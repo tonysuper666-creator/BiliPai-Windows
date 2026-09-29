@@ -83,7 +83,37 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.test { useJUnitPlatform() }
+tasks.test { useJUnitPlatform { excludeTags("packaged-updater") } }
+tasks.register<Test>("updaterSmoke") {
+    group = "verification"
+    description = "Exercise the updater against a real packaged EXE in isolated user data."
+    dependsOn("testClasses")
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform { includeTags("packaged-updater") }
+    outputs.upToDateWhen { false }
+    val packagePath = providers.gradleProperty("updateTestPackage").orNull
+    val reportPath = providers.gradleProperty("updateTestReport").orNull
+    val previousPackagePath = providers.gradleProperty("updatePreviousPackage").orNull
+    if (packagePath != null) {
+        inputs.file(packagePath)
+        systemProperty("bilipai.updateTestPackage", packagePath)
+    }
+    if (reportPath != null) {
+        outputs.file(File(reportPath, "updater-smoke.json"))
+        systemProperty("bilipai.updateTestReport", reportPath)
+    }
+    if (previousPackagePath != null) {
+        inputs.file(previousPackagePath)
+        systemProperty("bilipai.updatePreviousPackage", previousPackagePath)
+    }
+    doFirst {
+        require(System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) { "Packaged updater verification requires Windows." }
+        require(packagePath != null && file(packagePath).isFile) { "Pass -PupdateTestPackage=<actual portable ZIP>." }
+        require(!reportPath.isNullOrBlank()) { "Pass -PupdateTestReport=<isolated report directory>." }
+    }
+    testLogging { events("passed", "failed", "skipped") }
+}
 tasks.processResources {
     inputs.file(sourceManifest)
     inputs.file(upstreamBuildFile)

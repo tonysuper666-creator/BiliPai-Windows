@@ -16,6 +16,32 @@ import kotlin.test.assertTrue
 
 class StartupHealthTest {
     @Test
+    fun `acknowledged wrong packaged version is refused`() = runBlocking {
+        val marker = Files.createTempDirectory("bilipai-health-version-mismatch").resolve("startup-health.txt")
+        Files.writeString(marker.resolveSibling("startup-version.txt"), "0.2.406.3")
+        Files.writeString(marker, "token")
+        assertFalse(StartupHealth.await(ControlledProcess(), marker, "token", timeoutMs = 500,
+            stabilityMs = 10, pollMs = 5, expectedVersion = "windows-v0.2.406.4"))
+    }
+
+    @Test
+    fun `acknowledged missing packaged version is refused when required`() = runBlocking {
+        val marker = Files.createTempDirectory("bilipai-health-version-missing").resolve("startup-health.txt")
+        Files.writeString(marker, "token")
+        assertFalse(StartupHealth.await(ControlledProcess(), marker, "token", timeoutMs = 500,
+            stabilityMs = 10, pollMs = 5, expectedVersion = "0.2.406.4"))
+    }
+
+    @Test
+    fun `expected packaged version and current token survive stabilization`() = runBlocking {
+        val marker = Files.createTempDirectory("bilipai-health-version-valid").resolve("startup-health.txt")
+        Files.writeString(marker.resolveSibling("startup-version.txt"), "0.2.406.4")
+        Files.writeString(marker, "token")
+        assertTrue(StartupHealth.await(ControlledProcess(), marker, "token", timeoutMs = 500,
+            stabilityMs = 20, pollMs = 5, expectedVersion = "windows-v0.2.406.4"))
+    }
+
+    @Test
     fun `acknowledged process must survive stabilization period`() = runBlocking {
         val marker = Files.createTempDirectory("bilipai-health-crash").resolve("startup-health.txt")
         Files.writeString(marker, "test-token")

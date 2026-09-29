@@ -17,7 +17,7 @@ spec = importlib.util.spec_from_file_location("windows_sync", Path(__file__).wit
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
 ReleaseError = sync.UpdateError
-GATES = ("kotlinUnitTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke")
+GATES = ("kotlinUnitTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke", "packagedUpdaterSmoke")
 
 
 def valid_repository(repository: str) -> str:
@@ -50,7 +50,7 @@ def asset_names(version: str) -> tuple[str, str, str]:
 
 def validate_gates(gate: dict) -> None:
     if gate.get("passed") is not True or any(gate.get(name) != "passed" for name in GATES):
-        raise ReleaseError("Unit tests, guest backend smoke, and packaged native smoke must all pass.")
+        raise ReleaseError("Unit tests, guest backend smoke, packaged native smoke, and updater smoke must all pass.")
 
 
 def checksum(contents: bytes, archive_name: str) -> str:
@@ -218,6 +218,8 @@ def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
     local_digest = hashlib.sha256(archive.read_bytes()).hexdigest()
     if checksum((assets_root / checksum_name).read_bytes(), archive_name) != local_digest:
         raise ReleaseError("Local Windows ZIP checksum mismatch.")
+    if gate.get("windowsVersion") != version or gate.get("portableZipSha256") != local_digest:
+        raise ReleaseError("Release gate does not match the checked Windows package version and SHA-256.")
     status = publication_status(github, manifest, version, source_sha)
     if not status["publicationNeeded"]:
         return status
@@ -236,6 +238,12 @@ def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
             server_digest = assets[archive_name].get("digest")
             if server_digest is not None and server_digest != "sha256:" + digest:
                 raise ReleaseError("Existing Windows ZIP does not match the GitHub asset digest.")
+            if digest != local_digest:
+                if source_name not in assets:
+                    raise ReleaseError("Existing Windows ZIP lacks release evidence for its exact bytes; verify that ZIP or increment windowsRevision.")
+                # A fresh build's tests cannot attest another archive, even if its source tag is the same.
+                remote_evidence = json.loads(github.download(tag, source_name, directory).read_text(encoding="utf-8-sig"))
+                validate_evidence(remote_evidence, manifest, version, source_sha, digest)
         desired_evidence = evidence(manifest, version, source_sha, digest, gate)
         if checksum_name in assets:
             existing_checksum = github.download(tag, checksum_name, directory)

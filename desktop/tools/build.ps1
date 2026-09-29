@@ -5,13 +5,22 @@ param(
     [switch]$Installer,
     [switch]$SkipTests,
     [switch]$ReleaseGate,
-    [switch]$NativeSmoke
+    [switch]$NativeSmoke,
+    [switch]$UpdaterSmoke,
+    [string]$PreviousUpdateTestPackage
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $desktopRoot = Join-Path $repoRoot 'desktop'
 if ($ReleaseGate -and $SkipTests) { throw 'ReleaseGate cannot skip unit tests.' }
-# NativeSmoke checks only packaged playback; SkipTests never creates release evidence.
+# Independent smoke checks may use SkipTests; only the full ReleaseGate creates release evidence.
+if ($PreviousUpdateTestPackage -and -not ($ReleaseGate -or $UpdaterSmoke)) {
+    throw 'PreviousUpdateTestPackage requires UpdaterSmoke or ReleaseGate.'
+}
+if ($PreviousUpdateTestPackage) {
+    $PreviousUpdateTestPackage = [IO.Path]::GetFullPath($PreviousUpdateTestPackage)
+    if (-not (Test-Path -LiteralPath $PreviousUpdateTestPackage -PathType Leaf)) { throw 'The previous updater test ZIP is missing.' }
+}
 
 if (-not $JavaHome) { $JavaHome = $env:JAVA_HOME }
 if (-not $JavaHome) {
@@ -77,17 +86,6 @@ try {
         if (-not (Test-Path -LiteralPath $nativeReportPath)) { throw 'Packaged player produced no native test report.' }
         $nativeReport = Get-Content -LiteralPath $nativeReportPath -Raw | ConvertFrom-Json
         if ($nativeReport.passed -ne $true) { throw 'Packaged native playback checks did not pass.' }
-        if ($ReleaseGate) {
-            $releaseGateReport = [ordered]@{
-                passed = $true
-                kotlinUnitTests = 'passed'
-                guestNetworkBackendSmoke = 'passed'
-                packagedNativePlayerSmoke = 'passed'
-                nativeReport = $nativeReportPath
-                verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
-            }
-            $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $desktopRoot 'build/release-gate.json') -Encoding utf8
-        }
     }
     $manifest = Get-Content -LiteralPath (Join-Path $desktopRoot 'upstream-sources.json') -Raw | ConvertFrom-Json
     $versionLabel = [regex]::Replace($manifest.upstreamTag, '[^A-Za-z0-9._-]', '-')
@@ -107,6 +105,41 @@ try {
     ($digest + '  ' + [IO.Path]::GetFileName($archive)) | Set-Content -LiteralPath $stagedChecksum -Encoding ascii
     Move-Item -LiteralPath $stagedArchive -Destination $archive -Force
     Move-Item -LiteralPath $stagedChecksum -Destination ($archive + '.sha256') -Force
+    if ($ReleaseGate -or $UpdaterSmoke) {
+        $updaterSmokeRoot = Join-Path $desktopRoot ('build/reports/updater-smoke-' + [Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $updaterSmokeRoot -Force | Out-Null
+        $updaterSmokeArguments = @('-p', 'desktop', '--console=plain', 'updaterSmoke',
+            "-PupdateTestPackage=$archive", "-PupdateTestReport=$updaterSmokeRoot")
+        if ($PreviousUpdateTestPackage) { $updaterSmokeArguments += "-PupdatePreviousPackage=$PreviousUpdateTestPackage" }
+        Push-Location $repoRoot
+        try {
+            & (Join-Path $repoRoot 'gradlew.bat') @updaterSmokeArguments 2>&1 |
+                Tee-Object -FilePath (Join-Path $updaterSmokeRoot 'updater-smoke-gradle.log')
+            if ($LASTEXITCODE -ne 0) { throw "Packaged updater checks failed ($LASTEXITCODE)." }
+        } finally { Pop-Location }
+        $updaterReportPath = Join-Path $updaterSmokeRoot 'updater-smoke.json'
+        if (-not (Test-Path -LiteralPath $updaterReportPath -PathType Leaf)) { throw 'Packaged updater produced no test report.' }
+        $updaterReport = Get-Content -LiteralPath $updaterReportPath -Raw | ConvertFrom-Json
+        if ($updaterReport.passed -isnot [bool] -or -not $updaterReport.passed) { throw 'Packaged updater checks did not pass.' }
+        if ($updaterReport.windowsVersion -cne $windowsVersion -or $updaterReport.portableZipSha256 -cne $digest) {
+            throw 'Packaged updater evidence differs from the exact Windows version or ZIP SHA-256.'
+        }
+    }
+    if ($ReleaseGate) {
+        $releaseGateReport = [ordered]@{
+            passed = $true
+            kotlinUnitTests = 'passed'
+            guestNetworkBackendSmoke = 'passed'
+            packagedNativePlayerSmoke = 'passed'
+            packagedUpdaterSmoke = 'passed'
+            windowsVersion = $windowsVersion
+            portableZipSha256 = $digest
+            nativeReport = $nativeReportPath
+            updaterReport = $updaterReportPath
+            verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
+        }
+        $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath $gatePath -Encoding utf8
+    }
     Write-Host "Portable Windows package: $archive"
     Write-Host "SHA-256 checksum: $archive.sha256"
     Write-Host 'This package contains the Windows feature subset described in desktop/README.md.'

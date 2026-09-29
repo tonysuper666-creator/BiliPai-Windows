@@ -94,7 +94,8 @@ class PublicationTests(unittest.TestCase):
                 EVIDENCE: json.dumps(publication.evidence(MANIFEST, VERSION, SOURCE, digest, GATE)).encode("utf-8")}
 
     def publish(self, github, gate=None):
-        return publication.publish(github, MANIFEST, VERSION, SOURCE, self.root, gate or GATE)
+        selected_gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": self.local_digest} if gate is None else gate
+        return publication.publish(github, MANIFEST, VERSION, SOURCE, self.root, selected_gate)
 
     def test_no_release_requires_publication_even_without_upstream_source_changes(self):
         result = publication.publication_status(FakeGitHub(), MANIFEST, VERSION, SOURCE)
@@ -139,15 +140,24 @@ class PublicationTests(unittest.TestCase):
         self.assertTrue(github.is_draft)
         self.assertNotIn("public", github.operations)
 
-    def test_published_release_missing_evidence_is_repaired_without_replacing_valid_zip(self):
+    def test_matching_remote_zip_missing_evidence_can_be_repaired_after_exact_local_gate(self):
+        assets = self.complete_assets()
+        del assets[EVIDENCE]
+        github = FakeGitHub(tag=SOURCE, exists=True, assets=assets)
+        self.assertEqual(self.publish(github)["status"], "published")
+        self.assertEqual(github.assets[ARCHIVE], self.local_zip)
+        self.assertEqual(github.operations, ["draft", "upload:" + EVIDENCE, "public"])
+
+    def test_different_remote_zip_without_evidence_cannot_inherit_fresh_local_gate(self):
         old_zip = zip_bytes("previous valid package with different timestamps")
         assets = self.complete_assets(old_zip)
         del assets[EVIDENCE]
         github = FakeGitHub(tag=SOURCE, exists=True, assets=assets)
-        self.assertEqual(self.publish(github)["status"], "published")
+        with self.assertRaisesRegex(publication.ReleaseError, "lacks release evidence for its exact bytes"):
+            self.publish(github)
         self.assertEqual(github.assets[ARCHIVE], old_zip)
-        self.assertEqual(github.operations, ["draft", "upload:" + EVIDENCE, "public"])
-        self.assertEqual(json.loads(github.assets[EVIDENCE])["zipSha256"], hashlib.sha256(old_zip).hexdigest())
+        self.assertEqual(github.operations, [])
+        self.assertNotIn(EVIDENCE, github.assets)
 
     def test_missing_checksum_is_repaired_from_preserved_remote_zip(self):
         old_zip = zip_bytes("old build")
@@ -200,10 +210,32 @@ class PublicationTests(unittest.TestCase):
             self.publish(github)
         self.assertEqual(github.operations, [])
 
-    def test_passed_boolean_cannot_replace_the_three_release_gates(self):
+    def test_passed_boolean_cannot_replace_the_four_release_gates(self):
         github = FakeGitHub()
         with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
             self.publish(github, {"passed": True})
+        self.assertEqual(github.operations, [])
+
+    def test_old_three_gate_report_cannot_publish_without_updater_verification(self):
+        github = FakeGitHub()
+        gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": self.local_digest}
+        del gate["packagedUpdaterSmoke"]
+        with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
+            self.publish(github, gate)
+        self.assertEqual(github.operations, [])
+
+    def test_gate_for_another_package_cannot_publish_checked_local_zip(self):
+        github = FakeGitHub()
+        gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": "f" * 64}
+        with self.assertRaisesRegex(publication.ReleaseError, "does not match the checked Windows package"):
+            self.publish(github, gate)
+        self.assertEqual(github.operations, [])
+
+    def test_gate_for_another_version_cannot_publish_checked_local_zip(self):
+        github = FakeGitHub()
+        gate = {**GATE, "windowsVersion": "0.2.406.2", "portableZipSha256": self.local_digest}
+        with self.assertRaisesRegex(publication.ReleaseError, "does not match the checked Windows package"):
+            self.publish(github, gate)
         self.assertEqual(github.operations, [])
 
     def test_upstream_repository_and_invalid_source_cannot_be_published(self):

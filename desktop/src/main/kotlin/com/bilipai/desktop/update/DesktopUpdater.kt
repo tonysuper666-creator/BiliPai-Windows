@@ -30,13 +30,16 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 /** A build-configured GitHub Windows ZIP updater. It never downloads or installs Android APKs. */
-class DesktopUpdater {
+class DesktopUpdater private constructor(
+    private val config: UpdateConfig?,
+    private val updateRoot: Path,
+    private val client: OkHttpClient,
+    private val childLocalAppData: Path?,
+    private val onProcessStarted: (Process) -> Unit,
+) {
+    constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
+
     private val json = Json { ignoreUnknownKeys = true }
-    private val config: UpdateConfig? = runCatching {
-        javaClass.getResourceAsStream("/windows-update.json")?.use {
-            json.decodeFromString<UpdateConfig>(it.readBytes().toString(Charsets.UTF_8))
-        }
-    }.getOrNull()
     private val repository = config?.windowsReleaseRepository?.takeIf(::validRepository)
     private val installedVersion = config?.version?.let(DesktopVersion::parse)
     private val disabledReason = when {
@@ -51,10 +54,6 @@ class DesktopUpdater {
     val state: StateFlow<UpdateState> = mutableState.asStateFlow()
     private val mutex = Mutex()
     private var retainedPrepared: PreparedUpdate? = null
-    private val client = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
-        .readTimeout(40, TimeUnit.SECONDS).followSslRedirects(false).build()
-    private val updateRoot: Path = Path.of(System.getenv("LOCALAPPDATA")?.takeIf { it.isNotBlank() }
-        ?: Path.of(System.getProperty("user.home"), ".local", "share").toString(), "BiliPai", "updates").toAbsolutePath().normalize()
 
     /** Explicit UI checks bypass the six-hour background debounce. A prepared update is retained. */
     suspend fun check(force: Boolean = true): UpdateState = withContext(Dispatchers.IO) {
@@ -139,7 +138,7 @@ class DesktopUpdater {
                 validStoredExecutable(prepared.executable.toString()) == prepared.executable) { "更新安装目录校验失败" }
             mutableState.value = UpdateState.Launching
             attempt = launchInstallation(prepared.executable, emptyList())
-            require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token)) { "新版本未通过窗口和播放组件启动检查，当前版本继续运行" }
+            require(StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = prepared.update.version)) { "新版本未通过版本、窗口和播放组件启动检查，当前版本继续运行" }
             currentCoroutineContext().ensureActive()
             val previous = previousInstallation()
             writeActiveInstallation(ActiveInstallation(requireNotNull(repository), prepared.update.version, prepared.executable.toString(),
@@ -154,6 +153,7 @@ class DesktopUpdater {
             throw cancelled
         } catch (error: Exception) {
             currentCoroutineContext().ensureActive()
+            retainedPrepared = null
             mutableState.value = UpdateState.Failed(error.message ?: "Windows 更新启动失败，当前版本继续运行")
             false
         } finally {
@@ -241,15 +241,25 @@ class DesktopUpdater {
         }
     }
 
-    private fun launchInstallation(executable: Path, args: List<String>): LaunchAttempt {
+    private suspend fun launchInstallation(executable: Path, args: List<String>): LaunchAttempt {
         val stage = stageForExecutable(executable) ?: error("更新启动路径无效")
         val launchDirectory = Files.createDirectory(stage.resolve("launch-${UUID.randomUUID()}"))
         val token = UUID.randomUUID().toString()
         val healthFile = launchDirectory.resolve("startup-health.txt")
-        val process = ProcessBuilder(listOf(executable.toString()) + args + listOf("--update-health-file", healthFile.toString(), "--update-health-token", token))
+        val builder = ProcessBuilder(listOf(executable.toString()) + args + listOf("--update-health-file", healthFile.toString(), "--update-health-token", token))
             .directory(executable.parent.toFile())
             .redirectOutput(launchDirectory.resolve("startup-output.log").toFile())
-            .redirectError(launchDirectory.resolve("startup-error.log").toFile()).start()
+            .redirectError(launchDirectory.resolve("startup-error.log").toFile())
+        childLocalAppData?.let { isolated ->
+            builder.environment().apply {
+                this["LOCALAPPDATA"] = isolated.toString()
+                // Harness children must use the bundled native library and their own data directory.
+                listOf("BILIPAI_MPV_PATH", "JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "JDK_JAVA_OPTIONS").forEach(::remove)
+            }
+        }
+        val process = builder.start()
+        try { onProcessStarted(process) }
+        catch (error: Throwable) { StartupHealth.terminate(process); throw error }
         return LaunchAttempt(process, healthFile, token)
     }
 
@@ -310,7 +320,7 @@ class DesktopUpdater {
         }
     }
 
-    private suspend fun launchRegisteredInstall(args: Array<String>): Boolean {
+    internal suspend fun launchRegisteredInstall(args: Array<String>): Boolean {
         if (disabledReason != null || args.any { it in setOf("--update-health-file", "--update-health-token", "--backend-smoke", "--player-self-test") }) return false
         val active = readActiveInstallation() ?: return false
         val current = requireNotNull(installedVersion)
@@ -329,9 +339,11 @@ class DesktopUpdater {
             var committed = false
             try {
                 attempt = launchInstallation(executable, args.toList())
-                if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token)) {
+                if (StartupHealth.await(attempt.process, attempt.healthFile, attempt.token, expectedVersion = version)) {
                     currentCoroutineContext().ensureActive()
-                    if (version != active.version) writeActiveInstallation(ActiveInstallation(requireNotNull(repository), version, executable.toString()))
+                    if (version != active.version || executable.toString() != active.executablePath) {
+                        writeActiveInstallation(ActiveInstallation(requireNotNull(repository), version, executable.toString()))
+                    }
                     committed = true
                     pruneInstallations()
                     return true
@@ -351,6 +363,37 @@ class DesktopUpdater {
         const val STARTUP_TIMEOUT_MS = 30_000L
         internal const val STARTUP_STABILITY_MS = 1_500L
         internal const val AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L
+        private fun loadBuildConfig(): UpdateConfig? = runCatching {
+            DesktopUpdater::class.java.getResourceAsStream("/windows-update.json")?.use {
+                Json { ignoreUnknownKeys = true }.decodeFromString<UpdateConfig>(it.readBytes().toString(Charsets.UTF_8))
+            }
+        }.getOrNull()
+        internal fun packagedVersion(): String = requireNotNull(loadBuildConfig()?.version?.takeIf { DesktopVersion.parse(it) != null }) {
+            "Windows build version is unavailable"
+        }
+        private fun defaultUpdateRoot(): Path = Path.of(System.getenv("LOCALAPPDATA")?.takeIf { it.isNotBlank() }
+            ?: Path.of(System.getProperty("user.home"), ".local", "share").toString(), "BiliPai", "updates").toAbsolutePath().normalize()
+        private fun defaultClient(): OkHttpClient = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
+            .readTimeout(40, TimeUnit.SECONDS).followSslRedirects(false).build()
+
+        /** Internal opt-in harness only; the public constructor always uses embedded production settings. */
+        internal fun forIntegrationTest(
+            currentVersion: String,
+            repository: String,
+            updateRoot: Path,
+            client: OkHttpClient,
+            childLocalAppData: Path,
+            onProcessStarted: (Process) -> Unit,
+            executable: String = "BiliPai Windows.exe",
+        ): DesktopUpdater {
+            require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
+            val childData = childLocalAppData.toAbsolutePath().normalize()
+            require(updateRoot.toAbsolutePath().normalize() == childData.resolve("BiliPai/updates")) {
+                "Integration update root must belong to the isolated child LOCALAPPDATA"
+            }
+            return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, executable = executable),
+                updateRoot, client, childData, onProcessStarted)
+        }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {
             withContext(Dispatchers.IO) { DesktopUpdater().launchRegisteredInstall(args) }

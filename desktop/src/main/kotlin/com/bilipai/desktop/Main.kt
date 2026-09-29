@@ -92,6 +92,8 @@ fun main(args: Array<String>) {
                                     java.nio.file.Files.isDirectory(directory, java.nio.file.LinkOption.NOFOLLOW_LINKS))
                             }
                             MpvStartupProbe.verify()
+                            java.nio.file.Files.writeString(marker.resolveSibling("startup-version.txt"), DesktopUpdater.packagedVersion(),
+                                java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
                             java.nio.file.Files.writeString(marker, healthToken, java.nio.file.StandardOpenOption.CREATE_NEW,
                                 java.nio.file.StandardOpenOption.WRITE)
                         }

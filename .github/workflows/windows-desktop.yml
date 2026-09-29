@@ -91,7 +91,7 @@ jobs:
           BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
           MAKE_RELEASE: ${{ steps.plan.outputs.release }}
         run: |
-          $parameters = @{ NativeSmoke = $true }
+          $parameters = @{ NativeSmoke = $true; UpdaterSmoke = $true }
           if ('${{ inputs.installer }}' -eq 'true') { $parameters.Installer = $true }
           if ($env:MAKE_RELEASE -eq 'true') { $parameters.ReleaseGate = $true }
           & ./desktop/tools/build.ps1 @parameters
@@ -101,6 +101,15 @@ jobs:
         with:
           name: Windows-native-player-smoke-evidence
           path: desktop/build/reports/*/native-player-smoke.*
+          if-no-files-found: warn
+      - name: Upload packaged updater evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-updater-smoke-evidence
+          path: |
+            desktop/build/reports/updater-smoke-*/updater-smoke.json
+            desktop/build/reports/updater-smoke-*/**/*.log
           if-no-files-found: warn
       - name: Upload portable package
         uses: actions/upload-artifact@v4
@@ -118,6 +127,7 @@ jobs:
           path: |
             desktop/build/release-gate.json
             desktop/build/reports/release-gate-*/native-player-smoke.*
+            desktop/build/reports/updater-smoke-*/updater-smoke.json
           if-no-files-found: error
       - name: Upload optional installer
         if: inputs.installer == true
