@@ -25,6 +25,7 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Cookie
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.HttpUrl
@@ -210,13 +211,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             86090 -> QrLoginState.Scanned
             86038 -> QrLoginState.Expired
             0 -> {
-                val cookies = sessions.currentCookies().toMutableMap()
-                // Some poll responses expose the credentials in their success redirect query.
-                data.url?.toHttpUrlOrNull()?.let { url ->
-                    DesktopSessionStore.PERSISTED_COOKIE_NAMES.forEach { name ->
-                        url.queryParameter(name)?.let { cookies[name] = it }
-                    }
-                }
+                val cookies = resolveQrLoginCookies(response.raw().request.url, response.headers().values("Set-Cookie"),
+                    data.url, sessions.currentCookies())
+                if (cookies["SESSDATA"].isNullOrBlank()) throw BiliApiException(-1, "二维码登录响应缺少登录凭证，请刷新二维码后重试")
                 val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
                 sessions.saveAccount(cookies, summary)
                 QrLoginState.Complete(summary)
@@ -317,6 +314,39 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     companion object {
         const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+        private val QR_ACCOUNT_COOKIE_NAMES = setOf("SESSDATA", "bili_jct", "DedeUserID", "DedeUserID__ckMd5")
+
+        /** Authorize only the current QR response; stored credentials can belong to a different account. */
+        internal fun resolveQrLoginCookies(
+            responseUrl: HttpUrl,
+            setCookieHeaders: List<String>,
+            successUrl: String?,
+            previousJar: Map<String, String>,
+        ): Map<String, String> {
+            require(responseUrl.scheme == "https" && DesktopSessionStore.isBilibiliHost(responseUrl.host)) { "二维码登录响应来源无效" }
+            val allowedNames = DesktopSessionStore.PERSISTED_COOKIE_NAMES
+            val resolved = linkedMapOf<String, String>()
+            val now = System.currentTimeMillis()
+            setCookieHeaders.forEach { header ->
+                Cookie.parse(responseUrl, header)?.takeIf { cookie ->
+                    cookie.name in allowedNames && cookie.value.isNotBlank() && cookie.expiresAt > now &&
+                        DesktopSessionStore.isBilibiliHost(cookie.domain)
+                }?.let { cookie -> resolved[cookie.name] = cookie.value }
+            }
+            // HttpUrl decodes the URL query once. It must never overwrite literal Set-Cookie values.
+            successUrl?.toHttpUrlOrNull()?.takeIf {
+                it.scheme == "https" && DesktopSessionStore.isBilibiliHost(it.host)
+            }?.let { url ->
+                allowedNames.forEach { name ->
+                    url.queryParameter(name)?.takeIf { it.isNotBlank() }?.let { resolved.putIfAbsent(name, it) }
+                }
+            }
+            previousJar.filterKeys { it in allowedNames && it !in QR_ACCOUNT_COOKIE_NAMES }.forEach { (name, value) ->
+                if (value.isNotBlank()) resolved.putIfAbsent(name, value)
+            }
+            return resolved
+        }
+
         // Mirror upstream ApiClient: explicit headers win, WBI omits Referer, video APIs use the video page.
         internal fun resolveReferer(url: HttpUrl, explicit: String?): String? {
             explicit?.takeIf { it.isNotBlank() }?.let { return it }

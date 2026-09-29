@@ -180,6 +180,6 @@
     "plugins": "not-ported",
     "downloads": "not-ported"
   },
-  "windowsRevision": 2,
+  "windowsRevision": 3,
   "hashNormalization": "lf"
 }
