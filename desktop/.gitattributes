@@ -1,0 +1,2 @@
+# Native license digests identify the original LF bytes on every checkout.
+third-party/libmpv/licenses/* text eol=lf

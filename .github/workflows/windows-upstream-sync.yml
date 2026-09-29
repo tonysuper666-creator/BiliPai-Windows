@@ -1,0 +1,211 @@
+name: Prepare Windows upstream update
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */2 * * *'
+
+# Automatic sync/publication is dormant until explicitly enabled on a personal repo.
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-upstream-update
+  cancel-in-progress: false
+
+jobs:
+  detect:
+    if: >-
+      github.repository != 'jay3-yy/BiliPai' &&
+      (github.event_name == 'workflow_dispatch' || vars.BILIPAI_WINDOWS_AUTO_SYNC == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      # Authenticated release enumeration must include drafts left by failed uploads.
+      contents: write
+    outputs:
+      update_needed: ${{ steps.check.outputs.update_needed }}
+      publication_needed: ${{ steps.check.outputs.publication_needed }}
+      source_sha: ${{ steps.check.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify updater and publication safety policies
+        run: python -m unittest discover -s desktop/tools/tests -p 'test_*.py'
+      - name: Check upstream source and Windows publication independently
+        id: check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ github.token }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          from pathlib import Path
+          def command(*args):
+              return subprocess.run(args, check=True, capture_output=True, text=True).stdout
+          report = json.loads(command('python', 'desktop/tools/sync-upstream.py', '--check'))
+          publication = json.loads(command('python', 'desktop/tools/publish-release.py', '--check', '--repository', os.environ['GITHUB_REPOSITORY']))
+          Path(os.environ['RUNNER_TEMP'], 'upstream-check.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          needed = False
+          if report['status'] == 'updateAvailable':
+              prs = json.loads(command('gh', 'pr', 'list', '--repo', os.environ['GITHUB_REPOSITORY'], '--head', report['candidateBranch'], '--state', 'all', '--json', 'number'))
+              needed = not prs
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write(f"update_needed={str(needed).lower()}\n")
+              output.write(f"publication_needed={str(publication['publicationNeeded']).lower()}\n")
+              output.write(f"source_sha={publication['sourceSha']}\n")
+          print(json.dumps({'upstream': report, 'windowsPublication': publication}, indent=2))
+
+  candidate:
+    needs: detect
+    if: needs.detect.outputs.update_needed == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      source_sha: ${{ steps.advance.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.detect.outputs.source_sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build isolated candidate with all release gates
+        id: candidate
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          $result = python desktop/tools/sync-upstream.py --sync --release-gate --worktree-root "$env:RUNNER_TEMP/windows-updates" --java-home "$env:JAVA_HOME"
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate failed; no branch or PR is published.' }
+          $report = ($result -join "`n") | ConvertFrom-Json
+          if ($report.status -ne 'candidateReady' -or $report.buildStatus -ne 'passed' -or $report.releaseGatePassed -ne $true) { throw 'No release-gated candidate was produced.' }
+          $result | Set-Content -LiteralPath "$env:RUNNER_TEMP/upstream-candidate.json" -Encoding utf8
+          if ($report.autoPublishEligible -eq $true -and '${{ vars.BILIPAI_WINDOWS_AUTO_PUBLISH }}' -eq 'true') {
+            'autopublish=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+          }
+      - name: Upload tested candidate for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Windows-update-candidate
+          path: |
+            ${{ runner.temp }}/windows-updates/**/desktop/build/distributions/*.zip
+            ${{ runner.temp }}/windows-updates/**/desktop/build/distributions/*.zip.sha256
+          if-no-files-found: error
+      - name: Advance personal Windows branch to validated low-risk sources
+        id: advance
+        if: steps.candidate.outputs.autopublish == 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $report = Get-Content -LiteralPath "$env:RUNNER_TEMP/upstream-candidate.json" -Raw | ConvertFrom-Json
+          python desktop/tools/sync-upstream.py --publication-check
+          if ($LASTEXITCODE -ne 0 -or $report.releaseGatePassed -ne $true -or $report.autoPublishEligible -ne $true) { throw 'Automatic publication rejected this candidate.' }
+          $actualHead = git -C $report.candidatePath rev-parse HEAD
+          if ($actualHead -ne $report.candidateHead) { throw 'Candidate source changed after its successful build.' }
+          $baseBranch = gh repo view $env:GITHUB_REPOSITORY --json defaultBranchRef --jq '.defaultBranchRef.name'
+          if ($LASTEXITCODE -ne 0 -or -not $baseBranch) { throw 'Could not resolve the Windows default branch.' }
+          gh auth setup-git
+          if ($LASTEXITCODE -ne 0) { throw 'Could not configure personal repository authentication.' }
+          git -C $report.candidatePath push origin "$($report.candidateBranch):refs/heads/$baseBranch"
+          if ($LASTEXITCODE -ne 0) { throw 'Fast-forward failed; concurrent source changes require review. No force push is used.' }
+          "source_sha=$($report.candidateHead)" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+      - name: Open draft source update PR for manual review
+        if: steps.candidate.outputs.autopublish != 'true'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $report = Get-Content -LiteralPath "$env:RUNNER_TEMP/upstream-candidate.json" -Raw | ConvertFrom-Json
+          python desktop/tools/sync-upstream.py --publication-check
+          if ($LASTEXITCODE -ne 0) { throw 'Publication safety check failed.' }
+          $candidatePath = [IO.Path]::GetFullPath($report.candidatePath)
+          $allowedRoot = [IO.Path]::GetFullPath("$env:RUNNER_TEMP/windows-updates") + [IO.Path]::DirectorySeparatorChar
+          if (-not $candidatePath.StartsWith($allowedRoot, [StringComparison]::OrdinalIgnoreCase)) { throw 'Candidate escaped its worktree directory.' }
+          $actualHead = git -C $candidatePath rev-parse HEAD
+          if ($actualHead -ne $report.candidateHead -or $report.buildStatus -ne 'passed') { throw 'Candidate changed after its successful build.' }
+          $body = @"
+          Updates Windows sources to $($report.candidateTag) at $($report.candidateCommit).
+
+          Windows unit tests, updater safety tests, guest backend smoke, and packaged native player checks passed. The candidate ZIP is attached to this workflow run.
+
+          Reused source changes: $(@($report.changedReusedSources) -join ', ')
+          Features needing review: $(@($report.featuresNeedingReview) -join ', ')
+          Manual review reasons: $(@($report.manualReviewReasons) -join '; ')
+          Unported upstream paths changed: $(@($report.unportedChangedPaths).Count).
+
+          Coverage inventory:
+          $($report.featureCoverage | ConvertTo-Json -Depth 4)
+
+          Android changes do not expand Windows coverage automatically. Review login and mouse/keyboard behavior before merging.
+
+          Upstream release: $($report.releaseUrl)
+          "@
+          $bodyFile = "$env:RUNNER_TEMP/windows-update-pr.md"
+          $body | Set-Content -LiteralPath $bodyFile -Encoding utf8
+          gh auth setup-git
+          if ($LASTEXITCODE -ne 0) { throw 'Could not configure personal repository authentication.' }
+          git -C $candidatePath push origin $report.candidateBranch
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate push failed.' }
+          $baseBranch = gh repo view $env:GITHUB_REPOSITORY --json defaultBranchRef --jq '.defaultBranchRef.name'
+          if ($LASTEXITCODE -ne 0 -or -not $baseBranch) { throw 'Could not resolve the Windows default branch.' }
+          gh pr create --repo $env:GITHUB_REPOSITORY --base $baseBranch --head $report.candidateBranch --draft --title "Windows sources: $($report.candidateTag)" --body-file $bodyFile
+          if ($LASTEXITCODE -ne 0) { throw 'PR creation failed; the tested branch remains available for review.' }
+
+  recover_publication:
+    needs: [detect, candidate]
+    if: >-
+      always() && needs.detect.result == 'success' &&
+      (needs.candidate.result == 'success' || needs.candidate.result == 'skipped') &&
+      vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true' &&
+      (needs.detect.outputs.publication_needed == 'true' || needs.candidate.outputs.source_sha != '')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.candidate.outputs.source_sha || needs.detect.outputs.source_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retry incomplete Windows publication from its fixed source commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          def command(*args):
+              return subprocess.run(args, check=True, capture_output=True, text=True).stdout
+          repository = os.environ['GITHUB_REPOSITORY']
+          report = json.loads(command('python', 'desktop/tools/publish-release.py', '--check', '--repository', repository))
+          if report['publicationNeeded']:
+              base = command('gh', 'repo', 'view', repository, '--json', 'defaultBranchRef', '--jq', '.defaultBranchRef.name').strip()
+              if not base:
+                  raise RuntimeError('No Windows default branch was found.')
+              command('gh', 'workflow', 'run', 'windows-desktop.yml', '--repo', repository, '--ref', base,
+                      '-f', 'release=true', '-f', 'source_sha=' + report['sourceSha'], '-f', 'expected_head=' + report['sourceSha'])
+              print('Requested complete Windows release ' + report['tag'] + ' from fixed source ' + report['sourceSha'])
+          else:
+              print('Windows release and immutable source assets are complete.')

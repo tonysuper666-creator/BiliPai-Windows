@@ -1,0 +1,155 @@
+name: Windows desktop build
+
+on:
+  workflow_dispatch:
+    inputs:
+      installer:
+        description: Also build an MSI installer (requires WiX)
+        type: boolean
+        default: false
+      release:
+        description: Publish after unit, guest network, and packaged native player checks
+        type: boolean
+        default: false
+      expected_head:
+        description: Optional exact source commit required by publication
+        type: string
+        default: ''
+      source_sha:
+        description: Fixed source commit to build, including publication recovery
+        type: string
+        default: ''
+  push:
+    branches: ['desktop/windows']
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/windows-desktop.yml'
+      - 'app/**'
+      - 'settings-core/**'
+      - 'gradle/wrapper/**'
+      - 'gradlew.bat'
+  pull_request:
+    paths:
+      - 'desktop/**'
+      - '.github/workflows/windows-desktop.yml'
+      - 'gradle/wrapper/**'
+      - 'gradlew.bat'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-desktop-${{ inputs.source_sha || github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    if: github.repository != 'jay3-yy/BiliPai'
+    runs-on: windows-latest
+    timeout-minutes: 35
+    outputs:
+      release: ${{ steps.plan.outputs.release }}
+      source_sha: ${{ steps.plan.outputs.source_sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha || github.sha }}
+          persist-credentials: false
+      - name: Lock the source commit and decide release policy
+        id: plan
+        shell: pwsh
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+          MAKE_RELEASE: ${{ github.event_name != 'pull_request' && (inputs.release == true || (github.event_name == 'push' && vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true')) }}
+        run: |
+          $head = git rev-parse HEAD
+          foreach ($required in @($env:SOURCE_SHA, $env:EXPECTED_HEAD)) {
+            if ($required -and ($required -notmatch '^[0-9a-f]{40}$' -or $head -ne $required)) { throw 'Checkout differs from the fixed source commit; publication stopped.' }
+          }
+          "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+          if ($env:MAKE_RELEASE -eq 'true') { 'release=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT }
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify updater and publication safety policies
+        shell: pwsh
+        run: python -m unittest discover -s desktop/tools/tests -p 'test_*.py'
+      - name: Reject inherited publication workflows and upstream remote
+        if: steps.plan.outputs.release == 'true'
+        shell: pwsh
+        run: |
+          python desktop/tools/sync-upstream.py --publication-check
+          if ($LASTEXITCODE -ne 0) { throw 'Publication safety check failed.' }
+      - name: Build tested portable Windows package
+        shell: pwsh
+        env:
+          BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
+          MAKE_RELEASE: ${{ steps.plan.outputs.release }}
+        run: |
+          $parameters = @{}
+          if ('${{ inputs.installer }}' -eq 'true') { $parameters.Installer = $true }
+          if ($env:MAKE_RELEASE -eq 'true') { $parameters.ReleaseGate = $true }
+          & ./desktop/tools/build.ps1 @parameters
+      - name: Upload portable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Windows-x64
+          path: |
+            desktop/build/distributions/*.zip
+            desktop/build/distributions/*.zip.sha256
+          if-no-files-found: error
+      - name: Upload release smoke evidence
+        if: steps.plan.outputs.release == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-release-smoke-evidence
+          path: |
+            desktop/build/release-gate.json
+            desktop/build/reports/release-gate-*/native-player-smoke.*
+          if-no-files-found: error
+      - name: Upload optional installer
+        if: inputs.installer == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: BiliPai-Windows-MSI
+          path: desktop/build/compose/binaries/main/msi/*.msi
+          if-no-files-found: error
+
+  publish:
+    needs: windows
+    if: needs.windows.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: windows-release-publication
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.windows.outputs.source_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: BiliPai-Windows-x64
+          path: release-assets
+      - uses: actions/download-artifact@v4
+        with:
+          name: Windows-release-smoke-evidence
+          path: release-evidence
+      - name: Finish draft, verify immutable tag and all assets, then publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ needs.windows.outputs.source_sha }}
+        run: >-
+          python desktop/tools/publish-release.py --publish
+          --repository "$GITHUB_REPOSITORY" --source-sha "$SOURCE_SHA"
+          --assets release-assets --gate release-evidence/release-gate.json

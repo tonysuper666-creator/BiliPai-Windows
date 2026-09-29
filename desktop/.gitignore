@@ -1,0 +1,10 @@
+/build/
+/.gradle/
+/native/
+/resources/common/native/
+/.local/
+*.log
+__pycache__/
+*.pyc
+!/third-party/libmpv/NOTICES.md
+!/third-party/libmpv/licenses/ffmpeg-LICENSE.md
