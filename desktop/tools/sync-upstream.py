@@ -151,26 +151,188 @@ def branch_name(tag: str, commit: str) -> str:
     return f"windows/upstream-{name}-{commit[:12]}"
 
 
-def selected_login_api(repo: Path, source: bytes) -> str:
-    """Compare reused login declarations rather than unrelated singleton edits."""
+def kotlin_tokens(text: str) -> list[tuple[str, int, int]]:
+    """Keep literal contents, but do not mistake comments/templates for code delimiters."""
+    def comment_end(start: int) -> int:
+        depth, position = 1, start + 2
+        while position < len(text):
+            if text.startswith("/*", position):
+                depth, position = depth + 1, position + 2
+            elif text.startswith("*/", position):
+                depth, position = depth - 1, position + 2
+                if not depth:
+                    return position
+            else:
+                position += 1
+        raise UpdateError("Unterminated Kotlin comment; sensitive network review required.")
+
+    def quoted_end(start: int) -> int:
+        raw = text.startswith('"""', start)
+        quote = '"""' if raw else text[start]
+        position = start + len(quote)
+        while position < len(text):
+            if text.startswith(quote, position):
+                return position + len(quote)
+            if not raw and text[position] == "\\":
+                position += 2
+            elif quote != "'" and text.startswith("${", position):
+                position = template_end(position + 2)
+            else:
+                position += 1
+        raise UpdateError("Unterminated Kotlin literal; sensitive network review required.")
+
+    def template_end(position: int) -> int:
+        depth = 1
+        while position < len(text):
+            if text.startswith("//", position):
+                position = text.find("\n", position)
+                if position < 0:
+                    break
+            elif text.startswith("/*", position):
+                position = comment_end(position)
+            elif text[position] in "\"'":
+                position = quoted_end(position)
+            elif text[position] == "{":
+                depth, position = depth + 1, position + 1
+            elif text[position] == "}":
+                depth, position = depth - 1, position + 1
+                if not depth:
+                    return position
+            else:
+                position += 1
+        raise UpdateError("Unterminated Kotlin template; sensitive network review required.")
+
+    identifier = re.compile(r"[^\W\d]\w*|\d+")
+    result, position = [], 0
+    while position < len(text):
+        start = position
+        if text[position].isspace():
+            position += 1
+            continue
+        if text.startswith("//", position):
+            position = text.find("\n", position)
+            if position < 0:
+                break
+            continue
+        if text.startswith("/*", position):
+            position = comment_end(position)
+            continue
+        if text[position] in "\"'":
+            position = quoted_end(position)
+        elif text[position] == "`":
+            position = text.find("`", position + 1)
+            if position < 0:
+                raise UpdateError("Unterminated Kotlin identifier; sensitive network review required.")
+            position += 1
+        else:
+            name = identifier.match(text, position)
+            position += len(name.group(0)) if name else 1
+        result.append((text[start:position], start, position))
+    return result
+
+
+def kotlin_structure(tokens: list[tuple[str, int, int]], kind: str, name: str,
+                     *, constructor_only: bool = False) -> tuple[int, int]:
+    """Select one top-level declaration; malformed or missing reviewed blocks fail closed."""
+    depth, matches = 0, []
+    for index, (value, _, _) in enumerate(tokens):
+        if depth == 0 and value == kind and index + 1 < len(tokens) and tokens[index + 1][0] == name:
+            matches.append(index)
+        depth += (value == "{") - (value == "}")
+        if depth < 0:
+            raise UpdateError("Unbalanced Kotlin structure; sensitive network review required.")
+    if depth:
+        raise UpdateError("Unbalanced Kotlin structure; sensitive network review required.")
+    if len(matches) != 1:
+        raise UpdateError(f"Expected one reviewed {kind} {name}; sensitive network review required.")
+    start = matches[0]
+    position, parentheses = start + 2, 0
+    while position < len(tokens):
+        value = tokens[position][0]
+        parentheses += (value == "(") - (value == ")")
+        if constructor_only and value == ")" and parentheses == 0:
+            return start, position
+        if value == "{" and parentheses == 0:
+            opening, braces = position, 1
+            while position + 1 < len(tokens):
+                position += 1
+                value = tokens[position][0]
+                braces += (value == "{") - (value == "}")
+                if not braces:
+                    return (opening if kind == "interface" else start), position
+            break
+        if parentheses == 0 and value in {"class", "object", "interface", "fun", "val", "var", "="}:
+            break
+        position += 1
+    raise UpdateError(f"Cannot delimit reviewed {kind} {name}; sensitive network review required.")
+
+
+def selected_api_contract(repo: Path, source: bytes, *, login_only: bool = False) -> str:
+    """Only declarations adopted by Windows enter the interface risk comparison."""
     extractor_path = repo / "desktop/tools/extract-upstream-api.py"
     spec = importlib.util.spec_from_file_location("bilipai_api_extractor", extractor_path)
     extractor = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(extractor)
     text = normalized_source(source).decode("utf-8")
+    tokens = kotlin_tokens(text)
     constant = re.search(r'(?m)^internal const val FORCE_COOKIE_HEADER\s*=\s*"[^"\n]+"', text)
     if constant is None:
         raise UpdateError("Login cookie header constant changed; session adapter needs manual review.")
     declarations = [constant.group(0)]
-    for interface, methods in {"PassportApi": extractor.METHODS["PassportApi"], "BilibiliApi": ["getNavInfo"]}.items():
-        marker = re.search(r"\binterface\s+" + re.escape(interface) + r"\s*\{", text)
-        if marker is None:
-            raise UpdateError(f"Login API {interface} disappeared.")
-        opening = text.find("{", marker.start())
-        closing = extractor.matching_bracket(text, opening, "{", "}")
-        body = text[opening + 1:closing]
+    selected = ({"PassportApi": extractor.METHODS["PassportApi"], "BilibiliApi": ["getNavInfo"]}
+                if login_only else extractor.METHODS)
+    for interface, methods in selected.items():
+        opening, closing = kotlin_structure(tokens, "interface", interface)
+        body = text[tokens[opening][2]:tokens[closing][1]]
         declarations.extend(extractor.extract_method(body, method) for method in methods)
     return "\n".join(declarations)
+
+
+def selected_login_api(repo: Path, source: bytes) -> str:
+    return selected_api_contract(repo, source, login_only=True)
+
+
+def selected_network_behavior(source: bytes) -> tuple[str, ...]:
+    """Review account/visitor implementations, not unrelated Android API interfaces or objects."""
+    text = normalized_source(source).decode("utf-8")
+    tokens = kotlin_tokens(text)
+    sections = []
+    for kind, name, constructor_only in (
+        ("fun", "applyForcedCookieHeader", False),
+        ("class", "AppSessionCookieJar", False),
+        ("class", "PlaybackAccountCookieJar", False),
+        ("object", "NetworkModule", False),
+        ("class", "BuvidSpiData", True),
+        ("class", "BuvidSpiResponse", True),
+    ):
+        start, end = kotlin_structure(tokens, kind, name, constructor_only=constructor_only)
+        # Preserve statement boundaries/operators; formatting inside sensitive code is conservatively reviewed.
+        sections.append(text[tokens[start][1]:tokens[end][2]])
+    # Include identifiers inside string templates too; extra names in comments/literals are conservative.
+    identifiers = set(re.findall(r"[^\W\d]\w*", "\n".join(sections)))
+    # Header constants and the imported policies/classes they reference are part of the behavior.
+    for name in ("MERGED_APP_FEED_FP", "MERGED_APP_FEED_SESSION_ID"):
+        positions = [index for index in range(len(tokens) - 1)
+                     if tokens[index][0] == "val" and tokens[index + 1][0] == name]
+        if len(positions) != 1:
+            raise UpdateError(f"Missing or duplicate network constant {name}; manual review required.")
+        start = positions[0]
+        if (start + 4 >= len(tokens) or tokens[start + 2][0] != "=" or not tokens[start + 3][0].startswith('"') or
+                tokens[start + 4][0] not in {"private", "internal", "public", "const", "val", "fun", "class", "data", "object", "interface", "@"}):
+            raise UpdateError(f"Network constant {name} changed structure; manual review required.")
+        sections.append(text[tokens[start][1]:tokens[start + 3][2]])
+    for index, (value, _, _) in enumerate(tokens):
+        if value != "import":
+            continue
+        end = index + 2
+        while end + 1 < len(tokens) and tokens[end][0] == ".":
+            end += 2
+        alias = tokens[end + 1][0] if end + 1 < len(tokens) and tokens[end][0] == "as" else tokens[end - 1][0]
+        if alias in identifiers or alias == "*":
+            if end + 1 < len(tokens) and tokens[end][0] == "as":
+                end += 2
+            sections.append(text[tokens[index][1]:tokens[end - 1][2]])
+    return tuple(sections)
 
 
 def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
@@ -187,6 +349,7 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
         "status": "upToDate" if commit == manifest["upstreamCommit"] else "updateAvailable",
         "changedReusedSources": [], "featuresNeedingReview": [],
         "featureCoverage": manifest.get("featureCoverage", {}), "loginApiChanged": False,
+        "windowsApiContractChanged": False, "networkBehaviorChanged": False,
         "autoPublishEligible": True, "manualReviewReasons": [],
         "coverageNote": "Only explicitly ported Windows features are built. A new APK release does not imply new Windows feature support.",
     }
@@ -209,12 +372,17 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
             source_features = set(item.get("features", []))
             if path.endswith("core/network/ApiClient.kt"):
                 try:
+                    previous = repo.joinpath(*PurePosixPath(path).parts).read_bytes()
                     report["loginApiChanged"] = selected_login_api(repo, contents) != selected_login_api(
-                        repo, repo.joinpath(*PurePosixPath(path).parts).read_bytes())
+                        repo, previous)
+                    report["windowsApiContractChanged"] = selected_api_contract(repo, contents) != selected_api_contract(repo, previous)
+                    report["networkBehaviorChanged"] = selected_network_behavior(contents) != selected_network_behavior(previous)
                 except (ValueError, OSError, ImportError) as error:
-                    raise UpdateError(f"Selected login API extraction failed: {error}") from error
-                if not report["loginApiChanged"]:
+                    raise UpdateError(f"Sensitive Windows network extraction failed; manual review required: {error}") from error
+                if not report["loginApiChanged"] and not report["networkBehaviorChanged"]:
                     source_features.discard("login")
+                if report["windowsApiContractChanged"] or report["networkBehaviorChanged"]:
+                    review_reasons.append(f"Windows API/account/visitor network behavior changed: {path}")
             features.update(source_features)
             if source_features.intersection({"login", "auth", "updates", "cookie", "qr-login"}) or (
                     not path.endswith("core/network/ApiClient.kt") and re.search(r"Login|Passport|Cookie|Session|NavModels", path, re.I)):

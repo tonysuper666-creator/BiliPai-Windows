@@ -178,6 +178,115 @@ object AndroidOnlySingleton { val feature = "old" }
                 sync.publication_check(self.repo)
 
 
+class ApiClientRiskTests(unittest.TestCase):
+    def setUp(self):
+        self.repo = Path(__file__).parents[3]
+        self.path = "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+        self.source = (self.repo / self.path).read_bytes()
+        manifest = json.loads((self.repo / "desktop/upstream-sources.json").read_text(encoding="utf-8"))
+        self.manifest = {**manifest, "sources": [next(item for item in manifest["sources"] if item["path"] == self.path)]}
+
+    def report(self, candidate):
+        tree = {"tree": [{"path": self.path, "type": "blob", "mode": "100644"}]}
+        with patch.object(sync, "latest_release", return_value={"tag_name": "sensitive-test"}), \
+             patch.object(sync, "resolve_tag", return_value=NEW), \
+             patch.object(sync, "request_json", return_value=tree), \
+             patch.object(sync, "source_bytes", return_value=candidate):
+            return sync.check_update(self.repo, self.manifest)[0]
+
+    def changed(self, before, after):
+        self.assertEqual(self.source.count(before), 1, before)
+        return self.source.replace(before, after)
+
+    def test_cookie_buvid_authorization_and_visitor_implementation_changes_require_review(self):
+        probes = [
+            (b'.header("Cookie", forcedCookie)', b'.header("Cookie", forcedCookie + "; changed=1")'),
+            (b'.header("buvid", loginBuvid ?: TokenManager.buvid3Cache.orEmpty())', b'.header("buvid", loginBuvid ?: "changed")'),
+            (b'.cookieJar(appSessionCookieJar)', b'.cookieJar(PlaybackAccountCookieJar(account))'),
+            (b'chain.proceed(applyForcedCookieHeader(chain.request()))', b'chain.proceed(chain.request())'),
+            (b'.value(guestBuvid3)', b'.value("changed-visitor")'),
+            (b'.baseUrl("https://passport.bilibili.com/")', b'.baseUrl("https://changed.bilibili.com/")'),
+            (b'"11111111"', b'"changed-session-id"'),
+            (b'val b_4: String = ""', b'val b_4: String? = null'),
+            (b'PlaybackAccountCookieJar(account: StoredAccountSession)', b'PlaybackAccountCookieJar(account: StoredAccountSession = defaultAccount())'),
+            (b'applyForcedCookieHeader(request: okhttp3.Request): okhttp3.Request', b'applyForcedCookieHeader(request: okhttp3.Request = defaultRequest()): okhttp3.Request'),
+        ]
+        for before, after in probes:
+            with self.subTest(before=before):
+                report = self.report(self.changed(before, after))
+                self.assertTrue(report["networkBehaviorChanged"])
+                self.assertFalse(report["autoPublishEligible"])
+                self.assertTrue(report["manualReviewReasons"])
+                self.assertIn("login", report["featuresNeedingReview"])
+
+    def test_selected_windows_visitor_route_and_playback_route_require_review(self):
+        for before, after in [(b'@GET("x/frontend/finger/spi")', b'@GET("changed/spi")'),
+                              (b'@GET("x/player/wbi/playurl")', b'@GET("changed/playurl")')]:
+            # The playback endpoint has two declarations; modifying both still changes the selected one.
+            with self.subTest(before=before):
+                self.assertIn(before, self.source)
+                report = self.report(self.source.replace(before, after))
+                self.assertTrue(report["windowsApiContractChanged"])
+                self.assertFalse(report["autoPublishEligible"])
+
+    def test_unused_android_methods_and_unrelated_singletons_remain_low_risk(self):
+        additions = [
+            self.changed(b'interface BilibiliApi {', b'interface BilibiliApi {\n    @GET("android-only")\n    suspend fun androidOnly(): String\n'),
+            self.changed(b'interface PassportApi {', b'interface PassportApi {\n    @GET("android-only-auth")\n    suspend fun androidOnlyAuth(): String\n'),
+            self.source + b'\nobject AndroidOnlySingleton { val cookieName = "unrelated" }\n',
+            self.source.replace(b'suspend fun getIpZone(): IpLocationResponse', b'suspend fun getIpZone(): ChangedAndroidResponse'),
+        ]
+        for candidate in additions:
+            with self.subTest(candidateLength=len(candidate)):
+                report = self.report(candidate)
+                self.assertFalse(report["windowsApiContractChanged"])
+                self.assertFalse(report["networkBehaviorChanged"])
+                self.assertTrue(report["autoPublishEligible"])
+                self.assertEqual(report["manualReviewReasons"], [])
+
+    def test_sensitive_import_changes_are_not_hidden_by_unchanged_bodies(self):
+        report = self.report(self.changed(b'import com.android.purebilibili.core.store.TokenManager',
+                                         b'import changed.platform.TokenManager'))
+        self.assertTrue(report["networkBehaviorChanged"])
+        self.assertFalse(report["autoPublishEligible"])
+        template = self.changed(b'object NetworkModule {', b'object NetworkModule {\n    val templateOnly = "${TemplateOnlyHelper.value}"\n')
+        first = b'import original.platform.TemplateOnlyHelper\n' + template
+        second = b'import changed.platform.TemplateOnlyHelper\n' + template
+        self.assertNotEqual(sync.selected_network_behavior(first), sync.selected_network_behavior(second))
+
+    def test_operator_and_statement_whitespace_in_sensitive_code_is_not_erased(self):
+        prefix = b'object NetworkModule {\n    var probe = 1\n    val result = '
+        decrement = self.changed(b'object NetworkModule {', prefix + b'--probe\n')
+        negation = self.changed(b'object NetworkModule {', prefix + b'- -probe\n')
+        self.assertNotEqual(sync.selected_network_behavior(decrement), sync.selected_network_behavior(negation))
+
+    def test_crlf_is_ignored_but_sensitive_comments_and_templates_are_conservatively_reviewed(self):
+        fingerprint = sync.selected_network_behavior(self.source)
+        self.assertEqual(fingerprint, sync.selected_network_behavior(sync.normalized_source(self.source).replace(b"\n", b"\r\n")))
+        annotated = self.changed(b'object NetworkModule {', b'object NetworkModule {\n/* ignored } /* nested { */ } */\n// ignored } {\n')
+        self.assertNotEqual(fingerprint, sync.selected_network_behavior(annotated))
+        literal = self.changed(b'object NetworkModule {', b'''object NetworkModule {
+    val lexicalProbe = "${listOf("}", "{").joinToString("}")}"
+    val rawProbe = """ braces } { ${"}"} """
+    val charProbe = '}'
+''')
+        report = self.report(literal)
+        self.assertTrue(report["networkBehaviorChanged"])
+        self.assertFalse(report["autoPublishEligible"])
+
+    def test_missing_duplicate_and_unterminated_sensitive_structures_fail_closed(self):
+        candidates = [
+            self.changed(b'object NetworkModule {', b'object RemovedNetworkModule {'),
+            self.source + b'\nobject NetworkModule {}\n',
+            self.source + b'\n/* unterminated',
+            self.source + b'\nobject Unclosed {',
+            self.changed(b'object NetworkModule {', b'object NetworkModule { val broken = "unterminated'),
+        ]
+        for candidate in candidates:
+            with self.subTest(candidateLength=len(candidate)), self.assertRaises(sync.UpdateError):
+                self.report(candidate)
+
+
 class IsolatedWorktreeTests(unittest.TestCase):
     def test_failed_build_preserves_original_branch_and_files(self):
         with tempfile.TemporaryDirectory() as temporary:

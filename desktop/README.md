@@ -62,7 +62,7 @@ python desktop/tools/sync-upstream.py --sync --release-gate --java-home 'D:/tool
 
 更新器读取 GitHub `/releases`，包含 alpha/prerelease，解析 tag 对应的完整 commit SHA，核验复用文件是否仍存在以及内容哈希。它在另一个 Git worktree 和独立分支合并更新，保留已经审核的 Windows 工作流。原工作区必须先提交；冲突、移除源码、接口变化或测试失败时保留候选目录供排查，原工作区和已发布的便携包继续保留。脚本本身不会 push 或发布。
 
-报告列出复用文件变化、需要复核的功能、认证接口变化、其余尚未移植的上游文件变化和当前 Windows 覆盖范围。对 `ApiClient.kt` 会比较实际复用的登录接口声明，因此无关 Android 单例修改不会被当作登录风险。登录策略、登录模型和实际认证声明变化会转入人工审核。
+报告列出复用文件变化、需要复核的功能、认证接口变化、其余尚未移植的上游文件变化和当前 Windows 覆盖范围。对 `ApiClient.kt` 会比较实际复用的登录接口声明，以及 Cookie、授权和访客网络实现。普通未采用的 Android 接口或无关单例变化不会被当作登录风险；登录策略、登录模型、实际认证声明或敏感网络实现变化会转入人工审核。无法可靠识别敏感源码结构时停止自动发布，保留上一可用版。
 
 Windows 独立版本为 `0.2.<上游versionCode>.<windowsRevision>`。上游代码递增时 revision 从 1 开始；同一 versionCode 的下一次上游发布递增 Windows revision。同一上游版本的 Windows 修复也必须递增 revision，确保每个 Windows 标签只对应一个源码提交。Windows 标签使用 `Windows-v<Windows版本>`，避免与 Android 标签混淆。已有标签和有效发行附件不会被新构建覆盖。
 
