@@ -40,6 +40,8 @@ pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21'
 pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21' -ReleaseGate
 ```
 
+用 `-NativeSmoke` 可以单独执行打包后的原生播放器检查并产生原生报告。Windows CI 对每次普通构建也执行此检查；完整发行仍须通过 `-ReleaseGate` 的所有门槛。
+
 发布门槛包括 Windows 单元测试、访客模式推荐/搜索/视频详情/DASH 地址解析，以及**打包后的 EXE** 离线视频、音频、暂停、进度、速度和错误恢复检查。网络请求被拒绝或任一检查失败会停止发布，不会跳过门槛。报告位于 `desktop/build/release-gate.json` 和 `desktop/build/reports/release-gate-*`。CI 使用真实音视频解码与同步检查，并将声音输出送往空设备；本地保留声音设备检查。登录状态和新 Android 功能仍需要相应维护；这些自动检查不能证明完整 Android 功能已被移植。
 
 ## 跟随频繁的上游更新

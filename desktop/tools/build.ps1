@@ -4,12 +4,14 @@ param(
     [string]$SevenZipPath,
     [switch]$Installer,
     [switch]$SkipTests,
-    [switch]$ReleaseGate
+    [switch]$ReleaseGate,
+    [switch]$NativeSmoke
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $desktopRoot = Join-Path $repoRoot 'desktop'
 if ($ReleaseGate -and $SkipTests) { throw 'ReleaseGate cannot skip unit tests.' }
+# NativeSmoke checks only packaged playback; SkipTests never creates release evidence.
 
 if (-not $JavaHome) { $JavaHome = $env:JAVA_HOME }
 if (-not $JavaHome) {
@@ -62,8 +64,9 @@ try {
     $appRoot = Join-Path $desktopRoot 'build/compose/binaries/main/app'
     $executable = Get-ChildItem -LiteralPath $appRoot -Filter 'BiliPai Windows.exe' -File -Recurse | Select-Object -First 1
     if (-not $executable) { throw 'createDistributable did not produce a native Windows launcher.' }
-    if ($ReleaseGate) {
-        $smokeRoot = Join-Path $desktopRoot ('build/reports/release-gate-' + [Guid]::NewGuid().ToString('N'))
+    if ($ReleaseGate -or $NativeSmoke) {
+        $smokePrefix = if ($ReleaseGate) { 'release-gate-' } else { 'native-smoke-' }
+        $smokeRoot = Join-Path $desktopRoot ('build/reports/' + $smokePrefix + [Guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
         $nativeSmokeArgument = if ($env:CI -eq 'true') { '--player-self-test-ci' } else { '--player-self-test' }
         $nativeProcess = Start-Process -FilePath $executable.FullName -ArgumentList @(
@@ -74,15 +77,17 @@ try {
         if (-not (Test-Path -LiteralPath $nativeReportPath)) { throw 'Packaged player produced no native test report.' }
         $nativeReport = Get-Content -LiteralPath $nativeReportPath -Raw | ConvertFrom-Json
         if ($nativeReport.passed -ne $true) { throw 'Packaged native playback checks did not pass.' }
-        $releaseGateReport = [ordered]@{
-            passed = $true
-            kotlinUnitTests = 'passed'
-            guestNetworkBackendSmoke = 'passed'
-            packagedNativePlayerSmoke = 'passed'
-            nativeReport = $nativeReportPath
-            verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
+        if ($ReleaseGate) {
+            $releaseGateReport = [ordered]@{
+                passed = $true
+                kotlinUnitTests = 'passed'
+                guestNetworkBackendSmoke = 'passed'
+                packagedNativePlayerSmoke = 'passed'
+                nativeReport = $nativeReportPath
+                verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
+            }
+            $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $desktopRoot 'build/release-gate.json') -Encoding utf8
         }
-        $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $desktopRoot 'build/release-gate.json') -Encoding utf8
     }
     $manifest = Get-Content -LiteralPath (Join-Path $desktopRoot 'upstream-sources.json') -Raw | ConvertFrom-Json
     $versionLabel = [regex]::Replace($manifest.upstreamTag, '[^A-Za-z0-9._-]', '-')

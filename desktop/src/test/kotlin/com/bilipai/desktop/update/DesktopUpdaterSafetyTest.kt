@@ -1,7 +1,13 @@
 package com.bilipai.desktop.update
 
+import com.sun.jna.Native
+import com.sun.jna.WString
+import com.sun.jna.win32.StdCallLibrary
+import org.junit.jupiter.api.Assumptions.assumeTrue
 import java.nio.file.Files
+import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
+import java.util.concurrent.TimeUnit
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.test.Test
@@ -9,9 +15,81 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DesktopUpdaterSafetyTest {
+    @Test
+    fun `Windows short aliases share canonical updater root stage executable and preservation`() {
+        assumeTrue(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
+        val parent = Files.createTempDirectory("bilipai-long-path-parent")
+        val root = Files.createDirectory(parent.resolve("Updater root with long names"))
+        val canonical = root.toRealPath(NOFOLLOW_LINKS)
+        val alias = shortPath(root)
+        assumeTrue(alias != canonical, "8.3 aliases are unavailable on this test volume")
+        assertEquals(canonical, UpdateStorage.verifiedRoot(alias))
+        val repository = "owner/BiliPai-Windows"
+        val stage = UpdateStorage.createStage(alias, repository, 1)
+        val obsolete = UpdateStorage.createStage(alias, repository, 2)
+        val executable = Files.writeString(Files.createDirectories(stage.resolve("app/BiliPai Windows")).resolve("BiliPai Windows.exe"), "test")
+        assertEquals(stage, UpdateStorage.ownedStage(alias, shortPath(stage), repository))
+        assertEquals(stage, UpdateStorage.stageContaining(alias, shortPath(executable), repository))
+        assertEquals(stage, UpdateStorage.executableStage(alias, shortPath(executable), "BiliPai Windows.exe"))
+        UpdateStorage.prune(alias, repository, setOf(shortPath(stage)))
+        assertTrue(Files.isRegularFile(executable))
+        assertFalse(Files.exists(obsolete))
+    }
+
+    @Test
+    fun `directory junction root and nested escape are rejected without deleting target`() {
+        assumeTrue(System.getProperty("os.name").startsWith("Windows", ignoreCase = true))
+        val parent = Files.createTempDirectory("bilipai-junction-parent").toRealPath(NOFOLLOW_LINKS)
+        val target = Files.createTempDirectory("bilipai-junction-target").toRealPath(NOFOLLOW_LINKS)
+        val targetFile = Files.writeString(target.resolve("BiliPai Windows.exe"), "keep")
+        val junction = parent.resolve("junction-root")
+        createJunction(junction, target)
+        try {
+            assertFailsWith<IllegalArgumentException> { UpdateStorage.verifiedRoot(junction) }
+            val repository = "owner/BiliPai-Windows"
+            val stage = UpdateStorage.createStage(parent, repository, 1)
+            val app = Files.createDirectory(stage.resolve("app"))
+            val nested = app.resolve("junction")
+            createJunction(nested, target)
+            try {
+                assertNull(UpdateStorage.executableStage(parent, nested.resolve("BiliPai Windows.exe"), "BiliPai Windows.exe"))
+                assertFalse(UpdateStorage.deleteOwnedStage(parent, stage, repository))
+                assertTrue(Files.isRegularFile(targetFile))
+                assertTrue(Files.isDirectory(stage))
+            } finally { Files.deleteIfExists(nested) }
+        } finally { Files.deleteIfExists(junction) }
+    }
+
+    @Test
+    fun `symbolic root path is rejected while original directory survives`() {
+        val parent = Files.createTempDirectory("bilipai-symbolic-root").toRealPath(NOFOLLOW_LINKS)
+        val target = Files.createDirectory(parent.resolve("actual-root"))
+        val link = parent.resolve("symbolic-root")
+        val created = runCatching { Files.createSymbolicLink(link, target) }.isSuccess
+        assumeTrue(created, "symbolic link creation is unavailable on this test host")
+        try {
+            assertFailsWith<IllegalArgumentException> { UpdateStorage.verifiedRoot(link) }
+            assertFailsWith<IllegalArgumentException> { UpdateStorage.createStage(link, "owner/BiliPai-Windows", 1) }
+            assertTrue(Files.isDirectory(target))
+        } finally { Files.deleteIfExists(link) }
+    }
+
+    @Test
+    fun `owned stage outside root cannot be deleted or registered as executable`() {
+        val root = Files.createTempDirectory("bilipai-confinement-root")
+        val outside = Files.createTempDirectory("bilipai-confinement-outside")
+        val repository = "owner/BiliPai-Windows"
+        val stage = UpdateStorage.createStage(outside, repository, 1)
+        val executable = Files.writeString(Files.createDirectory(stage.resolve("app")).resolve("BiliPai Windows.exe"), "keep")
+        assertFalse(UpdateStorage.deleteOwnedStage(root, stage, repository))
+        assertNull(UpdateStorage.executableStage(root, executable, "BiliPai Windows.exe"))
+        assertTrue(Files.isRegularFile(executable))
+    }
+
     @Test
     fun `missing releases or missing assets never claim current version is latest`() {
         val repository = "owner/BiliPai-Windows"
@@ -158,5 +236,25 @@ class DesktopUpdaterSafetyTest {
         val prefix = "https://github.com/owner/BiliPai-Windows/releases/download/windows-v$version"
         val checksum = if (includeChecksum) """,{"id":3,"name":"BiliPai-Windows.zip.sha256","size":100,"browser_download_url":"$prefix/BiliPai-Windows.zip.sha256"}""" else ""
         return """[{"id":1,"tag_name":"windows-v$version","html_url":"https://github.com/owner/BiliPai-Windows/releases/tag/windows-v$version","assets":[{"id":2,"name":"BiliPai-Windows.zip","size":1000,"browser_download_url":"$prefix/BiliPai-Windows.zip"}$checksum]}]"""
+    }
+
+    private fun shortPath(path: Path): Path {
+        val library = Native.load("kernel32", WindowsShortPathLibrary::class.java)
+        val buffer = CharArray(32_768)
+        val length = library.GetShortPathNameW(WString(path.toAbsolutePath().toString()), buffer, buffer.size)
+        require(length in 1 until buffer.size) { "Windows short path lookup failed" }
+        return Path.of(Native.toString(buffer))
+    }
+
+    private fun createJunction(link: Path, target: Path) {
+        val process = ProcessBuilder("cmd.exe", "/d", "/c", "mklink", "/J", link.toString(), target.toString())
+            .redirectErrorStream(true).start()
+        val completed = process.waitFor(5, TimeUnit.SECONDS)
+        if (!completed) process.destroyForcibly()
+        assumeTrue(completed && process.exitValue() == 0, "junction creation is unavailable on this test volume")
+    }
+
+    interface WindowsShortPathLibrary : StdCallLibrary {
+        fun GetShortPathNameW(longPath: WString, shortPath: CharArray, bufferLength: Int): Int
     }
 }

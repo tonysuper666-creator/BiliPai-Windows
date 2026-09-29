@@ -274,24 +274,12 @@ class DesktopUpdater {
         } finally { Files.deleteIfExists(temporary) }
     }
 
-    private fun stageForExecutable(executable: Path): Path? = runCatching {
-        val root = updateRoot.toAbsolutePath().normalize()
-        val absolute = executable.toAbsolutePath().normalize()
-        if (!absolute.startsWith(root) || absolute == root || !Files.isRegularFile(absolute, NOFOLLOW_LINKS)) return@runCatching null
-        val relative = root.relativize(absolute)
-        if (relative.nameCount < 3 || !relative.getName(0).toString().matches(Regex("^staged-[0-9]+-[A-Za-z0-9-]+$")) || relative.getName(1).toString() != "app") return@runCatching null
-        if (!absolute.fileName.toString().equals(config?.executable, ignoreCase = true)) return@runCatching null
-        if (root.toRealPath() != root || absolute.toRealPath() != absolute) return@runCatching null
-        var current: Path? = absolute
-        while (current != null && current != root) {
-            if (Files.isSymbolicLink(current)) return@runCatching null
-            current = current.parent
-        }
-        root.resolve(relative.getName(0))
-    }.getOrNull()
+    private fun stageForExecutable(executable: Path): Path? = config?.executable?.let {
+        UpdateStorage.executableStage(updateRoot, executable, it)
+    }
 
     private fun validStoredExecutable(raw: String): Path? = runCatching {
-        val executable = Path.of(raw).toAbsolutePath().normalize()
+        val executable = UpdateStorage.existingPathWithoutLinks(Path.of(raw))
         executable.takeIf { stageForExecutable(it) != null }
     }.getOrNull()
 
@@ -336,7 +324,7 @@ class DesktopUpdater {
         )
         for ((version, executable) in candidates) {
             val currentCommand = ProcessHandle.current().info().command().orElse(null)
-            if (currentCommand?.let { runCatching { Path.of(it).toAbsolutePath().normalize() == executable }.getOrDefault(false) } == true) continue
+            if (currentCommand?.let { runCatching { UpdateStorage.existingPathWithoutLinks(Path.of(it)) == executable }.getOrDefault(false) } == true) continue
             var attempt: LaunchAttempt? = null
             var committed = false
             try {

@@ -91,10 +91,17 @@ jobs:
           BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
           MAKE_RELEASE: ${{ steps.plan.outputs.release }}
         run: |
-          $parameters = @{}
+          $parameters = @{ NativeSmoke = $true }
           if ('${{ inputs.installer }}' -eq 'true') { $parameters.Installer = $true }
           if ($env:MAKE_RELEASE -eq 'true') { $parameters.ReleaseGate = $true }
           & ./desktop/tools/build.ps1 @parameters
+      - name: Upload packaged native player evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-native-player-smoke-evidence
+          path: desktop/build/reports/*/native-player-smoke.*
+          if-no-files-found: warn
       - name: Upload portable package
         uses: actions/upload-artifact@v4
         with:

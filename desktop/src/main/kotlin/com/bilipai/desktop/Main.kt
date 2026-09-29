@@ -14,6 +14,7 @@ import com.bilipai.desktop.data.DesktopSessionStore
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.MpvStartupProbe
 import com.bilipai.desktop.update.DesktopUpdater
+import com.bilipai.desktop.update.UpdateStorage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -74,9 +75,10 @@ fun main(args: Array<String>) {
                 if (healthPath != null && healthToken != null && playerResult.isSuccess) {
                     runCatching {
                         withContext(Dispatchers.IO) {
-                            val root = java.nio.file.Path.of(System.getenv("LOCALAPPDATA") ?: error("Windows local application data is unavailable."),
-                                "BiliPai", "updates").toAbsolutePath().normalize()
-                            val marker = java.nio.file.Path.of(healthPath).toAbsolutePath().normalize()
+                            val root = UpdateStorage.verifiedRoot(java.nio.file.Path.of(
+                                System.getenv("LOCALAPPDATA") ?: error("Windows local application data is unavailable."), "BiliPai", "updates"))
+                            val requestedMarker = java.nio.file.Path.of(healthPath).toAbsolutePath().normalize()
+                            val marker = UpdateStorage.existingPathWithoutLinks(requireNotNull(requestedMarker.parent)).resolve(requestedMarker.fileName)
                             require(marker.startsWith(root) && marker.fileName.toString() == "startup-health.txt")
                             val relative = root.relativize(marker)
                             require(relative.nameCount == 3 && relative.getName(0).toString().startsWith("staged-"))
