@@ -1,0 +1,39 @@
+desktop\.local\settings-home-card-parity\UiFixture.kt:84:21: error: unresolved reference 'LocalAppPreferenceIconTreatment'.
+                    LocalAppPreferenceIconTreatment provides AppPreferenceIconTreatment.FILLED,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:84:62: error: unresolved reference 'AppPreferenceIconTreatment'.
+                    LocalAppPreferenceIconTreatment provides AppPreferenceIconTreatment.FILLED,
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:85:21: error: unresolved reference 'LocalAppPreferenceGroupPresentation'.
+                    LocalAppPreferenceGroupPresentation provides if(isMiuixNonGlassEnabled())AppPreferenceGroupPresentation.CARD else AppPreferenceGroupPresentation.FLAT) {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:85:94: error: unresolved reference 'AppPreferenceGroupPresentation'.
+                    LocalAppPreferenceGroupPresentation provides if(isMiuixNonGlassEnabled())AppPreferenceGroupPresentation.CARD else AppPreferenceGroupPresentation.FLAT) {
+                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:85:135: error: unresolved reference 'AppPreferenceGroupPresentation'.
+                    LocalAppPreferenceGroupPresentation provides if(isMiuixNonGlassEnabled())AppPreferenceGroupPresentation.CARD else AppPreferenceGroupPresentation.FLAT) {
+                                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:100:27: error: 'if' must have both main and 'else' branches when used as an expression.
+        val beforeColumns=if(width==800)4 else5
+                          ^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:100:43: error: unresolved reference 'else5'.
+        val beforeColumns=if(width==800)4 else5
+                                          ^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:100:48: error: syntax error: Expecting an element.
+        val beforeColumns=if(width==800)4 else5
+                                               ^
+desktop\.local\settings-home-card-parity\UiFixture.kt:104:26: error: 'if' must have both main and 'else' branches when used as an expression.
+        val initialRatio=if(width==800)16f/10f else16f/9f
+                         ^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:104:48: error: unresolved reference 'else16f'.
+        val initialRatio=if(width==800)16f/10f else16f/9f
+                                               ^^^^^^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:104:55: error: syntax error: Expecting an element.
+        val initialRatio=if(width==800)16f/10f else16f/9f
+                                                      ^
+desktop\.local\settings-home-card-parity\UiFixture.kt:104:56: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+        val initialRatio=if(width==800)16f/10f else16f/9f
+                                                       ^^
+desktop\.local\settings-home-card-parity\UiFixture.kt:105:89: error: 'operator' modifier is required on 'fun <T> Comparable<T>.compareTo(other: T): Int'.
+        check(abs(initialCovers.first().width/initialCovers.first().height-initialRatio)<0.025f)
+                                                                                        ^

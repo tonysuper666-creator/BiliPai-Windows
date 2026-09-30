@@ -1,0 +1,10 @@
+test_every_original_identity_header_and_determinism (test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_every_original_identity_header_and_determinism) ... ok
+test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding (test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding) ... ok
+test_production_omits_full_direct_sources_owned_by_main_preparation (test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_production_omits_full_direct_sources_owned_by_main_preparation) ... ok
+test_settings_getters_setters_and_original_controls_are_preserved (test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_settings_getters_setters_and_original_controls_are_preserved) ... ok
+test_user_fetch_retry_and_uid_cursor_changes_are_only_owned_transport_and_cancel_binding (test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_user_fetch_retry_and_uid_cursor_changes_are_only_owned_transport_and_cancel_binding) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 2.866s
+
+OK

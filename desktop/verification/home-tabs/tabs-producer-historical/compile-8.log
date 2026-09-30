@@ -1,0 +1,3 @@
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\settings\DesktopDynamicTabsPreferences.kt:50:26: warning: no cast needed.
+        val ids=(current as? JsonArray).orEmpty().map {
+                         ^^^^^^^^^^^^^

@@ -1,0 +1,938 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "e85a34e3e3c2e67fd69ae5a3a62179e82e68efe130902d3748c3e8e3bbc64e0f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-java.jar",
+    "sha256Bytes": "188a3eabdfd1514a4ca9c5e7c211436be5e9103fa6ff21e88e541d796ef6bf4e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-resources.jar",
+    "sha256Bytes": "038c930ab0f5343396726327a4c9af7bb18f127de8dba1ffda42a260d98e671d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-databind\\2.20.0\\f0a5e62fbd21285e9a5498a60dccb097e1ef793b\\jackson-databind-2.20.0.jar",
+    "sha256Bytes": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-core\\2.20.0\\3c97f7fad069f7cfae639d790bd93d6a0b2dff31\\jackson-core-2.20.0.jar",
+    "sha256Bytes": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-annotations\\2.20\\6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c\\jackson-annotations-2.20.jar",
+    "sha256Bytes": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.protobuf\\protobuf-javalite\\4.33.2\\3a0984fa90730fa7f54fe6027c41320b2a1c6833\\protobuf-javalite-4.33.2.jar",
+    "sha256Bytes": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\material3-desktop-1.12.0-alpha03.jar",
+    "sha256Bytes": "27ac80da1c3f65b67311bfae57d79f130b7d4d0ac8e1c5be1ca7ce8b04b7d0d7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\miuix-5157-desktop.jar",
+    "sha256Bytes": "f5b9f1390ee77add0fda971a7a5824133dac5406cbd2819767757557e44dc072"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\colormath-jvm.jar",
+    "sha256Bytes": "a1853ee4a5fec636dbbb8c44955b7a3015f02ce8f9cfa1c2350791c2c2d3639c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\graphics-shapes-desktop-1.1.0.jar",
+    "sha256Bytes": "8d7a4d3812cae2e3ef8272e97f6e9917ae45931f17cf1391f0246a92c955d9f4"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\material-color-utilities-jvm.jar",
+    "sha256Bytes": "a997ae8bcbdddc5baeca01c64d03f8d5014a186ae3f3a7f93ce9abbee93c7f9a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\material-kolor-jvm.jar",
+    "sha256Bytes": "0125a24ca92662320ef2409b8d439409174cb4b11f70afff466fe11272876d66"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\material3-window-size-class-desktop-1.12.0-alpha03.jar",
+    "sha256Bytes": "a8488465bb2d652b475b85187bbbd01919a8065fc592812069b47e2fa1e051bd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\navigationevent-compose-desktop-1.1.2.jar",
+    "sha256Bytes": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\deps\\navigationevent-desktop-1.1.2.jar",
+    "sha256Bytes": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.annotation\\annotation-jvm\\1.9.1\\b17951747e38bf3986a24431b9ba0d039958aa5f\\annotation-jvm-1.9.1.jar",
+    "sha256Bytes": "1e343917ebf27ba96fe4dc52b1cad7fd32b738fbc6355bb6cd5b3b305d7212d0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.arch.core\\core-common\\2.2.0\\5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3\\core-common-2.2.0.jar",
+    "sha256Bytes": "65308a06b1c00ee186cb9e19321383f043b993813f1522c47f4a3e3303bdba41"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.benchmark\\benchmark-baseline-profile-gradle-plugin\\1.5.0\\ce45d59a676b6af1cf52ad861746a0e63c4465ed\\benchmark-baseline-profile-gradle-plugin-1.5.0.jar",
+    "sha256Bytes": "e9044df73c24c164d960c480927481402746c64b6796d8c29cfa0f9330cad699"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.collection\\collection-jvm\\1.5.0\\7ba2c69414d46ebc2dd76598bdd0a75c54281a57\\collection-jvm-1.5.0.jar",
+    "sha256Bytes": "70b35924e4babcdffa37d0e575ee039c56a2d97123342624c48b603233704341"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-annotation-jvm\\1.12.1\\4cf2b71ea98c0d69c95a2885e521ba28af5fa7a0\\runtime-annotation-jvm-1.12.1.jar",
+    "sha256Bytes": "e291a6ae01ab71a7f48a568ec9744c6bf9b3f46ef72fbcdeb28c3407ae531c5e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-desktop\\1.12.1\\82e40832ddf785e9c0c15c4186d32f8c894fd914\\runtime-desktop-1.12.1.jar",
+    "sha256Bytes": "ed390d7bf7bdba951359d127f4c1ddd223f535f5a6a63078c5c5ac6b6924eb08"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-retain-desktop\\1.12.1\\3aa3ec26ef2a3d26bc556b51b33d09efc1a198e8\\runtime-retain-desktop-1.12.1.jar",
+    "sha256Bytes": "9b7e62a7df333c33eff9e1a6d6c2508a4d8fe4b7a43778075538fe3da4bc4485"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-saveable-desktop\\1.12.1\\8cacc17c590b2ac5fabf040c4f66d432092a821\\runtime-saveable-desktop-1.12.1.jar",
+    "sha256Bytes": "069949667409ab6de21053f9fdbff0869ae2a1f70a7212cdb89e7d409fd2552c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.databinding\\databinding-common\\9.3.2\\6f14d56ba3258fd1e803e71bc6c589235141c317\\databinding-common-9.3.2.jar",
+    "sha256Bytes": "82816382a2a9dec4f0ab17c79cef08a9e4fe4b97d896ac20d7f215b6dd788b18"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.databinding\\databinding-compiler-common\\9.3.2\\87c394c7e0964072b1aa052e12476635c03d087c\\databinding-compiler-common-9.3.2.jar",
+    "sha256Bytes": "4576917707351f5e7515382c0780651fef93bac153f4f64169d6cf77a54c0981"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-common-jvm\\2.11.0\\2c4f7d92f1fd723121d394c93455f50158403ad9\\lifecycle-common-jvm-2.11.0.jar",
+    "sha256Bytes": "e6a66e67b9f63a0fb6344f165c1d872376e5fe6d235bffb138af45122cf452a9"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-common-jvm\\2.9.4\\ab739bccdb3541983385af169565c7c035d897e7\\lifecycle-common-jvm-2.9.4.jar",
+    "sha256Bytes": "37d89b2101f074ac6c260917dabb185607645ee200aa3018c7c5bde70edcf184"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.11.0\\8a85615b7e4f5728106bf7bc3cfa95f429eb6264\\lifecycle-runtime-compose-desktop-2.11.0.jar",
+    "sha256Bytes": "d5336753ea4d5881ccfb8b0613e034eb241f0d8b4349536df1cd0ec86cf63664"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.9.4\\86a4ffec845d4e488078118a0b5095bd1fabcafe\\lifecycle-runtime-compose-desktop-2.9.4.jar",
+    "sha256Bytes": "d25c083df93da718a1876a3293bd15f7dc7a811e998735943bce590683a57835"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-desktop\\2.11.0\\c2b5e2f7d739375538c2a74757531a30607f85ff\\lifecycle-runtime-desktop-2.11.0.jar",
+    "sha256Bytes": "09f75a4a8d763cee5d6af36f422139a0205d3f6df2e2c5288cae42836f0b36ea"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-desktop\\2.9.4\\1cc820319ec0139e76b8a2fe4be0b356b4e624c4\\lifecycle-runtime-desktop-2.9.4.jar",
+    "sha256Bytes": "2fb49f76d1021792fb359e0a9246c1509f2f5b555f0a46591d24d58deb68bd5c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-compose-desktop\\2.11.0\\29daa46bc0d2d574ee95309be1f325764f40b35b\\lifecycle-viewmodel-compose-desktop-2.11.0.jar",
+    "sha256Bytes": "1b4c58125c7b3693444f40c8ab76881d17fa74726860c24872a3dec3e0fad34b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-desktop\\2.11.0\\156dea0e0e4862b60bc14881891bae1e5df64f81\\lifecycle-viewmodel-desktop-2.11.0.jar",
+    "sha256Bytes": "175c349266ccbb6a2036615725b7066ee3f3319665c98af42206ab3a582a43c3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-savedstate-desktop\\2.11.0\\4e8025bc47a196b0ee403b8d915393ae7922c21a\\lifecycle-viewmodel-savedstate-desktop-2.11.0.jar",
+    "sha256Bytes": "ca21720ce7f370cb21cabb5329b959eda624107ec06282e3bdc92582917b1d27"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.savedstate\\savedstate-compose-desktop\\1.4.0\\d3d6e0e2108528eb6080dc250da925a572be4202\\savedstate-compose-desktop-1.4.0.jar",
+    "sha256Bytes": "c02a98b0c2b35cdde245c0bfe6e7ff453c7b6d06a5eb8681d25b7f54b874ea48"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.savedstate\\savedstate-desktop\\1.4.0\\3b049a0f81643d6b4b900de95bc23efc085c32d5\\savedstate-desktop-1.4.0.jar",
+    "sha256Bytes": "e965ed7a011be83a271ac7d82249a776368479ee3a2b07948c3445b51d640856"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android\\signflinger\\9.3.2\\931575c0547261e249124c8749ece3b1664763a5\\signflinger-9.3.2.jar",
+    "sha256Bytes": "7d82126c9483b540173a65b0354fe27f067ec85c8e64676795873640a06b288d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android\\zipflinger\\9.3.2\\468d84015634e21c1607b7cb298fff3017dbe19\\zipflinger-9.3.2.jar",
+    "sha256Bytes": "0a1984d14cc8070f734ddcc5a947f122dfee364cdbe18595afb691aa803890e0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.databinding\\baseLibrary\\9.3.2\\a3e410a22b3d7b2608151d2052d044cd3a35ae06\\baseLibrary-9.3.2.jar",
+    "sha256Bytes": "96ba2a5f000846d317acdd90de6a7429701ac56573de2ccc8423d2ba40446fd9"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\annotations\\32.3.2\\755aa98f446d71a443d30a732b42f906cce94a44\\annotations-32.3.2.jar",
+    "sha256Bytes": "32e90226ae4c7b59ed61b06689ae8356bab080cd79f6569455fd92925439a339"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\common\\32.3.2\\e2dd8ff92482185d068768e76b0c12cd458a08a6\\common-32.3.2.jar",
+    "sha256Bytes": "cdb6dee574e1ae41f407b6c5fe4c175aaef226b4172ae52eeb26f5b68312db10"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\dvlib\\32.3.2\\f115a6eb073c3f6e4a7c1f6c70570b66ae7c0118\\dvlib-32.3.2.jar",
+    "sha256Bytes": "52e27f1364cdb5d4f531f52e4eec5ae48da040daa9417d4f06ddf6a1799a065e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\repository\\32.3.2\\d2ac23b098f7fafec4669cb11d0c2cf1d06989e7\\repository-32.3.2.jar",
+    "sha256Bytes": "b9470bb01fbd8fcad4847e1d10967b20fa93255361c0d2b2103fc6dcff13b177"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\sdk-common\\32.3.2\\555ddb6aa0f71a3c58e0c25488631d270d7b240b\\sdk-common-32.3.2.jar",
+    "sha256Bytes": "7d34308241071e482f47ccb7c5ba53e83858366905061979ae4ed4623c6dcdd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools\\sdklib\\32.3.2\\5fd02b90225cda01748244553eb36d55a58b4bc1\\sdklib-32.3.2.jar",
+    "sha256Bytes": "4433ca379db0a9f7bd0a5d5b931b0ac671747b10791706dc0d42a348dacbb782"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.analytics-library\\crash\\32.3.2\\6288d92666ab051f1da094203622c1c0ee68040f\\crash-32.3.2.jar",
+    "sha256Bytes": "89e33b3eaf05e77576c88ca14a458c47dfe0735efbfa48ee18e5fa85f95f6f2a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.analytics-library\\protos\\32.3.2\\e3a5a51afdb6758a794d51945edbec9008523d39\\protos-32.3.2.jar",
+    "sha256Bytes": "e9e3f5021b8ec64169b2e9a49232bbe8b2a23e2dcf31223f982163216b32d30f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.analytics-library\\shared\\32.3.2\\5b22e4cf57c695cc98278a93cddcdb4316852ed9\\shared-32.3.2.jar",
+    "sha256Bytes": "172a037b11dae0f2cb6b5c47a001c901afcf3631c637526f545e4517b973b68b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.analytics-library\\tracker\\32.3.2\\3a36e8061a564e2b61ed4f63405f90e278cb5c22\\tracker-32.3.2.jar",
+    "sha256Bytes": "f083e82627981dbe1312b5e805e9470d26b4ff56d09ae8fddcce8f862d2e807a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\aapt2-proto\\9.3.2-15703166\\cbffec6e4effe25da0382f547eafab6d38847f9c\\aapt2-proto-9.3.2-15703166.jar",
+    "sha256Bytes": "5bcdd71fde7863c68c67ee4a69cf86206fbd3a2de66f5a3e4625ce5fb4ead2b5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\aaptcompiler\\9.3.2\\9cdb9896f5ca8b245bc9cac168250c5d88779c5\\aaptcompiler-9.3.2.jar",
+    "sha256Bytes": "aaa3da8e958ac94c3352284224c82c0f153dcbc9376d9ddc0d8e935087849302"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\apksig\\9.3.2\\2881101f6a9d0baf6a341926ef0ff08c98a5d13b\\apksig-9.3.2.jar",
+    "sha256Bytes": "562cd0a88890960d2ece48e116c61f12872222f1dcc306890799382bc019b201"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\apkzlib\\9.3.2\\2d508e789301c4756d0ad8bc9cdc59fed0d65aac\\apkzlib-9.3.2.jar",
+    "sha256Bytes": "a7146985112bba9118c04b0e9745bab736a6673a8143f1467c2f3e4c262bde24"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\builder\\9.3.2\\f9fdaab774037c649303d97015bfb4ffe3d6f1\\builder-9.3.2.jar",
+    "sha256Bytes": "20dd166889b8108243b019779bdfecf7a08208ae4165f88a2a3422f34ae9e282"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\builder-model\\9.3.2\\f63d5214bf1caed742652f6f83d73a753f5759ed\\builder-model-9.3.2.jar",
+    "sha256Bytes": "9cbb99082f3c43b1cc652676271bfb642a89d720eccde772c6a4bb04398f549f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\builder-test-api\\9.3.2\\a6e38343c3f6fd6ce1f833e569bce4b2d85b0182\\builder-test-api-9.3.2.jar",
+    "sha256Bytes": "3cdf0caf8b2a104eb6239d4ea3e95a6c20ba2e76fa0ad1134c8e93e7757bd432"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\bundletool\\1.18.3\\8d7bee8e57a4158a872ed99190a60a498c2adc8d\\bundletool-1.18.3.jar",
+    "sha256Bytes": "ccad18514fd97db010856b2bbed40f481f8ba9349368c97ae54d72e3567d0171"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\gradle\\9.3.2\\141fa146cec89cac3e59c0d484b661bf906308fc\\gradle-9.3.2.jar",
+    "sha256Bytes": "f3a1004508daeb00c4535bd56207c7ec2f958a40d7543466379e4de6bb947873"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\gradle-api\\9.3.2\\235bc40d88166150741dbd287d5456167533d4c0\\gradle-api-9.3.2.jar",
+    "sha256Bytes": "0906266b237039241e905c96880febb5784bb91e57ef0ef91de08eab8a329b21"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\gradle-common-api\\9.3.2\\188fc42710d4072ae7f02415b497fe311041b555\\gradle-common-api-9.3.2.jar",
+    "sha256Bytes": "5f8ceb1738037707d166f79b13bde052024a63fc52b8ad11ad2cbc780efbb8d2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\gradle-settings-api\\9.3.2\\fcfedf9a56578511894c869f71eaecafbf5e49e6\\gradle-settings-api-9.3.2.jar",
+    "sha256Bytes": "22847e89f125294c301d51ee5b601bf541a4e0c53830cdcfea830046cdc62267"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build\\manifest-merger\\32.3.2\\5cc6d988caebc6e176745e80585ae106996cb5d7\\manifest-merger-32.3.2.jar",
+    "sha256Bytes": "e35ff7aa0a4b29660d58b0a667df7b543aa85f7f1dd462a1dd2b021a3a175a30"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build.jetifier\\jetifier-core\\1.0.0-beta10\\6e621022a9c95af12a7004d6b55805bbd1126837\\jetifier-core-1.0.0-beta10.jar",
+    "sha256Bytes": "26abb4a13927d9062169c504c9e94fe80e9ae3a4f7b5ab8875ab007536a91f5e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.build.jetifier\\jetifier-processor\\1.0.0-beta10\\946c39eb0c052ff4f60a8939648a8b99af20d604\\jetifier-processor-1.0.0-beta10.jar",
+    "sha256Bytes": "c5067a7b928237a1271a5e9cb5710e9f80b4973293945bc51e3a4c864ea4bfed"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.ddms\\ddmlib\\32.3.2\\aca0819e3a033e8de0f4d8290c7063cda7b4ab7c\\ddmlib-32.3.2.jar",
+    "sha256Bytes": "8bc8edf0637a9b520febf83b10b57f3120de5f5f3295cb232c90464f65d44318"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.layoutlib\\layoutlib-api\\32.3.2\\eee422fd98ca6c84709748601b7c84290717727c\\layoutlib-api-32.3.2.jar",
+    "sha256Bytes": "124f04eba80033e5080748a05797003a81c906deb5b76663abc289d009943e82"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.lint\\lint-model\\32.3.2\\7ec5bdf1929abef00a524b6ba1837f4df823b43e\\lint-model-32.3.2.jar",
+    "sha256Bytes": "dba7719ec2ba9f7e800147dd21fb57be65e0ef315a37356f6878d81222e82fc6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.lint\\lint-typedef-remover\\32.3.2\\b8665f5c42647d7d4088cd386d5d1d10e40fd9a2\\lint-typedef-remover-32.3.2.jar",
+    "sha256Bytes": "e281e90a6ffc831800e64517be8f1b230a6367bec226f1b0ce1a80d4573deade"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.android.tools.utp\\gradle-work-action-api\\32.3.2\\9f8423f22abe1068b0a8d5f144b49ac7fb148c83\\gradle-work-action-api-32.3.2.jar",
+    "sha256Bytes": "de87773a677e87f619c751c306af6ee73a04a7b26e5f205fff287728d8af4ace"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-annotations\\2.20\\6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c\\jackson-annotations-2.20.jar",
+    "sha256Bytes": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-core\\2.20.0\\3c97f7fad069f7cfae639d790bd93d6a0b2dff31\\jackson-core-2.20.0.jar",
+    "sha256Bytes": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-databind\\2.20.0\\f0a5e62fbd21285e9a5498a60dccb097e1ef793b\\jackson-databind-2.20.0.jar",
+    "sha256Bytes": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.android.gms\\strict-version-matcher-plugin\\1.2.4\\37f8b2ab56ecab699697602acdd598cb6d809b38\\strict-version-matcher-plugin-1.2.4.jar",
+    "sha256Bytes": "df1b48b67a3c5fea7267e9e51d20de4757818b6e8ed576484c74c96ea2951200"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.auto.value\\auto-value-annotations\\1.6.2\\ed193d86e0af90cc2342aedbe73c5d86b03fa09b\\auto-value-annotations-1.6.2.jar",
+    "sha256Bytes": "b48b04ddba40e8ac33bf036f06fc43995fc5084bd94bdaace807ce27d3bea3fb"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.code.findbugs\\jsr305\\3.0.2\\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\\jsr305-3.0.2.jar",
+    "sha256Bytes": "766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.code.gson\\gson\\2.11.0\\527175ca6d81050b53bdd4c457a6d6e017626b0e\\gson-2.11.0.jar",
+    "sha256Bytes": "57928d6e5a6edeb2abd3770a8f95ba44dce45f3b23b7a9dc2b309c581552a78b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.crypto.tink\\tink\\1.7.0\\668b57f109d32349b2870448f06ae6f202713edc\\tink-1.7.0.jar",
+    "sha256Bytes": "88970a456a08ba4c66b01b23e5846ca1095cc14e54cb48363e5d2e15a1307308"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.dagger\\dagger\\2.28.3\\10d83810ef9e19714116ed518896c90c6606d633\\dagger-2.28.3.jar",
+    "sha256Bytes": "f1dd23f8ae34a8e91366723991ead0d6499d1a3e9163ce550c200b02d76a872b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.devtools.ksp\\symbol-processing-api\\2.3.10\\a6f7d2f5cb6f63aed0e07eb53db1bf6ed07151d6\\symbol-processing-api-2.3.10.jar",
+    "sha256Bytes": "88a20326dbd7945c80594a8d03d8e2b253b6d3e35447d0c6e6df2b3789fd0c8e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.devtools.ksp\\symbol-processing-common-deps\\2.3.10\\f0bb28d7b911d8bd53e480c4678badbdede9507b\\symbol-processing-common-deps-2.3.10.jar",
+    "sha256Bytes": "30510a4364e02880ce2fbf0c4f0ef564dead3818eef4fc0500cbcee23fc362af"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.devtools.ksp\\symbol-processing-gradle-plugin\\2.3.10\\305dc21d624de19d002813606ff7251997ac90e4\\symbol-processing-gradle-plugin-2.3.10.jar",
+    "sha256Bytes": "95dbda446291340bebaef5feb2d5a649b500fac7bf0c816838c8bca38e0bb24a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.errorprone\\error_prone_annotations\\2.27.0\\91b2c29d8a6148b5e2e4930f070d4840e2e48e34\\error_prone_annotations-2.27.0.jar",
+    "sha256Bytes": "24c923372c58e35d0b9f16a028929bb9aedc77521867c274f2bd0735df5ba1f5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.errorprone\\error_prone_annotations\\2.36.0\\227d4d4957ccc3dc5761bd897e3a0ee587e750a7\\error_prone_annotations-2.36.0.jar",
+    "sha256Bytes": "77440e270b0bc9a249903c5a076c36a722c4886ca4f42675f2903a1c53ed61a5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.firebase\\firebase-crashlytics-buildtools\\3.0.2\\bf4fd481d6d33a465600cc0472028e35cb543ef6\\firebase-crashlytics-buildtools-3.0.2.jar",
+    "sha256Bytes": "e43456d8829181317869e010d27b8dce3e37524a9b411b5fd870b62dda1f856b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.firebase\\firebase-crashlytics-gradle\\3.0.2\\3182b73d85ebf2bad7ac117240a11a886dd7168c\\firebase-crashlytics-gradle-3.0.2.jar",
+    "sha256Bytes": "a869a5234fe65689e26d1158405aba7f7f2bc0f36b41d67ddf8fca28423926a8"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.flatbuffers\\flatbuffers-java\\1.12.0\\8201cc7b511177a37071249e891f2f2fea4b32e9\\flatbuffers-java-1.12.0.jar",
+    "sha256Bytes": "3f8c088b4dd04a9858721f2e162508c94db0dd86f961e306ee63ef2eda871bf7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.gms\\google-services\\4.4.2\\4d61599d56846c0cf3c6b466260a3d08b9032d55\\google-services-4.4.2.jar",
+    "sha256Bytes": "33ac5b8c20c7c9cc81e898d9f4d72f8e5f17a35505182683cd815ec69392ec8d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.guava\\failureaccess\\1.0.2\\c4a06a64e650562f30b7bf9aaec1bfed43aca12b\\failureaccess-1.0.2.jar",
+    "sha256Bytes": "8a8f81cf9b359e3f6dfa691a1e776985c061ef2f223c9b2c80753e1b458e8064"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.guava\\guava\\33.4.0-jre\\3fcc0a259f724c7de54a6a55ea7e26d3d5c0cac\\guava-33.4.0-jre.jar",
+    "sha256Bytes": "b918c98a7e44dbe94ebd9fe3e40cddaadb5a93e6a78eb6008b42df237241e538"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.guava\\listenablefuture\\9999.0-empty-to-avoid-conflict-with-guava\\b421526c5f297295adef1c886e5246c39d4ac629\\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar",
+    "sha256Bytes": "b372a037d4230aa57fbeffdef30fd6123f9c0c2db85d0aced00c91b974f33f99"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.j2objc\\j2objc-annotations\\3.0.0\\7399e65dd7e9ff3404f4535b2f017093bdb134c7\\j2objc-annotations-3.0.0.jar",
+    "sha256Bytes": "88241573467ddca44ffd4d74aa04c2bbfd11bf7c17e0c342c94c9de7a70a7c64"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.jimfs\\jimfs\\1.1\\8fbd0579dc68aba6186935cc1bee21d2f3e7ec1c\\jimfs-1.1.jar",
+    "sha256Bytes": "c4828e28d7c0a930af9387510b3bada7daa5c04d7c25a75c7b8b081f1c257ddd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.protobuf\\protobuf-java\\3.25.5\\5ae5c9ec39930ae9b5a61b32b93288818ec05ec1\\protobuf-java-3.25.5.jar",
+    "sha256Bytes": "8540247fad9e06baefa8fb45eb313802d019f485f14300e0f9d6b556ed88e753"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.protobuf\\protobuf-java-util\\3.25.5\\38cc5ce479603e36466feda2a9f1dfdb2210ef00\\protobuf-java-util-3.25.5.jar",
+    "sha256Bytes": "dacc58b2c3d2fa8d4bddc1acb881e78d6cf7c137dd78bc1d67f6aca732436a8d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.protobuf\\protobuf-javalite\\4.33.2\\3a0984fa90730fa7f54fe6027c41320b2a1c6833\\protobuf-javalite-4.33.2.jar",
+    "sha256Bytes": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.testing.platform\\core-proto\\0.0.8-alpha08\\72ca52065789993f2f029b34d797813c467d5d74\\core-proto-0.0.8-alpha08.jar",
+    "sha256Bytes": "3920575a74f1437975cdf45276f9b75e7ae41bafb8deb1d60e7d639f21d1b06c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.zxing\\core\\3.5.4\\955fcd6bcd0723ddfb8ee6ed502d5fdf0e9676a9\\core-3.5.4.jar",
+    "sha256Bytes": "71de5d89341b5fcf5dd89da7f44e84d825d0e084cdf3ec77c9abe26b0f0ceb13"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.googlecode.juniversalchardet\\juniversalchardet\\1.0.3\\cd49678784c46aa8789c060538e0154013bb421b\\juniversalchardet-1.0.3.jar",
+    "sha256Bytes": "757bfe906193b8b651e79dc26cd67d6b55d0770a2cdfb0381591504f779d4a76"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup\\javapoet\\1.13.0\\d6562d385049f35eb50403fa86bb11cce76b866a\\javapoet-1.13.0.jar",
+    "sha256Bytes": "4c7517e848a71b36d069d12bb3bf46a70fd4cda3105d822b0ed2e19c00b69291"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup\\javawriter\\2.5.0\\81241ff7078ef14f42ea2a8995fa09c096256e6b\\javawriter-2.5.0.jar",
+    "sha256Bytes": "fcfb09fb0ea0aa97d3cfe7ea792398081348e468f126b3603cb3803f240197f0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.okhttp3\\okhttp-jvm\\5.3.2\\f31e8de27feebe1e56d6c9d354a0986b65be0e1d\\okhttp-jvm-5.3.2.jar",
+    "sha256Bytes": "c771f48075b763f6c322055e21129a94b7de4c1faf3f8f58ace320b0c9517a30"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.okio\\okio-jvm\\3.17.0\\a12d684ec0df9541b3869ae60a4a5257fd3613df\\okio-jvm-3.17.0.jar",
+    "sha256Bytes": "3b13dcc3e1573047c2d507fc4f7fcb0bb0cbcd9d395da21d20e09406e2cd6a73"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.retrofit2\\converter-kotlinx-serialization\\3.0.0\\3541df11c0990f4a25610480c990d0e071a81e48\\converter-kotlinx-serialization-3.0.0.jar",
+    "sha256Bytes": "e9078b659251a2ef63e70729e0dec5f6cb57d220a1002948dc24b865fa6b42b0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.retrofit2\\retrofit\\3.0.0\\c0cdf6d243c5187732134129fda05a74f9197874\\retrofit-3.0.0.jar",
+    "sha256Bytes": "69c6a2d3451b6df9549a93fab744094ebf07a4b0ce4f453d6c8f575ef0fec9a1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.sun.istack\\istack-commons-runtime\\3.0.8\\d6a97364045aa6b99bf2d3c566a3f98599c2d296\\istack-commons-runtime-3.0.8.jar",
+    "sha256Bytes": "4ffabb06be454a05e4398e20c77fa2b6308d4b88dfbef7ca30a76b5b7d5505ef"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.sun.xml.fastinfoset\\FastInfoset\\1.2.16\\4eb6a0adad553bf759ffe86927df6f3b848c8bea\\FastInfoset-1.2.16.jar",
+    "sha256Bytes": "056f3a1e144409f21ed16afc26805f58e9a21f3fce1543c42d400719d250c511"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\commons-codec\\commons-codec\\1.17.1\\973638b7149d333563584137ebf13a691bb60579\\commons-codec-1.17.1.jar",
+    "sha256Bytes": "f9f6cb103f2ddc3c99a9d80ada2ae7bf0685111fd6bffccb72033d1da4e6ff23"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\commons-io\\commons-io\\2.16.1\\377d592e740dc77124e0901291dbfaa6810a200e\\commons-io-2.16.1.jar",
+    "sha256Bytes": "f41f7baacd716896447ace9758621f62c1c6b0a91d89acee488da26fc477c84f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\commons-logging\\commons-logging\\1.2\\4bfc12adfe4842bf07b657f0369c4cb522955686\\commons-logging-1.2.jar",
+    "sha256Bytes": "daddea1ea0be0f56978ab3006b8ac92834afeefbd9b7e4e6316fca57df0fa636"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-compose-core-jvm\\3.5.0\\8ebdd416d1157820ca47dc6a7644c56716a9c8fa\\coil-compose-core-jvm-3.5.0.jar",
+    "sha256Bytes": "38d80e53cd9dcda1fa84470bd3aa7a6080451b6cc52b03c9dffa22570b7f0e3b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-compose-jvm\\3.5.0\\820523ee39decd98eecdb61a7fc03412eedbbabc\\coil-compose-jvm-3.5.0.jar",
+    "sha256Bytes": "ec78dd5eaa0c4326b197880e5e7a44c31b0e6daa6cd2b8636ca7e1c032ce3567"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-core-jvm\\3.5.0\\5e82ee4827a88516057cb4ebd22871f6672643a8\\coil-core-jvm-3.5.0.jar",
+    "sha256Bytes": "479311df567a435d88aef4fabbec04585556770e7881d86c1758b07d5b126f40"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-jvm\\3.5.0\\602087c06fa4b1795a1572a26b174516c4d932e5\\coil-jvm-3.5.0.jar",
+    "sha256Bytes": "a280d338cb22a6bdc2f7f27aca1feccc3142a67c29f5cd945bd948d5b312727c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-network-core-jvm\\3.5.0\\5a995a2262efe8e8569b40fee8ce223aaa5599d8\\coil-network-core-jvm-3.5.0.jar",
+    "sha256Bytes": "3eb2ea78232460c9b9ae5ebe96e3bfb3b50b2c41b39277efb4ae454ad8652d6a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-network-okhttp-jvm\\3.5.0\\e988cf6fa65f8b93287f98a6ec36e54e39f72fc9\\coil-network-okhttp-jvm-3.5.0.jar",
+    "sha256Bytes": "73b11895e324812a4403d32d6c5d8cb67dad3fc3f1d57ffb0555da06c592965f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\jakarta.activation\\jakarta.activation-api\\1.2.1\\562a587face36ec7eff2db7f2fc95425c6602bc1\\jakarta.activation-api-1.2.1.jar",
+    "sha256Bytes": "8b0a0f52fa8b05c5431921a063ed866efaa41dadf2e3a7ee3e1961f2b0d9645b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\jakarta.xml.bind\\jakarta.xml.bind-api\\2.3.2\\8d49996a4338670764d7ca4b85a1c4ccf7fe665d\\jakarta.xml.bind-api-2.3.2.jar",
+    "sha256Bytes": "69156304079bdeed9fc0ae3b39389f19b3cc4ba4443bc80508995394ead742ea"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\javax.inject\\javax.inject\\1\\6975da39a7040257bd51d21a231b76c915872d38\\javax.inject-1.jar",
+    "sha256Bytes": "91c77044a50c481636c32d916fd89c9118a72195390452c81065080f957de7ff"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.java.dev.jna\\jna\\5.17.0\\33d12735bef894440780fce64f9758d420c7bae2\\jna-5.17.0.jar",
+    "sha256Bytes": "b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.java.dev.jna\\jna-platform\\5.6.0\\d18424ffb8bbfd036d71bcaab9b546858f2ef986\\jna-platform-5.6.0.jar",
+    "sha256Bytes": "9ecea8bf2b1b39963939d18b70464eef60c508fed8820f9dcaba0c35518eabf7"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.sf.jopt-simple\\jopt-simple\\4.9\\ee9e9eaa0a35360dcfeac129ff4923215fd65904\\jopt-simple-4.9.jar",
+    "sha256Bytes": "26c5856e954b5f864db76f13b86919b59c6eecf9fd930b96baa8884626baf2f5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.sf.kxml\\kxml2\\2.3.0\\ccbc77a5fd907ef863c29f3596c6f54ffa4e9442\\kxml2-2.3.0.jar",
+    "sha256Bytes": "f264dd9f79a1fde10ce5ecc53221eff24be4c9331c830b7d52f2f08a7b633de2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apache.commons\\commons-compress\\1.27.1\\a19151084758e2fbb6b41eddaa88e7b8ff4e6599\\commons-compress-1.27.1.jar",
+    "sha256Bytes": "293d80f54b536b74095dcd7ea3cf0a29bbfc3402519281332495f4420d370d16"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apache.commons\\commons-lang3\\3.16.0\\3eb54effe40946dfb06dc5cd6c7ce4116cd51ea4\\commons-lang3-3.16.0.jar",
+    "sha256Bytes": "08709dd74d602b705ce4017d26544210056a4ba583d5b20c09373406fe7a00f8"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apache.httpcomponents\\httpclient\\4.5.14\\1194890e6f56ec29177673f2f12d0b8e627dec98\\httpclient-4.5.14.jar",
+    "sha256Bytes": "c8bc7e1c51a6d4ce72f40d2ebbabf1c4b68bfe76e732104b04381b493478e9d6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apache.httpcomponents\\httpcore\\4.4.16\\51cf043c87253c9f58b539c9f7e44c8894223850\\httpcore-4.4.16.jar",
+    "sha256Bytes": "6c9b3dd142a09dc468e23ad39aad6f75a0f2b85125104469f026e52a474e464f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apache.httpcomponents\\httpmime\\4.5.6\\164343da11db817e81e24e0d9869527e069850c9\\httpmime-4.5.6.jar",
+    "sha256Bytes": "0b2b1102c18d3c7e05a77214b9b7501a6f6056174ae5604e0e256776eda7553e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apiguardian\\apiguardian-api\\1.1.2\\a231e0d844d2721b0fa1b238006d15c6ded6842a\\apiguardian-api-1.1.2.jar",
+    "sha256Bytes": "b509448ac506d607319f182537f0b35d71007582ec741832a1f111e5b5b70b38"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.bitbucket.b_c\\jose4j\\0.9.5\\e4ca26802488e6f16e24558d74ac8775a955fdd3\\jose4j-0.9.5.jar",
+    "sha256Bytes": "808fb3166f3e67dad9811c331029ab1681242fd52b735bc3f33f281167fcc72e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.bouncycastle\\bcpkix-jdk18on\\1.79\\7693cec3b8779b74b35466dcaeeaac7409872954\\bcpkix-jdk18on-1.79.jar",
+    "sha256Bytes": "3639a24ddf9ba4b7eba0659b44770e91eba816421888e571f285aadefe532cd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.bouncycastle\\bcprov-jdk18on\\1.79\\4d8e2732bcee15f1db93df266c3f5b70ce5cac21\\bcprov-jdk18on-1.79.jar",
+    "sha256Bytes": "0d81ecc3124536b539bce9aa3fe9621b7f84c9cee371b635a5b31c78b79ab1da"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.bouncycastle\\bcutil-jdk18on\\1.79\\ecfc5aef97cc7676ea0de5c53c407b9f533f0ad5\\bcutil-jdk18on-1.79.jar",
+    "sha256Bytes": "c70b88ada58938cbc2f005d40329054078bcfa1149e6ffc03e9242eb6ab21836"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.brotli\\dec\\0.1.2\\c26a897ae0d524809eef1c786cc6183b4ddcc3b\\dec-0.1.2.jar",
+    "sha256Bytes": "615c0c3efef990d77831104475fba6a1f7971388691d4bad1471ad84101f6d52"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.checkerframework\\checker-qual\\3.43.0\\9425eee39e56b116d2b998b7c2cebcbd11a3c98b\\checker-qual-3.43.0.jar",
+    "sha256Bytes": "3fbc2e98f05854c3df16df9abaa955b91b15b3ecac33623208ed6424640ef0f6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.glassfish.jaxb\\jaxb-runtime\\2.3.2\\5528bc882ea499a09d720b42af11785c4fc6be2a\\jaxb-runtime-2.3.2.jar",
+    "sha256Bytes": "e6e0a1e89fb6ff786279e6a0082d5cef52dc2ebe67053d041800737652b4fd1b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.glassfish.jaxb\\txw2\\2.3.2\\ce5be7da2e442c25ec14c766cb60cb802741727b\\txw2-2.3.2.jar",
+    "sha256Bytes": "4a6a9f483388d461b81aa9a28c685b8b74c0597993bf1884b04eddbca95f48fe"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jdom\\jdom2\\2.0.6\\6f14738ec2e9dd0011e343717fa624a10f8aab64\\jdom2-2.0.6.jar",
+    "sha256Bytes": "1345f11ba606d15603d6740551a8c21947c0215640770ec67271fe78bea97cf5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\13.0\\919f0dfe192fb4e063e7dacadee7f8bb9a2672a9\\annotations-13.0.jar",
+    "sha256Bytes": "ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\23.0.0\\8cc20c07506ec18e0834947b84a864bfc094484e\\annotations-23.0.0.jar",
+    "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.9.6\\7b6b6793f3c4c5996b20d1d99cf728e5fac00364\\lifecycle-runtime-compose-desktop-2.9.6.jar",
+    "sha256Bytes": "31c3c4b6dea38f078c46829dee2c43abba2bf8757b7ee8a0f660f31217364898"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.savedstate\\savedstate-compose-desktop\\1.3.6\\63692375ffe667f12cb3ea8aa1e605d659ed2add\\savedstate-compose-desktop-1.3.6.jar",
+    "sha256Bytes": "0f3d045c5fd7e1301ab6c38cd0778067b0484cf39acac1233be71a723a6a8075"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose\\compose-gradle-plugin\\1.12.1\\44480059e10d65d4b1fb19779c67f92074a6285f\\compose-gradle-plugin-1.12.1.jar",
+    "sha256Bytes": "f02445941fc50c7fdde9fe6da709b793199c7dc97ee08cf15fee6e99ccb4dcca"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose\\gradle-plugin-internal-jdk-version-probe\\1.12.1\\5aec890bc3049ef79b6d1ac617c15dac9d87e878\\gradle-plugin-internal-jdk-version-probe-1.12.1.jar",
+    "sha256Bytes": "0cfa4d5db473f30f8f25177fa301c4681cf85b14b85702d7eca6cd5dab34e8a1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.animation\\animation-core-desktop\\1.12.1\\a14cdb09ab8792b6b20d298d0a26530969228b0f\\animation-core-desktop-1.12.1.jar",
+    "sha256Bytes": "d988b6b7d867146825a9da38e1522fc50580aa14986ab22a8b724fcdcef17875"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.animation\\animation-desktop\\1.12.1\\4e815509a4bedbf3ff9f3ce292c548989a00ff53\\animation-desktop-1.12.1.jar",
+    "sha256Bytes": "755ca81764d5aae7afb2d5f72e3253a44a1cc9c0f890d1dcc319f0eb8f00736b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.desktop\\desktop-jvm\\1.12.1\\55722afc383641f44e5059e3a87e076436190826\\desktop-jvm-1.12.1.jar",
+    "sha256Bytes": "adaea6ec630420712dcfd52a356b46aef603129ca7f76cba204569112fa80e1c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.foundation\\foundation-desktop\\1.12.1\\cb418f810ab36f9268c13816a6b21d9cd6ffa4b7\\foundation-desktop-1.12.1.jar",
+    "sha256Bytes": "e1dc29cd9de2f1628a741866a112eedc62fec43bc548d0e4f434bf31207fd1e3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.foundation\\foundation-layout-desktop\\1.12.1\\64d4f43ec090a85f3069762a5c39a147c6d2c9aa\\foundation-layout-desktop-1.12.1.jar",
+    "sha256Bytes": "57b54c104bae9eea0e90bb26487f8b64ead09a473f1b32cbed8579084f485e7b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.hot-reload\\hot-reload-gradle-plugin\\1.2.0\\d14920bb191e1f9402ba7529b3e5bf4e58410dc\\hot-reload-gradle-plugin-1.2.0.jar",
+    "sha256Bytes": "8f57ecbd0ebd15137e0ce10a9a092e01c90cbe38152afd23bd0e60335fd5fda6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-desktop\\1.12.1\\6d090e795e1575f46fcd5f993f38c2e34b976a32\\material-desktop-1.12.1.jar",
+    "sha256Bytes": "0c1dd397b45a7cd830234ddf30d253b586259e726a5cd816cca2e79119a47fa2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-icons-core-desktop\\1.7.3\\414b3096050fe647b0638832eace80f22c06b85c\\material-icons-core-desktop-1.7.3.jar",
+    "sha256Bytes": "bcf6c853b6db2ff148d2d3aad3b7a7ea54d93fc7b42e0afd840eb6daf1a1c681"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-icons-extended-desktop\\1.7.3\\c7c5465dd754043076875b32bce0dd7f5a354fe8\\material-icons-extended-desktop-1.7.3.jar",
+    "sha256Bytes": "dc55d383dca8279e353917e5c5a93d192a95e7ca4f926ee55ee0b4627f99d860"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-ripple-desktop\\1.12.1\\b4b34a8be94b8c41526d448a58d7ce2256872df5\\material-ripple-desktop-1.12.1.jar",
+    "sha256Bytes": "06ac72a5f57b2e724ea129efbc71973a27a9e1ceeb7f568281dcb0d1ef4448fd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.runtime\\runtime-desktop\\1.12.1\\d9b0c5277cd9ba7a116fbb06e1716d02d0b33401\\runtime-desktop-1.12.1.jar",
+    "sha256Bytes": "9a40fb9ac9b98a1b2d8be51ce57dbcf733e768fa06a9e4859a1775cb52bf6806"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.runtime\\runtime-saveable-desktop\\1.12.1\\b4a48d211ac0281b049bf42cb21f715c71b69145\\runtime-saveable-desktop-1.12.1.jar",
+    "sha256Bytes": "d81973dced223d6aea7bf9f6d4ead285494c656ea003b59072babefd25470c7b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-backhandler-desktop\\1.12.1\\170494f680ff0f7532eeba0f4ba936b54224ed32\\ui-backhandler-desktop-1.12.1.jar",
+    "sha256Bytes": "0bc021accc616c2a99afe0c39ca1ec29082fa78a7b99868ed122d162eab828bd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-desktop\\1.12.1\\a6d765fb5086ca7046af0172a7fc2ff3b32a3e59\\ui-desktop-1.12.1.jar",
+    "sha256Bytes": "eaee42812c81cf1f1a925088bd7e847a343decbc3ccb1682f00f203123a51a17"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-geometry-desktop\\1.12.1\\21ca5715bcde50586e57506f07b280ff8b626bdb\\ui-geometry-desktop-1.12.1.jar",
+    "sha256Bytes": "2cde44d95ba21654dcced3a3098bdd171b3ef5b17ef7fc6cec0d25983dbc9fa0"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-graphics-desktop\\1.12.1\\dc0dbaa823b75a72d2306459e0a118b65769aa22\\ui-graphics-desktop-1.12.1.jar",
+    "sha256Bytes": "92fddd7609d77a803f7083b1b7dd5a651cba10be27c105361a5d0b3894932085"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-text-desktop\\1.12.1\\af2aab56220491e300daa1def6ce1e586f18d84\\ui-text-desktop-1.12.1.jar",
+    "sha256Bytes": "672331d7e1440f2406f6a9b6d3d61475316cf622d0dbbe910e47bdbd69861c38"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-tooling-preview-desktop\\1.12.1\\9871d626c28849c2f353e15d7694e38d7996ddcc\\ui-tooling-preview-desktop-1.12.1.jar",
+    "sha256Bytes": "19f5005baa27dfbf3f435feed44dfba9c938ba386ac6753d00a67a270cd72231"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-unit-desktop\\1.12.1\\e0670f2fc4ace09368fdba41c15558e1fa79e866\\ui-unit-desktop-1.12.1.jar",
+    "sha256Bytes": "7c4998f1224f241dbe88fa59701d697d598fe8979a4acaed717b8365d4cd9300"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-util-desktop\\1.12.1\\2d41b1dcda0c16efa86718f309fe2159a2890028\\ui-util-desktop-1.12.1.jar",
+    "sha256Bytes": "bb81e9748c9bcadeaeb99bab647e21442e62e253a3a497a213c68e040cb2b385"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\compose-compiler-gradle-plugin\\2.4.0\\a8bc25f160ade06795a4a51e3d774f17c7ac769d\\compose-compiler-gradle-plugin-2.4.0-gradle813.jar",
+    "sha256Bytes": "14ad611c8db8afc181d52b6c8683e24c4f602c87006eb60685e852dbfbdd66c6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\fus-statistics-gradle-plugin\\2.4.0\\9394ff2e790b58298b84b7d6ddd2a2ef076e8eee\\fus-statistics-gradle-plugin-2.4.0-gradle813.jar",
+    "sha256Bytes": "032d24532d648e42302348a2c80a5046dc9f4520c64bbd203e7e040df6c8691f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-statistics\\2.4.0\\d58fcc98c1ef7f350a59a9becaa35830c9b1ace0\\kotlin-build-statistics-2.4.0.jar",
+    "sha256Bytes": "cd969cca422e144774e28a6be51b2369ee45df7653877e7c0749835c2bd6ef20"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-api\\2.4.0\\46429d5887df2d02f33fe11a0c8444c5be5fd8da\\kotlin-build-tools-api-2.4.0.jar",
+    "sha256Bytes": "66917335497f9ab75a36c34b3d90bad2bc8dc256c34b2413ecd0c9467fcf597d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-compat\\2.4.0\\209372718c8759fbcb47402dc130d45f00c3f81\\kotlin-build-tools-compat-2.4.0.jar",
+    "sha256Bytes": "1fe7397a60b230a82ffdca2d59615dde7ac5720cec0892204a9818f30e80c16c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-cri-impl\\2.4.0\\7fdfe4b4de70b7e6d81c054572e862121aa1603a\\kotlin-build-tools-cri-impl-2.4.0.jar",
+    "sha256Bytes": "5168b866945f6ac1ffcb6d4c88cf582497249469c2e4a4eafc0bcd35b5a264a9"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-impl\\2.4.0\\3dde5b4075cd7963afd0b0b2835627f40abc1149\\kotlin-build-tools-impl-2.4.0.jar",
+    "sha256Bytes": "076c0a7f84d303f1e390774410c8678b8b584faa3f642435f93d2e4e81dabe7c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-embeddable\\2.4.0\\f1a24af8bd111a83950236b1aec7a6d72a97e92c\\kotlin-compiler-embeddable-2.4.0.jar",
+    "sha256Bytes": "c2b25e8c1c93ec416ba4327f5e31eaec0f0c8847241b9353e294b8db9dce564f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-runner\\2.4.0\\d2b2336d493d2d3a8047c826cb27606f67029da8\\kotlin-compiler-runner-2.4.0.jar",
+    "sha256Bytes": "ad9608152740e92d94a278b4ff2ca82c4bf5ff8ef219220e3c07aeb554638cee"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compose-compiler-plugin-embeddable\\2.4.0\\77913398cd4a9cb385000d56d51501954d1da6db\\kotlin-compose-compiler-plugin-embeddable-2.4.0.jar",
+    "sha256Bytes": "95ccd5c4008e454a5cb26f89405613f2ae33f46bf950c8be4d01bbdbdcfbcd08"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-client\\2.4.0\\e9080614f98d07554367b7e5810529963e9f43e2\\kotlin-daemon-client-2.4.0.jar",
+    "sha256Bytes": "f546f0b3699c4984f320dd03080de05cad61064208ba8f37df0d3f8f4a7fd14a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-embeddable\\2.4.0\\1ecabef3a8ba6a8e25654573d54edb7e4136e903\\kotlin-daemon-embeddable-2.4.0.jar",
+    "sha256Bytes": "383093af5e078435b60043d19bfa83eb6191be0f4d13a28fb1c8a0f3ab24fe66"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-gradle-plugin\\2.4.0\\18bfb59ea7d01e0ae925f5a5535e61a98624ed3f\\kotlin-gradle-plugin-2.4.0-gradle813.jar",
+    "sha256Bytes": "ca5903a236a19a54a883a8695958d8516f9e39cc333bd1e3077f92ae38271cd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-gradle-plugin-annotations\\2.4.0\\64ef8148d7fdcc5db57915ec2a9d9c5b0ce6896\\kotlin-gradle-plugin-annotations-2.4.0.jar",
+    "sha256Bytes": "8c85c2ef3180a5c4ea646a155e061e3d65e39d06f4938babbdc53dadac875976"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-gradle-plugin-api\\2.4.0\\75cef3ce6f6086fd3943cc614158c889b84ce5d1\\kotlin-gradle-plugin-api-2.4.0-gradle813.jar",
+    "sha256Bytes": "0d7f54bbd1cc368d129894067a93c58f7a580e316797ad581f0374b1f1b532f1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-gradle-plugin-idea\\2.4.0\\905431b905fbd7c516de862a1179d7ab5fae3955\\kotlin-gradle-plugin-idea-2.4.0.jar",
+    "sha256Bytes": "086734484c7edf19a620ab1a617d097c40e03bc52602e77840ea5ebd6380e514"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-gradle-plugin-idea-proto\\2.4.0\\c64be4d760a576018704234952e752ec8670bea3\\kotlin-gradle-plugin-idea-proto-2.4.0.jar",
+    "sha256Bytes": "b86f8ae3c1b94df130406cfbb7da68354805f914c1ca8c080af9dbeea8864771"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-klib-commonizer-api\\2.4.0\\e5b767303bd219c67a07f1f4ddc1b35359148660\\kotlin-klib-commonizer-api-2.4.0.jar",
+    "sha256Bytes": "ec52a3603f1c7cda3e08f905da29a623d6244122fe6cf323dbed8504d9302709"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-native-utils\\2.4.0\\f6fd432652adcecbbd70ec0018ce445918f63cac\\kotlin-native-utils-2.4.0.jar",
+    "sha256Bytes": "824a3cf7d418fc4d5c14d4949af54dd619a9d3ad1e1647a0dddbf61d8bcd4b40"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\1.6.10\\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\\kotlin-reflect-1.6.10.jar",
+    "sha256Bytes": "3277ac102ae17aad10a55abec75ff5696c8d109790396434b496e75087854203"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\2.3.20\\3a78af768b3747778b9db000088ea1cbfb996942\\kotlin-reflect-2.3.20.jar",
+    "sha256Bytes": "e346fa3c3ff4451f5f707a312887fd4c8555da48cc15fa9db2ba93c33f89f813"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-script-runtime\\2.4.0\\1de03f0ef3e208ab5f97ee6a587e9b8480447df6\\kotlin-script-runtime-2.4.0.jar",
+    "sha256Bytes": "196e8ecbf63daf477e34e67c2f871ee232ae7bf8b377432d876d1bbf9d273de3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-scripting-common\\2.4.0\\d0a53d62601b10b7ad700c3c5df57bb5a8262afd\\kotlin-scripting-common-2.4.0.jar",
+    "sha256Bytes": "5902e5cd0104f9a3bd65aa03679c5898d1ceb36ce01651a48a3db606bb97ada3"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-scripting-compiler-embeddable\\2.4.0\\d475e00905218e947dfc90bb208884ca5ab8dcd0\\kotlin-scripting-compiler-embeddable-2.4.0.jar",
+    "sha256Bytes": "c7d1afbedc0fb4e367316f7ab535d9162b14143b3d2fb6a624b431e142b70c7e"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-scripting-compiler-impl-embeddable\\2.4.0\\2d8ee9cea72bb0a1c71699e6768cb47266390d5e\\kotlin-scripting-compiler-impl-embeddable-2.4.0.jar",
+    "sha256Bytes": "63efa9dfeec5a7ebd239f643dba142548e182c1425b039eb97aa1b03fc9551de"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-scripting-jvm\\2.4.0\\27e313ed6d09e223634ed031382c019e2fdd6d94\\kotlin-scripting-jvm-2.4.0.jar",
+    "sha256Bytes": "72638e2c43ef0a08981863017780b133212193fbb0bfd0f5f35a24321764105f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization\\2.4.0\\76a324c418080699db12c99a3c47a004f0eb360a\\kotlin-serialization-2.4.0-gradle813.jar",
+    "sha256Bytes": "28b1e5c63642f1fd6473e42d3c9419ca7a35262335a9b7d98357e5345c140e91"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization-compiler-plugin-embeddable\\2.4.0\\9c09aa2727d9ade95c1b0a00458e74feced83908\\kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar",
+    "sha256Bytes": "272d419cb12e9a8aba4e6fa7a76bfc486f97dc0f79a32ef1397b1f175bc35c50"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.0\\4e9f4b531dce5c7dee58ed2de9a8b9a763c8dc6c\\kotlin-stdlib-2.4.0.jar",
+    "sha256Bytes": "ccb14ff83fabcb11458b798dbc9824748ccdffeec79c9aba789e6ed1cda86b1c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib-jdk7\\2.2.10\\18cc96ae090a71726822631e1808c7d329faab5d\\kotlin-stdlib-jdk7-2.2.10.jar",
+    "sha256Bytes": "cf95eccc6cc784dff479dee0b8834f3584b93292cc5d91972e82f5d7b9e13e3b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib-jdk8\\2.2.10\\80cc9a776a058eeda7053731350bc41af8858a5a\\kotlin-stdlib-jdk8-2.2.10.jar",
+    "sha256Bytes": "8974bfdd08b1d81843fe8d11f0729ab6e5b3c1f88d671ebe0c006358129ce149"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test\\2.4.0\\c9a0c254adade886172cb021c0b099d8be1a5fc4\\kotlin-test-2.4.0.jar",
+    "sha256Bytes": "38099e38d81f394d7ae3eb73ad0a2b6379629a293ba8cfe5485ee7f836124943"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test-junit5\\2.4.0\\3a25dcc853e90ef0ee264b0f532791966bea9cb6\\kotlin-test-junit5-2.4.0.jar",
+    "sha256Bytes": "305492a09546af4121b922f19a62b48bab650c31dc1e6ff187decc6859335675"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-tooling-core\\2.4.0\\75970f5a2a9cb4d25557965bbec0a7ccd55bfbcf\\kotlin-tooling-core-2.4.0.jar",
+    "sha256Bytes": "59ea305372e3a2b7417764dcfecf645066a0d9b1792ab40afd15c1cc8535b58a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-util-io\\2.4.0\\5cbad06319bd397dde521561701c0f5b36cd7faf\\kotlin-util-io-2.4.0.jar",
+    "sha256Bytes": "bcfd27fa7d9d4d3443173ebf03ad890f4d1764ded2d492f8fcaec306b80043ac"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-util-klib\\2.4.0\\336a8a1bd6fab18c5e529811076de2c0d46b3cdb\\kotlin-util-klib-2.4.0.jar",
+    "sha256Bytes": "5b058d2721b4c58caf54b2657f4fad42a3b23641491e6db74358b82377f4afd6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-util-klib-metadata\\2.4.0\\83486d03b118c0fd8a3c6901f9990fd90d9f8591\\kotlin-util-klib-metadata-2.4.0.jar",
+    "sha256Bytes": "3cd7b0fd1af109a9939db24f8ae3b03b6555f02e230af4e2d6ee198ddd20610a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\atomicfu-jvm\\0.28.0\\6a9ac536f4b2144e57c176fd4e26821eb12084f4\\atomicfu-jvm-0.28.0.jar",
+    "sha256Bytes": "39576ec46b83412ff7a2909d24cccbba90400e91f9aa67b250309bc0872ecf52"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-collections-immutable-jvm\\0.4.0\\82499bf608b0fc3ae6737a5eac1a1f1325279bbf\\kotlinx-collections-immutable-jvm-0.4.0.jar",
+    "sha256Bytes": "d767014ad0c9a27d27d26fd38e7afa030aee0d141338f108781ff02ecf2fdab5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.10.2\\4a9f78ef49483748e2c129f3d124b8fa249dafbf\\kotlinx-coroutines-core-jvm-1.10.2.jar",
+    "sha256Bytes": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.8.0\\ac1dc37a30a93150b704022f8d895ee1bd3a36b3\\kotlinx-coroutines-core-jvm-1.8.0.jar",
+    "sha256Bytes": "9860906a1937490bf5f3b06d2f0e10ef451e65b95b269f22daf68a3d1f5065c5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.9.0\\9beade4c1c1569e4f36cbd2c37e02e3e41502601\\kotlinx-coroutines-core-jvm-1.9.0.jar",
+    "sha256Bytes": "ad89c2892235e670f222d819cb3d81188143cb19a05b59df9889ae4269f5c70a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-swing\\1.10.2\\ccb5a2e7c83fa76da0ba4677f05678d3bd3eed57\\kotlinx-coroutines-swing-1.10.2.jar",
+    "sha256Bytes": "02bdb85f20ec08004429abf6887e8d0e40f3ab637d7462f817f0f8abbe7d1eb5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-datetime-jvm\\0.7.1\\81c2e0246bd28cc2dcbdf0ab53628322e66a9de9\\kotlinx-datetime-jvm-0.7.1.jar",
+    "sha256Bytes": "3b8b98657c9aff3be7f6b4b575e9f3fb9a3a1f452a801da0f438901734acdade"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-serialization-core-jvm\\1.11.0\\c1905c9bf7452b045d5af9248835abe64ddad6bf\\kotlinx-serialization-core-jvm-1.11.0.jar",
+    "sha256Bytes": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-serialization-json-jvm\\1.11.0\\e7e045e99e56f07599bb9ccb708c2190e2af0606\\kotlinx-serialization-json-jvm-1.11.0.jar",
+    "sha256Bytes": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.runtime\\jbr-api\\1.9.0\\2bc161f5472b5fd5610740e4d6ebe896c811cb0e\\jbr-api-1.9.0.jar",
+    "sha256Bytes": "7e37284e33b5b304ee6174dcaa92db949b257cc4c8991ca865e7daf5113d8279"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt\\0.150.1\\e03fd8140c0e331c3c7018b00a9710ec98d78fc1\\skiko-awt-0.150.1.jar",
+    "sha256Bytes": "bb610ada28509ebee3a623c0469aff3665689fbec73d118055f3dbf5a37211f5"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt-runtime-windows-x64\\0.150.1\\f709996c593fdd677168a054d09f7dcd91b6b51e\\skiko-awt-runtime-windows-x64-0.150.1.jar",
+    "sha256Bytes": "22a5e52c9fb4278f998785c5029d96f007c8eb8944f6eb0d3f4b06fb3775edcf"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jmdns\\jmdns\\3.6.3\\14e89b6d4cb6fb27194d48c353e4fb78486dabb\\jmdns-3.6.3.jar",
+    "sha256Bytes": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.json\\json\\20240303\\ebb88e8fb5122b7506d5cf1d69f1ccdb790d22a\\json-20240303.jar",
+    "sha256Bytes": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jspecify\\jspecify\\1.0.0\\7425a601c1c7ec76645a78d22b8c6a627edee507\\jspecify-1.0.0.jar",
+    "sha256Bytes": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-api\\5.10.1\\eb90c7d8bfaae8fdc97b225733fcb595ddd72843\\junit-jupiter-api-5.10.1.jar",
+    "sha256Bytes": "60d5c398c32dc7039b99282514ad6064061d8417cf959a1f6bd2038cc907c913"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-engine\\5.10.1\\6c9ff773f9aa842b91d1f2fe4658973252ce2428\\junit-jupiter-engine-5.10.1.jar",
+    "sha256Bytes": "02930dfe495f93fe70b26550ace3a28f7e1b900c84426c2e4626ce020c7282d6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-commons\\1.10.1\\2bfcd4a4e38b10c671b6916d7e543c20afe25579\\junit-platform-commons-1.10.1.jar",
+    "sha256Bytes": "7d9855ee3f3f71f015eb1479559bf923783243c24fbfbd8b29bed8e8099b5672"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-engine\\1.10.1\\f32ae4af74fde68414b8a3d2b7cf1fb43824a83a\\junit-platform-engine-1.10.1.jar",
+    "sha256Bytes": "baa48e470d6dee7369a0a8820c51da89c1463279eda6e13a304d11f45922c760"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.platform\\junit-platform-launcher\\1.10.1\\ce85bf5e38bee0989ded9bd468dd4ff78dc0cfa8\\junit-platform-launcher-1.10.1.jar",
+    "sha256Bytes": "ded414c504e88d02270331071969084e1b2fd9bcf8443f35d44da2c6e3301bc2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jvnet.staxex\\stax-ex\\1.8.1\\78011e483a21102fb4858f3e8f269a677e50aa23\\stax-ex-1.8.1.jar",
+    "sha256Bytes": "20522549056e9e50aa35ef0b445a2e47a53d06be0b0a9467d704e2483ffb049a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.nanohttpd\\nanohttpd\\2.3.1\\a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c\\nanohttpd-2.3.1.jar",
+    "sha256Bytes": "de864c47818157141a24c9acb36df0c47d7bf15b7ff48c90610f3eb4e5df0e58"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.opentest4j\\opentest4j\\1.3.0\\152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e\\opentest4j-1.3.0.jar",
+    "sha256Bytes": "48e2df636cab6563ced64dcdff8abb2355627cb236ef0bf37598682ddf742f1b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm\\9.9\\c29635c8a7afa03d74b33c1884df8abb2b3f3dcc\\asm-9.9.jar",
+    "sha256Bytes": "03d99a74ad1ee5c71334ef67437f4ef4fe3488caa7c96d8645abc73c8e2017d4"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm-analysis\\9.9\\bf4fa6e66638851c1cd22c2caea0c3ee5d5f437\\asm-analysis-9.9.jar",
+    "sha256Bytes": "6a15d28e8bd29ba4fd5bca4baf9b50e8fba2d7b51fbf78cfa0c875a7214c678b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm-commons\\9.9\\db9165a3bf908ded6b08612d583a15d1d0c7bda0\\asm-commons-9.9.jar",
+    "sha256Bytes": "db2f6f26150bbe7c126606b4a1151836bcc22a1e05a423b3585698bece995ff8"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm-tree\\9.9\\f8de6eead6d24dd0f45bd065bbe112b2cda6ea21\\asm-tree-9.9.jar",
+    "sha256Bytes": "42178f3775c9c63f9e5e1446747d29b4eca4d91bd6e75e5c43cfa372a47d38c6"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.ow2.asm\\asm-util\\9.9\\42fdfc0508b43807c8078d6e82ecff2ce2112ae8\\asm-util-9.9.jar",
+    "sha256Bytes": "3842e13cfe324ee9ab7cdc4914be9943541ead397c17e26daf0b8a755bede717"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.slf4j\\slf4j-api\\1.7.30\\b5a4b6d16ab13e34a88fae84c35cd5d68cac922c\\slf4j-api-1.7.30.jar",
+    "sha256Bytes": "cdba07964d1bb40a0761485c6b1e8c2f8fd9eb1d19c53928ac0d7f9510105c57"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.slf4j\\slf4j-api\\2.0.17\\d9e58ac9c7779ba3bf8142aff6c830617a7fe60f\\slf4j-api-2.0.17.jar",
+    "sha256Bytes": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.tensorflow\\tensorflow-lite-metadata\\0.2.0\\7dbe8f75ae5c0ef7093c43c3ac8b560bbc7ea4b6\\tensorflow-lite-metadata-0.2.0.jar",
+    "sha256Bytes": "e9f18b8a41f017e9033cb0ed85c8a2ba2307292cdfe25eae365923e7a31d2a70"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-search-parity\\dependencies\\pinyin4j-2.5.0.jar",
+    "sha256Bytes": "282de2b3f2558b4f1c86dfd2fd6550500f838a178ef8b7acf34863f7d814fa35"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.json\\json\\20240303\\ebb88e8fb5122b7506d5cf1d69f1ccdb790d22a\\json-20240303.jar",
+    "sha256Bytes": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+  }
+]

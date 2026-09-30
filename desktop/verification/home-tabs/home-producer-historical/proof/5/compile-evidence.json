@@ -1,0 +1,101 @@
+{
+  "passed": true,
+  "activeClasses": "classes-attempt5",
+  "acceptedProof": "proof\\5",
+  "productSnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+  "currentProductJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "0b6c261cb2cde91ff38bc0ad68bf55614b2f3f58933d38a8c3f5e89c7e36ac8d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-java.jar",
+      "sha256Bytes": "c111ced7d1131caf784bace7ab8a5cf84f565734d5271b1f874972419cf51e2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "ff2b94f690ca9832f2044baa4d10b8c5c9fb61abd609a850c4e72053e2b6daa7"
+    }
+  ],
+  "mainFilesChanged": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false,
+  "explicitExistingConsumerOverlay": "DiscoveryScreens.kt",
+  "reusedSiblingOriginalSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\FeedVerticalStaggeredGrid.kt",
+      "sha256Bytes": "9674e12d589c6e27cc600865d1fd66e6b7bd5b8ee47d83c8865444e52180bbfd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\FeedPrependScrollPolicy.kt",
+      "sha256Bytes": "53dc2636d4c741bdfde1b3a7b53499fd72db7ca2490089ef19575e313571f030"
+    }
+  ],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalHomeCardSettings.kt",
+      "sha256Bytes": "9175248a7344de1b85ef2d482e19de167bdb4e0dc5d3975610b923fb78f407c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\core\\util\\DesktopOriginalHomeCardWidthClass.kt",
+      "sha256Bytes": "24c1c5a2ac03eb6248efdefb6e380be8659f286dd4ba1f4944f999aefb635380"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeCardGridPolicy.kt",
+      "sha256Bytes": "e09c137a1f1259cb510b68cbdb2cd607f32f02c93bb5b0d275c1c37fad2b7781"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\feature\\home\\HomeFeedCardDensityPolicy.kt",
+      "sha256Bytes": "60c616def740bf7395362f47bdcaf9594d21a74540ca999ba814f626b6c4570b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\feature\\home\\HomeFeedCardStylePolicy.kt",
+      "sha256Bytes": "4698a14227131f6206c81d92cfa2da676d80616313ae49ccef72cc4c20f33a62"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalHomeCardFields.kt",
+      "sha256Bytes": "033816b1ca445e70fb8c1828a7c7aecd1b29949c7ae10ca5f0794df2b88de6d2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalHomeCardWidthOptions.kt",
+      "sha256Bytes": "f2dc6641152f80088b4522051f238ecdd69929574913b4ac5384e4e5447bb85f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopHomeCardPreferences.kt",
+      "sha256Bytes": "f661a8a33e636336ac6164024061d0a5b6781ef9b484486a9dc81eb8da16032f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeCardGrid.kt",
+      "sha256Bytes": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DiscoveryScreens.kt",
+      "sha256Bytes": "a6e18f3cfb6fc4ed6fd46b35caddb13ebe16cc58fbc48705eeeb9321a6ab156a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopHomeCardPreferencesTest.kt",
+      "sha256Bytes": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\JunitFixture.kt",
+      "sha256Bytes": "49ca1480b812493c9954a6d9ae37293a0b8baeab607d87e265ecee1d519db611"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\FeedVerticalStaggeredGrid.kt",
+      "sha256Bytes": "9674e12d589c6e27cc600865d1fd66e6b7bd5b8ee47d83c8865444e52180bbfd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\FeedPrependScrollPolicy.kt",
+      "sha256Bytes": "53dc2636d4c741bdfde1b3a7b53499fd72db7ca2490089ef19575e313571f030"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\UiFixture.kt",
+      "sha256Bytes": "bb03065e9386e699afe1cc0e312bba88a95342c638a5ce84b4c8b69c6319ae88"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity\\ColdDiskReader.kt",
+      "sha256Bytes": "b814081bbcd964b828f19174d8bf30d5158ab0dfd69910ed2ba7b34dccf5781c"
+    }
+  ]
+}

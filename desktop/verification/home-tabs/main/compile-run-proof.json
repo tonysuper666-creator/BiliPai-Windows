@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "snapshotManifestSha256Bytes": "ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828",
+  "productJarsFirst": true,
+  "productionOverrides": 0,
+  "compiledOnlyFixtureSources": 5,
+  "fixtureClassCount": 34,
+  "actualMainClassPins": 19,
+  "homeUiFlows": 8,
+  "homePointerPairs": 64,
+  "homeScreenshots": 34,
+  "homeLocalSourcePngs": 6,
+  "coldJvmReaders": 8,
+  "tabsUiFlows": 2,
+  "tabsPointerPairs": 16,
+  "tabsScreenshots": 10,
+  "originalProductRetrofitTransportAndSameMidEpoch": true,
+  "mainReadyOrNativeWindow": false,
+  "realAccountOrSocket": false,
+  "taskOwnedEnvironment": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-home-tabs-bgxceqnj"
+}

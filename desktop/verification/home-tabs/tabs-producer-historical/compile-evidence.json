@@ -1,0 +1,149 @@
+{
+  "passed": true,
+  "activeClasses": "classes-attempt11",
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopDynamicTabsSettings.kt",
+      "sha256Bytes": "c3261465531435426ee466a32431214cd61e7bffe03688390224f6128a3737f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\AppSegmentedControlPolicy.kt",
+      "sha256Bytes": "cccdf66c14350c4527db1089ba8e68f38939a87693ae1bdefbb4eb05411a2bb0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDynamicImmersiveChrome.kt",
+      "sha256Bytes": "ac9a2b4884ca7663b1f9feea6e76feecb8550768f81cf0207dd6eabf4c7a1f7c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\MatchedLiquidIndicatorGeometry.kt",
+      "sha256Bytes": "7fc8f6c848ef5b8642d34b6c8d89559a86768a4bb4683152c233bc7c01215fd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\DesktopOriginalDynamicNativeTabs.kt",
+      "sha256Bytes": "c6bbc8711341daafeeca6d41c7d39cd2cdb4b9d0d49b03987173ada8bad8f135"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\renderer\\material3\\AppMaterial3SegmentedControl.kt",
+      "sha256Bytes": "19cfc3a350a309c884c08c58b21e24f20c3b57dd74a83411ad9f8a024d429e9f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\renderer\\material3\\AppMaterial3TonalPillTabRow.kt",
+      "sha256Bytes": "cff0280579b45893284abc3946846d7f9f215d5f98ca7ce5771b0d609b50c46d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\renderer\\material3\\AppTonalPillTabPolicy.kt",
+      "sha256Bytes": "406950af0f7900a86120e570d66c4913d42c126918e887e78d218ced4e91fcd0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\renderer\\miuix\\AppMiuixSegmentedControl.kt",
+      "sha256Bytes": "2f8dd6205b85704abdaca14cd976e1af65b0bf94b6a814bcbd67a2ac6ce739aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicFollowedLiveUsers.kt",
+      "sha256Bytes": "b089a16cb30dac4b430763ea558f4085d2fc8b7d81139178c2f8fb6efd3eb392"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "dd4f6ee0bd47530bd3b7f97dc552f8f7bcd5e9405134cdc0f5321ba4128b62a2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUserControls.kt",
+      "sha256Bytes": "d8813674e45627a1bf9259930abdcf57e99704ed48e33edbdc16e49c8f78e1f3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUserItemFilter.kt",
+      "sha256Bytes": "ffe28c2f1bdedfa084eaadbf4027e09b6698b1779ecf2681a941f862c353388a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUserLayout.kt",
+      "sha256Bytes": "e5bc3c7d6b23e76ce9e635184cd37c84d2fcfd015d3f500c7d69307b0de80e2c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUserRequestPolicy.kt",
+      "sha256Bytes": "375109353f37141fd8931dfc92dd3a8ab9e13685c4ea0efad2cb45079aaa0287"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUsers.kt",
+      "sha256Bytes": "7bc64726527d24e4307b23bae75063451ea749f3d8ce75b751269fb299dfb155"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicUserStatePolicy.kt",
+      "sha256Bytes": "7cdb05b73424ef75d0a9024b5d57cb7adf5db5e9296256938a2a41246b1056f7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalDynamicTabsFields.kt",
+      "sha256Bytes": "3dacb1030f387d7b805b0e58c6a5544b574dc93af6a294485e77422069031af6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicNativeSegmentedControl.kt",
+      "sha256Bytes": "835f70e7e148dacbc14df09a13642e058d451f072987d3d846d8406b6ffb7e6c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicUserLiveBadge.kt",
+      "sha256Bytes": "fd0a8486247e1ab5690ceddffd87a0f1ccaaf8102cdd3988d00ceacf99b66794"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopCommunityRepository.kt",
+      "sha256Bytes": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopDynamicTabsPreferences.kt",
+      "sha256Bytes": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\CommunityDynamicScreens.kt",
+      "sha256Bytes": "fcd922bcabd5105f25ecafadd6e3498e3b9858181c64191824a6f49aa08ea7a0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "72ee732c51489f05243eb96d1ed338f79729931d378a3e10475c866232809af2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicUserPlatform.kt",
+      "sha256Bytes": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicUsersState.kt",
+      "sha256Bytes": "8226d15ecb5ed5fb3cdcda9cdab4f8d754f0174b1eef089c7a4553a12dd78ba0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicTabsTest.kt",
+      "sha256Bytes": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\JunitFixture.kt",
+      "sha256Bytes": "6a017cb2c39e91fc76b4ae9e7f4634c9270688291c74ad96298a7a2a1e088c0e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\UiFixture.kt",
+      "sha256Bytes": "75d7d9ce6f04a68b5c36714f5d4600036ccb0a1ba9a221fc06911f94a28136d2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity\\TransportFixture.kt",
+      "sha256Bytes": "158e6b2c9dee7c3ff943d475239e92cebfb8d978172bc64afa2a0a8fe6c525c4"
+    }
+  ],
+  "productJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "e85a34e3e3c2e67fd69ae5a3a62179e82e68efe130902d3748c3e8e3bbc64e0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-java.jar",
+      "sha256Bytes": "188a3eabdfd1514a4ca9c5e7c211436be5e9103fa6ff21e88e541d796ef6bf4e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "038c930ab0f5343396726327a4c9af7bb18f127de8dba1ffda42a260d98e671d"
+    }
+  ],
+  "explicitNotMainTabsOverlay": true,
+  "mainFilesChanged": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false
+}

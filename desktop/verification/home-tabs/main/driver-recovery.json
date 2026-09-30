@@ -1,0 +1,9 @@
+{
+  "fixtureCompilerSucceeded": true,
+  "uiHadNotStartedAtFirstDriverFailure": true,
+  "firstDriverFailure": "Long-path-safe hash helper double-prefixed an already extended Windows path before fixture class-overlap audit.",
+  "onlyRuntimeVerificationResumed": true,
+  "productOrFixtureCodeChanged": false,
+  "successfulRuntimeEnvironment": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-home-tabs-bgxceqnj",
+  "noSharedGradleOrMainRuntimeRerun": true
+}

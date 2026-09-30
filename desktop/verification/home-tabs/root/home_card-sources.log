@@ -1,0 +1,11 @@
+test_actual_setters_and_width_options_are_preserved (test_home_card_sources.HomeCardOriginalSourceTest.test_actual_setters_and_width_options_are_preserved) ... ok
+test_exact_actual_persisted_four_expressions_are_emitted (test_home_card_sources.HomeCardOriginalSourceTest.test_exact_actual_persisted_four_expressions_are_emitted) ... ok
+test_inventory_has_unique_actual_original_hashes (test_home_card_sources.HomeCardOriginalSourceTest.test_inventory_has_unique_actual_original_hashes) ... ok
+test_original_controls_keep_options_and_explicit_windows_scope (test_home_card_sources.HomeCardOriginalSourceTest.test_original_controls_keep_options_and_explicit_windows_scope) ... ok
+test_production_generator_does_not_duplicate_shared_direct_sources (test_home_card_sources.HomeCardOriginalSourceTest.test_production_generator_does_not_duplicate_shared_direct_sources) ... ok
+test_two_pure_direct_policies_are_full_original_bodies (test_home_card_sources.HomeCardOriginalSourceTest.test_two_pure_direct_policies_are_full_original_bodies) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.067s
+
+OK

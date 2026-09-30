@@ -1,0 +1,2204 @@
+{
+  "allFrozenBytesVerifiedByRoot": true,
+  "selectedRawArtifacts": 431,
+  "frozenCohorts": [
+    {
+      "name": "home-producer-historical",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-card-parity",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "9d5ae08bbbd9a3cdcb6218304b1181b256ba3fd321b94876cc39e3d0cc796513",
+      "allRawArtifactsVerified": 1201,
+      "externalTaskOwnedFilesVerified": 75
+    },
+    {
+      "name": "tabs-producer-historical",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-dynamic-tabs-parity",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "13c6f4cfe9b2c74bc6c0123331075bf1a441dff1c7478f6ca842bfce5773b6ea",
+      "allRawArtifactsVerified": 2568,
+      "externalTaskOwnedFilesVerified": 0
+    },
+    {
+      "name": "main",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-tabs-main-product-proof",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "ed99caf4980ca76664573fed734933fc9ef71e2c3aa15e9acfa5e6e8e196186c",
+      "allRawArtifactsVerified": 162,
+      "externalTaskOwnedFilesVerified": 0
+    },
+    {
+      "name": "root",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-tabs-main-integration",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "2810e64d41bec7882952d48a278601c3d6fd8f75dd1466a69136f556aeb8f8b8",
+      "allRawArtifactsVerified": 13,
+      "externalTaskOwnedFilesVerified": 0
+    }
+  ],
+  "allFrozenArtifactCount": 3944,
+  "externalTaskOwnedFilesVerified": 75,
+  "files": [
+    {
+      "path": "home-producer-historical/ColdDiskReader.kt",
+      "bytes": 858,
+      "sha256Bytes": "aa19c6952f3d2a8d141185bc320bd2685719850013f0593baa2b1af1a886f0d9"
+    },
+    {
+      "path": "home-producer-historical/FIELD-AUDIT.md",
+      "bytes": 3652,
+      "sha256Bytes": "a449e876c33be197fe8cf62807c9cbc5ed310a51677f9d1cb31cbb7077e0a959"
+    },
+    {
+      "path": "home-producer-historical/JunitFixture.kt",
+      "bytes": 844,
+      "sha256Bytes": "49ca1480b812493c9954a6d9ae37293a0b8baeab607d87e265ecee1d519db611"
+    },
+    {
+      "path": "home-producer-historical/ROOT-INTEGRATION.md",
+      "bytes": 6978,
+      "sha256Bytes": "92ebe29dd53b63bec0ecd3e8bf7306502d0202b437fe93ee1305c4bbdb132f46"
+    },
+    {
+      "path": "home-producer-historical/UiFixture.kt",
+      "bytes": 20708,
+      "sha256Bytes": "8b3b6980c2b80bb9758670477e374c579a4cf2079d3241b4ef0dc22c43edb4d9"
+    },
+    {
+      "path": "home-producer-historical/actual-main-class-pins.json",
+      "bytes": 4165,
+      "sha256Bytes": "bff60e402701f0db3d7414c76814d4c475c17f213404024840cb5b977f10d205"
+    },
+    {
+      "path": "home-producer-historical/audit.py",
+      "bytes": 4646,
+      "sha256Bytes": "5b61e0ebeca0ae550584b23f331b6af16c73f44fb9c75784eae2e1de0abaa3df"
+    },
+    {
+      "path": "home-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "bytes": 30856,
+      "sha256Bytes": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-compact-500-10.log",
+      "bytes": 69,
+      "sha256Bytes": "b83fbe0d0aaad7250b605d6484f1ac3352e7b5daa5c61691480d677255959400"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-compact-500-7.log",
+      "bytes": 69,
+      "sha256Bytes": "b83fbe0d0aaad7250b605d6484f1ac3352e7b5daa5c61691480d677255959400"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-1680-10.log",
+      "bytes": 67,
+      "sha256Bytes": "ae4bdf5a118a90640c5a5f0afbbd51c94275c46a75e4eb66117a8ca26ec7300f"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-1680-5.log",
+      "bytes": 67,
+      "sha256Bytes": "ae4bdf5a118a90640c5a5f0afbbd51c94275c46a75e4eb66117a8ca26ec7300f"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-1680-6.log",
+      "bytes": 67,
+      "sha256Bytes": "ae4bdf5a118a90640c5a5f0afbbd51c94275c46a75e4eb66117a8ca26ec7300f"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-1680-7.log",
+      "bytes": 67,
+      "sha256Bytes": "ae4bdf5a118a90640c5a5f0afbbd51c94275c46a75e4eb66117a8ca26ec7300f"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-960-10.log",
+      "bytes": 66,
+      "sha256Bytes": "cda61f1e5c3465298f1a8fb678ebc18faff8c89a4a8e4f76fa9e3b281276947c"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-960-5.log",
+      "bytes": 66,
+      "sha256Bytes": "cda61f1e5c3465298f1a8fb678ebc18faff8c89a4a8e4f76fa9e3b281276947c"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-960-6.log",
+      "bytes": 66,
+      "sha256Bytes": "cda61f1e5c3465298f1a8fb678ebc18faff8c89a4a8e4f76fa9e3b281276947c"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-dark-960-7.log",
+      "bytes": 66,
+      "sha256Bytes": "cda61f1e5c3465298f1a8fb678ebc18faff8c89a4a8e4f76fa9e3b281276947c"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-light-800-10.log",
+      "bytes": 67,
+      "sha256Bytes": "5006644989c3be09f2bff827eb7e4286a5b92d22c6097deebf6d271c7cc986da"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-light-800-5.log",
+      "bytes": 67,
+      "sha256Bytes": "5006644989c3be09f2bff827eb7e4286a5b92d22c6097deebf6d271c7cc986da"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-light-800-6.log",
+      "bytes": 67,
+      "sha256Bytes": "5006644989c3be09f2bff827eb7e4286a5b92d22c6097deebf6d271c7cc986da"
+    },
+    {
+      "path": "home-producer-historical/cold-material3-light-800-7.log",
+      "bytes": 67,
+      "sha256Bytes": "5006644989c3be09f2bff827eb7e4286a5b92d22c6097deebf6d271c7cc986da"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-compact-500-10.log",
+      "bytes": 65,
+      "sha256Bytes": "9c1a97b6d7e402ef683a033ab0f1253659679eee570e184137979154f7fcc07a"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-compact-500-7.log",
+      "bytes": 65,
+      "sha256Bytes": "9c1a97b6d7e402ef683a033ab0f1253659679eee570e184137979154f7fcc07a"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-1680-10.log",
+      "bytes": 63,
+      "sha256Bytes": "97d79b811b47bc432240ed4bc8317b5fabb3f6284570a794b087f0c1b2c9178f"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-1680-5.log",
+      "bytes": 63,
+      "sha256Bytes": "97d79b811b47bc432240ed4bc8317b5fabb3f6284570a794b087f0c1b2c9178f"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-1680-6.log",
+      "bytes": 63,
+      "sha256Bytes": "97d79b811b47bc432240ed4bc8317b5fabb3f6284570a794b087f0c1b2c9178f"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-1680-7.log",
+      "bytes": 63,
+      "sha256Bytes": "97d79b811b47bc432240ed4bc8317b5fabb3f6284570a794b087f0c1b2c9178f"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-960-10.log",
+      "bytes": 62,
+      "sha256Bytes": "e70b7a98a9bfaedd30cd87637e1a20a55eb0fc50a6e2a17d6c6633a6cb3d362b"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-960-5.log",
+      "bytes": 62,
+      "sha256Bytes": "e70b7a98a9bfaedd30cd87637e1a20a55eb0fc50a6e2a17d6c6633a6cb3d362b"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-960-6.log",
+      "bytes": 62,
+      "sha256Bytes": "e70b7a98a9bfaedd30cd87637e1a20a55eb0fc50a6e2a17d6c6633a6cb3d362b"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-dark-960-7.log",
+      "bytes": 62,
+      "sha256Bytes": "e70b7a98a9bfaedd30cd87637e1a20a55eb0fc50a6e2a17d6c6633a6cb3d362b"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-light-800-10.log",
+      "bytes": 63,
+      "sha256Bytes": "1c5707758cbf6167ef6f8fdce0d69ee01d0060034d641f752fc81c51aa79a13c"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-light-800-5.log",
+      "bytes": 63,
+      "sha256Bytes": "1c5707758cbf6167ef6f8fdce0d69ee01d0060034d641f752fc81c51aa79a13c"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-light-800-6.log",
+      "bytes": 63,
+      "sha256Bytes": "1c5707758cbf6167ef6f8fdce0d69ee01d0060034d641f752fc81c51aa79a13c"
+    },
+    {
+      "path": "home-producer-historical/cold-miuix-light-800-7.log",
+      "bytes": 63,
+      "sha256Bytes": "1c5707758cbf6167ef6f8fdce0d69ee01d0060034d641f752fc81c51aa79a13c"
+    },
+    {
+      "path": "home-producer-historical/compile-1.log",
+      "bytes": 548,
+      "sha256Bytes": "c9e6fcecd9232c10fb51d32358be7bf41c0d31cc6ad564b989a502d9c713f8fe"
+    },
+    {
+      "path": "home-producer-historical/compile-10.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-2.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-3.log",
+      "bytes": 3701,
+      "sha256Bytes": "7e8157895a3ab423e97a4cc5334305af45907d4241db6ccdf50e6feaa57f70e6"
+    },
+    {
+      "path": "home-producer-historical/compile-4.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-5.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-6.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-7.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-8.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-9.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "home-producer-historical/compile-evidence.json",
+      "bytes": 5962,
+      "sha256Bytes": "5359275ace53efe5f8b56235a1a44c7b388bb9b9339b0cd9b62f3aae26f46375"
+    },
+    {
+      "path": "home-producer-historical/compile-fixture.py",
+      "bytes": 6625,
+      "sha256Bytes": "bec2cf2b266b6feb470d5540398682dd4d41c0c0c0d505a85c8b383f6a9c1bdf"
+    },
+    {
+      "path": "home-producer-historical/consumer.patch",
+      "bytes": 7545,
+      "sha256Bytes": "e243b59e62d98fc4779f9e4c12f340daf48c0f8aabb1f8600080619a890aa719"
+    },
+    {
+      "path": "home-producer-historical/dependency-identities.json",
+      "bytes": 85884,
+      "sha256Bytes": "9c9201834baf8900168c6783b6e248e56b7e17cd0a1accca0bc59dd9ed35d53e"
+    },
+    {
+      "path": "home-producer-historical/field-audit.json",
+      "bytes": 5782,
+      "sha256Bytes": "2509c36158efa88d0c7c5ed66f8332bed77eb7512053c9583be6d4f005681aa7"
+    },
+    {
+      "path": "home-producer-historical/freeze.py",
+      "bytes": 6360,
+      "sha256Bytes": "6e75fc342a2f8438f4b652e8862f148f7b5f550b172ee15d3998c9796bc6e038"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/core/util/DesktopOriginalHomeCardWidthClass.kt",
+      "bytes": 1113,
+      "sha256Bytes": "24c1c5a2ac03eb6248efdefb6e380be8659f286dd4ba1f4944f999aefb635380"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPolicy.kt",
+      "bytes": 2756,
+      "sha256Bytes": "e09c137a1f1259cb510b68cbdb2cd607f32f02c93bb5b0d275c1c37fad2b7781"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/feature/home/HomeFeedCardDensityPolicy.kt",
+      "bytes": 1436,
+      "sha256Bytes": "60c616def740bf7395362f47bdcaf9594d21a74540ca999ba814f626b6c4570b"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/feature/home/HomeFeedCardStylePolicy.kt",
+      "bytes": 3991,
+      "sha256Bytes": "4698a14227131f6206c81d92cfa2da676d80616313ae49ccef72cc4c20f33a62"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/feature/settings/DesktopOriginalHomeCardFields.kt",
+      "bytes": 3804,
+      "sha256Bytes": "033816b1ca445e70fb8c1828a7c7aecd1b29949c7ae10ca5f0794df2b88de6d2"
+    },
+    {
+      "path": "home-producer-historical/generated/com/android/purebilibili/feature/settings/DesktopOriginalHomeCardWidthOptions.kt",
+      "bytes": 896,
+      "sha256Bytes": "f2dc6641152f80088b4522051f238ecdd69929574913b4ac5384e4e5447bb85f"
+    },
+    {
+      "path": "home-producer-historical/historical-crowded-consumer/DiscoveryScreens.kt",
+      "bytes": 30824,
+      "sha256Bytes": "a6e18f3cfb6fc4ed6fd46b35caddb13ebe16cc58fbc48705eeeb9321a6ab156a"
+    },
+    {
+      "path": "home-producer-historical/historical-evidence.json",
+      "bytes": 627,
+      "sha256Bytes": "c2ad0c41d011f0f92eeaea0176a645f2b8801982a51bd101b2a87d65be5e232f"
+    },
+    {
+      "path": "home-producer-historical/junit-10.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-2.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-4.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-5.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-6.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-7.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-8.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/junit-9.log",
+      "bytes": 571,
+      "sha256Bytes": "7608f0db9a18b36b8aa7124b6d8b9ac6c0752efb89a35b86a0105a3e7c1c3c29"
+    },
+    {
+      "path": "home-producer-historical/patch-check.log",
+      "bytes": 25,
+      "sha256Bytes": "02e2d06f69f5848b76db922e503b7f81bba58730837e2cfe152ed4e6089e82a6"
+    },
+    {
+      "path": "home-producer-historical/prepare.py",
+      "bytes": 3885,
+      "sha256Bytes": "811db9f1df9a479245a0b61623bf3563114587c9628416de49da300183ff86cb"
+    },
+    {
+      "path": "home-producer-historical/prepared-class-identities.json",
+      "bytes": 19044,
+      "sha256Bytes": "6446cbf2cb6a983070b8da4cd3c651e5ccf6377afd86a675ef476e8010549295"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "bytes": 3843,
+      "sha256Bytes": "f661a8a33e636336ac6164024061d0a5b6781ef9b484486a9dc81eb8da16032f"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "bytes": 2364,
+      "sha256Bytes": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "bytes": 31025,
+      "sha256Bytes": "9523eee07949cd8786506456247c451bd5dd70a184453cb9d74e884deb8d050e"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "bytes": 7745,
+      "sha256Bytes": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/tools/extract-upstream-home-cards.py",
+      "bytes": 8990,
+      "sha256Bytes": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c"
+    },
+    {
+      "path": "home-producer-historical/prepared/desktop/tools/tests/test_home_card_sources.py",
+      "bytes": 4139,
+      "sha256Bytes": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce"
+    },
+    {
+      "path": "home-producer-historical/product-class-overlap.json",
+      "bytes": 5390,
+      "sha256Bytes": "4c8f9ee5d1a675ac0513f745a7a452ee00a5e6b9cbd3771bbb8dcf5a9e790a47"
+    },
+    {
+      "path": "home-producer-historical/proof/10/actual-main-class-identities.json",
+      "bytes": 4031,
+      "sha256Bytes": "50bd95b565c954b4c965d5729cb571a68309af5339e3edd94799ad002d1e26af"
+    },
+    {
+      "path": "home-producer-historical/proof/10/cold-disk.json",
+      "bytes": 709,
+      "sha256Bytes": "c16c43b353bb2dd4952fc76a8f16185a5910a5d4a73132390ec78cb3dccd6738"
+    },
+    {
+      "path": "home-producer-historical/proof/10/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-compact-500/01-imported-compact2.png",
+      "bytes": 34179,
+      "sha256Bytes": "f9bb5e682f75be3d76b567929716c1bc5b338c94a5830d6d1e379adc8f195e4c"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 35473,
+      "sha256Bytes": "86645ede276289017483b65f8c0b35c0813c4d4401f69b414aba320a6ebcae4a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "8b0b2c1583bca2147aae3c17bd0a7fa035cf773da94cdca8d19112e0ece86274"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-compact-500/pointers.json",
+      "bytes": 172,
+      "sha256Bytes": "32b233718d4e1b7faf9801612d5f0b272f3304d54b56e820240d77bd31d16ce6"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/01-original-default-layout.png",
+      "bytes": 58024,
+      "sha256Bytes": "f292b60afbe7ca5d58158f90b87207948c045c83db90a2ba3721371b9d6d6848"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/02-original-column-options.png",
+      "bytes": 61561,
+      "sha256Bytes": "db8f4b23a9e04702bcf07e4bc51f50687f2799c66155e12a430f93314942105a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/03-wide-auto-layout.png",
+      "bytes": 48350,
+      "sha256Bytes": "f8989f1a64da8e2eb22c46c823233830001d3afbeb24c24cde66b67d6cda7229"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/04-official-layout.png",
+      "bytes": 49250,
+      "sha256Bytes": "cdde4777d5cc3642379c23b3d7acf0fed4917f9eaf251e7cd243cd0b79a64924"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/05-retained-scroll.png",
+      "bytes": 52740,
+      "sha256Bytes": "4d8c182ba5d5dd74fc48a6dec7f143531d82a733684831962068bf11f7599ba1"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2663,
+      "sha256Bytes": "a390c7ee481e3cab317631587970a015f8e57b154c086e25a68f11fca3355841"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-1680/pointers.json",
+      "bytes": 826,
+      "sha256Bytes": "fd7c99fbea0b17e8f5230cc64466c3bf866efc079955d3cb3da1b56c5f5a382d"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/01-original-default-layout.png",
+      "bytes": 48160,
+      "sha256Bytes": "44ac0d48b4e1fcf2cd87e489ea3e238d0f442f366e8199176be822faa1526b2f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/02-original-column-options.png",
+      "bytes": 50111,
+      "sha256Bytes": "f4ba6c4c7697fb2b833c4cb94e6f24c76e15280e6f5c50da263492eb0d96f6bc"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/03-wide-auto-layout.png",
+      "bytes": 43246,
+      "sha256Bytes": "acefdfae9ce85fb79d9cbb0bfa2c6526ac0ea68b6f38968e1853d2bdc01218df"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/04-official-layout.png",
+      "bytes": 42688,
+      "sha256Bytes": "49086fd46130bac44c019fb36e004e5f4cea3b517c5730006d3f6e265d5592f0"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/05-retained-scroll.png",
+      "bytes": 43347,
+      "sha256Bytes": "f0e5ab6da5fce9762023ed9cca4ad701fff64a637c0baf402fb4870815e2105b"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1884,
+      "sha256Bytes": "2e542a7f866a510841be7f57b7739adbfef6e87c0fdbafce4ce7f4f006b214a7"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-dark-960/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "0e5ae55ce9ab29bb024c62f49b551c2916ebc64499882c9a3055688df41e2007"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/01-original-default-layout.png",
+      "bytes": 45605,
+      "sha256Bytes": "0e68649f24278c26f4f242e292a225c5549f3c6752081065bff5743a5c7e55c9"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/02-original-column-options.png",
+      "bytes": 47991,
+      "sha256Bytes": "d53ec33163052cf15b17fa28599a428850ee6b0f035e684da0514c2dc3c64364"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/03-wide-auto-layout.png",
+      "bytes": 43104,
+      "sha256Bytes": "d162d6c1972aa02d38b41260b19b7d9b561408701cd861f19b79adb1d027aeaa"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/04-official-layout.png",
+      "bytes": 41422,
+      "sha256Bytes": "72914c5a5f1155a39055948a5c4725884ee10c2e4f00e88a9dc342d72e263dd9"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/05-retained-scroll.png",
+      "bytes": 47296,
+      "sha256Bytes": "f70771c7793dbc5660eb00a9c4ba4cc3c3ad2ffeded3cda2ec3a10cf33b41c4a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/actual-footer-hit-targets.json",
+      "bytes": 1506,
+      "sha256Bytes": "290a755b4ab28864bca86a7cda604c0bc508e646a5a1d98baa79eabc02c595a0"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/material3-light-800/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "d5872649b87564074579bc70af2733bb67d953107000f77cd531a00a610e79e3"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-compact-500/01-imported-compact2.png",
+      "bytes": 35164,
+      "sha256Bytes": "f9a82091390a4df44c060a37a22129d57ef77d2c5b2608a4e77d1a761ea98e76"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 36125,
+      "sha256Bytes": "1504fab67a7583cd9c171e5418901b4c1210bcf635791784a1a5e4b7652b12cf"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "89dd971b5c355ed2900aadda40e383f8d01c1e6067407b08064bfd25d9e9e0c4"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-compact-500/pointers.json",
+      "bytes": 173,
+      "sha256Bytes": "26f2c8c3f37157a420d35633c46da31c7bc921d6ad02aa752366fd1b5d9fb39e"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/01-original-default-layout.png",
+      "bytes": 58188,
+      "sha256Bytes": "7b2984ac5980ba250200aed0347f26b54025e4c4aa735f6d8df759ff94da9129"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/02-original-column-options.png",
+      "bytes": 59143,
+      "sha256Bytes": "b8217d83bea7d8f3320df62b3ab654932055522b9dac543eb7df41fceef3b03a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/03-wide-auto-layout.png",
+      "bytes": 51420,
+      "sha256Bytes": "353ef3438f27163a7575577c95777fbada1a22eead5aeb93f2e1cf6c1db96cb9"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/04-official-layout.png",
+      "bytes": 52213,
+      "sha256Bytes": "fd79018ca63a7c41de0475182a8b87b874f68c89480cc1734d57e469d52756bb"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/05-retained-scroll.png",
+      "bytes": 56523,
+      "sha256Bytes": "d8996b8784c6bc5c2bf707c5647fbeee50acbd9d292259fa120c69fd54a3f11f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2662,
+      "sha256Bytes": "477dd7641d182c913d15412f8710e396c12a90dcdeb5cb4cc6e78d115f2b61cb"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "c3d8305eb25fb4568cff2784e6d8222ae5e472c86ec5b3d72471b4f34075b0d1"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-1680/pointers.json",
+      "bytes": 827,
+      "sha256Bytes": "12e4fa210e81b004f228f14b19df6ba1e0e90fee752e9189eed0a5e656ab30ea"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/01-original-default-layout.png",
+      "bytes": 49318,
+      "sha256Bytes": "d264f75fb44000df66a8797805b146df3d8e7a62f84ed834c396792ab0698576"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/02-original-column-options.png",
+      "bytes": 49814,
+      "sha256Bytes": "6b62de2948f3a1bf01a552daa18bd33f2d7f7605f9e41c3aec11f4864050e04a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/03-wide-auto-layout.png",
+      "bytes": 45988,
+      "sha256Bytes": "9fbc9aa8b0be2f71eefc3696dee3da0430cc1705441a5faf3e49a4eb3f45fb39"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/04-official-layout.png",
+      "bytes": 45330,
+      "sha256Bytes": "45c7b9e935c3541b520c57bb4dc5bf91f970aa0947dfcddc9b63bb10713b8a4f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/05-retained-scroll.png",
+      "bytes": 47040,
+      "sha256Bytes": "44ae5e0e804b0d87cfb6f89c81e0e2ace1ff5ba01b40917fec280b314325f3fc"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1883,
+      "sha256Bytes": "ef12500431fb3fa095b5a479a6f6a869f49a69d736b9dac08111c52302b3791f"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "caa3da85a5b6726396a8053fa38ca391b8ffe7b214023a6e66b703047203aaa2"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-dark-960/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "cdaf8dde720a1d153093b263faf6601e6c0dcf670b257c9ac68a0079c314ffa7"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/01-original-default-layout.png",
+      "bytes": 47481,
+      "sha256Bytes": "7770a13ab42e655bfefa2520e072ef0920dc1c046bf76b988248feea8dc6dc3c"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/02-original-column-options.png",
+      "bytes": 49730,
+      "sha256Bytes": "32cc96bb6f4c5555202b4e70979cff19adf7568349f044903c68e7f6924cdd12"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/03-wide-auto-layout.png",
+      "bytes": 47142,
+      "sha256Bytes": "782a1b2f5c456579254c84eecf097af4f30bfb6672fdbf2bec6d013ce8ea2c79"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/04-official-layout.png",
+      "bytes": 44959,
+      "sha256Bytes": "b3d963f5b0eb8cb19e1b73e30b45efc7efece5a0e77ca048909b62718888037e"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/05-retained-scroll.png",
+      "bytes": 49007,
+      "sha256Bytes": "dcbe8186e21b78b9434a050fb4827dfe7ee7c151bbeaa1f6ae378e35e86abdd8"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/actual-footer-hit-targets.json",
+      "bytes": 1505,
+      "sha256Bytes": "6c7c22da4f3dfd906bfc9867c464e7b500fa6f635a5864fed332f539a18a2c6a"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/geometry.json",
+      "bytes": 2934,
+      "sha256Bytes": "01e56d9601ebbd46ec0ec8ef40b088e08ce61c6ded5c7229c2d541fe331d6373"
+    },
+    {
+      "path": "home-producer-historical/proof/10/miuix-light-800/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "9372ea67eff9fd06c40d5294d6546ecefbb1d7bd9240fb99bf63ad9201a19009"
+    },
+    {
+      "path": "home-producer-historical/proof/10/ui.json",
+      "bytes": 3982,
+      "sha256Bytes": "646b886830ed0396d927ff8c4db550d71e81ca0f1ccca2fe63b4f64b3dfffbbe"
+    },
+    {
+      "path": "home-producer-historical/proof/2/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/4/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/4/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/4/material3-dark-960/pointers.json",
+      "bytes": 738,
+      "sha256Bytes": "0ce13257dd3ddfb1ac7b565b0af9caa065cf580287e8904696130e1d7fc1f4f0"
+    },
+    {
+      "path": "home-producer-historical/proof/4/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/4/material3-light-800/pointers.json",
+      "bytes": 738,
+      "sha256Bytes": "8d09fbb49257c94675920e813027d4dc9e7a01f2628277660951754aae96005d"
+    },
+    {
+      "path": "home-producer-historical/proof/4/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "23bb539f98075fad8927e99f015080eb08cfb101adbf24b84548a522ee476952"
+    },
+    {
+      "path": "home-producer-historical/proof/4/miuix-dark-960/pointers.json",
+      "bytes": 739,
+      "sha256Bytes": "f959757b60ddd11f7ca017e3da242617ee44c1d45432e9b744fd5c3bc4396b7c"
+    },
+    {
+      "path": "home-producer-historical/proof/4/miuix-light-800/geometry.json",
+      "bytes": 3204,
+      "sha256Bytes": "9714aa5ab2e55c574a8af394894dfb857d68aa4abdd7a12f98b7d46a73343293"
+    },
+    {
+      "path": "home-producer-historical/proof/4/miuix-light-800/pointers.json",
+      "bytes": 739,
+      "sha256Bytes": "5447a094a1c6d6f596a762e62c55a115f1b6a672689df34c9b2e8d42f4c4cc1d"
+    },
+    {
+      "path": "home-producer-historical/proof/4/ui.json",
+      "bytes": 1730,
+      "sha256Bytes": "259ab2c092cb57ba227611805f1a6e9eea3e793568b7a5164d7a41cc71e699a3"
+    },
+    {
+      "path": "home-producer-historical/proof/5/actual-main-class-identities.json",
+      "bytes": 3327,
+      "sha256Bytes": "bd080cd91f372b69fa1462dd9d98536e429ddf3b36da02e28caab04734aad337"
+    },
+    {
+      "path": "home-producer-historical/proof/5/actual-main-class-pins.json",
+      "bytes": 3439,
+      "sha256Bytes": "5a1ec7500841fd07b27a352787cad6249ae17369539ccad825ade6b7ac21e324"
+    },
+    {
+      "path": "home-producer-historical/proof/5/cold-disk.json",
+      "bytes": 529,
+      "sha256Bytes": "e0c47fe6aaf0cdaa2e3c4d311b5705b80035bfe0f52fbb8aac02e3e7bcc617c4"
+    },
+    {
+      "path": "home-producer-historical/proof/5/compile-evidence.json",
+      "bytes": 7366,
+      "sha256Bytes": "c056a6a0ad91bb315643b76c528e12bf64e12af6a2e81a538f375553cc296b4b"
+    },
+    {
+      "path": "home-producer-historical/proof/5/dependency-identities.json",
+      "bytes": 85884,
+      "sha256Bytes": "1c5a60e281a16d0b25a5222ae5c48dd40c94615cbaee71cccee49271375bead6"
+    },
+    {
+      "path": "home-producer-historical/proof/5/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-dark-1680/pointers.json",
+      "bytes": 745,
+      "sha256Bytes": "c517a1429956907bc539f9a0356c8bb97b264504b98a1869c9d9176e18118cef"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-dark-960/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "3dfc030fa053bc89e18edcdb073b6b2b45ce77bd9b7dd3b6bfaae36102cc0a09"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-light-800/01-original-default-layout.png",
+      "bytes": 46105,
+      "sha256Bytes": "5a144f90b192bcaf0d03c00f36f0228d944cf5891e28eef9975d99937114fb6d"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/5/material3-light-800/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "46638778efd1899bebd54d140edc59db108914de5b2dc8d2dfb4f47b6f8f8429"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "809b002de7af0759fdcccbcca6640cadf5e97d9d61aba4092efb3af09ce3dd3c"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-dark-1680/pointers.json",
+      "bytes": 746,
+      "sha256Bytes": "5b52c43d5a4a000a46b970702e9a61186ac20539f74d45fa441e1bb4e14e6300"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "23bb539f98075fad8927e99f015080eb08cfb101adbf24b84548a522ee476952"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-dark-960/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "11273268ecb44702b33e34b394c4b548dc2dca40760a6f2526f3e850b507c842"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-light-800/geometry.json",
+      "bytes": 3204,
+      "sha256Bytes": "9714aa5ab2e55c574a8af394894dfb857d68aa4abdd7a12f98b7d46a73343293"
+    },
+    {
+      "path": "home-producer-historical/proof/5/miuix-light-800/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "dcc178e19aa0954f1635e5aa2dd894d7125740a1e6cb861b81ccdda886cde7f7"
+    },
+    {
+      "path": "home-producer-historical/proof/5/prepared-class-identities.json",
+      "bytes": 19987,
+      "sha256Bytes": "4c23bd325458bdceb469474cef81ce3064d1b6a8b257666088c6b95c989c2d29"
+    },
+    {
+      "path": "home-producer-historical/proof/5/product-class-overlap.json",
+      "bytes": 5390,
+      "sha256Bytes": "93776cc421d78130f97ffddda37b37d9d690cc66f241b7da2c27d336555c7140"
+    },
+    {
+      "path": "home-producer-historical/proof/5/ui.json",
+      "bytes": 2896,
+      "sha256Bytes": "70f3fda690ea63ae465cac4bc3bb18ab0f3e7fd2dbdebfda9ecfb32db7e4abf1"
+    },
+    {
+      "path": "home-producer-historical/proof/6/actual-main-class-identities.json",
+      "bytes": 4031,
+      "sha256Bytes": "50bd95b565c954b4c965d5729cb571a68309af5339e3edd94799ad002d1e26af"
+    },
+    {
+      "path": "home-producer-historical/proof/6/cold-disk.json",
+      "bytes": 529,
+      "sha256Bytes": "e0c47fe6aaf0cdaa2e3c4d311b5705b80035bfe0f52fbb8aac02e3e7bcc617c4"
+    },
+    {
+      "path": "home-producer-historical/proof/6/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-dark-1680/pointers.json",
+      "bytes": 745,
+      "sha256Bytes": "c517a1429956907bc539f9a0356c8bb97b264504b98a1869c9d9176e18118cef"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-dark-960/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "3dfc030fa053bc89e18edcdb073b6b2b45ce77bd9b7dd3b6bfaae36102cc0a09"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/6/material3-light-800/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "46638778efd1899bebd54d140edc59db108914de5b2dc8d2dfb4f47b6f8f8429"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "809b002de7af0759fdcccbcca6640cadf5e97d9d61aba4092efb3af09ce3dd3c"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-dark-1680/pointers.json",
+      "bytes": 746,
+      "sha256Bytes": "5b52c43d5a4a000a46b970702e9a61186ac20539f74d45fa441e1bb4e14e6300"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "23bb539f98075fad8927e99f015080eb08cfb101adbf24b84548a522ee476952"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-dark-960/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "11273268ecb44702b33e34b394c4b548dc2dca40760a6f2526f3e850b507c842"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-light-800/geometry.json",
+      "bytes": 3204,
+      "sha256Bytes": "9714aa5ab2e55c574a8af394894dfb857d68aa4abdd7a12f98b7d46a73343293"
+    },
+    {
+      "path": "home-producer-historical/proof/6/miuix-light-800/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "dcc178e19aa0954f1635e5aa2dd894d7125740a1e6cb861b81ccdda886cde7f7"
+    },
+    {
+      "path": "home-producer-historical/proof/6/ui.json",
+      "bytes": 2930,
+      "sha256Bytes": "25f105be5f1369c4c00f964a841d8452cef5abd28ce3ab49762b9b64f35f52c2"
+    },
+    {
+      "path": "home-producer-historical/proof/7/actual-main-class-identities.json",
+      "bytes": 4031,
+      "sha256Bytes": "50bd95b565c954b4c965d5729cb571a68309af5339e3edd94799ad002d1e26af"
+    },
+    {
+      "path": "home-producer-historical/proof/7/cold-disk.json",
+      "bytes": 709,
+      "sha256Bytes": "c16c43b353bb2dd4952fc76a8f16185a5910a5d4a73132390ec78cb3dccd6738"
+    },
+    {
+      "path": "home-producer-historical/proof/7/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "e177921aa033d9e623fcb0a1571d71c0b1eb45a2b881d5cdd999f90647886244"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-compact-500/pointers.json",
+      "bytes": 172,
+      "sha256Bytes": "32b233718d4e1b7faf9801612d5f0b272f3304d54b56e820240d77bd31d16ce6"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-dark-1680/pointers.json",
+      "bytes": 745,
+      "sha256Bytes": "c517a1429956907bc539f9a0356c8bb97b264504b98a1869c9d9176e18118cef"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-dark-960/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "3dfc030fa053bc89e18edcdb073b6b2b45ce77bd9b7dd3b6bfaae36102cc0a09"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/7/material3-light-800/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "46638778efd1899bebd54d140edc59db108914de5b2dc8d2dfb4f47b6f8f8429"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "3d7c575dd49618584a074ce3b08ba791af82d93960f2ca45527c41a51e8fb683"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-compact-500/pointers.json",
+      "bytes": 173,
+      "sha256Bytes": "26f2c8c3f37157a420d35633c46da31c7bc921d6ad02aa752366fd1b5d9fb39e"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "809b002de7af0759fdcccbcca6640cadf5e97d9d61aba4092efb3af09ce3dd3c"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-dark-1680/pointers.json",
+      "bytes": 746,
+      "sha256Bytes": "5b52c43d5a4a000a46b970702e9a61186ac20539f74d45fa441e1bb4e14e6300"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "23bb539f98075fad8927e99f015080eb08cfb101adbf24b84548a522ee476952"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-dark-960/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "11273268ecb44702b33e34b394c4b548dc2dca40760a6f2526f3e850b507c842"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-light-800/geometry.json",
+      "bytes": 3204,
+      "sha256Bytes": "9714aa5ab2e55c574a8af394894dfb857d68aa4abdd7a12f98b7d46a73343293"
+    },
+    {
+      "path": "home-producer-historical/proof/7/miuix-light-800/pointers.json",
+      "bytes": 741,
+      "sha256Bytes": "dcc178e19aa0954f1635e5aa2dd894d7125740a1e6cb861b81ccdda886cde7f7"
+    },
+    {
+      "path": "home-producer-historical/proof/7/ui.json",
+      "bytes": 3556,
+      "sha256Bytes": "5d7ddf7907332561edce3b47929e761fff26c699714a8da7e00a45545d9f3605"
+    },
+    {
+      "path": "home-producer-historical/proof/8/actual-main-class-identities.json",
+      "bytes": 4031,
+      "sha256Bytes": "50bd95b565c954b4c965d5729cb571a68309af5339e3edd94799ad002d1e26af"
+    },
+    {
+      "path": "home-producer-historical/proof/8/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/8/material3-light-800/01-original-default-layout.png",
+      "bytes": 45605,
+      "sha256Bytes": "0e68649f24278c26f4f242e292a225c5549f3c6752081065bff5743a5c7e55c9"
+    },
+    {
+      "path": "home-producer-historical/proof/9/actual-main-class-identities.json",
+      "bytes": 4031,
+      "sha256Bytes": "50bd95b565c954b4c965d5729cb571a68309af5339e3edd94799ad002d1e26af"
+    },
+    {
+      "path": "home-producer-historical/proof/9/junit.json",
+      "bytes": 849,
+      "sha256Bytes": "99fa6cdb7086bab1d09fcd94cc340397b00bff7f01396a8a96d003205a9877af"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1884,
+      "sha256Bytes": "2e542a7f866a510841be7f57b7739adbfef6e87c0fdbafce4ce7f4f006b214a7"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-dark-960/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "3dfc030fa053bc89e18edcdb073b6b2b45ce77bd9b7dd3b6bfaae36102cc0a09"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-light-800/actual-footer-hit-targets.json",
+      "bytes": 1506,
+      "sha256Bytes": "290a755b4ab28864bca86a7cda604c0bc508e646a5a1d98baa79eabc02c595a0"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "home-producer-historical/proof/9/material3-light-800/pointers.json",
+      "bytes": 740,
+      "sha256Bytes": "46638778efd1899bebd54d140edc59db108914de5b2dc8d2dfb4f47b6f8f8429"
+    },
+    {
+      "path": "home-producer-historical/python-source-checks.log",
+      "bytes": 109,
+      "sha256Bytes": "b05daa3f0094b169e3ec668a067c7f1d662007cb24bf52f92aa69d9f4ad9c70c"
+    },
+    {
+      "path": "home-producer-historical/source-inventory.json",
+      "bytes": 1926,
+      "sha256Bytes": "edd53d9ad36703207a988ef40a7bbd5918c531e722b6e84b40591926ad79a66c"
+    },
+    {
+      "path": "home-producer-historical/source-registration-delta.json",
+      "bytes": 2439,
+      "sha256Bytes": "15e88b99219e7dac15d5fbaf86cddea4a52f20d90fec1c2597f919b09e177e38"
+    },
+    {
+      "path": "home-producer-historical/target-baselines.json",
+      "bytes": 278,
+      "sha256Bytes": "11425bb7057b47b9ec3a0296789127d90ab00577716dab5f08fae6a8f3f1ec56"
+    },
+    {
+      "path": "home-producer-historical/ui-10.log",
+      "bytes": 442,
+      "sha256Bytes": "70c3b5ff494734270cb2b22a8b72da43750d8a725abbbf073794e848170e466d"
+    },
+    {
+      "path": "home-producer-historical/ui-4.log",
+      "bytes": 230,
+      "sha256Bytes": "3017fc30ae26319a64e07c2061bf60d94b6e9ff38b5a9d6173cb38dacd282f6e"
+    },
+    {
+      "path": "home-producer-historical/ui-5.log",
+      "bytes": 346,
+      "sha256Bytes": "8fff6096c39ce4b1f5c7f4627032dbf72c7757b467b7f6c0d788df98975343f7"
+    },
+    {
+      "path": "home-producer-historical/ui-6.log",
+      "bytes": 346,
+      "sha256Bytes": "8fff6096c39ce4b1f5c7f4627032dbf72c7757b467b7f6c0d788df98975343f7"
+    },
+    {
+      "path": "home-producer-historical/ui-7.log",
+      "bytes": 442,
+      "sha256Bytes": "70c3b5ff494734270cb2b22a8b72da43750d8a725abbbf073794e848170e466d"
+    },
+    {
+      "path": "home-producer-historical/ui-8.log",
+      "bytes": 2413,
+      "sha256Bytes": "c951d232f85d5cc2d69d9b0eecd08d615e36fa3127b1e808e67180c6f7cc70a0"
+    },
+    {
+      "path": "home-producer-historical/ui-9.log",
+      "bytes": 2537,
+      "sha256Bytes": "b126c199407c26643e5b30e027f56a621aef719c789d1a265a45bce11f4aab34"
+    },
+    {
+      "path": "home-producer-historical/verify-frozen.py",
+      "bytes": 823,
+      "sha256Bytes": "bb8bef517753d662068f8956539aadb633c9f38535f3f1418737d6f0fa32d4b1"
+    },
+    {
+      "path": "home-producer-historical/artifact-manifest.json",
+      "bytes": 282112,
+      "sha256Bytes": "9d5ae08bbbd9a3cdcb6218304b1181b256ba3fd321b94876cc39e3d0cc796513"
+    },
+    {
+      "path": "tabs-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "bytes": 37775,
+      "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "tabs-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "bytes": 3486,
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "tabs-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 19468,
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "tabs-producer-historical/compile-1.log",
+      "bytes": 7175,
+      "sha256Bytes": "e6f2432f1beb58b51b2e2ec7a71792968b5383f3d69541da132ef091a188b3be"
+    },
+    {
+      "path": "tabs-producer-historical/compile-10.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tabs-producer-historical/compile-11.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tabs-producer-historical/compile-2.log",
+      "bytes": 324,
+      "sha256Bytes": "f3c012193fd78984ec2181b383c64e6e2ad95ba507f49004b79514503d05eff2"
+    },
+    {
+      "path": "tabs-producer-historical/compile-3.log",
+      "bytes": 266,
+      "sha256Bytes": "d784b8b431e9626c7882ee9f3de337105e9ef5ce60949317851cedb62523063e"
+    },
+    {
+      "path": "tabs-producer-historical/compile-4.log",
+      "bytes": 63174,
+      "sha256Bytes": "f8c1d3500cf1b0a7b14de448cb52c3c0ad88a6fda1bc4011a3d8ec422e908bc3"
+    },
+    {
+      "path": "tabs-producer-historical/compile-5.log",
+      "bytes": 266,
+      "sha256Bytes": "d784b8b431e9626c7882ee9f3de337105e9ef5ce60949317851cedb62523063e"
+    },
+    {
+      "path": "tabs-producer-historical/compile-6.log",
+      "bytes": 266,
+      "sha256Bytes": "d784b8b431e9626c7882ee9f3de337105e9ef5ce60949317851cedb62523063e"
+    },
+    {
+      "path": "tabs-producer-historical/compile-7.log",
+      "bytes": 266,
+      "sha256Bytes": "d784b8b431e9626c7882ee9f3de337105e9ef5ce60949317851cedb62523063e"
+    },
+    {
+      "path": "tabs-producer-historical/compile-8.log",
+      "bytes": 266,
+      "sha256Bytes": "c81205ce77085e2c6d327bb1bcb36d37e56847777814e15470420704d7d22a43"
+    },
+    {
+      "path": "tabs-producer-historical/compile-9.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "tabs-producer-historical/compile-evidence.json",
+      "bytes": 11918,
+      "sha256Bytes": "3e68d7dfb4a7e28e2e5d2b38838b9da9960516cf5562bf5a689b023e385f285a"
+    },
+    {
+      "path": "tabs-producer-historical/compile-fixture.py",
+      "bytes": 3889,
+      "sha256Bytes": "a78849ef7439017f169979329f03a26ec8abb4bf048c4d0a60b9c8efb5961ad7"
+    },
+    {
+      "path": "tabs-producer-historical/consumer.patch",
+      "bytes": 9482,
+      "sha256Bytes": "94d6efe6187fe0904c248b922bc558d2fdd1ade07051bbc625b776203dd2bcec"
+    },
+    {
+      "path": "tabs-producer-historical/dependency-identities.json",
+      "bytes": 85884,
+      "sha256Bytes": "9c9201834baf8900168c6783b6e248e56b7e17cd0a1accca0bc59dd9ed35d53e"
+    },
+    {
+      "path": "tabs-producer-historical/freeze.py",
+      "bytes": 5035,
+      "sha256Bytes": "0c531b6090f595c9fc41ded73da670d1ad55c37f856fa10736d16ff0af044d23"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt",
+      "bytes": 3821,
+      "sha256Bytes": "cccdf66c14350c4527db1089ba8e68f38939a87693ae1bdefbb4eb05411a2bb0"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
+      "bytes": 18657,
+      "sha256Bytes": "c6bbc8711341daafeeca6d41c7d39cd2cdb4b9d0d49b03987173ada8bad8f135"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
+      "bytes": 364,
+      "sha256Bytes": "ac9a2b4884ca7663b1f9feea6e76feecb8550768f81cf0207dd6eabf4c7a1f7c"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt",
+      "bytes": 2667,
+      "sha256Bytes": "7fc8f6c848ef5b8642d34b6c8d89559a86768a4bb4683152c233bc7c01215fd2"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "bytes": 8055,
+      "sha256Bytes": "19cfc3a350a309c884c08c58b21e24f20c3b57dd74a83411ad9f8a024d429e9f"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "bytes": 10309,
+      "sha256Bytes": "cff0280579b45893284abc3946846d7f9f215d5f98ca7ce5771b0d609b50c46d"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt",
+      "bytes": 946,
+      "sha256Bytes": "406950af0f7900a86120e570d66c4913d42c126918e887e78d218ced4e91fcd0"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt",
+      "bytes": 19364,
+      "sha256Bytes": "2f8dd6205b85704abdaca14cd976e1af65b0bf94b6a814bcbd67a2ac6ce739aa"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicFollowedLiveUsers.kt",
+      "bytes": 624,
+      "sha256Bytes": "b089a16cb30dac4b430763ea558f4085d2fc8b7d81139178c2f8fb6efd3eb392"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "bytes": 5902,
+      "sha256Bytes": "dd4f6ee0bd47530bd3b7f97dc552f8f7bcd5e9405134cdc0f5321ba4128b62a2"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicNativeSegmentedControl.kt",
+      "bytes": 1177,
+      "sha256Bytes": "835f70e7e148dacbc14df09a13642e058d451f072987d3d846d8406b6ffb7e6c"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/components/DynamicUserLiveBadge.kt",
+      "bytes": 3952,
+      "sha256Bytes": "fd0a8486247e1ab5690ceddffd87a0f1ccaaf8102cdd3988d00ceacf99b66794"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserControls.kt",
+      "bytes": 12086,
+      "sha256Bytes": "d8813674e45627a1bf9259930abdcf57e99704ed48e33edbdc16e49c8f78e1f3"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserItemFilter.kt",
+      "bytes": 1504,
+      "sha256Bytes": "ffe28c2f1bdedfa084eaadbf4027e09b6698b1779ecf2681a941f862c353388a"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserLayout.kt",
+      "bytes": 594,
+      "sha256Bytes": "e5bc3c7d6b23e76ce9e635184cd37c84d2fcfd015d3f500c7d69307b0de80e2c"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserRequestPolicy.kt",
+      "bytes": 2975,
+      "sha256Bytes": "375109353f37141fd8931dfc92dd3a8ab9e13685c4ea0efad2cb45079aaa0287"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUsers.kt",
+      "bytes": 2565,
+      "sha256Bytes": "7bc64726527d24e4307b23bae75063451ea749f3d8ce75b751269fb299dfb155"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserStatePolicy.kt",
+      "bytes": 8276,
+      "sha256Bytes": "7cdb05b73424ef75d0a9024b5d57cb7adf5db5e9296256938a2a41246b1056f7"
+    },
+    {
+      "path": "tabs-producer-historical/generated/com/android/purebilibili/feature/settings/DesktopOriginalDynamicTabsFields.kt",
+      "bytes": 7087,
+      "sha256Bytes": "3dacb1030f387d7b805b0e58c6a5544b574dc93af6a294485e77422069031af6"
+    },
+    {
+      "path": "tabs-producer-historical/junit-10.log",
+      "bytes": 466,
+      "sha256Bytes": "b38e0bbe85e33b0c0b3fa31414ca2696aa9aaf1b43aa427c1c7bdc0a0dd98ab6"
+    },
+    {
+      "path": "tabs-producer-historical/junit-11.log",
+      "bytes": 466,
+      "sha256Bytes": "1107872355f4c7a8098fecedf9d4a838c667eb4f64f9cf5a0253a87e1a4c0b47"
+    },
+    {
+      "path": "tabs-producer-historical/junit-5.log",
+      "bytes": 466,
+      "sha256Bytes": "065b098b3a7263735e83b2e13736c7f8ecf40d39b5945f76a6495fff13b2fdd3"
+    },
+    {
+      "path": "tabs-producer-historical/junit-6.log",
+      "bytes": 466,
+      "sha256Bytes": "53b203cfd91e7336dddb142f13a2cce0d9fb70c67a789e789f1f8c3752a9ec1b"
+    },
+    {
+      "path": "tabs-producer-historical/junit-7.log",
+      "bytes": 466,
+      "sha256Bytes": "e03006043c731190cdc69064d173c06ff459ed6845eb1e975adb447c0b5a62f2"
+    },
+    {
+      "path": "tabs-producer-historical/junit-8.log",
+      "bytes": 466,
+      "sha256Bytes": "8753ca53301c4eef25e7718a61df03561294ec2d72d12b029632bf7fa91dc49f"
+    },
+    {
+      "path": "tabs-producer-historical/junit-9.log",
+      "bytes": 466,
+      "sha256Bytes": "67e52e6d0ec5ea25d21d3682da8dd63ef2a66adeddf0f525ac2859894dfaa0cf"
+    },
+    {
+      "path": "tabs-producer-historical/JunitFixture.kt",
+      "bytes": 1100,
+      "sha256Bytes": "6a017cb2c39e91fc76b4ae9e7f4634c9270688291c74ad96298a7a2a1e088c0e"
+    },
+    {
+      "path": "tabs-producer-historical/prepare.py",
+      "bytes": 8543,
+      "sha256Bytes": "77e4d56b57f2e496e62e9715ab5ca0071033f8f13c60d32d30f14d58a4948811"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "bytes": 39999,
+      "sha256Bytes": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "bytes": 5545,
+      "sha256Bytes": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "bytes": 3628,
+      "sha256Bytes": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 19555,
+      "sha256Bytes": "fcd922bcabd5105f25ecafadd6e3498e3b9858181c64191824a6f49aa08ea7a0"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "bytes": 6503,
+      "sha256Bytes": "72ee732c51489f05243eb96d1ed338f79729931d378a3e10475c866232809af2"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "bytes": 1773,
+      "sha256Bytes": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "bytes": 8013,
+      "sha256Bytes": "8226d15ecb5ed5fb3cdcda9cdab4f8d754f0174b1eef089c7a4553a12dd78ba0"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "bytes": 10792,
+      "sha256Bytes": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/tools/extract-upstream-dynamic-tabs.py",
+      "bytes": 15664,
+      "sha256Bytes": "81c9485b5c98938006773c819af83fe01cb747d83a782f9cac527457e1c68a38"
+    },
+    {
+      "path": "tabs-producer-historical/prepared/desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "bytes": 4669,
+      "sha256Bytes": "c625bfee265b56bb3375c4d783c0de1c256a7ddb29babe548348a593f8764f0e"
+    },
+    {
+      "path": "tabs-producer-historical/product-class-overlap.json",
+      "bytes": 6832,
+      "sha256Bytes": "f7764491ab3920e9a3f987e68dc0014663ba06d2234913a3c6d02452a65be190"
+    },
+    {
+      "path": "tabs-producer-historical/proof/junit-result.json",
+      "bytes": 35,
+      "sha256Bytes": "d643ca6958a9be57bafe603323635bf265ec5685f885bc29f37bf385dc7ae317"
+    },
+    {
+      "path": "tabs-producer-historical/proof/material3-actual-following-rail.png",
+      "bytes": 46397,
+      "sha256Bytes": "1e99b61906316d38c3db50cade217b7270497569b3debbe5be9c6fa2a874eaf2"
+    },
+    {
+      "path": "tabs-producer-historical/proof/material3-article-reordered.png",
+      "bytes": 46090,
+      "sha256Bytes": "447572af703a9b8373ad11187ac3942e80b168bd840cd7a53c532b851f59c60a"
+    },
+    {
+      "path": "tabs-producer-historical/proof/material3-default-tabs.png",
+      "bytes": 43683,
+      "sha256Bytes": "30544a745d3d368519091aa2d06fa17fc5fc5ee17b424ab9f6aff5c5a7029681"
+    },
+    {
+      "path": "tabs-producer-historical/proof/material3-selected-up.png",
+      "bytes": 53349,
+      "sha256Bytes": "f7e19dec21a4f42d639b6f85585d42db7a477e9024b5e0283cf7cb46552e143d"
+    },
+    {
+      "path": "tabs-producer-historical/proof/material3-up-hidden-restored-all.png",
+      "bytes": 44754,
+      "sha256Bytes": "4a23b1af025a0b96c8255e9f591a3a69b79a9baeadf74d94a74e448ee367cfe1"
+    },
+    {
+      "path": "tabs-producer-historical/proof/miuix-actual-following-rail.png",
+      "bytes": 46682,
+      "sha256Bytes": "2a03c8dd82d13ed23a43c049996639166d6732cf5454569863cfd604e470cd28"
+    },
+    {
+      "path": "tabs-producer-historical/proof/miuix-article-reordered.png",
+      "bytes": 45514,
+      "sha256Bytes": "52369d544eb90cbdb710caf1f6fcfc94156de0a67c050f364fda7a242d961bde"
+    },
+    {
+      "path": "tabs-producer-historical/proof/miuix-default-tabs.png",
+      "bytes": 43927,
+      "sha256Bytes": "672a2d7038d1c479d774c6e5edbe86e9e7b073e93434bca40cf678857def3043"
+    },
+    {
+      "path": "tabs-producer-historical/proof/miuix-selected-up.png",
+      "bytes": 51970,
+      "sha256Bytes": "cba142fb855f6e7b13abcc83c0e5d3f9ada99a1e417544e57cc06da1364e2bd9"
+    },
+    {
+      "path": "tabs-producer-historical/proof/miuix-up-hidden-restored-all.png",
+      "bytes": 43632,
+      "sha256Bytes": "bae9766c143f35e14dc830b495e5054c6c953cfd8209b24978b390f9f8f501c3"
+    },
+    {
+      "path": "tabs-producer-historical/proof/transport-result.json",
+      "bytes": 2763,
+      "sha256Bytes": "e2d6d2a15708509020936094a2b459f6dfa0ac4b2328046dd374e7e89e3de3bc"
+    },
+    {
+      "path": "tabs-producer-historical/proof/ui-result.json",
+      "bytes": 979,
+      "sha256Bytes": "6f06b14fc6a7e11621d33f70c1d48048ebea28a0a923d1c30a2414772fc9f998"
+    },
+    {
+      "path": "tabs-producer-historical/ROOT-INTEGRATION.md",
+      "bytes": 9900,
+      "sha256Bytes": "ba137ae53e292940c2c6fac6e84b175417a073f0ed107900b8cf914986d6a59c"
+    },
+    {
+      "path": "tabs-producer-historical/source-checks.json",
+      "bytes": 174,
+      "sha256Bytes": "a2174ca254bdca13d220a9eb8784b1c443665b7e754a11f398449d99c49c3bdb"
+    },
+    {
+      "path": "tabs-producer-historical/source-checks.log",
+      "bytes": 102,
+      "sha256Bytes": "842d16a7eac23c122c33cc9de2c3f614b67c52e556a5fc0213855ff2cb7e9876"
+    },
+    {
+      "path": "tabs-producer-historical/source-inventory.json",
+      "bytes": 5716,
+      "sha256Bytes": "ca93d817cebf5726d32a23f2bde574416aff60981df279b8e64d39c73ea85a3b"
+    },
+    {
+      "path": "tabs-producer-historical/source-registration-delta.json",
+      "bytes": 5217,
+      "sha256Bytes": "5c5d01ee13160380ade225972d6182b6f23565754a01a4514dc0409e530570d7"
+    },
+    {
+      "path": "tabs-producer-historical/target-baselines.json",
+      "bytes": 867,
+      "sha256Bytes": "9d1fa11a392b7cf7711d9f6f2da837f53bcb3b11f623d17c6267e50e32b2da5f"
+    },
+    {
+      "path": "tabs-producer-historical/transport-10.log",
+      "bytes": 137,
+      "sha256Bytes": "bf25636005b94880d8219a62da263a2c001fbc6653cc3674ee905e43c56791cb"
+    },
+    {
+      "path": "tabs-producer-historical/transport-11.log",
+      "bytes": 137,
+      "sha256Bytes": "bf25636005b94880d8219a62da263a2c001fbc6653cc3674ee905e43c56791cb"
+    },
+    {
+      "path": "tabs-producer-historical/transport-8.log",
+      "bytes": 137,
+      "sha256Bytes": "bf25636005b94880d8219a62da263a2c001fbc6653cc3674ee905e43c56791cb"
+    },
+    {
+      "path": "tabs-producer-historical/transport-9.log",
+      "bytes": 137,
+      "sha256Bytes": "bf25636005b94880d8219a62da263a2c001fbc6653cc3674ee905e43c56791cb"
+    },
+    {
+      "path": "tabs-producer-historical/TransportFixture.kt",
+      "bytes": 6761,
+      "sha256Bytes": "158e6b2c9dee7c3ff943d475239e92cebfb8d978172bc64afa2a0a8fe6c525c4"
+    },
+    {
+      "path": "tabs-producer-historical/ui-10.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/ui-11.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/ui-6.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/ui-7.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/ui-8.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/ui-9.log",
+      "bytes": 154,
+      "sha256Bytes": "363640b129d1f147244834726fc191f4e93d1609d2a13352c2d491646e20c0d9"
+    },
+    {
+      "path": "tabs-producer-historical/UiFixture.kt",
+      "bytes": 7989,
+      "sha256Bytes": "75d7d9ce6f04a68b5c36714f5d4600036ccb0a1ba9a221fc06911f94a28136d2"
+    },
+    {
+      "path": "tabs-producer-historical/verify-frozen.py",
+      "bytes": 1188,
+      "sha256Bytes": "80844ab1b644327c0c012d6c72afa1fb3e50e01567cd28b5f5e06194f7148446"
+    },
+    {
+      "path": "tabs-producer-historical/frozen-handoff.json",
+      "bytes": 724317,
+      "sha256Bytes": "13c6f4cfe9b2c74bc6c0123331075bf1a441dff1c7478f6ca842bfce5773b6ea"
+    },
+    {
+      "path": "main/actual-main-class-pins.json",
+      "bytes": 6483,
+      "sha256Bytes": "7d25d4d4bd00b6fb0dc4aec93d143e89662e4352fd1009e7ff3eae091c11960f"
+    },
+    {
+      "path": "main/cold-material3-compact-500.log",
+      "bytes": 172,
+      "sha256Bytes": "790e32e5ccb1bc011a7a1f01a4adc21d5784d458f41d0068112554819a916897"
+    },
+    {
+      "path": "main/cold-material3-dark-1680.log",
+      "bytes": 170,
+      "sha256Bytes": "cd7c900bc16910821ce0b6a323a6b07262bff6b0b333ed5c7c89bf14cc4215ef"
+    },
+    {
+      "path": "main/cold-material3-dark-960.log",
+      "bytes": 169,
+      "sha256Bytes": "147c97ddb419998cebef7eef897a58143d55ebd9dc4add9a874e77abf9ea4f1c"
+    },
+    {
+      "path": "main/cold-material3-light-800.log",
+      "bytes": 170,
+      "sha256Bytes": "292647ed344148ffc5fe1c1efb5f2b43c50816cbed3372ade3bf81bebf1f780a"
+    },
+    {
+      "path": "main/cold-miuix-compact-500.log",
+      "bytes": 168,
+      "sha256Bytes": "413153af96fef239dc6f8b50daa88265d92bba8589c939aded6d7587e2740ec5"
+    },
+    {
+      "path": "main/cold-miuix-dark-1680.log",
+      "bytes": 166,
+      "sha256Bytes": "5d5d22d0cdfdd974c2b401879b189a1bbcfd4884c1244fef10e2f9a20498694c"
+    },
+    {
+      "path": "main/cold-miuix-dark-960.log",
+      "bytes": 165,
+      "sha256Bytes": "0c3d63296c75f0f97086276ea05e97e13b0ac4f0ecbffa36b1a58eb82c11054a"
+    },
+    {
+      "path": "main/cold-miuix-light-800.log",
+      "bytes": 166,
+      "sha256Bytes": "9bdf1d00ed09f3f8531092102aaa098e63bf874dc651d15fbae0b75968e1968b"
+    },
+    {
+      "path": "main/ColdDiskReader.kt",
+      "bytes": 858,
+      "sha256Bytes": "aa19c6952f3d2a8d141185bc320bd2685719850013f0593baa2b1af1a886f0d9"
+    },
+    {
+      "path": "main/compile-run-proof.json",
+      "bytes": 680,
+      "sha256Bytes": "bdc99a16655c36a0b02584276a46465a10a31c652da856525a64cc20eb451f30"
+    },
+    {
+      "path": "main/compile.log",
+      "bytes": 102,
+      "sha256Bytes": "d6a21559bee5efacf8d59bb976f3dbc893c4fdd3a80082127c5c848659175fd5"
+    },
+    {
+      "path": "main/dependency-identities.json",
+      "bytes": 86078,
+      "sha256Bytes": "fb5fcab17104c530b4675ff6bcc3b50c53dac4b25b2c55d42b78d0892e4a75b5"
+    },
+    {
+      "path": "main/driver-recovery.json",
+      "bytes": 450,
+      "sha256Bytes": "67492f1bfb63f76ee1a5eb1bdf216b56861e83e047ba3aa07fcf88972beae23b"
+    },
+    {
+      "path": "main/fixture-class-identities.json",
+      "bytes": 6730,
+      "sha256Bytes": "ee2a428b1f200c6f5309f73c991ebf5771d509ad9173fe82a0feb69c6af39a3c"
+    },
+    {
+      "path": "main/home.log",
+      "bytes": 552,
+      "sha256Bytes": "be1570ebdd46fab9f5991fe523dbe781d199f48f3a7e702b0bc691069ebb2f06"
+    },
+    {
+      "path": "main/HomeUiFixture.kt",
+      "bytes": 20669,
+      "sha256Bytes": "031c0afabd9aa38d67325ee2c90ae8888c96c2a9da895b12cfc5a8c5ff95bd6d"
+    },
+    {
+      "path": "main/proof/dynamic/material3-actual-following-rail.png",
+      "bytes": 46397,
+      "sha256Bytes": "1e99b61906316d38c3db50cade217b7270497569b3debbe5be9c6fa2a874eaf2"
+    },
+    {
+      "path": "main/proof/dynamic/material3-article-reordered.png",
+      "bytes": 46090,
+      "sha256Bytes": "447572af703a9b8373ad11187ac3942e80b168bd840cd7a53c532b851f59c60a"
+    },
+    {
+      "path": "main/proof/dynamic/material3-default-tabs.png",
+      "bytes": 43683,
+      "sha256Bytes": "30544a745d3d368519091aa2d06fa17fc5fc5ee17b424ab9f6aff5c5a7029681"
+    },
+    {
+      "path": "main/proof/dynamic/material3-selected-up.png",
+      "bytes": 53349,
+      "sha256Bytes": "f7e19dec21a4f42d639b6f85585d42db7a477e9024b5e0283cf7cb46552e143d"
+    },
+    {
+      "path": "main/proof/dynamic/material3-up-hidden-restored-all.png",
+      "bytes": 44754,
+      "sha256Bytes": "4a23b1af025a0b96c8255e9f591a3a69b79a9baeadf74d94a74e448ee367cfe1"
+    },
+    {
+      "path": "main/proof/dynamic/miuix-actual-following-rail.png",
+      "bytes": 46682,
+      "sha256Bytes": "2a03c8dd82d13ed23a43c049996639166d6732cf5454569863cfd604e470cd28"
+    },
+    {
+      "path": "main/proof/dynamic/miuix-article-reordered.png",
+      "bytes": 45514,
+      "sha256Bytes": "52369d544eb90cbdb710caf1f6fcfc94156de0a67c050f364fda7a242d961bde"
+    },
+    {
+      "path": "main/proof/dynamic/miuix-default-tabs.png",
+      "bytes": 43927,
+      "sha256Bytes": "672a2d7038d1c479d774c6e5edbe86e9e7b073e93434bca40cf678857def3043"
+    },
+    {
+      "path": "main/proof/dynamic/miuix-selected-up.png",
+      "bytes": 51970,
+      "sha256Bytes": "cba142fb855f6e7b13abcc83c0e5d3f9ada99a1e417544e57cc06da1364e2bd9"
+    },
+    {
+      "path": "main/proof/dynamic/miuix-up-hidden-restored-all.png",
+      "bytes": 43632,
+      "sha256Bytes": "bae9766c143f35e14dc830b495e5054c6c953cfd8209b24978b390f9f8f501c3"
+    },
+    {
+      "path": "main/proof/dynamic/transport-result.json",
+      "bytes": 2746,
+      "sha256Bytes": "4192c116fc504966db05978393a30ef38a4da2d39e0f170ab41cd946c31733c6"
+    },
+    {
+      "path": "main/proof/dynamic/ui-result.json",
+      "bytes": 1025,
+      "sha256Bytes": "43dbbaa2eba4bd28bbb2887aeb364f5d400853d66d8bc32fcacc225685a1c234"
+    },
+    {
+      "path": "main/proof/home/actual-main-class-identities.json",
+      "bytes": 6272,
+      "sha256Bytes": "59b01f57e16ada39bef131c6c2f88bef00a468b440edf9ff4b9d76b12102dd97"
+    },
+    {
+      "path": "main/proof/home/cold-disk.json",
+      "bytes": 709,
+      "sha256Bytes": "c16c43b353bb2dd4952fc76a8f16185a5910a5d4a73132390ec78cb3dccd6738"
+    },
+    {
+      "path": "main/proof/home/material3-compact-500/01-imported-compact2.png",
+      "bytes": 34179,
+      "sha256Bytes": "f9bb5e682f75be3d76b567929716c1bc5b338c94a5830d6d1e379adc8f195e4c"
+    },
+    {
+      "path": "main/proof/home/material3-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 35473,
+      "sha256Bytes": "86645ede276289017483b65f8c0b35c0813c4d4401f69b414aba320a6ebcae4a"
+    },
+    {
+      "path": "main/proof/home/material3-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "8b0b2c1583bca2147aae3c17bd0a7fa035cf773da94cdca8d19112e0ece86274"
+    },
+    {
+      "path": "main/proof/home/material3-compact-500/pointers.json",
+      "bytes": 172,
+      "sha256Bytes": "32b233718d4e1b7faf9801612d5f0b272f3304d54b56e820240d77bd31d16ce6"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/01-original-default-layout.png",
+      "bytes": 58024,
+      "sha256Bytes": "f292b60afbe7ca5d58158f90b87207948c045c83db90a2ba3721371b9d6d6848"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/02-original-column-options.png",
+      "bytes": 61561,
+      "sha256Bytes": "db8f4b23a9e04702bcf07e4bc51f50687f2799c66155e12a430f93314942105a"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/03-wide-auto-layout.png",
+      "bytes": 48350,
+      "sha256Bytes": "f8989f1a64da8e2eb22c46c823233830001d3afbeb24c24cde66b67d6cda7229"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/04-official-layout.png",
+      "bytes": 49250,
+      "sha256Bytes": "cdde4777d5cc3642379c23b3d7acf0fed4917f9eaf251e7cd243cd0b79a64924"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/05-retained-scroll.png",
+      "bytes": 52740,
+      "sha256Bytes": "4d8c182ba5d5dd74fc48a6dec7f143531d82a733684831962068bf11f7599ba1"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2663,
+      "sha256Bytes": "a390c7ee481e3cab317631587970a015f8e57b154c086e25a68f11fca3355841"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "main/proof/home/material3-dark-1680/pointers.json",
+      "bytes": 826,
+      "sha256Bytes": "fd7c99fbea0b17e8f5230cc64466c3bf866efc079955d3cb3da1b56c5f5a382d"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/01-original-default-layout.png",
+      "bytes": 48160,
+      "sha256Bytes": "44ac0d48b4e1fcf2cd87e489ea3e238d0f442f366e8199176be822faa1526b2f"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/02-original-column-options.png",
+      "bytes": 50111,
+      "sha256Bytes": "f4ba6c4c7697fb2b833c4cb94e6f24c76e15280e6f5c50da263492eb0d96f6bc"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/03-wide-auto-layout.png",
+      "bytes": 43246,
+      "sha256Bytes": "acefdfae9ce85fb79d9cbb0bfa2c6526ac0ea68b6f38968e1853d2bdc01218df"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/04-official-layout.png",
+      "bytes": 42688,
+      "sha256Bytes": "49086fd46130bac44c019fb36e004e5f4cea3b517c5730006d3f6e265d5592f0"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/05-retained-scroll.png",
+      "bytes": 43347,
+      "sha256Bytes": "f0e5ab6da5fce9762023ed9cca4ad701fff64a637c0baf402fb4870815e2105b"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1884,
+      "sha256Bytes": "2e542a7f866a510841be7f57b7739adbfef6e87c0fdbafce4ce7f4f006b214a7"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "main/proof/home/material3-dark-960/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "0e5ae55ce9ab29bb024c62f49b551c2916ebc64499882c9a3055688df41e2007"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/01-original-default-layout.png",
+      "bytes": 45605,
+      "sha256Bytes": "0e68649f24278c26f4f242e292a225c5549f3c6752081065bff5743a5c7e55c9"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/02-original-column-options.png",
+      "bytes": 47991,
+      "sha256Bytes": "d53ec33163052cf15b17fa28599a428850ee6b0f035e684da0514c2dc3c64364"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/03-wide-auto-layout.png",
+      "bytes": 43104,
+      "sha256Bytes": "d162d6c1972aa02d38b41260b19b7d9b561408701cd861f19b79adb1d027aeaa"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/04-official-layout.png",
+      "bytes": 41422,
+      "sha256Bytes": "72914c5a5f1155a39055948a5c4725884ee10c2e4f00e88a9dc342d72e263dd9"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/05-retained-scroll.png",
+      "bytes": 47296,
+      "sha256Bytes": "f70771c7793dbc5660eb00a9c4ba4cc3c3ad2ffeded3cda2ec3a10cf33b41c4a"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/actual-footer-hit-targets.json",
+      "bytes": 1506,
+      "sha256Bytes": "290a755b4ab28864bca86a7cda604c0bc508e646a5a1d98baa79eabc02c595a0"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "main/proof/home/material3-light-800/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "d5872649b87564074579bc70af2733bb67d953107000f77cd531a00a610e79e3"
+    },
+    {
+      "path": "main/proof/home/miuix-compact-500/01-imported-compact2.png",
+      "bytes": 35164,
+      "sha256Bytes": "f9a82091390a4df44c060a37a22129d57ef77d2c5b2608a4e77d1a761ea98e76"
+    },
+    {
+      "path": "main/proof/home/miuix-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 36125,
+      "sha256Bytes": "1504fab67a7583cd9c171e5418901b4c1210bcf635791784a1a5e4b7652b12cf"
+    },
+    {
+      "path": "main/proof/home/miuix-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "89dd971b5c355ed2900aadda40e383f8d01c1e6067407b08064bfd25d9e9e0c4"
+    },
+    {
+      "path": "main/proof/home/miuix-compact-500/pointers.json",
+      "bytes": 173,
+      "sha256Bytes": "26f2c8c3f37157a420d35633c46da31c7bc921d6ad02aa752366fd1b5d9fb39e"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/01-original-default-layout.png",
+      "bytes": 58188,
+      "sha256Bytes": "7b2984ac5980ba250200aed0347f26b54025e4c4aa735f6d8df759ff94da9129"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/02-original-column-options.png",
+      "bytes": 59143,
+      "sha256Bytes": "b8217d83bea7d8f3320df62b3ab654932055522b9dac543eb7df41fceef3b03a"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/03-wide-auto-layout.png",
+      "bytes": 51420,
+      "sha256Bytes": "353ef3438f27163a7575577c95777fbada1a22eead5aeb93f2e1cf6c1db96cb9"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/04-official-layout.png",
+      "bytes": 52213,
+      "sha256Bytes": "fd79018ca63a7c41de0475182a8b87b874f68c89480cc1734d57e469d52756bb"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/05-retained-scroll.png",
+      "bytes": 56523,
+      "sha256Bytes": "d8996b8784c6bc5c2bf707c5647fbeee50acbd9d292259fa120c69fd54a3f11f"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2662,
+      "sha256Bytes": "477dd7641d182c913d15412f8710e396c12a90dcdeb5cb4cc6e78d115f2b61cb"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "c3d8305eb25fb4568cff2784e6d8222ae5e472c86ec5b3d72471b4f34075b0d1"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-1680/pointers.json",
+      "bytes": 827,
+      "sha256Bytes": "12e4fa210e81b004f228f14b19df6ba1e0e90fee752e9189eed0a5e656ab30ea"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/01-original-default-layout.png",
+      "bytes": 49318,
+      "sha256Bytes": "d264f75fb44000df66a8797805b146df3d8e7a62f84ed834c396792ab0698576"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/02-original-column-options.png",
+      "bytes": 49814,
+      "sha256Bytes": "6b62de2948f3a1bf01a552daa18bd33f2d7f7605f9e41c3aec11f4864050e04a"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/03-wide-auto-layout.png",
+      "bytes": 45988,
+      "sha256Bytes": "9fbc9aa8b0be2f71eefc3696dee3da0430cc1705441a5faf3e49a4eb3f45fb39"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/04-official-layout.png",
+      "bytes": 45330,
+      "sha256Bytes": "45c7b9e935c3541b520c57bb4dc5bf91f970aa0947dfcddc9b63bb10713b8a4f"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/05-retained-scroll.png",
+      "bytes": 47040,
+      "sha256Bytes": "44ae5e0e804b0d87cfb6f89c81e0e2ace1ff5ba01b40917fec280b314325f3fc"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1883,
+      "sha256Bytes": "ef12500431fb3fa095b5a479a6f6a869f49a69d736b9dac08111c52302b3791f"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "caa3da85a5b6726396a8053fa38ca391b8ffe7b214023a6e66b703047203aaa2"
+    },
+    {
+      "path": "main/proof/home/miuix-dark-960/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "cdaf8dde720a1d153093b263faf6601e6c0dcf670b257c9ac68a0079c314ffa7"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/01-original-default-layout.png",
+      "bytes": 47481,
+      "sha256Bytes": "7770a13ab42e655bfefa2520e072ef0920dc1c046bf76b988248feea8dc6dc3c"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/02-original-column-options.png",
+      "bytes": 49730,
+      "sha256Bytes": "32cc96bb6f4c5555202b4e70979cff19adf7568349f044903c68e7f6924cdd12"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/03-wide-auto-layout.png",
+      "bytes": 47142,
+      "sha256Bytes": "782a1b2f5c456579254c84eecf097af4f30bfb6672fdbf2bec6d013ce8ea2c79"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/04-official-layout.png",
+      "bytes": 44959,
+      "sha256Bytes": "b3d963f5b0eb8cb19e1b73e30b45efc7efece5a0e77ca048909b62718888037e"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/05-retained-scroll.png",
+      "bytes": 49007,
+      "sha256Bytes": "dcbe8186e21b78b9434a050fb4827dfe7ee7c151bbeaa1f6ae378e35e86abdd8"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/actual-footer-hit-targets.json",
+      "bytes": 1505,
+      "sha256Bytes": "6c7c22da4f3dfd906bfc9867c464e7b500fa6f635a5864fed332f539a18a2c6a"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/geometry.json",
+      "bytes": 2934,
+      "sha256Bytes": "01e56d9601ebbd46ec0ec8ef40b088e08ce61c6ded5c7229c2d541fe331d6373"
+    },
+    {
+      "path": "main/proof/home/miuix-light-800/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "9372ea67eff9fd06c40d5294d6546ecefbb1d7bd9240fb99bf63ad9201a19009"
+    },
+    {
+      "path": "main/proof/home/ui.json",
+      "bytes": 3943,
+      "sha256Bytes": "80afcf9c23c890152e04f4cd018f7cb45638abce22eaa060d298d8a7290b19c1"
+    },
+    {
+      "path": "main/tabs.log",
+      "bytes": 257,
+      "sha256Bytes": "a1483f53b0a95f515fceb3d119ab785d34b34295a780953182e3f438aa1e2284"
+    },
+    {
+      "path": "main/TabsModelFixtures.kt",
+      "bytes": 600,
+      "sha256Bytes": "f71b8c64799c93179e1e6be5c62d36577a5185acacf6bdccd4acd4d839141c0a"
+    },
+    {
+      "path": "main/TabsTransportFixture.kt",
+      "bytes": 6734,
+      "sha256Bytes": "0918ae9232416dbf7840bdb7a20605b376a4335e670e343e207abe7a08bb94e8"
+    },
+    {
+      "path": "main/TabsUiFixture.kt",
+      "bytes": 8065,
+      "sha256Bytes": "a3fe3427194489238ac337f5c45fec1b2830c2aedf07219d6fac61257b80729d"
+    },
+    {
+      "path": "main/transport.log",
+      "bytes": 240,
+      "sha256Bytes": "7db8695abeaa7887b1656928bf06bb9a585d4c1a49de4fa3b3b4d21945d4fa88"
+    },
+    {
+      "path": "main/artifact-manifest.json",
+      "bytes": 30417,
+      "sha256Bytes": "ed99caf4980ca76664573fed734933fc9ef71e2c3aa15e9acfa5e6e8e196186c"
+    },
+    {
+      "path": "root/base/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "bytes": 37775,
+      "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "root/base/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "bytes": 3486,
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "root/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 19468,
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "root/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "bytes": 30856,
+      "sha256Bytes": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "root/base/desktop/upstream-sources.json",
+      "bytes": 177186,
+      "sha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca"
+    },
+    {
+      "path": "root/compiled-product-snapshot.json",
+      "bytes": 16621,
+      "sha256Bytes": "ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828"
+    },
+    {
+      "path": "root/dynamic_tabs-sources.log",
+      "bytes": 1126,
+      "sha256Bytes": "5080cb893940bee840c1e4ea7e3f2536d3d70d46cb2e42b906977008c3e03869"
+    },
+    {
+      "path": "root/home_card-sources.log",
+      "bytes": 1149,
+      "sha256Bytes": "9046b67e6ea0290055abeb9050627b20ef05c999c34d531c838424bd5a0662d9"
+    },
+    {
+      "path": "root/installed-payload.json",
+      "bytes": 3303,
+      "sha256Bytes": "3a1631857ea60aa775aca25809e5197a9042df4e0e9e263ce8ba13f06d1ddb89"
+    },
+    {
+      "path": "root/root-source-seams.json",
+      "bytes": 4254,
+      "sha256Bytes": "caeedf0db98c8b05fb8732284bbb50873687db7a1edbfb1d07e7e4a5072d2cf2"
+    },
+    {
+      "path": "root/source-audit.json",
+      "bytes": 65515,
+      "sha256Bytes": "152009cabcc08283c36db9eb46a685f8af03ace580c101a3175b602ded987781"
+    },
+    {
+      "path": "root/TEST-com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest.xml",
+      "bytes": 1964,
+      "sha256Bytes": "b38ac3c7db7e0255cd1c8f9b413ad4de51502f79d932908f953984f5ace96e10"
+    },
+    {
+      "path": "root/TEST-com.bilipai.desktop.ui.DesktopDynamicTabsTest.xml",
+      "bytes": 1872,
+      "sha256Bytes": "c404e0d76feca9fd576b7c7ff04558fed850035fa04dcdde8775691f476ab4c7"
+    },
+    {
+      "path": "root/artifact-manifest.json",
+      "bytes": 2507,
+      "sha256Bytes": "2810e64d41bec7882952d48a278601c3d6fd8f75dd1466a69136f556aeb8f8b8"
+    },
+    {
+      "path": "home-producer-historical/frozen-handoff.json",
+      "bytes": 3658,
+      "sha256Bytes": "9df1d61f2750553d94149595afde8a71b21e64f9760f02d2132e5b8212de9857"
+    }
+  ],
+  "classesJarsNativeDumpAndTaskOwnedAccountSettingsExcluded": true,
+  "producerInstallerCountCorrection": {
+    "originalFrozenInstallerLiteral": 3789,
+    "actualProducerManifestRows": 3769,
+    "note": "The old literal counted20 source identities again; actual raw manifest rows are1201+2568. Frozen bytes retained; this corrected total is authoritative."
+  },
+  "noNewDesktopDeployment": true
+}

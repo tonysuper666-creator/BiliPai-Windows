@@ -1,0 +1,139 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
+@@ -15,6 +15,7 @@ import coil3.compose.AsyncImage
+ import com.android.purebilibili.data.model.response.*
+ import com.bilipai.desktop.data.*
+ import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
++import com.bilipai.desktop.settings.DesktopDynamicTabsPreferences
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.launch
+ import kotlinx.serialization.json.*
+@@ -25,39 +26,39 @@ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityReposito
+     val blocked by community.blockedUps.mids.collectAsState()
+     val epoch by community.accountEpoch.collectAsState()
+     val capturedEpoch=epoch
+-    val transform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
+-    var type by remember { mutableStateOf("all") }
+-    var composing by remember { mutableStateOf(false) }
+-    var revision by remember { mutableIntStateOf(0) }
+-    var published by remember { mutableStateOf(false) }
++    val scope=rememberCoroutineScope()
++    val tabsPreferences=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
++    val users=remember(mid,capturedEpoch,tabsPreferences) {
++        DesktopDynamicUsersState(scope,tabsPreferences,mid,
++            followingPage={community.followings(mid,it).data},
++            liveRooms={community.dynamicFollowedLiveUsers()},unreadUsers={community.dynamicUnreadUsers()},
++            requestPage={community.dynamicSelectedUserPage(it)},
++            stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},selfFace=community.account.value?.avatar.orEmpty())
++    }
++    DisposableEffect(users){onDispose{users.close()}}
++    val transform=remember(blocked){{rows:List<DynamicItem>->desktopVisibleDynamicItems(rows,blocked)}}
++    var composing by remember {mutableStateOf(false)}
++    var revision by remember {mutableIntStateOf(0)}
++    var published by remember {mutableStateOf(false)}
+     val memory=LocalDesktopBrowseMemory.current
+-    val timeline=remember(memory,mid,capturedEpoch,type,revision) {
+-        val key=listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision)
++    val timelines=remember(memory,mid,capturedEpoch,revision){mutableMapOf<String,DesktopDynamicTimelineState>()}
++    fun timeline(type:String)=timelines.getOrPut(type) {
+         val create={DesktopDynamicTimelineState(type,fetchPage={requestType,offset,baseline->
+-            try {DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
++            try{DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
+             catch(cancelled:CancellationException){throw cancelled}
+             catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
+         },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid})}
+-        memory?.screen(key,create)?:create()
++        memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision),create)?:create()
+     }
+     Column {
+-        Row(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+-            // Original remaining tabs/visibility/order/UP selection are a separate unimplemented slice.
+-            listOf("all" to "全部", "video" to "视频", "pgc" to "番剧").forEach { (value, label) ->
+-                FilterChip(selected = type == value, onClick = { type = value }, label = { Text(label) })
+-            }
+-            Button(onClick = { composing = true }) { DesktopSkinDynamicPublishIcon(composing); Text("发布动态") }
+-        }
+-        if (published) Text("动态已提交", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.primary)
+-        val originalTitle=com.android.purebilibili.feature.dynamic.allDynamicTabSpecs.firstOrNull{it.id==type}?.title?:"内容"
+-        DesktopDynamicTimelineFeed(timeline,preferences,navigation.onLogin,transform,
+-            oldContentDividerLabel=if(type=="all")"以下是之前的动态"else"以下是之前的${originalTitle}") {
++        if(published)com.android.purebilibili.core.ui.components.AppText("动态已提交",Modifier.padding(horizontal=20.dp))
++        DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
++            trailing={Button(onClick={composing=true}){DesktopSkinDynamicPublishIcon(composing);Text("发布动态")}}) {
+             CommunityDynamicCard(it,community,navigation)
+         }
+     }
+-    if (composing) CommunityDynamicComposer(community, navigation, onDismiss = { composing = false }, onPublished = { id ->
+-        composing = false; revision++; published = true
+-        if (id != null) navigation.onDynamic(id)
++    if(composing)CommunityDynamicComposer(community,navigation,onDismiss={composing=false},onPublished={id->
++        composing=false;revision++;published=true;if(id!=null)navigation.onDynamic(id)
+     })
+ }
+ 
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
+@@ -1,5 +1,7 @@
+ package com.bilipai.desktop.data
+ 
++import kotlinx.coroutines.ensureActive
++
+ import com.android.purebilibili.core.network.*
+ import com.android.purebilibili.data.model.response.*
+ import com.android.purebilibili.data.repository.MessageSendPayloadFactory
+@@ -309,6 +311,42 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
+             data.page.count, data.list.vlist.size))
+     }
+ 
++    /** Original UP space params are supplied by its original UID-pagination repository. */
++    internal suspend fun dynamicSelectedUserPage(params:Map<String,String>):DynamicFeedResponse {
++        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
++        fun owns()=repository.sessionEpoch==expectedEpoch&&repository.account.value?.mid==expectedMid
++        val result=read(accountOnly=true,validate={require(params["host_mid"]?.toLongOrNull()?.let{it>0}==true)}) {
++            if(!owns())throw kotlinx.coroutines.CancellationException("Dynamic source retired")
++            dynamic.getUserDynamicFeed(params)
++        }
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        if(!owns())throw kotlinx.coroutines.CancellationException("Dynamic source retired")
++        return result
++    }
++    internal suspend fun dynamicFollowedLiveUsers():List<LiveRoom> {
++        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
++        val result=read(accountOnly=true) {
++            val response=api.getFollowedLive(page=1,pageSize=50)
++            check(response.code,response.message)
++            com.android.purebilibili.data.repository.desktopOriginalDynamicFollowedLiveUsers(response)
++        }
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        if(repository.sessionEpoch!=expectedEpoch||repository.account.value?.mid!=expectedMid)throw kotlinx.coroutines.CancellationException("Dynamic source retired")
++        return result
++    }
++    internal suspend fun dynamicUnreadUsers():UplistData? {
++        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
++        val result=read(accountOnly=true) {
++            repository.requireCsrf()
++            val response=dynamic.getDynamicUplist()
++            check(response.code,response.message)
++            response.data
++        }
++        kotlinx.coroutines.currentCoroutineContext().ensureActive()
++        if(repository.sessionEpoch!=expectedEpoch||repository.account.value?.mid!=expectedMid)throw kotlinx.coroutines.CancellationException("Dynamic source retired")
++        return result
++    }
++
+     suspend fun followings(mid: Long, page: Int = 1): RelationPage = read(validate = { require(mid > 0 && page > 0) }) {
+         val response = api.getFollowings(vmid = mid, pn = page, ps = 50)
+         val data = verified(response.code, response.message, response.data, "关注列表")
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt b/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt
+@@ -56,5 +56,7 @@ internal fun DesktopDynamicTimelineSettings(preferences:DesktopDynamicTimelinePr
+     Column(modifier) {
+         DesktopDynamicTimelineSettingsFields(incremental,{value->write{preferences.setIncrementalRefresh(value)}},
+             layout,{value->write{preferences.setLayoutMode(value)}})
++        val tabs=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
++        DesktopDynamicTabsSettings(tabs,onFailure)
+     }
+ }

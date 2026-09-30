@@ -1,0 +1,96 @@
+{
+  "originalSourceAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity\\field-audit.json",
+    "sha256Bytes": "9f1c2b35cd28ddb0c603e48fd8adf8457a022357ee76238b53c5bbcd2c3067bc"
+  },
+  "closedConsumerFields": [
+    {
+      "field": "gridColumnCount",
+      "originalKeys": [
+        "grid_column_count"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_GRID_COLUMN_COUNT] ?: 0",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false,
+      "scope": "prepared actual Discovery consumer"
+    },
+    {
+      "field": "gridColumnCountCompact",
+      "originalKeys": [
+        "grid_column_count_compact"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_GRID_COLUMN_COUNT_COMPACT] ?: 0",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false,
+      "scope": "prepared actual Discovery consumer"
+    },
+    {
+      "field": "homeFeedCardWidthPreset",
+      "originalKeys": [
+        "home_feed_card_width_preset"
+      ],
+      "actualSourceReadExpression": "HomeFeedCardWidthPreset.fromValue(\n                preferences[KEY_HOME_FEED_CARD_WIDTH_PRESET] ?: HomeFeedCardWidthPreset.AUTO.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false,
+      "scope": "prepared actual Discovery consumer"
+    },
+    {
+      "field": "homeFeedCardStyle",
+      "originalKeys": [
+        "home_feed_card_style"
+      ],
+      "actualSourceReadExpression": "HomeFeedCardStyle.fromValue(\n                preferences[KEY_HOME_FEED_CARD_STYLE] ?: HomeFeedCardStyle.BILIPAI.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false,
+      "scope": "prepared actual Discovery consumer"
+    }
+  ],
+  "originalConstructorVsPersistedRead": {
+    "selectedFour": "Defaults coincide: 0,0,AUTO,BILIPAI; actual read expressions still emitted directly",
+    "homeHeroCarouselEnabled": "constructor true / actual persisted read false: not installed",
+    "crashTrackingConsentShown": "constructor true / actual persisted read false: outside card slice",
+    "homeDurationStyle": "legacy home_duration_badge fallback to OUTSIDE_COVER or HIDDEN: outside card slice",
+    "frostedGlass": "new separate key falls back to old combined tint: outside card slice"
+  },
+  "bindingDifferences": [
+    "Existing native grid displayMode=0 only. Original HomeSettings displayMode is not surfaced until real StoryVideoCard exists.",
+    "Original WindowDp class thresholds use actual desktop LocalWindowInfo; width cap uses the true remaining feed viewport because desktop sidebar consumes pixels.",
+    "Android fold/hinge/adaptive posture is not synthesized. Actual normal-window center cap is1280dp; gap/padding6dp.",
+    "DataStore edit/snapshot is bound to existing Root shared global PluginStore settings namespace, no guest/account fallback or duplicated writer.",
+    "One absent Android bulleted-list drawable is bound to the already real SettingsIconRole.HOME_FEED semantic renderer.",
+    "Original unsupported fold/pinch/help and all-search-related scope strings are narrowed explicitly to current Discovery consumers.",
+    "Compact remembered count is read/applied and setter verified; no desktop pinch gesture is claimed or fake switch displayed.",
+    "Existing desktop M3 Card/metadata/actions remain. Actual policy title min/max and cover ratio consumed; compactMetadata/compactStatsOnCover/storyPadding are not yet renderer consumers.",
+    "The existing three footer actions wrap with FlowRow and explicit48dp minimum measured size; original BV/CID/MID and enabled conditions retained."
+  ],
+  "remainingActiveGaps": [
+    "Home original ElegantVideoCard/StoryVideoCard full composition, follow badges, UP avatar, cover stats, overlay duration, data saver/cover-request policy, motion/transition/glass visual details.",
+    "Pinch-to-change-column gesture, fold hinge spacing, display mode1 renderer.",
+    "Home title full-content toggle, duration legacy migration consumer, publish visibility, compact stats-on-cover and other HomeSettings fields outside four selected keys.",
+    "Original hero carousel/autoplay, refresh-tip, Home navigation/tab/bar/search/collapse behavior are separate tasks.",
+    "Search/related/Personal card grids still use prior independent consumers; global original cover style is not claimed for those routes.",
+    "Prepared slice is not yet Root integrated or packaged native UI accepted."
+  ],
+  "referenceSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "ac3606178f6bf715eace497b0d1c8c6ccc0fb4c0796cba154fe426683d5c80c4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "sha256Bytes": "66188f400a172ce3554d1dfe067fbfe637b1dd371b6b4387f323f4325fb441eb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "sha256Bytes": "3a79c498838d6eced2b50de2d1873e56fddcc7282ee7e9cc3ba6a91264c0bfe2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt",
+      "sha256Bytes": "d95c335c2357af712fe5af41902c8631f51e53aa9b4d58410b935d9e1860cbf0"
+    }
+  ]
+}

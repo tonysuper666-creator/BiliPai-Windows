@@ -1,0 +1,84 @@
+{
+  "frozen": true,
+  "phase": "prepared-original-home-card-layout-four-fields",
+  "ownedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "sha256Bytes": "f661a8a33e636336ac6164024061d0a5b6781ef9b484486a9dc81eb8da16032f",
+      "existingTarget": false,
+      "baseSha256Bytes": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "sha256Bytes": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32",
+      "existingTarget": false,
+      "baseSha256Bytes": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "9523eee07949cd8786506456247c451bd5dd70a184453cb9d74e884deb8d050e",
+      "existingTarget": true,
+      "baseSha256Bytes": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "sha256Bytes": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542",
+      "existingTarget": false,
+      "baseSha256Bytes": null
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-cards.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-home-cards.py",
+      "sha256Bytes": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c",
+      "existingTarget": false,
+      "baseSha256Bytes": null
+    },
+    {
+      "path": "desktop/tools/tests/test_home_card_sources.py",
+      "prepared": "prepared/desktop/tools/tests/test_home_card_sources.py",
+      "sha256Bytes": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce",
+      "existingTarget": false,
+      "baseSha256Bytes": null
+    }
+  ],
+  "artifactManifest": "artifact-manifest.json",
+  "artifactManifestSha256Bytes": "9d5ae08bbbd9a3cdcb6218304b1181b256ba3fd321b94876cc39e3d0cc796513",
+  "artifacts": 1201,
+  "externalTaskOwnedArtifacts": 75,
+  "productSnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+  "currentOriginalRegistrySha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca",
+  "actualEvidence": {
+    "annotatedJUnitUnitMethods": 10,
+    "pythonSourceTests": 6,
+    "uiFlows": 8,
+    "actualPointerPressReleasePairs": 64,
+    "screenshotPngs": 34,
+    "actualLocalSourcePngs": 6,
+    "coldJvmReaders": 8,
+    "actualMainClassResourcePins": 12,
+    "actualFooterMeasuredMinimumDp": 48,
+    "actualNativeWindow": false,
+    "realAccountOrApi": false,
+    "productionOverlaysExplicit": true,
+    "replacementStoreRendererOrOriginalGrid": 0,
+    "wholeMainOrRootIntegrated": false,
+    "packagedNativeAccepted": false
+  },
+  "sourceInventory": "source-inventory.json",
+  "sourceRegistrationDelta": "source-registration-delta.json",
+  "sourceIdentities": 7,
+  "newIdentities": 5,
+  "newResources": 0,
+  "newDependencies": 0,
+  "acceptedProof": "proof/10",
+  "acceptedClasses": "classes-attempt10",
+  "rootContract": "ROOT-INTEGRATION.md",
+  "mainMutation": false,
+  "sharedGradle": false,
+  "existingFrozenEvidenceChanged": false,
+  "explicitRemainingGaps": "FIELD-AUDIT.md / field-audit.json"
+}

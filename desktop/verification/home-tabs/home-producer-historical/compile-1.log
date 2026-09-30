@@ -1,0 +1,6 @@
+desktop\.local\settings-home-card-parity\generated\com\android\purebilibili\core\store\DesktopOriginalHomeCardSettings.kt:53:5: error: unresolved reference 'private'.
+    private val KEY_HOME_FEED_CARD_STYLE = intPreferencesKey("home_feed_card_style")
+    ^^^^^^^
+desktop\.local\settings-home-card-parity\generated\com\android\purebilibili\core\store\DesktopOriginalHomeCardSettings.kt:53:12: error: syntax error: Property getter or setter expected.
+    private val KEY_HOME_FEED_CARD_STYLE = intPreferencesKey("home_feed_card_style")
+           ^

@@ -1,0 +1,258 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "02f3a5a60e79003f6d225ff97118276e516f8a82",
+  "status": "originalHomeCardSettingsAndDynamicTabsWithActualProductConsumersIntegrated",
+  "productFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "hashNormalization": "lf",
+      "sha256": "55637750ea0999ddade66f85885637aa764b5413fef9ab734f5960127fdd543d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "hashNormalization": "lf",
+      "sha256": "00b08e4b6e771d327c28aeae696461c30278f89b4bb2831f69dbade11ed5cd4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "hashNormalization": "lf",
+      "sha256": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "hashNormalization": "lf",
+      "sha256": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "hashNormalization": "lf",
+      "sha256": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "hashNormalization": "lf",
+      "sha256": "f661a8a33e636336ac6164024061d0a5b6781ef9b484486a9dc81eb8da16032f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "hashNormalization": "lf",
+      "sha256": "b6c7923185f74f267c53c42d77024d719fff0ab183d06dabfd141b6492dbe515"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "fcd922bcabd5105f25ecafadd6e3498e3b9858181c64191824a6f49aa08ea7a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "hashNormalization": "lf",
+      "sha256": "72ee732c51489f05243eb96d1ed338f79729931d378a3e10475c866232809af2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "hashNormalization": "lf",
+      "sha256": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "hashNormalization": "lf",
+      "sha256": "8226d15ecb5ed5fb3cdcda9cdab4f8d754f0174b1eef089c7a4553a12dd78ba0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "hashNormalization": "lf",
+      "sha256": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "9523eee07949cd8786506456247c451bd5dd70a184453cb9d74e884deb8d050e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "hashNormalization": "lf",
+      "sha256": "d7fc5d75c27b6c15786383c577e57cc4c37d29ddcf0293e2548169f6b6bd6437"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-cards.py",
+      "hashNormalization": "lf",
+      "sha256": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "3095dcf6fd31d2b68aad160f8f2a3749b223165af8cbc4ed67b64bb3412f6edb"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_card_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "hashNormalization": "lf",
+      "sha256": "73226646b5c359abbeca9175462113c7d2f461a64ee938c5dcf146a498549ecd"
+    }
+  ],
+  "originalSourceIdentities": 461,
+  "originalResourceIdentities": 210,
+  "originalApiDeclarationsVerbatim": 303,
+  "originalResponsesAdopted": 45,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "home": {
+    "namespace": "settings",
+    "exactKeys": [
+      "grid_column_count",
+      "grid_column_count_compact",
+      "home_feed_card_width_preset",
+      "home_feed_card_style"
+    ],
+    "exactOriginalDefaults": [
+      0,
+      0,
+      "AUTO",
+      "BILIPAI"
+    ],
+    "sameGlobalRootContext": true,
+    "actualOriginalThreeSettingsControls": true,
+    "compactWideRememberedCountsIndependent": true,
+    "compactSetterUi": "Original pinch not implemented; getter and actual compact consumer plus setter fixture verified",
+    "originalColumnDensityWidthCropAndTitlePolicies": true,
+    "contentMaximumDp": 1280,
+    "itemSpacingDp": 6,
+    "originalStaggeredGrid": true,
+    "pageAndScrollOwnerPreservedAcrossPreferences": true,
+    "footerUsesFlowRowWith48DpMinimumActions": true,
+    "rawVideoItemRetainedInRepository": true,
+    "completeElegantVideoCard": false
+  },
+  "dynamic": {
+    "exactGlobalKeys": [
+      "dynamic_tab_visible_tabs",
+      "dynamic_tab_order",
+      "dynamic_all_tab_horizontal_user_list_visible"
+    ],
+    "originalDefaults": [
+      "all,video,pgc,article,up",
+      "all,video,pgc,article,up",
+      false
+    ],
+    "sameTimelinePreferencesContext": true,
+    "originalUserPreferenceNamespace": "dynamic_user_prefs",
+    "originalUserPreferenceKeys": [
+      "dynamic_selected_tab",
+      "dynamic_pinned_users",
+      "dynamic_hidden_users"
+    ],
+    "originalNativeTabsAndHorizontalUserList": true,
+    "logicalTabIdentityIndependentOfVisibleIndex": true,
+    "followingPagesLiveStatusUnreadAndUidFeedUseOriginalModelsAndPolicies": true,
+    "sameMidEpochLateResponseRejected": true,
+    "originalSelectedUpCursorAndEmptyAdvancingPages": true,
+    "localRowsCannotReplaceAuthoritativeUidFetch": true,
+    "liveUidMappingUsesOriginalRepositoryBody": true,
+    "completeSidebarDrawerOrLiquid": false,
+    "originalStartupDelayedHydration": false
+  },
+  "verification": {
+    "mainCompile": {
+      "task": "test",
+      "successful": true,
+      "elapsedSeconds": 21,
+      "focusedJUnitSuites": [
+        "DesktopHomeCardPreferencesTest",
+        "DesktopDynamicTabsTest"
+      ],
+      "tests": 20,
+      "failures": 0,
+      "skipped": 0
+    },
+    "focusedJUnitMethods": 20,
+    "focusedPythonChecks": 11,
+    "productionDynamicTabsOnlyExtractedFiles": 15,
+    "productionDynamicTabsDirectFilesFromOriginalPreparation": 5,
+    "productionHomeOnlyExtractedFiles": 5,
+    "actualProductProof": {
+      "passed": true,
+      "snapshotManifestSha256Bytes": "ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828",
+      "productJarsFirst": true,
+      "productionOverrides": 0,
+      "compiledOnlyFixtureSources": 5,
+      "fixtureClassCount": 34,
+      "actualMainClassPins": 19,
+      "homeUiFlows": 8,
+      "homePointerPairs": 64,
+      "homeScreenshots": 34,
+      "homeLocalSourcePngs": 6,
+      "coldJvmReaders": 8,
+      "tabsUiFlows": 2,
+      "tabsPointerPairs": 16,
+      "tabsScreenshots": 10,
+      "originalProductRetrofitTransportAndSameMidEpoch": true,
+      "mainReadyOrNativeWindow": false,
+      "realAccountOrSocket": false,
+      "taskOwnedEnvironment": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-home-tabs-bgxceqnj"
+    },
+    "immutableSnapshotManifestSha256Bytes": "ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828",
+    "productJars": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-tabs-main-product-snapshot\\main-kotlin.jar",
+        "source": "desktop/build/classes/kotlin/main",
+        "entries": 6753,
+        "sha256Bytes": "8da8bdf15aab1f13f8674f0856f58be9084141e90f8acf5599fddafd7d59a8a5"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-tabs-main-product-snapshot\\main-java.jar",
+        "source": "desktop/build/classes/java/main",
+        "entries": 141,
+        "sha256Bytes": "02d9a0cd8e1cfc981cc1261d7830e6c1a0543eab0bb4130ddc1924c225bba1d0"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-tabs-main-product-snapshot\\main-resources.jar",
+        "source": "desktop/build/resources/main",
+        "entries": 56,
+        "sha256Bytes": "5df828438ddfadd84199417aec64a2d0ff02edb7bfd5fb8ce64bac58bf200fec"
+      }
+    ],
+    "sourcePins": 20,
+    "generatedPins": 44,
+    "orderedClasspathEntries": 234,
+    "externalOrderedEntries": 231,
+    "externalDistinctJars": 226,
+    "allFrozenRawArtifactsVerified": 3944,
+    "externalTaskOwnedFilesVerified": 75,
+    "selectedRawArtifacts": 431,
+    "producerHistory": {
+      "home": "Accepted proof10; initial40dp target failure and viewport-clipping fixture correction preserved",
+      "tabs": "Attempts1-10 retained old same-source timeline overrides; final attempt11 has only three declared prepared consumer class families",
+      "root": "Actual current three jars first; five unique fixture sources compiled; no production overlap. Hash-helper long-path prefix error occurred before UI; runtime only resumed."
+    },
+    "integrationFix": "DynamicTabs generator production excludes five direct full sources already copied by prepareUpstreamSources. Isolated/source checks explicitly use --standalone; one meaningful duplicate-source regression added.",
+    "evidence": "desktop/verification/home-tabs/selected-evidence.json"
+  },
+  "remaining": [
+    "Complete original Home and Dynamic card rendering and all actions",
+    "Home Story/display mode/pinch/title/metadata/stat/hero/motion/background/settings",
+    "Five original Dynamic Sidebar/Drawer hosts, liquid variant, swipe/reselect/near-end pagination",
+    "Dynamic delayed startup plan, disk cache, not-interested and account/page navigation acceptance",
+    "Other five original dynamic global fields and full detail/image behavior",
+    "Native Windows sharing/chooser and complete Main Ready window verification",
+    "Full native packaged/account regression and updater compatibility release gate",
+    "Final Desktop EXE deployment"
+  ],
+  "fullFunctionalParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

@@ -1,0 +1,11 @@
+{
+  "reviewedByRoot": true,
+  "rawScreenshots": [
+    "main/proof/home/miuix-light-800/01-original-default-layout.png",
+    "main/proof/home/material3-dark-1680/04-official-layout.png",
+    "main/proof/home/miuix-compact-500/02-compact3-original-cover-choice.png",
+    "main/proof/dynamic/miuix-selected-up.png",
+    "main/proof/dynamic/material3-article-reordered.png"
+  ],
+  "findings": "Controls/column geometry/content cap/footer and native tab/order/UP rail readable. Dynamic rows are explicitly text fixtures; complete original card/native HWND not claimed."
+}

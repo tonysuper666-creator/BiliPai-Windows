@@ -1,0 +1,97 @@
+{
+  "passed": true,
+  "sameExistingGlobalPluginContext": true,
+  "rootHomeCardPreferencesOwners": 1,
+  "rootHomeCardAmbientProviders": 1,
+  "homeSettingsRouteUsesOriginalThreeControls": true,
+  "existingRecommendationAndDynamicSectionsPreserved": true,
+  "sourceContractNotNativeRootExecution": true,
+  "productionDynamicTabsDirectSourcesProvidedOnce": true,
+  "productionDynamicTabsExtractedFiles": 15,
+  "productionHomeCardExtractedFiles": 5,
+  "focusedJUnitMethods": 20,
+  "focusedPythonChecks": 11,
+  "fullOriginalCardAndSidebarParity": false,
+  "sourcePins": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "55637750ea0999ddade66f85885637aa764b5413fef9ab734f5960127fdd543d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "00b08e4b6e771d327c28aeae696461c30278f89b4bb2831f69dbade11ed5cd4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "sha256Bytes": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "sha256Bytes": "f661a8a33e636336ac6164024061d0a5b6781ef9b484486a9dc81eb8da16032f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "b6c7923185f74f267c53c42d77024d719fff0ab183d06dabfd141b6492dbe515"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "fcd922bcabd5105f25ecafadd6e3498e3b9858181c64191824a6f49aa08ea7a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "72ee732c51489f05243eb96d1ed338f79729931d378a3e10475c866232809af2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "sha256Bytes": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "8226d15ecb5ed5fb3cdcda9cdab4f8d754f0174b1eef089c7a4553a12dd78ba0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "sha256Bytes": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "9523eee07949cd8786506456247c451bd5dd70a184453cb9d74e884deb8d050e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "sha256Bytes": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "sha256Bytes": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "d7fc5d75c27b6c15786383c577e57cc4c37d29ddcf0293e2548169f6b6bd6437"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-cards.py",
+      "sha256Bytes": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "sha256Bytes": "3095dcf6fd31d2b68aad160f8f2a3749b223165af8cbc4ed67b64bb3412f6edb"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_card_sources.py",
+      "sha256Bytes": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "73226646b5c359abbeca9175462113c7d2f461a64ee938c5dcf146a498549ecd"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-30T15:26:32.732Z" hostname="TONYSUPER666" time="0.25">
+  <properties/>
+  <testcase name="cancellationBeforeIoEntryDoesNotPersist()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.083"/>
+  <testcase name="originalPersistedDefaultsDoNotCreateAFile()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.006"/>
+  <testcase name="invalidNamespaceIsRejectedWithoutMutation()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.043"/>
+  <testcase name="originalWidthBreakpointsAndCompactMemorySelectCorrectScope()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.002"/>
+  <testcase name="originalCoverExceptionsSpacingAndDenseTitlePolicyRemainIntact()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.002"/>
+  <testcase name="unknownEnumValuesUseOriginalFallbackAndDoNotRewriteDisk()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.002"/>
+  <testcase name="originalAutomaticBoundsAndFixedColumnPriorityRemainIntact()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.001"/>
+  <testcase name="frozenRestoreGenerationCannotOverwriteFreshSettings()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.066"/>
+  <testcase name="realGlobalWritesKeepIndependentCompactMemoryAndUnrelatedKeys()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.021"/>
+  <testcase name="failedAtomicReplacementDoesNotPublishNewSettings()" classname="com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

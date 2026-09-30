@@ -1,0 +1,457 @@
+[
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopHomeCardSettings.class",
+    "sha256Bytes": "63718c5fb866c93548d858dbb4a2e3064a72dbfdb5d32e9ae2cf917bf95425de",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings$getSettings$$inlined$map$1$1.class",
+    "sha256Bytes": "13023817de4d73d6d90d703f90889a27de8f66b24e57a00a689a66d95c7a3231",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings$getSettings$$inlined$map$1$2$1.class",
+    "sha256Bytes": "cbdf3a198f59e98dbce032509ade056395d1efe8f639a5be11386ea950e7f58f",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings$getSettings$$inlined$map$1$2.class",
+    "sha256Bytes": "86de973a045627a753bb17e6cd6f2b55d59741f52d864a106b590071509d0d1c",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings$getSettings$$inlined$map$1.class",
+    "sha256Bytes": "60aab9f366ec0e19ccce67cf0436633d1101be66e0c0b73f9c11865d8474e979",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings.class",
+    "sha256Bytes": "b2b1171567c16a1803d72104256e7a0bad065e50dde7ddd9e4f7b3c2f0a8625c",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/HomeFeedCardStyle$Companion.class",
+    "sha256Bytes": "bdd5067c1bf0053ea69a78f54f41305618c2ad09a98a775f7e244ad4622694d1",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/HomeFeedCardStyle.class",
+    "sha256Bytes": "64a9bfb16b66a0cbc2bf9e6b6c16a2460425d86202587d9cc8ecb9a1d3a14b32",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/HomeFeedCardWidthPreset$Companion.class",
+    "sha256Bytes": "22b2361a8895c2419427d9bed4ad11414f5d237382c6fefe191bf4a5e39d1602",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/store/HomeFeedCardWidthPreset.class",
+    "sha256Bytes": "ea0accd38fca94e167f4f2603efd93f4aa81b4f34da04d4a123b7ee21b7913a7",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedPrependScrollPolicyKt.class",
+    "sha256Bytes": "455fbfae4f0e6ebc920062c9bce26e31ef584abb197ece7e5ac011588dae2b68",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedPrependScrollTarget.class",
+    "sha256Bytes": "7ef58244763d87841bf565ebff1317471a3f4b93c1c7eea802da427ce437d9c5",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGridKt$FeedVerticalStaggeredGrid$1$1$2.class",
+    "sha256Bytes": "ac95a84b2a7d5ac712528902f1196ccb4120977294a07a7deeeace2f3619763c",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGridKt$FeedVerticalStaggeredGrid$1$1.class",
+    "sha256Bytes": "f8958c7df901c404768bdd1d1a2f28721d83354884ec707a3ef7250761f7a38e",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGridKt.class",
+    "sha256Bytes": "8d7f6226ab4f6ae11c1468877f308135d062e8f34dd8aabb480f837b74a56d29",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/ui/components/FeedVisibleAnchor.class",
+    "sha256Bytes": "35797adf3f08e8f26c29166488ac286eb1a2fd43c386d3d111809efab87cdd13",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/util/DesktopOriginalHomeCardWidthClassKt.class",
+    "sha256Bytes": "f1937213bd5c6f6b5f8d01e4adbbc5ab5d46ee427df0cd413bd346bb6165881b",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/core/util/WindowWidthSizeClass.class",
+    "sha256Bytes": "7e48ef33e363d102000d02165f742579d910f02686cb923ea3076303dfc037f6",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPolicyKt$WhenMappings.class",
+    "sha256Bytes": "16dfab4bffc74842af805ef2c5c5fb8952b7863561e97915999691b1e7d60fe8",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPolicyKt.class",
+    "sha256Bytes": "f945304361dd611722252cad588f4b580067a104d9dd0d506fb39dbca399f5af",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/HomeFeedCardDensityPolicy.class",
+    "sha256Bytes": "077dc85fad37f9cfc900ae804ef71bb2e18dcfb378c7f9ed6a3c5222fc79b3df",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/HomeFeedCardDensityPolicyKt.class",
+    "sha256Bytes": "a3621e759c21c5db9f539e07c4f142c70825103fa40280ed5acdacabedfc75c0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/HomeFeedCardLayout.class",
+    "sha256Bytes": "c6a38a4740c90d914923729fe4404b4351480e780ce7e6d5b2119fadaa9d4880",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/HomeFeedCardStylePolicyKt$WhenMappings.class",
+    "sha256Bytes": "58c92d60ef7951a05825e6e2e821e00393c0ed9657ac94b8f9707bb7fb8057a0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/home/HomeFeedCardStylePolicyKt.class",
+    "sha256Bytes": "eeddccef20d32f64f1e44ff7432fbe888eafa7c3125b7c7d35f77e1b42a23ece",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/settings/DesktopOriginalHomeCardFieldsKt.class",
+    "sha256Bytes": "3d2c7ff3808b77995ba7c8f63c863fcb394657b3b823d1bbd116e16d40d06e6b",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/android/purebilibili/feature/settings/DesktopOriginalHomeCardWidthOptionsKt.class",
+    "sha256Bytes": "44b03e0a4eb04fd9935fed42774f136e97fdfe7540d611025a05ec0e3d758f98",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardDataStore$edit$2.class",
+    "sha256Bytes": "39dfdf433e2c76f1f62feb17802dd5e4054155871042276ebb3bce56df79c379",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardDataStore.class",
+    "sha256Bytes": "0ec27c6f53020b239e5c51afb164bd6cf1b01ca9b83e2bd372c5e471debe8849",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferenceEditor.class",
+    "sha256Bytes": "39af33e4c6c3e4f34faf9a11e7758de25d80d5f951d0b6098d82d221d15c9429",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferences.class",
+    "sha256Bytes": "3a1dbb5a0d815b1aa6b4e8e508978ee7547289bd59c52249ec97c51a262776b9",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesKt$DesktopHomeCardSettingsSection$1$1$1$1.class",
+    "sha256Bytes": "4ecd5e04f93016c86bdde715653d38bf815e05cf7eb6f8b8ca93bd5420add7de",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesKt$DesktopHomeCardSettingsSection$1$2$1$1.class",
+    "sha256Bytes": "809780c9fd34bf1f03bee9aef2507984931bc6292ff27df2ed549fcb7aae7ef0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesKt$DesktopHomeCardSettingsSection$1$3$1$1.class",
+    "sha256Bytes": "8b48d285112e3b099070d194a845a04eed365c39c05b48de00d7e614e38ba2b8",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesKt$DesktopHomeCardSettingsSection$write$1.class",
+    "sha256Bytes": "7f3c267a2030a446667aa9308eb8b28e99aac54159ef46bd0aacbd6f9a577293",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesKt.class",
+    "sha256Bytes": "e76fc52326afb5acc4dce1bfcf1795f5d48e1929b8ee2ab2a24c2be7a895c818",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$cancellationBeforeIoEntryDoesNotPersist$1$job$1.class",
+    "sha256Bytes": "41a760b12895858388aeba71c2791cd2b2c55dbedcbdb121e3a173dee41cd5aa",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$cancellationBeforeIoEntryDoesNotPersist$1.class",
+    "sha256Bytes": "5c4244cf8a69b5914b82b44270499149c0c48832c62643ae81713d864eaab48d",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$failedAtomicReplacementDoesNotPublishNewSettings$1.class",
+    "sha256Bytes": "41e11617b5d1e8feed972dd0a0dbb287c1bf271125fd13d6539972b92913be32",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$frozenRestoreGenerationCannotOverwriteFreshSettings$1.class",
+    "sha256Bytes": "e353e070f117df8fc758a7e8c8476fcaffbbbf86a98e190bd7556ca32c4a0025",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$originalPersistedDefaultsDoNotCreateAFile$1.class",
+    "sha256Bytes": "6647a8fede106ef24c0036afd9d91a92070fd19aeed21aff5b7c7009577fa6cb",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$realGlobalWritesKeepIndependentCompactMemoryAndUnrelatedKeys$1.class",
+    "sha256Bytes": "2c142c142ae6db6c7677f93726962ff04a75a06d2f6dc3c74fb0c2964912821f",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest$unknownEnumValuesUseOriginalFallbackAndDoNotRewriteDisk$1.class",
+    "sha256Bytes": "1a718d32f8ea7c7ad068afcfcc4307b9b780af087924856451cd79fb21ba1d4d",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.class",
+    "sha256Bytes": "780ec8149c01b3188dfc36aa8d2fdb6663e16461c42b716c588125cc7116d933",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/proof/ColdDiskReaderKt.class",
+    "sha256Bytes": "31d55adda4e2d4bd0752de4137632987aadaea7b4f59571ccde500887c7ce6f6",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/proof/JunitFixtureKt$main$$inlined$sortedBy$1.class",
+    "sha256Bytes": "89a27ef22e81f6fded98144026e6d51ed07917302a7c8707d368b9f9157b8d3c",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/proof/JunitFixtureKt.class",
+    "sha256Bytes": "83bf1e44e2503df9b1a5fc5cddf6502de10c6665d95fd672363a0e4939452afe",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/ComposableSingletons$DiscoveryScreensKt.class",
+    "sha256Bytes": "d57e24ff8bdf946c720f1578a41079ce205a5f901f398b7459c046df5a589ba7",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DesktopHomeCardGridKt.class",
+    "sha256Bytes": "48e2d46d3e1b790f0d7281b748f1e9e7c1b9eed08d407b82a29ae2ab0d43001d",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$1.class",
+    "sha256Bytes": "c331692397048b278f3ae516bff10e5c96bc65c7b4a815ae83fcf96719914ed4",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$2$1$4$1$1$1$1.class",
+    "sha256Bytes": "681baaaf73caf30cf8a194b63645172a0d609fa290a72f528865d97109863af1",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$2$1$4$2$1$1$1.class",
+    "sha256Bytes": "d0806ea43ce77cd839c017ac904f3e9987be509f26884f039301473b701a7b1d",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$1.class",
+    "sha256Bytes": "ba9b963bdc96678c101f2fddd577a897e63c82d06c5cba1e451e5c98e79f2bb2",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$1$2$1.class",
+    "sha256Bytes": "ce097dbaca111d93563d4a2bc39b819457337680b46561a6c98924d64a443d45",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$6$1$1$1.class",
+    "sha256Bytes": "64b9d000f200a6a9ec5e71f851149a09872b7cce3ad02b34300e9614a953be54",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$7$3$1.class",
+    "sha256Bytes": "3b321e69309bfa68239e23c40289684ba49060ed15ed525a06a1f3a41dd48c46",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$3$1$1$1.class",
+    "sha256Bytes": "dd94a22ed4926378d92174249902b8c19efa256dc1599f1f19c92a1d33be8635",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$3$1$2$1$1.class",
+    "sha256Bytes": "6d601c3d5c8ae754eadb3de7e8d89bd5531590f2bdc78b5d3da59ba81cd1bd87",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$3$1$2$2$1.class",
+    "sha256Bytes": "5e5c33f1c433e36b75ff8ec057a78a64361d4257c06809d418d0f6bd458bd8f6",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$3$1$2$3$1.class",
+    "sha256Bytes": "633cd248cbbf9fe75295f069ea338b197b376d0fec3749e8305a05011ad35712",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$4$1$1.class",
+    "sha256Bytes": "8cc521ea98c54129deeac8a7821893a5912c859acd68738bdafa212eda81f8f9",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$5$1$1.class",
+    "sha256Bytes": "abd5861fde7935ac44328de338835db514fcbf646f61e9c85806d114c5f49e65",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$3$2$1.class",
+    "sha256Bytes": "64760f66749222448bbeafda237524ff7ea439be250695793cdf969490ef769b",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$6$1$1$1$3$1.class",
+    "sha256Bytes": "5e2845482cb7d9c7a4f76cfef2924cedd311cee20ff338ab00341214af088bba",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$fetch$1.class",
+    "sha256Bytes": "892b0073df92c082023acd9ab65f5bf02d020f0ca8acdcf1818fff2eec631eed",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$1.class",
+    "sha256Bytes": "a247de54bb9b252e39eacd59183c527307ba0f307cfb88fbeeacae46659c2061",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$2.class",
+    "sha256Bytes": "5c5a7bde5bacb67e3b7b142399de903cb46ef9386f3a59d06a5a41b852eb44e7",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$3.class",
+    "sha256Bytes": "acda44f1425c54ec268172f52c7021a92dccd336bde470a5630b2b50a20b8bb1",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$4.class",
+    "sha256Bytes": "2ceff49a31dd675afef35a5e354d514e67eb4a345828e2b6f1ea47dfc434f1db",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$1$1.class",
+    "sha256Bytes": "022cbe0eacdf82df6dbd5c82a42005f357219f616f39cc3a6bb954bd8e0ecf88",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$2.class",
+    "sha256Bytes": "08b7f6b1b3bfe9ff6ab26dd3e09772f47dc26285ac44affc0f080c099ad0a417",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$1$1.class",
+    "sha256Bytes": "726128611c56a4eca1d1c6c05a22e55f8efa6ea1442a314c5f7c99842673d2a2",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$2.class",
+    "sha256Bytes": "a95c421936a7aad520bdf5a4c362b5561626b196391f82cd058f785471f21ed6",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$1.class",
+    "sha256Bytes": "2cf04fa4c5c20a2908baae81243118edc2703a6aa4781b47989a30dd9bf0d9a3",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$2.class",
+    "sha256Bytes": "34f81a296c06c7b363a3d9bee0e3a0b05e6115bbe647983036c2384d374ee41b",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$3.class",
+    "sha256Bytes": "53c1526d71f5ae48d35db6eefb5f8d88773d9684965d009962855eabebaed422",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$4.class",
+    "sha256Bytes": "f9ed5b97f9595b1c8deda00ebff39bf749c857209a0862ce8e1de9fc7f6d9d3f",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$2$1.class",
+    "sha256Bytes": "bde1a9bda35b5c5069593965433f16cac5bceb53aec5dd78463edab8a8aeddac",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$3$1.class",
+    "sha256Bytes": "cb0c51f8f4ce8e15b36004adeac540eb608bdbf95ca8cf0d73269a0c94fd9797",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt.class",
+    "sha256Bytes": "e253f8ed2e9882f5c36a593a8d6fbf02948d394f0d1553b107d61baba0f18f12",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreenState.class",
+    "sha256Bytes": "d9e70b29e1051780a77e6f0234aa3c7d9fa5471c17393296d142efcfbe7b1f3a",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$await$1.class",
+    "sha256Bytes": "ed1bb11043683800ef757de035ce5032c2459139b21b409fd5493edc9a97d007",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$await$2.class",
+    "sha256Bytes": "65a88097f0ccaa990691ad82957a1814ed3d6db9a9c25241cf79b77a99db23f2",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$click$1.class",
+    "sha256Bytes": "64252edc2b8fb7b93af3e9e8f6f35d0536eaae665f96d51c90dcbb43088dfd0b",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$frame$1.class",
+    "sha256Bytes": "b4d574fe3cf475fc8eeeac2b425de8ba25bd3550148a53aec7d8a762e4720a97",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "7b5b601d05bcf4bf74f3b69dc5d41666c3983a7134d04db9ae2ce904a80a3742",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui.class",
+    "sha256Bytes": "6219352793f2edb1cdf466ad7a0a93b4aea48195cbcd36ca119e44eb3e5e5ec0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/UiFixtureKt$case$1.class",
+    "sha256Bytes": "a7f94c361cde872b6c87f3d8c2b645bd7bcbf7ec11881b801eef7db4ea427ee0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/UiFixtureKt$main$1.class",
+    "sha256Bytes": "9acbe553668b486b2ebb5dd0e08a79a9fe92609dcf65df108f345a84ea33ced0",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/UiFixtureKt.class",
+    "sha256Bytes": "678b80ce78b7fedfbfa542e85363b1557d2e25b6fde69449fedbe1417d7e1463",
+    "shadowsProduct": false
+  },
+  {
+    "entry": "META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "ae43ed4abaef14cddfeb045ec5c2446878959bdeb937eb32125c2bf21cc4ca44",
+    "shadowsProduct": false
+  }
+]

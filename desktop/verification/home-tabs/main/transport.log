@@ -1,0 +1,2 @@
+PASS: actual original API queries/type, MID cursor, followings/live/unread, shared cookie jar and same-MID epoch rejection; zero sockets
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/AppData/Local/Temp/bp-home-tabs-bgxceqnj/home

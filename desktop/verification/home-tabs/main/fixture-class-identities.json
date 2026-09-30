@@ -1,0 +1,172 @@
+[
+  {
+    "entry": "com/bilipai/desktop/ui/ComposableSingletons$TabsUiFixtureKt.class",
+    "sha256Bytes": "dd2494178921bbc8d65218180e23b61a259e327e2dca4743be0db6526160063b",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsModelFixturesKt.class",
+    "sha256Bytes": "8e7ad918c1035862cc9b0f5264067739176d592d779f17f4313c9db41f10c66c",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsScene$await$1.class",
+    "sha256Bytes": "ee7601430f0192b30fccaab4422e8aa3a6e4d6318857a049dbcf1d3e2ff88691",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsScene$await$2.class",
+    "sha256Bytes": "7309e221b1c864f1958b69cc1ef82b23416e4b73f4e99b4871709b00cf00d78c",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsScene$press$1.class",
+    "sha256Bytes": "e3affacd4601245705bd02d96e534acb5f699059b2b4de0d4345a118d56455a8",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsScene.class",
+    "sha256Bytes": "dc08de2ee377e70b71147f593f726a4f94b7128a9bb7221055b61cef9088eb56",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$6.class",
+    "sha256Bytes": "e9658aba61af379c7760fb679f7c1bdadb98a4075df06f9124d272451259817b",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$delayed$1.class",
+    "sha256Bytes": "0129e8a3668032fc4d17a9537ae89b6e668ea8e27dbfe257f7d83938459bb116",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+    "sha256Bytes": "8fdf051df6747ce6596c314194aa2b05059ca1687abae9b09baecbd185963f47",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$user$1.class",
+    "sha256Bytes": "fa55fa1b7a9d3785937d7ead6b8dc8556a4f098f0d028b179958b4b907869c66",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1.class",
+    "sha256Bytes": "c8d47863a5eb6bcbccb9512bf6bf1520d6a9a8a4f50baf0e089acf86fa22c272",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsTransportFixtureKt.class",
+    "sha256Bytes": "6ded9823776684be2bb969985dd30a01213a14dc284645d89e2200ed12467c5b",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$1$1$1$1$2$4$1.class",
+    "sha256Bytes": "dc9402678739a6d8f94647a26856db959e6d4229af76694c675121232c651db1",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$3$1.class",
+    "sha256Bytes": "2530cac15c0ea0980ad57ea37ca1d52919a75523dafe5a8618d92e6bc4076ed2",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$5$1.class",
+    "sha256Bytes": "26b17de8ddb283cad1ea88eafc8c75242b4907477680c020b6ab4a0be307fe65",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$9$1.class",
+    "sha256Bytes": "38f654f8530c8821f2843f55df70a503f44db9dd94cc2ee30469c92a86c5e1fe",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$timeline$1$1.class",
+    "sha256Bytes": "757c52144bdad0bc85d47709ac6568552628b7e6ed6b084d30286c35516d3f6e",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$1.class",
+    "sha256Bytes": "5d373213d75b4ed93fe8823596b54f9570051ba4a24266bf4893c5cba44de038",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$2.class",
+    "sha256Bytes": "045cb89ea1a9759fe824b5bebd599b9ee86859665af79847dca7b89ec166efee",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$3.class",
+    "sha256Bytes": "64997626c749cec71e6e24931fadb9cabd732d77126d99b145e4f5992b72e0f6",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$4.class",
+    "sha256Bytes": "1da0b7a9b462d5333535a4c8e45c70b65fa7cc5df3e7f3d8cfb744fee9a7650d",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt$main$1.class",
+    "sha256Bytes": "0e7c3dc69a05d00544d4ab94f9b098896449998b42efd5a94202ee6fef5d44ef",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/TabsUiFixtureKt.class",
+    "sha256Bytes": "aaf99921e026c6c8b380a4ffaebe6b02e99dd075f879bec744a36e977a7a6449",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/settings/proof/ColdDiskReaderKt.class",
+    "sha256Bytes": "c3ddc6a5962cd6ca5c460545718be27568d3d464231b546ff64b6e01e4d1f43f",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/HomeUiFixtureKt$case$1.class",
+    "sha256Bytes": "c5e7a9900105ea95b67d8fefd88764f97d324a3cdcd7292f8a95b56a6b6f4e7c",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/HomeUiFixtureKt$compactCase$1.class",
+    "sha256Bytes": "b919b927db334f292fb0d198a7a2ac8e2a7bf0ef135eee940aa65a93b2b89dfe",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/HomeUiFixtureKt$main$1.class",
+    "sha256Bytes": "efd6cfae8d8aed8c4fa1938f922fec98b2585232f0adac7b17b6a63fd545f130",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/HomeUiFixtureKt.class",
+    "sha256Bytes": "d8ce0ce08cb60100ace84f7a8c72f3b805ed9619e0980c2a86e0872a964b12d1",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$await$1.class",
+    "sha256Bytes": "6499ad9ea455f5215848bb08a5488257492dcf26425b9c451493818bfbeaeef6",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$await$2.class",
+    "sha256Bytes": "98545fcd4935f93e56b42befe79147fc7739b9907630e9410e972442e1d5864b",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$click$1.class",
+    "sha256Bytes": "12104f9d10ac274b4efae5c05e87e213d17aa131dc235e7c1a0464463b96916d",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$frame$1.class",
+    "sha256Bytes": "286ba0006804974ded63f4a83fed2d3957fa110244bb14c09b94983eec80523e",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "5ee7dddff7eaaddb8e1f40125f60c1d5200bcfd3ca32f33fa78c9204d87bf18f",
+    "overlapsProduct": false
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/proof/Ui.class",
+    "sha256Bytes": "b2b07540a105b09dc1de1713d4f5725831c5a3e0edf3e608b6f35b6b44822ae0",
+    "overlapsProduct": false
+  }
+]

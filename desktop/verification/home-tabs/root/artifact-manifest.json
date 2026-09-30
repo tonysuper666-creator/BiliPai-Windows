@@ -1,0 +1,71 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "base/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "bytes": 37775,
+      "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "base/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "bytes": 3486,
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "base/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 19468,
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "base/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "bytes": 30856,
+      "sha256Bytes": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "base/desktop/upstream-sources.json",
+      "bytes": 177186,
+      "sha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca"
+    },
+    {
+      "path": "compiled-product-snapshot.json",
+      "bytes": 16621,
+      "sha256Bytes": "ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828"
+    },
+    {
+      "path": "dynamic_tabs-sources.log",
+      "bytes": 1126,
+      "sha256Bytes": "5080cb893940bee840c1e4ea7e3f2536d3d70d46cb2e42b906977008c3e03869"
+    },
+    {
+      "path": "home_card-sources.log",
+      "bytes": 1149,
+      "sha256Bytes": "9046b67e6ea0290055abeb9050627b20ef05c999c34d531c838424bd5a0662d9"
+    },
+    {
+      "path": "installed-payload.json",
+      "bytes": 3303,
+      "sha256Bytes": "3a1631857ea60aa775aca25809e5197a9042df4e0e9e263ce8ba13f06d1ddb89"
+    },
+    {
+      "path": "root-source-seams.json",
+      "bytes": 4254,
+      "sha256Bytes": "caeedf0db98c8b05fb8732284bbb50873687db7a1edbfb1d07e7e4a5072d2cf2"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 65515,
+      "sha256Bytes": "152009cabcc08283c36db9eb46a685f8af03ace580c101a3175b602ded987781"
+    },
+    {
+      "path": "TEST-com.bilipai.desktop.settings.DesktopHomeCardPreferencesTest.xml",
+      "bytes": 1964,
+      "sha256Bytes": "b38ac3c7db7e0255cd1c8f9b413ad4de51502f79d932908f953984f5ace96e10"
+    },
+    {
+      "path": "TEST-com.bilipai.desktop.ui.DesktopDynamicTabsTest.xml",
+      "bytes": 1872,
+      "sha256Bytes": "c404e0d76feca9fd576b7c7ff04558fed850035fa04dcdde8775691f476ab4c7"
+    }
+  ],
+  "artifactCount": 13
+}

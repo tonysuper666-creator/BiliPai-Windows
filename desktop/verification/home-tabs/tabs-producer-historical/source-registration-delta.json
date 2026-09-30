@@ -1,0 +1,152 @@
+{
+  "contextManifestSHA256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca",
+  "existingIdentityFeatureExtensions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveChrome.kt",
+      "addFeatures": [
+        "settings-dynamic-tabs-parity"
+      ]
+    }
+  ],
+  "newIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "46e70da832bf1a6b1a0a9388606386fba02b47311051055cd02ca880c1e32371"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicInteractionPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "0322b2835924409fbb3716524d292c040cdcdec15769b19e272e52bd7839b6f7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdaptiveSegmentedControl.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "a18b0abaea2466d176809280036055288a0104fbe38478517c2f5e1ae7ef4208"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicUserLiveBadge.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "b7ce88539917716e98cd1a24492a1de3f292358aa88c541a83040127767322c2"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3SegmentedControl.kt",
+      "mode": "direct",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "915d6869acce7761dd57320bd21e18349aa2232535ea09b97be1aed04e93fce1"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSegmentedControl.kt",
+      "mode": "direct",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "93a338c8fc3459f4dc1760fa2bf966245bac3f836f5078158ebd154168948073"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSegmentedControlPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "5f6ab6a3b9888ababe428e98ddf82c698829ece5e9bc1b25bd1c83d7f93f2043"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt",
+      "mode": "direct",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "a4e898029cd13992e964e4d811697f39a67706e53ad48c496143f42b230fdf34"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppTonalPillTabPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "326b3c206b9501e0bd7b80528ed95790e6f87c54aad1540d32eb8d1357c91653"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-dynamic-tabs-parity"
+      ],
+      "sha256": "ab36902e683884c8e72ddb175c7a67d6a3bf5ae89f06d118e6cff66c7246a653"
+    }
+  ],
+  "resources": [],
+  "newDependencies": [],
+  "replaceWholeManifest": false,
+  "replaceWholeShell": false,
+  "replaceWholeBuildFile": false
+}

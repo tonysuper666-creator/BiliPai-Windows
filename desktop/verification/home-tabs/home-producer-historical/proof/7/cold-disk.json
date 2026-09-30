@@ -1,0 +1,42 @@
+[
+  {
+    "case": "material3-light-800",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "material3-dark-960",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "material3-dark-1680",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "miuix-light-800",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "miuix-dark-960",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "miuix-dark-1680",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "material3-compact-500",
+    "passed": true,
+    "actualColdJvm": true
+  },
+  {
+    "case": "miuix-compact-500",
+    "passed": true,
+    "actualColdJvm": true
+  }
+]

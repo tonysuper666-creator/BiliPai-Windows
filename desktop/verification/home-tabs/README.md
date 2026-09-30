@@ -1,0 +1,17 @@
+# 首页卡片设置与动态栏目证据
+
+本批在02f3a5a主线接入原首页四键/三个可见控件，以及原动态三键、native栏目、HorizontalUserList、关注列表/直播状态/未读/指定UP动态。完整原卡片、五种Sidebar/Drawer宿主、液态控件及原启动延迟计划仍未完成。当前未部署新的桌面EXE。
+
+home-producer-historical保存原1201产物交接、accepted proof10、历史拥挤与40dp失败/fixture裁切修正。tabs-producer-historical保存2568产物交接；attempts1–10曾含旧同源timeline覆盖，最终attempt11才使用当前c013时间线，仅三项明确消费者源族被prepared覆盖。历史cohort不冒充本批主程序零覆盖证明。
+
+main使用新的ab8bce1ea9ae0674d578f4c1964fd448c2df1a42aa8395e61fc1ac3ddbb78828三jar，产品jar优先，编译五个独立fixture文件；34个fixture类无任何产品类重叠。19个实际类codeSource/字节与234有序classpath摘要核验。八个首页实际UI流程验证500/800/960/1680宽、深浅与M3/Miuix、原控件点击、真实磁盘、列数与裁切像素、1280上限/6dp间距、48dp真实OnClick布局、MID700/CID501和原page/scroll/anchor；64pointer/34截图/八个cold JVM通过。窄屏compact setter明确是fixture调用，原pinch手势未完成。
+
+main两动态UI流程验证原开关/order箭头、native栏目geometry、隐藏选中后的logical fallback和MID77指定UP请求，16pointer/十张截图通过。动态row使用文本fixture，因此不证明完整DynamicCard；prepared现有真实消费者仍用旧Windows卡片。真实当前Repository/CommunityRepository与原Retrofit接口使用application interceptor拦截，保留原cursor/参数、关注/直播/未读映射与同MID换凭据迟到拒绝，零真实socket/凭据。
+
+root保存主线两个suite共20项JUnit XML、11项Python来源检查、461/210原来源审计，以及Root借用既有globalPluginContext挂载唯一HomeCards与原wrapper的四项源接缝。源接缝不等于真实完整Ready窗口。安装后发现tabs generator会同时发出DIRECT5和原准备复制的DIRECT5，已窄修为production只发15个抽取文件，独立模式显式--standalone；原算法和full direct来源没有变化。
+
+本批先完成fixture编译后，Root hash工具对已有Windows extended path重复加前缀而失败；UI尚未执行。修复读取帮助函数后只继续runtime，编译和产品未重做。该基础设施边界在driver-recovery.json保留。
+
+Root逐字节核验四cohort3944产物及75个外部任务文件，保存431项原始选定证据。临时账号/设置/日志、class/jar/native dump不入仓库。安装器旧冻结literal3789多算了20身份；实际producer清单1201+2568=3769，原字节保留，selected-evidence.json给出更正，不改变任何验证结果。
+
+真实账号、完整Main/Ready/HWND、系统动画设置读取、原生播放/系统分享、完整卡片/窗口与最终打包验收尚未完成。Compose离屏、临时盘与拦截器不支持扩大这些结论；完整功能和发布门槛仍未通过，桌面仍0.2.406.5，人工总体继续约69%。

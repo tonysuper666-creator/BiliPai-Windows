@@ -1,0 +1,552 @@
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:34: error: syntax error: Expecting a '>'.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                 ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:34: error: syntax error: Expecting ')'.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                 ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:37: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                    ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:49: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:50: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                 ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:56: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                       ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:64: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                               ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:65: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:66: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                 ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:68: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                   ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:78: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                             ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:79: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                              ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:80: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                               ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:80: error: function declaration must have a name.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                               ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:21:86: error: syntax error: Expecting a top level declaration.
+    live:suspend()->List<LiveRoom>={emptyList()},unread:suspend()->UplistData?={null},
+                                                                                     ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:5: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+    ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:12: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+           ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:20: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                   ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:21: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                    ^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:24: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                       ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:25: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                        ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:31: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                              ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:32: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                               ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:38: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                     ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:39: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                      ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:40: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                       ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:42: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                         ^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:61: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                                            ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:62: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                                             ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:62: error: function declaration must have a name.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:89: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                                                                        ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:22:90: error: syntax error: Expecting a top level declaration.
+    request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
+                                                                                         ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:5: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:29: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                            ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:30: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                             ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:35: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                  ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:36: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                   ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:41: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                        ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:42: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                         ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:44: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                           ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:45: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                            ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:51: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                  ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:52: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                   ^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:56: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                       ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:57: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                        ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:63: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                              ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:64: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                               ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:71: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                                      ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:72: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                                       ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:23:77: error: syntax error: Expecting a top level declaration.
+    DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
+                                                                            ^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:37:33: error: no value passed for parameter 'live'.
+        val restored=state(this,two);assertEquals(3,restored.selectedLogicalTab);restored.close()
+                                ^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:37:62: error: unresolved reference 'selectedLogicalTab'.
+        val restored=state(this,two);assertEquals(3,restored.selectedLogicalTab);restored.close()
+                                                             ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:37:91: error: unresolved reference 'close'.
+        val restored=state(this,two);assertEquals(3,restored.selectedLogicalTab);restored.close()
+                                                                                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:40:21: error: no value passed for parameter 'live'.
+        val s=state(this);s.selectTab(3);assertEquals("article",resolveDynamicFeedRequestType(s.selectedLogicalTab))
+                    ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:40:29: error: unresolved reference 'selectTab'.
+        val s=state(this);s.selectTab(3);assertEquals("article",resolveDynamicFeedRequestType(s.selectedLogicalTab))
+                            ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:40:97: error: unresolved reference 'selectedLogicalTab'.
+        val s=state(this);s.selectTab(3);assertEquals("article",resolveDynamicFeedRequestType(s.selectedLogicalTab))
+                                                                                                ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:41:11: error: unresolved reference 'applyTabs'.
+        s.applyTabs(setOf("video","pgc"),listOf("pgc","video"))
+          ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:42:26: error: unresolved reference 'selectedLogicalTab'.
+        assertEquals(2,s.selectedLogicalTab);assertEquals("pgc",resolveDynamicFeedRequestType(s.selectedLogicalTab))
+                         ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:42:97: error: unresolved reference 'selectedLogicalTab'.
+        assertEquals(2,s.selectedLogicalTab);assertEquals("pgc",resolveDynamicFeedRequestType(s.selectedLogicalTab))
+                                                                                                ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:43:26: error: unresolved reference 'preferences'.
+        assertEquals(2,s.preferences.selectedTab)
+                         ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:44:11: error: unresolved reference 'applyTabs'.
+        s.applyTabs(emptySet(),emptyList());assertEquals(0,s.selectedLogicalTab)
+          ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:44:21: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        s.applyTabs(emptySet(),emptyList());assertEquals(0,s.selectedLogicalTab)
+                    ^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:44:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        s.applyTabs(emptySet(),emptyList());assertEquals(0,s.selectedLogicalTab)
+                               ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:44:62: error: unresolved reference 'selectedLogicalTab'.
+        s.applyTabs(emptySet(),emptyList());assertEquals(0,s.selectedLogicalTab)
+                                                             ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:45:11: error: unresolved reference 'preferences'.
+        s.preferences.setVisibleTabs(setOf("all"));s.preferences.toggleVisibility("all");assertEquals(setOf("all"),s.preferences.visibleTabs.first())
+          ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:45:54: error: unresolved reference 'preferences'.
+        s.preferences.setVisibleTabs(setOf("all"));s.preferences.toggleVisibility("all");assertEquals(setOf("all"),s.preferences.visibleTabs.first())
+                                                     ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:45:118: error: unresolved reference 'preferences'.
+        s.preferences.setVisibleTabs(setOf("all"));s.preferences.toggleVisibility("all");assertEquals(setOf("all"),s.preferences.visibleTabs.first())
+                                                                                                                     ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:46:11: error: unresolved reference 'close'.
+        s.close()
+          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:49:72: error: no parameter with name 'request' found.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={calls+=it;tabsResponse(listOf(tabsDynamic("remote")))})
+                                                                       ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:49:72: error: no value passed for parameter 'live'.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={calls+=it;tabsResponse(listOf(tabsDynamic("remote")))})
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:49:88: error: unresolved reference 'it'.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={calls+=it;tabsResponse(listOf(tabsDynamic("remote")))})
+                                                                                       ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:50:11: error: unresolved reference 'selectUser'.
+        s.selectUser(42);eventually{!s.userLoading};assertEquals(4,s.selectedLogicalTab)
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:50:40: error: unresolved reference 'userLoading'.
+        s.selectUser(42);eventually{!s.userLoading};assertEquals(4,s.selectedLogicalTab)
+                                       ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:50:70: error: unresolved reference 'selectedLogicalTab'.
+        s.selectUser(42);eventually{!s.userLoading};assertEquals(4,s.selectedLogicalTab)
+                                                                     ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:51:20: error: unresolved reference 'userItems'.
+        val rows=s.userItems;s.applyTabs(defaultDynamicTabVisibleIds,listOf("up","article","pgc","video","all"))
+                   ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:51:32: error: unresolved reference 'applyTabs'.
+        val rows=s.userItems;s.applyTabs(defaultDynamicTabVisibleIds,listOf("up","article","pgc","video","all"))
+                               ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:52:29: error: unresolved reference 'visibleTabs'.
+        assertEquals("up",s.visibleTabs.first().id);assertEquals(4,s.selectedLogicalTab);assertEquals(42,s.selectedUid)
+                            ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:52:41: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        assertEquals("up",s.visibleTabs.first().id);assertEquals(4,s.selectedLogicalTab);assertEquals(42,s.selectedUid)
+                                        ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:52:49: error: unresolved reference 'id'.
+        assertEquals("up",s.visibleTabs.first().id);assertEquals(4,s.selectedLogicalTab);assertEquals(42,s.selectedUid)
+                                                ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:52:70: error: unresolved reference 'selectedLogicalTab'.
+        assertEquals("up",s.visibleTabs.first().id);assertEquals(4,s.selectedLogicalTab);assertEquals(42,s.selectedUid)
+                                                                     ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:52:108: error: unresolved reference 'selectedUid'.
+        assertEquals("up",s.visibleTabs.first().id);assertEquals(4,s.selectedLogicalTab);assertEquals(42,s.selectedUid)
+                                                                                                           ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:53:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        assertSame(rows,s.userItems);assertEquals(1,calls.size);assertEquals("42",calls.single()["host_mid"])
+        ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:53:27: error: unresolved reference 'userItems'.
+        assertSame(rows,s.userItems);assertEquals(1,calls.size);assertEquals("42",calls.single()["host_mid"])
+                          ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:54:11: error: unresolved reference 'selectUser'.
+        s.selectUser(42);delay(180);assertEquals(1,calls.size);s.close()
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:54:66: error: unresolved reference 'close'.
+        s.selectUser(42);delay(180);assertEquals(1,calls.size);s.close()
+                                                                 ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:57:56: error: no parameter with name 'request' found.
+        var requests=0;var profile=0L;val s=state(this,request={requests++;tabsResponse(emptyList())})
+                                                       ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:57:56: error: no value passed for parameter 'live'.
+        var requests=0;var profile=0L;val s=state(this,request={requests++;tabsResponse(emptyList())})
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:58:11: error: unresolved reference 'applyTabs'.
+        s.applyTabs(setOf("all","article"),emptyList());s.selectUser(93){profile=it};delay(150)
+          ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:58:44: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        s.applyTabs(setOf("all","article"),emptyList());s.selectUser(93){profile=it};delay(150)
+                                           ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:58:59: error: unresolved reference 'selectUser'.
+        s.applyTabs(setOf("all","article"),emptyList());s.selectUser(93){profile=it};delay(150)
+                                                          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:58:82: error: unresolved reference 'it'.
+        s.applyTabs(setOf("all","article"),emptyList());s.selectUser(93){profile=it};delay(150)
+                                                                                 ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:59:72: error: unresolved reference 'selectedUid'.
+        assertEquals(93,profile);assertEquals(0,requests);assertNull(s.selectedUid);assertEquals(0,s.selectedLogicalTab);s.close()
+                                                                       ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:59:102: error: unresolved reference 'selectedLogicalTab'.
+        assertEquals(93,profile);assertEquals(0,requests);assertNull(s.selectedUid);assertEquals(0,s.selectedLogicalTab);s.close()
+                                                                                                     ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:59:124: error: unresolved reference 'close'.
+        assertEquals(93,profile);assertEquals(0,requests);assertNull(s.selectedUid);assertEquals(0,s.selectedLogicalTab);s.close()
+                                                                                                                           ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:62:72: error: no parameter with name 'request' found.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={params->calls+=params
+                                                                       ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:62:72: error: no value passed for parameter 'live'.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={params->calls+=params
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:62:81: error: cannot infer type for value parameter 'params'. Specify it explicitly.
+        val calls=mutableListOf<Map<String,String>>();val s=state(this,request={params->calls+=params
+                                                                                ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:65:11: error: unresolved reference 'selectUser'.
+        s.selectUser(81);eventually{!s.userLoading};assertEquals(listOf("","next"),calls.map{it["offset"]})
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:65:40: error: unresolved reference 'userLoading'.
+        s.selectUser(81);eventually{!s.userLoading};assertEquals(listOf("","next"),calls.map{it["offset"]})
+                                       ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:68:11: error: unresolved reference 'loadMoreUser'.
+        s.loadMoreUser();eventually{!s.userLoading};assertEquals("tail",calls.last()["offset"])
+          ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:68:40: error: unresolved reference 'userLoading'.
+        s.loadMoreUser();eventually{!s.userLoading};assertEquals("tail",calls.last()["offset"])
+                                       ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:69:40: error: unresolved reference 'userItems'.
+        assertEquals(listOf("1","2"),s.userItems.map{it.id_str});assertFalse(s.hasUserMore);s.close()
+                                       ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:69:54: error: unresolved reference 'it'.
+        assertEquals(listOf("1","2"),s.userItems.map{it.id_str});assertFalse(s.hasUserMore);s.close()
+                                                     ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:69:80: error: unresolved reference 'hasUserMore'.
+        assertEquals(listOf("1","2"),s.userItems.map{it.id_str});assertFalse(s.hasUserMore);s.close()
+                                                                               ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:69:95: error: unresolved reference 'close'.
+        assertEquals(listOf("1","2"),s.userItems.map{it.id_str});assertFalse(s.hasUserMore);s.close()
+                                                                                              ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:72:106: error: no parameter with name 'request' found.
+        val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();val s=state(this,request={params->
+                                                                                                         ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:72:106: error: no value passed for parameter 'live'.
+        val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();val s=state(this,request={params->
+                                                                                                         ^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:72:115: error: cannot infer type for value parameter 'params'. Specify it explicitly.
+        val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();val s=state(this,request={params->
+                                                                                                                  ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:73:16: error: operator '==' cannot be applied to 'MatchGroup?' and 'String'.
+            if(params["host_mid"]=="81"){entered.complete(Unit);withContext(NonCancellable){release.await()};tabsResponse(listOf(tabsDynamic("old",81)))}
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:73:65: error: suspension functions can only be called within coroutine body.
+            if(params["host_mid"]=="81"){entered.complete(Unit);withContext(NonCancellable){release.await()};tabsResponse(listOf(tabsDynamic("old",81)))}
+                                                                ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:75:11: error: unresolved reference 'updateTimeline'.
+        s.updateTimeline(listOf(tabsDynamic("local",81)));s.selectUser(81);entered.await()
+          ^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:75:61: error: unresolved reference 'selectUser'.
+        s.updateTimeline(listOf(tabsDynamic("local",81)));s.selectUser(81);entered.await()
+                                                            ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:76:40: error: unresolved reference 'visibleItems'.
+        assertEquals(listOf("local"),s.visibleItems().map{it.id_str})
+                                       ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:76:59: error: unresolved reference 'it'.
+        assertEquals(listOf("local"),s.visibleItems().map{it.id_str})
+                                                          ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:77:11: error: unresolved reference 'selectUser'.
+        s.selectUser(82);release.complete(Unit);eventually{!s.userLoading&&s.userItems.isNotEmpty()}
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:77:63: error: unresolved reference 'userLoading'.
+        s.selectUser(82);release.complete(Unit);eventually{!s.userLoading&&s.userItems.isNotEmpty()}
+                                                              ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:77:78: error: unresolved reference 'userItems'.
+        s.selectUser(82);release.complete(Unit);eventually{!s.userLoading&&s.userItems.isNotEmpty()}
+                                                                             ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:78:27: error: unresolved reference 'selectedUid'.
+        assertEquals(82,s.selectedUid);assertEquals(listOf("new"),s.userItems.map{it.id_str})
+                          ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:78:69: error: unresolved reference 'userItems'.
+        assertEquals(82,s.selectedUid);assertEquals(listOf("new"),s.userItems.map{it.id_str})
+                                                                    ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:78:83: error: unresolved reference 'it'.
+        assertEquals(82,s.selectedUid);assertEquals(listOf("new"),s.userItems.map{it.id_str})
+                                                                                  ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:79:11: error: unresolved reference 'selectTab'.
+        s.selectTab(1);assertNull(s.selectedUid);assertTrue(s.userItems.isEmpty());s.close()
+          ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:79:37: error: unresolved reference 'selectedUid'.
+        s.selectTab(1);assertNull(s.selectedUid);assertTrue(s.userItems.isEmpty());s.close()
+                                    ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:79:63: error: unresolved reference 'userItems'.
+        s.selectTab(1);assertNull(s.selectedUid);assertTrue(s.userItems.isEmpty());s.close()
+                                                              ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:79:86: error: unresolved reference 'close'.
+        s.selectTab(1);assertNull(s.selectedUid);assertTrue(s.userItems.isEmpty());s.close()
+                                                                                     ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:83:50: error: no parameter with name 'request' found.
+        val s=state(this,owned={epoch.get()==1L},request={entered.complete(Unit);withContext(NonCancellable){release.await()};tabsResponse(listOf(tabsDynamic("old")))},
+                                                 ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:83:82: error: suspension functions can only be called within coroutine body.
+        val s=state(this,owned={epoch.get()==1L},request={entered.complete(Unit);withContext(NonCancellable){release.await()};tabsResponse(listOf(tabsDynamic("old")))},
+                                                                                 ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:84:13: error: no value passed for parameter 'live'.
+            follow={withContext(NonCancellable){release.await()};FollowingsData(listOf(FollowingUser(99,"late","")),1)})
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:85:11: error: unresolved reference 'selectUser'.
+        s.selectUser(42);entered.await();val hydration=launch{s.hydrateUsers()};epoch.set(2);release.complete(Unit);hydration.join();delay(50)
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:85:65: error: unresolved reference 'hydrateUsers'.
+        s.selectUser(42);entered.await();val hydration=launch{s.hydrateUsers()};epoch.set(2);release.complete(Unit);hydration.join();delay(50)
+                                                                ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:86:22: error: unresolved reference 'userItems'.
+        assertTrue(s.userItems.isEmpty());assertTrue(s.users.isEmpty());s.close()
+                     ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:86:56: error: unresolved reference 'users'.
+        assertTrue(s.userItems.isEmpty());assertTrue(s.users.isEmpty());s.close()
+                                                       ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:86:75: error: unresolved reference 'close'.
+        assertTrue(s.userItems.isEmpty());assertTrue(s.users.isEmpty());s.close()
+                                                                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:93:13: error: no parameter with name 'unread' found.
+            unread={Json.decodeFromString("""{"items":[{"has_update":1,"user_profile":{"info":{"uid":51}}}]}""")})
+            ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:93:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            unread={Json.decodeFromString("""{"items":[{"has_update":1,"user_profile":{"info":{"uid":51}}}]}""")})
+                         ^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:94:11: error: unresolved reference 'updateTimeline'.
+        s.updateTimeline(listOf(tabsDynamic("stranger",111)));s.hydrateUsers()
+          ^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:94:65: error: unresolved reference 'hydrateUsers'.
+        s.updateTimeline(listOf(tabsDynamic("stranger",111)));s.hydrateUsers()
+                                                                ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:95:59: error: unresolved reference 'users'.
+        assertEquals(listOf(1,2),pages);assertEquals(51,s.users.size);assertTrue(s.users.none{it.uid==111L})
+                                                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:95:84: error: unresolved reference 'users'.
+        assertEquals(listOf(1,2),pages);assertEquals(51,s.users.size);assertTrue(s.users.none{it.uid==111L})
+                                                                                   ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:95:95: error: unresolved reference 'it'.
+        assertEquals(listOf(1,2),pages);assertEquals(51,s.users.size);assertTrue(s.users.none{it.uid==111L})
+                                                                                              ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:27: error: unresolved reference 'users'.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:41: error: unresolved reference 'uid'.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                        ^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:59: error: unresolved reference 'users'.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:65: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                                                ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:73: error: unresolved reference 'isLive'.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                                                        ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:96:107: error: unresolved reference 'unread'.
+        assertEquals(51,s.users.first().uid);assertTrue(s.users.first().isLive);assertEquals(setOf(51L),s.unread)
+                                                                                                          ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:97:11: error: unresolved reference 'preferences'.
+        s.preferences.toggleUserPreference("dynamic_pinned_users",1);s.preferences.toggleUserPreference("dynamic_hidden_users",2)
+          ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:97:72: error: unresolved reference 'preferences'.
+        s.preferences.toggleUserPreference("dynamic_pinned_users",1);s.preferences.toggleUserPreference("dynamic_hidden_users",2)
+                                                                       ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:98:11: error: unresolved reference 'updateUserPreferences'.
+        s.updateUserPreferences(s.preferences.pinned.first(),s.preferences.hidden.first())
+          ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:98:35: error: unresolved reference 'preferences'.
+        s.updateUserPreferences(s.preferences.pinned.first(),s.preferences.hidden.first())
+                                  ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:98:54: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        s.updateUserPreferences(s.preferences.pinned.first(),s.preferences.hidden.first())
+                                                     ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:98:64: error: unresolved reference 'preferences'.
+        s.updateUserPreferences(s.preferences.pinned.first(),s.preferences.hidden.first())
+                                                               ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:98:83: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        s.updateUserPreferences(s.preferences.pinned.first(),s.preferences.hidden.first())
+                                                                                  ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:26: error: unresolved reference 'users'.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                         ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:32: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                               ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:40: error: unresolved reference 'uid'.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                                       ^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:58: error: unresolved reference 'users'.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                                                         ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:69: error: unresolved reference 'it'.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                                                                    ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:99:99: error: unresolved reference 'hiddenCount'.
+        assertEquals(1,s.users.first().uid);assertTrue(s.users.none{it.uid==2L});assertEquals(1,s.hiddenCount)
+                                                                                                  ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:100:11: error: unresolved reference 'toggleShowHidden'.
+        s.toggleShowHidden();assertTrue(s.users.single{it.uid==2L}.isHidden)
+          ^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:100:43: error: unresolved reference 'users'.
+        s.toggleShowHidden();assertTrue(s.users.single{it.uid==2L}.isHidden)
+                                          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:100:56: error: unresolved reference 'it'.
+        s.toggleShowHidden();assertTrue(s.users.single{it.uid==2L}.isHidden)
+                                                       ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:100:68: error: unresolved reference 'isHidden'.
+        s.toggleShowHidden();assertTrue(s.users.single{it.uid==2L}.isHidden)
+                                                                   ^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:101:11: error: unresolved reference 'selectUser'.
+        s.selectUser(51);assertTrue(s.unread.isEmpty());eventually{!s.userLoading};s.close()
+          ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:101:39: error: unresolved reference 'unread'.
+        s.selectUser(51);assertTrue(s.unread.isEmpty());eventually{!s.userLoading};s.close()
+                                      ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:101:71: error: unresolved reference 'userLoading'.
+        s.selectUser(51);assertTrue(s.unread.isEmpty());eventually{!s.userLoading};s.close()
+                                                                      ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:101:86: error: unresolved reference 'close'.
+        s.selectUser(51);assertTrue(s.unread.isEmpty());eventually{!s.userLoading};s.close()
+                                                                                     ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:104:26: error: no parameter with name 'request' found.
+        val s=state(this,request={tabsResponse(listOf(tabsDynamic("same",77,"DYNAMIC_TYPE_AV"),tabsDynamic("article",77),tabsDynamic("fold",77,visible=false)))})
+                         ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:104:26: error: no value passed for parameter 'live'.
+        val s=state(this,request={tabsResponse(listOf(tabsDynamic("same",77,"DYNAMIC_TYPE_AV"),tabsDynamic("article",77),tabsDynamic("fold",77,visible=false)))})
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:105:62: error: unresolved reference 'updateTimeline'.
+        val local=tabsDynamic("same",77,"DYNAMIC_TYPE_AV");s.updateTimeline(listOf(local));s.selectUser(77);eventually{!s.userLoading}
+                                                             ^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:105:94: error: unresolved reference 'selectUser'.
+        val local=tabsDynamic("same",77,"DYNAMIC_TYPE_AV");s.updateTimeline(listOf(local));s.selectUser(77);eventually{!s.userLoading}
+                                                                                             ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:105:123: error: unresolved reference 'userLoading'.
+        val local=tabsDynamic("same",77,"DYNAMIC_TYPE_AV");s.updateTimeline(listOf(local));s.selectUser(77);eventually{!s.userLoading}
+                                                                                                                          ^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:106:49: error: unresolved reference 'visibleItems'.
+        assertEquals(listOf("same","article"),s.visibleItems().map{it.id_str});assertSame(local,s.visibleItems().first())
+                                                ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:106:68: error: unresolved reference 'it'.
+        assertEquals(listOf("same","article"),s.visibleItems().map{it.id_str});assertSame(local,s.visibleItems().first())
+                                                                   ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:106:99: error: unresolved reference 'visibleItems'.
+        assertEquals(listOf("same","article"),s.visibleItems().map{it.id_str});assertSame(local,s.visibleItems().first())
+                                                                                                  ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:107:11: error: unresolved reference 'filter'.
+        s.filter=DynamicUserContentFilter.VIDEO;assertEquals(listOf("same"),s.visibleItems().map{it.id_str})
+          ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:107:79: error: unresolved reference 'visibleItems'.
+        s.filter=DynamicUserContentFilter.VIDEO;assertEquals(listOf("same"),s.visibleItems().map{it.id_str})
+                                                                              ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:107:98: error: unresolved reference 'it'.
+        s.filter=DynamicUserContentFilter.VIDEO;assertEquals(listOf("same"),s.visibleItems().map{it.id_str})
+                                                                                                 ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:108:11: error: unresolved reference 'filter'.
+        s.filter=DynamicUserContentFilter.ARTICLE;assertEquals(listOf("article"),s.visibleItems().map{it.id_str})
+          ^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:108:84: error: unresolved reference 'visibleItems'.
+        s.filter=DynamicUserContentFilter.ARTICLE;assertEquals(listOf("article"),s.visibleItems().map{it.id_str})
+                                                                                   ^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:108:103: error: unresolved reference 'it'.
+        s.filter=DynamicUserContentFilter.ARTICLE;assertEquals(listOf("article"),s.visibleItems().map{it.id_str})
+                                                                                                      ^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:109:11: error: unresolved reference 'close'.
+        s.close();s.selectUser(88);assertEquals(77,s.selectedUid)
+          ^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:109:21: error: unresolved reference 'selectUser'.
+        s.close();s.selectUser(88);assertEquals(77,s.selectedUid)
+                    ^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsTest.kt:109:54: error: unresolved reference 'selectedUid'.
+        s.close();s.selectUser(88);assertEquals(77,s.selectedUid)
+                                                     ^^^^^^^^^^^

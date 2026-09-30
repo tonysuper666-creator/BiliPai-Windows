@@ -1,0 +1,58 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardDensityPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "078e67c2e210c78d58113460b545e7bd84c6c0dad23571bf2a5d688a4a96222b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardStylePolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "857d9615df833228e526506168c6e68ff387a224249d8f6687a949d19dd3d0e7"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "cda5b8ae2ba18958739f2d51648683ed33150cec4c1db70b5c232005bd140c62"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "0216d770c562728dc9cac6549bbbbb205ac10f79bb594437665a610ae17198ff"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "d44af5c39cfc095dcb369461781d098d4e69aa2d466afb0b2b63eb5083c1a77a"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-card-parity"
+    ],
+    "sha256": "c18aa754ff40d18d6f706c73d8be5ab9a26eda63b4b987be7ae609fe3d372836"
+  }
+]

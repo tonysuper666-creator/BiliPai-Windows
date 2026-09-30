@@ -1,0 +1,17 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "baseSha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac",
+    "desiredSha256Bytes": "fcd922bcabd5105f25ecafadd6e3498e3b9858181c64191824a6f49aa08ea7a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "baseSha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4",
+    "desiredSha256Bytes": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+    "baseSha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711",
+    "desiredSha256Bytes": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+  }
+]

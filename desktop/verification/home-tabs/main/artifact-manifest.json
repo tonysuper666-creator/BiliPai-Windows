@@ -1,0 +1,816 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "actual-main-class-pins.json",
+      "bytes": 6483,
+      "sha256Bytes": "7d25d4d4bd00b6fb0dc4aec93d143e89662e4352fd1009e7ff3eae091c11960f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/proof/ColdDiskReaderKt.class",
+      "bytes": 3280,
+      "sha256Bytes": "c3ddc6a5962cd6ca5c460545718be27568d3d464231b546ff64b6e01e4d1f43f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ComposableSingletons$TabsUiFixtureKt.class",
+      "bytes": 4454,
+      "sha256Bytes": "dd2494178921bbc8d65218180e23b61a259e327e2dca4743be0db6526160063b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/HomeUiFixtureKt$case$1.class",
+      "bytes": 9129,
+      "sha256Bytes": "c5e7a9900105ea95b67d8fefd88764f97d324a3cdcd7292f8a95b56a6b6f4e7c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/HomeUiFixtureKt$compactCase$1.class",
+      "bytes": 3610,
+      "sha256Bytes": "b919b927db334f292fb0d198a7a2ac8e2a7bf0ef135eee940aa65a93b2b89dfe"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/HomeUiFixtureKt$main$1.class",
+      "bytes": 16314,
+      "sha256Bytes": "efd6cfae8d8aed8c4fa1938f922fec98b2585232f0adac7b17b6a63fd545f130"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/HomeUiFixtureKt.class",
+      "bytes": 104197,
+      "sha256Bytes": "d8ce0ce08cb60100ace84f7a8c72f3b805ed9619e0980c2a86e0872a964b12d1"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui$await$1.class",
+      "bytes": 1798,
+      "sha256Bytes": "6499ad9ea455f5215848bb08a5488257492dcf26425b9c451493818bfbeaeef6"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui$await$2.class",
+      "bytes": 3566,
+      "sha256Bytes": "98545fcd4935f93e56b42befe79147fc7739b9907630e9410e972442e1d5864b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui$click$1.class",
+      "bytes": 1872,
+      "sha256Bytes": "12104f9d10ac274b4efae5c05e87e213d17aa131dc235e7c1a0464463b96916d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui$frame$1.class",
+      "bytes": 1613,
+      "sha256Bytes": "286ba0006804974ded63f4a83fed2d3957fa110244bb14c09b94983eec80523e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+      "bytes": 2824,
+      "sha256Bytes": "5ee7dddff7eaaddb8e1f40125f60c1d5200bcfd3ca32f33fa78c9204d87bf18f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/proof/Ui.class",
+      "bytes": 35057,
+      "sha256Bytes": "b2b07540a105b09dc1de1713d4f5725831c5a3e0edf3e608b6f35b6b44822ae0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsModelFixturesKt.class",
+      "bytes": 4950,
+      "sha256Bytes": "8e7ad918c1035862cc9b0f5264067739176d592d779f17f4313c9db41f10c66c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsScene$await$1.class",
+      "bytes": 1806,
+      "sha256Bytes": "ee7601430f0192b30fccaab4422e8aa3a6e4d6318857a049dbcf1d3e2ff88691"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsScene$await$2.class",
+      "bytes": 3574,
+      "sha256Bytes": "7309e221b1c864f1958b69cc1ef82b23416e4b73f4e99b4871709b00cf00d78c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsScene$press$1.class",
+      "bytes": 1773,
+      "sha256Bytes": "e3affacd4601245705bd02d96e534acb5f699059b2b4de0d4345a118d56455a8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsScene.class",
+      "bytes": 18476,
+      "sha256Bytes": "dc08de2ee377e70b71147f593f726a4f94b7128a9bb7221055b61cef9088eb56"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$6.class",
+      "bytes": 3342,
+      "sha256Bytes": "e9658aba61af379c7760fb679f7c1bdadb98a4075df06f9124d272451259817b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$delayed$1.class",
+      "bytes": 5301,
+      "sha256Bytes": "0129e8a3668032fc4d17a9537ae89b6e668ea8e27dbfe257f7d83938459bb116"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "bytes": 10737,
+      "sha256Bytes": "8fdf051df6747ce6596c314194aa2b05059ca1687abae9b09baecbd185963f47"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1$user$1.class",
+      "bytes": 2200,
+      "sha256Bytes": "fa55fa1b7a9d3785937d7ead6b8dc8556a4f098f0d028b179958b4b907869c66"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt$main$1.class",
+      "bytes": 32186,
+      "sha256Bytes": "c8d47863a5eb6bcbccb9512bf6bf1520d6a9a8a4f50baf0e089acf86fa22c272"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsTransportFixtureKt.class",
+      "bytes": 1184,
+      "sha256Bytes": "6ded9823776684be2bb969985dd30a01213a14dc284645d89e2200ed12467c5b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$1$1$1$1$2$4$1.class",
+      "bytes": 2189,
+      "sha256Bytes": "dc9402678739a6d8f94647a26856db959e6d4229af76694c675121232c651db1"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$3$1.class",
+      "bytes": 3435,
+      "sha256Bytes": "2530cac15c0ea0980ad57ea37ca1d52919a75523dafe5a8618d92e6bc4076ed2"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$5$1.class",
+      "bytes": 3480,
+      "sha256Bytes": "26b17de8ddb283cad1ea88eafc8c75242b4907477680c020b6ab4a0be307fe65"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$9$1.class",
+      "bytes": 3435,
+      "sha256Bytes": "38f654f8530c8821f2843f55df70a503f44db9dd94cc2ee30469c92a86c5e1fe"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$timeline$1$1.class",
+      "bytes": 4174,
+      "sha256Bytes": "757c52144bdad0bc85d47709ac6568552628b7e6ed6b084d30286c35516d3f6e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$1.class",
+      "bytes": 3597,
+      "sha256Bytes": "5d373213d75b4ed93fe8823596b54f9570051ba4a24266bf4893c5cba44de038"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$2.class",
+      "bytes": 2788,
+      "sha256Bytes": "045cb89ea1a9759fe824b5bebd599b9ee86859665af79847dca7b89ec166efee"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$3.class",
+      "bytes": 4506,
+      "sha256Bytes": "64997626c749cec71e6e24931fadb9cabd732d77126d99b145e4f5992b72e0f6"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1$users$4.class",
+      "bytes": 3917,
+      "sha256Bytes": "1da0b7a9b462d5333535a4c8e45c70b65fa7cc5df3e7f3d8cfb744fee9a7650d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt$main$1.class",
+      "bytes": 58941,
+      "sha256Bytes": "0e7c3dc69a05d00544d4ab94f9b098896449998b42efd5a94202ee6fef5d44ef"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TabsUiFixtureKt.class",
+      "bytes": 1258,
+      "sha256Bytes": "aaf99921e026c6c8b380a4ffaebe6b02e99dd075f879bec744a36e977a7a6449"
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "bytes": 217,
+      "sha256Bytes": "dd5347e500c6e890072b751712b2fde6ffe7e90b336f1a7287513450c335bcb8"
+    },
+    {
+      "path": "cold-material3-compact-500.args",
+      "bytes": 56997,
+      "sha256Bytes": "d8d3dcd87d71c2d4fb60e2451a528430bb48511dfe019cf2032b098d7fe6b832"
+    },
+    {
+      "path": "cold-material3-compact-500.log",
+      "bytes": 172,
+      "sha256Bytes": "790e32e5ccb1bc011a7a1f01a4adc21d5784d458f41d0068112554819a916897"
+    },
+    {
+      "path": "cold-material3-dark-1680.args",
+      "bytes": 56985,
+      "sha256Bytes": "ee6d4cf3a25bc6e383a9f4f1231f6eb01079b2026dd4cee3e908dbcf94ff304d"
+    },
+    {
+      "path": "cold-material3-dark-1680.log",
+      "bytes": 170,
+      "sha256Bytes": "cd7c900bc16910821ce0b6a323a6b07262bff6b0b333ed5c7c89bf14cc4215ef"
+    },
+    {
+      "path": "cold-material3-dark-960.args",
+      "bytes": 56984,
+      "sha256Bytes": "aa258f779874f39ee704f8f6b4d0c734cc0416a48a232d4afc0ed38fd5bdbac5"
+    },
+    {
+      "path": "cold-material3-dark-960.log",
+      "bytes": 169,
+      "sha256Bytes": "147c97ddb419998cebef7eef897a58143d55ebd9dc4add9a874e77abf9ea4f1c"
+    },
+    {
+      "path": "cold-material3-light-800.args",
+      "bytes": 56985,
+      "sha256Bytes": "853185997ae0d259b63941838fe34a478f0e5cd63ec571e43034d2e8b754a398"
+    },
+    {
+      "path": "cold-material3-light-800.log",
+      "bytes": 170,
+      "sha256Bytes": "292647ed344148ffc5fe1c1efb5f2b43c50816cbed3372ade3bf81bebf1f780a"
+    },
+    {
+      "path": "cold-miuix-compact-500.args",
+      "bytes": 56993,
+      "sha256Bytes": "a1b2e9b8bb4d25f875b0a05e2a7e83384a9957458638732112b097078fd564be"
+    },
+    {
+      "path": "cold-miuix-compact-500.log",
+      "bytes": 168,
+      "sha256Bytes": "413153af96fef239dc6f8b50daa88265d92bba8589c939aded6d7587e2740ec5"
+    },
+    {
+      "path": "cold-miuix-dark-1680.args",
+      "bytes": 56981,
+      "sha256Bytes": "148868a787bb1912cf0f65d943d709392ad32ee41266ddd1b15d86d6d96ee387"
+    },
+    {
+      "path": "cold-miuix-dark-1680.log",
+      "bytes": 166,
+      "sha256Bytes": "5d5d22d0cdfdd974c2b401879b189a1bbcfd4884c1244fef10e2f9a20498694c"
+    },
+    {
+      "path": "cold-miuix-dark-960.args",
+      "bytes": 56980,
+      "sha256Bytes": "6ea42216c2de89ec102cc01c5015549bf6ed3563bccec0bf4a8285a59f672434"
+    },
+    {
+      "path": "cold-miuix-dark-960.log",
+      "bytes": 165,
+      "sha256Bytes": "0c3d63296c75f0f97086276ea05e97e13b0ac4f0ecbffa36b1a58eb82c11054a"
+    },
+    {
+      "path": "cold-miuix-light-800.args",
+      "bytes": 56981,
+      "sha256Bytes": "c66272d309e2e2c81884b316cd624c57fbb1996d5f3acf2d01d3514acad94e5d"
+    },
+    {
+      "path": "cold-miuix-light-800.log",
+      "bytes": 166,
+      "sha256Bytes": "9bdf1d00ed09f3f8531092102aaa098e63bf874dc651d15fbae0b75968e1968b"
+    },
+    {
+      "path": "ColdDiskReader.kt",
+      "bytes": 858,
+      "sha256Bytes": "aa19c6952f3d2a8d141185bc320bd2685719850013f0593baa2b1af1a886f0d9"
+    },
+    {
+      "path": "compile-run-proof.json",
+      "bytes": 680,
+      "sha256Bytes": "bdc99a16655c36a0b02584276a46465a10a31c652da856525a64cc20eb451f30"
+    },
+    {
+      "path": "compile.args",
+      "bytes": 59770,
+      "sha256Bytes": "da549b7da506545e8b2e9efd949d3617b8a9de22fc67fd87480353e9d2e3dd83"
+    },
+    {
+      "path": "compile.log",
+      "bytes": 102,
+      "sha256Bytes": "d6a21559bee5efacf8d59bb976f3dbc893c4fdd3a80082127c5c848659175fd5"
+    },
+    {
+      "path": "dependency-identities.json",
+      "bytes": 86078,
+      "sha256Bytes": "fb5fcab17104c530b4675ff6bcc3b50c53dac4b25b2c55d42b78d0892e4a75b5"
+    },
+    {
+      "path": "driver-recovery.json",
+      "bytes": 450,
+      "sha256Bytes": "67492f1bfb63f76ee1a5eb1bdf216b56861e83e047ba3aa07fcf88972beae23b"
+    },
+    {
+      "path": "fixture-class-identities.json",
+      "bytes": 6730,
+      "sha256Bytes": "ee2a428b1f200c6f5309f73c991ebf5771d509ad9173fe82a0feb69c6af39a3c"
+    },
+    {
+      "path": "home.args",
+      "bytes": 57101,
+      "sha256Bytes": "929a92cf4cceaa5e545af107c89e1e9b9214755780dedf6b50130167e6e83d0a"
+    },
+    {
+      "path": "home.log",
+      "bytes": 552,
+      "sha256Bytes": "be1570ebdd46fab9f5991fe523dbe781d199f48f3a7e702b0bc691069ebb2f06"
+    },
+    {
+      "path": "HomeUiFixture.kt",
+      "bytes": 20669,
+      "sha256Bytes": "031c0afabd9aa38d67325ee2c90ae8888c96c2a9da895b12cfc5a8c5ff95bd6d"
+    },
+    {
+      "path": "proof/dynamic/material3-actual-following-rail.png",
+      "bytes": 46397,
+      "sha256Bytes": "1e99b61906316d38c3db50cade217b7270497569b3debbe5be9c6fa2a874eaf2"
+    },
+    {
+      "path": "proof/dynamic/material3-article-reordered.png",
+      "bytes": 46090,
+      "sha256Bytes": "447572af703a9b8373ad11187ac3942e80b168bd840cd7a53c532b851f59c60a"
+    },
+    {
+      "path": "proof/dynamic/material3-default-tabs.png",
+      "bytes": 43683,
+      "sha256Bytes": "30544a745d3d368519091aa2d06fa17fc5fc5ee17b424ab9f6aff5c5a7029681"
+    },
+    {
+      "path": "proof/dynamic/material3-selected-up.png",
+      "bytes": 53349,
+      "sha256Bytes": "f7e19dec21a4f42d639b6f85585d42db7a477e9024b5e0283cf7cb46552e143d"
+    },
+    {
+      "path": "proof/dynamic/material3-up-hidden-restored-all.png",
+      "bytes": 44754,
+      "sha256Bytes": "4a23b1af025a0b96c8255e9f591a3a69b79a9baeadf74d94a74e448ee367cfe1"
+    },
+    {
+      "path": "proof/dynamic/miuix-actual-following-rail.png",
+      "bytes": 46682,
+      "sha256Bytes": "2a03c8dd82d13ed23a43c049996639166d6732cf5454569863cfd604e470cd28"
+    },
+    {
+      "path": "proof/dynamic/miuix-article-reordered.png",
+      "bytes": 45514,
+      "sha256Bytes": "52369d544eb90cbdb710caf1f6fcfc94156de0a67c050f364fda7a242d961bde"
+    },
+    {
+      "path": "proof/dynamic/miuix-default-tabs.png",
+      "bytes": 43927,
+      "sha256Bytes": "672a2d7038d1c479d774c6e5edbe86e9e7b073e93434bca40cf678857def3043"
+    },
+    {
+      "path": "proof/dynamic/miuix-selected-up.png",
+      "bytes": 51970,
+      "sha256Bytes": "cba142fb855f6e7b13abcc83c0e5d3f9ada99a1e417544e57cc06da1364e2bd9"
+    },
+    {
+      "path": "proof/dynamic/miuix-up-hidden-restored-all.png",
+      "bytes": 43632,
+      "sha256Bytes": "bae9766c143f35e14dc830b495e5054c6c953cfd8209b24978b390f9f8f501c3"
+    },
+    {
+      "path": "proof/dynamic/transport-result.json",
+      "bytes": 2746,
+      "sha256Bytes": "4192c116fc504966db05978393a30ef38a4da2d39e0f170ab41cd946c31733c6"
+    },
+    {
+      "path": "proof/dynamic/ui-result.json",
+      "bytes": 1025,
+      "sha256Bytes": "43dbbaa2eba4bd28bbb2887aeb364f5d400853d66d8bc32fcacc225685a1c234"
+    },
+    {
+      "path": "proof/home/actual-main-class-identities.json",
+      "bytes": 6272,
+      "sha256Bytes": "59b01f57e16ada39bef131c6c2f88bef00a468b440edf9ff4b9d76b12102dd97"
+    },
+    {
+      "path": "proof/home/cold-disk.json",
+      "bytes": 709,
+      "sha256Bytes": "c16c43b353bb2dd4952fc76a8f16185a5910a5d4a73132390ec78cb3dccd6738"
+    },
+    {
+      "path": "proof/home/material3-compact-500/01-imported-compact2.png",
+      "bytes": 34179,
+      "sha256Bytes": "f9bb5e682f75be3d76b567929716c1bc5b338c94a5830d6d1e379adc8f195e4c"
+    },
+    {
+      "path": "proof/home/material3-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 35473,
+      "sha256Bytes": "86645ede276289017483b65f8c0b35c0813c4d4401f69b414aba320a6ebcae4a"
+    },
+    {
+      "path": "proof/home/material3-compact-500/actual-disk.json",
+      "bytes": 234,
+      "sha256Bytes": "b4f9f45323dd4e1596682b611ae1a4c32a9241afb532b52a6d020197450e3509"
+    },
+    {
+      "path": "proof/home/material3-compact-500/actual-task-global/plugin-settings.json",
+      "bytes": 234,
+      "sha256Bytes": "b4f9f45323dd4e1596682b611ae1a4c32a9241afb532b52a6d020197450e3509"
+    },
+    {
+      "path": "proof/home/material3-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "8b0b2c1583bca2147aae3c17bd0a7fa035cf773da94cdca8d19112e0ece86274"
+    },
+    {
+      "path": "proof/home/material3-compact-500/pointers.json",
+      "bytes": 172,
+      "sha256Bytes": "32b233718d4e1b7faf9801612d5f0b272f3304d54b56e820240d77bd31d16ce6"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/01-original-default-layout.png",
+      "bytes": 58024,
+      "sha256Bytes": "f292b60afbe7ca5d58158f90b87207948c045c83db90a2ba3721371b9d6d6848"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/02-original-column-options.png",
+      "bytes": 61561,
+      "sha256Bytes": "db8f4b23a9e04702bcf07e4bc51f50687f2799c66155e12a430f93314942105a"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/03-wide-auto-layout.png",
+      "bytes": 48350,
+      "sha256Bytes": "f8989f1a64da8e2eb22c46c823233830001d3afbeb24c24cde66b67d6cda7229"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/04-official-layout.png",
+      "bytes": 49250,
+      "sha256Bytes": "cdde4777d5cc3642379c23b3d7acf0fed4917f9eaf251e7cd243cd0b79a64924"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/05-retained-scroll.png",
+      "bytes": 52740,
+      "sha256Bytes": "4d8c182ba5d5dd74fc48a6dec7f143531d82a733684831962068bf11f7599ba1"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2663,
+      "sha256Bytes": "a390c7ee481e3cab317631587970a015f8e57b154c086e25a68f11fca3355841"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "6611f03d79f08c71c50b2517fcac9c6affa4471935462b6811fc3434b8b6be5f"
+    },
+    {
+      "path": "proof/home/material3-dark-1680/pointers.json",
+      "bytes": 826,
+      "sha256Bytes": "fd7c99fbea0b17e8f5230cc64466c3bf866efc079955d3cb3da1b56c5f5a382d"
+    },
+    {
+      "path": "proof/home/material3-dark-960/01-original-default-layout.png",
+      "bytes": 48160,
+      "sha256Bytes": "44ac0d48b4e1fcf2cd87e489ea3e238d0f442f366e8199176be822faa1526b2f"
+    },
+    {
+      "path": "proof/home/material3-dark-960/02-original-column-options.png",
+      "bytes": 50111,
+      "sha256Bytes": "f4ba6c4c7697fb2b833c4cb94e6f24c76e15280e6f5c50da263492eb0d96f6bc"
+    },
+    {
+      "path": "proof/home/material3-dark-960/03-wide-auto-layout.png",
+      "bytes": 43246,
+      "sha256Bytes": "acefdfae9ce85fb79d9cbb0bfa2c6526ac0ea68b6f38968e1853d2bdc01218df"
+    },
+    {
+      "path": "proof/home/material3-dark-960/04-official-layout.png",
+      "bytes": 42688,
+      "sha256Bytes": "49086fd46130bac44c019fb36e004e5f4cea3b517c5730006d3f6e265d5592f0"
+    },
+    {
+      "path": "proof/home/material3-dark-960/05-retained-scroll.png",
+      "bytes": 43347,
+      "sha256Bytes": "f0e5ab6da5fce9762023ed9cca4ad701fff64a637c0baf402fb4870815e2105b"
+    },
+    {
+      "path": "proof/home/material3-dark-960/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/material3-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1884,
+      "sha256Bytes": "2e542a7f866a510841be7f57b7739adbfef6e87c0fdbafce4ce7f4f006b214a7"
+    },
+    {
+      "path": "proof/home/material3-dark-960/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/material3-dark-960/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/material3-dark-960/geometry.json",
+      "bytes": 3138,
+      "sha256Bytes": "6b9bc264a1d17a2c45a4593fa0b4852b04031cd0fc6bb85b448d737dd8b892e2"
+    },
+    {
+      "path": "proof/home/material3-dark-960/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "0e5ae55ce9ab29bb024c62f49b551c2916ebc64499882c9a3055688df41e2007"
+    },
+    {
+      "path": "proof/home/material3-light-800/01-original-default-layout.png",
+      "bytes": 45605,
+      "sha256Bytes": "0e68649f24278c26f4f242e292a225c5549f3c6752081065bff5743a5c7e55c9"
+    },
+    {
+      "path": "proof/home/material3-light-800/02-original-column-options.png",
+      "bytes": 47991,
+      "sha256Bytes": "d53ec33163052cf15b17fa28599a428850ee6b0f035e684da0514c2dc3c64364"
+    },
+    {
+      "path": "proof/home/material3-light-800/03-wide-auto-layout.png",
+      "bytes": 43104,
+      "sha256Bytes": "d162d6c1972aa02d38b41260b19b7d9b561408701cd861f19b79adb1d027aeaa"
+    },
+    {
+      "path": "proof/home/material3-light-800/04-official-layout.png",
+      "bytes": 41422,
+      "sha256Bytes": "72914c5a5f1155a39055948a5c4725884ee10c2e4f00e88a9dc342d72e263dd9"
+    },
+    {
+      "path": "proof/home/material3-light-800/05-retained-scroll.png",
+      "bytes": 47296,
+      "sha256Bytes": "f70771c7793dbc5660eb00a9c4ba4cc3c3ad2ffeded3cda2ec3a10cf33b41c4a"
+    },
+    {
+      "path": "proof/home/material3-light-800/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/material3-light-800/actual-footer-hit-targets.json",
+      "bytes": 1506,
+      "sha256Bytes": "290a755b4ab28864bca86a7cda604c0bc508e646a5a1d98baa79eabc02c595a0"
+    },
+    {
+      "path": "proof/home/material3-light-800/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/material3-light-800/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/material3-light-800/geometry.json",
+      "bytes": 3212,
+      "sha256Bytes": "61425f2e8d8efae4eb93a3f2bf9eae2da7754897ccd39531eeec8fc78656ac8f"
+    },
+    {
+      "path": "proof/home/material3-light-800/pointers.json",
+      "bytes": 820,
+      "sha256Bytes": "d5872649b87564074579bc70af2733bb67d953107000f77cd531a00a610e79e3"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/01-imported-compact2.png",
+      "bytes": 35164,
+      "sha256Bytes": "f9a82091390a4df44c060a37a22129d57ef77d2c5b2608a4e77d1a761ea98e76"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/02-compact3-original-cover-choice.png",
+      "bytes": 36125,
+      "sha256Bytes": "1504fab67a7583cd9c171e5418901b4c1210bcf635791784a1a5e4b7652b12cf"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/actual-disk.json",
+      "bytes": 234,
+      "sha256Bytes": "b4f9f45323dd4e1596682b611ae1a4c32a9241afb532b52a6d020197450e3509"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/actual-task-global/plugin-settings.json",
+      "bytes": 234,
+      "sha256Bytes": "b4f9f45323dd4e1596682b611ae1a4c32a9241afb532b52a6d020197450e3509"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/geometry.json",
+      "bytes": 561,
+      "sha256Bytes": "89dd971b5c355ed2900aadda40e383f8d01c1e6067407b08064bfd25d9e9e0c4"
+    },
+    {
+      "path": "proof/home/miuix-compact-500/pointers.json",
+      "bytes": 173,
+      "sha256Bytes": "26f2c8c3f37157a420d35633c46da31c7bc921d6ad02aa752366fd1b5d9fb39e"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/01-original-default-layout.png",
+      "bytes": 58188,
+      "sha256Bytes": "7b2984ac5980ba250200aed0347f26b54025e4c4aa735f6d8df759ff94da9129"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/02-original-column-options.png",
+      "bytes": 59143,
+      "sha256Bytes": "b8217d83bea7d8f3320df62b3ab654932055522b9dac543eb7df41fceef3b03a"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/03-wide-auto-layout.png",
+      "bytes": 51420,
+      "sha256Bytes": "353ef3438f27163a7575577c95777fbada1a22eead5aeb93f2e1cf6c1db96cb9"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/04-official-layout.png",
+      "bytes": 52213,
+      "sha256Bytes": "fd79018ca63a7c41de0475182a8b87b874f68c89480cc1734d57e469d52756bb"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/05-retained-scroll.png",
+      "bytes": 56523,
+      "sha256Bytes": "d8996b8784c6bc5c2bf707c5647fbeee50acbd9d292259fa120c69fd54a3f11f"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/actual-footer-hit-targets.json",
+      "bytes": 2662,
+      "sha256Bytes": "477dd7641d182c913d15412f8710e396c12a90dcdeb5cb4cc6e78d115f2b61cb"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/geometry.json",
+      "bytes": 3868,
+      "sha256Bytes": "c3d8305eb25fb4568cff2784e6d8222ae5e472c86ec5b3d72471b4f34075b0d1"
+    },
+    {
+      "path": "proof/home/miuix-dark-1680/pointers.json",
+      "bytes": 827,
+      "sha256Bytes": "12e4fa210e81b004f228f14b19df6ba1e0e90fee752e9189eed0a5e656ab30ea"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/01-original-default-layout.png",
+      "bytes": 49318,
+      "sha256Bytes": "d264f75fb44000df66a8797805b146df3d8e7a62f84ed834c396792ab0698576"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/02-original-column-options.png",
+      "bytes": 49814,
+      "sha256Bytes": "6b62de2948f3a1bf01a552daa18bd33f2d7f7605f9e41c3aec11f4864050e04a"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/03-wide-auto-layout.png",
+      "bytes": 45988,
+      "sha256Bytes": "9fbc9aa8b0be2f71eefc3696dee3da0430cc1705441a5faf3e49a4eb3f45fb39"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/04-official-layout.png",
+      "bytes": 45330,
+      "sha256Bytes": "45c7b9e935c3541b520c57bb4dc5bf91f970aa0947dfcddc9b63bb10713b8a4f"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/05-retained-scroll.png",
+      "bytes": 47040,
+      "sha256Bytes": "44ae5e0e804b0d87cfb6f89c81e0e2ace1ff5ba01b40917fec280b314325f3fc"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/actual-footer-hit-targets.json",
+      "bytes": 1883,
+      "sha256Bytes": "ef12500431fb3fa095b5a479a6f6a869f49a69d736b9dac08111c52302b3791f"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/geometry.json",
+      "bytes": 3144,
+      "sha256Bytes": "caa3da85a5b6726396a8053fa38ca391b8ffe7b214023a6e66b703047203aaa2"
+    },
+    {
+      "path": "proof/home/miuix-dark-960/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "cdaf8dde720a1d153093b263faf6601e6c0dcf670b257c9ac68a0079c314ffa7"
+    },
+    {
+      "path": "proof/home/miuix-light-800/01-original-default-layout.png",
+      "bytes": 47481,
+      "sha256Bytes": "7770a13ab42e655bfefa2520e072ef0920dc1c046bf76b988248feea8dc6dc3c"
+    },
+    {
+      "path": "proof/home/miuix-light-800/02-original-column-options.png",
+      "bytes": 49730,
+      "sha256Bytes": "32cc96bb6f4c5555202b4e70979cff19adf7568349f044903c68e7f6924cdd12"
+    },
+    {
+      "path": "proof/home/miuix-light-800/03-wide-auto-layout.png",
+      "bytes": 47142,
+      "sha256Bytes": "782a1b2f5c456579254c84eecf097af4f30bfb6672fdbf2bec6d013ce8ea2c79"
+    },
+    {
+      "path": "proof/home/miuix-light-800/04-official-layout.png",
+      "bytes": 44959,
+      "sha256Bytes": "b3d963f5b0eb8cb19e1b73e30b45efc7efece5a0e77ca048909b62718888037e"
+    },
+    {
+      "path": "proof/home/miuix-light-800/05-retained-scroll.png",
+      "bytes": 49007,
+      "sha256Bytes": "dcbe8186e21b78b9434a050fb4827dfe7ee7c151bbeaa1f6ae378e35e86abdd8"
+    },
+    {
+      "path": "proof/home/miuix-light-800/actual-disk.json",
+      "bytes": 163,
+      "sha256Bytes": "1c2800896c273fa4a059416f5582396e73d5d2ed2a3ba208f44daf0afe44a2cc"
+    },
+    {
+      "path": "proof/home/miuix-light-800/actual-footer-hit-targets.json",
+      "bytes": 1505,
+      "sha256Bytes": "6c7c22da4f3dfd906bfc9867c464e7b500fa6f635a5864fed332f539a18a2c6a"
+    },
+    {
+      "path": "proof/home/miuix-light-800/actual-local-cover.png",
+      "bytes": 3563,
+      "sha256Bytes": "d8226ae2a7415605c362b5bc14ca6372aaa205a889c240e0ca72a23e3d63b094"
+    },
+    {
+      "path": "proof/home/miuix-light-800/actual-task-global/plugin-settings.json",
+      "bytes": 236,
+      "sha256Bytes": "8a23b881174fe66bb30d5ecb6b832f2680616e462b86c6ed8545ce0bca2e1cff"
+    },
+    {
+      "path": "proof/home/miuix-light-800/geometry.json",
+      "bytes": 2934,
+      "sha256Bytes": "01e56d9601ebbd46ec0ec8ef40b088e08ce61c6ded5c7229c2d541fe331d6373"
+    },
+    {
+      "path": "proof/home/miuix-light-800/pointers.json",
+      "bytes": 821,
+      "sha256Bytes": "9372ea67eff9fd06c40d5294d6546ecefbb1d7bd9240fb99bf63ad9201a19009"
+    },
+    {
+      "path": "proof/home/ui.json",
+      "bytes": 3943,
+      "sha256Bytes": "80afcf9c23c890152e04f4cd018f7cb45638abce22eaa060d298d8a7290b19c1"
+    },
+    {
+      "path": "tabs.args",
+      "bytes": 56936,
+      "sha256Bytes": "a3d28a5d24c678022397005379e2d7fc6f03c9325347443ca5e096120a9e2c6c"
+    },
+    {
+      "path": "tabs.log",
+      "bytes": 257,
+      "sha256Bytes": "a1483f53b0a95f515fceb3d119ab785d34b34295a780953182e3f438aa1e2284"
+    },
+    {
+      "path": "TabsModelFixtures.kt",
+      "bytes": 600,
+      "sha256Bytes": "f71b8c64799c93179e1e6be5c62d36577a5185acacf6bdccd4acd4d839141c0a"
+    },
+    {
+      "path": "TabsTransportFixture.kt",
+      "bytes": 6734,
+      "sha256Bytes": "0918ae9232416dbf7840bdb7a20605b376a4335e670e343e207abe7a08bb94e8"
+    },
+    {
+      "path": "TabsUiFixture.kt",
+      "bytes": 8065,
+      "sha256Bytes": "a3fe3427194489238ac337f5c45fec1b2830c2aedf07219d6fac61257b80729d"
+    },
+    {
+      "path": "transport.args",
+      "bytes": 56943,
+      "sha256Bytes": "eb5ddedffb7e7ea20ba890479db98536f887512e10d57f795a58c0e68e5236c5"
+    },
+    {
+      "path": "transport.log",
+      "bytes": 240,
+      "sha256Bytes": "7db8695abeaa7887b1656928bf06bb9a585d4c1a49de4fa3b3b4d21945d4fa88"
+    }
+  ],
+  "artifactCount": 162
+}

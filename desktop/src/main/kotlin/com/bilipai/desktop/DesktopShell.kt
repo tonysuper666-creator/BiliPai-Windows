@@ -224,6 +224,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val dynamicTimelinePreferences = remember(pluginStore) {
         DesktopDynamicTimelinePreferences(globalPluginContext)
     }
+    val homeCardPreferences = remember(pluginStore) {
+        DesktopHomeCardPreferences(globalPluginContext)
+    }
     val privacyBindings = remember(globalPluginContext, community.searchPreferences) {
         DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
     }
@@ -844,7 +847,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val scheme = MaterialTheme.colorScheme
     val strings = LocalDesktopStrings.current
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
-        LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences) {
+        LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
+        LocalDesktopHomeCardPreferences provides homeCardPreferences) {
         if (!appearanceReady) {
             Surface(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {

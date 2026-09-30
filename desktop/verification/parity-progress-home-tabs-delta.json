@@ -1,0 +1,25 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "02f3a5a60e79003f6d225ff97118276e516f8a82",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-dynamic-crash-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts and isolated work excluded from main progress.",
+  "changes": [],
+  "unchangedCreditReason": "Actual density/layout and three Dynamic tab fields deepen existing partial Home/Dynamic/settings groups. Complete original card, host, gestures and final product acceptance are still missing; no extra credit derived from source/proof counts.",
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 94.75,
+    "isolatedReadyPoints": 0.5,
+    "unfinishedOrUnverifiedPoints": 42.75,
+    "weightedReviewedProgressPercent": 68.7,
+    "presentation": "约69%，按完整原项目功能和底层行为对齐的人工粗估。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-home-tabs-integration.json",
+  "newDesktopDeployment": false
+}

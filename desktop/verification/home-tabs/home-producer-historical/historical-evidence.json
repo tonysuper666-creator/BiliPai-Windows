@@ -1,0 +1,17 @@
+{
+  "crowdedConsumerSha256Bytes": "a6e18f3cfb6fc4ed6fd46b35caddb13ebe16cc58fbc48705eeeb9321a6ab156a",
+  "original5065SnapshotProof": "proof/5",
+  "newC013SnapshotBeforeFooterAdaptation": "proof/6 and proof/7",
+  "attempt8": {
+    "result": "failed",
+    "reason": "Actual existing footer OnClick height40 below48",
+    "log": "ui-8.log"
+  },
+  "attempt9": {
+    "result": "fixture assertion failed",
+    "reason": "Viewport-clipped second-row bounds compared as full button. Final test checks actual layout size before visible bounds.",
+    "log": "ui-9.log"
+  },
+  "finalAccepted": "proof/10",
+  "thresholdNotLowered": true
+}

@@ -1,0 +1,60 @@
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\store\DesktopDynamicTabsSettings.kt:14:5: error: unresolved reference 'private'.
+    private const val DEFAULT_DYNAMIC_TAB_VISIBLE = "all,video,pgc,article,up"
+    ^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\store\DesktopDynamicTabsSettings.kt:14:19: error: only expressions are allowed here.
+    private const val DEFAULT_DYNAMIC_TAB_VISIBLE = "all,video,pgc,article,up"
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\store\DesktopDynamicTabsSettings.kt:18:65: error: unresolved reference 'DEFAULT_DYNAMIC_TAB_VISIBLE'.
+        val tabsString = prefs[KEY_DYNAMIC_TAB_VISIBLE_TABS] ?: DEFAULT_DYNAMIC_TAB_VISIBLE
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:18:41: error: unresolved reference 'LocalImmersiveTopChromeActive'.
+import com.android.purebilibili.core.ui.LocalImmersiveTopChromeActive
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:19:41: error: unresolved reference 'rememberAppSegmentedControlPolicy'.
+import com.android.purebilibili.core.ui.rememberAppSegmentedControlPolicy
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:20:41: error: unresolved reference 'roundMatchedLiquidIndicatorHeightDp'.
+import com.android.purebilibili.core.ui.roundMatchedLiquidIndicatorHeightDp
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:208:29: error: unresolved reference 'roundMatchedLiquidIndicatorHeightDp'.
+        indicatorHeightDp = roundMatchedLiquidIndicatorHeightDp(liquidControlHeightDp.toFloat()),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:287:18: error: unresolved reference 'rememberAppSegmentedControlPolicy'.
+    val policy = rememberAppSegmentedControlPolicy()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:289:32: error: unresolved reference 'LocalImmersiveTopChromeActive'.
+    val isImmersiveTopChrome = LocalImmersiveTopChromeActive.current
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:389:18: error: unresolved reference 'rememberAppSegmentedControlPolicy'.
+    val policy = rememberAppSegmentedControlPolicy()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\components\DesktopOriginalDynamicNativeTabs.kt:391:32: error: unresolved reference 'LocalImmersiveTopChromeActive'.
+    val isImmersiveTopChrome = LocalImmersiveTopChromeActive.current
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\renderer\material3\AppMaterial3SegmentedControl.kt:103:9: error: unresolved reference 'AppTonalPillTabRow'.
+        AppTonalPillTabRow(
+        ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\renderer\miuix\AppMiuixSegmentedControl.kt:38:41: error: unresolved reference 'resolveRoundedControlVisualGeometry'.
+import com.android.purebilibili.core.ui.resolveRoundedControlVisualGeometry
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\renderer\miuix\AppMiuixSegmentedControl.kt:39:41: error: unresolved reference 'resolveMiuixNonGlassControlGeometry'.
+import com.android.purebilibili.core.ui.resolveMiuixNonGlassControlGeometry
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\renderer\miuix\AppMiuixSegmentedControl.kt:259:20: error: unresolved reference 'resolveRoundedControlVisualGeometry'.
+    val geometry = resolveRoundedControlVisualGeometry(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\core\ui\renderer\miuix\AppMiuixSegmentedControl.kt:322:20: error: unresolved reference 'resolveMiuixNonGlassControlGeometry'.
+    val geometry = resolveMiuixNonGlassControlGeometry(compact, textHeight)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\generated\com\android\purebilibili\feature\dynamic\DesktopOriginalDynamicUserControls.kt:135:42: error: unresolved reference 'crossfade'.
+                                        .crossfade(true)
+                                         ^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsHost.kt:92:113: error: no value passed for parameter 'text'.
+            if(!state.userLoading&&state.hasUserMore)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(onClick=state::loadMoreUser){AppText("���ظ���")}}
+                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsHost.kt:92:141: error: argument type mismatch: actual type is '() -> Unit', but 'ImageVector?' was expected.
+            if(!state.userLoading&&state.hasUserMore)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(onClick=state::loadMoreUser){AppText("���ظ���")}}
+                                                                                                                                            ^^^^^^^^^^^^^^^^^
+desktop\.local\settings-dynamic-tabs-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTabsHost.kt:92:142: error: @Composable invocations can only happen from the context of a @Composable function
+            if(!state.userLoading&&state.hasUserMore)item(span=StaggeredGridItemSpan.FullLine){AppPrimaryButton(onClick=state::loadMoreUser){AppText("���ظ���")}}
+                                                                                                                                             ^^^^^^^

@@ -36,6 +36,9 @@ internal fun DesktopHomeRecommendationSettings(
             homeRefreshCount=refreshCount,
             onHomeRefreshCountChange={value->update{discovery.setRefreshCount(value)}},
         )
+        LocalDesktopHomeCardPreferences.current?.let { preferences ->
+            DesktopHomeCardSettingsSection(preferences,onFailure)
+        }
         LocalDesktopDynamicTimelinePreferences.current?.let {preferences->
             DesktopDynamicTimelineSettings(preferences,onFailure)
         }

@@ -1,0 +1,122 @@
+[
+  {
+    "entry": "com/bilipai/desktop/ui/ComposableSingletons$DiscoveryScreensKt.class",
+    "sha256Bytes": "7ffb11f07ec0800aa269775a2082bdfb817de85abab561aea746484ba9efe49d",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$1.class",
+    "sha256Bytes": "c331692397048b278f3ae516bff10e5c96bc65c7b4a815ae83fcf96719914ed4",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$2$1$4$1$1$1$1.class",
+    "sha256Bytes": "681baaaf73caf30cf8a194b63645172a0d609fa290a72f528865d97109863af1",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentReady$2$1$4$2$1$1$1.class",
+    "sha256Bytes": "d0806ea43ce77cd839c017ac904f3e9987be509f26884f039301473b701a7b1d",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$1.class",
+    "sha256Bytes": "ba9b963bdc96678c101f2fddd577a897e63c82d06c5cba1e451e5c98e79f2bb2",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$3$2$1.class",
+    "sha256Bytes": "64760f66749222448bbeafda237524ff7ea439be250695793cdf969490ef769b",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$6$1$1$1$3$1.class",
+    "sha256Bytes": "5e2845482cb7d9c7a4f76cfef2924cedd311cee20ff338ab00341214af088bba",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$fetch$1.class",
+    "sha256Bytes": "892b0073df92c082023acd9ab65f5bf02d020f0ca8acdcf1818fff2eec631eed",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$1.class",
+    "sha256Bytes": "a247de54bb9b252e39eacd59183c527307ba0f307cfb88fbeeacae46659c2061",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$2.class",
+    "sha256Bytes": "5c5a7bde5bacb67e3b7b142399de903cb46ef9386f3a59d06a5a41b852eb44e7",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$3.class",
+    "sha256Bytes": "acda44f1425c54ec268172f52c7021a92dccd336bde470a5630b2b50a20b8bb1",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$32$$inlined$items$default$4.class",
+    "sha256Bytes": "24f1429c34c5c670786f1f32a9358643f3219917f4722a7ac609f522ce28a7d4",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$1$1.class",
+    "sha256Bytes": "022cbe0eacdf82df6dbd5c82a42005f357219f616f39cc3a6bb954bd8e0ecf88",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$2.class",
+    "sha256Bytes": "3c5847388f63a8a1c2d09b69220e65382edbae48e15a9fa7fae6d12e1e18c2ae",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$1$1.class",
+    "sha256Bytes": "726128611c56a4eca1d1c6c05a22e55f8efa6ea1442a314c5f7c99842673d2a2",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$2.class",
+    "sha256Bytes": "cde8db34bbb8da6ac56fbfccf94287e2a8261ce89ef2773bbbcdb72e5802f127",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$1.class",
+    "sha256Bytes": "2cf04fa4c5c20a2908baae81243118edc2703a6aa4781b47989a30dd9bf0d9a3",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$2.class",
+    "sha256Bytes": "34f81a296c06c7b363a3d9bee0e3a0b05e6115bbe647983036c2384d374ee41b",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$3.class",
+    "sha256Bytes": "53c1526d71f5ae48d35db6eefb5f8d88773d9684965d009962855eabebaed422",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$4.class",
+    "sha256Bytes": "f9ed5b97f9595b1c8deda00ebff39bf749c857209a0862ce8e1de9fc7f6d9d3f",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$2$1.class",
+    "sha256Bytes": "bde1a9bda35b5c5069593965433f16cac5bceb53aec5dd78463edab8a8aeddac",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$3$1.class",
+    "sha256Bytes": "cb0c51f8f4ce8e15b36004adeac540eb608bdbf95ca8cf0d73269a0c94fd9797",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreensKt.class",
+    "sha256Bytes": "3f3976b3c1953337378515ba8facf72f29df947558e362783ee0d295928dcb54",
+    "shadowsProduct": true
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/DiscoveryScreenState.class",
+    "sha256Bytes": "d9e70b29e1051780a77e6f0234aa3c7d9fa5471c17393296d142efcfbe7b1f3a",
+    "shadowsProduct": true
+  }
+]
