@@ -14,22 +14,13 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.nio.file.StandardOpenOption
+import java.lang.ref.WeakReference
 
 /** Real Windows persistence for the original plugin keys and preference namespaces. */
 class DesktopPluginStore(val root: Path) {
-    private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
-    private val file = root.resolve("plugin-settings.json")
-    private val lock = Any()
-    private var writesFrozen = false
-    private val snapshots = mutableMapOf<String, MutableStateFlow<DesktopPreferenceSnapshot>>()
-    private var document: JsonObject = if (Files.exists(file)) {
-        try { json.parseToJsonElement(Files.readString(file)).jsonObject }
-        catch (error: Exception) { throw IllegalStateException("插件设置文件无法读取: $file", error) }
-    } else JsonObject(emptyMap())
-    private val _feedFilterConfig = MutableStateFlow(decodeFeedFilter())
-    val feedFilterConfig: StateFlow<BiliPaiFeedFilterConfig> = _feedFilterConfig.asStateFlow()
-    private val _feedFilterEnabled = MutableStateFlow(preferences("plugin_prefs")["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false)
-    val feedFilterEnabled: StateFlow<Boolean> = _feedFilterEnabled.asStateFlow()
+    private val backing = backingFor(root)
+    val feedFilterConfig: StateFlow<BiliPaiFeedFilterConfig> = backing.feedFilterConfig.asStateFlow()
+    val feedFilterEnabled: StateFlow<Boolean> = backing.feedFilterEnabled.asStateFlow()
 
     suspend fun setFeedFilterConfig(config: BiliPaiFeedFilterConfig) {
         validateFeedFilter(config)
@@ -40,17 +31,17 @@ class DesktopPluginStore(val root: Path) {
         update("plugin_prefs", mapOf("plugin_enabled_bilipai_feed_filter" to JsonPrimitive(enabled)))
     }
 
-    internal fun snapshot(name: String): StateFlow<DesktopPreferenceSnapshot> = synchronized(lock) {
-        snapshots.getOrPut(name) { MutableStateFlow(DesktopPreferenceSnapshot(preferences(name))) }.asStateFlow()
+    internal fun snapshot(name: String): StateFlow<DesktopPreferenceSnapshot> = synchronized(backing) {
+        backing.snapshots.getOrPut(name) { MutableStateFlow(DesktopPreferenceSnapshot(preferences(name))) }.asStateFlow()
     }
 
-    internal fun preferences(name: String): JsonObject = synchronized(lock) {
-        document[name] as? JsonObject ?: JsonObject(emptyMap())
+    internal fun preferences(name: String): JsonObject = synchronized(backing) {
+        backing.document[name] as? JsonObject ?: JsonObject(emptyMap())
     }
 
     /** Publish a new snapshot only after the atomic replacement succeeds. */
-    internal fun update(name: String, values: Map<String, JsonElement?>, clear: Boolean = false) = synchronized(lock) {
-        check(!writesFrozen) { "插件已停止，不能写入旧设置实例" }
+    internal fun update(name: String, values: Map<String, JsonElement?>, clear: Boolean = false) = synchronized(backing) {
+        check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
         val updated = (if (clear) emptyMap() else preferences(name)).toMutableMap()
         values.forEach { (key, value) -> if (value == null) updated.remove(key) else updated[key] = value }
         if (name == "plugin_prefs") {
@@ -59,40 +50,66 @@ class DesktopPluginStore(val root: Path) {
                 validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))
             }
         }
-        val next = JsonObject(document.toMutableMap().apply { put(name, JsonObject(updated)) })
-        Files.createDirectories(root)
-        val temporary = Files.createTempFile(root, "plugin-settings-", ".tmp")
+        val next = JsonObject(backing.document.toMutableMap().apply { put(name, JsonObject(updated)) })
+        Files.createDirectories(backing.root)
+        val temporary = Files.createTempFile(backing.root, "plugin-settings-", ".tmp")
         try {
             Files.writeString(temporary, json.encodeToString(next))
             FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
-            try { Files.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
+            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
             catch (_: java.nio.file.AtomicMoveNotSupportedException) {
-                Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING)
+                Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
             }
         } finally { Files.deleteIfExists(temporary) }
-        document = next
-        snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))
+        backing.document = next
+        backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))
         if (name == "plugin_prefs") {
-            _feedFilterConfig.value = decodeFeedFilter()
-            _feedFilterEnabled.value = updated["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
+            backing.feedFilterConfig.value = decodeFeedFilter(next)
+            backing.feedFilterEnabled.value = updated["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
         }
     }
 
-    /** Restoration replaces files only after this old in-memory instance becomes read-only. */
-    internal fun freezeWrites() = synchronized(lock) { writesFrozen = true }
+    /** All facades for this old file generation become read-only before restoration. */
+    internal fun freezeWrites() = synchronized(backing) { backing.writesFrozen = true }
 
-    private fun decodeFeedFilter(): BiliPaiFeedFilterConfig {
-        val encoded = preferences("plugin_prefs")["plugin_config_bilipai_feed_filter"]?.jsonPrimitive?.contentOrNull
-            ?: return BiliPaiFeedFilterConfig()
-        return try { json.decodeFromString<BiliPaiFeedFilterConfig>(encoded).also(::validateFeedFilter) }
-        catch (error: Exception) { throw IllegalStateException("推荐流过滤配置无效", error) }
+    private class Backing(val root: Path) {
+        val file: Path = root.resolve("plugin-settings.json")
+        var writesFrozen = false
+        val snapshots = mutableMapOf<String, MutableStateFlow<DesktopPreferenceSnapshot>>()
+        var document: JsonObject = if (Files.exists(file)) {
+            try { json.parseToJsonElement(Files.readString(file)).jsonObject }
+            catch (error: Exception) { throw IllegalStateException("插件设置文件无法读取: $file", error) }
+        } else JsonObject(emptyMap())
+        val feedFilterConfig = MutableStateFlow(decodeFeedFilter(document))
+        val feedFilterEnabled = MutableStateFlow((document["plugin_prefs"] as? JsonObject)
+            ?.get("plugin_enabled_bilipai_feed_filter")?.jsonPrimitive?.booleanOrNull ?: false)
     }
 
-    private fun validateFeedFilter(config: BiliPaiFeedFilterConfig) {
-        require(config.minDurationForRcmd >= 0 && config.minPlayForRcmd >= 0) { "过滤阈值不能为负数" }
-        require(config.minLikeRatioForRecommend in 0..100) { "点赞率必须在 0 到 100 之间" }
-        for (text in listOf(config.banWordForRecommend, config.banWordForZone)) {
-            DesktopFeedFilterEditor.parseBanWordToRegex(text)?.let { Regex(it, RegexOption.IGNORE_CASE) }
+    private companion object {
+        val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
+        val registry = mutableMapOf<Path, WeakReference<Backing>>()
+
+        fun backingFor(root: Path): Backing = synchronized(registry) {
+            val key = root.toAbsolutePath().normalize()
+            registry.entries.removeAll { it.value.get() == null }
+            val current = registry[key]?.get()
+            if (current != null && synchronized(current) { !current.writesFrozen }) current
+            else Backing(key).also { registry[key] = WeakReference(it) }
+        }
+
+        private fun decodeFeedFilter(document: JsonObject): BiliPaiFeedFilterConfig {
+            val encoded = (document["plugin_prefs"] as? JsonObject)?.get("plugin_config_bilipai_feed_filter")?.jsonPrimitive?.contentOrNull
+                ?: return BiliPaiFeedFilterConfig()
+            return try { json.decodeFromString<BiliPaiFeedFilterConfig>(encoded).also(::validateFeedFilter) }
+            catch (error: Exception) { throw IllegalStateException("推荐流过滤配置无效", error) }
+        }
+
+        private fun validateFeedFilter(config: BiliPaiFeedFilterConfig) {
+            require(config.minDurationForRcmd >= 0 && config.minPlayForRcmd >= 0) { "过滤阈值不能为负数" }
+            require(config.minLikeRatioForRecommend in 0..100) { "点赞率必须在 0 到 100 之间" }
+            for (text in listOf(config.banWordForRecommend, config.banWordForZone)) {
+                DesktopFeedFilterEditor.parseBanWordToRegex(text)?.let { Regex(it, RegexOption.IGNORE_CASE) }
+            }
         }
     }
 }
@@ -151,7 +168,7 @@ class DesktopPluginPreferences(private val store: DesktopPluginStore, private va
         private var clear = false
         fun putBoolean(key: String, value: Boolean) = apply { values[key] = JsonPrimitive(value) }
         fun putInt(key: String, value: Int) = apply { values[key] = JsonPrimitive(value) }
-        fun putString(key: String, value: String) = apply { values[key] = JsonPrimitive(value) }
+        fun putString(key: String, value: String?) = apply { values[key] = value?.let { JsonPrimitive(it) } }
         fun remove(key: String) = apply { values[key] = null }
         fun clear() = apply { clear = true }
         fun apply() { store.update(name, values, clear) }
