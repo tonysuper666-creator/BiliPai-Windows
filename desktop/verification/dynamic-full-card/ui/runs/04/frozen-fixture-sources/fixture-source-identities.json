@@ -1,0 +1,12 @@
+{
+  "files": [
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "72345ef410efb29a599711fa434fffed4788c18cca7b74cfd655b62b6335bf0b"
+    },
+    {
+      "path": "ColdCardFixture.kt",
+      "sha256Bytes": "0a7bfc68e61d9ac29c6e3d5d79478d2322f689e45d655a5ae1afcc0973f617b9"
+    }
+  ]
+}

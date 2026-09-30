@@ -26,7 +26,7 @@ internal class DesktopDynamicTimelineState(
     private val stillOwned:()->Boolean={true},
     initialCachedItems:List<DynamicItem> = emptyList(),
     private val onAllTimelineChanged:(List<DynamicItem>)->Unit = {},
-) {
+) : DesktopDynamicCardItemsOwner {
     private val original=DesktopOriginalDynamicTimelineRepository(fetchPage,stillOwned)
     private val requests=Mutex()
     val scroll=LazyStaggeredGridState()
@@ -36,6 +36,14 @@ internal class DesktopDynamicTimelineState(
     var initialized by mutableStateOf(false);private set
     var busy by mutableStateOf(false);private set
     var error by mutableStateOf<Throwable?>(null);private set
+    val isAllTimeline: Boolean get() = type == "all"
+    fun persistCurrentItems() { if (isAllTimeline && stillOwned()) onAllTimelineChanged(page.items) }
+    override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
+        if (!stillOwned()) return
+        val updated = transform(page.items)
+        if (updated == page.items) return
+        page = page.copy(items = updated.toImmutableList())
+    }
     suspend fun initialize(incrementalRefresh:Boolean):Boolean=requests.withLock {
         if(initialized||error!=null)return@withLock false
         fetchLocked(refresh=true,incrementalRefresh=incrementalRefresh)
@@ -56,7 +64,7 @@ internal class DesktopDynamicTimelineState(
             val result=original.getDynamicFeed(refresh=refresh,type=type,incrementalRefresh=incrementalRefresh).getOrThrow()
             currentCoroutineContext().ensureActive()
             if(!stillOwned())return false
-            var successPage=resolveDynamicTimelinePageAfterSuccess(snapshot,result.items,refresh,incrementalRefresh,result.hasMore)
+            var successPage=resolveDynamicTimelinePageAfterSuccess(page,result.items,refresh,incrementalRefresh,result.hasMore)
             // Same post-refresh synchronization as original DynamicViewModel; a replacement
             // must not continue paging through the retired tail of the old list.
             if(refresh&&successPage.incrementalPrependedCount==0) {
@@ -69,10 +77,10 @@ internal class DesktopDynamicTimelineState(
             if(type=="all")onAllTimelineChanged(page.items)
             return true
         }catch(cancelled:CancellationException){
-            if(stillOwned())page=snapshot
+            if(stillOwned())page=snapshot.copy(items=page.items)
             throw cancelled
         }catch(failure:Exception){
-            if(stillOwned()){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot,failure.message.orEmpty(),refresh)}
+            if(stillOwned()){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
             return false
         }finally{busy=false}
     }

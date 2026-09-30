@@ -1,0 +1,15 @@
+{
+  "preparedForAttempt": "05",
+  "status": "used in fresh theme cohort05 and final lifecycle Main attempt06; automatic and reviewed fixture UI checks passed",
+  "oldUiFixtureSha256Bytes": "72345ef410efb29a599711fa434fffed4788c18cca7b74cfd655b62b6335bf0b",
+  "newUiFixtureSha256Bytes": "012493908b1b0faa4203c112a7c1d2dbac096a0c04b905c51bd1b4ea5e88bbcb",
+  "actualParentReference": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:861 and :892",
+  "actualParent": "Material3 Surface with color=MaterialTheme.colorScheme.background",
+  "oldFixtureParent": "AppSurface, which in MIUIX supplies Miuix LocalContentColor only",
+  "change": "Add MaterialTheme/Surface imports; replace only fixture outer AppSurface with the actual Root parent Surface/color.",
+  "why": "Material3 Text in the real page needs the Material LocalContentColor supplied by actual Root. The task's prior AppSurface wrapper omitted it, producing an invisible dark title despite the actual Shell having the correct parent.",
+  "productTitleFixRequired": false,
+  "productionCodeModifiedByFixture": false,
+  "wholeShellExecuted": false,
+  "priorFrozenArtifactsRemainUnchanged": true
+}

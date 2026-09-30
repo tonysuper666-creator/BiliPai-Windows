@@ -1,0 +1,31 @@
+{
+  "scope": "Current Root source deltas after immutable b47 snapshot; no new compiled product identity claimed by this review. Root reports gate3 actual PASS; this file only pins sources. Prepared Emote class not compiled or executed here.",
+  "sourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256": "92f5700d4870d26f5cb3a6a00d6885e39801f3fd841a1e3e92b2c6b8507d3850",
+      "bytes": 2316
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256": "49d5720eb30ba82bd6dbc46cbf66cb08c1869fe5d098d34e3120e4f3e05a38ee",
+      "bytes": 14958
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-card.py",
+      "sha256": "e4d18c733e69290352a159953bdc000e08e9e964b5229803da8a561b8d43f449",
+      "bytes": 32262
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistryTest.kt",
+      "sha256": "381885534be7c481828767907deccab4a8c20612584146b452d273daa557375a",
+      "bytes": 13494
+    }
+  ],
+  "preparedTest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-final-review\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEmoteCatalogTest.kt",
+    "sha256": "3780999f111ceae2b2597ea1175af0cabececd3db45d1c7274860c764133b57b",
+    "tests": 3,
+    "executedByThisReview": false
+  }
+}

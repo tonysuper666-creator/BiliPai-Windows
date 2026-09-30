@@ -28,6 +28,12 @@ import top.yukonga.miuix.kmp.theme.Colors
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.theme.ThemeController
 
+internal val LocalDesktopDarkTheme = staticCompositionLocalOf { false }
+
+/** Windows system preferences can differ from the selected app theme.
+ * Original components choose their colors using Root's effective palette. */
+@Composable internal fun isDesktopInDarkTheme(): Boolean = LocalDesktopDarkTheme.current
+
 internal data class DesktopAppearancePalette(
     val material: ColorScheme,
     val miuixLight: Colors,
@@ -88,6 +94,7 @@ fun DesktopAppearanceTheme(
             lightColors = palette.miuixLight, darkColors = palette.miuixDark, isDark = palette.dark)
     }
     CompositionLocalProvider(
+        LocalDesktopDarkTheme provides palette.dark,
         LocalAppUiStyle provides settings.uiStyle,
         LocalAppIconStyle provides settings.appIconStyle,
         LocalAppListItemStyle provides settings.appListItemStyle,

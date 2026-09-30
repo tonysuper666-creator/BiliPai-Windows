@@ -288,7 +288,7 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
     suspend fun setDynamicLike(id: String, liked: Boolean) {
         require(id.trim().toLongOrNull()?.let { it > 0 } == true)
         mutate { csrf ->
-            val response = dynamic.likeDynamic(csrf = csrf, body = DynamicThumbRequest(id.trim(), if (liked) 1 else 0))
+            val response = dynamic.likeDynamic(csrf = csrf, body = DynamicThumbRequest(id.trim(), if (liked) 1 else 2))
             check(response.code, response.message)
         }
     }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-09-30T20:38:46.526Z" hostname="TONYSUPER666" time="0.522">
+  <properties/>
+  <testcase name="lateOpusReadbackKeepsConfirmedFieldsAndFreshContent()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.134"/>
+  <testcase name="delayedRetiredAllFetchCannotBecomeTheLastCacheWriter()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.149"/>
+  <testcase name="guestNotInterestedKeepsRawRowsAndEmptyCacheDoesNotEraseIds()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.015"/>
+  <testcase name="selectedUpAndAllMirrorAreChangedExactlyOnce()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.18"/>
+  <testcase name="unfoldUsesOriginalPolicyAndKeepsPaginationEnvelope()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.005"/>
+  <testcase name="pendingAppendSuccessFailureAndCancellationPreserveConfirmedFields()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.012"/>
+  <testcase name="sameMidCredentialReplacementAndClosedOwnerRejectOldCallbacks()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.003"/>
+  <testcase name="confirmedReducersUpdateEveryRawModelAndOnlyCurrentAllWritesCache()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

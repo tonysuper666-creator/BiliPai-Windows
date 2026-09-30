@@ -57,7 +57,7 @@ def generate(repo, output, standalone=False):
             body += "\n\n" + media.function(source, "resolveDynamicRichTextNodeToken", parser)
             annotation_start = source.index("private fun dynamicRichTextLinkAnnotation(")
             annotation_end = source.index("\n/** 动态富文本链接动作", annotation_start)
-            body += "\n\n" + source[annotation_start:annotation_end].strip()
+            body += "\n\n" + source[annotation_start:annotation_end].strip().replace("private fun", "internal fun", 1)
             body += "\n\n" + media.function(source, "appendDynamicRichTextTopic", parser).replace("private fun", "internal fun", 1)
             body = body.replace("import com.android.purebilibili.data.model.response.RichTextNode\n",
                 "import com.android.purebilibili.data.model.response.RichTextNode\n" +

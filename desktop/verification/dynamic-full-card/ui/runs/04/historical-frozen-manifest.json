@@ -1,0 +1,612 @@
+{
+  "attempt": "04",
+  "status": "historical-automatic-pass-visual-failure",
+  "finalFixtureUiAcceptance": false,
+  "productManifestSha256Bytes": "c1dbc3fa301c940ef05524c8a18e1871a2cbedf867d9d5a9b2520235089a5402",
+  "orderedRuntimeCpSha256Bytes": "b826f14bb62c9e61097d89e21487ef8b0312f70a474cecfd75c2cf684d7aa808",
+  "fixtureSources": 2,
+  "productionOverrides": 0,
+  "actualLoadedClasses": 29,
+  "orderedRuntimeEntries": 89,
+  "cells": 4,
+  "actualPointerPairs": 76,
+  "screenshots": 32,
+  "independentColdJvms": 8,
+  "rawCacheEqualityChecks": 24,
+  "automaticChecksPassed": true,
+  "visualReviewPassed": false,
+  "wholeShellExecuted": false,
+  "nativeHWND": false,
+  "packageAcceptance": false,
+  "realAccountOrSocket": false,
+  "sharedGradle": false,
+  "privateAccountAndStoreDiskExcluded": true,
+  "artifactCount": 117,
+  "files": [
+    {
+      "path": "runs/04/cold-card-material3-dark.args",
+      "sha256Bytes": "bc1316da180f2c75c749a5ea436bbd143cc2b83c1181f33ae9f832cb60798c49",
+      "bytes": 22563
+    },
+    {
+      "path": "runs/04/cold-card-material3-dark.log",
+      "sha256Bytes": "31917146b2528c44d54dee1745024879330ba46f9391438fa32182860e2aa468",
+      "bytes": 72
+    },
+    {
+      "path": "runs/04/cold-card-material3-light.args",
+      "sha256Bytes": "bffd0b4a0a9748d87b11a8de89a55d26249346ea0b37ae4237f2fac3b9c079af",
+      "bytes": 22564
+    },
+    {
+      "path": "runs/04/cold-card-material3-light.log",
+      "sha256Bytes": "31917146b2528c44d54dee1745024879330ba46f9391438fa32182860e2aa468",
+      "bytes": 72
+    },
+    {
+      "path": "runs/04/cold-card-miuix-dark.args",
+      "sha256Bytes": "a35de228679e52bf72ce5a007b4f25b2efdcdea1f712c0158cda7b409225835d",
+      "bytes": 22559
+    },
+    {
+      "path": "runs/04/cold-card-miuix-dark.log",
+      "sha256Bytes": "31917146b2528c44d54dee1745024879330ba46f9391438fa32182860e2aa468",
+      "bytes": 72
+    },
+    {
+      "path": "runs/04/cold-card-miuix-light.args",
+      "sha256Bytes": "5bbd2a83fe58c9728e9d646715df05deb449aa20d23194d965d0a4fc89c80eb3",
+      "bytes": 22560
+    },
+    {
+      "path": "runs/04/cold-card-miuix-light.log",
+      "sha256Bytes": "31917146b2528c44d54dee1745024879330ba46f9391438fa32182860e2aa468",
+      "bytes": 72
+    },
+    {
+      "path": "runs/04/cold-roots/material3-dark/independent-cold-card-read.json",
+      "sha256Bytes": "ff8844340a3b8d785a9cc664936d8e370f85acb31de62e477ef1d691dbd76bf6",
+      "bytes": 364
+    },
+    {
+      "path": "runs/04/cold-roots/material3-light/independent-cold-card-read.json",
+      "sha256Bytes": "ff8844340a3b8d785a9cc664936d8e370f85acb31de62e477ef1d691dbd76bf6",
+      "bytes": 364
+    },
+    {
+      "path": "runs/04/cold-roots/miuix-dark/independent-cold-card-read.json",
+      "sha256Bytes": "ff8844340a3b8d785a9cc664936d8e370f85acb31de62e477ef1d691dbd76bf6",
+      "bytes": 364
+    },
+    {
+      "path": "runs/04/cold-roots/miuix-light/independent-cold-card-read.json",
+      "sha256Bytes": "ff8844340a3b8d785a9cc664936d8e370f85acb31de62e477ef1d691dbd76bf6",
+      "bytes": 364
+    },
+    {
+      "path": "runs/04/compile-evidence.json",
+      "sha256Bytes": "df8662c31d50eeb8c00f645cf9b104bcc28eca97b4b2c0299d514b2a581ef828",
+      "bytes": 38823
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "3a69ef01d70c8bb056a7a6c77a2ebf1a3c66649612696a4dddf8707af6ea4e19",
+      "bytes": 9613
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "cd2719b5b37c3f08e0a2aadce688e648b3bf537d949d153a38cc3be8888d90ec",
+      "bytes": 22930
+    },
+    {
+      "path": "runs/04/fixture-class-identities.json",
+      "sha256Bytes": "cb702cfd2fc38bc6d7296abf4efacbb180f5c27b88f8176b42fad8d89dbfd924",
+      "bytes": 3439
+    },
+    {
+      "path": "runs/04/frozen-fixture-sources/ColdCardFixture.kt",
+      "sha256Bytes": "0a7bfc68e61d9ac29c6e3d5d79478d2322f689e45d655a5ae1afcc0973f617b9",
+      "bytes": 5036
+    },
+    {
+      "path": "runs/04/frozen-fixture-sources/UiFixture.kt",
+      "sha256Bytes": "72345ef410efb29a599711fa434fffed4788c18cca7b74cfd655b62b6335bf0b",
+      "bytes": 22374
+    },
+    {
+      "path": "runs/04/frozen-fixture-sources/fixture-source-identities.json",
+      "sha256Bytes": "ffd8d7e925e9a3c24f407bde3c510ad870da0cb6167e66b17b150bd8cb276948",
+      "bytes": 288
+    },
+    {
+      "path": "runs/04/frozen-fixture-sources/runner.py",
+      "sha256Bytes": "bf79125a8dcfd5b906f4e88aec1b7c235db9ca7744b94e5f22aff5eaef26c367",
+      "bytes": 12477
+    },
+    {
+      "path": "runs/04/product-class-pins.json",
+      "sha256Bytes": "6e94e1ad406dc52378a3923787348a876b948c6847c589359fcdbede3b6cbb5e",
+      "bytes": 11487
+    },
+    {
+      "path": "runs/04/proof/accepted-evidence.json",
+      "sha256Bytes": "2f4935f5e74590302f4d37027fe7d8015428f0912024386fa7139c5edbdf321e",
+      "bytes": 37329
+    },
+    {
+      "path": "runs/04/proof/actual-loaded-class-identities.json",
+      "sha256Bytes": "b26265c47fefb235ddef17517f981e40333f2f0ccd7cd567adb27d44d9c2a149",
+      "bytes": 10615
+    },
+    {
+      "path": "runs/04/proof/material3-dark/01-original-all-full-cards.png",
+      "sha256Bytes": "92a6cdecf564c2909d43b648604f4ca57b2cfe49f9194636188f394774db16a0",
+      "bytes": 42619
+    },
+    {
+      "path": "runs/04/proof/material3-dark/01-semantics.txt",
+      "sha256Bytes": "936d75583234dbd6b173b45d23e090aa8e37abb78d5b6ab08ef942fde0bea63b",
+      "bytes": 48571
+    },
+    {
+      "path": "runs/04/proof/material3-dark/02-up-like-confirmed-all-up-cache.png",
+      "sha256Bytes": "3acc37e2108448131f824427aa3e933747d13f0fc548d30101f97c3172c97592",
+      "bytes": 46951
+    },
+    {
+      "path": "runs/04/proof/material3-dark/03-up-unlike-repost-confirmed.png",
+      "sha256Bytes": "dfebcd5e84779ef9b38ee12968efd493f5c86c0a49df0feee5219ade887a3195",
+      "bytes": 46936
+    },
+    {
+      "path": "runs/04/proof/material3-dark/04-original-related-unfold.png",
+      "sha256Bytes": "d7c37232c0e100eb24b3cfe0ef27d050571db43feb76bfa08aa27249665958cc",
+      "bytes": 50438
+    },
+    {
+      "path": "runs/04/proof/material3-dark/04-semantics.txt",
+      "sha256Bytes": "b6c90e6c90f46d3b1755aa86dcebdc6ce039a516c524d6ea9f19d1bb3c54cc6e",
+      "bytes": 57220
+    },
+    {
+      "path": "runs/04/proof/material3-dark/05-original-not-interest-filter-raw-retained.png",
+      "sha256Bytes": "7314a6f7f00b9ecf3c427356b0125c594d1da92800109d4b18d84b5ae0f55c6d",
+      "bytes": 44908
+    },
+    {
+      "path": "runs/04/proof/material3-dark/06-all-confirmed-counts-fold-and-filter.png",
+      "sha256Bytes": "2cad3beafd71aa48f70efddf59220981f29502e12fc3b17fa80e2be024843bcd",
+      "bytes": 41639
+    },
+    {
+      "path": "runs/04/proof/material3-dark/07-original-delete-confirmation.png",
+      "sha256Bytes": "235477320917ad98781bfb3868d0419aecee9fa32fcc7661f800be8aaf457ef5",
+      "bytes": 42847
+    },
+    {
+      "path": "runs/04/proof/material3-dark/08-final-actual-all.png",
+      "sha256Bytes": "3437b8e7756035f881bdda70fd6fc512c1a0da92ec8b85a5610ae5df1b05ddb4",
+      "bytes": 35388
+    },
+    {
+      "path": "runs/04/proof/material3-dark/08-semantics.txt",
+      "sha256Bytes": "6d8c3149bdb6e9f8649197854447b6caf107cfa752afd668fe43ca8da7069926",
+      "bytes": 38461
+    },
+    {
+      "path": "runs/04/proof/material3-dark/checkpoints.json",
+      "sha256Bytes": "aeafb5ff297db78d367de4cf778125ef47811eb8bc6df12e7640de296c0da8c9",
+      "bytes": 31206
+    },
+    {
+      "path": "runs/04/proof/material3-dark/pointers.json",
+      "sha256Bytes": "e1d49cebbd270d7a103c75041db3d1dc5036347c724aabf002df7c1fc7e8ef5e",
+      "bytes": 792
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-02-like.json",
+      "sha256Bytes": "59798ea1ca1bdc05d6e609af2c0bb9c8742ef4d312b8e11dbb3742cd0b2eac91",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-03-unlike.json",
+      "sha256Bytes": "07a2a45252fdbc2933aebd39edb41736a008e64db004c626cd80367c5d72d09f",
+      "bytes": 5746
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-04-repost.json",
+      "sha256Bytes": "b350d9fe34c0d87bfb8a676bdf65a725856bccb1d9793675959bd99619900c99",
+      "bytes": 5749
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-05-unfold.json",
+      "sha256Bytes": "72d37be84fc9b41e9b98a53fc5454876ef69950519e474bfe687ba34d42ef0c9",
+      "bytes": 5500
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-06-not-interested.json",
+      "sha256Bytes": "30d4e94b45c592c2f8722ce09cceeefe42bfda631241edf042c72b12ddcad348",
+      "bytes": 5513
+    },
+    {
+      "path": "runs/04/proof/material3-dark/raw-07-delete.json",
+      "sha256Bytes": "3603db4443dbf596f82bff6c23f63a37f2525ca7ad8f3ef75872457a9db5ebdf",
+      "bytes": 2905
+    },
+    {
+      "path": "runs/04/proof/material3-dark/request-trace.json",
+      "sha256Bytes": "41b72937f1704123c9816aede7222a558153930b579dbc98943a1b3fd5e639f3",
+      "bytes": 2545
+    },
+    {
+      "path": "runs/04/proof/material3-light/01-original-all-full-cards.png",
+      "sha256Bytes": "1cadf8dc9f3accf7ebd81145c6a7742b26dccbb9ded58723ae2ddab1b90f01a9",
+      "bytes": 34056
+    },
+    {
+      "path": "runs/04/proof/material3-light/01-semantics.txt",
+      "sha256Bytes": "72fafa1543e016b774dee7732dace87d3d85d10dec9ce514d18c2ff1551c2e7d",
+      "bytes": 48581
+    },
+    {
+      "path": "runs/04/proof/material3-light/02-up-like-confirmed-all-up-cache.png",
+      "sha256Bytes": "6bcbc93070ebea9373775cfc039e715188dd167f53f54386e7226de8c0ae2bc2",
+      "bytes": 38250
+    },
+    {
+      "path": "runs/04/proof/material3-light/03-up-unlike-repost-confirmed.png",
+      "sha256Bytes": "933d2696ab8cc0c10e75cc33207d12a94bb2e5ed07fcc91fc1bc58f0daaa4a40",
+      "bytes": 38717
+    },
+    {
+      "path": "runs/04/proof/material3-light/04-original-related-unfold.png",
+      "sha256Bytes": "e06c3e2eb665d0514a319b0923f3d1f6bbc5c39fee791534ed8511805a9d8fdc",
+      "bytes": 41450
+    },
+    {
+      "path": "runs/04/proof/material3-light/04-semantics.txt",
+      "sha256Bytes": "77ad217bc2d420501db367317123c1da0faf637d5a887a1233a262067a159442",
+      "bytes": 57191
+    },
+    {
+      "path": "runs/04/proof/material3-light/05-original-not-interest-filter-raw-retained.png",
+      "sha256Bytes": "7040a56775cd1bd6d9dc328663b324a45bae67d474eccd57f640a8d1c13c917f",
+      "bytes": 35462
+    },
+    {
+      "path": "runs/04/proof/material3-light/06-all-confirmed-counts-fold-and-filter.png",
+      "sha256Bytes": "6c43896ddd64e877c4caf5a6b3682c6d3729f70aa66972a39789238d675081ba",
+      "bytes": 32726
+    },
+    {
+      "path": "runs/04/proof/material3-light/07-original-delete-confirmation.png",
+      "sha256Bytes": "152e16e0172546adbc35187a9f1594ecd5f694129e3029a4858ff90e2de22842",
+      "bytes": 43214
+    },
+    {
+      "path": "runs/04/proof/material3-light/08-final-actual-all.png",
+      "sha256Bytes": "6dd9d20d1d82bc28b4ef703a0166426310b2f5f0fb374afb3397790e0279085a",
+      "bytes": 25993
+    },
+    {
+      "path": "runs/04/proof/material3-light/08-semantics.txt",
+      "sha256Bytes": "7df6a2c4c4ffd709d4ea2558b558074eb6b1cb8e0b9dfa9ec985af598b5f9ff8",
+      "bytes": 38461
+    },
+    {
+      "path": "runs/04/proof/material3-light/checkpoints.json",
+      "sha256Bytes": "aeafb5ff297db78d367de4cf778125ef47811eb8bc6df12e7640de296c0da8c9",
+      "bytes": 31206
+    },
+    {
+      "path": "runs/04/proof/material3-light/pointers.json",
+      "sha256Bytes": "6f225a39149cc5809173b93d0fe089bd812e67f4d0959ed2222cb6e1773bbb7e",
+      "bytes": 787
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-02-like.json",
+      "sha256Bytes": "59798ea1ca1bdc05d6e609af2c0bb9c8742ef4d312b8e11dbb3742cd0b2eac91",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-03-unlike.json",
+      "sha256Bytes": "07a2a45252fdbc2933aebd39edb41736a008e64db004c626cd80367c5d72d09f",
+      "bytes": 5746
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-04-repost.json",
+      "sha256Bytes": "b350d9fe34c0d87bfb8a676bdf65a725856bccb1d9793675959bd99619900c99",
+      "bytes": 5749
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-05-unfold.json",
+      "sha256Bytes": "72d37be84fc9b41e9b98a53fc5454876ef69950519e474bfe687ba34d42ef0c9",
+      "bytes": 5500
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-06-not-interested.json",
+      "sha256Bytes": "30d4e94b45c592c2f8722ce09cceeefe42bfda631241edf042c72b12ddcad348",
+      "bytes": 5513
+    },
+    {
+      "path": "runs/04/proof/material3-light/raw-07-delete.json",
+      "sha256Bytes": "3603db4443dbf596f82bff6c23f63a37f2525ca7ad8f3ef75872457a9db5ebdf",
+      "bytes": 2905
+    },
+    {
+      "path": "runs/04/proof/material3-light/request-trace.json",
+      "sha256Bytes": "b70bb3acbbc85920c1b26543621b286d18db49d4ed5b0a679fa6cef4ef720a01",
+      "bytes": 2545
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/01-original-all-full-cards.png",
+      "sha256Bytes": "559405b22daf3e01d212dbe3362d047da65aae21170db2713ca09f6a49ca4787",
+      "bytes": 46623
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/01-semantics.txt",
+      "sha256Bytes": "892979f55bc94b921ae42822409004bb88a4b260efd49666ffe801c6ce62e3de",
+      "bytes": 44818
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/02-up-like-confirmed-all-up-cache.png",
+      "sha256Bytes": "834983e3874268ffe2236cb304ecf5b861bed11500fa15f1ecd9fef095c272ad",
+      "bytes": 48990
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/03-up-unlike-repost-confirmed.png",
+      "sha256Bytes": "0c05246f62b1de0ca4daee51df60b162012bb4af8adf90c4c47cba281b079aca",
+      "bytes": 49068
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/04-original-related-unfold.png",
+      "sha256Bytes": "6e52190593eed3cf27cba29b2da80709ad1114fbefc5c9604685b77f539be9f7",
+      "bytes": 54033
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/04-semantics.txt",
+      "sha256Bytes": "aaa53a39b3bba248b904cfcd4f7d76ca513ebe6c5fff3dc7c196ac4ef97d4d46",
+      "bytes": 52710
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/05-original-not-interest-filter-raw-retained.png",
+      "sha256Bytes": "d4f3dbd3eec24c3f7905c1db4a10edc5ba289ad146993b43f3a5d689df0c8b37",
+      "bytes": 47599
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/06-all-confirmed-counts-fold-and-filter.png",
+      "sha256Bytes": "a6beeb889cc79fbfad964972a8a29c0e43b05d2ea2c52f336bd92012cb4a00e3",
+      "bytes": 45716
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/07-original-delete-confirmation.png",
+      "sha256Bytes": "80e60bc2e49ca3b2f09cf74185c4d079b24d66cb27127f4127056e184826891d",
+      "bytes": 40917
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/08-final-actual-all.png",
+      "sha256Bytes": "d2e56bcc6b2c1d1bb34cf37a86961e5640f0353201a1a0feaeeae48c0b246505",
+      "bytes": 38690
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/08-semantics.txt",
+      "sha256Bytes": "5aa2ab474c80d01d93c7701d6557f07c0798321784c50e5160372f8ded1b2dd3",
+      "bytes": 35917
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/checkpoints.json",
+      "sha256Bytes": "aeafb5ff297db78d367de4cf778125ef47811eb8bc6df12e7640de296c0da8c9",
+      "bytes": 31206
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/pointers.json",
+      "sha256Bytes": "1496fbbd650acab26b916e9d464c68662ff3d9f5bb820a4d033ece501163153b",
+      "bytes": 794
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-02-like.json",
+      "sha256Bytes": "59798ea1ca1bdc05d6e609af2c0bb9c8742ef4d312b8e11dbb3742cd0b2eac91",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-03-unlike.json",
+      "sha256Bytes": "07a2a45252fdbc2933aebd39edb41736a008e64db004c626cd80367c5d72d09f",
+      "bytes": 5746
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-04-repost.json",
+      "sha256Bytes": "b350d9fe34c0d87bfb8a676bdf65a725856bccb1d9793675959bd99619900c99",
+      "bytes": 5749
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-05-unfold.json",
+      "sha256Bytes": "72d37be84fc9b41e9b98a53fc5454876ef69950519e474bfe687ba34d42ef0c9",
+      "bytes": 5500
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-06-not-interested.json",
+      "sha256Bytes": "30d4e94b45c592c2f8722ce09cceeefe42bfda631241edf042c72b12ddcad348",
+      "bytes": 5513
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/raw-07-delete.json",
+      "sha256Bytes": "3603db4443dbf596f82bff6c23f63a37f2525ca7ad8f3ef75872457a9db5ebdf",
+      "bytes": 2905
+    },
+    {
+      "path": "runs/04/proof/miuix-dark/request-trace.json",
+      "sha256Bytes": "1fecb5107485dfd0c76aa8595702c1a1c8a17fc1f36c7ec6a961aec7a663576a",
+      "bytes": 2545
+    },
+    {
+      "path": "runs/04/proof/miuix-light/01-original-all-full-cards.png",
+      "sha256Bytes": "0f32533669ce913c4225ae6cbb1aca3ec9926e4c36363f582ede74b9875686bf",
+      "bytes": 37377
+    },
+    {
+      "path": "runs/04/proof/miuix-light/01-semantics.txt",
+      "sha256Bytes": "9e2f54621fac69ee9fcf19a116abce277608cadbc54512c86de2f74c9a5df1ad",
+      "bytes": 44816
+    },
+    {
+      "path": "runs/04/proof/miuix-light/02-up-like-confirmed-all-up-cache.png",
+      "sha256Bytes": "f18554860290bec22f07c2ab9f5d57727b7b32ed39f91941b5af34c0695196e5",
+      "bytes": 39656
+    },
+    {
+      "path": "runs/04/proof/miuix-light/03-up-unlike-repost-confirmed.png",
+      "sha256Bytes": "7ab88e927f1d41af20ac7fbeb421892e74eaad2809d4cbd1d65fef8fbbe7ed3e",
+      "bytes": 40277
+    },
+    {
+      "path": "runs/04/proof/miuix-light/04-original-related-unfold.png",
+      "sha256Bytes": "871aa2f530616b87d2c36baf37d9b5dc10e51b9bf13ebd66b330b8099eadc9c7",
+      "bytes": 43984
+    },
+    {
+      "path": "runs/04/proof/miuix-light/04-semantics.txt",
+      "sha256Bytes": "2d02cac5053d2f1964ec5c0c609e30b6486fa0a03b89ab0be80ff747cbfeb3bd",
+      "bytes": 52694
+    },
+    {
+      "path": "runs/04/proof/miuix-light/05-original-not-interest-filter-raw-retained.png",
+      "sha256Bytes": "955e857804ad63bb022e133b392f629ba25bb79b407df5b2be47b9178b35c0c2",
+      "bytes": 37494
+    },
+    {
+      "path": "runs/04/proof/miuix-light/06-all-confirmed-counts-fold-and-filter.png",
+      "sha256Bytes": "1cc3a11f9e0ba6dd4e7c2fad4b84c62aaf02b4b215b9f0d4c0576f27c5e7cb49",
+      "bytes": 35895
+    },
+    {
+      "path": "runs/04/proof/miuix-light/07-original-delete-confirmation.png",
+      "sha256Bytes": "daca09acd5094722593593c45d57a43278bfeeed7caa0d4a2df8aec6690966e8",
+      "bytes": 42807
+    },
+    {
+      "path": "runs/04/proof/miuix-light/08-final-actual-all.png",
+      "sha256Bytes": "84efa34261ca51c0bedcc96d3b445446649547716f0761b05820e26909a78c59",
+      "bytes": 28443
+    },
+    {
+      "path": "runs/04/proof/miuix-light/08-semantics.txt",
+      "sha256Bytes": "4f7940bf7c8f4b019fbf28f033942af242b48bd839cb85fda972e388b1603e02",
+      "bytes": 35942
+    },
+    {
+      "path": "runs/04/proof/miuix-light/checkpoints.json",
+      "sha256Bytes": "aeafb5ff297db78d367de4cf778125ef47811eb8bc6df12e7640de296c0da8c9",
+      "bytes": 31206
+    },
+    {
+      "path": "runs/04/proof/miuix-light/pointers.json",
+      "sha256Bytes": "1e962e72c0d801b3c9aab4575da8235f2a40a3839e908ddb3dfaed2787ddd7f9",
+      "bytes": 789
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-02-like.json",
+      "sha256Bytes": "59798ea1ca1bdc05d6e609af2c0bb9c8742ef4d312b8e11dbb3742cd0b2eac91",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-03-unlike.json",
+      "sha256Bytes": "07a2a45252fdbc2933aebd39edb41736a008e64db004c626cd80367c5d72d09f",
+      "bytes": 5746
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-04-repost.json",
+      "sha256Bytes": "b350d9fe34c0d87bfb8a676bdf65a725856bccb1d9793675959bd99619900c99",
+      "bytes": 5749
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-05-unfold.json",
+      "sha256Bytes": "72d37be84fc9b41e9b98a53fc5454876ef69950519e474bfe687ba34d42ef0c9",
+      "bytes": 5500
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-06-not-interested.json",
+      "sha256Bytes": "30d4e94b45c592c2f8722ce09cceeefe42bfda631241edf042c72b12ddcad348",
+      "bytes": 5513
+    },
+    {
+      "path": "runs/04/proof/miuix-light/raw-07-delete.json",
+      "sha256Bytes": "3603db4443dbf596f82bff6c23f63a37f2525ca7ad8f3ef75872457a9db5ebdf",
+      "bytes": 2905
+    },
+    {
+      "path": "runs/04/proof/miuix-light/request-trace.json",
+      "sha256Bytes": "1fecb5107485dfd0c76aa8595702c1a1c8a17fc1f36c7ec6a961aec7a663576a",
+      "bytes": 2545
+    },
+    {
+      "path": "runs/04/proof/trace-conformance.json",
+      "sha256Bytes": "b8eed0f5898563a1a7e0085137d070f30a269a89fa5e62087f7ce9ed2d0de9de",
+      "bytes": 1364
+    },
+    {
+      "path": "runs/04/proof/ui.json",
+      "sha256Bytes": "b4cf090308cc7b7a3d6dc035db37d1a8ef890ea221132707a948586695756a29",
+      "bytes": 3693
+    },
+    {
+      "path": "runs/04/proof/visual-review.json",
+      "sha256Bytes": "17a9ba3dcc8df77402a1114dc697b011e0299350530a0d2be6b2f7e2b149dd18",
+      "bytes": 1964
+    },
+    {
+      "path": "runs/04/seed-material3-dark.args",
+      "sha256Bytes": "8612fab6f1c67e19104c3e7cdd12a21b4f72fa363d39707486eb69b3877d1819",
+      "bytes": 22563
+    },
+    {
+      "path": "runs/04/seed-material3-dark.log",
+      "sha256Bytes": "925c8a43eba2e2de80fabc5f534d39ceddfcfd67927f240519097ee27c66268d",
+      "bytes": 59
+    },
+    {
+      "path": "runs/04/seed-material3-light.args",
+      "sha256Bytes": "7af0888fe21453666ad9d8776eb5e5ef92d25fbf30e7b6ae67176bf1bafdd1f3",
+      "bytes": 22564
+    },
+    {
+      "path": "runs/04/seed-material3-light.log",
+      "sha256Bytes": "925c8a43eba2e2de80fabc5f534d39ceddfcfd67927f240519097ee27c66268d",
+      "bytes": 59
+    },
+    {
+      "path": "runs/04/seed-miuix-dark.args",
+      "sha256Bytes": "c8ecb1a9beee91eb368a45bcf57dbe696dade0a30a72228fc8703f1ca0eb1b2f",
+      "bytes": 22559
+    },
+    {
+      "path": "runs/04/seed-miuix-dark.log",
+      "sha256Bytes": "925c8a43eba2e2de80fabc5f534d39ceddfcfd67927f240519097ee27c66268d",
+      "bytes": 59
+    },
+    {
+      "path": "runs/04/seed-miuix-light.args",
+      "sha256Bytes": "3cab3ee18524a1ab720b6c962a58dcd400c30e4e39ba2a565a2617e633c03681",
+      "bytes": 22560
+    },
+    {
+      "path": "runs/04/seed-miuix-light.log",
+      "sha256Bytes": "925c8a43eba2e2de80fabc5f534d39ceddfcfd67927f240519097ee27c66268d",
+      "bytes": 59
+    },
+    {
+      "path": "runs/04/task-owned-environment.json",
+      "sha256Bytes": "1f4730cbbd961594e5c4b23e32c543c276a2423af79b6eade0a4433ea5b939a2",
+      "bytes": 236
+    },
+    {
+      "path": "runs/04/ui.args",
+      "sha256Bytes": "6f83f9ceb8e5d4c3c3fefb5592a7ff5f9c0817697f78a5ef27fa38ccbffc6fce",
+      "bytes": 22702
+    },
+    {
+      "path": "runs/04/ui.log",
+      "sha256Bytes": "405e327ddc46e877f653c920e35c55d330094f4c4ab909e41522e82a4175d882",
+      "bytes": 86
+    }
+  ]
+}

@@ -24,3 +24,4 @@ desktop/verification/home-full-card/** -text
 desktop/src/main/resources/licenses/home-card-platform/** -text
 desktop/third-party/home-card-palette/upstream/** -text
 desktop/verification/dynamic-cache/** -text
+desktop/verification/dynamic-full-card/** -text

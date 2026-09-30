@@ -1,0 +1,14 @@
+.................F......
+======================================================================
+FAIL: test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding (desktop.tools.tests.test_dynamic_tabs_sources.DynamicTabsSourcesTest.test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\tests\test_dynamic_tabs_sources.py", line 52, in test_native_component_body_is_original_with_only_platform_and_shared_declaration_binding
+    self.assertEqual(expected.strip(),actual.strip())
+AssertionError: "pack[1110 chars]port androidx.compose.foundation.isSystemInDar[17115 chars]}\n}" != "pack[1110 chars]port com.bilipai.desktop.appearance.isDesktopI[17142 chars]}\n}"
+Diff is 18829 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 24 tests in 5.303s
+
+FAILED (failures=1)

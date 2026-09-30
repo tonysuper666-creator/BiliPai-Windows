@@ -1,0 +1,34 @@
+{
+  "passed": false,
+  "exitCode": 1,
+  "snapshotSha256Bytes": "5d35c5c5d1af113502de1c6988ea81a54a3e4588e711414aeefeeb7f8c447dd6",
+  "productionOverrides": 0,
+  "fixtureJarSha256Bytes": "8c788191f2a8884ef3b634ebd883c791561ba7ec6b0f33919e034f31281b40ae",
+  "partialMatrix": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-product-ui-proof\\runs\\01\\proof\\ui.json",
+  "coldSeeds": [
+    {
+      "cell": "material3-light",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-product-ui-proof\\runs\\01\\cold-roots\\material3-light"
+    },
+    {
+      "cell": "material3-dark",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-product-ui-proof\\runs\\01\\cold-roots\\material3-dark"
+    },
+    {
+      "cell": "miuix-light",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-product-ui-proof\\runs\\01\\cold-roots\\miuix-light"
+    },
+    {
+      "cell": "miuix-dark",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-product-ui-proof\\runs\\01\\cold-roots\\miuix-dark"
+    }
+  ]
+}

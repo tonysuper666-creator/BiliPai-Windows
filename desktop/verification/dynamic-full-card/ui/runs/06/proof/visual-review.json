@@ -1,0 +1,38 @@
+{
+  "attempt": "06",
+  "passed": true,
+  "reviewer": "task fixture agent",
+  "independentChildReviewClaimed": false,
+  "reviewedScreenshots": 12,
+  "reviewedPerCell": ["01-original-all-full-cards.png", "07-original-delete-confirmation.png", "08-final-actual-all.png"],
+  "cells": ["material3-light", "material3-dark", "miuix-light", "miuix-dark"],
+  "retainedTotalScreenshots": 32,
+  "all32ScreenshotsManuallyReviewed": false,
+  "findings": [],
+  "checked": [
+    "Original action icons/text/counts are readable in all four cells.",
+    "Light action containers match the selected desktop palette.",
+    "Selected All tabs and Dynamic title are legible in all four cells.",
+    "Original self-delete modal title/content/cancel/confirm are visible in all four cells.",
+    "Initial hidden-related card is absent; final related card is visible and NotInterested/deleted cards are absent in every first/final screenshot pair."
+  ],
+  "sampledContrast": {
+    "material3LightAction": 9.297408670486925,
+    "miuixLightSelectedAll": 21.0,
+    "miuixDarkTitle": 18.758462357639324
+  },
+  "freshActualLifecycleMainBytesExecuted": true,
+  "sameFinalPixelsAsThemeCohortExpected": true,
+  "copiedPriorScreenshotsOrResults": false,
+  "fixtureParentMatchesActualRoot": true,
+  "automatedInteractionAndRawCacheChecksPassed": true,
+  "normalSharedEmoteCatalogCountsChecked": true,
+  "callbackCancellationScenarioExercisedByThisUIFixture": false,
+  "retiredEmoteOwnerScenarioExercisedByThisUIFixture": false,
+  "actualCommunityReadyOriginalCardRegistryIntegration": true,
+  "wholeShellExecuted": false,
+  "nativeHWND": false,
+  "packageOrEXEAcceptance": false,
+  "realAccountOrNetworkAcceptance": false,
+  "completeDynamicDetailEditorParity": false
+}

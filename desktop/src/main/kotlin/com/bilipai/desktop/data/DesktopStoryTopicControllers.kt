@@ -105,6 +105,9 @@ class DesktopTopicController(private val topicId: Long, private val data: Deskto
     private val mutable = MutableStateFlow(TopicDetailUiState())
     val state = mutable.asStateFlow()
     private fun owned(token: Long) = !closed.get() && token == generation.get() && epoch == data.sessionEpoch.value
+    internal fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
+        if (owned(generation.get())) mutable.update { it.copy(items = transform(it.items)) }
+    }
     fun load() {
         if (closed.get()) return
         if (topicId <= 0) { mutable.value = TopicDetailUiState(error = "话题不存在"); return }

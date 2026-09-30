@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "derivedFrom": "actual request-trace and checkpoint JSON artifacts",
+  "checks": [
+    {
+      "cell": "material3-light",
+      "passed": true,
+      "upMids": [
+        "77",
+        "42"
+      ],
+      "upCalls": 2,
+      "posts": 4,
+      "methodAndHostMatchOriginalAPI": true,
+      "checkpointCacheEqualsAllCount": 6,
+      "actualPointerPairs": 19,
+      "syntheticCsrfTokenOnly": true
+    },
+    {
+      "cell": "material3-dark",
+      "passed": true,
+      "upMids": [
+        "77",
+        "42"
+      ],
+      "upCalls": 2,
+      "posts": 4,
+      "methodAndHostMatchOriginalAPI": true,
+      "checkpointCacheEqualsAllCount": 6,
+      "actualPointerPairs": 19,
+      "syntheticCsrfTokenOnly": true
+    },
+    {
+      "cell": "miuix-light",
+      "passed": true,
+      "upMids": [
+        "77",
+        "42"
+      ],
+      "upCalls": 2,
+      "posts": 4,
+      "methodAndHostMatchOriginalAPI": true,
+      "checkpointCacheEqualsAllCount": 6,
+      "actualPointerPairs": 19,
+      "syntheticCsrfTokenOnly": true
+    },
+    {
+      "cell": "miuix-dark",
+      "passed": true,
+      "upMids": [
+        "77",
+        "42"
+      ],
+      "upCalls": 2,
+      "posts": 4,
+      "methodAndHostMatchOriginalAPI": true,
+      "checkpointCacheEqualsAllCount": 6,
+      "actualPointerPairs": 19,
+      "syntheticCsrfTokenOnly": true
+    }
+  ]
+}

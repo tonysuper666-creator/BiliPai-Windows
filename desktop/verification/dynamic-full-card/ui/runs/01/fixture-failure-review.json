@@ -1,0 +1,7 @@
+{
+  "productBug": false,
+  "reason": "Fixture checkpoint generic inference selected ImmutableList polymorphic serializer; actual persistent cache had already flushed. Use explicit List<DynamicItem> serializer only in the fixture dump. Product/CP unchanged.",
+  "snapshotSha256Bytes": "5d35c5c5d1af113502de1c6988ea81a54a3e4588e711414aeefeeb7f8c447dd6",
+  "frozenSource": "frozen-fixture-sources/UiFixture.kt",
+  "failure": "proof/material3-light/FAILED.txt"
+}

@@ -17,7 +17,7 @@ enum class CommunitySection(val title: String) {
 internal class CommunityNavigation(val onVideo: (VideoCard) -> Unit, val onUser: (Long) -> Unit,
     val onArticle: (Long) -> Unit, val onLogin: () -> Unit, val onLive: (Long) -> Unit,
     val onBangumi: (Long) -> Unit, val onDynamic: (String) -> Unit, val onTopic: (Long) -> Unit = {},
-    val onTopicKeyword: (String) -> Unit = {})
+    val onTopicKeyword: (String) -> Unit = {}, val onDynamicBack: () -> Unit = {})
 
 @Composable
 fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
@@ -33,7 +33,7 @@ fun CommunityContentScreen(section: CommunitySection, repository: DesktopReposit
         browseMemory.screen(listOf("community-dynamic-detail", section, userId, query, initialDynamicId)) { mutableStateOf(initialDynamicId) }
     }
     val feedMemory = browseMemory.feeds
-    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it }, onTopic, onTopicKeyword)
+    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it }, onTopic, onTopicKeyword, onDynamicBack={dynamicDetail=null})
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalCommunityFeedMemory provides feedMemory,
         LocalCommunityFeedNamespace provides listOf(section, userId, articleId, noteVideo?.aid)) {
     Column(Modifier.fillMaxSize()) {

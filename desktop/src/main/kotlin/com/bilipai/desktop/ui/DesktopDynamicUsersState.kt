@@ -23,7 +23,7 @@ internal class DesktopDynamicUsersState(
     private val selfFace:String="",
     private val nowMs:()->Long=System::currentTimeMillis,
     private val startupDelay:suspend (Long)->Unit={delay(it)},
-) {
+) : DesktopDynamicCardItemsOwner {
     var selectedLogicalTab by mutableIntStateOf(resolveDynamicSelectedTabWithinVisibleTabs(preferences.selectedTab,
         resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder)));private set
     var selectedUid by mutableStateOf<Long?>(null);private set
@@ -55,6 +55,12 @@ internal class DesktopDynamicUsersState(
     private val original=DesktopOriginalDynamicUserRepository(requestPage){owned()}
     val hiddenCount:Int get()=hidden.size
     private fun owned()=!closed&&stillOwned()
+    override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
+        if (!owned()) return
+        userItems = transform(userItems)
+        dynamics = transform(dynamics)
+        rebuild()
+    }
     private fun launchOwned(inScope:CoroutineScope=scope,block:suspend CoroutineScope.()->Unit):Job {
         val job=inScope.launch(start=CoroutineStart.LAZY){if(owned())block()}
         ownedJobs+=job

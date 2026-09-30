@@ -71,6 +71,7 @@ class OriginalStoryTopicExtractTest(unittest.TestCase):
             self.assertIn(media.function(original,"appendDynamicRichTextTopic",parser).replace("private fun","internal fun",1),body)
             start=original.index("private fun dynamicRichTextLinkAnnotation(")
             end=original.index("\n/** 动态富文本链接动作",start)
-            self.assertIn(original[start:end].strip(),body)
+            self.assertIn(original[start:end].strip().replace("private fun","internal fun",1),body)
+            self.assertEqual(body.count("internal fun dynamicRichTextLinkAnnotation("),1)
 
 if __name__=="__main__":unittest.main()

@@ -205,7 +205,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val space = remember(repository) { DesktopSpaceRepository(repository) }
     val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
-    val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
+    val browseMemory = remember(account?.mid, sessionEpoch) { DesktopBrowseMemory() }
     val homeCardProgress = remember(library, sessionEpoch) { desktopHomeCardProgressReader(library) }
     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
@@ -219,6 +219,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val dynamicCache = remember(pluginStore, repository) { DesktopDynamicCache(repository.dynamicCacheSessionGuard, pluginStore) }
     DisposableEffect(dynamicCache) { onDispose { dynamicCache.stopAccepting() } }
+    val latestDynamicIsClosing by rememberUpdatedState(isClosing)
+    val dynamicCardSession = remember(repository, sessionEpoch) {
+        DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
+    }
+    val dynamicCardRegistry = remember(repository, dynamicCache, sessionEpoch) {
+        DesktopDynamicCardStateRegistry(repository.dynamicCacheSessionGuard, dynamicCache, sessionEpoch,
+            stillOwned = dynamicCardSession::isOwned)
+    }
+    DisposableEffect(dynamicCardSession, dynamicCardRegistry) {
+        onDispose { dynamicCardSession.close(); dynamicCardRegistry.close() }
+    }
     val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache) {
         DesktopPluginRuntime(pluginStore, repository, community, discovery,
             beforeStoreFreeze = { dynamicCache.shutdownForRestore(); diagnosticLifecycle?.shutdownForRestore() })
@@ -851,9 +862,18 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val strings = LocalDesktopStrings.current
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
         LocalDesktopDynamicCache provides dynamicCache,
+        LocalDesktopDynamicCardRepository provides repository,
+        LocalDesktopDynamicCardSession provides dynamicCardSession,
+        LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
+        LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
+        LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
+            onVideoClick = { openVideo(VideoCard(it, "", "", "", 0, 0)) }, onUserClick = ::openUser,
+            onBangumiClick = { sid, eid -> showSeason(sid, eid) }, onMusicClick = ::openMusic,
+            onLiveClick = { room, _, _ -> openLive(room) }),
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
         LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
+        com.android.purebilibili.feature.dynamic.components.ImagePreviewOverlayHost()
         if (!appearanceReady) {
             Surface(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {

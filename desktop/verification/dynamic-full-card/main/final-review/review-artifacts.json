@@ -1,0 +1,39 @@
+{
+  "scope": "Task-only narrow read-only final review and prepared3 fake-API tests; no Main/shared Gradle/HWND/remote or old frozen edits. New targeted execution/compiled fix acceptance belongs to Root.",
+  "artifacts": [
+    {
+      "path": "ADDENDUM.md",
+      "sha256": "bebe7011d5efe87dbf187c59ee91276cece9c60f64cea29cc2ee7a8f2aa39680",
+      "bytes": 4563
+    },
+    {
+      "path": "evidence.json",
+      "sha256": "8703a0db48efd5b1ce5d63e6d686a4be38de80625b8538ca809db7e57c10863c",
+      "bytes": 5920
+    },
+    {
+      "path": "FINAL-ADDENDUM.md",
+      "sha256": "f4b5674f36865c97c809bb9e56d49df40b846abda2a631e2813d9ba80a931be4",
+      "bytes": 3444
+    },
+    {
+      "path": "post-fix-source-read.json",
+      "sha256": "fb8cf670e17ab80a418757c1ade28e99f6cd96638fcdf6f1c9ee2b3ad56a392e",
+      "bytes": 1543
+    },
+    {
+      "path": "POST-GATE-READ.md",
+      "sha256": "6929cf7308b54c7fe679178f7764870ff5f51ba384417ce7ec7c6ebf4e17f7d4",
+      "bytes": 2361
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicEmoteCatalogTest.kt",
+      "sha256": "3780999f111ceae2b2597ea1175af0cabececd3db45d1c7274860c764133b57b",
+      "bytes": 7000
+    }
+  ],
+  "immutableReviewedSnapshotManifestSha256": "b47f4d80fb598ec0d5de05ee41a5bead82de773331e0b50c8d41f237a35a9c01",
+  "laterSourceDeltasPinnedSeparately": true,
+  "preparedTestExecutedHere": false,
+  "remainingSourceBlockerAfterRootFixes": false
+}

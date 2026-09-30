@@ -1,0 +1,21 @@
+Exception in thread "main" kotlinx.serialization.SerializationException: Serializer for subclass 'SmallPersistentVector' is not found in the polymorphic scope of 'ImmutableList'.
+Check if class with serial name 'SmallPersistentVector' exists and serializer is registered in a corresponding SerializersModule.
+To be registered automatically, class 'SmallPersistentVector' has to be '@Serializable', and the base class 'ImmutableList' has to be sealed and '@Serializable'.
+	at kotlinx.serialization.internal.AbstractPolymorphicSerializerKt.throwSubtypeNotRegistered(AbstractPolymorphicSerializer.kt:103)
+	at kotlinx.serialization.internal.AbstractPolymorphicSerializerKt.throwSubtypeNotRegistered(AbstractPolymorphicSerializer.kt:115)
+	at kotlinx.serialization.PolymorphicSerializerKt.findPolymorphicSerializer(PolymorphicSerializer.kt:109)
+	at kotlinx.serialization.json.internal.AbstractJsonTreeEncoder.encodeSerializableValue(TreeJsonEncoder.kt:296)
+	at kotlinx.serialization.json.internal.TreeJsonEncoderKt.writeJson(TreeJsonEncoder.kt:21)
+	at kotlinx.serialization.json.Json.encodeToJsonElement(Json.kt:160)
+	at com.bilipai.desktop.ui.productdynamiccardproof.UiFixtureKt.case$rawCheckpoint(UiFixture.kt:309)
+	at com.bilipai.desktop.ui.productdynamiccardproof.UiFixtureKt.access$case$rawCheckpoint(UiFixture.kt:1)
+	at com.bilipai.desktop.ui.productdynamiccardproof.UiFixtureKt$case$rawCheckpoint$1.invokeSuspend(UiFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.productdynamiccardproof.UiFixtureKt.main(UiFixture.kt:213)

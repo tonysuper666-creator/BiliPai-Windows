@@ -1,0 +1,78 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "6ba395be90cbf12e78dd842ebe48d4d2b0c39f692ea7abdf1991eb1bfea13343"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/ColdCardFixtureKt.class",
+    "sha256Bytes": "6d10e292ef7d5cce904a9ce21b50cc62ced23a24c113f1de1d16712487217dc9"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/ColdCardFixtureKt$main$1.class",
+    "sha256Bytes": "6c0d43e31ac05375602425d5cc001f297eb16ad5a952c5184d19223b56f015cb"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui.class",
+    "sha256Bytes": "79d1cdac5b9b01a34401980c617c3a31ede8000837d9824e439d4e55e8b006dd"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "4e23ccf9f9e598d354809759393b2aa86397c44baac16f50a5beec74e92ba4bc"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$frame$1.class",
+    "sha256Bytes": "45151dd0842749f71c05c452d0394b40c9b9457d2b53476e65211b8833078303"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$await$2.class",
+    "sha256Bytes": "42765c7481312746495775de58998e91a0bd7281b6ce7fbdffeb670687a85f81"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$await$1.class",
+    "sha256Bytes": "1855ebeb2af886905eaaaaf66a9234147796fab0212f7d74efdd27ff04002fe0"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$press$1.class",
+    "sha256Bytes": "6a78fdbf2541c3e92c20b148e8a8f843d4e38092b2e847252ca5696ea0ecf697"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$click$1.class",
+    "sha256Bytes": "0e2a51782de56737266d9842e4538f3937ed71e0e4fde6566f80f4405599dbfd"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/Ui$moreFor$1.class",
+    "sha256Bytes": "4072f79f1b97c52b0a020fbfb6ddf9a1d1a404205ea97d1aa5577695c0757ab1"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt.class",
+    "sha256Bytes": "9c3cd84f0dfb4a28cdbbd3edcc4d09c5cc3acb79884b15a3711a74f6df0d0c5d"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$case$$inlined$-addInterceptor$1.class",
+    "sha256Bytes": "f49faca7772d50dbe01338b3bf66eae6a8e8b98b35921682a885acbad39936a5"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$case$registry$1.class",
+    "sha256Bytes": "190ebfbb9b913df695fe92521ef14f7e38ce6aed093f6d2ae4c39276b303c586"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$case$1.class",
+    "sha256Bytes": "04d473e99b87852ff495436e679c2951f5385db2f58352c2a85efedc1eea5db6"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$main$1.class",
+    "sha256Bytes": "6ea9af8141914f00e45f93d61ec8832b1c613c4d446d5deb5876709107389458"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$main$1$loader$1$1.class",
+    "sha256Bytes": "ad7895858cc87ea8a335cccd79fea6df8377617133a99cab713adb01eebafc61"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productdynamiccardproof/UiFixtureKt$case$rawCheckpoint$1.class",
+    "sha256Bytes": "c4a4f2b2d1a4a532919da27bb33b47b648211e734e31d1dcb0b1fd880df218b7"
+  },
+  {
+    "entry": "META-INF/dynamic_full_card_product_ui_proof.kotlin_module",
+    "sha256Bytes": "5ff01874c7e651aca6ba90ba94d9ac9c6fd6b1cad76330943cce8f659a7d54d8"
+  }
+]

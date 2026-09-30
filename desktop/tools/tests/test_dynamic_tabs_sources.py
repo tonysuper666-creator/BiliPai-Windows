@@ -48,6 +48,7 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   a=g.module(REPO,'tabs_test_decl','desktop/tools/extract-appearance-platform.py')
   expected=source.replace(self.media.data_class(source,'AppSegmentOption',self.parser),'').replace(a.declarations(self.parser,source,['resolvePiliPlusScrollableUnderlineMinWidth']),'')
   expected=expected.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration')
+  expected=expected.replace('import androidx.compose.foundation.isSystemInDarkTheme','import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme')
   actual=self.generated('DesktopOriginalDynamicNativeTabs.kt').split('\n',2)[2]
   self.assertEqual(expected.strip(),actual.strip())
   for path in g.DIRECT:

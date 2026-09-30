@@ -1,0 +1,41 @@
+{
+  "attempt": "03",
+  "passed": false,
+  "automatedInteractionAndDataChecksPassed": true,
+  "reviewedByParentAndIndependentFixtureReviewer": true,
+  "reviewedImages": [
+    "material3-light/01-original-all-full-cards.png",
+    "material3-light/08-final-actual-all.png",
+    "material3-dark/01-original-all-full-cards.png",
+    "material3-dark/08-final-actual-all.png",
+    "miuix-light/01-original-all-full-cards.png",
+    "miuix-light/08-final-actual-all.png",
+    "miuix-dark/01-original-all-full-cards.png",
+    "miuix-dark/08-final-actual-all.png"
+  ],
+  "findings": [
+    {
+      "cells": ["material3-light"],
+      "component": "original dynamic ActionButton row",
+      "result": "Very light icons, text and counts on a light background have poor contrast. The same action row is readable in dark mode.",
+      "parentDiagnosis": "Android isSystemInDarkTheme reads Windows system dark rather than the forced desktop palette."
+    },
+    {
+      "cells": ["miuix-light"],
+      "component": "original dynamic ActionButton row",
+      "result": "Dark button containers remain on the light page. Their light labels remain readable but the action theme does not match the page."
+    },
+    {
+      "cells": ["miuix-light"],
+      "component": "selected All tab",
+      "result": "Selected All uses dark text on a dark gray container with poor contrast."
+    },
+    {
+      "cells": ["miuix-dark"],
+      "component": "page title",
+      "result": "The Dynamic title at the top left is invisible in both first and final images; the corresponding light images show the title."
+    }
+  ],
+  "scope": "ImageComposeScene images only; no native HWND, package or real account/network acceptance.",
+  "resolution": "Keep all attempt03 bytes as historical evidence and rerun against a fresh immutable actual Main snapshot."
+}

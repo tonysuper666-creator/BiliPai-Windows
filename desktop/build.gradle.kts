@@ -468,6 +468,20 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/home-full-card"))
 }
 
+val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-card.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-full-card").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-card.py", "tools/extract-dynamic-message-share.py",
+        "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
+        "tools/extract-upstream-api.py", "tools/extract-appearance-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-dynamic-full-card-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
+}
+
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
@@ -702,6 +716,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-cards"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
@@ -715,6 +730,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstreamDynamicTabs) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

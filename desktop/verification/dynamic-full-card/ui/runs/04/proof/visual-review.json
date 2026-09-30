@@ -1,0 +1,47 @@
+{
+  "attempt": "04",
+  "passed": false,
+  "automatedInteractionAndDataChecksPassed": true,
+  "reviewedByParentFixtureAndIndependentFixtureReviewer": true,
+  "reviewedImages": [
+    "material3-light/01-original-all-full-cards.png",
+    "material3-light/08-final-actual-all.png",
+    "material3-dark/01-original-all-full-cards.png",
+    "material3-dark/08-final-actual-all.png",
+    "miuix-light/01-original-all-full-cards.png",
+    "miuix-light/08-final-actual-all.png",
+    "miuix-dark/01-original-all-full-cards.png",
+    "miuix-dark/08-final-actual-all.png"
+  ],
+  "resolved": [
+    {
+      "component": "original dynamic ActionButton row",
+      "cell": "material3-light",
+      "before": "#DDDDDD foreground / #FAF9FE background, 1.297:1",
+      "after": "#444444 foreground / #FAF9FE background, 9.297:1",
+      "result": "Readable. Original color body now follows the selected desktop palette."
+    },
+    {
+      "component": "original dynamic ActionButton row",
+      "cell": "miuix-light",
+      "before": "#DDDDDD foreground / #242424 dark container",
+      "after": "#444444 foreground / #F2F2F2 light container, 8.700:1",
+      "result": "Readable and matches the selected light theme."
+    }
+  ],
+  "remainingFindings": [
+    {
+      "cell": "miuix-light",
+      "component": "selected All tab",
+      "result": "#000000 selected text on #383838 container, 1.791:1."
+    },
+    {
+      "cell": "miuix-dark",
+      "component": "page title",
+      "result": "Semantics contains Dynamic title bounds(20,14)-(56,38); image ROI x20..58/y16..38 has 897/897 black pixels and no visible title."
+    }
+  ],
+  "darkActionRows": "Both dark action rows remain readable and their core sampled colors match attempt03.",
+  "scope": "ImageComposeScene only; no native HWND, package or real account/network acceptance.",
+  "resolution": "Keep attempt04 as historical evidence; fresh actual Main snapshot is required after the Root page-title/tab theme correction."
+}

@@ -34,7 +34,7 @@ internal class CommunityFeedMemory {
         }
     }
 }
-internal class CommunityFeedState<T, C>(val scroll: LazyListState = LazyListState()) {
+internal class CommunityFeedState<T, C>(val scroll: LazyListState = LazyListState()) : DesktopDynamicCardItemsOwner {
     var reloadRevision by mutableLongStateOf(0L); private set
     var rows by mutableStateOf(emptyList<T>())
     var next by mutableStateOf<C?>(null)
@@ -43,6 +43,14 @@ internal class CommunityFeedState<T, C>(val scroll: LazyListState = LazyListStat
     var failedCursor by mutableStateOf<C?>(null)
     var failedReplace by mutableStateOf(false)
     var statusMessage by mutableStateOf<String?>(null)
+    override fun mutateDynamicItems(transform: (List<com.android.purebilibili.data.model.response.DynamicItem>) -> List<com.android.purebilibili.data.model.response.DynamicItem>) {
+        if (rows.isEmpty() || rows.any { it !is com.android.purebilibili.data.model.response.DynamicItem }) return
+        @Suppress("UNCHECKED_CAST")
+        val dynamicRows = rows as List<com.android.purebilibili.data.model.response.DynamicItem>
+        @Suppress("UNCHECKED_CAST")
+        val updated = transform(dynamicRows) as List<T>
+        rows = updated
+    }
 
     /** Keep cached rows and their scroll owner until a replacement first page succeeds. */
     fun invalidate() {
@@ -80,6 +88,7 @@ internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> Comm
     val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds
     val namespace = LocalCommunityFeedNamespace.current
     val page = remember(memory, namespace, key) { memory?.page<T, C>(Pair(namespace, key)) ?: CommunityFeedState() }
+    LocalDesktopDynamicCardStateRegistry.current?.register(page)
     val scroll = page.scroll
     var refresh by remember(page) { mutableIntStateOf(0) }
     var rows by page::rows

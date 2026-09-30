@@ -165,6 +165,12 @@ internal fun DesktopTopicDetailScreen(topicId: Long, data: DesktopStoryTopicData
     val scope = rememberCoroutineScope()
     val controller = remember(data, topicId, epoch) { DesktopTopicController(topicId, data, scope) }
     val state by controller.state.collectAsState()
+    val cardOwner=remember(controller){object:DesktopDynamicCardItemsOwner {
+        override fun mutateDynamicItems(transform:(List<com.android.purebilibili.data.model.response.DynamicItem>)->List<com.android.purebilibili.data.model.response.DynamicItem>) {
+            controller.mutateDynamicItems(transform)
+        }
+    }}
+    LocalDesktopDynamicCardStateRegistry.current?.register(cardOwner)
     var composing by remember(controller) { mutableStateOf(false) }
     DisposableEffect(controller) { onDispose { controller.close() } }
     LaunchedEffect(controller) { controller.load() }

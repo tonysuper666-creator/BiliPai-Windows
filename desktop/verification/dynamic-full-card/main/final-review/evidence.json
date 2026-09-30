@@ -1,0 +1,115 @@
+{
+  "scope": "Narrow read-only final review; no shared Gradle/tests/window/remote/main/frozen payload edits. Source receipt matching proves reviewed source identity; compile/UI/test claims remain Root receipts, not newly rerun here.",
+  "snapshotManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-acceptance-final\\manifest.json",
+  "manifestSha256": "b47f4d80fb598ec0d5de05ee41a5bead82de773331e0b50c8d41f237a35a9c01",
+  "artifactsVerified": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-acceptance-final\\main-kotlin.jar",
+      "sha256": "1bd2dfb959c1f64c7684e576150db938773848df6836848da214f27f6dac7334",
+      "entries": 7461
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-acceptance-final\\main-java.jar",
+      "sha256": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c",
+      "entries": 149
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-acceptance-final\\main-resources.jar",
+      "sha256": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909",
+      "entries": 67
+    }
+  ],
+  "sourcePinsVerified": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256": "fd5293150f0e2a61d42c092a5bbacd4d27d0964193e425214437a8c5c276cdb0",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "sha256": "72f03809222535683440280ab7255599765e8dd916ba8d51896658a0c5109c17",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256": "d8490cf7448c64e49b5fe6190fa6abbbcdef082a8de78f592c37245578b288c9",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityUiSupport.kt",
+      "sha256": "c9d97a89bb49af556759af39a3ca4d2cb03f55cd1f1943c3ff64639bf78539fe",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256": "2bbc0e6cf59f3888bd4796bea7c0765bf4178575d61f3061f5d764e98aa0798d",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256": "5b592bc739285148c5ab172842e0cce9db8f95aaa82d765a1099b207df775730",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicDetailReadback.kt",
+      "sha256": "74511b30fc45282b288525b995d2ec0fc950b852bf4bdbcf410f3b94d5fc2e35",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256": "da5649cedb9fa4f472c85a27085ef13964d47d4866e5cecab345ac02dfba86cb",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256": "eb0ad79d90bd58a9704128de667f53fd5d2baa5b7b09155c79596b7ca4764329",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256": "77bead1f474dc47d2f3b3a1de053dc8edccffa6c20cde4ed5c21f6d129331b0b",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256": "0010b996743fadfac8a5f1a4b56599a94f38768a6fb251d368c071961bd4c579",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "sha256": "61421405c84902dcb95ae0fd2cc3d73ef1505e5512e2de4a5cc7fe0091278319",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-card.py",
+      "sha256": "e37a54ba4887fceab15c8bb14538b5fb41ef38b8556f13f3a0564ef867ba4799",
+      "matchesSnapshotSourceReceipt": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256": "6c9363815b9974c4d132fdee04cfccdef78dbf284ddaa7adafd0e256b831497e",
+      "matchesSnapshotSourceReceipt": true
+    }
+  ],
+  "generatedAliasPinsVerified": [
+    {
+      "path": "desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalActionButton.kt",
+      "sha256": "de709692a17d09a92b544ea0ced8fbe536efdfa6383918f30e9e6c142dddec10",
+      "effectiveThemeAliasPresent": true
+    },
+    {
+      "path": "desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt",
+      "sha256": "4b921783756623297663dcc7062fc12420ceb5d9c3a0749022ae5c9390bd0e64",
+      "effectiveThemeAliasPresent": true
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
+      "sha256": "7328582e6865bdf571928a6a6f33c0d467bec0e26d41e6f7e69f1584826e077d",
+      "effectiveThemeAliasPresent": true
+    }
+  ],
+  "earlierReview": {
+    "path": "desktop/.local/dynamic-full-card-main-integration-review/REVIEW.md",
+    "sha256": "69fbd66c741a758b42dde9fb25c19fe66fa31b1e3c52bb256394065b622a7cd6"
+  }
+}

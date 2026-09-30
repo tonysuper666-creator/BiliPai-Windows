@@ -1,0 +1,130 @@
+{
+  "attempt": "06",
+  "readOnlyImageInspection": true,
+  "wholeImageVisualAcceptance": false,
+  "samples": [
+    {
+      "cell": "material3-light",
+      "region": "first action text/icon",
+      "image": "08-final-actual-all.png",
+      "sha256Bytes": "6dd9d20d1d82bc28b4ef703a0166426310b2f5f0fb374afb3397790e0279085a",
+      "boundsExclusive": [
+        50,
+        304,
+        120,
+        324
+      ],
+      "pixels": 1400,
+      "uniqueColors": 42,
+      "commonColors": [
+        {
+          "rgb": "#FAF9FE",
+          "pixels": 1046
+        },
+        {
+          "rgb": "#444444",
+          "pixels": 119
+        },
+        {
+          "rgb": "#747475",
+          "pixels": 39
+        },
+        {
+          "rgb": "#B8B7BA",
+          "pixels": 23
+        },
+        {
+          "rgb": "#5D5D5D",
+          "pixels": 19
+        },
+        {
+          "rgb": "#CCCBCF",
+          "pixels": 18
+        }
+      ],
+      "twoMostCommonColorContrast": 9.297408670486925
+    },
+    {
+      "cell": "miuix-light",
+      "region": "selected All label",
+      "image": "08-final-actual-all.png",
+      "sha256Bytes": "f789ee4a72fdac518ed332494b3f7b74fef53bb6608b9ca1a72c8f759b572fba",
+      "boundsExclusive": [
+        100,
+        64,
+        139,
+        83
+      ],
+      "pixels": 741,
+      "uniqueColors": 9,
+      "commonColors": [
+        {
+          "rgb": "#FFFFFF",
+          "pixels": 459
+        },
+        {
+          "rgb": "#000000",
+          "pixels": 161
+        },
+        {
+          "rgb": "#AEAEAE",
+          "pixels": 30
+        },
+        {
+          "rgb": "#787878",
+          "pixels": 26
+        },
+        {
+          "rgb": "#E4E4E4",
+          "pixels": 21
+        },
+        {
+          "rgb": "#3A3A3A",
+          "pixels": 16
+        }
+      ],
+      "twoMostCommonColorContrast": 21.0
+    },
+    {
+      "cell": "miuix-dark",
+      "region": "Dynamic title",
+      "image": "08-final-actual-all.png",
+      "sha256Bytes": "146d1e99b7ea850fc42f29fad90e55e66d209ab0b263993db20368e06f73fd43",
+      "boundsExclusive": [
+        20,
+        16,
+        59,
+        39
+      ],
+      "pixels": 897,
+      "uniqueColors": 9,
+      "commonColors": [
+        {
+          "rgb": "#000000",
+          "pixels": 659
+        },
+        {
+          "rgb": "#F2F2F2",
+          "pixels": 95
+        },
+        {
+          "rgb": "#707070",
+          "pixels": 24
+        },
+        {
+          "rgb": "#BABABA",
+          "pixels": 22
+        },
+        {
+          "rgb": "#4C4C4C",
+          "pixels": 22
+        },
+        {
+          "rgb": "#E0E0E0",
+          "pixels": 20
+        }
+      ],
+      "twoMostCommonColorContrast": 18.758462357639324
+    }
+  ]
+}

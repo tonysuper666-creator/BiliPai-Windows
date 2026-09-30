@@ -1,0 +1,11 @@
+# Narrow post-gate-fix read
+
+Root subsequently changed current source after the immutable b47 snapshot. The original ADDENDUM and evidence.json accurately describe pre-fix bytes and remain preserved. No new product snapshot or test run is claimed by this note.
+
+`launchDesktopDynamicLike` now lives in DesktopDynamicCardSession.kt. It acquires once, launches the card child Job and attaches one invokeOnCompletion release. Host no longer has a separate body finally release. Completion registration handles an already cancelled/completed Job, so the child need never enter its body to free the shared gate. Completed old Job callbacks cannot run twice and release a later holder. The three newly read actual-helper tests cover already-cancelled scope, queued-before-start disposal, and running sibling denial/cancellation/retry. This closes the gate blocker in the prior ADDENDUM; test execution is Root's receipt, not rerun here.
+
+One further source-retirement adapter issue was found during final review. Generator extract-upstream-dynamic-card.py currently inserts two `check(stillOwned())` calls in DesktopDynamicEmoteCatalog.ensureLoaded (entry and post-network publication). IllegalStateException is not normal coroutine cancellation. Original RichDynamicText's LaunchedEffect directly calls platform.emotes.ensureLoaded without catching that exception. If the credential owner retires before that effect's cancellation is delivered, the expected retired task can escape as a UI coroutine error. Also the mutex body currently has no owner check before its cached fast return: a waiting card can retire while another valid card completes the catalog and then return retired cache entries.
+
+Minimal platform-only correction: make inserted owner failures kotlinx.coroutines.CancellationException and insert ensureActive + the same owner check immediately inside mutex.withLock. Preserve the exact original catalog keys, retry clock, cache merge and fallback logic. The original loadEmoteUrlMap runCatching can still suppress an inner cancellation, but the post-network ensureActive/owner cancellation then prevents publication; do not silently convert retirement into successful default entries.
+
+This note is a source finding. No fixture/network/UI/window execution, Main mutation, shared Gradle invocation or old frozen payload modification was performed.

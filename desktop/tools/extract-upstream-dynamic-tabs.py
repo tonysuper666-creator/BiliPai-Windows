@@ -181,6 +181,7 @@ import top.yukonga.miuix.kmp.blur.Backdrop
  path=DS+'components/AppSegmentedControl.kt';s=read(repo,path)
  s=s.replace(media.data_class(s,'AppSegmentOption',parser),'').replace(a.declarations(parser,s,['resolvePiliPlusScrollableUnderlineMinWidth']),'')
  s=s.replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration')
+ s=s.replace('import androidx.compose.foundation.isSystemInDarkTheme','import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme')
  emit(path,s,'DesktopOriginalDynamicNativeTabs.kt')
  if standalone:
   for path in DIRECT:

@@ -1,0 +1,40 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "263d55f01d61b9c2366816c68d1b1094cf78b4e0",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-dynamic-cache-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts and prepared isolated work excluded from main progress.",
+  "changes": [
+    {
+      "group": "dynamic",
+      "weight": 4,
+      "previousMainCredit": 2.5,
+      "currentMainCredit": 3.25,
+      "remainingCredit": 0.75,
+      "basis": "Full original raw card/menu/image-preview and actual Root All/UP reducer/cache integration replace the minimal card; four-style real product fixture interactions and cold reads passed.",
+      "remaining": [
+        "Complete original dynamic detail inline comments and full editor/publish hosts",
+        "Original follow-change event updates and persistence",
+        "Motion-photo EXIF/MP4 composition, native live-image HWND transforms/decoding and system image/text share",
+        "Remaining original collection/course routes and full navigation transitions",
+        "Real account publish/delete/vote/reserve/message acceptance and packaged EXE regression"
+      ]
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 96.0,
+    "isolatedReadyPoints": 0.5,
+    "unfinishedOrUnverifiedPoints": 41.5,
+    "weightedReviewedProgressPercent": 69.6,
+    "presentation": "About 70%, a manual estimate against complete original features and behavior.",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-dynamic-full-card-integration.json",
+  "newDesktopDeployment": false
+}

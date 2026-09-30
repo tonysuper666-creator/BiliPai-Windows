@@ -1,0 +1,20 @@
+{
+  "scope": "Read-only integration review; no tests/window/shared Gradle/remote account/main edits performed. Isolated git apply check exit 0 for exact 263d55f blobs. Frozen producer untouched.",
+  "artifacts": [
+    {
+      "path": "REVIEW.md",
+      "sha256": "69fbd66c741a758b42dde9fb25c19fe66fa31b1e3c52bb256394065b622a7cd6",
+      "bytes": 10905
+    },
+    {
+      "path": "review-identities.json",
+      "sha256": "802f1675b217f4b6a1d08f95a3b3cbd18acac4fd599dbe919549f20dcf7f896f",
+      "bytes": 6155
+    },
+    {
+      "path": "latest-review-identities.json",
+      "sha256": "186661ef4e18f1181df4baf461388ca8961b8d4e080da0925419514223710853",
+      "bytes": 1748
+    }
+  ]
+}

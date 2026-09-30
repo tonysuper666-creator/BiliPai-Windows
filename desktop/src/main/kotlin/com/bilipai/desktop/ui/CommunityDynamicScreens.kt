@@ -37,6 +37,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     val notInterested by cache.notInterestedIds.collectAsState()
     val cacheFailure by cache.writeFailure.collectAsState()
     val scope=rememberCoroutineScope()
+    val cardRegistry=checkNotNull(LocalDesktopDynamicCardStateRegistry.current){"Root dynamic mutation registry is not mounted"}
     val tabsPreferences=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
     val users=remember(mid,capturedEpoch,tabsPreferences) {
         DesktopDynamicUsersState(scope,tabsPreferences,mid,
@@ -46,6 +47,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
             stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},selfFace=community.account.value?.avatar.orEmpty())
     }
     DisposableEffect(users){onDispose{users.close()}}
+    cardRegistry.register(users)
     val transform=remember(blocked,notInterested){{rows:List<DynamicItem>->desktopVisibleDynamicItems(rows,blocked)
         .filterNot{it.id_str in notInterested}}}
     var composing by remember {mutableStateOf(false)}
@@ -54,14 +56,18 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     val memory=LocalDesktopBrowseMemory.current
     val timelines=remember(memory,mid,capturedEpoch,revision){mutableMapOf<String,DesktopDynamicTimelineState>()}
     fun timeline(type:String)=timelines.getOrPut(type) {
-        val create={DesktopDynamicTimelineState(type,fetchPage={requestType,offset,baseline->
+        val create={
+            lateinit var model:DesktopDynamicTimelineState
+            model=DesktopDynamicTimelineState(type,fetchPage={requestType,offset,baseline->
             try{DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
             catch(cancelled:CancellationException){throw cancelled}
             catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
         },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},
             initialCachedItems=if(type=="all")cache.cachedAllItems.value else emptyList(),
-            onAllTimelineChanged=cache::saveTimeline)}
-        memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision),create)?:create()
+            onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows)})
+            model
+        }
+        (memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision),create)?:create()).also(cardRegistry::register)
     }
     Column {
         cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items)}}
@@ -78,28 +84,59 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
 
 @Composable
 internal fun CommunityDynamicDetail(id: String, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
-    var data by remember(id) { mutableStateOf<DynamicDetailData?>(null) }
-    var error by remember(id) { mutableStateOf<Throwable?>(null) }
-    var loading by remember(id) { mutableStateOf(true) }
-    var revision by remember(id) { mutableIntStateOf(0) }
-    LaunchedEffect(id, revision) {
+    val epoch by community.accountEpoch.collectAsState()
+    val capturedEpoch=epoch
+    fun owned()=community.accountEpoch.value==capturedEpoch
+    var data by remember(id,capturedEpoch) { mutableStateOf<DynamicDetailData?>(null) }
+    var error by remember(id,capturedEpoch) { mutableStateOf<Throwable?>(null) }
+    var loading by remember(id,capturedEpoch) { mutableStateOf(true) }
+    var revision by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    var likeVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    var forwardVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    var foldVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    var removedVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    val rootMutations=checkNotNull(LocalDesktopDynamicCardMutations.current)
+    fun mutateDetail(transform:(List<DynamicItem>)->List<DynamicItem>) {
+        if(!owned())return
+        val current=data?:return
+        val item=current.item?:return
+        data=current.copy(item=transform(listOf(item)).firstOrNull())
+    }
+    val detailMutations=DesktopDynamicCardMutationBindings(
+        markNotInterested=rootMutations.markNotInterested,
+        likeConfirmed={target,liked->if(owned()&&target==id)likeVersion++;rootMutations.likeConfirmed(target,liked);mutateDetail{
+            com.android.purebilibili.feature.dynamic.applyDynamicLikeCountChange(it,target,liked)}},
+        repostConfirmed={target->if(owned()&&target==id)forwardVersion++;rootMutations.repostConfirmed(target);mutateDetail{
+            com.android.purebilibili.feature.dynamic.applyDynamicForwardCountIncrement(it,target)}},
+        removed={target->if(owned()&&target==id)removedVersion++;rootMutations.removed(target);mutateDetail{rows->rows.filterNot{it.id_str==target}}},
+        unfoldRelated={target->if(owned()&&target==id)foldVersion++;rootMutations.unfoldRelated(target);mutateDetail{
+            com.android.purebilibili.feature.dynamic.components.unfoldRelatedDynamicItems(it,target)}},
+    )
+    LaunchedEffect(id,revision,capturedEpoch) {
         loading = true; error = null
+        val beforeLike=likeVersion;val beforeForward=forwardVersion;val beforeFold=foldVersion;val beforeRemoved=removedVersion
+        fun mergeReadback(incoming:DynamicDetailData)=mergeDesktopDynamicDetailReadback(incoming,data,
+            likeVersion!=beforeLike,forwardVersion!=beforeForward,foldVersion!=beforeFold,removedVersion!=beforeRemoved)
         try {
             val primary = community.dynamicDetail(id)
-            data = primary
+            if(!owned())return@LaunchedEffect
+            data = mergeReadback(primary)
             val opus = primary.item?.modules?.module_dynamic?.major?.opus
             if (opus != null && opus.contentBlocks.isEmpty()) {
                 val full = community.opusDetail(id)
-                if (full.item != null || full.fallback != null) data = full
+                if(!owned())return@LaunchedEffect
+                if (full.item != null || full.fallback != null) data = mergeReadback(full)
             }
         }
-        catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
-        finally { loading = false }
+        catch (failure: Exception) { if (failure is CancellationException) throw failure; if(owned())error = failure }
+        finally { if(owned())loading = false }
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
         if (loading) DesktopLoadingIndicator(Modifier.fillMaxWidth())
         error?.let { CommunityFailure(it, navigation.onLogin) { revision++ } }
-        data?.item?.let { CommunityDynamicCard(it, community, navigation, details = true) }
+        CompositionLocalProvider(LocalDesktopDynamicCardMutations provides detailMutations) {
+            data?.item?.let { CommunityDynamicCard(it, community, navigation, details = true) }
+        }
         data?.fallback?.takeIf { it.id > 0 }?.let { fallback ->
             Button(onClick = { navigation.onArticle(fallback.id) }) { Text("查看完整专栏") }
         }
@@ -109,80 +146,26 @@ internal fun CommunityDynamicDetail(id: String, community: DesktopCommunityRepos
 @Composable
 internal fun CommunityDynamicCard(item: DynamicItem, community: DesktopCommunityRepository, navigation: CommunityNavigation,
     depth: Int = 0, details: Boolean = false) {
-    var expanded by remember(item.id_str) { mutableStateOf(item.visible) }
-    var comments by remember { mutableStateOf(false) }
-    var repost by remember { mutableStateOf(false) }
-    var liked by remember(item.id_str) { mutableStateOf(item.modules.module_stat?.like?.status == true) }
-    val account by community.account.collectAsState()
-    val author = item.modules.module_author
-    Card(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                AsyncImage(model = imageUrl(author?.face.orEmpty()), contentDescription = author?.name,
-                    modifier = Modifier.size(42.dp).clickable(enabled = (author?.mid ?: 0) > 0) { navigation.onUser(author!!.mid) })
-                Column(Modifier.weight(1f)) {
-                    Text(author?.name.orEmpty(), fontWeight = FontWeight.SemiBold,
-                        modifier = Modifier.clickable(enabled = (author?.mid ?: 0) > 0) { navigation.onUser(author!!.mid) })
-                    Text(author?.pub_time.orEmpty(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-                if (author != null && author.mid > 0 && account?.mid != author.mid) DesktopBlockedUpAction(
-                    community.blockedUpRepository, author.mid, author.name, author.face, navigation.onLogin)
-                if (!details) TextButton(onClick = { navigation.onDynamic(item.id_str) }) { Text("详情") }
-            }
-            if (!expanded) TextButton(onClick = { expanded = true }) { Text("展开折叠内容") }
-            else {
-                val content = item.modules.module_dynamic
-                content?.desc?.let { CommunityDynamicText(it.text, it.rich_text_nodes, navigation) }
-                val major = content?.major
-                val archive = major?.archive ?: major?.ugc_season?.archive
-                archive?.let {
-                    CommunityVideoRow(VideoCard(it.bvid, it.title, it.cover, author?.name.orEmpty(), personalCountText(it.stat.play),
-                        personalDurationText(it.duration_text), publishedAt = author?.pub_ts ?: 0, authorMid = author?.mid ?: 0), navigation.onVideo, navigation.onUser)
-                }
-                major?.pgc?.let { pgc -> CommunityLinkCard(pgc.title, pgc.cover, pgc.desc) { navigateCommunityUrl(pgc.jump_url, navigation) } }
-                major?.article?.let { article -> CommunityLinkCard(article.title, article.covers.firstOrNull().orEmpty(), article.desc) {
-                    if (article.id > 0) navigation.onArticle(article.id) else navigateCommunityUrl(article.jump_url, navigation)
-                } }
-                major?.draw?.items?.forEach { picture -> CommunityImage(picture.src, "动态图片") }
-                major?.opus?.let { opus ->
-                    opus.title?.takeIf { it.isNotBlank() }?.let { Text(it, style = MaterialTheme.typography.titleLarge) }
-                    if (opus.contentBlocks.isNotEmpty()) opus.contentBlocks.forEach { CommunityOpusBlock(it, navigation) }
-                    else {
-                        opus.summary?.let { CommunityDynamicText(it.text, it.rich_text_nodes, navigation) }
-                        opus.pics.forEach { CommunityImage(it.url, opus.title.orEmpty()) }
-                    }
-                    if (!details) TextButton(onClick = { navigation.onDynamic(item.id_str) }) { Text("阅读全文") }
-                }
-                major?.common?.let { contentCard -> CommunityLinkCard(contentCard.title, contentCard.cover, contentCard.desc) {
-                    navigateCommunityUrl(contentCard.jump_url, navigation)
-                } }
-                major?.music?.let { music -> CommunityLinkCard(music.title, music.cover, music.label) { navigateCommunityUrl(music.jump_url, navigation) } }
-                major?.live?.let { live -> CommunityLinkCard(live.title, live.cover, listOf(live.desc_first, live.desc_second).filter { it.isNotBlank() }.joinToString(" · ")) {
-                    navigateCommunityUrl(live.jump_url, navigation)
-                } }
-                major?.medialist?.let { collection -> CommunityLinkCard(collection.title, collection.cover, collection.sub_title) { navigateCommunityUrl(collection.jump_url, navigation) } }
-                major?.courses?.let { course -> CommunityLinkCard(course.title, course.cover, course.desc) { navigateCommunityUrl(course.jump_url, navigation) } }
-                major?.none?.tips?.takeIf { it.isNotBlank() }?.let { Text(it, color = MaterialTheme.colorScheme.onSurfaceVariant) }
-                (major?.live_rcmd ?: major?.subscription_new?.live_rcmd)?.content?.let { raw ->
-                    val live = runCatching { Json.parseToJsonElement(raw).jsonObject["live_play_info"]?.jsonObject }.getOrNull()
-                    val room = (live?.get("room_id") as? JsonPrimitive)?.longOrNull ?: 0
-                    if (live != null) CommunityLinkCard((live["title"] as? JsonPrimitive)?.content.orEmpty(),
-                        (live["cover"] as? JsonPrimitive)?.content.orEmpty(), "直播") { if (room > 0) navigation.onLive(room) }
-                }
-                content?.topic?.let { Text(it.name, color = MaterialTheme.colorScheme.primary) }
-                if (depth < 3) item.orig?.let { original -> CommunityDynamicCard(original, community, navigation, depth + 1) }
-                else item.orig?.let { TextButton(onClick = { navigation.onDynamic(it.id_str) }) { Text("查看原动态") } }
-                if (depth == 0) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    if (item.modules.module_stat?.like?.forbidden != true) CommunityAction(if (liked) "取消赞" else "赞 ${item.modules.module_stat?.like?.count ?: 0}",
-                        navigation.onLogin, action = { community.setDynamicLike(item.id_str, !liked) }, onSuccess = { liked = !liked })
-                    if (dynamicCommentTarget(item) != null) TextButton(onClick = { comments = true }) { Text("评论 ${item.modules.module_stat?.comment?.count ?: 0}") }
-                    if (item.modules.module_stat?.forward?.forbidden != true) TextButton(onClick = { repost = true }) { Text("转发") }
-                }
-            }
-        }
+    val repository=checkNotNull(LocalDesktopDynamicCardRepository.current){"Root dynamic card repository is not mounted"}
+    val mutations=checkNotNull(LocalDesktopDynamicCardMutations.current){"Root confirmed dynamic actions are not mounted"}
+    val epoch by community.accountEpoch.collectAsState()
+    var comments by remember(item.id_str,epoch){mutableStateOf(false)}
+    val nativeRoutes=LocalDesktopDynamicCardNavigation.current
+    val routes=(nativeRoutes?:com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
+        onVideoClick={navigation.onVideo(VideoCard(it,"","","",0,0))},onUserClick=navigation.onUser,
+        onBangumiClick={sid,_->navigation.onBangumi(sid)},onLiveClick={room,_,_->navigation.onLive(room)})).copy(
+        onVideoClick={navigation.onVideo(VideoCard(it,"","","",0,0))},onUserClick=navigation.onUser,
+        onTopicClick=navigation.onTopic,onTopicKeywordClick=navigation.onTopicKeyword,
+        onArticleClick={id,_->navigation.onArticle(id)},onDynamicDetailClick=navigation.onDynamic,
+        onUnfoldRelatedClick=mutations.unfoldRelated,
+    )
+    DesktopOriginalDynamicCardHost(item,repository,community,routes,isDetail=details,
+        onCommentClick={if(details)comments=true else navigation.onDynamic(it)},
+        onNotInterested=mutations.markNotInterested,onLikeConfirmed=mutations.likeConfirmed,onRepostConfirmed=mutations.repostConfirmed,
+        onRemoved={removed->mutations.removed(removed);if(details&&removed==item.id_str)navigation.onDynamicBack()})
+    if(comments)com.android.purebilibili.feature.dynamic.resolveDynamicCommentTargets(item).firstOrNull()?.let{
+        CommunityDynamicComments(CommunityCommentTarget(it.oid,it.type),community,navigation){comments=false}
     }
-    if (comments) dynamicCommentTarget(item)?.let { CommunityDynamicComments(it, community, navigation) { comments = false } }
-    if (repost) CommunityRepostDialog(item.id_str, community, navigation) { repost = false }
 }
 
 @Composable

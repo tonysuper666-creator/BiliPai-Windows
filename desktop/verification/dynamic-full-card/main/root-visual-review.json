@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "actualSnapshotSha256Bytes": "04e5d4e029621ffa34d360dd590beede56ff9c9110634cc0d1b1bdb181c5e3f3",
+  "reviewedBy": "Root",
+  "images": [
+    {
+      "path": "desktop/verification/dynamic-full-card/ui/runs/06/proof/miuix-light/08-final-actual-all.png",
+      "sha256Bytes": "f789ee4a72fdac518ed332494b3f7b74fef53bb6608b9ca1a72c8f759b572fba",
+      "observation": "Title, selected All tab, action icons and confirmed counts are visible with the effective app theme."
+    },
+    {
+      "path": "desktop/verification/dynamic-full-card/ui/runs/06/proof/miuix-dark/08-final-actual-all.png",
+      "sha256Bytes": "146d1e99b7ea850fc42f29fad90e55e66d209ab0b263993db20368e06f73fd43",
+      "observation": "Title, selected All tab, action icons and confirmed counts are visible with the effective app theme."
+    }
+  ]
+}

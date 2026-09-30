@@ -1,0 +1,72 @@
+desktop\.local\dynamic-full-card-product-ui-proof\ColdCardFixture.kt:30:120: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicStatModule'.
+                val a=rows.first{it.id_str=="123"};check(a.modules.module_stat!!.like.count==17&&!a.modules.module_stat!!.like.status)
+                                                                                                                       ^^
+desktop\.local\dynamic-full-card-product-ui-proof\ColdCardFixture.kt:31:44: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicStatModule'.
+                check(a.modules.module_stat!!.forward.count==10)
+                                           ^^
+desktop\.local\dynamic-full-card-product-ui-proof\ColdCardFixture.kt:32:119: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DynamicStatModule'.
+                val b=rows.first{it.id_str=="124"};check(b.modules.module_stat!!.like.count==31&&b.modules.module_stat!!.forward.count==12)
+                                                                                                                      ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:149:84: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.click("User-77");ui.await("actual selected-UP remote raw entries"){users!!.selectedUid==77L&&!users!!.userLoading&&users!!.userItems.size==4}
+                                                                                   ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:149:111: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.click("User-77");ui.await("actual selected-UP remote raw entries"){users!!.selectedUid==77L&&!users!!.userLoading&&users!!.userItems.size==4}
+                                                                                                              ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:149:132: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.click("User-77");ui.await("actual selected-UP remote raw entries"){users!!.selectedUid==77L&&!users!!.userLoading&&users!!.userItems.size==4}
+                                                                                                                                   ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:150:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        check(upRequests.get()==1);check(users!!.userItems.first{it.id_str=="127"}.visible==false)
+                                              ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:151:82: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        val siblingAll=all.page.items.first{it.id_str=="124"};val siblingUp=users!!.userItems.first{it.id_str=="124"}
+                                                                                 ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:153:93: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+            likes.toList()==listOf(1)&&stat(all.page.items,"123").like.count==18&&stat(users!!.userItems,"123").like.count==18}
+                                                                                            ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:154:79: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        check(all.page.items.first{it.id_str=="124"}===siblingAll);check(users!!.userItems.first{it.id_str=="124"}===siblingUp)
+                                                                              ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:158:95: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+            likes.toList()==listOf(1,2)&&stat(all.page.items,"123").like.count==17&&stat(users!!.userItems,"123").like.count==17}
+                                                                                              ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:159:67: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        check(!stat(all.page.items,"123").like.status&&!stat(users!!.userItems,"123").like.status)
+                                                                  ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:164:87: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+            reposts.get()==1&&stat(all.page.items,"123").forward.count==10&&stat(users!!.userItems,"123").forward.count==10}
+                                                                                      ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:168:66: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+            all.page.items.first{it.id_str=="127"}.visible&&users!!.userItems.first{it.id_str=="127"}.visible&&"Hidden-Related" in ui.texts()}
+                                                                 ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:169:92: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        check(all.page.items.first{it.id_str=="126"}.modules.module_fold==null);check(users!!.userItems.first{it.id_str=="126"}.modules.module_fold==null)
+                                                                                           ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:171:56: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        val beforeAll=all.page.items;val beforeUp=users!!.userItems;val postCountBefore=requests.count{it["method"]!!.jsonPrimitive.content=="POST"}
+                                                       ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:175:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        check(all.page.items===beforeAll&&users!!.userItems===beforeUp);check(requests.count{it["method"]!!.jsonPrimitive.content=="POST"}==postCountBefore)
+                                               ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:179:65: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.click("ȫ��");ui.await("actual ALL after filter"){users!!.selectedLogicalTab==0&&"Counter-A" in ui.texts()&&"Sibling-B" !in ui.texts()}
+                                                                ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:182:65: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.await("actual self MID42 raw selected source") {users!!.selectedUid==42L&&!users!!.userLoading&&users!!.userItems.singleOrNull()?.id_str=="125"}
+                                                                ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:182:92: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.await("actual self MID42 raw selected source") {users!!.selectedUid==42L&&!users!!.userLoading&&users!!.userItems.singleOrNull()?.id_str=="125"}
+                                                                                           ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:182:113: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.await("actual self MID42 raw selected source") {users!!.selectedUid==42L&&!users!!.userLoading&&users!!.userItems.singleOrNull()?.id_str=="125"}
+                                                                                                                ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:187:75: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+            deletes.get()==1&&all.page.items.none{it.id_str=="125"}&&users!!.userItems.none{it.id_str=="125"}}
+                                                                          ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:191:59: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'DesktopDynamicUsersState'.
+        ui.click("ȫ��");ui.await("final actual all") {users!!.selectedLogicalTab==0&&"Counter-A" in ui.texts()&&"Hidden-Related" in ui.texts()&&"Delete-Self" !in ui.texts()}
+                                                          ^^
+desktop\.local\dynamic-full-card-product-ui-proof\UiFixture.kt:224:127: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+        SuccessResult(ColorImage(0xff20c7cc.toInt(),400,300),chain.request,DataSource.MEMORY)})}.build();SingletonImageLoader.setUnsafe(loader)
+                                                                                                                              ^^^^^^^^^

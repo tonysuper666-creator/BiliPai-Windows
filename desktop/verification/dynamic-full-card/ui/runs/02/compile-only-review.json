@@ -1,0 +1,5 @@
+{
+  "run": false,
+  "reason": "Independent fixture audit required equality of actual durable cache and ALL raw model at every action checkpoint plus no writeFailure. This strengthens evidence before execution; no product or runtime CP changes. Attempt02 compiled only, new attempt03 compiles the strengthened fixture.",
+  "compiledSourcePreserved": "frozen-fixture-sources"
+}

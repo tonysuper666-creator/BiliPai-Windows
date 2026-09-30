@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "originalSourceIdentities": 58,
+  "manifestSourceIdentities": 568,
+  "productionAdapted": 32,
+  "standaloneIncludingDirect": 53,
+  "directBodiesCopiedByGradleOnly": 21,
+  "checks": [
+    "canonical original identities/hash headers",
+    "actual Gradle output equals deterministic producer",
+    "21 direct original bodies only copied once by prepareUpstreamSources",
+    "Home/Haptic shared identities preserved",
+    "single original rich text annotation helper reused"
+  ],
+  "rootProducerSha256Bytes": "d08636295e88668f40e4837e6f300c5f7b1a0b3e87817ee989701aea0dfd7f5d",
+  "rootTopicProducerSha256Bytes": "b60e59b299aa6401cce6f1c33dbd1500f264931525a893599672f8002584c849"
+}

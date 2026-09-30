@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-30T21:03:44.253Z" hostname="TONYSUPER666" time="0.52">
+  <properties/>
+  <testcase name="lateOpusReadbackKeepsConfirmedFieldsAndFreshContent()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.14"/>
+  <testcase name="delayedRetiredAllFetchCannotBecomeTheLastCacheWriter()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.137"/>
+  <testcase name="guestNotInterestedKeepsRawRowsAndEmptyCacheDoesNotEraseIds()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.015"/>
+  <testcase name="cardDisposedBeforeQueuedLikeStartsReleasesSharedGate()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.011"/>
+  <testcase name="selectedUpAndAllMirrorAreChangedExactlyOnce()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.174"/>
+  <testcase name="unfoldUsesOriginalPolicyAndKeepsPaginationEnvelope()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.005"/>
+  <testcase name="cancelledCardScopeReleasesLikeGateWithoutRunningBody()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.001"/>
+  <testcase name="pendingAppendSuccessFailureAndCancellationPreserveConfirmedFields()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.006"/>
+  <testcase name="sameMidCredentialReplacementAndClosedOwnerRejectOldCallbacks()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.003"/>
+  <testcase name="onlyCompletionReleasesGateAndSiblingCanRetryAfterCancellation()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.002"/>
+  <testcase name="confirmedReducersUpdateEveryRawModelAndOnlyCurrentAllWritesCache()" classname="com.bilipai.desktop.ui.DesktopDynamicCardStateRegistryTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
