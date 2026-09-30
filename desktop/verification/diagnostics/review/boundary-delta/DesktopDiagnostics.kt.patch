@@ -1,0 +1,29 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
+@@ -2,6 +2,7 @@
+ 
+ import com.android.purebilibili.core.util.*
+ import com.bilipai.desktop.plugins.DesktopPluginStore
++import com.bilipai.desktop.update.UpdateStorage
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.flow.*
+ import kotlinx.coroutines.withContext
+@@ -122,8 +123,17 @@
+     private fun ensurePrivateFile(path:Path) {
+         val dir=root.resolve("logs")
+         require(path.toAbsolutePath().normalize().parent==dir) {"诊断文件越界"}
+-        check(!Files.isSymbolicLink(dir)&&!Files.isSymbolicLink(path)) {"诊断目录不能是符号链接"}
++        // Reuse the actual Windows reparse/ancestor guard before creating a missing directory.
++        var existing=dir
++        while(!Files.exists(existing,LinkOption.NOFOLLOW_LINKS))existing=requireNotNull(existing.parent)
++        UpdateStorage.existingPathWithoutLinks(existing)
+         Files.createDirectories(dir)
++        val verifiedDir=UpdateStorage.existingPathWithoutLinks(dir)
++        require(Files.isDirectory(verifiedDir,LinkOption.NOFOLLOW_LINKS)) {"诊断目录必须是普通目录"}
++        if(Files.exists(path,LinkOption.NOFOLLOW_LINKS)) {
++            val verifiedFile=UpdateStorage.existingPathWithoutLinks(path)
++            require(Files.isRegularFile(verifiedFile,LinkOption.NOFOLLOW_LINKS)) {"诊断文件必须是普通文件"}
++        }
+     }
+     private fun deletePrivate(path:Path) {ensurePrivateFile(path);Files.deleteIfExists(path)}
+     private fun readBounded(path:Path,maxBytes:Int):String {

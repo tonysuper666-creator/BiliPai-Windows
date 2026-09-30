@@ -1,0 +1,574 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
+@@ -0,0 +1,189 @@
++package com.bilipai.desktop.diagnostics
++
++import com.android.purebilibili.core.util.*
++import com.bilipai.desktop.plugins.DesktopPluginStore
++import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.flow.*
++import kotlinx.coroutines.withContext
++import java.nio.ByteBuffer
++import java.nio.channels.FileChannel
++import java.nio.file.*
++import java.util.concurrent.*
++import java.util.concurrent.atomic.AtomicReference
++import kotlin.math.min
++
++/** Windows-only privacy additions; the original Android sanitizer runs afterwards. */
++internal fun sanitizeDesktopDiagnosticText(value:String):String = sanitizeLogMessage(
++    value.replace(Regex("(?i)\\b(?:https?|rtmps?|rtsp)://[^\\s<>\\\"]+"), "[network-address]")
++        .replace(Regex("(?i)\\b[A-Z]:[\\\\/](?:Users|Documents and Settings)[\\\\/][^\\\\/\\r\\n]+"), "[user-home]")
++        .replace(Regex("(?i)(auth_key|w_rid|x-bili-ticket|x-api-key)[=:]\\s*[^&\\s,}]+"), "$1=***")
++        .replace(Regex("(?i)\"(password|access_token|refresh_token|authorization|cookie)\"\\s*:\\s*\"[^\"]*\""), "\"$1\":\"***\"")
++)
++
++/** One process-owned serial consumer. No account, network client, or upload dependency. */
++internal class DesktopDiagnostics(
++    store:DesktopPluginStore,
++    private val version:String,
++    private val clock:()->Long = System::currentTimeMillis,
++    private val writer:ExecutorService = Executors.newSingleThreadExecutor { task -> Thread(task,"BiliPai-diagnostic-writer").apply {isDaemon=true} },
++) : AutoCloseable {
++    private val gate=Any()
++    private var closing=false
++    private val root=store.root.toAbsolutePath().normalize()
++    private val settings=DesktopDiagnosticSettings(store)
++    private val mutableEnhanced=MutableStateFlow(settings.getEnhancedDiagnosticLoggingEnabledSync())
++    val enhancedEnabled:StateFlow<Boolean> = mutableEnhanced.asStateFlow()
++    private val mutableError=MutableStateFlow<String?>(null)
++    val error:StateFlow<String?> = mutableError.asStateFlow()
++    private val collector=DesktopDiagnosticCollector(clock) {entry,basic ->
++        val isBasic=basic || entry.level=="W" || entry.level=="E"
++        val file=if(isBasic)resolveBasicLogFile(root.toFile()) else resolveRuntimeLogFile(root.toFile())
++        ensurePrivateFile(file.toPath())
++        appendRollingDiagnosticLog(file,sanitizeDesktopDiagnosticText(entry.format())+"\n",if(isBasic)64*1024 else 256*1024)
++    }
++    init {
++        // Synchronous read of the same atomic settings key precedes the first accepted log.
++        recordStartupStage("diagnostics_initialized")
++        if(mutableEnhanced.value) submit {recordSessionStart()}
++    }
++    private fun <T> submit(block:()->T):CompletableFuture<T> = synchronized(gate) {
++        check(!closing){"诊断记录器已经停止"}
++        val result=CompletableFuture<T>()
++        writer.execute {
++            try {result.complete(block())}
++            catch(failure:Exception) {
++                // Error state never contains raw exception/paths; no recursive log on writer failure.
++                mutableError.value="诊断文件操作失败（${failure.javaClass.simpleName}）"
++                result.completeExceptionally(failure)
++            }
++        }
++        result
++    }
++    private suspend fun <T> await(future:CompletableFuture<T>):T = withContext(Dispatchers.IO) {
++        try {future.get()} catch(failure:ExecutionException){throw failure.cause ?: failure}
++    }
++    private fun add(level:String,tag:String,message:String,basic:Boolean=false) {
++        collector.add(level,sanitizeDesktopDiagnosticText(tag),sanitizeDesktopDiagnosticText(message),true,basic)
++    }
++    private fun recordSessionStart() {
++        add("I","Diagnostics","增强诊断已开启；仅保存在应用私有目录，导出前会再次脱敏，滚动上限=256KB")
++        add("I","Diagnostics","app=$version, system=${System.getProperty("os.name")}/${System.getProperty("os.version")}, arch=${System.getProperty("os.arch")}, java=${System.getProperty("java.version")}")
++    }
++    fun record(level:String,tag:String,message:String,cause:Throwable?=null):Boolean = synchronized(gate) {
++        if(closing)return false
++        // Make raw messages task-local, never publish to JUL/console or the in-memory buffer.
++        val safe=sanitizeDesktopDiagnosticText(if(cause==null)message else "$message\n${cause.stackTraceToString()}")
++        val safeTag=sanitizeDesktopDiagnosticText(tag)
++        submit {
++            if(shouldCaptureRuntimeLogEntry(level,mutableEnhanced.value))add(level,safeTag,safe)
++        }
++        true
++    }
++    fun recordStartupStage(stage:String):Boolean = synchronized(gate) {
++        if(closing)return false
++        require(stage.matches(Regex("[a-z0-9_]{1,64}"))) {"启动诊断仅接受固定阶段名"}
++        submit {add("I","StartupDiagnostics","stage=$stage, app=$version",true)}
++        true
++    }
++    suspend fun setEnhancedEnabled(enabled:Boolean) = await(submit {
++        settings.setEnhancedDiagnosticLoggingEnabled(enabled)
++        mutableEnhanced.value=enabled
++        if(enabled)recordSessionStart()
++        else {
++            collector.clearRuntimeDiagnostics()
++            deletePrivate(resolveRuntimeLogFile(root.toFile()).toPath())
++        }
++        mutableError.value=null
++    })
++    suspend fun flush():Unit = await(submit {Unit})
++    suspend fun entries():List<DesktopDiagnosticCollector.LogEntry> = await(submit {collector.getEntries()})
++    suspend fun artifactSize():Long = await(submit {privatePaths().sumOf {path ->
++        ensurePrivateFile(path);if(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))Files.size(path) else 0L
++    }})
++    suspend fun viewLocal():String = await(submit {buildExport()})
++    /** Explicit caller-selected local file only. CREATE_NEW never overwrites another artifact. */
++    suspend fun exportTo(selectedPath:Path):Path = await(submit {
++        val target=selectedPath.toAbsolutePath().normalize()
++        require(!target.startsWith(root.resolve("logs"))) {"导出目标不能覆盖应用日志"}
++        Files.write(target,buildExport().toByteArray(Charsets.UTF_8),StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)
++        target
++    })
++    suspend fun clearAll():Unit = await(submit {
++        collector.clear();privatePaths().forEach(::deletePrivate);mutableError.value=null
++    })
++    suspend fun clearCrashPrompt():Unit = await(submit {deletePrivate(resolveCrashSnapshotMarkerFile(root.toFile()).toPath())})
++    suspend fun hasPendingCrash():Boolean = await(submit {
++        val snapshot=resolveCrashSnapshotFile(root.toFile()).toPath();val marker=resolveCrashSnapshotMarkerFile(root.toFile()).toPath()
++        ensurePrivateFile(snapshot);ensurePrivateFile(marker)
++        hasPendingCrashSnapshot(Files.isRegularFile(marker,LinkOption.NOFOLLOW_LINKS),Files.isRegularFile(snapshot,LinkOption.NOFOLLOW_LINKS))
++    })
++    private fun privatePaths():List<Path> = listOf(resolveBasicLogFile(root.toFile()),resolveRuntimeLogFile(root.toFile()),
++        resolveCrashSnapshotFile(root.toFile()),resolveCrashSnapshotMarkerFile(root.toFile())).map {it.toPath()}
++    private fun ensurePrivateFile(path:Path) {
++        val dir=root.resolve("logs")
++        require(path.toAbsolutePath().normalize().parent==dir) {"诊断文件越界"}
++        check(!Files.isSymbolicLink(dir)&&!Files.isSymbolicLink(path)) {"诊断目录不能是符号链接"}
++        Files.createDirectories(dir)
++    }
++    private fun deletePrivate(path:Path) {ensurePrivateFile(path);Files.deleteIfExists(path)}
++    private fun readBounded(path:Path,maxBytes:Int):String {
++        ensurePrivateFile(path)
++        if(!Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))return ""
++        return FileChannel.open(path,StandardOpenOption.READ).use {channel ->
++            val count=min(channel.size(),maxBytes.toLong()).toInt();val buffer=ByteBuffer.allocate(count)
++            channel.position((channel.size()-count).coerceAtLeast(0));while(buffer.hasRemaining()&&channel.read(buffer)>=0){}
++            utf8Tail(buffer.array().copyOf(buffer.position()),count).toString(Charsets.UTF_8)
++        }
++    }
++    private fun buildExport():String {
++        val lines=(readBounded(resolveBasicLogFile(root.toFile()).toPath(),64*1024).lines()+
++            readBounded(resolveRuntimeLogFile(root.toFile()).toPath(),256*1024).lines()+collector.getEntries().map {it.format()})
++            .filter {it.isNotBlank()}.distinct()
++        val crash=readBounded(resolveCrashSnapshotFile(root.toFile()).toPath(),256*1024)
++        if(!hasExportableDiagnostics(lines.size,crash.isNotBlank(),0,0))return "暂无日志记录"
++        val header="BiliPai 应用日志导出\n应用版本: $version\n系统: ${System.getProperty("os.name")} ${System.getProperty("os.version")}\n基础诊断: 64KB；增强诊断: ${if(mutableEnhanced.value)"已开启" else "未开启"}（256KB）\n隐私说明: 本地脱敏日志，仅在用户主动选择文件时导出；不自动上传。\n"
++        val body=sanitizeDesktopDiagnosticText(lines.joinToString("\n")+if(crash.isBlank())"" else "\n----- 最近一次崩溃快照 -----\n$crash")
++        val safeHeader=sanitizeDesktopDiagnosticText(header).toByteArray(Charsets.UTF_8)
++        return (safeHeader+utf8Tail(body.toByteArray(Charsets.UTF_8),512*1024-safeHeader.size)).toString(Charsets.UTF_8)
++    }
++    /** Synchronous only for an actual uncaught handler. Queues behind writes and retains evidence. */
++    fun persistLocalCrash(throwable:Throwable):Boolean = synchronized(gate) {
++        if(closing)return false
++        // Original local-snapshot policy is true independently of Firebase consent.
++        if(!shouldPersistLocalCrashSnapshot(false))return false
++        submit {
++            val content=buildCrashSnapshotContent(throwable,collector.getEntries(),clock(),version,0,
++                "Windows","JVM",System.getProperty("os.version"),Runtime.version().feature(),"desktop","unknown")
++            val snapshot=resolveCrashSnapshotFile(root.toFile()).toPath();ensurePrivateFile(snapshot)
++            Files.write(snapshot,utf8Tail(sanitizeDesktopDiagnosticText(content).toByteArray(Charsets.UTF_8),256*1024))
++            val marker=resolveCrashSnapshotMarkerFile(root.toFile()).toPath();ensurePrivateFile(marker)
++            Files.writeString(marker,clock().toString())
++        }.get(5,TimeUnit.SECONDS)
++        true
++    }
++    /** Call before Store.freezeWrites / restore. Accepted queue drains; old facade rejects new work. */
++    suspend fun shutdownForRestore() = withContext(Dispatchers.IO) {close()}
++    override fun close() {
++        synchronized(gate){if(!closing){closing=true;writer.shutdown()}}
++        DesktopDiagnosticsBridge.retire(this)
++        check(writer.awaitTermination(10,TimeUnit.SECONDS)) {"诊断写入尚未排空"}
++    }
++    companion object {
++        internal fun utf8Tail(bytes:ByteArray,maxBytes:Int):ByteArray {
++            require(maxBytes>0);var start=(bytes.size-maxBytes).coerceAtLeast(0)
++            while(start<bytes.size&&(bytes[start].toInt() and 0xC0)==0x80)start++
++            return bytes.copyOfRange(start,bytes.size)
++        }
++    }
++}
++
++/** Replaces the two existing logging bridges; it never installs a global JUL handler. */
++internal object DesktopDiagnosticsBridge {
++    private val active=AtomicReference<DesktopDiagnostics?>()
++    fun install(consumer:DesktopDiagnostics) {check(active.compareAndSet(null,consumer)){"诊断记录器已安装"}}
++    fun retire(consumer:DesktopDiagnostics) {active.compareAndSet(consumer,null)}
++    fun record(level:String,tag:String,message:String,cause:Throwable?=null):Int {
++        active.get()?.record(level,tag,message,cause)
++        return 0
++    }
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt
+@@ -0,0 +1,27 @@
++package com.bilipai.desktop.diagnostics
++
++import androidx.compose.runtime.*
++import androidx.compose.foundation.layout.*
++import androidx.compose.ui.Modifier
++import com.android.purebilibili.feature.settings.DesktopDiagnosticFields
++import kotlinx.coroutines.*
++
++/** The retained process consumer must be supplied; page disposal does not stop logging. */
++@Composable
++internal fun DesktopDiagnosticSettingsSection(
++    diagnostics:DesktopDiagnostics,
++    onLocalLogs:()->Unit,
++    onFailure:(Throwable)->Unit,
++    modifier:Modifier=Modifier,
++) {
++    val enhanced by diagnostics.enhancedEnabled.collectAsState()
++    val scope=rememberCoroutineScope()
++    val latestFailure by rememberUpdatedState(onFailure)
++    Column(modifier) {
++        DesktopDiagnosticFields(enhanced,{enabled ->scope.launch {
++            try {diagnostics.setEnhancedEnabled(enabled)}
++            catch(cancelled:CancellationException){throw cancelled}
++            catch(failure:Exception){latestFailure(failure)}
++        }},onLocalLogs)
++    }
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt
+@@ -0,0 +1,51 @@
++package com.bilipai.desktop.diagnostics
++
++import androidx.compose.runtime.*
++import androidx.compose.foundation.*
++import androidx.compose.foundation.layout.*
++import androidx.compose.foundation.text.selection.SelectionContainer
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.unit.dp
++import com.android.purebilibili.core.ui.*
++import com.android.purebilibili.core.ui.components.AppText
++import kotlinx.coroutines.*
++import java.nio.file.Path
++
++/** Local viewer only; the host's explicit chooser supplies an export destination. */
++@Composable
++internal fun DesktopLocalDiagnosticViewer(
++    diagnostics:DesktopDiagnostics,
++    onDismiss:()->Unit,
++    chooseExportPath:suspend ()->Path?,
++) {
++    var content by remember(diagnostics){mutableStateOf("正在读取本地日志…")}
++    var busy by remember{mutableStateOf(false)}
++    var result by remember{mutableStateOf<String?>(null)}
++    val scope=rememberCoroutineScope()
++    val consumerError by diagnostics.error.collectAsState()
++    LaunchedEffect(diagnostics) {content=diagnostics.viewLocal()}
++    fun action(block:suspend ()->Unit) {if(busy)return;busy=true;scope.launch {
++        try {block()}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(_:Exception){result="操作失败，请重试"}
++        finally{busy=false}
++    }}
++    AppAlertDialog(
++        onDismissRequest={if(!busy)onDismiss()},
++        title={AppText("本地诊断日志")},
++        text={Column(Modifier.widthIn(max=720.dp)) {
++            AppText("仅显示应用本地脱敏日志；导出时再脱敏，不自动上传。")
++            SelectionContainer {Box(Modifier.heightIn(max=420.dp).verticalScroll(rememberScrollState())) {AppText(content)}}
++            (result ?: consumerError ?: if(busy)"正在操作…" else null)?.let{AppText(it)}
++        }},
++        confirmButton={Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
++            AppDialogAction(onClick={action {
++                chooseExportPath()?.let {diagnostics.exportTo(it);result="日志已导出到你选择的本地文件"}
++            }}){AppText("导出日志")}
++            AppDialogAction(onClick={action {
++                diagnostics.clearAll();content=diagnostics.viewLocal();result="本地诊断日志已清理"
++            }}){AppText("清理日志")}
++        }},
++        dismissButton={AppDialogAction(onClick={if(!busy)onDismiss()}){AppText("关闭")}},
++    )
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt
+@@ -0,0 +1,37 @@
++package com.bilipai.desktop.diagnostics
++
++import com.bilipai.desktop.player.PlayerState
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++
++/** Finite native state only: titles, URLs, track/subtitle text and error messages are excluded. */
++internal fun formatDesktopPlaybackDiagnostic(state:PlayerState):String =
++    "ready=${state.ready}, loading=${state.loading}, paused=${state.paused}, nativePaused=${state.nativePaused}, "+
++        "frameReady=${state.firstVideoFrameReady}, cachePaused=${state.pausedForCache}, "+
++        "hwIntent=${state.hardwareDecodeEnabled}, softwareRecovery=${state.softwareDecodingRequested}, "+
++        "hardware=${safeCodecToken(state.hardwareDecoder)}, video=${safeCodecToken(state.videoCodec)}, "+
++        "audio=${safeCodecToken(state.audioCodec)}, audioOnly=${state.audioOnly}, ended=${state.ended}"
++
++private fun safeCodecToken(value:String?):String = value?.takeIf{it.matches(Regex("[a-zA-Z0-9_.-]{1,40}"))} ?: "unknown"
++
++/** Root supplies its retained main/native-audio state and lifecycle scope; page disposal is irrelevant. */
++internal fun DesktopDiagnostics.observePlayback(state:StateFlow<PlayerState>,scope:CoroutineScope):Job = scope.launch {
++    combine(state,enhancedEnabled){snapshot,enabled ->snapshot to enabled}
++        .map{(snapshot,enabled)-> Triple(if(enabled)formatDesktopPlaybackDiagnostic(snapshot) else null,
++            snapshot.failure?.let{it.kind.name to it.nativeCode},snapshot.failure?.sourceVersion)}
++        .distinctUntilChanged().collect{(summary,failure,_) ->
++            if(summary!=null)record("I","PlaybackDiagnostics",summary)
++            if(failure!=null)record("E","PlaybackDiagnostics","kind=${failure.first}, nativeCode=${failure.second}")
++        }
++}
++
++/** Root may install this at startup; snapshots remain local independently of Firebase. */
++internal class DesktopDiagnosticUncaughtHandler(
++    private val diagnostics:DesktopDiagnostics,
++    private val previous:Thread.UncaughtExceptionHandler?,
++) : Thread.UncaughtExceptionHandler {
++    override fun uncaughtException(thread:Thread,throwable:Throwable) {
++        try {runCatching {diagnostics.persistLocalCrash(throwable)}}
++        finally {previous?.uncaughtException(thread,throwable)}
++    }
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt
+@@ -0,0 +1,27 @@
++package com.bilipai.desktop.diagnostics
++
++import kotlinx.coroutines.suspendCancellableCoroutine
++import java.awt.Component
++import java.nio.file.Path
++import java.text.SimpleDateFormat
++import java.util.Date
++import javax.swing.JFileChooser
++import javax.swing.SwingUtilities
++import kotlin.coroutines.resume
++import kotlin.coroutines.resumeWithException
++
++/** Called only by the actual export button. No default export or upload is scheduled. */
++internal suspend fun chooseDesktopDiagnosticExportFile(parent:Component?=null):Path? = suspendCancellableCoroutine {continuation ->
++    val chooser=JFileChooser().apply {
++        dialogTitle="导出本地诊断日志"
++        selectedFile=java.io.File("bilipai_log_${SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())}.txt")
++    }
++    continuation.invokeOnCancellation {SwingUtilities.invokeLater {chooser.cancelSelection()}}
++    SwingUtilities.invokeLater {
++        if(!continuation.isActive)return@invokeLater
++        try {
++            val selected=if(chooser.showSaveDialog(parent)==JFileChooser.APPROVE_OPTION)chooser.selectedFile.toPath() else null
++            if(continuation.isActive)continuation.resume(selected)
++        }catch(failure:Exception){if(continuation.isActive)continuation.resumeWithException(failure)}
++    }
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt
+@@ -1,16 +1,12 @@
+ package android.util
+-
+-/** JVM logging bridge for unchanged upstream models and the protobuf decoder. */
++/** Original decoder/network call shapes bind only the retained local diagnostic consumer. */
+ object Log {
+-    private val logger = java.util.logging.Logger.getLogger("BiliPai.upstream")
+-    fun d(tag: String, message: String): Int = write(java.util.logging.Level.FINE, tag, message)
+-    fun i(tag: String, message: String): Int = write(java.util.logging.Level.INFO, tag, message)
+-    fun e(tag: String, message: String): Int = write(java.util.logging.Level.SEVERE, tag, message)
+-    fun e(tag: String, message: String, cause: Throwable): Int = write(java.util.logging.Level.SEVERE, tag, message, cause)
+-    fun v(tag: String, message: String): Int = write(java.util.logging.Level.FINER, tag, message)
+-    private fun write(level: java.util.logging.Level, tag: String, message: String, cause: Throwable? = null): Int {
+-        logger.log(level, "$tag: $message", cause)
+-        return 0
+-    }
+-    fun w(tag: String, message: String): Int = write(java.util.logging.Level.WARNING, tag, message)
++    fun d(tag:String,message:String):Int = write("D",tag,message)
++    fun i(tag:String,message:String):Int = write("I",tag,message)
++    fun e(tag:String,message:String):Int = write("E",tag,message)
++    fun e(tag:String,message:String,cause:Throwable):Int = write("E",tag,message,cause)
++    fun v(tag:String,message:String):Int = write("V",tag,message)
++    fun w(tag:String,message:String):Int = write("W",tag,message)
++    private fun write(level:String,tag:String,message:String,cause:Throwable?=null):Int =
++        com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record(level,tag,message,cause)
+ }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt
+@@ -1,8 +1,6 @@
+ package com.android.purebilibili.core.util
+-
+-/** Platform logging adapter used by unchanged upstream signing/stream-selection policies. */
++/** Shared upstream policy bridge; the original capture/consent policy runs in the retained consumer. */
+ object Logger {
+-    fun e(tag: String, message: String, cause: Throwable) = android.util.Log.e(tag, message, cause)
+-    // Debug messages in upstream network policies can contain signed query data; discard them.
+-    fun d(tag: String, message: String) = Unit
++    fun e(tag:String,message:String,cause:Throwable) = android.util.Log.e(tag,message,cause)
++    fun d(tag:String,message:String) = android.util.Log.d(tag,message)
+ }
+--- a/desktop/tools/extract-upstream-diagnostics.py
++++ b/desktop/tools/extract-upstream-diagnostics.py
+@@ -0,0 +1,82 @@
++"""Original logging policies, collector, and effective enhanced-consent UI only."""
++from pathlib import Path
++import argparse,hashlib,importlib.util,json,textwrap
++BASE='app/src/main/java/com/android/purebilibili/'
++LOGGER=BASE+'core/util/Logger.kt'
++SETTINGS=BASE+'core/store/SettingsManager.kt'
++SECTIONS=BASE+'feature/settings/ui/SettingsSections.kt'
++CRASH=BASE+'core/util/CrashReporter.kt'
++ASSETS=['ms_pest_control_24']
++def load(path,name):
++ s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
++def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
++def generate(repo,out):
++ host=load(repo/'desktop/tools/extract-upstream-plugins.py','diaghost');media=host.media_extractor(repo);parser=media.parser_for(repo)
++ out.mkdir(parents=True,exist_ok=True);files=[];original=read(repo,LOGGER)
++ # All pure original functions before the Android Logger object. The reference to the
++ # original singleton becomes the sole platform collector type, not a duplicate buffer.
++ pure=original[original.index('private const val LOG_DIRECTORY_NAME'):original.index('/**\n *  统一日志工具类')]
++ pure=pure.replace('LogCollector.','DesktopDiagnosticCollector.')
++ pure=host.substitute(pure,'appendLine("Android版本: $androidRelease (API $apiLevel)")','appendLine("系统版本: $androidRelease；运行时: $apiLevel")')
++ files.append(host.write(out,LOGGER,original,'package com.android.purebilibili.core.util\nimport java.io.File\nimport java.text.SimpleDateFormat\nimport java.util.*\n\n'+pure,'DesktopDiagnosticPolicy.kt'))
++ collector=original[original.index('object LogCollector {'):]
++ fields=collector[collector.index('    private const val MAX_ENTRIES'):collector.index('    /**\n     * 日志条目')]
++ fields=fields[:fields.index('    private val dateFormat')]+collector[collector.index('    private var lastEntryFingerprint'):collector.index('    @Volatile\n    private var appContext')]
++ fields=fields.replace('private const val','private val')
++ entry=media.function(collector,'add',parser).replace('System.currentTimeMillis()','clock()')
++ entry=host.substitute(entry,'appendEntryToRuntimeFile(it, basicDiagnostic)','persist(it, basicDiagnostic)')
++ # Nested model and methods are original, including dedupe, truncation, UTF-8 cap,
++ # ring eviction and pre-memory sanitization. File/lifetime binding is separate.
++ model=parser.extract_declaration(collector,'data class LogEntry') if hasattr(parser,'extract_declaration') else None
++ if model is None:
++  model=collector[collector.index('    data class LogEntry('):collector.index('    /**\n     * 添加日志条目')].strip()
++ methods=[media.function(collector,n,parser) for n in ['getEntries','getCount','clear']]
++ clear=media.function(collector,'clearRuntimeDiagnostics',parser)
++ clear=clear[:clear.index('    val context = appContext')].rstrip()+'\n}'
++ sanitize=media.function(collector,'sanitizeMessage',parser)
++ source='package com.android.purebilibili.core.util\nimport java.text.SimpleDateFormat\nimport java.util.*\n\ninternal class DesktopDiagnosticCollector(\n    private val clock: () -> Long = System::currentTimeMillis,\n    private val persist: (LogEntry, Boolean) -> Unit,\n) {\n'+fields+'\n'+model+'\n\n'+entry+'\n\n'+'\n\n'.join(methods)+'\n\n'+clear+'\n\n    companion object {\n'+textwrap.indent(sanitize,'        ')+'\n    }\n}\n'
++ files.append(host.write(out,LOGGER,original,source,'DesktopDiagnosticCollector.kt'))
++ # Preserve original settings key/default/body while binding its one DataStore to
++ # the existing Windows atomic settings namespace. Cold-start reads that same key.
++ original=read(repo,SETTINGS)
++ getter=media.function(original,'getEnhancedDiagnosticLoggingEnabled',parser)
++ setter=media.function(original,'setEnhancedDiagnosticLoggingEnabled',parser)
++ key='KEY_ENHANCED_DIAGNOSTIC_LOGGING_ENABLED'
++ assert 'booleanPreferencesKey("enhanced_diagnostic_logging_enabled")' in original
++ getter=host.substitute(getter,'context.settingsDataStore.data','store.snapshot("settings")')
++ getter=host.substitute(getter,'preferences['+key+']','preferences[com.bilipai.desktop.plugins.booleanPreferencesKey('+key+')]')
++ getter=getter.replace('(context: Context)','()')
++ setter=setter[:setter.index('    // Application')].rstrip()+'\n}'
++ setter=host.substitute(setter,'(context: Context, value: Boolean)','(value: Boolean)')
++ setter=host.substitute(setter,'suspend fun setEnhancedDiagnosticLoggingEnabled','fun setEnhancedDiagnosticLoggingEnabled')
++ setter=host.substitute(setter,'context.settingsDataStore.edit { preferences ->\n        preferences['+key+'] = value\n    }','store.update("settings", mapOf('+key+' to JsonPrimitive(value)))')
++ source='package com.bilipai.desktop.diagnostics\nimport com.bilipai.desktop.plugins.DesktopPluginStore\nimport kotlinx.coroutines.flow.*\nimport kotlinx.serialization.json.*\n\ninternal class DesktopDiagnosticSettings(private val store:DesktopPluginStore) {\n    private val '+key+' = "enhanced_diagnostic_logging_enabled"\n'+getter+'\n'+setter+'\n    fun getEnhancedDiagnosticLoggingEnabledSync():Boolean = store.preferences("settings")['+key+']?.jsonPrimitive?.booleanOrNull ?: false\n}\n'
++ files.append(host.write(out,SETTINGS,original,source,'DesktopDiagnosticSettings.kt'))
++ original=read(repo,SECTIONS);section=media.function(original,'DiagnosticsSection',parser)
++ start=section.index('        SettingSwitchItem(\n            icon = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_pest_control_24)')
++ end=section.index('        SettingsAdaptiveDivider()',start)
++ control=section[start:end]
++ export=section[section.index('        SettingClickableItem(\n            icon = exportLogsVisual.icon,'):section.index('\n    }\n\n    if (showProxyDialog)')]
++ consent=section[section.index('    if (showEnhancedDiagnosticConsent)'):].rstrip()[:-1].rstrip()
++ preamble=section[section.index('    val siblingTints'):section.index('    val proxySettings')]
++ source='package com.android.purebilibili.feature.settings\nimport androidx.compose.runtime.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.text.font.FontWeight\nimport com.android.purebilibili.core.theme.*\nimport com.android.purebilibili.core.ui.*\nimport com.android.purebilibili.core.ui.components.*\nimport com.android.purebilibili.core.ui.components.AppSwitchPreference as SettingSwitchItem\nimport com.android.purebilibili.core.ui.components.AppPreference as SettingClickableItem\nimport com.bilipai.desktop.settings.*\n\n@Composable\ninternal fun DesktopDiagnosticFields(\n    enhancedDiagnosticLoggingEnabled:Boolean,\n    onEnhancedDiagnosticLoggingChange:(Boolean)->Unit,\n    onExportLogsClick:()->Unit,\n) {\n'+preamble+'    var showEnhancedDiagnosticConsent by remember { mutableStateOf(false) }\n    SettingsCardGroup {\n'+control+'        SettingsAdaptiveDivider()\n'+export+'\n    }\n'+consent+'\n}\n'
++ for asset in ASSETS:source=host.substitute(source,'com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.'+asset+')','DesktopDiagnosticSettingsVectors.vector(DesktopDiagnosticSettingsSymbols.'+asset+')')
++ # Android painter-resource call is the existing Windows vector adapter boundary.
++ source=host.substitute(source,'exportLogsVisual.iconResId?.let { painterResource(id = it) }','exportLogsVisual.iconResId?.let { androidx.compose.ui.graphics.vector.rememberVectorPainter(DesktopSettingsVectors.vector(it)) }')
++ files.append(host.write(out,SECTIONS,original,source,'SettingsDiagnosticFields.kt'))
++ converter=load(repo/'desktop/tools/extract-upstream-settings-search.py','diagvectors')
++ shared=converter.symbol_names(repo)
++ if any(n in shared for n in ASSETS):raise ValueError('Reuse shared vector for diagnostic icon')
++ converter.symbol_names=lambda _:ASSETS
++ vectors=converter.vectors(repo).replace('DesktopSettingsSymbols','DesktopDiagnosticSettingsSymbols').replace('DesktopSettingsVectors','DesktopDiagnosticSettingsVectors')
++ files.append(media.write(out,'com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt','app/src/main/res/drawable/'+ASSETS[0]+'.xml',read(repo,'app/src/main/res/drawable/'+ASSETS[0]+'.xml'),vectors))
++ ref=out.parent/'reference-only';ref.mkdir(exist_ok=True)
++ (ref/'OriginalDiagnosticsSection.kt').write_text('@Composable\n'+section,encoding='utf-8',newline='\n')
++ # No Firebase stub/provider is generated. Local crash-snapshot policy is always true.
++ original=read(repo,CRASH);local=media.function(original,'shouldPersistLocalCrashSnapshot',parser)
++ files.append(host.write(out,CRASH,original,'package com.android.purebilibili.core.util\n'+local+'\n','DesktopLocalCrashPolicy.kt'))
++ return files
++def inventory(repo):return [dict(path=p,mode='policy-extract',features=['settings-local-diagnostics-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in [LOGGER,SETTINGS,SECTIONS,CRASH]]
++def resources(repo):return [dict(path='app/src/main/res/drawable/'+a+'.xml',features=['settings-local-diagnostics-symbol'],sha256=hashlib.sha256(read(repo,'app/src/main/res/drawable/'+a+'.xml').encode()).hexdigest()) for a in ASSETS]
++if __name__=='__main__':
++ c=argparse.ArgumentParser();c.add_argument('--repo',required=True,type=Path);c.add_argument('--output',required=True,type=Path);a=c.parse_args();print(len(generate(a.repo.resolve(),a.output.resolve())))
+--- a/desktop/upstream-sources.json
++++ b/desktop/upstream-sources.json
+@@ -1694,7 +1694,8 @@
+       "features": [
+         "discovery",
+         "appearance-parity",
+-        "settings-privacy-section-parity"
++        "settings-privacy-section-parity",
++        "settings-local-diagnostics-parity"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -3507,7 +3508,8 @@
+         "settings-privacy-section-parity",
+         "settings-playback-entry-parity",
+         "settings-storage-backup-entries",
+-        "settings-network-proxy-parity"
++        "settings-network-proxy-parity",
++        "settings-local-diagnostics-parity"
+       ],
+       "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+     },
+@@ -3615,6 +3617,22 @@
+         "settings-blocked-up"
+       ],
+       "sha256": "e6caf2c89424ed46d1018bd9846becc8f391ee1140f5f268df802e17846a522e"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
++      "mode": "policy-extract",
++      "features": [
++        "settings-local-diagnostics-parity"
++      ],
++      "sha256": "8564e68e99c3e557c9b52811803792fdaa155f483d5b015e5c9a4ab1a1925111"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
++      "mode": "policy-extract",
++      "features": [
++        "settings-local-diagnostics-parity"
++      ],
++      "sha256": "f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6"
+     }
+   ],
+   "featureCoverage": {
+@@ -5135,6 +5153,13 @@
+         "settings-blocked-up"
+       ],
+       "hashNormalization": "raw"
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_pest_control_24.xml",
++      "features": [
++        "settings-local-diagnostics-symbol"
++      ],
++      "sha256": "0744bf06cc448779e466f49c6d57117c306a84a294ed34fe9ea14c361604f015"
+     }
+   ]
+ }
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -408,6 +408,23 @@
+     inputs.files(originalResources.filter { "settings-network-proxy-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+         .map { File(repositoryRoot, it["path"].toString()) })
+     outputs.dir(layout.buildDirectory.dir("generated/network-proxy"))
++}
++
++val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/diagnostics/sources").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-plugins.py",
++        "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
++        "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
++    inputs.files(sources.filter { "settings-local-diagnostics-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    inputs.files(originalResources.filter { "settings-local-diagnostics-symbol" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/diagnostics"))
++    // Own the reference-only output too; the network-proxy producer has its own copy.
+ }
+ 
+ val extractNativeMusicRoot by tasks.registering(Exec::class) {
+@@ -610,6 +627,7 @@
+     kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-up"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-list-ui"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
++    kotlin.srcDir(layout.buildDirectory.dir("generated/diagnostics/sources"))
+ }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
+@@ -618,6 +636,7 @@
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
++tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
+ sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
+ tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
+ 

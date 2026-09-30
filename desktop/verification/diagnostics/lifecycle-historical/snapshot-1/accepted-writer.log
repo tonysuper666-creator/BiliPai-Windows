@@ -1,0 +1,30 @@
+PASS: actual twelve providers settle without enabled LAN providers
+PASS: real actor writer is actually blocked
+PASS: actual consent write accepted in real executor queue
+PASS: both actual observer Jobs cancelled and joined
+PASS: Runtime hook remains behind actual accepted writer
+PASS: global backing is writable before accepted actor write drains
+PASS: no late observation is accepted during Runtime retirement
+PASS: actor rejects new record while accepted queue drains
+PASS: accepted original consent persists before actual global freeze
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/dgl-snapshot-1/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-product-lifecycle-proof/snapshot-1/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+Exception in thread "main" java.lang.IllegalStateException: retired shared facade rejects writes after actual Runtime shutdown
+	at com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt.verify(DiagnosticProductLifecycleFixture.kt:28)
+	at com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt.access$verify(DiagnosticProductLifecycleFixture.kt:1)
+	at com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$acceptedWriter$2.invokeSuspend(DiagnosticProductLifecycleFixture.kt:151)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt.main(DiagnosticProductLifecycleFixture.kt:216)

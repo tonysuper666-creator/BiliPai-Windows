@@ -1,0 +1,1316 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "bridge-baselines.json",
+      "sha256Bytes": "fed36b5cb1cbe7eadb098c31114abb439d012243d97acaee28f4807193749388"
+    },
+    {
+      "path": "bridge-draft/UpstreamLog.kt",
+      "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+    },
+    {
+      "path": "bridge-draft/UpstreamLogger.kt",
+      "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+    },
+    {
+      "path": "bridge-integration.patch",
+      "sha256Bytes": "42632721954228d038a7d69323c499a59024b567ce9de50ab548d2b14fd844f9"
+    },
+    {
+      "path": "classes/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "2d58e5d9c97cae8bb30ae73e9a47994d0a3352682213e1e712ed3d7d987f1128"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "d3b15c94d56c3c8cf9d63fbbc378871f5373ec2178b8b6388c7a69ad45f90001"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "6e6f18b062a80a90a20d1d4763ed1d34ce43f6a9316dbce3dab4d39183d75368"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "7d3372ab6bf24349d79465cdaa178f97dd790c577beae0eb9d9a748f1f64c09f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "7a6850dc5687b67f1ddbb78e8143bd20ea2874d0d95099a10661afbbe7c6f5c9"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "92dd3667796423deccb49b4c64ee78b3b77b6134eebc806ddf4c34d7937cc5e6"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "9171a2a34b12b08a4323db4766acbb835aca131519e990d57c141f9038a7151b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "c916b34ea46a43adbb9d047f047ce1762b941ab959d3be9bdd6742de4fed7ac8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "b7560b889d74ac56458260b12b7ac167cb0f9e7e1c5c8a3e10b8fb5e180d6dee"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "8ff1c51ec6e09c9bcef62cc674a9dca4fb98f4fb574c96aeac6e9aab2ca73a30"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "24a073494c16afe2334b28a3125b0fe7f48a372e63dce038b2f9b9a6d6e26b8e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "ce3a204d99a7d479cba0e46112126611bcb9193178eb380a66962a62d747c321"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "4a7a01ff8163671f4b32c75afb050e591b79b29d0418ed7d15a27dc46c1f5c78"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "3c1ec1146f8cbded34e1d7c68303d32866f4c434111ae5fc3ef6402f7fda89d4"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$14.class",
+      "sha256Bytes": "f5feff95fc631afc825ee3d6bf2bf32e9ce0e8e12bca615ea585e7c916713cbe"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$17.class",
+      "sha256Bytes": "113e43503eb4c2bd3fae61f9721236a750c571ce3b0f89bf1a68d2b421c26518"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$3.class",
+      "sha256Bytes": "766e1d154225bb72f28a8164d47937d4c95065b157e70503314eacce2e2525a4"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$4.class",
+      "sha256Bytes": "876369f90eff638089ca3d06401a275d7b3f146d89ae1547a75cf6579c5dba57"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$closing$1.class",
+      "sha256Bytes": "991fca9e9356ecdc5dfd504fbf36256138edc6776e3734dd73d60181cc3172fd"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$off$1.class",
+      "sha256Bytes": "036a756fd9a59d916a2a580e07698ca28903d87e51eec06135a3cc7bdc9123f0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1.class",
+      "sha256Bytes": "d2a97449e132ac9dc7b2e910aa20e89b3e4952314ff9184d0bb77a73d87da91c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt.class",
+      "sha256Bytes": "1848b0308e92b0cc6561c0fa0c80cee65542e47f52aecc2a5b3ab1eec073a1b7"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$1$1$1$3.class",
+      "sha256Bytes": "e036d0babf80c072b38386d5502e6746084c06ea37fc67b78cef6b11b8fa2858"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$2.class",
+      "sha256Bytes": "178732e6a398c3aabb038ed03e9bbcb60a5464ef4b8bc6438d7d2bdcf5cb9404"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$3.class",
+      "sha256Bytes": "33384ea2b8f8980e27a98f7c8fe4157e99ac87f3e5c3f96c1de58f92976dc2d0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "4aaa1faae360c6d05b1d585f81cfe40c96f5c07b34e735b3b6edc5a462253c1e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$5.class",
+      "sha256Bytes": "75a3f99d27e79a9245c334571adb518dbe37f21af959ba4dfc658fd7e89173f7"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$6.class",
+      "sha256Bytes": "246356c24a42128bbdf4a235b619177de74bbb23702cb85dbca919b5dedfb27b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$7.class",
+      "sha256Bytes": "a56ce41fc329f3677b8bbc1783109b999003cb19b019aaaecccfa70447394003"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$8.class",
+      "sha256Bytes": "f2f028ca22600ffa9aff28b692340103c6459741d22403dd30c3de3677b4f688"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "635c850ace582defba0179e44fd5ecd7fe8637e60f8bb42f9da55481eda5fa57"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1.class",
+      "sha256Bytes": "1b1cae3b6bbc2c35b49fee975c598e4a734cd8a36297f81036c338ddbc6be77c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt.class",
+      "sha256Bytes": "3ca4b100131a9b3dca6f9df21af9d5ee56dd189f512fd4968580f4d63decd0a7"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db"
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "93fb89feeea1d777cd7b4cfe1e281bdc691fec8565cca1ded2fd155fdc02f375"
+    },
+    {
+      "path": "classes-final/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa"
+    },
+    {
+      "path": "classes-final/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "2d58e5d9c97cae8bb30ae73e9a47994d0a3352682213e1e712ed3d7d987f1128"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "d3b15c94d56c3c8cf9d63fbbc378871f5373ec2178b8b6388c7a69ad45f90001"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "6e6f18b062a80a90a20d1d4763ed1d34ce43f6a9316dbce3dab4d39183d75368"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "7d3372ab6bf24349d79465cdaa178f97dd790c577beae0eb9d9a748f1f64c09f"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "7a6850dc5687b67f1ddbb78e8143bd20ea2874d0d95099a10661afbbe7c6f5c9"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "92dd3667796423deccb49b4c64ee78b3b77b6134eebc806ddf4c34d7937cc5e6"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "9171a2a34b12b08a4323db4766acbb835aca131519e990d57c141f9038a7151b"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "c916b34ea46a43adbb9d047f047ce1762b941ab959d3be9bdd6742de4fed7ac8"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "b7560b889d74ac56458260b12b7ac167cb0f9e7e1c5c8a3e10b8fb5e180d6dee"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "8ff1c51ec6e09c9bcef62cc674a9dca4fb98f4fb574c96aeac6e9aab2ca73a30"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "24a073494c16afe2334b28a3125b0fe7f48a372e63dce038b2f9b9a6d6e26b8e"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "ce3a204d99a7d479cba0e46112126611bcb9193178eb380a66962a62d747c321"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "4a7a01ff8163671f4b32c75afb050e591b79b29d0418ed7d15a27dc46c1f5c78"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "3c1ec1146f8cbded34e1d7c68303d32866f4c434111ae5fc3ef6402f7fda89d4"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$17.class",
+      "sha256Bytes": "113e43503eb4c2bd3fae61f9721236a750c571ce3b0f89bf1a68d2b421c26518"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$3.class",
+      "sha256Bytes": "766e1d154225bb72f28a8164d47937d4c95065b157e70503314eacce2e2525a4"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$4.class",
+      "sha256Bytes": "876369f90eff638089ca3d06401a275d7b3f146d89ae1547a75cf6579c5dba57"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$closing$1.class",
+      "sha256Bytes": "991fca9e9356ecdc5dfd504fbf36256138edc6776e3734dd73d60181cc3172fd"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$off$1.class",
+      "sha256Bytes": "036a756fd9a59d916a2a580e07698ca28903d87e51eec06135a3cc7bdc9123f0"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1.class",
+      "sha256Bytes": "d2a97449e132ac9dc7b2e910aa20e89b3e4952314ff9184d0bb77a73d87da91c"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt.class",
+      "sha256Bytes": "1848b0308e92b0cc6561c0fa0c80cee65542e47f52aecc2a5b3ab1eec073a1b7"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$1$1$1$3.class",
+      "sha256Bytes": "e036d0babf80c072b38386d5502e6746084c06ea37fc67b78cef6b11b8fa2858"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "4aaa1faae360c6d05b1d585f81cfe40c96f5c07b34e735b3b6edc5a462253c1e"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$5.class",
+      "sha256Bytes": "75a3f99d27e79a9245c334571adb518dbe37f21af959ba4dfc658fd7e89173f7"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$6.class",
+      "sha256Bytes": "b20f737a8acd2a48c609630b15ca904dd5ec9d2a642ceb37611e0188ffe57c53"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$8.class",
+      "sha256Bytes": "cf240382e91ac778b30850c169c1a22915cd2b11218037dfd100d74ca93ec764"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$9.class",
+      "sha256Bytes": "804d3e291622571caebcc43a24d2381ba27c97cc1428461ee85c0d5bb561f518"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "635c850ace582defba0179e44fd5ecd7fe8637e60f8bb42f9da55481eda5fa57"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1.class",
+      "sha256Bytes": "b1b8f32b9f166e238c845524a11e976422faef9a6f28393bc46b7af0676b7d5f"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt.class",
+      "sha256Bytes": "c9574c53425e0b792250893a570cd7bc5dfaaa8a39929fe5542999871dd42d5f"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963"
+    },
+    {
+      "path": "classes-final/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db"
+    },
+    {
+      "path": "classes-final/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "93fb89feeea1d777cd7b4cfe1e281bdc691fec8565cca1ded2fd155fdc02f375"
+    },
+    {
+      "path": "classes-stable/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa"
+    },
+    {
+      "path": "classes-stable/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "67907178b9f355c1d3ffa2ae8e6166fc96a25377c6597b95739eb5af216023a3"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "d3b15c94d56c3c8cf9d63fbbc378871f5373ec2178b8b6388c7a69ad45f90001"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "6e6f18b062a80a90a20d1d4763ed1d34ce43f6a9316dbce3dab4d39183d75368"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "7d3372ab6bf24349d79465cdaa178f97dd790c577beae0eb9d9a748f1f64c09f"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "7a6850dc5687b67f1ddbb78e8143bd20ea2874d0d95099a10661afbbe7c6f5c9"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "92dd3667796423deccb49b4c64ee78b3b77b6134eebc806ddf4c34d7937cc5e6"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "e8e83bdff18aef1f7a58ffe4cd71279bc78f5f6b441005528f7a41e9271a2e6e"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "c916b34ea46a43adbb9d047f047ce1762b941ab959d3be9bdd6742de4fed7ac8"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "b7560b889d74ac56458260b12b7ac167cb0f9e7e1c5c8a3e10b8fb5e180d6dee"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "8ff1c51ec6e09c9bcef62cc674a9dca4fb98f4fb574c96aeac6e9aab2ca73a30"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "24a073494c16afe2334b28a3125b0fe7f48a372e63dce038b2f9b9a6d6e26b8e"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "ce3a204d99a7d479cba0e46112126611bcb9193178eb380a66962a62d747c321"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "4a7a01ff8163671f4b32c75afb050e591b79b29d0418ed7d15a27dc46c1f5c78"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "e3a2398e2f9a8b2f556a6f6388f883293d04ec6ec3fec48194a0dcca886558a4"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$17.class",
+      "sha256Bytes": "113e43503eb4c2bd3fae61f9721236a750c571ce3b0f89bf1a68d2b421c26518"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$3.class",
+      "sha256Bytes": "766e1d154225bb72f28a8164d47937d4c95065b157e70503314eacce2e2525a4"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$4.class",
+      "sha256Bytes": "876369f90eff638089ca3d06401a275d7b3f146d89ae1547a75cf6579c5dba57"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$closing$1.class",
+      "sha256Bytes": "991fca9e9356ecdc5dfd504fbf36256138edc6776e3734dd73d60181cc3172fd"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$off$1.class",
+      "sha256Bytes": "036a756fd9a59d916a2a580e07698ca28903d87e51eec06135a3cc7bdc9123f0"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1.class",
+      "sha256Bytes": "d2a97449e132ac9dc7b2e910aa20e89b3e4952314ff9184d0bb77a73d87da91c"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt.class",
+      "sha256Bytes": "1848b0308e92b0cc6561c0fa0c80cee65542e47f52aecc2a5b3ab1eec073a1b7"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$1$1$1$3.class",
+      "sha256Bytes": "e036d0babf80c072b38386d5502e6746084c06ea37fc67b78cef6b11b8fa2858"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "4aaa1faae360c6d05b1d585f81cfe40c96f5c07b34e735b3b6edc5a462253c1e"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$5.class",
+      "sha256Bytes": "75a3f99d27e79a9245c334571adb518dbe37f21af959ba4dfc658fd7e89173f7"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$6.class",
+      "sha256Bytes": "b20f737a8acd2a48c609630b15ca904dd5ec9d2a642ceb37611e0188ffe57c53"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$8.class",
+      "sha256Bytes": "cf240382e91ac778b30850c169c1a22915cd2b11218037dfd100d74ca93ec764"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$9.class",
+      "sha256Bytes": "804d3e291622571caebcc43a24d2381ba27c97cc1428461ee85c0d5bb561f518"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "635c850ace582defba0179e44fd5ecd7fe8637e60f8bb42f9da55481eda5fa57"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1.class",
+      "sha256Bytes": "b1b8f32b9f166e238c845524a11e976422faef9a6f28393bc46b7af0676b7d5f"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt.class",
+      "sha256Bytes": "c9574c53425e0b792250893a570cd7bc5dfaaa8a39929fe5542999871dd42d5f"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963"
+    },
+    {
+      "path": "classes-stable/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db"
+    },
+    {
+      "path": "classes-stable/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "93fb89feeea1d777cd7b4cfe1e281bdc691fec8565cca1ded2fd155fdc02f375"
+    },
+    {
+      "path": "classes-verified/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa"
+    },
+    {
+      "path": "classes-verified/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "2d58e5d9c97cae8bb30ae73e9a47994d0a3352682213e1e712ed3d7d987f1128"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "d3b15c94d56c3c8cf9d63fbbc378871f5373ec2178b8b6388c7a69ad45f90001"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "6e6f18b062a80a90a20d1d4763ed1d34ce43f6a9316dbce3dab4d39183d75368"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "7d3372ab6bf24349d79465cdaa178f97dd790c577beae0eb9d9a748f1f64c09f"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "7a6850dc5687b67f1ddbb78e8143bd20ea2874d0d95099a10661afbbe7c6f5c9"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "92dd3667796423deccb49b4c64ee78b3b77b6134eebc806ddf4c34d7937cc5e6"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "e8e83bdff18aef1f7a58ffe4cd71279bc78f5f6b441005528f7a41e9271a2e6e"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "c916b34ea46a43adbb9d047f047ce1762b941ab959d3be9bdd6742de4fed7ac8"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "b7560b889d74ac56458260b12b7ac167cb0f9e7e1c5c8a3e10b8fb5e180d6dee"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "8ff1c51ec6e09c9bcef62cc674a9dca4fb98f4fb574c96aeac6e9aab2ca73a30"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "24a073494c16afe2334b28a3125b0fe7f48a372e63dce038b2f9b9a6d6e26b8e"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "ce3a204d99a7d479cba0e46112126611bcb9193178eb380a66962a62d747c321"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "4a7a01ff8163671f4b32c75afb050e591b79b29d0418ed7d15a27dc46c1f5c78"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "3c1ec1146f8cbded34e1d7c68303d32866f4c434111ae5fc3ef6402f7fda89d4"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$17.class",
+      "sha256Bytes": "113e43503eb4c2bd3fae61f9721236a750c571ce3b0f89bf1a68d2b421c26518"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$3.class",
+      "sha256Bytes": "766e1d154225bb72f28a8164d47937d4c95065b157e70503314eacce2e2525a4"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$4.class",
+      "sha256Bytes": "876369f90eff638089ca3d06401a275d7b3f146d89ae1547a75cf6579c5dba57"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$closing$1.class",
+      "sha256Bytes": "991fca9e9356ecdc5dfd504fbf36256138edc6776e3734dd73d60181cc3172fd"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1$off$1.class",
+      "sha256Bytes": "036a756fd9a59d916a2a580e07698ca28903d87e51eec06135a3cc7bdc9123f0"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt$main$1.class",
+      "sha256Bytes": "d2a97449e132ac9dc7b2e910aa20e89b3e4952314ff9184d0bb77a73d87da91c"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticFixtureKt.class",
+      "sha256Bytes": "1848b0308e92b0cc6561c0fa0c80cee65542e47f52aecc2a5b3ab1eec073a1b7"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$1$1$1$3.class",
+      "sha256Bytes": "e036d0babf80c072b38386d5502e6746084c06ea37fc67b78cef6b11b8fa2858"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "4aaa1faae360c6d05b1d585f81cfe40c96f5c07b34e735b3b6edc5a462253c1e"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$5.class",
+      "sha256Bytes": "75a3f99d27e79a9245c334571adb518dbe37f21af959ba4dfc658fd7e89173f7"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$6.class",
+      "sha256Bytes": "b20f737a8acd2a48c609630b15ca904dd5ec9d2a642ceb37611e0188ffe57c53"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$8.class",
+      "sha256Bytes": "cf240382e91ac778b30850c169c1a22915cd2b11218037dfd100d74ca93ec764"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$9.class",
+      "sha256Bytes": "804d3e291622571caebcc43a24d2381ba27c97cc1428461ee85c0d5bb561f518"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "635c850ace582defba0179e44fd5ecd7fe8637e60f8bb42f9da55481eda5fa57"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt$main$1.class",
+      "sha256Bytes": "b1b8f32b9f166e238c845524a11e976422faef9a6f28393bc46b7af0676b7d5f"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/diagnostics/DiagnosticUiFixtureKt.class",
+      "sha256Bytes": "c9574c53425e0b792250893a570cd7bc5dfaaa8a39929fe5542999871dd42d5f"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963"
+    },
+    {
+      "path": "classes-verified/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db"
+    },
+    {
+      "path": "classes-verified/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "93fb89feeea1d777cd7b4cfe1e281bdc691fec8565cca1ded2fd155fdc02f375"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "b6003c98a8acc1ff7e592b1f2d910fa29c1ac611564e77b1d0baaaea65cf342e"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "ba053e3cf2d7560d3e503140bf8949875443c47085a3762a0f9c15333ef5aa3d"
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "a0d1c704aa2fbd4ee89176219e890112919426c707140800a12f69db36f64edf"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "04238da8f66f8cfe3ccacf19329b23faadebb9359bd663742b286f923e7ba69c"
+    },
+    {
+      "path": "DesktopDiagnosticFileChooser.kt",
+      "sha256Bytes": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05"
+    },
+    {
+      "path": "DesktopDiagnosticRuntimeBindings.kt",
+      "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641"
+    },
+    {
+      "path": "DesktopDiagnostics.kt",
+      "sha256Bytes": "20fd95b1fdb0cdafd891aa55370862db4068097049f07e51f218fe2454077a16"
+    },
+    {
+      "path": "DesktopDiagnosticSettingsSection.kt",
+      "sha256Bytes": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e"
+    },
+    {
+      "path": "DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "8f26b26886e80eb92be07f6fc751af72fe48f0d50a24133f8936686c332da54c"
+    },
+    {
+      "path": "DiagnosticFixture.kt",
+      "sha256Bytes": "95360d85a111bacc3587540916491a5243fb1fba9fb95d37007b5be06cb11cc5"
+    },
+    {
+      "path": "DiagnosticUiFixture.kt",
+      "sha256Bytes": "555c9fe53d217b02613be10c9075928d3a3ad85f2406292d2d2715548db7683c"
+    },
+    {
+      "path": "extract-upstream-diagnostics.py",
+      "sha256Bytes": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "d8db414bfa623efeab750969005e32c48b5a9b447e4a64b12fa7d753f92599aa"
+    },
+    {
+      "path": "fresh-jvm.args",
+      "sha256Bytes": "7b7c4d3d73a5cfebd4b18b21bec655abde148e75c1d704e4ee0cb46532868afe"
+    },
+    {
+      "path": "fresh-jvm.log",
+      "sha256Bytes": "1cf614d63cfbed90469b6740e9a55472585aaefdf66c68e54995c57c8d63fbce"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsDiagnosticFields.kt",
+      "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt",
+      "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039"
+    },
+    {
+      "path": "prepare-compile-run.py",
+      "sha256Bytes": "1d4f786d94c0f5d731896e940feb67eeb6dabb05359fe835e7751daee9e51a2a"
+    },
+    {
+      "path": "proof/cold-root.txt",
+      "sha256Bytes": "b3c66f011b19c5ed61d3e238f11de5a90fa7eaddb4787aed7c1224df85cdc845"
+    },
+    {
+      "path": "proof/explicit-local-export-1c04fc58-bb13-47a6-9f04-464d1671f592.txt",
+      "sha256Bytes": "b08b3655f15957e1fa783a450d85282c211ee37baf816a894837f5dde4fe6dfb"
+    },
+    {
+      "path": "proof/explicit-local-export-1f073b3b-82d3-4941-82ab-f1cb89bb1102.txt",
+      "sha256Bytes": "b08b3655f15957e1fa783a450d85282c211ee37baf816a894837f5dde4fe6dfb"
+    },
+    {
+      "path": "proof/explicit-local-export-79bf3e59-3c30-48e3-9b25-611dfd51e58a.txt",
+      "sha256Bytes": "21f0639d7898fb9303dd33f99fe6b2c9d71f83faf23b09817f6dca2b3e665006"
+    },
+    {
+      "path": "proof/explicit-local-export-7f84f5b4-58a1-492a-889b-d59ece19884d.txt",
+      "sha256Bytes": "21f0639d7898fb9303dd33f99fe6b2c9d71f83faf23b09817f6dca2b3e665006"
+    },
+    {
+      "path": "proof/explicit-local-export-a319427a-0b22-4e8b-8adf-c7ad898a98a2.txt",
+      "sha256Bytes": "21f0639d7898fb9303dd33f99fe6b2c9d71f83faf23b09817f6dca2b3e665006"
+    },
+    {
+      "path": "proof/explicit-local-export-b75bbac0-0927-43b4-a87b-58a9613215ed.txt",
+      "sha256Bytes": "b08b3655f15957e1fa783a450d85282c211ee37baf816a894837f5dde4fe6dfb"
+    },
+    {
+      "path": "proof/explicit-local-export-c8dc4900-6e59-4b73-84f9-3d807a33763b.txt",
+      "sha256Bytes": "b08b3655f15957e1fa783a450d85282c211ee37baf816a894837f5dde4fe6dfb"
+    },
+    {
+      "path": "proof/explicit-local-export.txt",
+      "sha256Bytes": "21f0639d7898fb9303dd33f99fe6b2c9d71f83faf23b09817f6dca2b3e665006"
+    },
+    {
+      "path": "proof/fresh-jvm.json",
+      "sha256Bytes": "f452694f8f3609d30ce1c73c8dcd96e33dcbba967ada9f4da6da9e39da2ef4fe"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "1910a51c626729864531e271f947c723157a55299781341104fa094563652753"
+    },
+    {
+      "path": "proof-index.json",
+      "sha256Bytes": "a3792c57b9aecfc03b6f6d61f9e4d68275e8b9af9c610715f3d59d0bd4f375c7"
+    },
+    {
+      "path": "reference-only/OriginalDiagnosticsSection.kt",
+      "sha256Bytes": "3ce182efc24b86173ec236faf8f59f2bb8a0745d94ef68640d269757d1dd4817"
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "c2eff2c104cfbecc7e2dbc4e1d7f44e65af4c38ed738655daf2b98820e98bd89"
+    },
+    {
+      "path": "root-baselines.json",
+      "sha256Bytes": "990b5edaa196592ac4ea7647b781fbac8f2853b9ca89ab135ff0d54c09b4636b"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "3d98f43988b321d29de51b194873131f4dd18ec07245f739ee6f1f49566fdf30"
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "7e1f849e48794299ab4020b21e15a3ad3a0e1d3cd26c6ae9faaf2256a0f0fc33"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "0719f2bcec1979676637bc77b548f34df8580425401ef0c93f514e04945b48c5"
+    },
+    {
+      "path": "source-contract-proof.json",
+      "sha256Bytes": "3607925f5096ead6335d14d579fdf6cbef953b9acdf83d939e2d642532a2fd8f"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "bbaef5703f5d79bdd54c77f700b322b8d3252150e14e2bb0961073746ec9393a"
+    },
+    {
+      "path": "ui-proof/material3-after-confirm.png",
+      "sha256Bytes": "79dcff2dd51443adf790f320b6a5a1c9d2a11a096d53e98db56a09e08a2e3a65"
+    },
+    {
+      "path": "ui-proof/material3-diagnostics.png",
+      "sha256Bytes": "472b4da10a9f2a98fa42296b9d4407dd673c5737bfa68afcc1b32cccb4270090"
+    },
+    {
+      "path": "ui-proof/material3-local-viewer.png",
+      "sha256Bytes": "5d4b063cfcb46ec7ab5aac93c40e2f7bff8f76cfce854f47851a3442f70f2d37"
+    },
+    {
+      "path": "ui-proof/material3-ui-export-348885e3-a20a-46ef-aae3-26078de6203a.txt",
+      "sha256Bytes": "af993b4712377952e4091a74ca7785cda69bf579db18f0f0c195faa473884631"
+    },
+    {
+      "path": "ui-proof/material3-ui-export-3f697931-3b14-40ca-a355-6cae332477d6.txt",
+      "sha256Bytes": "139a1b23eae69cb3a15fdf04514885179461dacb8296b4c5fb74298f4dd264de"
+    },
+    {
+      "path": "ui-proof/material3-ui-export-765830d9-b9b3-4d62-99a0-58a499b806f7.txt",
+      "sha256Bytes": "54cbb1743bb371ced36294d7fe82aec4f75366f4bca7c0370216b7a7a32618b6"
+    },
+    {
+      "path": "ui-proof/material3-ui-export-77f6cb8d-3239-4fcc-b396-2cb812811be7.txt",
+      "sha256Bytes": "6c8a7b40ad0a0cd9e669577a748353bb86ec945703050bd12854fd7d6b03be56"
+    },
+    {
+      "path": "ui-proof/material3-ui-export-ef025e7e-7f5e-450b-9f40-1ef6e6cff063.txt",
+      "sha256Bytes": "470f46b9acf4fe2bde76ce4e6b328906dc1f12718725090c59ef4cfcd9c09f7e"
+    },
+    {
+      "path": "ui-proof/miuix-after-confirm.png",
+      "sha256Bytes": "52c6db05c71caa9b4b190203da535e62da17d1c9913c45d8b4bd7eb48bcb74cc"
+    },
+    {
+      "path": "ui-proof/miuix-diagnostics.png",
+      "sha256Bytes": "517e845961ab047b6c6da68525a75a74091ab7fee866d09a60afda83eb9163fc"
+    },
+    {
+      "path": "ui-proof/miuix-local-viewer.png",
+      "sha256Bytes": "7ff7c5f87eabb8de42fd1f02e7aafa273d329a698c0cedf096196251277845cb"
+    },
+    {
+      "path": "ui-proof/miuix-ui-export-47c962da-51d7-4ec1-aaab-b9c83b479b26.txt",
+      "sha256Bytes": "23287b457cc0be66ce9a3974b26883e2b7b4834dc629986252bc0f2d7775f9c4"
+    },
+    {
+      "path": "ui-proof/miuix-ui-export-830eea7b-f710-4c25-b678-b1aa456d5652.txt",
+      "sha256Bytes": "f5bc4d2af6e921fe7992f92f4740049220eb82da8523e870df01278d60e3728c"
+    },
+    {
+      "path": "ui-proof/miuix-ui-export-b0e1ae8e-1626-4379-a21a-5d273372d689.txt",
+      "sha256Bytes": "685cd7a4f8f7524315f9e20ac6155ea0f584c33ff1b381da774228d9fdfab4ba"
+    },
+    {
+      "path": "ui-proof/miuix-ui-export-bcdac799-1f0f-494e-bafb-936ac2a5c4df.txt",
+      "sha256Bytes": "e718f09f4891492aa226c2167f9283325476e951e0dd43629cc5614f5a0731c6"
+    },
+    {
+      "path": "ui-proof/miuix-ui-export-f02aaa31-8e02-4fb3-a25e-0399c7474e1d.txt",
+      "sha256Bytes": "08a136f8c446d10be8b80aa7f3dc8e50091c49d34758e56d33a086226f261e08"
+    },
+    {
+      "path": "ui-proof/result.json",
+      "sha256Bytes": "aef9c91696b49dfd74471879713ea788052ac4286d9a15005dde7ad885fb2aee"
+    },
+    {
+      "path": "ui-runtime.args",
+      "sha256Bytes": "f55e1249e9f7201b4c9f8e233e2e8e679f6dd26af239aacc7f6a8ef28f5e0214"
+    },
+    {
+      "path": "ui-runtime.log",
+      "sha256Bytes": "23288562757178e134e1c2034c92293beca23b7fe7d889a99903b3df3b681bbb"
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "1914431208d7e510254369a5ada66af11816106d49df5ac4b41fcdd354e4a171"
+    },
+    {
+      "path": "verify-original-contracts.py",
+      "sha256Bytes": "6d425019673b3008606b621c556261de4d5c2f552e80c352712d0eb9f53148d5"
+    }
+  ],
+  "artifactCount": 322,
+  "scope": {
+    "activeClassDirectory": "classes-stable",
+    "inactiveEarlierClassDirectories": [
+      "classes",
+      "classes-final",
+      "classes-verified"
+    ],
+    "offlineRealFilesAndActorCases": 14,
+    "freshJvmConsentCases": 1,
+    "actualPointerPairs": 18,
+    "styles": 2,
+    "compiledSourceCount": 15,
+    "nativeWindowCreated": false,
+    "systemSaveDialogOpened": false,
+    "localLoggingPrepared": true,
+    "fullDiagnosticsComplete": false,
+    "sharedGradleInvoked": false,
+    "mainModified": false,
+    "networkUsed": false,
+    "userDataRead": false,
+    "externalMessagesOrLogUpload": false
+  }
+}

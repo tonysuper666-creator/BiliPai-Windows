@@ -1,0 +1,212 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "416d5e36fb48dfc495388adfed10356a85351e99",
+  "status": "originalLocalDiagnosticsIntegratedWithActualConsumerLifecycleAndViewer",
+  "productFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "hashNormalization": "lf",
+      "sha256": "84e51934d4ec837f1fcdfe1caefbfd82b4fee8a318671aaa6d8889f9cbfa0d4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "hashNormalization": "lf",
+      "sha256": "f43b619c7e222a44c64be255676f6c39382dd76aff50c0c96d17707e92e47db3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "hashNormalization": "lf",
+      "sha256": "e9bccc5f13cf270da77c609e4191841f36ec147335f4327292982178b498f0f6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt",
+      "hashNormalization": "lf",
+      "sha256": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt",
+      "hashNormalization": "lf",
+      "sha256": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt",
+      "hashNormalization": "lf",
+      "sha256": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.kt",
+      "hashNormalization": "lf",
+      "sha256": "6856566f92ac61c0960dbe0c39803c36751f0f97840133f15038207037960407"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt",
+      "hashNormalization": "lf",
+      "sha256": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt",
+      "hashNormalization": "lf",
+      "sha256": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "hashNormalization": "lf",
+      "sha256": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "hashNormalization": "lf",
+      "sha256": "3da8e066f7badc3c3fe093dd10d9e6a2201ca176d90b2806337643952fda44ac"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "hashNormalization": "lf",
+      "sha256": "3f33392b1eb7bf14c7e0cbc8c9330890b8991a3b85d5f74859b7159ad6383de3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticsTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "8cdc31af2e0592173a08ec15449c8aff1d195fdded07a8e7a32b158a235e4aa1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "hashNormalization": "lf",
+      "sha256": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f"
+    },
+    {
+      "path": "desktop/tools/tests/test_diagnostic_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "0738d106b26ad6caee41d6860877ab70be3659dd74c94708dcbadbc286ee18ab"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "hashNormalization": "lf",
+      "sha256": "f5404b0c33f55c1005d5b1645ed9c1fb781dd23b3a0e57352a6dd84817fc8f91"
+    }
+  ],
+  "originalSourceIdentities": 433,
+  "originalResourceIdentities": 210,
+  "originalApiDeclarationsVerbatim": 303,
+  "originalResponsesAdopted": 45,
+  "sourceAndTestCountsUsedAsProgress": false,
+  "effectiveConsent": {
+    "namespace": "settings",
+    "key": "enhanced_diagnostic_logging_enabled",
+    "default": false,
+    "globalStore": true,
+    "synchronousBeforeRepository": true,
+    "publishedAfterSuccessfulAtomicPersistence": true
+  },
+  "adoptedOriginalBehavior": [
+    "pure diagnostic path/rolling/eligibility/crash content functions",
+    "collector sanitizer, 1000-entry ring, 250ms duplicate suppression and 16Ki message limit",
+    "original enhanced diagnostic authorization dialog and effective field",
+    "local crash policy independent of Firebase consent"
+  ],
+  "windowsConsumers": [
+    "retained Main factory and both actual logging bridges",
+    "same process owner for video and audio observer Jobs",
+    "original SYSTEM_ABOUT setting plus local view/export/clear dialog",
+    "default uncaught handler with previous-handler chaining and identity-checked restoration",
+    "startup fallback, explicit restore/normal close and actual Runtime disposal before store freeze"
+  ],
+  "shutdownBarrier": {
+    "cancelAndJoinBothObservers": true,
+    "acceptedWriterDrainedBeforeStoreFreeze": true,
+    "timeoutPropagates": true,
+    "sameInstanceRetrySupported": true,
+    "storeMonitorNotHeldWhileWaiting": true
+  },
+  "diagnosticFiles": {
+    "basicCapBytes": 65536,
+    "runtimeCapBytes": 262144,
+    "crashCapBytes": 262144,
+    "exportCapBytes": 524288,
+    "knownFileClearOnly": true,
+    "explicitExportCreateNew": true,
+    "privateWindowsReparseGuard": true,
+    "handleRaceProofIoClaimed": false
+  },
+  "correctedProductFailures": [
+    "initial viewer read failure escaped coroutine before safe UI",
+    "junction or redirected ancestor could reach private diagnostic victim files",
+    "actual Miuix 720 initial and 900 post-export dialog consumed action row"
+  ],
+  "viewerCorrection": {
+    "actualWindowHeight": true,
+    "totalTextSlotBounded": true,
+    "weightedScrollingLog": true,
+    "originalRendererUnchanged": true,
+    "fontScale15Verified": true
+  },
+  "verification": {
+    "mainCompilePassed": true,
+    "mainJUnitMethods": 31,
+    "mainJUnitSuites": 2,
+    "failures": 0,
+    "skipped": 0,
+    "methodsBySuite": {
+      "DesktopDiagnosticsTest": 18,
+      "DesktopBackupRestoreBarrierTest": 13
+    },
+    "viewerOnlyChangeAfterJUnit": true,
+    "finalViewerCompilePassed": true,
+    "pythonOriginalSourceTests": 4,
+    "installerRehearsals": 9,
+    "finalLifecycleFreshJvmCases": 7,
+    "finalLifecycleFixtureAssertions": 70,
+    "finalLifecycleSourceContracts": 15,
+    "finalLifecyclePinnedSourceIdentities": 30,
+    "finalUiFlows": 24,
+    "finalUiPointerPairs": 96,
+    "finalUiScreenshots": 72,
+    "productOverrides": 0,
+    "actualUiClassIdentities": 14,
+    "requestedCoreActualUiClasses": 9,
+    "classpathEntries": 234,
+    "distinctExternalJars": 226,
+    "existingExternalDuplicateEntries": 5,
+    "historicalUiFailedMatrixPreserved": true,
+    "frozenArtifactsRootVerified": 1293,
+    "selectedRawArtifacts": 540,
+    "selectedEvidence": "desktop/verification/diagnostics/selected-evidence.json",
+    "selectedEvidenceSha256Bytes": "d8e21351e11b223666d7f11bfd19dfb2a41785288e32ebf5990e197ab9f42797"
+  },
+  "finalProductSnapshot": {
+    "manifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+    "productJars": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-kotlin.jar",
+        "source": "desktop/build/classes/kotlin/main",
+        "entries": 6493,
+        "sha256Bytes": "0b6c261cb2cde91ff38bc0ad68bf55614b2f3f58933d38a8c3f5e89c7e36ac8d"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-java.jar",
+        "source": "desktop/build/classes/java/main",
+        "entries": 141,
+        "sha256Bytes": "c111ced7d1131caf784bace7ab8a5cf84f565734d5271b1f874972419cf51e2b"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-resources.jar",
+        "source": "desktop/build/resources/main",
+        "entries": 56,
+        "sha256Bytes": "ff2b94f690ca9832f2044baa4d10b8c5c9fb61abd609a850c4e72053e2b6daa7"
+      }
+    ]
+  },
+  "limits": [
+    "original pending crash startup prompt still requires consumer integration",
+    "Firebase/analytics and Android process-exit diagnostics are not implemented Windows equivalents",
+    "independent DesktopPluginLog/JUL/JS/updater/mux producers outside patched bridges remain outside local export",
+    "Main native first construction order and ReadyApp shutdown seams have source-contract evidence, not full native Main acceptance",
+    "pure Compose dialogs use fixture chosen export path; native OS chooser not accepted",
+    "no real account, HTTP/TLS, physical native player, fatal-native-crash recovery or process restart acceptance",
+    "outer global JSON constructor failure remains before protected diagnostic/discovery factory boundaries"
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

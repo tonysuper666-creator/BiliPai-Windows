@@ -1,0 +1,16 @@
+PASS: actual Main factory failure supplies nullable Root consumer
+PASS: actual Root shows both diagnostics and classified storage error
+PASS: actual Root labels hide raw consent/discovery bytes and paths
+PASS: Root cold guard never creates a guest account
+PASS: retry pointer actually invokes product disk reader again
+PASS: original retry pointer preserves corrupt input and remains outside Ready
+PASS: actual Root registered shutdown callback
+PASS: actual Root startup shutdown freezes the same held global backing
+PASS: original restart pointer calls supplied callback without real process launch
+PASS: malformed diagnostic consent remains unchanged after Root retirement
+PASS: offline fence observed zero network/listener/multicast/process attempts
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/dgl-snapshot-3/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-product-lifecycle-proof/snapshot-3/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

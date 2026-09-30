@@ -1,0 +1,39 @@
+{
+  "frozen": true,
+  "files": [
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "e5ccc882d5ccc2451abaccfb2d9b225391bd54995be147b882daac31a6f4484b",
+      "bytes": 65006
+    },
+    {
+      "path": "source-audit.log",
+      "sha256Bytes": "5074ff7c4b216bfad8fdefd7a117f3cd630aca5346d96a7438f518dfb8bd1aae",
+      "bytes": 761
+    },
+    {
+      "path": "source-contract-tests.log",
+      "sha256Bytes": "ad559fd20d2fa34c4f9b38d94453a11904b750f661dabcf7292f0a3ec7b291f8",
+      "bytes": 753
+    },
+    {
+      "path": "viewer-height-fix.patch",
+      "sha256Bytes": "b94c0afa52edb786ffe0a9bbf8a37d27346007ba513c11ad6f71d3382d313fcd",
+      "bytes": 2147
+    }
+  ],
+  "pythonSourceTests": 4,
+  "failures": 0,
+  "sourceFiles": 433,
+  "resources": 210,
+  "mainTestScope": {
+    "methods": 31,
+    "suites": 2,
+    "viewerOnlyChangeAfterTests": true
+  },
+  "currentViewerCompile": {
+    "task": "compileKotlin",
+    "passed": true,
+    "elapsedSeconds": 3
+  }
+}

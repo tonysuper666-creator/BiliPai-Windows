@@ -1,0 +1,7 @@
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/dg-env/home
+desktop\.local\diagnostics-main-review\DiagnosticBoundaryFixture.kt:85:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\diagnostics-main-review\DiagnosticViewerFailureFixture.kt:61:5: warning: expression is unused.
+    Unit
+    ^^^^

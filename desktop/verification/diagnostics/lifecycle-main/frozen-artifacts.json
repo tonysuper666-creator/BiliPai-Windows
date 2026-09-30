@@ -1,0 +1,611 @@
+{
+  "frozen": true,
+  "artifactCount": 78,
+  "artifacts": [
+    {
+      "path": "compile-run-product-fixture.py",
+      "sha256Bytes": "36c13fa64b690d325a5be2ebd24344ee2733d9969095e211d7f35fb7da689f7c",
+      "sizeBytes": 5134
+    },
+    {
+      "path": "DiagnosticProductLifecycleFixture.kt",
+      "sha256Bytes": "b51b6d9787815d37fab7afbcb656e86eadba3057b5546fa714d65b206c5af2bf",
+      "sizeBytes": 19272
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "411eab5f30439b0c7ac8c6bfa7602316f8c393bf3fca23fa43b5e46283b05273",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "82d163659f30289ebf8e8b17f1e41aa30282cbd46960c8b5df1c5498ec24e56d",
+      "sizeBytes": 260
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "2da46e48bb2e51f6d6404f7e8b4086192390c8365b2479d4f25ba456321489cb",
+      "sizeBytes": 258
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/result.json",
+      "sha256Bytes": "49939fe96c6d5c2eebba05f09c5f0cca388b81dbd7e85e3018e2900f316d6a02",
+      "sizeBytes": 1160
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer.args",
+      "sha256Bytes": "ce5a7f00422cea0cdd4d8c03df4d62407ca7dcb462c2dbf120a9e607250ba016",
+      "sizeBytes": 57235
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer.log",
+      "sha256Bytes": "53c29b771624ee827f54491d36a17153315324019f50cb8154370815a5055188",
+      "sizeBytes": 1527
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$main$1.class",
+      "sha256Bytes": "f195f3c52f15376ff8387ed259f442050bf08c346cdb13f02ea990a3cdbaf913",
+      "sizeBytes": 13191
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$1.class",
+      "sha256Bytes": "90230e64930da93973ec1b5aaf8ccb725346dffdd6578c58b11de6274a329add",
+      "sizeBytes": 1881
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$2.class",
+      "sha256Bytes": "c404050b472a03badfb7afe1e8729f08b5390caff2b678f41f5d20f020b70087",
+      "sizeBytes": 5033
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$startup$1.class",
+      "sha256Bytes": "a71faac91ce3eab3ca7a16d396eb2b8b0635018a73e433d16c72ff564dad0792",
+      "sizeBytes": 2235
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$waitFor$1.class",
+      "sha256Bytes": "bdbe4666a1d31a07f250d438ad153c38bef1843f7fb4ee776b2b33b22b2684f0",
+      "sizeBytes": 1791
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$waitFor$2.class",
+      "sha256Bytes": "a04c2fb14c16590ffda59dd8a8c9631437e847f09f5733a42b087adb1d7bf72c",
+      "sizeBytes": 3691
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt.class",
+      "sha256Bytes": "6f00d55398e67ebb27a055fb9a6973cfa3c002399fdd29ec3e131933de997faf",
+      "sizeBytes": 52209
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/OfflineFence.class",
+      "sha256Bytes": "b8ea739922e55b645901e6f6b0b7254c99b30685966f8af1ba63c822ee532e69",
+      "sizeBytes": 3162
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$click$1.class",
+      "sha256Bytes": "c8724a7bb89d3183b93e4c3034863e617b3a71f683898dd8f5c044bf9b7783f9",
+      "sizeBytes": 1884
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$png$1.class",
+      "sha256Bytes": "93b739750c646a1b105c591eeff3ac5c04dd7066e352110ba899f4ab2282ca06",
+      "sizeBytes": 1849
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$wait$1.class",
+      "sha256Bytes": "f15243f33a6097e8f050ec547a5121e5f58a11ebf61c6bbc4931c3265bdc6a55",
+      "sizeBytes": 1946
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$wait$2.class",
+      "sha256Bytes": "a8d496c228f3edbcf1fcaac48febdf956cb3471eaaf2f75a616ba96e98fc5f87",
+      "sizeBytes": 3713
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene.class",
+      "sha256Bytes": "acb1e6c06fa256be6a32317c19db3d9f905df31e55de2daa469c7281da540c61",
+      "sizeBytes": 15849
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TrackedState$collect$1.class",
+      "sha256Bytes": "10bebdd0f046148740cccb84e72b1df2d880122a11b7b17c91651e5918ae085d",
+      "sizeBytes": 1862
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TrackedState.class",
+      "sha256Bytes": "9c09305ce3a90a37950ad65db59e537b5013a3300786915745f4aea5aac8c311",
+      "sizeBytes": 5005
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$entered$2.class",
+      "sha256Bytes": "aef6a4d33919fdd4e3291d7c9bc93339df4607078a6bf32fcfe10bdbe199b2f9",
+      "sizeBytes": 3629
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$joined$1.class",
+      "sha256Bytes": "f3ca42ad9295b806ffa76991a4ebd3a3669ddc3ff0348c0e1d9c5ad46631c582",
+      "sizeBytes": 1783
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$joined$2.class",
+      "sha256Bytes": "77cc420a1d9a8dd67cdd1c8312c9099f329d00b047834e85f4beda20c058934d",
+      "sizeBytes": 5547
+    },
+    {
+      "path": "final-snapshot-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers.class",
+      "sha256Bytes": "130895c4d6cf64eef98c120e35ec6d1b69804aeef746ed4dd83895375af1bb98",
+      "sizeBytes": 7962
+    },
+    {
+      "path": "final-snapshot-1/classes/META-INF/com.bilipai.desktop_bilipai-windows.kotlin_module",
+      "sha256Bytes": "c948353f2b161808501f66e7ed403d7ce9505c118183a020330d0c59571f1174",
+      "sizeBytes": 102
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "6a508973fc52d77e48d19ad7379691e4262f97ad6187b4ab4d4c2d667ab03aa3",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "298768a9adce07b88034ae1b5dccb9fb02bbf3b58044ade551ed21bcd1f9bd67",
+      "sizeBytes": 260
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "cf447a3651aa967a8b01d162283f11d6ce2982c5f1da462019a5e1e5c42be0f4",
+      "sizeBytes": 289
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/result.json",
+      "sha256Bytes": "419b897c1cbbfdf7e5fc4b6b2ae79b5dbf8af054cd5bf76b22bfa48d7902d356",
+      "sizeBytes": 1157
+    },
+    {
+      "path": "final-snapshot-1/close-bypass.args",
+      "sha256Bytes": "8d187af0609f0d5abba0512db13cd4e06b3202c4658dbafe0bf6dbae5bc381f6",
+      "sizeBytes": 57229
+    },
+    {
+      "path": "final-snapshot-1/close-bypass.log",
+      "sha256Bytes": "53c29b771624ee827f54491d36a17153315324019f50cb8154370815a5055188",
+      "sizeBytes": 1527
+    },
+    {
+      "path": "final-snapshot-1/compile-evidence.json",
+      "sha256Bytes": "d241fb776d3492aeb86e389fdf10ffc0304b0573bf1df1a2df4a9d6aa545f4d1",
+      "sizeBytes": 1488
+    },
+    {
+      "path": "final-snapshot-1/compile.log",
+      "sha256Bytes": "46a97b2db590486e245ef5ef16b62cf022c4cbfc89920c434e2b06f3d1dd71be",
+      "sizeBytes": 1540
+    },
+    {
+      "path": "final-snapshot-1/compiler.args",
+      "sha256Bytes": "b472e24eda523913c24f5454d9bbeeb5c9c331173d431096e89e223570f371c1",
+      "sizeBytes": 59232
+    },
+    {
+      "path": "final-snapshot-1/dependency-identities.json",
+      "sha256Bytes": "1c5a60e281a16d0b25a5222ae5c48dd40c94615cbaee71cccee49271375bead6",
+      "sizeBytes": 85884
+    },
+    {
+      "path": "final-snapshot-1/hook-failure/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "84b1ac63f756066d458e0707537bc8b1631310c348e79c9b3e1bb84cec4f19cf",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/hook-failure/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "502bac08b6f4409f0247db3fe1b58e4bebac54fcc2bbd70971cf31c2ab18d7ca",
+      "sizeBytes": 186
+    },
+    {
+      "path": "final-snapshot-1/hook-failure/result.json",
+      "sha256Bytes": "2445a2a7e0c28d42fd517639b197d525185308f3829e7d8d59e5f997e2b50b43",
+      "sizeBytes": 777
+    },
+    {
+      "path": "final-snapshot-1/hook-failure.args",
+      "sha256Bytes": "83e1002bd46450f731ecfbc337b5ab5ac15190c0a10f31105a6907520250de5a",
+      "sizeBytes": 57229
+    },
+    {
+      "path": "final-snapshot-1/hook-failure.log",
+      "sha256Bytes": "f3cf34c9d6fef666388a5d9bdc06c138d97a49911e375b99a403f583b9269329",
+      "sizeBytes": 1123
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "416b66e1613d8c43c722f84f60cb16e48dc1656b4688b46f0cacbf0f27f4fc9e",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "31e053886a25ca003abb716808438093f447b5f14384ff8030fa477463bacd5c",
+      "sizeBytes": 776
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "94a99cec1988485a6e0ffe5f14159b839a2541c9b8562394c1dade98cdd9a711",
+      "sizeBytes": 195
+    },
+    {
+      "path": "final-snapshot-1/observers/result.json",
+      "sha256Bytes": "1bee8287fb9b04afe2bb6cbd5d87429ecbe0b0c22122472bb6e19e4e261074bc",
+      "sizeBytes": 826
+    },
+    {
+      "path": "final-snapshot-1/observers.args",
+      "sha256Bytes": "07597f40ec4d64233bbe38df9722c8760e55c012f031727f78ec87d21acebbf5",
+      "sizeBytes": 57223
+    },
+    {
+      "path": "final-snapshot-1/observers.log",
+      "sha256Bytes": "2d63c1a9b93ceea5d474fef0b0ba1b49527404bbe79560f99bd398e5c5908e6f",
+      "sizeBytes": 1180
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/actual-private-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "1a5b00653edd876f920970b462580965efcc6ac4c23d1cb583579f0174b9f1c4",
+      "sizeBytes": 292
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/material3-root-retry-error.png",
+      "sha256Bytes": "c713fc85466d1b4785a703b96dbb40dc3dcd05d8742b81b72708846e2aa619c9",
+      "sizeBytes": 18745
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/material3-root-startup-error.png",
+      "sha256Bytes": "de2e0efb3e0cbf33504e65f7cc3111c3c1f259c30df992887766a7ae4d97f92d",
+      "sizeBytes": 18234
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/material3-root-stopped.png",
+      "sha256Bytes": "52c79937928f246cfd999eb432ad2b33adaa1311a2f517b8d88d6c164f23d525",
+      "sizeBytes": 13237
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/result.json",
+      "sha256Bytes": "2ff8efdc734407092b9c01c07b82060700ee15ed86b6e114d975fed11bd79da5",
+      "sizeBytes": 1156
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3.args",
+      "sha256Bytes": "0092ae0c11760be727e4550ab88588a2af191a02e0987b7a3aae79e075e9d68a",
+      "sizeBytes": 57249
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3.log",
+      "sha256Bytes": "c1f82f5727aa9ebcaf15fc5780805e32e32a56d1e24bd25895dc9d2f772a2222",
+      "sizeBytes": 1513
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/actual-private-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "2a16d72e0a96740c22ed030cf096793d6fa72e346a973f6653f1db3fcf6dbaa0",
+      "sizeBytes": 281
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/miuix-root-retry-error.png",
+      "sha256Bytes": "926e4ea233a18fee59cc03f477aca8c2367f426a1cfbd85e8ecc4ad1b3c0e53c",
+      "sizeBytes": 19351
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/miuix-root-startup-error.png",
+      "sha256Bytes": "4cbce99f63e0e2592f963e515452ccf73fbf4988f84a1efc974af0cb3d1440c9",
+      "sizeBytes": 18674
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/miuix-root-stopped.png",
+      "sha256Bytes": "4c962d3a8ad9b6e9bc875871babf49f7525a687da8279fd410556d7ac04f2e41",
+      "sizeBytes": 13611
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/result.json",
+      "sha256Bytes": "1f28d977c72cd95c36197e94e4770feca6e85d98442cdd457a1bb23298c306d0",
+      "sizeBytes": 1152
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix.args",
+      "sha256Bytes": "cab566f389915cede931506a7b9164dba34f401f995a4ae3a560ea16a710ed31",
+      "sizeBytes": 57241
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix.log",
+      "sha256Bytes": "c1f82f5727aa9ebcaf15fc5780805e32e32a56d1e24bd25895dc9d2f772a2222",
+      "sizeBytes": 1513
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/array/plugin-settings.json",
+      "sha256Bytes": "36b61705e5d98e4bbcca9dd2851b0250108c0ce0bbf4b8c4768f61a7c091180d",
+      "sizeBytes": 219
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/global/logs/basic.log",
+      "sha256Bytes": "bff1553efebce16f18a2dcfdd9ffd7901355fd5520486e7aff59baab86bdf73a",
+      "sizeBytes": 163
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "77d82ae37b0ea96d7f951a5cf0d4a40a2c1dc296b9c56e25302aadc6132fb7f4",
+      "sizeBytes": 196
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/object/plugin-settings.json",
+      "sha256Bytes": "4298cf4dacffb4a5fe770bff56daef89409dc19e6302cfca232f1ce372b9683f",
+      "sizeBytes": 240
+    },
+    {
+      "path": "final-snapshot-1/startup/result.json",
+      "sha256Bytes": "57b08775efb2d3af54d6883d3ea52d59c75775a28c4231c2a16b3674f77c6b01",
+      "sizeBytes": 1088
+    },
+    {
+      "path": "final-snapshot-1/startup.args",
+      "sha256Bytes": "eb9a4efab84f46e12c39ca250366ddce1496fd6482caf5179c4e9b1a287c75b3",
+      "sizeBytes": 57219
+    },
+    {
+      "path": "final-snapshot-1/startup.log",
+      "sha256Bytes": "3de44ce6e15774e09c573d77a0ef5e10cb2e3e510b23151a38ec416bfead6249",
+      "sizeBytes": 1460
+    },
+    {
+      "path": "freeze-evidence.py",
+      "sha256Bytes": "a36bfba01204280b55902be350ddca006099ad8030c4e121af768e5b91a7fcb6",
+      "sizeBytes": 4695
+    },
+    {
+      "path": "RESULTS.md",
+      "sha256Bytes": "8fed903fa4d17742e999d368dacc866d991937ac9408ff83810ebb58f1a6a704",
+      "sizeBytes": 4116
+    },
+    {
+      "path": "screenshot-verification.json",
+      "sha256Bytes": "87c748f176103b5d775011d7bae66606b3c3213eb6c125f78345d8e60bf24f22",
+      "sizeBytes": 2866
+    },
+    {
+      "path": "source-seam-verification.json",
+      "sha256Bytes": "ca0cef02291bd4ea45aec2e170982dc144b2658895413ec6f4e8f4af795f1742",
+      "sizeBytes": 7904
+    },
+    {
+      "path": "verify-product-screenshots.py",
+      "sha256Bytes": "1bf413dd7d2fb8ad83d5bbbbd0f0fd33c1294b3397d6df669b1c2b80ac4184f2",
+      "sizeBytes": 1832
+    },
+    {
+      "path": "verify-source-seams.py",
+      "sha256Bytes": "b2691686c68c5a387a173f576fd4726f327ff040cc9b4bf82c73b45eecd7e052",
+      "sizeBytes": 6469
+    }
+  ],
+  "snapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+  "productJarPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "0b6c261cb2cde91ff38bc0ad68bf55614b2f3f58933d38a8c3f5e89c7e36ac8d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-java.jar",
+      "sha256Bytes": "c111ced7d1131caf784bace7ab8a5cf84f565734d5271b1f874972419cf51e2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-viewer-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "ff2b94f690ca9832f2044baa4d10b8c5c9fb61abd609a850c4e72053e2b6daa7"
+    }
+  ],
+  "fixtureOnlyCompiledSourceCount": 1,
+  "compiledProductOverrideClasses": 0,
+  "cases": [
+    {
+      "case": "accepted-writer",
+      "checks": 12,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": false
+    },
+    {
+      "case": "close-bypass",
+      "checks": 12,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": false
+    },
+    {
+      "case": "hook-failure",
+      "checks": 6,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": false
+    },
+    {
+      "case": "observers",
+      "checks": 7,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": false
+    },
+    {
+      "case": "root-startup-material3",
+      "checks": 11,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": true
+    },
+    {
+      "case": "root-startup-miuix",
+      "checks": 11,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": true
+    },
+    {
+      "case": "startup",
+      "checks": 11,
+      "networkOrProcessAttempts": 0,
+      "actualRootStartupComposable": false
+    }
+  ],
+  "executableAssertionCount": 70,
+  "sourceContractCount": 15,
+  "sourceIdentityCount": 29,
+  "laterSourceDrift": [],
+  "finalPngCount": 6,
+  "historicalConvergenceCohortSha256Bytes": "ce96edf81d99ef633cd4d7eb8c54b92b37c6421e1dce25ab2228fb98bfc7efb3",
+  "rawTaskStorageEvidenceCount": 19,
+  "rawTaskStorageEvidence": [
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "2da46e48bb2e51f6d6404f7e8b4086192390c8365b2479d4f25ba456321489cb",
+      "sizeBytes": 258
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "411eab5f30439b0c7ac8c6bfa7602316f8c393bf3fca23fa43b5e46283b05273",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/accepted-writer/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "82d163659f30289ebf8e8b17f1e41aa30282cbd46960c8b5df1c5498ec24e56d",
+      "sizeBytes": 260
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "cf447a3651aa967a8b01d162283f11d6ce2982c5f1da462019a5e1e5c42be0f4",
+      "sizeBytes": 289
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "6a508973fc52d77e48d19ad7379691e4262f97ad6187b4ab4d4c2d667ab03aa3",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/close-bypass/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "298768a9adce07b88034ae1b5dccb9fb02bbf3b58044ade551ed21bcd1f9bd67",
+      "sizeBytes": 260
+    },
+    {
+      "path": "final-snapshot-1/hook-failure/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "502bac08b6f4409f0247db3fe1b58e4bebac54fcc2bbd70971cf31c2ab18d7ca",
+      "sizeBytes": 186
+    },
+    {
+      "path": "final-snapshot-1/hook-failure/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "84b1ac63f756066d458e0707537bc8b1631310c348e79c9b3e1bb84cec4f19cf",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/plugin-settings.json",
+      "sha256Bytes": "94a99cec1988485a6e0ffe5f14159b839a2541c9b8562394c1dade98cdd9a711",
+      "sizeBytes": 195
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/logs/basic.log",
+      "sha256Bytes": "416b66e1613d8c43c722f84f60cb16e48dc1656b4688b46f0cacbf0f27f4fc9e",
+      "sizeBytes": 99
+    },
+    {
+      "path": "final-snapshot-1/observers/actual-private-storage/logs/runtime.log",
+      "sha256Bytes": "31e053886a25ca003abb716808438093f447b5f14384ff8030fa477463bacd5c",
+      "sizeBytes": 776
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "1a5b00653edd876f920970b462580965efcc6ac4c23d1cb583579f0174b9f1c4",
+      "sizeBytes": 292
+    },
+    {
+      "path": "final-snapshot-1/root-startup-material3/actual-private-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "2a16d72e0a96740c22ed030cf096793d6fa72e346a973f6653f1db3fcf6dbaa0",
+      "sizeBytes": 281
+    },
+    {
+      "path": "final-snapshot-1/root-startup-miuix/actual-private-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/array/plugin-settings.json",
+      "sha256Bytes": "36b61705e5d98e4bbcca9dd2851b0250108c0ce0bbf4b8c4768f61a7c091180d",
+      "sizeBytes": 219
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/global/plugin-settings.json",
+      "sha256Bytes": "77d82ae37b0ea96d7f951a5cf0d4a40a2c1dc296b9c56e25302aadc6132fb7f4",
+      "sizeBytes": 196
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/object/plugin-settings.json",
+      "sha256Bytes": "4298cf4dacffb4a5fe770bff56daef89409dc19e6302cfca232f1ce372b9683f",
+      "sizeBytes": 240
+    },
+    {
+      "path": "final-snapshot-1/startup/actual-private-storage/global/logs/basic.log",
+      "sha256Bytes": "bff1553efebce16f18a2dcfdd9ffd7901355fd5520486e7aff59baab86bdf73a",
+      "sizeBytes": 163
+    }
+  ],
+  "compilerPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "sha256Bytes": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compose-compiler-plugin-embeddable\\2.4.0\\77913398cd4a9cb385000d56d51501954d1da6db\\kotlin-compose-compiler-plugin-embeddable-2.4.0.jar",
+      "sha256Bytes": "95ccd5c4008e454a5cb26f89405613f2ae33f46bf950c8be4d01bbdbdcfbcd08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-embeddable\\2.4.0\\f1a24af8bd111a83950236b1aec7a6d72a97e92c\\kotlin-compiler-embeddable-2.4.0.jar",
+      "sha256Bytes": "c2b25e8c1c93ec416ba4327f5e31eaec0f0c8847241b9353e294b8db9dce564f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-api\\2.4.0\\46429d5887df2d02f33fe11a0c8444c5be5fd8da\\kotlin-build-tools-api-2.4.0.jar",
+      "sha256Bytes": "66917335497f9ab75a36c34b3d90bad2bc8dc256c34b2413ecd0c9467fcf597d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.0\\4e9f4b531dce5c7dee58ed2de9a8b9a763c8dc6c\\kotlin-stdlib-2.4.0.jar",
+      "sha256Bytes": "ccb14ff83fabcb11458b798dbc9824748ccdffeec79c9aba789e6ed1cda86b1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-script-runtime\\2.4.0\\1de03f0ef3e208ab5f97ee6a587e9b8480447df6\\kotlin-script-runtime-2.4.0.jar",
+      "sha256Bytes": "196e8ecbf63daf477e34e67c2f871ee232ae7bf8b377432d876d1bbf9d273de3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-embeddable\\2.4.0\\1ecabef3a8ba6a8e25654573d54edb7e4136e903\\kotlin-daemon-embeddable-2.4.0.jar",
+      "sha256Bytes": "383093af5e078435b60043d19bfa83eb6191be0f4d13a28fb1c8a0f3ab24fe66"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\1.6.10\\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\\kotlin-reflect-1.6.10.jar",
+      "sha256Bytes": "3277ac102ae17aad10a55abec75ff5696c8d109790396434b496e75087854203"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.8.0\\ac1dc37a30a93150b704022f8d895ee1bd3a36b3\\kotlinx-coroutines-core-jvm-1.8.0.jar",
+      "sha256Bytes": "9860906a1937490bf5f3b06d2f0e10ef451e65b95b269f22daf68a3d1f5065c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\23.0.0\\8cc20c07506ec18e0834947b84a864bfc094484e\\annotations-23.0.0.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+    }
+  ],
+  "workerCatalogSha256Bytes": "fcad2583c2862e66870f100a314db53534bbc782f4bca8b144ae7eaf3c0fe628",
+  "workerCpCount": 13,
+  "workerResourceCount": 137,
+  "jsWorkerExecuted": false,
+  "nativeMainWindowExecuted": false,
+  "mainOrSharedGradleModified": false,
+  "noRealAccountOrNetworking": true,
+  "initialFixtureFailurePreservedInHistoricalCohort": true
+}

@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checks": [
+    "shouldEnableVerboseRuntimeLogs",
+    "shouldEmitVerboseLogcat",
+    "shouldCaptureRuntimeLogEntry",
+    "shouldPersistRuntimeLogEntry",
+    "hasExportableDiagnostics",
+    "appendRollingDiagnosticLog",
+    "hasPendingCrashSnapshot",
+    "resolveRuntimeLogFile",
+    "resolveBasicLogFile",
+    "resolveCrashSnapshotFile",
+    "resolveCrashSnapshotMarkerFile",
+    "sanitizeMessage",
+    "getEntries",
+    "getCount",
+    "clear",
+    "original_add_only_clock_and_file_sink_bound",
+    "original_effective_fields_and_consent_only_no_firebase_or_proxy_stubs",
+    "consumer_has_no_account_network_or_global_handler_install"
+  ],
+  "originalLoggerSha256Lf": "8564e68e99c3e557c9b52811803792fdaa155f483d5b015e5c9a4ab1a1925111",
+  "originalSanitizerEntireBodyPreserved": true
+}

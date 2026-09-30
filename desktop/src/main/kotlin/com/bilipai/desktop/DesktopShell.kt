@@ -73,6 +73,7 @@ import com.bilipai.desktop.player.WindowsMediaSnapshot
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.settings.*
+import com.bilipai.desktop.diagnostics.*
 import com.android.purebilibili.core.store.SearchHintSettingsStore
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsRootCategory
@@ -121,10 +122,11 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
 }
 
 @Composable
-fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
+internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
     registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null,
-    applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false }) {
+    applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false },
+    diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null) {
     val pluginStore = remember(applicationPluginStore) {
         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
             com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
@@ -149,18 +151,29 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val startupAppearance = remember(pluginStore) { DesktopThemePrefs(pluginStore) }
     val startupTheme by startupAppearance.settings.collectAsState(startupAppearance.initialSettings())
     // The startup failure branch has no Runtime; retire its global migration writer before restart/exit.
-    DisposableEffect(startupGuard) {
+    DisposableEffect(startupGuard, diagnosticLifecycle) {
         registerShutdown?.invoke {
             closeDiscoveryStorage()
-            withContext(NonCancellable + Dispatchers.IO) { pluginStore.freezeWrites() }
+            withContext(NonCancellable) {
+                diagnosticLifecycle?.shutdownForRestore()
+                withContext(Dispatchers.IO) { pluginStore.freezeWrites() }
+            }
         }
         onDispose { startupGuard.close() }
     }
     DesktopDiscoveryStorageBoundary(startupGuard, epoch, onRestart, Modifier.fillMaxSize(),
-        errorTheme = { content -> DesktopAppearanceTheme(startupTheme, content = content) }) { discovery ->
+        errorTheme = { content -> DesktopAppearanceTheme(startupTheme) {
+            com.android.purebilibili.core.ui.components.AppSurface(Modifier.fillMaxSize()) {
+                Column(Modifier.fillMaxSize()) {
+                    diagnosticStartupError?.let { com.android.purebilibili.core.ui.components.AppText(it, Modifier.padding(12.dp)) }
+                    Box(Modifier.weight(1f).fillMaxWidth()) { content() }
+                }
+            }
+        } }) { discovery ->
         DesktopReadyApp(repository, player, playerError, initialVideo, onExit, onToggleFullscreen, hostWindow,
             registerShutdown, onRestart, pluginStore, discovery, closeDiscoveryStorage,
-            isClosing = { rootClosing.get() || latestIsClosing() })
+            isClosing = { rootClosing.get() || latestIsClosing() },
+            diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError)
     }
 }
 
@@ -169,7 +182,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window?,
     registerShutdown: ((suspend () -> Unit) -> Unit)?, onRestart: (() -> Unit)?,
     pluginStore: DesktopPluginStore, discovery: DesktopDiscoveryRepository,
-    closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean) {
+    closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean,
+    diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?) {
+    val diagnostics = diagnosticLifecycle?.diagnostics
     val account by repository.account.collectAsState()
     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
     val settingsLibrary = remember { DesktopLibrary() }
@@ -196,7 +211,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { appearanceError = failure.message ?: failure.javaClass.simpleName }
     }
-    val pluginRuntime = remember(pluginStore) { DesktopPluginRuntime(pluginStore, repository, community, discovery) }
+    val pluginRuntime = remember(pluginStore, diagnosticLifecycle) {
+        DesktopPluginRuntime(pluginStore, repository, community, discovery,
+            beforeStoreFreeze = { diagnosticLifecycle?.shutdownForRestore() })
+    }
     val globalPluginContext = pluginRuntime.context
     val privacyBindings = remember(globalPluginContext, community.searchPreferences) {
         DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
@@ -259,6 +277,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val storyOwner by storyHost.owner.collectAsState()
     var systemTargetAudio by remember { mutableStateOf(false) }
     val audioPlayer = remember(player) { player?.let { MpvPlayer() } }
+    val diagnosticObservers = remember(diagnosticLifecycle, player, audioPlayer) {
+        listOfNotNull(
+            player?.let { diagnosticLifecycle?.observePlayback(it.state, scope) },
+            audioPlayer?.let { diagnosticLifecycle?.observePlayback(it.state, scope) },
+        )
+    }
+    DisposableEffect(diagnosticObservers) { onDispose { diagnosticObservers.forEach { it.cancel() } } }
     val beforeListenAcquire = remember { java.util.concurrent.atomic.AtomicReference<() -> Unit>({}) }
     val listen = remember(repository, community, audioPlayer, playback, account?.mid, sessionEpoch) {
         audioPlayer?.let { ListenAudioSession(repository, community, it, preferences, onAcquirePlayback = { beforeListenAcquire.get().invoke(); systemTargetAudio = true; playback.pause(); player?.setPaused(true) },
@@ -325,11 +350,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         beforeStoryAcquire.set { pip?.close(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false }
         pipSeek.set { seconds -> if (retainedMedia.current != null) player?.seekTo(seconds) else playback.seekTo(seconds) }
     }
-    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement) {
+    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
             closeDiscoveryStorage()
             withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
             cast.quiesce()
+            diagnosticLifecycle?.shutdownForRestore()
             community.searchPreferences.freezeWritesForRestore()
             pluginRuntime.shutdownForRestore()
             preferenceWriter.flushAndClose()
@@ -341,6 +367,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 closeDiscoveryStorage()
                 withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
                 cast.quiesce()
+                diagnosticLifecycle?.shutdownForRestore()
                 community.searchPreferences.freezeWritesForRestore()
                 pluginRuntime.shutdownForRestore()
                 preferenceWriter.flushAndClose()
@@ -358,6 +385,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     var combinedBackupSettings by remember { mutableStateOf(false) }
+    var showDiagnosticViewer by remember { mutableStateOf(false) }
     LaunchedEffect(preferenceWriteFailed) {
         if (preferenceWriteFailed) error = "播放设置保存失败，请检查本地存储空间和写入权限"
     }
@@ -864,6 +892,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 }
                 }
                 Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    diagnosticStartupError?.let { Text(it, color = scheme.error) }
                     Box(Modifier.fillMaxWidth()) {
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.topAtmosphere }, Modifier.matchParentSize(), onError = { error = it })
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.searchCapsuleBackground }, Modifier.matchParentSize(), onError = { error = it })
@@ -1028,7 +1057,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
                                         onFailure = { error = it.message ?: "代理设置保存失败" })
                                     TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
-                                    Text("原版诊断、日志、许可和支持页面仍在移植中。", Modifier.padding(12.dp))
+                                    diagnostics?.let { localDiagnostics ->
+                                        DesktopDiagnosticSettingsSection(localDiagnostics,
+                                            onLocalLogs = { showDiagnosticViewer = true },
+                                            onFailure = { error = "诊断设置保存失败，请重试" },
+                                            modifier = Modifier.fillMaxWidth())
+                                    }
+                                    diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
+                                    Text("许可和支持页面仍在移植中。", Modifier.padding(12.dp))
                                 })
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
@@ -1147,6 +1183,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }
         if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit)
+        if (showDiagnosticViewer && diagnostics != null) {
+            DesktopLocalDiagnosticViewer(diagnostics,
+                onDismiss = { showDiagnosticViewer = false },
+                chooseExportPath = { chooseDesktopDiagnosticExportFile(hostWindow) })
+        }
         if (jsSubscriptionReader) SubscriptionReaderDialog(pluginRuntime, refreshOnOpen = true) { jsSubscriptionReader = false }
         if (castDialog) AlertDialog(onDismissRequest = { castDialog = false }, title = { Text("选择投屏方式") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {

@@ -1,0 +1,896 @@
+{
+  "frozen": true,
+  "allRequestedUiFlowsPassed": false,
+  "files": [
+    {
+      "path": "actual-class-pins.json",
+      "sha256Bytes": "a063c96719fbf282b6d32722a92838e064b951772ba927352d7469913691c46c",
+      "bytes": 5985
+    },
+    {
+      "path": "baseline-manifest.json",
+      "sha256Bytes": "5e8fc360372557bf004b55a1ded9fe4be1a3b6bae33090cb037d8fe600006fda",
+      "bytes": 8540
+    },
+    {
+      "path": "compile-and-run-proof.json",
+      "sha256Bytes": "d1255b065eecb53decc8681c73aa37491c803017e70ba6b84653dc39acb452ba",
+      "bytes": 18741
+    },
+    {
+      "path": "compile-and-run.py",
+      "sha256Bytes": "817c8021526e451fb0e9c25bb4a79d41cadbecf51ef7aa773b85c9fb593f4306",
+      "bytes": 7405
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "f9cec114792ce5d11912f2780c7fe0a47498b70626f12d9f0db19144c90ddd44",
+      "bytes": 130
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "02b74a9fdf144c97fe711fdb9c22fe2ff3990f39d4f21a677904974f0b15ed8b",
+      "bytes": 57114
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "49ecc1e1c106ac8a05872f15ed5f0be9bf1ea65ba20eb1e29ce6720ca4d7b0b2",
+      "bytes": 85878
+    },
+    {
+      "path": "DiagnosticProductUiFixture.kt",
+      "sha256Bytes": "c6400fc60c5071a6134075ce2e76464d93ad81d0d5530fc476bc316802eda49f",
+      "bytes": 19186
+    },
+    {
+      "path": "fixture-class-identities.json",
+      "sha256Bytes": "48c08610020b0fdd6ef20cee5ff745d320cf3498f2c5858a38b69c11539b94e7",
+      "bytes": 6391
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$initialReadFailure$1.class",
+      "sha256Bytes": "71ccbb29f9b03ae188e381e58b323533fe4878687396a950ec81d92625b9357c",
+      "bytes": 3392
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$initialReadFailure$4$1$2.class",
+      "sha256Bytes": "c9dd2f7726e90fe36415baadac875ab59090c3b20f8e521b0c79f2f49b10b17f",
+      "bytes": 3241
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$main$1.class",
+      "sha256Bytes": "14d9f0651d5f6a1c536c60d26a96cc9a5ccb6823d986d9226089e82195db32fc",
+      "bytes": 16846
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$normalCase$1.class",
+      "sha256Bytes": "3ec5a678946e645796c932d07f1c535a577b7165ca91dd94ac08cf5755931b4c",
+      "bytes": 8719
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$normalCase$2$1$1$3.class",
+      "sha256Bytes": "f8bc79b3e31ad7e96464ddcadee2d7c4ba95c7f85a20b07f8ffdaaecb8f13991",
+      "bytes": 3299
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt.class",
+      "sha256Bytes": "babaf5274b295732e2bb31b5babdc33d45c065a2a3f52b89d68ac8969e952d38",
+      "bytes": 73899
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/ReadLockKernel32.class",
+      "sha256Bytes": "cb819d19c943d2bb3f6c3fbc658c45203972af2e7ea0680f7cd2f5d68e7ac6ed",
+      "bytes": 1172
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness$await$1.class",
+      "sha256Bytes": "fe7eebb32b3400fffff5cb178c7ac23f98cc34521ac88e148b2c993136aebc1b",
+      "bytes": 1836
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness$await$2.class",
+      "sha256Bytes": "3922c02931095f79179317f6664784fd00d530737813cd090cb09832126d2164",
+      "bytes": 3860
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness$click$1.class",
+      "sha256Bytes": "81350ac83680f98638e9650e76f44292c77cc27eefe5c90c1d22931dbbbb42ce",
+      "bytes": 1927
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness$settle$1.class",
+      "sha256Bytes": "a956af6b8221751844b6dd177dc53bfe763561c9fa59e7756c17e978d3e9639a",
+      "bytes": 1823
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness$special$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "0f85a121ced9dca9924cec1d5e424f826c50a1d851ddf1522b177d4a5ebb9897",
+      "bytes": 2971
+    },
+    {
+      "path": "fixture-classes-43da3bd6/com/bilipai/desktop/diagnostics/proof/UiHarness.class",
+      "sha256Bytes": "c69cd52b11ffedff3f9ca35abdb85ad18e9455334906c2ac74502493aa6238ca",
+      "bytes": 27874
+    },
+    {
+      "path": "fixture-classes-43da3bd6/META-INF/diagnostics_product_ui_fixture.kotlin_module",
+      "sha256Bytes": "4a498205303441f192ac261ad8b0117dbc439bb8c3cdf97079f27b0786010ac4",
+      "bytes": 95
+    },
+    {
+      "path": "freeze-proof.py",
+      "sha256Bytes": "e4e1151639ffc94364944c77c7b558addefa9034b43140d5b163edb08f309303",
+      "bytes": 6263
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256Bytes": "923ad95e08de793642ee32921aef1eed93d7ade0ba0553d2772d0754a12cf3fb",
+      "bytes": 3801
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/01-settings-default.png",
+      "sha256Bytes": "36072ec4b329fcf6075e0d87b7a0ddd0d44c86c3a7da123aa001a7860e586bde",
+      "bytes": 15790
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/02-original-consent.png",
+      "sha256Bytes": "4c4fd5d11c1c4a2a07ac6a11ba09c08055b8212903996aa5c07d7d2a5a3b9131",
+      "bytes": 40052
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/03-actual-local-viewer.png",
+      "sha256Bytes": "13930cfd1ba563b5ee935c7fc5126739b3ec3e0129fdde3e28439ba1ddb2bb2a",
+      "bytes": 69646
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/04-cleared-viewer.png",
+      "sha256Bytes": "3fc7caee0f3fb91677fc29368b11ff2758149a89871d527b4dd2102c7e6dbde3",
+      "bytes": 28295
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/05-settings-disabled.png",
+      "sha256Bytes": "c8e2edddd9000eb80c68eecd6b474dd4bcec150d9dd18c3216a7b33e08e55e52",
+      "bytes": 15902
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/actual-fixture-selected-export.txt",
+      "sha256Bytes": "a8d8c585dd1c8d145b59d3531864315e4841db48c1a39a1b4961b0f9d438fbae",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/after-export-result.png",
+      "sha256Bytes": "5c69600a8d4403513c773015943a691aa8f0fecb760316895c5c27e4ab867b9f",
+      "bytes": 71813
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/after-export-semantics.json",
+      "sha256Bytes": "dad92f0a4b9e71aa354e0ebdc0fe11d45315c371195e9b1e40ef23f941e75fea",
+      "bytes": 5362
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/detail-before-disable.txt",
+      "sha256Bytes": "3dcf4504fdf242bb9aef5f9849f8d279eb4d949358306851ad52d70d69aa0dfb",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/pointer-events.json",
+      "sha256Bytes": "8707303419d90f091d682ea339a0120fef0d329b017dec3a23e8482f171a3991",
+      "bytes": 1381
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720/viewer-read-semantics.json",
+      "sha256Bytes": "284f9cc26cca74a986a42f978598d231b9e3264ff63979f377f9cefda2bf7b98",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "ef6ed9b8ae5f54b9fbe3dbbf0fae39bf7caa087bb78befe73815d62ee37c9f7f",
+      "bytes": 17562
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "93cfb1688d7a3e083cf3ac0a3821a7295cdb2c662aee4582f7c4ec292affeb7e",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "74ef3ac6350cdffb4f64e71fa086ee2e9b6aceace383b7611be7d052d273e976",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-720-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "21b41e44ce5b2e546ec9ba56076ac6f4f1469df2ceb196a0c624f3d517f17b5a",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/01-settings-default.png",
+      "sha256Bytes": "7eec0506b518c8baa679a5eca7f35ef0cb1ac88711a364e7f8dc4d09766b80a6",
+      "bytes": 16460
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/02-original-consent.png",
+      "sha256Bytes": "72afbb4a9c2f359d1a0cc8abae0a8a90733e33a2bd306c95c4042c0dfb9d4563",
+      "bytes": 41021
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/03-actual-local-viewer.png",
+      "sha256Bytes": "fa37015180ff069786c4dfed4b5ad6651015296c1579236358b85d7021e4a905",
+      "bytes": 73784
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/04-cleared-viewer.png",
+      "sha256Bytes": "1377058992216838662e977e4d315ade8b3c02d080ac8cbe74165a164bb142a7",
+      "bytes": 29568
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/05-settings-disabled.png",
+      "sha256Bytes": "beebbb20d08defaff7f05b0c865805467d82483332ca01bb320e74af5ab16fd6",
+      "bytes": 16584
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/actual-fixture-selected-export.txt",
+      "sha256Bytes": "a635524cc0a7c86eea257c2003ce6f8c2fda806a09a7a0e0f886f288806001b9",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/after-export-result.png",
+      "sha256Bytes": "cb8f1e1f1615fd143bdd615cd6a04a0cc9cc216271a584bf02c00f5207a1305c",
+      "bytes": 75989
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/after-export-semantics.json",
+      "sha256Bytes": "f0d06a86cffa76c49e193188aff1f657690de35187e1ac61b3496016c91fe302",
+      "bytes": 5365
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/detail-before-disable.txt",
+      "sha256Bytes": "ab19f940454e6c5649dcc4628698563f25117335837a1235edc7590e6608143b",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/pointer-events.json",
+      "sha256Bytes": "be452719e30da11314ae5a524d842e7b006d41e2af75efeea5f4fa64f104cadf",
+      "bytes": 1381
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900/viewer-read-semantics.json",
+      "sha256Bytes": "7ece67cccfa5f61e8f3ca0cb760ab6b445cd41a6cd9fc4e9fa998f5f2f05bb6c",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "852362ac72842eb23d8253a99637fc0d038cf2e5806e2e75bdfce822197867ac",
+      "bytes": 18622
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "93cfb1688d7a3e083cf3ac0a3821a7295cdb2c662aee4582f7c4ec292affeb7e",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "7dfb27edc1c14c936ea40107c52a26d69235df56f323109f7abcbe32598a61a3",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/material3-dark-900-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "47a03f06693b2992e3e16bace8f8a7ca060e3b5a7c378599b4ae21237c4a326b",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/01-settings-default.png",
+      "sha256Bytes": "ab4088952650239f783b663b5838c5465bb02145210410688d5298448bbaa63d",
+      "bytes": 15617
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/02-original-consent.png",
+      "sha256Bytes": "21d8a1e865d7caaedb2fcbe371c9680a03bb0e1a2fffc03944af26e2eb8b53e8",
+      "bytes": 39906
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/03-actual-local-viewer.png",
+      "sha256Bytes": "ee1cff29b45d81401ba2f7e61e7f64928d947ce0f73193569277ba6f455063ba",
+      "bytes": 67932
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/04-cleared-viewer.png",
+      "sha256Bytes": "eebd10628d3f812e1e112a0914207718a7784bccd539396de1c7c93e00b7d6df",
+      "bytes": 28188
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/05-settings-disabled.png",
+      "sha256Bytes": "3b2340448ec1d71dbf0471edf7068ccd286668d9f840577c7287684408634fce",
+      "bytes": 15720
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/actual-fixture-selected-export.txt",
+      "sha256Bytes": "86c577fb6f7108601c4640c612fe43f2ba8f645e3d94682ae9fdc537486a3b42",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/after-export-result.png",
+      "sha256Bytes": "0ff228e6b7318aaa5778e08adc7022cc3714a9a9719a79421031c2210db0df13",
+      "bytes": 70152
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/after-export-semantics.json",
+      "sha256Bytes": "dcd139e9c2fcf0690e4ae34b1c2c913e349c4bcffb9f5fc9e287c715bbbc323a",
+      "bytes": 5362
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/detail-before-disable.txt",
+      "sha256Bytes": "7c76c8e161b3da74eabf9cd6ca5825f840c4fd678142c4aa8dcdcd1e00d19980",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/pointer-events.json",
+      "sha256Bytes": "8707303419d90f091d682ea339a0120fef0d329b017dec3a23e8482f171a3991",
+      "bytes": 1381
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720/viewer-read-semantics.json",
+      "sha256Bytes": "93852b1e38ee6d594c81cddcf4218feccbecdbc3d4249e95f1cf37341f03b0e9",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "9f583285754e8c442c48bfc6f95305f9076ea928a726bfd20322da028896d98d",
+      "bytes": 17547
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "93cfb1688d7a3e083cf3ac0a3821a7295cdb2c662aee4582f7c4ec292affeb7e",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "74ef3ac6350cdffb4f64e71fa086ee2e9b6aceace383b7611be7d052d273e976",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-720-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "4e14d5be007334d1f45657b35a921e6c58369a8437930fede0ef1c13474cc7f4",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/01-settings-default.png",
+      "sha256Bytes": "527a6ab74a3310603c2e245e9c9fe314e0cf47fc1dfbdf0add86e3ae115743ca",
+      "bytes": 16287
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/02-original-consent.png",
+      "sha256Bytes": "12103c899f5f22a9b6a6708699e9b2c62adde6e9f78cde2e8d592caf243964a9",
+      "bytes": 40896
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/03-actual-local-viewer.png",
+      "sha256Bytes": "a2ed108fd198fee5ddeaaf8aa5ecc10b39e65146be1fba341eb92a12401ac3b7",
+      "bytes": 72126
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/04-cleared-viewer.png",
+      "sha256Bytes": "25ee918b3583c49e77cfbb142f037d131219542040a4c8285485ebe4919718b8",
+      "bytes": 29450
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/05-settings-disabled.png",
+      "sha256Bytes": "36ea75e18ab105adb580bbb516253b63ae9daa33041c0e2261388cf70eef2df6",
+      "bytes": 16390
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/actual-fixture-selected-export.txt",
+      "sha256Bytes": "2145701eeda468c4d1a26f2d8a85c9f8975eeebc2f8dd1155c8d0ca39a6c4c0c",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/after-export-result.png",
+      "sha256Bytes": "de71bd372385cf91a7ac211e9b12a3949349a95766ff0521bbf19bc3ead7cd42",
+      "bytes": 74310
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/after-export-semantics.json",
+      "sha256Bytes": "369683a48dde1ca10d93200c31c81652f151ba5c99ffba5d3aa33e9b36c04456",
+      "bytes": 5365
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/detail-before-disable.txt",
+      "sha256Bytes": "62a3c1b5c699c14245ffb50d7775f0990c6b6dd3112035d403923703cf50cb4b",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/pointer-events.json",
+      "sha256Bytes": "be452719e30da11314ae5a524d842e7b006d41e2af75efeea5f4fa64f104cadf",
+      "bytes": 1381
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900/viewer-read-semantics.json",
+      "sha256Bytes": "d4b896792c83ed56cb0da16d0240f4c5d9610eeefbc40df50836d673074ab479",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "9ddf0b1f4bb6146b1723bfbe3864bdc4935c807c52385e521089308551abf599",
+      "bytes": 18692
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "93cfb1688d7a3e083cf3ac0a3821a7295cdb2c662aee4582f7c4ec292affeb7e",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "7dfb27edc1c14c936ea40107c52a26d69235df56f323109f7abcbe32598a61a3",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/material3-light-900-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "32ec2b8b1c77322d9c717115c90487d57da4edcf170c66d66096a442ad7bc87c",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/01-settings-default.png",
+      "sha256Bytes": "5e8e103716fef5a53206542bfb5e0619e8f0958339ced75261a34b242725daaa",
+      "bytes": 15692
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/02-original-consent.png",
+      "sha256Bytes": "5efd719f8334c981843a57663ced47f192aa9a3a1c31f417b60caf5c330663ba",
+      "bytes": 44217
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/03-actual-local-viewer.png",
+      "sha256Bytes": "c9bbce2185ab99a935b2aa465b5395a24ed8fafcd40f2f20faac75ada35a1a11",
+      "bytes": 50696
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/detail-before-disable.txt",
+      "sha256Bytes": "52d53aa2a652a6034ecfeb6dd6dc10786f2bd2ddc46bba7b41b674d904c09438",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/failed-flow-actual.png",
+      "sha256Bytes": "c9bbce2185ab99a935b2aa465b5395a24ed8fafcd40f2f20faac75ada35a1a11",
+      "bytes": 50696
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/failed-flow-semantics.json",
+      "sha256Bytes": "c99ce0089453f2e2160f4070fbde1dca6f098cfef745abeb0c10a6b36793b202",
+      "bytes": 5349
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/pointer-events.json",
+      "sha256Bytes": "25e888352230ff8b2301bf7847756f9ef80760525e2a748df180be81c9478e7a",
+      "bytes": 925
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "ab650e16fb40eb969493338f6b7d77c965740ef3a2415f23d31ae94bc89f92bf",
+      "bytes": 1351
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720/viewer-read-semantics.json",
+      "sha256Bytes": "4ac099e5aed8db4d15c0977e0125dc26743aca9e0f65d33733ddec49f31629ab",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "092dab5b59e352bee6684a9b9345e4a0dfc91510948e448f7ce7bff142aeb824",
+      "bytes": 18417
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "af9c987cbf4e095b2ab84325cca24ac814416b71ef70958cae9bc9efd183e123",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "280b396c1bd8b53a8fe9b09947391d43ae1f50152c76fba1d467a13d1dfeaed5",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-720-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "bba09288d913766dc9d90d0be1055169bc9ec60576dcf976f770845b9ff940d5",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/01-settings-default.png",
+      "sha256Bytes": "be71e5cf09afbc04c1e9fd7837abe94ce3d03b341987c5b60c2a804afe329c90",
+      "bytes": 16363
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/02-original-consent.png",
+      "sha256Bytes": "302094bc6ec0930b8c56c433c5ffafcbb284e015b1cc4e780f19e26b99afdcf3",
+      "bytes": 45149
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/03-actual-local-viewer.png",
+      "sha256Bytes": "25d2c67fa3f2d640a411f2bb0d4b5223dda673127c983abccc88afd5fc2dc36a",
+      "bytes": 59882
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/actual-fixture-selected-export.txt",
+      "sha256Bytes": "d6545c63facdfafb6114c379dc9a3cd4bcbe503f4a4a7a451672c87bbcbaa215",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/after-export-result.png",
+      "sha256Bytes": "7ddbade60ebe6135502cb5c519851aafb449bdecd84e9618b6cc90d2e64ac793",
+      "bytes": 60789
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/after-export-semantics.json",
+      "sha256Bytes": "f90199ab25f42ba4753b2a1cf68c02afc8a61e99ccabb61e46284f63abf93854",
+      "bytes": 5475
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/detail-before-disable.txt",
+      "sha256Bytes": "29cbe8118144ebba215a889ca16fa0f29fb0f31f5f4a998c840bd265d6db5cbf",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/failed-flow-actual.png",
+      "sha256Bytes": "7ddbade60ebe6135502cb5c519851aafb449bdecd84e9618b6cc90d2e64ac793",
+      "bytes": 60789
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/failed-flow-semantics.json",
+      "sha256Bytes": "f90199ab25f42ba4753b2a1cf68c02afc8a61e99ccabb61e46284f63abf93854",
+      "bytes": 5475
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/pointer-events.json",
+      "sha256Bytes": "95e18fe69cc765f7e06f65228b40261e8c15713014de5432f595ee2ae22dafec",
+      "bytes": 1079
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "ec71d4b6ffd588bc7edad6831453daed1c002fdebca22baf2c157e26040af347",
+      "bytes": 1351
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900/viewer-read-semantics.json",
+      "sha256Bytes": "53552fe13dd07fb5ce0055b93100b3b2133bc37ca96502eacb8e90f1433f6cf5",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "6e54197c23417b64261f1dd8f659477d2023d01cb7701b2717686273981400a9",
+      "bytes": 19507
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "af9c987cbf4e095b2ab84325cca24ac814416b71ef70958cae9bc9efd183e123",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "9a2175914c03df66b60ed344667421ce7a8a1f1f40268b8b3268ac84e1f079a2",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/miuix-dark-900-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "45b4c1377359b88f4769551db551c994c99030169848f30d2ca0a9d3059061eb",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/01-settings-default.png",
+      "sha256Bytes": "c368d8b4f46aa236f89654325e7f5b680dc69f3c80988a0af378f9532624c9df",
+      "bytes": 15079
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/02-original-consent.png",
+      "sha256Bytes": "62dabf2d013cbe6cb73dc83c876edc906d96863d51d1ab1fc5c3e0498dd64443",
+      "bytes": 43585
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/03-actual-local-viewer.png",
+      "sha256Bytes": "8e23c4d790b53dbe339164e294c90040cc577e70847a006119172ace2c96176f",
+      "bytes": 49925
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/detail-before-disable.txt",
+      "sha256Bytes": "7c6853481143b059ec5a49e3fb779202aea15857ea049a27a9a129be47c0197d",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/failed-flow-actual.png",
+      "sha256Bytes": "8e23c4d790b53dbe339164e294c90040cc577e70847a006119172ace2c96176f",
+      "bytes": 49925
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/failed-flow-semantics.json",
+      "sha256Bytes": "2f61baf0ebde925c96a07b16229409a80cb2a6ec68bd4e829c0bfe9e8221e9c5",
+      "bytes": 5349
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/pointer-events.json",
+      "sha256Bytes": "25e888352230ff8b2301bf7847756f9ef80760525e2a748df180be81c9478e7a",
+      "bytes": 925
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "97959d1824aac9db56ce2255502ecd3fcc99dddb4e7039d33f2e44873ec7676c",
+      "bytes": 1351
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720/viewer-read-semantics.json",
+      "sha256Bytes": "3e58b464449bd62179a234cd11094b9e0faa97add4624251bb1dfd20b2703849",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "93586c47eefab0a8ab26a641c7edcb785d472c6667774c69e1cdce5ce3055dea",
+      "bytes": 17893
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "af9c987cbf4e095b2ab84325cca24ac814416b71ef70958cae9bc9efd183e123",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "280b396c1bd8b53a8fe9b09947391d43ae1f50152c76fba1d467a13d1dfeaed5",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-720-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "4fda052fedcd8d555a3dca74a643c220dc528ca732b3cc057809bdd479cc1317",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/01-settings-default.png",
+      "sha256Bytes": "edb1c9443bf705bfef14b131ee01baae5b2bb5835a03ceacad7ce488136e111f",
+      "bytes": 15750
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/02-original-consent.png",
+      "sha256Bytes": "e1ba8d35dc0722d4ca46836c731b2d2a9115350299b5c180783abce2a25ebb6f",
+      "bytes": 44572
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/03-actual-local-viewer.png",
+      "sha256Bytes": "74652c72c1db444dc1ae7f3dcd56a36150ae719fe90bfd6b3dde23c5b4b5b4af",
+      "bytes": 58787
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/actual-fixture-selected-export.txt",
+      "sha256Bytes": "b4297f9a354f18c5f592f5506c6dde2519203ce91765392790c1299dccac46db",
+      "bytes": 2765
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/after-export-result.png",
+      "sha256Bytes": "1220b5eee34eca099b9907c9797a3a0a5cb603909481fb7f1439b36a4e3c2944",
+      "bytes": 59607
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/after-export-semantics.json",
+      "sha256Bytes": "80769931d2583d2823916b17da6a15cafeb58c401e535247d6565eecba074981",
+      "bytes": 5475
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/detail-before-disable.txt",
+      "sha256Bytes": "e317bc5e38bc8b4d32c9264c3cdd3702bb32b3962e04c3ee22644454f8c091ff",
+      "bytes": 894
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/failed-flow-actual.png",
+      "sha256Bytes": "1220b5eee34eca099b9907c9797a3a0a5cb603909481fb7f1439b36a4e3c2944",
+      "bytes": 59607
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/failed-flow-semantics.json",
+      "sha256Bytes": "80769931d2583d2823916b17da6a15cafeb58c401e535247d6565eecba074981",
+      "bytes": 5475
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/pointer-events.json",
+      "sha256Bytes": "95e18fe69cc765f7e06f65228b40261e8c15713014de5432f595ee2ae22dafec",
+      "bytes": 1079
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/settings-disabled.json",
+      "sha256Bytes": "bef9147484641d4bd6d91348ae1f2161d4f51fe04a6cb908856774b90eaa48bf",
+      "bytes": 58
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/settings-enabled.json",
+      "sha256Bytes": "a246c89b7e70750bb9576dbbc24fc94ff0972741dac298eb2cf5b264a22c818c",
+      "bytes": 57
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "2a6472523323a7a4d3c9ac20d26e07c99603de05a98f9fb96322ca701a5d6e71",
+      "bytes": 1351
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/task-owned-global-store/plugin-settings.json",
+      "sha256Bytes": "23c76d4a119e09a39cfb1eecfc4a7b664dc490870f3613f965094aa41a75eb82",
+      "bytes": 80
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900/viewer-read-semantics.json",
+      "sha256Bytes": "5198be572b43abbb441f0cea07324f8b962af702028f665c74eff121d6a067f3",
+      "bytes": 3162
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900-initial-io-failure/actual-safe-first-io-error.png",
+      "sha256Bytes": "6362f3d9c17fe65e56522759891286b096bd893acdc19eed4160e1ce87930203",
+      "bytes": 18971
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900-initial-io-failure/error-semantics.json",
+      "sha256Bytes": "af9c987cbf4e095b2ab84325cca24ac814416b71ef70958cae9bc9efd183e123",
+      "bytes": 211
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900-initial-io-failure/pointer-events.json",
+      "sha256Bytes": "9a2175914c03df66b60ed344667421ce7a8a1f1f40268b8b3268ac84e1f079a2",
+      "bytes": 149
+    },
+    {
+      "path": "runs/43da3bd6/miuix-light-900-initial-io-failure/task-owned-global-store/logs/basic.log",
+      "sha256Bytes": "db808f300410b50e3ab9193ec2d77ee0f666564746a569ec171936de55028371",
+      "bytes": 166
+    },
+    {
+      "path": "runs/43da3bd6/owned-env/.skiko/.skiko.lock",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/43da3bd6/owned-env/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/icudtl.dat",
+      "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92",
+      "bytes": 10468208
+    },
+    {
+      "path": "runs/43da3bd6/owned-env/.skiko/skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38/skiko-windows-x64.dll",
+      "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38",
+      "bytes": 14109696
+    },
+    {
+      "path": "runs/43da3bd6/owned-env/temp/jna-80007053/jna17988691753853338707.dll",
+      "sha256Bytes": "5a7ff949f6d93d86491eb5b26b1cfc60051168a60622650224b89995ac420023",
+      "bytes": 273408
+    },
+    {
+      "path": "runs/43da3bd6/owned-env/temp/jna-80007053/jna17988691753853338707.dll.x",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/43da3bd6/result.json",
+      "sha256Bytes": "8f283b23b9485a65da7c753ccd5360c0414fe6b461f701a701be64a74bc2f5d0",
+      "bytes": 8186
+    },
+    {
+      "path": "runs/43da3bd6/runtime-actual-class-identities.json",
+      "sha256Bytes": "aac7139ebfdd8989795b125125888b1daff3abbe2c4871df2603723e3fd8997a",
+      "bytes": 7513
+    },
+    {
+      "path": "runs/43da3bd6/runtime.log",
+      "sha256Bytes": "a1be5af15ff9517435304eb4a4e3da925f717e1b8d4c0986e51d89f25cb74fa6",
+      "bytes": 5154
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "dd1c87f1d1974fd9eeaf9051c9b350a6fbfa49ef9be08c74d791e417177db6c7",
+      "bytes": 57264
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "cb7b35baf71efa8f71e789d34c15d5213a969b7e0a39809c646e0f0c8d05b4f0",
+      "bytes": 5076
+    },
+    {
+      "path": "toolchain-identities.json",
+      "sha256Bytes": "b0034f4fb229563fd9c5523ff3daa594ef58bfcf9f84fea31ce7100eea6c5bc6",
+      "bytes": 3668
+    }
+  ]
+}

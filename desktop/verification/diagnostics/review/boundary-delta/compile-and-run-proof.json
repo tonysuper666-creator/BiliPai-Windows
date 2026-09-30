@@ -1,0 +1,165 @@
+{
+  "passed": true,
+  "productSnapshotManifestSha256Bytes": "74165f272e012c1a13e9171e963bf76127dbd71e7003da9e2576b7af2a25e2e6",
+  "productSnapshotPhase": "foundation-before-shell-guard",
+  "productJarPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-foundation-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "5206463a7d1d3ea017994a3bac04b8a9a2ff2df0fcd8d6b8a4b73ab30f46953f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-foundation-product-snapshot\\main-java.jar",
+      "sha256Bytes": "0f1aa395d94454358800db277c457cb5eeb41114b2d32e467eccda70d4001c7c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-foundation-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "db1b03c67e63f5cc37e4cb35c693cd5120b402e5ccf9e799bffdcb855ce48179"
+    }
+  ],
+  "runtimeDependencyCount": 231,
+  "compilations": [
+    {
+      "mode": "original",
+      "sourceCount": 15,
+      "sources": [
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticCollector.kt",
+          "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticPolicy.kt",
+          "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopLocalCrashPolicy.kt",
+          "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\feature\\settings\\SettingsDiagnosticFields.kt",
+          "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4"
+        },
+        {
+          "path": "generated-review\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettings.kt",
+          "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96"
+        },
+        {
+          "path": "generated-review\\com\\bilipai\\desktop\\settings\\DesktopDiagnosticSettingsVectors.kt",
+          "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnostics.kt",
+          "sha256Bytes": "20fd95b1fdb0cdafd891aa55370862db4068097049f07e51f218fe2454077a16"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettingsSection.kt",
+          "sha256Bytes": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopLocalDiagnosticViewer.kt",
+          "sha256Bytes": "8f26b26886e80eb92be07f6fc751af72fe48f0d50a24133f8936686c332da54c"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticRuntimeBindings.kt",
+          "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticFileChooser.kt",
+          "sha256Bytes": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\UpstreamLog.kt",
+          "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\UpstreamLogger.kt",
+          "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+        },
+        {
+          "path": "DiagnosticBoundaryFixture.kt",
+          "sha256Bytes": "7d770a7818c2e65fc127550aae56517003c344bcf84404cf69375d10f403275d"
+        },
+        {
+          "path": "DiagnosticViewerFailureFixture.kt",
+          "sha256Bytes": "79759595ac6e6240a4bed4c79441fe634938f0486e439ce95c2ba644692f393c"
+        }
+      ],
+      "markedDiagnosticsOverridesOnly": true,
+      "noOriginalRendererOverride": true
+    },
+    {
+      "mode": "reviewed",
+      "sourceCount": 15,
+      "sources": [
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticCollector.kt",
+          "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticPolicy.kt",
+          "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\core\\util\\DesktopLocalCrashPolicy.kt",
+          "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d"
+        },
+        {
+          "path": "generated-review\\com\\android\\purebilibili\\feature\\settings\\SettingsDiagnosticFields.kt",
+          "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4"
+        },
+        {
+          "path": "generated-review\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettings.kt",
+          "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96"
+        },
+        {
+          "path": "generated-review\\com\\bilipai\\desktop\\settings\\DesktopDiagnosticSettingsVectors.kt",
+          "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039"
+        },
+        {
+          "path": "boundary-delta\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnostics.kt",
+          "sha256Bytes": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettingsSection.kt",
+          "sha256Bytes": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e"
+        },
+        {
+          "path": "boundary-delta\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopLocalDiagnosticViewer.kt",
+          "sha256Bytes": "93a9f3faf104a56decee9f2d531de39776e5330e66a217cd4d59a487810b0c43"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticRuntimeBindings.kt",
+          "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticFileChooser.kt",
+          "sha256Bytes": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\UpstreamLog.kt",
+          "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+        },
+        {
+          "path": "payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\UpstreamLogger.kt",
+          "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+        },
+        {
+          "path": "DiagnosticBoundaryFixture.kt",
+          "sha256Bytes": "7d770a7818c2e65fc127550aae56517003c344bcf84404cf69375d10f403275d"
+        },
+        {
+          "path": "DiagnosticViewerFailureFixture.kt",
+          "sha256Bytes": "79759595ac6e6240a4bed4c79441fe634938f0486e439ce95c2ba644692f393c"
+        }
+      ],
+      "markedDiagnosticsOverridesOnly": true,
+      "noOriginalRendererOverride": true
+    }
+  ],
+  "actualWindowsJunctionCasesPerMode": 2,
+  "originalViewerFailureReproducedBothStyles": true,
+  "reviewedViewerSafeErrorAndActualDismissPointerBothStyles": true,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrHttpUsed": false,
+  "fixturesAreExecutableNotJUnit": true
+}

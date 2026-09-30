@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "compiledSourceCount": 15,
+  "activeClassDirectory": "classes-stable",
+  "historicalAttemptClassDirectories": [
+    "classes",
+    "classes-final",
+    "classes-verified"
+  ],
+  "sources": [
+    "generated\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticPolicy.kt",
+    "generated\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticCollector.kt",
+    "generated\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettings.kt",
+    "generated\\com\\android\\purebilibili\\feature\\settings\\SettingsDiagnosticFields.kt",
+    "generated\\com\\bilipai\\desktop\\settings\\DesktopDiagnosticSettingsVectors.kt",
+    "generated\\com\\android\\purebilibili\\core\\util\\DesktopLocalCrashPolicy.kt",
+    "bridge-draft\\UpstreamLog.kt",
+    "bridge-draft\\UpstreamLogger.kt",
+    "DesktopDiagnostics.kt",
+    "DesktopDiagnosticSettingsSection.kt",
+    "DesktopLocalDiagnosticViewer.kt",
+    "DesktopDiagnosticRuntimeBindings.kt",
+    "DesktopDiagnosticFileChooser.kt",
+    "DiagnosticFixture.kt",
+    "DiagnosticUiFixture.kt"
+  ],
+  "productSnapshotJarSha256": [
+    "bc5ebafbdb5d14cfe07d6b5eb8074395e30d806e3e188a7e92363a68b398fa95",
+    "0bd21a0ae1006a429b5370d927a26cb6b448285d21f98b1b307177238f6f38c8",
+    "d9d59204e473e9fab73ea1219f604470cbad5be006fcaa09d5f936c988358142"
+  ],
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false
+}

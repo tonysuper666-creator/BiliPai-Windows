@@ -1,0 +1,18 @@
+{
+  "frozen": true,
+  "productMatrixPassed": false,
+  "normalFlowsPassed": 4,
+  "normalFlowsFailed": 4,
+  "initialActualIoFailureFlowsPassed": 8,
+  "snapshotManifestSha256Bytes": "5e8fc360372557bf004b55a1ded9fe4be1a3b6bae33090cb037d8fe600006fda",
+  "acceptedRun": "43da3bd6",
+  "actualPointerPairs": 70,
+  "screenshots": 50,
+  "artifactManifestSha256Bytes": "92db5fac508a949c56bafd7df275a646f5b72d452bf3b475e98ed293f67242ec",
+  "artifactFiles": 178,
+  "handoffSha256Bytes": "923ad95e08de793642ee32921aef1eed93d7ade0ba0553d2772d0754a12cf3fb",
+  "mainEdits": 0,
+  "productionOverrides": 0,
+  "wholeMainOrPluginRuntime": false,
+  "nativeOsChooserVerified": false
+}

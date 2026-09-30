@@ -1,0 +1,11 @@
+PASS: actual twelve providers settle without enabled LAN providers
+PASS: actual Runtime propagates retirement hook failure
+PASS: failed hook never freezes backing or falsely reports stopped
+PASS: explicit same Runtime retry drains and freezes
+PASS: successful retry remains idempotent
+PASS: offline fence observed zero network/listener/multicast/process attempts
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/dgl-snapshot-3/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-product-lifecycle-proof/snapshot-3/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.proof.DiagnosticProductLifecycleFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

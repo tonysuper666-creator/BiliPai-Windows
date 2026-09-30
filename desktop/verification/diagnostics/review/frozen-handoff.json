@@ -1,0 +1,967 @@
+{
+  "frozen": true,
+  "artifactCount": 189,
+  "artifacts": [
+    {
+      "path": "boundary-delta/classes-original/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5",
+      "sizeBytes": 2828
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9",
+      "sizeBytes": 1405
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5",
+      "sizeBytes": 11477
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c",
+      "sizeBytes": 4804
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280",
+      "sizeBytes": 9624
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff",
+      "sizeBytes": 12332
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e",
+      "sizeBytes": 569
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a",
+      "sizeBytes": 1675
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa",
+      "sizeBytes": 6857
+    },
+    {
+      "path": "boundary-delta/classes-original/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917",
+      "sizeBytes": 20845
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "67907178b9f355c1d3ffa2ae8e6166fc96a25377c6597b95739eb5af216023a3",
+      "sizeBytes": 5528
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde",
+      "sizeBytes": 1039
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915",
+      "sizeBytes": 1672
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2",
+      "sizeBytes": 2368
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d",
+      "sizeBytes": 4997
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a",
+      "sizeBytes": 3381
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b",
+      "sizeBytes": 2718
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e",
+      "sizeBytes": 1949
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a",
+      "sizeBytes": 1944
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0",
+      "sizeBytes": 5551
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8",
+      "sizeBytes": 4218
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94",
+      "sizeBytes": 6597
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664",
+      "sizeBytes": 4548
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "d3b15c94d56c3c8cf9d63fbbc378871f5373ec2178b8b6388c7a69ad45f90001",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "6e6f18b062a80a90a20d1d4763ed1d34ce43f6a9316dbce3dab4d39183d75368",
+      "sizeBytes": 3572
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "7d3372ab6bf24349d79465cdaa178f97dd790c577beae0eb9d9a748f1f64c09f",
+      "sizeBytes": 1800
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "7a6850dc5687b67f1ddbb78e8143bd20ea2874d0d95099a10661afbbe7c6f5c9",
+      "sizeBytes": 1835
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "92dd3667796423deccb49b4c64ee78b3b77b6134eebc806ddf4c34d7937cc5e6",
+      "sizeBytes": 3254
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "e8e83bdff18aef1f7a58ffe4cd71279bc78f5f6b441005528f7a41e9271a2e6e",
+      "sizeBytes": 33636
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "c916b34ea46a43adbb9d047f047ce1762b941ab959d3be9bdd6742de4fed7ac8",
+      "sizeBytes": 3556
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4",
+      "sizeBytes": 1912
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5",
+      "sizeBytes": 1907
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde",
+      "sizeBytes": 4693
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0",
+      "sizeBytes": 4350
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0",
+      "sizeBytes": 5224
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319",
+      "sizeBytes": 4616
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0",
+      "sizeBytes": 17730
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "b7560b889d74ac56458260b12b7ac167cb0f9e7e1c5c8a3e10b8fb5e180d6dee",
+      "sizeBytes": 1570
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d",
+      "sizeBytes": 3376
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "8ff1c51ec6e09c9bcef62cc674a9dca4fb98f4fb574c96aeac6e9aab2ca73a30",
+      "sizeBytes": 4206
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "24a073494c16afe2334b28a3125b0fe7f48a372e63dce038b2f9b9a6d6e26b8e",
+      "sizeBytes": 5390
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "ce3a204d99a7d479cba0e46112126611bcb9193178eb380a66962a62d747c321",
+      "sizeBytes": 4178
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "4a7a01ff8163671f4b32c75afb050e591b79b29d0418ed7d15a27dc46c1f5c78",
+      "sizeBytes": 4827
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "e3a2398e2f9a8b2f556a6f6388f883293d04ec6ec3fec48194a0dcca886558a4",
+      "sizeBytes": 36902
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticBoundaryFixtureKt$main$1.class",
+      "sha256Bytes": "634051c1ba953e89d17f8cb7bbe6f4c0c965a541e38890824049bb3c9728c01e",
+      "sizeBytes": 25504
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticBoundaryFixtureKt.class",
+      "sha256Bytes": "eda2dec78fcd01a16f7135d42037902b07b4ba957f258be742da094397990e17",
+      "sizeBytes": 1217
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$1$1$2.class",
+      "sha256Bytes": "3d6ec9b35de3ef9bfcd00a6f0573e362c2881083d149b817f0e764be5b996e05",
+      "sizeBytes": 2960
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "837e8ae3f51e7ec6f31e828b44318b81699e58d0309ddbd213f6c7356fce770f",
+      "sizeBytes": 3082
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "ccf30bce27868197442a34db1143a3340f17c04cc4aa7a99ceff5ef245538369",
+      "sizeBytes": 1837
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1.class",
+      "sha256Bytes": "66d44580c47f12bd2f303a00aad2861e5684f1291a6c99f2c4b9eda66e9f6160",
+      "sizeBytes": 32184
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt.class",
+      "sha256Bytes": "e026e42199f24d848c757b2e8f46cfd86fdc2a7e03bbeee983e83b7488ded3e1",
+      "sizeBytes": 1232
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963",
+      "sizeBytes": 1081
+    },
+    {
+      "path": "boundary-delta/classes-original/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db",
+      "sizeBytes": 8955
+    },
+    {
+      "path": "boundary-delta/classes-original/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0e4fab166ef759d3bc81b958f3f1087253f4cdf4ff82d858a01ee756da15e49c",
+      "sizeBytes": 446
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/android/util/Log.class",
+      "sha256Bytes": "1f479bc0e6b84bc3c9830a1eb38832afd281a31d1e7d73bc94e404240834a0a5",
+      "sizeBytes": 2828
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopDiagnosticCollector$1.class",
+      "sha256Bytes": "de29468b487c2b1c6ef4c8b44b3032f6bf4d3a7097d818fb7fb9ecc385722db9",
+      "sizeBytes": 1405
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopDiagnosticCollector$Companion.class",
+      "sha256Bytes": "f3d458fc763de178beeec385a032f530db2afd76dfca52121b1a8ee5f1da7bd5",
+      "sizeBytes": 11477
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopDiagnosticCollector$LogEntry.class",
+      "sha256Bytes": "b6d6b1891516cab929e097be9e1c7d4a18540d4f4097272fe71528d78fcdd98c",
+      "sizeBytes": 4804
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopDiagnosticCollector.class",
+      "sha256Bytes": "89091d36835898e6e22cdbcc83cd536ef0a95d932086e71ef8187392393f1280",
+      "sizeBytes": 9624
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopDiagnosticPolicyKt.class",
+      "sha256Bytes": "0c9915b14c57b6e022bf0ce21f6789146aed2a00628ad219803518051772dbff",
+      "sizeBytes": 12332
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/DesktopLocalCrashPolicyKt.class",
+      "sha256Bytes": "7c108a340545c2ebf505b949176cb3bf34b5a23813c6dd06922e04b3adbb238e",
+      "sizeBytes": 569
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/core/util/Logger.class",
+      "sha256Bytes": "c90f91dd17fbba3f089f15a4021339e59d14e63e80ae77baffe9c6441033953a",
+      "sizeBytes": 1675
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "a3be4087e81c2fd595446219f3fb6cf85f791943190d339213b77410fa89a5aa",
+      "sizeBytes": 6857
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/android/purebilibili/feature/settings/SettingsDiagnosticFieldsKt.class",
+      "sha256Bytes": "56e6585c8efbac57af1be39fcbfd9e7f05db0e16c2be45844a9ce551b12a6917",
+      "sizeBytes": 20845
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "d313a4979cbd018484eed444ade768b50e21b59daa7553538d60e18020eb0b63",
+      "sizeBytes": 5528
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1$1.class",
+      "sha256Bytes": "eb3ffa0d1d9e4434ca63093cee62119df317bf92c527a56c1a01f075e16cddde",
+      "sizeBytes": 1039
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$1.class",
+      "sha256Bytes": "65ddcd5779d3346811cb3101013f12cf936429897f60d89a38e6e66e60276915",
+      "sizeBytes": 1672
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt$chooseDesktopDiagnosticExportFile$2$2.class",
+      "sha256Bytes": "705c4ef369764b51872c774bd85ff075af04422b998456f8bb22fdb9632720b2",
+      "sizeBytes": 2368
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooserKt.class",
+      "sha256Bytes": "642086059bdc2c9b1d695acc7fb6024b5ba477e11e96ca05ad5075c8b290206d",
+      "sizeBytes": 4997
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$1.class",
+      "sha256Bytes": "a773d57c2fbff75d040d374054620e36c3034bf86e53f4183cbcf52467618e6a",
+      "sizeBytes": 3381
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$3.class",
+      "sha256Bytes": "f26828cd5c3faefdca3c56a5f9d1c79fb21ec7c761f40613c92b0a3527a4248b",
+      "sizeBytes": 2718
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "c6d0efd2a90571880d65f8ebc319a35eb5adaa4f969984880d2f6eadb90a904e",
+      "sizeBytes": 1949
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "91caac5bf28d17b8b4dcb84321dda632a3d81224e1ef711b2ed0d2f3b5b3053a",
+      "sizeBytes": 1944
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "c3221b0c33a87836ff1b23e53b253a2a3bc30808df0e52313e845d06a5f914e0",
+      "sizeBytes": 5551
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1999f37f54c365b6c9cace5185d7d9bd3529f4269dcacd480a891b086f2e13a8",
+      "sizeBytes": 4218
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt$observePlayback$1.class",
+      "sha256Bytes": "6f60af35c426bd75904507d7748458b9c6138160144ca80d015073e17014cb94",
+      "sizeBytes": 6597
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindingsKt.class",
+      "sha256Bytes": "9ca46e30b8b427b159cc9b186ed8fd26559fa4cc55801fc28c197730528d9664",
+      "sizeBytes": 4548
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "9b58987879cbd4b2c42df104e4ba6674c32ba146a351159b5e003ca0ddcd9b42",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "424d3f21ae8078a1ad08a3e87cf3eca8726fcf836cfec47b78fb81386c103af2",
+      "sizeBytes": 3572
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "63d4052fec677b65e462e27abbb57b638099a25e41f15e05ab4bacbb1fb175cf",
+      "sizeBytes": 1800
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "acbe26ba4be97be84c49a1c45ec589b17e25ea4afbb1cd0333273c9c231c6847",
+      "sizeBytes": 1835
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "ece308841256f366dac8d3801fd749ddb249c045327893cd41cacbaf4dc601bd",
+      "sizeBytes": 3254
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "1af525282440dab0b1a71b341502c9ae718eae6d72c70e54798ebe10e3a26cca",
+      "sizeBytes": 34332
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "0180537301382bb9031467d3e94881a06ce7d1e8a63d2f422e0abd5d7b958721",
+      "sizeBytes": 3556
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$1.class",
+      "sha256Bytes": "08341d34eb24d8a14ad7b948692fad09b1812305d734e0cdccc3d95026f7cfb4",
+      "sizeBytes": 1912
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2$1.class",
+      "sha256Bytes": "f7d01b76e81bf46692eba795533dde0121e2280df4ed21cac8243915f4152af5",
+      "sizeBytes": 1907
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1$2.class",
+      "sha256Bytes": "6aba8942dbb904ec1f5f41d55d96e3bd46972181f2ee190fb480d32141ba5cde",
+      "sizeBytes": 4693
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings$getEnhancedDiagnosticLoggingEnabled$$inlined$map$1.class",
+      "sha256Bytes": "1791ffc1b912e46fad01b15df49aa68df45fee3cbbfdb8009defd3aaac5938c0",
+      "sizeBytes": 4350
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.class",
+      "sha256Bytes": "0b5387b6d7342e5b9c583976e751a837924b6f6cb6493881d01428c7784bd4f0",
+      "sizeBytes": 5224
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt$DesktopDiagnosticSettingsSection$1$1$1$1.class",
+      "sha256Bytes": "99dc32cff441536fcc6a4bc639d3b1e7513abcf2b1a12219e158968dd770f319",
+      "sizeBytes": 4616
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSectionKt.class",
+      "sha256Bytes": "911c80838af75fcea7360a126e0f383787e2e05f9ca47ae4dfe78a77841a73b0",
+      "sizeBytes": 17730
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "fa6e13f23317f623a34d40ca78aa36eb3221ccf24b292c66324e508156747046",
+      "sizeBytes": 1570
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopDiagnosticUncaughtHandler.class",
+      "sha256Bytes": "b71f6fb56c5f242be6a23b24b1019d6e16bda0183abccd5084e8c74a2816001d",
+      "sizeBytes": 3376
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$1$1.class",
+      "sha256Bytes": "82d4a15f64b596a5b839777bad66f0802fbbde1a48f0e5b46fc6da186abfe271",
+      "sizeBytes": 4780
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$1$1$1.class",
+      "sha256Bytes": "7f1533e99a57c6b12d7235671f1d382e2d69b8c4e900ce07cecbdaf47aa49177",
+      "sizeBytes": 5390
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$4$1$2$1$1.class",
+      "sha256Bytes": "3287c027700097593ab550ebd1ee16e81caa80ac7f5e4ff0b3ccf3ad0a4a6c86",
+      "sizeBytes": 4178
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt$DesktopLocalDiagnosticViewer$action$1.class",
+      "sha256Bytes": "d4ec675d82ebc3121c247cfa14f5f99c4c0c9164094c8a7c60ba12da43bc58b8",
+      "sizeBytes": 4827
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewerKt.class",
+      "sha256Bytes": "085f015412b53f1572e5d0bee29ecbfea9c8918c7c3b310c490345ea1a8c8fcb",
+      "sizeBytes": 36778
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticBoundaryFixtureKt$main$1.class",
+      "sha256Bytes": "634051c1ba953e89d17f8cb7bbe6f4c0c965a541e38890824049bb3c9728c01e",
+      "sizeBytes": 25504
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticBoundaryFixtureKt.class",
+      "sha256Bytes": "eda2dec78fcd01a16f7135d42037902b07b4ba957f258be742da094397990e17",
+      "sizeBytes": 1217
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$1$1$2.class",
+      "sha256Bytes": "3d6ec9b35de3ef9bfcd00a6f0573e362c2881083d149b817f0e764be5b996e05",
+      "sizeBytes": 2960
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$invokeSuspend$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "837e8ae3f51e7ec6f31e828b44318b81699e58d0309ddbd213f6c7356fce770f",
+      "sizeBytes": 3082
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "ccf30bce27868197442a34db1143a3340f17c04cc4aa7a99ceff5ef245538369",
+      "sizeBytes": 1837
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt$main$1.class",
+      "sha256Bytes": "66d44580c47f12bd2f303a00aad2861e5684f1291a6c99f2c4b9eda66e9f6160",
+      "sizeBytes": 32184
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/diagnostics/DiagnosticViewerFailureFixtureKt.class",
+      "sha256Bytes": "e026e42199f24d848c757b2e8f46cfd86fdc2a7e03bbeee983e83b7488ded3e1",
+      "sizeBytes": 1232
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/settings/DesktopDiagnosticSettingsSymbols.class",
+      "sha256Bytes": "866fc1f820f2524896bf6a6969497b551f8d47d70dcdd8a58bcdf6029d6c5963",
+      "sizeBytes": 1081
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.class",
+      "sha256Bytes": "13bae58a7e1a1f12452e9e824f5cb64f083e15e8a3287abe72cb880405e9a1db",
+      "sizeBytes": 8955
+    },
+    {
+      "path": "boundary-delta/classes-reviewed/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "0e4fab166ef759d3bc81b958f3f1087253f4cdf4ff82d858a01ee756da15e49c",
+      "sizeBytes": 446
+    },
+    {
+      "path": "boundary-delta/compile-and-run-proof.json",
+      "sha256Bytes": "0771e2aae1e183606c494217f1c4ca739e7d30642e2d996aaead4e2434e764fc",
+      "sizeBytes": 8386
+    },
+    {
+      "path": "boundary-delta/compile-original.log",
+      "sha256Bytes": "0890f360f7cb13f6d189db70d67246f7bbfae77a54477417e56672bab4b1b0ce",
+      "sizeBytes": 391
+    },
+    {
+      "path": "boundary-delta/compile-reviewed.log",
+      "sha256Bytes": "0890f360f7cb13f6d189db70d67246f7bbfae77a54477417e56672bab4b1b0ce",
+      "sizeBytes": 391
+    },
+    {
+      "path": "boundary-delta/compiler-original.args",
+      "sha256Bytes": "4e8fc9c828a361d3de800c871305e0480cd22fbb17d6fa2b299d54fc1ea9e2fb",
+      "sizeBytes": 62159
+    },
+    {
+      "path": "boundary-delta/compiler-reviewed.args",
+      "sha256Bytes": "eb2ea91ca0c2abd2e09370e302614e9e7e63011b2d53652a0e4291dd66761629",
+      "sizeBytes": 62189
+    },
+    {
+      "path": "boundary-delta/delta-contract.json",
+      "sha256Bytes": "1c988b3c7080e14100286548d86f8ce144990072eb38a80eba893fd89e3a143e",
+      "sizeBytes": 879
+    },
+    {
+      "path": "boundary-delta/dependency-identities.json",
+      "sha256Bytes": "5cd5ab075a2b3922eb5282eeb6942bf9739603cc40948c6ce5c466df8e48292b",
+      "sizeBytes": 85893
+    },
+    {
+      "path": "boundary-delta/DesktopDiagnostics.kt.patch",
+      "sha256Bytes": "a9a89dd5e1973765809d1071fc1f35e3c5bebb11f6423fe14de220f6e3db0b42",
+      "sizeBytes": 1688
+    },
+    {
+      "path": "boundary-delta/DesktopLocalDiagnosticViewer.kt.patch",
+      "sha256Bytes": "048e04ca30fc5f6bfef3f04dcb3acef69824c6a63c4959eaecafdd0fdb666db2",
+      "sizeBytes": 873
+    },
+    {
+      "path": "boundary-delta/initial-skiko-long-home-failure.log",
+      "sha256Bytes": "93ce6b0c42624e603922aee96337d67480d4b19c363b9438606cc62c2e90b5bb",
+      "sizeBytes": 132657
+    },
+    {
+      "path": "boundary-delta/install-boundary-delta.py",
+      "sha256Bytes": "4b67bc21d149be9a108e1558acc9ce798e10d15f0407ed21b0eaa30fecac58f0",
+      "sizeBytes": 977
+    },
+    {
+      "path": "boundary-delta/install-plan.json",
+      "sha256Bytes": "f17e9f0f1321df784d3d0b4faeef3e0c43d4fa9fccb941412881f37b469b8616",
+      "sizeBytes": 206063
+    },
+    {
+      "path": "boundary-delta/original-disk-proof/result.json",
+      "sha256Bytes": "951d5c363b617dd18b65b8e31cb804c6cb0e486564b9e0c14946863d04d23762",
+      "sizeBytes": 723
+    },
+    {
+      "path": "boundary-delta/original-disk.log",
+      "sha256Bytes": "84eebad73f0186461eb15a342574a2b0f4b70647bed926391923e07b231c5956",
+      "sizeBytes": 864
+    },
+    {
+      "path": "boundary-delta/original-viewer.log",
+      "sha256Bytes": "d78c4ae02c4775075fb269ef6c9fd12b2fb47f6499fc9a5fdd2a0b2fc592bd47",
+      "sizeBytes": 572
+    },
+    {
+      "path": "boundary-delta/payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205",
+      "sizeBytes": 12270
+    },
+    {
+      "path": "boundary-delta/payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "93a9f3faf104a56decee9f2d531de39776e5330e66a217cd4d59a487810b0c43",
+      "sizeBytes": 2610
+    },
+    {
+      "path": "boundary-delta/reviewed-disk.log",
+      "sha256Bytes": "06644e45a1713168d980c7dd52a7bfb575763f1135d7231125d45c47c4fa6847",
+      "sizeBytes": 856
+    },
+    {
+      "path": "boundary-delta/reviewed-viewer.log",
+      "sha256Bytes": "5f3e2986746e2029c6f62b1ba90afe28f34c6ecd5e4121bc1bb445387028d9fb",
+      "sizeBytes": 572
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/ancestor-junction/explicit-export.txt",
+      "sha256Bytes": "3b9a27d5695df45ee67cf5be3d65f05bf881f76361c9249c238d2fe2fe509a53",
+      "sizeBytes": 374
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/logs-junction/explicit-export.txt",
+      "sha256Bytes": "53b73d22ae3b4632b68cf378dcf9275a948af863875b1861829cc85b1a177acf",
+      "sizeBytes": 374
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/logs-junction-command.txt",
+      "sha256Bytes": "01ffbfab7deb318050de7c1c2e5d12fa54eaec66c1b8899d9fad8dca78f0de7e",
+      "sizeBytes": 429
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/normal-export.txt",
+      "sha256Bytes": "2cfa66903de81e92520ca48c1e4a47b1e5bda52f27b3fdf4333b2788437ebcd1",
+      "sizeBytes": 2512
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/normal-store/plugin-settings.json",
+      "sha256Bytes": "6533eec42ef96f15c92707647612b6e0fc1e77b47f26be2b1d27d707c34d0f86",
+      "sizeBytes": 79
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/redirected-parent-junction-command.txt",
+      "sha256Bytes": "ec6de642c4d44c69b61c5d3e253ddb7896f776a409018bca7d546c66d5b0627b",
+      "sizeBytes": 444
+    },
+    {
+      "path": "boundary-delta/run2-original-disk-proof/result.json",
+      "sha256Bytes": "951d5c363b617dd18b65b8e31cb804c6cb0e486564b9e0c14946863d04d23762",
+      "sizeBytes": 723
+    },
+    {
+      "path": "boundary-delta/run2-original-viewer-proof/material3-store/logs/basic.log",
+      "sha256Bytes": "2b37408d7856e01576323dd2a10ea2f2161f978457570e010e87478ca275693f",
+      "sizeBytes": 104
+    },
+    {
+      "path": "boundary-delta/run2-original-viewer-proof/miuix-store/logs/basic.log",
+      "sha256Bytes": "b09a49ba8b1e937be07b45773e791295611c4afd44559aa1e5e3739323a875d4",
+      "sizeBytes": 104
+    },
+    {
+      "path": "boundary-delta/run2-original-viewer-proof/result.json",
+      "sha256Bytes": "50b1d30d03591579cb57a387e944e1978f2b20f4dcbeb0b55156b9cce89aa69e",
+      "sizeBytes": 431
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/ancestor-junction/owned-victim/store/logs/basic.log",
+      "sha256Bytes": "200781535133fb31387e7363c036d55b810a99a7d692d103d853deb55a7529e8",
+      "sizeBytes": 25
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/logs-junction/owned-victim/basic.log",
+      "sha256Bytes": "200781535133fb31387e7363c036d55b810a99a7d692d103d853deb55a7529e8",
+      "sizeBytes": 25
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/logs-junction-command.txt",
+      "sha256Bytes": "b68817249ae5f55bac260ee46a242dd2559a4ea454d0477603de81a2c0fbdd0f",
+      "sizeBytes": 429
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/normal-export.txt",
+      "sha256Bytes": "acad4c9bf7117098a27ce5ae40d7c0b69c4b2cfa889155ff6f53b1f05c9ff2fd",
+      "sizeBytes": 2512
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/normal-store/plugin-settings.json",
+      "sha256Bytes": "6533eec42ef96f15c92707647612b6e0fc1e77b47f26be2b1d27d707c34d0f86",
+      "sizeBytes": 79
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/redirected-parent-junction-command.txt",
+      "sha256Bytes": "c1ccc01c91a92c25b001d8063dbe2b36eb09536aa9e0bc3d994420b48e9cf054",
+      "sizeBytes": 444
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-disk-proof/result.json",
+      "sha256Bytes": "10f67a0d90c7173ab4866fb1fd048a61cb244833d05fe529f628ff70c33a0b9d",
+      "sizeBytes": 715
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-viewer-proof/material3-initial-failure.png",
+      "sha256Bytes": "852362ac72842eb23d8253a99637fc0d038cf2e5806e2e75bdfce822197867ac",
+      "sizeBytes": 18622
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-viewer-proof/material3-store/logs/basic.log",
+      "sha256Bytes": "b361669f68183b51006044dfe4d751f42bf063bc4510539eda8203807159254f",
+      "sizeBytes": 104
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-viewer-proof/miuix-initial-failure.png",
+      "sha256Bytes": "6e54197c23417b64261f1dd8f659477d2023d01cb7701b2717686273981400a9",
+      "sizeBytes": 19507
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-viewer-proof/miuix-store/logs/basic.log",
+      "sha256Bytes": "d71450a8b4517f0d83703fd438a65d1ee45583f13d2054d8cd2abc1a04e8dcb5",
+      "sizeBytes": 104
+    },
+    {
+      "path": "boundary-delta/run2-reviewed-viewer-proof/result.json",
+      "sha256Bytes": "adc423f9a46dac99e5d568c9fa62a1f4ad57e15f185004711bda1274a24ab6bc",
+      "sizeBytes": 431
+    },
+    {
+      "path": "boundary-delta/runtime-original-disk.args",
+      "sha256Bytes": "732f6f898e51cbf92c116656fde5c4b6a69348518abb63488a8029f8c6c50fd7",
+      "sizeBytes": 56980
+    },
+    {
+      "path": "boundary-delta/runtime-original-viewer.args",
+      "sha256Bytes": "e5dfbfcb46694299ff5d70455576fa58fb952ec3b7cda4f70816f671c15e20cd",
+      "sizeBytes": 56987
+    },
+    {
+      "path": "boundary-delta/runtime-reviewed-disk.args",
+      "sha256Bytes": "0cb26deb24092ff842155021d5f4b7463b4cbf0b599ad9f46cc3d4206e6a5590",
+      "sizeBytes": 56980
+    },
+    {
+      "path": "boundary-delta/runtime-reviewed-viewer.args",
+      "sha256Bytes": "d16828c3c3bc44875bcb562a5ba244f472c39557d776d373b2a7bb168295d2d4",
+      "sizeBytes": 56987
+    },
+    {
+      "path": "current-seam-baselines.json",
+      "sha256Bytes": "389a042a3807e6fed668fac6a30b087d0775b57e0eb70a2641a577fffa743a8c",
+      "sizeBytes": 705
+    },
+    {
+      "path": "DiagnosticBoundaryFixture.kt",
+      "sha256Bytes": "7d770a7818c2e65fc127550aae56517003c344bcf84404cf69375d10f403275d",
+      "sizeBytes": 5534
+    },
+    {
+      "path": "DiagnosticViewerFailureFixture.kt",
+      "sha256Bytes": "79759595ac6e6240a4bed4c79441fe634938f0486e439ce95c2ba644692f393c",
+      "sizeBytes": 4174
+    },
+    {
+      "path": "freeze-review.py",
+      "sha256Bytes": "c91d59e751af2ec4de4cea2a8554bdd9bb09127d62b5da47821907db93d3c24c",
+      "sizeBytes": 2535
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f",
+      "sizeBytes": 11549
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/core/util/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161",
+      "sizeBytes": 5598
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/core/util/DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d",
+      "sizeBytes": 347
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/feature/settings/SettingsDiagnosticFields.kt",
+      "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4",
+      "sizeBytes": 4464
+    },
+    {
+      "path": "generated-review/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96",
+      "sizeBytes": 1126
+    },
+    {
+      "path": "generated-review/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt",
+      "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039",
+      "sizeBytes": 2316
+    },
+    {
+      "path": "install-plan.json",
+      "sha256Bytes": "21c8a7374353858a6ecd29bcdb2d1210db69c141e15baeda90363367ba9ce047",
+      "sizeBytes": 212079
+    },
+    {
+      "path": "install-reviewed.py",
+      "sha256Bytes": "ca5d4bfde3eb2a7eb71c728b28a51c6d21165a2cfe9d8f0e891b8b7ab34615b1",
+      "sizeBytes": 4357
+    },
+    {
+      "path": "installer-proof.json",
+      "sha256Bytes": "319d9b286db7bfe45733dc087e6146b2b94346e4798b190278b31fae52262bed",
+      "sizeBytes": 184
+    },
+    {
+      "path": "integration.patch",
+      "sha256Bytes": "4eb212acac82f946afa576e7fe1425e539dc3d8a4f9d807f2cf72c5029a861cd",
+      "sizeBytes": 37211
+    },
+    {
+      "path": "payload/desktop/build.gradle.kts",
+      "sha256Bytes": "84e51934d4ec837f1fcdfe1caefbfd82b4fee8a318671aaa6d8889f9cbfa0d4b",
+      "sizeBytes": 52691
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt",
+      "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2",
+      "sizeBytes": 735
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt",
+      "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4",
+      "sizeBytes": 330
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt",
+      "sha256Bytes": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05",
+      "sizeBytes": 1268
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt",
+      "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641",
+      "sizeBytes": 2237
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "20fd95b1fdb0cdafd891aa55370862db4068097049f07e51f218fe2454077a16",
+      "sizeBytes": 11606
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt",
+      "sha256Bytes": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e",
+      "sizeBytes": 1009
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "8f26b26886e80eb92be07f6fc751af72fe48f0d50a24133f8936686c332da54c",
+      "sizeBytes": 2411
+    },
+    {
+      "path": "payload/desktop/tools/extract-upstream-diagnostics.py",
+      "sha256Bytes": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "sizeBytes": 9503
+    },
+    {
+      "path": "payload/desktop/upstream-sources.json",
+      "sha256Bytes": "f5404b0c33f55c1005d5b1645ed9c1fb781dd23b3a0e57352a6dd84817fc8f91",
+      "sizeBytes": 173327
+    },
+    {
+      "path": "prepare-boundary-delta.py",
+      "sha256Bytes": "ae3a05a518f731ffd4191f7eb9d203887a490ff84eeb8be79f3de57d7faa4ac2",
+      "sizeBytes": 3036
+    },
+    {
+      "path": "prepare-delta-installer.py",
+      "sha256Bytes": "ec737d9e12901b5fb0c4b892ac8948b1a56dd025d2d6187c61635c0479485bd9",
+      "sizeBytes": 1775
+    },
+    {
+      "path": "prepare-proof.json",
+      "sha256Bytes": "c9f0ed48583917d7e162c017748db79e7b91683456ae28276bb952847ef749fa",
+      "sizeBytes": 603
+    },
+    {
+      "path": "prepare-review.py",
+      "sha256Bytes": "0391d979e09da45711fa031892e5ca57f876bf7dea45d8dc25409b19cbb6be15",
+      "sizeBytes": 10405
+    },
+    {
+      "path": "reference-only/OriginalDiagnosticsSection.kt",
+      "sha256Bytes": "3ce182efc24b86173ec236faf8f59f2bb8a0745d94ef68640d269757d1dd4817",
+      "sizeBytes": 6340
+    },
+    {
+      "path": "review-proof.json",
+      "sha256Bytes": "a2cdb3c2947e5e9b596bd52d6e798034f9b1eb6e2367183e9bd43e30f75c0c02",
+      "sizeBytes": 619
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "b4c84e2ed996c316a4c46c826fd4d3ab3224f29e73455c0f3dcbebdbf43d1204",
+      "sizeBytes": 9803
+    },
+    {
+      "path": "ROOT-MAIN-SHELL-SNIPPETS.kt.txt",
+      "sha256Bytes": "cffff948f1c654dd8f78b882fdfdb39fa2c3fa893bdc7db754be466b67bfb87c",
+      "sizeBytes": 4402
+    },
+    {
+      "path": "run-boundary-proof.py",
+      "sha256Bytes": "c60ffcd15b0b4bf44b6a35d12698078036edf4254149211fe217a9c25bc4f624",
+      "sizeBytes": 4968
+    },
+    {
+      "path": "test-install-reviewed.py",
+      "sha256Bytes": "e99c58870d2d261b7f0dab7bbd6085a1280c4b5595dea7d5bdb90f81e7103be9",
+      "sizeBytes": 5799
+    },
+    {
+      "path": "verify-frozen-review.py",
+      "sha256Bytes": "fc8ff00319951a3be5551dcff3b0b69a040a0812adc2dbcd91a362737376420c",
+      "sizeBytes": 922
+    },
+    {
+      "path": "verify-review.py",
+      "sha256Bytes": "5944c494cb7a4deafdb16ad8ffbe4bcc8f703df469fcbc1f679a7b537ede9716",
+      "sizeBytes": 3709
+    }
+  ],
+  "producerManifestSha256Bytes": "e04f8a6ec2b533695c3f988b4d67733d500089d49c238bbb1b976a8b930be5f7",
+  "producerFrozenArtifacts": 322,
+  "installPlanSha256Bytes": "21c8a7374353858a6ecd29bcdb2d1210db69c141e15baeda90363367ba9ce047",
+  "deltaPlanSha256Bytes": "f17e9f0f1321df784d3d0b4faeef3e0c43d4fa9fccb941412881f37b469b8616",
+  "integrationDocSha256Bytes": "b4c84e2ed996c316a4c46c826fd4d3ab3224f29e73455c0f3dcbebdbf43d1204",
+  "skippedTaskOwnedJunctions": [
+    "boundary-delta/run2-original-disk-proof/ancestor-junction/redirected-parent",
+    "boundary-delta/run2-original-disk-proof/logs-junction/store/logs",
+    "boundary-delta/run2-reviewed-disk-proof/ancestor-junction/redirected-parent",
+    "boundary-delta/run2-reviewed-disk-proof/logs-junction/store/logs"
+  ],
+  "privateRuntimeEnvironmentExcluded": true,
+  "mainApplied": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "claimsLimitedToLocalLoggingAndMarkedFixtures": true
+}

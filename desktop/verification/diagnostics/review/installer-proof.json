@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "tests": 9,
+  "failures": 0,
+  "errors": 0,
+  "targets": 10,
+  "temporaryDiskRehearsal": true,
+  "mainApplied": false,
+  "sharedGradleInvoked": false
+}

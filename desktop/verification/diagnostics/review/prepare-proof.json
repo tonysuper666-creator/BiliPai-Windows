@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "frozenArtifactsVerified": 322,
+  "dependenciesVerified": 234,
+  "originalSourceCount": 4,
+  "originalResourceCount": 1,
+  "rootGplLicenseVerified": true,
+  "existingAppearanceNoticesVerified": 6,
+  "generatedSixIdenticalToFrozen": true,
+  "sharedGradleInvoked": false,
+  "mainFilesModified": false,
+  "frozenFilesModified": false,
+  "filesStaged": 10,
+  "countsBefore": {
+    "sources": 431,
+    "resources": 209
+  },
+  "countsAfter": {
+    "sources": 433,
+    "resources": 210
+  },
+  "installPlanSha256Bytes": "21c8a7374353858a6ecd29bcdb2d1210db69c141e15baeda90363367ba9ce047"
+}

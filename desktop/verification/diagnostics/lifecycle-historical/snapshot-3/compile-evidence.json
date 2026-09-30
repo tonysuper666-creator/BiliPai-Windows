@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "snapshotManifestSha256Bytes": "5e8fc360372557bf004b55a1ded9fe4be1a3b6bae33090cb037d8fe600006fda",
+  "productJarPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "faff5ddd9bf61b4ee50b500119f7734228925e891342f9cf3008a6e552b5cd7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-java.jar",
+      "sha256Bytes": "a7206eb9cbbdcb16285c8ca49a4a6b5865378adfd449f8f733cce21b325a29f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "843e19310a97a3d9426dc218f2019313d43466cff089e831cdbeebdb191fdca1"
+    }
+  ],
+  "productJarsFirstInCompilerAndRuntimeClasspath": true,
+  "moduleName": "com.bilipai.desktop_bilipai-windows",
+  "fixtureSourceSha256Bytes": "b51b6d9787815d37fab7afbcb656e86eadba3057b5546fa714d65b206c5af2bf",
+  "compiledFixtureSourceCount": 1,
+  "noProductClassOverrides": true,
+  "productLifecycleAndRuntimeHookExecuted": true,
+  "freshJvmPerRuntimeCase": true,
+  "scenarioCount": 7,
+  "nativeWindowCreated": false,
+  "sharedGradleInvoked": false,
+  "realAccountOrHttpUsed": false
+}

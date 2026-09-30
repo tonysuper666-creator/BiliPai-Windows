@@ -1,0 +1,22 @@
+{
+  "activeClassDirectory": "classes-stable",
+  "inactiveEarlierClassDirectories": [
+    "classes",
+    "classes-final",
+    "classes-verified"
+  ],
+  "offlineRealFilesAndActorCases": 14,
+  "freshJvmConsentCases": 1,
+  "actualPointerPairs": 18,
+  "styles": 2,
+  "compiledSourceCount": 15,
+  "nativeWindowCreated": false,
+  "systemSaveDialogOpened": false,
+  "localLoggingPrepared": true,
+  "fullDiagnosticsComplete": false,
+  "sharedGradleInvoked": false,
+  "mainModified": false,
+  "networkUsed": false,
+  "userDataRead": false,
+  "externalMessagesOrLogUpload": false
+}

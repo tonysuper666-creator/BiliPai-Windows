@@ -1,0 +1,6 @@
+desktop\.local\settings-diagnostics-parity\DiagnosticFixture.kt:150:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\settings-diagnostics-parity\DiagnosticUiFixture.kt:87:5: warning: expression is unused.
+    Unit
+    ^^^^

@@ -1,0 +1,247 @@
+{
+  "proofCompleted": true,
+  "allRequestedUiFlowsPassed": false,
+  "snapshotManifestSha256Bytes": "5e8fc360372557bf004b55a1ded9fe4be1a3b6bae33090cb037d8fe600006fda",
+  "snapshotPhase": "local-diagnostics-main-lifecycle-and-settings",
+  "immutableProductJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "faff5ddd9bf61b4ee50b500119f7734228925e891342f9cf3008a6e552b5cd7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-java.jar",
+      "sha256Bytes": "a7206eb9cbbdcb16285c8ca49a4a6b5865378adfd449f8f733cce21b325a29f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "843e19310a97a3d9426dc218f2019313d43466cff089e831cdbeebdb191fdca1"
+    }
+  ],
+  "verifiedExternalDependencyEntries": 231,
+  "verifiedDistinctExternalJars": 226,
+  "existingExternalDuplicateEntries": 5,
+  "compiledSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\DiagnosticProductUiFixture.kt",
+      "sha256Bytes": "c6400fc60c5071a6134075ce2e76464d93ad81d0d5530fc476bc316802eda49f"
+    }
+  ],
+  "compiledProductionSources": 0,
+  "productionOverrides": 0,
+  "storeOrRendererReplacements": 0,
+  "actualClassIdentities": 13,
+  "requestedCoreActualClasses": 9,
+  "fixtureClasses": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6",
+  "acceptedRun": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6",
+  "acceptedRunSha256Bytes": "8f283b23b9485a65da7c753ccd5360c0414fe6b461f701a701be64a74bc2f5d0",
+  "normalUiFlows": 8,
+  "initialRealIoFailureUiFlows": 8,
+  "actualPointerPairs": 70,
+  "screenshots": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\01-settings-default.png",
+      "sha256Bytes": "36072ec4b329fcf6075e0d87b7a0ddd0d44c86c3a7da123aa001a7860e586bde"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\02-original-consent.png",
+      "sha256Bytes": "4c4fd5d11c1c4a2a07ac6a11ba09c08055b8212903996aa5c07d7d2a5a3b9131"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\03-actual-local-viewer.png",
+      "sha256Bytes": "13930cfd1ba563b5ee935c7fc5126739b3ec3e0129fdde3e28439ba1ddb2bb2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\04-cleared-viewer.png",
+      "sha256Bytes": "3fc7caee0f3fb91677fc29368b11ff2758149a89871d527b4dd2102c7e6dbde3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\05-settings-disabled.png",
+      "sha256Bytes": "c8e2edddd9000eb80c68eecd6b474dd4bcec150d9dd18c3216a7b33e08e55e52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720\\after-export-result.png",
+      "sha256Bytes": "5c69600a8d4403513c773015943a691aa8f0fecb760316895c5c27e4ab867b9f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-720-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "ef6ed9b8ae5f54b9fbe3dbbf0fae39bf7caa087bb78befe73815d62ee37c9f7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\01-settings-default.png",
+      "sha256Bytes": "7eec0506b518c8baa679a5eca7f35ef0cb1ac88711a364e7f8dc4d09766b80a6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\02-original-consent.png",
+      "sha256Bytes": "72afbb4a9c2f359d1a0cc8abae0a8a90733e33a2bd306c95c4042c0dfb9d4563"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\03-actual-local-viewer.png",
+      "sha256Bytes": "fa37015180ff069786c4dfed4b5ad6651015296c1579236358b85d7021e4a905"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\04-cleared-viewer.png",
+      "sha256Bytes": "1377058992216838662e977e4d315ade8b3c02d080ac8cbe74165a164bb142a7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\05-settings-disabled.png",
+      "sha256Bytes": "beebbb20d08defaff7f05b0c865805467d82483332ca01bb320e74af5ab16fd6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900\\after-export-result.png",
+      "sha256Bytes": "cb8f1e1f1615fd143bdd615cd6a04a0cc9cc216271a584bf02c00f5207a1305c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-dark-900-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "852362ac72842eb23d8253a99637fc0d038cf2e5806e2e75bdfce822197867ac"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\01-settings-default.png",
+      "sha256Bytes": "ab4088952650239f783b663b5838c5465bb02145210410688d5298448bbaa63d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\02-original-consent.png",
+      "sha256Bytes": "21d8a1e865d7caaedb2fcbe371c9680a03bb0e1a2fffc03944af26e2eb8b53e8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\03-actual-local-viewer.png",
+      "sha256Bytes": "ee1cff29b45d81401ba2f7e61e7f64928d947ce0f73193569277ba6f455063ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\04-cleared-viewer.png",
+      "sha256Bytes": "eebd10628d3f812e1e112a0914207718a7784bccd539396de1c7c93e00b7d6df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\05-settings-disabled.png",
+      "sha256Bytes": "3b2340448ec1d71dbf0471edf7068ccd286668d9f840577c7287684408634fce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720\\after-export-result.png",
+      "sha256Bytes": "0ff228e6b7318aaa5778e08adc7022cc3714a9a9719a79421031c2210db0df13"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-720-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "9f583285754e8c442c48bfc6f95305f9076ea928a726bfd20322da028896d98d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\01-settings-default.png",
+      "sha256Bytes": "527a6ab74a3310603c2e245e9c9fe314e0cf47fc1dfbdf0add86e3ae115743ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\02-original-consent.png",
+      "sha256Bytes": "12103c899f5f22a9b6a6708699e9b2c62adde6e9f78cde2e8d592caf243964a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\03-actual-local-viewer.png",
+      "sha256Bytes": "a2ed108fd198fee5ddeaaf8aa5ecc10b39e65146be1fba341eb92a12401ac3b7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\04-cleared-viewer.png",
+      "sha256Bytes": "25ee918b3583c49e77cfbb142f037d131219542040a4c8285485ebe4919718b8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\05-settings-disabled.png",
+      "sha256Bytes": "36ea75e18ab105adb580bbb516253b63ae9daa33041c0e2261388cf70eef2df6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900\\after-export-result.png",
+      "sha256Bytes": "de71bd372385cf91a7ac211e9b12a3949349a95766ff0521bbf19bc3ead7cd42"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\material3-light-900-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "9ddf0b1f4bb6146b1723bfbe3864bdc4935c807c52385e521089308551abf599"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-720\\01-settings-default.png",
+      "sha256Bytes": "5e8e103716fef5a53206542bfb5e0619e8f0958339ced75261a34b242725daaa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-720\\02-original-consent.png",
+      "sha256Bytes": "5efd719f8334c981843a57663ced47f192aa9a3a1c31f417b60caf5c330663ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-720\\03-actual-local-viewer.png",
+      "sha256Bytes": "c9bbce2185ab99a935b2aa465b5395a24ed8fafcd40f2f20faac75ada35a1a11"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-720\\failed-flow-actual.png",
+      "sha256Bytes": "c9bbce2185ab99a935b2aa465b5395a24ed8fafcd40f2f20faac75ada35a1a11"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-720-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "092dab5b59e352bee6684a9b9345e4a0dfc91510948e448f7ce7bff142aeb824"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900\\01-settings-default.png",
+      "sha256Bytes": "be71e5cf09afbc04c1e9fd7837abe94ce3d03b341987c5b60c2a804afe329c90"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900\\02-original-consent.png",
+      "sha256Bytes": "302094bc6ec0930b8c56c433c5ffafcbb284e015b1cc4e780f19e26b99afdcf3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900\\03-actual-local-viewer.png",
+      "sha256Bytes": "25d2c67fa3f2d640a411f2bb0d4b5223dda673127c983abccc88afd5fc2dc36a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900\\after-export-result.png",
+      "sha256Bytes": "7ddbade60ebe6135502cb5c519851aafb449bdecd84e9618b6cc90d2e64ac793"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900\\failed-flow-actual.png",
+      "sha256Bytes": "7ddbade60ebe6135502cb5c519851aafb449bdecd84e9618b6cc90d2e64ac793"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-dark-900-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "6e54197c23417b64261f1dd8f659477d2023d01cb7701b2717686273981400a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-720\\01-settings-default.png",
+      "sha256Bytes": "c368d8b4f46aa236f89654325e7f5b680dc69f3c80988a0af378f9532624c9df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-720\\02-original-consent.png",
+      "sha256Bytes": "62dabf2d013cbe6cb73dc83c876edc906d96863d51d1ab1fc5c3e0498dd64443"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-720\\03-actual-local-viewer.png",
+      "sha256Bytes": "8e23c4d790b53dbe339164e294c90040cc577e70847a006119172ace2c96176f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-720\\failed-flow-actual.png",
+      "sha256Bytes": "8e23c4d790b53dbe339164e294c90040cc577e70847a006119172ace2c96176f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-720-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "93586c47eefab0a8ab26a641c7edcb785d472c6667774c69e1cdce5ce3055dea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900\\01-settings-default.png",
+      "sha256Bytes": "edb1c9443bf705bfef14b131ee01baae5b2bb5835a03ceacad7ce488136e111f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900\\02-original-consent.png",
+      "sha256Bytes": "e1ba8d35dc0722d4ca46836c731b2d2a9115350299b5c180783abce2a25ebb6f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900\\03-actual-local-viewer.png",
+      "sha256Bytes": "74652c72c1db444dc1ae7f3dcd56a36150ae719fe90bfd6b3dde23c5b4b5b4af"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900\\after-export-result.png",
+      "sha256Bytes": "1220b5eee34eca099b9907c9797a3a0a5cb603909481fb7f1439b36a4e3c2944"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900\\failed-flow-actual.png",
+      "sha256Bytes": "1220b5eee34eca099b9907c9797a3a0a5cb603909481fb7f1439b36a4e3c2944"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\runs\\43da3bd6\\miuix-light-900-initial-io-failure\\actual-safe-first-io-error.png",
+      "sha256Bytes": "6362f3d9c17fe65e56522759891286b096bd893acdc19eed4160e1ce87930203"
+    }
+  ],
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "nativeOsChooserVerified": false,
+  "wholeMainOrPluginRuntimeInstantiated": false,
+  "accountOrHttpUsed": false
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopWindowConfiguration.kt",
+    "sha256Bytes": "0f86ba6a2c1466abc579cda29c1e96696747b63ff6b4333a00b35c7d6cdd904a"
+  },
+  {
+    "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/layout/DialogContentLayout.kt",
+    "sha256Bytes": "6f0273f44558c04cc4a5d179ac25eb0540ffaf83730cf88e862124eb3b2678cd"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+    "sha256Bytes": "0935f9876f097d9fa33ba70e373b1dcd049371a10a21ae7224642cb1ff3a21e8"
+  }
+]

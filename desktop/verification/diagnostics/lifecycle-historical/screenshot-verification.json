@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "images": [
+    {
+      "path": "snapshot-3/root-startup-material3/material3-root-startup-error.png",
+      "sha256Bytes": "de2e0efb3e0cbf33504e65f7cc3111c3c1f259c30df992887766a7ae4d97f92d",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 7799,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    },
+    {
+      "path": "snapshot-3/root-startup-material3/material3-root-retry-error.png",
+      "sha256Bytes": "c713fc85466d1b4785a703b96dbb40dc3dcd05d8742b81b72708846e2aa619c9",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 7799,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    },
+    {
+      "path": "snapshot-3/root-startup-material3/material3-root-stopped.png",
+      "sha256Bytes": "52c79937928f246cfd999eb432ad2b33adaa1311a2f517b8d88d6c164f23d525",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 4462,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    },
+    {
+      "path": "snapshot-3/root-startup-miuix/miuix-root-startup-error.png",
+      "sha256Bytes": "4cbce99f63e0e2592f963e515452ccf73fbf4988f84a1efc974af0cb3d1440c9",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 8613,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    },
+    {
+      "path": "snapshot-3/root-startup-miuix/miuix-root-retry-error.png",
+      "sha256Bytes": "926e4ea233a18fee59cc03f477aca8c2367f426a1cfbd85e8ecc4ad1b3c0e53c",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 8613,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    },
+    {
+      "path": "snapshot-3/root-startup-miuix/miuix-root-stopped.png",
+      "sha256Bytes": "4c962d3a8ad9b6e9bc875871babf49f7525a687da8279fd410556d7ac04f2e41",
+      "width": 1080,
+      "height": 800,
+      "transparentPixels": 0,
+      "opaquePixels": 864000,
+      "contrastedInkPixels": 4920,
+      "equalIndependentSnapshot2Capture": true,
+      "actualProductAppSurface": true,
+      "fixtureRendererOverride": false
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "afterInstallPlanSha256Bytes": "21c8a7374353858a6ecd29bcdb2d1210db69c141e15baeda90363367ba9ce047",
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "baselineSha256Bytes": "20fd95b1fdb0cdafd891aa55370862db4068097049f07e51f218fe2454077a16",
+      "payloadSha256Bytes": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "baselineSha256Bytes": "8f26b26886e80eb92be07f6fc751af72fe48f0d50a24133f8936686c332da54c",
+      "payloadSha256Bytes": "93a9f3faf104a56decee9f2d531de39776e5330e66a217cd4d59a487810b0c43"
+    }
+  ],
+  "existingUpdateStorageGuardReused": true,
+  "originalAlgorithmsUnchanged": true,
+  "mainWritten": false
+}

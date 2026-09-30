@@ -1,0 +1,72 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt$initialReadFailure$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$initialReadFailure$1.class",
+    "sha256Bytes": "71ccbb29f9b03ae188e381e58b323533fe4878687396a950ec81d92625b9357c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt$initialReadFailure$4$1$2.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$initialReadFailure$4$1$2.class",
+    "sha256Bytes": "c9dd2f7726e90fe36415baadac875ab59090c3b20f8e521b0c79f2f49b10b17f"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt$main$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$main$1.class",
+    "sha256Bytes": "14d9f0651d5f6a1c536c60d26a96cc9a5ccb6823d986d9226089e82195db32fc"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt$normalCase$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$normalCase$1.class",
+    "sha256Bytes": "3ec5a678946e645796c932d07f1c535a577b7165ca91dd94ac08cf5755931b4c"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt$normalCase$2$1$1$3.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt$normalCase$2$1$1$3.class",
+    "sha256Bytes": "f8bc79b3e31ad7e96464ddcadee2d7c4ba95c7f85a20b07f8ffdaaecb8f13991"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\DiagnosticProductUiFixtureKt.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/DiagnosticProductUiFixtureKt.class",
+    "sha256Bytes": "babaf5274b295732e2bb31b5babdc33d45c065a2a3f52b89d68ac8969e952d38"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\ReadLockKernel32.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/ReadLockKernel32.class",
+    "sha256Bytes": "cb819d19c943d2bb3f6c3fbc658c45203972af2e7ea0680f7cd2f5d68e7ac6ed"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness$await$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness$await$1.class",
+    "sha256Bytes": "fe7eebb32b3400fffff5cb178c7ac23f98cc34521ac88e148b2c993136aebc1b"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness$await$2.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness$await$2.class",
+    "sha256Bytes": "3922c02931095f79179317f6664784fd00d530737813cd090cb09832126d2164"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness$click$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness$click$1.class",
+    "sha256Bytes": "81350ac83680f98638e9650e76f44292c77cc27eefe5c90c1d22931dbbbb42ce"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness$settle$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness$settle$1.class",
+    "sha256Bytes": "a956af6b8221751844b6dd177dc53bfe763561c9fa59e7756c17e978d3e9639a"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness$special$$inlined$CoroutineExceptionHandler$1.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "0f85a121ced9dca9924cec1d5e424f826c50a1d851ddf1522b177d4a5ebb9897"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\com\\bilipai\\desktop\\diagnostics\\proof\\UiHarness.class",
+    "archiveEntry": "com/bilipai/desktop/diagnostics/proof/UiHarness.class",
+    "sha256Bytes": "c69cd52b11ffedff3f9ca35abdb85ad18e9455334906c2ac74502493aa6238ca"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-product-ui-proof\\fixture-classes-43da3bd6\\META-INF\\diagnostics_product_ui_fixture.kotlin_module",
+    "archiveEntry": "META-INF/diagnostics_product_ui_fixture.kotlin_module",
+    "sha256Bytes": "4a498205303441f192ac261ad8b0117dbc439bb8c3cdf97079f27b0786010ac4"
+  }
+]

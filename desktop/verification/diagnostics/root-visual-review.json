@@ -1,0 +1,44 @@
+{
+  "reviewedBy": "Root",
+  "method": "view_image actual PNG inspection",
+  "images": [
+    {
+      "path": "lifecycle-main/final-snapshot-1/root-startup-material3/material3-root-startup-error.png",
+      "sha256Bytes": "de2e0efb3e0cbf33504e65f7cc3111c3c1f259c30df992887766a7ae4d97f92d"
+    },
+    {
+      "path": "lifecycle-main/final-snapshot-1/root-startup-miuix/miuix-root-startup-error.png",
+      "sha256Bytes": "4cbce99f63e0e2592f963e515452ccf73fbf4988f84a1efc974af0cb3d1440c9"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/miuix-light-900/after-export-result.png",
+      "sha256Bytes": "ec8d11cbf1430af425f228e6f7220e5ed181fcbd90361c3c7fabb894dd0fd61e"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/miuix-dark-720/after-export-result.png",
+      "sha256Bytes": "1a242ffca5e5d4e5f8b2fe29d8ec083f32a1a83ee522723177fa703ef12e0141"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/material3-light-720/after-export-result.png",
+      "sha256Bytes": "121885e2f286ba9afdb067648a1a85e97dabe11d6c57dd6ff625803d349ebb42"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/material3-dark-900/after-export-result.png",
+      "sha256Bytes": "e566e907756a81edf48844ee472b38a8715f48ec64045d7aa953329048f02930"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/miuix-dark-720-viewer-font-1.5/export-result-large-font-viewer.png",
+      "sha256Bytes": "f5f3fce855ba20485c2d3197c3b60f6e292a7e24c35a939c8619a6d5c9aeecc5"
+    },
+    {
+      "path": "ui-main/runs/a86126c1/material3-light-720-viewer-font-1.5/export-result-large-font-viewer.png",
+      "sha256Bytes": "8a0aa8635dbeb69cff4abc3fb9aa5085977f654256e1a187fc470c735496426e"
+    }
+  ],
+  "imagesReviewed": 8,
+  "buttonsVisibleAndTextReadable": true,
+  "orderedClasspathEntriesVerified": 234,
+  "distinctExternalJars": 226,
+  "actualProductUiClassResourceBytesVerified": 14,
+  "fullNativeWindowClaimed": false
+}

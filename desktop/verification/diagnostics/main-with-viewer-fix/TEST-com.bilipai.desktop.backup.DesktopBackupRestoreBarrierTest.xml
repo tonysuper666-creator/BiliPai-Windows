@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:42:21.672Z" hostname="TONYSUPER666" time="0.959">
+  <properties/>
+  <testcase name="failureThenValidRestoreDoesNotReuseAStaleCommitFlag()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.363"/>
+  <testcase name="successfulLocalRestoreInvokesExitOnceAfterBothFilesCommit()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.054"/>
+  <testcase name="localCommitStillCompletesExitWhenBeforeRestoreDisposesInitiatingPage()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.058"/>
+  <testcase name="cancellationBeforeStartingRestoreDoesNotReadNetworkOrExit()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.099"/>
+  <testcase name="failedQuiescenceIsNotACommitAndDoesNotExecuteExit()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.018"/>
+  <testcase name="secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.153"/>
+  <testcase name="replacementFailureRollsBackEarlierFileAndNeverSignalsSuccessfulExit()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.026"/>
+  <testcase name="commitCallbackFiresBeforeOriginalWebDavWithContextLosesReturn()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.027"/>
+  <testcase name="cancellationDuringRealDownloadPreventsRetirementAndReplacement()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.029"/>
+  <testcase name="realDownloadFailureDoesNotInvokeCommitOrExit()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.027"/>
+  <testcase name="invalidArchiveNeverRetiresPageReplacesFilesOrExits()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.013"/>
+  <testcase name="archiveSuccessCallbackIsNotCalledAfterValidationOrRollbackFailure()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.019"/>
+  <testcase name="realWebDavCommitStillCompletesExitWhenBeforeRestoreDisposesPage()" classname="com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest" time="0.056"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

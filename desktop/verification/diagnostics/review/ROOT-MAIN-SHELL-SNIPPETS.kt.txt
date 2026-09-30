@@ -1,0 +1,84 @@
+// Human-reviewed snippets only. Preserve all current guard/tree/restore code.
+// Imports: com.bilipai.desktop.diagnostics.* plus kotlinx.coroutines.cancelAndJoin.
+
+// Main.application: immediately after the actual applicationPluginStore, before Repository/player:
+val diagnosticsResult = remember(applicationPluginStore) {
+    try {
+        Result.success(DesktopDiagnostics(applicationPluginStore,
+            runCatching { DesktopUpdater.packagedVersion() }.getOrDefault("unpackaged-development"))
+            .also { DesktopDiagnosticsBridge.install(it) })
+    } catch (failure: Exception) {
+        Result.failure<DesktopDiagnostics>(failure)
+    }
+}
+val diagnostics = diagnosticsResult.getOrNull()
+val diagnosticStartupError = if (diagnosticsResult.isFailure) "诊断配置无法读取，请检查配置并重新启动。" else null
+// Display this fixed failure in the actual startup/settings UI; do not echo failure.message.
+// Replace the initial empty callback (do not merely rely on a later ReadyApp effect):
+val shutdown = remember(diagnostics) {
+    java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnostics?.shutdownForRestore() })
+}
+// Existing DesktopApp call tails: diagnostics = diagnostics, diagnosticStartupError = diagnosticStartupError.
+
+// DesktopApp must become `internal fun DesktopApp` before exposing this internal actor type.
+// Main and same-module/friend fixtures retain access; do not create a new public actor API.
+// DesktopApp nullable-compatible tail, after existing applicationPluginStore/isClosing:
+// diagnostics: DesktopDiagnostics? = null
+// diagnosticStartupError: String? = null
+// DesktopReadyApp private tail: diagnostics: DesktopDiagnostics?
+// Forward the same instance through DesktopDiscoveryStorageBoundary's ready-content call.
+
+// Replace only the startup-failure callback body, preserving actual closeDiscoveryStorage:
+SideEffect {
+    registerShutdown?.invoke {
+        withContext(NonCancellable) {
+            closeDiscoveryStorage()
+            diagnostics?.shutdownForRestore()
+            pluginStore.freezeWrites()
+        }
+    }
+}
+
+// DesktopReadyApp: after existing actual audioPlayer and retained scope declarations:
+val diagnosticObservers = remember(diagnostics, player, audioPlayer) {
+    listOfNotNull(
+        player?.let { diagnostics?.observePlayback(it.state, scope) },
+        audioPlayer?.let { diagnostics?.observePlayback(it.state, scope) },
+    )
+}
+DisposableEffect(diagnosticObservers) {
+    onDispose { diagnosticObservers.forEach { it.cancel() } }
+}
+suspend fun drainDiagnostics() {
+    diagnosticObservers.forEach { it.cancel() }
+    diagnosticObservers.forEach { it.join() }
+    diagnostics?.shutdownForRestore()
+}
+
+// Current beforeRestore block: retain actual ownership stops/cast.quiesce, then:
+drainDiagnostics() // Before community.searchPreferences.freezeWritesForRestore and pluginRuntime.shutdownForRestore.
+// Current registerShutdown callback, inside existing NonCancellable: same order.
+// Include diagnostics/diagnosticObservers in the backup remember keys as needed.
+// Never catch drain failure and continue to an archive/global-store overwrite.
+
+// Actual settings state retained beside existing dialogs:
+var showDiagnosticViewer by remember { mutableStateOf(false) }
+// Existing SYSTEM_ABOUT systemContent: retain DesktopNetworkProxySettings and Windows update action.
+diagnostics?.let { localDiagnostics ->
+    DesktopDiagnosticSettingsSection(localDiagnostics,
+        onLocalLogs = { showDiagnosticViewer = true },
+        onFailure = { error = "诊断设置保存失败，请重试" },
+        modifier = Modifier.fillMaxWidth())
+}
+diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp)) }
+// Mount after tree content inside the current appearance theme:
+if (showDiagnosticViewer && diagnostics != null) {
+    DesktopLocalDiagnosticViewer(diagnostics,
+        onDismiss = { showDiagnosticViewer = false },
+        chooseExportPath = { chooseDesktopDiagnosticExportFile(hostWindow) })
+}
+
+// Optional original local uncaught-snapshot bridge: install once in Main, not in page effects.
+// Preserve Thread.getDefaultUncaughtExceptionHandler(); use DesktopDiagnosticUncaughtHandler.
+// Restore prior handler only when Thread.getDefaultUncaughtExceptionHandler() === installedHandler.
+// No claims of native/JVM fatal-crash recovery, no Firebase SDK, no fabricated consent rows.

@@ -1,0 +1,84 @@
+{
+    "passed": true,
+    "actualAnnotatedMethods": 18,
+    "mainEdited": false,
+    "junitDiscoveredTests": 18,
+    "junitSkippedTests": 0,
+    "sharedGradleInvoked": false,
+    "headless": true,
+    "liveAccountRequests": false,
+    "tests": [
+        {
+            "test": "closingWaitsForBlockedAcceptedDiskJobsAndRejectsConcurrentLateRecords()",
+            "passed": true
+        },
+        {
+            "test": "consentPersistsAtomicallyInTheSingleOriginalGlobalSettingsKey()",
+            "passed": true
+        },
+        {
+            "test": "aColdJvmReadsPersistedConsentFromTheSameGlobalKeyBeforeFirstDetail()",
+            "passed": true
+        },
+        {
+            "test": "explicitExportIsBoundedAndCannotOverwriteAnExistingOrActiveFile()",
+            "passed": true
+        },
+        {
+            "test": "taskOwnedUncaughtHandlerKeepsLocalCrashEvidenceWithoutEnhancedConsent()",
+            "passed": true
+        },
+        {
+            "test": "historicalOversizedFileIsBoundedAndSanitizedAgainOnActualRead()",
+            "passed": true
+        },
+        {
+            "test": "falseConsentKeepsOnlyBasicWarningsErrorsAndFixedStartup()",
+            "passed": true
+        },
+        {
+            "test": "realRingAndRollingFilesKeepOriginalBoundsWithoutSplittingUtf8()",
+            "passed": true
+        },
+        {
+            "test": "actualAncestorJunctionCannotBeReadExportedOrCleared()",
+            "passed": true
+        },
+        {
+            "test": "realPlaybackStateObserverRecordsFiniteStateWithoutMediaOrAccountText()",
+            "passed": true
+        },
+        {
+            "test": "bothActualUpstreamBridgesRedactBeforeMemoryDiskAndExport()",
+            "passed": true
+        },
+        {
+            "test": "actualWindowsSharingDenialIsReportedSafelyAndDoesNotProduceAnExport()",
+            "passed": true
+        },
+        {
+            "test": "realConsentPersistenceFailureKeepsFalseStateAndCanRetry()",
+            "passed": true
+        },
+        {
+            "test": "serializedClearDeletesOnlyKnownArtifactsAndTheActualRing()",
+            "passed": true
+        },
+        {
+            "test": "originalCollectorSuppressesBurstDuplicatesButAcceptsLaterEvents()",
+            "passed": true
+        },
+        {
+            "test": "restoreShutdownDrainsAcceptedWritesAndRejectsTheRetiredFacade()",
+            "passed": true
+        },
+        {
+            "test": "actualLogsDirectoryJunctionCannotBeReadExportedOrCleared()",
+            "passed": true
+        },
+        {
+            "test": "disablingConsentRemovesDetailedFilesAndCannotBeUndoneByQueuedDetails()",
+            "passed": true
+        }
+    ]
+}

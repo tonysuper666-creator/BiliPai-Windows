@@ -1,0 +1,14 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt",
+    "baselineSha256Bytes": "ae4683885f15a9c82c33a73a72bff0052af51468b72578fcb7d781246226dc27",
+    "baselineSha256Lf": "ae4683885f15a9c82c33a73a72bff0052af51468b72578fcb7d781246226dc27",
+    "desiredSha256Lf": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt",
+    "baselineSha256Bytes": "4dfcb6057cfa8d432935e873ec5c60a3c2dce37f3250931f13dfc52398645279",
+    "baselineSha256Lf": "4dfcb6057cfa8d432935e873ec5c60a3c2dce37f3250931f13dfc52398645279",
+    "desiredSha256Lf": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+  }
+]

@@ -1,0 +1,108 @@
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '取消' at Offset(626.0, 529.0), height=900
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '同意并开启' at Offset(701.0, 529.0), height=900
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '导出日志' at Offset(120.0, 114.5), height=900
+actual pointer '导出日志' at Offset(632.0, 691.0), height=900
+actual pointer '清理日志' at Offset(704.0, 691.0), height=900
+actual pointer '关闭' at Offset(479.0, 518.0), height=900
+actual pointer '关闭' at Offset(479.0, 518.0), height=900
+UI true MATERIAL3 LIGHT 960x900; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '取消' at Offset(626.0, 439.0), height=720
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '同意并开启' at Offset(701.0, 439.0), height=720
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '导出日志' at Offset(120.0, 114.5), height=720
+actual pointer '导出日志' at Offset(632.0, 541.0), height=720
+actual pointer '清理日志' at Offset(704.0, 541.0), height=720
+actual pointer '关闭' at Offset(479.0, 428.0), height=720
+actual pointer '关闭' at Offset(479.0, 428.0), height=720
+UI true MATERIAL3 LIGHT 960x720; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '取消' at Offset(626.0, 529.0), height=900
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '同意并开启' at Offset(701.0, 529.0), height=900
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=900
+actual pointer '导出日志' at Offset(120.0, 114.5), height=900
+actual pointer '导出日志' at Offset(632.0, 691.0), height=900
+actual pointer '清理日志' at Offset(704.0, 691.0), height=900
+actual pointer '关闭' at Offset(479.0, 518.0), height=900
+actual pointer '关闭' at Offset(479.0, 518.0), height=900
+UI true MATERIAL3 DARK 960x900; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '取消' at Offset(626.0, 439.0), height=720
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '同意并开启' at Offset(701.0, 439.0), height=720
+actual pointer '增强诊断日志' at Offset(136.0, 42.5), height=720
+actual pointer '导出日志' at Offset(120.0, 114.5), height=720
+actual pointer '导出日志' at Offset(632.0, 541.0), height=720
+actual pointer '清理日志' at Offset(704.0, 541.0), height=720
+actual pointer '关闭' at Offset(479.0, 428.0), height=720
+actual pointer '关闭' at Offset(479.0, 428.0), height=720
+UI true MATERIAL3 DARK 960x720; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '取消' at Offset(499.0, 564.5), height=900
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '同意并开启' at Offset(581.5, 564.5), height=900
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '导出日志' at Offset(128.0, 125.0), height=900
+actual pointer '导出日志' at Offset(514.0, 674.5), height=900
+actual pointer '清理日志' at Offset(590.0, 674.5), height=900
+actual pointer '关闭' at Offset(440.0, 515.5), height=900
+actual pointer '关闭' at Offset(440.0, 515.5), height=900
+UI true MIUIX LIGHT 960x900; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '取消' at Offset(499.0, 474.5), height=720
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '同意并开启' at Offset(581.5, 474.5), height=720
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '导出日志' at Offset(128.0, 125.0), height=720
+actual pointer '导出日志' at Offset(514.0, 524.5), height=720
+actual pointer '清理日志' at Offset(590.0, 524.5), height=720
+actual pointer '关闭' at Offset(440.0, 425.5), height=720
+actual pointer '关闭' at Offset(440.0, 425.5), height=720
+UI true MIUIX LIGHT 960x720; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '取消' at Offset(499.0, 564.5), height=900
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '同意并开启' at Offset(581.5, 564.5), height=900
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=900
+actual pointer '导出日志' at Offset(128.0, 125.0), height=900
+actual pointer '导出日志' at Offset(514.0, 674.5), height=900
+actual pointer '清理日志' at Offset(590.0, 674.5), height=900
+actual pointer '关闭' at Offset(440.0, 515.5), height=900
+actual pointer '关闭' at Offset(440.0, 515.5), height=900
+UI true MIUIX DARK 960x900; initial IO denial PASS
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '取消' at Offset(499.0, 474.5), height=720
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '同意并开启' at Offset(581.5, 474.5), height=720
+actual pointer '增强诊断日志' at Offset(145.0, 43.5), height=720
+actual pointer '导出日志' at Offset(128.0, 125.0), height=720
+actual pointer '导出日志' at Offset(514.0, 524.5), height=720
+actual pointer '清理日志' at Offset(590.0, 524.5), height=720
+actual pointer '关闭' at Offset(440.0, 425.5), height=720
+actual pointer '关闭' at Offset(440.0, 425.5), height=720
+UI true MIUIX DARK 960x720; initial IO denial PASS
+actual pointer '导出日志' at Offset(602.0, 501.5), height=720
+actual pointer '清理日志' at Offset(694.0, 501.5), height=720
+actual pointer '关闭' at Offset(520.0, 469.5), height=720
+actual pointer '关闭' at Offset(520.0, 469.5), height=720
+PASS large-font 1.5 MATERIAL3 LIGHT 960x720 actual viewer / actual IO denial
+actual pointer '导出日志' at Offset(602.0, 501.5), height=720
+actual pointer '清理日志' at Offset(694.0, 501.5), height=720
+actual pointer '关闭' at Offset(520.0, 469.5), height=720
+actual pointer '关闭' at Offset(520.0, 469.5), height=720
+PASS large-font 1.5 MATERIAL3 DARK 960x720 actual viewer / actual IO denial
+actual pointer '导出日志' at Offset(463.0, 481.0), height=720
+actual pointer '清理日志' at Offset(573.0, 481.0), height=720
+actual pointer '关闭' at Offset(372.5, 469.0), height=720
+actual pointer '关闭' at Offset(372.5, 481.0), height=720
+PASS large-font 1.5 MIUIX LIGHT 960x720 actual viewer / actual IO denial
+actual pointer '导出日志' at Offset(463.0, 481.0), height=720
+actual pointer '清理日志' at Offset(573.0, 481.0), height=720
+actual pointer '关闭' at Offset(372.5, 469.0), height=720
+actual pointer '关闭' at Offset(372.5, 481.0), height=720
+PASS large-font 1.5 MIUIX DARK 960x720 actual viewer / actual IO denial

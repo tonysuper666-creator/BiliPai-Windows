@@ -1,0 +1,26 @@
+{
+  "commit": "ae57dc66884da3243a7f1d5c24bb734674069483",
+  "readOnlySeamBaselines": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "bdb232db00c623f285893383c24c31038254d4deeafa9d8727a7d21ec26cd5f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "aff69720581c27e246dd0f3229b730976a73dca4020ab3f602dbd35dd57ab300"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt",
+      "sha256Bytes": "d1b057e29bdce041620801682a3d3ab05c54f2312c1bebbf2fab56e43947649e"
+    }
+  ],
+  "rootFilesNotModified": true
+}

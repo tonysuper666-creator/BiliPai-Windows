@@ -1,0 +1,15 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt
+@@ -23,7 +23,11 @@
+     var result by remember{mutableStateOf<String?>(null)}
+     val scope=rememberCoroutineScope()
+     val consumerError by diagnostics.error.collectAsState()
+-    LaunchedEffect(diagnostics) {content=diagnostics.viewLocal()}
++    LaunchedEffect(diagnostics) {
++        try {content=diagnostics.viewLocal()}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(_:Exception){content="本地诊断日志无法读取，请重试";result="操作失败，请重试"}
++    }
+     fun action(block:suspend ()->Unit) {if(busy)return;busy=true;scope.launch {
+         try {block()}
+         catch(cancelled:CancellationException){throw cancelled}

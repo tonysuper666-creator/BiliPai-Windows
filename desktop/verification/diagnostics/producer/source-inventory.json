@@ -1,0 +1,34 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "sha256": "8564e68e99c3e557c9b52811803792fdaa155f483d5b015e5c9a4ab1a1925111"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-local-diagnostics-parity"
+    ],
+    "sha256": "f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6"
+  }
+]

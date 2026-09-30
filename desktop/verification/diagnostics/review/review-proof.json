@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "all322ProducerAnd234DependencyPinsVerified": true,
+  "planAndCurrentBaselineVerified": true,
+  "originalSourceIdentities": 4,
+  "originalXmlIdentities": 1,
+  "allEightRawResourceFieldsPreserved": true,
+  "existingManifestFieldsAndFeaturesPreserved": true,
+  "sourceCountBefore": 431,
+  "sourceCountAfter": 433,
+  "resourceCountBefore": 209,
+  "resourceCountAfter": 210,
+  "uniqueProducer": true,
+  "independentReferenceOutput": true,
+  "generatedFqnCollisionFound": false,
+  "newGeneratedClassCandidates": 11,
+  "deltaAfterProducerPinsVerified": true,
+  "mainWritten": false
+}

@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrHttpUsed": false,
+  "snapshotManifestSha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+  "snapshotPhase": "management-guards-restore-exit-and-error-surface",
+  "productJarPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-final-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "a6148f5486585361c45b1114f3fe10e76f3de52e90f237602656f10d01b56fb1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-final-product-snapshot\\main-java.jar",
+      "sha256Bytes": "8b713fc0b45c8d7dac2ac5446e09e6b38074fe0f0b2aa732ad3cfb7ca3522425"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-final-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "c62e0fc0362b5c9ea8cee7adf5f266a3d9d252d593dd06ebde2a5a547cb46735"
+    }
+  ],
+  "noPluginStoreOrPlayerOverride": true,
+  "diagnosticOverrides": [
+    {
+      "path": "desktop\\.local\\diagnostics-main-review\\boundary-delta\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnostics.kt",
+      "sha256Bytes": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\DesktopDiagnosticRuntimeBindings.kt",
+      "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\bridge-draft\\UpstreamLog.kt",
+      "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\bridge-draft\\UpstreamLogger.kt",
+      "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4"
+    }
+  ],
+  "generatedOriginalPolicies": [
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\generated\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\generated\\com\\android\\purebilibili\\core\\util\\DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\generated\\com\\android\\purebilibili\\core\\util\\DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d"
+    },
+    {
+      "path": "desktop\\.local\\settings-diagnostics-parity\\generated\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96"
+    }
+  ],
+  "testSha256Bytes": "8cdc31af2e0592173a08ec15449c8aff1d195fdded07a8e7a32b158a235e4aa1",
+  "junitDiscovered": 18,
+  "junitSucceeded": 18,
+  "junitSkipped": 0,
+  "junitReportSha256Bytes": "f49ff044837ce2ea17712151c22eb0fc244e00ececa9acd3478097b77dfc4bc2"
+}

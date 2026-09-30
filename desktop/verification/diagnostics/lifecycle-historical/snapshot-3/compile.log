@@ -1,0 +1,10 @@
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/dgl-snapshot-3/home
+desktop\.local\diagnostics-product-lifecycle-proof\DiagnosticProductLifecycleFixture.kt:64:49: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+private class TrackedState(initial:PlayerState):StateFlow<PlayerState> {
+                                                ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\diagnostics-product-lifecycle-proof\DiagnosticProductLifecycleFixture.kt:147:118: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Deferred<Unit>'.
+        verify("Runtime hook remains behind actual accepted writer",!hookDone.isCompleted&&(shutdown==null||!shutdown!!.isCompleted))
+                                                                                                                     ^^
+desktop\.local\diagnostics-product-lifecycle-proof\DiagnosticProductLifecycleFixture.kt:152:54: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Deferred<Unit>'.
+        if(shutdown!=null)withTimeout(10000){shutdown!!.await()} else withTimeout(10000){while(writable(global,"await_retired"))delay(5)}
+                                                     ^^

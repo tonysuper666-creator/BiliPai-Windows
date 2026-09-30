@@ -410,6 +410,23 @@ val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/network-proxy"))
 }
 
+val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-diagnostics.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/diagnostics/sources").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-diagnostics.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
+        "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-local-diagnostics-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "settings-local-diagnostics-symbol" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/diagnostics"))
+    // Own the reference-only output too; the network-proxy producer has its own copy.
+}
+
 val extractNativeMusicRoot by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -610,6 +627,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-up"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-list-ui"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/diagnostics/sources"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
@@ -618,6 +636,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractU
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

@@ -3,6 +3,7 @@ package com.bilipai.desktop
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +20,7 @@ import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.MpvStartupProbe
 import com.bilipai.desktop.update.DesktopUpdater
 import com.bilipai.desktop.update.UpdateStorage
+import com.bilipai.desktop.diagnostics.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -77,11 +79,38 @@ fun main(args: Array<String>) {
                 com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
             }
         }
+        val diagnosticsResult = remember(applicationPluginStore) {
+            openDesktopDiagnostics(applicationPluginStore,
+                runCatching { DesktopUpdater.packagedVersion() }.getOrDefault("unpackaged-development"))
+        }
+        val diagnostics = diagnosticsResult.getOrNull()
+        val diagnosticLifecycle = remember(diagnostics) { diagnostics?.let { DesktopDiagnosticLifecycle(it) } }
+        val diagnosticStartupError = if (diagnosticsResult.isFailure)
+            "诊断配置无法读取，请检查配置并重新启动。" else null
+        val diagnosticHandler = remember(diagnostics) {
+            diagnostics?.let {
+                val previous = Thread.getDefaultUncaughtExceptionHandler()
+                val handler = DesktopDiagnosticUncaughtHandler(it, previous)
+                Thread.setDefaultUncaughtExceptionHandler(handler)
+                previous to handler
+            }
+        }
+        DisposableEffect(diagnosticHandler) {
+            onDispose {
+                diagnosticHandler?.let { (previous, handler) ->
+                    if (Thread.getDefaultUncaughtExceptionHandler() === handler)
+                        Thread.setDefaultUncaughtExceptionHandler(previous)
+                }
+            }
+        }
         val repository = remember { DesktopRepository() }
+        LaunchedEffect(repository) { diagnostics?.recordStartupStage("repository_initialized") }
         val playerResult = remember { runCatching { MpvPlayer() } }
         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
         val applicationScope = rememberCoroutineScope()
-        val shutdown = remember { java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({}) }
+        val shutdown = remember(diagnosticLifecycle) {
+            java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({ diagnosticLifecycle?.shutdownForRestore() })
+        }
         val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }
         var restartFailure by remember { mutableStateOf<String?>(null) }
         fun closeApp(restart: Boolean = false) {
@@ -110,6 +139,7 @@ fun main(args: Array<String>) {
             window.minimumSize = Dimension(960, 680)
             LaunchedEffect(Unit) {
                 withFrameNanos { }
+                diagnostics?.recordStartupStage("window_content_mounted")
                 if (healthPath != null && healthToken != null && playerResult.isSuccess) {
                     runCatching {
                         withContext(Dispatchers.IO) {
@@ -142,7 +172,8 @@ fun main(args: Array<String>) {
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
                 }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
-                applicationPluginStore = applicationPluginStore, isClosing = closing::get)
+                applicationPluginStore = applicationPluginStore, isClosing = closing::get,
+                diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError)
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
                     title = { androidx.compose.material3.Text("客户端重启") },

@@ -1,0 +1,859 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ILLEGAL_INSTRUCTION (0xc000001d) at pc=0x00007ffff50c77c0, pid=19904, tid=34892
+#
+# JRE version: OpenJDK Runtime Environment Temurin-21.0.12.1+1 (21.0.12.1+1) (build 21.0.12.1+1-LTS)
+# Java VM: OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (21.0.12.1+1-LTS, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# Problematic frame:
+# C  [sk+0xb77c0]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   https://github.com/adoptium/adoptium-support/issues
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/runtime-environment/home -Dfile.encoding=UTF-8 -Djava.awt.headless=true -Djava.io.tmpdir=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/runtime-environment/temp com.bilipai.desktop.diagnostics.DiagnosticViewerFailureFixtureKt C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/original-viewer-proof original
+
+Host: AMD Ryzen 7 9700X 8-Core Processor             , 16 cores, 31G,  Windows 11 , 64 bit Build 28000 (10.0.28000.2952)
+Time: Wed Sep 30 14:04:17 2026 elapsed time: 1.421290 seconds (0d 0h 0m 1s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000009a55d4c090):  JavaThread "main"             [_thread_in_native, id=34892, stack(0x0000009a56100000,0x0000009a56200000) (1024K)]
+
+Stack: [0x0000009a56100000,0x0000009a56200000],  sp=0x0000009a561fae28,  free space=1003k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [sk+0xb77c0]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  org.jetbrains.skia.paragraph.ParagraphBuilderKt._nBuild(J)J+0
+j  org.jetbrains.skia.paragraph.ParagraphBuilderKt.access$_nBuild(J)J+1
+j  org.jetbrains.skia.paragraph.ParagraphBuilder.build()Lorg/jetbrains/skia/paragraph/Paragraph;+15
+j  androidx.compose.ui.text.platform.ParagraphBuilder.build()Lorg/jetbrains/skia/paragraph/Paragraph;+547
+j  androidx.compose.ui.text.platform.ParagraphLayouter.layoutParagraph(F)Lorg/jetbrains/skia/paragraph/Paragraph;+74
+j  androidx.compose.ui.text.platform.SkiaParagraphIntrinsics.<init>(Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Ljava/util/List;Ljava/util/List;Landroidx/compose/ui/unit/Density;Landroidx/compose/ui/text/font/FontFamily$Resolver;)V+98
+j  androidx.compose.ui.text.ParagraphIntrinsicsKt.ParagraphIntrinsics(Ljava/lang/String;Landroidx/compose/ui/text/TextStyle;Ljava/util/List;Landroidx/compose/ui/unit/Density;Landroidx/compose/ui/text/font/FontFamily$Resolver;Ljava/util/List;Z)Landroidx/compose/ui/text/ParagraphIntrinsics;+12
+j  androidx.compose.foundation.text.modifiers.ParagraphLayoutCache.setLayoutDirection(Landroidx/compose/ui/unit/LayoutDirection;)Landroidx/compose/ui/text/ParagraphIntrinsics;+65
+j  androidx.compose.foundation.text.modifiers.ParagraphLayoutCache.layoutText-K40F9xA$foundation(JLandroidx/compose/ui/unit/LayoutDirection;)Landroidx/compose/ui/text/Paragraph;+2
+j  androidx.compose.foundation.text.modifiers.ParagraphLayoutCache.layoutWithConstraints-K40F9xA(JLandroidx/compose/ui/unit/LayoutDirection;)Z+252
+j  androidx.compose.foundation.text.modifiers.TextStringSimpleNode.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+30
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.foundation.layout.BoxMeasurePolicy.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+101
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.foundation.layout.PaddingValuesModifier.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+236
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.foundation.layout.RowColumnMeasurePolicyKt.measure(Landroidx/compose/foundation/layout/RowColumnMeasurePolicy;IIIIILandroidx/compose/ui/layout/MeasureScope;Ljava/util/List;[Landroidx/compose/ui/layout/Placeable;II[II)Landroidx/compose/ui/layout/MeasureResult;+275
+j  androidx.compose.foundation.layout.RowColumnMeasurePolicyKt.measure$default(Landroidx/compose/foundation/layout/RowColumnMeasurePolicy;IIIIILandroidx/compose/ui/layout/MeasureScope;Ljava/util/List;[Landroidx/compose/ui/layout/Placeable;II[IIILjava/lang/Object;)Landroidx/compose/ui/layout/MeasureResult;+46
+j  androidx.compose.foundation.layout.ColumnMeasurePolicy.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+59
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.foundation.layout.PaddingValuesModifier.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+236
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.foundation.layout.BoxMeasurePolicy.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+101
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.ui.graphics.SimpleGraphicsLayerModifier.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+2
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.foundation.layout.BoxMeasurePolicy.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+101
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.foundation.layout.SizeNode.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+307
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.ui.window.ComposeSceneLayerMeasurePolicyKt$ComposeSceneLayerMeasurePolicy$1.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+108
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+469
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.MeasurePassDelegate.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+103
+j  androidx.compose.ui.layout.RootMeasurePolicy.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Ljava/util/List;J)Landroidx/compose/ui/layout/MeasureResult;+62
+j  androidx.compose.ui.node.InnerNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+151
+j  androidx.compose.ui.layout.RulerProviderModifierNode.measure-3p2s80s(Landroidx/compose/ui/layout/MeasureScope;Landroidx/compose/ui/layout/Measurable;J)Landroidx/compose/ui/layout/MeasureResult;+2
+j  androidx.compose.ui.node.LayoutModifierNodeCoordinator.measure-BRTryo0(J)Landroidx/compose/ui/layout/Placeable;+326
+j  androidx.compose.ui.node.MeasurePassDelegate.performMeasureBlock$lambda$0(Landroidx/compose/ui/node/MeasurePassDelegate;)Lkotlin/Unit;+8
+j  androidx.compose.ui.node.MeasurePassDelegate$$Lambda+0x0000009a010dca00.invoke()Ljava/lang/Object;+4
+j  androidx.compose.runtime.snapshots.SnapshotStateObserver.observeReads(Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)V+606
+j  androidx.compose.ui.node.MeasurePassDelegate.remeasure-BRTryo0(J)Z+291
+j  androidx.compose.ui.node.LayoutNode.remeasure-_Sx5XlM$ui(Landroidx/compose/ui/unit/Constraints;)Z+26
+j  androidx.compose.ui.node.MeasureAndLayoutDelegate.doRemeasure-sdFAvZA(Landroidx/compose/ui/node/LayoutNode;Landroidx/compose/ui/unit/Constraints;)Z+6
+j  androidx.compose.ui.node.MeasureAndLayoutDelegate.remeasureIfNeeded(Landroidx/compose/ui/node/LayoutNode;ZZ)Z+169
+j  androidx.compose.ui.node.MeasureAndLayoutDelegate.access$remeasureIfNeeded(Landroidx/compose/ui/node/MeasureAndLayoutDelegate;Landroidx/compose/ui/node/LayoutNode;ZZ)Z+4
+j  androidx.compose.ui.node.MeasureAndLayoutDelegate.measureAndLayout(Lkotlin/jvm/functions/Function0;)Z+346
+j  androidx.compose.ui.node.RootNodeOwner$OwnerImpl.measureAndLayout(Z)V+64
+j  androidx.compose.ui.node.RootNodeOwner.measureAndLayout()V+43
+j  androidx.compose.ui.scene.CanvasLayersComposeSceneImpl.doMeasureAndLayout()V+110
+j  androidx.compose.ui.scene.BaseComposeScene.measureAndLayout()V+121
+j  androidx.compose.ui.ImageComposeScene.render(J)Lorg/jetbrains/skia/Image;+24
+j  com.bilipai.desktop.diagnostics.DiagnosticViewerFailureFixtureKt$main$1.invokeSuspend$settle(Lkotlin/jvm/internal/Ref$LongRef;Landroidx/compose/ui/ImageComposeScene;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;+137
+j  com.bilipai.desktop.diagnostics.DiagnosticViewerFailureFixtureKt$main$1.invokeSuspend(Ljava/lang/Object;)Ljava/lang/Object;+656
+j  kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(Ljava/lang/Object;)V+40
+j  kotlinx.coroutines.DispatchedTask.run()V+301
+j  kotlinx.coroutines.EventLoopImplBase.processNextEvent()J+27
+j  kotlinx.coroutines.BlockingCoroutine.joinBlocking()Ljava/lang/Object;+43
+j  kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;+157
+j  kotlinx.coroutines.BuildersKt.runBlocking(Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;)Ljava/lang/Object;+2
+j  kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljava/lang/Object;+15
+j  kotlinx.coroutines.BuildersKt.runBlocking$default(Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljava/lang/Object;+4
+j  com.bilipai.desktop.diagnostics.DiagnosticViewerFailureFixtureKt.main([Ljava/lang/String;)V+21
+v  ~StubRoutines::call_stub 0x0000009a5d8110e7
+
+siginfo: EXCEPTION_ILLEGAL_INSTRUCTION (0xc000001d)
+
+
+Registers:
+RAX=0x0000009a55b41000, RBX=0x0000009a736b48a8, RCX=0x00006f365f4f0b08, RDX=0x0000000000000000
+RSP=0x0000009a561fae28, RBP=0x0000009a561faf98, RSI=0x0000009a561faf08, RDI=0x0000009a7994a610
+R8 =0x0000009a561fa0e8, R9 =0x0000000000000000, R10=0x0000000000000000, R11=0x0000009a561fa550
+R12=0x0000000000000000, R13=0x0000009a736b48a8, R14=0x0000009a561fafc0, R15=0x0000009a55d4c090
+RIP=0x00007ffff50c77c0, EFLAGS=0x0000000000010206
+
+XMM[0]=0x0000000000000000 0x0000000000000000
+XMM[1]=0x0000000000000000 0x0000000000000000
+XMM[2]=0x0000000000000000 0x0000000000000000
+XMM[3]=0x0000000000000000 0x0000000000000000
+XMM[4]=0x0000000000000000 0x0000000000000000
+XMM[5]=0x0000000000000000 0x0000000000000000
+XMM[6]=0x0000000000000000 0x1ccb11a12cb64beb
+XMM[7]=0x0000000000000000 0x0c2342a13618890c
+XMM[8]=0x0000000000000000 0xefd3b12fd2feee14
+XMM[9]=0x0000000000000000 0x4eae2dacb0295c43
+XMM[10]=0x0000000000000000 0x00000000617b2e97
+XMM[11]=0x0000000000000000 0x77ff2f3f28288b82
+XMM[12]=0x0000000000000000 0x00000000b0295c43
+XMM[13]=0x0000000000000000 0x0000000000000000
+XMM[14]=0x0000000000000000 0x0000000000000000
+XMM[15]=0x0000000000000000 0x0000000000000000
+  MXCSR=0x00001fa0
+
+
+Register to memory mapping:
+
+RAX=0x0000009a55b41000 points into unknown readable memory: 0x0000000000000000 | 00 00 00 00 00 00 00 00
+RBX={method} {0x0000009a736b48b0} '_nBuild' '(J)J' in 'org/jetbrains/skia/paragraph/ParagraphBuilderKt'
+RCX=0x00006f365f4f0b08 is an unknown value
+RDX=0x0 is null
+RSP=0x0000009a561fae28 is pointing into the stack for thread: 0x0000009a55d4c090
+RBP=0x0000009a561faf98 is pointing into the stack for thread: 0x0000009a55d4c090
+RSI=0x0000009a561faf08 is pointing into the stack for thread: 0x0000009a55d4c090
+RDI=0x0000009a7994a610 points into unknown readable memory: 0x00007ffff5b64d70 | 70 4d b6 f5 ff 7f 00 00
+R8 =0x0000009a561fa0e8 is pointing into the stack for thread: 0x0000009a55d4c090
+R9 =0x0 is null
+R10=0x0 is null
+R11=0x0000009a561fa550 is pointing into the stack for thread: 0x0000009a55d4c090
+R12=0x0 is null
+R13={method} {0x0000009a736b48b0} '_nBuild' '(J)J' in 'org/jetbrains/skia/paragraph/ParagraphBuilderKt'
+R14=0x0000009a561fafc0 is pointing into the stack for thread: 0x0000009a55d4c090
+R15=0x0000009a55d4c090 is a thread
+
+Top of Stack: (sp=0x0000009a561fae28)
+0x0000009a561fae28:   00007ffff50eef10 0000009a561faf98   ...........V....
+0x0000009a561fae38:   0000009a7994a610 00007ffff5b64dd9   ...y.....M......
+0x0000009a561fae48:   00000000000000b6 00007ffff5b64dd0   .........M......
+0x0000009a561fae58:   00007ffff50eeed8 00001ce36687493d   ........=I.f....
+0x0000009a561fae68:   00007fff9c34b5ad 0000009a561fafc0   ..4........V....
+0x0000009a561fae78:   0000009a736b48a8 0000000000000000   .Hks............
+0x0000009a561fae88:   0000000000000000 0000000000000120   ........ .......
+0x0000009a561fae98:   0000009a55d4c090 0000000000000000   ...U............
+0x0000009a561faea8:   0000000000000000 0000009a00000000   ................
+0x0000009a561faeb8:   0000009a55d4c090 00006fac0950a568   ...U....h.P..o..
+0x0000009a561faec8:   0000000000000120 00000000000000fb    ...............
+0x0000009a561faed8:   00007ffff502e7b1 0000000000000120   ........ .......
+0x0000009a561faee8:   0000009a5d81ccfc 0000009a736b48a8   ...].....Hks....
+0x0000009a561faef8:   0000009a736b48a8 0000009a736b48a8   .Hks.....Hks....
+0x0000009a561faf08:   0000009a561fafc0 00006fac0950a5e8   ...V......P..o..
+0x0000009a561faf18:   0000009a5d81ce8b 0000009a736b48a8   ...].....Hks....
+0x0000009a561faf28:   00000000000000fb 3ff0000000000000   ...............?
+0x0000009a561faf38:   0000009a55d4c090 00000000000000fb   ...U............
+0x0000009a561faf48:   0000009a5d81cb1f 0000009a561faf50   ...]....P..V....
+0x0000009a561faf58:   0000009a736b48a8 0000000000000005   .Hks............
+0x0000009a561faf68:   0000009a736b4f08 0000000000000000   .Oks............
+0x0000009a561faf78:   0000000613fb6b88 0000009a736b48a8   .k.......Hks....
+0x0000009a561faf88:   0000000000000000 0000009a561fafb8   ...........V....
+0x0000009a561faf98:   0000009a561fb010 0000009a5d81893e   ...V....>..]....
+0x0000009a561fafa8:   0000000613fb6b88 0000009a5d81a3d6   .k.........]....
+0x0000009a561fafb8:   0000009a7994a610 0000000000000000   ...y............
+0x0000009a561fafc8:   0000009a561fafc8 0000009a736b4d19   ...V.....Mks....
+0x0000009a561fafd8:   0000000000000003 0000009a736b4f08   .........Oks....
+0x0000009a561fafe8:   0000000000000000 0000000613fb6b88   .........k......
+0x0000009a561faff8:   0000009a736b4d30 0000009a561fafb8   0Mks.......V....
+0x0000009a561fb008:   0000009a561fb020 0000009a561fb088    ..V.......V....
+0x0000009a561fb018:   0000009a5d81893e 0000009a7994a610   >..].......y....
+
+Instructions: (pc=0x00007ffff50c77c0)
+0x00007ffff50c76c0:   49 83 c7 04 49 83 ff 10 0f 85 32 fe ff ff eb 3c
+0x00007ffff50c76d0:   48 89 f9 e9 0d fe ff ff 0f 2e d9 73 07 eb 4e 0f
+0x00007ffff50c76e0:   2e cb 72 49 0f 2e c2 0f 83 05 fe ff ff eb 3e 0f
+0x00007ffff50c76f0:   2e d9 72 39 0f 2e d0 0f 83 f5 fd ff ff eb 2e 0f
+0x00007ffff50c7700:   11 76 20 0f 11 76 10 0f 11 36 eb 2f 48 8d 4c 24
+0x00007ffff50c7710:   20 48 8d 54 24 30 e8 45 fa ff ff 84 c0 74 0e 48
+0x00007ffff50c7720:   8d 4c 24 20 e8 f7 dd ff ff 84 c0 74 47 0f 57 c0
+0x00007ffff50c7730:   0f 11 46 20 0f 11 46 10 0f 11 06 c7 46 30 00 00
+0x00007ffff50c7740:   00 00 48 8b 4c 24 58 48 31 e1 48 3b 0d 2f 1b c6
+0x00007ffff50c7750:   00 75 5d 48 89 f0 0f 28 74 24 60 0f 28 7c 24 70
+0x00007ffff50c7760:   48 81 c4 88 00 00 00 5b 5d 5f 5e 41 5c 41 5d 41
+0x00007ffff50c7770:   5e 41 5f c3 48 8d 4c 24 20 e8 62 e7 ff ff 8b 44
+0x00007ffff50c7780:   24 50 89 46 30 0f 28 44 24 20 0f 28 4c 24 30 0f
+0x00007ffff50c7790:   28 54 24 40 0f 11 56 20 0f 11 4e 10 0f 11 06 48
+0x00007ffff50c77a0:   8b 4c 24 58 48 31 e1 48 3b 0d d2 1a c6 00 74 a3
+0x00007ffff50c77b0:   e8 cb a6 99 00 cc 0f 0b cc cc cc cc cc cc cc cc
+0x00007ffff50c77c0:   0f 0b cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+0x00007ffff50c77d0:   48 83 ec 28 e8 3f 68 a3 00 cc cc cc cc cc cc cc
+0x00007ffff50c77e0:   48 83 ec 28 48 85 d2 74 0f e8 82 6f a4 00 48 85
+0x00007ffff50c77f0:   c0 74 16 48 83 c4 28 c3 48 85 c9 74 05 e8 9e f8
+0x00007ffff50c7800:   a3 00 31 c0 48 83 c4 28 c3 e8 0a 68 a3 00 cc cc
+0x00007ffff50c7810:   48 85 c9 0f 85 87 f8 a3 00 c3 cc cc cc cc cc cc
+0x00007ffff50c7820:   56 57 48 83 ec 28 89 d7 48 89 ce 40 f6 c7 01 75
+0x00007ffff50c7830:   10 48 89 f1 e8 87 42 a4 00 40 f6 c7 02 75 15 eb
+0x00007ffff50c7840:   23 ba 01 00 00 00 48 89 f1 e8 c2 8f a3 00 40 f6
+0x00007ffff50c7850:   c7 02 74 10 48 85 f6 0f 94 c1 48 85 c0 0f 95 c2
+0x00007ffff50c7860:   08 ca 74 07 48 83 c4 28 5f 5e c3 e8 a8 67 a3 00
+0x00007ffff50c7870:   cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+0x00007ffff50c7880:   e9 eb 04 a3 00 cc cc cc cc cc cc cc cc cc cc cc
+0x00007ffff50c7890:   c6 05 11 b6 c6 00 01 c3 cc cc cc cc cc cc cc cc
+0x00007ffff50c78a0:   0f 28 d0 0f 57 c0 0f 2e c2 73 0f f3 0f 10 05 cd
+0x00007ffff50c78b0:   28 a9 00 0f 2e d0 75 03 7a 01 c3 66 0f 7e d0 0f
+
+
+Stack slot to memory mapping:
+
+stack at sp + 0 slots: 0x00007ffff50eef10 
+stack at sp + 1 slots: 0x0000009a561faf98 is pointing into the stack for thread: 0x0000009a55d4c090
+stack at sp + 2 slots: 0x0000009a7994a610 points into unknown readable memory: 0x00007ffff5b64d70 | 70 4d b6 f5 ff 7f 00 00
+stack at sp + 3 slots: 0x00007ffff5b64dd9 
+stack at sp + 4 slots: 0x00000000000000b6 is an unknown value
+stack at sp + 5 slots: 0x00007ffff5b64dd0 
+stack at sp + 6 slots: 0x00007ffff50eeed8 
+stack at sp + 7 slots: 0x00001ce36687493d is an unknown value
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x0000009a7839c320, length=27, elements={
+0x0000009a55d4c090, 0x0000009a6f379950, 0x0000009a6f37c4b0, 0x0000009a6f37fa80,
+0x0000009a6f380be0, 0x0000009a6f3847e0, 0x0000009a6f386dc0, 0x0000009a6f39bd10,
+0x0000009a6f39e470, 0x0000009a6f39f8e0, 0x0000009a71b665a0, 0x0000009a71b66dd0,
+0x0000009a6f39eb40, 0x0000009a6f39d000, 0x0000009a773f0e50, 0x0000009a778b9650,
+0x0000009a77875eb0, 0x0000009a6f39dda0, 0x0000009a6f39f210, 0x0000009a77bcd800,
+0x0000009a777492c0, 0x0000009a77eda340, 0x0000009a77edb6f0, 0x0000009a77edbd80,
+0x0000009a77eda9d0, 0x0000009a77edd130, 0x0000009a77edc410
+}
+
+Java Threads: ( => current thread )
+=>0x0000009a55d4c090 JavaThread "main"                              [_thread_in_native, id=34892, stack(0x0000009a56100000,0x0000009a56200000) (1024K)]
+  0x0000009a6f379950 JavaThread "Reference Handler"          daemon [_thread_blocked, id=35612, stack(0x0000009a71ec0000,0x0000009a71fc0000) (1024K)]
+  0x0000009a6f37c4b0 JavaThread "Finalizer"                  daemon [_thread_blocked, id=34648, stack(0x0000009a76000000,0x0000009a76100000) (1024K)]
+  0x0000009a6f37fa80 JavaThread "Signal Dispatcher"          daemon [_thread_blocked, id=39316, stack(0x0000009a76100000,0x0000009a76200000) (1024K)]
+  0x0000009a6f380be0 JavaThread "Attach Listener"            daemon [_thread_blocked, id=10232, stack(0x0000009a76200000,0x0000009a76300000) (1024K)]
+  0x0000009a6f3847e0 JavaThread "Service Thread"             daemon [_thread_blocked, id=31860, stack(0x0000009a76300000,0x0000009a76400000) (1024K)]
+  0x0000009a6f386dc0 JavaThread "Monitor Deflation Thread"   daemon [_thread_blocked, id=15280, stack(0x0000009a76400000,0x0000009a76500000) (1024K)]
+  0x0000009a6f39bd10 JavaThread "C2 CompilerThread0"         daemon [_thread_blocked, id=39260, stack(0x0000009a76500000,0x0000009a76600000) (1024K)]
+  0x0000009a6f39e470 JavaThread "C1 CompilerThread0"         daemon [_thread_blocked, id=37848, stack(0x0000009a76600000,0x0000009a76700000) (1024K)]
+  0x0000009a6f39f8e0 JavaThread "C1 CompilerThread1"         daemon [_thread_blocked, id=36776, stack(0x0000009a76700000,0x0000009a76800000) (1024K)]
+  0x0000009a71b665a0 JavaThread "Notification Thread"        daemon [_thread_blocked, id=16720, stack(0x0000009a76800000,0x0000009a76900000) (1024K)]
+  0x0000009a71b66dd0 JavaThread "Common-Cleaner"             daemon [_thread_blocked, id=38840, stack(0x0000009a76900000,0x0000009a76a00000) (1024K)]
+  0x0000009a6f39eb40 JavaThread "C2 CompilerThread1"         daemon [_thread_blocked, id=33520, stack(0x0000009a76a00000,0x0000009a76b00000) (1024K)]
+  0x0000009a6f39d000 JavaThread "C2 CompilerThread2"         daemon [_thread_blocked, id=41444, stack(0x0000009a76b00000,0x0000009a76c00000) (1024K)]
+  0x0000009a773f0e50 JavaThread "DefaultDispatcher-worker-1" daemon [_thread_blocked, id=26200, stack(0x0000009a790d0000,0x0000009a791d0000) (1024K)]
+  0x0000009a778b9650 JavaThread "DefaultDispatcher-worker-2" daemon [_thread_blocked, id=9236, stack(0x0000009a791d0000,0x0000009a792d0000) (1024K)]
+  0x0000009a77875eb0 JavaThread "DefaultDispatcher-worker-3" daemon [_thread_blocked, id=30496, stack(0x0000009a792d0000,0x0000009a793d0000) (1024K)]
+  0x0000009a6f39dda0 JavaThread "C1 CompilerThread2"         daemon [_thread_blocked, id=6856, stack(0x0000009a793d0000,0x0000009a794d0000) (1024K)]
+  0x0000009a6f39f210 JavaThread "C1 CompilerThread3"         daemon [_thread_blocked, id=30492, stack(0x0000009a794d0000,0x0000009a795d0000) (1024K)]
+  0x0000009a77bcd800 JavaThread "Reference Cleaner"          daemon [_thread_blocked, id=6620, stack(0x0000009a78fd0000,0x0000009a790d0000) (1024K)]
+  0x0000009a777492c0 JavaThread "kotlinx.coroutines.DefaultExecutor" daemon [_thread_blocked, id=33768, stack(0x0000009a795d0000,0x0000009a796d0000) (1024K)]
+  0x0000009a77eda340 JavaThread "TimerQueue"                 daemon [_thread_blocked, id=37156, stack(0x0000009a7a6a0000,0x0000009a7a7a0000) (1024K)]
+  0x0000009a77edb6f0 JavaThread "Java2D Disposer"            daemon [_thread_blocked, id=30432, stack(0x0000009a7a7a0000,0x0000009a7a8a0000) (1024K)]
+  0x0000009a77edbd80 JavaThread "AWT-Shutdown"                      [_thread_blocked, id=24160, stack(0x0000009a7a8a0000,0x0000009a7a9a0000) (1024K)]
+  0x0000009a77eda9d0 JavaThread "AWT-Windows"                daemon [_thread_in_native, id=18452, stack(0x0000009a7a9a0000,0x0000009a7aaa0000) (1024K)]
+  0x0000009a77edd130 JavaThread "AWT-EventQueue-0"                  [_thread_blocked, id=41424, stack(0x0000009a7aaa0000,0x0000009a7aba0000) (1024K)]
+  0x0000009a77edc410 JavaThread "JNA Cleaner"                daemon [_thread_blocked, id=35160, stack(0x0000009a7aca0000,0x0000009a7ada0000) (1024K)]
+Total: 27
+
+Other Threads:
+  0x0000009a6f356ca0 VMThread "VM Thread"                           [id=31044, stack(0x0000009a71dc0000,0x0000009a71ec0000) (1024K)]
+  0x0000009a719410a0 WatcherThread "VM Periodic Task Thread"        [id=31624, stack(0x0000009a71cc0000,0x0000009a71dc0000) (1024K)]
+  0x0000009a6f1fe290 WorkerThread "GC Thread#0"                     [id=29208, stack(0x0000009a6f3c0000,0x0000009a6f4c0000) (1024K)]
+  0x0000009a77389f50 WorkerThread "GC Thread#1"                     [id=29820, stack(0x0000009a783d0000,0x0000009a784d0000) (1024K)]
+  0x0000009a77501d60 WorkerThread "GC Thread#2"                     [id=40776, stack(0x0000009a784d0000,0x0000009a785d0000) (1024K)]
+  0x0000009a77377460 WorkerThread "GC Thread#3"                     [id=19840, stack(0x0000009a785d0000,0x0000009a786d0000) (1024K)]
+  0x0000009a7704c5b0 WorkerThread "GC Thread#4"                     [id=28092, stack(0x0000009a786d0000,0x0000009a787d0000) (1024K)]
+  0x0000009a7704b6f0 WorkerThread "GC Thread#5"                     [id=536, stack(0x0000009a787d0000,0x0000009a788d0000) (1024K)]
+  0x0000009a7704be50 WorkerThread "GC Thread#6"                     [id=12296, stack(0x0000009a788d0000,0x0000009a789d0000) (1024K)]
+  0x0000009a7704baa0 WorkerThread "GC Thread#7"                     [id=17552, stack(0x0000009a789d0000,0x0000009a78ad0000) (1024K)]
+  0x0000009a7704b340 WorkerThread "GC Thread#8"                     [id=20212, stack(0x0000009a78ad0000,0x0000009a78bd0000) (1024K)]
+  0x0000009a7704cd10 WorkerThread "GC Thread#9"                     [id=10016, stack(0x0000009a78bd0000,0x0000009a78cd0000) (1024K)]
+  0x0000009a7704c960 WorkerThread "GC Thread#10"                    [id=2428, stack(0x0000009a78cd0000,0x0000009a78dd0000) (1024K)]
+  0x0000009a7704c200 WorkerThread "GC Thread#11"                    [id=29280, stack(0x0000009a78dd0000,0x0000009a78ed0000) (1024K)]
+  0x0000009a77c779c0 WorkerThread "GC Thread#12"                    [id=33312, stack(0x0000009a7aba0000,0x0000009a7aca0000) (1024K)]
+  0x0000009a5639db70 ConcurrentGCThread "G1 Main Marker"            [id=20116, stack(0x0000009a6f4c0000,0x0000009a6f5c0000) (1024K)]
+  0x0000009a5639e940 WorkerThread "G1 Conc#0"                       [id=41192, stack(0x0000009a6f5c0000,0x0000009a6f6c0000) (1024K)]
+  0x0000009a7a1023d0 WorkerThread "G1 Conc#1"                       [id=37696, stack(0x0000009a7cd40000,0x0000009a7ce40000) (1024K)]
+  0x0000009a7a1039f0 WorkerThread "G1 Conc#2"                       [id=3632, stack(0x0000009a7ce40000,0x0000009a7cf40000) (1024K)]
+  0x0000009a6f294130 ConcurrentGCThread "G1 Refine#0"               [id=35936, stack(0x0000009a716c0000,0x0000009a717c0000) (1024K)]
+  0x0000009a6f294a50 ConcurrentGCThread "G1 Service"                [id=38548, stack(0x0000009a717c0000,0x0000009a718c0000) (1024K)]
+Total: 21
+
+Threads with active compile tasks:
+Total: 0
+
+VM state: not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap address: 0x000000060f000000, size: 7952 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+
+CDS archive(s) mapped at: [0x0000009a00000000-0x0000009a00c80000-0x0000009a00c80000), size 13107200, SharedBaseAddress: 0x0000009a00000000, ArchiveRelocationMode: 1.
+Compressed class space mapped at: 0x0000009a01000000-0x0000009a41000000, reserved size: 1073741824
+Narrow klass base: 0x0000009a00000000, Narrow klass shift: 0, Narrow klass range: 0x100000000
+
+GC Precious Log:
+ CardTable entry size: 512
+ Card Set container configuration: InlinePtr #cards 4 size 8 Array Of Cards #cards 32 size 80 Howl #buckets 8 coarsen threshold 7372 Howl Bitmap #cards 1024 size 144 coarsen threshold 921 Card regions per heap region 1 cards per card region 8192
+ CPUs: 16 total, 16 available
+ Memory: 31801M
+ Large Page Support: Disabled
+ NUMA Support: Disabled
+ Compressed Oops: Enabled (Zero based)
+ Heap Region Size: 4M
+ Heap Min Capacity: 8M
+ Heap Initial Capacity: 500M
+ Heap Max Capacity: 7952M
+ Pre-touch: Disabled
+ Parallel Workers: 13
+ Concurrent Workers: 3
+ Concurrent Refinement Workers: 13
+ Periodic GC: Disabled
+
+Heap:
+ garbage-first heap   total 110592K, used 47711K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 8 young (32768K), 2 survivors (8192K)
+ Metaspace       used 25516K, committed 25856K, reserved 1114112K
+  class space    used 2565K, committed 2688K, reserved 1048576K
+
+Heap Regions: E=young(eden), S=young(survivor), O=old, HS=humongous(starts), HC=humongous(continues), CS=collection set, F=free, TAMS=top-at-mark-start, PB=parsable bottom
+|   0|0x000000060f000000, 0x000000060f400000, 0x000000060f400000|100%|HS|  |TAMS 0x000000060f000000| PB 0x000000060f000000| Complete 
+|   1|0x000000060f400000, 0x000000060f800000, 0x000000060f800000|100%| O|  |TAMS 0x000000060f400000| PB 0x000000060f400000| Untracked 
+|   2|0x000000060f800000, 0x000000060fc00000, 0x000000060fc00000|100%| O|  |TAMS 0x000000060f800000| PB 0x000000060f800000| Untracked 
+|   3|0x000000060fc00000, 0x0000000610000000, 0x0000000610000000|100%| O|  |TAMS 0x000000060fc00000| PB 0x000000060fc00000| Untracked 
+|   4|0x0000000610000000, 0x0000000610400000, 0x0000000610400000|100%| O|  |TAMS 0x0000000610000000| PB 0x0000000610000000| Untracked 
+|   5|0x0000000610400000, 0x00000006105fe120, 0x0000000610800000| 49%| O|Cm|TAMS 0x0000000610400000| PB 0x0000000610400000| Complete 
+|   6|0x0000000610800000, 0x0000000610800000, 0x0000000610c00000|  0%| F|  |TAMS 0x0000000610800000| PB 0x0000000610800000| Untracked 
+|   7|0x0000000610c00000, 0x0000000610c00000, 0x0000000611000000|  0%| F|  |TAMS 0x0000000610c00000| PB 0x0000000610c00000| Untracked 
+|   8|0x0000000611000000, 0x0000000611000000, 0x0000000611400000|  0%| F|  |TAMS 0x0000000611000000| PB 0x0000000611000000| Untracked 
+|   9|0x0000000611400000, 0x0000000611400000, 0x0000000611800000|  0%| F|  |TAMS 0x0000000611400000| PB 0x0000000611400000| Untracked 
+|  10|0x0000000611800000, 0x0000000611800000, 0x0000000611c00000|  0%| F|  |TAMS 0x0000000611800000| PB 0x0000000611800000| Untracked 
+|  11|0x0000000611c00000, 0x0000000611c00000, 0x0000000612000000|  0%| F|  |TAMS 0x0000000611c00000| PB 0x0000000611c00000| Untracked 
+|  12|0x0000000612000000, 0x0000000612000000, 0x0000000612400000|  0%| F|  |TAMS 0x0000000612000000| PB 0x0000000612000000| Untracked 
+|  13|0x0000000612400000, 0x0000000612400000, 0x0000000612800000|  0%| F|  |TAMS 0x0000000612400000| PB 0x0000000612400000| Untracked 
+|  14|0x0000000612800000, 0x0000000612800000, 0x0000000612c00000|  0%| F|  |TAMS 0x0000000612800000| PB 0x0000000612800000| Untracked 
+|  15|0x0000000612c00000, 0x0000000612c00000, 0x0000000613000000|  0%| F|  |TAMS 0x0000000612c00000| PB 0x0000000612c00000| Untracked 
+|  16|0x0000000613000000, 0x0000000613000000, 0x0000000613400000|  0%| F|  |TAMS 0x0000000613000000| PB 0x0000000613000000| Untracked 
+|  17|0x0000000613400000, 0x0000000613400000, 0x0000000613800000|  0%| F|  |TAMS 0x0000000613400000| PB 0x0000000613400000| Untracked 
+|  18|0x0000000613800000, 0x0000000613800000, 0x0000000613c00000|  0%| F|  |TAMS 0x0000000613800000| PB 0x0000000613800000| Untracked 
+|  19|0x0000000613c00000, 0x0000000614000000, 0x0000000614000000|100%| E|  |TAMS 0x0000000613c00000| PB 0x0000000613c00000| Complete 
+|  20|0x0000000614000000, 0x0000000614400000, 0x0000000614400000|100%| E|CS|TAMS 0x0000000614000000| PB 0x0000000614000000| Complete 
+|  21|0x0000000614400000, 0x0000000614800000, 0x0000000614800000|100%| E|CS|TAMS 0x0000000614400000| PB 0x0000000614400000| Complete 
+|  22|0x0000000614800000, 0x0000000614c00000, 0x0000000614c00000|100%| E|CS|TAMS 0x0000000614800000| PB 0x0000000614800000| Complete 
+|  23|0x0000000614c00000, 0x0000000615000000, 0x0000000615000000|100%| E|CS|TAMS 0x0000000614c00000| PB 0x0000000614c00000| Complete 
+| 119|0x000000062cc00000, 0x000000062cc99b00, 0x000000062d000000| 15%| S|CS|TAMS 0x000000062cc00000| PB 0x000000062cc00000| Complete 
+| 120|0x000000062d000000, 0x000000062d400000, 0x000000062d400000|100%| S|CS|TAMS 0x000000062d000000| PB 0x000000062d000000| Complete 
+| 124|0x000000062e000000, 0x000000062e400000, 0x000000062e400000|100%| E|CS|TAMS 0x000000062e000000| PB 0x000000062e000000| Complete 
+
+Card table byte_map: [0x0000009a66530000,0x0000009a674c0000] _byte_map_base: 0x0000009a634b8000
+
+Marking Bits: (CMBitMap*) 0x0000009a6f1fe650
+ Bits: [0x0000009a674c0000, 0x0000009a6f100000)
+
+Polling page: 0x0000009a55ce0000
+
+Metaspace:
+
+Usage:
+  Non-class:     22.41 MB used.
+      Class:      2.51 MB used.
+       Both:     24.92 MB used.
+
+Virtual space:
+  Non-class space:       64.00 MB reserved,      22.62 MB ( 35%) committed,  1 nodes.
+      Class space:        1.00 GB reserved,       2.62 MB ( <1%) committed,  1 nodes.
+             Both:        1.06 GB reserved,      25.25 MB (  2%) committed. 
+
+Chunk freelists:
+   Non-Class:  9.25 MB
+       Class:  13.38 MB
+        Both:  22.62 MB
+
+MaxMetaspaceSize: unlimited
+CompressedClassSpaceSize: 1.00 GB
+Initial GC threshold: 21.00 MB
+Current GC threshold: 35.12 MB
+CDS: on
+ - commit_granule_bytes: 65536.
+ - commit_granule_words: 8192.
+ - virtual_space_node_default_size: 8388608.
+ - enlarge_chunks_in_place: 1.
+ - use_allocation_guard: 0.
+
+
+Internal statistics:
+
+num_allocs_failed_limit: 3.
+num_arena_births: 382.
+num_arena_deaths: 0.
+num_vsnodes_births: 2.
+num_vsnodes_deaths: 0.
+num_space_committed: 404.
+num_space_uncommitted: 0.
+num_chunks_returned_to_freelist: 3.
+num_chunks_taken_from_freelist: 1211.
+num_chunk_merges: 3.
+num_chunk_splits: 847.
+num_chunks_enlarged: 667.
+num_inconsistent_stats: 0.
+
+CodeHeap 'non-profiled nmethods': size=119168Kb used=1166Kb max_used=1166Kb free=118001Kb
+ bounds [0x0000009a5df60000, 0x0000009a5e1d0000, 0x0000009a653c0000]
+CodeHeap 'profiled nmethods': size=119104Kb used=4871Kb max_used=4871Kb free=114232Kb
+ bounds [0x0000009a563c0000, 0x0000009a56890000, 0x0000009a5d810000]
+CodeHeap 'non-nmethods': size=7488Kb used=4159Kb max_used=4173Kb free=3328Kb
+ bounds [0x0000009a5d810000, 0x0000009a5dc30000, 0x0000009a5df60000]
+CodeCache: size=245760Kb, used=10196Kb, max_used=10210Kb, free=235561Kb
+ total_blobs=3750, nmethods=2518, adapters=1134, full_count=0
+Compilation: enabled, stopped_count=0, restarted_count=0
+
+Compilation events (20 events):
+Event: 1.391 Thread 0x0000009a6f39dda0 nmethod 2505 0x0000009a5687fc90 code [0x0000009a5687fe20, 0x0000009a5687ff58]
+Event: 1.392 Thread 0x0000009a6f39f210 2506       1       androidx.compose.ui.node.MeasurePassDelegate::getMeasurePending$ui (5 bytes)
+Event: 1.392 Thread 0x0000009a6f39dda0 2507       1       androidx.compose.ui.node.LayoutNodeLayoutDelegate::getLayoutState$ui (5 bytes)
+Event: 1.392 Thread 0x0000009a6f39f210 nmethod 2506 0x0000009a5e080710 code [0x0000009a5e0808a0, 0x0000009a5e080970]
+Event: 1.392 Thread 0x0000009a6f39dda0 nmethod 2507 0x0000009a5e080a10 code [0x0000009a5e080ba0, 0x0000009a5e080c70]
+Event: 1.392 Thread 0x0000009a6f39eb40 nmethod 2500 0x0000009a5e080d10 code [0x0000009a5e080f00, 0x0000009a5e0814d8]
+Event: 1.394 Thread 0x0000009a6f39eb40 2508       4       java.util.HashMap::get (19 bytes)
+Event: 1.397 Thread 0x0000009a6f39eb40 nmethod 2508 0x0000009a5e081890 code [0x0000009a5e081a60, 0x0000009a5e081de0]
+Event: 1.403 Thread 0x0000009a6f39bd10 2509       4       java.lang.String::<init> (74 bytes)
+Event: 1.406 Thread 0x0000009a6f39bd10 nmethod 2509 0x0000009a5e082090 code [0x0000009a5e082240, 0x0000009a5e082888]
+Event: 1.409 Thread 0x0000009a6f39bd10 2514       4       java.lang.invoke.LambdaForm::uncustomize (57 bytes)
+Event: 1.409 Thread 0x0000009a6f39bd10 nmethod 2514 0x0000009a5e083690 code [0x0000009a5e083820, 0x0000009a5e0838d0]
+Event: 1.412 Thread 0x0000009a6f39f210 2515       3       java.lang.Module::allows (60 bytes)
+Event: 1.412 Thread 0x0000009a6f39f8e0 2516       3       java.util.ImmutableCollections$Set12::contains (28 bytes)
+Event: 1.412 Thread 0x0000009a6f39f8e0 nmethod 2516 0x0000009a56880010 code [0x0000009a568801e0, 0x0000009a56880520]
+Event: 1.412 Thread 0x0000009a6f39f210 nmethod 2515 0x0000009a56880610 code [0x0000009a56880820, 0x0000009a56880e28]
+Event: 1.414 Thread 0x0000009a6f39e470 2517       3       java.lang.Module::isStaticallyExportedOrOpen (70 bytes)
+Event: 1.414 Thread 0x0000009a6f39e470 nmethod 2517 0x0000009a56880f90 code [0x0000009a568811a0, 0x0000009a56881850]
+Event: 1.415 Thread 0x0000009a6f39e470 2518       3       jdk.internal.loader.NativeLibraries$NativeLibraryImpl::find (9 bytes)
+Event: 1.415 Thread 0x0000009a6f39e470 nmethod 2518 0x0000009a56881a10 code [0x0000009a56881bc0, 0x0000009a56881d00]
+
+GC Heap History (8 events):
+Event: 0.254 GC heap before
+{Heap before GC invocations=0 (full 0):
+ garbage-first heap   total 512000K, used 24576K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 6 young (24576K), 0 survivors (0K)
+ Metaspace       used 571K, committed 768K, reserved 1114112K
+  class space    used 32K, committed 128K, reserved 1048576K
+}
+Event: 0.256 GC heap after
+{Heap after GC invocations=1 (full 0):
+ garbage-first heap   total 512000K, used 22565K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 1 young (4096K), 1 survivors (4096K)
+ Metaspace       used 571K, committed 768K, reserved 1114112K
+  class space    used 32K, committed 128K, reserved 1048576K
+}
+Event: 0.650 GC heap before
+{Heap before GC invocations=1 (full 0):
+ garbage-first heap   total 512000K, used 43045K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 6 young (24576K), 1 survivors (4096K)
+ Metaspace       used 6003K, committed 6208K, reserved 1114112K
+  class space    used 542K, committed 640K, reserved 1048576K
+}
+Event: 0.652 GC heap after
+{Heap after GC invocations=2 (full 0):
+ garbage-first heap   total 512000K, used 24982K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 1 young (4096K), 1 survivors (4096K)
+ Metaspace       used 6003K, committed 6208K, reserved 1114112K
+  class space    used 542K, committed 640K, reserved 1048576K
+}
+Event: 1.028 GC heap before
+{Heap before GC invocations=2 (full 0):
+ garbage-first heap   total 512000K, used 65942K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 11 young (45056K), 1 survivors (4096K)
+ Metaspace       used 16877K, committed 17088K, reserved 1114112K
+  class space    used 1644K, committed 1728K, reserved 1048576K
+}
+Event: 1.029 GC heap after
+{Heap after GC invocations=3 (full 0):
+ garbage-first heap   total 512000K, used 26488K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 1 young (4096K), 1 survivors (4096K)
+ Metaspace       used 16877K, committed 17088K, reserved 1114112K
+  class space    used 1644K, committed 1728K, reserved 1048576K
+}
+Event: 1.229 GC heap before
+{Heap before GC invocations=3 (full 0):
+ garbage-first heap   total 512000K, used 38776K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 5 young (20480K), 1 survivors (4096K)
+ Metaspace       used 21210K, committed 21504K, reserved 1114112K
+  class space    used 2040K, committed 2176K, reserved 1048576K
+}
+Event: 1.230 GC heap after
+{Heap after GC invocations=4 (full 0):
+ garbage-first heap   total 512000K, used 27231K [0x000000060f000000, 0x0000000800000000)
+  region size 4096K, 2 young (8192K), 2 survivors (8192K)
+ Metaspace       used 21210K, committed 21504K, reserved 1114112K
+  class space    used 2040K, committed 2176K, reserved 1048576K
+}
+
+Dll operation events (18 events):
+Event: 0.004 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\java.dll
+Event: 0.005 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\java.dll
+Event: 0.023 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jsvml.dll
+Event: 0.023 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jsvml.dll
+Event: 0.155 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\net.dll
+Event: 0.156 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\net.dll
+Event: 0.157 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\nio.dll
+Event: 0.158 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\nio.dll
+Event: 0.163 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\zip.dll
+Event: 0.164 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\zip.dll
+Event: 0.377 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jimage.dll
+Event: 0.377 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jimage.dll
+Event: 0.530 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\home\.skiko\skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b6
+Event: 0.569 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\home\.skiko\skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d
+Event: 0.792 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\awt.dll
+Event: 0.794 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\awt.dll
+Event: 1.051 Attempting to load shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\temp\jna-80007053\jna7591818142352851889.dll
+Event: 1.074 Loaded shared library C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\temp\jna-80007053\jna7591818142352851889.dll
+
+Deoptimization events (20 events):
+Event: 1.306 Thread 0x0000009a55d4c090 Uncommon trap: trap_request=0xffffffc6 fr.pc=0x0000009a5dff32d8 relative=0x00000000000002f8
+Event: 1.306 Thread 0x0000009a55d4c090 Uncommon trap: reason=bimorphic_or_optimized_type_check action=maybe_recompile pc=0x0000009a5dff32d8 method=java.util.HashMap.getNode(Ljava/lang/Object;)Ljava/util/HashMap$Node; @ 63 c2
+Event: 1.306 Thread 0x0000009a55d4c090 DEOPT PACKING pc=0x0000009a5dff32d8 sp=0x0000009a561fb040
+Event: 1.306 Thread 0x0000009a55d4c090 DEOPT UNPACKING pc=0x0000009a5d867ba2 sp=0x0000009a561fafa8 mode 2
+Event: 1.306 Thread 0x0000009a55d4c090 Uncommon trap: trap_request=0xffffffc6 fr.pc=0x0000009a5dff32d8 relative=0x00000000000002f8
+Event: 1.306 Thread 0x0000009a55d4c090 Uncommon trap: reason=bimorphic_or_optimized_type_check action=maybe_recompile pc=0x0000009a5dff32d8 method=java.util.HashMap.getNode(Ljava/lang/Object;)Ljava/util/HashMap$Node; @ 63 c2
+Event: 1.306 Thread 0x0000009a55d4c090 DEOPT PACKING pc=0x0000009a5dff32d8 sp=0x0000009a561fb040
+Event: 1.306 Thread 0x0000009a55d4c090 DEOPT UNPACKING pc=0x0000009a5d867ba2 sp=0x0000009a561fafa8 mode 2
+Event: 1.320 Thread 0x0000009a55d4c090 Uncommon trap: trap_request=0xffffff45 fr.pc=0x0000009a5dff4110 relative=0x0000000000000070
+Event: 1.320 Thread 0x0000009a55d4c090 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000009a5dff4110 method=java.lang.ref.ReferenceQueue.poll()Ljava/lang/ref/Reference; @ 4 c2
+Event: 1.320 Thread 0x0000009a55d4c090 DEOPT PACKING pc=0x0000009a5dff4110 sp=0x0000009a561f7630
+Event: 1.320 Thread 0x0000009a55d4c090 DEOPT UNPACKING pc=0x0000009a5d867ba2 sp=0x0000009a561f75c0 mode 2
+Event: 1.372 Thread 0x0000009a55d4c090 Uncommon trap: trap_request=0xffffffde fr.pc=0x0000009a5dfb04d0 relative=0x00000000000001b0
+Event: 1.372 Thread 0x0000009a55d4c090 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000009a5dfb04d0 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8 c2
+Event: 1.372 Thread 0x0000009a55d4c090 DEOPT PACKING pc=0x0000009a5dfb04d0 sp=0x0000009a561fd2e0
+Event: 1.372 Thread 0x0000009a55d4c090 DEOPT UNPACKING pc=0x0000009a5d867ba2 sp=0x0000009a561fd268 mode 2
+Event: 1.372 Thread 0x0000009a55d4c090 Uncommon trap: trap_request=0xffffffde fr.pc=0x0000009a5dfb04d0 relative=0x00000000000001b0
+Event: 1.372 Thread 0x0000009a55d4c090 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000009a5dfb04d0 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8 c2
+Event: 1.372 Thread 0x0000009a55d4c090 DEOPT PACKING pc=0x0000009a5dfb04d0 sp=0x0000009a561fd1f0
+Event: 1.372 Thread 0x0000009a55d4c090 DEOPT UNPACKING pc=0x0000009a5d867ba2 sp=0x0000009a561fd178 mode 2
+
+Classes loaded (20 events):
+Event: 1.115 Loading class com/sun/org/apache/xerces/internal/dom/AttrImpl done
+Event: 1.115 Loading class com/sun/org/apache/xerces/internal/dom/DeferredAttrImpl done
+Event: 1.118 Loading class jdk/internal/foreign/MemorySessionImpl
+Event: 1.118 Loading class java/lang/foreign/MemorySegment$Scope
+Event: 1.118 Loading class java/lang/foreign/MemorySegment$Scope done
+Event: 1.118 Loading class jdk/internal/foreign/MemorySessionImpl done
+Event: 1.295 Loading class java/awt/datatransfer/DataFlavor
+Event: 1.295 Loading class java/io/Externalizable
+Event: 1.295 Loading class java/io/Externalizable done
+Event: 1.295 Loading class java/awt/datatransfer/DataFlavor done
+Event: 1.295 Loading class java/awt/datatransfer/MimeTypeParameterList
+Event: 1.295 Loading class java/awt/datatransfer/MimeTypeParameterList done
+Event: 1.295 Loading class java/awt/datatransfer/MimeType
+Event: 1.295 Loading class java/awt/datatransfer/MimeType done
+Event: 1.320 Loading class java/awt/Cursor
+Event: 1.320 Loading class java/awt/Cursor done
+Event: 1.320 Loading class java/awt/Cursor$1
+Event: 1.320 Loading class sun/awt/AWTAccessor$CursorAccessor
+Event: 1.320 Loading class sun/awt/AWTAccessor$CursorAccessor done
+Event: 1.320 Loading class java/awt/Cursor$1 done
+
+Classes unloaded (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (20 events):
+Event: 1.239 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000062e053080}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, long, java.lang.Object, java.lang.Object, java.lang.Object)'> (0x000000062e053080) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.240 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000062e05aed0}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000062e05aed0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.240 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000062e05f000}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, long, java.lang.Object)'> (0x000000062e05f000) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.240 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000062e062c10}: 'java.lang.Object java.lang.invoke.Invokers$Holder.linkToTargetMethod(java.lang.Object, long, java.lang.Object, java.lang.Object)'> (0x000000062e062c10) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.289 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x0000000614e8d030}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStaticInit(java.lang.Object, long)'> (0x0000000614e8d030) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.294 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x0000000614f3f920}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, int, long)'> (0x0000000614f3f920) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.309 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006148d67d0}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStaticInit(java.lang.Object, int)'> (0x00000006148d67d0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.316 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006149a46d8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, java.lang.Object, long)'> (0x00000006149a46d8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.317 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006149ae2a8}: 'long java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object)'> (0x00000006149ae2a8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.343 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006145a6158}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, int)'> (0x00000006145a6158) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.343 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006145aa488}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, java.lang.Object, int)'> (0x00000006145aa488) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.343 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006145ade80}: 'java.lang.Object java.lang.invoke.Invokers$Holder.linkToTargetMethod(java.lang.Object, java.lang.Object, int, java.lang.Object)'> (0x00000006145ade80) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.360 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006141641d0}: 'int java.lang.invoke.DirectMethodHandle$Holder.invokeStaticInit(java.lang.Object, java.lang.Object)'> (0x00000006141641d0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.383 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x0000000614342690}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, long, java.lang.Object)'> (0x0000000614342690) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.383 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006143481f8}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, long)'> (0x00000006143481f8) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.385 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x00000006143688f0}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, int, int)'> (0x00000006143688f0) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.385 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000061436c748}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeSpecial(java.lang.Object, java.lang.Object, java.lang.Object, int, int)'> (0x000000061436c748) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.386 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x000000061438d918}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, long, long, java.lang.Object)'> (0x000000061438d918) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.407 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x0000000613eea238}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.invokeStatic(java.lang.Object, java.lang.Object, int, java.lang.Object, int)'> (0x0000000613eea238) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+Event: 1.407 Thread 0x0000009a55d4c090 Exception <a 'java/lang/NoSuchMethodError'{0x0000000613ef1388}: 'java.lang.Object java.lang.invoke.DirectMethodHandle$Holder.newInvokeSpecial(java.lang.Object, java.lang.Object, int)'> (0x0000000613ef1388) 
+thrown [s\src\hotspot\share\interpreter\linkResolver.cpp, line 773]
+
+ZGC Phase Switch (0 events):
+No events
+
+VM Operations (20 events):
+Event: 0.611 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize)
+Event: 0.611 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize) done
+Event: 0.650 Executing safepoint VM operation: G1CollectForAllocation (G1 Evacuation Pause)
+Event: 0.652 Executing safepoint VM operation: G1CollectForAllocation (G1 Evacuation Pause) done
+Event: 0.813 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize)
+Event: 0.813 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize) done
+Event: 0.822 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize)
+Event: 0.822 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize) done
+Event: 1.028 Executing safepoint VM operation: G1CollectForAllocation (G1 Evacuation Pause)
+Event: 1.029 Executing safepoint VM operation: G1CollectForAllocation (G1 Evacuation Pause) done
+Event: 1.083 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize)
+Event: 1.083 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize) done
+Event: 1.088 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize)
+Event: 1.088 Executing non-safepoint VM operation: HandshakeAllThreads (Deoptimize) done
+Event: 1.228 Executing safepoint VM operation: CollectForMetadataAllocation (Metadata GC Threshold)
+Event: 1.230 Executing safepoint VM operation: CollectForMetadataAllocation (Metadata GC Threshold) done
+Event: 1.233 Executing safepoint VM operation: G1PauseRemark
+Event: 1.234 Executing safepoint VM operation: G1PauseRemark done
+Event: 1.234 Executing safepoint VM operation: G1PauseCleanup
+Event: 1.235 Executing safepoint VM operation: G1PauseCleanup done
+
+Memory protections (0 events):
+No events
+
+Nmethod flushes (0 events):
+No events
+
+Events (20 events):
+Event: 0.152 Thread 0x0000009a55d4c090 Thread added: 0x0000009a71b66dd0
+Event: 0.162 Thread 0x0000009a6f39f8e0 Thread added: 0x0000009a6f39eb40
+Event: 0.162 Thread 0x0000009a6f39f8e0 Thread added: 0x0000009a6f39d000
+Event: 0.340 Thread 0x0000009a55d4c090 Thread added: 0x0000009a77cbce60
+Event: 0.349 Thread 0x0000009a55d4c090 Thread added: 0x0000009a773f0e50
+Event: 0.349 Thread 0x0000009a55d4c090 Thread added: 0x0000009a778b9650
+Event: 0.349 Thread 0x0000009a773f0e50 Thread added: 0x0000009a77875eb0
+Event: 0.353 Thread 0x0000009a6f39f8e0 Thread added: 0x0000009a6f39dda0
+Event: 0.353 Thread 0x0000009a6f39f8e0 Thread added: 0x0000009a6f39f210
+Event: 0.403 Thread 0x0000009a77cbce60 Thread exited: 0x0000009a77cbce60
+Event: 0.423 Thread 0x0000009a55d4c090 Thread added: 0x0000009a77bcd800
+Event: 0.609 Thread 0x0000009a55d4c090 Thread added: 0x0000009a774889b0
+Event: 0.612 Thread 0x0000009a774889b0 Thread exited: 0x0000009a774889b0
+Event: 0.614 Thread 0x0000009a773f0e50 Thread added: 0x0000009a777492c0
+Event: 0.799 Thread 0x0000009a55d4c090 Thread added: 0x0000009a77eda340
+Event: 0.821 Thread 0x0000009a77eda340 Thread added: 0x0000009a77edb6f0
+Event: 0.824 Thread 0x0000009a77eda340 Thread added: 0x0000009a77edbd80
+Event: 0.824 Thread 0x0000009a77eda340 Thread added: 0x0000009a77eda9d0
+Event: 0.831 Thread 0x0000009a77eda340 Thread added: 0x0000009a77edd130
+Event: 1.085 Thread 0x0000009a55d4c090 Thread added: 0x0000009a77edc410
+
+
+Dynamic libraries:
+0x00007ff716c20000 - 0x00007ff716c2e000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\java.exe
+0x00007ff8c0400000 - 0x00007ff8c0665000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff8bf490000 - 0x00007ff8bf55b000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff8bd7c0000 - 0x00007ff8bdbca000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff8bde70000 - 0x00007ff8bdfbd000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff886bf0000 - 0x00007ff886c0e000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\VCRUNTIME140.dll
+0x00007ff885e20000 - 0x00007ff885e38000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jli.dll
+0x00007ff8bf760000 - 0x00007ff8bf928000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff8bd790000 - 0x00007ff8bd7b7000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff89b360000 - 0x00007ff89b5f5000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.28000.2804_none_cc7d899023a6959a\COMCTL32.dll
+0x00007ff8bf720000 - 0x00007ff8bf753000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff8bf670000 - 0x00007ff8bf719000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff8bdd40000 - 0x00007ff8bde65000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff8bd660000 - 0x00007ff8bd704000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff8bf1f0000 - 0x00007ff8bf298000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff8be050000 - 0x00007ff8be082000 	C:\WINDOWS\System32\IMM32.DLL
+0x00007ff88e980000 - 0x00007ff88e98c000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\vcruntime140_1.dll
+0x00007ff838770000 - 0x00007ff8387fd000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\msvcp140.dll
+0x00007fff9bcc0000 - 0x00007fff9ca62000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\server\jvm.dll
+0x00007ff8bfae0000 - 0x00007ff8bfb9c000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff8c0200000 - 0x00007ff8c031a000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff8c0170000 - 0x00007ff8c01f2000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff8ae620000 - 0x00007ff8ae656000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff8bd170000 - 0x00007ff8bd1cf000 	C:\WINDOWS\SYSTEM32\POWRPROF.dll
+0x00007ff8b6950000 - 0x00007ff8b695b000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ff8bd150000 - 0x00007ff8bd16a000 	C:\WINDOWS\SYSTEM32\UMPDC.dll
+0x00007ff8bc240000 - 0x00007ff8bc25b000 	C:\WINDOWS\SYSTEM32\kernel.appcore.dll
+0x00007ff88e610000 - 0x00007ff88e61a000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jimage.dll
+0x00007ff8acfb0000 - 0x00007ff8ad28b000 	C:\WINDOWS\SYSTEM32\DBGHELP.DLL
+0x00007ff8bfc40000 - 0x00007ff8bffc9000 	C:\WINDOWS\System32\combase.dll
+0x00007ff8be8f0000 - 0x00007ff8be9ca000 	C:\WINDOWS\System32\OLEAUT32.dll
+0x00007ff898fc0000 - 0x00007ff89900a000 	C:\WINDOWS\SYSTEM32\dbgcore.DLL
+0x00007ff8bdbd0000 - 0x00007ff8bdc77000 	C:\WINDOWS\System32\bcryptPrimitives.dll
+0x00007ff883dc0000 - 0x00007ff883de0000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\java.dll
+0x00007ff8be9f0000 - 0x00007ff8bf182000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ff8bafb0000 - 0x00007ff8bb876000 	C:\WINDOWS\SYSTEM32\windows.storage.dll
+0x00007ff8c0060000 - 0x00007ff8c015f000 	C:\WINDOWS\System32\SHCORE.dll
+0x00007ff8bf560000 - 0x00007ff8bf5c6000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ff8bd3c0000 - 0x00007ff8bd3e9000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x00007ff82a470000 - 0x00007ff82a547000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\jsvml.dll
+0x00007ff88e2e0000 - 0x00007ff88e2f0000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\net.dll
+0x00007ff8b5bc0000 - 0x00007ff8b5ce3000 	C:\WINDOWS\SYSTEM32\WINHTTP.dll
+0x00007ff8bdfd0000 - 0x00007ff8be03c000 	C:\WINDOWS\System32\mswsock.dll
+0x00007ff87b400000 - 0x00007ff87b416000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\nio.dll
+0x00007ff87ac70000 - 0x00007ff87ac88000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\zip.dll
+0x00007ff8bcb20000 - 0x00007ff8bcb3b000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x00007ff8bc1a0000 - 0x00007ff8bc1d9000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007ff8bc7c0000 - 0x00007ff8bc7f2000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ff8bd630000 - 0x00007ff8bd659000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ff8bc970000 - 0x00007ff8bc97c000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007ff8bbbd0000 - 0x00007ff8bbc02000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ff8c0050000 - 0x00007ff8c005a000 	C:\WINDOWS\System32\NSI.dll
+0x00007ffff5010000 - 0x00007ffff5d9f000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\home\.skiko\skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38\sk
+0x00007ff8bf930000 - 0x00007ff8bfacd000 	C:\WINDOWS\System32\ole32.dll
+0x00007ff8ba8e0000 - 0x00007ff8ba90f000 	C:\WINDOWS\SYSTEM32\dwmapi.dll
+0x00007ff8b81c0000 - 0x00007ff8b82ba000 	C:\WINDOWS\SYSTEM32\PROPSYS.dll
+0x00007ff8b8a00000 - 0x00007ff8b8c6b000 	C:\WINDOWS\SYSTEM32\dwrite.dll
+0x00007ff824570000 - 0x00007ff8246ff000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\awt.dll
+0x00007ff8ba190000 - 0x00007ff8ba237000 	C:\WINDOWS\SYSTEM32\apphelp.dll
+0x00007ff8ba5b0000 - 0x00007ff8ba659000 	C:\WINDOWS\system32\uxtheme.dll
+0x00007ff8bf2a0000 - 0x00007ff8bf400000 	C:\WINDOWS\System32\MSCTF.dll
+0x00007ff841aa0000 - 0x00007ff841ae9000 	C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\temp\jna-80007053\jna7591818142352851889.dll
+0x00007ff8c03a0000 - 0x00007ff8c03a8000 	C:\WINDOWS\System32\PSAPI.DLL
+
+JVMTI agents: none
+
+dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
+symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.28000.2804_none_cc7d899023a6959a;C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\jdk\jdk-21.0.12.1+1\bin\server;C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\home\.skiko\skiko-windows-x64-5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38;C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\temp\jna-80007053
+
+VM Arguments:
+jvm_args: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/runtime-environment/home -Dfile.encoding=UTF-8 -Djava.awt.headless=true -Djava.io.tmpdir=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/runtime-environment/temp 
+java_command: com.bilipai.desktop.diagnostics.DiagnosticViewerFailureFixtureKt C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/original-viewer-proof original
+java_class_path (initial): C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/classes-original;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/blocked-up-foundation-product-snapshot/main-kotlin.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/blocked-up-foundation-product-snapshot/main-java.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/blocked-up-foundation-product-snapshot/main-resources.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.20.0/f0a5e62fbd21285e9a5498a60dccb097e1ef793b/jackson-databind-2.20.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.20.0/3c97f7fad069f7cfae639d790bd93d6a0b2dff31/jackson-core-2.20.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.20/6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c/jackson-annotations-2.20.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.protobuf/protobuf-javalite/4.33.2/3a0984fa90730fa7f54fe6027c41320b2a1c6833/protobuf-javalite-4.33.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/material3-desktop-1.12.0-alpha03.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/miuix-5157-desktop.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/colormath-jvm.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/graphics-shapes-desktop-1.1.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/material-color-utilities-jvm.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/material-kolor-jvm.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/material3-window-size-class-desktop-1.12.0-alpha03.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/navigationevent-compose-desktop-1.1.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/source9-appearance/deps/navigationevent-desktop-1.1.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.annotation/annotation-jvm/1.9.1/b17951747e38bf3986a24431b9ba0d039958aa5f/annotation-jvm-1.9.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.arch.core/core-common/2.2.0/5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3/core-common-2.2.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.benchmark/benchmark-baseline-profile-gradle-plugin/1.5.0/ce45d59a676b6af1cf52ad861746a0e63c4465ed/benchmark-baseline-profile-gradle-plugin-1.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.collection/collection-jvm/1.5.0/7ba2c69414d46ebc2dd76598bdd0a75c54281a57/collection-jvm-1.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.compose.runtime/runtime-annotation-jvm/1.12.1/4cf2b71ea98c0d69c95a2885e521ba28af5fa7a0/runtime-annotation-jvm-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.compose.runtime/runtime-desktop/1.12.1/82e40832ddf785e9c0c15c4186d32f8c894fd914/runtime-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.compose.runtime/runtime-retain-desktop/1.12.1/3aa3ec26ef2a3d26bc556b51b33d09efc1a198e8/runtime-retain-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.compose.runtime/runtime-saveable-desktop/1.12.1/8cacc17c590b2ac5fabf040c4f66d432092a821/runtime-saveable-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.databinding/databinding-common/9.3.2/6f14d56ba3258fd1e803e71bc6c589235141c317/databinding-common-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.databinding/databinding-compiler-common/9.3.2/87c394c7e0964072b1aa052e12476635c03d087c/databinding-compiler-common-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-jvm/2.11.0/2c4f7d92f1fd723121d394c93455f50158403ad9/lifecycle-common-jvm-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-common-jvm/2.9.4/ab739bccdb3541983385af169565c7c035d897e7/lifecycle-common-jvm-2.9.4.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-runtime-compose-desktop/2.11.0/8a85615b7e4f5728106bf7bc3cfa95f429eb6264/lifecycle-runtime-compose-desktop-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-runtime-compose-desktop/2.9.4/86a4ffec845d4e488078118a0b5095bd1fabcafe/lifecycle-runtime-compose-desktop-2.9.4.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-runtime-desktop/2.11.0/c2b5e2f7d739375538c2a74757531a30607f85ff/lifecycle-runtime-desktop-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-runtime-desktop/2.9.4/1cc820319ec0139e76b8a2fe4be0b356b4e624c4/lifecycle-runtime-desktop-2.9.4.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel-compose-desktop/2.11.0/29daa46bc0d2d574ee95309be1f325764f40b35b/lifecycle-viewmodel-compose-desktop-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel-desktop/2.11.0/156dea0e0e4862b60bc14881891bae1e5df64f81/lifecycle-viewmodel-desktop-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.lifecycle/lifecycle-viewmodel-savedstate-desktop/2.11.0/4e8025bc47a196b0ee403b8d915393ae7922c21a/lifecycle-viewmodel-savedstate-desktop-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.savedstate/savedstate-compose-desktop/1.4.0/d3d6e0e2108528eb6080dc250da925a572be4202/savedstate-compose-desktop-1.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/androidx.savedstate/savedstate-desktop/1.4.0/3b049a0f81643d6b4b900de95bc23efc085c32d5/savedstate-desktop-1.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android/signflinger/9.3.2/931575c0547261e249124c8749ece3b1664763a5/signflinger-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android/zipflinger/9.3.2/468d84015634e21c1607b7cb298fff3017dbe19/zipflinger-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.databinding/baseLibrary/9.3.2/a3e410a22b3d7b2608151d2052d044cd3a35ae06/baseLibrary-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/annotations/32.3.2/755aa98f446d71a443d30a732b42f906cce94a44/annotations-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/common/32.3.2/e2dd8ff92482185d068768e76b0c12cd458a08a6/common-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/dvlib/32.3.2/f115a6eb073c3f6e4a7c1f6c70570b66ae7c0118/dvlib-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/repository/32.3.2/d2ac23b098f7fafec4669cb11d0c2cf1d06989e7/repository-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/sdk-common/32.3.2/555ddb6aa0f71a3c58e0c25488631d270d7b240b/sdk-common-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools/sdklib/32.3.2/5fd02b90225cda01748244553eb36d55a58b4bc1/sdklib-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/crash/32.3.2/6288d92666ab051f1da094203622c1c0ee68040f/crash-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/protos/32.3.2/e3a5a51afdb6758a794d51945edbec9008523d39/protos-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/shared/32.3.2/5b22e4cf57c695cc98278a93cddcdb4316852ed9/shared-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.analytics-library/tracker/32.3.2/3a36e8061a564e2b61ed4f63405f90e278cb5c22/tracker-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/aapt2-proto/9.3.2-15703166/cbffec6e4effe25da0382f547eafab6d38847f9c/aapt2-proto-9.3.2-15703166.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/aaptcompiler/9.3.2/9cdb9896f5ca8b245bc9cac168250c5d88779c5/aaptcompiler-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/apksig/9.3.2/2881101f6a9d0baf6a341926ef0ff08c98a5d13b/apksig-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/apkzlib/9.3.2/2d508e789301c4756d0ad8bc9cdc59fed0d65aac/apkzlib-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/builder/9.3.2/f9fdaab774037c649303d97015bfb4ffe3d6f1/builder-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/builder-model/9.3.2/f63d5214bf1caed742652f6f83d73a753f5759ed/builder-model-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/builder-test-api/9.3.2/a6e38343c3f6fd6ce1f833e569bce4b2d85b0182/builder-test-api-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/bundletool/1.18.3/8d7bee8e57a4158a872ed99190a60a498c2adc8d/bundletool-1.18.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/gradle/9.3.2/141fa146cec89cac3e59c0d484b661bf906308fc/gradle-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/gradle-api/9.3.2/235bc40d88166150741dbd287d5456167533d4c0/gradle-api-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/gradle-common-api/9.3.2/188fc42710d4072ae7f02415b497fe311041b555/gradle-common-api-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/gradle-settings-api/9.3.2/fcfedf9a56578511894c869f71eaecafbf5e49e6/gradle-settings-api-9.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build/manifest-merger/32.3.2/5cc6d988caebc6e176745e80585ae106996cb5d7/manifest-merger-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build.jetifier/jetifier-core/1.0.0-beta10/6e621022a9c95af12a7004d6b55805bbd1126837/jetifier-core-1.0.0-beta10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.build.jetifier/jetifier-processor/1.0.0-beta10/946c39eb0c052ff4f60a8939648a8b99af20d604/jetifier-processor-1.0.0-beta10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.ddms/ddmlib/32.3.2/aca0819e3a033e8de0f4d8290c7063cda7b4ab7c/ddmlib-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.layoutlib/layoutlib-api/32.3.2/eee422fd98ca6c84709748601b7c84290717727c/layoutlib-api-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-model/32.3.2/7ec5bdf1929abef00a524b6ba1837f4df823b43e/lint-model-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.lint/lint-typedef-remover/32.3.2/b8665f5c42647d7d4088cd386d5d1d10e40fd9a2/lint-typedef-remover-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.android.tools.utp/gradle-work-action-api/32.3.2/9f8423f22abe1068b0a8d5f144b49ac7fb148c83/gradle-work-action-api-32.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.20/6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c/jackson-annotations-2.20.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.20.0/3c97f7fad069f7cfae639d790bd93d6a0b2dff31/jackson-core-2.20.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.20.0/f0a5e62fbd21285e9a5498a60dccb097e1ef793b/jackson-databind-2.20.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.android.gms/strict-version-matcher-plugin/1.2.4/37f8b2ab56ecab699697602acdd598cb6d809b38/strict-version-matcher-plugin-1.2.4.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.auto.value/auto-value-annotations/1.6.2/ed193d86e0af90cc2342aedbe73c5d86b03fa09b/auto-value-annotations-1.6.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.code.gson/gson/2.11.0/527175ca6d81050b53bdd4c457a6d6e017626b0e/gson-2.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.crypto.tink/tink/1.7.0/668b57f109d32349b2870448f06ae6f202713edc/tink-1.7.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.dagger/dagger/2.28.3/10d83810ef9e19714116ed518896c90c6606d633/dagger-2.28.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.devtools.ksp/symbol-processing-api/2.3.10/a6f7d2f5cb6f63aed0e07eb53db1bf6ed07151d6/symbol-processing-api-2.3.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.devtools.ksp/symbol-processing-common-deps/2.3.10/f0bb28d7b911d8bd53e480c4678badbdede9507b/symbol-processing-common-deps-2.3.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.devtools.ksp/symbol-processing-gradle-plugin/2.3.10/305dc21d624de19d002813606ff7251997ac90e4/symbol-processing-gradle-plugin-2.3.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.27.0/91b2c29d8a6148b5e2e4930f070d4840e2e48e34/error_prone_annotations-2.27.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.36.0/227d4d4957ccc3dc5761bd897e3a0ee587e750a7/error_prone_annotations-2.36.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.firebase/firebase-crashlytics-buildtools/3.0.2/bf4fd481d6d33a465600cc0472028e35cb543ef6/firebase-crashlytics-buildtools-3.0.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.firebase/firebase-crashlytics-gradle/3.0.2/3182b73d85ebf2bad7ac117240a11a886dd7168c/firebase-crashlytics-gradle-3.0.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.flatbuffers/flatbuffers-java/1.12.0/8201cc7b511177a37071249e891f2f2fea4b32e9/flatbuffers-java-1.12.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.gms/google-services/4.4.2/4d61599d56846c0cf3c6b466260a3d08b9032d55/google-services-4.4.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.2/c4a06a64e650562f30b7bf9aaec1bfed43aca12b/failureaccess-1.0.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.guava/guava/33.4.0-jre/3fcc0a259f724c7de54a6a55ea7e26d3d5c0cac/guava-33.4.0-jre.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/3.0.0/7399e65dd7e9ff3404f4535b2f017093bdb134c7/j2objc-annotations-3.0.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.jimfs/jimfs/1.1/8fbd0579dc68aba6186935cc1bee21d2f3e7ec1c/jimfs-1.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.25.5/5ae5c9ec39930ae9b5a61b32b93288818ec05ec1/protobuf-java-3.25.5.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java-util/3.25.5/38cc5ce479603e36466feda2a9f1dfdb2210ef00/protobuf-java-util-3.25.5.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.protobuf/protobuf-javalite/4.33.2/3a0984fa90730fa7f54fe6027c41320b2a1c6833/protobuf-javalite-4.33.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.testing.platform/core-proto/0.0.8-alpha08/72ca52065789993f2f029b34d797813c467d5d74/core-proto-0.0.8-alpha08.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.google.zxing/core/3.5.4/955fcd6bcd0723ddfb8ee6ed502d5fdf0e9676a9/core-3.5.4.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.googlecode.juniversalchardet/juniversalchardet/1.0.3/cd49678784c46aa8789c060538e0154013bb421b/juniversalchardet-1.0.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup/javapoet/1.13.0/d6562d385049f35eb50403fa86bb11cce76b866a/javapoet-1.13.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup/javawriter/2.5.0/81241ff7078ef14f42ea2a8995fa09c096256e6b/javawriter-2.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-jvm/5.3.2/f31e8de27feebe1e56d6c9d354a0986b65be0e1d/okhttp-jvm-5.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup.okio/okio-jvm/3.17.0/a12d684ec0df9541b3869ae60a4a5257fd3613df/okio-jvm-3.17.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-kotlinx-serialization/3.0.0/3541df11c0990f4a25610480c990d0e071a81e48/converter-kotlinx-serialization-3.0.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/3.0.0/c0cdf6d243c5187732134129fda05a74f9197874/retrofit-3.0.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.sun.istack/istack-commons-runtime/3.0.8/d6a97364045aa6b99bf2d3c566a3f98599c2d296/istack-commons-runtime-3.0.8.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/com.sun.xml.fastinfoset/FastInfoset/1.2.16/4eb6a0adad553bf759ffe86927df6f3b848c8bea/FastInfoset-1.2.16.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/commons-codec/commons-codec/1.17.1/973638b7149d333563584137ebf13a691bb60579/commons-codec-1.17.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/commons-io/commons-io/2.16.1/377d592e740dc77124e0901291dbfaa6810a200e/commons-io-2.16.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-compose-core-jvm/3.5.0/8ebdd416d1157820ca47dc6a7644c56716a9c8fa/coil-compose-core-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-compose-jvm/3.5.0/820523ee39decd98eecdb61a7fc03412eedbbabc/coil-compose-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-core-jvm/3.5.0/5e82ee4827a88516057cb4ebd22871f6672643a8/coil-core-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-jvm/3.5.0/602087c06fa4b1795a1572a26b174516c4d932e5/coil-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-network-core-jvm/3.5.0/5a995a2262efe8e8569b40fee8ce223aaa5599d8/coil-network-core-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/io.coil-kt.coil3/coil-network-okhttp-jvm/3.5.0/e988cf6fa65f8b93287f98a6ec36e54e39f72fc9/coil-network-okhttp-jvm-3.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.1/562a587face36ec7eff2db7f2fc95425c6602bc1/jakarta.activation-api-1.2.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.xml.bind-api/2.3.2/8d49996a4338670764d7ca4b85a1c4ccf7fe665d/jakarta.xml.bind-api-2.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/net.java.dev.jna/jna/5.17.0/33d12735bef894440780fce64f9758d420c7bae2/jna-5.17.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/net.java.dev.jna/jna-platform/5.6.0/d18424ffb8bbfd036d71bcaab9b546858f2ef986/jna-platform-5.6.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/4.9/ee9e9eaa0a35360dcfeac129ff4923215fd65904/jopt-simple-4.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/net.sf.kxml/kxml2/2.3.0/ccbc77a5fd907ef863c29f3596c6f54ffa4e9442/kxml2-2.3.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.27.1/a19151084758e2fbb6b41eddaa88e7b8ff4e6599/commons-compress-1.27.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.16.0/3eb54effe40946dfb06dc5cd6c7ce4116cd51ea4/commons-lang3-3.16.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.14/1194890e6f56ec29177673f2f12d0b8e627dec98/httpclient-4.5.14.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.16/51cf043c87253c9f58b539c9f7e44c8894223850/httpcore-4.4.16.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apache.httpcomponents/httpmime/4.5.6/164343da11db817e81e24e0d9869527e069850c9/httpmime-4.5.6.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.2/a231e0d844d2721b0fa1b238006d15c6ded6842a/apiguardian-api-1.1.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.bitbucket.b_c/jose4j/0.9.5/e4ca26802488e6f16e24558d74ac8775a955fdd3/jose4j-0.9.5.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.bouncycastle/bcpkix-jdk18on/1.79/7693cec3b8779b74b35466dcaeeaac7409872954/bcpkix-jdk18on-1.79.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.bouncycastle/bcprov-jdk18on/1.79/4d8e2732bcee15f1db93df266c3f5b70ce5cac21/bcprov-jdk18on-1.79.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.bouncycastle/bcutil-jdk18on/1.79/ecfc5aef97cc7676ea0de5c53c407b9f533f0ad5/bcutil-jdk18on-1.79.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.brotli/dec/0.1.2/c26a897ae0d524809eef1c786cc6183b4ddcc3b/dec-0.1.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.43.0/9425eee39e56b116d2b998b7c2cebcbd11a3c98b/checker-qual-3.43.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.glassfish.jaxb/jaxb-runtime/2.3.2/5528bc882ea499a09d720b42af11785c4fc6be2a/jaxb-runtime-2.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.glassfish.jaxb/txw2/2.3.2/ce5be7da2e442c25ec14c766cb60cb802741727b/txw2-2.3.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jdom/jdom2/2.0.6/6f14738ec2e9dd0011e343717fa624a10f8aab64/jdom2-2.0.6.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains/annotations/23.0.0/8cc20c07506ec18e0834947b84a864bfc094484e/annotations-23.0.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.androidx.lifecycle/lifecycle-runtime-compose-desktop/2.9.6/7b6b6793f3c4c5996b20d1d99cf728e5fac00364/lifecycle-runtime-compose-desktop-2.9.6.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.androidx.savedstate/savedstate-compose-desktop/1.3.6/63692375ffe667f12cb3ea8aa1e605d659ed2add/savedstate-compose-desktop-1.3.6.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose/compose-gradle-plugin/1.12.1/44480059e10d65d4b1fb19779c67f92074a6285f/compose-gradle-plugin-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose/gradle-plugin-internal-jdk-version-probe/1.12.1/5aec890bc3049ef79b6d1ac617c15dac9d87e878/gradle-plugin-internal-jdk-version-probe-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-core-desktop/1.12.1/a14cdb09ab8792b6b20d298d0a26530969228b0f/animation-core-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.animation/animation-desktop/1.12.1/4e815509a4bedbf3ff9f3ce292c548989a00ff53/animation-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.desktop/desktop-jvm/1.12.1/55722afc383641f44e5059e3a87e076436190826/desktop-jvm-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-desktop/1.12.1/cb418f810ab36f9268c13816a6b21d9cd6ffa4b7/foundation-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.foundation/foundation-layout-desktop/1.12.1/64d4f43ec090a85f3069762a5c39a147c6d2c9aa/foundation-layout-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.hot-reload/hot-reload-gradle-plugin/1.2.0/d14920bb191e1f9402ba7529b3e5bf4e58410dc/hot-reload-gradle-plugin-1.2.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-desktop/1.12.1/6d090e795e1575f46fcd5f993f38c2e34b976a32/material-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-core-desktop/1.7.3/414b3096050fe647b0638832eace80f22c06b85c/material-icons-core-desktop-1.7.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-icons-extended-desktop/1.7.3/c7c5465dd754043076875b32bce0dd7f5a354fe8/material-icons-extended-desktop-1.7.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.material/material-ripple-desktop/1.12.1/b4b34a8be94b8c41526d448a58d7ce2256872df5/material-ripple-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-desktop/1.12.1/d9b0c5277cd9ba7a116fbb06e1716d02d0b33401/runtime-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.runtime/runtime-saveable-desktop/1.12.1/b4a48d211ac0281b049bf42cb21f715c71b69145/runtime-saveable-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-backhandler-desktop/1.12.1/170494f680ff0f7532eeba0f4ba936b54224ed32/ui-backhandler-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-desktop/1.12.1/a6d765fb5086ca7046af0172a7fc2ff3b32a3e59/ui-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-geometry-desktop/1.12.1/21ca5715bcde50586e57506f07b280ff8b626bdb/ui-geometry-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-graphics-desktop/1.12.1/dc0dbaa823b75a72d2306459e0a118b65769aa22/ui-graphics-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-text-desktop/1.12.1/af2aab56220491e300daa1def6ce1e586f18d84/ui-text-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-tooling-preview-desktop/1.12.1/9871d626c28849c2f353e15d7694e38d7996ddcc/ui-tooling-preview-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-unit-desktop/1.12.1/e0670f2fc4ace09368fdba41c15558e1fa79e866/ui-unit-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.compose.ui/ui-util-desktop/1.12.1/2d41b1dcda0c16efa86718f309fe2159a2890028/ui-util-desktop-1.12.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/compose-compiler-gradle-plugin/2.4.0/a8bc25f160ade06795a4a51e3d774f17c7ac769d/compose-compiler-gradle-plugin-2.4.0-gradle813.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/fus-statistics-gradle-plugin/2.4.0/9394ff2e790b58298b84b7d6ddd2a2ef076e8eee/fus-statistics-gradle-plugin-2.4.0-gradle813.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-statistics/2.4.0/d58fcc98c1ef7f350a59a9becaa35830c9b1ace0/kotlin-build-statistics-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-tools-api/2.4.0/46429d5887df2d02f33fe11a0c8444c5be5fd8da/kotlin-build-tools-api-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-tools-compat/2.4.0/209372718c8759fbcb47402dc130d45f00c3f81/kotlin-build-tools-compat-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-tools-cri-impl/2.4.0/7fdfe4b4de70b7e6d81c054572e862121aa1603a/kotlin-build-tools-cri-impl-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-build-tools-impl/2.4.0/3dde5b4075cd7963afd0b0b2835627f40abc1149/kotlin-build-tools-impl-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-embeddable/2.4.0/f1a24af8bd111a83950236b1aec7a6d72a97e92c/kotlin-compiler-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compiler-runner/2.4.0/d2b2336d493d2d3a8047c826cb27606f67029da8/kotlin-compiler-runner-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-compose-compiler-plugin-embeddable/2.4.0/77913398cd4a9cb385000d56d51501954d1da6db/kotlin-compose-compiler-plugin-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-daemon-client/2.4.0/e9080614f98d07554367b7e5810529963e9f43e2/kotlin-daemon-client-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-daemon-embeddable/2.4.0/1ecabef3a8ba6a8e25654573d54edb7e4136e903/kotlin-daemon-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin/2.4.0/18bfb59ea7d01e0ae925f5a5535e61a98624ed3f/kotlin-gradle-plugin-2.4.0-gradle813.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-annotations/2.4.0/64ef8148d7fdcc5db57915ec2a9d9c5b0ce6896/kotlin-gradle-plugin-annotations-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-api/2.4.0/75cef3ce6f6086fd3943cc614158c889b84ce5d1/kotlin-gradle-plugin-api-2.4.0-gradle813.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-idea/2.4.0/905431b905fbd7c516de862a1179d7ab5fae3955/kotlin-gradle-plugin-idea-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-gradle-plugin-idea-proto/2.4.0/c64be4d760a576018704234952e752ec8670bea3/kotlin-gradle-plugin-idea-proto-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-klib-commonizer-api/2.4.0/e5b767303bd219c67a07f1f4ddc1b35359148660/kotlin-klib-commonizer-api-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-native-utils/2.4.0/f6fd432652adcecbbd70ec0018ce445918f63cac/kotlin-native-utils-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.6.10/1cbe9c92c12a94eea200d23c2bbaedaf3daf5132/kotlin-reflect-1.6.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/2.3.20/3a78af768b3747778b9db000088ea1cbfb996942/kotlin-reflect-2.3.20.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-script-runtime/2.4.0/1de03f0ef3e208ab5f97ee6a587e9b8480447df6/kotlin-script-runtime-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-common/2.4.0/d0a53d62601b10b7ad700c3c5df57bb5a8262afd/kotlin-scripting-common-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-compiler-embeddable/2.4.0/d475e00905218e947dfc90bb208884ca5ab8dcd0/kotlin-scripting-compiler-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-compiler-impl-embeddable/2.4.0/2d8ee9cea72bb0a1c71699e6768cb47266390d5e/kotlin-scripting-compiler-impl-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-scripting-jvm/2.4.0/27e313ed6d09e223634ed031382c019e2fdd6d94/kotlin-scripting-jvm-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-serialization/2.4.0/76a324c418080699db12c99a3c47a004f0eb360a/kotlin-serialization-2.4.0-gradle813.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-serialization-compiler-plugin-embeddable/2.4.0/9c09aa2727d9ade95c1b0a00458e74feced83908/kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/2.4.0/4e9f4b531dce5c7dee58ed2de9a8b9a763c8dc6c/kotlin-stdlib-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/2.2.10/18cc96ae090a71726822631e1808c7d329faab5d/kotlin-stdlib-jdk7-2.2.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/2.2.10/80cc9a776a058eeda7053731350bc41af8858a5a/kotlin-stdlib-jdk8-2.2.10.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test/2.4.0/c9a0c254adade886172cb021c0b099d8be1a5fc4/kotlin-test-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-test-junit5/2.4.0/3a25dcc853e90ef0ee264b0f532791966bea9cb6/kotlin-test-junit5-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-tooling-core/2.4.0/75970f5a2a9cb4d25557965bbec0a7ccd55bfbcf/kotlin-tooling-core-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-util-io/2.4.0/5cbad06319bd397dde521561701c0f5b36cd7faf/kotlin-util-io-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-util-klib/2.4.0/336a8a1bd6fab18c5e529811076de2c0d46b3cdb/kotlin-util-klib-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-util-klib-metadata/2.4.0/83486d03b118c0fd8a3c6901f9990fd90d9f8591/kotlin-util-klib-metadata-2.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-jvm/0.28.0/6a9ac536f4b2144e57c176fd4e26821eb12084f4/atomicfu-jvm-0.28.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-collections-immutable-jvm/0.4.0/82499bf608b0fc3ae6737a5eac1a1f1325279bbf/kotlinx-collections-immutable-jvm-0.4.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.10.2/4a9f78ef49483748e2c129f3d124b8fa249dafbf/kotlinx-coroutines-core-jvm-1.10.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.8.0/ac1dc37a30a93150b704022f8d895ee1bd3a36b3/kotlinx-coroutines-core-jvm-1.8.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.9.0/9beade4c1c1569e4f36cbd2c37e02e3e41502601/kotlinx-coroutines-core-jvm-1.9.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-swing/1.10.2/ccb5a2e7c83fa76da0ba4677f05678d3bd3eed57/kotlinx-coroutines-swing-1.10.2.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-datetime-jvm/0.7.1/81c2e0246bd28cc2dcbdf0ab53628322e66a9de9/kotlinx-datetime-jvm-0.7.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core-jvm/1.11.0/c1905c9bf7452b045d5af9248835abe64ddad6bf/kotlinx-serialization-core-jvm-1.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json-jvm/1.11.0/e7e045e99e56f07599bb9ccb708c2190e2af0606/kotlinx-serialization-json-jvm-1.11.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.runtime/jbr-api/1.9.0/2bc161f5472b5fd5610740e4d6ebe896c811cb0e/jbr-api-1.9.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt/0.150.1/e03fd8140c0e331c3c7018b00a9710ec98d78fc1/skiko-awt-0.150.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jetbrains.skiko/skiko-awt-runtime-windows-x64/0.150.1/f709996c593fdd677168a054d09f7dcd91b6b51e/skiko-awt-runtime-windows-x64-0.150.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jmdns/jmdns/3.6.3/14e89b6d4cb6fb27194d48c353e4fb78486dabb/jmdns-3.6.3.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.json/json/20240303/ebb88e8fb5122b7506d5cf1d69f1ccdb790d22a/json-20240303.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jspecify/jspecify/1.0.0/7425a601c1c7ec76645a78d22b8c6a627edee507/jspecify-1.0.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.10.1/eb90c7d8bfaae8fdc97b225733fcb595ddd72843/junit-jupiter-api-5.10.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.10.1/6c9ff773f9aa842b91d1f2fe4658973252ce2428/junit-jupiter-engine-5.10.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.10.1/2bfcd4a4e38b10c671b6916d7e543c20afe25579/junit-platform-commons-1.10.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.10.1/f32ae4af74fde68414b8a3d2b7cf1fb43824a83a/junit-platform-engine-1.10.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.10.1/ce85bf5e38bee0989ded9bd468dd4ff78dc0cfa8/junit-platform-launcher-1.10.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.jvnet.staxex/stax-ex/1.8.1/78011e483a21102fb4858f3e8f269a677e50aa23/stax-ex-1.8.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.nanohttpd/nanohttpd/2.3.1/a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c/nanohttpd-2.3.1.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.3.0/152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e/opentest4j-1.3.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.ow2.asm/asm/9.9/c29635c8a7afa03d74b33c1884df8abb2b3f3dcc/asm-9.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.9/bf4fa6e66638851c1cd22c2caea0c3ee5d5f437/asm-analysis-9.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.9/db9165a3bf908ded6b08612d583a15d1d0c7bda0/asm-commons-9.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.9/f8de6eead6d24dd0f45bd065bbe112b2cda6ea21/asm-tree-9.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.9/42fdfc0508b43807c8078d6e82ecff2ce2112ae8/asm-util-9.9.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.30/b5a4b6d16ab13e34a88fae84c35cd5d68cac922c/slf4j-api-1.7.30.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.17/d9e58ac9c7779ba3bf8142aff6c830617a7fe60f/slf4j-api-2.0.17.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.tensorflow/tensorflow-lite-metadata/0.2.0/7dbe8f75ae5c0ef7093c43c3ac8b560bbc7ea4b6/tensorflow-lite-metadata-0.2.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/settings-search-parity/dependencies/pinyin4j-2.5.0.jar;C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/toolchain/gradle-home/caches/modules-2/files-2.1/org.json/json/20240303/ebb88e8fb5122b7506d5cf1d69f1ccdb790d22a/json-20240303.jar
+Launcher Type: SUN_STANDARD
+
+[Global flags]
+     intx CICompilerCount                          = 12                                        {product} {ergonomic}
+     uint ConcGCThreads                            = 3                                         {product} {ergonomic}
+     uint G1ConcRefinementThreads                  = 13                                        {product} {ergonomic}
+   size_t G1HeapRegionSize                         = 4194304                                   {product} {ergonomic}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+   size_t InitialHeapSize                          = 524288000                                 {product} {ergonomic}
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MaxHeapSize                              = 8338276352                                {product} {ergonomic}
+   size_t MaxNewSize                               = 4999610368                                {product} {ergonomic}
+   size_t MinHeapDeltaBytes                        = 4194304                                   {product} {ergonomic}
+   size_t MinHeapSize                              = 8388608                                   {product} {ergonomic}
+    uintx NonNMethodCodeHeapSize                   = 7602480                                {pd product} {ergonomic}
+    uintx NonProfiledCodeHeapSize                  = 122027880                              {pd product} {ergonomic}
+    uintx ProfiledCodeHeapSize                     = 122027880                              {pd product} {ergonomic}
+    uintx ReservedCodeCacheSize                    = 251658240                              {pd product} {ergonomic}
+     bool SegmentedCodeCache                       = true                                      {product} {ergonomic}
+   size_t SoftMaxHeapSize                          = 8338276352                             {manageable} {ergonomic}
+     bool UseCompressedOops                        = true                           {product lp64_product} {ergonomic}
+     bool UseG1GC                                  = true                                      {product} {ergonomic}
+     bool UseLargePagesIndividualAllocation        = false                                  {pd product} {ergonomic}
+
+Logging:
+Log output configuration:
+ #0: stdout all=warning uptime,level,tags foldmultilines=false
+ #1: stderr all=off uptime,level,tags foldmultilines=false
+
+Release file:
+IMPLEMENTOR="Eclipse Adoptium" 
+IMPLEMENTOR_VERSION="Temurin-21.0.12.1+1" 
+JAVA_RUNTIME_VERSION="21.0.12.1+1-LTS" 
+JAVA_VERSION="21.0.12.1" 
+JAVA_VERSION_DATE="2026-08-18" 
+LIBC="default" 
+MODULES="java.base java.compiler java.datatransfer java.xml java.prefs java.desktop java.instrument java.logging java.management java.security.sasl java.naming java.rmi java.management.rmi java.net.http java.scripting java.security.jgss java.transaction.xa java.sql java.sql.rowset java.xml.crypto java.se java.smartcardio jdk.accessibility jdk.internal.jvmstat jdk.attach jdk.charsets jdk.internal.opt jdk.zipfs jdk.compiler jdk.crypto.ec jdk.crypto.cryptoki jdk.crypto.mscapi jdk.dynalink jdk.internal.ed jdk.editpad jdk.hotspot.agent jdk.httpserver jdk.incubator.vector jdk.internal.le jdk.internal.vm.ci jdk.internal.vm.compiler jdk.internal.vm.compiler.management jdk.jartool jdk.javadoc jdk.jcmd jdk.management jdk.management.agent jdk.jconsole jdk.jdeps jdk.jdwp.agent jdk.jdi jdk.jfr jdk.jlink jdk.jpackage jdk.jshell jdk.jsobject jdk.jstatd jdk.localedata jdk.management.jfr jdk.naming.dns jdk.naming.rmi jdk.net jdk.nio.mapmode jdk.random jdk.sctp jdk.security.auth jdk.security.jgss jdk.unsupported jdk.unsupported.desktop jdk.xml.dom" 
+OS_ARCH="x86_64" 
+OS_NAME="Windows" 
+SOURCE=".:git:1c417fbfc2f7" 
+BUILD_SOURCE="git:e6ba7dec3d07654074559310376a3ae89da5f4ac"
+BUILD_SOURCE_REPO="https://github.com/adoptium/temurin-build.git"
+SOURCE_REPO="https://github.com/adoptium/jdk21u.git"
+FULL_VERSION="21.0.12.1+1-LTS"
+SEMANTIC_VERSION="21.0.12.1+1"
+BUILD_INFO="OS: Windows Server 2022 Version: 10.0"
+JVM_VARIANT="Hotspot"
+JVM_VERSION="21.0.12.1+1-LTS"
+IMAGE_TYPE="JDK"
+
+Environment Variables:
+JAVA_TOOL_OPTIONS=-Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-main-review/boundary-delta/runtime-environment/home
+PATH=C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell;C:\Users\TONYS\.codex\tmp\arg0\codex-arg0OTlVnB;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\libheif\libheif\bin;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\jxrlib\jxrlib\bin;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\poppler\Library\bin;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\override;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;E:\Bandizip;C:\Program Files\Tailscale\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Git\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Users\TONYS\AppData\Local\Programs\Python\Python312\Scripts\;C:\Users\TONYS\AppData\Local\Programs\Python\Python312\;C:\Users\TONYS\AppData\Local\Programs\Python\Launcher\;C:\Users\TONYS\.cargo\bin;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\powershell;C:\Users\TONYS\AppData\Local\Microsoft\WindowsApps;C:\Users\TONYS\AppData\Roaming\npm;C:\Users\TONYS\AppData\Local\Microsoft\WinGet\Links;E:\CodeBuddy CN\bin;C:\Users\TONYS\.workbuddy\binaries\node\versions\22.22.2;C:\Users\TONYS\.lmstudio\bin;C:\Users\TONYS\.dotnet\tools;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\fallback;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin;C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\native\git\cmd;C:\Users\TONYS\AppData\Local\OpenAI\Codex\bin\438f63242d1bcf85;C:\Users\TONYS\AppData\Local\OpenAI\Codex\bin\ca9abb0b4d8ac692
+USERNAME=TONYS
+SHELL=C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe
+LANG=C.UTF-8
+LC_ALL=C.UTF-8
+LC_CTYPE=C.UTF-8
+TERM=dumb
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD
+TMP=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\tmp
+TEMP=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\diagnostics-main-review\boundary-delta\runtime-environment\temp
+
+
+
+
+Periodic native trim disabled
+
+---------------  S Y S T E M  ---------------
+
+OS:
+ Windows 11 , 64 bit Build 28000 (10.0.28000.2952)
+OS uptime: 0 days 16:01 hours
+Hyper-V role detected
+
+CPU: total 16 (initial active 16) (16 cores per cpu, 2 threads per core) family 26 model 68 stepping 0 microcode 0xb404032, cx8, cmov, fxsr, ht, mmx, 3dnowpref, sse, sse2, sse3, ssse3, sse4a, sse4.1, sse4.2, popcnt, lzcnt, tsc, tscinvbit, avx, avx2, aes, erms, clmul, bmi1, bmi2, adx, avx512f, avx512dq, avx512cd, avx512bw, avx512vl, sha, fma, vzeroupper, avx512_vpopcntdq, avx512_vpclmulqdq, avx512_vaes, avx512_vnni, clflush, clflushopt, avx512_vbmi2, avx512_vbmi, hv, rdtscp, rdpid, fsrm, gfni, avx512_bitalg, f16c, cet_ss, avx512_ifma
+Processor Information for the first 16 processors :
+  Max Mhz: 3800, Current Mhz: 3800, Mhz Limit: 3800
+
+Memory: 4k page, system-wide physical 31801M (11852M free)
+TotalPageFile size 66617M (AvailPageFile size 34251M)
+current process WorkingSet (physical memory assigned to process): 185M, peak: 205M
+current process commit charge ("private bytes"): 287M, peak: 695M
+
+vm_info: OpenJDK 64-Bit Server VM (21.0.12.1+1-LTS) for windows-amd64 JRE (21.0.12.1+1-LTS), built on 2026-08-18T00:00:00Z by "admin" with MS VC++ 17.12 (VS2022)
+
+END.

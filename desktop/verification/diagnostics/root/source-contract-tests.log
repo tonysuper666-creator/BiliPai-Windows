@@ -1,0 +1,9 @@
+test_entire_original_pure_region_reaches_product_with_documented_adapters (__main__.DiagnosticSources.test_entire_original_pure_region_reaches_product_with_documented_adapters) ... ok
+test_original_collector_retains_sanitizer_ring_and_dedupe (__main__.DiagnosticSources.test_original_collector_retains_sanitizer_ring_and_dedupe) ... ok
+test_original_consent_dialog_body_reaches_product_unchanged (__main__.DiagnosticSources.test_original_consent_dialog_body_reaches_product_unchanged) ... ok
+test_original_local_crash_policy_reaches_product_unchanged (__main__.DiagnosticSources.test_original_local_crash_policy_reaches_product_unchanged) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.041s
+
+OK
