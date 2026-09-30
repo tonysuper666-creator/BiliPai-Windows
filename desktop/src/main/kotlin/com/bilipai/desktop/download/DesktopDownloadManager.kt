@@ -27,7 +27,7 @@ class DesktopDownloadManager internal constructor(
     private val sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = null,
     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
 ) : AutoCloseable {
-    constructor(repository: DesktopRepository) : this(repository.httpClient, defaultStateFile(), WindowsFfmpegMuxer(),
+    constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
         defaultSourceResolver(repository), defaultDanmakuDownloader(repository))
 
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }

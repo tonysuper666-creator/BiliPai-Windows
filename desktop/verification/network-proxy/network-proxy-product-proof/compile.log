@@ -1,0 +1,6 @@
+desktop\.local\network-proxy-product-proof\ProductProxyFixture.kt:253:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\network-proxy-product-proof\ProductProxyUiFixture.kt:129:5: warning: expression is unused.
+    Unit
+    ^^^^

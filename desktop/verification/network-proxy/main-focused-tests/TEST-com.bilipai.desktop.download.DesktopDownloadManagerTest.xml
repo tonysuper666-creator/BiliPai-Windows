@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.download.DesktopDownloadManagerTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:47:12.294Z" hostname="TONYSUPER666" time="0.721">
+  <properties/>
+  <testcase name="expired media URLs refresh through shared source resolver and preserve final tracks()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.354"/>
+  <testcase name="mux failure retains both tracks for a successful retry()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.053"/>
+  <testcase name="audio only task produces M4A from audio track without downloading video()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.031"/>
+  <testcase name="offline resume position persists and resets when the original policy reaches the end()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.046"/>
+  <testcase name="failed optional cover does not lose successfully downloaded media()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.031"/>
+  <testcase name="missing middle offline danmaku file retains its original six minute slot()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.048"/>
+  <testcase name="Windows merge uses argument array and copy with both explicit tracks()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.003"/>
+  <testcase name="output filename excludes Windows reserved names and path components()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.001"/>
+  <testcase name="Windows multi segment command uses safe local concat and explicit copy tracks()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.0"/>
+  <testcase name="upstream downloader resumes exact byte range from existing part()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.01"/>
+  <testcase name="upstream parallel ranges are assembled in original order()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.03"/>
+  <testcase name="multi durl downloads every segment in order and persists aggregate bytes()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.054"/>
+  <testcase name="completed task points to merged file and survives manager restart()" classname="com.bilipai.desktop.download.DesktopDownloadManagerTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

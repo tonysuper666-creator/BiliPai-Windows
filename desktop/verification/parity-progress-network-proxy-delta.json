@@ -1,0 +1,34 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "0794047e98141c8b1f4ed591f323fc19184f6ef5",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-settings-tree-fields-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts and isolated work are excluded from main progress.",
+  "changes": [
+    {
+      "group": "settings",
+      "weight": 5,
+      "previousMainCredit": 3.25,
+      "currentMainCredit": 3.5,
+      "remainingCredit": 1.5,
+      "basis": "Original effective proxy settings, startup/store wiring and actual application/media consumers are integrated and locally exercised.",
+      "remaining": "Remaining settings/diagnostics/logging/blacklist/platform fields and consumers; full native/package acceptance."
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 94.25,
+    "isolatedReadyPoints": 1.0,
+    "unfinishedOrUnverifiedPoints": 42.75,
+    "weightedReviewedProgressPercent": 68.3,
+    "presentation": "约68%，按完整原项目功能和底层行为对齐的人工粗估。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-network-proxy-integration.json",
+  "newDesktopDeployment": false
+}

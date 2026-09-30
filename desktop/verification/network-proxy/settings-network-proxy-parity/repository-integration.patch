@@ -1,0 +1,19 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -64,6 +64,7 @@
+     private val authMutex = Mutex()
+     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+     private val client = OkHttpClient.Builder()
++        .proxySelector(com.bilipai.desktop.network.DesktopNetworkProxyPlatform.buildAppProxySelector())
+         .cookieJar(sessions)
+         .connectTimeout(15, TimeUnit.SECONDS)
+         .readTimeout(25, TimeUnit.SECONDS)
+@@ -134,6 +135,8 @@
+     private val playbackCache = DesktopPlaybackCache()
+ 
+     internal val httpClient: OkHttpClient get() = client
++    private val playbackClient by lazy { com.bilipai.desktop.network.DesktopNetworkProxyPlatform.buildPlaybackOkHttpClient(client) }
++    internal val playbackHttpClient: OkHttpClient get() = playbackClient
+     internal suspend fun ensureSession() = ensureVisitorSession()
+     internal suspend fun signWebParams(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
+         forceRefresh: Boolean = false) = sign(params, includeRiskFingerprint, forceRefresh)

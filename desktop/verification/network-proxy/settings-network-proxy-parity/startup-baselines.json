@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+    "sha256Bytes": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "sha256Bytes": "e0738ea48ed11db0067a578a0fa69b381902b495dc45dde0c8466635b08db05f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+    "sha256Bytes": "27a8f24c2797e2db2b7f8d30eec422ac4a1054e79836b052ab4831518d6dcd8e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "sha256Bytes": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "sha256Bytes": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9"
+  }
+]

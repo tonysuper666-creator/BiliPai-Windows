@@ -1,0 +1,93 @@
+{
+  "passed": true,
+  "frozenArtifactsVerified": 281,
+  "dependenciesVerified": 234,
+  "originalSourceInputsVerified": 4,
+  "originalResourceInputsVerified": 2,
+  "generatedProductOutputsExactFrozenMatch": 4,
+  "currentProductDeclarationCollisionCount": 0,
+  "stageFileCount": 10,
+  "startupBaselineComparison": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359",
+      "currentSha256Bytes": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359",
+      "baselineStillMatches": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "e0738ea48ed11db0067a578a0fa69b381902b495dc45dde0c8466635b08db05f",
+      "currentSha256Bytes": "5bb6b104bf23df0dc1a5116e8a72421df4310cfd5f783b6a2acbb5faf30185df",
+      "baselineStillMatches": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "27a8f24c2797e2db2b7f8d30eec422ac4a1054e79836b052ab4831518d6dcd8e",
+      "currentSha256Bytes": "27a8f24c2797e2db2b7f8d30eec422ac4a1054e79836b052ab4831518d6dcd8e",
+      "baselineStillMatches": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4",
+      "currentSha256Bytes": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4",
+      "baselineStillMatches": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "sha256Bytes": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+      "currentSha256Bytes": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+      "baselineStillMatches": true
+    }
+  ],
+  "currentMainBaselines": {
+    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt": "c1435716a7450b045a15f5ffbc2d0bbef167f22c1327078db417d79f2d065449",
+    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt": "c471aad118d68bc593889ae562b796050a03fdbc1528e81ee7621c5cbf121d87",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt": "8616484572049aa0da4a76b9f24966821295e2bdfcc9fbd0af0f2bace8e30fc7",
+    "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt": "5bb6b104bf23df0dc1a5116e8a72421df4310cfd5f783b6a2acbb5faf30185df",
+    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt": "27a8f24c2797e2db2b7f8d30eec422ac4a1054e79836b052ab4831518d6dcd8e",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4",
+    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+    "desktop/build.gradle.kts": "c410cc1f289227c03914cf791224f57a619f967a90fefe783ed8ef3d84f97700",
+    "desktop/upstream-sources.json": "4c508b47e5aba81740c5f55f710954806d226a056c5c6d7a637a6dff0c020486",
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt": "bcd3431b801401966d3c35b47f7a484aaf27cc6d7ef0a950438b86d2c7aac1fa"
+  },
+  "sourceMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "operation": "append-unique",
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+      "operation": "append-unique",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "operation": "merge-features-only",
+      "mode": "api-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "operation": "merge-features-only",
+      "mode": "policy-extract"
+    }
+  ],
+  "resourceMerge": [
+    {
+      "path": "app/src/main/res/drawable/ms_lan_24.xml",
+      "operation": "append-unique",
+      "mode": null
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_hub_24.xml",
+      "operation": "append-unique",
+      "mode": null
+    }
+  ],
+  "mainModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "networkRequested": false
+}

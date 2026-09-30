@@ -72,6 +72,11 @@ fun main(args: Array<String>) {
     val healthPath = args.getOrNull(healthIndex + 1)?.takeIf { healthIndex >= 0 }
     val healthToken = args.getOrNull(tokenIndex + 1)?.takeIf { tokenIndex >= 0 }
     application {
+        val applicationPluginStore = remember {
+            com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->
+                com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
+            }
+        }
         val repository = remember { DesktopRepository() }
         val playerResult = remember { runCatching { MpvPlayer() } }
         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
@@ -136,7 +141,8 @@ fun main(args: Array<String>) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
-                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) })
+                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
+                applicationPluginStore = applicationPluginStore)
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
                     title = { androidx.compose.material3.Text("客户端重启") },

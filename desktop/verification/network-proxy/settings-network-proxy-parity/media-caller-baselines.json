@@ -1,0 +1,12 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+    "baselineSha256Bytes": "c471aad118d68bc593889ae562b796050a03fdbc1528e81ee7621c5cbf121d87",
+    "desiredSha256Lf": "7f891b7687e9ba6c736894935dad71bc15bd478d37f85924db30e1f04649d5f1"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+    "baselineSha256Bytes": "8616484572049aa0da4a76b9f24966821295e2bdfcc9fbd0af0f2bace8e30fc7",
+    "desiredSha256Lf": "f59a31d6f346050b287971f979715e82a83f2861dadda2085ae7c46408d423b0"
+  }
+]

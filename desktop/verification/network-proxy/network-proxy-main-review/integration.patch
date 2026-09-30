@@ -1,0 +1,340 @@
+--- /dev/null
++++ b/desktop/tools/extract-upstream-network-proxy.py
+@@ -0,0 +1,60 @@
++"""Source-preserving application HTTP proxy store/policy and actual proxy-only settings UI."""
++from pathlib import Path
++import argparse,hashlib,importlib.util,json,textwrap
++BASE='app/src/main/java/com/android/purebilibili/'
++STORE=BASE+'core/store/NetworkProxyStore.kt'
++POLICY='network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt'
++API=BASE+'core/network/ApiClient.kt'
++SECTIONS=BASE+'feature/settings/ui/SettingsSections.kt'
++ASSETS=['ms_lan_24','ms_hub_24']
++SOURCES={STORE:'platform-rewrite',POLICY:'direct',API:'policy-extract',SECTIONS:'policy-extract'}
++def load(path,name):
++ spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
++def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
++def generate(repo,output,standalone=False):
++ host=load(repo/'desktop/tools/extract-upstream-plugins.py','proxy_helpers');media=host.media_extractor(repo);parser=media.parser_for(repo)
++ files=[];output.mkdir(parents=True,exist_ok=True)
++ original=read(repo,STORE)
++ source=host.substitute(original,'import android.content.Context','import com.bilipai.desktop.plugins.DesktopPluginContext as Context')
++ files.append(host.write(output,STORE,original,source))
++ original=read(repo,POLICY)
++ host.prune_old_direct(output,POLICY,original)
++ if standalone:files.append(host.write(output,POLICY,original,original))
++ original=read(repo,API)
++ selector=media.function(original,'buildAppProxySelector',parser)
++ selector=host.substitute(selector,'buildAppProxySelector():','buildAppProxySelector(systemSelector: () -> java.net.ProxySelector? = { java.net.ProxySelector.getDefault() }):')
++ selector=host.substitute(selector,'getDefault()?.select(uri).orEmpty()','systemSelector()?.select(uri).orEmpty()')
++ unsafe='com.android.purebilibili.core.util.Logger.w(\n                "ApiClient",\n                "Proxy connect failed uri=$uri sa=$sa: ${ioe?.message}"\n            )'
++ selector=host.substitute(selector,unsafe,'recordDesktopProxyConnectionFailure(ioe)')
++ playback=media.function(original,'buildPlaybackOkHttpClient',parser)
++ source='package com.bilipai.desktop.network\nimport okhttp3.OkHttpClient\nimport java.net.Proxy\n\ninternal object DesktopNetworkProxyPlatform {\n'+selector+'\n\n'+playback+'\n}\n'
++ files.append(host.write(output,API,original,source,'DesktopNetworkProxyPlatform.kt'))
++ original=read(repo,SECTIONS);section=media.function(original,'DiagnosticsSection',parser)
++ controls_start=section.index('        SettingSwitchItem(\n            icon = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_lan_24)')
++ controls_end=section.index('        SettingsAdaptiveDivider()',section.index('        SettingClickableItem(',controls_start))
++ controls=textwrap.dedent(section[controls_start:controls_end]).rstrip()
++ dialog_start=section.index('    if (showProxyDialog) {');dialog_end=section.index('    if (showEnhancedDiagnosticConsent)',dialog_start)
++ modal=section[dialog_start:dialog_end].rstrip()
++ source='package com.android.purebilibili.feature.settings\nimport androidx.compose.runtime.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.text.font.FontWeight\nimport androidx.compose.ui.unit.dp\nimport com.android.purebilibili.core.store.NetworkProxyStore\nimport com.android.purebilibili.core.network.policy.*\nimport com.android.purebilibili.core.ui.AppAlertDialog\nimport com.android.purebilibili.core.ui.AppDialogAction\nimport com.android.purebilibili.core.ui.components.*\nimport com.android.purebilibili.core.ui.components.AppSwitchPreference as SettingSwitchItem\nimport com.android.purebilibili.core.ui.components.AppPreference as SettingClickableItem\nimport com.bilipai.desktop.settings.LocalDesktopNetworkProxyBindings\nimport com.bilipai.desktop.settings.DesktopProxySettingsVectors\nimport com.bilipai.desktop.settings.DesktopProxySettingsSymbols\n@Composable\ninternal fun DesktopNetworkProxyFields() {\n    val bindings=LocalDesktopNetworkProxyBindings.current\n    val context=bindings.context\n    val siblingTints = remember { resolveSettingsSiblingIconTints(6, paletteOffset = 5) }\n    val proxySettings by NetworkProxyStore.settings.collectAsState()\n    var showProxyDialog by remember { mutableStateOf(false) }\n    SettingsCardGroup {\n'+textwrap.indent(controls,'        ')+'\n    }\n'+modal+'\n}\n\n@Composable\n'+media.function(original,'NetworkProxyEditDialog',parser)
++ source=host.substitute(source,'NetworkProxyStore.save(context, proxySettings.copy(enabled = enabled))','bindings.save(proxySettings.copy(enabled = enabled))')
++ source=host.substitute(source,'NetworkProxyStore.save(context, next)','bindings.save(next)')
++ for asset in ASSETS:
++  source=host.substitute(source,'com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.'+asset+')','DesktopProxySettingsVectors.vector(DesktopProxySettingsSymbols.'+asset+')')
++ files.append(host.write(output,SECTIONS,original,source,'SettingsNetworkProxyFields.kt'))
++ # Original enhanced-logging consent and full DiagnosticsSection remain reviewed reference only.
++ write_ref=output.parent/'reference-only';write_ref.mkdir(exist_ok=True)
++ (write_ref/'OriginalDiagnosticsSection.kt').write_text('@Composable\n'+section,encoding='utf-8',newline='\n')
++ converter=load(repo/'desktop/tools/extract-upstream-settings-search.py','proxy_vectors')
++ if any(asset in converter.symbol_names(repo) for asset in ASSETS):raise ValueError('Shared vector owner gained a proxy asset; reuse it instead')
++ converter.symbol_names=lambda _ : ASSETS
++ vectors=converter.vectors(repo).replace('DesktopSettingsSymbols','DesktopProxySettingsSymbols').replace('DesktopSettingsVectors','DesktopProxySettingsVectors')
++ files.append(media.write(output,'com/bilipai/desktop/settings/DesktopProxySettingsVectors.kt','app/src/main/res/drawable/'+ASSETS[0]+'.xml',read(repo,'app/src/main/res/drawable/'+ASSETS[0]+'.xml'),vectors))
++ return files
++
++def inventory(repo):return [dict(path=p,mode=mode,features=['settings-network-proxy-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p,mode in SOURCES.items()]
++def resources(repo):return [dict(path='app/src/main/res/drawable/'+n+'.xml',features=['settings-network-proxy-symbols'],sha256=hashlib.sha256(read(repo,'app/src/main/res/drawable/'+n+'.xml').encode()).hexdigest()) for n in ASSETS]
++if __name__=='__main__':
++ c=argparse.ArgumentParser(description=__doc__);c.add_argument('--repo',type=Path,required=True);c.add_argument('--output',type=Path);c.add_argument('--standalone',action='store_true');c.add_argument('--inventory',action='store_true');c.add_argument('--resource-inventory',action='store_true');a=c.parse_args()
++ if a.inventory:print(json.dumps(inventory(a.repo.resolve()),indent=2))
++ if a.resource_inventory:print(json.dumps(resources(a.repo.resolve()),indent=2))
++ if a.output:print('Generated',len(generate(a.repo.resolve(),a.output.resolve(),a.standalone)))
+--- /dev/null
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt
+@@ -0,0 +1,56 @@
++package com.bilipai.desktop.settings
++
++import androidx.compose.runtime.*
++import androidx.compose.ui.Modifier
++import androidx.compose.foundation.layout.Column
++import com.android.purebilibili.core.network.policy.AppHttpProxySettings
++import com.android.purebilibili.core.store.NetworkProxyStore
++import com.android.purebilibili.feature.settings.DesktopNetworkProxyFields
++import com.bilipai.desktop.plugins.DesktopPluginContext
++import kotlinx.coroutines.*
++import kotlinx.coroutines.sync.Mutex
++import kotlinx.coroutines.sync.withLock
++import okhttp3.OkHttpClient
++
++/** The original singleton is initialized before the original fields observe it. */
++internal class DesktopNetworkProxyBindings(
++    val context: DesktopPluginContext,
++    private val sharedApplicationClient: OkHttpClient,
++    private val scope: CoroutineScope,
++    private val onFailure: (Throwable) -> Unit,
++) {
++    private val writer=Mutex()
++    init { NetworkProxyStore.init(context) }
++    suspend fun saveAndAwait(value:AppHttpProxySettings) = writer.withLock {
++        withContext(Dispatchers.IO) {
++            currentCoroutineContext().ensureActive()
++            val previous=NetworkProxyStore.getSync(context)
++            NetworkProxyStore.save(context,value)
++            // OkHttp can reuse idle connections without asking the dynamic selector.
++            // Retire idle routes after successful persistence; active requests keep the original semantics.
++            if (previous!=NetworkProxyStore.getSync()) sharedApplicationClient.connectionPool.evictAll()
++        }
++    }
++    fun save(value:AppHttpProxySettings):Job=scope.launch {
++        try {saveAndAwait(value)}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(failure:Exception){onFailure(failure)}
++    }
++}
++
++internal val LocalDesktopNetworkProxyBindings = staticCompositionLocalOf<DesktopNetworkProxyBindings> {
++    error("Actual application proxy binding is required")
++}
++
++@Composable
++internal fun DesktopNetworkProxySettings(
++    context:DesktopPluginContext,
++    sharedApplicationClient:OkHttpClient,
++    onFailure:(Throwable)->Unit,
++    modifier:Modifier=Modifier,
++) {
++    val scope=rememberCoroutineScope()
++    val latestFailure by rememberUpdatedState(onFailure)
++    val binding=remember(context,sharedApplicationClient,scope){DesktopNetworkProxyBindings(context,sharedApplicationClient,scope){latestFailure(it)}}
++    CompositionLocalProvider(LocalDesktopNetworkProxyBindings provides binding) {Column(modifier){DesktopNetworkProxyFields()}}
++}
+--- /dev/null
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt
+@@ -0,0 +1,10 @@
++package com.bilipai.desktop.network
++
++import java.io.IOException
++import java.util.concurrent.atomic.AtomicLong
++
++/** Original connectFailed hook, with URI/address/error-message data deliberately discarded. */
++internal val desktopProxyConnectionFailureCount=AtomicLong()
++internal fun recordDesktopProxyConnectionFailure(error:IOException?) {
++    if(error!=null)desktopProxyConnectionFailureCount.incrementAndGet()
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -64,6 +64,7 @@
+     private val authMutex = Mutex()
+     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+     private val client = OkHttpClient.Builder()
++        .proxySelector(com.bilipai.desktop.network.DesktopNetworkProxyPlatform.buildAppProxySelector())
+         .cookieJar(sessions)
+         .connectTimeout(15, TimeUnit.SECONDS)
+         .readTimeout(25, TimeUnit.SECONDS)
+@@ -134,6 +135,8 @@
+     private val playbackCache = DesktopPlaybackCache()
+ 
+     internal val httpClient: OkHttpClient get() = client
++    private val playbackClient by lazy { com.bilipai.desktop.network.DesktopNetworkProxyPlatform.buildPlaybackOkHttpClient(client) }
++    internal val playbackHttpClient: OkHttpClient get() = playbackClient
+     internal suspend fun ensureSession() = ensureVisitorSession()
+     internal suspend fun signWebParams(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
+         forceRefresh: Boolean = false) = sign(params, includeRiskFingerprint, forceRefresh)
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
+@@ -27,7 +27,7 @@
+     private val sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = null,
+     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
+ ) : AutoCloseable {
+-    constructor(repository: DesktopRepository) : this(repository.httpClient, defaultStateFile(), WindowsFfmpegMuxer(),
++    constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
+         defaultSourceResolver(repository), defaultDanmakuDownloader(repository))
+ 
+     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt
+@@ -41,7 +41,7 @@
+     }
+     private fun active(): Binding = binding ?: error("插件账号服务尚未初始化")
+     val api: BilibiliApi get() = active().api
+-    val playbackClient: OkHttpClient get() = active().repository.httpClient
++    val playbackClient: OkHttpClient get() = active().repository.playbackHttpClient
+     internal fun recommendationContext(): DesktopPluginContext = active().discovery.recommendationContext()
+ 
+     // The original enrichment caller consumes only the first element; paging remains owned by Community.
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt
+@@ -72,6 +72,11 @@
+     val healthPath = args.getOrNull(healthIndex + 1)?.takeIf { healthIndex >= 0 }
+     val healthToken = args.getOrNull(tokenIndex + 1)?.takeIf { tokenIndex >= 0 }
+     application {
++        val applicationPluginStore = remember {
++            com.bilipai.desktop.plugins.DesktopPluginStore(DesktopLibrary.directoryForAccount(null)).also { store ->
++                com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
++            }
++        }
+         val repository = remember { DesktopRepository() }
+         val playerResult = remember { runCatching { MpvPlayer() } }
+         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
+@@ -136,7 +141,8 @@
+             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
+                 onExit = { closeApp() }, onToggleFullscreen = {
+                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
+-                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) })
++                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
++                applicationPluginStore = applicationPluginStore)
+             restartFailure?.let { message ->
+                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
+                     title = { androidx.compose.material3.Text("客户端重启") },
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -123,7 +123,8 @@
+ @Composable
+ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
+     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
+-    registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null) {
++    registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null,
++    applicationPluginStore: DesktopPluginStore? = null) {
+     val account by repository.account.collectAsState()
+     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
+     val settingsLibrary = remember { DesktopLibrary() }
+@@ -141,7 +142,11 @@
+     val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
+     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
+     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
+-    val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
++    val pluginStore = remember(applicationPluginStore) {
++        (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
++            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
++        }
++    }
+     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
+     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
+     var appearanceReady by remember(appearance) { mutableStateOf(false) }
+@@ -977,6 +982,8 @@
+                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
+                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
+                                 systemContent = {
++                                    com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
++                                        onFailure = { error = it.message ?: "代理设置保存失败" })
+                                     TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
+                                     Text("原版诊断、日志、许可和支持页面仍在移植中。", Modifier.padding(12.dp))
+                                 })
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -363,6 +363,22 @@
+     inputs.files(sources.filter { "settings-storage-backup-entries" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+         .map { File(repositoryRoot, it["path"].toString()) })
+     outputs.dir(layout.buildDirectory.dir("generated/settings-storage-entries"))
++}
++
++val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-network-proxy.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/network-proxy").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-network-proxy.py", "tools/extract-upstream-plugins.py",
++        "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
++        "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
++    inputs.files(sources.filter { "settings-network-proxy-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    inputs.files(originalResources.filter { "settings-network-proxy-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/network-proxy"))
+ }
+ 
+ val extractNativeMusicRoot by tasks.registering(Exec::class) {
+@@ -562,12 +578,14 @@
+     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-entries"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-storage-entries"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/native-music-root"))
++    kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
+ }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
++tasks.named("compileKotlin") { dependsOn(extractUpstreamNetworkProxy) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
+ sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
+ tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
+--- a/desktop/upstream-sources.json
++++ b/desktop/upstream-sources.json
+@@ -144,7 +144,8 @@
+         "login",
+         "playback",
+         "search",
+-        "space-contributions"
++        "space-contributions",
++        "settings-network-proxy-parity"
+       ],
+       "mode": "api-extract"
+     },
+@@ -3504,7 +3505,8 @@
+         "settings-home-section-parity",
+         "settings-privacy-section-parity",
+         "settings-playback-entry-parity",
+-        "settings-storage-backup-entries"
++        "settings-storage-backup-entries",
++        "settings-network-proxy-parity"
+       ],
+       "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+     },
+@@ -3548,6 +3550,22 @@
+         "settings-privacy-section-parity"
+       ],
+       "sha256": "b2e9b7ebcdd8f717f15f028da7ade58897d07f647ef64f9b4376a9de90db07c5"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/store/NetworkProxyStore.kt",
++      "mode": "platform-rewrite",
++      "features": [
++        "settings-network-proxy-parity"
++      ],
++      "sha256": "c32194595d65dc530f2b9e0cc036dc26e16a3226aef11d8ccb18a3aa4fbe9e72"
++    },
++    {
++      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
++      "mode": "direct",
++      "features": [
++        "settings-network-proxy-parity"
++      ],
++      "sha256": "0f2160fd2a1c91dea13c09901d147d34c3c85d63276edc10d0f2ac9a091a5c24"
+     }
+   ],
+   "featureCoverage": {
+@@ -4990,6 +5008,20 @@
+         "settings-privacy-symbols"
+       ],
+       "sha256": "2cc7a7bd203321ff547581554c64efacaa1208a818232393c291cbf6ccbbb5ff"
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_lan_24.xml",
++      "features": [
++        "settings-network-proxy-symbols"
++      ],
++      "sha256": "fd70d5cd00bf6a6170c6c84c9a1d4a308ff1e96c3e9c08677332b7ccbe2439d3"
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_hub_24.xml",
++      "features": [
++        "settings-network-proxy-symbols"
++      ],
++      "sha256": "bf87be30f555aae39c74d52674aebeae9cc5bc281a3d5241988c033378c1cf71"
+     }
+   ]
+ }

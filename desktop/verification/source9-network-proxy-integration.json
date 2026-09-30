@@ -1,0 +1,143 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "0794047e98141c8b1f4ed591f323fc19184f6ef5",
+  "status": "originalApplicationHttpProxyIntegratedAndVerifiedLocally",
+  "productFiles": [
+    {
+      "path": "desktop/tools/extract-upstream-network-proxy.py",
+      "sha256Lf": "678865552e25cb5dfb6ac5cd34a0296c3df36e238737e2c8ab82c80ac56d9180"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt",
+      "sha256Lf": "1c3706719af1331ef23be3fd73d6a8be846baa5fc16368beda9bc66c56141315"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt",
+      "sha256Lf": "d1b057e29bdce041620801682a3d3ab05c54f2312c1bebbf2fab56e43947649e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Lf": "88f3909f9fb703e6a4ff3e7c09cb558595526f566b82dfa60776381c2e593aab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Lf": "7f891b7687e9ba6c736894935dad71bc15bd478d37f85924db30e1f04649d5f1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Lf": "f59a31d6f346050b287971f979715e82a83f2861dadda2085ae7c46408d423b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Lf": "bdb232db00c623f285893383c24c31038254d4deeafa9d8727a7d21ec26cd5f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Lf": "aff69720581c27e246dd0f3229b730976a73dca4020ab3f602dbd35dd57ab300"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Lf": "c538b02050a23466306221255c47656ba4e88cb5a2a572ee9884e15cf9e62c21"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Lf": "1f8a989bee635b71005803d6cf3bfdaf587710e37305a5f6468eb273bcc5586a"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_network_proxy.py",
+      "sha256Lf": "159d804004a9f71b07a7ed7fdb63777ec65ed69cad4ea534171aecec4abda2d8"
+    }
+  ],
+  "sourceAudit": "source9-network-proxy-source-audit.json",
+  "sourceIdentityCount": 425,
+  "resourceIdentityCount": 201,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "verification": {
+    "frozenCohorts": [
+      {
+        "cohort": "network-proxy-main-review",
+        "manifestSha256Bytes": "dc416b5f9a7e4ff4d0c9643b55b5f57f423345206eb16a93c94e9f679df2a2d5",
+        "verifiedFrozenArtifacts": 24
+      },
+      {
+        "cohort": "settings-network-proxy-parity",
+        "manifestSha256Bytes": "f7352d7499f02891077c228238a2e6b6853db4efc46e676af9ad9785c8602a67",
+        "verifiedFrozenArtifacts": 281
+      },
+      {
+        "cohort": "network-proxy-product-proof",
+        "manifestSha256Bytes": "599e46a2d1075d901914b1c5dfa56e30a42490dfb80914ca31e1a6ec7a768c01",
+        "verifiedFrozenArtifacts": 103
+      }
+    ],
+    "mainCompilePassed": true,
+    "mainFocusedJUnit": {
+      "suites": [
+        {
+          "suite": "com.bilipai.desktop.download.DesktopDownloadManagerTest",
+          "methods": 13
+        },
+        {
+          "suite": "com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest",
+          "methods": 5
+        }
+      ],
+      "distinctMethods": 18,
+      "passed": true
+    },
+    "pythonProductExtractionChecks": {
+      "methods": 5,
+      "passed": true
+    },
+    "actualProductLoopbackGraphCases": 15,
+    "actualProductUiPointerCount": 32,
+    "actualProductUiEditorInputs": 16,
+    "actualProductUiViewports": [
+      [
+        720,
+        720
+      ],
+      [
+        720,
+        900
+      ]
+    ],
+    "actualProductUiStyles": [
+      "MATERIAL3",
+      "MIUIX"
+    ],
+    "initialTransientUiPointerCount": 16,
+    "initialTransientUiEditorInputs": 8,
+    "actualProductOriginalDialogFunctionallyVerifiedOffscreen": true,
+    "visualViewportFollowupPending": false,
+    "initialCaptureSpringAnimationSettlingResolved": true,
+    "nativeWindowOrPackageTested": false,
+    "realAccountsOrRemoteProxyTested": false,
+    "fullDownloadOrMuxExecuted": false,
+    "realTlsHandshakeTested": false,
+    "actualProductOverrideOrShadowRenderer": false,
+    "newDesktopDeployment": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "actualChanges": [
+    "One retained global PluginStore initializes the original proxy store before the normal Main path constructs Repository.",
+    "Original live proxy selector is inherited by application API, Community, candidate login, validation/captcha and Buvid clients.",
+    "Candidate cookies remain independent; validation/captcha have NO_COOKIES; Buvid retains the shared application CookieJar.",
+    "Successful changed persistence retires idle shared routes so the next request observes the setting; active requests continue.",
+    "Original direct media client is consumed by DownloadManager and plugin playback service.",
+    "Original two proxy fields and complete address dialog use the actual shared store, failure callback and source vectors."
+  ],
+  "limitations": [
+    "The old frozen review incorrectly described Buvid as NO_COOKIES. Actual product graph verification establishes the shared Jar contract.",
+    "Initial dialog images captured an unsettled spring at 240ms. Final 2400ms images show the unchanged original 12px bottom margin in both viewports.",
+    "Windowed address dialog and final packaged Main first-request startup still require acceptance.",
+    "Actual CONNECT then rejection proves proxy tunnelling, without a TLS handshake or remote/account request.",
+    "Independent updater, JS/public-network, image and lyric clients retain their existing scope.",
+    "Full diagnostics/logging/consent consumers and remaining settings are being implemented separately."
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

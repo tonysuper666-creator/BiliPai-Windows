@@ -1,0 +1,133 @@
+{
+  "frozen": true,
+  "passed": true,
+  "baseHead": "c5f8a21d17a33183b03209ce0de3e450c70cfd8c",
+  "purpose": "Read-only review and exact future installer draft; no main application/install executed",
+  "originalCohortManifestSha256": "f7352d7499f02891077c228238a2e6b6853db4efc46e676af9ad9785c8602a67",
+  "installPlanSha256": "e1367e941c9f5b813c96fc9135966fc2b7238d46b3ef1160893fd01a31d620eb",
+  "frozenArtifactsVerified": 281,
+  "existingDependencyJarsVerified": 234,
+  "originalSourceInputs": 4,
+  "originalResourceInputs": 2,
+  "currentMainSourceInputs": {
+    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt": "c1435716a7450b045a15f5ffbc2d0bbef167f22c1327078db417d79f2d065449",
+    "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt": "c471aad118d68bc593889ae562b796050a03fdbc1528e81ee7621c5cbf121d87",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt": "8616484572049aa0da4a76b9f24966821295e2bdfcc9fbd0af0f2bace8e30fc7",
+    "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt": "5bb6b104bf23df0dc1a5116e8a72421df4310cfd5f783b6a2acbb5faf30185df",
+    "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt": "27a8f24c2797e2db2b7f8d30eec422ac4a1054e79836b052ab4831518d6dcd8e",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4",
+    "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+    "desktop/build.gradle.kts": "c410cc1f289227c03914cf791224f57a619f967a90fefe783ed8ef3d84f97700",
+    "desktop/upstream-sources.json": "4c508b47e5aba81740c5f55f710954806d226a056c5c6d7a637a6dff0c020486",
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt": "bcd3431b801401966d3c35b47f7a484aaf27cc6d7ef0a950438b86d2c7aac1fa"
+  },
+  "filesToInstall": 10,
+  "generatedProductOutputs": 4,
+  "addedSourceIdentities": 2,
+  "addedResourceIdentities": 2,
+  "addedDependencyCount": 0,
+  "installerActualTempDiskTests": 9,
+  "mainModified": false,
+  "sharedGradleInvoked": false,
+  "productJvmOrNativeExecuted": false,
+  "accountOrNetworkRequests": false,
+  "files": [
+    {
+      "path": "final-verification.json",
+      "sha256Bytes": "04ac5c36411681dfa905a6ee7e30893ae092a5bc4b1f904685f0977821a721eb"
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "sha256Bytes": "ab95ca96bf32a01d29c27f55768bcfb7a50215fc61893b3b9e5925971e8d6d68"
+    },
+    {
+      "path": "generated-review/com/android/purebilibili/feature/settings/SettingsNetworkProxyFields.kt",
+      "sha256Bytes": "8aa59342e35b51f27bda7841dbe59b176aa48abccfa8513cd0d0b4f94fc18500"
+    },
+    {
+      "path": "generated-review/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.kt",
+      "sha256Bytes": "7343e428ce645366d145ec5f7da8259de0417880920e0f9aeb722d3098a1a68b"
+    },
+    {
+      "path": "generated-review/com/bilipai/desktop/settings/DesktopProxySettingsVectors.kt",
+      "sha256Bytes": "91c21c9b7fc2ab2e00ee57a699c339c6aeea506257a9b2131668f6df8d34c60b"
+    },
+    {
+      "path": "install-plan.json",
+      "sha256Bytes": "e1367e941c9f5b813c96fc9135966fc2b7238d46b3ef1160893fd01a31d620eb"
+    },
+    {
+      "path": "install-reviewed.py",
+      "sha256Bytes": "4002f51947a7b2c685ae4be07bd1814bf63ce05ebbc32134ed3fbfc24ae93367"
+    },
+    {
+      "path": "installer-test-evidence.json",
+      "sha256Bytes": "5a57c327dcec84760a11cc268478ae3a2dd6bcc09fff6ffd1c97aa2dfe922a4b"
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "78e9e9e324603e1211036d54adb763007ba370515da134cc31c9bc0ab1e38617"
+    },
+    {
+      "path": "integration.patch",
+      "sha256Bytes": "1d85e39b9cb501efaccaa3a465dfea7e7e985a0fbd3d1ce73982663061aa7a36"
+    },
+    {
+      "path": "payload/desktop/build.gradle.kts",
+      "sha256Bytes": "c538b02050a23466306221255c47656ba4e88cb5a2a572ee9884e15cf9e62c21"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "806712ceccb8760d62c24663d068dc44d418269ecdc374b4bc4b7c302e32d54d"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "aff69720581c27e246dd0f3229b730976a73dca4020ab3f602dbd35dd57ab300"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "7f891b7687e9ba6c736894935dad71bc15bd478d37f85924db30e1f04649d5f1"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "bdb232db00c623f285893383c24c31038254d4deeafa9d8727a7d21ec26cd5f7"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt",
+      "sha256Bytes": "d1b057e29bdce041620801682a3d3ab05c54f2312c1bebbf2fab56e43947649e"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "f59a31d6f346050b287971f979715e82a83f2861dadda2085ae7c46408d423b0"
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt",
+      "sha256Bytes": "1c3706719af1331ef23be3fd73d6a8be846baa5fc16368beda9bc66c56141315"
+    },
+    {
+      "path": "payload/desktop/tools/extract-upstream-network-proxy.py",
+      "sha256Bytes": "678865552e25cb5dfb6ac5cd34a0296c3df36e238737e2c8ab82c80ac56d9180"
+    },
+    {
+      "path": "payload/desktop/upstream-sources.json",
+      "sha256Bytes": "1f8a989bee635b71005803d6cf3bfdaf587710e37305a5f6468eb273bcc5586a"
+    },
+    {
+      "path": "prepare-review.py",
+      "sha256Bytes": "23253e06d91820d0b8d9fd767624d94fdf877451600aa7cf25d3018a1ddcefff"
+    },
+    {
+      "path": "reference-only/OriginalDiagnosticsSection.kt",
+      "sha256Bytes": "3ce182efc24b86173ec236faf8f59f2bb8a0745d94ef68640d269757d1dd4817"
+    },
+    {
+      "path": "review-evidence.json",
+      "sha256Bytes": "060319bf31b9756d4690259dfbf4713828d4fdad551b60fab34b87a6c59c5ead"
+    },
+    {
+      "path": "test_install_reviewed.py",
+      "sha256Bytes": "63c14a6775eeec2574a1277f610a8e43f12a4fecf9523ed8e4ddb12bb5730114"
+    }
+  ]
+}

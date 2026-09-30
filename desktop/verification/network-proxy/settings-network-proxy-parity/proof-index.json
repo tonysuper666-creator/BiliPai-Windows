@@ -1,0 +1,16 @@
+{
+  "activeCompiledClasses": "classes-cohort",
+  "activeCompileEvidence": "compile-evidence.json",
+  "actualSocketStoreGraphCases": "proof/result.json",
+  "actualOffscreenPointerCases": "ui-proof/result.json",
+  "originalSourcePreservation": "source-contract-proof.json",
+  "snapshotBytes": "dependency-identities.json",
+  "startupSeamNotApplied": "startup-seam.kt.txt",
+  "inactiveAttemptDirectories": [
+    "classes",
+    "diagnostics"
+  ],
+  "noFullDiagnosticsCompletion": true,
+  "noNativeAddressDialogAcceptance": true,
+  "noCurrentPackagedExecutableAcceptance": true
+}

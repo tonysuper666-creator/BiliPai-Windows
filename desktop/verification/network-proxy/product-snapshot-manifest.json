@@ -1,0 +1,101 @@
+{
+  "frozen": true,
+  "afterSuccessfulMainCompile": true,
+  "mainCompile": {
+    "task": "compileKotlin",
+    "exitCode": 0,
+    "successful": true,
+    "elapsedSeconds": 44
+  },
+  "windowsBaseCommit": "0794047e98141c8b1f4ed591f323fc19184f6ef5",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 6346,
+      "sha256Bytes": "bc5ebafbdb5d14cfe07d6b5eb8074395e30d806e3e188a7e92363a68b398fa95"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 141,
+      "sha256Bytes": "0bd21a0ae1006a429b5370d927a26cb6b448285d21f98b1b307177238f6f38c8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 48,
+      "sha256Bytes": "d9d59204e473e9fab73ea1219f604470cbad5be006fcaa09d5f936c988358142"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "desktop/tools/extract-upstream-network-proxy.py",
+      "sha256Bytes": "678865552e25cb5dfb6ac5cd34a0296c3df36e238737e2c8ab82c80ac56d9180"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt",
+      "sha256Bytes": "1c3706719af1331ef23be3fd73d6a8be846baa5fc16368beda9bc66c56141315"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt",
+      "sha256Bytes": "d1b057e29bdce041620801682a3d3ab05c54f2312c1bebbf2fab56e43947649e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "806712ceccb8760d62c24663d068dc44d418269ecdc374b4bc4b7c302e32d54d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "7f891b7687e9ba6c736894935dad71bc15bd478d37f85924db30e1f04649d5f1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "f59a31d6f346050b287971f979715e82a83f2861dadda2085ae7c46408d423b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "bdb232db00c623f285893383c24c31038254d4deeafa9d8727a7d21ec26cd5f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "aff69720581c27e246dd0f3229b730976a73dca4020ab3f602dbd35dd57ab300"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "c538b02050a23466306221255c47656ba4e88cb5a2a572ee9884e15cf9e62c21"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "1f8a989bee635b71005803d6cf3bfdaf587710e37305a5f6468eb273bcc5586a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Bytes": "bcd3431b801401966d3c35b47f7a484aaf27cc6d7ef0a950438b86d2c7aac1fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf"
+    }
+  ],
+  "generatedProductFiles": [
+    {
+      "path": "desktop/build/generated/network-proxy/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "sha256Bytes": "ab95ca96bf32a01d29c27f55768bcfb7a50215fc61893b3b9e5925971e8d6d68"
+    },
+    {
+      "path": "desktop/build/generated/network-proxy/com/android/purebilibili/feature/settings/SettingsNetworkProxyFields.kt",
+      "sha256Bytes": "8aa59342e35b51f27bda7841dbe59b176aa48abccfa8513cd0d0b4f94fc18500"
+    },
+    {
+      "path": "desktop/build/generated/network-proxy/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.kt",
+      "sha256Bytes": "7343e428ce645366d145ec5f7da8259de0417880920e0f9aeb722d3098a1a68b"
+    },
+    {
+      "path": "desktop/build/generated/network-proxy/com/bilipai/desktop/settings/DesktopProxySettingsVectors.kt",
+      "sha256Bytes": "91c21c9b7fc2ab2e00ee57a699c339c6aeea506257a9b2131668f6df8d34c60b"
+    }
+  ],
+  "nativeWindowOrPackageTested": false,
+  "realAccountRequests": false
+}

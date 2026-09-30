@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:47:13.017Z" hostname="TONYSUPER666" time="0.184">
+  <properties/>
+  <testcase name="committed changes update every existing facade flow()" classname="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" time="0.047"/>
+  <testcase name="failed atomic replacement publishes nothing to any facade()" classname="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" time="0.007"/>
+  <testcase name="restoration freezes all old facades and a new generation cannot reactivate them()" classname="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" time="0.01"/>
+  <testcase name="concurrent facade edits merge keys under the same file lock()" classname="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" time="0.1"/>
+  <testcase name="an older facade cannot overwrite privacy or unknown namespaces()" classname="com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

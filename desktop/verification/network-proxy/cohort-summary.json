@@ -1,0 +1,67 @@
+{
+  "frozenCohorts": [
+    {
+      "cohort": "network-proxy-main-review",
+      "manifestSha256Bytes": "dc416b5f9a7e4ff4d0c9643b55b5f57f423345206eb16a93c94e9f679df2a2d5",
+      "verifiedFrozenArtifacts": 24
+    },
+    {
+      "cohort": "settings-network-proxy-parity",
+      "manifestSha256Bytes": "f7352d7499f02891077c228238a2e6b6853db4efc46e676af9ad9785c8602a67",
+      "verifiedFrozenArtifacts": 281
+    },
+    {
+      "cohort": "network-proxy-product-proof",
+      "manifestSha256Bytes": "599e46a2d1075d901914b1c5dfa56e30a42490dfb80914ca31e1a6ec7a768c01",
+      "verifiedFrozenArtifacts": 103
+    }
+  ],
+  "mainCompilePassed": true,
+  "mainFocusedJUnit": {
+    "suites": [
+      {
+        "suite": "com.bilipai.desktop.download.DesktopDownloadManagerTest",
+        "methods": 13
+      },
+      {
+        "suite": "com.bilipai.desktop.plugins.DesktopPluginStoreSharingTest",
+        "methods": 5
+      }
+    ],
+    "distinctMethods": 18,
+    "passed": true
+  },
+  "pythonProductExtractionChecks": {
+    "methods": 5,
+    "passed": true
+  },
+  "actualProductLoopbackGraphCases": 15,
+  "actualProductUiPointerCount": 32,
+  "actualProductUiEditorInputs": 16,
+  "actualProductUiViewports": [
+    [
+      720,
+      720
+    ],
+    [
+      720,
+      900
+    ]
+  ],
+  "actualProductUiStyles": [
+    "MATERIAL3",
+    "MIUIX"
+  ],
+  "initialTransientUiPointerCount": 16,
+  "initialTransientUiEditorInputs": 8,
+  "actualProductOriginalDialogFunctionallyVerifiedOffscreen": true,
+  "visualViewportFollowupPending": false,
+  "initialCaptureSpringAnimationSettlingResolved": true,
+  "nativeWindowOrPackageTested": false,
+  "realAccountsOrRemoteProxyTested": false,
+  "fullDownloadOrMuxExecuted": false,
+  "realTlsHandshakeTested": false,
+  "actualProductOverrideOrShadowRenderer": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

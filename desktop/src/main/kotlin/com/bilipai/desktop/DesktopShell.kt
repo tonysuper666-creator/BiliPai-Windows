@@ -123,7 +123,8 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
 @Composable
 fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
-    registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null) {
+    registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null,
+    applicationPluginStore: DesktopPluginStore? = null) {
     val account by repository.account.collectAsState()
     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
     val settingsLibrary = remember { DesktopLibrary() }
@@ -141,7 +142,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
-    val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
+    val pluginStore = remember(applicationPluginStore) {
+        (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
+            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
+        }
+    }
     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
     var appearanceReady by remember(appearance) { mutableStateOf(false) }
@@ -977,6 +982,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
                                 systemContent = {
+                                    com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
+                                        onFailure = { error = it.message ?: "代理设置保存失败" })
                                     TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
                                     Text("原版诊断、日志、许可和支持页面仍在移植中。", Modifier.padding(12.dp))
                                 })

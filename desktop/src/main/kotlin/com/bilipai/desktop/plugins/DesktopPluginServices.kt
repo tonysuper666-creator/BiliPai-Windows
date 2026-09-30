@@ -41,7 +41,7 @@ object DesktopPluginRepositoryBinding {
     }
     private fun active(): Binding = binding ?: error("插件账号服务尚未初始化")
     val api: BilibiliApi get() = active().api
-    val playbackClient: OkHttpClient get() = active().repository.httpClient
+    val playbackClient: OkHttpClient get() = active().repository.playbackHttpClient
     internal fun recommendationContext(): DesktopPluginContext = active().discovery.recommendationContext()
 
     // The original enrichment caller consumes only the first element; paging remains owned by Community.

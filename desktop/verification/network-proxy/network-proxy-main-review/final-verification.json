@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "gitApplyCheckExitCode": 0,
+  "mainBaselinesStillExact": true,
+  "frozenManifestStillExact": true,
+  "productCompileInvoked": false,
+  "productInstallInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrNetworkRequest": false
+}

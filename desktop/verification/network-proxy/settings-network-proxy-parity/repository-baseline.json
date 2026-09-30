@@ -1,0 +1,7 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+  "baselineSha256Bytes": "c1435716a7450b045a15f5ffbc2d0bbef167f22c1327078db417d79f2d065449",
+  "baselineSha256Lf": "6e7e760a7958758a108c1812602e6bdc51453c5e3c90dde70c7b399c0ccc6061",
+  "desiredSha256Lf": "88f3909f9fb703e6a4ff3e7c09cb558595526f566b82dfa60776381c2e593aab",
+  "sourceOverrideNotMainEdit": true
+}

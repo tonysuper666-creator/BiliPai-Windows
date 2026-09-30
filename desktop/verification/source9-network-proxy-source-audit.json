@@ -1,0 +1,1082 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsSourceCommit": "0794047e98141c8b1f4ed591f323fc19184f6ef5",
+  "workingTreeDirty": true,
+  "adoptedSourceCount": 425,
+  "adoptionModes": {
+    "direct": 296,
+    "api-extract": 1,
+    "policy-extract": 56,
+    "extracted": 47,
+    "platform-rewrite": 11,
+    "platform-adapter-reference": 12,
+    "reference-only": 2
+  },
+  "adoptedResourceCount": 201,
+  "resourceHashesVerified": true,
+  "apiInterfacesVerbatim": true,
+  "apiInterfaces": {
+    "BilibiliApi": {
+      "sha256": "f6c8543a85b9336dd54073b71e16b9b3d1c23aab998d6c6e8219f8f1f185ae85",
+      "methods": [
+        "getIpZone",
+        "getNavInfo",
+        "getNavStat",
+        "getMemberAccount",
+        "updateMemberSign",
+        "getUserCard",
+        "getUserCardRaw",
+        "getPrivateVideoNoteIds",
+        "getPrivateVideoNoteInfo",
+        "getVideoNoteForbidState",
+        "saveVideoNote",
+        "deleteVideoNote",
+        "getPublicVideoNoteList",
+        "getPublicVideoNoteInfo",
+        "getHistoryList",
+        "searchHistory",
+        "reportHistory",
+        "deleteHistoryItem",
+        "clearHistory",
+        "setHistoryShadow",
+        "getHistoryShadow",
+        "getFavFolders",
+        "getCollectedFavFolders",
+        "createFavFolder",
+        "editFavFolder",
+        "deleteFavFolders",
+        "getFavoriteList",
+        "getLikedVideos",
+        "getFavoriteSeasonList",
+        "batchDelFavResource",
+        "copyFavResources",
+        "moveFavResources",
+        "cleanInvalidFavResource",
+        "getFavoriteArticles",
+        "getFavoriteNotes",
+        "getPublishedFavoriteNotes",
+        "getFavoriteTopics",
+        "getFavoriteCourses",
+        "deleteFavoriteArticle",
+        "deleteFavoriteNote",
+        "deletePublishedFavoriteNote",
+        "deleteFavoriteTopic",
+        "deleteFavoriteCourse",
+        "getRecommendParams",
+        "getMobileFeed",
+        "getMobileFeedEncoded",
+        "submitMobileFeedDislike",
+        "getPopularVideos",
+        "getRankingVideos",
+        "getPopularPreciousVideos",
+        "getWeeklySeriesList",
+        "getWeeklySeriesVideos",
+        "getRegionVideos",
+        "getLegacyRegionVideos",
+        "getLiveList",
+        "getLiveRecommendList",
+        "getFollowedLive",
+        "getLiveAreaList",
+        "getLiveSecondAreaList",
+        "getLiveFeedIndex",
+        "getLiveAppSecondList",
+        "getLiveRoomInit",
+        "getLiveRoomDetail",
+        "getLiveRoomH5Info",
+        "getLiveDanmakuHistory",
+        "getLiveDanmakuConfig",
+        "reportLiveHeartbeat",
+        "getDanmuInfo",
+        "getDanmuInfoWbi",
+        "getRoomInfo",
+        "getLivePlayUrl",
+        "getLivePlayUrlLegacy",
+        "sendLiveDanmaku",
+        "clickLikeLiveRoom",
+        "reportLiveRoomEntry",
+        "getLiveEmoticons",
+        "shieldLiveUser",
+        "getLiveInfoByUser",
+        "setLiveSilentRule",
+        "addLiveShieldKeyword",
+        "deleteLiveShieldKeyword",
+        "reportLiveDanmaku",
+        "reportLiveSuperChat",
+        "getLiveSuperChatMessages",
+        "getLiveLotteryInfo",
+        "getLiveVotePanel",
+        "getLiveVoteHistory",
+        "getLiveContributionRank",
+        "getVideoInfo",
+        "getVideoInfoByAid",
+        "getVideoTags",
+        "getAiConclusion",
+        "getPlayUrl",
+        "getPlayUrlHtml5",
+        "reportHeartbeat",
+        "getPlayUrlLegacy",
+        "getPlayUrlByAid",
+        "getPlayUrlApp",
+        "getTvPlayUrl",
+        "getVideoshot",
+        "getPbpData",
+        "getPlayerInfo",
+        "getBgmMultipleMusic",
+        "getBgmDetail",
+        "getBgmRecommendList",
+        "getInteractEdgeInfo",
+        "getRelatedVideos",
+        "getDanmakuXml",
+        "getDanmakuSeg",
+        "getDanmakuView",
+        "updateDanmakuWebConfig",
+        "sendDanmaku",
+        "sendCommandDanmaku",
+        "getDanmakuSpecialDm",
+        "gradeDanmaku",
+        "recallDanmaku",
+        "likeDanmaku",
+        "getDanmakuThumbupStats",
+        "reportDanmaku",
+        "getReplyList",
+        "getReplyListMain",
+        "getReplyListLegacy",
+        "getReplyReply",
+        "getReplyCount",
+        "searchMentionUsers",
+        "searchDynamicPublishTopics",
+        "addReply",
+        "uploadCommentImage",
+        "uploadPrivateMessageImage",
+        "getEmotes",
+        "likeReply",
+        "hateReply",
+        "deleteReply",
+        "setReplyTop",
+        "reportReply",
+        "getRelation",
+        "getRelationTags",
+        "getRelationBlacks",
+        "getRelationTagUser",
+        "getRelationTagMembers",
+        "getRelationTagFollowingUsers",
+        "checkFavoured",
+        "getVideoRelation",
+        "modifyRelation",
+        "addUsersToRelationTags",
+        "dealFavorite",
+        "favoriteSeason",
+        "unfavoriteSeason",
+        "likeVideo",
+        "hasLiked",
+        "dislikeVideo",
+        "coinVideo",
+        "hasCoined",
+        "getFollowings",
+        "getOnlineCount",
+        "getWatchLaterList",
+        "getWatchLaterPage",
+        "addToWatchLater",
+        "deleteFromWatchLater",
+        "deleteMultipleFromWatchLater",
+        "clearWatchLater",
+        "copyWatchLaterToFavorite",
+        "moveWatchLaterToFavorite"
+      ]
+    },
+    "BuvidApi": {
+      "sha256": "e4eec590a740a08a44bb82a05e0a903b7af37f1fb1be15393b960632a8aadbb5",
+      "methods": [
+        "getSpi",
+        "activateBuvid"
+      ]
+    },
+    "SplashApi": {
+      "sha256": "e2814cc381aea438433f31f0ab05593e4fcf3bceae48eeae2ccbf7178cd64332",
+      "methods": [
+        "getSplashList",
+        "getSplashBrandList"
+      ]
+    },
+    "SearchApi": {
+      "sha256": "d8672b9af0fbaebca5447981027bf4242430bbf5f80e0b3194f3330fd78d9bc1",
+      "methods": [
+        "getDefaultSearch",
+        "getDefaultSearchLegacy",
+        "getHotSearch",
+        "getTrendingList",
+        "getSearchRecommend",
+        "searchAll",
+        "search",
+        "searchUp",
+        "searchBangumi",
+        "searchMediaFt",
+        "searchLive",
+        "searchLiveUser",
+        "searchArticle",
+        "searchTopic",
+        "searchPhoto",
+        "getSearchSuggest"
+      ]
+    },
+    "ArticleApi": {
+      "sha256": "66c4e65f71a241ab702ad421d0ccfd424360e55c6f10da276ff5227b3c4a1a39",
+      "methods": [
+        "getArticleView"
+      ]
+    },
+    "StoryApi": {
+      "sha256": "b808c0223be18d859af93af86d9ebc051db7aabcf71bba36ad9ded28d3356006",
+      "methods": [
+        "getStoryFeed"
+      ]
+    },
+    "DynamicApi": {
+      "sha256": "3ea3406d1001491cd2ebd7196340fd9b81ebb30190fbad3c65c909239949b9d0",
+      "methods": [
+        "getDynamicFeed",
+        "getUserDynamicFeed",
+        "getDynamicUpdateCount",
+        "getDynamicDetail",
+        "getDynamicDetailFallback",
+        "getOpusDetail",
+        "getTopicDetail",
+        "getTopicFeed",
+        "getDynamicReplies",
+        "addDynamicReply",
+        "likeDynamic",
+        "repostDynamic",
+        "createFeedDynamic",
+        "editFeedDynamic",
+        "createVote",
+        "createReserve",
+        "clickDynamicReserve",
+        "createDynamic",
+        "getDynamicUplist",
+        "deleteDynamic",
+        "setDynamicTop",
+        "removeDynamicTop",
+        "getVoteInfo",
+        "doVote",
+        "reportDynamic",
+        "setDynamicVisibility",
+        "getReplyInteractionStatus",
+        "modifyReplySubject"
+      ]
+    },
+    "SpaceApi": {
+      "sha256": "6a1bb50700307d890345a0b37659599d34543414f6d817f406afd945a8286fd3",
+      "methods": [
+        "getSpaceAggregate",
+        "getSpaceLikedArchive",
+        "getSpaceCoinArchive",
+        "getSpaceInfo",
+        "getAppSpaceSupporters",
+        "getUpowerRank",
+        "getMemberGuard",
+        "getSpaceInfoRaw",
+        "getSpaceVideos",
+        "getRelationStat",
+        "getUpStat",
+        "getSeasonsSeriesList",
+        "getSeasonArchives",
+        "getSeriesArchives",
+        "getTopArc",
+        "getNotice",
+        "getSpaceDynamic",
+        "getSpaceAudioList",
+        "getSpaceArticleList",
+        "getSpaceCheese"
+      ]
+    },
+    "BangumiApi": {
+      "sha256": "e0346761ed03c546f043b6ef08e3e454f9614633433216f783ef4ae1325869ad",
+      "methods": [
+        "getTimeline",
+        "getBangumiIndex",
+        "getBangumiIndexCondition",
+        "getBangumiIndexResult",
+        "getSeasonDetail",
+        "getBangumiMediaInfo",
+        "getSeasonSections",
+        "getBangumiPlayUrl",
+        "getBangumiPlayUrlLegacy",
+        "getPugvSeasonDetail",
+        "getPugvPlayUrl",
+        "addFavPugv",
+        "delFavPugv",
+        "followBangumi",
+        "unfollowBangumi",
+        "updateBangumiFollowStatus",
+        "updateBangumiFollowStatusBatch",
+        "getMyFollowBangumi",
+        "getBangumiShortReviews",
+        "getBangumiLongReviews",
+        "likeBangumiReview",
+        "postBangumiShortReview"
+      ]
+    },
+    "PassportApi": {
+      "sha256": "1cb0cd974a8f72aac4525a777c66bab589fbd216da3e7829e4f880c9a4c36331",
+      "methods": [
+        "validateCookieSession",
+        "generateQrCode",
+        "pollQrCode",
+        "getCountryList",
+        "getCaptcha",
+        "sendSmsCode",
+        "sendSmsCodeByApp",
+        "loginBySms",
+        "loginBySmsApp",
+        "getWebKey",
+        "loginByPassword",
+        "loginByPasswordApp",
+        "safeCenterGetInfo",
+        "safeCenterPreCapture",
+        "safeCenterSendSms",
+        "safeCenterVerifySms",
+        "oauth2AccessToken",
+        "generateTvQrCode",
+        "pollTvQrCode",
+        "confirmTvQrCode",
+        "refreshToken"
+      ]
+    },
+    "AudioApi": {
+      "sha256": "c0b29c7cd7b5fc8eeb3187026899ddfe8f15d62b5897e4bb2ec9b8d1c3877e9e",
+      "methods": [
+        "getSongInfo",
+        "getSongStream",
+        "getSongLyric"
+      ]
+    },
+    "MessageApi": {
+      "sha256": "95c7504459d6e5986891debc141b57c8111e653ba050f9cbe0f25f0aa00ded14",
+      "methods": [
+        "getUnreadCount",
+        "getFeedUnread",
+        "getReplyFeed",
+        "getAtFeed",
+        "getLikeFeed",
+        "getSystemNotices",
+        "updateSystemNoticeCursor",
+        "deleteFeedItem",
+        "setFeedNotice",
+        "getSessions",
+        "getSessionDetail",
+        "getSessionLimit",
+        "getMsgDnd",
+        "getSessionPushSetting",
+        "fetchSessionMsgs",
+        "sendMsg",
+        "updateAck",
+        "setTop",
+        "removeSession",
+        "setMsgDnd",
+        "setPushSetting",
+        "updateIntercept",
+        "batchUpdateDustbinAck",
+        "batchRemoveDustbin"
+      ]
+    }
+  },
+  "apiMethodCount": 303,
+  "responseFiles": {
+    "upstreamCount": 45,
+    "adoptedCount": 45,
+    "unadopted": []
+  },
+  "featureSources": {
+    "aicu": {
+      "upstreamKotlinFiles": 4,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/aicu/AicuConsentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/aicu/AicuNavigationPolicy.kt"
+      ]
+    },
+    "anime4k": {
+      "upstreamKotlinFiles": 15,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementConfigLoadGuard.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementSessionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KDisplayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KPipelineRenderer.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/FboManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Fsr1Shaders.kt",
+        "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/MpvAnime4KShader.kt"
+      ],
+      "unadoptedPolicyCandidates": []
+    },
+    "article": {
+      "upstreamKotlinFiles": 7,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentBlockParser.kt",
+        "app/src/main/java/com/android/purebilibili/feature/article/ArticleContentLoadPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/article/ArticleImagePreviewPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/article/ArticleSharedTransitionPolicy.kt"
+      ]
+    },
+    "audio": {
+      "upstreamKotlinFiles": 49,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryDataSource.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/library/ListenVideoLibraryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/BiliSubtitleLyricsPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/FileLyricsCache.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsDisplayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsHighlightPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsMatchingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsNetworkProviders.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsParser.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsRepository.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsTimelinePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsWordAlignmentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/halcyon/HalcyonLyricTextHelpers.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/player/MusicPlaybackContract.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingVisibilityPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicArtworkRotationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerChromePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicTopControlDragPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicWavyProgressPolicy.kt"
+      ]
+    },
+    "bangumi": {
+      "upstreamKotlinFiles": 32,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiPlaybackUrlPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiSeasonActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/CourseNavigationPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiEpisodeSkipPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiResumePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowStatsDetailPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowWatchInsightPolicy.kt"
+      ]
+    },
+    "cast": {
+      "upstreamKotlinFiles": 7,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+        "app/src/main/java/com/android/purebilibili/feature/cast/SsdpCastClient.kt",
+        "app/src/main/java/com/android/purebilibili/feature/cast/SsdpDevicePresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/cast/SsdpDiscovery.kt",
+        "app/src/main/java/com/android/purebilibili/feature/cast/SsdpLocalNetworkPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/cast/LocalNetworkAccessPolicy.kt"
+      ]
+    },
+    "category": {
+      "upstreamKotlinFiles": 1,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": []
+    },
+    "comment": {
+      "upstreamKotlinFiles": 2,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": []
+    },
+    "common": {
+      "upstreamKotlinFiles": 1,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt"
+      ]
+    },
+    "download": {
+      "upstreamKotlinFiles": 29,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadAssetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadPersistencePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadQueuePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadResumePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadTask.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskProgressPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/OfflineEpisodeQueuePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadCandidatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadQueuePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadCleanupPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadForegroundServicePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadListNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadStoragePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadTaskPresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackSessionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt"
+      ]
+    },
+    "dynamic": {
+      "upstreamKotlinFiles": 65,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicBackToTopPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicBottomBarScrollPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicCommentReplyPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDeletePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicForwardCountPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicIncrementalRefreshPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicInteractionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLikeCountPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTimelineRequestPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicUserRequestPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DrawGridLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicAdditionalCardPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicArchiveBadgePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCardClickPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCardFoldPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCommentActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicMajorCardPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicMenuActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicTimePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewFeedbackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewTransitionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImageSaveLocationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageGesturePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ZoomableImageScalePolicy.kt"
+      ]
+    },
+    "following": {
+      "upstreamKotlinFiles": 4,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt"
+      ]
+    },
+    "home": {
+      "upstreamKotlinFiles": 123,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedMergePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeNotInterestedPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/PopularFeedPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchCandidatePoolPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchQueuePolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeCardEnterAnimationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardDensityPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardStylePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeWatchLaterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabMaterialIconPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeVideoGlassBadgeStylePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverOverlayTextPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverStatsLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardDurationBadgeVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardHistoryProgressPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoPremiumBadgePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt"
+      ]
+    },
+    "list": {
+      "upstreamKotlinFiles": 27,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/FavoriteManagementPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/FavoritePlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryDeletePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryPlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/VideoProgressDisplayPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListAppearancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListBackToTopPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListHeaderLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListPaginationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListSearchPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListVideoNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterTabChromePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryPaginationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchPolicy.kt"
+      ]
+    },
+    "live": {
+      "upstreamKotlinFiles": 36,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveRealtimeMessagePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveSuperChatExpiryPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveAudioOnlyPlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveBiliPaiVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeAreaSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveHomeCategoryIndicatorPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveListTabColorPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LivePlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerPipPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LivePortraitPresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/live/LiveRoomLayoutPolicy.kt"
+      ]
+    },
+    "livesite": {
+      "upstreamKotlinFiles": 4,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": []
+    },
+    "login": {
+      "upstreamKotlinFiles": 20,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/login/CaptchaManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/LoginAppAuthPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/LoginCaptchaRetryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/LoginCookieImportPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/LoginPhonePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/LoginRiskPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/login/PiliPlusLoginIdentityPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/login/TvQrConfirmationPolicy.kt"
+      ]
+    },
+    "message": {
+      "upstreamKotlinFiles": 28,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/message/InboxSessionPaginationPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/message/ChatMessageMutationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/message/MessageGlassSurfacePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeContentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt"
+      ]
+    },
+    "onboarding": {
+      "upstreamKotlinFiles": 6,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/onboarding/OnboardingHeroIconPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/onboarding/OnboardingMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/onboarding/OnboardingSettingsGuidePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt"
+      ]
+    },
+    "partition": {
+      "upstreamKotlinFiles": 1,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt"
+      ],
+      "unadoptedPolicyCandidates": []
+    },
+    "personal": {
+      "upstreamKotlinFiles": 2,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/personal/PersonalListLayoutPolicy.kt"
+      ]
+    },
+    "plugin": {
+      "upstreamKotlinFiles": 32,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/CdnOptimizationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/EyeProtectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockCommunityPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastRoutePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/googlecast/GoogleCastMediaLoader.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/googlecast/GoogleCastRoutePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentScreen.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchTasteInsightPolicy.kt"
+      ]
+    },
+    "privacy": {
+      "upstreamKotlinFiles": 1,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/privacy/PrivacyAuthenticationPolicy.kt"
+      ]
+    },
+    "profile": {
+      "upstreamKotlinFiles": 14,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt"
+      ]
+    },
+    "screenshot": {
+      "upstreamKotlinFiles": 6,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/screenshot/AppScreenshotPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/screenshot/AppScreenshotRegionPolicy.kt"
+      ]
+    },
+    "search": {
+      "upstreamKotlinFiles": 20,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailVisualPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchEntryMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchResultCardAppearancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchTabletLayoutPolicy.kt"
+      ]
+    },
+    "settings": {
+      "upstreamKotlinFiles": 96,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppLanguage.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppThemeMode.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceUiPresetDescriptionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceUiPresetSegmentPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeStyle.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/PluginCapabilityUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSelectionComponents.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsVisualSpec.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/PluginsScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchHistorySection.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchUi.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupAutoSchedulePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupStore.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/settings/AnimationSettingsPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/AppLanguageLocalePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsAppNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsScreenPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSubpageChromePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SplashRandomPoolPreviewPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SystemBrightnessPermissionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/policy/AppearanceSettingsLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/policy/SettingsTabletLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/policy/VisualEffectTogglePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsSharePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppBuildVerificationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateAssetSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateDialogVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateInstallPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateReleaseNotesPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateUiPolicy.kt"
+      ]
+    },
+    "space": {
+      "upstreamKotlinFiles": 18,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceArticlePresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceChargeBadgePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceHeaderPresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceProfileEnhancementPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt"
+      ]
+    },
+    "story": {
+      "upstreamKotlinFiles": 3,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt"
+      ],
+      "unadoptedPolicyCandidates": []
+    },
+    "video": {
+      "upstreamKotlinFiles": 298,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/AdvancedDanmakuData.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuKeywordFilterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuParser.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuProto.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSegmentWindowPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuTypeFilterPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuViewportPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteContentCodec.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteSharePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteTagPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamModels.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/LocalDashManifestBuilder.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackAncillaryTaskPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackQualityMode.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/player/PlayerKeyboardPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionEpisodePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayChromePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPollingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayPositionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuNativePrototypePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuOverlayViewPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSettingsPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuSyncStatusPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/FaceOcclusionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPowerPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackTransitionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/player/AudioBarReturnPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/progress/PbpProgressPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeCoverLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeRenderPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/subtitle/SubtitleFeaturePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CircularGesturePercentMotionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuComposerPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/PagesSelectorLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/UpPreviewSheetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanelActionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/GestureLevelOverlayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/Md3GestureLevelHapticPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomControlBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BottomRightControlsLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenDoubleTapPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenKeyboardPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlayPollingPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LandscapeEndDrawerLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuBitmapLifecyclePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuRenderPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlayShellPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderDisplayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PlaybackOrderSelectionSheetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitBottomInputBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitFullscreenOverlayLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitInteractionBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitProgressBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/PortraitTopBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/TopControlBarLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayVisualPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCollectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitCommentPresentationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitDetailVideoListPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitMainPlayerSyncPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPlaybackAdvancePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitProgressSyncPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitSharePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerDanmakuLoadPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerTopBarPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerUiLayoutPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicy.kt"
+      ]
+    },
+    "watchlater": {
+      "upstreamKotlinFiles": 3,
+      "adoptedSourceFiles": [
+        "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt"
+      ],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt"
+      ]
+    },
+    "web": {
+      "upstreamKotlinFiles": 2,
+      "adoptedSourceFiles": [],
+      "unadoptedPolicyCandidates": [
+        "app/src/main/java/com/android/purebilibili/feature/web/WebViewNavigationPolicy.kt"
+      ]
+    }
+  },
+  "acceptanceMatrix": "desktop/PARITY.md",
+  "fullFunctionalParityVerified": false
+}

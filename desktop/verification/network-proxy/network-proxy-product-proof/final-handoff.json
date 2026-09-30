@@ -1,0 +1,434 @@
+{
+  "frozen": true,
+  "passed": true,
+  "kind": "Current product graph plus settled original dialog layer proof",
+  "productSnapshotManifestSha256": "c2c892064267e6a1e8c5425a3c4095a2070faacfe5debb1c07f43fae9957016d",
+  "productKotlinJarSha256": "bc5ebafbdb5d14cfe07d6b5eb8074395e30d806e3e188a7e92363a68b398fa95",
+  "currentTransportCases": 15,
+  "primaryUiOriginalDialogFlows": 4,
+  "primaryUiPointers": 32,
+  "primaryUiEditorInputs": 16,
+  "originalUiRendererLayers": true,
+  "initialTransientUiEvidenceRetained": true,
+  "nativeAddressDialogAcceptanceClaimed": false,
+  "mainModified": false,
+  "frozenOriginalsModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "realAccountsOrExternalRequests": false,
+  "finalVisualEvidence": "viewport-review/proof",
+  "files": [
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "d44ae704496c6e1a692c5d22442f0f82c957fd10fe13e0a7ca7ba0c660f1056d"
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "3d67100065048a2a8615f3690feb1edd93d5ab85c2308e1b396e96ec8592d58f"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e732ee34dfed00b67347cfae40bd304da95b589df967556ae615ed13d0aaba0f"
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "05c22cbca2cd2b11ef3df89b2862d24dfbb9673b7b6c7beb34758980430e2e0d"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "04238da8f66f8cfe3ccacf19329b23faadebb9359bd663742b286f923e7ba69c"
+    },
+    {
+      "path": "final-verification.json",
+      "sha256Bytes": "50ae4f157d6f25214a3097f7683dc86d17c291afdf4f8381e0566da6a4b65812"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/FixtureSocket.class",
+      "sha256Bytes": "ab78597f67cb52dd29fa24158a05d6d70249c911783a86cdf6c4af1f867f3ff6"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$awaitText$2$1.class",
+      "sha256Bytes": "b3916acbfdb80f549d24945c298ebb6f5d9f36737fe2e14d26b00f2480cb20de"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$awaitText$2$2.class",
+      "sha256Bytes": "63f02af32716523c4652661219f7262cfd64352fe2b1c7481b29b06a7d955ff8"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$10.class",
+      "sha256Bytes": "6e156322d6562f49c0c477df40da1c2af21fb7320bf23d5be97b5444ddadc622"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$11$1.class",
+      "sha256Bytes": "39f30c0edf5d87bf9cd5a6e11e000c6a89c02d6a48155ca61af120ca0519f63c"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$11$2.class",
+      "sha256Bytes": "956fea2a7dff2da0a5fef91b1bfd9a4f9630530faf7c1b9a05143b2888dad451"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$11$work$1.class",
+      "sha256Bytes": "62fcf004af1a6e46a9baa417691d7095973fd563e58f60aea087e7834bd4dc61"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$11.class",
+      "sha256Bytes": "0b3d7a61452df4718aad48bfbd0f52f0f76feaee3cef55f748b26e33376b1d21"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$12.class",
+      "sha256Bytes": "8d75dd28f9a436e8e0c84993aabb8430f8ee798668ccb5dd9520716eb5996e26"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$13$fakeSystem$1.class",
+      "sha256Bytes": "82a9855fa4adca4d47c7112890c7eeb30a160f33209646150c6d62d3d73037ee"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$13.class",
+      "sha256Bytes": "b015a640bb32fc55d6f88faf48d127e10dfae4380065584b60a86fe99b5b1a17"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$14.class",
+      "sha256Bytes": "1eb31189610fdd98d5e3b331775488e6574dd9a9fac48b1f44e81691606207d2"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$15.class",
+      "sha256Bytes": "4878e9cc7dbd225c7c9ef9fbda3582cf3a330df17042e63bdb32c3c68da256ba"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$16$2.class",
+      "sha256Bytes": "5901a3c60f407b0731767c9d0dc967fcea88178b5718c23e58e3ad20dc806ed9"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$16$stdout$1.class",
+      "sha256Bytes": "6034448d957f1c4f6732f3fd731939fa6c9f155988118b31b5ceb93f4f447e13"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$16.class",
+      "sha256Bytes": "9f41499ff0b5b276a5a0a06d074e3d08b136a9b519795c8dc715fc3a56c4d61c"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$17.class",
+      "sha256Bytes": "c608b740c4748cdc8fd462843aa2dead4833b861902dbc5e91331330d4172a33"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$3.class",
+      "sha256Bytes": "f6991bb1639c4e301837f924a1df6ad2c3c1260b0704cc10a5a76e8503858028"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$4.class",
+      "sha256Bytes": "f1038ba72fb85518849634ec2010c3bbe20e1f8b2ffd5c03450a50ecb1edab6e"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$5.class",
+      "sha256Bytes": "490c0198333224e2507411a64663ccf31d1b9ad215875dc35c8498bcaee60a30"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$6.class",
+      "sha256Bytes": "550ec30cd9592be063b6ca566eb001f846fb7f99d580d5300ddedb0d8ecdc65d"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$7.class",
+      "sha256Bytes": "ee2dbe1887edae1593714a9e3b369ceece33ab35ab89486743ecc2883b2a941a"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$8.class",
+      "sha256Bytes": "d2f52a89e8efcf1b84237cd47247671a4ab75ae544a226c7f6e6fdfb7ebdf2ed"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$1$1$9.class",
+      "sha256Bytes": "454fb9cd33fd320eee82e6c218c75277b7373f96b58290008f4fadf4fbf2e3a7"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1$case$1.class",
+      "sha256Bytes": "bd6a3c2c28c39f6a2bb11b5095d5bb0f3947945abe46dce1a2ee1c80c09fbff4"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt$main$1.class",
+      "sha256Bytes": "0a7b6e6772c89bea5645954f6b3b827d1771aa11c0ece01515160b1a03be53a9"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/network/ProductProxyFixtureKt.class",
+      "sha256Bytes": "f4e8e16c9fbb8f366032bd51a3facd6e13374dc9f062c17c1eaa3524e1a9536b"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/settings/ProductProxyUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "5be5be63a8df35fbfd0d646dc7ac201be30a0e6c8e1a944a1cfba520861cf932"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/settings/ProductProxyUiFixtureKt$main$1$waitFor$1.class",
+      "sha256Bytes": "31b47b789d6ec4d8997d23180656a2d36631cc88f759c4323241cb95eabd3405"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/settings/ProductProxyUiFixtureKt$main$1$waitFor$2.class",
+      "sha256Bytes": "af38f797c70685a1f0945b80a87a221d796e5c7852b5e1c275708fa7cfe6233b"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/settings/ProductProxyUiFixtureKt$main$1.class",
+      "sha256Bytes": "5f9f8aa78f057cdd1ffd801d1cf4ac8af50290c1cde5bad2b1b102513ebe4a09"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/com/bilipai/desktop/settings/ProductProxyUiFixtureKt.class",
+      "sha256Bytes": "99901b9ffd9ee042644d9d32495374b1a6298251cac352012c40719cf3f2612a"
+    },
+    {
+      "path": "fixture-classes-pji1hcww/META-INF/actual_product_proxy_fixture.kotlin_module",
+      "sha256Bytes": "e111ffd323ce8834f70c7c12850c72dae371ea20890577b283c83157da6424ca"
+    },
+    {
+      "path": "fixture-origin.json",
+      "sha256Bytes": "26edd747650723702eacee5cd0c8246f51d7223108647542d205c589202ea869"
+    },
+    {
+      "path": "input-verification.json",
+      "sha256Bytes": "dd89b1a188ac1a64f4fa12e03513c0182a5cbb1c233b9ab622afa64decb23749"
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "9dbbcfa222ecadc9bfb98a554b6e6d494bf35e425adeb556760649b7da234d69"
+    },
+    {
+      "path": "product-snapshot-manifest.json",
+      "sha256Bytes": "c2c892064267e6a1e8c5425a3c4095a2070faacfe5debb1c07f43fae9957016d"
+    },
+    {
+      "path": "ProductProxyFixture.kt",
+      "sha256Bytes": "da39fe92e8fe7b233167825b265d5063b1d116106c12f1e7d7ec0ee6efbfc8d1"
+    },
+    {
+      "path": "ProductProxyUiFixture.kt",
+      "sha256Bytes": "497b017f4bf9953ccf683d9bebfc45dc258e2f067eea979d4c7e38d9eb3102b7"
+    },
+    {
+      "path": "proof/transport/fresh-jvm.args",
+      "sha256Bytes": "43156b0decc1d289ec90dd5980c67d81922de591d0ab6416d357d79c99345e5e"
+    },
+    {
+      "path": "proof/transport/fresh-jvm.log",
+      "sha256Bytes": "a2673d0ae2deba24489314f618ecee0dea93c97bd1e257cfa369a5ed47128040"
+    },
+    {
+      "path": "proof/transport/result.json",
+      "sha256Bytes": "9d0f57e5b4d69c456ab9cbf37d8bb41281f96911b5486f349762a66ec0bd1a6f"
+    },
+    {
+      "path": "proof/ui/material3-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "proof/ui/material3-invalid-original-dialog.png",
+      "sha256Bytes": "b95d731faf6745b194e8cb07870a241431461069f7482c2002be6606a6bcb625"
+    },
+    {
+      "path": "proof/ui/material3-original-dialog.png",
+      "sha256Bytes": "bf690cdfe07869e4957fc2a75a72fc51077dcc8b6968fd82bed8b68912076cef"
+    },
+    {
+      "path": "proof/ui/material3-proxy-fields.png",
+      "sha256Bytes": "83bc0b3db1134c469af714eff3987f2e5fb2162ea17ac075b43da059be483da8"
+    },
+    {
+      "path": "proof/ui/material3-saved-original-dialog.png",
+      "sha256Bytes": "51b1cf5e0101d768227a47025b0f81411b4bebbd6b34797e6e8c16d92c675b44"
+    },
+    {
+      "path": "proof/ui/miuix-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "proof/ui/miuix-invalid-original-dialog.png",
+      "sha256Bytes": "2b7534dc25395cd396da1b9de7514dc1d7affaee3ceb1a84e165340bb247e144"
+    },
+    {
+      "path": "proof/ui/miuix-original-dialog.png",
+      "sha256Bytes": "6e22b7a05e06f5d18f60c983ef9dddcf67fa0ed3f39c0f2a47cc99fdacd8bc0f"
+    },
+    {
+      "path": "proof/ui/miuix-proxy-fields.png",
+      "sha256Bytes": "f866a1bb8e45c4093fa52e5d164e97f3afd27f3e5bd7e41655fb041545a13075"
+    },
+    {
+      "path": "proof/ui/miuix-saved-original-dialog.png",
+      "sha256Bytes": "59bbd84bef513dc88ed6f914b5eb2577eee38a66949c99107ca21654c5b698bb"
+    },
+    {
+      "path": "proof/ui/result.json",
+      "sha256Bytes": "2c489f70b4d3da70f9df2777e738e2b0a65f880072b84458478e29912c883d06"
+    },
+    {
+      "path": "transport-runtime.args",
+      "sha256Bytes": "65c3a9ecbbf413c51ffc85bce96cf6e1a68e7fce4d48f2a88559c078a816ee92"
+    },
+    {
+      "path": "transport-runtime.log",
+      "sha256Bytes": "62db07fcad0dfd23fff7a18d084cd5c52317569989634d44a5a7038a7d88727a"
+    },
+    {
+      "path": "ui-runtime.args",
+      "sha256Bytes": "f9e22239d22ec10f63df33a14094bcdceb98bb2e40564717a3929be42b395dce"
+    },
+    {
+      "path": "ui-runtime.log",
+      "sha256Bytes": "c6be60f5779917232c4d5224fec8a45e4e90f4f08e90dc809c8e728038039e68"
+    },
+    {
+      "path": "verify-inputs.py",
+      "sha256Bytes": "765e1fedc2569db2d82c111829b8fb8df1e7a90345e0f28cb6f204dd94a6e3ae"
+    },
+    {
+      "path": "frozen-handoff.json",
+      "sha256Bytes": "4fcbafc0c0ec4600586fcd8ea073751fad3ed0eb9f42d1a39327a1b5d24012b6"
+    },
+    {
+      "path": "viewport-review/classes/com/bilipai/desktop/settings/ViewportProxyUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "a4e191d7793a10600ef329690846b61982f413be496811b80b9e502dae8e1277"
+    },
+    {
+      "path": "viewport-review/classes/com/bilipai/desktop/settings/ViewportProxyUiFixtureKt$main$1$waitFor$1.class",
+      "sha256Bytes": "73c8d273bb604ad224b7858891284f93fe3819d8dfcde65c9e1cab84194fe945"
+    },
+    {
+      "path": "viewport-review/classes/com/bilipai/desktop/settings/ViewportProxyUiFixtureKt$main$1$waitFor$2.class",
+      "sha256Bytes": "816c32710b82be9fb6a3b7dbceef69c5c1ab40541a1953ae3dc9570b4cb47b99"
+    },
+    {
+      "path": "viewport-review/classes/com/bilipai/desktop/settings/ViewportProxyUiFixtureKt$main$1.class",
+      "sha256Bytes": "1326b8908f8b0c96af45c257ab19cc2cdd4100813ccfffee2715cbdc2920a091"
+    },
+    {
+      "path": "viewport-review/classes/com/bilipai/desktop/settings/ViewportProxyUiFixtureKt.class",
+      "sha256Bytes": "33b77e9946d818098ffcd29e0334ab754c8a568999f0ac059827314fd36d8e50"
+    },
+    {
+      "path": "viewport-review/classes/META-INF/actual_product_proxy_viewport_fixture.kotlin_module",
+      "sha256Bytes": "43b0247d62ea75c601085c684b30d15811b62cfef789fa9563f922870767b8d7"
+    },
+    {
+      "path": "viewport-review/compile-evidence.json",
+      "sha256Bytes": "971e9a8430bdb6b0a3586f62abc4f740bbd1f6f0c4ec3c54ca1ccaff47493514"
+    },
+    {
+      "path": "viewport-review/compile-run.py",
+      "sha256Bytes": "10f722bafb469023419fa6a48c223acaea64bcab930eca465d73d4d5b18e4db5"
+    },
+    {
+      "path": "viewport-review/compile.log",
+      "sha256Bytes": "3aec19558fa15c6c22a467b6fbaa12c1e40e434a87d85c49feec82f6d684fe62"
+    },
+    {
+      "path": "viewport-review/compiler.args",
+      "sha256Bytes": "01c2f22131822258a8ed579ce5b6b3f1f0313481240bb628587469b5b867ae77"
+    },
+    {
+      "path": "viewport-review/diagnostics/hs_err_pid41776.log",
+      "sha256Bytes": "71b4e5dffd78401f354b90e717ed00dc8c5c25571c56223fa1517535f70e766b"
+    },
+    {
+      "path": "viewport-review/INTEGRATION.md",
+      "sha256Bytes": "7363f7ec7a97abaea647968cf8ea7ba9864104c25b9451a4c80abfa224b32531"
+    },
+    {
+      "path": "viewport-review/pixel-evidence.json",
+      "sha256Bytes": "d4fee07c0b4fda863e611b10015cc2398ccb25c7f36cbd54a167557401ff0dfd"
+    },
+    {
+      "path": "viewport-review/proof/material3-720-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "viewport-review/proof/material3-720-invalid-original-dialog.png",
+      "sha256Bytes": "993710399a30badff2b2c4a5bdd3f41cfa94b16f4599f479b8365a2a3bda6422"
+    },
+    {
+      "path": "viewport-review/proof/material3-720-original-dialog.png",
+      "sha256Bytes": "dcecb947f2051e330031eeecfce7a06d9cafcb157377393b6f903510ba92bec7"
+    },
+    {
+      "path": "viewport-review/proof/material3-720-proxy-fields.png",
+      "sha256Bytes": "83bc0b3db1134c469af714eff3987f2e5fb2162ea17ac075b43da059be483da8"
+    },
+    {
+      "path": "viewport-review/proof/material3-720-saved-original-dialog.png",
+      "sha256Bytes": "51b1cf5e0101d768227a47025b0f81411b4bebbd6b34797e6e8c16d92c675b44"
+    },
+    {
+      "path": "viewport-review/proof/material3-900-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "viewport-review/proof/material3-900-invalid-original-dialog.png",
+      "sha256Bytes": "bad1e39def1fd53789c81326ff5c9fca6305519674d929438b67a3705df4d762"
+    },
+    {
+      "path": "viewport-review/proof/material3-900-original-dialog.png",
+      "sha256Bytes": "f0628a7821550df3e6bd364f0719c8d8d80e49f51ef89ec03d837b1400c034e2"
+    },
+    {
+      "path": "viewport-review/proof/material3-900-proxy-fields.png",
+      "sha256Bytes": "f8e3c7b7cb31e3b3daba5564d15ebe3d6cf9fb01a2d5712f5fc2ae3b19f3bb91"
+    },
+    {
+      "path": "viewport-review/proof/material3-900-saved-original-dialog.png",
+      "sha256Bytes": "94eb601d128324a2c7996eab33df327d71097801b03c75f1b0adb59106554841"
+    },
+    {
+      "path": "viewport-review/proof/miuix-720-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "viewport-review/proof/miuix-720-invalid-original-dialog.png",
+      "sha256Bytes": "e66af94540367d3ab46f7defd2dd3a0262aec3ea41a1c522650cfa4de9e89293"
+    },
+    {
+      "path": "viewport-review/proof/miuix-720-original-dialog.png",
+      "sha256Bytes": "9c2578b5c65f5e3c2a2e44fdf7cc630ed37437633ba6007daa251d3795e02a02"
+    },
+    {
+      "path": "viewport-review/proof/miuix-720-proxy-fields.png",
+      "sha256Bytes": "f866a1bb8e45c4093fa52e5d164e97f3afd27f3e5bd7e41655fb041545a13075"
+    },
+    {
+      "path": "viewport-review/proof/miuix-720-saved-original-dialog.png",
+      "sha256Bytes": "59bbd84bef513dc88ed6f914b5eb2577eee38a66949c99107ca21654c5b698bb"
+    },
+    {
+      "path": "viewport-review/proof/miuix-900-actual-proxy-disk.json",
+      "sha256Bytes": "0d5e3bdd785a3652f34c88d4290b25f1fa363e19ee17c16e0182adf4db9d2223"
+    },
+    {
+      "path": "viewport-review/proof/miuix-900-invalid-original-dialog.png",
+      "sha256Bytes": "247383c7fcb8e1635c48616f047f17ef32a9d0981b6494f0b611c0af35c23cce"
+    },
+    {
+      "path": "viewport-review/proof/miuix-900-original-dialog.png",
+      "sha256Bytes": "ede8c5a9cf9128a55d45f503aeb5de3216d359abecb731aae73f2bd4c994a3c9"
+    },
+    {
+      "path": "viewport-review/proof/miuix-900-proxy-fields.png",
+      "sha256Bytes": "e05916f3eca47aade0de9a08f896fe418224d3012dcd08a7db689554a7cb33ac"
+    },
+    {
+      "path": "viewport-review/proof/miuix-900-saved-original-dialog.png",
+      "sha256Bytes": "4c50de60f0e6a788699eace8bba178a2222f2d864372f000b58a4a5bc8898ca4"
+    },
+    {
+      "path": "viewport-review/proof/result.json",
+      "sha256Bytes": "f888a130027abd4057baed32ae89f8f40519d768268e6961661246ca44556944"
+    },
+    {
+      "path": "viewport-review/runtime.args",
+      "sha256Bytes": "42ac9f5c5fa91c3da925eafd3b281ecf33e1da873063c11c41fc6fbae9938b9e"
+    },
+    {
+      "path": "viewport-review/runtime.log",
+      "sha256Bytes": "c6be60f5779917232c4d5224fec8a45e4e90f4f08e90dc809c8e728038039e68"
+    },
+    {
+      "path": "viewport-review/ViewportProxyUiFixture.kt",
+      "sha256Bytes": "829ab35ecc364c800ff333d52d6ed3e20ce56459e26337b7dab897bc494c3d47"
+    },
+    {
+      "path": "viewport-review/frozen-handoff.json",
+      "sha256Bytes": "863509d539133f0834d350a375392012b0bca8418045952ad469e5b8c75b6f28"
+    }
+  ]
+}

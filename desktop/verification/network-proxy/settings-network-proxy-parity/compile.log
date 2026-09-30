@@ -1,0 +1,21 @@
+desktop\.local\settings-network-proxy-parity\ProxyFixture.kt:212:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\settings-network-proxy-parity\ProxyUiFixture.kt:82:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\settings-network-proxy-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:78:30: warning: 'enum entry APPEARANCE_INTERACTION: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.APPEARANCE_INTERACTION -> SettingsRootCategory.APPEARANCE_THEME
+                             ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-network-proxy-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:79:30: warning: 'enum entry CONTENT_PLAYBACK: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.CONTENT_PLAYBACK -> SettingsRootCategory.PLAYBACK_QUALITY
+                             ^^^^^^^^^^^^^^^^
+desktop\.local\settings-network-proxy-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:80:30: warning: 'enum entry PRIVACY_STORAGE: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.PRIVACY_STORAGE -> SettingsRootCategory.PRIVACY_PERMISSION
+                             ^^^^^^^^^^^^^^^
+desktop\.local\settings-network-proxy-parity\repository-draft\DesktopRepository.kt:477:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+desktop\.local\settings-network-proxy-parity\repository-draft\DesktopRepository.kt:478:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^

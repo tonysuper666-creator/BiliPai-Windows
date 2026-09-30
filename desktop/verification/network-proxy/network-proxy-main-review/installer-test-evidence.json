@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "testsRun": 9,
+  "failures": 0,
+  "errors": 0,
+  "onlyOwnedTempProductCopiesWritten": true,
+  "realProductFilesModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrNetworkRequests": false
+}

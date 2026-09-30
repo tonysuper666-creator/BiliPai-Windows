@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "actualTransportCases": 15,
+  "actualOriginalDialogStyles": [
+    "MATERIAL3",
+    "MIUIX"
+  ],
+  "actualPointers": 16,
+  "actualEditorInputs": 8,
+  "actualProductSnapshotOnly": true,
+  "repositoryOverride": false,
+  "originalDialogLayerTested": true,
+  "nativeDialogAcceptanceClaimed": false,
+  "currentBuvidGraph": "shared application CookieJar",
+  "currentValidationCaptchaGraph": "CookieJar.NO_COOKIES",
+  "screenshots": 8,
+  "uiDiskJson": 2,
+  "sharedGradleInvoked": false,
+  "mainModified": false,
+  "frozenInputsModified": false,
+  "nativeWindowCreated": false,
+  "realAccountsOrExternalRequests": false,
+  "localLoopbackRequestsOnly": true
+}

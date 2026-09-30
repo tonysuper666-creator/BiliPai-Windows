@@ -1,0 +1,16 @@
+[
+  {
+    "path": "app/src/main/res/drawable/ms_lan_24.xml",
+    "features": [
+      "settings-network-proxy-symbols"
+    ],
+    "sha256": "fd70d5cd00bf6a6170c6c84c9a1d4a308ff1e96c3e9c08677332b7ccbe2439d3"
+  },
+  {
+    "path": "app/src/main/res/drawable/ms_hub_24.xml",
+    "features": [
+      "settings-network-proxy-symbols"
+    ],
+    "sha256": "bf87be30f555aae39c74d52674aebeae9cc5bc281a3d5241988c033378c1cf71"
+  }
+]

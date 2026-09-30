@@ -1,0 +1,1137 @@
+{
+  "artifacts": [
+    {
+      "path": "classes/com/android/purebilibili/core/network/policy/AppHttpProxySettings.class",
+      "sha256Bytes": "a5c5cb57140483baf5dc5e962dbd740d3605d4430efa2d2e621d1ef817dd8c40"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/network/policy/NetworkProxyPolicyKt.class",
+      "sha256Bytes": "3349fdf72ce13b30b4e94104f8334c2c9a22e10d10e09abfac1213660f61f255"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/store/NetworkProxyStore.class",
+      "sha256Bytes": "dc91fdc6901bd13aa8019b30764b41ca99ead4af60261910ba96693692ce54c2"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/PinyinUtils.class",
+      "sha256Bytes": "a561f474700f2813473f6064ffa9f002b0ba22ee8bcb183b4739c35ff9c821ed"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsNetworkProxyFieldsKt.class",
+      "sha256Bytes": "317d54e264c911f5bb8b589e749ea59ece9fe4c3960ad72a1f12068fbc695e13"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsCategoryHeaderKt.class",
+      "sha256Bytes": "e241b2eb70a240df91690d08d940e0de3f6541454a2d46e2b8b5e685ac7d4ddf"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopy.class",
+      "sha256Bytes": "9336077290d449831dd7e9905028d9efe8e4167c1875e81036800332557cb061"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt$WhenMappings.class",
+      "sha256Bytes": "9e7e95a5f5e0232aed0941eff269c7deaec1a2dd2d8c6dbb38563fbfe9815f14"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt.class",
+      "sha256Bytes": "1275ed12bb99bced0ead3b437e8cfdc6a248e6c2201cf12e25c4e94f312f761e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisual.class",
+      "sha256Bytes": "46c91bd592d42fdd3acabffce2d77d2783e9a1f6fae6b91495cb303e45731dfe"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt$WhenMappings.class",
+      "sha256Bytes": "40c2502dbf34ba8a7a917833a23d3bd0943da23e9443e28403fd607583ccfc88"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt.class",
+      "sha256Bytes": "8431ea3f21d25dbe0e867ed4f859e2b4a455cfd3d0c41ad755e6e9db2d5d2b05"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsIconRole.class",
+      "sha256Bytes": "3fe690e8342a72c3961d71aab9e2f92860ce87ff9e62f05754ebdf3999740e61"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsNetworkProxyFieldsKt.class",
+      "sha256Bytes": "1d0e6fbaaa25db6e481ebb324327016e8723b0cd90ea049418390f2c9786ff1d"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsPageScrollHost.class",
+      "sha256Bytes": "485881a467d06d9d0ac5132cfe662eccdfbe91d4ade6e47d174945995e6c1a06"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategory.class",
+      "sha256Bytes": "d03df7d1b33c38ac09bcd24554f4a9dc1fecee3a507d44f36f6dd340a8aa5d2c"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryListKt.class",
+      "sha256Bytes": "705dbe71f09989d6104b0d547b8132218993bfea43891c32f1b7f98e3b52667e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt$WhenMappings.class",
+      "sha256Bytes": "a66a9c1d6a4901f06b20dcbe31373c221a27ae51488455504b5938b9594987c3"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt.class",
+      "sha256Bytes": "70b0a1dba580cb3cdea34de28357f414cd080c80865f76b9bcd9c630d7f374b3"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSceneDetailFocus.class",
+      "sha256Bytes": "380f71d67e898a5efd6120a06bb1e22ed2962aae439279fccb19680f60399892"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchEntry.class",
+      "sha256Bytes": "4f9563fb6a4d627a299f836d92922a2a306ef65b19bb6909e024f5584a8a85d3"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusController.class",
+      "sha256Bytes": "dff1df44357fe8c6fcedc7ec13076def78bb79d1826c5664093d65c20437d2a5"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusIds.class",
+      "sha256Bytes": "d2d2f3ff1a6f11b92229a870dc9bf240b4bea9b1e618bda8914bb8676d1eab2b"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt$WhenMappings.class",
+      "sha256Bytes": "ba3bf8c3d44b8a01facd09c2025e847b3b659c84920746e7e08c2fac76ca6df8"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt.class",
+      "sha256Bytes": "2ae10d47bb49794ad32f3d9d131d0c750c1a9ed8ca16ad75775bf7576971d617"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusRequest.class",
+      "sha256Bytes": "ba15bf3cfbc8f16173ef367485ca3fc4458431a375a99a1ec8b35a13ee283d88"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$compareByDescending$1.class",
+      "sha256Bytes": "f8297b2105c4b6f69c5142f50aced65a7d2e08440132b1d61fc7be988b4530ea"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$1.class",
+      "sha256Bytes": "0dd6ee8ddd1249d079ab57378469ab5357e6d6c73ce15c1de9cee92873e36718"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$2.class",
+      "sha256Bytes": "2b400b2b297367ecbd43ab7c69f66973c743776b4a812a74d81f778fe306a844"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenByDescending$1.class",
+      "sha256Bytes": "049731b454003b816e29b1afe3ca0e9de2962f3bbd366f4e0fee583d1b0b7a5d"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt.class",
+      "sha256Bytes": "e51f7c8ab499c687f9b4a18df8c369b39fc7efe0b02d68d86f7845d9fba1660e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchResult.class",
+      "sha256Bytes": "4fd7dfefb92acaf8fb096f540816e458a408ebad99ed280f61b91b00f604ae96"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchTarget.class",
+      "sha256Bytes": "8b28f2bf6ec446b0f07befe8a6d5007bfb04d583893d4814f89de5a213b6961c"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt$WhenMappings.class",
+      "sha256Bytes": "91fa792f392688f6db9dedc7bcdd855ef073e01b506255f397f3e71f049142b6"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt.class",
+      "sha256Bytes": "7aee620c7e5e618a09a25cde206c1313be39cbc3856dd3e584833b6f8c11333a"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicyKt.class",
+      "sha256Bytes": "4502ecb098404a13bd2c4fd7de9b9ce2304be4f538d10a84c8e3e973eb07b750"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsVisualSpec.class",
+      "sha256Bytes": "731e1b0a01244e90030922f1511a583e1984a7e01950c9b7c579dde4c7f9db87"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsVisualSpecKt.class",
+      "sha256Bytes": "57e4992126c7b7b1aaf7866899b357b3d1f4e620165adfa5b57faf54d21320eb"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$cloudFavoriteFolders$2.class",
+      "sha256Bytes": "d6bee0efdc1c18b8e7ee3023c5d9a652fefae150f38a79d962662d952fb947c6"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$cloudFavoriteVideos$2.class",
+      "sha256Bytes": "a92989ba9363a4586750e2a288ed3a79407c4f877e878c7731875cca310a3a04"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$cloudHistory$2.class",
+      "sha256Bytes": "8581773c74043efcf684b37a4b525b3754673dd7cccdbd4749a00ad063438131"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$comments$2.class",
+      "sha256Bytes": "1332a3a3238d49e439ef66690a6794c0c85c8f72d369aa145d1923216fa10c5c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$Companion.class",
+      "sha256Bytes": "311fcfccc597bff4fefc6323f230f525141fab21fdff75e64375d873ed48343a"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$ensureVisitorSession$1.class",
+      "sha256Bytes": "0afe490a83ddd5c9fa26a2531daf68d17ab8bd1d763963677084eaa5346963bb"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$followingVideos$2.class",
+      "sha256Bytes": "c9f0ac88cb3387316f00bb0757c1332e0886ce4c28b4c761f62a79facb27be7f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$importCookies$2.class",
+      "sha256Bytes": "4485177e04c3f3485a010111fa7a9b5a49956c4bdcd09c3ca164e7e3625e2704"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$installLogin$2.class",
+      "sha256Bytes": "699bf485450be2957b6743c93b7bbef2c93d1f530f9261d8db9779a68993a71a"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$playback$2.class",
+      "sha256Bytes": "d8cbb321a6f1e175ffc76dd23403705a53af47e72c6e2a668a7543f75a3910e8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$popular$2.class",
+      "sha256Bytes": "c8e4988188f0a86f348264421a00f69b48c5e7a97c24e6beb080e556bba28555"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$recommendations$2.class",
+      "sha256Bytes": "36db6f37b0b0dec77ba472f04c8014ab30116a3982105661e5ea183d4c88abc2"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$refreshAccount$2.class",
+      "sha256Bytes": "ee6b01a0ef919bdd4cde1022a335258eda922e872a81ab4c3d364b2ec96a04c1"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$related$2.class",
+      "sha256Bytes": "da67b3ff4e26aa4e5ff2f89ce78418a35c447b89eb799825608df6739f9b3d40"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$removeSavedAccount$2.class",
+      "sha256Bytes": "242ed2c956434aed1424dc0d3fab6fbcdf5c7c1ced6f5de9de9b1b33db48885e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$search$2.class",
+      "sha256Bytes": "3d161a10b9af59e4fc62a281189ea333f2e262ea1e2a1cb9844bf00bcf05d69e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$sign$1.class",
+      "sha256Bytes": "d3d562fd88a95836e569fad4d1c4f86b71ff09fba8157c657646fedc663b9a23"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "bd2beb873ce0d086d67c983ad067463c3e19a69fd6dff64f437242409d495c7d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addNetworkInterceptor$1.class",
+      "sha256Bytes": "0837521be82dd617c34e8d63ce544ee970692a930c161b7b4bf27220c99854ff"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$switchAccount$2.class",
+      "sha256Bytes": "dd69631bda6a7bf74ec0c94395177613ceb30d07952e846f94d1d90b827b1483"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$validateCookieHeader$1.class",
+      "sha256Bytes": "00347aea2a550ff3cdac3b3138d8ec9c484afc25b2ea3048642c909f5d5e5525"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$videoDetails$2.class",
+      "sha256Bytes": "a1ca97ac9e750418dea3829847698625d63a194e6fa421e78f6a5d01826a4231"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository$watchLater$2.class",
+      "sha256Bytes": "85ae72ecb7952142fc2a11e7708e1952e048ac9669b8ceede3fdfd8345d3ebdb"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopRepository.class",
+      "sha256Bytes": "8874b6ea93816b6c38224ce42dee700942fb66ac8d88e5086f77a3bb240f5a73"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/data/DesktopSessionEpoch.class",
+      "sha256Bytes": "68fb954daba6cbb6962889f095390194cd08f144ffc794793e78f0f8b52b2eb1"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/DesktopNetworkProxyFailureKt.class",
+      "sha256Bytes": "4a467f59616844af26b51f8c7e906cf7eeabd6e117af9b139f2622eef78357aa"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/DesktopNetworkProxyPlatform$buildAppProxySelector$2.class",
+      "sha256Bytes": "832d9879fec7743a68b7bcad433170103138a0e29d277d088b4785c29357ac5b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.class",
+      "sha256Bytes": "6977ce219594a2536333223a8b3036fc6f83d84b6d93edf0a782f70abe300aa3"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/FixtureSocket.class",
+      "sha256Bytes": "5a82400f94c2b226094297714717be30cdbacbddeb020faa68407e51fc38eeaf"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$awaitText$2$1.class",
+      "sha256Bytes": "5dcde73464e475288efa9160b1c99915cf78c9fdd9c995f4b008424b7fc8919e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$awaitText$2$2.class",
+      "sha256Bytes": "35e459538318ae6cbea31a7caae7a1d36ff18c0527cfc56d90bcb9f685f0baf0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$10.class",
+      "sha256Bytes": "c0b6c3c50afc760bcdea4d65b1466376b8b4c06103b85a487c012bfc0c1471c2"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$11$fakeSystem$1.class",
+      "sha256Bytes": "15fac7cc12a1778cb8ae99d9dfb481b9d9b8bf9a18f9a3189aea0a831520340d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$11.class",
+      "sha256Bytes": "90edcade4a6b544d82af538f4062027140a247ad6bbf85f73b686cd4ffe56e6b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$12.class",
+      "sha256Bytes": "bb63449a131f26fe13b6e8717a4b931d3aa427f31990f0d24d07f0c73d145f2f"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$13$1.class",
+      "sha256Bytes": "e6d1e828eb592199c4a95e660cf3428fdfbb1d30b380f28104ffe96e70ccb727"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$13$2.class",
+      "sha256Bytes": "04d76fdbb285879a6ab88876bc9be754582bcd10ad9a553dba24e5dce3612b07"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$13$stdout$1.class",
+      "sha256Bytes": "2215261f71fe3d51aae6f966630591671b84c804be46cf72431f9dd78b1eee19"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$13.class",
+      "sha256Bytes": "8991ea5029d6d7f32ee0e24e052eb2ce3f4b10cc447a6745e75bd005100bfa06"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14$2.class",
+      "sha256Bytes": "306d0b203fe7cede6edba07f2da0047fa4b74f22f36690591259b9203006f1dc"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14$stdout$1.class",
+      "sha256Bytes": "87e60255157ed60c2a5e63b9703a1cd72637588cd41bf725321f8dcd480837fb"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14.class",
+      "sha256Bytes": "eb42d093c26d7543529f9b1e9e24675d07580ee7967f7aae5592cfd9eb15305c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$15.class",
+      "sha256Bytes": "3307872905b22279bedcefca8163be34e086a70853191c36b09a6f045361f848"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$3.class",
+      "sha256Bytes": "78f509eab08a9b43606f24668f49337fd7ab3ba6e6f280d05efec4981f28d391"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$4.class",
+      "sha256Bytes": "9c01fcd03b1f962fc8e3873dd238952a8d41092f104a3d3e1240e4866e5c3376"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$5.class",
+      "sha256Bytes": "0c5efeee299cd44e50a2e885a10cf635a703e454b1ead2d8dc760ae8cc3c2d14"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$6.class",
+      "sha256Bytes": "09167b64daee54bfb1d533c67cac3a8705f79bcf03ea4f4a0d3555ffafe6a4f8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$7.class",
+      "sha256Bytes": "4be805af8a1f9e5c52b02967a1df54e4a4460b7b0dccba97c4b2b90ba62941a3"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$8.class",
+      "sha256Bytes": "7e1c53c27ddbc07ab1867b233548f7067d9cc64ca0b71a617608793cc0b56d53"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$1.class",
+      "sha256Bytes": "2fdbfc9d670a6b3ead7372712cfe23746016c89432e30259eb07a788beca834e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$2.class",
+      "sha256Bytes": "a6897c4b41ff7c0b27fe07d4ebf60f75904752cfd796b61f890e80ff52bee66d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$work$1.class",
+      "sha256Bytes": "5f176e167a1a6ebee782946e0ee418c2636646e1150bf407498ee71854ad6bc8"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9.class",
+      "sha256Bytes": "9ba69d02dd29ca010068f82e2a39df61b615feca8d460619a97dd589c6b1268d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1$case$1.class",
+      "sha256Bytes": "4ad6ad4ab716eb32795c4cb635ed490885f7251dd2270f82d2dfb92e13b33c07"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt$main$1.class",
+      "sha256Bytes": "ba80ad09f2c5e8c7045a7794f0b2796ee3ed5e8722cf217c4834c0b2c30c7c49"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/network/ProxyFixtureKt.class",
+      "sha256Bytes": "f8b85602c93958085e64cc991d02baebc8ab666d132e263faa80a34d1c371c12"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$save$1.class",
+      "sha256Bytes": "5eeb8268c789125b5a7a46680de7b3b18420d89db509c2d942dba9fefdfb786d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$saveAndAwait$1.class",
+      "sha256Bytes": "074f72dcbba9dff267ee47a1a10689e172bf2551cf26f23642adaffdb9d30291"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$saveAndAwait$2$1.class",
+      "sha256Bytes": "0ccfc88b2ff45bb69f98818ffb6746ed28abe62d7ec22260291fa8ca4483730d"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.class",
+      "sha256Bytes": "55472b990330672ce7187d722c6ab4df34da48ae6470fb2cc294001d5797cfb0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopNetworkProxyBindingsKt.class",
+      "sha256Bytes": "192fa0df640ff754b33f70083c0642a7efa455500f8e01689e438bc74c7159fc"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopProxySettingsSymbols.class",
+      "sha256Bytes": "3906e6006680883a50c8963ce7903937ceaca561a6d1b1229649892e6166a691"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopProxySettingsVectors.class",
+      "sha256Bytes": "bd114c70d8306395a0770aa43af7f4282e8f6697b2baa7d56c610e9a4fcd31ce"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsCategorySymbols.class",
+      "sha256Bytes": "e800e81c4a5dafe3ec52086c1d767804212fdb6a3d38c4cfa894d93e0560d539"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsCategoryVectors.class",
+      "sha256Bytes": "6a968dbe96f482f2f34418a567854d5cbf5e0a4e46683ad31f97115fa8b492e6"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsSymbols.class",
+      "sha256Bytes": "7fc807a21867dca4b9f57dbe5deabe05c2be5e5d0d538728f7d82a7be97971f0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsVectors.class",
+      "sha256Bytes": "4999ed71e362d04309a99f00fc524d36059e749a2e5e981a89733e455a7eabac"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$3.class",
+      "sha256Bytes": "cf879e4729c46b4b1cc9459d0164aff3b6be5e024b8f858c85ae5c5d27d9390e"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "281725abbc149f6214ca51a69df45e58089158f2853de9523f03c4fc9e3f77e0"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "b853c5e53ae2559444c572f301965a10b22db5946f04e994cc4a672bcf064fc4"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1.class",
+      "sha256Bytes": "3cbd1cd68b69e30a28f33230bca072f64475d270197cba38ba8d806537841b38"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/ProxyUiFixtureKt.class",
+      "sha256Bytes": "ed064ac1ea4c62546436813698a5e828811d4cbea1cd49880053315a4635ea4b"
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "65d1145067949b00959161ec7935572ccb46d15a515ab2ab8a709ab4f85bb4b7"
+    },
+    {
+      "path": "classes/META-INF/settings_network_proxy_parity.kotlin_module",
+      "sha256Bytes": "f967d8336860fe1bcd5cbe9d2b97f742fadcbeb95e5fd0bc8b1f49a9cb42b000"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/core/network/policy/AppHttpProxySettings.class",
+      "sha256Bytes": "a5c5cb57140483baf5dc5e962dbd740d3605d4430efa2d2e621d1ef817dd8c40"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/core/network/policy/NetworkProxyPolicyKt.class",
+      "sha256Bytes": "3349fdf72ce13b30b4e94104f8334c2c9a22e10d10e09abfac1213660f61f255"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/core/store/NetworkProxyStore.class",
+      "sha256Bytes": "dc91fdc6901bd13aa8019b30764b41ca99ead4af60261910ba96693692ce54c2"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/core/util/PinyinUtils.class",
+      "sha256Bytes": "a561f474700f2813473f6064ffa9f002b0ba22ee8bcb183b4739c35ff9c821ed"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/ComposableSingletons$SettingsNetworkProxyFieldsKt.class",
+      "sha256Bytes": "317d54e264c911f5bb8b589e749ea59ece9fe4c3960ad72a1f12068fbc695e13"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsCategoryHeaderKt.class",
+      "sha256Bytes": "e241b2eb70a240df91690d08d940e0de3f6541454a2d46e2b8b5e685ac7d4ddf"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsDestinationCopy.class",
+      "sha256Bytes": "9336077290d449831dd7e9905028d9efe8e4167c1875e81036800332557cb061"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt$WhenMappings.class",
+      "sha256Bytes": "9e7e95a5f5e0232aed0941eff269c7deaec1a2dd2d8c6dbb38563fbfe9815f14"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt.class",
+      "sha256Bytes": "1275ed12bb99bced0ead3b437e8cfdc6a248e6c2201cf12e25c4e94f312f761e"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsEntryVisual.class",
+      "sha256Bytes": "46c91bd592d42fdd3acabffce2d77d2783e9a1f6fae6b91495cb303e45731dfe"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt$WhenMappings.class",
+      "sha256Bytes": "40c2502dbf34ba8a7a917833a23d3bd0943da23e9443e28403fd607583ccfc88"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt.class",
+      "sha256Bytes": "8431ea3f21d25dbe0e867ed4f859e2b4a455cfd3d0c41ad755e6e9db2d5d2b05"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsIconRole.class",
+      "sha256Bytes": "3fe690e8342a72c3961d71aab9e2f92860ce87ff9e62f05754ebdf3999740e61"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsNetworkProxyFieldsKt.class",
+      "sha256Bytes": "1d0e6fbaaa25db6e481ebb324327016e8723b0cd90ea049418390f2c9786ff1d"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsPageScrollHost.class",
+      "sha256Bytes": "485881a467d06d9d0ac5132cfe662eccdfbe91d4ade6e47d174945995e6c1a06"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsRootCategory.class",
+      "sha256Bytes": "d03df7d1b33c38ac09bcd24554f4a9dc1fecee3a507d44f36f6dd340a8aa5d2c"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsRootCategoryListKt.class",
+      "sha256Bytes": "705dbe71f09989d6104b0d547b8132218993bfea43891c32f1b7f98e3b52667e"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt$WhenMappings.class",
+      "sha256Bytes": "a66a9c1d6a4901f06b20dcbe31373c221a27ae51488455504b5938b9594987c3"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt.class",
+      "sha256Bytes": "70b0a1dba580cb3cdea34de28357f414cd080c80865f76b9bcd9c630d7f374b3"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSceneDetailFocus.class",
+      "sha256Bytes": "380f71d67e898a5efd6120a06bb1e22ed2962aae439279fccb19680f60399892"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchEntry.class",
+      "sha256Bytes": "4f9563fb6a4d627a299f836d92922a2a306ef65b19bb6909e024f5584a8a85d3"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchFocusController.class",
+      "sha256Bytes": "dff1df44357fe8c6fcedc7ec13076def78bb79d1826c5664093d65c20437d2a5"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchFocusIds.class",
+      "sha256Bytes": "d2d2f3ff1a6f11b92229a870dc9bf240b4bea9b1e618bda8914bb8676d1eab2b"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt$WhenMappings.class",
+      "sha256Bytes": "ba3bf8c3d44b8a01facd09c2025e847b3b659c84920746e7e08c2fac76ca6df8"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt.class",
+      "sha256Bytes": "2ae10d47bb49794ad32f3d9d131d0c750c1a9ed8ca16ad75775bf7576971d617"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchFocusRequest.class",
+      "sha256Bytes": "ba15bf3cfbc8f16173ef367485ca3fc4458431a375a99a1ec8b35a13ee283d88"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$compareByDescending$1.class",
+      "sha256Bytes": "f8297b2105c4b6f69c5142f50aced65a7d2e08440132b1d61fc7be988b4530ea"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$1.class",
+      "sha256Bytes": "0dd6ee8ddd1249d079ab57378469ab5357e6d6c73ce15c1de9cee92873e36718"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$2.class",
+      "sha256Bytes": "2b400b2b297367ecbd43ab7c69f66973c743776b4a812a74d81f778fe306a844"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenByDescending$1.class",
+      "sha256Bytes": "049731b454003b816e29b1afe3ca0e9de2962f3bbd366f4e0fee583d1b0b7a5d"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt.class",
+      "sha256Bytes": "e51f7c8ab499c687f9b4a18df8c369b39fc7efe0b02d68d86f7845d9fba1660e"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchResult.class",
+      "sha256Bytes": "4fd7dfefb92acaf8fb096f540816e458a408ebad99ed280f61b91b00f604ae96"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSearchTarget.class",
+      "sha256Bytes": "8b28f2bf6ec446b0f07befe8a6d5007bfb04d583893d4814f89de5a213b6961c"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt$WhenMappings.class",
+      "sha256Bytes": "91fa792f392688f6db9dedc7bcdd855ef073e01b506255f397f3e71f049142b6"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt.class",
+      "sha256Bytes": "7aee620c7e5e618a09a25cde206c1313be39cbc3856dd3e584833b6f8c11333a"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicyKt.class",
+      "sha256Bytes": "4502ecb098404a13bd2c4fd7de9b9ce2304be4f538d10a84c8e3e973eb07b750"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsVisualSpec.class",
+      "sha256Bytes": "731e1b0a01244e90030922f1511a583e1984a7e01950c9b7c579dde4c7f9db87"
+    },
+    {
+      "path": "classes-cohort/com/android/purebilibili/feature/settings/SettingsVisualSpecKt.class",
+      "sha256Bytes": "57e4992126c7b7b1aaf7866899b357b3d1f4e620165adfa5b57faf54d21320eb"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$cloudFavoriteFolders$2.class",
+      "sha256Bytes": "d6bee0efdc1c18b8e7ee3023c5d9a652fefae150f38a79d962662d952fb947c6"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$cloudFavoriteVideos$2.class",
+      "sha256Bytes": "a92989ba9363a4586750e2a288ed3a79407c4f877e878c7731875cca310a3a04"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$cloudHistory$2.class",
+      "sha256Bytes": "8581773c74043efcf684b37a4b525b3754673dd7cccdbd4749a00ad063438131"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$comments$2.class",
+      "sha256Bytes": "1332a3a3238d49e439ef66690a6794c0c85c8f72d369aa145d1923216fa10c5c"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$Companion.class",
+      "sha256Bytes": "311fcfccc597bff4fefc6323f230f525141fab21fdff75e64375d873ed48343a"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$ensureVisitorSession$1.class",
+      "sha256Bytes": "0afe490a83ddd5c9fa26a2531daf68d17ab8bd1d763963677084eaa5346963bb"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$followingVideos$2.class",
+      "sha256Bytes": "c9f0ac88cb3387316f00bb0757c1332e0886ce4c28b4c761f62a79facb27be7f"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$importCookies$2.class",
+      "sha256Bytes": "4485177e04c3f3485a010111fa7a9b5a49956c4bdcd09c3ca164e7e3625e2704"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$installLogin$2.class",
+      "sha256Bytes": "699bf485450be2957b6743c93b7bbef2c93d1f530f9261d8db9779a68993a71a"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$playback$2.class",
+      "sha256Bytes": "d8cbb321a6f1e175ffc76dd23403705a53af47e72c6e2a668a7543f75a3910e8"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$popular$2.class",
+      "sha256Bytes": "c8e4988188f0a86f348264421a00f69b48c5e7a97c24e6beb080e556bba28555"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$recommendations$2.class",
+      "sha256Bytes": "36db6f37b0b0dec77ba472f04c8014ab30116a3982105661e5ea183d4c88abc2"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$refreshAccount$2.class",
+      "sha256Bytes": "ee6b01a0ef919bdd4cde1022a335258eda922e872a81ab4c3d364b2ec96a04c1"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$related$2.class",
+      "sha256Bytes": "da67b3ff4e26aa4e5ff2f89ce78418a35c447b89eb799825608df6739f9b3d40"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$removeSavedAccount$2.class",
+      "sha256Bytes": "242ed2c956434aed1424dc0d3fab6fbcdf5c7c1ced6f5de9de9b1b33db48885e"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$search$2.class",
+      "sha256Bytes": "3d161a10b9af59e4fc62a281189ea333f2e262ea1e2a1cb9844bf00bcf05d69e"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$sign$1.class",
+      "sha256Bytes": "d3d562fd88a95836e569fad4d1c4f86b71ff09fba8157c657646fedc663b9a23"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "bd2beb873ce0d086d67c983ad067463c3e19a69fd6dff64f437242409d495c7d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$special$$inlined$-addNetworkInterceptor$1.class",
+      "sha256Bytes": "0837521be82dd617c34e8d63ce544ee970692a930c161b7b4bf27220c99854ff"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$switchAccount$2.class",
+      "sha256Bytes": "dd69631bda6a7bf74ec0c94395177613ceb30d07952e846f94d1d90b827b1483"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$validateCookieHeader$1.class",
+      "sha256Bytes": "00347aea2a550ff3cdac3b3138d8ec9c484afc25b2ea3048642c909f5d5e5525"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$videoDetails$2.class",
+      "sha256Bytes": "a1ca97ac9e750418dea3829847698625d63a194e6fa421e78f6a5d01826a4231"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository$watchLater$2.class",
+      "sha256Bytes": "85ae72ecb7952142fc2a11e7708e1952e048ac9669b8ceede3fdfd8345d3ebdb"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopRepository.class",
+      "sha256Bytes": "8874b6ea93816b6c38224ce42dee700942fb66ac8d88e5086f77a3bb240f5a73"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/data/DesktopSessionEpoch.class",
+      "sha256Bytes": "68fb954daba6cbb6962889f095390194cd08f144ffc794793e78f0f8b52b2eb1"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/DesktopNetworkProxyFailureKt.class",
+      "sha256Bytes": "4a467f59616844af26b51f8c7e906cf7eeabd6e117af9b139f2622eef78357aa"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/DesktopNetworkProxyPlatform$buildAppProxySelector$2.class",
+      "sha256Bytes": "832d9879fec7743a68b7bcad433170103138a0e29d277d088b4785c29357ac5b"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.class",
+      "sha256Bytes": "6977ce219594a2536333223a8b3036fc6f83d84b6d93edf0a782f70abe300aa3"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/FixtureSocket.class",
+      "sha256Bytes": "5a82400f94c2b226094297714717be30cdbacbddeb020faa68407e51fc38eeaf"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$awaitText$2$1.class",
+      "sha256Bytes": "5dcde73464e475288efa9160b1c99915cf78c9fdd9c995f4b008424b7fc8919e"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$awaitText$2$2.class",
+      "sha256Bytes": "35e459538318ae6cbea31a7caae7a1d36ff18c0527cfc56d90bcb9f685f0baf0"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$10.class",
+      "sha256Bytes": "c0b6c3c50afc760bcdea4d65b1466376b8b4c06103b85a487c012bfc0c1471c2"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$11$fakeSystem$1.class",
+      "sha256Bytes": "15fac7cc12a1778cb8ae99d9dfb481b9d9b8bf9a18f9a3189aea0a831520340d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$11.class",
+      "sha256Bytes": "90edcade4a6b544d82af538f4062027140a247ad6bbf85f73b686cd4ffe56e6b"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$12.class",
+      "sha256Bytes": "bb63449a131f26fe13b6e8717a4b931d3aa427f31990f0d24d07f0c73d145f2f"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$13.class",
+      "sha256Bytes": "8991ea5029d6d7f32ee0e24e052eb2ce3f4b10cc447a6745e75bd005100bfa06"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14$2.class",
+      "sha256Bytes": "306d0b203fe7cede6edba07f2da0047fa4b74f22f36690591259b9203006f1dc"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14$stdout$1.class",
+      "sha256Bytes": "87e60255157ed60c2a5e63b9703a1cd72637588cd41bf725321f8dcd480837fb"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$14.class",
+      "sha256Bytes": "eb42d093c26d7543529f9b1e9e24675d07580ee7967f7aae5592cfd9eb15305c"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$15.class",
+      "sha256Bytes": "3307872905b22279bedcefca8163be34e086a70853191c36b09a6f045361f848"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$3.class",
+      "sha256Bytes": "78f509eab08a9b43606f24668f49337fd7ab3ba6e6f280d05efec4981f28d391"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$4.class",
+      "sha256Bytes": "9c01fcd03b1f962fc8e3873dd238952a8d41092f104a3d3e1240e4866e5c3376"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$5.class",
+      "sha256Bytes": "0c5efeee299cd44e50a2e885a10cf635a703e454b1ead2d8dc760ae8cc3c2d14"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$6.class",
+      "sha256Bytes": "09167b64daee54bfb1d533c67cac3a8705f79bcf03ea4f4a0d3555ffafe6a4f8"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$7.class",
+      "sha256Bytes": "4be805af8a1f9e5c52b02967a1df54e4a4460b7b0dccba97c4b2b90ba62941a3"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$8.class",
+      "sha256Bytes": "7e1c53c27ddbc07ab1867b233548f7067d9cc64ca0b71a617608793cc0b56d53"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$1.class",
+      "sha256Bytes": "2fdbfc9d670a6b3ead7372712cfe23746016c89432e30259eb07a788beca834e"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$2.class",
+      "sha256Bytes": "a6897c4b41ff7c0b27fe07d4ebf60f75904752cfd796b61f890e80ff52bee66d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9$work$1.class",
+      "sha256Bytes": "5f176e167a1a6ebee782946e0ee418c2636646e1150bf407498ee71854ad6bc8"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$1$1$9.class",
+      "sha256Bytes": "9ba69d02dd29ca010068f82e2a39df61b615feca8d460619a97dd589c6b1268d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1$case$1.class",
+      "sha256Bytes": "4ad6ad4ab716eb32795c4cb635ed490885f7251dd2270f82d2dfb92e13b33c07"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt$main$1.class",
+      "sha256Bytes": "ba80ad09f2c5e8c7045a7794f0b2796ee3ed5e8722cf217c4834c0b2c30c7c49"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/network/ProxyFixtureKt.class",
+      "sha256Bytes": "f8b85602c93958085e64cc991d02baebc8ab666d132e263faa80a34d1c371c12"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$save$1.class",
+      "sha256Bytes": "5eeb8268c789125b5a7a46680de7b3b18420d89db509c2d942dba9fefdfb786d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$saveAndAwait$1.class",
+      "sha256Bytes": "074f72dcbba9dff267ee47a1a10689e172bf2551cf26f23642adaffdb9d30291"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopNetworkProxyBindings$saveAndAwait$2$1.class",
+      "sha256Bytes": "0ccfc88b2ff45bb69f98818ffb6746ed28abe62d7ec22260291fa8ca4483730d"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.class",
+      "sha256Bytes": "55472b990330672ce7187d722c6ab4df34da48ae6470fb2cc294001d5797cfb0"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopNetworkProxyBindingsKt.class",
+      "sha256Bytes": "192fa0df640ff754b33f70083c0642a7efa455500f8e01689e438bc74c7159fc"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopProxySettingsSymbols.class",
+      "sha256Bytes": "3906e6006680883a50c8963ce7903937ceaca561a6d1b1229649892e6166a691"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopProxySettingsVectors.class",
+      "sha256Bytes": "bd114c70d8306395a0770aa43af7f4282e8f6697b2baa7d56c610e9a4fcd31ce"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopSettingsCategorySymbols.class",
+      "sha256Bytes": "e800e81c4a5dafe3ec52086c1d767804212fdb6a3d38c4cfa894d93e0560d539"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopSettingsCategoryVectors.class",
+      "sha256Bytes": "6a968dbe96f482f2f34418a567854d5cbf5e0a4e46683ad31f97115fa8b492e6"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopSettingsSymbols.class",
+      "sha256Bytes": "7fc807a21867dca4b9f57dbe5deabe05c2be5e5d0d538728f7d82a7be97971f0"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/DesktopSettingsVectors.class",
+      "sha256Bytes": "4999ed71e362d04309a99f00fc524d36059e749a2e5e981a89733e455a7eabac"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$3.class",
+      "sha256Bytes": "cf879e4729c46b4b1cc9459d0164aff3b6be5e024b8f858c85ae5c5d27d9390e"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$4.class",
+      "sha256Bytes": "281725abbc149f6214ca51a69df45e58089158f2853de9523f03c4fc9e3f77e0"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "b853c5e53ae2559444c572f301965a10b22db5946f04e994cc4a672bcf064fc4"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/ProxyUiFixtureKt$main$1.class",
+      "sha256Bytes": "3cbd1cd68b69e30a28f33230bca072f64475d270197cba38ba8d806537841b38"
+    },
+    {
+      "path": "classes-cohort/com/bilipai/desktop/settings/ProxyUiFixtureKt.class",
+      "sha256Bytes": "ed064ac1ea4c62546436813698a5e828811d4cbea1cd49880053315a4635ea4b"
+    },
+    {
+      "path": "classes-cohort/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "65d1145067949b00959161ec7935572ccb46d15a515ab2ab8a709ab4f85bb4b7"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "392ae504f84454284784c08a38e6b923da731b73b643dc7b8ca4a7d0b93fc298"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "2864374766485986a112ac70a4e5b561a62b9ba3bd50c8c376b40447371d2287"
+    },
+    {
+      "path": "compiled-only.json",
+      "sha256Bytes": "781b9e9fff9c3418b6342df7e5ac96fa17fb3455a48d310d007f298bc8489abd"
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "18a165be34b0479082593427b88d9c472e20f4a400d50932de73cbfbbfef4752"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "4ac736d1f2d5c9ab0c667b2b91bc2826f6f236d659bbb4fc0d5bb5f7cd8f466e"
+    },
+    {
+      "path": "DesktopNetworkProxyBindings.kt",
+      "sha256Bytes": "1c3706719af1331ef23be3fd73d6a8be846baa5fc16368beda9bc66c56141315"
+    },
+    {
+      "path": "DesktopNetworkProxyFailure.kt",
+      "sha256Bytes": "d1b057e29bdce041620801682a3d3ab05c54f2312c1bebbf2fab56e43947649e"
+    },
+    {
+      "path": "diagnostics/initial-fixture-abi-error.md",
+      "sha256Bytes": "be3d373720063696e4108d2a81dcb9c5db54c2bd1b2d2fdd7b5ecefe02b50184"
+    },
+    {
+      "path": "existing-platform-provenance.json",
+      "sha256Bytes": "ae4e3612b840b8a6acb7c304a8d7a7b04e8a596d2385724803905ef63034d908"
+    },
+    {
+      "path": "extract-upstream-network-proxy.py",
+      "sha256Bytes": "678865552e25cb5dfb6ac5cd34a0296c3df36e238737e2c8ab82c80ac56d9180"
+    },
+    {
+      "path": "fixture-category-helpers/DesktopSettingsCategoryVectors.kt",
+      "sha256Bytes": "d1b11f95dc503e553f1f65b2c95d568a01d229862c15eefde9bfecb56b781033"
+    },
+    {
+      "path": "fixture-category-helpers/SettingsCategoryHeader.kt",
+      "sha256Bytes": "bb1e197613c0455bdd5ca768213ae7427026854b4f1108952332789c3969c76e"
+    },
+    {
+      "path": "fixture-category-helpers/SettingsRootCategoryList.kt",
+      "sha256Bytes": "d54080e06d85577fd3943bc9f7e4520e5a9999f7e8b1fafe6586bf5414a2c728"
+    },
+    {
+      "path": "fixture-category-helpers/SettingsVisualSpec.kt",
+      "sha256Bytes": "a1ba6fbf09f6a0bdf505f41ce69f320377d2b62752b203bdf762fc5f323536e8"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/core/util/PinyinUtils.kt",
+      "sha256Bytes": "56827d90279fa85572abeddd0dbf612e14ce0bb276b50f63ef8db122d90b68fe"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+      "sha256Bytes": "09e81f7d7a96ce8ad92e577e1854825a450c7019e86b20285579c40ec95e8520"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+      "sha256Bytes": "abbc7c196a515a160d4ae52308e4df5b80b032a248c51874dad7444c4f923cfd"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+      "sha256Bytes": "1ecb7c15e6e04bcfbf76643f2846975e64fa9bb53d2b7e65898e5e05660758b3"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicy.kt",
+      "sha256Bytes": "dd194030766924355c172060059c7d26f5c32d8606ce796caa931cd26419b1c7"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt",
+      "sha256Bytes": "89d6f88a4830a8627eb64f88d21cc3a9f434fdccc34b1f4e1fa08e1f5cd7f316"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+      "sha256Bytes": "40aed9a02aada86610a59f28e57761f411aba06f91d8b7534a70c2dc56f3e488"
+    },
+    {
+      "path": "fixture-search-helpers/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt",
+      "sha256Bytes": "0788acdcf772d034bf68f1e3bc6c5096b5d89369866ed57da07ee3efe0534fd3"
+    },
+    {
+      "path": "fixture-search-helpers/com/bilipai/desktop/settings/DesktopSettingsVectors.kt",
+      "sha256Bytes": "61b181a7be24112a99cca9d8ac40d16b3d73bbf42d9bfbb9541bdf45c906596e"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "8c1a758b874bffb14176be20b648d44d87f457d78891f242eeef299e68c98456"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+      "sha256Bytes": "e88a8d7240e44cec42654786dfd4da7772ed72373d0ac78ee9b7e70fd47abc4d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "sha256Bytes": "ab95ca96bf32a01d29c27f55768bcfb7a50215fc61893b3b9e5925971e8d6d68"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsNetworkProxyFields.kt",
+      "sha256Bytes": "8aa59342e35b51f27bda7841dbe59b176aa48abccfa8513cd0d0b4f94fc18500"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.kt",
+      "sha256Bytes": "7343e428ce645366d145ec5f7da8259de0417880920e0f9aeb722d3098a1a68b"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopProxySettingsVectors.kt",
+      "sha256Bytes": "91c21c9b7fc2ab2e00ee57a699c339c6aeea506257a9b2131668f6df8d34c60b"
+    },
+    {
+      "path": "media-caller-baselines.json",
+      "sha256Bytes": "3051853c69aabe6e8852ada2a190157018ee2f893462b812b4479463c48d80a6"
+    },
+    {
+      "path": "media-caller-integration.patch",
+      "sha256Bytes": "d70d1565a73f181bfeb18d6aae193fede6b01286b495e8d12925b56b757fc218"
+    },
+    {
+      "path": "prepare-compile-run.py",
+      "sha256Bytes": "3615a06989c49e57a3725f8e1245151d87773d183a39b60acd7f23e8b40eda6d"
+    },
+    {
+      "path": "product-generated/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+      "sha256Bytes": "ab95ca96bf32a01d29c27f55768bcfb7a50215fc61893b3b9e5925971e8d6d68"
+    },
+    {
+      "path": "product-generated/com/android/purebilibili/feature/settings/SettingsNetworkProxyFields.kt",
+      "sha256Bytes": "8aa59342e35b51f27bda7841dbe59b176aa48abccfa8513cd0d0b4f94fc18500"
+    },
+    {
+      "path": "product-generated/com/bilipai/desktop/network/DesktopNetworkProxyPlatform.kt",
+      "sha256Bytes": "7343e428ce645366d145ec5f7da8259de0417880920e0f9aeb722d3098a1a68b"
+    },
+    {
+      "path": "product-generated/com/bilipai/desktop/settings/DesktopProxySettingsVectors.kt",
+      "sha256Bytes": "91c21c9b7fc2ab2e00ee57a699c339c6aeea506257a9b2131668f6df8d34c60b"
+    },
+    {
+      "path": "proof/fresh-jvm.args",
+      "sha256Bytes": "b84690ed341e9ee059c5f289e53909cc4558eb6ada7d0cdb104f43aa0bb3f35e"
+    },
+    {
+      "path": "proof/fresh-jvm.log",
+      "sha256Bytes": "a2673d0ae2deba24489314f618ecee0dea93c97bd1e257cfa369a5ed47128040"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "e61524d677cde38a6edad2f1de6dda4bfb19648c1de20267c030c4a6ca2e3bc0"
+    },
+    {
+      "path": "proof-index.json",
+      "sha256Bytes": "1858d0fd80ac8b3977ed112378f07dbd746c189bc7dcffbe27ac240e854e1750"
+    },
+    {
+      "path": "ProxyFixture.kt",
+      "sha256Bytes": "a2641b9411d91fa0122ddca106e6a1a276b4800589ae040fa9e54d550ae6d2c8"
+    },
+    {
+      "path": "ProxyUiFixture.kt",
+      "sha256Bytes": "fa2209c23be4c03d85ffe5eedc42a6e042b2c723c9e3c6cd200ae0e791dc9866"
+    },
+    {
+      "path": "reference-only/OriginalDiagnosticsSection.kt",
+      "sha256Bytes": "3ce182efc24b86173ec236faf8f59f2bb8a0745d94ef68640d269757d1dd4817"
+    },
+    {
+      "path": "repository-baseline.json",
+      "sha256Bytes": "008e0d80b6ce6ff113cec65d1b9881ab8b1b1eb0b4fd39be68ec4f1eba59c72c"
+    },
+    {
+      "path": "repository-draft/DesktopRepository.kt",
+      "sha256Bytes": "88f3909f9fb703e6a4ff3e7c09cb558595526f566b82dfa60776381c2e593aab"
+    },
+    {
+      "path": "repository-integration.patch",
+      "sha256Bytes": "c62532a5183fe69767f0dc113916cd19765c43e53cdf8dd182750344cb993140"
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "9e9ee0f19354a8d5ddcb2672cd582148848e0a4dbbfb811fc43d220e574aefa1"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "2ee0e2b4167e78c49d341e50d0e584768c2d2b3c83553b38b1169c6d38822e8c"
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "345f85da6975c9959d26e1af437c0645db8c9dbf3c8fc38d8e6a09f66c2d61ad"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "2bd21c0a508b8afa8b6472b9516c4eff7a7579ec42f383a3d705dd8b8d9c2d2a"
+    },
+    {
+      "path": "source-contract-proof.json",
+      "sha256Bytes": "938b4b7718e5aecb14e22e8fe42f5379772f567022e0f517e015f15f4c5b4c73"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "a98fa2309cdabae4ac45443a9ac8418a409e4d068abe31385dde8aff8743993b"
+    },
+    {
+      "path": "startup-baselines.json",
+      "sha256Bytes": "d1ba32a874256703358043aa96f14a5ab721b5bf45bab3d0f86c3b90d1fc819d"
+    },
+    {
+      "path": "startup-seam.kt.txt",
+      "sha256Bytes": "2420da05bd51c1ea68b59a2e4fbd9cb75eb974757876648283fe831e1e48ac5f"
+    },
+    {
+      "path": "ui-proof/material3-proxy.png",
+      "sha256Bytes": "56743cf0e638b8191af1a662feee44de0bc48ddde1fef01feb99083d8f290963"
+    },
+    {
+      "path": "ui-proof/miuix-proxy.png",
+      "sha256Bytes": "f6b75988a3b574d855579c50734dbbeb3a08e28aa2f640d0525ba2b14e90c0e9"
+    },
+    {
+      "path": "ui-proof/result.json",
+      "sha256Bytes": "a10144dd829b6655c06fb48fbe44df9b95b20fa8b8df2eedd4d8d48ef21b7cb4"
+    },
+    {
+      "path": "ui-runtime.args",
+      "sha256Bytes": "26db7d59993838827042583a070139befb863c049dbf6fdc14ce31ab527d522d"
+    },
+    {
+      "path": "ui-runtime.log",
+      "sha256Bytes": "82edfa5b0b0e8e6ff07c1e36b6529ce06652eb59fc908b931328013789ab022e"
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "c3b1ff4dbf9553bdd26c816e5b2a5cad7e1cd569a7a3e6bc5f85e17b171f627a"
+    },
+    {
+      "path": "verify-original-contracts.py",
+      "sha256Bytes": "2925a810d05f659ce487bbe69aaacfd185da3f553201590f3aff10c1d5bdfeb7"
+    }
+  ],
+  "artifactCount": 281,
+  "activeClassDirectory": "classes-cohort",
+  "priorAttemptClassDirectory": "classes",
+  "applicationProxyPrepared": true,
+  "fullDiagnosticsComplete": false,
+  "mainModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrExternalHttpRequestMade": false
+}

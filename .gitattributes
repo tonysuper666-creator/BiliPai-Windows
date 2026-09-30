@@ -8,3 +8,5 @@ desktop/src/main/resources/licenses/pinyin4j-2.5.0/** -text
 # Frozen evidence manifests bind raw bytes across Windows/Linux checkouts.
 desktop/verification/settings-history-music/** -text
 desktop/verification/settings-tree-fields/** -text
+
+desktop/verification/network-proxy/** -text

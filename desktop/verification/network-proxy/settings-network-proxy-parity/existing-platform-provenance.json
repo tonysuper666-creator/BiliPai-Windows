@@ -1,0 +1,27 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-plugins.py",
+    "sha256Bytes": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4",
+    "referenceOrExistingPlatformOnly": true
+  },
+  {
+    "path": "desktop/tools/extract-upstream-media.py",
+    "sha256Bytes": "cf2067ad47f38dc9f54e3e37be463a4fe61f91599e209f7a314323392c88cf78",
+    "referenceOrExistingPlatformOnly": true
+  },
+  {
+    "path": "desktop/tools/extract-upstream-settings-search.py",
+    "sha256Bytes": "c5d2b14c34c06e4c2b5106b29c7859965b2d46618803b650966c4f8df140b3db",
+    "referenceOrExistingPlatformOnly": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "sha256Bytes": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf",
+    "referenceOrExistingPlatformOnly": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+    "sha256Bytes": "9b919c4fb266f811a0f559376d4f2c32e37f4ad86c0f34110b1f23cbb91ccb10",
+    "referenceOrExistingPlatformOnly": true
+  }
+]

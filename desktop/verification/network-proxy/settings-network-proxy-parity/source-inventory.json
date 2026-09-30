@@ -1,0 +1,34 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/NetworkProxyStore.kt",
+    "mode": "platform-rewrite",
+    "features": [
+      "settings-network-proxy-parity"
+    ],
+    "sha256": "c32194595d65dc530f2b9e0cc036dc26e16a3226aef11d8ccb18a3aa4fbe9e72"
+  },
+  {
+    "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/NetworkProxyPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-network-proxy-parity"
+    ],
+    "sha256": "0f2160fd2a1c91dea13c09901d147d34c3c85d63276edc10d0f2ac9a091a5c24"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-network-proxy-parity"
+    ],
+    "sha256": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-network-proxy-parity"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  }
+]

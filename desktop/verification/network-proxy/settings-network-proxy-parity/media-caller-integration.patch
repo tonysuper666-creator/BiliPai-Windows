@@ -1,0 +1,22 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
+@@ -27,7 +27,7 @@
+     private val sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = null,
+     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
+ ) : AutoCloseable {
+-    constructor(repository: DesktopRepository) : this(repository.httpClient, defaultStateFile(), WindowsFfmpegMuxer(),
++    constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
+         defaultSourceResolver(repository), defaultDanmakuDownloader(repository))
+ 
+     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt
+@@ -41,7 +41,7 @@
+     }
+     private fun active(): Binding = binding ?: error("插件账号服务尚未初始化")
+     val api: BilibiliApi get() = active().api
+-    val playbackClient: OkHttpClient get() = active().repository.httpClient
++    val playbackClient: OkHttpClient get() = active().repository.playbackHttpClient
+     internal fun recommendationContext(): DesktopPluginContext = active().discovery.recommendationContext()
+ 
+     // The original enrichment caller consumes only the first element; paging remains owned by Community.

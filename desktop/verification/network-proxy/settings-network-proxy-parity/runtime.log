@@ -1,0 +1,27 @@
+START original host-port policy and sanitizer semantics remain unchanged
+PASS original host-port policy and sanitizer semantics remain unchanged
+START actual repository disabled route uses only the task origin without global proxy mutation
+PASS actual repository disabled route uses only the task origin without global proxy mutation
+START successful original persistence plus thin idle-route retirement switches a warm actual graph
+PASS successful original persistence plus thin idle-route retirement switches a warm actual graph
+START existing community and isolated login client graphs share the selector while keeping their own cookie jars
+PASS existing community and isolated login client graphs share the selector while keeping their own cookie jars
+START original playback-client NO_PROXY boundary bypasses enabled application proxy
+PASS original playback-client NO_PROXY boundary bypasses enabled application proxy
+START the actual application client tunnels HTTPS through configured HTTP proxy without inventing proxy credentials
+PASS the actual application client tunnels HTTPS through configured HTTP proxy without inventing proxy credentials
+START task coroutine cancellation cancels only its real proxy socket while a separate request succeeds
+PASS task coroutine cancellation cancels only its real proxy socket while a separate request succeeds
+START disable keeps endpoint and live selector returns actual subsequent API request to direct route
+PASS disable keeps endpoint and live selector returns actual subsequent API request to direct route
+START original disabled or invalid config uses injected system list without setting global defaults
+PASS original disabled or invalid config uses injected system list without setting global defaults
+START actual failed store replacement does not publish or normalize a new proxy state
+PASS actual failed store replacement does not publish or normalize a new proxy state
+START real refused task proxy invokes the original failure hook without URI or exception-message logging
+PASS real refused task proxy invokes the original failure hook without URI or exception-message logging
+START new JVM reads original namespace and keys from actual persisted proxy settings
+PASS new JVM reads original namespace and keys from actual persisted proxy settings
+START actual restore write fence rejects a late old binding without changing the original live state
+PASS actual restore write fence rejects a late old binding without changing the original live state
+Original proxy graph/store: 13 actual policy/socket/graph/disk cases passed. Unretired warm route=origin.

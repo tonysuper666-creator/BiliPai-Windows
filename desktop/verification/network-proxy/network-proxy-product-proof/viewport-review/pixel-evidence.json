@@ -1,0 +1,46 @@
+{
+  "readOnlyImageAnalysis": true,
+  "imagesEdited": false,
+  "originalFrozenPixelsRetained": true,
+  "rows": [
+    {
+      "image": "miuix-original-dialog.png",
+      "width": 720,
+      "height": 720,
+      "settleLogicalMilliseconds": 240,
+      "lastExactDialogBackgroundRow": 719,
+      "bottomCenterPixel": [
+        36,
+        36,
+        36
+      ],
+      "exactBackgroundBottomMargin": 0
+    },
+    {
+      "image": "miuix-720-original-dialog.png",
+      "width": 720,
+      "height": 720,
+      "settleLogicalMilliseconds": 2400,
+      "lastExactDialogBackgroundRow": 707,
+      "bottomCenterPixel": [
+        0,
+        0,
+        0
+      ],
+      "exactBackgroundBottomMargin": 12
+    },
+    {
+      "image": "miuix-900-original-dialog.png",
+      "width": 720,
+      "height": 900,
+      "settleLogicalMilliseconds": 2400,
+      "lastExactDialogBackgroundRow": 887,
+      "bottomCenterPixel": [
+        0,
+        0,
+        0
+      ],
+      "exactBackgroundBottomMargin": 12
+    }
+  ]
+}
