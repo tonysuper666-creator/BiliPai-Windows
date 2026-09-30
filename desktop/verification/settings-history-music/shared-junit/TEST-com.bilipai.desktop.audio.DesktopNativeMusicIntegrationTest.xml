@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.audio.DesktopNativeMusicIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:52.199Z" hostname="TONYSUPER666" time="0.112">
+  <properties/>
+  <testcase name="originalAudioRequestsAndRetainedPlaybackOwnership()" classname="com.bilipai.desktop.audio.DesktopNativeMusicIntegrationTest" time="0.111"/>
+  <system-out><![CDATA[PASS AU SID and NativeMusic BV/CID retain original distinct identities and owners
+PASS real original AudioApi queries return full song metadata stream and lyric
+PASS artist fallback uses original uploader without discarding raw author field
+PASS unplayable stream reply fails before requesting lyrics
+PASS song API business failure is preserved and no stream request follows
+PASS lyric API failure does not discard a playable song or metadata
+PASS account replacement after info cannot continue under another account
+PASS account replacement after url cannot continue under another account
+PASS account replacement after lyric cannot continue under another account
+PASS existing scoped CookieJar never adds Bilibili account Cookie to external audio
+PASS retained session loads AU metadata and original timed lyrics with au cache key
+PASS native projection preserves pause progress metadata and original single-song queue controls
+PASS stale route and foreign native owner cannot publish foreign progress or lyrics
+PASS pending AU preparation cannot overwrite a newly installed foreign source
+PASS cancelled old AU result cannot replace a newer AU song even if provider finishes late
+PASS saved AU queue resumes progress and owner-only close releases the audio source
+PASS NativeMusic preserves requested part and does not masquerade as AU song metadata
+PASS invalid SID and CID fail before any repository call
+18 native MusicDetail/NativeMusic offline cases PASS. No HTTP, HWND, GPU, shared Gradle or account secrets.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

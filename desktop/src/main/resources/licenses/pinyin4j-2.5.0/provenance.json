@@ -1,0 +1,56 @@
+{
+  "artifacts": [
+    {
+      "coordinate": "com.belerweb:pinyin4j:2.5.0",
+      "url": "https://repo.maven.apache.org/maven2/com/belerweb/pinyin4j/2.5.0/pinyin4j-2.5.0.jar",
+      "file": "pinyin4j-2.5.0.jar",
+      "sha256": "282de2b3f2558b4f1c86dfd2fd6550500f838a178ef8b7acf34863f7d814fa35",
+      "officialSha1": "5a620aedec0f779f2123ba60fd4b74bfbd3e2646"
+    },
+    {
+      "coordinate": "com.belerweb:pinyin4j:2.5.0",
+      "url": "https://repo.maven.apache.org/maven2/com/belerweb/pinyin4j/2.5.0/pinyin4j-2.5.0.pom",
+      "file": "pinyin4j-2.5.0.pom",
+      "sha256": "7860cfad3bac667d51e53c28d3b6ee058893cd626a8ecb6e49c0d6b6f4b5c5f6",
+      "officialSha1": "1eb3f4ad329f253f5afdc9c282f669be7beff19f"
+    },
+    {
+      "coordinate": "com.belerweb:pinyin4j:2.5.0",
+      "url": "https://repo.maven.apache.org/maven2/com/belerweb/pinyin4j/2.5.0/pinyin4j-2.5.0-sources.jar",
+      "file": "pinyin4j-2.5.0-sources.jar",
+      "sha256": "b249cc93415b0c349fc4d0cdef2697ebd36df29246a5b87d68a9327e0153fdf6",
+      "officialSha1": "e5ad4e29c5d9dc9baaccd7b078a92987a2e37726"
+    }
+  ],
+  "metadataConflict": {
+    "pomLicense": "BSD",
+    "sourceHeaderLicense": "GPL-2.0-or-later"
+  },
+  "fullLicense": {
+    "url": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt",
+    "file": "GPL-2.0.txt",
+    "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+  },
+  "files": [
+    {
+      "file": "GPL-2.0.txt",
+      "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+    },
+    {
+      "file": "NOTICE.txt",
+      "sha256": "b0541bc3dfe0517c8e49a1aff053d8f65debb88d56fb5cadc5a205dedb189d0c"
+    },
+    {
+      "file": "pinyin4j-2.5.0-sources.jar",
+      "sha256": "b249cc93415b0c349fc4d0cdef2697ebd36df29246a5b87d68a9327e0153fdf6"
+    },
+    {
+      "file": "pinyin4j-2.5.0.pom",
+      "sha256": "7860cfad3bac667d51e53c28d3b6ee058893cd626a8ecb6e49c0d6b6f4b5c5f6"
+    },
+    {
+      "file": "PinyinHelper-source-header.txt",
+      "sha256": "e7a48477e3cd92e4ec6ecdd8285c9a7379c00f123c1f9fe9a313753828952bad"
+    }
+  ]
+}

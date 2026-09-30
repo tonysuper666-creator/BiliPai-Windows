@@ -1,0 +1,41 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "b2812eac6182ad06f99d0a04a0ea4d53aa558a5a",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-enhancement-subtitle-story-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts do not determine progress. Existing privacy credits are strengthened by these fixes, without counting them twice.",
+  "changes": [
+    {
+      "group": "native-music",
+      "weight": 1,
+      "previousMainCredit": 0.5,
+      "currentMainCredit": 0.75,
+      "remainingCredit": 0.25,
+      "basis": "Verified current-part/BGM and Space sequential-listen entry hooks, retained session progress and credential/native ownership are integrated into Root.",
+      "remaining": "Original complete detail/immersive visuals, gRPC multi-BGM and real packaged AU/codec/audio-device/service acceptance."
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 93.5,
+    "isolatedReadyPoints": 1,
+    "unfinishedOrUnverifiedPoints": 43.5,
+    "weightedReviewedProgressPercent": 67.8,
+    "presentation": "约68%，按完整原项目功能及底层行为对齐的人工粗估。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-settings-history-music-integration.json",
+  "uncreditedPreparedWork": [
+    "Original settings search/category/focus Shell subtree and complete actual category content",
+    "AICU/reports",
+    "Space complete profile/actions/dynamic search",
+    "Dynamic vote/reserve UI",
+    "New component popup native dialog and packaged acceptance"
+  ],
+  "newDesktopDeployment": false
+}

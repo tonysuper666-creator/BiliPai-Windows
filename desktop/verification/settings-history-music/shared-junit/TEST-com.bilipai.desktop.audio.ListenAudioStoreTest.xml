@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.audio.ListenAudioStoreTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:29:03.977Z" hostname="TONYSUPER666" time="0.062">
+  <properties/>
+  <testcase name="listening forces audio output without changing ordinary video preferences()" classname="com.bilipai.desktop.audio.ListenAudioStoreTest" time="0.013"/>
+  <testcase name="damaged documents and invalid queue bounds recover into usable cold state()" classname="com.bilipai.desktop.audio.ListenAudioStoreTest" time="0.026"/>
+  <testcase name="saved queue favorites recent selected item and resume position survive reopening()" classname="com.bilipai.desktop.audio.ListenAudioStoreTest" time="0.011"/>
+  <testcase name="inactive audio account destruction preserves its resume and cannot release another source()" classname="com.bilipai.desktop.audio.ListenAudioStoreTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

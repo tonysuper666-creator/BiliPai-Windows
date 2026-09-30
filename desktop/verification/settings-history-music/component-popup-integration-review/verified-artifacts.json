@@ -1,0 +1,675 @@
+{
+  "artifacts": [
+    {
+      "path": "baseline/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "9ae50fec3cf2ff783fd2bb4db2eac1d2b88e3de4a62038df3e6f74b3fc73c0c2"
+    },
+    {
+      "path": "baseline/extract-upstream-components.py",
+      "sha256Bytes": "9f11249c136f0479738fd822ab520eb839247af929c67725bf185a9268eb51af"
+    },
+    {
+      "path": "baseline/product/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "1a69303f5362ba8e93ffcb89f4628fd256d3b7fe7b488e1356ab807718548108"
+    },
+    {
+      "path": "baseline/product/com/android/purebilibili/core/ui/components/AppScrollableUnderlinePolicy.kt",
+      "sha256Bytes": "6ff2f69e77f69d0954310967a52ef1b9b45957a8ca6f4240b5ab6bb2c2ab1e89"
+    },
+    {
+      "path": "baseline/product/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "sha256Bytes": "b3572448a1ed7c5571427b0265b16e9077b89c6aa43e4c7cdcfa7c66f6741548"
+    },
+    {
+      "path": "baseline/product/com/android/purebilibili/core/ui/components/AppText.kt",
+      "sha256Bytes": "9df993695a2a9518f98595c57278f7ae9dbc70291d644ab765d6033a89e00c5c"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+      "sha256Bytes": "6eb650be80f2543d47df24f52a867de54361a96e7e8118f2e04f3f040f526c88"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "sha256Bytes": "9c75985ac7db1fee96bc5e558cb2c7c9895a6e9bbedab0bff70606519f2eae09"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "1a69303f5362ba8e93ffcb89f4628fd256d3b7fe7b488e1356ab807718548108"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppDialogComponents.kt",
+      "sha256Bytes": "8f1c07a54007a9bc96fde65372405140f8edb8b742bac3d376adedff0aeaec25"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "sha256Bytes": "8c4a225ee55c8f1f4a6ee8c0eb28d5dd9577cec40bf5c28f30303248d4141f0b"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt",
+      "sha256Bytes": "c6bb999133ff18512973bccb5d78838f9aed59f8e62415b42bfca1d4db2b39d4"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppShapes.kt",
+      "sha256Bytes": "00e4ef1eac3d499e85c6c435477410743dc615aad78b705a9256fd161af58e8a"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppSpacingTokens.kt",
+      "sha256Bytes": "8142bdb0ba19f483aaefbbc0f25f1326f10d114791101c45460d37169b7ec039"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "sha256Bytes": "93c1f74f982a6a22bba617e86f1cd953d142004644da6dab2cb7da4937790a9e"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "sha256Bytes": "e8473dc4ba3ee54a1a1188c08588127d15070b9c71142129f361639bf3a96429"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/blur/BlurIntensity.kt",
+      "sha256Bytes": "41c5b5e866019e8d116ede7ca7352623291f097f2e0d3ef73abd0f289a5f0928"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt",
+      "sha256Bytes": "5fa95f4388028d1edbfafecd938ab2d43d48bd0d14d91d3cc297becb3aa2e0e0"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppBadge.kt",
+      "sha256Bytes": "cc0f63ee20cc6e55546e4eddb51d22626e96f28337a10f4ba30f5c9f8a25b4fc"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "sha256Bytes": "1561d4bae9aa1499909450407cae24aa240a24244700516080348f9aad733754"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppCheckbox.kt",
+      "sha256Bytes": "9064d6263e119b83a6f0c398a7061dbb76d4c96987b0d7fd16db16d069f8a0f5"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "sha256Bytes": "eb89695fc93be7a3e6fdbed53de6417d5344867fbb58676610ce379270aa0980"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "sha256Bytes": "086991bcc50b3d3f17aeb42b446e1bac3adfb4be9edfc98550a84b4a7bda0dbe"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppIconButton.kt",
+      "sha256Bytes": "ee819fa1ad779335e150714e6ca54c986e29dcf89156dd4d1b1e3403c1350d9d"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt",
+      "sha256Bytes": "36a4438c9aa109aefb4e5505ce211a0ea2baf08747b546108f906b6972f51afc"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "sha256Bytes": "653087beca75d15169a5d3493f7c86f40227de463b8348d911e359fa97e528e6"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt",
+      "sha256Bytes": "25a0ac8913b2237cd8327f09af287358b557128e2ca90e8c827c1b28cb6c0fca"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppProgressIndicator.kt",
+      "sha256Bytes": "56aaecb57377ee9d2059cd08ff792230976de858167911fb095a217bfedcb242"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppRadioButton.kt",
+      "sha256Bytes": "729891e5c94b61e3e36d245b17acb3e675a8d12294d367f34a6efce128455fb1"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppScrollableUnderlinePolicy.kt",
+      "sha256Bytes": "6ff2f69e77f69d0954310967a52ef1b9b45957a8ca6f4240b5ab6bb2c2ab1e89"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "sha256Bytes": "b3572448a1ed7c5571427b0265b16e9077b89c6aa43e4c7cdcfa7c66f6741548"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppSurface.kt",
+      "sha256Bytes": "1b34b4137f09bb2e1d7f68c7b115b54a6899b6025bb88d7018c067a852ddd944"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppSwitch.kt",
+      "sha256Bytes": "968a934b6b0aeec155c84401dec1a937c347c643e11bfe3ce06fbb84682aa926"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/components/AppText.kt",
+      "sha256Bytes": "9df993695a2a9518f98595c57278f7ae9dbc70291d644ab765d6033a89e00c5c"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/motion/MiuixPressFeedbackModifier.kt",
+      "sha256Bytes": "4151027a1aa65ff581829ac4da53761671658c6e11b7f688c652e82e95299ca9"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Badge.kt",
+      "sha256Bytes": "684b45ba71b5f13520bbd93c4858ad3ff8253022549fea8693c1ab24ce871523"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Card.kt",
+      "sha256Bytes": "503383a14cb74d1a053ba0b549b558cdc15bd27be9d31427980463ff12857f30"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Checkbox.kt",
+      "sha256Bytes": "02af9bd65fb65b6cb7d2c7e2496ed9c3a4da590ba89c0587d8fcfbe49a2aaa8d"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Icon.kt",
+      "sha256Bytes": "2148085aac08e51975011a23f29a92acb245a0aeac663625c6fdbb8e62c025ae"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt",
+      "sha256Bytes": "16e977aa627c3ee4da9c519a10c3cb398aa7328f23764f0e4adf3df274c8e7d6"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3ProgressIndicator.kt",
+      "sha256Bytes": "fab317a8dfbb3cac6456cf94469c15d744c1f76dbdba70e7b0df0ff124359011"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3RadioButton.kt",
+      "sha256Bytes": "f52fde6b0ee055ec67ab37313c36c21ef44e936acf8200a729a960a188e380ad"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Slider.kt",
+      "sha256Bytes": "e2f0e940a890a00df06953a842219e782858b45ea87690b8cb67e8232a3afcd3"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Surface.kt",
+      "sha256Bytes": "62fe4db0582025560188c7459d666c8c8ee27f3e298cce43607552c4ceeef08f"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt",
+      "sha256Bytes": "55c5191e0b22b1bfb6be834fb9b6c6403904ef5061a5a51f8a1f7fed9ab05f3f"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Text.kt",
+      "sha256Bytes": "d3179573c1324f53b3c9cdac72cf33b95bfd08b0204aa7ee61670677bb24a359"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt",
+      "sha256Bytes": "e6e496dfdb75fbfeaba5fca4ddcfa3b8da92ca7a6a5f554bfbb1b9065de032df"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixBadge.kt",
+      "sha256Bytes": "f69d46e2194e90bcc737d2833ac4385b27ddbbfcc9514347f7dd5b40fbb17b49"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCard.kt",
+      "sha256Bytes": "f8559f7ce3a28041f774ddb412f0a56796b0052a57d040e94aa20cf49c2d5f95"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCheckbox.kt",
+      "sha256Bytes": "3037755e15f5d5782346501e361be22970be4439ad26cc0edc18eb4a61b69acc"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixHapticFeedback.kt",
+      "sha256Bytes": "d77234866c654d0407caec682ac43f3c029c4afefc4ebbe0117ebffabf511223"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIcon.kt",
+      "sha256Bytes": "edb6245e3c7322642daa90d85634d962d3e11fb8f1464eb78baf850390afede7"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt",
+      "sha256Bytes": "d9a12042f825fcc8109b21b0d5c27bbcc40d4415f15692015733ff7db7785117"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixRadioButton.kt",
+      "sha256Bytes": "3113dbe953fb8153c378929ee4b20ea8836c135d2e4c7b9d76effa0d3abb2f96"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt",
+      "sha256Bytes": "4711cd92649cd1a3c41ff6a3eccb555eec0591a789d401e6eee3067c7222e41e"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSurface.kt",
+      "sha256Bytes": "39137adbb59c9c28b4134735306a297f9026fa4477b01cde17bf762ecac52879"
+    },
+    {
+      "path": "baseline/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "sha256Bytes": "2f1c42d62779ca846fa9f611537056debac83ea52e190347a9101020329742d5"
+    },
+    {
+      "path": "baseline/test_extract_upstream_components.py",
+      "sha256Bytes": "3a0f040e6e7aa95e65aed60b6f351345996ed0ed52c0aac389926833c7f894c8"
+    },
+    {
+      "path": "baseline-python-tests.log",
+      "sha256Bytes": "159cbdd91c43c3d0d1981e7b4cd91b4481e1444c047977745e575156ba1e2ac7"
+    },
+    {
+      "path": "baseline-width/com/bilipai/desktop/nativeproof/ComposableSingletons$WidthFixtureKt.class",
+      "sha256Bytes": "fc4f2051e57ece71642b6b28e7f13d3fc826c2382740f78828b8c8cb95eaa21f"
+    },
+    {
+      "path": "baseline-width/com/bilipai/desktop/nativeproof/WidthFixtureKt$main$1.class",
+      "sha256Bytes": "d128aa72f8c54bd8e096f61b4ec2859c5a5d3a9be4f4ab1bad403168c57618cf"
+    },
+    {
+      "path": "baseline-width/com/bilipai/desktop/nativeproof/WidthFixtureKt.class",
+      "sha256Bytes": "e58665e1c33b3151a38470de14e362859e3bd4400bbccef78352e32c281480aa"
+    },
+    {
+      "path": "baseline-width/META-INF/baseline_width.kotlin_module",
+      "sha256Bytes": "c3d26e378db52f19088ab63cec1da6b9d67227e889834252d7e18e49a254b228"
+    },
+    {
+      "path": "baseline-width/proof/material3-300-1.0.png",
+      "sha256Bytes": "6f2d2297e10b1ef45682aabcdda7493abca0d1efc0f44549f8a2d91d820f483a"
+    },
+    {
+      "path": "baseline-width/proof/material3-734-1.1.png",
+      "sha256Bytes": "c0a49b481a9349b21556b7de686497f397b5bf0a2f48d80b5383193031a76adc"
+    },
+    {
+      "path": "baseline-width/proof/material3-884-1.0.png",
+      "sha256Bytes": "772b996eb2e59e077bcee6961d4ef2c6f697ad773454dc6e8f25767b064b4fc2"
+    },
+    {
+      "path": "baseline-width/proof/miuix-300-1.0.png",
+      "sha256Bytes": "b9c65d9f98f96671638f2fdefcfbcab50a581c06433fd6b3db8071e09161d06f"
+    },
+    {
+      "path": "baseline-width/proof/miuix-734-1.1.png",
+      "sha256Bytes": "10f222bbe38d56ae079919c59935bdb6cdbdd3d01cd7a4f805a5ab36d60a7e07"
+    },
+    {
+      "path": "baseline-width/proof/miuix-884-1.0.png",
+      "sha256Bytes": "c49c2d7d6e00b5e1c78c613a49840b0a997f31decd56384726c0359767146187"
+    },
+    {
+      "path": "baseline-width/proof/result.json",
+      "sha256Bytes": "619b1a120fe1f1b5dd4a9e075474351a9257315d8d0c94b341d71418b9d80a2c"
+    },
+    {
+      "path": "baseline-width-compile.log",
+      "sha256Bytes": "6150c3ccac6c9c07f6d800258f2a9de81d5819f7a4598c5bbdac51b8dea84bea"
+    },
+    {
+      "path": "baseline-width-compiler.args",
+      "sha256Bytes": "db2cd3233cc6229fb4c5af46529089f1c39fec547ed40f77005a6be4141c5a8e"
+    },
+    {
+      "path": "baseline-width-runtime.args",
+      "sha256Bytes": "5a3c60014ae257a169c92dbfd63e21cc7936133a11cf5b5963df0c8506d21744"
+    },
+    {
+      "path": "baseline-width-runtime.log",
+      "sha256Bytes": "342bfc076331799666adde38275a930efa8416369309dfb112f021999bcf3be1"
+    },
+    {
+      "path": "baseline.json",
+      "sha256Bytes": "02d9e2712b9d65b8844b6c3b33d6155ac5f104c489dda7425c14baa85f289b24"
+    },
+    {
+      "path": "compile-width.py",
+      "sha256Bytes": "a026783cfa17eaab3620c61cd6f4936841c16df2b0cf828879e846fb7227c8d5"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "4ac736d1f2d5c9ab0c667b2b91bc2826f6f236d659bbb4fc0d5bb5f7cd8f466e"
+    },
+    {
+      "path": "draft-python-tests.log",
+      "sha256Bytes": "356d707e0e499d1cb465f20ce386271eff4b0916cdadb932e40f3894868eb543"
+    },
+    {
+      "path": "draft-width/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.class",
+      "sha256Bytes": "294bd2b6ad8a7ec0dbd72e54e17905134277c6df48c6b86603d39f920f4db77e"
+    },
+    {
+      "path": "draft-width/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicyKt.class",
+      "sha256Bytes": "70dae61a7018fa833784fddfc7d193f445c4f3ca08af63e671930e310b92cf61"
+    },
+    {
+      "path": "draft-width/com/bilipai/desktop/nativeproof/ComposableSingletons$WidthFixtureKt.class",
+      "sha256Bytes": "6f4b7c65fa9e00139e333c0e774b353b5b7163c1882799acd3acbdf6dce8af68"
+    },
+    {
+      "path": "draft-width/com/bilipai/desktop/nativeproof/WidthFixtureKt$main$1.class",
+      "sha256Bytes": "93344de5f6cefbc25570a6310313a4248f0865d895db9a78e1a97d443a333c8a"
+    },
+    {
+      "path": "draft-width/com/bilipai/desktop/nativeproof/WidthFixtureKt.class",
+      "sha256Bytes": "af1527717a4611b86bcfb9bf20b12862f4f8d4db800514843918f29b0fb95d24"
+    },
+    {
+      "path": "draft-width/META-INF/draft_width.kotlin_module",
+      "sha256Bytes": "42ea68f10adb8d3564e36dd6b6ecad98815220ddb7425469393a9992717ed58b"
+    },
+    {
+      "path": "draft-width/proof/material3-300-1.0.png",
+      "sha256Bytes": "6f2d2297e10b1ef45682aabcdda7493abca0d1efc0f44549f8a2d91d820f483a"
+    },
+    {
+      "path": "draft-width/proof/material3-734-1.1.png",
+      "sha256Bytes": "a7c12934ecd5e96ee220c483a3b97e51c2276dd99522b97582225acaab14dddf"
+    },
+    {
+      "path": "draft-width/proof/material3-884-1.0.png",
+      "sha256Bytes": "b0c6ecee618227be7149d2c13b6400ee85f2eb13b2f2f293e0f430b921d308f3"
+    },
+    {
+      "path": "draft-width/proof/miuix-300-1.0.png",
+      "sha256Bytes": "b9c65d9f98f96671638f2fdefcfbcab50a581c06433fd6b3db8071e09161d06f"
+    },
+    {
+      "path": "draft-width/proof/miuix-734-1.1.png",
+      "sha256Bytes": "e756cde7b06e01c507d57d9904847bd58573617f2df508f4ad1b9ca983e6a82d"
+    },
+    {
+      "path": "draft-width/proof/miuix-884-1.0.png",
+      "sha256Bytes": "105ae302d305960a8bff3b9add3c47308d5736a95f14292345e268cbe65ca499"
+    },
+    {
+      "path": "draft-width/proof/result.json",
+      "sha256Bytes": "69791c52ba6ea8067dd080199d8c700c508f39ea3ca7ebb11a4adf84b10bcc62"
+    },
+    {
+      "path": "draft-width-compile.log",
+      "sha256Bytes": "6150c3ccac6c9c07f6d800258f2a9de81d5819f7a4598c5bbdac51b8dea84bea"
+    },
+    {
+      "path": "draft-width-compiler.args",
+      "sha256Bytes": "4e7aa01bca67b9badc00f2725ab5e256cbc1e61375f35ab798b7d538a6c27970"
+    },
+    {
+      "path": "draft-width-runtime.args",
+      "sha256Bytes": "befa9022988daf916231b7d9fe43598c093241f059d9091bcaca8b6cb3b5eaaa"
+    },
+    {
+      "path": "draft-width-runtime.log",
+      "sha256Bytes": "6efa98278009e7d67d80ab71195d8becc21f92f79562847317f16c48e00019ca"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "46c37f847243609d82ba36b6826bda2bcd139be6533133078e97fd8056e7c701"
+    },
+    {
+      "path": "frozen-evidence-verification.json",
+      "sha256Bytes": "ffece5b6dbcbe2c295b3f23a07ee50ca4c4529568241d30e19f5975db2d2ce83"
+    },
+    {
+      "path": "git-apply-check.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "integration.patch",
+      "sha256Bytes": "371590f6a8d8e5a394d1eb5a001f4a2903cf09bec6d231b9690a1a3400fc7ca0"
+    },
+    {
+      "path": "original-inventory.json",
+      "sha256Bytes": "9b1fcb0982fc09f21b3831809ad101d7f2e4f254546c7efd9d27f7854438cc6e"
+    },
+    {
+      "path": "original-window-source-verification.json",
+      "sha256Bytes": "e86dd8ee4be4c5d6e1b043ce63caa255ee55894b022121c0411756aaed8447eb"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "9b035d4005f080a84dd5ee955ae22dc913e0fb5e0fa6859ee430be3939425b33"
+    },
+    {
+      "path": "prepared/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "21eada7c79524646e349b207d4ba693c1af55e35d4dd8421b32027ee60a0d3a1"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-components.py",
+      "sha256Bytes": "cd189f264aae19b27e11fa37fc348163396fa9614985b3cb06027a420ad528e9"
+    },
+    {
+      "path": "prepared/desktop/tools/tests/test_extract_upstream_components.py",
+      "sha256Bytes": "ea8e053e4212176c18d7925c947c77c977115bc3f15b7eb4d64f7a5ed20c6704"
+    },
+    {
+      "path": "prepared/product/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "1f5e18cfdb795997eb3b2d021bd142cb6532063905eb9a794436cd7cfd9e659e"
+    },
+    {
+      "path": "prepared/product/com/android/purebilibili/core/ui/components/AppScrollableUnderlinePolicy.kt",
+      "sha256Bytes": "6ff2f69e77f69d0954310967a52ef1b9b45957a8ca6f4240b5ab6bb2c2ab1e89"
+    },
+    {
+      "path": "prepared/product/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "sha256Bytes": "b3572448a1ed7c5571427b0265b16e9077b89c6aa43e4c7cdcfa7c66f6741548"
+    },
+    {
+      "path": "prepared/product/com/android/purebilibili/core/ui/components/AppText.kt",
+      "sha256Bytes": "9df993695a2a9518f98595c57278f7ae9dbc70291d644ab765d6033a89e00c5c"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+      "sha256Bytes": "6eb650be80f2543d47df24f52a867de54361a96e7e8118f2e04f3f040f526c88"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "sha256Bytes": "9c75985ac7db1fee96bc5e558cb2c7c9895a6e9bbedab0bff70606519f2eae09"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "1f5e18cfdb795997eb3b2d021bd142cb6532063905eb9a794436cd7cfd9e659e"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppDialogComponents.kt",
+      "sha256Bytes": "8f1c07a54007a9bc96fde65372405140f8edb8b742bac3d376adedff0aeaec25"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "sha256Bytes": "8c4a225ee55c8f1f4a6ee8c0eb28d5dd9577cec40bf5c28f30303248d4141f0b"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt",
+      "sha256Bytes": "c6bb999133ff18512973bccb5d78838f9aed59f8e62415b42bfca1d4db2b39d4"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppShapes.kt",
+      "sha256Bytes": "00e4ef1eac3d499e85c6c435477410743dc615aad78b705a9256fd161af58e8a"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppSpacingTokens.kt",
+      "sha256Bytes": "8142bdb0ba19f483aaefbbc0f25f1326f10d114791101c45460d37169b7ec039"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "sha256Bytes": "93c1f74f982a6a22bba617e86f1cd953d142004644da6dab2cb7da4937790a9e"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "sha256Bytes": "e8473dc4ba3ee54a1a1188c08588127d15070b9c71142129f361639bf3a96429"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/blur/BlurIntensity.kt",
+      "sha256Bytes": "41c5b5e866019e8d116ede7ca7352623291f097f2e0d3ef73abd0f289a5f0928"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt",
+      "sha256Bytes": "5fa95f4388028d1edbfafecd938ab2d43d48bd0d14d91d3cc297becb3aa2e0e0"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppBadge.kt",
+      "sha256Bytes": "cc0f63ee20cc6e55546e4eddb51d22626e96f28337a10f4ba30f5c9f8a25b4fc"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "sha256Bytes": "1561d4bae9aa1499909450407cae24aa240a24244700516080348f9aad733754"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppCheckbox.kt",
+      "sha256Bytes": "9064d6263e119b83a6f0c398a7061dbb76d4c96987b0d7fd16db16d069f8a0f5"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "sha256Bytes": "eb89695fc93be7a3e6fdbed53de6417d5344867fbb58676610ce379270aa0980"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "sha256Bytes": "086991bcc50b3d3f17aeb42b446e1bac3adfb4be9edfc98550a84b4a7bda0dbe"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppIconButton.kt",
+      "sha256Bytes": "ee819fa1ad779335e150714e6ca54c986e29dcf89156dd4d1b1e3403c1350d9d"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt",
+      "sha256Bytes": "36a4438c9aa109aefb4e5505ce211a0ea2baf08747b546108f906b6972f51afc"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "sha256Bytes": "653087beca75d15169a5d3493f7c86f40227de463b8348d911e359fa97e528e6"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt",
+      "sha256Bytes": "25a0ac8913b2237cd8327f09af287358b557128e2ca90e8c827c1b28cb6c0fca"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppProgressIndicator.kt",
+      "sha256Bytes": "56aaecb57377ee9d2059cd08ff792230976de858167911fb095a217bfedcb242"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppRadioButton.kt",
+      "sha256Bytes": "729891e5c94b61e3e36d245b17acb3e675a8d12294d367f34a6efce128455fb1"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppScrollableUnderlinePolicy.kt",
+      "sha256Bytes": "6ff2f69e77f69d0954310967a52ef1b9b45957a8ca6f4240b5ab6bb2c2ab1e89"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "sha256Bytes": "b3572448a1ed7c5571427b0265b16e9077b89c6aa43e4c7cdcfa7c66f6741548"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppSurface.kt",
+      "sha256Bytes": "1b34b4137f09bb2e1d7f68c7b115b54a6899b6025bb88d7018c067a852ddd944"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppSwitch.kt",
+      "sha256Bytes": "968a934b6b0aeec155c84401dec1a937c347c643e11bfe3ce06fbb84682aa926"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/components/AppText.kt",
+      "sha256Bytes": "9df993695a2a9518f98595c57278f7ae9dbc70291d644ab765d6033a89e00c5c"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/motion/MiuixPressFeedbackModifier.kt",
+      "sha256Bytes": "4151027a1aa65ff581829ac4da53761671658c6e11b7f688c652e82e95299ca9"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Badge.kt",
+      "sha256Bytes": "684b45ba71b5f13520bbd93c4858ad3ff8253022549fea8693c1ab24ce871523"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Card.kt",
+      "sha256Bytes": "503383a14cb74d1a053ba0b549b558cdc15bd27be9d31427980463ff12857f30"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Checkbox.kt",
+      "sha256Bytes": "02af9bd65fb65b6cb7d2c7e2496ed9c3a4da590ba89c0587d8fcfbe49a2aaa8d"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Icon.kt",
+      "sha256Bytes": "2148085aac08e51975011a23f29a92acb245a0aeac663625c6fdbb8e62c025ae"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt",
+      "sha256Bytes": "16e977aa627c3ee4da9c519a10c3cb398aa7328f23764f0e4adf3df274c8e7d6"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3ProgressIndicator.kt",
+      "sha256Bytes": "fab317a8dfbb3cac6456cf94469c15d744c1f76dbdba70e7b0df0ff124359011"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3RadioButton.kt",
+      "sha256Bytes": "f52fde6b0ee055ec67ab37313c36c21ef44e936acf8200a729a960a188e380ad"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Slider.kt",
+      "sha256Bytes": "e2f0e940a890a00df06953a842219e782858b45ea87690b8cb67e8232a3afcd3"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Surface.kt",
+      "sha256Bytes": "62fe4db0582025560188c7459d666c8c8ee27f3e298cce43607552c4ceeef08f"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt",
+      "sha256Bytes": "55c5191e0b22b1bfb6be834fb9b6c6403904ef5061a5a51f8a1f7fed9ab05f3f"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Text.kt",
+      "sha256Bytes": "d3179573c1324f53b3c9cdac72cf33b95bfd08b0204aa7ee61670677bb24a359"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt",
+      "sha256Bytes": "e6e496dfdb75fbfeaba5fca4ddcfa3b8da92ca7a6a5f554bfbb1b9065de032df"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixBadge.kt",
+      "sha256Bytes": "f69d46e2194e90bcc737d2833ac4385b27ddbbfcc9514347f7dd5b40fbb17b49"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCard.kt",
+      "sha256Bytes": "f8559f7ce3a28041f774ddb412f0a56796b0052a57d040e94aa20cf49c2d5f95"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCheckbox.kt",
+      "sha256Bytes": "3037755e15f5d5782346501e361be22970be4439ad26cc0edc18eb4a61b69acc"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixHapticFeedback.kt",
+      "sha256Bytes": "d77234866c654d0407caec682ac43f3c029c4afefc4ebbe0117ebffabf511223"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIcon.kt",
+      "sha256Bytes": "edb6245e3c7322642daa90d85634d962d3e11fb8f1464eb78baf850390afede7"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt",
+      "sha256Bytes": "d9a12042f825fcc8109b21b0d5c27bbcc40d4415f15692015733ff7db7785117"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixRadioButton.kt",
+      "sha256Bytes": "3113dbe953fb8153c378929ee4b20ea8836c135d2e4c7b9d76effa0d3abb2f96"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt",
+      "sha256Bytes": "4711cd92649cd1a3c41ff6a3eccb555eec0591a789d401e6eee3067c7222e41e"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSurface.kt",
+      "sha256Bytes": "39137adbb59c9c28b4134735306a297f9026fa4477b01cde17bf762ecac52879"
+    },
+    {
+      "path": "prepared/standalone/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "sha256Bytes": "2f1c42d62779ca846fa9f611537056debac83ea52e190347a9101020329742d5"
+    },
+    {
+      "path": "public-component-contracts.json",
+      "sha256Bytes": "d89dd7c2c3f3608fdcfa605625eb1d1c5a778ee631b4c23554923d79a2736968"
+    },
+    {
+      "path": "python-results.json",
+      "sha256Bytes": "73b63ef6698a0d9d6f5cff69a7eff295c178d37031688030f04db36062c6f014"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "fa6c3b5fd44a27aa7d97fc91828c8dc901fa65dd2cec2e215a060b8e24990bbb"
+    },
+    {
+      "path": "snapshot-boundary.json",
+      "sha256Bytes": "2afac4f00def50167d13d9ce2b12b1b67641365d3f087fd632c40acff9cb226c"
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "9dfa8288c5ed104d447c3a0c6b1e4ee4010a5990e7075ac35a177204c4513d13"
+    },
+    {
+      "path": "WidthFixture.kt",
+      "sha256Bytes": "663a8c4ee96425711055f5c192395fc6d9de37f2be8ace49480e459cec699b68"
+    },
+    {
+      "path": "window-facade-bytecode-comparison.json",
+      "sha256Bytes": "b4f454a7ddd68de2d3c14463ad791fb430c85daf05a5f4048b86744005aca373"
+    }
+  ],
+  "artifactCount": 167,
+  "noNewNativeWindow": true,
+  "mainFilesModified": false
+}

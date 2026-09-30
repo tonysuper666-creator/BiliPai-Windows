@@ -24,10 +24,12 @@ internal class DesktopSearchHistoryDao(private val context: DesktopPluginContext
         insertNow(history)
     }
     internal fun insertNow(history: SearchHistory) = synchronized(lock) { save(listOf(history) + entries.filter { it.keyword != history.keyword }) }
+    internal fun deleteNow(history: SearchHistory) = synchronized(lock) { save(entries.filter { it.keyword != history.keyword }) }
+    internal fun clearNow() = synchronized(lock) { save(emptyList()) }
     override suspend fun delete(history: SearchHistory) = withContext(Dispatchers.IO) {
-        synchronized(lock) { save(entries.filter { it.keyword != history.keyword }) }
+        deleteNow(history)
     }
-    override suspend fun clearAll() = withContext(Dispatchers.IO) { synchronized(lock) { save(emptyList()) } }
+    override suspend fun clearAll() = withContext(Dispatchers.IO) { clearNow() }
 
     private fun save(next: List<SearchHistory>) {
         val encoded = buildJsonArray { next.forEach { row -> add(buildJsonObject {
@@ -49,11 +51,13 @@ internal fun decodeSearchHistory(encoded: String?): List<SearchHistory> {
 
 class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null)) {
     private val lock = Any()
+    private var writesFrozen = false
     private val contexts = mutableMapOf<Long?, DesktopPluginContext>()
     private val histories = mutableMapOf<Long?, DesktopSearchHistoryDao>()
     private fun context(mid: Long?): DesktopPluginContext = synchronized(lock) {
         require(mid == null || mid > 0)
         contexts.getOrPut(mid) {
+            checkWritesOpen()
             val accountRoot = if (mid == null) root else root.resolve("accounts").resolve(mid.toString())
             DesktopPluginContext(DesktopPluginStore(accountRoot.resolve("search")))
         }
@@ -63,12 +67,24 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
     private val suggestions = global.getSharedPreferences("settings", 0)
     private val _privacyMode = MutableStateFlow(privacy.getBoolean("enabled", false))
     val privacyMode: StateFlow<Boolean> = _privacyMode.asStateFlow()
+    /** Drain a currently accepted disk operation, then retire all held store generations. */
+    fun freezeWritesForRestore(): Unit = synchronized(lock) {
+        if (writesFrozen) return@synchronized
+        writesFrozen = true
+        contexts.values.forEach { it.store.freezeWrites() }
+    }
+    private fun checkWritesOpen() = check(!writesFrozen) { "搜索设置已关闭，不能写入或创建旧会话数据" }
     /** Same original synchronous privacy key, reading the atomic file across facade instances. */
-    fun isPrivacyModeEnabledSync(): Boolean = synchronized(lock) {
-        val file = root.resolve("search").resolve("plugin-settings.json")
-        if (!Files.exists(file)) return@synchronized false
-        val document = Json.parseToJsonElement(Files.readString(file)).jsonObject
-        (document["privacy_mode"] as? JsonObject)?.get("enabled")?.jsonPrimitive?.booleanOrNull ?: false
+    fun isPrivacyModeEnabledSync(): Boolean = synchronized(lock) { readPrivacyModeEnabledSync(root) }
+
+    internal companion object {
+        /** One original privacy file/key. No new facade, cookie jar or cached default. */
+        internal fun readPrivacyModeEnabledSync(root: Path = DesktopLibrary.directoryForAccount(null)): Boolean {
+            val file = root.resolve("search").resolve("plugin-settings.json")
+            if (!Files.exists(file)) return false
+            val document = Json.parseToJsonElement(Files.readString(file)).jsonObject
+            return (document["privacy_mode"] as? JsonObject)?.get("enabled")?.jsonPrimitive?.booleanOrNull ?: false
+        }
     }
     private val _suggestionsEnabled = MutableStateFlow(suggestions.getBoolean("search_suggestions_enabled", true))
     val suggestionsEnabled: StateFlow<Boolean> = _suggestionsEnabled.asStateFlow()
@@ -82,18 +98,25 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
         if (value.isEmpty()) return
         // Like SearchViewModel.saveHistory: incognito suppresses writes, not access to saved history.
         withContext(Dispatchers.IO) { synchronized(lock) {
+            checkWritesOpen()
             if (!isPrivacyModeEnabledSync()) {
                 val target = dao(mid)
                 target.insertNow(SearchHistory(value))
             }
         } }
     }
-    suspend fun delete(mid: Long?, history: SearchHistory) = dao(mid).delete(history)
-    suspend fun clear(mid: Long?) = dao(mid).clearAll()
+    suspend fun delete(mid: Long?, history: SearchHistory) = withContext(Dispatchers.IO) { synchronized(lock) {
+        checkWritesOpen(); dao(mid).deleteNow(history)
+    } }
+    suspend fun clear(mid: Long?) = withContext(Dispatchers.IO) { synchronized(lock) {
+        checkWritesOpen(); dao(mid).clearNow()
+    } }
     suspend fun setPrivacyMode(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
+        checkWritesOpen()
         privacy.edit().putBoolean("enabled", enabled).apply(); _privacyMode.value = enabled
     } }
     suspend fun setSuggestionsEnabled(enabled: Boolean) = withContext(Dispatchers.IO) { synchronized(lock) {
+        checkWritesOpen()
         suggestions.edit().putBoolean("search_suggestions_enabled", enabled).apply(); _suggestionsEnabled.value = enabled
     } }
 }

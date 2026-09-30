@@ -1,0 +1,207 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "b2812eac6182ad06f99d0a04a0ea4d53aa558a5a",
+  "developmentIntegration": true,
+  "deployedDesktopVersion": "0.2.406.5",
+  "sourceAudit": "desktop/verification/source9-settings-history-source-audit.json",
+  "sourceCounts": {
+    "kotlinIdentities": 420,
+    "resources": 198,
+    "verbatimApiDeclarations": 303,
+    "responseFiles": 45
+  },
+  "verification": {
+    "productCompilePassed": true,
+    "focusedJUnit": {
+      "tests": 90,
+      "suites": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suiteResults": [
+      {
+        "name": "com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.audio.DesktopNativeMusicIntegrationTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.audio.ListenAudioStoreTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.data.DesktopArticleHistoryTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.data.DesktopSearchTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopCheckpointFailureTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopLibraryTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopLibraryTransactionTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.privacyfixture.IncognitoWriterTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.settings.DesktopSettingsNavigatorTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.settings.DesktopSettingsSearchTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.ui.DesktopCompleteSpaceTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "originalMusicCases": 18,
+    "newMusicCases": 18,
+    "pythonTests": {
+      "settingsSearch": 11,
+      "preferences": 11,
+      "components": 9,
+      "nativeMusicRoot": 2
+    },
+    "nativeWindowOpened": false,
+    "realAccountRequests": false
+  },
+  "seams": {
+    "historyPrivacy": "One authoritative global/search/plugin-settings.json privacy_mode/enabled reader gates ordinary/Story visible history and original settings/video queries; offline/task/Listen resume stays available as original.",
+    "historyTransactions": "Disk move precedes the immutable in-memory commit; filesystem/privacy failures return safe checkpoint false, preserve navigation parameters and still permit player shutdown.",
+    "restore": "Cached search stores drain accepted writes and reject queued/new generations before Root restores or shuts down.",
+    "settingsSearch": "Original index, history, category/target/focus policy, renderer and root list are compiled; navigator/controller query lifetime is prepared. Complete original category content and Shell settings subtree are not connected in this slice.",
+    "music": "Root current-part and metadata BGM route to the retained listening session; Space play-all listens sequentially. Same-MID epoch, late preparation, foreign acquisition and exact-CID/progress back-to-video have offline coverage.",
+    "popup": "Original wrapContentWidth platform binding preserves original 420dp maximum under offscreen measurement. This slice has no new native Dialog proof."
+  },
+  "retainedDiagnostics": [
+    "The first Navigator test expected a diagnostics scene to be a playback detail. Reading original SettingsSearchScreen showed category dispatch takes precedence. The expectation was corrected, then all four Navigator cases passed; the final shared cohort is preserved.",
+    "Frozen music patches used CRLF. Original --check rejected the EOF hunk before mutation; LF copies applied. All nine owned bodies matched frozen prepared sources under LF normalization. The original BGM inventory raw hash was normalized to LF and a cross-checkout regression passes."
+  ],
+  "isolatedFrozenCohorts": [
+    {
+      "manifest": "desktop/.local/incognito-parity/integration-drafts/lifecycle-review/frozen-lifecycle.json",
+      "sha256": "5d0c4a97d6328440edbc75ec8f069bdabbc351bb8efadeaf552af1dfbfa2411b",
+      "artifactsVerified": 6,
+      "mainLfVerified": 4
+    },
+    {
+      "manifest": "desktop/.local/incognito-parity/integration-drafts/library-transaction-review/frozen-transaction.json",
+      "sha256": "56b1c1d0bc53539c2a7dda044c860d0ab328fac3c09705b79d686818536ed865",
+      "artifactsVerified": 6,
+      "mainLfVerified": 2
+    },
+    {
+      "manifest": "desktop/.local/settings-search-parity/frozen-handoff.json",
+      "sha256": "db1cab43dc187f2db12dbb8773aab855d0bb5b5acf8d09dd5e3ea6350226e1d8"
+    },
+    {
+      "manifest": "desktop/.local/settings-category-ui-parity/verified-artifacts.json",
+      "sha256": "9e47c9c44745e837e5827f70096a421b1efc1160aec3e64570af53aef85a284c"
+    },
+    {
+      "manifest": "desktop/.local/component-popup-integration-review/verified-artifacts.json",
+      "sha256": "ff9ab5ca732044bc07bc01bb33b90287c63300ccaf6f711408d9a05ecc915c6c"
+    },
+    {
+      "manifest": "desktop/.local/native-music-root-integration/artifact-manifest.json",
+      "sha256": "c068b5fd68af805c5ac8776f99120e6f322cf66969662893869bb98147529d21"
+    }
+  ],
+  "limitations": [
+    "Complete original settings state/actions, privacy authentication, search-hint semantics, proxy/diagnostics/about and full Root settings UI remain in progress.",
+    "Music gRPC multi-BGM discovery/full sheets, original immersive visuals and packaged real AU/CDN/codec/audio output remain unverified.",
+    "No new EXE or desktop deployment; full feature parity and release gate are false.",
+    "The earlier Source9 initial black surface remains unexplained."
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newExePackaged": false,
+  "newDesktopDeployment": false
+}

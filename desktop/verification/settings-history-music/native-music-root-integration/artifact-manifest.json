@@ -1,0 +1,275 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicDetail.kt",
+      "sha256": "d666b7813552b29362631688fa47d5d2beee9dfdeedd5763e044eed93b2cc4e9",
+      "bytes": 5039
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256": "d31909db8dd5bde47c9401e27bba256ea8ead7579a2c49aeced77df37dcd5ab4",
+      "bytes": 25204
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256": "6fa7a61ce3aef8df52e2a8844cc51590db154ba54bc9cd68ad61e39021abb886",
+      "bytes": 84032
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNativeMusicDetailScreen.kt",
+      "sha256": "d173d829ad96e0768e10b5e86ffb725ca404b33069db1657913d4a1a860b4656",
+      "bytes": 4498
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpacePlaybackBridge.kt",
+      "sha256": "219e599be0f6d3233cfc4c75ef9dc99fccfa01114343df3b25f0d5c3308dde92",
+      "bytes": 1200
+    },
+    {
+      "path": "baseline-history/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256": "9003afee69a90809619b1af03c44fac17a124a58d7b32875b208214c0f57dbed",
+      "bytes": 82919
+    },
+    {
+      "path": "checkpoint-controller-compile-compatibility.json",
+      "sha256": "be6904cbfab4d5d5378dcbd54faedbbe3cfd529338123e578453d6d4b255d68b",
+      "bytes": 556
+    },
+    {
+      "path": "compile.log",
+      "sha256": "93607c1e3812091dc0a58496d79886d1687dcf0f155ab7b81b34ca4e6c87825b",
+      "bytes": 6804
+    },
+    {
+      "path": "contract.json",
+      "sha256": "ae179b5aab6705da3c6364aee2255de7444359266f7cb8d9f61522c2bd359c57",
+      "bytes": 2975
+    },
+    {
+      "path": "evidence/first-runtime-diagnostic.log",
+      "sha256": "ca6a7c41f26a2df29849b2449dd7a39538c1c6b43c2b0e6a82e2d3f65c35c6b1",
+      "bytes": 1645
+    },
+    {
+      "path": "evidence/offline-report.json",
+      "sha256": "1022926c1e1b4a0664afe5a63930df062c41d4679c82258b376028a71f010622",
+      "bytes": 1700
+    },
+    {
+      "path": "evidence/offline.log",
+      "sha256": "1d94e07567c8416202f13e5d6228ad4e71ae5cf818266dce84452ba67b6d6e7e",
+      "bytes": 1645
+    },
+    {
+      "path": "evidence/process-completion.json",
+      "sha256": "ec719e63ecb82192615f97d97b1ec59f87d7978bc885a9aab0e89621c6660779",
+      "bytes": 102
+    },
+    {
+      "path": "evidence/root-concurrent-differences.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "bytes": 2
+    },
+    {
+      "path": "freeze-contract.py",
+      "sha256": "ded56ecbdc7572ce117ea294aa0e5508dfd1302033aeda4b3d8c13ae6e5808f5",
+      "bytes": 5277
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/section/DesktopOriginalBgmDisplay.kt",
+      "sha256": "b8d591f2e9367d01d8d5021531a723a23840a053bdbb273c6b1688741f6547c0",
+      "bytes": 301
+    },
+    {
+      "path": "generated-tool-verification/com/android/purebilibili/feature/video/ui/section/DesktopOriginalBgmDisplay.kt",
+      "sha256": "b8d591f2e9367d01d8d5021531a723a23840a053bdbb273c6b1688741f6547c0",
+      "bytes": 301
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256": "fab0242fb67bd55c8522ca73c0d886b69aefffcacc0d81677b919cdf925d7f43",
+      "bytes": 10241
+    },
+    {
+      "path": "java-snapshot-entries.json",
+      "sha256": "b5525447f1664de36f14743e6e0e79008824b72099cfdfa2595da6327f942fac",
+      "bytes": 28295
+    },
+    {
+      "path": "kotlin-snapshot-entries.json",
+      "sha256": "42b77fcc573aa12d7ada0b8bf1c8a2404c5a75858c568601f828e1dbc68ac9c2",
+      "bytes": 1353481
+    },
+    {
+      "path": "main-java-snapshot.jar",
+      "sha256": "a49ba7e27d63edc1084b2b583a8cff57fb1745c87939a6da2186049f47e44aac",
+      "bytes": 189789
+    },
+    {
+      "path": "main-kotlin-snapshot.jar",
+      "sha256": "d48439e0d950cb4ee3ef7f9af613aa07b9b96a98bf13e4bb61bb39aa2f1a60ca",
+      "bytes": 17201688
+    },
+    {
+      "path": "main-resources-snapshot.jar",
+      "sha256": "dae6f08690026c80a194bb36f930eb871ba594c44cb0eb614f7dced7472410e4",
+      "bytes": 871283
+    },
+    {
+      "path": "origin-evidence.json",
+      "sha256": "e56c50251c2436dcc156c9f18abeae957d10596997be58bf4fd1c4ec861fa851",
+      "bytes": 2350
+    },
+    {
+      "path": "owned-files.json",
+      "sha256": "8ea8bc8edbec96c53f0f9c1ab472d9c7787b15b91b8bfb3249e86c0ca8ebd220",
+      "bytes": 2272
+    },
+    {
+      "path": "patches/DesktopMusicRootIntegrationTest.kt.patch",
+      "sha256": "f23f3fd07bb8ae2887b22d2906e21ddf602c7b8937783169569dd1c3325b09f7",
+      "bytes": 16758
+    },
+    {
+      "path": "patches/DesktopMusicRootRoutes.kt.patch",
+      "sha256": "8c22da429d4f4657c4fb94a1197e768146f2ba624662497b67cb456ac43f28b6",
+      "bytes": 3271
+    },
+    {
+      "path": "patches/DesktopNativeMusicDetail.kt.patch",
+      "sha256": "9f51943b1544642a851408449651b1e1941f02a65beca024eb95d5c2073ad22c",
+      "bytes": 915
+    },
+    {
+      "path": "patches/DesktopNativeMusicDetailScreen.kt.patch",
+      "sha256": "c3cbf92233b73f74f6eaf3340b903ffeffbcc927f15e5a318c14c60b8dc159c7",
+      "bytes": 1103
+    },
+    {
+      "path": "patches/DesktopShell.kt.patch",
+      "sha256": "9ab37dec8ab220fb09b7fdc8bde483064fcb88193a7983c5add3ba092a65df61",
+      "bytes": 10863
+    },
+    {
+      "path": "patches/DesktopSpacePlaybackBridge.kt.patch",
+      "sha256": "54125f3a03fba64ccd5783313edff450a88c4f4a48d3ceae9768e1d78dc1446b",
+      "bytes": 908
+    },
+    {
+      "path": "patches/DesktopVideoMusicEntries.kt.patch",
+      "sha256": "8bf1d1fac6cdc80ddaa89dbc7e0f0caa61e0fa19fe5760eb0c5388e733470463",
+      "bytes": 4566
+    },
+    {
+      "path": "patches/extract-native-music-root-platform.py.patch",
+      "sha256": "34194da64e8e5c8bb92901582ec73b463d44dd3d7679617248574a839a45f2c5",
+      "bytes": 2580
+    },
+    {
+      "path": "patches/ListenAudioSession.kt.patch",
+      "sha256": "308af6cd77b7eb643ad450ec600a249924faedcfff39fdd7ae540beb65ac0b6b",
+      "bytes": 17935
+    },
+    {
+      "path": "prepare-drafts.py",
+      "sha256": "b28bb8d2f0712e9bf5367cc8f61aabf793004868d24d6a1ddf286fe7b1663283",
+      "bytes": 15830
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopMusicRootRoutes.kt",
+      "sha256": "9e81fc23261104e12d1f227d5415c53a24e8e752b4b82cf064d9655fe04015b7",
+      "bytes": 3057
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicDetail.kt",
+      "sha256": "4a1f448a1850271d7d2223606aa684464a1602f7146a2ff95bc5f8958fd5fe63",
+      "bytes": 5233
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256": "ea2d828e1b710073b5e143b59eb4499a8de5fc1b8ecab5da4c16f697cfdc3a8b",
+      "bytes": 26039
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256": "5fe94dde0f221c29c7579a1524546e938b3c207384d78a2c44b387b1cf6aa8aa",
+      "bytes": 87943
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNativeMusicDetailScreen.kt",
+      "sha256": "addf950254dc7dd98064c3618a37ec57e13b2880203e028f3c01b25a1c57a545",
+      "bytes": 4560
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpacePlaybackBridge.kt",
+      "sha256": "6200fd465090e857c8b0b0a9960fcb0e89a97a3327aa30a2924834d460662cc1",
+      "bytes": 1849
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "sha256": "2ce34dc38667a22cbe1da4bfaf480c386309f30fb58f6a4fd32397395abddd7b",
+      "bytes": 4309
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+      "sha256": "74cd1ea08638360e01b980211ba7f51a8513b6f11fcd2dcd86fab54a3bc24d1a",
+      "bytes": 16156
+    },
+    {
+      "path": "prepared/desktop/tools/extract-native-music-root-platform.py",
+      "sha256": "4ef5c0df906f425358dc8cb4b35502c2c0184759d1a72c7c7d1c45a1b2c73ea9",
+      "bytes": 2382
+    },
+    {
+      "path": "preserved-evidence.json",
+      "sha256": "ebd00e016677eeb04aa82400f3f0ba331660224115d4c7bb2e22a278c64ff28f",
+      "bytes": 1009
+    },
+    {
+      "path": "preserved-music-tests.json",
+      "sha256": "3ec335db940023b12108e24c9a9b4784ef6c5f36db62f492a8b4b2514a200e17",
+      "bytes": 243
+    },
+    {
+      "path": "resources-snapshot-entries.json",
+      "sha256": "cde9ee2d1ac78f11d69026da4571d60166e63321c0d140321251497e57ef2f1b",
+      "bytes": 8905
+    },
+    {
+      "path": "RunMusicRootIntegration.kt",
+      "sha256": "0ad40e619e8214a0458316b3354dafdf465443e4ffe3868fbda7dfc143faf341",
+      "bytes": 1365
+    },
+    {
+      "path": "snapshot-identity.json",
+      "sha256": "8603fb73d928d9bd26f48b702aa6bb5b9d396063314360eee956ba5b4324d221",
+      "bytes": 568
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256": "53655ab05b4bc01318c4e0783b9e55a1f07c59d213f3d01e8c23fcce46e2315e",
+      "bytes": 385
+    },
+    {
+      "path": "test-support/DesktopNativeMusicIntegrationTest.kt",
+      "sha256": "da8a6cb3414aa5a9a4096ffeceecdd188765f103c2d60878d1ba978ec8096745",
+      "bytes": 18295
+    },
+    {
+      "path": "test-support/DesktopPlaybackController.kt",
+      "sha256": "4497f947967f1181b4c5e3fb1558758e501b3c9113f2b6a7f1b48016812f6181",
+      "bytes": 55814
+    },
+    {
+      "path": "test-support/DesktopSearchPreferences.kt",
+      "sha256": "8d000d578ec677578aa6534b9dce903a86557d8bbd4cf6d461afed559f9b31a5",
+      "bytes": 6681
+    },
+    {
+      "path": "verify-isolated.py",
+      "sha256": "f446a29dfed0acfc8d155ff9245dae678ef211854ee81fb12c115beb53cb90da",
+      "bytes": 6433
+    }
+  ]
+}

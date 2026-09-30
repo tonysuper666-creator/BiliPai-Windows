@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "sources": 6,
+  "productSnapshotSha256": "89d1715f142d23d96cd42b91f1116f4337f37dfe65734ec908a4aab5ce45a54c",
+  "sharedGradleInvoked": false,
+  "compiler": "Kotlin 2.4.0",
+  "inputs": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopLibrary.kt",
+      "sha256Lf": "8d0a9a9a7f4a127b6207d21656ba1838dfcb8ebe070ca037e64955e118e954c7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt",
+      "sha256Lf": "8147ab7496b8085d557c732e2e346aa4c7e189518748339f10cc828a04160d5d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Lf": "30927ccfc9a57fd29d9dd21cb65c473aa7cc4087991d0989d5aeea652cd1f72f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "sha256Lf": "62078d208caddf57604b49d301815718446ee364ed6c5bb567b73cb48a25479c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchRestoreLifecycleTest.kt",
+      "sha256Lf": "df30c5dc53a5740a780ab86fffdcd6812cf1a1941a8076f774a51bbc27cd626a"
+    }
+  ]
+}

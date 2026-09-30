@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "compiler": "Kotlin/serialization 2.4.0",
+  "sources": 3,
+  "sharedGradleInvoked": false,
+  "sharedClassesRead": false,
+  "existingSnapshotSha256": "89d1715f142d23d96cd42b91f1116f4337f37dfe65734ec908a4aab5ce45a54c",
+  "inputs": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopLibrary.kt",
+      "sha256Lf": "a4884b5b92c11d089512609655773e65313774f6d06693d25fed056bb5400100"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopLibraryTransactionTest.kt",
+      "sha256Lf": "d5a0cb5b8602be142a6144ff94a6c30ced00f1505a743169b6e00c8d16abd65b"
+    }
+  ]
+}

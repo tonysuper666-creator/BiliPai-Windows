@@ -48,6 +48,12 @@ def adapt(path, source, host):
         # JVM DialogProperties does not expose Android secure-policy or decor-fit fields.
         source = host.substitute(source, "        securePolicy = base.securePolicy,\n", "")
         source = host.substitute(source, "        decorFitsSystemWindows = base.decorFitsSystemWindows,\n", "")
+        # Desktop Dialog passes a tight host minimum. Release that minimum before
+        # applying the original content policy's min/max widths and centering.
+        source = host.substitute(source, "import androidx.compose.foundation.layout.wrapContentHeight\n",
+            "import androidx.compose.foundation.layout.wrapContentHeight\nimport androidx.compose.foundation.layout.wrapContentWidth\n")
+        source = host.substitute(source, "        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .widthIn(",
+            "        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .wrapContentWidth()\n        .widthIn(")
     elif path.endswith("/AppSlider.kt"):
         source = host.substitute(source, "import android.os.SystemClock", "import com.bilipai.desktop.appearance.DesktopMonotonicClock as SystemClock")
     else: raise ValueError("No platform binding for " + path)

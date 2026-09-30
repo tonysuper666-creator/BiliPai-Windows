@@ -1,0 +1,50 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchController.kt",
+    "sha256": "8c59d2658a165589c5210d004ee190eaf19d77c7eef4d7fb456ddf57bd396a76"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchRepository.kt",
+    "sha256": "058fabc29bfadb8ecd446972d4d3342ec2a94be7c2652781dfd0e7339487da15"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchScreen.kt",
+    "sha256": "4fea3b560d630b84c09ecb48e8d28cd7ea5c51f65efbb3fc3e94153da9846eb3"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/GPL-2.0.txt",
+    "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/NOTICE.txt",
+    "sha256": "b0541bc3dfe0517c8e49a1aff053d8f65debb88d56fb5cadc5a205dedb189d0c"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/pinyin4j-2.5.0-sources.jar",
+    "sha256": "b249cc93415b0c349fc4d0cdef2697ebd36df29246a5b87d68a9327e0153fdf6"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/pinyin4j-2.5.0.pom",
+    "sha256": "7860cfad3bac667d51e53c28d3b6ee058893cd626a8ecb6e49c0d6b6f4b5c5f6"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/PinyinHelper-source-header.txt",
+    "sha256": "e7a48477e3cd92e4ec6ecdd8285c9a7379c00f123c1f9fe9a313753828952bad"
+  },
+  {
+    "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/provenance.json",
+    "sha256": "ca14fa4e091afcf1c8458925ec94013539c5b7dfb5aae5e5c30e1a5575b3dfef"
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchTest.kt",
+    "sha256": "981b4d7c58800b754bdeaf3f552be10341461d5017b5080bd8b2e2dd35aa2f98"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-settings-search.py",
+    "sha256": "7f676870426137be14623b4b4ebbc4d66e98df53ac59379e5bb5dedc5814fb98"
+  },
+  {
+    "path": "desktop/tools/tests/test_extract_upstream_settings_search.py",
+    "sha256": "9ebadee236fc41515b3b42f632ea7212d971ef12bb0941feac7d8368e3970d60"
+  }
+]

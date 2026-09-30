@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "mainStable": true,
+  "junit": {
+    "found": 8,
+    "started": 8,
+    "succeeded": 8,
+    "failed": 0,
+    "nativeWindowOpened": false,
+    "accountRequests": 0,
+    "realTempDisk": true,
+    "actualControllerClosed": true,
+    "actualCachedStoreGenerations": true
+  },
+  "sharedGradleInvoked": false,
+  "nativeWindowOpened": false,
+  "sourceAdditions": 0,
+  "dependenciesAdded": 0,
+  "schemaChanges": 0,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt",
+      "sha256Lf": "8147ab7496b8085d557c732e2e346aa4c7e189518748339f10cc828a04160d5d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Lf": "30927ccfc9a57fd29d9dd21cb65c473aa7cc4087991d0989d5aeea652cd1f72f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchRestoreLifecycleTest.kt",
+      "sha256Lf": "df30c5dc53a5740a780ab86fffdcd6812cf1a1941a8076f774a51bbc27cd626a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "sha256Lf": "62078d208caddf57604b49d301815718446ee364ed6c5bb567b73cb48a25479c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "INTEGRATION.md",
+      "sha256": "31ebc958511a7065899c2a85abf3099e5eed8ef48e66d6ead153fa80839ab231"
+    },
+    {
+      "path": "junit-evidence.json",
+      "sha256": "81357c1f0707bcf05b1ecc365cd9cff96e8641fcafb5b1f3e3c7afcd9765bd4a"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256": "f42524c771100a58db6a3b045405e29b5c4e696aa9f318b3017a5937d051359b"
+    },
+    {
+      "path": "run-tests.py",
+      "sha256": "87ab3f3c3e49f3a201b19e78d7a6e3195203069379009680b9783189796b1978"
+    },
+    {
+      "path": "TestLauncher.kt",
+      "sha256": "dbc18a93c89282f315d7a5954c3d4a48d22550a9b80388e4158de8e651e9d9c2"
+    },
+    {
+      "path": "freeze.py",
+      "sha256": "79bcd3154f1791367dfeac90333a2fa17b5d0f49e846653e4812c222cd0e7b6a"
+    }
+  ]
+}

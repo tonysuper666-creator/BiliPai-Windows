@@ -3373,6 +3373,151 @@
         "playback"
       ],
       "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "4ea9603637380356a482def1e8e1366a0c775d260dd7700686440bdab24ab144"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "8813c9c1e764122542c3a9dd826fbd069d8f25896e56b21c456ab832246ba1a8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "1e68ae700ea22d3d5ed776701bb1378c4d79268fbb680d3250e7bc567e49f5ef"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "0e8200241c8b9ad3e2228aac0a5750eb4e7ec9f434d452161788944a473b903a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "f907bf67cc32c9eae237fcf32c59cc78991a5275aedb7a06f1da4faa9c060d72"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/PinyinUtils.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "b77dec30d71e18ea8749b96aaf0432c6c2427ad75b3dff965fc74c5aecde13d7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchHistorySection.kt",
+      "mode": "direct",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "9f3ddddf8818e924b3591798a8fddad817840f1205585b175860e3d048c24aea"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "b208983b36fe392708836eb45e7712ff72862454e84f40fba708a17cfc097d54"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "531b3bf325bb1ac1b6b24c665d5f3dad2d5dcc1ae8d9a18ffdb694c9559df5de"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsSearchHistoryStore.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "e7ae41ed7b05d2df72ec8bb5a835423e29a94b2b028113b6e300fcb5077832bd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "159cd83dcd72a0833cae676893a84b9ed5ce97d1e59fd1905fa7d94320930acb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchUi.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "7f68325ad428905af35ec3a9f3527e4a4fb1ed231b80650abf5821d6b9b9d143"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "ced1fdca02adbf8229bf57bab696704babf4a5ac88ca3a2c1732adc305f572bd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-search-parity"
+      ],
+      "sha256": "eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsVisualSpec.kt",
+      "mode": "direct",
+      "features": [
+        "settings-category-ui-parity"
+      ],
+      "sha256": "6112e0f7bae983128f14c56a312ae280add61c567ce93ca1c08ae193db65fc42"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-category-ui-parity"
+      ],
+      "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-category-ui-parity"
+      ],
+      "sha256": "300346d94ff55caf2a974c87602c9e067f8ed875a0cb90b68e41643999befaf1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "mode": "policy-extract",
+      "features": [
+        "resolveDisplayBgmList"
+      ],
+      "sha256": "fa087c65a13bc0de384dbf751a5f403263d2149739ce1767ecd3eb6404ccb7cb",
+      "declarationSha256": "f7e103373fda9e5f283fff08a798a86ee578e0c217747249e1b38236bcb4fd73"
     }
   ],
   "featureCoverage": {
@@ -3527,6 +3672,1287 @@
         "appearance-language"
       ],
       "sha256": "6d4746789d01394ec9084b5a84140e0ad820e1ff9ae6a160c2c8e0684e817b40"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_telegram_mono.xml",
+      "sha256": "09b358f8388f06358cd77ae92fdc6ab3aa750e11e23c82b7be47c240635d2d2c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_3d_rotation_24.xml",
+      "sha256": "ac6ee5708b3cec8bbb00a45ee872b436be61f479c97370f4b968ac5ea4c09c57",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_access_time_24.xml",
+      "sha256": "5caf3de2719ef8a9ba922dca0a9dfbb0ab03c0507224f2d4ff41b595d1fb5e4c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_account_circle_24.xml",
+      "sha256": "097d5393e8c8087077e7df1c9ef59f2aaa677f4d1f4e3ead60a3d3bd040b3b5f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_alternate_email_24.xml",
+      "sha256": "3c8bdb0f880fc687393523ae5197ae05f7e6a8eb1c871f8683d5e34c9f990ef1",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_analytics_24.xml",
+      "sha256": "310b676645d807eda24fc04bece52f91e2f37491316567d2e11b97fd4a134110",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_animation_24.xml",
+      "sha256": "aa66cfccf80ac4009a17204b10700f22b3697399ef524e848798dbff7acb0c73",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_apps_24.xml",
+      "sha256": "6d16e921a41841590351fef37fb40fcba3b92a8846699ec6ab52d23e74e33fb3",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_arrow_back_24.xml",
+      "sha256": "cd1f5a1109c07c79ac3e52a9a1ae8ab14be7a3bff7f7bc3559f7088d60eca3aa",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_article_24.xml",
+      "sha256": "d6faf6656bfacb12ac3ef2406b360bd70a5b898e64e3a89561e02366ac3dcb5e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_aspect_ratio_24.xml",
+      "sha256": "812c9d525bacfe36e5ad5281da45d8d1fdf8903003b2138eb93f54a380599051",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_auto_awesome_24.xml",
+      "sha256": "eb7039b4a67d25eb75afdad87093c2efc1cc79f9e230ee06cf9745fb8a36daa1",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_auto_awesome_motion_24.xml",
+      "sha256": "743d85d67e50a07c2f716bd67f2661bde31ed81ec97a40cf8aaaf5c8519d4d15",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_auto_fix_high_24.xml",
+      "sha256": "3c3136bc3b7a5a68be098266a5ad87cfd389c2d97acc2bd97669a009f8f45382",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_backup_24.xml",
+      "sha256": "803e0b1518e286e09fbb3c46365b4a3ea45422c025a988e50b41544aacfd779b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_badge_24.xml",
+      "sha256": "b5d38aa02ffe101fe0391efb555f187e1febca52e501f9e0f8f5be6372ca5bdf",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_battery_full_24.xml",
+      "sha256": "c5131c2e1a857538433694403c6489fd9b561f83abaff9565bfbb56bf44c5039",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_block_24.xml",
+      "sha256": "d5bc15da5d1909c57e872fa80449f5411ff1ff4bc488db1e5ad389b34353de4a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_blur_circular_24.xml",
+      "sha256": "b7bfc63343311235a3718685b287716cd5c2b79469effaddba45989f01310f9a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_blur_linear_24.xml",
+      "sha256": "9ce12d59355350b87d0a04f26354eb0a4ff08b2d4949bc3721f6e8bdc8e59d28",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_blur_on_24.xml",
+      "sha256": "b6e3b601b6ecb13d997521fc16515023155f9eccc827a182cd87ce18d6a32412",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_brightness_medium_24.xml",
+      "sha256": "6440e5805fd223221999231ad997d804a88cc32a25e60abc990bae76d0667397",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_brush_24.xml",
+      "sha256": "47da5acae507d86de4454322dbc4670deb060fd5dccc1838774b2408a97cd979",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_bug_report_24.xml",
+      "sha256": "517479a5c927e84029edf4dd8b8ddba6220554b3545b9d33778719887c2270ce",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_calendar_month_24.xml",
+      "sha256": "975455cd700484e46e2ee1cf1af777ddac8bc5b3dba2f470490e69b0951d58af",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_campaign_24.xml",
+      "sha256": "9614ab2e4102b82a7742c08ab6bb8fed891c9c0a880de440101de1b25b0f4b47",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_card_giftcard_24.xml",
+      "sha256": "7b96223cad7e43e62c270e2a31ab113af0482f87101d4b4ea7348f0447b09bfa",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_cast_24.xml",
+      "sha256": "f1d2a6b3573c4cc351bf9612f4e5f65396ac27d0ac05e81eaf883ad3eb61b432",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_chat_bubble_outline_24.xml",
+      "sha256": "384d1622babb502280ae1627ccaea1f9978b5f64426e6db49ea1394259f21cb7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_cloud_download_24.xml",
+      "sha256": "31c33681bade0537ec21c7b28bcfa93603e9153de700a29c862ee16f701cd409",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_cloud_sync_24.xml",
+      "sha256": "f0a4c988d00228f2361ffb2c13d9d847463993d8b0d48209a13ce1f4a3a9a690",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_cloud_upload_24.xml",
+      "sha256": "803e0b1518e286e09fbb3c46365b4a3ea45422c025a988e50b41544aacfd779b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_collections_bookmark_24.xml",
+      "sha256": "c4e94e3741882f5b3ab46fe2456560f0f96dc5e494c857d2e58dffd442fa9a79",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_color_lens_24.xml",
+      "sha256": "77da392d239862f1c1a4f736d698debcffe9477eacb49947b41210360af23b92",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_colorize_24.xml",
+      "sha256": "d56021f9a1c7a68367e13b1d8a1fa52456cd46d132b84537f8927d69076628c2",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_comments_disabled_24.xml",
+      "sha256": "81a4a1900183476fc0e1fb3408ef206021836d3d0c5bb3954cb56f00100d6b03",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_compare_arrows_24.xml",
+      "sha256": "f543244fc3a91960fb649ddfe40882211eded8becf4449356678a1e9d4d5af6a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_compress_24.xml",
+      "sha256": "c5e3a43ea6136c378021f03b2d6310c25659d840cfd68603eeb71d31c231b7fa",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_content_copy_24.xml",
+      "sha256": "f83b9c4f3f51b5a64365e6222498934cbccaead05fd720d4cabcb175eb50d2d4",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_control_point_24.xml",
+      "sha256": "f8ea156e478345569e9a21d2b949884b4a9e789a4ead5247b0013eb06bf20c36",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_dark_mode_24.xml",
+      "sha256": "29527b73af3086cf8e222c1a1b3a203853cfa86523c56b113cf8a25c8fbd2881",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_dashboard_24.xml",
+      "sha256": "a3fa2e15da41901c3e12360225c60f60606304e87de321a0b92ee1418e868108",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_data_usage_24.xml",
+      "sha256": "881ce5292b1ec9349bba40bc35ec3dcbefb38caa0dd1837340f0cffc473fae07",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_delete_outline_24.xml",
+      "sha256": "8589dfd0ab9c15182ba5698bd38c4502ad8f476dbd983e840a709a24281211fa",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_edit_note_24.xml",
+      "sha256": "4cbd128be9fa8ac5a53bf7c5a08948e0f847af99d7943b66840c26653b73ebef",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_extension_24.xml",
+      "sha256": "bc0fec4d13b0f4e71c3ac6209c5f323932f8f6011d8eb181980b7cc0511670bb",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_fact_check_24.xml",
+      "sha256": "ba68d5bf7b808ec2d5f38b869711924017567d8f1be4beb2109aff0f76e073b8",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_filter_frames_24.xml",
+      "sha256": "3e41373211e9aff96996eba2e96d1bf93ef85b2e1d2a801201f9f8fc01a77dec",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_filter_hdr_24.xml",
+      "sha256": "81c4bb23868a0bee93e71e802357a1c41d4b0a1e255a80176b9656e762abb4b7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_fingerprint_24.xml",
+      "sha256": "8485c91da0f8ce88c68cb9605eb7e5b14ea4b7c3fce8ed054e59f5cc765eed0b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_flare_24.xml",
+      "sha256": "facc06db9417c7407bc9c2aab4ac4a317f59f8f4f55c5773b05963b199d14848",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_folder_24.xml",
+      "sha256": "527c6a7dd741753f91cd8f33894aa2cfac375138c852b1ebfc2b43195ebaa313",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_font_download_24.xml",
+      "sha256": "79008f1ca265cf6fc7a9d3cb7faa0a79ac9d9aaeec6f63d932ee540803bebe9a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_format_color_text_24.xml",
+      "sha256": "ccbfca2085ad3c62f73f3418c9504228bda578589a49e798cfa0f93dee20ee1f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_format_paint_24.xml",
+      "sha256": "ecd8c993b15642fe44aa7d2b5878c9a8d511270e9a1e86b49f5c26dbaeea9210",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_format_size_24.xml",
+      "sha256": "345d741128b9c36bc2324170ca7251b088d4c5a078e43f7a6371748af5cbba6c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_fullscreen_24.xml",
+      "sha256": "3859ac522d02dd268236849f09071ad8aaeca53fb47eb01903222e4c851bddb4",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_fullscreen_exit_24.xml",
+      "sha256": "045f9297e2cad4cddf1ddb5d3d5af81985a4f92d74adad246114357c2e5fd00c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_gavel_24.xml",
+      "sha256": "156a5fb98b459169550877b9dbd34bfc8389aa7fcdd710b2d061c621ef902496",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_gradient_24.xml",
+      "sha256": "04d4cff5ef9f9b9ac24c16511409b419c03121586450cc42f44ac9b28fbd4d23",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_graphic_eq_24.xml",
+      "sha256": "5b68a6161df0b3650116bd2dc3dbbfd0fcf34a9eff3b1e6e4580eb3ee3c0394e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_grid_view_24.xml",
+      "sha256": "668aecefe58f30533e9917cb49e13cfc27c1bdac4648452d3140d9a33bd94acf",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_groups_24.xml",
+      "sha256": "7282bb271290c9d881e0b1ea473ee181eb0704eb4fd355ef3942bac5274a9969",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_headphones_24.xml",
+      "sha256": "8c429637c7611e2ba13481e4ffff33cf9eb190fc3a4485041c89de45ee7b243f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_health_and_safety_24.xml",
+      "sha256": "844c4474df4ab9fc34f6f17271d40800c0acb31705c7557c74d5d59ba36e4d24",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_high_quality_24.xml",
+      "sha256": "528a80eb1ba78e66e4008cd63a4f4f3ac08f91c386523792fdf8d67e1d5d0c52",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_history_fill_24.xml",
+      "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_history_toggle_off_24.xml",
+      "sha256": "52f01a3630b639c0ad76dfc73873ac8018450a5b2dceb270bda27ecb54a9b30a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_home_24.xml",
+      "sha256": "01fc3a366b960200f8eca85177b2fec7f057beef24fa9fa5d73a14f9a65db418",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_image_24.xml",
+      "sha256": "17313b4cd878f62bd13e21e2c96cc6d1023f23295349a3d33d94e67ecb862254",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_info_24.xml",
+      "sha256": "b105df7f824e7eafbd0a73ebc55085134409161d606894c97685ba1cd38cbcc2",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_insert_chart_outlined_24.xml",
+      "sha256": "ad0bff2749ac153fe97f7fd4ffb7cab865ba0c14eeb54ec998f68f80df8ee418",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_invert_colors_24.xml",
+      "sha256": "61cb0c8dbf41a1b7492a80a56e044a54b57865ad3eff676bd6ed461d095b482d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_keyboard_arrow_up_24.xml",
+      "sha256": "b0a011df19ee81eab7e1d822fb2a3d7b9b446bae8fccc83f2fd5450b12d850b8",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_keyboard_double_arrow_up_24.xml",
+      "sha256": "c0ac0d82f4a6012d016039eec4335e1fb1e2112189cc6dc450ed4c3de0a9d172",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_language_24.xml",
+      "sha256": "85b63f92da0edae5dfacb17b2ddc67a92c939ba4c872ee189d97c4efc9c00c4b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_layers_24.xml",
+      "sha256": "862fbc5a61cd285db27fc455aa7578a669a71c8b0bbf50df1220d12a097677e5",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_lens_blur_24.xml",
+      "sha256": "b6e3b601b6ecb13d997521fc16515023155f9eccc827a182cd87ce18d6a32412",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_light_mode_24.xml",
+      "sha256": "5797cbac5cd27b6b2d0496b20cfb07fd838d61f47e2b61a0f6a839c956472737",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_lightbulb_24.xml",
+      "sha256": "2041393ca823f5c8ca45fad5d46bbe483c18ed5ee3678ae832f0f6ddd0edf774",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_link_24.xml",
+      "sha256": "c1aad36fbc2f5857731304472eb30c26b81b385e05852be9d3f6575848b1f35e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_live_tv_24.xml",
+      "sha256": "5c5c9e681a23d2e27649b1d3c0f0ccc61b77c606f1b4b66e1afc0b238991c4a4",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_lock_24.xml",
+      "sha256": "2153d1ce0851e9b9eff5e55efca2dc5d10343988bc14c3d96c958ca2e9d287fe",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_mail_24.xml",
+      "sha256": "ca7ba4f816bf1fe70b5e6b2a66696355524a2dbfcca0d3090c93842effc367d9",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_manage_search_24.xml",
+      "sha256": "66ca7787f6eb3ee399c73a6c16e93b7c9f879bb60169acefaa1f5b0d227857eb",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_memory_24.xml",
+      "sha256": "fb24f19cb38db3dc7ecab82eaa9faff129227190f202dbfeea125b8128ec68f5",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_mode_comment_24.xml",
+      "sha256": "49efb24da9948ece926543092b569e7ca71d8c91b0195f9c883155a78bcf58e5",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_more_horiz_24.xml",
+      "sha256": "3654901c8808ac4209d8c0aa820a1cf64fca7dbd3a815a8faa5898881d2bf941",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_motion_photos_on_24.xml",
+      "sha256": "b495cb0fce655da3c99604934e0dd97ef4820f8d98ff780a3ffe69bd9dbfbd7f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_movie_24.xml",
+      "sha256": "5ce86475edfbd61efb45711b4c4a0e1d0e97a1abc0264075f5887c1ea3adbc12",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_music_note_24.xml",
+      "sha256": "df995a2b821fd0f27ca444160438ff57148b55cf1846e48f95dc2b35438a749b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_network_locked_24.xml",
+      "sha256": "ca05bbb4a0ac5a64725a56c8d11ea276300e60cf7cfe63435ed150694da47474",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_new_releases_24.xml",
+      "sha256": "4e40960fa95cef13173c83132fd06e481b7096923c1e7302a69f34a6c6fd7a92",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_newspaper_24.xml",
+      "sha256": "6914525b304f80d9741313e13fa81e89c75e3e7e31fd3a349f715d9996686077",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_notes_24.xml",
+      "sha256": "c65ba6dffe71bcc8d8393368a363eb45648ce86c4f23e769f979d79891ab4757",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_notification_important_24.xml",
+      "sha256": "ad1749545ce66eeadf167e870d4b23edc3540cb96152810f84763e383e9b77ac",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_notifications_24.xml",
+      "sha256": "9915e9e282df7d59758c70c32bde9dc9cfee8401abfcf3311b508ac63ca5e8de",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_numbers_24.xml",
+      "sha256": "cb170a15c1d244a84c1e4efb8ffc06105475b4f6e2a8b6eebd484bd64b960ab7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_online_prediction_24.xml",
+      "sha256": "88017081fc5bc725c33f02475db12b506a2f02eacaa40a2040174f55d249b3b1",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_opacity_24.xml",
+      "sha256": "aacfe77e3a3f259fa07d3e1471268164a07884533d7fe64403a558498dd9153d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_open_in_full_24.xml",
+      "sha256": "e4db4b82f9357c1c53ff08e50f3aba47b7ea1700af773a24dd26349ea85be252",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_open_in_new_24.xml",
+      "sha256": "12b1dfc1be3b858a2d22781dcae341ec180834266198022b2f63494f7aab9c04",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_palette_24.xml",
+      "sha256": "77da392d239862f1c1a4f736d698debcffe9477eacb49947b41210360af23b92",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_pause_24.xml",
+      "sha256": "47feae58c807ff754d60975ef4e37a1373893b7edebc994edbb46b80c76b6807",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_person_24.xml",
+      "sha256": "ab409acf8825d92c92928e06d2d84c003f9e227033594443d0ba5700fe2fe072",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_person_add_24.xml",
+      "sha256": "82de7e9f3bff592dfab2ea78028262a047bf0123d56f1fa9d997d817d0f7398f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_photo_24.xml",
+      "sha256": "17313b4cd878f62bd13e21e2c96cc6d1023f23295349a3d33d94e67ecb862254",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_photo_library_24.xml",
+      "sha256": "c441ee806248088a9a8b611af9ab90309fe0016db3198c1720ff34839ebd7779",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_picture_in_picture_24.xml",
+      "sha256": "573e5b112ab97e0642f9fadd59b87c49902df21a13aeab699503a797950d6b19",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_play_arrow_24.xml",
+      "sha256": "4cfe5685d7c22230c1263f85efd46dee0e06103b01402a9863c7f15ab0ea32c0",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_play_circle_24.xml",
+      "sha256": "6803783c63171ff7e4b67f0cff428e5eb8cbbbe16c0bd46e0e57939116673132",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_playlist_play_24.xml",
+      "sha256": "2af8af2f6733f3d0e2a4bf4b2378352b298a981ba56a05677e9e312ee65d1c4d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_query_stats_24.xml",
+      "sha256": "d4d85ff53db2537f81a93296ca41330bf67bd6d60d2765b26857915f21926b98",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_queue_play_next_24.xml",
+      "sha256": "b27428607ec02d1fa9d7b517eeae4cfe5269a9d8ff1d7b2a62e09ce4ef2cfddc",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_refresh_24.xml",
+      "sha256": "983a75fe91322a8bd3cae0050c293242d651d43c67ae9ab12691d9b069625b7f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_replay_24.xml",
+      "sha256": "0b3cfdc9681a664ca7c4b21ab645d30f3e701253fad0e7f634b3a100690766d7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_reply_24.xml",
+      "sha256": "89d6b4461a52817ec364fecef09369f6d66f7d4edcc998cc9b46dc7517600c1e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_report_gmailerrorred_24.xml",
+      "sha256": "ece185429a383d2408d4c20897d6fd05a6c141182feb0c5738b231ded792adfd",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_report_problem_24.xml",
+      "sha256": "eec68dd9db555e0c89b06d3b32215d5e5fc56d7a447db197b5057c93e899ae60",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_restore_24.xml",
+      "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_rocket_24.xml",
+      "sha256": "5ce78b0670e097eb541b2725f7be61404ab7094dc2a859dea32a1d9d27be69d4",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_rotate90_degrees_ccw_24.xml",
+      "sha256": "fea2ddf59e27e7e28350cc5a4da6c2241d13b137b909663fc152c39c71bff9a6",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_rss_feed_24.xml",
+      "sha256": "0528ba9f4532752c28eeb3b98cf46d2d57b3784d06725f2cdddca85802649b62",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_screen_lock_rotation_24.xml",
+      "sha256": "a9b38a3c5df8703cdf73fa70a51ca2f89ce9340753342d542bbe66772e4fbb78",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_screen_rotation_24.xml",
+      "sha256": "c7fed715a3416bf254c8f66e3b84372da52c2e4656924d6935868434faade9b4",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_screenshot_24.xml",
+      "sha256": "d6453aaf14f665b6204f4ab315928773b43950cdc5e95dafa838956068b2ab8f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_screenshot_monitor_24.xml",
+      "sha256": "7d1fcd3f17734d07590e5e399bace98eaeade0bf637dcd1ab336f946f1d6cafd",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_search_24.xml",
+      "sha256": "e99d075e9867ec5347fc850eb629a6bbef1819cf393c39eaa06b43251f96ecd3",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_search_fill_24.xml",
+      "sha256": "21f2fd9a9ff5331e331424a028fdbd90cbaf4c3806a7c7c92cc4db6f7047757f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_security_24.xml",
+      "sha256": "5eb3964eba0d664e971f79f96ce3752717146c9a38f232dc38e6730980111e5c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_settings_suggest_24.xml",
+      "sha256": "d5183cfd6bf7dc88c9a37fbfc48e8906d648f636e4e1eb2d0ecfd11cffeb07a6",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_share_24.xml",
+      "sha256": "e68cc51976886c8395e3317d8bea0b8324e98d365ed8a15fc8c67767c2241931",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_short_text_24.xml",
+      "sha256": "897bffbb774d17c87df73551c241f8a3d4283780ca448551f40e633a51da273b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_shuffle_24.xml",
+      "sha256": "4853a5f708253875ccd25895acdfcdabba8af0c7c53f2b9fb51f070e60482a8d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_skip_next_24.xml",
+      "sha256": "6bee66d953bc320cdb107599a668a4425cb802136a063450580e114f8fd7cb73",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_smart_display_24.xml",
+      "sha256": "d68643cfdfd77a51a6a4d18e46ed7f93721cbc5ef71e1f035afc250659676867",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_smart_toy_24.xml",
+      "sha256": "9efcc30e1d1a1cdc6643f26cf9c4d505ede8e31cb9235e78d3e252119190773c",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_speed_24.xml",
+      "sha256": "3fa39ed5e53ecec86bf64c32b60632473878138cc342c97568c40ed4b38c6396",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_stacked_bar_chart_24.xml",
+      "sha256": "09c5c0fddc45a2beccfdc6b5fa397c5c3d011a6851fd34e0d764cccf422efece",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_stay_current_portrait_24.xml",
+      "sha256": "bac7c23df60b735ffb43eac7379c12dc09764b115f8a18ce117fc2176d73ab10",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_stop_circle_24.xml",
+      "sha256": "da773c29fe4a84ad08015f52c8302d4059f75f949efbcb94fa310fe312804b5d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_subject_24.xml",
+      "sha256": "1e1c833e432324b52cde2dddfe6d2068f408e49585cf583fe744be4be2f79ec6",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_subtitles_24.xml",
+      "sha256": "fc2db53cdace71beb74fdf70f7c7a6c95d43abef44633404afb4aebb42253307",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_subtitles_off_24.xml",
+      "sha256": "32bef31d020237b3aef6610b40b55fa54b99a9fe156e8b6e4f90887a6993d98f",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_swap_vert_24.xml",
+      "sha256": "aec76a8455ecf7dfd9a281bc82d1e1c6b68a4763f9ebde3e66b197d79a019164",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_swipe_24.xml",
+      "sha256": "db6e88cda6d7a3432099f75ecaa5ce4194517bdaffae6f28a1b5d9c4941a82af",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_swipe_right_24.xml",
+      "sha256": "59b61ae76d94758b3a20cca854467d54f1165ac86416abd7e7a4e8d8b7a0f96a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_swipe_up_24.xml",
+      "sha256": "e099b8a81cd1787f1fce927d71f7aa866e04e28a339329796b3d647e881ca77a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_swipe_vertical_24.xml",
+      "sha256": "79d9680de9daffd5932fdb538662cbfe26c35cfb4ce1e1fb98dab251cb668e0d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_sync_alt_24.xml",
+      "sha256": "ae1785541db964b7e3f2f55b382017fcb08f7ec3f24fa4ab748c7a78f0df1905",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_system_update_24.xml",
+      "sha256": "7f9d07c2903bb10381abfadc4119ebd546398da82b35a484f67c5710575c66bd",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_tag_24.xml",
+      "sha256": "cb170a15c1d244a84c1e4efb8ffc06105475b4f6e2a8b6eebd484bd64b960ab7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_terminal_24.xml",
+      "sha256": "2c21f8f0cd32717564e90dba94ffddbc8c1d04851aa9ac3a41822f2ea735b749",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_text_fields_24.xml",
+      "sha256": "5ee4ed4feff3727fcd0eb3f1650ce1bc2c96863caad4f2c8b9f02e1b23be8480",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_text_format_24.xml",
+      "sha256": "f97d89b47cbed6227f1a2fd91b777078c17e6ad7f7ad554fe9b25a22ec57ac38",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_text_snippet_24.xml",
+      "sha256": "1858163a45fc94afb12195e1b6a45d5db74f0ed04670b68d55c0c02bbfc7ad8e",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_textsms_24.xml",
+      "sha256": "e2b9335866d7af90f5150cb3b43a1d8e1aad040361fef9295f50f78d215a8338",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_thumb_up_fill_24.xml",
+      "sha256": "6d590c4007a2fd5bd03cf805956b8ca898bea39fa850c262c5ac5b1c3c1cfc5a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_thumb_up_off_alt_24.xml",
+      "sha256": "5a186228f86c8ad57f045a8e885d4d8f61afba6196424fcb7158ed2b49dd855a",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_timer_24.xml",
+      "sha256": "4b2f36391129b187279128189ab02431588dee6111ebf3fbd3c7046fdbdfc0b6",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_touch_app_24.xml",
+      "sha256": "1fa05f2a49dd0c359ad93eac63c3fe384be7850d50296af24f71cb9f84570ee3",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_touch_app_fill_24.xml",
+      "sha256": "6f458f32092c163a11e9766dc5eb5238e9c6b210451ce02ef18ba54db1e970ca",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_tune_24.xml",
+      "sha256": "7620ffcecd323ed28d0479a615129efd1202701bc66e58d28e55395b58614014",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_update_24.xml",
+      "sha256": "79690b8d19447cdad4366d60abc3af5b7fd9b843a7d48102aefd075940c47167",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_verified_24.xml",
+      "sha256": "4e40960fa95cef13173c83132fd06e481b7096923c1e7302a69f34a6c6fd7a92",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_verified_user_24.xml",
+      "sha256": "b55059b72fba2c08ff1f7faa8571ed352c8908f7c933e8b8b229807d326aaa23",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_vertical_align_top_24.xml",
+      "sha256": "f3c6a9d672e8a1a3e8c8ab7a90c74e3536916a2b6d725c05f732378229beb4ae",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_video_library_24.xml",
+      "sha256": "f3370db5d6a0808ddf0c1651c81db5edfd56c45ba023cc7654c6f84c6f440ed2",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_view_agenda_24.xml",
+      "sha256": "c8b337fc48d96164b97de05bda480bd1265253547ed0af875511939535110fc7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_view_carousel_24.xml",
+      "sha256": "22996960a641935f5bc091fb1e16c6071b66f59fde2d69eb56647dff6ddfbc6b",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_view_day_24.xml",
+      "sha256": "c142712fb46e428ef5a1827165b0c7ac1efd6ea0e546bc789007bd94e5161471",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_view_headline_24.xml",
+      "sha256": "bb9a357f00e5602bda8528e634a6b4426dcd5da4b5c2fb21208c167517ea8620",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_visibility_24.xml",
+      "sha256": "8fd525718044a61166c10e21ad72a5382d33935bcd11a337ff2284eacb54a950",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_visibility_off_24.xml",
+      "sha256": "24c67489b46f0bae2062ef24e0334ae3252f5d45fadff1ecfaedec43777730b7",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_wallpaper_24.xml",
+      "sha256": "96d827ab4faea8bdb6bf4625852902cd51f11e7e6e48d3f778ecbd6f5ebcadd2",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_warning_amber_24.xml",
+      "sha256": "eec68dd9db555e0c89b06d3b32215d5e5fc56d7a447db197b5057c93e899ae60",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_water_drop_24.xml",
+      "sha256": "c52a8200b12012db5152c94acc8de1e55224b0fa27f56861a471394ef0a1582d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_widgets_24.xml",
+      "sha256": "eae222b4d2dc51a2a83b5467928a174493a49d52d2276cbb4f0320ecef27ceb3",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_width_normal_24.xml",
+      "sha256": "be2e224b01eaf73d73fcaecba730395bc7e1f3296b24096d6ea2e1993e759806",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_wifi_24.xml",
+      "sha256": "04d8de7a2d17e1a0def31119c7dc05796dfea3a58f506165319a54783df8efe3",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_workspace_premium_24.xml",
+      "sha256": "4c116cbf3aef77a91d608ce9501fb6a11eb42bb7355248061115c20ad51ee385",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_zoom_out_map_24.xml",
+      "sha256": "4e30e3d81efa486df34c1b6881b5d3d91c9824342043c22ce8bd7d7404df642d",
+      "features": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_keyboard_arrow_right_24.xml",
+      "features": [
+        "settings-category-symbols"
+      ],
+      "sha256": "d3f53b271fdb2150775b4252bf46139c3ab5ca872802372a1089e6e1dd6f2a35"
     }
   ]
 }

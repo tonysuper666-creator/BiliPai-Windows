@@ -18,3 +18,12 @@ internal fun desktopSpacePlaybackQueue(playlist: SpaceExternalPlaylist, mid: Lon
     }
     return rows to playlist.startIndex
 }
+
+/** Original Space play-all audio uses the same raw playlist, selected CID and account-local progress. */
+internal fun desktopSpaceListenPlaybackQueue(playlist: SpaceExternalPlaylist, mid: Long,
+    history: List<VideoCard>): Triple<List<com.android.purebilibili.feature.video.player.PlaylistItem>, Int, Double>? {
+    val (rows, index) = desktopSpacePlaybackQueue(playlist, mid, history) ?: return null
+    val items = playlist.playlistItems.zip(rows).map { (original, card) -> original.copy(cid = card.preferredCid) }
+    val position = rows[index].progressSeconds?.coerceAtLeast(0)?.toDouble() ?: 0.0
+    return Triple(items, index, position)
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:52.393Z" hostname="TONYSUPER666" time="0.08">
+  <properties/>
+  <testcase name="held peer stores cannot overwrite restoration but a fresh facade loads its new generation()" classname="com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest" time="0.028"/>
+  <testcase name="a queued IO write is refused after the owning generation freezes()" classname="com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest" time="0.009"/>
+  <testcase name="freeze denies every cached writer and new account while history remains readable()" classname="com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest" time="0.024"/>
+  <testcase name="freeze waits for an accepted disk operation before rejecting subsequent writes()" classname="com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest" time="0.019"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -746,11 +746,19 @@ class DesktopPlaybackController internal constructor(
         }
         mutableState.update { it.copy(manualSkip = button) }
     }
-    fun checkpoint() {
-        val context = current?.takeIf(::owns) ?: return
-        val native = player?.state?.value ?: return
-        if (native.loading || native.error != null || native.durationSeconds <= 0) return
-        library.checkpoint(context.details.bvid, context.details.pages[context.index].cid, context.index, native.positionSeconds)
+    /** A history failure must not prevent a source from pausing, closing or releasing. */
+    fun checkpoint(): Boolean {
+        val context = current?.takeIf(::owns) ?: return true
+        val native = player?.state?.value ?: return true
+        if (native.loading || native.error != null || native.durationSeconds <= 0) return true
+        return try {
+            library.checkpoint(context.details.bvid, context.details.pages[context.index].cid, context.index, native.positionSeconds)
+            true // Incognito deliberately suppresses this write and remains a successful no-op.
+        } catch (_: Exception) {
+            // JSON contents, account paths and exception URLs must not enter product errors.
+            mutableState.update { it.copy(error = "播放记录保存失败，请检查本地隐私和存储设置") }
+            false
+        }
     }
     private fun recordCreatorWatch(context: Current) {
         val delta = heartbeat.takeCreatorWatchDelta()

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.DesktopCheckpointFailureTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:51.288Z" hostname="TONYSUPER666" time="0.562">
+  <properties/>
+  <testcase name="history storage failure is reported but stopping still releases the owned source()" classname="com.bilipai.desktop.DesktopCheckpointFailureTest" time="0.462"/>
+  <testcase name="malformed privacy fails safely on repeated checkpoints and still pauses and closes()" classname="com.bilipai.desktop.DesktopCheckpointFailureTest" time="0.035"/>
+  <testcase name="no eligible source and deliberate incognito suppression remain successful checkpoints()" classname="com.bilipai.desktop.DesktopCheckpointFailureTest" time="0.042"/>
+  <testcase name="a foreign source is neither checkpointed nor stopped during controller close()" classname="com.bilipai.desktop.DesktopCheckpointFailureTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

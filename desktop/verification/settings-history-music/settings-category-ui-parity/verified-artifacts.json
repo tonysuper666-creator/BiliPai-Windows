@@ -1,0 +1,352 @@
+{
+  "artifacts": [
+    {
+      "path": "baseline.json",
+      "sha256Bytes": "4cc93d9639bf50e59e8a812acf95845d3996c942125916333b602f6050ae1ff2"
+    },
+    {
+      "path": "category-binding-contract.json",
+      "sha256Bytes": "2108ae569e39f3bc08820915dede481a0b657ee78567835a5ec4e560a2ab71bd"
+    },
+    {
+      "path": "classes/com/android/purebilibili/core/util/PinyinUtils.class",
+      "sha256Bytes": "74c87f950da734a57f8676f78aeb12c53acc63595574228957dc240a3efdc1b3"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/RootCategoryFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "5069af7c2f1095913dfef38a1c4a9e21c808f4d3e680ec405f7856ffe696a526"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/RootCategoryFixtureKt$main$1.class",
+      "sha256Bytes": "acce2a5953e7d50b21396f31dde29c645dcb7ddf87ca17cb025831b25cfaf454"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/RootCategoryFixtureKt.class",
+      "sha256Bytes": "24e0c6995a6224920650c2c7e0e062f5a392eb0893a061851e96ce44158172c5"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsCategoryHeaderKt.class",
+      "sha256Bytes": "7189bb149fda0e6edcfe90899ccb5050998dc0fe1996d729ef868bb361c9944e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopy.class",
+      "sha256Bytes": "3cbb9285b3e1b1015b8b653319b7184c3b431080d3b94a113b418e7da9fdd959"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt$WhenMappings.class",
+      "sha256Bytes": "9e7e95a5f5e0232aed0941eff269c7deaec1a2dd2d8c6dbb38563fbfe9815f14"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsDestinationCopyKt.class",
+      "sha256Bytes": "1c1cd434d0551950c838df599d380d8bfd37e345c3b9ded018cb8ae1ec9fe517"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisual.class",
+      "sha256Bytes": "6c5158694529f9de4fe0b0bf9cbb4946af86d7cd1b10765e5ab892464f0cae8e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt$WhenMappings.class",
+      "sha256Bytes": "40c2502dbf34ba8a7a917833a23d3bd0943da23e9443e28403fd607583ccfc88"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicyKt.class",
+      "sha256Bytes": "e9ade208e2ca1ce6e8dcd66d9baf965f8467ad5cf2351ad720104e5a98712768"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsIconRole.class",
+      "sha256Bytes": "762f57980954cf471a23396edf52a48f6a7f66ba13ff2a57c3ad6989e3d37047"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsPageScrollHost.class",
+      "sha256Bytes": "682ba4ba2e2492d95215fc7f618fe9cefa0eff0865898fcdd11bdd36df54d760"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategory.class",
+      "sha256Bytes": "d10c62849bee5f217256fceb1502834b614cbb758ec73902522e8b77d38c3632"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryListKt.class",
+      "sha256Bytes": "e541947d148d1745a534ee5e0d844a469278cae84e99547e21b703ae4027481e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt$WhenMappings.class",
+      "sha256Bytes": "a66a9c1d6a4901f06b20dcbe31373c221a27ae51488455504b5938b9594987c3"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicyKt.class",
+      "sha256Bytes": "22e88724f9d47f43b3e050017c0aa5e9b81a0e397be0aac89a330e2b2b502eac"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSceneDetailFocus.class",
+      "sha256Bytes": "1ccf40f02cca1c378fa12a33c0d9c008a35c5dfa9fceef31e4b2b521ddebaa5e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchEntry.class",
+      "sha256Bytes": "fdbb926b8e8269663c7e85885e7cab9f3b72c0f2049637af02b1674a7eef497e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusController.class",
+      "sha256Bytes": "6ad712a08d28b7e6a3989da0c05f611196d185d010cc204181a5fd6c3f5bc6e2"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusIds.class",
+      "sha256Bytes": "9668fab0ba95ef97735b801c9049c764db36b3f0713707980afb103b7b8057f7"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt$WhenMappings.class",
+      "sha256Bytes": "ba3bf8c3d44b8a01facd09c2025e847b3b659c84920746e7e08c2fac76ca6df8"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicyKt.class",
+      "sha256Bytes": "96e04310de91e40cf34a76b71fffe94df1122b6026d554cf605745b4c38348af"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchFocusRequest.class",
+      "sha256Bytes": "06a002dc7dc33eeb1aebdbf1808ae6871a56408233fc15daa37c0f008d46e7c1"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$compareByDescending$1.class",
+      "sha256Bytes": "f8297b2105c4b6f69c5142f50aced65a7d2e08440132b1d61fc7be988b4530ea"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$1.class",
+      "sha256Bytes": "0dd6ee8ddd1249d079ab57378469ab5357e6d6c73ce15c1de9cee92873e36718"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenBy$2.class",
+      "sha256Bytes": "2b400b2b297367ecbd43ab7c69f66973c743776b4a812a74d81f778fe306a844"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt$resolveSettingsSearchResults$$inlined$thenByDescending$1.class",
+      "sha256Bytes": "049731b454003b816e29b1afe3ca0e9de2962f3bbd366f4e0fee583d1b0b7a5d"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchPolicyKt.class",
+      "sha256Bytes": "ee078ef75af0d29803e669543f9bd3590b2601fe6afedaf3110c91ae2cc2b907"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchResult.class",
+      "sha256Bytes": "b6587b6d1615cfba57798935835f60dc1c19ab3eb2137c0d7b5d6e13879fe435"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSearchTarget.class",
+      "sha256Bytes": "899e71af3ff8ce7356a6282eb59ef5c9368af5fd57191ae5d7ed1507b19b1230"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt$WhenMappings.class",
+      "sha256Bytes": "91fa792f392688f6db9dedc7bcdd855ef073e01b506255f397f3e71f049142b6"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicyKt.class",
+      "sha256Bytes": "2f09e375e0cde3d3d3910a274b26a64f7bce63416ffc0c88ecfa93dd537be8e2"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicyKt.class",
+      "sha256Bytes": "364a340c702b062e5f8f655a243f4f1eb18194acf334011ad3a45637b4df8e16"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsVisualSpec.class",
+      "sha256Bytes": "ae60fd097cea88fa1689b7fbee61c587ab0cf9b963fa8b70b15bfc98a003250e"
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsVisualSpecKt.class",
+      "sha256Bytes": "aa7fafb77b5b3679cc7b4168b491db7ab11ab0017ddd1a74398f2944b7b0a555"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsCategorySymbols.class",
+      "sha256Bytes": "b83db8502fccdcbc6956bedc867c4bc4916b053b471ef25e799a4dcd80dda864"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsCategoryVectors.class",
+      "sha256Bytes": "5ece3d26f2efcc573f6b9e4e111b36e7fcc2f3897bf5b29a2a61cdeacd282f7b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsSymbols.class",
+      "sha256Bytes": "482557e9cb0ad3f9518fc59187fdc5ff4cd0918c9c3d98f0c5263421eea81535"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsVectors.class",
+      "sha256Bytes": "5fae2dd3328be78d247628b3862ab5c7061ac78bb4fbb5893e2ad15176da6c51"
+    },
+    {
+      "path": "classes/META-INF/settings_category_ui_parity.kotlin_module",
+      "sha256Bytes": "6e1bed45f319bf967cfe7ad668eba55e91dc146facccd0dfe6be38535cd1cec3"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "a6aaa90ef622db5e009260b5c821f5b2ae0cffd8333705879ed7085d7161e95c"
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "7f94d335a7b941ee9269307e82d5095d809b18f0e525f5ddc3f54eacbb19fd99"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "b8f826f2c7657d89bc0362ef2c6509d3279f676f65f9d6edde199ff04c71023d"
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "587b9bc5840db551f6b94ad0ed0c860fc402483b10fc90b6740eb094eb58348b"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "4ac736d1f2d5c9ab0c667b2b91bc2826f6f236d659bbb4fc0d5bb5f7cd8f466e"
+    },
+    {
+      "path": "extract-upstream-settings-categories.py",
+      "sha256Bytes": "505d30ee759b5db265f38621887e85b2532d083336a6ee2c2c2f851d3185a8fe"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/core/store/SettingsSearchHistoryStore.kt",
+      "sha256Bytes": "ee216d25f96b1a86905d6d7a05775972e2135e30f93d94b7e615789d125adf02"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/core/util/PinyinUtils.kt",
+      "sha256Bytes": "b1d068e7279b9ae6ea09ff4b546206a4e3899245580150fbef2c3e7f80347976"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/DesktopSettingsRouteHierarchy.kt",
+      "sha256Bytes": "4c849de1c96ae48099f516000ce7d5ed1facad54c441de1e80a6591c4a615561"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+      "sha256Bytes": "7693e54457360449096501c4bbfcc3e17f4190c73a974e0547aef87c9b8cada4"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+      "sha256Bytes": "f5390a3560812731e3ca6e316c1c50fe4734b926387ccaa147b15c378d7853b1"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+      "sha256Bytes": "3b8932850e68cd35df6af15d51a134c4c337300feb78b7f6029339ce5d8576d6"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicy.kt",
+      "sha256Bytes": "3d7d442ea4f1e6c80e6d7d4a6df3d04d97c79d975f34aa9f0805362b31f85f6e"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchHistoryOperations.kt",
+      "sha256Bytes": "f677a2e9c1b9e637fd4ce493a3e534c958817b13d7182775e9f24f92093de0b2"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchHistorySection.kt",
+      "sha256Bytes": "d5524158f057786ae535be44d883553d221936d852336882f97e78855fe971ce"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+      "sha256Bytes": "addb112de09cca42d5064c0ac51c9cf28e49f58127c0a75f2b3b4593e2805044"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt",
+      "sha256Bytes": "b36b20b5ca449143cbaef3951e9903f5aa2fea0ce0be54f1798cdb642a585aaa"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSearchUi.kt",
+      "sha256Bytes": "df53bfec0cca32889b5c57d44f1b287f60441bac8ce5b8151dc151275b635726"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+      "sha256Bytes": "ef3c04f002d8eca2d67e38bbeec53504c64c660fd7b83d3c0221a6355a4edec2"
+    },
+    {
+      "path": "fixture-helper-generation/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt",
+      "sha256Bytes": "581f4464eae14c52caca57bd0f7cd289f8a5808e2e5c0a0223b5bd0578ff4b12"
+    },
+    {
+      "path": "fixture-helper-generation/com/bilipai/desktop/settings/DesktopSettingsVectors.kt",
+      "sha256Bytes": "38e73dcd3315678ed45f4bcdf26d22d7dc1d633ec2dde05a7e625b8581518872"
+    },
+    {
+      "path": "fixture-helper-generator.py",
+      "sha256Bytes": "c5d2b14c34c06e4c2b5106b29c7859965b2d46618803b650966c4f8df140b3db"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "330f9cb1b6e0430b930ad2c7171c825f566636f25b91654a95de5e1397bacd11"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsCategoryHeader.kt",
+      "sha256Bytes": "b50945cca2c6dd6d5352c558f4b13e2f21ffdb8fb138ab56b7da46ef4246d7eb"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsRootCategoryList.kt",
+      "sha256Bytes": "062c24ab42615c6c9986d12b49f7cc2da834cc27669b842feeff76b9cf6931ae"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsVisualSpec.kt",
+      "sha256Bytes": "6326d44a02439678af98df695a49533e4007826d0fc5353801f4a79e335ac668"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopSettingsCategoryVectors.kt",
+      "sha256Bytes": "06e473634333eacd1ff9c032b9c1aaa3c55281978b4ce11a96c639d72f4862df"
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "3f6532b4b633d5eac5fa413ba67e10636134961ae4e3add6f3a56d471f95ed10"
+    },
+    {
+      "path": "product-generated/com/android/purebilibili/feature/settings/SettingsCategoryHeader.kt",
+      "sha256Bytes": "b50945cca2c6dd6d5352c558f4b13e2f21ffdb8fb138ab56b7da46ef4246d7eb"
+    },
+    {
+      "path": "product-generated/com/android/purebilibili/feature/settings/SettingsRootCategoryList.kt",
+      "sha256Bytes": "062c24ab42615c6c9986d12b49f7cc2da834cc27669b842feeff76b9cf6931ae"
+    },
+    {
+      "path": "product-generated/com/bilipai/desktop/settings/DesktopSettingsCategoryVectors.kt",
+      "sha256Bytes": "06e473634333eacd1ff9c032b9c1aaa3c55281978b4ce11a96c639d72f4862df"
+    },
+    {
+      "path": "proof/material3-root-list.png",
+      "sha256Bytes": "c0828daebc79781d63470bddbc2e25bd993dc315136a540bc338667ade7236bd"
+    },
+    {
+      "path": "proof/miuix-root-list.png",
+      "sha256Bytes": "1886c5dc91c44ad7b40c6b83c78e0cfe60b164bae183c17000ed06e1802c4434"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "4636ce5a832f2d33306f59c9b932957f86fa3459b5053d3fff542827e5407d64"
+    },
+    {
+      "path": "python-tests.log",
+      "sha256Bytes": "fe015ec86d4695c79be9a14d7d4a8c4087a02e33387a570dbc672602cffcbd27"
+    },
+    {
+      "path": "reference-only/OriginalCategoryStateActionsContent.kt",
+      "sha256Bytes": "767ed0f0add18b48437c9a6520361ea4b45f535cc580d75999c9a13dbbc396b6"
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "7a829e50ef659b490d9b082f2d334cd1d20b03acb8bfe4ccc71c935f7f21876b"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "c669172fdf08a4f9bdc713cf624fa265a9a0659901418d30db652993c672ec58"
+    },
+    {
+      "path": "RootCategoryFixture.kt",
+      "sha256Bytes": "bec18a67a81358ced29ff8c7dc4195cf9ffbc8af962b280a5eb8516015d7cd30"
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "0d953764619b96e6cbf439e8afb7c0092a2ddddb99f2bb69d97cae49bd9a3f72"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "a9a3af0d63951506876440cb4e0b45c7f22fb4e92c930c51bddabfcc63a4829c"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "2d09910fe8010f476772b5b07570ec0d1e3316a0ac5f74da5fee09b2b632c41f"
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "056c370cdcc1a536fa8e871021183029bf23f7db5a77bc7a3222216b6e11b490"
+    }
+  ],
+  "artifactCount": 86,
+  "fullCategoryBound": false,
+  "mainModified": false,
+  "nativeWindowCreated": false
+}

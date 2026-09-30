@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
+import com.android.purebilibili.feature.settings.SettingsSearchTarget
+import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,35 +45,43 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
                 }
             }
             PlayerSwitch("记住上次播放倍速", draft.rememberLastSpeed) { draft = draft.copy(rememberLastSpeed = it) }
-            PlayerSwitch("启用硬件解码", draft.hardwareDecodeEnabled) { draft = draft.copy(hardwareDecodeEnabled = it) }
-            val codecOptions = listOf("avc1" to "AVC", "hev1" to "HEVC", "av01" to "AV1")
-            Text("首选视频编码", style = MaterialTheme.typography.titleSmall)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                codecOptions.forEach { (value, label) -> FilterChip(selected = draft.videoCodecPreference == value,
-                    onClick = { draft = draft.copy(videoCodecPreference = value) }, label = { Text(label) }) }
-            }
-            Text("无法播放时改用", style = MaterialTheme.typography.titleSmall)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                codecOptions.forEach { (value, label) -> FilterChip(selected = draft.videoSecondCodecPreference == value,
-                    onClick = { draft = draft.copy(videoSecondCodecPreference = value) }, label = { Text(label) }) }
-            }
-            Text("默认音质", style = MaterialTheme.typography.titleSmall)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                resolveDefaultAudioQualityOptions().forEach { option -> FilterChip(selected = draft.defaultAudioQuality == option.value,
-                    onClick = { draft = draft.copy(defaultAudioQuality = option.value) }, label = { Text(option.label) }) }
-            }
-            Text("自动启用字幕", style = MaterialTheme.typography.titleSmall)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                listOf(SubtitleAutoPreference.OFF to "关闭", SubtitleAutoPreference.ON to "开启",
-                    SubtitleAutoPreference.WITHOUT_AI to "无 AI", SubtitleAutoPreference.AUTO to "自动").forEach { (value, label) ->
-                    FilterChip(selected = draft.subtitleAutoPreference == value,
-                        onClick = { draft = draft.copy(subtitleAutoPreference = value) }, label = { Text(label) })
+            Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_DECODER), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                PlayerSwitch("启用硬件解码", draft.hardwareDecodeEnabled) { draft = draft.copy(hardwareDecodeEnabled = it) }
+                val codecOptions = listOf("avc1" to "AVC", "hev1" to "HEVC", "av01" to "AV1")
+                Text("首选视频编码", style = MaterialTheme.typography.titleSmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    codecOptions.forEach { (value, label) -> FilterChip(selected = draft.videoCodecPreference == value,
+                        onClick = { draft = draft.copy(videoCodecPreference = value) }, label = { Text(label) }) }
+                }
+                Text("无法播放时改用", style = MaterialTheme.typography.titleSmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    codecOptions.forEach { (value, label) -> FilterChip(selected = draft.videoSecondCodecPreference == value,
+                        onClick = { draft = draft.copy(videoSecondCodecPreference = value) }, label = { Text(label) }) }
                 }
             }
-            Text("默认倍速", style = MaterialTheme.typography.titleSmall)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                draft.speedOptions.forEach { speed ->
-                    FilterChip(selected = draft.defaultSpeed == speed, onClick = { draft = draft.copy(defaultSpeed = speed) }, label = { Text("${playbackSpeedLabel(speed)}×") })
+            Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_NETWORK), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("默认音质", style = MaterialTheme.typography.titleSmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    resolveDefaultAudioQualityOptions().forEach { option -> FilterChip(selected = draft.defaultAudioQuality == option.value,
+                        onClick = { draft = draft.copy(defaultAudioQuality = option.value) }, label = { Text(option.label) }) }
+                }
+            }
+            Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_INTERACTION), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("自动启用字幕", style = MaterialTheme.typography.titleSmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf(SubtitleAutoPreference.OFF to "关闭", SubtitleAutoPreference.ON to "开启",
+                        SubtitleAutoPreference.WITHOUT_AI to "无 AI", SubtitleAutoPreference.AUTO to "自动").forEach { (value, label) ->
+                        FilterChip(selected = draft.subtitleAutoPreference == value,
+                            onClick = { draft = draft.copy(subtitleAutoPreference = value) }, label = { Text(label) })
+                    }
+                }
+            }
+            Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_SPEED), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Text("默认倍速", style = MaterialTheme.typography.titleSmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    draft.speedOptions.forEach { speed ->
+                        FilterChip(selected = draft.defaultSpeed == speed, onClick = { draft = draft.copy(defaultSpeed = speed) }, label = { Text("${playbackSpeedLabel(speed)}×") })
+                    }
                 }
             }
             Text("倍速菜单", style = MaterialTheme.typography.titleSmall)

@@ -50,11 +50,24 @@ class PreferenceExtractionTest(unittest.TestCase):
         selection = host.read(REPO, module.BASE + "components/AppSelectionPreferenceComponents.kt")
         self.assertTrue(any("<T> AppSingleChoicePreference" in signature for signature in signatures(selection)))
 
-    def test_preference_renderer_changes_only_duplicate_header_import(self):
+    def test_preference_renderer_preserves_body_except_duplicate_import_and_current_query_binding(self):
         path = module.BASE + "components/AdaptivePreferenceComponents.kt"; original = host.read(REPO, path)
         duplicate = "import com.android.purebilibili.core.ui.LocalAppThemeConfig\n"
         self.assertEqual(original.count(duplicate), 2)
-        self.assertEqual(module.adapt(path, original, host), original.replace(duplicate, "", 1))
+        expected = original.replace(duplicate, "", 1)
+        expected = expected.replace("import androidx.compose.runtime.remember\n", "import androidx.compose.runtime.remember\nimport androidx.compose.runtime.rememberUpdatedState\n")
+        expected = expected.replace("val textFieldState = rememberTextFieldState(initialText = query)\n        LaunchedEffect(textFieldState)",
+            "val textFieldState = rememberTextFieldState(initialText = query)\n        val currentQuery by rememberUpdatedState(query)\n        val currentOnQueryChange by rememberUpdatedState(onQueryChange)\n        LaunchedEffect(textFieldState)")
+        expected = expected.replace("if (updated != query) {\n                        onQueryChange(updated)", "if (updated != currentQuery) {\n                        currentOnQueryChange(updated)")
+        self.assertEqual(module.adapt(path, original, host), expected)
+
+    def test_query_collector_drift_fails_closed(self):
+        path = module.BASE + "components/AdaptivePreferenceComponents.kt"; original = host.read(REPO, path)
+        for anchor in ("import androidx.compose.runtime.remember\n",
+                       "val textFieldState = rememberTextFieldState(initialText = query)\n        LaunchedEffect(textFieldState)",
+                       "if (updated != query) {\n                        onQueryChange(updated)"):
+            with self.assertRaises(ValueError):
+                module.adapt(path, original.replace(anchor, "// original collector changed\n", 1), host)
 
     def test_window_adapter_has_only_current_window_binding_import(self):
         path = module.BASE + "components/AppSelectionPreferenceComponents.kt"; original = host.read(REPO, path)

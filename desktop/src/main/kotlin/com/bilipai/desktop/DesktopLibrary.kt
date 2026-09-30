@@ -1,6 +1,7 @@
 package com.bilipai.desktop
 
 import com.bilipai.desktop.data.VideoCard
+import com.bilipai.desktop.data.DesktopSearchPreferences
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -19,7 +20,8 @@ private data class LibraryData(val history: List<LibraryEntry> = emptyList(),
     val favorites: List<LibraryEntry> = emptyList(), val dark: Boolean = false, val automaticUpdates: Boolean = true)
 
 class DesktopLibrary(private val directory: Path = Path.of(
-    System.getenv("LOCALAPPDATA") ?: System.getProperty("java.io.tmpdir"), "BiliPaiWindows")) {
+    System.getenv("LOCALAPPDATA") ?: System.getProperty("java.io.tmpdir"), "BiliPaiWindows"),
+    private val privacyModeEnabled: () -> Boolean = { DesktopSearchPreferences.readPrivacyModeEnabledSync() }) {
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
     private val file = directory.resolve("library.json")
     private var data = runCatching { json.decodeFromString<LibraryData>(Files.readString(file)) }.getOrDefault(LibraryData())
@@ -33,38 +35,45 @@ class DesktopLibrary(private val directory: Path = Path.of(
     @Synchronized fun favorites(): List<VideoCard> = data.favorites.map { it.toCard() }
     @Synchronized fun resumeCard(bvid: String): VideoCard? = data.history.firstOrNull { it.bvid == bvid }?.toCard()
     @Synchronized fun isFavorite(bvid: String): Boolean = data.favorites.any { it.bvid == bvid }
-    @Synchronized fun setDark(dark: Boolean) { data = data.copy(dark = dark); save() }
-    @Synchronized fun setAutomaticUpdates(enabled: Boolean) { data = data.copy(automaticUpdates = enabled); save() }
+    @Synchronized fun setDark(dark: Boolean) { save(data.copy(dark = dark)) }
+    @Synchronized fun setAutomaticUpdates(enabled: Boolean) { save(data.copy(automaticUpdates = enabled)) }
     @Synchronized fun record(card: VideoCard) {
+        if (privacyModeEnabled()) return
         val previous = data.history.firstOrNull { it.bvid == card.bvid }
         val entry = card.toEntry().let {
             if (card.progressSeconds == null && previous != null) it.copy(progressSeconds = previous.progressSeconds,
                 preferredCid = previous.preferredCid, pageIndex = previous.pageIndex) else it
         }
-        data = data.copy(history = (listOf(entry) + data.history.filter { it.bvid != card.bvid }).take(300))
-        save()
+        save(data.copy(history = (listOf(entry) + data.history.filter { it.bvid != card.bvid }).take(300)))
     }
     @Synchronized fun checkpoint(bvid: String, cid: Long, part: Int, positionSeconds: Double) {
         if (!positionSeconds.isFinite() || positionSeconds < 0 || cid <= 0 || part < 0) return
+        if (privacyModeEnabled()) return
         if (data.history.none { it.bvid == bvid }) return
-        data = data.copy(history = data.history.map {
+        save(data.copy(history = data.history.map {
             if (it.bvid == bvid) it.copy(progressSeconds = positionSeconds.toInt(), preferredCid = cid, pageIndex = part) else it
-        })
-        save()
+        }))
     }
     @Synchronized fun toggleFavorite(card: VideoCard) {
-        data = data.copy(favorites = if (isFavorite(card.bvid)) data.favorites.filter { it.bvid != card.bvid }
-            else listOf(card.toEntry()) + data.favorites)
-        save()
+        save(data.copy(favorites = if (isFavorite(card.bvid)) data.favorites.filter { it.bvid != card.bvid }
+            else listOf(card.toEntry()) + data.favorites))
     }
-    private fun save() {
+    /** Commit the immutable candidate only after persistence succeeds under the caller's lock. */
+    private fun save(candidate: LibraryData) {
         Files.createDirectories(directory)
-        val temporary = directory.resolve("library.json.tmp")
-        Files.writeString(temporary, json.encodeToString(data))
-        try { Files.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
-        catch (_: java.nio.file.AtomicMoveNotSupportedException) {
-            Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING)
+        val temporary = Files.createTempFile(directory, "library-", ".tmp")
+        try {
+            Files.writeString(temporary, json.encodeToString(candidate))
+            try { Files.move(temporary, file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
+            catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                Files.move(temporary, file, StandardCopyOption.REPLACE_EXISTING)
+            }
+        } catch (failure: Exception) {
+            try { Files.deleteIfExists(temporary) }
+            catch (cleanup: Exception) { failure.addSuppressed(cleanup) }
+            throw failure
         }
+        data = candidate
     }
     private fun VideoCard.toEntry() = LibraryEntry(bvid, title, cover, author, playCount, duration, System.currentTimeMillis(),
         progressSeconds, preferredCid, pageIndex, authorMid)

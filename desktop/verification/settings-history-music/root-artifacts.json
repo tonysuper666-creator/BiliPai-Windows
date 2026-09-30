@@ -1,0 +1,213 @@
+{
+  "artifacts": [
+    {
+      "path": "desktop/verification/settings-history-music/component-popup-integration-review/baseline.json",
+      "sha256": "02d9e2712b9d65b8844b6c3b33d6155ac5f104c489dda7425c14baa85f289b24"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/component-popup-integration-review/frozen-evidence-verification.json",
+      "sha256": "ffece5b6dbcbe2c295b3f23a07ee50ca4c4529568241d30e19f5975db2d2ce83"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/component-popup-integration-review/verified-artifacts.json",
+      "sha256": "ff9ab5ca732044bc07bc01bb33b90287c63300ccaf6f711408d9a05ecc915c6c"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/extra-gradle.log",
+      "sha256": "106613bb60d3f219b2ccbbbaab762ba24285e0dcde097df6c6b3bbbc0870322e"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/compile-evidence.json",
+      "sha256": "0a66f5754e0dffbe1821239b440c75aca00e1aff0d39f194e1bd41524be1a7c3"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/freeze.py",
+      "sha256": "fad66726dcbea7b6a0958d687cb689bc7947620f8cc3d2900e20b6d4be467692"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/frozen-transaction.json",
+      "sha256": "56b1c1d0bc53539c2a7dda044c860d0ab328fac3c09705b79d686818536ed865"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/junit-evidence.json",
+      "sha256": "951f9b972685469afde28c27a5795e209b26b77e41e13fefe2fd863e75ff76af"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/run-tests.py",
+      "sha256": "2f9b57cfc056428ed7c9f2e5c35681cb26bd416ad033a765d6e5f55d1866035f"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/library-transaction-review/TestLauncher.kt",
+      "sha256": "c29562682a71c3f174330acb42ddd15f0d4c499ded75893409e62f17b8326d94"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/compile-evidence.json",
+      "sha256": "f42524c771100a58db6a3b045405e29b5c4e696aa9f318b3017a5937d051359b"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/freeze.py",
+      "sha256": "79bcd3154f1791367dfeac90333a2fa17b5d0f49e846653e4812c222cd0e7b6a"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/frozen-lifecycle.json",
+      "sha256": "5d0c4a97d6328440edbc75ec8f069bdabbc351bb8efadeaf552af1dfbfa2411b"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/junit-evidence.json",
+      "sha256": "81357c1f0707bcf05b1ecc365cd9cff96e8641fcafb5b1f3e3c7afcd9765bd4a"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/run-tests.py",
+      "sha256": "87ab3f3c3e49f3a201b19e78d7a6e3195203069379009680b9783189796b1978"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/lifecycle-review/TestLauncher.kt",
+      "sha256": "dbc18a93c89282f315d7a5954c3d4a48d22550a9b80388e4158de8e651e9d9c2"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/artifact-manifest.json",
+      "sha256": "c068b5fd68af805c5ac8776f99120e6f322cf66969662893869bb98147529d21"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/contract.json",
+      "sha256": "ae179b5aab6705da3c6364aee2255de7444359266f7cb8d9f61522c2bd359c57"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/evidence/offline-report.json",
+      "sha256": "1022926c1e1b4a0664afe5a63930df062c41d4679c82258b376028a71f010622"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/evidence/process-completion.json",
+      "sha256": "ec719e63ecb82192615f97d97b1ec59f87d7978bc885a9aab0e89621c6660779"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/evidence/root-concurrent-differences.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/owned-files.json",
+      "sha256": "8ea8bc8edbec96c53f0f9c1ab472d9c7787b15b91b8bfb3249e86c0ca8ebd220"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/native-music-root-integration/source-inventory.json",
+      "sha256": "53655ab05b4bc01318c4e0783b9e55a1f07c59d213f3d01e8c23fcce46e2315e"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/proof/material3-root-list.png",
+      "sha256": "c0828daebc79781d63470bddbc2e25bd993dc315136a540bc338667ade7236bd"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/proof/miuix-root-list.png",
+      "sha256": "1886c5dc91c44ad7b40c6b83c78e0cfe60b164bae183c17000ed06e1802c4434"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/proof/result.json",
+      "sha256": "4636ce5a832f2d33306f59c9b932957f86fa3459b5053d3fff542827e5407d64"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/resource-inventory.json",
+      "sha256": "7a829e50ef659b490d9b082f2d334cd1d20b03acb8bfe4ccc71c935f7f21876b"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/source-inventory.json",
+      "sha256": "2d09910fe8010f476772b5b07570ec0d1e3316a0ac5f74da5fee09b2b632c41f"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-category-ui-parity/verified-artifacts.json",
+      "sha256": "9e47c9c44745e837e5827f70096a421b1efc1160aec3e64570af53aef85a284c"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-search-parity/frozen-handoff.json",
+      "sha256": "db1cab43dc187f2db12dbb8773aab855d0bb5b5acf8d09dd5e3ea6350226e1d8"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-search-parity/junit-evidence.json",
+      "sha256": "ec96f6cf4a86a457bf0bbd5266aad9b166e3f85913ff5663f297a721f018ce73"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-search-parity/owned-files.json",
+      "sha256": "f617cffbf5ae11e12d3271a971d6830306a52cb8817a3e481f7f984fbff89f08"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-search-parity/resource-inventory.json",
+      "sha256": "54eb18e193de63002ccbee8fd981a783e77442187fb4af41638dbc6b9610fcd8"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/settings-search-parity/source-inventory.json",
+      "sha256": "9c05da8b8c2f4dffc3e479a50d7cec1554da3269c96cd08c0e501841a4bb64b8"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-gradle.log",
+      "sha256": "929165e022142b601896785a6c9cf80e8de592dba44b3917624147262a60a39c"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest.xml",
+      "sha256": "7c50d40d1bcfb9f003bab437b6e0b8f8c2c1085420ee139dde2329b7fa0f0eaa"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.audio.DesktopNativeMusicIntegrationTest.xml",
+      "sha256": "8286f718dc0fe30364f8a0d4afb9e2e5337cc27cd18254d13e1b219e33a3ec50"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml",
+      "sha256": "0efbc9260143f576124b11f2e3a2e87f1c5714ff0a0ba8baf8cd0cb16541a507"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.audio.ListenAudioStoreTest.xml",
+      "sha256": "c85ee6e55da6ecf29601a4dfaa3512bd0fa2d88a5fb889418c718bdcfc812c38"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.data.DesktopArticleHistoryTest.xml",
+      "sha256": "ea2927d722a3fc30af19755e7cd58cc4eb5f104f466cc8d28a554e720fd82adb"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest.xml",
+      "sha256": "3e9e12c4b737f88c8d8070f38ae12c621a8be0c9eb3c0def4a5a3f83ea6314ac"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest.xml",
+      "sha256": "bbc14f7bbf4dc2f7d904975307ee07713eca66dfb7a08251f505cb91bb8207a0"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.data.DesktopSearchTest.xml",
+      "sha256": "d162bfab730637b672f7a25bc0cf047a52f2b1ef8b1d81fdd40f1ed00161c5d5"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.DesktopCheckpointFailureTest.xml",
+      "sha256": "fb39b15486b25926d5a52c4e0d84d9cea9743322754cd7163b09e2e8c8b422eb"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.DesktopLibraryTest.xml",
+      "sha256": "134a382d451e542251aaff54ee04a3761dfc2129eb1314154f3cd936ba86f193"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.DesktopLibraryTransactionTest.xml",
+      "sha256": "37a34763b7c2e90f01be8b127f0f415f2e47b1b2701c098ab7e8294d5f8e117d"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.DesktopPlaybackControllerTest.xml",
+      "sha256": "86b64b04a5bdd4885f45b242ea81637813d657aced388d54fbdecded7b01f159"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest.xml",
+      "sha256": "0dd3327359dca3dda24a132e0c7950bf30fa01b3b17a1886e13406c0cdef06cf"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.privacyfixture.IncognitoWriterTest.xml",
+      "sha256": "ca1a76b42b9a0063b6790a12269d03d016ccff516c6b87185dd31d475d6c3134"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.settings.DesktopSettingsNavigatorTest.xml",
+      "sha256": "1a4a3bba077277b70129517c35381d94d00f9eb54c901da3298fa1b34082728e"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.settings.DesktopSettingsSearchTest.xml",
+      "sha256": "359cb64f3c244c4d0e0d7fc9a093fcf17c1605e73428cd180aa2dfef1f05fa37"
+    },
+    {
+      "path": "desktop/verification/settings-history-music/shared-junit/TEST-com.bilipai.desktop.ui.DesktopCompleteSpaceTest.xml",
+      "sha256": "d93103390c333b3c2a8cd5f38f65086db7a84998303fc41a42d2dd073db704ac"
+    }
+  ],
+  "completeBinarySnapshotsRetainedInLocalProof": true
+}

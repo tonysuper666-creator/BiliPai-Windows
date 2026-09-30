@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopArticleHistoryTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:52.311Z" hostname="TONYSUPER666" time="0.06">
+  <properties/>
+  <testcase name="latestDisabledPrivacyAllowsSearchDespiteStaleEnabledFlow()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.017"/>
+  <testcase name="cancelledTransportAndBestEffortWrapperBothPropagateCancellation()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.003"/>
+  <testcase name="reportFailuresKeepTheAlreadyLoadedArticleIdentity()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="anotherFacadeEnablingPrivacyBlocksGuestAndAccountSearchWrites()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.008"/>
+  <testcase name="actualRetrofitFormPreservesOriginalArticleTypeAndEscapesCsrfOnce()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.011"/>
+  <testcase name="staleEpochAndChangedAccountAreRejectedBeforeCredentials()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="privacyEnabledDuringCsrfCaptureBecomesSuccessfulNoOp()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="privacyIsSuccessfulNoOpBeforeCredentialsOrTransport()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="apiFailureAndIOExceptionNeverNotifyHistory()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="switchingSessionDuringCsrfCaptureNeverSends()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="switchedAccountDuringResponseNeverPublishesIntoNewBrowseMemory()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <testcase name="guestInvalidArticleAndMissingCsrfDoNotPublishOrSend()" classname="com.bilipai.desktop.data.DesktopArticleHistoryTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

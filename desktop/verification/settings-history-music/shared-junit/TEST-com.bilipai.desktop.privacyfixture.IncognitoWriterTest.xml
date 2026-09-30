@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:29:04.040Z" hostname="TONYSUPER666" time="0.171">
+  <properties/>
+  <testcase name="cloudOrdinaryAndPgcUseSameOriginalSuccessfulPrivacyNoopAndEpochGuard()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.051"/>
+  <testcase name="ordinarySearchAndOriginalSettingsHistoryObserveSameDiskSwitch()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.039"/>
+  <testcase name="corruptedSwitchCannotTurnIntoSuccessfulHistoryWrite()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.015"/>
+  <testcase name="realDiskHistorySuppressedRestoredAndExistingEntriesKept()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.02"/>
+  <testcase name="originalListenResumeAndRecentStoreRemainUsableInPrivacyMode()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.009"/>
+  <testcase name="privateHistoryDoesNotDisableExplicitFavoritesThemeOrExistingReadAccess()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.014"/>
+  <testcase name="delayedOrdinaryAndStoryWriterCallbacksReadOneCurrentGlobalSwitch()" classname="com.bilipai.desktop.privacyfixture.IncognitoWriterTest" time="0.019"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

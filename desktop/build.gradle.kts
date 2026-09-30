@@ -278,10 +278,51 @@ val extractUpstreamPreferences by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-preferences.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/preferences").get().asFile.absolutePath)
-    inputs.file("tools/extract-upstream-preferences.py")
+    inputs.files("tools/extract-upstream-preferences.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "preference-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/preferences"))
+}
+
+val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-search.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-search.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-search-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "settings-search-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-search"))
+}
+
+val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsSearch)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-categories.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-categories").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-categories.py", "tools/extract-upstream-settings-search.py",
+        "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-category-ui-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "settings-category-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-categories"))
+}
+
+val extractNativeMusicRoot by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-native-music-root-platform.py",
+        "--source-root", repositoryRoot.absolutePath,
+        "--output-dir", layout.buildDirectory.dir("generated/native-music-root").get().asFile.absolutePath)
+    inputs.files("tools/extract-native-music-root-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "resolveDisplayBgmList" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/native-music-root"))
 }
 
 val extractUpstreamSpace by tasks.registering(Exec::class) {
@@ -367,6 +408,26 @@ val verifyAppearanceDependencies by tasks.registering {
     }
 }
 
+val verifySettingsSearchDependencies by tasks.registering {
+    inputs.dir("src/main/resources/licenses/pinyin4j-2.5.0")
+    doLast {
+        val noticeRoot = file("src/main/resources/licenses/pinyin4j-2.5.0")
+        val pins = JsonSlurper().parse(File(noticeRoot, "provenance.json")) as Map<*, *>
+        fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
+        val originalJar = (pins["artifacts"] as List<*>).map { it as Map<*, *> }.single { it["file"] == "pinyin4j-2.5.0.jar" }
+        val artifact = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
+            .single { it.moduleVersion.id.toString() == originalJar["coordinate"] }
+        require(digest(artifact.file) == originalJar["sha256"]) { "Original pinyin4j runtime checksum failed" }
+        val notices = pins["files"] as List<*>
+        require(notices.size == 5) { "The original pinyin4j notice/source inventory changed" }
+        notices.forEach { item ->
+            val entry = item as Map<*, *>
+            require(digest(File(noticeRoot, entry["file"].toString())) == entry["sha256"]) { "pinyin4j notice/source checksum failed: ${entry["file"]}" }
+        }
+        logger.lifecycle("Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.")
+    }
+}
+
 // The guest VM has a closed classpath and its own minimal runtime, separate from app dependencies.
 val jsWorkerCache = providers.gradleProperty("jsWorkerCache").orElse(file(".gradle/js-worker-cache").absolutePath).get()
 val jsWorkerJdkArchive = providers.gradleProperty("jsWorkerJdkArchive").orElse(File(jsWorkerCache, "fixed-jdk.zip").absolutePath).get()
@@ -442,10 +503,14 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-search"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-categories"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/native-music-root"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
@@ -479,6 +544,12 @@ val prepareAppearanceNotices by tasks.registering(Sync::class) {
     into("resources/common/notices/appearance")
 }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareAppearanceNotices) }
+val prepareSettingsSearchNotices by tasks.registering(Sync::class) {
+    dependsOn(verifySettingsSearchDependencies)
+    from("src/main/resources/licenses/pinyin4j-2.5.0")
+    into("resources/common/notices/pinyin4j-2.5.0")
+}
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareSettingsSearchNotices) }
 tasks.withType<JavaExec>().configureEach {
     dependsOn(prepareJsWorker)
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
@@ -510,6 +581,7 @@ dependencies {
     implementation("com.google.zxing:core:3.5.4")
     implementation("net.java.dev.jna:jna:5.17.0")
     implementation("org.json:json:20240303")
+    implementation("com.belerweb:pinyin4j:2.5.0")
     implementation("org.brotli:dec:0.1.2")
     testImplementation(kotlin("test-junit5"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

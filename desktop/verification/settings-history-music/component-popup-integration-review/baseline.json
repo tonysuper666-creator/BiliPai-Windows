@@ -1,0 +1,39 @@
+{
+  "gitHead": "b2812eac6182ad06f99d0a04a0ea4d53aa558a5a",
+  "files": [
+    {
+      "path": "desktop/tools/extract-upstream-components.py",
+      "sha256Bytes": "9f11249c136f0479738fd822ab520eb839247af929c67725bf185a9268eb51af"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_components.py",
+      "sha256Bytes": "3a0f040e6e7aa95e65aed60b6f351345996ed0ed52c0aac389926833c7f894c8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppDialogComponents.kt",
+      "sha256Bytes": "bb892e5cbd3d8821cb59f4bd1724477a595fd9cec07488ccac2aa99b7cac6987"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+      "sha256Bytes": "0935f9876f097d9fa33ba70e373b1dcd049371a10a21ae7224642cb1ff3a21e8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "sha256Bytes": "2fdbe79a36869449f3dbbef17428f30a7f2e980f30c7795e435b124849db4fd9"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSingleChoiceRow.kt",
+      "sha256Bytes": "03a97a04fb9b2f2ed6e16ffc1afbfc22b6da7b97065476ad24309c1ce0de092f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt",
+      "sha256Bytes": "65dd5e8315c5fa5ab27a719e8efd29d073517ca586c0b25bd59bfb8dfc3e3e8d"
+    }
+  ],
+  "currentGeneratedPolicySha256Bytes": "1a69303f5362ba8e93ffcb89f4628fd256d3b7fe7b488e1356ab807718548108",
+  "originalPolicyLfSha256": "3a705865ff36c816e16fb637efdd61ff9a443288ed3d193be638c5f7f3e8e631",
+  "desiredExtractorSha256Bytes": "cd189f264aae19b27e11fa37fc348163396fa9614985b3cb06027a420ad528e9",
+  "desiredTestSha256Bytes": "ea8e053e4212176c18d7925c947c77c977115bc3f15b7eb4d64f7a5ed20c6704",
+  "noMainFilesModified": true,
+  "gitApplyCheck": true
+}

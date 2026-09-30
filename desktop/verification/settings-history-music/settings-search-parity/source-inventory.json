@@ -1,0 +1,114 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "4ea9603637380356a482def1e8e1366a0c775d260dd7700686440bdab24ab144"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchFocusPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "8813c9c1e764122542c3a9dd826fbd069d8f25896e56b21c456ab832246ba1a8"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "1e68ae700ea22d3d5ed776701bb1378c4d79268fbb680d3250e7bc567e49f5ef"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "0e8200241c8b9ad3e2228aac0a5750eb4e7ec9f434d452161788944a473b903a"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSiblingIconPalettePolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "f907bf67cc32c9eae237fcf32c59cc78991a5275aedb7a06f1da4faa9c060d72"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/PinyinUtils.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "b77dec30d71e18ea8749b96aaf0432c6c2427ad75b3dff965fc74c5aecde13d7"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchHistorySection.kt",
+    "mode": "direct",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "9f3ddddf8818e924b3591798a8fddad817840f1205585b175860e3d048c24aea"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+    "mode": "platform-adapter-reference",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "b208983b36fe392708836eb45e7712ff72862454e84f40fba708a17cfc097d54"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt",
+    "mode": "platform-adapter-reference",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "531b3bf325bb1ac1b6b24c665d5f3dad2d5dcc1ae8d9a18ffdb694c9559df5de"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsSearchHistoryStore.kt",
+    "mode": "platform-adapter-reference",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "e7ae41ed7b05d2df72ec8bb5a835423e29a94b2b028113b6e300fcb5077832bd"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+    "mode": "platform-adapter-reference",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "159cd83dcd72a0833cae676893a84b9ed5ce97d1e59fd1905fa7d94320930acb"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchUi.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "7f68325ad428905af35ec3a9f3527e4a4fb1ed231b80650abf5821d6b9b9d143"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsNavHierarchyPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "ced1fdca02adbf8229bf57bab696704babf4a5ac88ca3a2c1732adc305f572bd"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-search-parity"
+    ],
+    "sha256": "eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787"
+  }
+]

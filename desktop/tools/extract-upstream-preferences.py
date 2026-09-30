@@ -29,10 +29,17 @@ def helper(repo):
 
 def adapt(path, source, host):
     if path.endswith("/AdaptivePreferenceComponents.kt"):
-        # The original source has a duplicate import; preserve its complete rendering body.
+        # Keep original rendering/signatures; bind the M3 collector to current hoisted input.
         duplicate = "import com.android.purebilibili.core.ui.LocalAppThemeConfig\n"
         if source.count(duplicate) != 2: raise ValueError("Original duplicate preference import changed")
         source = source.replace(duplicate, "", 1)
+        source = host.substitute(source, "import androidx.compose.runtime.remember\n",
+            "import androidx.compose.runtime.remember\nimport androidx.compose.runtime.rememberUpdatedState\n")
+        source = host.substitute(source,
+            "val textFieldState = rememberTextFieldState(initialText = query)\n        LaunchedEffect(textFieldState)",
+            "val textFieldState = rememberTextFieldState(initialText = query)\n        val currentQuery by rememberUpdatedState(query)\n        val currentOnQueryChange by rememberUpdatedState(onQueryChange)\n        LaunchedEffect(textFieldState)")
+        source = host.substitute(source, "if (updated != query) {\n                        onQueryChange(updated)",
+            "if (updated != currentQuery) {\n                        currentOnQueryChange(updated)")
     elif path.endswith("/AppSelectionPreferenceComponents.kt"):
         source = host.substitute(source, "import androidx.compose.ui.platform.LocalConfiguration",
             "import com.bilipai.desktop.appearance.DesktopWindowConfiguration as LocalConfiguration")

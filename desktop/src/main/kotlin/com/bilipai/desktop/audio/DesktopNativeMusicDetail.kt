@@ -71,5 +71,8 @@ internal fun projectNativeMusicPlayerState(state: MusicUiState, mode: PlaybackMo
 /** No player is created. Root's single retained ListenAudioSession remains the music owner. */
 internal fun ListenAudioSession.openNativeMusic(source: MusicPlaybackSource) = play(listOf(musicSourcePlaylistItem(source)))
 
+internal fun ListenAudioSession.openNativeMusic(source: MusicPlaybackSource, startPositionSeconds: Double) =
+    playStartingAt(listOf(musicSourcePlaylistItem(source)), positionSeconds = startPositionSeconds)
+
 internal fun shouldStartNativeMusic(source: MusicPlaybackSource, state: ListenAudioState, ownsNative: Boolean): Boolean =
-    !source.matches(state.current) || !(state.loading || state.active && ownsNative)
+    !source.matches(state.current) || !(state.loading || ownsNative)

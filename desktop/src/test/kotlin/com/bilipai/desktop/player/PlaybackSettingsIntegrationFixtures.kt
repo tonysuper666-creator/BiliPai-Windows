@@ -88,7 +88,7 @@ private class ControllerFixture : AutoCloseable {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing + CoroutineExceptionHandler { _, error -> errors.add(error) })
     private val dir = Files.createTempDirectory("bilipai-settings-controller-")
     val remembered = mutableListOf<Int>()
-    val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(dir),
+    val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(dir) { false },
         { preferences }, scope, dataSource = source, onRememberAudioQuality = {
             remembered.add(it); preferences = preferences.copy(lastSelectedAudioQuality = it)
         })

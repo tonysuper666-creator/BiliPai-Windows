@@ -1,0 +1,11 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+    "mode": "policy-extract",
+    "features": [
+      "resolveDisplayBgmList"
+    ],
+    "sha256": "86e7ce11610c860e9ed511afa5bdd0fb5bf6f8196b5517a1b27a363ee9543181",
+    "declarationSha256": "f7e103373fda9e5f283fff08a798a86ee578e0c217747249e1b38236bcb4fd73"
+  }
+]

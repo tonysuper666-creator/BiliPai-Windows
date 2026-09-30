@@ -4,3 +4,6 @@ desktop/third-party/libmpv/licenses/** -text
 desktop/third-party/graaljs/licenses/** -text
 desktop/third-party/miuix5157/upstream/** -text
 desktop/src/main/resources/licenses/appearance/** -text
+desktop/src/main/resources/licenses/pinyin4j-2.5.0/** -text
+# Frozen evidence manifests bind raw bytes across Windows/Linux checkouts.
+desktop/verification/settings-history-music/** -text

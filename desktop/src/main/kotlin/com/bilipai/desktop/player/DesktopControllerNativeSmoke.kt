@@ -35,7 +35,7 @@ internal object DesktopControllerNativeSmoke {
                 com.bilipai.desktop.data.PlaybackSource(video.absolutePath, null, "${details.bvid}/${details.pages[index].cid}", "", quality = quality)
             override suspend fun reportHeartbeat(report: DesktopHeartbeatReport): Boolean { reports += report; return true }
         }
-        val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory),
+        val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },
             { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, dataSource = source)
         try {
             SwingUtilities.invokeAndWait { controller.openQueue(listOf(VideoCard("BVfixtureA", "Fixture A", "", "", 0, 10),
@@ -89,7 +89,7 @@ internal object DesktopControllerNativeSmoke {
                         cookieHeader = "SESSDATA=fixture-cookie", quality = quality, videoAlternatives = listOf(http.playableUrl))
                 }
             }
-            val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory),
+            val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },
                 { PlayerPreferences(playbackMode = PlaybackMode.SEQUENTIAL) }, scope, dataSource = source)
             try {
                 SwingUtilities.invokeAndWait { controller.open(VideoCard("BVfixtureCDN", "CDN fixture", "", "", 0L, 10)) }

@@ -1,0 +1,68 @@
+{
+  "status": "frozen",
+  "integrated": false,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "hwndCreated": false,
+  "realAccountRequests": false,
+  "newPlayerSessionProvider": false,
+  "originalCasesPassed": 18,
+  "newCasesPassed": 18,
+  "sourceInventory": "source-inventory.json",
+  "ownedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseSha256": "d31909db8dd5bde47c9401e27bba256ea8ead7579a2c49aeced77df37dcd5ab4",
+      "sha256": "ea2d828e1b710073b5e143b59eb4499a8de5fc1b8ecab5da4c16f697cfdc3a8b",
+      "kind": "modify"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicDetail.kt",
+      "baseSha256": "d666b7813552b29362631688fa47d5d2beee9dfdeedd5763e044eed93b2cc4e9",
+      "sha256": "4a1f448a1850271d7d2223606aa684464a1602f7146a2ff95bc5f8958fd5fe63",
+      "kind": "modify"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNativeMusicDetailScreen.kt",
+      "baseSha256": "d173d829ad96e0768e10b5e86ffb725ca404b33069db1657913d4a1a860b4656",
+      "sha256": "addf950254dc7dd98064c3618a37ec57e13b2880203e028f3c01b25a1c57a545",
+      "kind": "modify"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpacePlaybackBridge.kt",
+      "baseSha256": "219e599be0f6d3233cfc4c75ef9dc99fccfa01114343df3b25f0d5c3308dde92",
+      "sha256": "6200fd465090e857c8b0b0a9960fcb0e89a97a3327aa30a2924834d460662cc1",
+      "kind": "modify"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256": "6fa7a61ce3aef8df52e2a8844cc51590db154ba54bc9cd68ad61e39021abb886",
+      "sha256": "5fe94dde0f221c29c7579a1524546e938b3c207384d78a2c44b387b1cf6aa8aa",
+      "kind": "modify"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopMusicRootRoutes.kt",
+      "sha256": "9e81fc23261104e12d1f227d5415c53a24e8e752b4b82cf064d9655fe04015b7",
+      "kind": "new"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "sha256": "2ce34dc38667a22cbe1da4bfaf480c386309f30fb58f6a4fd32397395abddd7b",
+      "kind": "new"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+      "sha256": "74cd1ea08638360e01b980211ba7f51a8513b6f11fcd2dcd86fab54a3bc24d1a",
+      "kind": "new"
+    },
+    {
+      "path": "desktop/tools/extract-native-music-root-platform.py",
+      "kind": "new",
+      "sha256": "4ef5c0df906f425358dc8cb4b35502c2c0184759d1a72c7c7d1c45a1b2c73ea9"
+    }
+  ],
+  "rootIntegration": "per-file patches only; Root owns current DesktopShell settings/navigation; do not replace whole Shell",
+  "nativeAuDecodeVerified": false,
+  "audioDeviceVerified": false,
+  "sha256": "0ba3bfe82c42f67e8f6467c43fe72c5845329e7b770cc9709d1e0101d9b12b45"
+}

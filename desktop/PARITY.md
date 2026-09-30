@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | 网络与数据模型 | `core/network/ApiClient.kt`, `data/model/response/*` | 全部 Retrofit 接口和响应模型纳入构建，实际使用原 WBI/播放请求策略 | 请求到行为的完整对应；客户端会话、重试与平台能力验收 |
 | 推荐、热门、分区与列表 | `feature/home`, `feature/list` | 原推荐来源/分页、分区/排行/必看/每周模式与筛选已接；实际列表状态保留，原负反馈与插件过滤已整合并离线测试 | 单列/瀑布流全部设置、刷新总线、真人账号推荐与服务端负反馈验收 |
-| 搜索 | `feature/search`, 原 `SearchType` | 九类搜索、热搜/建议、原历史/隐私/筛选策略和结果路由已实现并离线测试 | 真人账号结果与完整交互验收 |
+| 搜索 | `feature/search`, 原 `SearchType` | 九类搜索、热搜/建议、原历史/隐私/筛选策略和结果路由已实现并离线测试；无痕读取唯一实际全局隐私文件，恢复前拒绝旧代际写入 | 默认搜索词与推荐词开关的原消费者语义、真人账号结果与完整交互验收 |
 | 动态 | `feature/dynamic`, `DynamicRepository` | 真实动态流/详情、图片、评论、转发 | 发布/图片上传已接，写操作单测通过；投票、图片保存、完整卡片交互与回归 |
 | 私信与通知 | `feature/message`, `MessageSendPayloadFactory.kt` | 回复/@/赞/系统/会话历史；发送/图片/撤回/已读已接并单测 | 富内容跳转、账号验证与未知消息类型展示 |
 | UP 空间与合集 | `feature/space`, `SpaceApi` | 原聚合主页/头图、服务端一级与投稿二级栏目；投稿筛选/四种排序/搜索/网格、收藏子页、专栏/图文、充电/舰队、投币/赞过/音频/追番/课程及真实合集ID已接；续播CID、原队列与主页SID点击通过离线验证 | 原粉丝专用网页的桌面内置承载、签名编辑/关注分组/特别关注及完整菜单、动态搜索和全部窗口/账号验收 |
@@ -19,7 +19,7 @@
 | 播放控制 | `PlaybackSpeedPolicy.kt`, `PlayerKeyboardPolicy.kt` | 原生暂停/进度/0.1–8倍/音量/静音/音轨/主副字幕/截图/分P/循环；新原生测试已确认字幕/浮窗/系统媒体同步；多段连续播放/跨段跳转实际通过；自动字幕账号代际、真实HTTP取消、原授权一次重取与单轨保留已接且定向测试通过 | 新字幕传输的实际服务与整包字体/渲染验收；进度预览、完整手势、全屏影院/锁定与所有快捷键仍在推进 |
 | 弹幕 | `DanmakuProto.kt`, 原分段/过滤/高级模型与 parser | 标准 protobuf/XML、高级 JSON 弹幕、原窗口/过滤、离线分段；原插件字体、颜色、时机与隐藏适配已接；新增首帧/层级同步后，整包透明 Windows 叠层、过滤/样式和护眼实际屏幕像素验证通过 | 长期叠层稳定性、指令互动、避挡、GIF/APNG 多帧、BAS 与发送/点赞及直播线上验收 |
 | 后台/PiP/系统媒体控制 | 原 `MusicPlaybackContract`, PiP/player policies | 页面外迷你画面；听视频独立常驻原生会话；直播/PGC/离线请求、播放及实时会话提升至窗口/账号生命周期，PiP/系统媒体按钮按实际所有者路由；原生换宿主后保活/返回、旧所有者隔离和根关闭验证通过 | 完整产品界面切换、线上直播生命周期与完整队列验收 |
-| 听视频 | `feature/audio/lyrics`, `library`, 原 `PlaylistManager` 纯策略 | 真实音轨、队列/随机历史、持久收藏/最近、歌词与双字幕、睡眠定时已整合 | 队列/恢复/账号释放的 4 项测试通过；完整原生音频流程、外部歌单、沉浸/黑胶视觉 |
+| 听视频 | `feature/audio/lyrics`, `library`, 原 `PlaylistManager` 纯策略 | 真实音轨、队列/随机历史、持久收藏/最近、歌词与双字幕、睡眠定时已整合；Root 当前分P/BGM与空间顺序听歌队列已接，账号代际/异步结果/外来源隔离和返回视频CID进度通过离线验证 | 完整原生 AU 音频与设备输出验收、gRPC 多 BGM 与原完整详情、外部歌单和沉浸/黑胶视觉 |
 | 视频笔记/AI | `feature/video/note`, `VideoNoteContentCodec.kt`, `AiSummaryResponse.kt` | 私有/公开读取、AI/章节；原富文本/时间戳写入已接并单测 | 编辑/删除/公开分享和时间戳跳转已接；真人账号验收 |
 | 番剧/影视/课程 | `BangumiRepository.kt`, `BangumiIndexFilterPolicy`, PGC/PUGV APIs | 原 PGC 校验/fallback/季与分集/index；实际播放屏幕 | 原追番/状态、时间表/筛选、课程、权益与指定分集续播已接；多段原生播放与真人验收 |
 | 直播 | `feature/live`, `LiveApi` | 真实分区/搜索/关注/HLS与品质选择 | 原 WebSocket/Brotli 协议、鉴权、实时弹幕/SC期限/删除/发送已接并测试；线上连接生命周期 |
@@ -30,7 +30,7 @@
 | 登录与多账号 | `feature/login`, `TokenManager` | Web/TV 扫码、密码/短信/真实浏览器验证、多账号与 DPAPI 已接并单测 | 实际账号登录/验证码与切换验收；账号缓存 owner 回归已通过 |
 | WebDAV与数据备份 | `feature/settings/webdav`, 原 Backup policies | 原九个 WebDAV HTTP 方法和调度策略复用；Windows 受限 ZIP/摘要/回滚、旧写入器停止、DPAPI、本地/跨进程锁与设置对话框已接；真实 loopback DAV、恢复和 DST 周期离线测试通过 | 实际 WebDAV 服务与打包的 Windows 调度验收；Android 备份格式迁移未实现；皮肤/外部包资产未纳入 |
 | 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/缩放/DPI、简繁英 XML 与固定 Miuix 5157 已接；原 App* 控件和偏好/导航图进入主构建，四个桌面控件入口及外观选择器使用原实现；新增原图标/列表样式和点击复制键、宿主配置与错误展示已接，28 项定向 JUnit 和 103 个真实离屏输入检查通过 | 全 Shell 控件/文案迁移、玻璃/皮肤、完整导航/可访问性与实际窗口菜单/弹窗/语言重启验收；壁纸色采用原非 Android S 分支预设色，未实现 Windows 玻璃 |
-| 诊断与隐私设置 | 原诊断/遥测与设置 | Windows 本地诊断已有基础 | 用户开关、日志脱敏、诊断导出与上游设置语义核对 |
+| 诊断与隐私设置 | 原诊断/遥测与设置 | Windows 本地诊断已有基础；普通/Story本地历史写入遵守实际无痕文件，保存失败不提交内存；原设置搜索/分类/图标与导航focus代码已编译 | 原完整设置分类内容及Shell设置树仍在接入；用户开关、隐私内容认证、代理、日志脱敏和诊断导出 |
 | 竖屏 Story | 原 StoryFeed/PortraitPager policies | 原推荐映射、洗牌/追加与settled页提交接Root原生队列；初始失败/重试与账号/外源守卫通过；真实Canvas鼠标释放翻页、Space暂停、上下键及焦点/旧所有者隔离接入并验证 | 完整原触摸/惯性/缩放/双击/长按、控制与视觉；主窗口/打包与线上验收 |
 | 话题详情 | 原 TopicRepository/UiState/VisualPolicy/RichTextPolicy | 客户端详情、排序/追加、参与草稿及真实Topic ID；原关键词回退、嵌套返回和动态页面保留已接，真实Compose点击通过 | 完整原发现/详情视觉、页面保留和线上/账号/主窗口验收 |
 | 高级播放设置 | 原音轨/默认音质/codec/subtitle/HiRes failure policies | 默认字段、缓存维度、当前音质切换与成功后记忆已接；单写入队列保留最新完整快照；同源字幕/硬解恢复实际native通过；新增31项实际TCP/原字幕策略与旧actor请求退休测试通过 | 完整原设置搜索/界面、真实HiRes设备和新字幕整包验收 |
@@ -59,3 +59,5 @@ Windows revision 9 的新 EXE/便携包验收记录为 `verification/source9-nat
 Story/Topic 与高级播放/HiRes 的本批主程序整合记录为 `verification/source9-story-playback-integration.json`：396 份原 Kotlin、15 个资源、303 个 Retrofit 声明和45/45响应来源继续核验。12个suite的75项定向JUnit、18项Python来源检查通过；其中原Story/Topic两个方法分别包含26个数据与46个实际Compose交互检查。独立编译的精确main播放器在自建窗口使用固定DLL，12个原生门槛通过：本机真实d3d11va、关闭/恢复硬解、主副字幕四种模式、真实像素、同源暂停/2秒位置和双字幕恢复，以及换源后的旧请求拒绝。该原生验证采用null音频输出和fixture元数据，不代表真实HiRes声音、实际AO初始化故障、账号字幕传输或新EXE/Shell验收。当前已明确自动字幕账号epoch/HTTP取消/原授权重取/单轨降级等底层差异正在下一切片修正，Story Canvas输入与完整界面仍待接。未打包或部署新桌面版本，完整release gate未通过。
 
 最新画质增强/字幕/Story 接入记录为 `verification/source9-enhancement-subtitle-story-integration.json`：402 个原 Kotlin 来源身份、15 个资源、303 个原 Retrofit 声明与45个响应文件核验通过，来源数不用于换算进度。主产品14个suite共132项定向JUnit、20项Python来源测试通过。原画质增强单一provider、两套原设置控件与真实顺序落盘进入Root；独立当前主线的16项配置/Session/UI/Runtime测试及两项实际锁等待回归通过。后两项确认原manager锁和原onEnable配置读取期间，关闭同视频增强或退休owner后不会发布、提示或持久化启用。完整原生快照另通过19项原FSR/Anime4K/Runtime检查，保留原11项严格像素/格式/位置门槛；它绑定这两处窄守卫修改之前的快照，GPU播放器源之后未改，当前manager守卫由独立回归验证。Story实际Canvas的14项输入检查通过，自动字幕31项实际TCP/actor测试纳入共享构建。原生与UI证据使用隔离状态及合成输入，不代表真实账号、完整Shell/Story视觉或新EXE验收。全部冻结产物由Root按长路径安全摘要复验，初次不完整Windows类快照保留为历史，修正后重新执行才计入本批。桌面仍为revision 5，未部署新包；同一35组功能权重的人工评估为67.6%，对外约68%，完整对齐与release gate仍未完成。
+
+本轮历史/设置源码与音乐入口记录为 `verification/source9-settings-history-music-integration.json`：420个原Kotlin来源身份、198个资源、303个逐字API声明与45/45响应继续核验；这些数量不用于计算进度。共享主程序编译及17个suite共90项定向JUnit通过，其中两个音乐方法实际执行原18项和新增18项路由/会话检查；33项Python来源检查通过。历史保存成功落盘后才提交内存，失败保留页面/参数并继续播放器关闭；备份恢复与退出前排空或拒绝旧搜索写入。原当前分P/BGM和空间播放全部已接入同一常驻听视频会话，返回视频保留CID/自有进度，同MID换凭据和外来音源不能被旧异步任务接管。原设置搜索索引/历史/分类/focus及分类列表已纳入构建，完整分类38个state字段与53个actions、Root设置树和真实字段消费者仍未接完，不能把原列表离屏点击或编译通过算作完整设置完成。弹窗420dp宽度补丁仅有两套主题六种离屏尺寸的新证明，未执行新原生Dialog验收。原pinyin4j运行JAR与五份源/许可文件按固定摘要通过，POM与源头许可差异按原资料保留。冻结证据均按长路径安全摘要核验；音乐补丁仅规范LF并逐项比对原交接内容，原来源inventory的跨平台LF修正有定向回归。真实AU/CDN/codec/音频设备、全窗口交互和新的EXE验收仍待完成；旧首次黑屏原因未被本批解释。未生成或部署新包，桌面仍revision5。同一35组权重的人工评估为67.8%，对外仍约68%，完整功能对齐及release gate仍未完成。

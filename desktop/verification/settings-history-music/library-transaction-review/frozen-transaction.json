@@ -1,0 +1,55 @@
+{
+  "passed": true,
+  "mainStable": true,
+  "junit": {
+    "found": 3,
+    "started": 3,
+    "succeeded": 3,
+    "failed": 0,
+    "nativeWindowOpened": false,
+    "accountRequests": 0,
+    "realTempDisk": true
+  },
+  "sharedGradleInvoked": false,
+  "sharedClassesRead": false,
+  "nativeWindowOpened": false,
+  "sourceAdditions": 0,
+  "schemaChanges": 0,
+  "publicApiChanges": 0,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopLibrary.kt",
+      "sha256Lf": "a4884b5b92c11d089512609655773e65313774f6d06693d25fed056bb5400100"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopLibraryTransactionTest.kt",
+      "sha256Lf": "d5a0cb5b8602be142a6144ff94a6c30ced00f1505a743169b6e00c8d16abd65b"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "INTEGRATION.md",
+      "sha256": "5d1853bff8c52de08984216a4daa25afb20d1db4ca3b4c2ea8ff5ea54d4da6d9"
+    },
+    {
+      "path": "junit-evidence.json",
+      "sha256": "951f9b972685469afde28c27a5795e209b26b77e41e13fefe2fd863e75ff76af"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256": "0a66f5754e0dffbe1821239b440c75aca00e1aff0d39f194e1bd41524be1a7c3"
+    },
+    {
+      "path": "run-tests.py",
+      "sha256": "2f9b57cfc056428ed7c9f2e5c35681cb26bd416ad033a765d6e5f55d1866035f"
+    },
+    {
+      "path": "TestLauncher.kt",
+      "sha256": "c29562682a71c3f174330acb42ddd15f0d4c499ded75893409e62f17b8326d94"
+    },
+    {
+      "path": "freeze.py",
+      "sha256": "fad66726dcbea7b6a0958d687cb689bc7947620f8cc3d2900e20b6d4be467692"
+    }
+  ]
+}

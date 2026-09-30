@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:52.052Z" hostname="TONYSUPER666" time="0.147">
+  <properties/>
+  <testcase name="originalRoutesAndRetainedSessionLifecycle()" classname="com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest" time="0.146"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

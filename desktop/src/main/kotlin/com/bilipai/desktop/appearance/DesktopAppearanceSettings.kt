@@ -1,5 +1,9 @@
 package com.bilipai.desktop.appearance
 
+import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
+import com.android.purebilibili.feature.settings.SettingsSearchTarget
+import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
+
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -57,7 +61,7 @@ fun DesktopAppearanceSettings(
     Column(modifier.verticalScroll(scrollState).padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         DesktopAppearanceText(strings["appearance_settings_title"], style = MaterialTheme.typography.headlineMedium)
         error?.let { DesktopAppearanceText(it, color = MaterialTheme.colorScheme.error) }
-        DesktopAppearanceCard(Modifier.fillMaxWidth()) {
+        DesktopAppearanceCard(Modifier.fillMaxWidth().desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, SettingsSearchFocusIds.APPEARANCE_THEME)) {
             AppearanceChoice(strings["appearance_ui_preset_title"], settings.uiStyle,
                 resolveThemeSelectionOptions("Material 3", "Miuix"), !busy) { update { prefs.setUiStyle(it) } }
             AppearanceChoice(strings["appearance_theme_mode_title"], settings.themeMode,
@@ -95,7 +99,7 @@ fun DesktopAppearanceSettings(
                 strings.desktop("高级调色配置会保留，切换到 Material 3 后生效。", "進階調色設定會保留，切換到 Material 3 後生效。", "Advanced palette settings are retained and apply in Material 3."),
                 Modifier.padding(16.dp), style = MaterialTheme.typography.bodySmall)
         }
-        DesktopAppearanceCard(Modifier.fillMaxWidth()) {
+        DesktopAppearanceCard(Modifier.fillMaxWidth().desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, SettingsSearchFocusIds.APPEARANCE_DISPLAY)) {
             AppearanceChoice(strings.desktop("字体大小", "字體大小", "Font size"), settings.appFontSizePreset,
                 AppFontSizePreset.entries.map { AppSegmentOption(it, "${(it.multiplier * 100).toInt()}%") }, !busy) { update { prefs.setFontSize(it) } }
             AppearanceChoice(strings.desktop("字体粗细", "字體粗細", "Font weight"), settings.appFontWeightPreset,

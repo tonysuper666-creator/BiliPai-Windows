@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.DesktopLibraryTransactionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:51.881Z" hostname="TONYSUPER666" time="0.028">
+  <properties/>
+  <testcase name="failed file replacement retains every in memory field and successful retry matches restart()" classname="com.bilipai.desktop.DesktopLibraryTransactionTest" time="0.019"/>
+  <testcase name="failure before temp creation does not commit memory and can retry after directory repair()" classname="com.bilipai.desktop.DesktopLibraryTransactionTest" time="0.004"/>
+  <testcase name="successful saves preserve an unrelated legacy temp file()" classname="com.bilipai.desktop.DesktopLibraryTransactionTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

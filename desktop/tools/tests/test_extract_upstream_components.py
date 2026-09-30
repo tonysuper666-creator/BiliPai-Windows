@@ -52,10 +52,14 @@ class ComponentsExtractionTest(unittest.TestCase):
             self.assertEqual(signatures(original), signatures(module.adapt(path, original, host)), path)
         self.assertEqual(len(signatures(host.read(REPO, module.BASE + "components/AppText.kt"))), 4)
 
-    def test_dialog_adapter_changes_only_android_constructor_fields(self):
+    def test_dialog_adapter_preserves_original_policy_and_properties_with_desktop_width_constraints(self):
         path = module.BASE + "AppContentDialogLayoutPolicy.kt"
         original = host.read(REPO, path)
         expected = original.replace("        securePolicy = base.securePolicy,\n", "").replace("        decorFitsSystemWindows = base.decorFitsSystemWindows,\n", "")
+        expected = expected.replace("import androidx.compose.foundation.layout.wrapContentHeight\n",
+            "import androidx.compose.foundation.layout.wrapContentHeight\nimport androidx.compose.foundation.layout.wrapContentWidth\n")
+        expected = expected.replace("        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .widthIn(",
+            "        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .wrapContentWidth()\n        .widthIn(")
         self.assertEqual(module.adapt(path, original, host), expected)
         self.assertIn("dismissOnBackPress = base.dismissOnBackPress", expected)
         self.assertIn("dismissOnClickOutside = base.dismissOnClickOutside", expected)

@@ -194,7 +194,7 @@ class DesktopPlaybackControllerTest {
         val player = MpvPlayer()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
         val repository = DesktopRepository(DesktopSessionStore(directory.resolve("account.json"), persistent = false))
-        val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory),
+        val controller = DesktopPlaybackController(repository, player, null, null, DesktopLibrary(directory) { false },
             { PlayerPreferences(playbackMode = mode) }, scope, dataSource = source)
         fun await(predicate: (DesktopPlaybackState) -> Boolean) = runBlocking { withTimeout(3_000) { controller.state.first { predicate(it) } } }
         override fun close() {

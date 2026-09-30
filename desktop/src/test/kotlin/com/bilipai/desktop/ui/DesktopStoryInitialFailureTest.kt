@@ -202,7 +202,7 @@ class DesktopStoryInitialFailureTest {
                 return ResolvedSource("file:///C:/story-fixture.avi", null, details.title, "", quality = quality, videoCodecFamily = "avc1")
             }
         }
-        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory), { PlayerPreferences() }, scope, dataSource = source)
+        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { PlayerPreferences() }, scope, dataSource = source)
         val host = DesktopStoryPlaybackHost(ControllerStoryQueuePlayer(controller), { epoch.get() })
         fun details(bvid: String) = VideoDetails(bvid, 51, bvid, "", "", "", 0, 0,
             listOf(VideoPart(7, "P1", 120), VideoPart(9, "P2", 120)))

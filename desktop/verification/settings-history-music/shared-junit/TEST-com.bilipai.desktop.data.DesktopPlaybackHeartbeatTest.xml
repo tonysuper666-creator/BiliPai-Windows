@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-30T10:27:52.372Z" hostname="TONYSUPER666" time="0.02">
+  <properties/>
+  <testcase name="switchingAccountDuringFieldCaptureNeverSends()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.002"/>
+  <testcase name="privacySynchronousReadSeesAnotherInstancesLatestOriginalKey()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.007"/>
+  <testcase name="guestMissingCsrfAndStaleSessionNeverWrite()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.002"/>
+  <testcase name="privacyReturnsOriginalSuccessfulNoOpWithoutTransport()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.001"/>
+  <testcase name="startHeartbeatUsesOriginalPlayTypeAndClampsTimes()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.001"/>
+  <testcase name="originalHeartbeatFormUsesActualRetrofitAndWallClockTime()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.005"/>
+  <testcase name="cancellationPropagatesAndApiFailuresRemainFalse()" classname="com.bilipai.desktop.data.DesktopPlaybackHeartbeatTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

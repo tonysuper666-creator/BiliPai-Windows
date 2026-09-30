@@ -25,6 +25,7 @@ internal fun DesktopNativeMusicDetailScreen(
     onOpenSpace: (Long) -> Unit,
     onOpenVideo: (VideoCard) -> Unit,
     modifier: Modifier = Modifier,
+    startPositionSeconds: Double = 0.0,
 ) {
     val audio by session.state.collectAsState()
     val native by session.player.state.collectAsState()
@@ -34,7 +35,7 @@ internal fun DesktopNativeMusicDetailScreen(
     val matching = source.matches(audio.current)
 
     LaunchedEffect(source.stableId, session) {
-        if (shouldStartNativeMusic(source, session.state.value, session.ownedPlaybackSourceVersion != null)) session.openNativeMusic(source)
+        if (shouldStartNativeMusic(source, session.state.value, session.ownedPlaybackSourceVersion != null)) session.openNativeMusic(source, startPositionSeconds)
     }
     // Deliberately no screen-disposal release: original AudioSong is MiniPlayerManager-owned.
     Column(modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {

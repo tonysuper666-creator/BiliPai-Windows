@@ -39,6 +39,7 @@ import com.android.purebilibili.feature.list.resolveHistoryNavigationKind
 import com.android.purebilibili.feature.list.resolveHistoryResumePositionMs
 import com.android.purebilibili.feature.audio.player.MusicPlaybackSource
 import com.android.purebilibili.feature.space.SpaceWatchProgress
+import com.android.purebilibili.feature.space.SpaceExternalPlaylist
 import com.android.purebilibili.feature.bangumi.policy.parseCourseNavigation
 import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
 import com.android.purebilibili.core.plugin.skin.UiSkinSurface
@@ -46,6 +47,9 @@ import com.bilipai.desktop.danmaku.DanmakuOverlay
 import com.bilipai.desktop.audio.ListenAudioSession
 import com.bilipai.desktop.audio.ListenAudioState
 import com.bilipai.desktop.audio.ListenAudioStore
+import com.bilipai.desktop.audio.DesktopMusicVideoTarget
+import com.bilipai.desktop.audio.nativeMusicSourceForListenItem
+import com.bilipai.desktop.audio.nativeMusicVideoReturnCard
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadMetadata
@@ -185,7 +189,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var systemTargetAudio by remember { mutableStateOf(false) }
     val audioPlayer = remember(player) { player?.let { MpvPlayer() } }
     val beforeListenAcquire = remember { java.util.concurrent.atomic.AtomicReference<() -> Unit>({}) }
-    val listen = remember(repository, community, audioPlayer, playback, account?.mid) {
+    val listen = remember(repository, community, audioPlayer, playback, account?.mid, sessionEpoch) {
         audioPlayer?.let { ListenAudioSession(repository, community, it, preferences, onAcquirePlayback = { beforeListenAcquire.get().invoke(); systemTargetAudio = true; playback.pause(); player?.setPaused(true) },
             store = ListenAudioStore(DesktopLibrary.directoryForAccount(account?.mid).resolve("listen-state.json"))) }
     }
@@ -253,6 +257,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
             withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.close() }
             cast.quiesce()
+            community.searchPreferences.freezeWritesForRestore()
             pluginRuntime.shutdownForRestore()
             preferenceWriter.flushAndClose()
         }, afterRestore = { withContext(Dispatchers.Main) { onExit() } })
@@ -262,6 +267,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
             withContext(NonCancellable) {
                 withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.close() }
                 cast.quiesce()
+                community.searchPreferences.freezeWritesForRestore()
                 pluginRuntime.shutdownForRestore()
                 preferenceWriter.flushAndClose()
             }
@@ -299,6 +305,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var storyReturnSection by remember { mutableStateOf(DesktopSection.HOME) }
     var musicSource by remember(sessionEpoch) { mutableStateOf<MusicPlaybackSource?>(null) }
     var musicReturnSection by remember { mutableStateOf(DesktopSection.LISTEN) }
+    var musicReturnVideo by remember(sessionEpoch) { mutableStateOf(false) }
+    var musicStartPosition by remember(sessionEpoch) { mutableDoubleStateOf(0.0) }
     var articleId by remember { mutableLongStateOf(0) }
     var roomId by remember { mutableLongStateOf(0) }
     var seasonId by remember { mutableLongStateOf(0) }
@@ -364,57 +372,97 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         val snapshot = preferences
         preferenceWriter.submit(snapshot)
     }
-    fun navigate(target: DesktopSection) {
-        if (activatingUpdate) return
-        playback.checkpoint()
+    fun checkpointForNavigation(): Boolean {
+        if (playback.checkpoint()) return true
+        error = playback.state.value.error ?: "播放记录保存失败，请检查本地隐私和存储设置"
+        return false
+    }
+    fun navigate(target: DesktopSection, commit: () -> Unit = {}): Boolean {
+        if (activatingUpdate || !checkpointForNavigation()) return false
         if (target != DesktopSection.STORY) storyHost.retire()
-        showVideo = false; section = target; page = 1; error = null
         if (target == DesktopSection.DYNAMIC) dynamicId = null
+        commit()
+        showVideo = false; playerFocused = false; section = target; page = 1; error = null
         if (target == DesktopSection.HISTORY) cards = library.history()
         if (target == DesktopSection.FAVORITES) cards = library.favorites()
+        return true
     }
     fun openVideo(card: VideoCard) {
-        if (activatingUpdate) return
+        if (activatingUpdate || !checkpointForNavigation()) return
         storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
         showVideo = true; mediaActive = false; playback.open(card)
     }
     fun openQueue(videos: List<VideoCard>, selected: VideoCard) {
-        if (activatingUpdate || videos.isEmpty()) return
+        if (activatingUpdate || videos.isEmpty() || !checkpointForNavigation()) return
         val index = videos.indexOfFirst { it.bvid == selected.bvid && it.preferredCid == selected.preferredCid }.takeIf { it >= 0 } ?: 0
         storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
         showVideo = true; mediaActive = false; playback.openQueue(videos, index)
     }
-    fun openUser(id: Long) { userId = id; navigate(DesktopSection.USER) }
-    fun openDynamic(id: String) { navigate(DesktopSection.DYNAMIC); dynamicId = id }
+    fun openUser(id: Long) { navigate(DesktopSection.USER) { userId = id } }
+    fun openDynamic(id: String) { navigate(DesktopSection.DYNAMIC) { dynamicId = id } }
     fun openTopic(id: Long) {
         if (activatingUpdate || id <= 0) return
-        if (section != DesktopSection.TOPIC) {
-            topicReturnSection = section; topicReturnDynamicId = dynamicId; topicStack = listOf(id)
-        } else if (topicStack.lastOrNull() != id) topicStack = topicStack + id
-        topicId = id; navigate(DesktopSection.TOPIC)
+        navigate(DesktopSection.TOPIC) {
+            if (section != DesktopSection.TOPIC) {
+                topicReturnSection = section; topicReturnDynamicId = dynamicId; topicStack = listOf(id)
+            } else if (topicStack.lastOrNull() != id) topicStack = topicStack + id
+            topicId = id
+        }
     }
     fun openTopicKeyword(keyword: String) {
         if (activatingUpdate || keyword.isBlank()) return
-        query = keyword; submitted = keyword; navigate(DesktopSection.SEARCH)
+        navigate(DesktopSection.SEARCH) { query = keyword; submitted = keyword }
     }
     fun openStory(card: VideoCard? = null) {
         if (activatingUpdate) return
-        if (section != DesktopSection.STORY) storyReturnSection = section
-        storySeed = card?.let { DesktopStorySeed(it.bvid, it.preferredCid, it.cover, it.title) } ?: DesktopStorySeed()
-        navigate(DesktopSection.STORY)
+        navigate(DesktopSection.STORY) {
+            if (section != DesktopSection.STORY) storyReturnSection = section
+            storySeed = card?.let { DesktopStorySeed(it.bvid, it.preferredCid, it.cover, it.title) } ?: DesktopStorySeed()
+        }
     }
-    fun openMusic(sid: Long) {
-        if (activatingUpdate || sid <= 0) return
-        musicReturnSection = section
-        musicSource = MusicPlaybackSource.AudioSong(sid)
-        navigate(DesktopSection.MUSIC)
+    fun openMusicSource(source: MusicPlaybackSource, startPosition: Double = 0.0) {
+        if (activatingUpdate || listen == null) return
+        when (source) {
+            is MusicPlaybackSource.AudioSong -> if (source.sid <= 0) return
+            is MusicPlaybackSource.VideoAudio -> if (source.bvid.isBlank() || source.cid <= 0) return
+        }
+        navigate(DesktopSection.MUSIC) {
+            if (section != DesktopSection.MUSIC) {
+                musicReturnSection = section
+                musicReturnVideo = showVideo
+            }
+            musicSource = source
+            musicStartPosition = startPosition.takeIf { it.isFinite() && it >= 0.0 } ?: 0.0
+        }
     }
-    fun openArticle(id: Long) { articleId = id; navigate(DesktopSection.ARTICLE) }
-    fun openNotes(info: VideoDetails) { noteVideo = info; navigate(DesktopSection.NOTES) }
-    fun openJsPlugin(id: String) { jsPluginId = id; navigate(DesktopSection.JS_CONTENT) }
+    fun openListenSpaceQueue(playlist: SpaceExternalPlaylist, mid: Long, history: List<VideoCard>) {
+        if (activatingUpdate || listen == null) return
+        val (items, index, progress) = desktopSpaceListenPlaybackQueue(playlist, mid, history) ?: return
+        navigate(DesktopSection.LISTEN) {
+            changePreferences(preferences.copy(playbackMode = com.bilipai.desktop.player.PlaybackMode.SEQUENTIAL))
+            listen.playStartingAt(items, index, progress)
+        }
+    }
+    fun openMusic(sid: Long) { if (sid > 0) openMusicSource(MusicPlaybackSource.AudioSong(sid)) }
+    fun closeMusic() {
+        val source = musicSource
+        if (musicReturnVideo && source is MusicPlaybackSource.VideoAudio && listen != null) {
+            openVideo(nativeMusicVideoReturnCard(source, listen.state.value, listen.player.state.value,
+                listen.ownedPlaybackSourceVersion != null))
+        } else {
+            if (navigate(musicReturnSection) && musicReturnVideo && playing.details != null) showVideo = true
+        }
+    }
+    LaunchedEffect(sessionEpoch) {
+        if (section == DesktopSection.MUSIC && musicSource == null) navigate(DesktopSection.LISTEN)
+    }
+    fun openArticle(id: Long) { navigate(DesktopSection.ARTICLE) { articleId = id } }
+    fun openNotes(info: VideoDetails) { navigate(DesktopSection.NOTES) { noteVideo = info } }
+    fun openJsPlugin(id: String) { navigate(DesktopSection.JS_CONTENT) { jsPluginId = id } }
     fun openJsMedia(launchId: String, revision: Long) {
         val host = pluginRuntime.jsPlugins.host
         if (activatingUpdate) { host.releaseExternalLaunch(launchId); return }
+        if (!checkpointForNavigation()) { host.releaseExternalLaunch(launchId); return }
         storyHost.retire()
         val epoch = repository.sessionEpoch
         try {
@@ -429,14 +477,15 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
             error = failure.message ?: "外部媒体无法播放"
         }
     }
-    fun openLive(id: Long) { roomId = id; navigate(DesktopSection.LIVE) }
+    fun openLive(id: Long) { navigate(DesktopSection.LIVE) { roomId = id } }
     fun showSeason(id: Long, epId: Long = 0, course: Boolean = false, progress: Double = 0.0) {
-        seasonId = id; episodeId = epId; isCourse = course; seasonProgress = progress
-        navigate(DesktopSection.BANGUMI)
+        navigate(DesktopSection.BANGUMI) {
+            seasonId = id; episodeId = epId; isCourse = course; seasonProgress = progress
+        }
     }
     fun openBangumi(id: Long) { showSeason(id) }
     fun openCollection(mid: Long, id: Long, type: String) {
-        collectionMid = mid; collectionId = id; collectionType = type; navigate(DesktopSection.COLLECTION)
+        navigate(DesktopSection.COLLECTION) { collectionMid = mid; collectionId = id; collectionType = type }
     }
     fun openResource(resource: PersonalResource) {
         when (resource) {
@@ -478,7 +527,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         val text = query.trim()
         if (text.isEmpty()) return
         Regex("BV[0-9A-Za-z]{10}", RegexOption.IGNORE_CASE).find(text)?.value?.let { openVideo(VideoCard(it, "", "", "", 0, 0)); return }
-        submitted = text; navigate(DesktopSection.SEARCH)
+        navigate(DesktopSection.SEARCH) { submitted = text }
     }
     suspend fun currentCastMedia(): com.android.purebilibili.core.plugin.CastPluginMediaRequest {
         check(!systemTargetAudio) { "请先打开需要投屏的视频" }
@@ -590,7 +639,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     }
     LaunchedEffect(Unit) { runCatching { repository.refreshAccount() }; initialVideo?.let { playback.open(it) } }
     LaunchedEffect(playing.details?.bvid, playing.currentPart) {
-        while (playing.details != null) { delay(5000); withContext(Dispatchers.IO) { playback.checkpoint() } }
+        while (playing.details != null) {
+            delay(5000)
+            if (!withContext(Dispatchers.IO) { playback.checkpoint() })
+                error = playback.state.value.error ?: "播放记录保存失败，请检查本地隐私和存储设置"
+        }
     }
     LaunchedEffect(native.paused, native.loading) {
         if (!native.paused && (native.loading || native.durationSeconds > 0) && (playing.details != null || mediaActive)) {
@@ -732,7 +785,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.topAtmosphere }, Modifier.matchParentSize(), onError = { error = it })
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.searchCapsuleBackground }, Modifier.matchParentSize(), onError = { error = it })
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        if (showVideo) OutlinedButton(onClick = { playback.checkpoint(); showVideo = false }, modifier = Modifier.height(52.dp)) { Text("‹ ${strings["common_back"]}") }
+                        if (showVideo) OutlinedButton(onClick = { if (checkpointForNavigation()) { showVideo = false; playerFocused = false } }, modifier = Modifier.height(52.dp)) { Text("‹ ${strings["common_back"]}") }
                         OutlinedTextField(query, { query = it }, singleLine = true, placeholder = { Text("搜索视频、UP 主、番剧、专栏，或粘贴 BV / 链接") },
                             shape = RoundedCornerShape(26.dp), modifier = Modifier.weight(1f).onFocusChanged { searchFocused = it.hasFocus },
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submitSearch() }))
@@ -750,7 +803,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             }
                         }
                     }
-                    if (listen != null && section != DesktopSection.LISTEN) ListenNowPlayingBar(listen, { navigate(DesktopSection.LISTEN) })
+                    if (listen != null && section != DesktopSection.LISTEN) ListenNowPlayingBar(listen, {
+                        val source = nativeMusicSourceForListenItem(listen.state.value.current)
+                        if (source is MusicPlaybackSource.AudioSong) openMusicSource(source)
+                        else navigate(DesktopSection.LISTEN)
+                    })
                     if (casting.isActive) TextButton(onClick = { dlnaDialog = true }) { Text("投屏：${casting.deviceLabel.ifBlank { "播放设备" }} · 打开控制") }
                     if (googleCasting.isActive) TextButton(onClick = { googleCastDialog = true }) { Text("Google Cast：${googleCasting.deviceLabel.ifBlank { "播放设备" }} · 打开控制") }
                     if (playing.recovering) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -834,6 +891,19 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                 engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) { VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
                                     cid = playing.details!!.pages[playing.currentPart].cid)
+                                    val musicTarget = DesktopMusicVideoTarget(playing.details!!.bvid,
+                                        playing.details!!.pages[playing.currentPart].cid, player?.currentSourceVersion ?: 0L, repository.sessionEpoch)
+                                    DesktopVideoMusicEntries(playing.details!!, musicTarget, repository, community,
+                                        currentTarget = { captured -> captured.isCurrent(playback.state.value.details?.bvid,
+                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid,
+                                            player?.currentSourceVersion, repository.sessionEpoch) && showVideo && !activatingUpdate &&
+                                            playback.currentCastSource(captured.sourceVersion) != null },
+                                        positionSeconds = { player?.state?.value?.positionSeconds ?: 0.0 },
+                                        onMusic = ::openMusicSource, onExternalUrl = { raw ->
+                                            runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+                                                runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                                            }
+                                        })
                                     DiscoveryUgcCollectionPanel(playing.details!!, ::openVideo, ::openQueue,
                                         currentCid = playing.details!!.pages[playing.currentPart].cid)
                                 } },
@@ -885,7 +955,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             section == DesktopSection.MUSIC -> {
                                 val source = musicSource
                                 if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,
-                                    { navigate(musicReturnSection) }, ::openUser, ::openVideo)
+                                    ::closeMusic, ::openUser, ::openVideo, startPositionSeconds = musicStartPosition)
                                 else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
                             }
                             section == DesktopSection.STORY -> DesktopStoryScreen(storyTopic, storySeed,
@@ -908,17 +978,23 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword),
                                 onBack = {
-                                    if (topicStack.size > 1) { topicStack = topicStack.dropLast(1); topicId = topicStack.last() }
-                                    else { topicStack = emptyList(); navigate(topicReturnSection); if (topicReturnSection == DesktopSection.DYNAMIC) dynamicId = topicReturnDynamicId }
+                                    if (topicStack.size > 1) {
+                                        if (checkpointForNavigation()) { topicStack = topicStack.dropLast(1); topicId = topicStack.last() }
+                                    } else navigate(topicReturnSection) {
+                                        topicStack = emptyList()
+                                        if (topicReturnSection == DesktopSection.DYNAMIC) dynamicId = topicReturnDynamicId
+                                    }
                                 }, onTopic = ::openTopic)
                             section == DesktopSection.USER -> {
+                                val spaceTargetMid = userId
+                                val spaceTargetEpoch = repository.sessionEpoch
                                 val history = library.history().filter { it.authorMid == userId }
                                 val progress = history.associate { card -> card.bvid to SpaceWatchProgress(card.bvid, card.preferredCid, card.title,
                                     card.progressSeconds ?: 0, card.duration, card.viewedAt) }
                                 DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,
                                     ::openVideo, ::openUser, ::openArticle, ::openDynamic, ::openLive, ::openBangumi, ::openMusic,
                                     { showSeason(it, course = true) }, ::openResource, ::openCollection,
-                                    onPlaylist = { playlist -> desktopSpacePlaybackQueue(playlist, userId, history)?.let { (rows, index) -> openQueue(rows, rows[index]) } },
+                                    onPlaylist = { playlist -> if (repository.sessionEpoch == spaceTargetEpoch && userId == spaceTargetMid) openListenSpaceQueue(playlist, spaceTargetMid, history) },
                                     onLogin = { loginDialog = true }, onExternalUrl = { raw ->
                                         runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
                                             runCatching { java.awt.Desktop.getDesktop().browse(uri) }

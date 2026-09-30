@@ -1,0 +1,67 @@
+{
+  "owned": [
+    {
+      "path": "NativeComponentFixture.kt",
+      "expected": "2c022d0b471ba086cfba4ebaa69b010b19f6fd03ff94ca9ce8bb08346650872a",
+      "actual": "2c022d0b471ba086cfba4ebaa69b010b19f6fd03ff94ca9ce8bb08346650872a",
+      "passed": true
+    },
+    {
+      "path": "compile-fixture.py",
+      "expected": "9397110b41f67dc5a5ee2bf06ac4e82b31a5a2f787d3cb9592bba4822e4bc79a",
+      "actual": "9397110b41f67dc5a5ee2bf06ac4e82b31a5a2f787d3cb9592bba4822e4bc79a",
+      "passed": true
+    },
+    {
+      "path": "run-fixture.py",
+      "expected": "59ad8e5b5d319239370176c974feb06b7cf4f69a7f208b0a0d28f14eb4b60b8a",
+      "actual": "59ad8e5b5d319239370176c974feb06b7cf4f69a7f208b0a0d28f14eb4b60b8a",
+      "passed": true
+    },
+    {
+      "path": "WidthFixture.kt",
+      "expected": "663a8c4ee96425711055f5c192395fc6d9de37f2be8ace49480e459cec699b68",
+      "actual": "663a8c4ee96425711055f5c192395fc6d9de37f2be8ace49480e459cec699b68",
+      "passed": true
+    },
+    {
+      "path": "compile-width.py",
+      "expected": "dd39d973bc9961fbdd4d8efd8b9fbacd08f50ff264d0d39940aedaaf0e069e19",
+      "actual": "dd39d973bc9961fbdd4d8efd8b9fbacd08f50ff264d0d39940aedaaf0e069e19",
+      "passed": true
+    },
+    {
+      "path": "draft/dialog-width-adapter.patch",
+      "expected": "7dce8b2d46919e21be906e6347adaa1a73ca8a8ad4ad587f8eb8c9451cad63a1",
+      "actual": "7dce8b2d46919e21be906e6347adaa1a73ca8a8ad4ad587f8eb8c9451cad63a1",
+      "passed": true
+    },
+    {
+      "path": "draft/extractor-delta.patch",
+      "expected": "fa55d01a4aaa0b08f580ecabe64e7c6806c4ece25194c187fc7f67074978d693",
+      "actual": "fa55d01a4aaa0b08f580ecabe64e7c6806c4ece25194c187fc7f67074978d693",
+      "passed": true
+    },
+    {
+      "path": "baseline-proof-7/result.json",
+      "expected": "eaa05a4882af2628a9ff499b4c878eb6b4d64ebde2d3e35fc8167497c9b6ab0f",
+      "actual": "eaa05a4882af2628a9ff499b4c878eb6b4d64ebde2d3e35fc8167497c9b6ab0f",
+      "passed": true
+    },
+    {
+      "path": "baseline-width/proof/result.json",
+      "expected": "619b1a120fe1f1b5dd4a9e075474351a9257315d8d0c94b341d71418b9d80a2c",
+      "actual": "619b1a120fe1f1b5dd4a9e075474351a9257315d8d0c94b341d71418b9d80a2c",
+      "passed": true
+    },
+    {
+      "path": "draft-width/proof/result.json",
+      "expected": "69791c52ba6ea8067dd080199d8c700c508f39ea3ca7ebb11a4adf84b10bcc62",
+      "actual": "69791c52ba6ea8067dd080199d8c700c508f39ea3ca7ebb11a4adf84b10bcc62",
+      "passed": true
+    }
+  ],
+  "nativeGateCount": 26,
+  "allFrozenPassed": true,
+  "newNativeExecution": false
+}

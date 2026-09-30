@@ -167,7 +167,7 @@ class DesktopPlaybackQueueOwnershipTest {
                     quality = quality, videoCodecFamily = "avc1")
             }
         }
-        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory),
+        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false },
             { PlayerPreferences(playbackMode = mode) }, scope, dataSource = source)
         suspend fun await(condition: () -> Boolean) = withTimeout(4_000) {
             while(!withContext(Dispatchers.Swing) { condition() }) delay(5)

@@ -258,7 +258,7 @@ class DesktopPremiumAudioControllerTest {
         private val failures = CopyOnWriteArrayList<Throwable>()
         private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing + CoroutineExceptionHandler { _, failure -> failures.add(failure) })
         private val directory = Files.createTempDirectory("bilipai-premium-controller-")
-        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory), { preferences }, scope,
+        val controller = DesktopPlaybackController(repo, player, null, null, DesktopLibrary(directory) { false }, { preferences }, scope,
             dataSource = source, onRememberAudioQuality = { remembered.add(it) })
         suspend fun open() {
             swing { controller.open(VideoCard("BV-premium", "Fixture", "", "", 0, 120)) }
