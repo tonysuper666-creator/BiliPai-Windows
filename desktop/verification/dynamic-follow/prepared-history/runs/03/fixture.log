@@ -1,0 +1,12 @@
+desktop\.local\dynamic-follow-observer-parity\FollowObserverFixture.kt:142:33: error: operator '==' cannot be applied to 'Long' and 'Int'.
+        expect(users.users.none{it.uid==22},"followings and live side rail removed")
+                                ^^^^^^^^^^
+desktop\.local\dynamic-follow-observer-parity\FollowObserverFixture.kt:158:134: error: operator '==' cannot be applied to 'Long' and 'Int'.
+        h.social.setFollowing(22,true);eventually("follow success invalidated fresh TTL and hydrated"){calls>before&&users.users.any{it.uid==22}}
+                                                                                                                                     ^^^^^^^^^^
+desktop\.local\dynamic-follow-observer-parity\FollowObserverFixture.kt:227:33: error: operator '==' cannot be applied to 'Long' and 'Int'.
+        expect(users.users.none{it.uid==22},"old following/live payload cannot restore side rail")
+                                ^^^^^^^^^^
+desktop\.local\dynamic-follow-observer-parity\FollowObserverFixture.kt:236:120: error: operator '==' cannot be applied to 'Long' and 'Int'.
+        release.complete(Unit);hydrate.join();eventually("queued original following reload completed"){users.users.any{it.uid==22}}
+                                                                                                                       ^^^^^^^^^^

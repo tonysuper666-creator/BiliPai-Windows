@@ -1,0 +1,137 @@
+{
+    "passed": true,
+    "assertions": 73,
+    "cases": [
+        {
+            "name": "exact-original-reducer",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "unfollow-home-scope-cache",
+            "passed": true,
+            "assertions": 20
+        },
+        {
+            "name": "follow-ttl-refresh-success-only",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "canceled-success-no-event",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "same-mid-new-epoch-late-response",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "queued-old-owner-no-post",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "closed-session-and-registry",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "pending-home-response-success",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "pending-home-response-failure",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "pending-home-response-cancel",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "pending-followings-live-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "following-while-hydration-pending",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "pending-selected-up-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "guest-csrf-self-invalid-no-http",
+            "passed": true,
+            "assertions": 5
+        }
+    ],
+    "modelOwnerThread": "follow-fixture-model-owner",
+    "socketGuardInstalled": true,
+    "outsideHTTP": false,
+    "MainIntegrated": false,
+    "HWND": false,
+    "package": false,
+    "fixtureTransport": "reflection replaces Repository client transport + visitor readiness only; actual Retrofit route, checks, event/session/registry/models/cache",
+    "classSources": [
+        {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSocialRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopDynamicCache",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.DynamicItem",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopFollowStateEvents",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.repository.FollowStateChange",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        },
+        {
+            "class": "com.android.purebilibili.feature.dynamic.DynamicUiState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/candidate.jar"
+        }
+    ]
+}

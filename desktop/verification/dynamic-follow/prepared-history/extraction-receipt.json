@@ -1,0 +1,57 @@
+{
+  "originalFunctions": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "marker": "private fun observeFollowStateChanges()",
+      "sha256Lf": "6600c03d546b9f87e9879e8c08e6581951f2a361b599abe26a09a86cfd951cf3"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "marker": "private fun applyAuthorUnfollow(",
+      "sha256Lf": "85f214c5ba70e7e50bede324c8dee7c5bf263b34e6d8b320b443d0dd5a6934a7"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "marker": "private fun requestFollowingsRefreshIfStale()",
+      "sha256Lf": "2748c52820872527524946b808520e019457897a8a64aff75b6b7d7d4ff7475a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "marker": "suspend fun followUser(",
+      "sha256Lf": "4a84111cd8d71fbcfbec6644f14bc5950374b6bf72f65d3bbd18924b8e995ed3"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "internal fun resolveDynamicStateAfterAuthorUnfollow(",
+      "sha256Lf": "4d974b4b00a02ab026ddf4df78ee0febe398ca8c080acc77ec13c4f4c778c277"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "internal fun resolveFollowedUsersAfterAuthorUnfollow(",
+      "sha256Lf": "0779086bb7c3998ea6d87767cbdeb182b2eb3aba7375d597ab4475e341f1cd0e"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "internal fun DynamicUiState.timelinePage(",
+      "sha256Lf": "a4f8afb4c044efa792156c96206faefd5ac79fbde1ad3ac19f65b81e2c14ecb0"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "internal fun updateDynamicTimelinePage(",
+      "sha256Lf": "c6e05a860a0f2193fca9e8de4c633fc9312e0f1fdff97cf8ed9bb2541804b261"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "internal fun mapDynamicTimelineItems(",
+      "sha256Lf": "454e2e4e241371e781dca66f0d3a9c3de4a45b02ce10ad4352d855bd0dbac3e1"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "marker": "private fun DynamicUiState.copyActiveTimelinePage(",
+      "sha256Lf": "7d2baa43661c8722f2913dfcf2d2d06b374cec5a5eb093afacd6b142ffabd8d0"
+    }
+  ],
+  "exactOriginalFollowStateChangeSha256Lf": "508fa3933a08525f8a854d693a5da8342c4f0b58ca3ae11173abc46702be9958",
+  "exactOriginalDynamicUiStateSha256Lf": "a14dd83b5b38f74aa1f77d7a49f8a767d7bd33b358c8377e07663576b946342a",
+  "productIntegrated": false
+}

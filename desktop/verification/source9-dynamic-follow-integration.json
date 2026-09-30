@@ -1,0 +1,73 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "06fd1d6fde820c859ed7356d64ba5aaac6d5ed28",
+  "MainIntegrated": true,
+  "actualMainSnapshotSha256Bytes": "d3fd2de6caf3302a65547ef29350ba1a158dead69d84c9b680131db88f7f62cd",
+  "actualOrderedRuntimeCpSha256Bytes": "2dc490f5604c2029bbee4f83fb1e20ee3ad83607b18c5a6a79505d90f941e629",
+  "orderedRuntimeArtifacts": 89,
+  "actualMainSourceFiles": 383,
+  "generatedSourceFiles": 703,
+  "sourceRegistryCount": 588,
+  "originalFollowInventoryEntries": 3,
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "preparedKotlinSourcesInstalled": 7,
+  "preparedProducersInstalled": 3,
+  "MainFocusedJUnit": {
+    "tests": 36,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "originalSourceExtractionTests": 12,
+  "originalSourceContracts": 35,
+  "actualMainFollowObserver": {
+    "assertions": 92,
+    "scenarios": 18,
+    "productionOverrides": 0,
+    "loadedClassIdentities": 13,
+    "fixtureSourceSha256Bytes": "d373ba88ef22fc53c88c5bd083bcb0b84cc2999b83e6f1ff9c73d08018189c42",
+    "resultSha256Bytes": "b8b8edc3163b64f25976355ebc7ac335f733ed6ef7549af6254029bcdf39b39c",
+    "acceptedEvidenceSha256Bytes": "2bb5e4e432d4c4170c7ef7c23cfd14683ff2bc2562ddc8f9bbac078cf415e144",
+    "actualRetrofitTerminalTransport": true,
+    "externalHttp": false
+  },
+  "acceptedChanges": [
+    "Original success-only FollowStateChange with buffer32 and replay0; tryEmit false preserves confirmed server success",
+    "Existing Repository owns one credential-epoch tagged event flow; current SessionStore guards request and cookie authority",
+    "Root Compose epoch-keyed LaunchedEffect collects on existing model owner and cancels with the existing Session/Registry lifetime",
+    "Original unfollow reducers apply to retained home All/video/pgc/article and selected-UP owners",
+    "Existing followings/live sidebar owners remove the author; selected-UP cancellation and original logical-tab behavior preserved",
+    "Follow success invalidates original followings TTL/full flag and requests original queued hydration",
+    "Old home, followings, live and UP responses cannot replace a confirmed follow change; original cursor checkpoints restored under existing mutex",
+    "Current All is the only cache writer; cold disk readback matches reduced All and not-interested IDs remain unchanged",
+    "Existing Space/Topic/detail card mutation owners remain outside the original home-only follow observer scope"
+  ],
+  "RootEpochEffectCompiled": true,
+  "RootShellExecuted": false,
+  "MainWindowOrNativeChooserExecuted": false,
+  "realAccountAccepted": false,
+  "externalServiceAccepted": false,
+  "packageAccepted": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
+  "fullFeatureParityVerified": false,
+  "weightedReviewedProgressPercent": 69.7,
+  "progressEstimateChanged": false,
+  "remaining": [
+    "Actual live-account follow UI and Root Shell regression on the new package",
+    "Complete original detail container, primary comment scrolling and thread integration",
+    "Native gallery/MotionPhoto/EXIF/share, remaining original feature parity and final Desktop deployment"
+  ],
+  "historicalBoundaries": [
+    "Prepared runs declare 102 candidate class overlaps; accepted new actual Main proof has zero overrides",
+    "Prepared07 queue-full notification failure semantics are rejected history; Prepared08 and actual Main preserve original server success",
+    "Prepared first raw manifest missed long-path artifacts; immutable v2 contains complete extended-path enumeration with prior bytes retained"
+  ],
+  "rawArtifacts": {
+    "path": "desktop/verification/dynamic-follow/artifact-manifest.json",
+    "sha256Bytes": "17cd7ba42993f7c3346a764d834f32f319f8161300bb05d266b5ee8582b48710",
+    "files": 269
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "name": "exact original event data class",
+      "passed": true
+    },
+    {
+      "name": "exact original state data class only transient input-output",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer resolveDynamicStateAfterAuthorUnfollow",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer resolveFollowedUsersAfterAuthorUnfollow",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer timelinePage",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer updateDynamicTimelinePage",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer mapDynamicTimelineItems",
+      "passed": true
+    },
+    {
+      "name": "exact original reducer copyActiveTimelinePage",
+      "passed": true
+    },
+    {
+      "name": "exact existing Timeline repository getDynamicFeed",
+      "passed": true
+    },
+    {
+      "name": "exact existing Timeline repository syncPaginationAfterRefresh",
+      "passed": true
+    },
+    {
+      "name": "exact existing Timeline repository fetchDynamicFeedPageWithRetry",
+      "passed": true
+    },
+    {
+      "name": "Timeline added checkpoints own no cursor map or items",
+      "passed": true
+    },
+    {
+      "name": "exact existing User repository getUserDynamicFeed",
+      "passed": true
+    },
+    {
+      "name": "exact existing User repository fetchDynamicFeedPageWithRetry",
+      "passed": true
+    },
+    {
+      "name": "exact existing User repository buildSelectedUserDynamicFeedParams",
+      "passed": true
+    },
+    {
+      "name": "User added checkpoints own no cursor map or items",
+      "passed": true
+    },
+    {
+      "name": "Repository only adds single event source",
+      "passed": true
+    },
+    {
+      "name": "capture owner before queue",
+      "passed": true
+    },
+    {
+      "name": "API check then cancel check then original success event",
+      "passed": true
+    },
+    {
+      "name": "same owner guarded transport and cookies",
+      "passed": true
+    },
+    {
+      "name": "all other existing Social methods unchanged",
+      "passed": true
+    },
+    {
+      "name": "event owner and session authority",
+      "passed": true
+    },
+    {
+      "name": "only concrete original-home owners",
+      "passed": true
+    },
+    {
+      "name": "unique cache owner existing currentAll",
+      "passed": true
+    },
+    {
+      "name": "DesktopDynamicUsersState.kt transient reducer no retained DynamicUiState",
+      "passed": true
+    },
+    {
+      "name": "DesktopDynamicUsersState.kt version barrier and sole cursor rollback",
+      "passed": true
+    },
+    {
+      "name": "DesktopDynamicTimeline.kt transient reducer no retained DynamicUiState",
+      "passed": true
+    },
+    {
+      "name": "DesktopDynamicTimeline.kt version barrier and sole cursor rollback",
+      "passed": true
+    },
+    {
+      "name": "original shared flow capacity and replay semantics",
+      "passed": true
+    },
+    {
+      "name": "original tryEmit false does not turn server success into failure",
+      "passed": true
+    },
+    {
+      "name": "no observer-owned items/cache",
+      "passed": true
+    },
+    {
+      "name": "Root session collector filters epoch",
+      "passed": true
+    },
+    {
+      "name": "Root actual Compose epoch keyed collector has no IO dispatcher",
+      "passed": true
+    },
+    {
+      "name": "Root currentAll sole cache binding retained",
+      "passed": true
+    },
+    {
+      "name": "three original identities use the existing registry without duplicate paths",
+      "passed": true
+    }
+  ],
+  "checkCount": 35,
+  "baselineManifestSha256Bytes": "d3fd2de6caf3302a65547ef29350ba1a158dead69d84c9b680131db88f7f62cd",
+  "MainIntegrated": true
+}

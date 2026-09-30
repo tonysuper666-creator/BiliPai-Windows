@@ -1,0 +1,18 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.ui.followobserverproof.FollowObserverFixtureKt (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/05/fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.ui.followobserverproof.FollowObserverFixtureKt
+WARNING: System::setSecurityManager will be removed in a future release
+PASS unfollow-home-scope-cache 20
+PASS follow-ttl-refresh-success-only 6
+PASS canceled-success-no-event 3
+PASS same-mid-new-epoch-late-response 5
+PASS queued-old-owner-no-post 2
+PASS closed-session-and-registry 2
+PASS pending-home-response-success 5
+PASS pending-home-response-failure 5
+PASS pending-home-response-cancel 4
+PASS pending-followings-live-unfollow 3
+PASS following-while-hydration-pending 4
+PASS pending-selected-up-unfollow 3
+PASS guest-csrf-self-invalid-no-http 5
+PASS total 73 assertions

@@ -30,3 +30,5 @@ desktop/tools/compile-native-diagnostic-share.py -text
 desktop/verification/native-share/** -text
 desktop/verification/dynamic-editor/** -text
 desktop/verification/dynamic-resource-navigation/** -text
+
+desktop/verification/dynamic-follow/** -text

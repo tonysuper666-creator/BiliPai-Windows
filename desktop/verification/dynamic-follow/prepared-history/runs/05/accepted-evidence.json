@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "actualBaselineSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "orderedCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "candidateJarSha256Bytes": "c4545db80855a0b5459cd1c68c139512fac7331251cc164b1b33e123b9f01a40",
+  "fixtureJarSha256Bytes": "5204859f343b28de2899bcc264fc9ffb6e99da64d3905196a08146b12bb73c36",
+  "assertions": 73,
+  "caseCount": 14,
+  "resultSha256Bytes": "37caf872ab0bc28d0553c023c2fce5ef85ee9f99213ced22dacdbea5bace7347",
+  "preparedCandidateOverrides": 83,
+  "productionIntegrated": false,
+  "realHTTP": false,
+  "account": false,
+  "HWND": false,
+  "package": false
+}

@@ -1,0 +1,6 @@
+desktop\.local\dynamic-follow-observer-parity\candidate\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:479:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+desktop\.local\dynamic-follow-observer-parity\candidate\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:480:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^

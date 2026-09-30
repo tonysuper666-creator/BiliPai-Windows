@@ -1,0 +1,170 @@
+{
+    "passed": true,
+    "assertions": 91,
+    "cases": [
+        {
+            "name": "exact-original-reducer",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "unfollow-home-scope-cache",
+            "passed": true,
+            "assertions": 20
+        },
+        {
+            "name": "follow-ttl-refresh-success-only",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "canceled-success-no-event",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "same-mid-new-epoch-late-response",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "queued-old-owner-no-post",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "closed-session-and-registry",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "pending-home-response-success",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "pending-home-response-failure",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "pending-home-response-cancel",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "pending-followings-live-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "following-while-hydration-pending",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "pending-selected-up-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "pending-other-up-cursor-restored",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "current-all-is-only-cache-owner",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "guest-csrf-self-invalid-no-http",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "bounded-event-notification-explicit-failure",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "original-no-subscriber-no-replay",
+            "passed": true,
+            "assertions": 2
+        }
+    ],
+    "modelOwnerThread": "follow-fixture-model-owner",
+    "socketGuardInstalled": true,
+    "outsideHTTP": false,
+    "MainIntegrated": false,
+    "HWND": false,
+    "package": false,
+    "fixtureTransport": "reflection replaces Repository client transport + visitor readiness only; actual Retrofit route, checks, event/session/registry/models/cache",
+    "classSources": [
+        {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "5581d8e65ec4a3e93a6c43f47245ef37ad33f0c88b3fbd333adf20d1651c874c"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSocialRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "3bf5002ded6c275ec7eafc98e350cf4942275bb1e62d7772f724643f28169773"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "220d78143f2c2cbfa86bf0b24f53dfd57398e76f8bf437b4d5729c1153c3cdc8"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "b02e28cd72304cfb2410b35abc9d8a86d884ffe0e7dc542541e1a8ec6b2ccc87"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "70ec5d1f8a273583ee37cdd6927e2c891d5775368fd7a2ba0efa7b253b67022f"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "3d3d6ee110e0d14169c4258de3402b211185bb2fb60efde716715eed4d4c6801"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopDynamicCache",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "85dc3235debf512e1ae656572401140849278cf3b61646991bab4f9b235a443b"
+        },
+        {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.DynamicItem",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-editor-main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "d3cb029b27146e49d5445e603e1d6b1b735b42bcddc4a5fc53da5d928056b8a2"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopFollowStateEvents",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "532d599902b5c2b7f839be8e280ea4b6ce486473b305f36219775665591a671e"
+        },
+        {
+            "class": "com.android.purebilibili.data.repository.FollowStateChange",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "bdc093933b381d2256f843cb3910515aa414387379f27e72a1736a0b1c382a72"
+        },
+        {
+            "class": "com.android.purebilibili.feature.dynamic.DynamicUiState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-observer-parity/runs/07/candidate.jar",
+            "resourceSha256Bytes": "6b35d555c901b9a162e5b3793a73ae16c2657c8ff989a4b70704ea2cb60796cb"
+        }
+    ]
+}

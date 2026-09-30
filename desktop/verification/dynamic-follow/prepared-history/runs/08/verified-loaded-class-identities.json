@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "5581d8e65ec4a3e93a6c43f47245ef37ad33f0c88b3fbd333adf20d1651c874c",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSocialRepository",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "3bf5002ded6c275ec7eafc98e350cf4942275bb1e62d7772f724643f28169773",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "220d78143f2c2cbfa86bf0b24f53dfd57398e76f8bf437b4d5729c1153c3cdc8",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "b02e28cd72304cfb2410b35abc9d8a86d884ffe0e7dc542541e1a8ec6b2ccc87",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "70ec5d1f8a273583ee37cdd6927e2c891d5775368fd7a2ba0efa7b253b67022f",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "3d3d6ee110e0d14169c4258de3402b211185bb2fb60efde716715eed4d4c6801",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCache",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "85dc3235debf512e1ae656572401140849278cf3b61646991bab4f9b235a443b",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.android.purebilibili.data.model.response.DynamicItem",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "d3cb029b27146e49d5445e603e1d6b1b735b42bcddc4a5fc53da5d928056b8a2",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopFollowStateEvents",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "a7e8371fcd3b6a6248eeea408327d5378b2a9be9cd80e9221542f56e0844d6ce",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.android.purebilibili.data.repository.FollowStateChange",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "bdc093933b381d2256f843cb3910515aa414387379f27e72a1736a0b1c382a72",
+      "preparedOverride": true
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.DynamicUiState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-observer-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "6b35d555c901b9a162e5b3793a73ae16c2657c8ff989a4b70704ea2cb60796cb",
+      "preparedOverride": true
+    }
+  ]
+}

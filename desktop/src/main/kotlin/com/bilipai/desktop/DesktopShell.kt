@@ -233,6 +233,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     DisposableEffect(dynamicCardSession, dynamicCardRegistry) {
         onDispose { dynamicCardSession.close(); dynamicCardRegistry.close() }
     }
+    LaunchedEffect(dynamicCardSession, dynamicCardRegistry) {
+        dynamicCardSession.observeFollowStateChanges(dynamicCardRegistry)
+    }
     val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache) {
         DesktopPluginRuntime(pluginStore, repository, community, discovery,
             beforeStoreFreeze = { dynamicCache.shutdownForRestore(); diagnosticLifecycle?.shutdownForRestore() })

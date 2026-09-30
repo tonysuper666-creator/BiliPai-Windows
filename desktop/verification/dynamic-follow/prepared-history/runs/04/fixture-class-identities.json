@@ -1,0 +1,230 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "e53f7ea48b4d6580bf9b671b76088879209ae8ca7298b9d06d7dbda2b1ec3579"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/NoSockets.class",
+    "sha256Bytes": "f6d311d33217139b1b605898564e81c979428d32b5b0700f4d5610dd75a4b8bc"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FixtureTransport.class",
+    "sha256Bytes": "a3e47f4f56b7ed6d91739a16582d28ed9ffbddb7baeb21fcf4d4bfe603b43e22"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/GenericOwner.class",
+    "sha256Bytes": "728d77ade701672915b41ef54536563f79a14a7a98e802790610fca31201a311"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness.class",
+    "sha256Bytes": "851415556c5466d729cf3e1a6bb2e9ad37ac3647d222fd3e035c2d28f3c5c7a1"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$timeline$3.class",
+    "sha256Bytes": "9662f73a7aff18568fe4a968d34cd018654b9114abb3a48b5f74f94a9763fce5"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$timeline$1.class",
+    "sha256Bytes": "cf06c318369ef4ab211a8d495b47aa551e88129c3261aa358d9a8055b3205db4"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$timeline$2.class",
+    "sha256Bytes": "401204f1e923f5885c1f5df63b08a0b04b63db62271308aa9c88ac60e5be87a9"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$users$state$1.class",
+    "sha256Bytes": "40a07aaf553aa411566651804ac57ec40c4b1fbbb949079ae9e931b19e7c6cee"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$users$state$2.class",
+    "sha256Bytes": "17ff9bbd271ab624ef445449ead0bdf46dc38eb60cb1a67a00569abe0201bd68"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$users$1.class",
+    "sha256Bytes": "dd8ab5a47fe50cc02c28dfa09861e3c8842ba548f32c8a4e762e72e0660ea2d1"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$users$2.class",
+    "sha256Bytes": "aeebe46fd2444033bcc14c6d157f23f7cac0b26e1408e16502564dc781f23bfd"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$users$3.class",
+    "sha256Bytes": "2c35438edaecc195b13498350b776a04095dacd228ba090efa3b1c0399577396"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$close$1.class",
+    "sha256Bytes": "6b06b3e659f43619fd57579f614beb38a6db381b05b07f7eba3e2d978d5176c4"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$1.class",
+    "sha256Bytes": "943d2e484c0a657627e23c9c17131263e2e2cb2493b6bda20063f11a799562f7"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$2.class",
+    "sha256Bytes": "4456f5e64e83ee637b07aaa6be1413d0f45ea379d4ced7a38c1c6f98f8dc52ce"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$2$1.class",
+    "sha256Bytes": "810fd18590c7ed7f04240ca6ead86d248380b9ef48cffd752416a7b2be54ca09"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/Harness$3.class",
+    "sha256Bytes": "be61acd245ceb3d0dd254d17618e77e7b097df9b94aa70c8a1526dd78c69456b"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt.class",
+    "sha256Bytes": "54621776f68ff13ee05d4fa732905b0406c47d7e58df491057bc8cc09c9f9ed0"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$eventually$2.class",
+    "sha256Bytes": "d6787a6d4940bcd227639c06ea311cf4129cc4a804647bf94d810fa14c0dd729"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$runCase$1.class",
+    "sha256Bytes": "ec343ddd2dde269075dd64418065b9597cde83e8ce9acf4d79324809e743a3c3"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$3.class",
+    "sha256Bytes": "64ec91bdd076e7f85cc65dfd92f1db897f1e2a05c510511583778add50df243a"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$4.class",
+    "sha256Bytes": "cd4d9cc797677ed93adcd7744c7558f1287491eb1e7957a1cbebeda3c03ac618"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$4$users$1.class",
+    "sha256Bytes": "187b538b443aaf7f4b14ea77a41e46d33eb6393f75798a218bb44c1386298312"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$4$users$2.class",
+    "sha256Bytes": "22f5a7baab01269987d111bed005dc13f12c7bd8431aeca57ed753b3a5c3970a"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$5.class",
+    "sha256Bytes": "845e1ef9e03288a6ff4769f4c2d9d45a89ef0e60e8959763d1d2d26b408e8ed7"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$5$job$1.class",
+    "sha256Bytes": "6775e9ff97be28027234200458bfe9f8828c8513e6d3b20ddf9b267d23ea1ada"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$5$2.class",
+    "sha256Bytes": "e6cac109285bf4f4b112a2f9bf9072f718bbe9f85d87fbb33d16109f5865c487"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6.class",
+    "sha256Bytes": "8e53a797187774150e9fb1340348fe75d55296dc1e2a8e374f97208cb77acf70"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6$write$1.class",
+    "sha256Bytes": "27546a3bfb9576601d341c6a173c213748909d59f7244b7f6a594f973046ac73"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6$2.class",
+    "sha256Bytes": "125b4e96cde72910fef9afb33d13a2d99a4b1c4e7ebbfd9e3d74aa8dc32fee8b"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6$newer$1.class",
+    "sha256Bytes": "8ddd5ef3e6b6f57563616f65efe220962c14b7f7516381bd3cab473d50eb355e"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6$3.class",
+    "sha256Bytes": "93287e31eefb02b9553d91a6da2d186e0d099093a2c33b58e2e84e208ad0ce1f"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$6$4.class",
+    "sha256Bytes": "f5ecbe04493359db79bcc61a3746b299a89175717717654786ef03ab2899e945"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$7.class",
+    "sha256Bytes": "0250410728a2f3caf4113521c999debb547fa60950c0a2b65cf6101f2ac5f3fd"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$7$first$1.class",
+    "sha256Bytes": "5df575b91367be20024f18ee0b955b6d6c43bbefe7abc58c52ae148804ac3916"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$7$2.class",
+    "sha256Bytes": "d389ddf7d2da6068a382b1a82fb9db6ad39abc13d9fc086ed26bd4bc36f9bc56"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$7$second$1.class",
+    "sha256Bytes": "754d8d8da0e7b6c7f791889dfda9cdf44408fa86f89dc7820b72e421b6189412"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$8.class",
+    "sha256Bytes": "425b6de4ccd51220f3c854c6fc27cd8360ea16081add5c1aa1df865b809db6e8"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$9.class",
+    "sha256Bytes": "357053adba15bd6d39b4ca1fdcdb6b2174a7def09bd6dd34c29e7733f388f978"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$9$all$1.class",
+    "sha256Bytes": "844cab8772ea3d23465b0aa23b255d35f8bf7b435db806590250c6ed457452dd"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$9$append$1.class",
+    "sha256Bytes": "a2e63bb8f78e2510eb35eb6bb919dd97af8c7d626e4cb0e686adbe8cb6fa704d"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$10.class",
+    "sha256Bytes": "1f7755e0ab7e2c458a794356e79168e67761e1a4b6cdcb4cbd46039ffd92a320"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$10$users$1.class",
+    "sha256Bytes": "3fe706d80330f1f21f6ad5f1f030c8cdd96fdc23aad37e9d98ddee264e220a59"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$10$users$2.class",
+    "sha256Bytes": "c633f7ac28409e79267ff850656374f08b4f6dfd69209912733258042529ffc4"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$10$hydrate$1.class",
+    "sha256Bytes": "697fd9290ead94cecdd006f188dbca7c56801dc438d8e7eb001d0c7e7e4b6167"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$11.class",
+    "sha256Bytes": "257608ccb7288d3bb52da2865c0da7e339a1c10c00ffbdbf212bc4227fe68a98"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$11$users$1.class",
+    "sha256Bytes": "43ad0d239883deaad9a58cef470f0dcedbd96233ea1fdfc6df97acd797f9bc4e"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$11$users$2.class",
+    "sha256Bytes": "9ed7742ec9c260f6836628b50365fd410e4650efa84b168818c7b22e48851195"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$11$hydrate$1.class",
+    "sha256Bytes": "cf264d6f1f47c4a2415dd18fd76b817a29b867e44596d45b8226b9c8452e176c"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$12.class",
+    "sha256Bytes": "cad7a7f594e40682e6392048c314a7651fbefc871bd92696b2b170f1d49d4821"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$12$users$1.class",
+    "sha256Bytes": "efb2b4879aafb456dff16ea085f6d402e2624613517e75432bddaafd882f248e"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$12$users$1$1.class",
+    "sha256Bytes": "eb3ab49ccc1260ef89ee9daa0600ad8950c7d4e33170af5115c7385914fd7536"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$13.class",
+    "sha256Bytes": "c04bf0bdcec18f1f810fdd6a8cb0bd934af638a9761c97948ed452208ca7233b"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$tests$1.class",
+    "sha256Bytes": "32fb76c732725548f04c024c12a593faf64bd68eab4ca8d4da910f46ddf5dfa1"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/followobserverproof/FollowObserverFixtureKt$main$1.class",
+    "sha256Bytes": "467c005a933aa801d2aa55999d27682f36dddeade8dde1a5ed7b52faf57d43ed"
+  },
+  {
+    "entry": "META-INF/follow_observer_task_fixture.kotlin_module",
+    "sha256Bytes": "6f4ea77325143a6e68ba9c4d408d846dd2d7243d808e677db5151737e415f720"
+  }
+]

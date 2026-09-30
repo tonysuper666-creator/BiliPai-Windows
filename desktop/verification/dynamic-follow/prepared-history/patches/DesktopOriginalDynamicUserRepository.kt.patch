@@ -1,0 +1,13 @@
+--- desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt
++++ desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt
+@@ -8,6 +8,10 @@
+  private val stillOwned:()->Boolean={true},
+ ) {
+  private val userFeedPagination=DynamicUserPaginationRegistry()
++ fun checkpointForFollowChange(uid:Long)=DynamicPaginationState(offset=userFeedPagination.offset(uid),hasMore=userFeedPagination.hasMore(uid))
++ fun restoreAfterFollowChange(uid:Long,before:DynamicPaginationState) {
++  userFeedPagination.update(uid,before.offset,before.hasMore)
++ }
+  fun hasMore(uid:Long)=userFeedPagination.hasMore(uid)
+  private suspend fun getPage(params:Map<String,String>):DynamicFeedResponse {
+   currentCoroutineContext().ensureActive();if(!stillOwned())throw CancellationException("Dynamic source retired")

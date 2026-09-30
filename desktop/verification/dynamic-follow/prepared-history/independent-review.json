@@ -1,0 +1,135 @@
+{
+  "reviewer": "/root/player_parity/dynamic_action_review",
+  "kind": "independent read-only source and existing fresh08 evidence review",
+  "conclusion": "No new blocker found in the reviewed follow producer, epoch-tagged observer, original home-scope reducers, stale-response rejection, sole-cursor restoration, and original no-replay notification contract.",
+  "requiredIntegration": [
+    "Root must collect the flow on the actual model owner thread through its owned epoch effect.",
+    "Root must wire onAllTimelineChanged through registry.isCurrentAll before the existing sole cache actor, as the fixture does."
+  ],
+  "actualMainBaselineSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "orderedRuntimeCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "acceptedEvidence": "desktop/.local/dynamic-follow-observer-parity/runs/08/accepted-evidence.json",
+  "acceptedEvidenceSha256Bytes": "5eed34a21fffbb1e82f68960072426d69ba2a6188642a4570e4df5ba8615d108",
+  "resultSha256Bytes": "a7ca2d0ab31a88b2577e0fb0d28db4ea72d27fba5b667c66ae72a9af0030fd32",
+  "candidateJarSha256Bytes": "19f1302c0c739434d28dddb980f040d2dea6f4202e39d621f21a2c8476de0908",
+  "fixtureJarSha256Bytes": "359fbb87a11c1b264da3997e58b6811386edf917c70f43c322bb64ea89235137",
+  "loadedClassIdentitiesSha256Bytes": "17eaccfc2d9c08563ed764c3cd8082626cab641b0960bcdd837f01562a9e0732",
+  "assertions": 92,
+  "cases": 18,
+  "currentSourcesMatchFrozen08": 11,
+  "candidateSourcePins": [
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopFollowStateEvents.kt",
+      "sha256Bytes": "56e48a68d83346eaabf87ace13bc447eb6cfb3b602e460f9e7049127140ac123"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicTimeline.kt",
+      "sha256Bytes": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3"
+    },
+    {
+      "path": "candidate\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicUsersState.kt",
+      "sha256Bytes": "9e580edd0797eb417fb5077bc6d0bfaa7a486f40deec953a97d4e6c2a31937c0"
+    },
+    {
+      "path": "candidate\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9"
+    },
+    {
+      "path": "candidate\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "42739fdc6184399bde9349d9995e06fc36c0c8b67191aad03ea8d64f51ddcdee"
+    },
+    {
+      "path": "candidate\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096"
+    },
+    {
+      "path": "candidate\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f"
+    }
+  ],
+  "originalSourcePins": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a",
+      "matchesAlpha9": true,
+      "sha256Bytes": "74abbdb8d4aab4a82333bc5ab14da2948e76a4e432884101292033ee635dee25"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "gitBlob": "d3566c26a7e063f3b629c822a5abfdf5deecd9d1",
+      "matchesAlpha9": true,
+      "sha256Bytes": "38b64ee1fda0c7aaf619a6d4f0677fae3bdab814f4fa8355bcdf015ae8cf416a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "gitBlob": "441b4120a7e7522d468385b98a5cbb563fa37910",
+      "matchesAlpha9": true,
+      "sha256Bytes": "15e64c779c76bd39a2b26e2e8cfa0dc57ba17fe3741bae1ae5b40cc4a9344eb5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicIncrementalRefreshPolicy.kt",
+      "gitBlob": "284849f7ee6e5de757fcb893c289afc7c6115851",
+      "matchesAlpha9": true,
+      "sha256Bytes": "3bef0179a609ce8021e7232cd6eeef4bc26f5abce822499bb9f35ea4708a9bb6"
+    }
+  ],
+  "extractionReceiptSha256Bytes": "22229102e2c341fbbf35881ec4767cbdb4506e863823d45cb9504a7cc2873996",
+  "sourceFindings": [
+    {
+      "source": "DesktopSocialRepository.kt:99-139 / DesktopFollowStateEvents.kt:17-38",
+      "finding": "The owner stamp is captured before queueing the mutation mutex. Guest, self, invalid and retired queued owners cannot send. Existing SessionStore/client remain the account authority; owner-bound cookie operations and application/network interception reject old epochs. Await cancellation and retired epochs cannot publish confirmation."
+    },
+    {
+      "source": "DesktopDynamicCardSession.kt:42-47 / DesktopDynamicCardStateRegistry.kt:58-80 / DesktopDynamicTimeline.kt:49-54",
+      "finding": "The collector checks owned epoch; registry checks the complete captured owner atomically. Existing Users and home timeline types all/video/pgc/article are reduced; Space/Topic/detail timelines are excluded. Only currentAll may persist through the original Root cache actor; no registry item/cache copy is introduced."
+    },
+    {
+      "source": "DesktopDynamicTimeline.kt:66-101 / DesktopDynamicUsersState.kt:130-183,237-249",
+      "finding": "Follow revisions reject pre-confirmation feed, selected-UP, live and following hydration responses. Each original pagination checkpoint/restore runs under its existing request mutex; stale success/failure/cancellation restores the sole original cursor before a later request. Transient checkpoints do not become another cursor, item or cache authority."
+    },
+    {
+      "source": "DesktopOriginalDynamicTimelineRepository.kt:17-21 / DesktopOriginalDynamicUserRepository.kt:11-14",
+      "finding": "Independently diffed against baseline-byte-pinned actual generated sources: each repository differs only by the declared checkpoint/restore additions. Original fetch loops, builders, retry and pagination bodies remain unchanged."
+    }
+  ],
+  "queueContract": {
+    "capacity": 32,
+    "replay": 0,
+    "source": "DesktopFollowStateEvents.kt:14,33-38",
+    "fullQueue": "Original tryEmit(false) is ignored: one confirmed backend mutation still returns success and notification can drop; it never becomes an artificial backend failure or triggers a transport retry.",
+    "noSubscriber": "Original SharedFlow has no replay; events emitted without subscribers are not delivered to a future subscriber.",
+    "actualFresh08Assertions": [
+      "full buffer plus actual Social/Retrofit one POST, caller success and missing notification",
+      "no subscriber first() timeout verifies no replay"
+    ],
+    "previous07QueueThrowsSemanticsNotAccepted": true
+  },
+  "evidenceScope": {
+    "actualRetrofitAndExistingSessionRegistryModelsCache": true,
+    "syntheticTerminalTransport": true,
+    "productionMainIntegrated": false,
+    "realHTTP": false,
+    "realAccount": false,
+    "HWND": false,
+    "package": false,
+    "reviewerRanFixture": false,
+    "candidateOrExistingEvidenceModified": false
+  },
+  "payloadLocation": "Reviewer-owned additive protocol/follow-observer-review08; outside frozen comment175/detail194 and follow candidate artifacts."
+}

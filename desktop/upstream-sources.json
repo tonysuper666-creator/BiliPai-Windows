@@ -1718,7 +1718,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
       "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
       "features": [
-        "discovery"
+        "discovery",
+        "dynamic-follow-observer-parity"
       ],
       "mode": "policy-extract"
     },
@@ -3740,8 +3741,9 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-home-dynamic-parity",
-        "settings-dynamic-tabs-parity"
+        "dynamic-follow-observer-parity",
+        "settings-dynamic-tabs-parity",
+        "settings-home-dynamic-parity"
       ],
       "sha256": "49dec34dcbd22dd89f1468e18b87e99e309ff646badc836174b81065d39bff0c"
     },
@@ -3757,9 +3759,10 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-home-dynamic-parity",
+        "dynamic-editor-detail-parity",
+        "dynamic-follow-observer-parity",
         "settings-dynamic-tabs-parity",
-        "dynamic-editor-detail-parity"
+        "settings-home-dynamic-parity"
       ],
       "sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
     },

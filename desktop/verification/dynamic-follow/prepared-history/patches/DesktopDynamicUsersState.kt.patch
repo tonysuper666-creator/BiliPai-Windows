@@ -1,0 +1,102 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt
+@@ -5,6 +5,7 @@
+ import com.android.purebilibili.data.repository.DesktopOriginalDynamicUserRepository
+ import com.android.purebilibili.feature.dynamic.*
+ import com.bilipai.desktop.settings.DesktopDynamicTabsPreferences
++import kotlinx.collections.immutable.toImmutableList
+ import kotlinx.coroutines.*
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+@@ -51,6 +52,8 @@
+     private var followingsFullyLoaded=false
+     private var completeFollowingsLoadRequested=false
+     private var lastFollowingsLoadMs=0L
++    @Volatile private var followStateRevision=0L
++    private var followingsRefreshRequested=false
+     private val ownedJobs=ConcurrentHashMap.newKeySet<Job>()
+     private val requests=Mutex()
+     private val original=DesktopOriginalDynamicUserRepository(requestPage){owned()}
+@@ -112,9 +115,35 @@
+         val unreadJob=launchOwned(this){loadUnreadUsers()}
+         joinAll(following,liveJob,unreadJob)
+     }
++    fun applyFollowingConfirmed() {
++        if(!owned())return
++        followStateRevision++
++        followingsFullyLoaded=false
++        lastFollowingsLoadMs=0L
++        requestFollowingsRefreshIfStale()
++    }
++    private fun requestFollowingsRefreshIfStale() {
++        if(!owned()||!shouldReloadFollowings(nowMs=nowMs(),lastLoadMs=lastFollowingsLoadMs))return
++        if(isFollowingsLoading){followingsRefreshRequested=true;return}
++        launchOwned{loadAllFollowings(force=true,pageLimit=resolveDynamicFollowingsPageLimit(false))}
++    }
++    fun applyAuthorUnfollow(authorMid:Long) {
++        if(!owned()||authorMid<=0L)return
++        followStateRevision++
++        followings=followings.filterNot{it.mid==authorMid}
++        live=live.filterNot{it.uid==authorMid}
++        val reduced=resolveDynamicStateAfterAuthorUnfollow(DynamicUiState(
++            items=dynamics.toImmutableList(),userItems=userItems.toImmutableList()),authorMid)
++        dynamics=reduced.items
++        userItems=reduced.userItems
++        if(selectedUid==authorMid)selectUser(null)
++        users=resolveFollowedUsersAfterAuthorUnfollow(users,authorMid)
++        rebuild()
++    }
+     private suspend fun loadLiveUsers(){
+         if(!owned())return
+-        try{val rows=liveRooms();currentCoroutineContext().ensureActive();if(owned()){live=rows;rebuild()}}
++        val revision=followStateRevision
++        try{val rows=liveRooms();currentCoroutineContext().ensureActive();if(owned()&&revision==followStateRevision){live=rows;rebuild()}}
+             catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
+     }
+     private suspend fun loadUnreadUsers(){
+@@ -128,6 +157,7 @@
+         val now=nowMs()
+         if(!force&&!shouldReloadFollowings(nowMs=now,lastLoadMs=lastFollowingsLoadMs))return
+         isFollowingsLoading=true
++        val revision=followStateRevision
+         try {
+             val collected=mutableListOf<FollowingUser>()
+             var reachedEnd=false
+@@ -139,11 +169,14 @@
+                 collected+=rows
+                 if(hasLoadedAllDynamicFollowings(rows.size,collected.size,data.total)){reachedEnd=true;break}
+             }
+-            if(owned()){followings=collected;followingsFullyLoaded=reachedEnd;lastFollowingsLoadMs=now;followingsError=null;rebuild()}
+-        }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){if(owned())followingsError=error}
++            if(owned()&&revision==followStateRevision){followings=collected;followingsFullyLoaded=reachedEnd;lastFollowingsLoadMs=now;followingsError=null;rebuild()}
++        }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){if(owned()&&revision==followStateRevision)followingsError=error}
+         finally {
+             isFollowingsLoading=false
+-            if(owned()&&completeFollowingsLoadRequested&&!followingsFullyLoaded){
++            if(owned()&&followingsRefreshRequested){
++                followingsRefreshRequested=false
++                launchOwned{loadAllFollowings(force=true,pageLimit=resolveDynamicFollowingsPageLimit(false))}
++            } else if(owned()&&completeFollowingsLoadRequested&&!followingsFullyLoaded){
+                 completeFollowingsLoadRequested=false
+                 launchOwned{loadAllFollowings(force=true,pageLimit=null)}
+             }
+@@ -203,14 +236,17 @@
+     }
+     private suspend fun loadUser(refresh:Boolean,uid:Long,token:Long)=requests.withLock {
+         if(!owned()||!shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))return@withLock
++        val revision=followStateRevision
++        val paginationBefore=original.checkpointForFollowChange(uid)
+         try {
+             val rows=original.getUserDynamicFeed(uid,refresh).getOrThrow();currentCoroutineContext().ensureActive()
+             if(!owned()||!shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))return@withLock
++            if(revision!=followStateRevision)return@withLock
+             // Original ViewModel appends remote rows; local/remote deduplication belongs to its visible-items policy.
+             userItems=if(refresh)rows else userItems+rows;hasUserMore=original.hasMore(uid);userError=null
+         }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){
+-            if(owned()&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userError=error
+-        }
++            if(owned()&&revision==followStateRevision&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userError=error
++        }finally{if(revision!=followStateRevision)original.restoreAfterFollowChange(uid,paginationBefore)}
+     }
+     private fun clearSelection(){userJob?.cancel();requestToken++;selectedUid=null;userItems=emptyList();userLoading=false;userError=null;hasUserMore=true}
+     fun close(){if(closed)return;closed=true;requestToken++;ownedJobs.toList().forEach{it.cancel()}}

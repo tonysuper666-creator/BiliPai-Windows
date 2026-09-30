@@ -1,0 +1,23 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt
+@@ -11,6 +11,7 @@
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
++import kotlinx.coroutines.flow.collect
+ 
+ /** One page/credential owner for the original singleton catalog and like gate.
+  * Cards keep their own cancellable tasks; disposing one card never retires this
+@@ -38,6 +39,12 @@
+     fun isOwned(): Boolean = alive.get() && stillOwned() && repository.sessionEpoch == expectedEpoch
+     fun matches(candidate: DesktopRepository, epoch: Long): Boolean =
+         candidate === repository && epoch == expectedEpoch && isOwned()
++    /** Root's epoch effect owns collection; this session and registry own no feed copies. */
++    suspend fun observeFollowStateChanges(registry: DesktopDynamicCardStateRegistry) {
++        repository.followStateEvents.changes.collect { event ->
++            if (isOwned() && event.owner.epoch == expectedEpoch) registry.applyFollowStateChange(event)
++        }
++    }
+     override fun close() { alive.set(false) }
+ }
+ 

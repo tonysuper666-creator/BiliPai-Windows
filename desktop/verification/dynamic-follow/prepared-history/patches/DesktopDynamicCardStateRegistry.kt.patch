@@ -1,0 +1,38 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt
+@@ -7,6 +7,7 @@
+ import com.android.purebilibili.feature.dynamic.components.unfoldRelatedDynamicItems
+ import com.bilipai.desktop.data.DesktopDynamicCache
+ import com.bilipai.desktop.data.DesktopDynamicCacheSessionGuard
++import com.bilipai.desktop.data.DesktopOwnedFollowStateChange
+ import java.lang.ref.WeakReference
+ import java.util.concurrent.atomic.AtomicBoolean
+ 
+@@ -51,6 +52,27 @@
+         alive.get() && stillOwned() && currentAll?.get() === model
+     }
+ 
++    /** Original home ViewModel scope only; Space/Topic/detail owners are intentionally excluded. */
++    fun applyFollowStateChange(event: DesktopOwnedFollowStateChange) {
++        val captured = owner ?: return
++        if (event.owner != captured || event.change.mid <= 0L) return
++        guard.withCurrentDynamicCacheOwner(captured) {
++            if (!alive.get() || !stillOwned()) return@withCurrentDynamicCacheOwner
++            val active = synchronized(models) {
++                models.removeAll { it.get() == null }
++                models.mapNotNull { it.get() }
++            }
++            if (event.change.isFollowing) {
++                active.filterIsInstance<DesktopDynamicUsersState>().forEach { it.applyFollowingConfirmed() }
++            } else {
++                active.filterIsInstance<DesktopDynamicTimelineState>().forEach { it.applyAuthorUnfollow(event.change.mid) }
++                active.filterIsInstance<DesktopDynamicUsersState>().forEach { it.applyAuthorUnfollow(event.change.mid) }
++                // Original ViewModel saves even an empty All page. The sole Root cache actor still writes it.
++                synchronized(models) { currentAll?.get() }?.persistCurrentItems()
++            }
++        }
++    }
++
+     private fun mutate(transform: (List<DynamicItem>) -> List<DynamicItem>) {
+         val captured = owner ?: return
+         guard.withCurrentDynamicCacheOwner(captured) {

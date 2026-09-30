@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "producerInputs": [
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "167b329ed3215528f1507c532ed70d14809aaf89b83559513916de68a29cf4d0",
+      "preparedSha256Bytes": "181b7253d78443fed4351dffdf287f461ee62196ae7c0f8dd842a6e05381e66a",
+      "onlyAddedCursorCheckpointMethods": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "6c9363815b9974c4d132fdee04cfccdef78dbf284ddaa7adafd0e256b831497e",
+      "preparedSha256Bytes": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "onlyAddedCursorCheckpointMethods": true
+    }
+  ],
+  "originalInventory": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "mode": "policy-extract",
+      "features": [
+        "dynamic-follow-observer-parity"
+      ],
+      "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "dynamic-follow-observer-parity"
+      ],
+      "sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "dynamic-follow-observer-parity"
+      ],
+      "sha256": "49dec34dcbd22dd89f1468e18b87e99e309ff646badc836174b81065d39bff0c"
+    }
+  ],
+  "generatedChecks": [
+    {
+      "path": "tool-generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "1f7c422940f6fdb7a889f1a74cb6342f896a5cd0309dcc9255af7009a349b673",
+      "compiledCandidateBodySha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "sameBody": true
+    },
+    {
+      "path": "tool-generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "ec09199e5d3b4d9058b61aa7db993af7d2abde97a498e94e71c17af90bc5b36d",
+      "compiledCandidateBodySha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "sameBody": true
+    }
+  ],
+  "noMainOrSharedGradle": true
+}

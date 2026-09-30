@@ -1,0 +1,42 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "sha256Bytes": "06452c52ad5fd5ff280f7b1f05f023877995f6180722495c074a442af99e0677",
+    "sha256Lf": "eff41733c4f55d51c752e81f82d68c28cbcfa3180754a7cb509eb18c27e0aaeb"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+    "sha256Bytes": "4950b9fa13382a3f8768abaa41df6a43228b6d782216d443f384324738bcd7a9",
+    "sha256Lf": "4950b9fa13382a3f8768abaa41df6a43228b6d782216d443f384324738bcd7a9"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+    "sha256Bytes": "f6e3b6db845c645ccdc321c93fb130cbfe18f33f5644face5a1aa356b10634e3",
+    "sha256Lf": "f6e3b6db845c645ccdc321c93fb130cbfe18f33f5644face5a1aa356b10634e3"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+    "sha256Bytes": "81d15082f01120e0ad355b675d31d3325debbc1acba5c18582838b9ce5cd4d59",
+    "sha256Lf": "81d15082f01120e0ad355b675d31d3325debbc1acba5c18582838b9ce5cd4d59"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+    "sha256Bytes": "a01fc5795eb6cbe5c581f6f2b32a86cdd4bafe2ed76d6aaadaf793c597dc68ed",
+    "sha256Lf": "a01fc5795eb6cbe5c581f6f2b32a86cdd4bafe2ed76d6aaadaf793c597dc68ed"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+    "sha256Bytes": "5b592bc739285148c5ab172842e0cce9db8f95aaa82d765a1099b207df775730",
+    "sha256Lf": "5b592bc739285148c5ab172842e0cce9db8f95aaa82d765a1099b207df775730"
+  },
+  {
+    "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+    "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94",
+    "sha256Lf": "1194db12c36a8a6edaee2891a91129430e964d5d454ae58a1d2982c4622e5b1a"
+  },
+  {
+    "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+    "sha256Bytes": "dd4f6ee0bd47530bd3b7f97dc552f8f7bcd5e9405134cdc0f5321ba4128b62a2",
+    "sha256Lf": "219973cfb0390582048308c4558efd32b200c7ec8c1e2a9027e2688bfb7abcce"
+  }
+]

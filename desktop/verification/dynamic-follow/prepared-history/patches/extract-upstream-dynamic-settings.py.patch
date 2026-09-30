@@ -1,0 +1,14 @@
+--- desktop/tools/extract-upstream-dynamic-settings.py
++++ desktop/tools/extract-upstream-dynamic-settings.py
+@@ -126,6 +126,11 @@
+     private val stillOwned: ()->Boolean = {true},
+ ) {
+     private val feedPagination=DynamicFeedPaginationRegistry()
++    /** One request's transient checkpoint; the original registry remains the only cursor owner. */
++    fun checkpointForFollowChange(type:String)=feedPagination.snapshot(DynamicFeedScope.DYNAMIC_SCREEN,type)
++    fun restoreAfterFollowChange(type:String,before:DynamicPaginationState) {
++        feedPagination.updateState(DynamicFeedScope.DYNAMIC_SCREEN,type,before)
++    }
+     private suspend fun getPage(type:String,offset:String,updateBaseline:String):DynamicFeedResponse {
+         currentCoroutineContext().ensureActive()
+         if(!stillOwned()) throw kotlinx.coroutines.CancellationException("Dynamic source retired")

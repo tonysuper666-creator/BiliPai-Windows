@@ -1,0 +1,53 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt
+@@ -35,6 +35,7 @@
+         else DynamicTimelinePageState());private set
+     var initialized by mutableStateOf(false);private set
+     internal var editorRefreshRevision=0L
++    @Volatile private var followStateRevision=0L
+     var busy by mutableStateOf(false);private set
+     var error by mutableStateOf<Throwable?>(null);private set
+     val isAllTimeline: Boolean get() = type == "all"
+@@ -44,6 +45,12 @@
+         val updated = transform(page.items)
+         if (updated == page.items) return
+         page = page.copy(items = updated.toImmutableList())
++    }
++    fun applyAuthorUnfollow(authorMid:Long) {
++        if(!stillOwned()||authorMid<=0L||type !in setOf("all","video","pgc","article"))return
++        followStateRevision++
++        val originalState=DynamicUiState(items=page.items,timelineRequestType=type)
++        page=page.copy(items=resolveDynamicStateAfterAuthorUnfollow(originalState,authorMid).items)
+     }
+     suspend fun initialize(incrementalRefresh:Boolean):Boolean=requests.withLock {
+         if(initialized||error!=null)return@withLock false
+@@ -59,12 +66,20 @@
+     private suspend fun fetchLocked(refresh:Boolean,incrementalRefresh:Boolean):Boolean {
+         if(!stillOwned())return false
+         val snapshot=page
++        val followRevision=followStateRevision
++        val paginationBefore=original.checkpointForFollowChange(type)
+         busy=true;error=null
+         page=resolveDynamicTimelinePageForLoadStart(snapshot,refresh,true)
+         try {
+             val result=original.getDynamicFeed(refresh=refresh,type=type,incrementalRefresh=incrementalRefresh).getOrThrow()
+             currentCoroutineContext().ensureActive()
+             if(!stillOwned())return false
++            if(followRevision!=followStateRevision) {
++                // A pre-confirmation response cannot undo the accepted local reducer.
++                original.restoreAfterFollowChange(type,paginationBefore)
++                page=snapshot.copy(items=page.items)
++                return false
++            }
+             var successPage=resolveDynamicTimelinePageAfterSuccess(page,result.items,refresh,incrementalRefresh,result.hasMore)
+             // Same post-refresh synchronization as original DynamicViewModel; a replacement
+             // must not continue paging through the retired tail of the old list.
+@@ -83,7 +98,7 @@
+         }catch(failure:Exception){
+             if(stillOwned()){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
+             return false
+-        }finally{busy=false}
++        }finally{if(followRevision!=followStateRevision)original.restoreAfterFollowChange(type,paginationBefore);busy=false}
+     }
+ }
+ 

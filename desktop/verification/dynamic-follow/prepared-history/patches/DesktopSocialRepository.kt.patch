@@ -1,0 +1,68 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt
+@@ -5,6 +5,13 @@
+ import com.android.purebilibili.data.model.response.SimpleApiResponse
+ import com.android.purebilibili.data.model.response.FavoriteData
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
++import com.android.purebilibili.data.repository.FollowStateChange
++import okhttp3.CookieJar
++import okhttp3.Cookie
++import okhttp3.HttpUrl
++import java.io.IOException
+ import kotlinx.coroutines.sync.Mutex
+ import kotlinx.coroutines.sync.withLock
+ import kotlinx.coroutines.withContext
+@@ -91,8 +98,49 @@
+ 
+     suspend fun setFollowing(mid: Long, follow: Boolean) {
+         require(mid > 0)
+-        require(repository.requireAccount().mid != mid) { "不能关注自己" }
+-        mutate { csrf -> check(api.modifyRelation(mid, if (follow) 1 else 2, csrf)) }
++        // Capture before queueing: another login of the same MID is a new authority.
++        val owner = repository.followStateEvents.requireOwner()
++        require(owner.mid != mid) { "不能关注自己" }
++        withContext(Dispatchers.IO) {
++            mutationMutex.withLock {
++                repository.followStateEvents.requireCurrent(owner)
++                repository.requireCsrf()
++                repository.ensureSession()
++                currentCoroutineContext().ensureActive()
++                repository.followStateEvents.requireCurrent(owner)
++                check(followingApi(owner).modifyRelation(mid, if (follow) 1 else 2, repository.requireCsrf()))
++                currentCoroutineContext().ensureActive()
++                repository.followStateEvents.confirm(owner, FollowStateChange(mid = mid, isFollowing = follow))
++            }
++        }
++    }
++
++    private fun followingApi(owner: DesktopDynamicCacheOwner): BilibiliApi {
++        val events=repository.followStateEvents
++        val originalJar=repository.httpClient.cookieJar
++        val ownerJar=object:CookieJar {
++            override fun loadForRequest(url:HttpUrl):List<Cookie> = events.withCurrent(owner) { originalJar.loadForRequest(url) }
++            override fun saveFromResponse(url:HttpUrl,cookies:List<Cookie>) {
++                // The SessionStore monitor atomically rejects retired-cookie response writes.
++                repository.dynamicCacheSessionGuard.withCurrentDynamicCacheOwner(owner) { originalJar.saveFromResponse(url,cookies) }
++            }
++        }
++        val client=repository.httpClient.newBuilder().retryOnConnectionFailure(false).cookieJar(ownerJar).apply {
++            interceptors().add(0,okhttp3.Interceptor { chain ->
++                if(!events.isCurrent(owner))throw IOException("Follow owner retired")
++                val response=chain.proceed(chain.request())
++                if(!events.isCurrent(owner)){response.close();throw IOException("Follow owner retired")}
++                response
++            })
++            addNetworkInterceptor { chain ->
++                if(!events.isCurrent(owner))throw IOException("Follow owner retired")
++                val response=chain.proceed(chain.request())
++                if(!events.isCurrent(owner)){response.close();throw IOException("Follow owner retired")}
++                response
++            }
++        }.build()
++        return Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client)
++            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(BilibiliApi::class.java)
+     }
+ 
+     suspend fun removeBlacklist(mid: Long) {

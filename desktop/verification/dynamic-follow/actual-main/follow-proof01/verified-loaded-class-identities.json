@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "className": "com.bilipai.desktop.data.DesktopRepository",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "9246ada03ac958257d869820bcb2316423db90b9c0fc9e7b60198a95ecaaeb92",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSocialRepository",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "23466930aabfe1ce8e73539a051ea7e467955fb05c2dac5b59e8817252a68f2e",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "12edb93aa21b4ec7836e9f524c12f89871e6f9161157d1ad407493620eb11230",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "db8b9e7892a23ae2a6bd95e1ce6012717103d88c7200364a04bbf5ca4b933e31",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "cfe49e92e42f4802a1546cbc76e4d79c759affea92813a0e15c3f4b2540ab184",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "8bf7897eb0ce53f51520aa4037af541f5f7f3ce40a32fdf00d3ffef995e8eee3",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCache",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "85dc3235debf512e1ae656572401140849278cf3b61646991bab4f9b235a443b",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.android.purebilibili.data.model.response.DynamicItem",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "d3cb029b27146e49d5445e603e1d6b1b735b42bcddc4a5fc53da5d928056b8a2",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopFollowStateEvents",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "62b6769b92c69867e0104fb067b08ad0a988043591d5f163f82b607ac518d214",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.android.purebilibili.data.repository.FollowStateChange",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "a951885186d06677871d3096d3a2848d261d8177201ec84080717f92e688f009",
+      "preparedOverride": false
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.DynamicUiState",
+      "expectedCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-follow-main-integration\\main-product-snapshot-01\\main-kotlin.jar",
+      "sha256Bytes": "b0fc01ba7a7c146228be994216f587ed29336ab4769a6fcb266bf834b6d0f55c",
+      "preparedOverride": false
+    }
+  ]
+}

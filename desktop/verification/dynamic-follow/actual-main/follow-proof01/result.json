@@ -1,0 +1,170 @@
+{
+    "passed": true,
+    "assertions": 92,
+    "cases": [
+        {
+            "name": "exact-original-reducer",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "unfollow-home-scope-cache",
+            "passed": true,
+            "assertions": 20
+        },
+        {
+            "name": "follow-ttl-refresh-success-only",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "canceled-success-no-event",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "same-mid-new-epoch-late-response",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "queued-old-owner-no-post",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "closed-session-and-registry",
+            "passed": true,
+            "assertions": 2
+        },
+        {
+            "name": "pending-home-response-success",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "pending-home-response-failure",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "pending-home-response-cancel",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "pending-followings-live-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "following-while-hydration-pending",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "pending-selected-up-unfollow",
+            "passed": true,
+            "assertions": 3
+        },
+        {
+            "name": "pending-other-up-cursor-restored",
+            "passed": true,
+            "assertions": 6
+        },
+        {
+            "name": "current-all-is-only-cache-owner",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "guest-csrf-self-invalid-no-http",
+            "passed": true,
+            "assertions": 5
+        },
+        {
+            "name": "bounded-event-notification-preserves-server-success",
+            "passed": true,
+            "assertions": 4
+        },
+        {
+            "name": "original-no-subscriber-no-replay",
+            "passed": true,
+            "assertions": 2
+        }
+    ],
+    "modelOwnerThread": "follow-fixture-model-owner",
+    "socketGuardInstalled": true,
+    "outsideHTTP": false,
+    "MainIntegrated": false,
+    "HWND": false,
+    "package": false,
+    "fixtureTransport": "reflection replaces Repository client transport + visitor readiness only; actual Retrofit route, checks, event/session/registry/models/cache",
+    "classSources": [
+        {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "9246ada03ac958257d869820bcb2316423db90b9c0fc9e7b60198a95ecaaeb92"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSocialRepository",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "23466930aabfe1ce8e73539a051ea7e467955fb05c2dac5b59e8817252a68f2e"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "12edb93aa21b4ec7836e9f524c12f89871e6f9161157d1ad407493620eb11230"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicCardStateRegistry",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "db8b9e7892a23ae2a6bd95e1ce6012717103d88c7200364a04bbf5ca4b933e31"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "cfe49e92e42f4802a1546cbc76e4d79c759affea92813a0e15c3f4b2540ab184"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "8bf7897eb0ce53f51520aa4037af541f5f7f3ce40a32fdf00d3ffef995e8eee3"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopDynamicCache",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "85dc3235debf512e1ae656572401140849278cf3b61646991bab4f9b235a443b"
+        },
+        {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.DynamicItem",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "d3cb029b27146e49d5445e603e1d6b1b735b42bcddc4a5fc53da5d928056b8a2"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopFollowStateEvents",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "62b6769b92c69867e0104fb067b08ad0a988043591d5f163f82b607ac518d214"
+        },
+        {
+            "class": "com.android.purebilibili.data.repository.FollowStateChange",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "a951885186d06677871d3096d3a2848d261d8177201ec84080717f92e688f009"
+        },
+        {
+            "class": "com.android.purebilibili.feature.dynamic.DynamicUiState",
+            "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/dynamic-follow-main-integration/main-product-snapshot-01/main-kotlin.jar",
+            "resourceSha256Bytes": "b0fc01ba7a7c146228be994216f587ed29336ab4769a6fcb266bf834b6d0f55c"
+        }
+    ]
+}

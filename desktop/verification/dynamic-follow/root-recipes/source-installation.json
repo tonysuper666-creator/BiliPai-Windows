@@ -1,0 +1,36 @@
+{
+  "MainSourceInstalled": true,
+  "baseCommit": "06fd1d6fde820c859ed7356d64ba5aaac6d5ed28",
+  "verifiedRawFiles": 237,
+  "frozenHandoffSha256Bytes": "fe16610024638f562846e409c549f72542cfb79abed50bf678a2998dbf3d0635",
+  "reviewFinalSha256Bytes": "4ef0715c9441fb577db43013e44783c722a2660ec0ec316e21bc61f830f8541f",
+  "beforeRootPins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "cc7d60d52bd75b27c9a1bc287b69718ab983bd84eeb51479cc3d7079c0dc9ff4",
+      "sha256Lf": "cc7d60d52bd75b27c9a1bc287b69718ab983bd84eeb51479cc3d7079c0dc9ff4"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "4c2689498eae9d022d241f9ec27ec6274f176c9e6209e4281d92ccf01748c30c",
+      "sha256Lf": "4c2689498eae9d022d241f9ec27ec6274f176c9e6209e4281d92ccf01748c30c"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "9ebfca49843e787553ede1c2f1c0b7b3a40b8927e2b22ebd151d2756f8016187",
+      "sha256Lf": "9ebfca49843e787553ede1c2f1c0b7b3a40b8927e2b22ebd151d2756f8016187"
+    }
+  ],
+  "preparedKotlinSources": 7,
+  "preparedProducers": 3,
+  "originalInventoryEntries": 3,
+  "newSourceIdentities": [],
+  "sourceCountBefore": 588,
+  "sourceCountAfter": 588,
+  "originalModesFeaturesPreserved": true,
+  "rootEpochEffectInstalled": true,
+  "communityCurrentAllSoleCacheSeamsPreserved": true,
+  "MainCompilationPending": true,
+  "realAccountOrPackageAccepted": false,
+  "newDesktopDeployment": false
+}

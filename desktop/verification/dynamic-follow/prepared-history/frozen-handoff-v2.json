@@ -1,0 +1,1226 @@
+{
+  "frozen": true,
+  "completeExtendedPathEnumeration": true,
+  "kind": "prepared-original-dynamic-follow-observer-parity",
+  "preparedFollowObserverPassed": true,
+  "MainIntegrated": false,
+  "DesktopDeployed": false,
+  "finalAcceptedRun": "runs/08",
+  "actualMainBaselineSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "orderedRuntimeCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "reviewFinalSha256Bytes": "4ef0715c9441fb577db43013e44783c722a2660ec0ec316e21bc61f830f8541f",
+  "rootIntegrationChecklistSha256Bytes": "8bfc1bad9a4f5e522472c5242be2197e54cf68f02b6fd62a9a17e37e52c5d3cc",
+  "supersededPartialRawManifestSha256Bytes": "7b7ad3fdc43fbc18ece03644be567f41625929cb8350556ba5b54f7ac2d45654",
+  "previousRawBytesPreserved": true,
+  "additionalRawPaths": [
+    "baseline/desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+    "baseline/desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+    "finalize-evidence-v2.py",
+    "frozen-handoff.json",
+    "README-freeze-v2.md",
+    "review-final-v2.json",
+    "runs/02/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/03/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/04/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/05/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+    "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+    "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+    "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+    "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt"
+  ],
+  "files": [
+    {
+      "path": "baseline/desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94",
+      "bytes": 13902
+    },
+    {
+      "path": "baseline/desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "dd4f6ee0bd47530bd3b7f97dc552f8f7bcd5e9405134cdc0f5321ba4128b62a2",
+      "bytes": 5902
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "06452c52ad5fd5ff280f7b1f05f023877995f6180722495c074a442af99e0677",
+      "bytes": 35203
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "4950b9fa13382a3f8768abaa41df6a43228b6d782216d443f384324738bcd7a9",
+      "bytes": 7529
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "a01fc5795eb6cbe5c581f6f2b32a86cdd4bafe2ed76d6aaadaf793c597dc68ed",
+      "bytes": 2551
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "5b592bc739285148c5ab172842e0cce9db8f95aaa82d765a1099b207df775730",
+      "bytes": 3603
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "81d15082f01120e0ad355b675d31d3325debbc1acba5c18582838b9ce5cd4d59",
+      "bytes": 8884
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "f6e3b6db845c645ccdc321c93fb130cbfe18f33f5644face5a1aa356b10634e3",
+      "bytes": 12256
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "167b329ed3215528f1507c532ed70d14809aaf89b83559513916de68a29cf4d0",
+      "bytes": 12637
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "6c9363815b9974c4d132fdee04cfccdef78dbf284ddaa7adafd0e256b831497e",
+      "bytes": 16210
+    },
+    {
+      "path": "baseline-pins.json",
+      "sha256Bytes": "872866efd2d1d16171194a4a436e98bae27c75d29a193969b4c03fbafea713af",
+      "bytes": 2251
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "56e48a68d83346eaabf87ace13bc447eb6cfb3b602e460f9e7049127140ac123",
+      "bytes": 1887
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3",
+      "bytes": 9816
+    },
+    {
+      "path": "candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "9e580edd0797eb417fb5077bc6d0bfaa7a486f40deec953a97d4e6c2a31937c0",
+      "bytes": 14247
+    },
+    {
+      "path": "candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9",
+      "bytes": 13936
+    },
+    {
+      "path": "candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "42739fdc6184399bde9349d9995e06fc36c0c8b67191aad03ea8d64f51ddcdee",
+      "bytes": 6029
+    },
+    {
+      "path": "candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "extracted/applyAuthorUnfollow.kt",
+      "sha256Bytes": "593d4eefaffa191663ede02898ce078780d4a68d2f74cd992fd5ecc3fe3a8b9c",
+      "bytes": 748
+    },
+    {
+      "path": "extracted/followUser.kt",
+      "sha256Bytes": "2989fa592862232ae397050b257bb388693a5cf254458f1b2d7c24efd2dd0ad5",
+      "bytes": 1501
+    },
+    {
+      "path": "extracted/observeFollowStateChanges.kt",
+      "sha256Bytes": "987d0a74ca65426e28e9a2ea28c3b2829f294f5dc1a28ac9b8b485c995db4da9",
+      "bytes": 463
+    },
+    {
+      "path": "extracted/requestFollowingsRefreshIfStale.kt",
+      "sha256Bytes": "5ef15fa96e54cbcc386c08b4426972722a6723d20e084c58744e6ab361a7f402",
+      "bytes": 281
+    },
+    {
+      "path": "extraction-receipt.json",
+      "sha256Bytes": "22229102e2c341fbbf35881ec4767cbdb4506e863823d45cb9504a7cc2873996",
+      "bytes": 2902
+    },
+    {
+      "path": "finalize-evidence-v2.py",
+      "sha256Bytes": "0cf764bce0beb9b3aa77f8d83dda99246d47671bc24bd90a6b46b0a36e292d08",
+      "bytes": 3035
+    },
+    {
+      "path": "finalize-evidence.py",
+      "sha256Bytes": "e031de51fe0ba2db49c6753bbdc8de4e073f94a5d338c7ecd4f15d9c41134e7f",
+      "bytes": 6218
+    },
+    {
+      "path": "FollowObserverFixture.kt",
+      "sha256Bytes": "d373ba88ef22fc53c88c5bd083bcb0b84cc2999b83e6f1ff9c73d08018189c42",
+      "bytes": 26058
+    },
+    {
+      "path": "frozen-handoff.json",
+      "sha256Bytes": "7b7ad3fdc43fbc18ece03644be567f41625929cb8350556ba5b54f7ac2d45654",
+      "bytes": 45040
+    },
+    {
+      "path": "independent-review.json",
+      "sha256Bytes": "51e75b109536cc217881c38b3fe88a4c1abcf4b7c048b8dea7d3cc0898f4422f",
+      "bytes": 8256
+    },
+    {
+      "path": "original/app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256Bytes": "74abbdb8d4aab4a82333bc5ab14da2948e76a4e432884101292033ee635dee25",
+      "bytes": 38899
+    },
+    {
+      "path": "original/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicIncrementalRefreshPolicy.kt",
+      "sha256Bytes": "3bef0179a609ce8021e7232cd6eeef4bc26f5abce822499bb9f35ea4708a9bb6",
+      "bytes": 3657
+    },
+    {
+      "path": "original/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+      "sha256Bytes": "15e64c779c76bd39a2b26e2e8cfa0dc57ba17fe3741bae1ae5b40cc4a9344eb5",
+      "bytes": 27515
+    },
+    {
+      "path": "original/app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256Bytes": "38b64ee1fda0c7aaf619a6d4f0677fae3bdab814f4fa8355bcdf015ae8cf416a",
+      "bytes": 99389
+    },
+    {
+      "path": "patches/DesktopDynamicCardSession.kt.patch",
+      "sha256Bytes": "d955f4219ec75eb92c18b093f1a58b5e2a65b5dbe6ab01da63e4b078431c950e",
+      "bytes": 1203
+    },
+    {
+      "path": "patches/DesktopDynamicCardStateRegistry.kt.patch",
+      "sha256Bytes": "e8edc35f8aece256e2602a8d26bb7015784e393334e1b50389db8fc492554ce3",
+      "bytes": 2060
+    },
+    {
+      "path": "patches/DesktopDynamicTimeline.kt.patch",
+      "sha256Bytes": "45e064aacb609d9ca79aac5ca74979e6181ddecc30218bbde20e08d786a8535e",
+      "bytes": 2895
+    },
+    {
+      "path": "patches/DesktopDynamicUsersState.kt.patch",
+      "sha256Bytes": "7f9818c5aa00101db3e920d2b0264a83cb04450311c8f667f3f1253906223bcc",
+      "bytes": 6046
+    },
+    {
+      "path": "patches/DesktopOriginalDynamicTimelineRepository.kt.patch",
+      "sha256Bytes": "1bf5900599e7742726caa146398c76eee9857640de354b4f8ad52b8c3c5938db",
+      "bytes": 1031
+    },
+    {
+      "path": "patches/DesktopOriginalDynamicUserRepository.kt.patch",
+      "sha256Bytes": "31af05f7e60b7d2d17745e6404e7d84a101d772cbfdc59a22090a1667031c755",
+      "bytes": 910
+    },
+    {
+      "path": "patches/DesktopRepository.kt.patch",
+      "sha256Bytes": "d4feab61b0b4868bc68e99fc7e540bd6354927843cf6531ce0bbeac80c3653ae",
+      "bytes": 646
+    },
+    {
+      "path": "patches/DesktopSocialRepository.kt.patch",
+      "sha256Bytes": "c0bdbeeaac1502b66a407f78b63735f60ce8e05b05a9c7f1b140ecf5df16708d",
+      "bytes": 3696
+    },
+    {
+      "path": "patches/extract-upstream-dynamic-settings.py.patch",
+      "sha256Bytes": "d3b635332cec2b7497fa9538b8aa3821bf821541f598e813d64e418f4daf0dba",
+      "bytes": 883
+    },
+    {
+      "path": "patches/extract-upstream-dynamic-tabs.py.patch",
+      "sha256Bytes": "68731dc0554998cb467a2e44803b58e3c06a2d90be8a04cca51e792e28e41652",
+      "bytes": 772
+    },
+    {
+      "path": "prepare-candidate.py",
+      "sha256Bytes": "4d609a470edf7fa569f85ee7bddd268a2f8a6ca1cb85b745e7bf7c886f1b7a26",
+      "bytes": 18029
+    },
+    {
+      "path": "prepare-tools.py",
+      "sha256Bytes": "314f99168468dbbbd809eeebfff211e119c66a1661834ad1d34568a9375665d8",
+      "bytes": 3154
+    },
+    {
+      "path": "prepared-tool-receipt.json",
+      "sha256Bytes": "98609694f97e6581329941a89918a7a8402321b24bd13fa40d8842f114722053",
+      "bytes": 2414
+    },
+    {
+      "path": "prepared-tools/desktop/tools/extract-upstream-dynamic-follow.py",
+      "sha256Bytes": "23667cdb68fe7d3fda86f86e2df87647c0b885a58bd12b414ba2cbcbfeb04b0c",
+      "bytes": 2335
+    },
+    {
+      "path": "prepared-tools/desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "181b7253d78443fed4351dffdf287f461ee62196ae7c0f8dd842a6e05381e66a",
+      "bytes": 13010
+    },
+    {
+      "path": "prepared-tools/desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d",
+      "bytes": 16490
+    },
+    {
+      "path": "README-freeze-v2.md",
+      "sha256Bytes": "1301fb65b3207c183d115a584608554a39eaf54e71f3e1ac75d36befb72415ee",
+      "bytes": 959
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "ac905e902e47cd73a86f0b2bb032c1e61a8c2e1a6a440328d6cce652d9942fb7",
+      "bytes": 4791
+    },
+    {
+      "path": "review-final-v2.json",
+      "sha256Bytes": "4ef0715c9441fb577db43013e44783c722a2660ec0ec316e21bc61f830f8541f",
+      "bytes": 1652
+    },
+    {
+      "path": "review-final.json",
+      "sha256Bytes": "d672d890d7135c5419a06a248fba0c1a0f014000c9277dfa5ca62f4fff314378",
+      "bytes": 1366
+    },
+    {
+      "path": "root-integration-checklist.json",
+      "sha256Bytes": "8bfc1bad9a4f5e522472c5242be2197e54cf68f02b6fd62a9a17e37e52c5d3cc",
+      "bytes": 1704
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "a6b76c7d5a6d10700a2adff7f801a7b112af1a265a7ac71ef349897f2e4d444b",
+      "bytes": 6135
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "8f140296fd1db26cd25505ead20bb676fefb3bc4e9629df2e88ed1359763f1cb",
+      "bytes": 6955
+    },
+    {
+      "path": "runs/02/candidate.args",
+      "sha256Bytes": "43e2cd53afe1e61be6bdbee90f7af292d472ea16225da422721aa85f82914416",
+      "bytes": 24612
+    },
+    {
+      "path": "runs/02/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/02/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/02/declared-candidate-overrides.json",
+      "sha256Bytes": "8ba4baaea5d0544a30a2a1dbda49566734c31169c63f7f9dfdfd717adeb210ee",
+      "bytes": 24120
+    },
+    {
+      "path": "runs/02/fixture.args",
+      "sha256Bytes": "40e575189160c152d6a54308e1d3c0524608099360467deb3491bcd89d105ce1",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/02/fixture.log",
+      "sha256Bytes": "55f8092f06b176698c40f58e7381f592fe30a3aa12503b8d4e809c00575cf90d",
+      "bytes": 3394
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "5df7fce8d3e2d4081e2b75e5696400bcce2a203df72a53ba026c1175c359ee04",
+      "bytes": 1429
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "7f24cd67335cc51eabd243f83342d67d76b68781bb30585174b596c923f2766c",
+      "bytes": 8364
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "01bba58abf2f88b2c2132d09998c6aff2f73bc6ce345552c9f46624120057b3c",
+      "bytes": 9567
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "95ad3d23a0a73ca14866ba987012da7bc3031cacb51ef857bac9dc6aba86f6f8",
+      "bytes": 14009
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/02/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/02/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "3d556735eab8b4f0c73061229937be2ecaf82b0c7f0a4af28b92135a8b56d66f",
+      "bytes": 21430
+    },
+    {
+      "path": "runs/02/frozen-sources/run-proof.py",
+      "sha256Bytes": "1ad0eaa5b3562753b6edf8c228e3c593de1a824900b07afb2b1a7861e01efa23",
+      "bytes": 5832
+    },
+    {
+      "path": "runs/03/candidate.args",
+      "sha256Bytes": "2eebd1dd893230f59be7008f2f7e5b04b49418c0f8a10701b94cdb5bdd2ddb76",
+      "bytes": 24612
+    },
+    {
+      "path": "runs/03/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/03/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/03/declared-candidate-overrides.json",
+      "sha256Bytes": "64e0a8722a751826a43bb852cbdecdeb289ce81e0a5a7d8807b9726ad56cad99",
+      "bytes": 24548
+    },
+    {
+      "path": "runs/03/fixture.args",
+      "sha256Bytes": "e44672e078cde4e8acda3b10007747a31869feade895bf0db3c9c69028d3acef",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/03/fixture.log",
+      "sha256Bytes": "ff9c02eb6fbf6321c6de360eccae89a06c2cc3bf1854ea4d2c65845c1d7b901f",
+      "bytes": 1392
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "cc1a3bd7aec458eb9b898f8acdfcdc980d839101ed2643e3fa0cd9f6a1ae9c81",
+      "bytes": 1842
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "01bba58abf2f88b2c2132d09998c6aff2f73bc6ce345552c9f46624120057b3c",
+      "bytes": 9567
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "95ad3d23a0a73ca14866ba987012da7bc3031cacb51ef857bac9dc6aba86f6f8",
+      "bytes": 14009
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/03/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/03/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "3d556735eab8b4f0c73061229937be2ecaf82b0c7f0a4af28b92135a8b56d66f",
+      "bytes": 21430
+    },
+    {
+      "path": "runs/03/frozen-sources/run-proof.py",
+      "sha256Bytes": "21b8caee203d035f85c4f8800a79646510e1e63f6546ee28e3519305435cf581",
+      "bytes": 5832
+    },
+    {
+      "path": "runs/04/candidate.args",
+      "sha256Bytes": "70a68241f2448580b7cbfeb0b64d489543e518f98daf583cc0332224085434be",
+      "bytes": 24612
+    },
+    {
+      "path": "runs/04/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/04/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/04/declared-candidate-overrides.json",
+      "sha256Bytes": "64e0a8722a751826a43bb852cbdecdeb289ce81e0a5a7d8807b9726ad56cad99",
+      "bytes": 24548
+    },
+    {
+      "path": "runs/04/fixture-class-identities.json",
+      "sha256Bytes": "4b867fb56eb3e122542294d4727d163ec8fbb5939dddca6615dbab84243ceaa5",
+      "bytes": 10729
+    },
+    {
+      "path": "runs/04/fixture.args",
+      "sha256Bytes": "a7b523ba5982430869cdf044a4e69d6c0adacfab0299a09fa866d805155f8386",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/04/fixture.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "cc1a3bd7aec458eb9b898f8acdfcdc980d839101ed2643e3fa0cd9f6a1ae9c81",
+      "bytes": 1842
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "01bba58abf2f88b2c2132d09998c6aff2f73bc6ce345552c9f46624120057b3c",
+      "bytes": 9567
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "95ad3d23a0a73ca14866ba987012da7bc3031cacb51ef857bac9dc6aba86f6f8",
+      "bytes": 14009
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/04/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/04/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "8b9cfbfa08ac084ffab8570334ccd3648aff57f5875880a24a65920fb004bfee",
+      "bytes": 21434
+    },
+    {
+      "path": "runs/04/frozen-sources/run-proof.py",
+      "sha256Bytes": "21b8caee203d035f85c4f8800a79646510e1e63f6546ee28e3519305435cf581",
+      "bytes": 5832
+    },
+    {
+      "path": "runs/04/input-pins.json",
+      "sha256Bytes": "ae70a2483d3ad22019005175e6fec26f42b187e8363c90bbfbf14e767dbce05d",
+      "bytes": 36518
+    },
+    {
+      "path": "runs/04/own-process.json",
+      "sha256Bytes": "af198d20b783443a713db200db24a5d3589b548ef4ac24d4e56f821e891589ea",
+      "bytes": 19
+    },
+    {
+      "path": "runs/04/result.json",
+      "sha256Bytes": "24527e0d3747ff92cb9256585e42bba1be14a777d1957a3f4f3d189bd2c72e3c",
+      "bytes": 5977
+    },
+    {
+      "path": "runs/04/run.args",
+      "sha256Bytes": "93a796dd74fff163f826fc585fc5d20fe66d3f48045abefb284b53693df52f3a",
+      "bytes": 22653
+    },
+    {
+      "path": "runs/04/run.log",
+      "sha256Bytes": "3ec6d6e5b2df1f07541c6b862655069dc026197d680a2505d39eb565c586a699",
+      "bytes": 1079
+    },
+    {
+      "path": "runs/04/task-private-environment.json",
+      "sha256Bytes": "54b514be8ebef0e4f8a81878533095da95226e6e513550ed938c2e6ae01834de",
+      "bytes": 100
+    },
+    {
+      "path": "runs/04/timeout.json",
+      "sha256Bytes": "557a03b327890216f11e0cea1706ef785b3184ca7a244b9ebdf2693e2ba6f7f8",
+      "bytes": 27
+    },
+    {
+      "path": "runs/05/accepted-evidence.json",
+      "sha256Bytes": "defceaf721dd0bbc6e986646a70811039832abbf607752d8b14e1339148823bc",
+      "bytes": 683
+    },
+    {
+      "path": "runs/05/candidate.args",
+      "sha256Bytes": "164a5e07a4db12512b4b460bd5de87a6aaa41142a4dd06c6aadc48416485c405",
+      "bytes": 24612
+    },
+    {
+      "path": "runs/05/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/05/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/05/declared-candidate-overrides.json",
+      "sha256Bytes": "64e0a8722a751826a43bb852cbdecdeb289ce81e0a5a7d8807b9726ad56cad99",
+      "bytes": 24548
+    },
+    {
+      "path": "runs/05/fixture-class-identities.json",
+      "sha256Bytes": "12b42b8e9c3fb3d5755f985c29f0a7554d898fbb08f389ec052456a210e33b54",
+      "bytes": 10729
+    },
+    {
+      "path": "runs/05/fixture.args",
+      "sha256Bytes": "76f8ea95dfb0da7ccf1c9396987e63a4d9a41fdef283855c4968750a40754365",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/05/fixture.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "cc1a3bd7aec458eb9b898f8acdfcdc980d839101ed2643e3fa0cd9f6a1ae9c81",
+      "bytes": 1842
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "01bba58abf2f88b2c2132d09998c6aff2f73bc6ce345552c9f46624120057b3c",
+      "bytes": 9567
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "95ad3d23a0a73ca14866ba987012da7bc3031cacb51ef857bac9dc6aba86f6f8",
+      "bytes": 14009
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/05/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/05/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "31f7e7ec37dc0c48fc0fcc054b97f40780e9ef9d3d04645fc2f605721e2322c1",
+      "bytes": 21667
+    },
+    {
+      "path": "runs/05/frozen-sources/run-proof.py",
+      "sha256Bytes": "21b8caee203d035f85c4f8800a79646510e1e63f6546ee28e3519305435cf581",
+      "bytes": 5832
+    },
+    {
+      "path": "runs/05/input-pins.json",
+      "sha256Bytes": "5c1e0f5a91e41c9f87a42586661d488d91cce18fffffcddc67626398314dd24c",
+      "bytes": 36518
+    },
+    {
+      "path": "runs/05/own-process.json",
+      "sha256Bytes": "1d64e543fd8e4c92eacf6657a9ac8dbdaf546cb62a5113e2bae0d0a8b41c1ebd",
+      "bytes": 19
+    },
+    {
+      "path": "runs/05/result.json",
+      "sha256Bytes": "37caf872ab0bc28d0553c023c2fce5ef85ee9f99213ced22dacdbea5bace7347",
+      "bytes": 5977
+    },
+    {
+      "path": "runs/05/run.args",
+      "sha256Bytes": "bd2b5f7f2f178b57ee87fcadf9e46c6cff320ee3dd91f8d9d6b8834d7c21b458",
+      "bytes": 22653
+    },
+    {
+      "path": "runs/05/run.log",
+      "sha256Bytes": "328e4170ec84d43ffd19238133e51989529c0c9031247e3bbe6a27c05c80c0ba",
+      "bytes": 1079
+    },
+    {
+      "path": "runs/05/task-private-environment.json",
+      "sha256Bytes": "d22b51d64f2149252608635fb8b933af39f207f571240f280840920cd2ffd84f",
+      "bytes": 100
+    },
+    {
+      "path": "runs/06/accepted-evidence.json",
+      "sha256Bytes": "5a2ab1f73860ee80cb7808398467e5214c7e9d47eaa0b8d4f4ad1e0b82e84bec",
+      "bytes": 684
+    },
+    {
+      "path": "runs/06/candidate.args",
+      "sha256Bytes": "ebc637b13ea82f32dc3fc406c9609f19e3d07ee94d5cb6422c454f9334c3c080",
+      "bytes": 25090
+    },
+    {
+      "path": "runs/06/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/06/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/06/declared-candidate-overrides.json",
+      "sha256Bytes": "a08b0935132bf9f5ec8e35a31a6b31f948611e321d8bb0dd9940417990c5c1e7",
+      "bytes": 30486
+    },
+    {
+      "path": "runs/06/fixture-class-identities.json",
+      "sha256Bytes": "547bb0dd24292abd00f4fc38a7934cb454e0900fe197f774a79a9be0e111e80b",
+      "bytes": 11519
+    },
+    {
+      "path": "runs/06/fixture.args",
+      "sha256Bytes": "521294f78eafbd7d4508a7fd5b9c1275d0e7b42a6c97050a5737510e3850f0d1",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/06/fixture.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "cc1a3bd7aec458eb9b898f8acdfcdc980d839101ed2643e3fa0cd9f6a1ae9c81",
+      "bytes": 1842
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3",
+      "bytes": 9816
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "9e580edd0797eb417fb5077bc6d0bfaa7a486f40deec953a97d4e6c2a31937c0",
+      "bytes": 14247
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9",
+      "bytes": 13936
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "42739fdc6184399bde9349d9995e06fc36c0c8b67191aad03ea8d64f51ddcdee",
+      "bytes": 6029
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/06/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/06/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "b5a3f73b0125e8a1b5d2283121d4608490544939600f19da0eba6e6dca9d8524",
+      "bytes": 24195
+    },
+    {
+      "path": "runs/06/frozen-sources/run-proof.py",
+      "sha256Bytes": "21b8caee203d035f85c4f8800a79646510e1e63f6546ee28e3519305435cf581",
+      "bytes": 5832
+    },
+    {
+      "path": "runs/06/input-pins.json",
+      "sha256Bytes": "51c1dde60640d86a463315eda0e667ad50d2abf567cbf26f64bde32d02b108c5",
+      "bytes": 36974
+    },
+    {
+      "path": "runs/06/own-process.json",
+      "sha256Bytes": "fb4b7bd623ae09e736b08f102d0e81329eabbb5c69ba9fa7bd1d64d409b794e4",
+      "bytes": 19
+    },
+    {
+      "path": "runs/06/result.json",
+      "sha256Bytes": "7b6733ab7ea5b8e50ea2d81329400d230054fde0e149f17eba0e01c40b01b7bb",
+      "bytes": 6242
+    },
+    {
+      "path": "runs/06/run.args",
+      "sha256Bytes": "98aad06661582a230113148603c0046054e570eae634c92610a9ff2ca3dbe3bf",
+      "bytes": 22653
+    },
+    {
+      "path": "runs/06/run.log",
+      "sha256Bytes": "85bcbe26d29319904147a504926a2181fb4b44fe01af7548d65dfe28959ee81f",
+      "bytes": 1160
+    },
+    {
+      "path": "runs/06/task-private-environment.json",
+      "sha256Bytes": "c781ecff3d1cad6667a31effcebe93394a14676f8eabb35a888743e20cc59675",
+      "bytes": 100
+    },
+    {
+      "path": "runs/07/accepted-evidence.json",
+      "sha256Bytes": "ea227b2a1db40660b147ff46fa9ff1da5dce7cf6103c143d977b7928a722534b",
+      "bytes": 831
+    },
+    {
+      "path": "runs/07/candidate.args",
+      "sha256Bytes": "cb1aa973567de048f0b90ed9572e2c881ce70597c5274947b248d11d25a35bc7",
+      "bytes": 25090
+    },
+    {
+      "path": "runs/07/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/07/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/07/declared-candidate-overrides.json",
+      "sha256Bytes": "a08b0935132bf9f5ec8e35a31a6b31f948611e321d8bb0dd9940417990c5c1e7",
+      "bytes": 30486
+    },
+    {
+      "path": "runs/07/fixture-class-identities.json",
+      "sha256Bytes": "5e04d489aaa178ef02a74039015fef2546dcbdc9869a2b1e8113927e219745d3",
+      "bytes": 12707
+    },
+    {
+      "path": "runs/07/fixture.args",
+      "sha256Bytes": "ec7494587b070cb6659618671074fc2b85994fbb9846b7e7913f9af5b8830fa5",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/07/fixture.log",
+      "sha256Bytes": "209f4ba33763f8de0fa5ab1d91bf5159c52ae2384dea1efe11176122bcbd79c6",
+      "bytes": 234
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "cc1a3bd7aec458eb9b898f8acdfcdc980d839101ed2643e3fa0cd9f6a1ae9c81",
+      "bytes": 1842
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3",
+      "bytes": 9816
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "9e580edd0797eb417fb5077bc6d0bfaa7a486f40deec953a97d4e6c2a31937c0",
+      "bytes": 14247
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9",
+      "bytes": 13936
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "42739fdc6184399bde9349d9995e06fc36c0c8b67191aad03ea8d64f51ddcdee",
+      "bytes": 6029
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/07/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/07/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "0280ceb7f88f14797c2f550892fc43f6c4c1482ac988e16cd8317789e8f0d312",
+      "bytes": 26050
+    },
+    {
+      "path": "runs/07/frozen-sources/run-proof.py",
+      "sha256Bytes": "8f140296fd1db26cd25505ead20bb676fefb3bc4e9629df2e88ed1359763f1cb",
+      "bytes": 6955
+    },
+    {
+      "path": "runs/07/input-pins.json",
+      "sha256Bytes": "ce4f5481a5b8ba54f3d1e44626354e4235a2ef527ac3f0329715c0f73f397215",
+      "bytes": 36974
+    },
+    {
+      "path": "runs/07/own-process.json",
+      "sha256Bytes": "7bae378da2799e1bef3c0f06abe9503001174ec294bd824644faba2c8c741740",
+      "bytes": 19
+    },
+    {
+      "path": "runs/07/result.json",
+      "sha256Bytes": "d800ce97ca5303af1cc9c046136e0f8bc1553cce835839e9b048b4d03189a049",
+      "bytes": 7858
+    },
+    {
+      "path": "runs/07/run.args",
+      "sha256Bytes": "d3616aa64517946d1a823d4a026a8b8fe5de8e17defba713c8acd488afe82f2b",
+      "bytes": 22653
+    },
+    {
+      "path": "runs/07/run.log",
+      "sha256Bytes": "443bd10dea45645186449bdc4da10e055fa3a0c55f6d347e7e63f0c6c189a672",
+      "bytes": 1253
+    },
+    {
+      "path": "runs/07/task-private-environment.json",
+      "sha256Bytes": "d7b0880c493dc2f6830997c584fcddb95e113a0da6585976554ec9e2cd3fcbd4",
+      "bytes": 100
+    },
+    {
+      "path": "runs/07/verified-loaded-class-identities.json",
+      "sha256Bytes": "19e8cb01f2e4db864c9b8e25f44a86d5f0b5a56462a261e68434cbd1cf9e644e",
+      "bytes": 5329
+    },
+    {
+      "path": "runs/08/accepted-evidence.json",
+      "sha256Bytes": "5eed34a21fffbb1e82f68960072426d69ba2a6188642a4570e4df5ba8615d108",
+      "bytes": 831
+    },
+    {
+      "path": "runs/08/candidate.args",
+      "sha256Bytes": "84858d58e75f7909481dc29a3f9f900a05a01294638b1b0eccfc8623c4d69262",
+      "bytes": 25090
+    },
+    {
+      "path": "runs/08/candidate.log",
+      "sha256Bytes": "0369060f5f5e5a98b0ac84aaa6fa1d81c6514879284bbaef03cd12ce1c41f755",
+      "bytes": 693
+    },
+    {
+      "path": "runs/08/compiler-tool-pins.json",
+      "sha256Bytes": "e44d1d4757f404d1b3dddc7d511a04a504554480622e3f6ddca61852351cdaa2",
+      "bytes": 4160
+    },
+    {
+      "path": "runs/08/declared-candidate-overrides.json",
+      "sha256Bytes": "08aca8ef6d9c2414caebfb3b48e22213f4f54b38e1982947e5594f89a2982362",
+      "bytes": 30486
+    },
+    {
+      "path": "runs/08/fixture-class-identities.json",
+      "sha256Bytes": "06a20c15c792d0d553df55738d67f5ad701ec1de29f5938a0d7f1d3f6e7c93eb",
+      "bytes": 12506
+    },
+    {
+      "path": "runs/08/fixture.args",
+      "sha256Bytes": "8b700e4d39dfcc5f523850dfeb32d08b16cec9a93e7eb850dfc446ab33d995ba",
+      "bytes": 23052
+    },
+    {
+      "path": "runs/08/fixture.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "56e48a68d83346eaabf87ace13bc447eb6cfb3b602e460f9e7049127140ac123",
+      "bytes": 1887
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "657dbba5b4c050d3524e25abb1d3554b130a1415319c1a11ab9679294ec43767",
+      "bytes": 10206
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "9418ad69a23d0e750f02984999d1d61b062b507767e4b6c92e15f22fcdb926e3",
+      "bytes": 9816
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "9e580edd0797eb417fb5077bc6d0bfaa7a486f40deec953a97d4e6c2a31937c0",
+      "bytes": 14247
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "4f5ca0821a7c62be6df66a220d6565aebdb7f9091d97d8923b4f5894b1cf9dd9",
+      "bytes": 13936
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "42739fdc6184399bde9349d9995e06fc36c0c8b67191aad03ea8d64f51ddcdee",
+      "bytes": 6029
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "6655ef7f2098f7cf55631a665638ee7d82d16d5eb455e35889d0d6da97130096",
+      "bytes": 130
+    },
+    {
+      "path": "runs/08/frozen-sources/candidate/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "36273ab85ccd7557474772b0c00272aa03799954dcce4d3bb219aba64ab16c5f",
+      "bytes": 3968
+    },
+    {
+      "path": "runs/08/frozen-sources/FollowObserverFixture.kt",
+      "sha256Bytes": "d373ba88ef22fc53c88c5bd083bcb0b84cc2999b83e6f1ff9c73d08018189c42",
+      "bytes": 26058
+    },
+    {
+      "path": "runs/08/frozen-sources/run-proof.py",
+      "sha256Bytes": "8f140296fd1db26cd25505ead20bb676fefb3bc4e9629df2e88ed1359763f1cb",
+      "bytes": 6955
+    },
+    {
+      "path": "runs/08/input-pins.json",
+      "sha256Bytes": "0be777cc67f84f85a53a77561ed15f74bd193776f4cda0ef4d5337afc2f4457a",
+      "bytes": 36974
+    },
+    {
+      "path": "runs/08/own-process.json",
+      "sha256Bytes": "02318c4ebc9ebbb482d1a54bac0e149a5a12a2eecc390910568daa23760dd043",
+      "bytes": 19
+    },
+    {
+      "path": "runs/08/result.json",
+      "sha256Bytes": "a7ca2d0ab31a88b2577e0fb0d28db4ea72d27fba5b667c66ae72a9af0030fd32",
+      "bytes": 7866
+    },
+    {
+      "path": "runs/08/run.args",
+      "sha256Bytes": "c84ee8981e815e541be1971b8e1568c797137df2201fbeb0fccd478a97a4260c",
+      "bytes": 22653
+    },
+    {
+      "path": "runs/08/run.log",
+      "sha256Bytes": "33a1c91627cbd4e9299b4b9c815acd208d8e815b167efd5f0c86b30695d9be79",
+      "bytes": 1261
+    },
+    {
+      "path": "runs/08/task-private-environment.json",
+      "sha256Bytes": "98366fc8b8dfe0b76536553c766aa2bece29c66e5c55af35007a8444d41bbb7a",
+      "bytes": 100
+    },
+    {
+      "path": "runs/08/verified-loaded-class-identities.json",
+      "sha256Bytes": "17eaccfc2d9c08563ed764c3cd8082626cab641b0960bcdd837f01562a9e0732",
+      "bytes": 5329
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "5df7fce8d3e2d4081e2b75e5696400bcce2a203df72a53ba026c1175c359ee04",
+      "bytes": 1429
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "82a984c705c7af422da8b9079aa55d091bb0f568731e22210957a4f20ebe6833",
+      "bytes": 34708
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "7f24cd67335cc51eabd243f83342d67d76b68781bb30585174b596c923f2766c",
+      "bytes": 8364
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "3f6c4b1117d08f75462581f82e2484aaedd80352ff5e5d54b72cd3c668d52d9a",
+      "bytes": 2955
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "b1f32885c157a78f4b6a166dce6fd94db435a5ea302b3bd3683c0964bad915d6",
+      "bytes": 4890
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "01bba58abf2f88b2c2132d09998c6aff2f73bc6ce345552c9f46624120057b3c",
+      "bytes": 9567
+    },
+    {
+      "path": "runs/compile01/frozen-sources/candidate/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "95ad3d23a0a73ca14866ba987012da7bc3031cacb51ef857bac9dc6aba86f6f8",
+      "bytes": 14009
+    },
+    {
+      "path": "source-contract-result.json",
+      "sha256Bytes": "92292950fb404f1671399b38bc2abfc9daa5035e3d10c1c9f7b5c318685a462d",
+      "bytes": 3588
+    },
+    {
+      "path": "source-contract.py",
+      "sha256Bytes": "bd2a96b68c8da60aa8110fcc47acaad481be083184fc46cd5372b95fdfd093c6",
+      "bytes": 6375
+    },
+    {
+      "path": "tool-generated/com/android/purebilibili/data/repository/DesktopOriginalFollowStateChange.kt",
+      "sha256Bytes": "1f7c422940f6fdb7a889f1a74cb6342f896a5cd0309dcc9255af7009a349b673",
+      "bytes": 340
+    },
+    {
+      "path": "tool-generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicFollowStatePolicy.kt",
+      "sha256Bytes": "ec09199e5d3b4d9058b61aa7db993af7d2abde97a498e94e71c17af90bc5b36d",
+      "bytes": 4281
+    }
+  ],
+  "exclusions": [
+    "JAR/class binary outputs",
+    "private task synthetic session/store/account files",
+    "compiler/cache binaries"
+  ],
+  "historyAcceptedAsCurrent": false
+}

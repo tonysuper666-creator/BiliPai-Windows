@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "actualMainSnapshotSha256Bytes": "d3fd2de6caf3302a65547ef29350ba1a158dead69d84c9b680131db88f7f62cd",
+  "orderedCpSha256Bytes": "2dc490f5604c2029bbee4f83fb1e20ee3ad83607b18c5a6a79505d90f941e629",
+  "fixtureSourceSha256Bytes": "d373ba88ef22fc53c88c5bd083bcb0b84cc2999b83e6f1ff9c73d08018189c42",
+  "fixtureJarSha256Bytes": "4eb0fe688ddb405934ddb891575f88b47abd6d56a6daabd5e77eadbad0be60d3",
+  "assertions": 92,
+  "caseCount": 18,
+  "resultSha256Bytes": "b8b8edc3163b64f25976355ebc7ac335f733ed6ef7549af6254029bcdf39b39c",
+  "loadedClassIdentitiesSha256Bytes": "beb59696b6dfa850c488e018e4257f1d01370b8a4d5bbcf7c41db374fde1b92f",
+  "productionOverrides": 0,
+  "emittedClassOverlap": 0,
+  "MainIntegrated": true,
+  "sourceAndGeneratedBytesUnchangedDuringRun": true,
+  "RootEpochEffectCompiled": true,
+  "RootShellExecuted": false,
+  "actualRetrofitTerminalTransport": true,
+  "externalHTTP": false,
+  "account": false,
+  "HWND": false,
+  "package": false
+}

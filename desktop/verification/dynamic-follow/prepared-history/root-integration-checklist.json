@@ -1,0 +1,30 @@
+{
+  "MainIntegrated": false,
+  "DesktopDeployed": false,
+  "preparedSourceInstall": [],
+  "producerInstall": [
+    {
+      "source": "prepared-tools\\desktop\\tools\\extract-upstream-dynamic-follow.py",
+      "target": "desktop/tools/extract-upstream-dynamic-follow.py",
+      "sha256Bytes": "23667cdb68fe7d3fda86f86e2df87647c0b885a58bd12b414ba2cbcbfeb04b0c"
+    },
+    {
+      "source": "prepared-tools\\desktop\\tools\\extract-upstream-dynamic-settings.py",
+      "target": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "181b7253d78443fed4351dffdf287f461ee62196ae7c0f8dd842a6e05381e66a"
+    },
+    {
+      "source": "prepared-tools\\desktop\\tools\\extract-upstream-dynamic-tabs.py",
+      "target": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "2d69ecf0766b7c9c7207f5cf3e8f30396e1364aaae7ee348591c3abaeb87383d"
+    }
+  ],
+  "sourceRegistryFeature": "dynamic-follow-observer-parity",
+  "generatedRoot": "generated/dynamic-follow",
+  "rootEpochEffect": "LaunchedEffect(dynamicCardSession, dynamicCardRegistry) { dynamicCardSession.observeFollowStateChanges(dynamicCardRegistry) }",
+  "modelOwnerThread": "existing Root Compose owner; do not dispatch observer to IO",
+  "allCacheSeam": "CommunityDynamicFeedReady onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows)}",
+  "cacheOwner": "existing Root DesktopDynamicCache actor; Registry calls currentAll.persistCurrentItems()",
+  "revalidateActualMain": "new frozen Main/89 ordered CP with zero prepared candidate class overrides; existing timeline/tabs/Registry checks and focused source/extraction contracts",
+  "actualReceiverAccountPackageAcceptance": false
+}

@@ -541,6 +541,19 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))
 }
 
+val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamDynamicTabs)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-follow.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-follow").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-follow.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
+    inputs.files(sources.filter { "dynamic-follow-observer-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-follow"))
+}
+
 val extractUpstreamCrashPrompt by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -762,6 +775,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
@@ -778,6 +792,8 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstre
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicEditor, verifyUpstreamDynamicEditorProtocol) }
+
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFollow) }
 tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.named("processResources") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareNativeDiagnosticShare) }
