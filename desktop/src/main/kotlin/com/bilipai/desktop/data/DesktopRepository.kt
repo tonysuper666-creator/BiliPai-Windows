@@ -1,5 +1,12 @@
 package com.bilipai.desktop.data
 
+import com.bilipai.desktop.player.PlayerPreferences
+import com.bilipai.desktop.player.resolveDesktopDashSelection
+import com.android.purebilibili.feature.video.playback.audio.resolveRequestedAudioQuality
+import com.android.purebilibili.feature.video.playback.policy.resolveSpeedCompatibleAudioQualityPreference
+import com.android.purebilibili.feature.video.viewmodel.resolveEffectiveVideoCodecPreference
+import com.android.purebilibili.feature.video.viewmodel.resolveEffectiveAv1Support
+
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.BuvidApi
 import com.android.purebilibili.core.network.DynamicApi
@@ -293,22 +300,30 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     }
 
     suspend fun playback(details: VideoDetails, pageIndex: Int = 0, quality: Int = 80,
-        codecOverride: String? = null, forceRefresh: Boolean = false): PlaybackSource = withContext(Dispatchers.IO) {
+        codecOverride: String? = null, forceRefresh: Boolean = false,
+        playbackPreferences: PlayerPreferences = PlayerPreferences(), blockedVideoCodecs: Set<String> = emptySet()): PlaybackSource = withContext(Dispatchers.IO) {
         ensureVisitorSession()
         val part = details.pages.getOrNull(pageIndex) ?: throw IllegalArgumentException("视频分 P 不存在")
+        val preferenceSnapshot = playbackPreferences.normalized()
+        val blockedSnapshot = blockedVideoCodecs.toSet()
         val codec = normalizeCodecFamilyKey(codecOverride)
         require(codec == null || codec in setOf("avc1", "hev1", "av01")) { "不支持的视频编码" }
         val epoch = sessions.generation
-        val cacheKey = DesktopPlaybackCache.Key(epoch, details.bvid, part.cid, quality, codec)
+        val cacheKey = DesktopPlaybackCache.Key(epoch, details.bvid, part.cid, quality, codec,
+            firstCodec = resolveEffectiveVideoCodecPreference(codec, preferenceSnapshot.videoCodecPreference, blockedSnapshot),
+            secondCodec = resolveEffectiveVideoSecondCodecPreference(codec, preferenceSnapshot.videoSecondCodecPreference),
+            audioQuality = resolveSpeedCompatibleAudioQualityPreference(resolveRequestedAudioQuality(
+                preferenceSnapshot.defaultAudioQuality, preferenceSnapshot.lastSelectedAudioQuality), preferenceSnapshot.speed.toFloat()),
+            av1Supported = resolveEffectiveAv1Support(true, blockedSnapshot))
         if (forceRefresh) playbackCache.invalidateVideo(epoch, details.bvid, part.cid)
         else playbackCache.get(cacheKey)?.let { cached ->
-            cached.data.toPlaybackSource(details, cached.selectionQuality, codec)?.let {
+            cached.data.toPlaybackSource(details, cached.selectionQuality, codec, preferenceSnapshot, blockedSnapshot)?.let {
                 if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新加载")
                 return@withContext it
             }
         }
         fun selected(data: PlayUrlData?, targetQuality: Int): PlaybackSource? {
-            val source = data?.toPlaybackSource(details, targetQuality, codec) ?: return null
+            val source = data?.toPlaybackSource(details, targetQuality, codec, preferenceSnapshot, blockedSnapshot) ?: return null
             if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新加载")
             playbackCache.put(cacheKey, requireNotNull(data), targetQuality)
             return source
@@ -445,21 +460,21 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         return WbiUtils.sign(params, keys.first, keys.second, includeRiskFingerprint = includeRiskFingerprint)
     }
 
-    internal fun PlayUrlData.toPlaybackSource(details: VideoDetails, requestedQuality: Int, codecOverride: String? = null): PlaybackSource? {
+    internal fun PlayUrlData.toPlaybackSource(details: VideoDetails, requestedQuality: Int, codecOverride: String? = null,
+        playbackPreferences: PlayerPreferences = PlayerPreferences(), blockedVideoCodecs: Set<String> = emptySet()): PlaybackSource? {
         val referer = "https://www.bilibili.com/video/${details.bvid}"
         val qualities = acceptQuality.mapIndexed { index, id -> PlaybackQuality(id, acceptDescription.getOrNull(index) ?: id.toString()) }
         dash?.let { streams ->
-            val video = streams.getBestVideo(requestedQuality, preferCodec = normalizeCodecFamilyKey(codecOverride) ?: "avc1",
-                secondPreferCodec = resolveEffectiveVideoSecondCodecPreference(codecOverride, "hev1"),
-                isHevcSupported = true, isAv1Supported = true)
-            val audio = streams.getBestAudio()
+            val selection = resolveDesktopDashSelection(streams, requestedQuality, playbackPreferences, codecOverride, blockedVideoCodecs)
+            val video = selection.video
+            val audio = selection.audio.selected?.track
             val videoUrl = video?.getValidUrl()?.takeIf { it.isNotBlank() }
             if (videoUrl != null) return PlaybackSource(normalizeUrl(videoUrl),
                 audio?.getValidUrl()?.takeIf { it.isNotBlank() }?.let(::normalizeUrl), details.title, referer,
                 quality = video?.id ?: quality, availableQualities = qualities,
                 videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
                 audioAlternatives = audio?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
-                videoCodecFamily = resolvePlaybackVideoCodec(videoUrl, streams.video), cachedDashData = streams)
+                videoCodecFamily = resolvePlaybackVideoCodec(videoUrl, streams.video), cachedDashData = streams, audioSelection = selection.audio)
         }
         val progressive = durl.orEmpty()
         val progressiveUrls = collectPlayableDurlUrls(progressive)

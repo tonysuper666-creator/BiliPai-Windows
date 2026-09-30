@@ -1,0 +1,1810 @@
+{
+  "kind": "Independent Kotlin 2.4 compile of exact current main playback sources, fixture-only read-only ABI instrumentation",
+  "fsrIncluded": false,
+  "mainSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "b5de792c161e21769b65a46e2df100625362ca7aab2e0b5242679736aa630bdc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerPreferences.kt",
+      "sha256Bytes": "2ff25af6a9700f1476726629eb67b30a45cec3f3f69ddf99fe6c03547568c06c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackSource.kt",
+      "sha256Bytes": "ec542ca986d1c06d05dd5889783500b8a3cf3ee08e0f100eb96f0aff16e76d53"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlayerFailure.kt",
+      "sha256Bytes": "e20d64e2c2c9533d370d0b92e854cce95089965585d19872edf6442edaafdcdb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackStreamHeaders.kt",
+      "sha256Bytes": "19647fffb511aafc2d31fbedf0ce7cfad30464f9454ef165f7a7a631c5f75e7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles.kt",
+      "sha256Bytes": "7724a3e30b1d928064f7d4dec9436e8aa9d742f260a2e565b8c370b704bc0d99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopPlaybackSelection.kt",
+      "sha256Bytes": "0a71cd150d488368364ea04b75c9b47f06c4d79425c49569f191dfce4ad6b54f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "fafa52013b6c826dd358040ae6ec7c01d66b603d94a7cfd0e3dc03353c1bf539"
+    }
+  ],
+  "instrumentedNativeOriginal": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+    "sha256Bytes": "14e23b202e375e3abf736cc899a0373dfd39e9912f921e7a7d29062ca87ec7a3"
+  },
+  "instrumentation": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\MpvNative.kt",
+      "sha256Bytes": "f4e01d53f617f210eea73ec0e82c84f853f2d0f12039ddb52b5b7e7e5779bfca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\NativeSettingsObservations.kt",
+      "sha256Bytes": "b5969694de2a60b9953b059fefef31b6e382fb8d1f5cfeb561ad28339bfaed09"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\RunNativeSettingsProof.kt",
+      "sha256Bytes": "9b04146bf5e240719e64fe4be665ae0ae74e6438fedf62c35cd3464c46ff4217"
+    }
+  ],
+  "classes": [
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "65602ade119094d581662b7345282806e2db8de76e9bf960993c83d205964b85"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "5ffb84ee37a694e72a3f88e2a718b27f277f9c46adf84f878015f0fafa3ff8da"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$Binding.class",
+      "sha256Bytes": "585fa88f727c135748033c6bcf71beda437add52f7d62357acac2bafbed3d4fe"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$primary$1.class",
+      "sha256Bytes": "fa775ef9cdb49972fc7e76fcdd890ef2951f4ab51d1c181b3eda9c220364bd80"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$secondary$1.class",
+      "sha256Bytes": "02bb02913428bfcc9c9024df48630db1c7175aead387b6c98b83d2e0ec27194b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1.class",
+      "sha256Bytes": "f14c541f9e8954787263258620255dfb3f7c95189749e8540aae1258cfd44a02"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1.class",
+      "sha256Bytes": "ae04304324648947e60e7c7e3eb821621f4e25c020913bae6d06529c13f62b5c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles.class",
+      "sha256Bytes": "9336d89c8be5f334342f7b1ca07d65124692e876de36b3ff220a5a7898d7181e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleState.class",
+      "sha256Bytes": "b52e793630df26d9de0896745a9f2e54c5ed906df50ab4633ac1bacb65522738"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopDashSelection.class",
+      "sha256Bytes": "15dead78883339411c5e6270abb2b04099a1a97bbb7a69098c47e10a66cc6b9d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopOnlineSubtitleAsset.class",
+      "sha256Bytes": "043e9c1021722816917f3989355aefed83ef9a0a9052eea42c06ec7c304e629a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPlaybackSelectionKt.class",
+      "sha256Bytes": "fc09e73959de7ca6d74805ee1900b2bf0b943f09c2e32a6e174fb7125ba46804"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryKt.class",
+      "sha256Bytes": "da579908a33b768cc6bf5c173f294a9ac6a1aefa99c1d7783543fc020cdaddfe"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$NotApplicable.class",
+      "sha256Bytes": "9bcc4e5cf759e16812b28bef9ffa219e51511d3b434288ff6be487ea6aad5c8a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Ready.class",
+      "sha256Bytes": "e4a32e336dd7d9408bf0a7a78da4188587a1f5300ba31aee1f6267339d330d32"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Reason.class",
+      "sha256Bytes": "4cd17f5cc337090940da67423bd2d6245c9d4eb57822d4dda6ca7c9270d927bb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Unavailable.class",
+      "sha256Bytes": "625d7fce990a12e863f5458c6dfa6e03cd36ca0d6c12f44bcb0c82e903e86888"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan.class",
+      "sha256Bytes": "e4cd80c9dda577a1abef0f672ad12f0f23f735252de5d38656c66fe7f9579d6e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\LocalDocuments$metadata$1.class",
+      "sha256Bytes": "721fd01d706bf43002daab84064064189902d9cc85f4824e1a916d886679fa62"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\LocalDocuments.class",
+      "sha256Bytes": "52dfb1dcdbd11b22bd27cd5b0b9f72a176d4777c5b0d90873bfda6a7cc20c069"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "407c9faaec5deaab00b4993d174165583d437512b394885c9b32bd7eb3716719"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvCallException.class",
+      "sha256Bytes": "a419541e849e5ce24a908c5ec0f549fcfaf5b6754a20c623f51319b4090e7e64"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNative$Companion.class",
+      "sha256Bytes": "21ff859b82a1e79a97e9a547ab62accc9e8031f0f42c442b3ff7672d29ff4982"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNative.class",
+      "sha256Bytes": "a2246adfc2b9d7892c403564521f1c7138e9439ea1db48e17f04473cb61dcd65"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNativeKt.class",
+      "sha256Bytes": "87471cc31d053defbc014d6a8a198095ed973971fedb02e74670a5d0781168fa"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNodes.class",
+      "sha256Bytes": "38d3eab5014a1e3b60a2635133ccad302b5a2368711afc9997ae07ab44968f05"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Command.class",
+      "sha256Bytes": "d512c57961acc77121453149c7189edf1bd5684d594f91530c1ced00f0445869"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$HardwareDecoding.class",
+      "sha256Bytes": "ff9640b2c557a01bfcf0c047dbb07c6be588888434b5610987e2214fff74f587"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Load.class",
+      "sha256Bytes": "30823c94f25b1811f07651279ef1ad64e35c8b724350c288e0eebdec203f813d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Property.class",
+      "sha256Bytes": "de9a09976ff7d5bc6aa665bd94b0151c99b165c44c80c817555ffa8320089984"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Screenshot.class",
+      "sha256Bytes": "7f19f3ed1af2d7b6275a9a0f219512267036631ac948e39c1bba52f0f6b3aa64"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Seek.class",
+      "sha256Bytes": "1f5cfbbe0d7620719b50422151331885eb77bac0790398a47d13022ef4b9dd83"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$SubtitleConfiguration.class",
+      "sha256Bytes": "e005f6b9f045f282ee28c466c632dbd5c27614f87fd13fd7655a78229e9a4ca7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Subtitles.class",
+      "sha256Bytes": "ceb6c82da006697a64541160310203607a7151df323e973e34f0862ed68dbf35"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$VideoShaders.class",
+      "sha256Bytes": "3ac5f27f74b41e5b7120fdddb012865ebb26a1c0ceba7b34be8f5c92c314ef96"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action.class",
+      "sha256Bytes": "d31c6f0e04b7bf5694ff4e72c5e1333a1a95ae3f35df32a4265e352a467b2a73"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$canvas$1.class",
+      "sha256Bytes": "de6089ae56ae272ee5f52b9576b278fb50dadd22c6c863ec2eefa8aca9f6e1e2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$1.class",
+      "sha256Bytes": "984336423aefb0f739104ee11de7b44470c011cf47e7a893faf0ad1a3ebfb875"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$4.class",
+      "sha256Bytes": "e69aef6b0f6051b61873f4458e54ffc0c597533d140ee34880972e20bf1e41ce"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$ExternalSubtitle.class",
+      "sha256Bytes": "568fc22325f814ce45f8955b7c6ed3a23a580a4d34f1623180cee41ff5b17d05"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Session.class",
+      "sha256Bytes": "e058c17558544e755d58ee6a6da754aeaa555341fcc0b607a9aa6f23c7aade28"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer.class",
+      "sha256Bytes": "8a876c8c19186d649c9dbc3bed9e5a97e008f9ad0e4033c9c5af1ae6c0af4dfa"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\NativeSettingsObservations$Snapshot.class",
+      "sha256Bytes": "4ff6ea5800add9aeee7ad82b2fa1b0299de56ba844e2f5ce2ce0f9e2b95c928b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\NativeSettingsObservations$wrap$1.class",
+      "sha256Bytes": "41a2327b01a447be8bd5d854ffd088bf16aaeecb1ece28a781204847d01afcee"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\NativeSettingsObservations.class",
+      "sha256Bytes": "233a96c5a72fcc71c621196a8a7305603286a676d96e5b3e60ed73b70ee7c33e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\OwnedPlaybackSourceSnapshot.class",
+      "sha256Bytes": "8ef523113249e92e798f023d5b2e6c501734c8b193c2113ef8b6266752182969"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackMode$Companion.class",
+      "sha256Bytes": "deab03f5e5e74cbb946804b4489ceef83589063795a202bbdf0545dcece53b9d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackMode.class",
+      "sha256Bytes": "c1fcb7069e783ca5054e3561731614fbc5a8a10f7939fda886fdc199b106a984"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSegment.class",
+      "sha256Bytes": "292729970ab9e86714dd3b2a031aa63632158e3db0be78c71cfa8696b8b0d576"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSource$Companion.class",
+      "sha256Bytes": "f2b784f8d20cdd5e59553f10d0439dc026c71d1219e89b65d42785ac14e52bd2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSource.class",
+      "sha256Bytes": "c15ef1631d9854c0f2d5bba9f4ac39ea2d5ecc6648e7258b321a5d8b84e1b5da"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackStreamHeadersKt.class",
+      "sha256Bytes": "1ca4fc675bc3d1b3a7b224c1939812b753eef27dc10b29b43f14f768f1d74ff6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics$Companion.class",
+      "sha256Bytes": "6a079ca2b33ddb170682167482fb97dcb577e88546d6465a551e6b9dca4c0179"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics$reset$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "b28c0f62c623445b4c4e6dc57350a5c837e7d164f6271178a1ee01cece1aaf35"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics.class",
+      "sha256Bytes": "b6346755db215fd699f2ac05bfcd872792120b79bb97a2d329a05994e8e9f0cb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerFailure.class",
+      "sha256Bytes": "6bc62fa52f886fa53a470d37642fe82b6583bcc355320a04859535915e3401b3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerFailureKind.class",
+      "sha256Bytes": "8be2a2626b20482d38fa7401358b2cd5fe56e7b8c08754a84eab71658faaa210"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences$$serializer.class",
+      "sha256Bytes": "3d30bbf3a7c26986f329a1488e0c1d74e8200fe8e5190b2d8a6a3815455599e3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences$Companion.class",
+      "sha256Bytes": "93c03874aca7fe8dc710031659540cf7e7052718230027eba6e8961e335bd232"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences.class",
+      "sha256Bytes": "1f1c3ad93ccdb950c3e1a8ad90a471ccd3202129c1c5fb8ff495305177f285df"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesKt$WhenMappings.class",
+      "sha256Bytes": "39bbc8a9f9ab430ed11580fa4540bbada2889691c83639a83630c76cea24c76c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesKt.class",
+      "sha256Bytes": "2f835feeec0b80274f8630de0c7d6025c6ce49aa58e319ed0ce8ecdfbd7058b1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesStore$Companion.class",
+      "sha256Bytes": "b420641c8f49074a9b30807d46a99f561fd1a7e30be3d00d9f7d9df3aa4695ab"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesStore.class",
+      "sha256Bytes": "2b30af28e32dd2d5edaba9b653eb0a4f10695f648eb67e422b471388e3da7510"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerState.class",
+      "sha256Bytes": "9c8d2e36dc3d9a9b4ee43e265fbbda1d652bfc746c3ba5a6200628a3f2d64528"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerTrack.class",
+      "sha256Bytes": "6a19aae59079e91cec51579f34d95b04edde33a8308598db575cd70ff1a2ab32"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RepositoryAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "8a423f99270e5f3193fa46e70a3e871ee241be93e5ec23702c8bc4d8af7b8e73"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18$1.class",
+      "sha256Bytes": "f3dd797312920184f45c6b959f23f47b3b489383379162d11dfc587e2e8bc5b0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18.class",
+      "sha256Bytes": "91fcd84378fe17a6efb15be0ff6df775905f61258d1d9d3f788dbd21b251f5a7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19$1.class",
+      "sha256Bytes": "efb27fcfc4a892f8be9bf7882c9ad1a6d89d2254a7c520d1b89a93a7c4a23c79"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19.class",
+      "sha256Bytes": "7fbafc5f64150aa506b7a3bcfd8e2ee85003d34b12eb4fd26e61fcf9d19bf086"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$7.class",
+      "sha256Bytes": "5ad1edccf60066be81dac8f21910e4105de262a25e3c5c1fef340c618fd3f260"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt.class",
+      "sha256Bytes": "3d7fd9892875de0c1662b1f468e77439a128eccbd3586ce283e61c3d135f5a8c"
+    }
+  ],
+  "foundationClasses": [
+    {
+      "relativePath": "com\\android\\purebilibili\\core\\store\\player\\DefaultAudioQualityKt.class",
+      "sha256Bytes": "4708699073b895936110875f4b2bb4ebfa1f835247c64d05427e32496f6e3d08"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\settings\\DefaultAudioQualitySelectionKt.class",
+      "sha256Bytes": "1ec79bee7c2e4c19505aada4728e153acbee185ead7770242f320457d1497750"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioFallbackReason.class",
+      "sha256Bytes": "432365ee9f74aa8c6f53b52c1498199fe5ed6861fb87dbd77e107308b6aeab5d"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioQualityControlPresentation.class",
+      "sha256Bytes": "622d3092ba61afbe672d72965d27c28b777bdf8b6618f4d422f9445eff5cfcfc"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioQualityOption.class",
+      "sha256Bytes": "4706075c752ed1d9d26e0157eea9b84a92a0a26bf3a36640ac6936d384342623"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioSelectionDecision$WhenMappings.class",
+      "sha256Bytes": "976ee44966eba13359c24328b1589d7a763b2d721753a272cb9400a85d4200ba"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioSelectionDecision.class",
+      "sha256Bytes": "85b36f2c2c053fb3b3c5c90c674f1907b2e79828999cf59880ed0ff7f5c0f364"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamCandidate.class",
+      "sha256Bytes": "81f59f76c54fa9d9cf3bb26629f6a17c30d3a53a9d6c3d2b7fcbcfd4ae7f9661"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamKind.class",
+      "sha256Bytes": "32ff1966e73f666995b7e97ff7ab13a73e830962df44673f9edbe0e24c33f986"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamModelsKt.class",
+      "sha256Bytes": "8369c7d0fe6349bf87ba45ea6a008363ad6fa20af03d6588676733a107747810"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamSelectionPolicyKt$buildAvailableAudioQualityOptions$$inlined$compareBy$1.class",
+      "sha256Bytes": "ea52b505a45faad1a41a1cf062f8415d8e2370f2bddaaa0d520f59d20db77efc"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamSelectionPolicyKt$buildAvailableAudioQualityOptions$$inlined$thenByDescending$1.class",
+      "sha256Bytes": "7037d95b7d40deea3b0df7c77d1361ca8cbb3520c711863821187e5c56a4f4e7"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamSelectionPolicyKt$WhenMappings.class",
+      "sha256Bytes": "68ea2d567570d3d7ed8681dfdf1d1469cadbe3f84479892d616d7ba1a2fcbcfb"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\AudioStreamSelectionPolicyKt.class",
+      "sha256Bytes": "07ced0a5c85f8b745e5f2c356473df8fe59b8e624b1310bdcd30f6cf75f5a6ea"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\audio\\PremiumAudioPlaybackFailurePolicyKt.class",
+      "sha256Bytes": "f648eb5808cc0276abe8fa88f4c5f053be599a04e646dd0c09f7ed060a56a746"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$compareByDescending$1.class",
+      "sha256Bytes": "d80ebb4395fbbda968ec6b0d1a71dda7be82c095c1aca68ab6dc545aae4e80a1"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "a96dfc7d0719f42ecdb28227729ad090117c9e3bb9df2b64fe6c925dd8e39d47"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$thenByDescending$1.class",
+      "sha256Bytes": "3cd871914f4add4a0e150432446c857ad992d3a1f7c7a3de459b725c4948fe2e"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$thenByDescending$2.class",
+      "sha256Bytes": "e4bb3ce37135b87a72c7303d1a727276115900e7dfa221413abfb868d5a3255d"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackPolicyKt.class",
+      "sha256Bytes": "daeab5fa2db1924881edfebfa245016f1b4ee1dcf3ee80e82d1d853bcf3f8d12"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\AdaptiveDashTrackSet.class",
+      "sha256Bytes": "455a1dec327f1f28783fb33de5251f3b4ebbaff26916a67d9e0395958c8df8ee"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackQualityMode$AUTO.class",
+      "sha256Bytes": "300a82bd46f4291b55c2a53ed8a8037ea92ac5fafa5368b12cb6a81a09f372ec"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackQualityMode$Companion.class",
+      "sha256Bytes": "4c26152a5a945465637ee0f68e5fb0882d75a66cdfc000bbef6883ce33cfbbf3"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackQualityMode$LOCKED.class",
+      "sha256Bytes": "7dbba26a7de023ce29daacf8b4b51169b00b865582b4670e9342a47f2659875a"
+    },
+    {
+      "relativePath": "com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackQualityMode.class",
+      "sha256Bytes": "8a7fd8d33d901cf42dc4208f4e0eb906067ffb9063a9508d7e584089b99a8944"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$2$1$4.class",
+      "sha256Bytes": "150b260780bbe4c8e17347a4cb8b85724134b18053af38dbdf99b6a19cbf5713"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$2$1$emit$1.class",
+      "sha256Bytes": "4ecfedd4a35640c08577ed0bf7e989e359e17f9f611f4bbc369dec90cfc5ee3e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$2$1.class",
+      "sha256Bytes": "98d8949a8c24e7e60a2d992ebc05acd207d8d6c82f8de664f707460848453119"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$2.class",
+      "sha256Bytes": "ae41fa7464c1b70af093c638c21f29773c549d48af49be18bc8a9f837774e3c2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$3.class",
+      "sha256Bytes": "5a656a99df90481f84be8adbd0ef0ea19f73bbb9c45d60b387ea0c2d387f2285"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$beginPlugins$1.class",
+      "sha256Bytes": "046c675500f9d12b12c82159847802782ea461459e0c7f00d9626c4902fb183b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$completeSponsorSkip$1.class",
+      "sha256Bytes": "43fa0da20de5d766fbd625f6478a8b9c512b2f42bc4ffb014f9c5755faba4b63"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$Current.class",
+      "sha256Bytes": "057a1b3a5f51f77e1cd41b23108484d014356434c9e98ad4b3228de20a053230"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$heartbeatReporter$2.class",
+      "sha256Bytes": "cef345b7a836ed3c0525b5885d0c82cc46b42ca553d1091ea6c87bbb65153e35"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$heartbeatReporter$3$1.class",
+      "sha256Bytes": "ea5d43c8af7d26a705b400047ad09b0b3a9a2e8f6d4224eba503dfb3ac197078"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$heartbeatReporter$3.class",
+      "sha256Bytes": "4f0d494c6eca543aaf644be9bc0c3e40c3b18da953115ff2e9788b9eed5d45c0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$load$2$1.class",
+      "sha256Bytes": "c3feab78ebae464c55ef9cdba67351522640b9797958d579f1e90f38c157e979"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$load$2.class",
+      "sha256Bytes": "fdf9b8ee21d220d94b383813b6121cc3106a4f70f563a5fb5cb8022cb419ac79"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$openQueueItem$2$3.class",
+      "sha256Bytes": "974ce7385c0db22ebb973943c9bee8aa32a2f1a9ef1b20a8d92d1c495c9c8b88"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$openQueueItem$2.class",
+      "sha256Bytes": "30383d1e0d4e5910dbbfed2a675359a0f266125f23195c144d17de86d59dc99b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$PendingSponsorSkip.class",
+      "sha256Bytes": "d7e9ac6b3bb1eebb861fc6d104836fe2ca97c1294901d446f2f5852b28c6e772"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$playback$1.class",
+      "sha256Bytes": "55e77a8f4010aed53f85ea8e13f6f0748a4cc3ec5f3a3c04987ab51ab96d0025"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$playPart$2.class",
+      "sha256Bytes": "14abd2901aff998b29c58ca6b17e9e3f9e28e14f85ebc118810628e5080c1ac6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$prepareResolved$$inlined$sortedBy$1.class",
+      "sha256Bytes": "c16251509936b1d84d97bfd1a91db7e889fbca4f11d1b6dd64fe733ce1c45711"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$QueueOwnership.class",
+      "sha256Bytes": "e198f30fbb4a9f63f149bc60bc8ae22d893846b70dd64879f987758168bec22e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$recover$3$WhenMappings.class",
+      "sha256Bytes": "d6b999778649f9d919e8d6a18cabcb2176cea7b935622e9e51716c47d6d4e833"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$recover$3.class",
+      "sha256Bytes": "0bb9715257f17f5421207b9baec799f6640c8df5e1c1e816fe8e03b5cf912293"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$reloadSource$2.class",
+      "sha256Bytes": "81c23e969a5f66d04ea92e100fcc28fd8cd33e6f8abff9eec1b3c4cf69546a5e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$runPositionPlugins$1.class",
+      "sha256Bytes": "e262882857b6da001db4bb9dbff6d8eaca6743848da11d61efc20faddef61c5b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$Target.class",
+      "sha256Bytes": "0ec6b4721401e29a8defdc6e025066cd39d8adb8fcee7b63a6297a8290bc84d9"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$watchdog$1.class",
+      "sha256Bytes": "ea5d68a3dc166e4e5aae2c4886c15887f40a4b386e9aa2e2f4b9758103dbb0d8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$watchdog$2.class",
+      "sha256Bytes": "535a8ecfbc74925aaf68c49deb6782ec94a1402b3d65faaf5589b41c52151d18"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController$WhenMappings.class",
+      "sha256Bytes": "66e9ddf58ac0e3181dd4dd0f23e2ec40d3bed0aadefacb34055728fe2b3bb2ed"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackController.class",
+      "sha256Bytes": "277925d0d5f0d805bb9d76216f9298944d5271eefd9a29ab6d221073ab73659c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackControllerKt.class",
+      "sha256Bytes": "8ee3113c4013a474322404050e9b9d031bf7709c29e13ed7d784f54c85c51909"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackDataSource$DefaultImpls.class",
+      "sha256Bytes": "8b1c37bcac36108973bec3510a393cdde52462f770033d3e2b0de18502f780fa"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackDataSource.class",
+      "sha256Bytes": "bf78a9c9070105fa97c641ca5b0d771d48103e7ec617b2c25f0725f1ccb4cbd7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$append preserves actual source owner CID pause and position without a transport request$1.class",
+      "sha256Bytes": "b5eb1c77f0ce1855d3d54519fb6a1488e9dec811e227f085a708a9322122c075"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$canceling a matching pending host cancels its fetch and retains the native baseline$1.class",
+      "sha256Bytes": "72751fef0bcfb147f474313259ddf26eb6ff5d1e706511b390908d2acbf79d31"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture$await$2$1.class",
+      "sha256Bytes": "0a705956b02df3a4ba0e9c6a40705adbc889c0190a859b32ae839870d5f917ad"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture$await$2.class",
+      "sha256Bytes": "e2ea018ec4ac2a1333bb33e8d103e66132ce3f742abb2c3f3cc912b6031d0a0d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture$source$1$playback$1.class",
+      "sha256Bytes": "9dcb24d6c812856324f63422e9439724e41e7e98df487ef3a28e99313be39bdc"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture$source$1.class",
+      "sha256Bytes": "961c8996e9cba7d68bc50cc811004143cb9c838dce76c850b251bb96e66ced5c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture$special$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "6a93659135d9e70813af164593323b77ea68113eb89266c6877609849d6dd12a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$Fixture.class",
+      "sha256Bytes": "4f47f8ba088d6e07f7c8f448ac293cb06d40c9ada053888e9a5414272f1348cd"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$initial delayed stream can update queue but cannot mutate or stop a foreign native replacement$1$1$4.class",
+      "sha256Bytes": "88fbce5b9f871bd7c00fa265484bb6c85ce9e5079c9706c252f7698b895a8d15"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$initial delayed stream can update queue but cannot mutate or stop a foreign native replacement$1.class",
+      "sha256Bytes": "069a015ebbc61170b2ca7f5c98d665dc380a25ee5769fe237b5c4e05b2a712c8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$ordinary open retires an equal but distinct or previously owned host token$1.class",
+      "sha256Bytes": "1f4eac8f46af0aea140757a357493d2d6be384d432d6c92962683fbd8ff26326"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$parts quality retry and pause retain lease while changed account rejects host stop$1.class",
+      "sha256Bytes": "22480ad356512cb84d280555cd057723ce744ab52995f84759a1b9fc71b16000"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest$same BV different CID next retains queue token and original shuffle reconciliation maps both identities$1.class",
+      "sha256Bytes": "6c5e36fa9bc9c108eabf46a9ae2eac5142878f1449219d2b254f932298f306ac"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTest.class",
+      "sha256Bytes": "0c5ea027ce6e544120d1f7076007deaa950fa98681475606729e5ca19e4c67cd"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackQueueOwnershipTestKt.class",
+      "sha256Bytes": "a3547c1f591a67667a9372bc1dac867898d746bba0ebf8a1e0392ff36f63b218"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\DesktopPlaybackState.class",
+      "sha256Bytes": "0a8da77ce19d000b523dfa5ce4385b49c59a2703393be83100dabd12b41dcb17"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\AccountSummary$$serializer.class",
+      "sha256Bytes": "3c133723cf5a3c9cdd7eec12bd6951b8d231ebb9d37fd6cc866789ab06690e21"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\AccountSummary$Companion.class",
+      "sha256Bytes": "284fba33c1857463bd1bfa3938e458c3ffff0ef19a219741adab1796305cba9c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\AccountSummary.class",
+      "sha256Bytes": "ee0b6313e77029cb4dd0f86113e668dd0642f378f48afa86c711dc22d377e9a1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\BiliApiException.class",
+      "sha256Bytes": "ad5b5d7423f309b5a93c7a89776a3183b7ad67c131a957088b425f9408c0ee6d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\CloudFavoriteFolder.class",
+      "sha256Bytes": "18b13381399bdd1caab1adae89a73fc8600e7b25e610d204ec4a030d5cdb7777"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\CloudHistoryCursor.class",
+      "sha256Bytes": "f19cf4c107fd63b25f68bd423effb45466b09d31a6180e2820c3b775be048e4c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\CloudHistoryPage.class",
+      "sha256Bytes": "12e36f584c121f467a63dee8a960f6117052dfe8a75bd9b54b8c8568ecf35966"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\Comment.class",
+      "sha256Bytes": "eefaa1aa7717eb51fcf4ad5cc38f4218375bbd760d0cd26ed21b91cbc9610d45"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopPlaybackCache$Entry.class",
+      "sha256Bytes": "69d76c15d6529de7b72bc24ad786eca202ef500fd5af184c1da2a72b19ee770b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopPlaybackCache$Key.class",
+      "sha256Bytes": "69f56644330283d6773c37ebd633d152a5ce6b721001a5ef9bc67194b03408c1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopPlaybackCache.class",
+      "sha256Bytes": "dc92065c5a2ffe4daf4f3767749d872cf41748b8b76262282a3edf4426f64e91"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$cloudFavoriteFolders$2.class",
+      "sha256Bytes": "581557b4be2e8d60bd2d0b2bef8030e82de72cb6cbc1648280a6dde05e994e21"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$cloudFavoriteVideos$2.class",
+      "sha256Bytes": "72e8a7d44adf0cf45361f3733cdf2cb3d660a0985e75fd9878052aae2a32bf21"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$cloudHistory$2.class",
+      "sha256Bytes": "b801af3667fcf962a97cbaa0d44db70e4ca83a2ab62c8ef1768412e890b76b87"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$comments$2.class",
+      "sha256Bytes": "0a58d5641ef9961924d451557d61769d8fbce46d35e00f93b1e5fc49cdabbc29"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$Companion.class",
+      "sha256Bytes": "07f693e3e36222e2b6ea7b4773c22334508c4f3cc5acfd6e5a027fddcfe61fc3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$ensureVisitorSession$1.class",
+      "sha256Bytes": "834fc9733ab0e64343cdbbc971282f02db8a0d707ce4a81e7dfe2f499936f0db"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$followingVideos$2.class",
+      "sha256Bytes": "64a4d4286e0582bf3204679c894f29e26177a33666e21f8bd6699a9ed26df2ca"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$importCookies$2.class",
+      "sha256Bytes": "68eaa6f08aeb826405d5e1a9232cf5145de89d029acadf6d74eaca5585cc63f8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$installLogin$2.class",
+      "sha256Bytes": "bf220ec9b4945819d9496685795e602ea594cc3e39605e00760daa5295a446a3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$playback$2.class",
+      "sha256Bytes": "7de7163f6e2e23dcdb34caddbae937cb9b73003330aade97c615fe4314cd54c7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$popular$2.class",
+      "sha256Bytes": "31b301f69a7888685b33527de3259d3f3545cd4766b4bb2bc97cef1def83eb16"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$recommendations$2.class",
+      "sha256Bytes": "827a8b5cd61463ce3a421ad8194abaa7244c509969f4a0d5986fd9c83f2087c0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$refreshAccount$2.class",
+      "sha256Bytes": "a558336f4ab66013afd7e655051e8c610fc56a660ba84f5628a897b000fa3904"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$related$2.class",
+      "sha256Bytes": "a9857b4f6778f7f10e577856e8bcf61de172215b9c1db6c1e7aa974a3554ec5a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$removeSavedAccount$2.class",
+      "sha256Bytes": "26f197bca30c0e53308b3cd64448a62985b506143921d3c141445c9b083a11ea"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$search$2.class",
+      "sha256Bytes": "0a785132a397606c3feffa80d81d240766c6f0dc657ee3676894728a647c7e23"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$sign$1.class",
+      "sha256Bytes": "8e77cbd4590103996dc995c163d4aeee5dda47dcf7fa9418dec6c7b108f7a2ac"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "7e981b29529183859258e8b621d21f963d696a3c04439995b2011896eb8bf48e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$special$$inlined$-addNetworkInterceptor$1.class",
+      "sha256Bytes": "134b077cbade04ddbbde45c61ef4a34757cfb100f927b08878432875304a472d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$switchAccount$2.class",
+      "sha256Bytes": "49a6c726aad3a9d265daa5cd5f1b61b669fdf6888da7b4b1d427d9fade45cae6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$validateCookieHeader$1.class",
+      "sha256Bytes": "ece75b9b4d25522d68c94a9440626a833efc9bc90a34bbff0d53281d26c7f9e1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$videoDetails$2.class",
+      "sha256Bytes": "6c9494883ec8d54dd477f1433b3f78a727b23221e264db89de459a5a0924f483"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository$watchLater$2.class",
+      "sha256Bytes": "71dbe0ae5c98cdeb3df25e04c35d7df71fbec5196954861f9f47c56c381737eb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopRepository.class",
+      "sha256Bytes": "49bad00b2e58eb2f4e2713c7258b6691baac7a9dd7880362d29409ed26bdc1e6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionEpoch.class",
+      "sha256Bytes": "935d134aff823c91c06844d98d179f0776fed862f85cde9f223b41e51e25c002"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$accountRecords$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "64cecd37a6afa6db0099e5198054a2aeba481c48689df49ef355e40d801d9967"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$Companion.class",
+      "sha256Bytes": "b7f251d928bdd2488cda0cd50030855db540b3ad84bee4b3c91109ba6e0c7593"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$CookieIdentity.class",
+      "sha256Bytes": "846a5692177224727fe9c2df0f76a4d1e444978a656d56ac159621a558e4741b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$CookieSnapshot.class",
+      "sha256Bytes": "5e40d9e4f3b925a35e01c04db0eaf116856d1b2450feb0f8ef2817b9dd6f1a69"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$persist$1.class",
+      "sha256Bytes": "8a55b7df004118463782c097cf09157524e2d990ec8b3017dfbc14549b1edee8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$readSaved$1$restored$1.class",
+      "sha256Bytes": "0a39e78e6de5887141d9df3e7ee4229ee41df21f926378fcd02394445761f173"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedAccount$$serializer.class",
+      "sha256Bytes": "3be66e7a7b0526e69ca74f81c9175613eaf940076ab16e64f6e78af353b25606"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedAccount$Companion.class",
+      "sha256Bytes": "6beccceedf18c99c26fd186bcb475125d2e5ed8076bccbf5b7dd60fb6d927d18"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedAccount.class",
+      "sha256Bytes": "adba14513efaef2d957f9f72bbbd276d18af14ef3a8e4863493d5dd5fa530368"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedSession$$serializer.class",
+      "sha256Bytes": "fd58651fe0e4a10cc6e6c8a255de61757d8a9049e38562acbb8480142b56127e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedSession$Companion.class",
+      "sha256Bytes": "0a20bb3c44e20647e3297cfcd42e9274d9907508c88757b171852a0448739204"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$SavedSession.class",
+      "sha256Bytes": "887599fa41448354cc8d2083758f59bb76384e8e06c77143bdcf4507aced2649"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$ServerCookie$$serializer.class",
+      "sha256Bytes": "5cd155f346e1bb40fb17fd00365617b299243fdcb72286547dcabd34bff5e078"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$ServerCookie$Companion.class",
+      "sha256Bytes": "278b515c51ba11f6ab6aa1759b9a0b62a706cf30b4ee3e1517138b3751e6a3d4"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore$ServerCookie.class",
+      "sha256Bytes": "d8051fbb368f57597cd5404bd2189eb16307e93e73c113ab5b0c22b0fce1bbb3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\DesktopSessionStore.class",
+      "sha256Bytes": "52395bb7b047ba77bc5cdae7e645a8ddab5101ed810d6027984760fac8d96315"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\FollowingVideoPage.class",
+      "sha256Bytes": "471eeecd6a3c0c53ce79bdcf8d4654f61f394bfc5e5f8958907bc2f151492748"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\PlaybackQuality.class",
+      "sha256Bytes": "0b67eb1bab873fd66bbb92be70a0d179c29306d54f3db10c8e1f3d7f2aaeff33"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\PlaybackSource.class",
+      "sha256Bytes": "f2adf904bb17ea905a7bc7134440fcfbdd0937583306938e7b9b8a062194bf72"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLogin.class",
+      "sha256Bytes": "62ddedfaa0d5f272858ad7c24470819cee3d7cdbd109c336befe2009758d5d76"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLoginState$Complete.class",
+      "sha256Bytes": "40e802e151c09557fddce63b2afe0e7c808574be3c43b15bebc27011b53b65fc"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLoginState$Expired.class",
+      "sha256Bytes": "c88f2d5f33424b86fd4e6966f1789f90263ae781af9bb804dee5f79cfea39034"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLoginState$Scanned.class",
+      "sha256Bytes": "eb4ffcabcf84732fe9a92804098749d69a339221e6a1032e1452d62d95fdee20"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLoginState$Waiting.class",
+      "sha256Bytes": "37e2cccb76432b8ee6e1dcabac204c85ae22f66928e5d1717e30bb02f6336fb2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\QrLoginState.class",
+      "sha256Bytes": "2b7b7bab8ec8b38ebe91c2d81fb99c1b4d777565ba4ce5594db60d2fcc16fbb3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\VideoCard.class",
+      "sha256Bytes": "c50ad601da99d9beecdb5701d1bc7303f18e785c5dca95f74d1aaefcc75446ea"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\VideoDetails.class",
+      "sha256Bytes": "86793c3ec8a2017b3977ab20518a82e1cdbc62f9d584f5d45d2647140c399303"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\VideoPage.class",
+      "sha256Bytes": "3887458b89ff5079595f9e2861350f9f050e1ac756400780521cae7d18fb3dd6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\data\\VideoPart.class",
+      "sha256Bytes": "91c30b55da51d0e43fab6bc0e536943ebdadcb620d9e75c9abf644b8408dc19a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ActorNative.class",
+      "sha256Bytes": "23b870bbbb37b04965b648983818cf62fa6031ad3af265f3a1ff4b282fd952a2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ControllerFixture$await$2$1.class",
+      "sha256Bytes": "2a7a959b84c5b5d8fc48e05c82da7439cae107a207015f08c272c6e94b816f1a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ControllerFixture$await$2.class",
+      "sha256Bytes": "ca4dc6f74ac65f425a23b54d5a9f19d057eec104f6343f8c540ef56a134fa8ee"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ControllerFixture$open$1.class",
+      "sha256Bytes": "2a5b300ecdf65419222e7e05c8d535a206e6f0c591b86ba9fa21f2792bd674af"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ControllerFixture$special$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "ab9d98017f81a5387e5a43d8dcca220dc93b9dbbb4d1d1c6fdc49211e106a833"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\ControllerFixture.class",
+      "sha256Bytes": "f1213eb888c61671692c15c096dbee16379718ad6e7cabbeb1b57498e7c7b203"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$1.class",
+      "sha256Bytes": "e1e5b06b2a2f07d951ede5307790b6d1b1748c8440086176000ee10408b734e2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$10.class",
+      "sha256Bytes": "5c7968ec5131293c5ee9f0aa4fd40e84caf7487dffad8a91c8ae8126181fa2f6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$11.class",
+      "sha256Bytes": "0525856e2d85e1df57e455b05e7a26a74645acee1a0d17a50ab4aae46c83cecb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$12.class",
+      "sha256Bytes": "f8cb1d9f18f22a809a29e0e905fcde3775f178281659a139fb297ccd36b64b37"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$13.class",
+      "sha256Bytes": "9db0eda9f7f2387a2ecb55c9d4edfb1d58914a0025f06dba18191e01a0854260"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$14.class",
+      "sha256Bytes": "7d7300d51eb011c95ac9d48b1afe0d6882b654d6028651ecd8c40ac38a4894e6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$15$1$1$1.class",
+      "sha256Bytes": "792293c4dc6f5716576729d50bee070bc554e03639e713512f6e701e0f909d45"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$15$1$1.class",
+      "sha256Bytes": "824eb49a5183b989852fed50ec913d6cb655f26cc1d4cfa3ff27184bb6646efe"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$15.class",
+      "sha256Bytes": "e8b8cdee4c06efffd8b66bffe1051ca57a6fd56d7944b72e11c09f33eca7d9e5"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$16$1$1.class",
+      "sha256Bytes": "63e1b9e59e6da544b00c1df49037471077d7faa2d3f293d8a5ed2eb6ae29bc05"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$16.class",
+      "sha256Bytes": "458bfa7116db3ecb4b371df5e2a6cfbc0bb43806e898ec566ad1775c08efea33"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$17.class",
+      "sha256Bytes": "97c463ba06fac74b0d980b84398a3c9453046cfb33283add48d11788bd3687f8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$18$1$1.class",
+      "sha256Bytes": "84a8bb5a2dad31549c3e597e6b11f0ee3ddd95bc892ef28344670fb33616184b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$18.class",
+      "sha256Bytes": "c00038a61e23c1bb276db957be594bb3d18c9fd891abff5effcc2c1bc2841d9e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$19$1$1.class",
+      "sha256Bytes": "bfaad4d11486d6293808e99521d551461f2033d5c941e87b90ab1fb6db9213e8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$19.class",
+      "sha256Bytes": "fefb3a24e5d5f49909376319562d4a6652e6f80ebd540b967feaf502853d6da0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$2.class",
+      "sha256Bytes": "065eda8b29d098b2bfc178037d8374b8d5cc83a688ed9c101505c456b0a2856c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$20$1.class",
+      "sha256Bytes": "d67a34416f1096528ec4d7dd720f4cdb1b3b659cb31809edc774c6a88fc374b2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$20.class",
+      "sha256Bytes": "8518d97f96d01982dc4147a22481f8245895276b0f2ffdb9eb9cc1c26e9e96e7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$3.class",
+      "sha256Bytes": "fb91f2404fb42dd14cb89bae524cea0a5d1666afb4e4ba792daee7db326e0585"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$4.class",
+      "sha256Bytes": "060eca0787af45d5d8e4a7f3857403fcc49e90508ac76eefca4508a9d5368dad"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$5.class",
+      "sha256Bytes": "37dcd2f2bb7d68ecaec4e286df0ea3714f545fcd4d137a7e0c4c98f035eb2f7c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$6.class",
+      "sha256Bytes": "58c0f91c72691f55d544e230987bad6a492bdd88ac17f2e3d1320f8d6bc4549d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$7.class",
+      "sha256Bytes": "d623be3ab50b1345206a9c6de0fc2428ed16bdc5a4e9238142dfe148ce4f0ffb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$8.class",
+      "sha256Bytes": "480c998425e6aa18d957874c10102dadf827eb16fa99caa2bb062596906b2f49"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$9.class",
+      "sha256Bytes": "dc084285865cc901a8050308103ee6ed00b4ae77c836135b0046f0e6b1d0de14"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest$originalPoliciesAndNativeActor$case$1$1.class",
+      "sha256Bytes": "e11e2ba2aa483ec1a92d902f935a1dca0dff1aeb02bd721a86159e1a2de29492"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTest.class",
+      "sha256Bytes": "5fae33612ee320c3eff3eeede11189745d8b5029278257fe858899c3b787de47"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAdvancedPlaybackSettingsTestKt.class",
+      "sha256Bytes": "e763d460691d59656a52b62c513388dfb1e4e02fdf555523a8bc1660e0d52912"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "65602ade119094d581662b7345282806e2db8de76e9bf960993c83d205964b85"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "5ffb84ee37a694e72a3f88e2a718b27f277f9c46adf84f878015f0fafa3ff8da"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$Binding.class",
+      "sha256Bytes": "585fa88f727c135748033c6bcf71beda437add52f7d62357acac2bafbed3d4fe"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$primary$1.class",
+      "sha256Bytes": "fa775ef9cdb49972fc7e76fcdd890ef2951f4ab51d1c181b3eda9c220364bd80"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$secondary$1.class",
+      "sha256Bytes": "02bb02913428bfcc9c9024df48630db1c7175aead387b6c98b83d2e0ec27194b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1.class",
+      "sha256Bytes": "f14c541f9e8954787263258620255dfb3f7c95189749e8540aae1258cfd44a02"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1.class",
+      "sha256Bytes": "ae04304324648947e60e7c7e3eb821621f4e25c020913bae6d06529c13f62b5c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles.class",
+      "sha256Bytes": "9336d89c8be5f334342f7b1ca07d65124692e876de36b3ff220a5a7898d7181e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleState.class",
+      "sha256Bytes": "b52e793630df26d9de0896745a9f2e54c5ed906df50ab4633ac1bacb65522738"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopDashSelection.class",
+      "sha256Bytes": "15dead78883339411c5e6270abb2b04099a1a97bbb7a69098c47e10a66cc6b9d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopOnlineSubtitleAsset.class",
+      "sha256Bytes": "043e9c1021722816917f3989355aefed83ef9a0a9052eea42c06ec7c304e629a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPlaybackSelectionKt.class",
+      "sha256Bytes": "fc09e73959de7ca6d74805ee1900b2bf0b943f09c2e32a6e174fb7125ba46804"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$actual AO init failure chooses original cached AAC and retains owner CID pause position and user intent$1.class",
+      "sha256Bytes": "07875116c79c9a8a7d194b89fc760cef192eb7c096059f5afc61027a3b560af8"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$changed account rejects an old source AO failure and stale preferences$1.class",
+      "sha256Bytes": "98a870e4d0012f56a0900a02c6f90dd2e650e896c7ea6c31cfbe555af00cdad4"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$direct obsolete recovery cannot penalize CDN or consume a new owners budget$1.class",
+      "sha256Bytes": "fc2a4f1d457acbfadd35d34afe31d2a12da0429167ea5f9ed6677167462edb1c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$direct prior account recovery cannot write health or consume video budget$1.class",
+      "sha256Bytes": "e7e13fbae43db53c6806b54f66118157bf4ab24f96a80649566d356d0e824bce"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Fixture$await$2$1.class",
+      "sha256Bytes": "869a571ca9b3bef933faffec8b726c282de1fdef62846eb012b59c18df0d6124"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Fixture$await$2.class",
+      "sha256Bytes": "c8674b66a13dd0a3c278bbc0792ac6578556bda543ccde432643e8ab20757f0b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Fixture$source$1.class",
+      "sha256Bytes": "94ca4dd0b57aae70be146d5e449c8f655786ac261cc48eab3a03bfb376396729"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Fixture$special$$inlined$CoroutineExceptionHandler$1.class",
+      "sha256Bytes": "a0e6bc528b3b909738e74a6479b2412aa853a6ea57498b544214fe4a2695469e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Fixture.class",
+      "sha256Bytes": "5988200733295b6de6a0d1793e78e9b3a83bae4bcc6411d83ace6a327f3c6df0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$missing AAC pauses only this owned failed source without pretending fallback succeeded$1.class",
+      "sha256Bytes": "8ba65bcf78f8e87988f77cfc4a03e21c7a4fc67abdbb1ffe07deb77e202ececf"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$new video reads requested premium setting after previous video temporarily fell back$1.class",
+      "sha256Bytes": "856c6c5c8f26e731bbcac43240e6af5e0519a0c640eb530c4e29e4bc57d4f66a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$Request.class",
+      "sha256Bytes": "adfaf9ed408ea2d821e9b0dfd3cca9896c2dad45100cedfeb07986f21d450a17"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$same CID quality codec and network refresh keep AAC failure fallback until explicit reselection$1.class",
+      "sha256Bytes": "1378a6cbd75b0173f171e4698866eaa6ae6d8d142383bb9d7e79d84ed344af0a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest$unknown video output failure never impersonates premium audio recovery$1.class",
+      "sha256Bytes": "e6bed5e120d568db040ed9197031257895b605a44f519c254030d213d73eeec5"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTest.class",
+      "sha256Bytes": "dcd3adbaace8153cdda9fcba891dd253920f7121b7971bc5fdb3a4457346ad0d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioControllerTestKt.class",
+      "sha256Bytes": "4e858a0dc3b6a4f00aec6f9a9863df7181af7607ce5ff67c8ac7849c9c714a99"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryKt.class",
+      "sha256Bytes": "da579908a33b768cc6bf5c173f294a9ac6a1aefa99c1d7783543fc020cdaddfe"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$NotApplicable.class",
+      "sha256Bytes": "9bcc4e5cf759e16812b28bef9ffa219e51511d3b434288ff6be487ea6aad5c8a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Ready.class",
+      "sha256Bytes": "e4a32e336dd7d9408bf0a7a78da4188587a1f5300ba31aee1f6267339d330d32"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Reason.class",
+      "sha256Bytes": "4cd17f5cc337090940da67423bd2d6245c9d4eb57822d4dda6ca7c9270d927bb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Unavailable.class",
+      "sha256Bytes": "625d7fce990a12e863f5458c6dfa6e03cd36ca0d6c12f44bcb0c82e903e86888"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan.class",
+      "sha256Bytes": "e4cd80c9dda577a1abef0f672ad12f0f23f735252de5d38656c66fe7f9579d6e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$1.class",
+      "sha256Bytes": "db18ff440682b1fa6ad5265ab9fcd88554f797b059a2509a8e688f11e30221e5"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$2.class",
+      "sha256Bytes": "786810037d1d8db20743ce609659b52d0283d406186df426c98213409dabd012"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$3$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "ae3ae4547587cc64c8a75f0d21d699f57b5a78c385f66f427cf870d6e4100d9a"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$3.class",
+      "sha256Bytes": "0ebb5841fb503bce5972ef669547d306c6f9cc0e84ce1645ba9fed53383f37b9"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$4.class",
+      "sha256Bytes": "5e434b1744a97632fb841bb8ef42c6260ca8c51c554e7e83518aa16513f33add"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$5.class",
+      "sha256Bytes": "636dd946bc8a5f5e20d6ee64e9fa9733ea7fec450122659fd284ec8c1f3af141"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$6.class",
+      "sha256Bytes": "5ec783f680d2926d9682a786c40b29aced383c28d609d0db4738b65ea29fed80"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$7.class",
+      "sha256Bytes": "6bb088e541646d54d2bde17a3d754d32c2c82bd9c71ac6ff2f1bf3ce30729aa2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$8.class",
+      "sha256Bytes": "e43c8851995b5491dd320352cd4385e672580865f64c2c8fd0ca1637af596445"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest$originalPoliciesAndNativeActor$case$1$1.class",
+      "sha256Bytes": "b9ef439c5dd8aa542d682b125a48a594ae7f584ce0d6f9af8e45ed78f4748310"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTest.class",
+      "sha256Bytes": "6d2cddcddfc6a1fec9b097fec273e338a4a2d0e2c9e26aa4b75a62562be9fd3e"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryTestKt.class",
+      "sha256Bytes": "69e3da182167dc24a56fd28340f258a224bea3c08cba93034db73e4ccd6160c7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\DormantActor.class",
+      "sha256Bytes": "c3699cb007ac1c446165ca47eecc513682126073ffce29584ccd4ed4e434d549"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FakeSubtitlePlayer.class",
+      "sha256Bytes": "cedbaa678469509684034929b19140e1765bfe3f397b6ce681d0110078a804e0"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FakeSubtitleSource$import$1.class",
+      "sha256Bytes": "417edf1b6955683c0f6b5ef06cb38f45dbbf3b7c6816542bf76065379a579268"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FakeSubtitleSource$metadata$1.class",
+      "sha256Bytes": "7ec1efcca8dcd0aa5524a185819660eb545087041922be9cc84a3a850ccc53f4"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FakeSubtitleSource.class",
+      "sha256Bytes": "03d4a034d77554dc36a0908560e9237972bb2be0e3af63c9436e59820678eb49"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FixtureApi$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "00e77f75461fea2fc22dd9fc83b3058ef8619663e934c2a18a97c532b33fcb8b"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\FixtureApi.class",
+      "sha256Bytes": "e32633b79b0282a6b9588b81f90b7dfacc3c8bd25999eb156c04e8d721c723cc"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "407c9faaec5deaab00b4993d174165583d437512b394885c9b32bd7eb3716719"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvCallException.class",
+      "sha256Bytes": "a419541e849e5ce24a908c5ec0f549fcfaf5b6754a20c623f51319b4090e7e64"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNative$Companion.class",
+      "sha256Bytes": "019cb48339f772713bfe3b039d29b018ffb3dda513ffac86c0344ba380357489"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNative.class",
+      "sha256Bytes": "a2246adfc2b9d7892c403564521f1c7138e9439ea1db48e17f04473cb61dcd65"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNativeKt.class",
+      "sha256Bytes": "87471cc31d053defbc014d6a8a198095ed973971fedb02e74670a5d0781168fa"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvNodes.class",
+      "sha256Bytes": "38d3eab5014a1e3b60a2635133ccad302b5a2368711afc9997ae07ab44968f05"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Command.class",
+      "sha256Bytes": "d512c57961acc77121453149c7189edf1bd5684d594f91530c1ced00f0445869"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$HardwareDecoding.class",
+      "sha256Bytes": "ff9640b2c557a01bfcf0c047dbb07c6be588888434b5610987e2214fff74f587"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Load.class",
+      "sha256Bytes": "30823c94f25b1811f07651279ef1ad64e35c8b724350c288e0eebdec203f813d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Property.class",
+      "sha256Bytes": "de9a09976ff7d5bc6aa665bd94b0151c99b165c44c80c817555ffa8320089984"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Screenshot.class",
+      "sha256Bytes": "7f19f3ed1af2d7b6275a9a0f219512267036631ac948e39c1bba52f0f6b3aa64"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Seek.class",
+      "sha256Bytes": "1f5cfbbe0d7620719b50422151331885eb77bac0790398a47d13022ef4b9dd83"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$SubtitleConfiguration.class",
+      "sha256Bytes": "e005f6b9f045f282ee28c466c632dbd5c27614f87fd13fd7655a78229e9a4ca7"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$Subtitles.class",
+      "sha256Bytes": "ceb6c82da006697a64541160310203607a7151df323e973e34f0862ed68dbf35"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action$VideoShaders.class",
+      "sha256Bytes": "3ac5f27f74b41e5b7120fdddb012865ebb26a1c0ceba7b34be8f5c92c314ef96"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Action.class",
+      "sha256Bytes": "d31c6f0e04b7bf5694ff4e72c5e1333a1a95ae3f35df32a4265e352a467b2a73"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$canvas$1.class",
+      "sha256Bytes": "de6089ae56ae272ee5f52b9576b278fb50dadd22c6c863ec2eefa8aca9f6e1e2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$1.class",
+      "sha256Bytes": "984336423aefb0f739104ee11de7b44470c011cf47e7a893faf0ad1a3ebfb875"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$4.class",
+      "sha256Bytes": "e69aef6b0f6051b61873f4458e54ffc0c597533d140ee34880972e20bf1e41ce"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$ExternalSubtitle.class",
+      "sha256Bytes": "568fc22325f814ce45f8955b7c6ed3a23a580a4d34f1623180cee41ff5b17d05"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer$Session.class",
+      "sha256Bytes": "e058c17558544e755d58ee6a6da754aeaa555341fcc0b607a9aa6f23c7aade28"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\MpvPlayer.class",
+      "sha256Bytes": "8a876c8c19186d649c9dbc3bed9e5a97e008f9ad0e4033c9c5af1ae6c0af4dfa"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\OwnedPlaybackSourceSnapshot.class",
+      "sha256Bytes": "8ef523113249e92e798f023d5b2e6c501734c8b193c2113ef8b6266752182969"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackMode$Companion.class",
+      "sha256Bytes": "deab03f5e5e74cbb946804b4489ceef83589063795a202bbdf0545dcece53b9d"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackMode.class",
+      "sha256Bytes": "c1fcb7069e783ca5054e3561731614fbc5a8a10f7939fda886fdc199b106a984"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSegment.class",
+      "sha256Bytes": "292729970ab9e86714dd3b2a031aa63632158e3db0be78c71cfa8696b8b0d576"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$1.class",
+      "sha256Bytes": "32ed85877fd062598c12b923bf277828c460e50e1907a76a8eed64d55c9733e9"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$2.class",
+      "sha256Bytes": "a3422f7951117f0f6c70513e97d18fd574a3a1a3c3f8318c6525ef0d97d9cebc"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$3.class",
+      "sha256Bytes": "b6709eb63a98ce1071244dbf40284f54976de89929fdeffc682b4d9627d33ef1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$4.class",
+      "sha256Bytes": "96ba917a716f4eedbea94f9ed8e4251a42f2caa1791547d6094ffe2ae47c8978"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$5.class",
+      "sha256Bytes": "942446915dcb325348f500a9ae865960a081808a7905d18aeb7a7ee161de7527"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$6.class",
+      "sha256Bytes": "fc4f1592a8b3a5d4c61efa1b2138452fa25844ac4decb22e2d170975f39ed9ed"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt$runPlaybackSettingsIntegrationTests$7.class",
+      "sha256Bytes": "e90abe26ee592517b9f4b069e5ce873c82e87c0a66ddf56b6866c053e73f0815"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSettingsIntegrationFixturesKt.class",
+      "sha256Bytes": "fa30e11f82d72843d6d03d4b563680e5cf71fef7cd70c02dc5fb5bb6dad70d90"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSource$Companion.class",
+      "sha256Bytes": "f2b784f8d20cdd5e59553f10d0439dc026c71d1219e89b65d42785ac14e52bd2"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackSource.class",
+      "sha256Bytes": "c15ef1631d9854c0f2d5bba9f4ac39ea2d5ecc6648e7258b321a5d8b84e1b5da"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlaybackStreamHeadersKt.class",
+      "sha256Bytes": "1ca4fc675bc3d1b3a7b224c1939812b753eef27dc10b29b43f14f768f1d74ff6"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics$Companion.class",
+      "sha256Bytes": "6a079ca2b33ddb170682167482fb97dcb577e88546d6465a551e6b9dca4c0179"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics$reset$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "b28c0f62c623445b4c4e6dc57350a5c837e7d164f6271178a1ee01cece1aaf35"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerDiagnostics.class",
+      "sha256Bytes": "b6346755db215fd699f2ac05bfcd872792120b79bb97a2d329a05994e8e9f0cb"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerFailure.class",
+      "sha256Bytes": "6bc62fa52f886fa53a470d37642fe82b6583bcc355320a04859535915e3401b3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerFailureKind.class",
+      "sha256Bytes": "8be2a2626b20482d38fa7401358b2cd5fe56e7b8c08754a84eab71658faaa210"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences$$serializer.class",
+      "sha256Bytes": "3d30bbf3a7c26986f329a1488e0c1d74e8200fe8e5190b2d8a6a3815455599e3"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences$Companion.class",
+      "sha256Bytes": "93c03874aca7fe8dc710031659540cf7e7052718230027eba6e8961e335bd232"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferences.class",
+      "sha256Bytes": "1f1c3ad93ccdb950c3e1a8ad90a471ccd3202129c1c5fb8ff495305177f285df"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesKt$WhenMappings.class",
+      "sha256Bytes": "39bbc8a9f9ab430ed11580fa4540bbada2889691c83639a83630c76cea24c76c"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesKt.class",
+      "sha256Bytes": "2f835feeec0b80274f8630de0c7d6025c6ce49aa58e319ed0ce8ecdfbd7058b1"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesStore$Companion.class",
+      "sha256Bytes": "b420641c8f49074a9b30807d46a99f561fd1a7e30be3d00d9f7d9df3aa4695ab"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerPreferencesStore.class",
+      "sha256Bytes": "2b30af28e32dd2d5edaba9b653eb0a4f10695f648eb67e422b471388e3da7510"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerState.class",
+      "sha256Bytes": "9c8d2e36dc3d9a9b4ee43e265fbbda1d652bfc746c3ba5a6200628a3f2d64528"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PlayerTrack.class",
+      "sha256Bytes": "6a19aae59079e91cec51579f34d95b04edde33a8308598db575cd70ff1a2ab32"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PremiumRecoveryActor.class",
+      "sha256Bytes": "bcd57d599e985a69de1c1afabe0b5d3371c87fbad8516e4411bf4b36e40a8054"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\PremiumRecoveryNative.class",
+      "sha256Bytes": "a888deb57561c6dc1fef745a84ab78bb4170add3d1ebe99386870ffb8cb6f924"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RepositoryAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "8a423f99270e5f3193fa46e70a3e871ee241be93e5ec23702c8bc4d8af7b8e73"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\RunIntegrationJUnitKt.class",
+      "sha256Bytes": "17a858582d7b2a16d533867657c36783caadce0de7612f080a1a1a8c9a8bbe47"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\SettingsSource$Request.class",
+      "sha256Bytes": "95fea35a1d7bc3c5f30332c78f2aa86774c7a67b6b31361ca591e2dff7447d44"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\SettingsSource.class",
+      "sha256Bytes": "4524ccacf37bef6ad5b3390a6ac853923a7f0b15857229cacfa582ba9d13b005"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\platform\\DesktopPremiumAudioMedia3ErrorCodes.class",
+      "sha256Bytes": "593a64b46ad3ef8984ffc11d600f6c50fd9e38d7a5f482d25627bf81d8ca864f"
+    },
+    {
+      "relativePath": "com\\bilipai\\desktop\\player\\platform\\DesktopPremiumAudioMpvErrors.class",
+      "sha256Bytes": "88460d059124910440f1a188c3526817f89af14e60f735e2c9d4656ec927805f"
+    }
+  ],
+  "runtimeJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\animation-core-desktop-1.12.1-e9420621a5a999d679c6cbd2f1a42.jar",
+      "sha256Bytes": "d988b6b7d867146825a9da38e1522fc50580aa14986ab22a8b724fcdcef17875"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\animation-desktop-1.12.1-fdae3e449cd09fba75baf68dd23ffc.jar",
+      "sha256Bytes": "755ca81764d5aae7afb2d5f72e3253a44a1cc9c0f890d1dcc319f0eb8f00736b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\annotation-jvm-1.9.1-1d6a04b3b9847638d0529df8ef76a.jar",
+      "sha256Bytes": "1e343917ebf27ba96fe4dc52b1cad7fd32b738fbc6355bb6cd5b3b305d7212d0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\annotations-23.0.0-8484cd17d040d837983323f760b2c660.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\atomicfu-jvm-0.28.0-70921245a0aed3c3e3d17c34ca3dbd87.jar",
+      "sha256Bytes": "39576ec46b83412ff7a2909d24cccbba90400e91f9aa67b250309bc0872ecf52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\bilipai-windows-0.1.0-1c4becda33c57fc16bdae421541f6fb.jar",
+      "sha256Bytes": "ccd3a6821e1ca8c3db30e9cc364a2773fe46bc242b94eb29ed86d079dc74e2d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-compose-core-jvm-3.5.0-9565c4af0fad861b0bc16b7bffc53.jar",
+      "sha256Bytes": "38d80e53cd9dcda1fa84470bd3aa7a6080451b6cc52b03c9dffa22570b7f0e3b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-compose-jvm-3.5.0-c0c057f9ba1311897cfbada05f910fb.jar",
+      "sha256Bytes": "ec78dd5eaa0c4326b197880e5e7a44c31b0e6daa6cd2b8636ca7e1c032ce3567"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-core-jvm-3.5.0-73da9d924cacaf672c3cc0d09340dfa.jar",
+      "sha256Bytes": "479311df567a435d88aef4fabbec04585556770e7881d86c1758b07d5b126f40"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-jvm-3.5.0-4cd0fba134e919a7ce9b2982d8d52685.jar",
+      "sha256Bytes": "a280d338cb22a6bdc2f7f27aca1feccc3142a67c29f5cd945bd948d5b312727c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-network-core-jvm-3.5.0-ae9139c71aff8fac3760d889bf422572.jar",
+      "sha256Bytes": "3eb2ea78232460c9b9ae5ebe96e3bfb3b50b2c41b39277efb4ae454ad8652d6a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\coil-network-okhttp-jvm-3.5.0-f974fdd495c0323392b2471d5755364.jar",
+      "sha256Bytes": "73b11895e324812a4403d32d6c5d8cb67dad3fc3f1d57ffb0555da06c592965f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\collection-jvm-1.5.0-4421442c114a4f8c8fe587cf2d668237.jar",
+      "sha256Bytes": "70b35924e4babcdffa37d0e575ee039c56a2d97123342624c48b603233704341"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\converter-kotlinx-serialization-3.0.0-fb704796896a38711038d172f7a8d4aa.jar",
+      "sha256Bytes": "e9078b659251a2ef63e70729e0dec5f6cb57d220a1002948dc24b865fa6b42b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\core-3.5.4-23cc13611f7f222b9988220fa28a115.jar",
+      "sha256Bytes": "71de5d89341b5fcf5dd89da7f44e84d825d0e084cdf3ec77c9abe26b0f0ceb13"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\core-common-2.2.0-2212d240dfe1e8a7598ee117ccc316d.jar",
+      "sha256Bytes": "65308a06b1c00ee186cb9e19321383f043b993813f1522c47f4a3e3303bdba41"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\dec-0.1.2-4b1cd14cf29733941cc536b27e6aedfa.jar",
+      "sha256Bytes": "615c0c3efef990d77831104475fba6a1f7971388691d4bad1471ad84101f6d52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\desktop-jvm-1.12.1-4ae609894295d208af37cd66a73dcb.jar",
+      "sha256Bytes": "adaea6ec630420712dcfd52a356b46aef603129ca7f76cba204569112fa80e1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\foundation-desktop-1.12.1-af970f7348edc832f57bd29a9aceaf.jar",
+      "sha256Bytes": "e1dc29cd9de2f1628a741866a112eedc62fec43bc548d0e4f434bf31207fd1e3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\foundation-layout-desktop-1.12.1-a74242b69b6ea3e0269ad27af719fbe5.jar",
+      "sha256Bytes": "57b54c104bae9eea0e90bb26487f8b64ead09a473f1b32cbed8579084f485e7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jackson-annotations-2.20-b91def3c2752817f2713e4b8d6640.jar",
+      "sha256Bytes": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jackson-core-2.20.0-3536b524a7106dae1b4feb71e6f5ff74.jar",
+      "sha256Bytes": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jackson-databind-2.20.0-7e33b9e657f74ff95fe2c881e2f8f76.jar",
+      "sha256Bytes": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jbr-api-1.9.0-4ae6ce27bcafb233efdbf54395d03.jar",
+      "sha256Bytes": "7e37284e33b5b304ee6174dcaa92db949b257cc4c8991ca865e7daf5113d8279"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jmdns-3.6.3-b22928eba13879441b654ffaf780121c.jar",
+      "sha256Bytes": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jna-5.17.0-8fc1e1f239ec4511e8d9e5a433f6244.jar",
+      "sha256Bytes": "b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\json-20240303-99aae5de9871d158cdb970f17be4c8da.jar",
+      "sha256Bytes": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\jspecify-1.0.0-9133aba420d0ca3b01dbb6ae9992cf6.jar",
+      "sha256Bytes": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlin-stdlib-2.4.0-c4332c733a8dfa2687d8f119dc43.jar",
+      "sha256Bytes": "ccb14ff83fabcb11458b798dbc9824748ccdffeec79c9aba789e6ed1cda86b1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-collections-immutable-jvm-0.4.0-8f33105b4925dda1ce211bcb54ab58.jar",
+      "sha256Bytes": "d767014ad0c9a27d27d26fd38e7afa030aee0d141338f108781ff02ecf2fdab5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-coroutines-core-jvm-1.10.2-16bb58d0777fca3b2efde66862478c.jar",
+      "sha256Bytes": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-coroutines-swing-1.10.2-b9cd9ab0c3f429acd698981c43dd6a2f.jar",
+      "sha256Bytes": "02bdb85f20ec08004429abf6887e8d0e40f3ab637d7462f817f0f8abbe7d1eb5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-datetime-jvm-0.7.1-70b44e22ebc7eebfa53f7d1941af072.jar",
+      "sha256Bytes": "3b8b98657c9aff3be7f6b4b575e9f3fb9a3a1f452a801da0f438901734acdade"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-serialization-core-jvm-1.11.0-cce19040b3217192d383e28af7ffcb58.jar",
+      "sha256Bytes": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\kotlinx-serialization-json-jvm-1.11.0-22c7504f2965bec48288d5efa4886c52.jar",
+      "sha256Bytes": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-common-jvm-2.11.0-14b667ae927764855aedc4f3c099.jar",
+      "sha256Bytes": "e6a66e67b9f63a0fb6344f165c1d872376e5fe6d235bffb138af45122cf452a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-runtime-compose-desktop-2.11.0-b176c793de60d9c31bc2ae3987f7d29e.jar",
+      "sha256Bytes": "d5336753ea4d5881ccfb8b0613e034eb241f0d8b4349536df1cd0ec86cf63664"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-runtime-compose-desktop-2.9.6-497e8fcabac8a5f5ee68cb2a1c8e70a4.jar",
+      "sha256Bytes": "31c3c4b6dea38f078c46829dee2c43abba2bf8757b7ee8a0f660f31217364898"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-runtime-desktop-2.11.0-f14af19f336c43981285f2b83ea88f.jar",
+      "sha256Bytes": "09f75a4a8d763cee5d6af36f422139a0205d3f6df2e2c5288cae42836f0b36ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-viewmodel-compose-desktop-2.11.0-9b8cf0a583b9f95d6c80da92f398b5.jar",
+      "sha256Bytes": "1b4c58125c7b3693444f40c8ab76881d17fa74726860c24872a3dec3e0fad34b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-viewmodel-desktop-2.11.0-f82f9216259467601fb180d915a6b118.jar",
+      "sha256Bytes": "175c349266ccbb6a2036615725b7066ee3f3319665c98af42206ab3a582a43c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\lifecycle-viewmodel-savedstate-desktop-2.11.0-32f127f2f7fce65ea95a871fd81b1a2.jar",
+      "sha256Bytes": "ca21720ce7f370cb21cabb5329b959eda624107ec06282e3bdc92582917b1d27"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\material-desktop-1.12.1-921af98aef5117e3c225b2aa7fe7b5d9.jar",
+      "sha256Bytes": "0c1dd397b45a7cd830234ddf30d253b586259e726a5cd816cca2e79119a47fa2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\material-icons-core-desktop-1.7.3-23eaca5d2a4caa3e4077a0e9fd549d68.jar",
+      "sha256Bytes": "bcf6c853b6db2ff148d2d3aad3b7a7ea54d93fc7b42e0afd840eb6daf1a1c681"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\material-icons-extended-desktop-1.7.3-848bc0f13628d5b3accc94dd3afdfa27.jar",
+      "sha256Bytes": "dc55d383dca8279e353917e5c5a93d192a95e7ca4f926ee55ee0b4627f99d860"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\material-ripple-desktop-1.12.1-14de3de9fc704811971ae5fc7fe212a.jar",
+      "sha256Bytes": "06ac72a5f57b2e724ea129efbc71973a27a9e1ceeb7f568281dcb0d1ef4448fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\material3-desktop-1.9.0-e8b6edb91fefebc65537db222e7bd1.jar",
+      "sha256Bytes": "78f0787a1c6d20f9b2460a387f51ecf554e211d3c874b22d66530a540390b811"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\nanohttpd-2.3.1-847ff87de16561e3dcede3eda6abfab6.jar",
+      "sha256Bytes": "de864c47818157141a24c9acb36df0c47d7bf15b7ff48c90610f3eb4e5df0e58"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\navigationevent-compose-desktop-1.1.0-6370d5c46488f619be7b5e63333545d2.jar",
+      "sha256Bytes": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\navigationevent-compose-desktop-1.1.1-7c81c6a8aa54e8beed4bae895cb91.jar",
+      "sha256Bytes": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\navigationevent-desktop-1.1.1-5d6b5b7abab9bd6abdc6485ffd91541.jar",
+      "sha256Bytes": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\okhttp-jvm-5.3.2-827a887aa959c1f1d6b12f3345df2484.jar",
+      "sha256Bytes": "c771f48075b763f6c322055e21129a94b7de4c1faf3f8f58ace320b0c9517a30"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\okio-jvm-3.17.0-96ad357689fd2841747aec56e94a7162.jar",
+      "sha256Bytes": "3b13dcc3e1573047c2d507fc4f7fcb0bb0cbcd9d395da21d20e09406e2cd6a73"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\protobuf-javalite-4.33.2-8f6a2105e856f35aa93a82b2ebd9e.jar",
+      "sha256Bytes": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\retrofit-3.0.0-624b533e1f8ab3e8c52646e89a53f5.jar",
+      "sha256Bytes": "69c6a2d3451b6df9549a93fab744094ebf07a4b0ce4f453d6c8f575ef0fec9a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-annotation-jvm-1.12.1-4190aa9d3047cacca43687b075ca9f41.jar",
+      "sha256Bytes": "e291a6ae01ab71a7f48a568ec9744c6bf9b3f46ef72fbcdeb28c3407ae531c5e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-desktop-1.12.1-1f10feae5687d5ddef2226983a95b8e.jar",
+      "sha256Bytes": "ed390d7bf7bdba951359d127f4c1ddd223f535f5a6a63078c5c5ac6b6924eb08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-desktop-1.12.1-b7d07b28974ce573c251fcf21c78ac5.jar",
+      "sha256Bytes": "9a40fb9ac9b98a1b2d8be51ce57dbcf733e768fa06a9e4859a1775cb52bf6806"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-retain-desktop-1.12.1-1a6731c44f232c5d9e1fb10edac28de.jar",
+      "sha256Bytes": "9b7e62a7df333c33eff9e1a6d6c2508a4d8fe4b7a43778075538fe3da4bc4485"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-saveable-desktop-1.12.1-20894c61e27fb5db944c2ca8876eb2.jar",
+      "sha256Bytes": "069949667409ab6de21053f9fdbff0869ae2a1f70a7212cdb89e7d409fd2552c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\runtime-saveable-desktop-1.12.1-b997262ae4482c23c7c8a0c47e846924.jar",
+      "sha256Bytes": "d81973dced223d6aea7bf9f6d4ead285494c656ea003b59072babefd25470c7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\savedstate-compose-desktop-1.3.6-8de11644e97845eaa45d9e74fdec755.jar",
+      "sha256Bytes": "0f3d045c5fd7e1301ab6c38cd0778067b0484cf39acac1233be71a723a6a8075"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\savedstate-compose-desktop-1.4.0-84ed9710e312be7017fd7498fe747a.jar",
+      "sha256Bytes": "c02a98b0c2b35cdde245c0bfe6e7ff453c7b6d06a5eb8681d25b7f54b874ea48"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\savedstate-desktop-1.4.0-e2a50762f9c6de234b04b12926df6b3.jar",
+      "sha256Bytes": "e965ed7a011be83a271ac7d82249a776368479ee3a2b07948c3445b51d640856"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\skiko-awt-0.150.1-68b78f48c75f4f82c8e747df5df4883a.jar",
+      "sha256Bytes": "bb610ada28509ebee3a623c0469aff3665689fbec73d118055f3dbf5a37211f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\skiko-awt-runtime-windows-x64-0.150.1-5fb673a6922c484fe1605fb9be7ca1c7.jar",
+      "sha256Bytes": "72f8c0edb46687d586963957eaac259442de5589b6b94116c204f6724123cce2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\slf4j-api-2.0.17-b648d114a23683498ac3f746f959d2f.jar",
+      "sha256Bytes": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-backhandler-desktop-1.12.1-35874ca299568adff7969876bded31ff.jar",
+      "sha256Bytes": "0bc021accc616c2a99afe0c39ca1ec29082fa78a7b99868ed122d162eab828bd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-desktop-1.12.1-c4ace5714b95bdaa8dfbefbef8c45514.jar",
+      "sha256Bytes": "eaee42812c81cf1f1a925088bd7e847a343decbc3ccb1682f00f203123a51a17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-geometry-desktop-1.12.1-29a565e9b56c42fc9a78ad6247868345.jar",
+      "sha256Bytes": "2cde44d95ba21654dcced3a3098bdd171b3ef5b17ef7fc6cec0d25983dbc9fa0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-graphics-desktop-1.12.1-6fa07bde255e7be1447cd8eabce6901d.jar",
+      "sha256Bytes": "92fddd7609d77a803f7083b1b7dd5a651cba10be27c105361a5d0b3894932085"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-text-desktop-1.12.1-5e3686245ced4825d1d811c323ec58fb.jar",
+      "sha256Bytes": "672331d7e1440f2406f6a9b6d3d61475316cf622d0dbbe910e47bdbd69861c38"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-tooling-preview-desktop-1.12.1-3548dd9011fded88e7f44967f5c29e4.jar",
+      "sha256Bytes": "19f5005baa27dfbf3f435feed44dfba9c938ba386ac6753d00a67a270cd72231"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-unit-desktop-1.12.1-7ef6fe1b7eef6348891d94869166a6f7.jar",
+      "sha256Bytes": "7c4998f1224f241dbe88fa59701d697d598fe8979a4acaed717b8365d4cd9300"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings\\base-runtime\\ui-util-desktop-1.12.1-8f9524bdc94dc578c1cf5d640b48d99.jar",
+      "sha256Bytes": "bb81e9748c9bcadeaeb99bab647e21442e62e253a3a497a213c68e040cb2b385"
+    }
+  ],
+  "nativeDll": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+    "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea"
+  },
+  "syntheticInput": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\reports\\native-smoke-ba466db815f24e648f6bd661fa4984e8\\native-smoke-video.avi",
+    "sha256Bytes": "3612eaedb219a9fde6acf8040b813f745ab9179eaa3093b8112631a80fdcdd64"
+  },
+  "syntheticAvc": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\synthetic-avc.mp4",
+    "sha256Bytes": "639f3435ffe0eb5d6ab8bf7ae576660aee2917eccf38ec8f9599373880593ba9"
+  }
+}

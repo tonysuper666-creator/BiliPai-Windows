@@ -16,21 +16,24 @@ enum class CommunitySection(val title: String) {
 
 internal class CommunityNavigation(val onVideo: (VideoCard) -> Unit, val onUser: (Long) -> Unit,
     val onArticle: (Long) -> Unit, val onLogin: () -> Unit, val onLive: (Long) -> Unit,
-    val onBangumi: (Long) -> Unit, val onDynamic: (String) -> Unit)
+    val onBangumi: (Long) -> Unit, val onDynamic: (String) -> Unit, val onTopic: (Long) -> Unit = {},
+    val onTopicKeyword: (String) -> Unit = {})
 
 @Composable
 fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, query: String = "", userId: Long = 0, articleId: Long = 0,
     noteVideo: VideoDetails? = null, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onArticle: (Long) -> Unit,
     onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null,
-    initialDynamicId: String? = null) {
-    var dynamicDetail by remember(section, userId, query, initialDynamicId) { mutableStateOf(initialDynamicId) }
+    initialDynamicId: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
     val account by repository.account.collectAsState()
     val inherited = LocalDesktopBrowseMemory.current
     val fallback = remember(account?.mid) { DesktopBrowseMemory() }
     val browseMemory = inherited ?: fallback
+    var dynamicDetail by remember(browseMemory, section, userId, query, initialDynamicId) {
+        browseMemory.screen(listOf("community-dynamic-detail", section, userId, query, initialDynamicId)) { mutableStateOf(initialDynamicId) }
+    }
     val feedMemory = browseMemory.feeds
-    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it })
+    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it }, onTopic, onTopicKeyword)
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalCommunityFeedMemory provides feedMemory,
         LocalCommunityFeedNamespace provides listOf(section, userId, articleId, noteVideo?.aid)) {
     Column(Modifier.fillMaxSize()) {
@@ -60,6 +63,11 @@ internal fun navigateCommunityUrl(raw: String, navigation: CommunityNavigation) 
     if (uri.scheme !in setOf("https", "http")) return
     val host = uri.host?.lowercase().orEmpty()
     if (host == "bilibili.com" || host.endsWith(".bilibili.com")) {
+        if (uri.path.orEmpty().contains("topic", ignoreCase = true)) {
+            com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTextTopicId(
+                com.android.purebilibili.data.model.response.RichTextNode(jump_url = url)
+            )?.let { navigation.onTopic(it); return }
+        }
         Regex("BV[0-9A-Za-z]{10}").find(url)?.value?.let {
             navigation.onVideo(VideoCard(it, "", "", "", 0, 0)); return
         }

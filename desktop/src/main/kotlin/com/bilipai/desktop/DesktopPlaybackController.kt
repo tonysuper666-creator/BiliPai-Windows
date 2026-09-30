@@ -1,5 +1,8 @@
 package com.bilipai.desktop
 
+import com.android.purebilibili.feature.video.playback.audio.*
+import com.android.purebilibili.feature.video.playback.policy.shouldRefreshPremiumAudioForPlaybackSpeedChange
+
 import com.android.purebilibili.core.plugin.SkipAction
 import com.android.purebilibili.feature.plugin.*
 import com.android.purebilibili.feature.video.player.*
@@ -44,6 +47,9 @@ internal interface DesktopPlaybackDataSource {
     suspend fun related(bvid: String): List<VideoCard>
     suspend fun playback(details: VideoDetails, index: Int, quality: Int, codecOverride: String? = null,
         forceRefresh: Boolean = false): ResolvedSource
+    suspend fun playbackConfigured(details: VideoDetails, index: Int, quality: Int, playbackPreferences: PlayerPreferences,
+        blockedVideoCodecs: Set<String>, codecOverride: String? = null, forceRefresh: Boolean = false): ResolvedSource =
+        playback(details, index, quality, codecOverride, forceRefresh)
     suspend fun reportHeartbeat(report: DesktopHeartbeatReport): Boolean = false
 }
 
@@ -59,6 +65,8 @@ class DesktopPlaybackController internal constructor(
     private val plugins: DesktopPluginRuntime? = null,
     dataSource: DesktopPlaybackDataSource? = null,
     community: DesktopCommunityRepository? = null,
+    private val automaticSubtitles: DesktopAutomaticSubtitles? = null,
+    private val onRememberAudioQuality: (Int) -> Unit = {},
 ) : AutoCloseable {
     private val communityReports by lazy { community ?: DesktopCommunityRepository(repository) }
     private val playback = dataSource ?: object : DesktopPlaybackDataSource {
@@ -67,6 +75,9 @@ class DesktopPlaybackController internal constructor(
         override suspend fun related(bvid: String) = repository.related(bvid)
         override suspend fun playback(details: VideoDetails, index: Int, quality: Int, codecOverride: String?, forceRefresh: Boolean) =
             repository.playback(details, index, quality, codecOverride, forceRefresh)
+        override suspend fun playbackConfigured(details: VideoDetails, index: Int, quality: Int,
+            playbackPreferences: PlayerPreferences, blockedVideoCodecs: Set<String>, codecOverride: String?, forceRefresh: Boolean) =
+            repository.playback(details, index, quality, codecOverride, forceRefresh, playbackPreferences, blockedVideoCodecs)
         override suspend fun reportHeartbeat(report: DesktopHeartbeatReport) = communityReports.reportPlayHeartbeat(
             bvid = report.identity.bvid, cid = report.identity.cid, aid = report.identity.aid,
             playedTimeSec = report.snapshot.playedTimeSec, realPlayedTimeSec = report.snapshot.realPlayedTimeSec,
@@ -85,6 +96,8 @@ class DesktopPlaybackController internal constructor(
     private var handledEnd = false
     private var shuffle = ShuffleProgress()
     private var partShuffle = ShuffleProgress()
+    private data class QueueOwnership(val owner: Any, val accountEpoch: Long, val requestGeneration: Long, val nativeBaseline: Long?)
+    private var queueOwnership: QueueOwnership? = null
     private val blockedCodecs = mutableSetOf<String>()
     private val health = mutableMapOf<String, CdnCandidateHealth>()
     private var budget = DesktopPlaybackRecoveryBudget()
@@ -173,7 +186,7 @@ class DesktopPlaybackController internal constructor(
     fun open(card: VideoCard) { if (!closed.get()) openQueue(listOf(card), 0) }
     fun open(bvid: String) = open(VideoCard(bvid, "", "", "", 0, 0))
 
-    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0) {
+    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null) {
         if (closed.get()) return
         require(cards.size <= 10_000 && selectedIndex in cards.indices) { "播放队列为空或选中项无效" }
         val selected = cards[selectedIndex]
@@ -181,8 +194,67 @@ class DesktopPlaybackController internal constructor(
         val normalized = cards.filter { it.bvid.isNotBlank() }.distinctBy { Triple(it.bvid, it.preferredCid, it.pageIndex) }
         val index = normalized.indexOfFirst { it.bvid == selected.bvid && it.preferredCid == selected.preferredCid && it.pageIndex == selected.pageIndex }
         shuffle = ShuffleProgress(); partShuffle = ShuffleProgress()
+        queueOwnership = owner?.let { QueueOwnership(it, playback.sessionEpoch, generation.get(), player?.currentSourceVersion) }
         mutableState.update { it.copy(queue = normalized, queueIndex = index) }
         openQueueItem(index, useResume = true)
+    }
+
+    /** Identity tokens cannot mutate a retired queue, a different account, or a foreign native source. */
+    fun ownsQueue(owner: Any): Boolean {
+        val owned = queueOwnership ?: return false
+        if (closed.get() || owned.owner !== owner || owned.accountEpoch != playback.sessionEpoch ||
+            owned.requestGeneration != generation.get()) return false
+        val context = current
+        if (context != null) return owns(context)
+        // Loading and a failed initial request still hold the same queue lease. A foreign
+        // native takeover, changed epoch/generation, or a canceled request cannot acquire it.
+        val initialRequestIsHeld = state.value.opening || state.value.error != null
+        return initialRequestIsHeld && ownedSourceVersion == null && owned.nativeBaseline == player?.currentSourceVersion
+    }
+
+    /** Append/reorder without replacing the actual current item, media source, pause, or position. */
+    fun updateQueueForOwner(owner: Any, cards: List<VideoCard>, selectedIndex: Int): Boolean {
+        if (!ownsQueue(owner) || cards.size > 10_000 || selectedIndex !in cards.indices) return false
+        val previous = state.value.queue
+        val selected = previous.getOrNull(state.value.queueIndex) ?: return false
+        val requested = cards[selectedIndex]
+        if (queueIdentity(selected) != queueIdentity(requested) || requested.bvid.isBlank()) return false
+        val normalized = cards.filter { it.bvid.isNotBlank() }.distinctBy(::queueIdentity)
+        val index = normalized.indexOfFirst { queueIdentity(it) == queueIdentity(requested) }
+        if (index < 0) return false
+        // The unchanged original reconciler keys by bvid. Opaque local keys add CID/page identity
+        // only for this pure index calculation; they never go to repository, playback, or UI.
+        fun item(card: VideoCard) = PlaylistItem(queueIdentity(card), card.preferredCid, card.title,
+            card.cover, card.author, duration = card.duration.toLong())
+        shuffle = reconcileShuffleProgressForPlaylistUpdate(previous.map(::item), normalized.map(::item), index, shuffle)
+        mutableState.update { it.copy(queue = normalized, queueIndex = index) }
+        return true
+    }
+
+    /** Retry only the held queue. Initial metadata/stream failures have no current native source. */
+    fun retryQueueForOwner(owner: Any): Boolean {
+        if (!ownsQueue(owner) || state.value.opening || state.value.recovering) return false
+        if (current != null) {
+            retry()
+        } else {
+            val index = state.value.queueIndex
+            if (index !in state.value.queue.indices) return false
+            openQueueItem(index, useResume = true)
+        }
+        return true
+    }
+
+    fun stopQueueForOwner(owner: Any): Boolean {
+        if (!ownsQueue(owner)) return false
+        stop()
+        return true
+    }
+
+    private fun queueIdentity(card: VideoCard): String = "${card.bvid.length}:${card.bvid}:${card.preferredCid}:${card.pageIndex}"
+
+    private fun recordQueueRequest(expected: Long, baseline: Long?) {
+        queueOwnership = queueOwnership?.takeIf { it.accountEpoch == playback.sessionEpoch }
+            ?.copy(requestGeneration = expected, nativeBaseline = baseline)
     }
 
     private fun openQueueItem(index: Int, useResume: Boolean) {
@@ -190,9 +262,10 @@ class DesktopPlaybackController internal constructor(
         checkpoint()
         val cached = state.value.details?.takeIf { it.bvid == card.bvid }
         val related = state.value.related.takeIf { cached != null }.orEmpty()
-        invalidate(stopNative = true)
+        invalidate(stopNative = true, retainQueueOwner = true)
         val expected = generation.get()
         val baseline = player?.currentSourceVersion
+        recordQueueRequest(expected, baseline)
         val accountEpoch = playback.sessionEpoch
         val resume = if (!useResume) card.copy(progressSeconds = 0)
             else card.takeIf { it.progressSeconds != null || it.preferredCid > 0 } ?: library.resumeCard(card.bvid)
@@ -222,8 +295,9 @@ class DesktopPlaybackController internal constructor(
         if (closed.get() || !position.isFinite()) return
         val info = state.value.details ?: return
         if (index !in info.pages.indices) return
-        checkpoint(); invalidate(stopNative = true)
+        checkpoint(); invalidate(stopNative = true, retainQueueOwner = true)
         val expected = generation.get(); val baseline = player?.currentSourceVersion
+        recordQueueRequest(expected, baseline)
         val accountEpoch = playback.sessionEpoch
         val queueMatch = state.value.queue.indexOfFirst { it.bvid == info.bvid && it.preferredCid == info.pages[index].cid }
         mutableState.update { it.copy(currentPart = index, queueIndex = queueMatch.takeIf { it >= 0 } ?: it.queueIndex,
@@ -237,7 +311,8 @@ class DesktopPlaybackController internal constructor(
 
     private suspend fun load(info: VideoDetails, index: Int, position: Double, paused: Boolean, expected: Long, baseline: Long?, accountEpoch: Long) = coroutineScope {
         launch { if (expected == generation.get()) { danmaku?.applySettings(preferences().danmaku); danmaku?.load(info.pages[index].cid, info.aid, info.pages[index].duration.toDouble()) } }
-        val source = playback.playback(info, index, state.value.quality)
+        val settings = preferences().let { it.copy(speed = it.preferredSpeed) }
+        val source = playback.playbackConfigured(info, index, state.value.quality, settings, blockedCodecs.toSet())
         if (!valid(expected, baseline, accountEpoch)) return@coroutineScope
         val native = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
         native.applyPreferences(preferences().let { it.copy(speed = it.preferredSpeed) })
@@ -250,6 +325,48 @@ class DesktopPlaybackController internal constructor(
         mutableState.update { it.copy(opening = false, effectiveQuality = resolved.quality, availableQualities = resolved.availableQualities) }
         watchdogSnapshot()?.let(watchdog::loaded)
         beginPlugins(current!!)
+        automaticSubtitles?.load(info.bvid, info.pages[index].cid, version, settings.subtitleAutoPreference,
+            settings.muted || settings.volume <= 0.0)
+    }
+
+    /** Hardware changes are native; codec changes refresh the same CID while preserving ownership/progress/subtitles. */
+    fun onPlaybackPreferencesChanged(previous: PlayerPreferences, next: PlayerPreferences) {
+        val context = current?.takeIf(::owns) ?: return
+        val normalized = next.normalized()
+        if (previous.hardwareDecodeEnabled != normalized.hardwareDecodeEnabled)
+            player?.setHardwareDecodingEnabled(normalized.hardwareDecodeEnabled, context.sourceVersion)
+        if (previous.subtitleAutoPreference != normalized.subtitleAutoPreference)
+            automaticSubtitles?.load(context.details.bvid, context.details.pages[context.index].cid, context.sourceVersion,
+                normalized.subtitleAutoPreference, normalized.muted || normalized.volume <= 0.0)
+        val requested = context.source.audioSelection?.requestedPreferenceId
+            ?: resolveRequestedAudioQuality(normalized.defaultAudioQuality, normalized.lastSelectedAudioQuality)
+        if (previous.videoCodecPreference != normalized.videoCodecPreference ||
+            previous.videoSecondCodecPreference != normalized.videoSecondCodecPreference) {
+            reloadSource(state.value.effectiveQuality.takeIf { it > 0 } ?: state.value.quality,
+                forceRefresh = false, preserveCodec = false)
+        } else if (shouldRefreshPremiumAudioForPlaybackSpeedChange(requested, previous.speed.toFloat(), normalized.speed.toFloat())) {
+            reloadSource(state.value.effectiveQuality.takeIf { it > 0 } ?: state.value.quality, forceRefresh = false)
+        }
+        // The original default audio setting is read at load time; it does not overwrite the current video's explicit selection.
+    }
+
+    fun selectAudioQuality(preferenceId: Int) {
+        if (current?.takeIf(::owns) == null) return
+        val normalized = normalizeAudioQualityPreference(preferenceId)
+        reloadSource(state.value.effectiveQuality.takeIf { it > 0 } ?: state.value.quality,
+            forceRefresh = false, audioOverride = normalized, rememberAudio = true)
+    }
+
+    fun setAutomaticSubtitleMode(mode: com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode): Boolean =
+        automaticSubtitles?.setDisplayMode(mode) == true
+
+    fun notifyUserSubtitleTrackSelection() { current?.takeIf(::owns)?.let { automaticSubtitles?.onUserTrackSelection(it.sourceVersion) } }
+
+    private fun playbackSettingsFor(context: Current, audioOverride: Int? = null): PlayerPreferences {
+        val preferences = preferences()
+        return preferences.copy(speed = player?.state?.value?.speed ?: preferences.speed,
+            defaultAudioQuality = audioOverride ?: effectiveAudioPreferenceAfterFailure(context.source.audioSelection)
+                ?: resolveRequestedAudioQuality(preferences.defaultAudioQuality, preferences.lastSelectedAudioQuality))
     }
 
     fun switchQuality(quality: Int) {
@@ -265,22 +382,29 @@ class DesktopPlaybackController internal constructor(
         reloadSource(state.value.effectiveQuality.takeIf { it > 0 } ?: state.value.quality, forceRefresh = true)
     }
 
-    private fun reloadSource(quality: Int, forceRefresh: Boolean) {
+    private fun reloadSource(quality: Int, forceRefresh: Boolean, preserveCodec: Boolean = true,
+        audioOverride: Int? = null, rememberAudio: Boolean = false) {
         val context = current?.takeIf(::owns) ?: run { playPart(state.value.currentPart); return }
         val native = player?.state?.value ?: return
         checkpoint(); request?.cancel(); recovery?.cancel()
         val expected = generation.incrementAndGet()
+        recordQueueRequest(expected, player?.currentSourceVersion)
         current = context.copy(requestGeneration = expected)
         if (context.pluginGeneration == null) beginPlugins(current!!)
         mutableState.update { it.copy(opening = true, error = null, recovering = false, recoveryMessage = null) }
         request = controllerScope.launch {
             try {
-                val (source, candidates, fallback) = prepareResolved(playback.playback(context.details, context.index, quality, context.source.videoCodecFamily, forceRefresh))
+                val refreshed = playback.playbackConfigured(context.details, context.index, quality,
+                    playbackSettingsFor(context, audioOverride), blockedCodecs.toSet(),
+                    if (preserveCodec) context.source.videoCodecFamily else null, forceRefresh)
+                val retained = if (audioOverride == null) retainDesktopPremiumAudioFallback(refreshed, context.source.audioSelection) else refreshed
+                val (source, candidates, fallback) = prepareResolved(retained)
                 val active = current ?: return@launch
                 if (!owns(active) || expected != generation.get()) return@launch
                 val latest = player?.state?.value ?: native
                 if (player?.recoverSource(active.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),
                         latest.positionSeconds, latest.paused) == true) {
+                    if (rememberAudio && audioOverride != null) onRememberAudioQuality(audioOverride)
                     budget = DesktopPlaybackRecoveryBudget()
                     suspended = false
                     current = active.copy(source = source, candidates = candidates, cdnIndex = 0, readyObserved = false, handledFailure = null,
@@ -374,8 +498,11 @@ class DesktopPlaybackController internal constructor(
     }
 
     private fun recover(context: Current, failure: PlayerFailure, native: PlayerState) {
+        if (!recoverable(context, failure)) return
         watchdog.cancel()
-        recovery?.cancel(); recordHealth(context, CdnHealthEvent.PLAYER_ERROR)
+        recovery?.cancel()
+        if (recoverPremiumAudio(context, failure, native)) return
+        recordHealth(context, CdnHealthEvent.PLAYER_ERROR)
         val action = budget.action(failure, context.cdnIndex + 1 < context.candidates.size)
         if (action == PlayerErrorRecoveryAction.GIVE_UP) {
             mutableState.update { it.copy(recovering = false, recoveryMessage = null, error = failure.safeMessage) }; return
@@ -403,20 +530,25 @@ class DesktopPlaybackController internal constructor(
                         fallbackState = fallbackState.advanceFallback(selected.videoUrl, selected.audioUrl)
                     }
                     PlayerErrorRecoveryAction.RETRY_NETWORK -> {
-                        source = playback.playback(context.details, context.index, context.source.quality.takeIf { it > 0 } ?: state.value.quality,
+                        source = playback.playbackConfigured(context.details, context.index, context.source.quality.takeIf { it > 0 } ?: state.value.quality,
+                            playbackSettingsFor(context), blockedCodecs.toSet(),
                             codecOverride = context.source.videoCodecFamily, forceRefresh = true)
+                        source = retainDesktopPremiumAudioFallback(source, context.source.audioSelection)
                         prepareResolved(source).let { source = it.first; candidates = it.second; fallbackState = it.third }; cdn = 0
                     }
                     PlayerErrorRecoveryAction.RETRY_DECODER_FALLBACK -> {
                         val failed = resolvePlaybackVideoCodec(source.videoUrl, source.cachedDashData?.video.orEmpty()) ?: normalizeCodecFamilyKey(source.videoCodecFamily)
                         if (failed == AV1_CODEC_KEY) blockedCodecs.add(AV1_CODEC_KEY)
-                        val fallback = resolveNextVideoCodecFallback(failed, AVC_CODEC_KEY, isHevcSupported = true,
+                        val fallback = resolveNextVideoCodecFallback(failed, preferences().videoSecondCodecPreference, isHevcSupported = true,
                             isAv1Supported = resolveEffectiveAv1Support(true, blockedCodecs))?.takeIf { failed != null }
                         if (fallback != null) {
-                            val fresh = playback.playback(context.details, context.index, source.quality.takeIf { it > 0 } ?: state.value.quality,
+                            val fresh = playback.playbackConfigured(context.details, context.index, source.quality.takeIf { it > 0 } ?: state.value.quality,
+                                playbackSettingsFor(context), blockedCodecs.toSet(),
                                 codecOverride = fallback, forceRefresh = true)
                             if (normalizeCodecFamilyKey(fresh.videoCodecFamily) == fallback) {
-                                prepareResolved(fresh).let { source = it.first; candidates = it.second; fallbackState = it.third }; cdn = 0
+                                prepareResolved(retainDesktopPremiumAudioFallback(fresh, context.source.audioSelection)).let {
+                                    source = it.first; candidates = it.second; fallbackState = it.third
+                                }; cdn = 0
                             } else software = true
                         } else software = true
                     }
@@ -439,6 +571,44 @@ class DesktopPlaybackController internal constructor(
                 }
             }
         }
+    }
+
+    /** The original audio role policy runs before video/network budgets; no generic decoder guess is permitted. */
+    private fun recoverPremiumAudio(context: Current, failure: PlayerFailure, native: PlayerState): Boolean {
+        when (val plan = resolveDesktopPremiumAudioRecovery(context.source, failure, native.speed)) {
+            DesktopPremiumAudioRecoveryPlan.NotApplicable -> return false
+            is DesktopPremiumAudioRecoveryPlan.Unavailable -> {
+                player?.pauseIfSourceVersion(context.sourceVersion, failure.attemptId)
+                if (owns(context)) mutableState.update { it.copy(recovering = false, recoveryMessage = null,
+                    error = "当前设备无法解码该 Hi-Res 音轨，且没有可回退的 AAC 音轨") }
+            }
+            is DesktopPremiumAudioRecoveryPlan.Ready -> {
+                val nativePlayer = player ?: return true
+                val accepted = applyDesktopPremiumAudioRecovery(nativePlayer, failure, plan) {
+                    recoverable(context, failure) && context.accountEpoch == playback.sessionEpoch
+                }
+                if (accepted && owns(context)) {
+                    val actual = nativePlayer.currentSourceSnapshot()?.takeIf { it.sourceVersion == context.sourceVersion }
+                        ?: return true
+                    val source = plan.source.copy(videoUrl = actual.source.videoUrl, audioUrl = actual.source.audioUrl)
+                    // Keep the exact active video/CDN; candidates may change audio only on later recovery.
+                    val active = PlaybackCdnCandidate(source.videoUrl, source.audioUrl, PlaybackCdnCandidateSource.ORIGINAL)
+                    val candidates = (listOf(active) + authorizedPlaybackCandidates(source, health))
+                        .distinctBy { it.videoUrl to it.audioUrl }
+                    current = (current ?: context).copy(source = source, candidates = candidates, cdnIndex = 0,
+                        readyObserved = false, handledFailure = null, cdnFallback = PlaybackCdnFallbackState.Inactive,
+                        watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
+                    mutableState.update { it.copy(recovering = true, error = null,
+                        recoveryMessage = "当前设备无法稳定解码 Hi-Res，已临时切换至 AAC") }
+                    watchdogSnapshot()?.let(watchdog::loaded)
+                } else if (recoverable(context, failure)) {
+                    nativePlayer.pauseIfSourceVersion(context.sourceVersion, failure.attemptId)
+                    mutableState.update { it.copy(recovering = false, recoveryMessage = null,
+                        error = "Hi-Res 解码失败，AAC 回退也未能完成") }
+                }
+            }
+        }
+        return true
     }
 
     private fun prepareResolved(source: ResolvedSource): Triple<ResolvedSource, List<PlaybackCdnCandidate>, PlaybackCdnFallbackState> {
@@ -531,9 +701,10 @@ class DesktopPlaybackController internal constructor(
     }?.source
 
     private fun recoverable(context: Current, failure: PlayerFailure): Boolean = owns(context) && !suspended &&
-        player?.state?.value?.failure?.attemptId == failure.attemptId
+        failure.sourceVersion == context.sourceVersion && player?.state?.value?.failure?.attemptId == failure.attemptId
     private fun owns(context: Current): Boolean = !closed.get() && context.requestGeneration == generation.get() &&
-        ownedSourceVersion == context.sourceVersion && player?.currentSourceVersion == context.sourceVersion
+        ownedSourceVersion == context.sourceVersion && player?.currentSourceVersion == context.sourceVersion &&
+        context.accountEpoch == playback.sessionEpoch
     private fun valid(expected: Long, baseline: Long?, accountEpoch: Long): Boolean = !closed.get() && expected == generation.get() &&
         (player == null || baseline == player.currentSourceVersion) && playback.sessionEpoch == accountEpoch
     private fun recordHealth(context: Current, event: CdnHealthEvent) {
@@ -594,7 +765,8 @@ class DesktopPlaybackController internal constructor(
         if (submit) heartbeatReporter.submit(final)
         return final
     }
-    private fun invalidate(stopNative: Boolean, flushReport: Boolean = true): DesktopHeartbeatReport? {
+    private fun invalidate(stopNative: Boolean, flushReport: Boolean = true, retainQueueOwner: Boolean = false): DesktopHeartbeatReport? {
+        if (!retainQueueOwner) queueOwnership = null
         watchdog.reset()
         val finalReport = current?.let { finishHeartbeat(it, submit = flushReport) }
         generation.incrementAndGet(); request?.cancel(); recovery?.cancel(); pluginLoad?.cancel()
@@ -622,13 +794,14 @@ class DesktopPlaybackController internal constructor(
             heartbeatReporter.submit(heartbeat.finalReport())
             context.pluginGeneration?.let { plugins?.onVideoEnd(it) }
             current = context.copy(requestGeneration = expected, pluginGeneration = null, handledFailure = null)
+            recordQueueRequest(expected, player.currentSourceVersion)
             suspended = true; player?.setPaused(true)
         } else {
             context?.let {
                 finishHeartbeat(it)
                 it.pluginGeneration?.let { token -> plugins?.onVideoEnd(token) }
             }
-            current = null; ownedSourceVersion = null; pendingSponsorSkip = null
+            current = null; ownedSourceVersion = null; pendingSponsorSkip = null; queueOwnership = null
             pluginMuteUntilMs = null; pluginMuteFromMs = null
         }
         mutableState.update { it.copy(opening = false, recovering = false, recoveryMessage = null, manualSkip = null,
@@ -653,6 +826,7 @@ class DesktopPlaybackController internal constructor(
         if (closed.get()) return
         checkpoint()
         val final = invalidate(stopNative = true, flushReport = false)
+        automaticSubtitles?.close()
         closed.set(true); controllerScope.cancel()
         heartbeatReporter.close(final)
         mutableState.update { DesktopPlaybackState(quality = it.quality) }

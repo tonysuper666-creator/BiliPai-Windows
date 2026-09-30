@@ -1,0 +1,307 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "4b5c77e49d6c2ef0a3ea09f7bb384325e8d679aa",
+  "developmentIntegration": true,
+  "deployedDesktopVersion": "0.2.406.5",
+  "sourceAudit": "desktop/verification/source9-story-playback-source-audit.json",
+  "sourceCounts": {
+    "kotlin": 396,
+    "resources": 15,
+    "apiDeclarationsVerbatim": 303,
+    "responseFiles": 45
+  },
+  "verification": {
+    "productCompilePassed": true,
+    "focusedJUnit": {
+      "tests": 75,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suiteNames": [
+      "com.bilipai.desktop.data.DesktopStoryTopicTest",
+      "com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest",
+      "com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest",
+      "com.bilipai.desktop.player.DesktopPlayerPreferencesWriterTest",
+      "com.bilipai.desktop.player.DesktopPremiumAudioControllerTest",
+      "com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest",
+      "com.bilipai.desktop.ui.DesktopStoryInitialFailureTest",
+      "com.bilipai.desktop.ui.DesktopStoryInitialFailureUiTest",
+      "com.bilipai.desktop.ui.DesktopStoryPlaybackHostTest",
+      "com.bilipai.desktop.ui.DesktopStoryTopicUiTest",
+      "com.bilipai.desktop.ui.DesktopSubtitleDialogTargetTest",
+      "com.bilipai.desktop.ui.DesktopTopicRoutingTest"
+    ],
+    "pythonSourceTests": {
+      "tests": 18,
+      "passed": 18
+    },
+    "originalStoryTopicEmbeddedCases": {
+      "data": 26,
+      "compose": 46
+    },
+    "composeImages": [
+      {
+        "path": "desktop/build/reports/story-topic-parity/story-material3.png",
+        "sha256": "1f16ea7d3bd99481ce949f44418f0e0d394bd0f09e9ebf6c2a153d29d37d47cc"
+      },
+      {
+        "path": "desktop/build/reports/story-topic-parity/story-miuix.png",
+        "sha256": "8692e80b6001e9659488a0d1c128ad4902c9062d1dd7ddf015f41df06ca45d21"
+      },
+      {
+        "path": "desktop/build/reports/story-topic-parity/topic-material3.png",
+        "sha256": "22b1493ead7ed8d8036a0386ba92b554dbb814e28a570b670c02d3f1e5555b87"
+      },
+      {
+        "path": "desktop/build/reports/story-topic-parity/topic-miuix.png",
+        "sha256": "938bbbc0232023f235a215366eddaa0c6f0e5d51bf09114e5d23d2d453ba8062"
+      }
+    ],
+    "nativePlayer": {
+      "checks": 12,
+      "passed": 12,
+      "frozenFilesVerified": 92,
+      "report": "desktop/verification/native-playback-settings/runtime-report.json",
+      "identity": "desktop/verification/native-playback-settings/execution-identity.json",
+      "kind": "Exact main player sources independently compiled; fixture-only read-only C ABI observer, own HWND and real pixels",
+      "actualHardwareDecoderOnThisDevice": "d3d11va",
+      "audioOutput": "null",
+      "physicalPremiumAudioDevicePlaybackVerified": false,
+      "packagedExeTested": false
+    }
+  },
+  "story": {
+    "rootQueueAndSurfaceIntegrated": true,
+    "originalFeedShuffleAppendAndPagerPolicyReused": true,
+    "appendPreservesNativeSourceAndProgress": true,
+    "initialMetadataAndStreamFailureRetryTested": true,
+    "remaining": [
+      "Actual Swing Canvas wheel/drag/key bridge and full original controls/visual/window lifecycle",
+      "Real account/service acceptance and packaged native portrait playback"
+    ]
+  },
+  "topic": {
+    "originalApiModelsStatesAndVisualPolicy": true,
+    "rootDetailSortPaginationParticipation": true,
+    "richTextOriginalAnnotatedPayloadAndKeywordFallback": true,
+    "nestedBackStackAndDynamicReturnRetained": true,
+    "remaining": [
+      "Complete original discovery/detail visual interactions, retained route state and live account/service/window acceptance"
+    ]
+  },
+  "playbackSettings": {
+    "originalHardwareCodecDefaultsAndAudioSelection": true,
+    "explicitAcceptedAudioRemembered": true,
+    "serializedConflatedPreferenceWritesAndShutdownRestoreDrain": true,
+    "manualSubtitleDialogCancellationPreservesAutomaticSession": true,
+    "onlineSubtitleCapturedBvCidNativeTokenAndAccountChecked": true,
+    "originalPremiumAudioPolicyUsesOnlyExplicitAoInitEvidence": true,
+    "audioFailureDoesNotConsumeVideoCdnHealthOrGenericBudget": true,
+    "remaining": [
+      "Automatic subtitle account epoch, actual HTTP cancellation/join, original one-time authorization refresh and single-track fallback",
+      "Physical HiRes output and controlled real AO initialization failure",
+      "Packaged Shell controls and full original settings UI"
+    ]
+  },
+  "inputs": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "rawSha256": "3a5df419b97897c8d357260b8bebf3186dd2f0177e2f4a1d233d930a9dcf88d5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "rawSha256": "6c9ab1123b7d143fcb09a0da43a0d425ca57599c16ce4f25cd8c38117b898bc2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "rawSha256": "d1cf35c91727aa428ca9bd0d97e823a0e3ef1ad944e720483cd5806914eec916"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "rawSha256": "fd23e585ed119fe4a58a447cfe7d3072e1531401d5012291c2d2c7bb70060b01"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "rawSha256": "46c6f61859d5a8f29d00a21db432a873738062e47cd548e94162c9d1c5d14a63"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "rawSha256": "c1435716a7450b045a15f5ffbc2d0bbef167f22c1327078db417d79f2d065449"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "rawSha256": "b5de792c161e21769b65a46e2df100625362ca7aab2e0b5242679736aa630bdc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "rawSha256": "ec542ca986d1c06d05dd5889783500b8a3cf3ee08e0f100eb96f0aff16e76d53"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
+      "rawSha256": "2ff25af6a9700f1476726629eb67b30a45cec3f3f69ddf99fe6c03547568c06c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "rawSha256": "aae96711bbb1185e26eaa4588dcddaff0724bb85edc2c9a4189c2c664edd5108"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "rawSha256": "98b9be4bf157747ec6d00232269d1bbad1bbe73a7c4c94be37ce74ba4de12392"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "rawSha256": "f196425096bb475090c32038711b4c2fea61445b2041143f176f0f7e97607e6a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "rawSha256": "54002bb99bc77bdb9fe5e792a03540da88b32a8bb30025cc572709030ea4aa1e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "rawSha256": "99808ee4fb54d77adc50828b997263e2360107c00843a24a75fb1a7ffa3c30ac"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "rawSha256": "07dec1a5e4a67cf3d1dac0a1865bfd32448a30b95ba5c7c0d99bb4b7512ab359"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "rawSha256": "4cc1cfeec6a52b260e500fef1fc9a8efcb145adc7281d5a52a8dd6c326d9ffcf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopStoryTopicControllers.kt",
+      "rawSha256": "f93c0b60b129f137f14eb5ddf629b37c01c48c9b58e68a4be467dc28e2616a08"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopStoryTopicRepository.kt",
+      "rawSha256": "797c714452de331a4693222397c3528c6d809e31a3bee7f500388944329edfa7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "rawSha256": "7724a3e30b1d928064f7d4dec9436e8aa9d742f260a2e565b8c370b704bc0d99"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackSelection.kt",
+      "rawSha256": "0a71cd150d488368364ea04b75c9b47f06c4d79425c49569f191dfce4ad6b54f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlayerPreferencesWriter.kt",
+      "rawSha256": "1586641ce7466ac423f8b19b964aeffc0e3950fe71c94d5e0ff365a7dd033a9b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "rawSha256": "fafa52013b6c826dd358040ae6ec7c01d66b603d94a7cfd0e3dc03353c1bf539"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTopicLink.kt",
+      "rawSha256": "bff8bdd40c9a4091166374658da732b6844ed921424548ffadff6b692eb00d6c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHost.kt",
+      "rawSha256": "65d0b72b02c3dabfdfa2224340d3c3dc2b620f662257bed3a316d3cc7d97ee48"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubtitleDialogTarget.kt",
+      "rawSha256": "b783452f0f308ecee1a315748ebdeca3875907a82daba7cb4a84985e06f771ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "rawSha256": "5dfba965d83bbdf2f8235464c13a442b13d6995cef969a7ab32bfbfd8285260f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+      "rawSha256": "fdfe8c8af5977664b2ac6ddaf9a199692ee6df5e52237ab1c11499bf594a1864"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopStoryTopicTest.kt",
+      "rawSha256": "d4358a52aded19dd76ba901dbdf6157b1e44bb9632ab569a6000b0ec32001660"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopAdvancedPlaybackSettingsTest.kt",
+      "rawSha256": "4fbd51b60f4d4791dfd5ac3463a79003c688cdde53db7bf2104877862c558c7d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPlayerPreferencesWriterTest.kt",
+      "rawSha256": "f35e6bb8d0100f6adb119d8096dc8738dc74582540e500fba4b869e90f30a2cf"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioControllerTest.kt",
+      "rawSha256": "2565557bc0d1e0447c2c68adec6484309532c89a73ea4452c03256f3b744247a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecoveryTest.kt",
+      "rawSha256": "8b74b9bf18e9bfddeb8ffac6b915bcd87816e99c2a94c71219a7ab4edcf1b30a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+      "rawSha256": "7d7a860fe134be516ec3927c031b017fef390121b9ca436ff96a21fa259bd5a2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+      "rawSha256": "77765821489f72c5e27b3bc0897f0594439fe8852db22c6a53e8c04e74cc69bc"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureUiTest.kt",
+      "rawSha256": "d27fb4ff9ff4c58e080745249aaa406e08e32ebf55fcd3c5d60e6656c7ba3deb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHostTest.kt",
+      "rawSha256": "06050bf1ef8b4d415d59d14074aea8f2de3d54d8aa9afa54b65d419f16e5d81e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryTopicUiTest.kt",
+      "rawSha256": "40142677ee00c829f32c418e4934a4bc692019026c390fb23560e9ef43993665"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubtitleDialogTargetTest.kt",
+      "rawSha256": "5dbb490bbd2100e8a63a9f1b09fb7f997361f5a6a20a4b2606bffa6d5c4d68d7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopTopicRoutingTest.kt",
+      "rawSha256": "9b480420e3c22676c2e7e828d6948077d450b89305dff22c1622cd6292db4c09"
+    },
+    {
+      "path": "desktop/third-party/premium-audio-platform.json",
+      "rawSha256": "34746b1e6772a32458477c036d4bb975d8668055bee17fe38727a763529a20ca"
+    },
+    {
+      "path": "desktop/tools/extract-playback-settings.py",
+      "rawSha256": "225f0d618b67a8ac9ffc088bfe87a7a1b2ddfdd80c1b13f7817e1368b20e6994"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-story-topic.py",
+      "rawSha256": "0006fbf4af3be8fccd6e76302b86f2fcc93d918dc5410a4346a0ee87893de9e7"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_advanced_playback_settings.py",
+      "rawSha256": "f9bb9875cba39b06f5c533744aaf57ad6df62e7cd57d774fc769554bdbbc8894"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_story_topic.py",
+      "rawSha256": "fb71b586839f6a0a594bf3978e8bb962485343814ddb1e874d8fb6783cbb966c"
+    },
+    {
+      "path": "desktop/verification/native-playback-settings/execution-identity.json",
+      "rawSha256": "07a8c03a449abcc1ddf3ca197f4d103f56302ca8d1640eb46d56b8525bd2c66a"
+    },
+    {
+      "path": "desktop/verification/native-playback-settings/runtime-report.json",
+      "rawSha256": "b5dc658332f99c986fc7717d7d6b1d94aef949f0dae6bd823b7aa8b2b101970f"
+    },
+    {
+      "path": "desktop/verification/native-playback-settings/verified-artifacts.json",
+      "rawSha256": "09394fc28628e1b89375ed0dc919addac6f60b32e68b08791264871c6b20477c"
+    },
+    {
+      "path": "desktop/verification/source9-story-playback-source-audit.json",
+      "rawSha256": "0a7fe089735ebc1dd86d56d7690712fb8c890005f78d5ead5063408bf8c59053"
+    }
+  ],
+  "fullFunctionalParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newPackageBuilt": false,
+  "desktopDeployed": false,
+  "previousOverlayBlackSurfaceCauseResolved": false
+}

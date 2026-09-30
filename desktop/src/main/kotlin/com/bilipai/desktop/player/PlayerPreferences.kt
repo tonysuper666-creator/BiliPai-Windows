@@ -5,6 +5,11 @@ import com.android.purebilibili.core.store.DEFAULT_PLAYBACK_SPEED_OPTIONS
 import com.android.purebilibili.core.store.normalizePlaybackSpeedOptions
 import com.android.purebilibili.core.store.nearestPlaybackSpeed
 import com.android.purebilibili.core.store.resolvePreferredPlaybackSpeed
+import com.android.purebilibili.core.store.player.DEFAULT_AUDIO_QUALITY_FOLLOW_LAST
+import com.android.purebilibili.feature.settings.normalizeDefaultAudioQualityOption
+import com.android.purebilibili.feature.video.playback.audio.normalizeAudioQualityPreference
+import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference
+import com.android.purebilibili.feature.video.viewmodel.normalizeCodecFamilyKey
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import java.nio.file.Files
@@ -39,6 +44,12 @@ data class PlayerPreferences(
     val speedOptions: List<Double> = DEFAULT_PLAYBACK_SPEED_OPTIONS.map { (it * 100).roundToInt() / 100.0 },
     val defaultSpeed: Double = 1.0,
     val rememberLastSpeed: Boolean = true,
+    val hardwareDecodeEnabled: Boolean = true,
+    val videoCodecPreference: String = "hev1",
+    val videoSecondCodecPreference: String = "avc1",
+    val defaultAudioQuality: Int = DEFAULT_AUDIO_QUALITY_FOLLOW_LAST,
+    val lastSelectedAudioQuality: Int = -1,
+    val subtitleAutoPreference: SubtitleAutoPreference = SubtitleAutoPreference.OFF,
 ) {
     val preferredSpeed: Double get() = resolvePreferredPlaybackSpeed(defaultSpeed.toFloat(), rememberLastSpeed, speed.toFloat()).let { (it * 100).roundToInt() / 100.0 }
     fun normalized(): PlayerPreferences {
@@ -49,6 +60,10 @@ data class PlayerPreferences(
         defaultSpeed = nearestPlaybackSpeed(if (defaultSpeed.isFinite()) defaultSpeed.toFloat().coerceIn(0.1f, 8f) else 1f, options).let { (it * 100).roundToInt() / 100.0 },
         speedOptions = options.map { (it * 100).roundToInt() / 100.0 },
         danmaku = danmaku.normalized(),
+        videoCodecPreference = normalizeCodecFamilyKey(videoCodecPreference)?.takeIf { it in setOf("avc1", "hev1", "av01") } ?: "hev1",
+        videoSecondCodecPreference = normalizeCodecFamilyKey(videoSecondCodecPreference)?.takeIf { it in setOf("avc1", "hev1", "av01") } ?: "avc1",
+        defaultAudioQuality = normalizeDefaultAudioQualityOption(defaultAudioQuality),
+        lastSelectedAudioQuality = normalizeAudioQualityPreference(lastSelectedAudioQuality),
     )
     }
 }

@@ -1,0 +1,467 @@
+{
+  "passed": true,
+  "nativeGates": 12,
+  "scope": "Exact main Advanced/HiRes native player, fixture-only ABI reads; no FSR draft",
+  "files": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\compile.log",
+      "relativePath": "compile.log",
+      "sha256Bytes": "abd2c23946fcb1425d959ae6ef1a2c892edb7ed03abec1ebdb36c020cd0cc6b8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\execution-identity.json",
+      "relativePath": "execution-identity.json",
+      "sha256Bytes": "07a8c03a449abcc1ddf3ca197f4d103f56302ca8d1640eb46d56b8525bd2c66a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\freeze.py",
+      "relativePath": "freeze.py",
+      "sha256Bytes": "4de83e65d091f823b133799fdf0a4cf22d24431a0daada795a8b3c09236c20f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\MpvNative.kt",
+      "relativePath": "MpvNative.kt",
+      "sha256Bytes": "f4e01d53f617f210eea73ec0e82c84f853f2d0f12039ddb52b5b7e7e5779bfca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-process.log",
+      "relativePath": "native-process.log",
+      "sha256Bytes": "30f0069f9016686109c78f22d7f705eb9fb54579a467ee628fed85861331594d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\NativeSettingsObservations.kt",
+      "relativePath": "NativeSettingsObservations.kt",
+      "sha256Bytes": "b5969694de2a60b9953b059fefef31b6e382fb8d1f5cfeb561ad28339bfaed09"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\README.md",
+      "relativePath": "README.md",
+      "sha256Bytes": "614ac5cbc7a6d6ccb36c8c09ca2c541581e1bcfa230e5ddef4e17a6e0f340e97"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\RunNativeSettingsProof.kt",
+      "relativePath": "RunNativeSettingsProof.kt",
+      "sha256Bytes": "9b04146bf5e240719e64fe4be665ae0ae74e6438fedf62c35cd3464c46ff4217"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\synthetic-avc.mp4",
+      "relativePath": "synthetic-avc.mp4",
+      "sha256Bytes": "639f3435ffe0eb5d6ab8bf7ae576660aee2917eccf38ec8f9599373880593ba9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\verify-and-run.py",
+      "relativePath": "verify-and-run.py",
+      "sha256Bytes": "e60c084dba93514478e1e645e20c0a9d07a821b52c4c74d5be87183763c3c95a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\bilingual.png",
+      "relativePath": "native-output\\bilingual.png",
+      "sha256Bytes": "97a745906244c8e3497b26f83eeb53842d7d14371f996ff8c788d6afd3c99804"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\native-settings-report.json",
+      "relativePath": "native-output\\native-settings-report.json",
+      "sha256Bytes": "b5dc658332f99c986fc7717d7d6b1d94aef949f0dae6bd823b7aa8b2b101970f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\primary-only.png",
+      "relativePath": "native-output\\primary-only.png",
+      "sha256Bytes": "0559b4af6ad345d4a89bc61cbba9a890f7a772d1006754ff3dae90faa53814dd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\primary.srt",
+      "relativePath": "native-output\\primary.srt",
+      "sha256Bytes": "cae4cabfba59c70050d4de3caf8db3de8e8e165ca255940758fbe42ef71de0ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\recovered-bilingual.png",
+      "relativePath": "native-output\\recovered-bilingual.png",
+      "sha256Bytes": "d7decdbd16566e5a589aa1b2c6c7a3234c8b41602150ec09d75cf5e689191435"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\secondary-only.png",
+      "relativePath": "native-output\\secondary-only.png",
+      "sha256Bytes": "16bda54ca6c6e0050443ae960cb7d2fe9326c745ce0a099de0159d8be7ccd232"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\secondary.srt",
+      "relativePath": "native-output\\secondary.srt",
+      "sha256Bytes": "0cc9ba30fa74fed5c99150967c9db00e5cdfa15878786007b66d189a7ad3a1ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\native-output\\subtitles-off.png",
+      "relativePath": "native-output\\subtitles-off.png",
+      "sha256Bytes": "f1078532fb4a0b67ea26e9371ecb58a535e043e939b78cf9aa02ff47fc47995a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\META-INF\\main.kotlin_module",
+      "relativePath": "classes\\META-INF\\main.kotlin_module",
+      "sha256Bytes": "97e2e98fef4f6fa54b344a49395657b1629be7a306ba7600893b7c80552091f9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleDataSource.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "65602ade119094d581662b7345282806e2db8de76e9bf960993c83d205964b85"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitlePlayer.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "5ffb84ee37a694e72a3f88e2a718b27f277f9c46adf84f878015f0fafa3ff8da"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$Binding.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$Binding.class",
+      "sha256Bytes": "585fa88f727c135748033c6bcf71beda437add52f7d62357acac2bafbed3d4fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$primary$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$primary$1.class",
+      "sha256Bytes": "fa775ef9cdb49972fc7e76fcdd890ef2951f4ab51d1c181b3eda9c220364bd80"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$secondary$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1$secondary$1.class",
+      "sha256Bytes": "02bb02913428bfcc9c9024df48630db1c7175aead387b6c98b83d2e0ec27194b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1$documents$1.class",
+      "sha256Bytes": "f14c541f9e8954787263258620255dfb3f7c95189749e8540aae1258cfd44a02"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles$load$1$next$1.class",
+      "sha256Bytes": "ae04304324648947e60e7c7e3eb821621f4e25c020913bae6d06529c13f62b5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitles.class",
+      "sha256Bytes": "9336d89c8be5f334342f7b1ca07d65124692e876de36b3ff220a5a7898d7181e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleState.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopAutomaticSubtitleState.class",
+      "sha256Bytes": "b52e793630df26d9de0896745a9f2e54c5ed906df50ab4633ac1bacb65522738"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopDashSelection.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopDashSelection.class",
+      "sha256Bytes": "15dead78883339411c5e6270abb2b04099a1a97bbb7a69098c47e10a66cc6b9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopOnlineSubtitleAsset.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopOnlineSubtitleAsset.class",
+      "sha256Bytes": "043e9c1021722816917f3989355aefed83ef9a0a9052eea42c06ec7c304e629a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPlaybackSelectionKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPlaybackSelectionKt.class",
+      "sha256Bytes": "fc09e73959de7ca6d74805ee1900b2bf0b943f09c2e32a6e174fb7125ba46804"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryKt.class",
+      "sha256Bytes": "da579908a33b768cc6bf5c173f294a9ac6a1aefa99c1d7783543fc020cdaddfe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$NotApplicable.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$NotApplicable.class",
+      "sha256Bytes": "9bcc4e5cf759e16812b28bef9ffa219e51511d3b434288ff6be487ea6aad5c8a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Ready.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Ready.class",
+      "sha256Bytes": "e4a32e336dd7d9408bf0a7a78da4188587a1f5300ba31aee1f6267339d330d32"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Reason.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Reason.class",
+      "sha256Bytes": "4cd17f5cc337090940da67423bd2d6245c9d4eb57822d4dda6ca7c9270d927bb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Unavailable.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan$Unavailable.class",
+      "sha256Bytes": "625d7fce990a12e863f5458c6dfa6e03cd36ca0d6c12f44bcb0c82e903e86888"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\DesktopPremiumAudioRecoveryPlan.class",
+      "sha256Bytes": "e4cd80c9dda577a1abef0f672ad12f0f23f735252de5d38656c66fe7f9579d6e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\LocalDocuments$metadata$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\LocalDocuments$metadata$1.class",
+      "sha256Bytes": "721fd01d706bf43002daab84064064189902d9cc85f4824e1a916d886679fa62"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\LocalDocuments.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\LocalDocuments.class",
+      "sha256Bytes": "52dfb1dcdbd11b22bd27cd5b0b9f72a176d4777c5b0d90873bfda6a7cc20c069"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvAutomaticSubtitlePlayer.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvAutomaticSubtitlePlayer.class",
+      "sha256Bytes": "407c9faaec5deaab00b4993d174165583d437512b394885c9b32bd7eb3716719"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvCallException.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvCallException.class",
+      "sha256Bytes": "a419541e849e5ce24a908c5ec0f549fcfaf5b6754a20c623f51319b4090e7e64"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvNative$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvNative$Companion.class",
+      "sha256Bytes": "21ff859b82a1e79a97e9a547ab62accc9e8031f0f42c442b3ff7672d29ff4982"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvNative.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvNative.class",
+      "sha256Bytes": "a2246adfc2b9d7892c403564521f1c7138e9439ea1db48e17f04473cb61dcd65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvNativeKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvNativeKt.class",
+      "sha256Bytes": "87471cc31d053defbc014d6a8a198095ed973971fedb02e74670a5d0781168fa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvNodes.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvNodes.class",
+      "sha256Bytes": "38d3eab5014a1e3b60a2635133ccad302b5a2368711afc9997ae07ab44968f05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Command.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Command.class",
+      "sha256Bytes": "d512c57961acc77121453149c7189edf1bd5684d594f91530c1ced00f0445869"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$HardwareDecoding.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$HardwareDecoding.class",
+      "sha256Bytes": "ff9640b2c557a01bfcf0c047dbb07c6be588888434b5610987e2214fff74f587"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Load.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Load.class",
+      "sha256Bytes": "30823c94f25b1811f07651279ef1ad64e35c8b724350c288e0eebdec203f813d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Property.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Property.class",
+      "sha256Bytes": "de9a09976ff7d5bc6aa665bd94b0151c99b165c44c80c817555ffa8320089984"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Screenshot.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Screenshot.class",
+      "sha256Bytes": "7f19f3ed1af2d7b6275a9a0f219512267036631ac948e39c1bba52f0f6b3aa64"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Seek.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Seek.class",
+      "sha256Bytes": "1f5cfbbe0d7620719b50422151331885eb77bac0790398a47d13022ef4b9dd83"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$SubtitleConfiguration.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$SubtitleConfiguration.class",
+      "sha256Bytes": "e005f6b9f045f282ee28c466c632dbd5c27614f87fd13fd7655a78229e9a4ca7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Subtitles.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$Subtitles.class",
+      "sha256Bytes": "ceb6c82da006697a64541160310203607a7151df323e973e34f0862ed68dbf35"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$VideoShaders.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action$VideoShaders.class",
+      "sha256Bytes": "3ac5f27f74b41e5b7120fdddb012865ebb26a1c0ceba7b34be8f5c92c314ef96"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Action.class",
+      "sha256Bytes": "d31c6f0e04b7bf5694ff4e72c5e1333a1a95ae3f35df32a4265e352a467b2a73"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$canvas$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$canvas$1.class",
+      "sha256Bytes": "de6089ae56ae272ee5f52b9576b278fb50dadd22c6c863ec2eefa8aca9f6e1e2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$1.class",
+      "sha256Bytes": "984336423aefb0f739104ee11de7b44470c011cf47e7a893faf0ad1a3ebfb875"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$4.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$captureScreenshot$4.class",
+      "sha256Bytes": "e69aef6b0f6051b61873f4458e54ffc0c597533d140ee34880972e20bf1e41ce"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$ExternalSubtitle.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$ExternalSubtitle.class",
+      "sha256Bytes": "568fc22325f814ce45f8955b7c6ed3a23a580a4d34f1623180cee41ff5b17d05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Session.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer$Session.class",
+      "sha256Bytes": "e058c17558544e755d58ee6a6da754aeaa555341fcc0b607a9aa6f23c7aade28"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\MpvPlayer.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\MpvPlayer.class",
+      "sha256Bytes": "8a876c8c19186d649c9dbc3bed9e5a97e008f9ad0e4033c9c5af1ae6c0af4dfa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations$Snapshot.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations$Snapshot.class",
+      "sha256Bytes": "4ff6ea5800add9aeee7ad82b2fa1b0299de56ba844e2f5ce2ce0f9e2b95c928b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations$wrap$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations$wrap$1.class",
+      "sha256Bytes": "41a2327b01a447be8bd5d854ffd088bf16aaeecb1ece28a781204847d01afcee"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\NativeSettingsObservations.class",
+      "sha256Bytes": "233a96c5a72fcc71c621196a8a7305603286a676d96e5b3e60ed73b70ee7c33e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\OwnedPlaybackSourceSnapshot.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\OwnedPlaybackSourceSnapshot.class",
+      "sha256Bytes": "8ef523113249e92e798f023d5b2e6c501734c8b193c2113ef8b6266752182969"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackMode$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackMode$Companion.class",
+      "sha256Bytes": "deab03f5e5e74cbb946804b4489ceef83589063795a202bbdf0545dcece53b9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackMode.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackMode.class",
+      "sha256Bytes": "c1fcb7069e783ca5054e3561731614fbc5a8a10f7939fda886fdc199b106a984"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackSegment.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackSegment.class",
+      "sha256Bytes": "292729970ab9e86714dd3b2a031aa63632158e3db0be78c71cfa8696b8b0d576"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackSource$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackSource$Companion.class",
+      "sha256Bytes": "f2b784f8d20cdd5e59553f10d0439dc026c71d1219e89b65d42785ac14e52bd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackSource.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackSource.class",
+      "sha256Bytes": "c15ef1631d9854c0f2d5bba9f4ac39ea2d5ecc6648e7258b321a5d8b84e1b5da"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlaybackStreamHeadersKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlaybackStreamHeadersKt.class",
+      "sha256Bytes": "1ca4fc675bc3d1b3a7b224c1939812b753eef27dc10b29b43f14f768f1d74ff6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics$Companion.class",
+      "sha256Bytes": "6a079ca2b33ddb170682167482fb97dcb577e88546d6465a551e6b9dca4c0179"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics$reset$$inlined$sortedByDescending$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics$reset$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "b28c0f62c623445b4c4e6dc57350a5c837e7d164f6271178a1ee01cece1aaf35"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerDiagnostics.class",
+      "sha256Bytes": "b6346755db215fd699f2ac05bfcd872792120b79bb97a2d329a05994e8e9f0cb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerFailure.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerFailure.class",
+      "sha256Bytes": "6bc62fa52f886fa53a470d37642fe82b6583bcc355320a04859535915e3401b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerFailureKind.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerFailureKind.class",
+      "sha256Bytes": "8be2a2626b20482d38fa7401358b2cd5fe56e7b8c08754a84eab71658faaa210"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferences$$serializer.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferences$$serializer.class",
+      "sha256Bytes": "3d30bbf3a7c26986f329a1488e0c1d74e8200fe8e5190b2d8a6a3815455599e3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferences$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferences$Companion.class",
+      "sha256Bytes": "93c03874aca7fe8dc710031659540cf7e7052718230027eba6e8961e335bd232"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferences.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferences.class",
+      "sha256Bytes": "1f1c3ad93ccdb950c3e1a8ad90a471ccd3202129c1c5fb8ff495305177f285df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesKt$WhenMappings.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesKt$WhenMappings.class",
+      "sha256Bytes": "39bbc8a9f9ab430ed11580fa4540bbada2889691c83639a83630c76cea24c76c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesKt.class",
+      "sha256Bytes": "2f835feeec0b80274f8630de0c7d6025c6ce49aa58e319ed0ce8ecdfbd7058b1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesStore$Companion.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesStore$Companion.class",
+      "sha256Bytes": "b420641c8f49074a9b30807d46a99f561fd1a7e30be3d00d9f7d9df3aa4695ab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesStore.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerPreferencesStore.class",
+      "sha256Bytes": "2b30af28e32dd2d5edaba9b653eb0a4f10695f648eb67e422b471388e3da7510"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerState.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerState.class",
+      "sha256Bytes": "9c8d2e36dc3d9a9b4ee43e265fbbda1d652bfc746c3ba5a6200628a3f2d64528"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\PlayerTrack.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\PlayerTrack.class",
+      "sha256Bytes": "6a19aae59079e91cec51579f34d95b04edde33a8308598db575cd70ff1a2ab32"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RepositoryAutomaticSubtitleDataSource.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RepositoryAutomaticSubtitleDataSource.class",
+      "sha256Bytes": "8a423f99270e5f3193fa46e70a3e871ee241be93e5ec23702c8bc4d8af7b8e73"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18$1.class",
+      "sha256Bytes": "f3dd797312920184f45c6b959f23f47b3b489383379162d11dfc587e2e8bc5b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$18.class",
+      "sha256Bytes": "91fcd84378fe17a6efb15be0ff6df775905f61258d1d9d3f788dbd21b251f5a7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19$1.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19$1.class",
+      "sha256Bytes": "efb27fcfc4a892f8be9bf7882c9ad1a6d89d2254a7c520d1b89a93a7c4a23c79"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$19.class",
+      "sha256Bytes": "7fbafc5f64150aa506b7a3bcfd8e2ee85003d34b12eb4fd26e61fcf9d19bf086"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$7.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt$main$7.class",
+      "sha256Bytes": "5ad1edccf60066be81dac8f21910e4105de262a25e3c5c1fef340c618fd3f260"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\playback-settings-native-proof\\classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt.class",
+      "relativePath": "classes\\com\\bilipai\\desktop\\player\\RunNativeSettingsProofKt.class",
+      "sha256Bytes": "3d7fd9892875de0c1662b1f468e77439a128eccbd3586ce283e61c3d135f5a8c"
+    }
+  ]
+}

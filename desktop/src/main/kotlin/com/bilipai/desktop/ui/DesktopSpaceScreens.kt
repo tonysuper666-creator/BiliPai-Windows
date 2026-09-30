@@ -48,7 +48,7 @@ internal fun DesktopSpaceScreen(requestedMid: Long, repository: DesktopRepositor
     onCollection: (mid: Long, collectionId: Long, collectionType: String) -> Unit,
     onLogin: () -> Unit, onExternalUrl: (String) -> Unit,
     bodyTab: DesktopSpaceTab? = null, headerVisible: Boolean = true,
-    browseState: DesktopSpaceBrowseState? = null) {
+    browseState: DesktopSpaceBrowseState? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
     val account by repository.account.collectAsState()
     val epoch by repository.sessionEpochFlow.collectAsState()
     val mid = requestedMid.takeIf { it > 0 } ?: account?.mid ?: 0
@@ -58,7 +58,7 @@ internal fun DesktopSpaceScreen(requestedMid: Long, repository: DesktopRepositor
     val state = browseState ?: remember(memory, owner) { memory?.screen(owner) { DesktopSpaceBrowseState() } ?: DesktopSpaceBrowseState() }
     val selectedTab = bodyTab ?: state.tab
     val scope = rememberCoroutineScope()
-    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic)
+    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic, onTopic, onTopicKeyword)
     suspend fun loadProfile() {
         try { val result = social.userProfile(mid); state.profile = result; state.profileError = null }
         catch (failure: Exception) { if (failure is CancellationException) throw failure; state.profileError = failure }

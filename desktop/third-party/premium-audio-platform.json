@@ -1,0 +1,26 @@
+{
+  "upstream": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt",
+    "sha256Lf": "1aa85eac44a65b128f96e39241e89478dde4b9ac4f81eda93af96acc3bb7509c",
+    "mode": "only import alias, original body unchanged"
+  },
+  "media3": {
+    "sourceUrl": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar",
+    "sourceArchiveSha256": "472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba",
+    "entry": "androidx/media3/common/PlaybackException.java",
+    "constants": {
+      "ERROR_CODE_AUDIO_TRACK_INIT_FAILED": 5001,
+      "ERROR_CODE_AUDIO_TRACK_WRITE_FAILED": 5002,
+      "ERROR_CODE_DECODER_INIT_FAILED": 4001,
+      "ERROR_CODE_DECODING_FAILED": 4003,
+      "ERROR_CODE_FAILED_RUNTIME_CHECK": 1004
+    }
+  },
+  "mpv": {
+    "actualHeader": "desktop/build/downloads/mpv-extract-1f0b14c597a94e73a31d0e1733f1a9f7/include/mpv/client.h",
+    "headerSha256Bytes": "1acf99ee77c8c2a6f1d1993bd81bbc8a91d27fb5924e80171670e6139a4bd353",
+    "pinnedCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+    "constant": "MPV_ERROR_AO_INIT_FAILED",
+    "value": -14
+  }
+}

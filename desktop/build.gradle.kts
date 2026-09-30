@@ -318,6 +318,30 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
 }
 
+val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-story-topic.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/story-topic").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-story-topic.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-api.py")
+    inputs.files(sources.filter { "story-topic" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/story-topic"))
+}
+
+val extractPlaybackSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-settings.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/playback-settings").get().asFile.absolutePath)
+    inputs.files("tools/extract-playback-settings.py", "third-party/premium-audio-platform.json")
+    inputs.files(sources.filter { "playback-settings-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/playback-settings"))
+}
+
 val verifyAppearanceDependencies by tasks.registering {
     inputs.file("third-party/miuix5157/dependency-pins.json")
     inputs.dir("src/main/resources/licenses/appearance")
@@ -408,6 +432,8 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/js"))
     kotlin.srcDir(jsWorkerGenerated)
     kotlin.srcDir(generatedAppearance)
+    kotlin.srcDir(layout.buildDirectory.dir("generated/story-topic"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/playback-settings"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
@@ -595,3 +621,5 @@ compose.desktop {
         }
     }
 }
+
+tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings) }

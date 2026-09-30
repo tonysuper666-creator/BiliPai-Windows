@@ -12,6 +12,9 @@ import androidx.compose.ui.unit.dp
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerTrack
+import com.android.purebilibili.feature.video.playback.audio.AudioSelectionDecision
+import com.android.purebilibili.feature.video.playback.audio.resolveAudioQualityControlPresentation
+import com.android.purebilibili.feature.video.subtitle.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,6 +46,13 @@ fun PlayerPanel(
     renderSurface: Boolean = true,
     onPictureInPicture: (() -> Unit)? = null,
     onSeekTo: ((Double) -> Unit)? = null,
+    onManualSubtitleSelection: () -> Unit = {},
+    audioSelection: AudioSelectionDecision? = null,
+    onAudioQualityChange: ((Int) -> Unit)? = null,
+    automaticSubtitleMode: SubtitleDisplayMode = SubtitleDisplayMode.OFF,
+    automaticSubtitleTracks: List<SubtitleTrackMeta> = emptyList(),
+    onAutomaticSubtitleMode: ((SubtitleDisplayMode) -> Unit)? = null,
+    surfaceOnly: Boolean = false,
 ) {
     val state by player.state.collectAsState()
     val scope = rememberCoroutineScope()
@@ -53,10 +63,20 @@ fun PlayerPanel(
     var danmakuSettings by remember { mutableStateOf(false) }
     var busyScreenshot by remember { mutableStateOf(false) }
     var status by remember { mutableStateOf<String?>(null) }
+    var audioQualityMenu by remember { mutableStateOf(false) }
+    var automaticSubtitleMenu by remember { mutableStateOf(false) }
     val duration = state.durationSeconds.takeIf { it.isFinite() && it > 0 }?.toFloat() ?: 1f
     fun update(next: PlayerPreferences) { onPreferencesChange(next.normalized()) }
     fun message(text: String) { status = text; onMessage(text) }
     fun seekTo(seconds: Double) { (onSeekTo ?: player::seekTo)(seconds.coerceAtLeast(0.0)) }
+
+    if (surfaceOnly) {
+        Box(modifier.fillMaxSize().background(Color.Black)) {
+            if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+            else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
+        }
+        return
+    }
 
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
@@ -122,9 +142,12 @@ fun PlayerPanel(
                 }
             }) { Text(if (busyScreenshot) "截图中…" else "截图") }
             TextButton(enabled = state.ready && state.durationSeconds > 0, onClick = {
+                val owner = player.currentSourceVersion
                 scope.launch {
                     try {
                         chooseSubtitleFile(player)?.let { path ->
+                            if (player.currentSourceVersion != owner) return@launch
+                            onManualSubtitleSelection()
                             player.addSubtitle(path)
                             player.setSubtitlesVisible(true)
                             message("正在载入字幕：${path.fileName}")
@@ -133,13 +156,34 @@ fun PlayerPanel(
                 }
             }) { Text("载入字幕") }
             if (onOnlineSubtitles != null) TextButton(onClick = onOnlineSubtitles) { Text("在线视频字幕") }
+            if (audioSelection != null && onAudioQualityChange != null) Box {
+                val presentation = resolveAudioQualityControlPresentation(audioSelection.availableOptions, audioSelection.selectedPreferenceId)
+                TextButton(onClick = { audioQualityMenu = true }) { Text(presentation.label) }
+                DropdownMenu(expanded = audioQualityMenu, onDismissRequest = { audioQualityMenu = false }) {
+                    audioSelection.availableOptions.forEach { option ->
+                        DropdownMenuItem(text = { Text((if (option.preferenceId == audioSelection.requestedPreferenceId) "✓ " else "") + option.label) },
+                            onClick = { audioQualityMenu = false; onAudioQualityChange(option.preferenceId) })
+                    }
+                }
+            }
+            if (onAutomaticSubtitleMode != null && automaticSubtitleTracks.isNotEmpty()) Box {
+                val languages = resolveDefaultSubtitleLanguages(automaticSubtitleTracks)
+                val primary = automaticSubtitleTracks.firstOrNull { it.lan == languages.primaryLanguage }
+                val secondary = automaticSubtitleTracks.firstOrNull { it.lan == languages.secondaryLanguage }
+                val options = resolveSubtitleDisplayOptions(primary?.lanDoc.orEmpty(), secondary?.lanDoc.orEmpty(), primary != null, secondary != null)
+                TextButton(onClick = { automaticSubtitleMenu = true }) { Text("字幕：${options.firstOrNull { it.mode == automaticSubtitleMode }?.label ?: "关闭"}") }
+                DropdownMenu(expanded = automaticSubtitleMenu, onDismissRequest = { automaticSubtitleMenu = false }) {
+                    options.forEach { option -> DropdownMenuItem(text = { Text(option.label) }, enabled = option.enabled,
+                        onClick = { automaticSubtitleMenu = false; onAutomaticSubtitleMode(option.mode) }) }
+                }
+            }
             val audioTracks = state.tracks.filter { it.type == "audio" }
             if (audioTracks.isNotEmpty()) PlayerTrackMenu("音轨", audioTracks, { it.selected }, player::selectAudioTrack)
             val subtitleTracks = state.tracks.filter { it.type == "sub" }
             if (subtitleTracks.isNotEmpty()) {
-                PlayerTrackMenu("主字幕", subtitleTracks, { it.selected && it.mainSelection != 1 }, player::selectSubtitleTrack)
-                PlayerTrackMenu("副字幕", subtitleTracks, { it.selected && it.mainSelection == 1 }, player::selectSecondarySubtitleTrack)
-                FilterChip(selected = state.subtitlesVisible, onClick = { player.setSubtitlesVisible(!state.subtitlesVisible) }, label = { Text("显示字幕") })
+                PlayerTrackMenu("主字幕", subtitleTracks, { it.selected && it.mainSelection != 1 }, { onManualSubtitleSelection(); player.selectSubtitleTrack(it) })
+                PlayerTrackMenu("副字幕", subtitleTracks, { it.selected && it.mainSelection == 1 }, { onManualSubtitleSelection(); player.selectSecondarySubtitleTrack(it) })
+                FilterChip(selected = state.subtitlesVisible, onClick = { onManualSubtitleSelection(); player.setSubtitlesVisible(!state.subtitlesVisible) }, label = { Text("显示字幕") })
             }
             if (onClose != null) TextButton(onClick = onClose) { Text("关闭播放") }
         }

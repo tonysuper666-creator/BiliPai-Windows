@@ -151,12 +151,15 @@ internal fun CommunityDynamicCard(item: DynamicItem, community: DesktopCommunity
 internal fun CommunityDynamicText(text: String, nodes: List<RichTextNode>, navigation: CommunityNavigation) {
     val resolved = text.ifBlank { nodes.joinToString("") { it.text.ifBlank { it.orig_text } } }
     if (resolved.isNotBlank()) Text(resolved)
-    nodes.filter { it.jump_url != null || it.type.contains("AT") || it.emoji != null }.forEach { node ->
+    nodes.filter { it.jump_url != null || it.type.contains("AT") || it.type.contains("TOPIC") || it.emoji != null }.forEach { node ->
         Row(verticalAlignment = Alignment.CenterVertically) {
             node.emoji?.let { AsyncImage(model = imageUrl(it.icon_url.ifBlank { it.webp_url }), contentDescription = it.text, modifier = Modifier.size(28.dp)) }
-            if (node.jump_url != null || node.type.contains("AT")) TextButton(onClick = {
+            if (node.jump_url != null || node.type.contains("AT") || node.type.contains("TOPIC")) TextButton(onClick = {
                 val mid = node.rid?.toLongOrNull()
-                if (node.type.contains("AT") && mid != null && mid > 0) navigation.onUser(mid)
+                val topic = node.takeIf { it.type.contains("TOPIC") }?.let(::desktopDynamicTopicLinkAction)
+                if (topic is com.android.purebilibili.feature.dynamic.components.DynamicRichTextLinkAction.TopicId) navigation.onTopic(topic.topicId)
+                else if (topic is com.android.purebilibili.feature.dynamic.components.DynamicRichTextLinkAction.TopicKeyword) navigation.onTopicKeyword(topic.keyword)
+                else if (node.type.contains("AT") && mid != null && mid > 0) navigation.onUser(mid)
                 else node.jump_url?.let { navigateCommunityUrl(it, navigation) }
             }) { Text(node.text.ifBlank { node.orig_text }) }
         }

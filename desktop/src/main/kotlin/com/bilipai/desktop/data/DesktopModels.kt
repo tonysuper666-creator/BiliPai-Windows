@@ -53,6 +53,7 @@ data class PlaybackSource(
     val progressiveSegments: List<com.bilipai.desktop.player.PlaybackSegment> = emptyList(),
     val videoCodecFamily: String? = null,
     val cachedDashData: com.android.purebilibili.data.model.response.Dash? = null,
+    val audioSelection: com.android.purebilibili.feature.video.playback.audio.AudioSelectionDecision? = null,
 )
 
 data class PlaybackQuality(val id: Int, val label: String)

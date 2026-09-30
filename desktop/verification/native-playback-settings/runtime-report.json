@@ -1,0 +1,80 @@
+{
+    "passed": true,
+    "execution": "real DLL / owned Swing HWND / actual Robot pixels",
+    "playerFoundation": "current main Advanced/HiRes; no FSR draft",
+    "abiInstrumentation": "read-only property calls on the existing native actor",
+    "nullAudioOutput": true,
+    "networkRequests": 0,
+    "physicalAudioOutputInitializationFailureVerified": false,
+    "physicalPremiumAudioDevicePlaybackVerified": false,
+    "checks": {
+        "hardwareIntentSeparateFromActual": {
+            "passed": true,
+            "intent": true,
+            "optionReadback": "auto-safe",
+            "actualDecoderReadback": "d3d11va",
+            "stateActualDecoder": "d3d11va",
+            "videoCodec": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10"
+        },
+        "hardwareDisabledActualReadback": {
+            "passed": true,
+            "optionReadback": "no",
+            "actualDecoderReadback": "no"
+        },
+        "hardwareIntentRestored": {
+            "passed": true,
+            "optionReadback": "auto-safe",
+            "actualDecoderReadback": "d3d11va"
+        },
+        "automaticBilingualActualNativeSelection": {
+            "passed": true,
+            "primaryId": 1,
+            "secondaryId": 2,
+            "mode": "BILINGUAL",
+            "subVisibility": "yes",
+            "secondaryVisibility": "yes"
+        },
+        "subtitleOffActualNativeSlots": {
+            "passed": true
+        },
+        "primaryOnlyActualSelectionAndPixels": {
+            "passed": true,
+            "bottomChangedPixels": 1463
+        },
+        "secondaryOnlyActualSelectionAndPixels": {
+            "passed": true,
+            "topChangedPixels": 1861
+        },
+        "bilingualActualBothVisiblePixels": {
+            "passed": true,
+            "topChangedPixels": 1861,
+            "bottomChangedPixels": 1463
+        },
+        "sameOwnerRecoveryPreservesPausePositionAndSubtitles": {
+            "passed": true,
+            "sourceVersion": 1,
+            "pauseReadback": "yes",
+            "positionBefore": 2.0,
+            "positionAfter500ms": 2.0,
+            "retainedHardwareIntent": true,
+            "softwareFailureGuard": true,
+            "optionReadback": "no"
+        },
+        "replacementRejectsOldSourceSubtitleHardwareAndRecovery": {
+            "passed": true,
+            "newSourceVersion": 2,
+            "subTracks": 0,
+            "optionReadback": "auto-safe"
+        },
+        "lateAutomaticMetadataCannotBindReplacement": {
+            "passed": true,
+            "sourceVersion": 3,
+            "importCount": 2,
+            "subtitleTracks": 0
+        },
+        "readOnlyAbiObservationsOnSingleNativeActor": {
+            "passed": true,
+            "threadName": "BiliPai-native-player"
+        }
+    }
+}

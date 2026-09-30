@@ -41,6 +41,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private val nextAttemptId = AtomicLong()
     private val nextSeekId = AtomicLong()
     private var softwareDecodingRequested = false
+    private var hardwareDecodeEnabled = true
+    private var hardwareControlVersion = 0L
+    private var subtitleControlVersion = 0L
+    internal val currentSubtitleControlVersion: Long get() = synchronized(lock) { subtitleControlVersion }
     private val externalSubtitles = mutableListOf<ExternalSubtitle>()
     private var videoShaderConfiguration = PreparedVideoShaders(emptyList(), emptySet())
     private var videoShaderVersion = 0L
@@ -97,7 +101,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             // Validate and freeze caller-owned maps before transferring media ownership.
             val retainedSource = source.immutableSnapshot()
             if (!preserveSubtitles) { sourceVersion++; softwareDecodingRequested = false }
-            if (!preserveSubtitles) externalSubtitles.clear()
+            if (!preserveSubtitles) { externalSubtitles.clear(); subtitleControlVersion++ }
             requestedSource = retainedSource
             val revision = ++playbackRevision
             mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
@@ -118,6 +122,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     fun setPaused(paused: Boolean) {
         mutableState.update { it.copy(paused = paused, nativePaused = null) }
         send(Action.Property("pause", if (paused) "yes" else "no"))
+    }
+    /** Atomic ownership check prevents an obsolete recovery from pausing a replacement stream. */
+    internal fun pauseIfSourceVersion(expectedSourceVersion: Long, expectedFailureAttemptId: Long? = null): Boolean = synchronized(lock) {
+        if (closed.get() || requestedSource == null || sourceVersion != expectedSourceVersion ||
+            (expectedFailureAttemptId != null && state.value.failure?.attemptId != expectedFailureAttemptId)) return@synchronized false
+        setPaused(true)
+        true
     }
     fun togglePause() {
         if (state.value.ended) replay() else setPaused(!state.value.paused)
@@ -191,12 +202,60 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
     fun applyPreferences(preferences: PlayerPreferences) {
         val normalized = preferences.normalized()
+        setHardwareDecodingEnabled(normalized.hardwareDecodeEnabled)
         setVolume(normalized.volume)
         setSpeed(normalized.speed)
         setMuted(normalized.muted)
         setAudioOnly(normalized.audioOnly)
         setLoop(normalized.playbackMode == PlaybackMode.REPEAT_ONE)
     }
+    /** Changing the user setting never cancels software fallback for an already failed source. */
+    fun setHardwareDecodingEnabled(enabled: Boolean, expectedSourceVersion: Long? = null): Boolean = synchronized(lock) {
+        if (closed.get() || (expectedSourceVersion != null &&
+                (requestedSource == null || sourceVersion != expectedSourceVersion))) return@synchronized false
+        hardwareDecodeEnabled = enabled
+        val control = ++hardwareControlVersion
+        mutableState.update { it.copy(hardwareDecodeEnabled = enabled) }
+        session?.commands?.offer(Action.HardwareDecoding(control, sourceVersion, playbackRevision))
+        true
+    }
+
+    /** One owned transaction binds both original tracks, their visibility, and the native selection slots. */
+    internal fun installSubtitlePair(expectedSourceVersion: Long, expectedControlVersion: Long,
+        primary: DesktopOnlineSubtitleAsset?, secondary: DesktopOnlineSubtitleAsset?,
+        mode: com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode): Boolean {
+        listOfNotNull(primary, secondary).forEach {
+            require(Files.isRegularFile(it.file)) { "Subtitle asset is missing." }
+            require('\u0000' !in it.nativeTitle && '\u0000' !in it.track.lan) { "Subtitle metadata contains a NUL character." }
+        }
+        return synchronized(lock) {
+            if (closed.get() || requestedSource == null || sourceVersion != expectedSourceVersion ||
+                subtitleControlVersion != expectedControlVersion) return@synchronized false
+            val normalizedMode = com.android.purebilibili.feature.video.subtitle.normalizeSubtitleDisplayMode(
+                mode, primary != null, secondary != null)
+            externalSubtitles.replaceAll { it.copy(selection = null) }
+            listOfNotNull(primary, secondary).forEach { asset ->
+                val path = asset.file.toAbsolutePath().normalize()
+                externalSubtitles.removeAll { it.path == path }
+                val slot = when {
+                    asset === primary && normalizedMode in setOf(
+                        com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode.PRIMARY_ONLY,
+                        com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode.BILINGUAL) -> 0
+                    asset === secondary && normalizedMode in setOf(
+                        com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode.SECONDARY_ONLY,
+                        com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode.BILINGUAL) -> 1
+                    else -> null
+                }
+                externalSubtitles.add(ExternalSubtitle(path, asset.nativeTitle, asset.track.lan, slot))
+            }
+            val control = ++subtitleControlVersion
+            val visible = normalizedMode != com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode.OFF
+            mutableState.update { it.copy(subtitlesVisible = visible) }
+            session?.commands?.offer(Action.SubtitleConfiguration(control, sourceVersion, playbackRevision, visible))
+            true
+        }
+    }
+
     /** Applies genuine mpv GLSL hook assets; an empty list restores the native base renderer. */
     fun setVideoShaders(files: List<Path>): Long {
         val prepared = prepareVideoShaders(files)
@@ -211,6 +270,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
 
     fun setSubtitlesVisible(visible: Boolean) {
+        synchronized(lock) { subtitleControlVersion++ }
         mutableState.update { it.copy(subtitlesVisible = visible) }
         send(Action.Property("sub-visibility", if (visible) "yes" else "no"))
         send(Action.Property("secondary-sub-visibility", if (visible) "yes" else "no"))
@@ -235,6 +295,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         require(listOf(title, language).none { '\u0000' in it }) { "Invalid subtitle metadata." }
         synchronized(lock) {
             check(!closed.get() && requestedSource != null) { "No video selected." }
+            subtitleControlVersion++
             val path = file.toAbsolutePath().normalize()
             if (select) externalSubtitles.replaceAll { if (it.selection == 0) it.copy(selection = null) else it }
             externalSubtitles.removeAll { it.path == path }
@@ -244,6 +305,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
 
     private fun retainSubtitleSelection(id: Int?, slot: Int) = synchronized(lock) {
+        subtitleControlVersion++
         externalSubtitles.replaceAll {
             when {
                 id != null && it.nativeId == id -> it.copy(selection = slot)
@@ -334,6 +396,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private sealed interface Action {
         data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long) : Action
         data class Subtitles(val version: Long) : Action
+        data class HardwareDecoding(val controlVersion: Long, val version: Long, val revision: Long) : Action
+        data class SubtitleConfiguration(val controlVersion: Long, val version: Long, val revision: Long, val visible: Boolean) : Action
         data class VideoShaders(val version: Long, val configuration: PreparedVideoShaders) : Action
         data class Property(val name: String, val value: String) : Action
         data class Command(val args: List<String>) : Action
@@ -385,7 +449,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     "wid" to windowId.toString(),
                     "vo" to "gpu",
                     "gpu-api" to "d3d11",
-                    "hwdec" to if (softwareDecodingRequested) "no" else "auto-safe",
+                    "hwdec" to synchronized(lock) { resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested) },
                     "audio-client-name" to "BiliPai",
                     "network-timeout" to "20",
                     "demuxer-max-bytes" to "64MiB",
@@ -466,7 +530,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         activeAttemptId = nextAttemptId.incrementAndGet()
                         seekTracker.reset()
                         diagnostics.reset(action.source)
-                        checkResult(native, native.mpv_set_property_string(handle, "hwdec", if (action.softwareDecoding) "no" else "auto-safe"), "hwdec")
+                        checkResult(native, native.mpv_set_property_string(handle, "hwdec", synchronized(lock) { resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) }), "hwdec")
                         loadedSubtitlePaths.clear()
                         lastTrackPoll = 0L
                         MpvNodes().use { nodes ->
@@ -477,6 +541,21 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         }
                         // loadfile synchronously installs the new playlist entry before its asynchronous events.
                         expectedEntry = property(native, handle, "playlist/0/id")?.toLongOrNull()
+                    }
+                    is Action.HardwareDecoding -> synchronized(lock) {
+                        if (session !== this || closing.get() || action.controlVersion != hardwareControlVersion ||
+                            action.version != sourceVersion || action.revision != playbackRevision ||
+                            action.version != activeSourceVersion || action.revision != activeRevision) return
+                        checkResult(native, native.mpv_set_property_string(handle, "hwdec",
+                            resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested)), "hwdec")
+                    }
+                    is Action.SubtitleConfiguration -> synchronized(lock) {
+                        if (session !== this || closing.get() || action.controlVersion != subtitleControlVersion ||
+                            action.version != sourceVersion || action.revision != playbackRevision ||
+                            action.version != activeSourceVersion || action.revision != activeRevision) return
+                        checkResult(native, native.mpv_set_property_string(handle, "sub-visibility", if(action.visible) "yes" else "no"), "sub-visibility")
+                        checkResult(native, native.mpv_set_property_string(handle, "secondary-sub-visibility", if(action.visible) "yes" else "no"), "secondary-sub-visibility")
+                        if (fileLoaded) restoreSubtitles(native, handle)
                     }
                     is Action.Subtitles -> if (fileLoaded && activeSourceVersion == action.version) restoreSubtitles(native, handle)
                     is Action.Seek -> {

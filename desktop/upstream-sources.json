@@ -3184,6 +3184,140 @@
         "native-music"
       ],
       "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "2abee6c92977679a71ef155677cdfc8052a8f201564ac280bcfb8bc4bbae66bf"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "43ac63e9dd5dd58308f7a0363cc61533409821cfe4d1fb62610e91b17f565b5b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/PortraitStoryNavigationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "db6acd4e2437714daf595fa29fb2ab4aefb554ebdd6dea54cb8354c2ef011f57"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/TopicRepository.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "17d62c25e59bba979650a5633dea928338cd205c0e78ceac8bd185f048b28a64"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "6805c3dfcd1f853d5251c47001cbb5a16adfa070e46971468dd84e3c7c0c59c0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "16d33fa80b4e92026bb83681f050eb85fd59f397ac15f7b7963dcfa3b6f6cbc3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicRichTextPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "story-topic"
+      ],
+      "sha256": "475f01d32fbae8b8c1641b0eb6ce5d5cc72f52a729e65b8a90ac444ed104749d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamModels.kt",
+      "mode": "direct",
+      "sha256": "1de830dd54ffd092b22e2bd719674180fda120904e8be063161d06975229a496",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicy.kt",
+      "mode": "direct",
+      "sha256": "7be24a448d8b7ea8c71afb76ad45e4ba6e3cac83c9d8a53c9ec5c1c58bac4ec0",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicy.kt",
+      "mode": "direct",
+      "sha256": "5e4fa5f84f61bbe9998c7f88b59613ea91f9dee676141656b3508f4e59de94bb",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackQualityMode.kt",
+      "mode": "direct",
+      "sha256": "3c33799fb4cfe77b60d34bb23cc8844101bf622b94b0dec2e89538c46f0c2788",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt",
+      "mode": "extracted",
+      "sha256": "a3af07012eae8421764464a7b857ac301a2dd9b2e77a049c62239b60779536ed",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt",
+      "mode": "extracted",
+      "sha256": "d44af5c39cfc095dcb369461781d098d4e69aa2d466afb0b2b63eb5083c1a77a",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt",
+      "mode": "extracted",
+      "sha256": "1aa85eac44a65b128f96e39241e89478dde4b9ac4f81eda93af96acc3bb7509c",
+      "features": [
+        "playback",
+        "audio",
+        "playback-settings-parity"
+      ]
     }
   ],
   "featureCoverage": {
@@ -3210,7 +3344,10 @@
     "full-functional-parity": "not-yet-complete",
     "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler",
     "space": "integrated-original-overview-tabs-contributions-offline-tested-account-acceptance-pending",
-    "native-music": "integrated-au-sid-detail-retained-session-video-root-entry-and-live-acceptance-pending"
+    "native-music": "integrated-au-sid-detail-retained-session-video-root-entry-and-live-acceptance-pending",
+    "story": "root-portrait-queue-failure-retry-integrated-native-input-and-full-visual-pending",
+    "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
+    "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
   "windowsRevision": 9,
   "hashNormalization": "lf",

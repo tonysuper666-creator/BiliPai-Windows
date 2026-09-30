@@ -105,7 +105,7 @@ internal fun DesktopCompleteSpaceScreen(requestedMid: Long, repository: DesktopR
     onCollection: (Long, Long, String) -> Unit, onPlaylist: (SpaceExternalPlaylist) -> Unit,
     onLogin: () -> Unit, onExternalUrl: (String) -> Unit,
     progressByBvid: Map<String, SpaceWatchProgress> = emptyMap(), localPositionMs: (String) -> Long = { 0L },
-    locateBvid: String? = null) {
+    locateBvid: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
     val account by repository.account.collectAsState()
     val epoch by repository.sessionEpochFlow.collectAsState()
     val mid = requestedMid.takeIf { it > 0 } ?: account?.mid ?: 0
@@ -158,7 +158,7 @@ internal fun DesktopCompleteSpaceScreen(requestedMid: Long, repository: DesktopR
             state.failure?.let { CommunityFailure(it, onLogin) { scope.launch { loadOverview() } } }
             // The original aggregate policy requires the legacy profile path when the card is incomplete.
             if (state.failure != null) DesktopSpaceScreen(mid, repository, social, community, space,
-                onVideo, onUser, onArticle, onDynamic, onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl)
+                onVideo, onUser, onArticle, onDynamic, onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, onTopic = onTopic, onTopicKeyword = onTopicKeyword)
         }
         return
     }
@@ -166,7 +166,7 @@ internal fun DesktopCompleteSpaceScreen(requestedMid: Long, repository: DesktopR
     val contribution = resolveSelectedContributionTab(contributionTabs, state.selectedContributionId, state.selectedSubTab)
     @Composable fun leaf(tab: DesktopSpaceTab) {
         DesktopSpaceScreen(mid, repository, social, community, space, onVideo, onUser, onArticle, onDynamic,
-            onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, tab, false, state.leaf)
+            onLive, onBangumi, onResource, onCollection, onLogin, onExternalUrl, tab, false, state.leaf, onTopic, onTopicKeyword)
     }
     @Composable fun contributions(section: DesktopSpaceContributionSection) {
         DesktopSpaceContributionScreen(mid, section, repository, backend, onVideo, onUser,

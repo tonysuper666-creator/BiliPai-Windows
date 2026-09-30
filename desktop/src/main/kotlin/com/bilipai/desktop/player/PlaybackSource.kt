@@ -98,6 +98,8 @@ data class PlayerState(
     val failure: PlayerFailure? = null,
     val softwareDecodingRequested: Boolean = false,
     val hardwareDecoder: String? = null,
+    /** Persistent user intent; softwareDecodingRequested is a separate per-source failure guard. */
+    val hardwareDecodeEnabled: Boolean = true,
     val seekCompletedId: Long = 0,
     val seekCompletedPositionSeconds: Double? = null,
     /** Retained zoom intent, reapplied when the native surface is recreated. */
