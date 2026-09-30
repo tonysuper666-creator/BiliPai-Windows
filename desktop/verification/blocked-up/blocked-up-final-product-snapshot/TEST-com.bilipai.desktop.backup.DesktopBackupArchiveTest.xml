@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.backup.DesktopBackupArchiveTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:18:45.297Z" hostname="TONYSUPER666" time="0.255">
+  <properties/>
+  <testcase name="an empty settings directory does not upload an empty backup()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.045"/>
+  <testcase name="case aliases cannot overwrite one Windows path twice()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.059"/>
+  <testcase name="round trip restores global account and JSON plugin settings while excluding credentials and media()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.084"/>
+  <testcase name="restore quiesces old settings writers only after the entire backup is valid()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.008"/>
+  <testcase name="Android protobuf backup is identified as incompatible before writes()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.002"/>
+  <testcase name="checksum failure validates every entry before replacing earlier valid files()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.004"/>
+  <testcase name="archive traversal and protected credential entries are rejected()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.006"/>
+  <testcase name="same origin download excludes userinfo and alternate ports hosts or schemes()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.016"/>
+  <testcase name="a later filesystem failure rolls back prior replacements()" classname="com.bilipai.desktop.backup.DesktopBackupArchiveTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

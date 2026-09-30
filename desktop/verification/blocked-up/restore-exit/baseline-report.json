@@ -1,0 +1,20 @@
+{
+    "passed": true,
+    "actualAnnotatedMethods": 2,
+    "mainEdited": false,
+    "junitDiscoveredTests": 2,
+    "junitSkippedTests": 0,
+    "sharedGradleInvoked": false,
+    "headless": true,
+    "liveAccountRequests": false,
+    "tests": [
+        {
+            "test": "realProductLocalArchiveCommitsButUiExitIsLost()",
+            "passed": true
+        },
+        {
+            "test": "realProductWebDavArchiveCommitsButUiExitIsLost()",
+            "passed": true
+        }
+    ]
+}

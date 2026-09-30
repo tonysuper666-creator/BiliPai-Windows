@@ -1,0 +1,4 @@
+PASS: material3-bare-theme stable actual render; alpha=458410/1135, ink=0/0; actual restart pointer=1
+PASS: material3-original-surface stable actual render; alpha=0/460800, ink=1733/657; actual restart pointer=1
+PASS: miuix-bare-theme stable actual render; alpha=458166/0, ink=1538/597; actual restart pointer=1
+PASS: miuix-original-surface stable actual render; alpha=0/460800, ink=1906/728; actual restart pointer=1

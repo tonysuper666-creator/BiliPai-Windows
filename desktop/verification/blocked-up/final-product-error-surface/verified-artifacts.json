@@ -1,0 +1,259 @@
+{
+  "frozen": true,
+  "files": [
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene$pointer$1.class",
+      "sha256Bytes": "4a442bfe08439dc6f25d028b176484f052024439f80ba1e356284c18fd078625",
+      "bytes": 1797
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene$screenshot$1.class",
+      "sha256Bytes": "09d44e8b92e1719fb41af953396c8f3bbc5d8c4f325fbfa2774371aabc6eeaac",
+      "bytes": 1986
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene$scrollTo$1.class",
+      "sha256Bytes": "8cfa14ac4f5df1ab0766622c36e7a73fca2c2c1637622ba3552259fbb4716e94",
+      "bytes": 1885
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene$waitFor$1.class",
+      "sha256Bytes": "c851f53bcb8a3f3dd530458f23312da0dd0b1f60dcfb827892c3b5cacfed9e38",
+      "bytes": 1909
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene$waitFor$2.class",
+      "sha256Bytes": "f1f9c5da3c6f82b76a0d462e18782f9b93b37f46630c086a1f9909f90c061eec",
+      "bytes": 3665
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ActualProductScene.class",
+      "sha256Bytes": "8cff54fcde2f701255cf0615df270ade0ebdd1bc8beeddf6e6f0da532ea4a18b",
+      "bytes": 31678
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductClassOriginFixtureKt.class",
+      "sha256Bytes": "c11875faf184cafffcddd23296cdd920c16c6b66634a440c63d41fe245e53f82",
+      "bytes": 7575
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductStorageUiFixtureKt$main$1.class",
+      "sha256Bytes": "47f1115ce1ed85cea0b2d62e8604b3b74828306d32166d16090d17bc8d50335f",
+      "bytes": 9305
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductStorageUiFixtureKt$startupAndStopped$1.class",
+      "sha256Bytes": "73155128d4fcba55fd5b131db75a12dc498f2c39c8385019765d12f0714f2d76",
+      "bytes": 3970
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductStorageUiFixtureKt$startupAndStopped$2$3$1$1.class",
+      "sha256Bytes": "d268accaeeeaad09113322077de644aeff898a7a8215e153aa38765f05ba67c1",
+      "bytes": 3412
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductStorageUiFixtureKt$startupAndStopped$lambda$3$4$0$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "d59cc12ed28b939c6bde72f963b3b910bd066b3692796b54dab3b384eecd486d",
+      "bytes": 2229
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ProductStorageUiFixtureKt.class",
+      "sha256Bytes": "343c79cf66fde6fc0787708b5bd854d331059d743b85d1be38987869d6a9fcf4",
+      "bytes": 36805
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "36ddc9c2990ceee85042690e86b9eba92fdda751b536321f94665ae0a41bbcfb",
+      "bytes": 106
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "051b27164340f04e0846cd7185d45eefb0ffad0cef73d239c8f0daa50ec3ddad",
+      "bytes": 658
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "859f34acd86c1870addc2faa496f438b06b574f27b7022942534149d0b67cce5",
+      "bytes": 8949
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "ac196bfd7760278f0cdc22edefe93a6c17e7a159cd45c38c3ba3bec524b97a1d",
+      "bytes": 57299
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "71e926223cc107f2564253e0074731712a371935385fd10563f42aa39c0fd6a8",
+      "bytes": 85878
+    },
+    {
+      "path": "fixture-derivation.json",
+      "sha256Bytes": "beb9e89b36f311fe37c6b7a4afed2fd2d35ebac2c78cb249214473dc7510bd5b",
+      "bytes": 635
+    },
+    {
+      "path": "freeze-proof.py",
+      "sha256Bytes": "97c5c842434b938b4e00833936274a5d94139656467b058bbb54e8fa1ba693f2",
+      "bytes": 7800
+    },
+    {
+      "path": "origins.args",
+      "sha256Bytes": "9a44d86117399c77bdd5e29dacaf4434c4beb6d458bd44302638120462123e0c",
+      "bytes": 56987
+    },
+    {
+      "path": "origins.log",
+      "sha256Bytes": "72e03257e5ec83c9f77c41d8f6095b9c8fbead9f5e135abf508e59d2b3cfeefb",
+      "bytes": 108
+    },
+    {
+      "path": "ProductClassOriginFixture.kt",
+      "sha256Bytes": "2098c2d6095ec6e1657b310a541da7387cc93d629f68badf2b0b440d24160780",
+      "bytes": 1448
+    },
+    {
+      "path": "ProductStorageUiFixture.kt",
+      "sha256Bytes": "fab13c956d8f713fb52e5f6c20a8091e530b386d294186b43d98b873d95f75f5",
+      "bytes": 11166
+    },
+    {
+      "path": "proof/class-origins.json",
+      "sha256Bytes": "56891cc87356ab2e79036191fb3d6f0ea06be6ba64bf6fd5d639828b1ab1ca07",
+      "bytes": 2468
+    },
+    {
+      "path": "proof/material3-startup-error-converged-0.png",
+      "sha256Bytes": "fdcdd390deea5463e26f5e32905714ebfc9320fde323b82d6688911075bee0ae",
+      "bytes": 12698
+    },
+    {
+      "path": "proof/material3-startup-error-converged-1.png",
+      "sha256Bytes": "fdcdd390deea5463e26f5e32905714ebfc9320fde323b82d6688911075bee0ae",
+      "bytes": 12698
+    },
+    {
+      "path": "proof/material3-startup-error-converged-2.png",
+      "sha256Bytes": "fdcdd390deea5463e26f5e32905714ebfc9320fde323b82d6688911075bee0ae",
+      "bytes": 12698
+    },
+    {
+      "path": "proof/material3-startup-error.png",
+      "sha256Bytes": "fdcdd390deea5463e26f5e32905714ebfc9320fde323b82d6688911075bee0ae",
+      "bytes": 12698
+    },
+    {
+      "path": "proof/material3-startup-ready.png",
+      "sha256Bytes": "f9ef2790eac31d7fb5a8e8912797f8eabd5387abb13464af60678e133f683fbe",
+      "bytes": 3003
+    },
+    {
+      "path": "proof/material3-stopped-restart-converged-0.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "proof/material3-stopped-restart-converged-1.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "proof/material3-stopped-restart-converged-2.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "proof/material3-stopped-restart.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "proof/miuix-startup-error-converged-0.png",
+      "sha256Bytes": "72e587d7c4bc2c9778024e742fa8dfd3e47ca26e311e20f05361e47c4477aa76",
+      "bytes": 12914
+    },
+    {
+      "path": "proof/miuix-startup-error-converged-1.png",
+      "sha256Bytes": "72e587d7c4bc2c9778024e742fa8dfd3e47ca26e311e20f05361e47c4477aa76",
+      "bytes": 12914
+    },
+    {
+      "path": "proof/miuix-startup-error-converged-2.png",
+      "sha256Bytes": "72e587d7c4bc2c9778024e742fa8dfd3e47ca26e311e20f05361e47c4477aa76",
+      "bytes": 12914
+    },
+    {
+      "path": "proof/miuix-startup-error.png",
+      "sha256Bytes": "72e587d7c4bc2c9778024e742fa8dfd3e47ca26e311e20f05361e47c4477aa76",
+      "bytes": 12914
+    },
+    {
+      "path": "proof/miuix-startup-ready.png",
+      "sha256Bytes": "1d4f68c1009938a3e41db3209504a21448653e78e8e60a8f4df3cae472fc58c6",
+      "bytes": 3427
+    },
+    {
+      "path": "proof/miuix-stopped-restart-converged-0.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "proof/miuix-stopped-restart-converged-1.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "proof/miuix-stopped-restart-converged-2.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "proof/miuix-stopped-restart.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "42434a28fe8ac3134fbc8f7278400db1f138e2b91935e6e43ee4d9732b1aae8c",
+      "bytes": 3190
+    },
+    {
+      "path": "proof/screenshot-metrics.json",
+      "sha256Bytes": "90d844ca1ba1cd67cc6b07b336881767b1b88672be049e90e16de361936bcb9b",
+      "bytes": 1759
+    },
+    {
+      "path": "ROOT-RESULT.md",
+      "sha256Bytes": "9df51dfb3fdd633ff8684ae4ffa93083880d46a80086bd16dc40fc55c4410202",
+      "bytes": 2825
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "991736bc579586dad7673dd60d718691296981c07798b93231b69d347b8c5040",
+      "bytes": 56811
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "81e2b5d014b33dac4045e1f53e11ecf161b60d039c6a9e0fe12a21ad77a00ffb",
+      "bytes": 2870
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "dbdf82f1043e506fb0e5011a4a80c1dbe6bab004d77812e0a79d5aaf3d975ed1",
+      "bytes": 1069
+    }
+  ],
+  "productManifestPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-final-product-snapshot\\manifest.json",
+  "productManifestSha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+  "original43ManifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+  "productionOverrides": 0,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false,
+  "fullShell": false,
+  "actualProcessRestart": false
+}

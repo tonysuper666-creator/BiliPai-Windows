@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "original",
+      "passed": true,
+      "sources": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-blocked-up-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopBlockedUpStore.kt": "d001a295f54c0665d978d4e6f5265a09a6c215bca6dc85e532867fb6824de746",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\CachedDestinationReviewFixture.kt": "9bacef6d43d5939ce45063b21cd4eada53e62c09a7ed80f78171dd4ddfc0c31c"
+      },
+      "compilerPlugins": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization-compiler-plugin-embeddable\\2.4.0\\9c09aa2727d9ade95c1b0a00458e74feced83908\\kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar": "272d419cb12e9a8aba4e6fa7a76bfc486f97dc0f79a32ef1397b1f175bc35c50"
+      },
+      "java": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "sandbox": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\proof\\original-attempt2\\child-j9t6gqdh",
+      "productJarsFirstAfterMarkedOverride": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar"
+      ],
+      "markedFrozenProductionOverrides": [
+        "DesktopDiscoveryPreferences",
+        "DesktopDiscoveryRepository",
+        "DiscoveryScreens"
+      ],
+      "noMainEdited": true,
+      "noSharedGradle": true,
+      "noHWND": true,
+      "noUserAccountReads": true,
+      "noHTTP": true
+    },
+    {
+      "variant": "reviewed",
+      "passed": true,
+      "sources": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\review-delta\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopBlockedUpStore.kt": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\CachedDestinationReviewFixture.kt": "9bacef6d43d5939ce45063b21cd4eada53e62c09a7ed80f78171dd4ddfc0c31c"
+      },
+      "compilerPlugins": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-serialization-compiler-plugin-embeddable\\2.4.0\\9c09aa2727d9ade95c1b0a00458e74feced83908\\kotlin-serialization-compiler-plugin-embeddable-2.4.0.jar": "272d419cb12e9a8aba4e6fa7a76bfc486f97dc0f79a32ef1397b1f175bc35c50"
+      },
+      "java": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "sandbox": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\proof\\reviewed-attempt2\\child-wiab7zlm",
+      "productJarsFirstAfterMarkedOverride": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar"
+      ],
+      "markedFrozenProductionOverrides": [
+        "DesktopDiscoveryPreferences",
+        "DesktopDiscoveryRepository",
+        "DiscoveryScreens"
+      ],
+      "noMainEdited": true,
+      "noSharedGradle": true,
+      "noHWND": true,
+      "noUserAccountReads": true,
+      "noHTTP": true
+    }
+  ],
+  "eachVariantExecutableChecks": 4,
+  "producerFrozenUnchanged": true,
+  "originalStoreCachedRepairLimitationVerified": true,
+  "reviewDeltaErrorCopyVerified": true
+}

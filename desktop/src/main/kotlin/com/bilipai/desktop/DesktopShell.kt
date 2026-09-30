@@ -124,7 +124,52 @@ private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = whe
 fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
     registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null,
-    applicationPluginStore: DesktopPluginStore? = null) {
+    applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false }) {
+    val pluginStore = remember(applicationPluginStore) {
+        (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
+            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
+        }
+    }
+    val blockedUps = remember(pluginStore) {
+        DesktopBlockedUpStore(com.bilipai.desktop.plugins.DesktopPluginContext(pluginStore))
+    }
+    val rootClosing = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicBoolean() }
+    val latestIsClosing by rememberUpdatedState(isClosing)
+    val epoch by repository.sessionEpochFlow.collectAsState()
+    val startupGuard = remember(repository, pluginStore, blockedUps) {
+        DesktopDiscoveryStorageGuard(
+            factory = { openDesktopDiscoveryStorage(repository) { DesktopDiscoveryPreferences(pluginStore.root, blockedUps) } },
+            sessionEpoch = { repository.sessionEpoch },
+            stillOwned = { !rootClosing.get() && !latestIsClosing() },
+        )
+    }
+    val closeDiscoveryStorage = remember(startupGuard, rootClosing) {
+        { rootClosing.set(true); startupGuard.close() }
+    }
+    val startupAppearance = remember(pluginStore) { DesktopThemePrefs(pluginStore) }
+    val startupTheme by startupAppearance.settings.collectAsState(startupAppearance.initialSettings())
+    // The startup failure branch has no Runtime; retire its global migration writer before restart/exit.
+    DisposableEffect(startupGuard) {
+        registerShutdown?.invoke {
+            closeDiscoveryStorage()
+            withContext(NonCancellable + Dispatchers.IO) { pluginStore.freezeWrites() }
+        }
+        onDispose { startupGuard.close() }
+    }
+    DesktopDiscoveryStorageBoundary(startupGuard, epoch, onRestart, Modifier.fillMaxSize(),
+        errorTheme = { content -> DesktopAppearanceTheme(startupTheme, content = content) }) { discovery ->
+        DesktopReadyApp(repository, player, playerError, initialVideo, onExit, onToggleFullscreen, hostWindow,
+            registerShutdown, onRestart, pluginStore, discovery, closeDiscoveryStorage,
+            isClosing = { rootClosing.get() || latestIsClosing() })
+    }
+}
+
+@Composable
+private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
+    onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window?,
+    registerShutdown: ((suspend () -> Unit) -> Unit)?, onRestart: (() -> Unit)?,
+    pluginStore: DesktopPluginStore, discovery: DesktopDiscoveryRepository,
+    closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean) {
     val account by repository.account.collectAsState()
     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
     val settingsLibrary = remember { DesktopLibrary() }
@@ -136,17 +181,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val latestPreferences by rememberUpdatedState(preferences)
     val scope = rememberCoroutineScope()
     val social = remember(repository) { DesktopSocialRepository(repository) }
-    val community = remember(repository) { DesktopCommunityRepository(repository) }
+    val community = remember(repository, discovery.blockedUps) { DesktopCommunityRepository(repository, discovery.blockedUps) }
     val space = remember(repository) { DesktopSpaceRepository(repository) }
     val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
-    val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
-    val pluginStore = remember(applicationPluginStore) {
-        (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
-            com.android.purebilibili.core.store.NetworkProxyStore.init(com.bilipai.desktop.plugins.DesktopPluginContext(store))
-        }
-    }
     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
     var appearanceReady by remember(appearance) { mutableStateOf(false) }
@@ -288,6 +327,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     }
     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
+            closeDiscoveryStorage()
             withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
             cast.quiesce()
             community.searchPreferences.freezeWritesForRestore()
@@ -298,6 +338,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     SideEffect {
         registerShutdown?.invoke {
             withContext(NonCancellable) {
+                closeDiscoveryStorage()
                 withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
                 cast.quiesce()
                 community.searchPreferences.freezeWritesForRestore()
@@ -926,6 +967,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         when {
                             showVideo && playing.opening -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
                             showVideo && playing.details != null -> DesktopVideoPage(playing, player, playerContent, favorite,
+                                blockedUps = community.blockedUpRepository, onLogin = { loginDialog = true },
                                 onVideo = ::openVideo, onPart = playback::playPart, onQuality = playback::switchQuality,
                                 onFavorite = { library.toggleFavorite(playing.details!!.asCard()); favorite = library.isFavorite(playing.details!!.bvid) },
                                 onCast = { castDialog = true },
@@ -981,6 +1023,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                 playbackContent = { dismiss -> PlaybackSettingsDialog(preferences, ::changePreferences, dismiss) },
                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
+                                blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
                                 systemContent = {
                                     com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
                                         onFailure = { error = it.message ?: "代理设置保存失败" })
@@ -1007,7 +1050,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     DesktopSection.PRECIOUS -> DiscoverySection.PRECIOUS
                                     else -> DiscoverySection.WEEKLY
                                 }, discovery, repository, pluginStore, ::openVideo, ::openUser, { loginDialog = true },
-                                    onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime)
+                                    onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime,
+                                    onRestart = onRestart, isClosing = isClosing)
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia)
@@ -1154,7 +1198,8 @@ private fun VideoDetails.asCard() = VideoCard(bvid, title, cover, author, playCo
 @Composable
 private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, playerContent: @Composable (MpvPlayer) -> Unit,
     favorite: Boolean, onVideo: (VideoCard) -> Unit, onPart: (Int) -> Unit, onQuality: (Int) -> Unit, onFavorite: () -> Unit,
-    engagement: @Composable () -> Unit, onDownload: () -> Unit, onCast: () -> Unit, onStory: () -> Unit) {
+    engagement: @Composable () -> Unit, onDownload: () -> Unit, onCast: () -> Unit, onStory: () -> Unit,
+    blockedUps: DesktopBlockedUpRepository, onLogin: () -> Unit) {
     val info = playing.details ?: return
     Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -1180,7 +1225,12 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
         }
         LazyColumn(Modifier.width(280.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             item { Text("相关推荐", style = MaterialTheme.typography.titleMedium) }
-            items(playing.related, key = { it.bvid }) { card -> FeedCard(card) { onVideo(card) } }
+            items(playing.related, key = { it.bvid }) { card ->
+                Column {
+                    FeedCard(card) { onVideo(card) }
+                    DesktopBlockedUpAction(blockedUps, card.authorMid, card.author, face = "", onLogin = onLogin)
+                }
+            }
         }
     }
 }

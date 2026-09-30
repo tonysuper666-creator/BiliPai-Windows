@@ -1,0 +1,513 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\material3-startup-error.png",
+    "sha256Bytes": "b4df537a821b272a3a3ba2d48b0c969a3fe752884e287975e85ec399bb4cc6cc",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      26,
+      633,
+      123
+    ],
+    "transparentPixels": 455073,
+    "nonTransparentPixels": 5727,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 455073
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "count": 2592
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          135
+        ],
+        "count": 642
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          164
+        ],
+        "count": 468
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          27
+        ],
+        "count": 453
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          54
+        ],
+        "count": 403
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\material3-startup-ready.png",
+    "sha256Bytes": "f9ef2790eac31d7fb5a8e8912797f8eabd5387abb13464af60678e133f683fbe",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      25,
+      165,
+      41
+    ],
+    "transparentPixels": 459919,
+    "nonTransparentPixels": 881,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 459919
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "count": 363
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          164
+        ],
+        "count": 102
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          108
+        ],
+        "count": 99
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          197
+        ],
+        "count": 75
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          27
+        ],
+        "count": 69
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\miuix-startup-error.png",
+    "sha256Bytes": "a024d75d4c2ce285a87ace5ab7fa1fa959b3459930e1900df2d9f0059029501e",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      24,
+      672,
+      119
+    ],
+    "transparentPixels": 454473,
+    "nonTransparentPixels": 6327,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        255,
+        255,
+        255
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 454473
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          230
+        ],
+        "count": 2804
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          213
+        ],
+        "count": 640
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          157
+        ],
+        "count": 606
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          195
+        ],
+        "count": 488
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          106
+        ],
+        "count": 480
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\miuix-startup-ready.png",
+    "sha256Bytes": "1d4f68c1009938a3e41db3209504a21448653e78e8e60a8f4df3cae472fc58c6",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      23,
+      174,
+      40
+    ],
+    "transparentPixels": 459839,
+    "nonTransparentPixels": 961,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        255,
+        255,
+        255
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 459839
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          230
+        ],
+        "count": 432
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          176
+        ],
+        "count": 94
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          133
+        ],
+        "count": 90
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          195
+        ],
+        "count": 81
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          72
+        ],
+        "count": 73
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\material3-stopped-restart.png",
+    "sha256Bytes": "d17b0338efd6f78d443142ac0d9a7a7d7e1adaf756905c0b608027ab3c6fca4f",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      26,
+      297,
+      97
+    ],
+    "transparentPixels": 455227,
+    "nonTransparentPixels": 5573,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 455227
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          43
+        ],
+        "count": 3183
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "count": 1135
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          135
+        ],
+        "count": 213
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          27
+        ],
+        "count": 138
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          164
+        ],
+        "count": 134
+      }
+    ]
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\proof\\miuix-stopped-restart.png",
+    "sha256Bytes": "5d7caddb394229d8e856d8d472fae63c20e57507e8abe9e3cdf266c43d8fbf1e",
+    "mode": "RGBA",
+    "alphaBoundingBox": [
+      20,
+      23,
+      315,
+      95
+    ],
+    "transparentPixels": 454814,
+    "nonTransparentPixels": 5986,
+    "distinctRgbValues": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        148,
+        148,
+        148
+      ],
+      [
+        169,
+        169,
+        169
+      ],
+      [
+        182,
+        182,
+        182
+      ],
+      [
+        190,
+        190,
+        190
+      ],
+      [
+        196,
+        196,
+        196
+      ],
+      [
+        200,
+        200,
+        200
+      ],
+      [
+        204,
+        204,
+        204
+      ],
+      [
+        207,
+        207,
+        207
+      ],
+      [
+        255,
+        255,
+        255
+      ]
+    ],
+    "mostCommon": [
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "count": 454814
+      },
+      {
+        "rgba": [
+          0,
+          0,
+          0,
+          43
+        ],
+        "count": 3352
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          230
+        ],
+        "count": 879
+      },
+      {
+        "rgba": [
+          207,
+          207,
+          207,
+          233
+        ],
+        "count": 322
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          176
+        ],
+        "count": 173
+      },
+      {
+        "rgba": [
+          255,
+          255,
+          255,
+          157
+        ],
+        "count": 167
+      }
+    ]
+  }
+]

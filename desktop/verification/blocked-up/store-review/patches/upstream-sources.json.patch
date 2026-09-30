@@ -1,0 +1,35 @@
+--- a/desktop/upstream-sources.json
++++ b/desktop/upstream-sources.json
+@@ -1718,7 +1718,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt",
+       "sha256": "28c40af8019e3d10f7c36f05404f300f7728bc2a196010a7bbe1663270270fe7",
+       "features": [
+-        "discovery"
++        "discovery",
++        "settings-blocked-up"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -3566,6 +3567,22 @@
+         "settings-network-proxy-parity"
+       ],
+       "sha256": "0f2160fd2a1c91dea13c09901d147d34c3c85d63276edc10d0f2ac9a091a5c24"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/database/entity/BlockedUp.kt",
++      "mode": "policy-extract",
++      "features": [
++        "settings-blocked-up"
++      ],
++      "sha256": "19a21523fbaa3e139d44d4310310e3a482961abceee00fc64e198de282a4cfc7"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/data/repository/BilibiliBlockedListSyncRepository.kt",
++      "mode": "policy-extract",
++      "features": [
++        "settings-blocked-up"
++      ],
++      "sha256": "ca2c80ac44966c155f8f73583adc548388c278b3fa84b5d1d1f9b9c8cd8407a2"
+     }
+   ],
+   "featureCoverage": {

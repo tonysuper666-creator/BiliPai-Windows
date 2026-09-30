@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "normalExit": true,
+  "snapshotSha256": "c2c892064267e6a1e8c5425a3c4095a2070faacfe5debb1c07f43fae9957016d",
+  "compiledSourceIdentities": {
+    "generated/com/android/purebilibili/core/database/entity/BlockedUp.kt": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2",
+    "generated/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a",
+    "generated/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt": "d001a295f54c0665d978d4e6f5265a09a6c215bca6dc85e532867fb6824de746",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt": "fec66b5cb9daa617e42de87a5cbd0b79a8c30b48a2e2b7bcb79980124f6a723a",
+    "prepared/desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0",
+    "RunBlockedStoreFixture.kt": "640fef2cf75addd79d45d53e9c6ae92d030ee0030fb40b8cac075d84cc121541"
+  },
+  "actualPatchedDiscoveryPreferencesRepositoryAndScreensCompiled": true,
+  "markedProductionOverrides": [
+    "DesktopDiscoveryPreferences.kt",
+    "DesktopDiscoveryRepository.kt",
+    "DiscoveryScreens.kt"
+  ],
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountRequests": false,
+  "childLocalAppData": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-blocked-up-parity\\store-proof\\owned-appdata-hz_bynxu"
+}

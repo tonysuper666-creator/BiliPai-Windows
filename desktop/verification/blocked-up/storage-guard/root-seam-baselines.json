@@ -1,0 +1,37 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "sha256Bytes": "aff69720581c27e246dd0f3229b730976a73dca4020ab3f602dbd35dd57ab300",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+    "sha256Bytes": "fec66b5cb9daa617e42de87a5cbd0b79a8c30b48a2e2b7bcb79980124f6a723a",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+    "sha256Bytes": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+    "sha256Bytes": "1bcfacea11859762befe41cb3a98e02e67d8e5d1349e11d1f4b9025da0f41543",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "sha256Bytes": "ee761b8cc2da47b7db588a317a4912ac368d9aea7598ea120efbac5bd0951495",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "sha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4",
+    "informationalReadOnlyNotReplacement": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+    "sha256Bytes": "bdb232db00c623f285893383c24c31038254d4deeafa9d8727a7d21ec26cd5f7",
+    "informationalReadOnlyNotReplacement": true
+  }
+]

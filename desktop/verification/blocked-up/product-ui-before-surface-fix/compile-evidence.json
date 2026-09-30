@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "activeClassDirectory": "classes-attempt2",
+  "source": "ProductStorageUiFixture.kt",
+  "sourceSha256Bytes": "0b17d5b7233ca6cb89a74ee11ee9617f44016267daa77b2e5ab29cddd6577cdc",
+  "snapshotManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\manifest.json",
+  "snapshotManifestSha256Bytes": "10e08fbc781a62ceff68c06c768677922925679b6121f59f7eb43ab56845cd7b",
+  "productSnapshotJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 6436,
+      "sha256Bytes": "0f4015a7895730df5ba15b5f69259ce0b147cd4599f5c4b5cdcea14921d317b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 141,
+      "sha256Bytes": "1d58606221c3513c170017fa04583fbb5972ba102c0edf499859d3cc2bfd1ccb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 56,
+      "sha256Bytes": "98212b1465c331f37ced7a4c921fd9720fb56b4391f349a2f5afbb9eeeb0eb3a"
+    }
+  ],
+  "dependencyCount": 234,
+  "fixtureDoesNotShadowAnyProductClass": true,
+  "productionSourceOverrides": 0,
+  "GuardBoundaryTreeRepositoryLoadedFromActualSnapshot": true,
+  "sandbox": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bpd-product-ui-yulknzvm",
+  "sharedGradle": false,
+  "HWND": false,
+  "realAccountData": false,
+  "HTTP": false,
+  "actualArchiveRestoreClaimed": false
+}

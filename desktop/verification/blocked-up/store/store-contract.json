@@ -1,0 +1,60 @@
+{
+  "status": "frozen",
+  "stage": 1,
+  "integrated": false,
+  "ownedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "kind": "new",
+      "sha256": "d001a295f54c0665d978d4e6f5265a09a6c215bca6dc85e532867fb6824de746"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "kind": "modify",
+      "sha256": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+      "baseSha256": "2f9d52e3d0f9ae09b05896a4342de2bf6b4ac51be097e947599926bfb0f4c951"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "kind": "modify",
+      "sha256": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+      "baseSha256": "5263d414ce99a5efb13f619478131b119b889d3c0c9fae73789b03aeed6cb2ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "kind": "modify",
+      "sha256": "fec66b5cb9daa617e42de87a5cbd0b79a8c30b48a2e2b7bcb79980124f6a723a",
+      "baseSha256": "0780ee3261173c26de4c4c5653bf5a1612e9942e84267066aaeae97ec7c51ba0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "kind": "new",
+      "sha256": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-up-platform.py",
+      "kind": "new",
+      "sha256": "6e58c01f64e48843ee168a989390b3addb143c9141a1ceac8e560f2c882c8097"
+    }
+  ],
+  "sourceInventory": "source-inventory.json",
+  "generatedSourceCount": 3,
+  "newSourceIdentities": 2,
+  "newDependencies": [],
+  "newResources": [],
+  "originalFullModelStored": true,
+  "globalSingleActiveStore": true,
+  "originalManagementUiImplemented": false,
+  "profilesRemotelyRefreshed": false,
+  "remoteSyncVerified": false,
+  "communitySearchSpaceConsumersImplemented": false,
+  "junitMethodsPassed": 8,
+  "actualDiskRestoreFenceVerified": true,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "realAccountReads": false,
+  "networkRequests": false,
+  "immutableProductManifestSha256": "c2c892064267e6a1e8c5425a3c4095a2070faacfe5debb1c07f43fae9957016d",
+  "ownedSetSha256": "6097e18c1edcf4a388f3b9e7d6dbe62a6a4d32a158e2b49b4079a7fee085758d"
+}

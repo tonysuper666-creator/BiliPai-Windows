@@ -1,0 +1,22 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+    "sha256Bytes": "575b96a82e79f08be6ca849b53252d578f81317d4bb10a2e3ed38fb23525ac46",
+    "compiledInThisLane": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+    "sha256Bytes": "38b64ee1fda0c7aaf619a6d4f0677fae3bdab814f4fa8355bcdf015ae8cf416a",
+    "compiledInThisLane": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+    "sha256Bytes": "9491cf0e210b8204c52daa6b85c6164df05f95780edbe468b7bb64508ffc5176",
+    "compiledInThisLane": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+    "sha256Bytes": "325fbbe39728d9b122684881072df23d0c07ad405c8e4203c4198bca38a72dc5",
+    "compiledInThisLane": false
+  }
+]

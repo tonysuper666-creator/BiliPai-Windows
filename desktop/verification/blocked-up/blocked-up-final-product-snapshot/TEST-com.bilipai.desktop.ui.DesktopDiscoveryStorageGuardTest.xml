@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:18:46.443Z" hostname="TONYSUPER666" time="0.153">
+  <properties/>
+  <testcase name="initializedBackingRepairRequiresRestartAndIsNotFreshFacadeReload()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.015"/>
+  <testcase name="epochRetirementRejectsActualLateFactoryResult()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.048"/>
+  <testcase name="closeRejectsActualInFlightResult()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.007"/>
+  <testcase name="cancellationIsNotPresentedAsDiskError()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.003"/>
+  <testcase name="explicitHeldDecodeFailureOnlyAllowsActualRestart()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.001"/>
+  <testcase name="guestConstructorFailureIsRealAndPreservesBadBytes()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.016"/>
+  <testcase name="closedGuardDoesNotReopenOrReviveFrozenOriginalStore()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.009"/>
+  <testcase name="actualGuestRepairRetriesFactoryAndKeepsOneSuccessfulRepository()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.018"/>
+  <testcase name="embeddedFeedbackPayloadFallbackIsOriginalAndDoesNotRewriteFile()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.014"/>
+  <testcase name="replacementPendingCannotBeClearedByRetiredFinally()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.001"/>
+  <testcase name="corruptActiveFeedbackDoesNotDestroyValidGuestRepositoryAndRepairIsReal()" classname="com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest" time="0.018"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "exactGeneratedFiles": {
+    "com/android/purebilibili/core/database/entity/BlockedUp.kt": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2",
+    "com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a",
+    "com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90"
+  },
+  "existingDeclarationProviderRetained": [
+    "enum class BilibiliBlockedListRemoteStatus",
+    "enum class BlockedUpRelationSource",
+    "data class BlockedUpWriteResult",
+    "fun resolveBlockedUpRelationReSrc",
+    "fun buildBlockedUpWriteMessage"
+  ],
+  "sources": 427,
+  "resources": 201,
+  "allOriginalManifestHashesVerified": 628,
+  "noDirectCopyOfExtractedEntity": true,
+  "uniqueNewTask": true,
+  "uniqueOutputDirectory": true,
+  "mainEdited": false,
+  "frozenGeneratedFilesUnchanged": true,
+  "sharedGradleInvoked": false
+}

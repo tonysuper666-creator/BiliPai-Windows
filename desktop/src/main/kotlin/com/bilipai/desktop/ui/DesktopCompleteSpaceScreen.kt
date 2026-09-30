@@ -186,9 +186,12 @@ internal fun DesktopCompleteSpaceScreen(requestedMid: Long, repository: DesktopR
                 modifier = Modifier.heightIn(max = 260.dp).verticalScroll(state.headerScroll), action = {
                     val user = overview.user
                     if (account?.mid == mid) TextButton(onClick = { onExternalUrl("https://account.bilibili.com/account/setting") }) { Text("编辑资料") }
-                    else CommunityAction(resolveSpaceFollowActionLabel(false, user.relationStatus, user.isFollowed), onLogin,
-                        action = { if (user.relationStatus == 128) social.removeBlacklist(mid) else social.setFollowing(mid, !user.isFollowed) },
-                        onSuccess = { scope.launch { loadOverview() } })
+                    else Row {
+                        if (user.relationStatus != 128) CommunityAction(resolveSpaceFollowActionLabel(false, user.relationStatus, user.isFollowed), onLogin,
+                            action = { social.setFollowing(mid, !user.isFollowed) }, onSuccess = { scope.launch { loadOverview() } })
+                        DesktopBlockedUpAction(community.blockedUpRepository, mid, user.name, user.face, onLogin,
+                            remoteBlocked = user.relationStatus == 128, onChanged = { scope.launch { loadOverview() } })
+                    }
                 })
             state.failure?.let { CommunityFailure(it, onLogin) { scope.launch { loadOverview() } } }
             Row(Modifier.horizontalScroll(state.mainScroll), horizontalArrangement = Arrangement.spacedBy(8.dp)) {

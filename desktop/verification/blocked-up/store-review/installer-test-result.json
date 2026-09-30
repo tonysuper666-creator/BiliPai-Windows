@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "unittestMethodsFound": 9,
+  "unittestMethodsPassed": 9,
+  "actualFixtureDiskAtomicRollback": true,
+  "stalePayloadBaselinePathAndSourceRejections": true,
+  "productApplied": false,
+  "mainEdited": false
+}

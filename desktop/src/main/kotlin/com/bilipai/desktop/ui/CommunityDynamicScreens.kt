@@ -20,6 +20,9 @@ import kotlinx.serialization.json.*
 
 @Composable
 internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
+    val blocked by community.blockedUps.mids.collectAsState()
+    val epoch by community.accountEpoch.collectAsState()
+    val transform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
     var type by remember { mutableStateOf("all") }
     var composing by remember { mutableStateOf(false) }
     var revision by remember { mutableIntStateOf(0) }
@@ -32,8 +35,8 @@ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityReposito
             Button(onClick = { composing = true }) { DesktopSkinDynamicPublishIcon(composing); Text("发布动态") }
         }
         if (published) Text("动态已提交", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.primary)
-        CommunityFeed(Triple(mid, type, revision), "", load = { offset -> community.dynamicFeed(type, offset).let { CommunityBatch(it.items, it.nextOffset) } },
-            identity = { it.id_str }, onLogin = navigation.onLogin) { CommunityDynamicCard(it, community, navigation) }
+        CommunityFeed(listOf(mid, epoch, type, revision), "", load = { offset -> community.dynamicFeed(type, offset).let { CommunityBatch(it.items, it.nextOffset) } },
+            identity = { it.id_str }, onLogin = navigation.onLogin, transform = transform) { CommunityDynamicCard(it, community, navigation) }
     }
     if (composing) CommunityDynamicComposer(community, navigation, onDismiss = { composing = false }, onPublished = { id ->
         composing = false; revision++; published = true
@@ -78,6 +81,7 @@ internal fun CommunityDynamicCard(item: DynamicItem, community: DesktopCommunity
     var comments by remember { mutableStateOf(false) }
     var repost by remember { mutableStateOf(false) }
     var liked by remember(item.id_str) { mutableStateOf(item.modules.module_stat?.like?.status == true) }
+    val account by community.account.collectAsState()
     val author = item.modules.module_author
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -89,6 +93,8 @@ internal fun CommunityDynamicCard(item: DynamicItem, community: DesktopCommunity
                         modifier = Modifier.clickable(enabled = (author?.mid ?: 0) > 0) { navigation.onUser(author!!.mid) })
                     Text(author?.pub_time.orEmpty(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
+                if (author != null && author.mid > 0 && account?.mid != author.mid) DesktopBlockedUpAction(
+                    community.blockedUpRepository, author.mid, author.name, author.face, navigation.onLogin)
                 if (!details) TextButton(onClick = { navigation.onDynamic(item.id_str) }) { Text("详情") }
             }
             if (!expanded) TextButton(onClick = { expanded = true }) { Text("展开折叠内容") }

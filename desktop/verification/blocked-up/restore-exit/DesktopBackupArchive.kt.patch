@@ -1,0 +1,21 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt
+@@ -55,7 +55,8 @@
+ 
+     /** Validate the entire archive before replacing any file. A failed replacement restores every earlier target. */
+     @Synchronized
+-    fun restore(bytes: ByteArray): Int {
++    @JvmOverloads
++    fun restore(bytes: ByteArray, onSuccessfulRestore: () -> Unit = {}): Int {
+         require(bytes.size <= MAX_ZIP_BYTES) { "备份压缩包过大" }
+         Files.createDirectories(root)
+         val entries = linkedMapOf<String, ByteArray>()
+@@ -111,6 +112,8 @@
+             }
+             throw failure
+         }
++        // Signal only after every replacement succeeded, before a suspend caller can lose its return to cancellation.
++        onSuccessfulRestore()
+         return replaced.size
+     }
+ 

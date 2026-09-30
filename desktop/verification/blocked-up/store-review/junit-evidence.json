@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "testResultSha256Bytes": "b9347d3ecdc5a80f5d4a47ef24600393f0d9fe6bf3772ce6017cced3077e5a0a",
+  "junitEngineActuallyInvoked": true,
+  "testsFound": 8,
+  "testsSucceeded": 8,
+  "frozen118Unchanged": true,
+  "actualReviewedStoreClasses": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\classes\\reviewed-attempt2",
+  "frozenTestAndDiscoveryClasses": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-blocked-up-parity\\store-classes",
+  "actualProductSnapshotJars": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar"
+  ],
+  "launcherSourceSha256Bytes": "542907ca099c0ca4b8916f0ba5f4675260db26e74d00a2551f8ddcb8c7444802",
+  "sandbox": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\proof\\junit-engine\\child-m8isfjw5",
+  "markedProductionOverrides": true,
+  "noSharedGradle": true,
+  "noMainWrites": true,
+  "noHWND": true,
+  "noUserAccountReads": true,
+  "noHTTP": true
+}

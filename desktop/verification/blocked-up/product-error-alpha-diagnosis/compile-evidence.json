@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "pureFixtureSourceSha256Bytes": "50a16e444a974c5b0fd1303fee0e899f1b8c4a85fec859cafb48d5f6d96af547",
+  "activeClasses": "classes",
+  "originalFrozenManifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+  "originalProductClassesUnchanged": true,
+  "productSnapshotJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 6436,
+      "sha256Bytes": "0f4015a7895730df5ba15b5f69259ce0b147cd4599f5c4b5cdcea14921d317b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 141,
+      "sha256Bytes": "1d58606221c3513c170017fa04583fbb5972ba102c0edf499859d3cc2bfd1ccb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 56,
+      "sha256Bytes": "98212b1465c331f37ced7a4c921fd9720fb56b4391f349a2f5afbb9eeeb0eb3a"
+    }
+  ],
+  "productionSourceOverrides": 0,
+  "explicitAppSurfaceFixtureControl": true,
+  "mainAppSurfaceFixClaimed": false,
+  "HWND": false,
+  "sharedGradle": false,
+  "HTTP": false
+}

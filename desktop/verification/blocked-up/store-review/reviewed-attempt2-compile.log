@@ -1,0 +1,3 @@
+desktop\.local\blocked-up-store-main-review\review-delta\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopBlockedUpStore.kt:150:110: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+private class BlockedPreferenceState<T : Any>(private val source: StateFlow<*>, private val read: () -> T) : StateFlow<T> {
+                                                                                                             ^^^^^^^^^^^^

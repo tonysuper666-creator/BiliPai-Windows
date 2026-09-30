@@ -1,0 +1,67 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt
+@@ -3,6 +3,9 @@
+ import com.android.purebilibili.feature.settings.webdav.*
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.NonCancellable
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.asStateFlow
+ import kotlinx.coroutines.flow.update
+@@ -25,10 +28,7 @@
+     private val beforeRestore: suspend () -> Unit = {},
+     private val afterRestore: suspend () -> Unit = {},
+     private val clock: () -> Long = System::currentTimeMillis) {
+-    private val archive = DesktopBackupArchive(store.directory) {
+-        mutableState.update { it.copy(restartRequired = true) }
+-        runBlocking { beforeRestore() }
+-    }
++    private val archive = DesktopBackupArchive(store.directory)
+     private val service = WebDavBackupService(archive)
+     private val operations = Mutex()
+     private val initial = runCatching { store.read() }
+@@ -62,18 +62,35 @@
+ 
+     suspend fun backupNow() = operation("设置备份已上传") { upload(store.read()) }
+ 
+-    suspend fun restoreLatest() = operation("设置已恢复，请退出并重新打开客户端") {
++    suspend fun restoreLatest() = restoreOperation { restoreArchive, onCommitted ->
+         val config = store.read().config; validateServer(config)
+-        service.restoreLatest(config).getOrThrow()
+-        mutableState.update { it.copy(restartRequired = true) }
+-        afterRestore()
++        WebDavBackupService(restoreArchive, onCommitted).restoreLatest(config).getOrThrow()
+     }
+ 
+     suspend fun exportLocal(target: Path) = operation("本地设置备份已导出") { Files.write(target, archive.create(clock())); Unit }
+-    suspend fun importLocal(source: Path) = operation("设置已恢复，请退出并重新打开客户端") {
++    suspend fun importLocal(source: Path) = restoreOperation { restoreArchive, onCommitted ->
+         require(Files.size(source) <= 32L * 1024 * 1024) { "备份压缩包过大" }
+-        archive.restore(Files.readAllBytes(source)); mutableState.update { it.copy(restartRequired = true) }
+-        afterRestore()
++        restoreArchive.restore(Files.readAllBytes(source), onCommitted)
++    }
++
++    private suspend fun restoreOperation(
++        block: suspend (DesktopBackupArchive, () -> Unit) -> Unit
++    ): Result<Unit> = operation("设置已恢复，请退出并重新打开客户端") {
++        var committed = false
++        val operationContext = currentCoroutineContext()
++        operationContext.ensureActive()
++        val restoreArchive = DesktopBackupArchive(store.directory) {
++            // A cancelled download/validation must not retire the app or replace settings.
++            operationContext.ensureActive()
++            mutableState.update { it.copy(restartRequired = true) }
++            runBlocking { beforeRestore() }
++        }
++        try {
++            block(restoreArchive) { committed = true }
++        } finally {
++            // beforeRestore may dispose the initiating UI scope. Once files committed, exit must still run.
++            if (committed) withContext(NonCancellable) { afterRestore() }
++        }
+     }
+ 
+     /** Both the application and the scheduled EXE use this path and the same cross-process file lock. */

@@ -1,0 +1,14 @@
+test_atomic_install_and_idempotent_second_application (__main__.InstallerFailureTest.test_atomic_install_and_idempotent_second_application) ... ok
+test_changed_platform_transport_prevents_install (__main__.InstallerFailureTest.test_changed_platform_transport_prevents_install) ... ok
+test_crlf_source_is_accepted_but_real_source_change_prevents_install (__main__.InstallerFailureTest.test_crlf_source_is_accepted_but_real_source_change_prevents_install) ... ok
+test_frozen_evidence_tamper_prevents_install (__main__.InstallerFailureTest.test_frozen_evidence_tamper_prevents_install) ... ok
+test_later_stale_baseline_prevents_first_file_write (__main__.InstallerFailureTest.test_later_stale_baseline_prevents_first_file_write) ... ok
+test_path_traversal_and_drive_paths_are_rejected (__main__.InstallerFailureTest.test_path_traversal_and_drive_paths_are_rejected) ... ok
+test_read_only_does_not_create_or_replace_any_product_target (__main__.InstallerFailureTest.test_read_only_does_not_create_or_replace_any_product_target) ... ok
+test_second_atomic_write_failure_restores_first_exact_bytes (__main__.InstallerFailureTest.test_second_atomic_write_failure_restores_first_exact_bytes) ... ok
+test_staged_payload_tamper_prevents_install (__main__.InstallerFailureTest.test_staged_payload_tamper_prevents_install) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.111s
+
+OK

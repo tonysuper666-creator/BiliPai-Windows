@@ -21,7 +21,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /** Upstream web API contracts, sharing the desktop's authorized cookie jar and WBI keys. */
-class DesktopCommunityRepository(private val repository: DesktopRepository) {
+class DesktopCommunityRepository(private val repository: DesktopRepository,
+    val blockedUps: DesktopBlockedUpStore = DesktopBlockedUpStore(com.bilipai.desktop.plugins.DesktopPluginContext(
+        com.bilipai.desktop.plugins.DesktopPluginStore(com.bilipai.desktop.DesktopLibrary.directoryForAccount(null))))) {
+    val blockedUpRepository by lazy { DesktopBlockedUpRepository(repository, blockedUps) }
+    internal val accountEpoch get() = repository.sessionEpochFlow
     val account get() = repository.account
     val search by lazy { DesktopSearchRepository(repository) }
     val searchPreferences by lazy { DesktopSearchPreferences() }

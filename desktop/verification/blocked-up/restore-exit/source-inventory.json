@@ -1,0 +1,38 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings",
+      "backup"
+    ],
+    "sha256": "a6fc02bbb34c9a6f539cc784087798e34cad6c051c5bf4e37d34a44fdc3abc6f"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupAutoSchedulePolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings",
+      "backup"
+    ],
+    "sha256": "c5bc58fc8eb1764d139b88e5109a4e68bce312f380da26a0635eb0c1300817c9"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupStore.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings",
+      "backup"
+    ],
+    "sha256": "ffa867fd010ef4c75a50b09ea476fe0a735ea7d5445c25cdbb35e547da4e047a"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt",
+    "mode": "extracted",
+    "features": [
+      "settings",
+      "backup"
+    ],
+    "sha256": "04f46bedef25085b658d0edb04e6e430e5b0cb774d85c5690b34e3d14b081704"
+  }
+]

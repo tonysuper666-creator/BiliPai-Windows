@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.backup.DesktopWebDavTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:18:46.326Z" hostname="TONYSUPER666" time="0.116">
+  <properties/>
+  <testcase name="scheduled backup uses original daily cadence and persists success across process instances()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.052"/>
+  <testcase name="Windows protects WebDAV password while retaining original normalized settings()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.007"/>
+  <testcase name="original WebDAV protocol creates directories uploads lists and restores a real ZIP()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.025"/>
+  <testcase name="failed scheduling does not silently enable automatic backup()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.003"/>
+  <testcase name="daily backup uses original flex window across a 23 hour daylight saving day()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.022"/>
+  <testcase name="WebDAV unauthorized result never creates or uploads a backup()" classname="com.bilipai.desktop.backup.DesktopWebDavTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

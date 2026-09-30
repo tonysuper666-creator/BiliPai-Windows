@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "sharedGradleInvoked": false,
+  "mainEdited": false,
+  "productSnapshotManifestSha256Bytes": "74165f272e012c1a13e9171e963bf76127dbd71e7003da9e2576b7af2a25e2e6",
+  "runs": [
+    {
+      "label": "baseline",
+      "passed": true,
+      "reportSha256Bytes": "eaadddae3320e04e0313a9cf7bf8d3074b8b9a8f9eafcb86d6f1bd7f7dedd42b",
+      "sourceIdentities": [
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\BaselineReproduction.kt",
+          "sha256Bytes": "78a252bffb3245072820999c4f7045a21cfa6b6f1281eaa6eedfdd6e76c9433b"
+        },
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\RunFixture.kt",
+          "sha256Bytes": "ab1d49f4b7fc448cbcf71dbd79c70eb9ed5f6450013a1351d24ab0b45a2bd7f7"
+        }
+      ],
+      "classes": "classes-baseline",
+      "productionOverrides": [],
+      "actualAnnotatedMethods": 2
+    },
+    {
+      "label": "patched",
+      "passed": true,
+      "reportSha256Bytes": "5ad757b2e2f23705ee49010409e09265730a870a11a2422ea443e7e7e720ce97",
+      "sourceIdentities": [
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\backup\\DesktopBackupArchive.kt",
+          "sha256Bytes": "1ce354b7ea45fef78563ad404c7c66c5dcc967164af50e7e92c803387471e41d"
+        },
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\backup\\DesktopBackupCoordinator.kt",
+          "sha256Bytes": "81cf250ce2bf7669f5cd6be2d78a7bee5d36b06884af211050a40b5d795daccb"
+        },
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\generated\\com\\android\\purebilibili\\feature\\settings\\webdav\\WebDavBackupService.kt",
+          "sha256Bytes": "8d22f8eb879f7459419ce8a91dd304ca7b5c8f9d19fda54660d092871ccc59bf"
+        },
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\backup\\DesktopBackupRestoreBarrierTest.kt",
+          "sha256Bytes": "cd192567b94c587e4e247802004a24824416dcfbf697c42824970d1a3b8a909c"
+        },
+        {
+          "path": "desktop\\.local\\backup-restore-exit-barrier\\RunFixture.kt",
+          "sha256Bytes": "ab1d49f4b7fc448cbcf71dbd79c70eb9ed5f6450013a1351d24ab0b45a2bd7f7"
+        },
+        {
+          "path": "desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\backup\\DesktopBackupArchiveTest.kt",
+          "sha256Bytes": "80de2249a91402a968385b07051d5860333afe611a69015886d1acaa0e21ccd6"
+        },
+        {
+          "path": "desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\backup\\DesktopWebDavTest.kt",
+          "sha256Bytes": "9759bf6098606423afaa9f71b332050e29b7fcc797a73f7f149a460583404794"
+        }
+      ],
+      "classes": "classes-patched",
+      "productionOverrides": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+        "generated/settings/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt"
+      ],
+      "actualAnnotatedMethods": 28
+    }
+  ]
+}

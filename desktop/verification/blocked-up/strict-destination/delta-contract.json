@@ -1,0 +1,25 @@
+{
+  "status": "frozen",
+  "appliesAfterInstallerPlanSha256Bytes": "19ca03407d64e4c4fce848aac01c7b2b88eb8f884ae49c9795e031c9b8258125",
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "baseSha256Bytes": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf",
+      "payloadSha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "baseSha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+      "payloadSha256Bytes": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e"
+    }
+  ],
+  "rootOwnsPluginStoreHelper": true,
+  "requiresNoAdditionalSourceIdentity": true,
+  "newDependencies": [],
+  "newResources": [],
+  "originalSchemaAndImportPoliciesUnchanged": true,
+  "noDiskReload": true,
+  "noFrozenGenerationRevival": true,
+  "mainEdited": false,
+  "installerPlanChanged": false
+}

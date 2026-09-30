@@ -1,0 +1,33 @@
+PASS: MATERIAL3: actual persisted error style and once-applied density
+PASS: MATERIAL3: real factory failure has no ready initializer
+PASS: MATERIAL3: error theme applied while boundary remains active
+PASS: MATERIAL3: actual pointer retry retains active mounted guard
+PASS: MATERIAL3: same global blocked-UP authority
+PASS: MATERIAL3: ready initializer runs once and no ready disposal
+PASS: MATERIAL3: ready density applied only once
+PASS: MATERIAL3: epoch recompose preserves live guard and exact original repository
+PASS: MATERIAL3: epoch change does not dispose ready initializer
+PASS: MATERIAL3: actual persisted theme recompose has one density transform
+PASS: MATERIAL3: ready branch never invokes errorTheme
+PASS: MATERIAL3: theme recompose preserves live repository and guard
+PASS: MATERIAL3: retry did not rewrite repaired or unrelated fields
+PASS: MATERIAL3: actual root closing predicate suppresses retained ready content
+PASS: MATERIAL3: stopped branch uses actual error theme once
+PASS: MATERIAL3: root closing cannot schedule another factory
+PASS: MIUIX: actual persisted error style and once-applied density
+PASS: MIUIX: real factory failure has no ready initializer
+PASS: MIUIX: error theme applied while boundary remains active
+PASS: MIUIX: actual pointer retry retains active mounted guard
+PASS: MIUIX: same global blocked-UP authority
+PASS: MIUIX: ready initializer runs once and no ready disposal
+PASS: MIUIX: ready density applied only once
+PASS: MIUIX: epoch recompose preserves live guard and exact original repository
+PASS: MIUIX: epoch change does not dispose ready initializer
+PASS: MIUIX: actual persisted theme recompose has one density transform
+PASS: MIUIX: ready branch never invokes errorTheme
+PASS: MIUIX: theme recompose preserves live repository and guard
+PASS: MIUIX: retry did not rewrite repaired or unrelated fields
+PASS: MIUIX: actual root closing predicate suppresses retained ready content
+PASS: MIUIX: stopped branch uses actual error theme once
+PASS: MIUIX: root closing cannot schedule another factory
+PASS: two styles, actual retry-to-ready retains mounted live guard; epoch/theme changes and closing verified

@@ -1,0 +1,179 @@
+{
+  "frozen": true,
+  "files": [
+    {
+      "path": "classes/com/bilipai/desktop/ui/ComposableSingletons$StoppedCaptureFixtureKt.class",
+      "sha256Bytes": "0afe2c1f88bc241fdce8ab26f785b041798093197fbc52c1ed0e3dd3cb47926c",
+      "bytes": 3269
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/StoppedCaptureFixtureKt$main$1$2.class",
+      "sha256Bytes": "310ed390c6803d7496e8616b6f83616853efc1ad5f291d79cabdd6f06127e7a8",
+      "bytes": 3719
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/StoppedCaptureFixtureKt$main$1.class",
+      "sha256Bytes": "2407332bb4d4e4efafec72c8c558e69b67b143c7617ec229f4261dde543ff92b",
+      "bytes": 38984
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/StoppedCaptureFixtureKt.class",
+      "sha256Bytes": "0a4c40340b3b85da189780a18986af4c185645146a0b158bae615c22a21e4658",
+      "bytes": 1280
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "01447e70a37f78dbdc7534d36bc20952947f3f5260d1e5854170244f950a5805",
+      "bytes": 75
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "2473049a2993090119e052ae5c000d79841a71fbe085dcb3870621b93c135051",
+      "bytes": 1573
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "cfd22c2bdeb0d36a0b7bf1e9ab83974ae10682959dc4af279800b268fc324f43",
+      "bytes": 4203
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "3aba906dd921d74f3ca78c871280ba62f77eee74ab8f39d627da379037263a3d",
+      "bytes": 57114
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "6764596a77fa5e0dad3b1c1bc565d7a651f3ba25f0af52300d8d23eedd717628",
+      "bytes": 86081
+    },
+    {
+      "path": "original-frozen-alpha-analysis.json",
+      "sha256Bytes": "6218d0c41d851f76136a6c2493f9079daf18642742b4a8a7cf3a32fdb009db01",
+      "bytes": 8379
+    },
+    {
+      "path": "proof/material3-bare-theme-after-restart-pointer.png",
+      "sha256Bytes": "c820031d0872289803bc62950dcc76445e8a6d74d1703ea35de36115e907ba8d",
+      "bytes": 4806
+    },
+    {
+      "path": "proof/material3-bare-theme-before-0.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "proof/material3-bare-theme-before-1.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "proof/material3-bare-theme-before-2.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "proof/material3-original-surface-after-restart-pointer.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "proof/material3-original-surface-before-0.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "proof/material3-original-surface-before-1.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "proof/material3-original-surface-before-2.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "proof/miuix-bare-theme-after-restart-pointer.png",
+      "sha256Bytes": "25ffb8bde3f6a3f6462b44ffefbe8fd7577291df79c7daaab2d110105a8184cf",
+      "bytes": 6163
+    },
+    {
+      "path": "proof/miuix-bare-theme-before-0.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "proof/miuix-bare-theme-before-1.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "proof/miuix-bare-theme-before-2.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "proof/miuix-original-surface-after-restart-pointer.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "proof/miuix-original-surface-before-0.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "proof/miuix-original-surface-before-1.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "proof/miuix-original-surface-before-2.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "e7b187451c1eb2a6607d5990065cc447ad6f5b19e06649ba068dc6ce3033393c",
+      "bytes": 2181
+    },
+    {
+      "path": "ROOT-RESULT.md",
+      "sha256Bytes": "507e0a9fbf9415b49256efce9f10de395dabb312817faa42c80a6cfd3275cbca",
+      "bytes": 2264
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "5ddfd2e489c7f3cdfb92112d626ec5ad50a5ce299aa7e23753a612b2faa682e3",
+      "bytes": 56957
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "c5aed79760ccdfdc2466629e50bedb69d3a6ae1b9b1aa1536dccac30a6448542",
+      "bytes": 418
+    },
+    {
+      "path": "StoppedCaptureFixture.kt",
+      "sha256Bytes": "50a16e444a974c5b0fd1303fee0e899f1b8c4a85fec859cafb48d5f6d96af547",
+      "bytes": 6732
+    },
+    {
+      "path": "verify-frozen.py",
+      "sha256Bytes": "dbdf82f1043e506fb0e5011a4a80c1dbe6bab004d77812e0a79d5aaf3d975ed1",
+      "bytes": 1069
+    }
+  ],
+  "productManifestPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\manifest.json",
+  "productManifestSha256Bytes": "10e08fbc781a62ceff68c06c768677922925679b6121f59f7eb43ab56845cd7b",
+  "original43ManifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+  "productionOverrides": 0,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false,
+  "fullShell": false,
+  "actualProcessRestart": false
+}

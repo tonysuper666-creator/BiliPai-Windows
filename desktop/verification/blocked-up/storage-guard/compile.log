@@ -1,0 +1,12 @@
+desktop\.local\discovery-storage-error-parity\marked-overrides\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopBlockedUpStore.kt:150:110: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+private class BlockedPreferenceState<T : Any>(private val source: StateFlow<*>, private val read: () -> T) : StateFlow<T> {
+                                                                                                             ^^^^^^^^^^^^
+desktop\.local\discovery-storage-error-parity\marked-overrides\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDiscoveryPreferences.kt:83:130: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+private class DiscoveryPreferenceState<T : Any>(context: DesktopPluginContext, namespace: String, private val decode: () -> T) : StateFlow<T> {
+                                                                                                                                 ^^^^^^^^^^^^
+desktop\.local\discovery-storage-error-parity\marked-overrides\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDiscoveryRepository.kt:28:30: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+        .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\discovery-storage-error-parity\marked-overrides\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopDiscoveryRepository.kt:171:30: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+        .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

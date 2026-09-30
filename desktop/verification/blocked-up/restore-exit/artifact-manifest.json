@@ -1,0 +1,726 @@
+{
+  "frozen": true,
+  "extendedWindowsPathTraversal": true,
+  "files": [
+    {
+      "path": "baseline-compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "baseline-compiler.args",
+      "bytes": 57273,
+      "sha256Bytes": "81f1463e98b3691d8c1ffd7381fc6829902b40d6480f24ffb15c1d793b9a6ced"
+    },
+    {
+      "path": "baseline-report.json",
+      "bytes": 489,
+      "sha256Bytes": "eaadddae3320e04e0313a9cf7bf8d3074b8b9a8f9eafcb86d6f1bd7f7dedd42b"
+    },
+    {
+      "path": "baseline-runtime.args",
+      "bytes": 56724,
+      "sha256Bytes": "a5494f8e5f873baa6a0752dc7eea7a8a767de57719e4d54b9e151747b2ee4a74"
+    },
+    {
+      "path": "baseline-runtime.log",
+      "bytes": 107,
+      "sha256Bytes": "2fcadc849fb46ec5ac15aa74f099de66185c61a5cbc24b19fd70fd1a27bd542c"
+    },
+    {
+      "path": "BaselineReproduction.kt",
+      "bytes": 8101,
+      "sha256Bytes": "78a252bffb3245072820999c4f7045a21cfa6b6f1281eaa6eedfdd6e76c9433b"
+    },
+    {
+      "path": "BaselineReproduction.tail.kt",
+      "bytes": 1084,
+      "sha256Bytes": "bb7d91c3435627c3994d83faf7768a083585415c008766073ddcd3cbd17c0781"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/BaselineRestoreCancellationTest$realProductLocalArchiveCommitsButUiExitIsLost$1$1$1.class",
+      "bytes": 3722,
+      "sha256Bytes": "6f08721d665b28a4e93ae7e1f9ea0638ced1cf01942c40a91d4389bc8be533ca"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/BaselineRestoreCancellationTest$realProductLocalArchiveCommitsButUiExitIsLost$1.class",
+      "bytes": 5582,
+      "sha256Bytes": "e91398de771f15d56aa49eba5ee854c53b329a8666fce0f8a8dcec035973b80b"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/BaselineRestoreCancellationTest$realProductWebDavArchiveCommitsButUiExitIsLost$1$1$1$1.class",
+      "bytes": 3390,
+      "sha256Bytes": "977cfcb4c4922c3d531b2e0a1696ecd5fb0654b3bc46fa071fc3b25fdf7bec22"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/BaselineRestoreCancellationTest$realProductWebDavArchiveCommitsButUiExitIsLost$1.class",
+      "bytes": 7411,
+      "sha256Bytes": "c7b44ec6ccd54f964af0486053c19bce1d273edac6bc5074d94dc5a75c3016af"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/BaselineRestoreCancellationTest.class",
+      "bytes": 1481,
+      "sha256Bytes": "a5e863663c66c0a9a85251db1d4bfae617a87fe7dbac9a2e683fd30c9f2ec81e"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreDav.class",
+      "bytes": 10276,
+      "sha256Bytes": "ac54354f0162adada2d49da43d49f9e4c89087ab7ddf73419430c6b1992c358e"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$coordinator$1.class",
+      "bytes": 1378,
+      "sha256Bytes": "3201fa5de64977d7574bf468c3297be50d4018044554fad25a6f069ec008daa2"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$coordinator$2.class",
+      "bytes": 3424,
+      "sha256Bytes": "3df20dc846bc2e252258d376dede92d4379730d43322700c7fccfa7c2bdba085"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$coordinator$3$1.class",
+      "bytes": 4713,
+      "sha256Bytes": "8693fae414a979effd89d3301386e06c7bd2ed3c36bd5a8e41d8a6835d8d28a2"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$coordinator$3.class",
+      "bytes": 3302,
+      "sha256Bytes": "bc67207390d39f46546d0e5a8581496c4e1bb406a65b373b91e5c578e76aba85"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$runPage$2$1.class",
+      "bytes": 4145,
+      "sha256Bytes": "9e457503d5f0c4beba44d43e85cbcf095e16864aa3d01a94596bd6caae064ab1"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture$runPage$2.class",
+      "bytes": 4099,
+      "sha256Bytes": "7a96db4657023893a052079dd3a421495b005205eb7675b0bee2a24fb9ea2466"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RestoreFixture.class",
+      "bytes": 12523,
+      "sha256Bytes": "b18ec456edd04da2a38b7237485ce2dc5e39c7e1bb512e864bb161525e2228f7"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RunFixtureKt$main$lambda$0$$inlined$sortedBy$1.class",
+      "bytes": 1987,
+      "sha256Bytes": "42c2629f4a775d2a556aecd5334540b32d0be23dc7893dd4c1bab29b025bfedb"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RunFixtureKt$main$listener$1.class",
+      "bytes": 5548,
+      "sha256Bytes": "1df3403d01690e1cfc3db39042c4fb5b07cad19708a8961aaacd1ceeab518f4e"
+    },
+    {
+      "path": "classes-baseline/com/bilipai/desktop/backup/RunFixtureKt.class",
+      "bytes": 11737,
+      "sha256Bytes": "7a593d218203b480f1bbdaa57273849931c5f279682b250446540b1c7a9931bc"
+    },
+    {
+      "path": "classes-baseline/META-INF/backup_restore_baseline.kotlin_module",
+      "bytes": 68,
+      "sha256Bytes": "b4da82891f4aba5770b34a1f2f884016b65d56a60cdadb3569c1d0a9fed24a57"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$backupNow$1.class",
+      "bytes": 2279,
+      "sha256Bytes": "8436772f981d85042664a7383823e9238dfe36ef3ed38361092282a651605419"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$backupNow$2.class",
+      "bytes": 8540,
+      "sha256Bytes": "4a54b82f166e57e5aa9830b975161f04ef87cd71e50de90a9e768708cbfec444"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$listBackups$1.class",
+      "bytes": 2287,
+      "sha256Bytes": "9879fda7188e3d7d05578f6c269a7dbecd46a5616c9b50c1720392830c0cdd0b"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$listBackups$2.class",
+      "bytes": 5537,
+      "sha256Bytes": "c3a92b5aaf1ee2494bf54376129ae49608db401caf6d930630c092c15020fc0e"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$restoreLatest$1.class",
+      "bytes": 2295,
+      "sha256Bytes": "8b677f65a1270c8760265225b2c0a1c58d5d95f7d69dc344886bd650db602815"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$restoreLatest$2.class",
+      "bytes": 9339,
+      "sha256Bytes": "bc218f1f5ed19430b5b4b8529912e9d019ddd64e47dcc80764d4b7dbfb29ac38"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$testConnection$1.class",
+      "bytes": 2299,
+      "sha256Bytes": "c438c422737340d3a49c8b7dc20501575d7ad5ec519edd15be9a8b9e27e15ec5"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$testConnection$2.class",
+      "bytes": 5336,
+      "sha256Bytes": "6a9e731b90fb89fa20b6f7c76b2d9340ddda43df44e336f68b0baff079c776ad"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService$WhenMappings.class",
+      "bytes": 1020,
+      "sha256Bytes": "4c9d6e37ab2dc8d7db584f4f1d6510e3b548b09df71495f49f85c519066e9193"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.class",
+      "bytes": 19340,
+      "sha256Bytes": "dddfb6de448f0a024f95fd9140ad7023b3175c893b9948384cf6ec8b60c68d7b"
+    },
+    {
+      "path": "classes-patched/com/android/purebilibili/feature/settings/webdav/WebDavBackupServiceKt.class",
+      "bytes": 665,
+      "sha256Bytes": "6040ce724df6af8f46d20b793d586970ede0c40dd9ec345c1a68fb317be19450"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupArchive$Companion.class",
+      "bytes": 2911,
+      "sha256Bytes": "31e4f15e901098945f6afb8e7199d41ed4d17e586cc09bdfc1c27f3aabf0ee68"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupArchive$create$files$1$3.class",
+      "bytes": 1633,
+      "sha256Bytes": "5c0917e3bf2f960d0f7e819d4a9c719e2191fdd8309748d3d39d5d51fea2fc73"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupArchive.class",
+      "bytes": 32688,
+      "sha256Bytes": "6d7cd23bdcb8a2c05890720956fee4fcce72ef3323227b9f9a75bbfa8c34d92c"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupArchiveTest.class",
+      "bytes": 24371,
+      "sha256Bytes": "ad4f07c0601020fad9fa1e717e4b19243670f008e88bd4e2c6cdd34cc70c6961"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$1.class",
+      "bytes": 2776,
+      "sha256Bytes": "3021629524a9babf56e68fa07c658ac85443be5a4b7785a71c959615afb1657a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$2.class",
+      "bytes": 2776,
+      "sha256Bytes": "d4ad94197b9cba89d45cf447963189ad510ebb3844b5b71e646cca38343e2d08"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$3.class",
+      "bytes": 1503,
+      "sha256Bytes": "1b5e17f10bec08eb696076e16ed983ff314c9caf647972ab0e8ea010d0346d18"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$automaticBackupIfDue$1.class",
+      "bytes": 2090,
+      "sha256Bytes": "c8459b26db84fcb0106e7c2ae0b7b15117ed46dbca3248e071607bce94573361"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$automaticBackupIfDue$2.class",
+      "bytes": 4447,
+      "sha256Bytes": "aecc4d43ff10080182e0894da077df80c9718464d8349461b18bd87d6cc4bc99"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$backupNow$1.class",
+      "bytes": 2046,
+      "sha256Bytes": "46415bb74d7431204ab3a2512dff17ddf6d4a7b7e8fbe1fbc85ffcc1be63177d"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$backupNow$2.class",
+      "bytes": 3350,
+      "sha256Bytes": "6b56c35c28b4799c1a78410504d8a2b0445b5fb06f905f28082db7ce267b17bb"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$configure$1.class",
+      "bytes": 2148,
+      "sha256Bytes": "f6eaa85109efaf15f6f1eff4f9960e302da019e565b3e4354891d0f2e17a24e9"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$configure$2.class",
+      "bytes": 7245,
+      "sha256Bytes": "2c9e5f5c162a18295d9ca2cb09e03d5673fe6c0b3e7884b842178e386409a433"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$exportLocal$1.class",
+      "bytes": 2107,
+      "sha256Bytes": "d9efbfc48c84c1a3b0a8c60ef1120197ea3bc5efb1b488d5e08e4540a44c5a52"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$exportLocal$2.class",
+      "bytes": 3617,
+      "sha256Bytes": "b2386b691ac26032e3753a8c720209f30d0964ba4b2c4c645b8aae025254917f"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$importLocal$1.class",
+      "bytes": 2107,
+      "sha256Bytes": "c0aa73d8f71c222dc94b9fcc4951c3e3dfe66a08a341142cb3b1f92f218b9bae"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$importLocal$2.class",
+      "bytes": 4511,
+      "sha256Bytes": "bd7154f884b5b81e1bd9020a5120b4498a892b71567e4f4f9083360869eb0ced"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$listBackups$1.class",
+      "bytes": 2054,
+      "sha256Bytes": "3f5a3b2a8b6b8da3f35302dd2c4bfcffa581d0690595afb4a4603794bd79c2f1"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$listBackups$2$invokeSuspend$lambda$0$$inlined$sortedByDescending$1.class",
+      "bytes": 2411,
+      "sha256Bytes": "d98aee22391a206593795d81f602dfd639d65ce3a3750b372750aa50d440044d"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$listBackups$2.class",
+      "bytes": 6884,
+      "sha256Bytes": "a2eaa3e3833b5adaedc5728f03e47d11ac615227fd807a45b64e4287c03e00cb"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$operation$1.class",
+      "bytes": 2352,
+      "sha256Bytes": "19c7173382ef70df1c2cdb8320c77949d1ec2f956e4f157a0296f24e743f1a0a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$operation$2.class",
+      "bytes": 13028,
+      "sha256Bytes": "535a74fa95063e5e072ff7008284d950b9c6a027eef4157b67835eb7bfba0a2e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreLatest$1.class",
+      "bytes": 2062,
+      "sha256Bytes": "fb5190b2ed86614a6af7f17532660993b94f67896bb4e7cef25230d6a6dda1e1"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreLatest$2.class",
+      "bytes": 4912,
+      "sha256Bytes": "68bffed9daddb58ff5bccd4d27da6a6d1269bace656873097a99a417405f431e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreOperation$1.class",
+      "bytes": 2317,
+      "sha256Bytes": "9755f0ffb3f71d37ac7c3ce410819fbf3a8b4a0730e7157533ebec3ba31bd56a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreOperation$2$2.class",
+      "bytes": 3504,
+      "sha256Bytes": "46d20c0af783addecc70e44b405c6c3f70c17d0ff158307f71a8665fbf8cb164"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreOperation$2$restoreArchive$1$2.class",
+      "bytes": 3573,
+      "sha256Bytes": "2dcf0eb6875e64a4cfb80d7be57d57f79a57842eb5e87c2980f83e33c1bd2934"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$restoreOperation$2.class",
+      "bytes": 9353,
+      "sha256Bytes": "bec5db591839cf484cf8d668a275c6a52faba230a19201a4030320e0b4b10240"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$testConnection$1.class",
+      "bytes": 2168,
+      "sha256Bytes": "b1dbab1ae6b3f740bf6fb52363797cf330e59de3649aabf3cec81930bc5387f1"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$testConnection$2.class",
+      "bytes": 3780,
+      "sha256Bytes": "25e8e1e24714f1b61171adb96049546e31403fde2549ddc8eeba306daf15533f"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator$upload$1.class",
+      "bytes": 2041,
+      "sha256Bytes": "f9ee3499b3972c94ab6c5119039ebe742ea12cd8861f187ac190b647514a890f"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupCoordinator.class",
+      "bytes": 25303,
+      "sha256Bytes": "1835a58f0f969fb12fa6ef531a98756fa4e8332c2d61fa8d8c55d338907bbfbc"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationBeforeStartingRestoreDoesNotReadNetworkOrExit$1$1$1$1.class",
+      "bytes": 3456,
+      "sha256Bytes": "69858944d6a6436eb110bd0b1f9a53617288830b425741a7268cae5960a6270f"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationBeforeStartingRestoreDoesNotReadNetworkOrExit$1.class",
+      "bytes": 7786,
+      "sha256Bytes": "f8d286fd6448c24465973c7c9c7c4ff0f01bb0ad6e96d1190fa280478aaedb20"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationDuringRealDownloadPreventsRetirementAndReplacement$1$1$1$1.class",
+      "bytes": 3840,
+      "sha256Bytes": "ee65d1600123e4ec71e60beb318ff1aa76381eb1885a8ed2655326ecbaffa7a5"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationDuringRealDownloadPreventsRetirementAndReplacement$1$1$1$2.class",
+      "bytes": 3561,
+      "sha256Bytes": "22a6e19542b7981bffe34cd0c35ef5c527cdaf8868565bf1616cdd18c5354295"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationDuringRealDownloadPreventsRetirementAndReplacement$1$1$1$job$1.class",
+      "bytes": 4494,
+      "sha256Bytes": "196908a05135cc340be9159d950f131327125f6c9fd412bd6dc8af5705f0d6c4"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$cancellationDuringRealDownloadPreventsRetirementAndReplacement$1.class",
+      "bytes": 9975,
+      "sha256Bytes": "6bc7b1bb98a5e80dee6d84b3ec16fb52a7dcd1788c1502b900c365a8a24d6557"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$commitCallbackFiresBeforeOriginalWebDavWithContextLosesReturn$1$1$1$1.class",
+      "bytes": 3556,
+      "sha256Bytes": "9a15eeb25417c483231178ab111c5d09c36163e70675fe7c79721bf36da53493"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$commitCallbackFiresBeforeOriginalWebDavWithContextLosesReturn$1$1$1$job$1.class",
+      "bytes": 4945,
+      "sha256Bytes": "fc8e1fef98c5f8dda51fccb319432f66e1ad6bd8075c11b78867a6c14cb5de9d"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$commitCallbackFiresBeforeOriginalWebDavWithContextLosesReturn$1.class",
+      "bytes": 9724,
+      "sha256Bytes": "8e3d1d0e7e706375c2cf9acae541745fdad0d0de2d85b7b58b6bb0b062c29b9f"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$failedQuiescenceIsNotACommitAndDoesNotExecuteExit$1.class",
+      "bytes": 6927,
+      "sha256Bytes": "8b4d83608199ea08b6770046bc046c403bf38e879a4235b5fab4d387e73a3608"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$failureThenValidRestoreDoesNotReuseAStaleCommitFlag$1.class",
+      "bytes": 5777,
+      "sha256Bytes": "a96523504831a34f1e7ecab6ecebfe22737ee7b4395034503e090dc0a6811fc4"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$invalidArchiveNeverRetiresPageReplacesFilesOrExits$1.class",
+      "bytes": 5777,
+      "sha256Bytes": "2938bea4ca2d16bb6613b9bd49c66057085175e43b1ea8a19f25af31857afbfe"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$localCommitStillCompletesExitWhenBeforeRestoreDisposesInitiatingPage$1$1$1.class",
+      "bytes": 3848,
+      "sha256Bytes": "9aeb7fd2a309c8767f7dcc57e54b24eeff44248f09032d56c246e21a02dd09d4"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$localCommitStillCompletesExitWhenBeforeRestoreDisposesInitiatingPage$1.class",
+      "bytes": 6003,
+      "sha256Bytes": "80afd885a1c6971f6175157ac9f18049b350fd31d5c1163ab8450e1e5388d406"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$realDownloadFailureDoesNotInvokeCommitOrExit$1.class",
+      "bytes": 7075,
+      "sha256Bytes": "0de7a2f1116a3b35fdf50d89aa0d5c65add7822ee618e9b12528e8540516d437"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$realWebDavCommitStillCompletesExitWhenBeforeRestoreDisposesPage$1$1$1$1.class",
+      "bytes": 3486,
+      "sha256Bytes": "3dc4271d2a62f04fbcc92cd879f90cb23d9b5468454bb74add1eace81eb4babb"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$realWebDavCommitStillCompletesExitWhenBeforeRestoreDisposesPage$1.class",
+      "bytes": 7687,
+      "sha256Bytes": "e2b0d49acafeb4edb3ceab006cab5e9a6797d239b27fd77bcda86540af314d3a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$replacementFailureRollsBackEarlierFileAndNeverSignalsSuccessfulExit$1$1$1.class",
+      "bytes": 3843,
+      "sha256Bytes": "6adf3a325841e439e44c29d4ada064aa4f59357f6a7ee7c9f3733a4214f440b5"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$replacementFailureRollsBackEarlierFileAndNeverSignalsSuccessfulExit$1.class",
+      "bytes": 6389,
+      "sha256Bytes": "aae70a9fb1b1330d814396171fd6ea5176b0b2d64e3cdf2d88767408d8867496"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits$1$1$1$1.class",
+      "bytes": 3865,
+      "sha256Bytes": "e3833345dae275c51fe0f1e67eb70e73848e89001d49e6fd345884eeb3b0b8fd"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits$1$1$1$2.class",
+      "bytes": 3765,
+      "sha256Bytes": "b5becddb8155987487f794c3f2df3253e5215413c77fd8b9e75b56d8fe9cf34b"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits$1$1$1$first$1.class",
+      "bytes": 3921,
+      "sha256Bytes": "f1b93a716af92225666aee55ed813baf048cd52188e913fbef12d4635ddbe065"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits$1.class",
+      "bytes": 10215,
+      "sha256Bytes": "1bf996e84ef622c1a8a248ae79ffadd7e01518406c047d1da7146560f336d257"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest$successfulLocalRestoreInvokesExitOnceAfterBothFilesCommit$1.class",
+      "bytes": 5510,
+      "sha256Bytes": "f04f3a7660fb1e326499dbed027c583f08c2a1b809543b63682bb924db64f4f6"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest.class",
+      "bytes": 9082,
+      "sha256Bytes": "fb508aeaf63e129a1daae0a7cf8b1500c953e7f47ba9976ebfe5b43b815f1e3a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopBackupState.class",
+      "bytes": 6137,
+      "sha256Bytes": "6a7acbb26ad01e6f845389b0950565d02d38bec2a9376a74df7f12781f253260"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$daily backup uses original flex window across a 23 hour daylight saving day$1$1.class",
+      "bytes": 10084,
+      "sha256Bytes": "84926f1cfde372a15554c6700e483518e212a0c286de077d9f3cf2f7ed490d2e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$daily backup uses original flex window across a 23 hour daylight saving day$1.class",
+      "bytes": 3856,
+      "sha256Bytes": "8eeabac8653d965d4d3ae31a61c0da56086070ca17f21e809be7152ec3d2a007"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$Dav.class",
+      "bytes": 10488,
+      "sha256Bytes": "67ef778b818c33340d65d4de55ba5ec467927508bb63cecdd90e4faeabca4b5e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$failed scheduling does not silently enable automatic backup$1$scheduler$1.class",
+      "bytes": 1468,
+      "sha256Bytes": "240f9681bfa289ca45a7613e193ed0b2752d3caf91be37c6a2bd796ff3c1d484"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$failed scheduling does not silently enable automatic backup$1.class",
+      "bytes": 5715,
+      "sha256Bytes": "2cf57d19acbffd697f340d8762a4b3e183788e0ab5a04526950fb216c45c18ed"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$FakeScheduler.class",
+      "bytes": 1495,
+      "sha256Bytes": "4e2f93dc3a15a68ae429cfa759784fe86ccecc6087e129e30dc19aa8cb41b727"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$original WebDAV protocol creates directories uploads lists and restores a real ZIP$1$1.class",
+      "bytes": 11365,
+      "sha256Bytes": "f065f523922b11eea60c7a907d66a6f2b34800db130ff044a9ddbb1869ee69eb"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$original WebDAV protocol creates directories uploads lists and restores a real ZIP$1.class",
+      "bytes": 3898,
+      "sha256Bytes": "768e46aa9b5db065a31970b5c8e7ca78debbbf6db3083d7ee9ed4ae0f82fe3c3"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$scheduled backup uses original daily cadence and persists success across process instances$1$1.class",
+      "bytes": 14151,
+      "sha256Bytes": "2214d207d56a4576a37a308cc3f8fedc2b58f82f41e644bfb61b9bb8ae241606"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$scheduled backup uses original daily cadence and persists success across process instances$1.class",
+      "bytes": 3946,
+      "sha256Bytes": "7a7b3e7e6238cdb274b7b3c77b935b5e56816849f001c291e98940280b4ae466"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$WebDAV unauthorized result never creates or uploads a backup$1$1.class",
+      "bytes": 7445,
+      "sha256Bytes": "0608fa4aafafb68edf2ea2b5163a0f897f87c435ee20ac03670a9c608ec1947e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$WebDAV unauthorized result never creates or uploads a backup$1.class",
+      "bytes": 3766,
+      "sha256Bytes": "74a8a879f123e2149d38e0f63012e18180e21004d9ff2a1bbd604d44e2a4da2a"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest$withDav$1.class",
+      "bytes": 1979,
+      "sha256Bytes": "5a00e341af18477ef844bcdaafe3813131a5a5daca06b82c38e9eaef4375d521"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/DesktopWebDavTest.class",
+      "bytes": 8617,
+      "sha256Bytes": "1bec61545cb09e27ef416936745f61a6dd21308425320aae5af0ebaa67f82eaf"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreDav.class",
+      "bytes": 10330,
+      "sha256Bytes": "d0e19ec9299afdee703746d483b5d6fccfe6c95d8cd6de466c154451891c20de"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$coordinator$1.class",
+      "bytes": 1388,
+      "sha256Bytes": "7fb876233c61463c90b12a3352516ed364b5966059812d36cc293d7e43df6ce4"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$coordinator$2.class",
+      "bytes": 3435,
+      "sha256Bytes": "5647dd9f62a66de18131484ba375fd76cb777c43825b2a6b1eb149fa2db4dcf7"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$coordinator$3$1.class",
+      "bytes": 4790,
+      "sha256Bytes": "037eba594a52cbda10ee956e3dbd0b76444b0a7625ddf5e4bdf9a7e9f17ed154"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$coordinator$3.class",
+      "bytes": 3313,
+      "sha256Bytes": "4121926a483fb249a808b1ff4c71e4e2a361277a011be9a61ef212a93319e060"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$runPage$2$1.class",
+      "bytes": 4156,
+      "sha256Bytes": "70028b78a272d89ad2a63bb582f5d51ffdd29f3f502cbe9a07d8ae991aa07337"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture$runPage$2.class",
+      "bytes": 4110,
+      "sha256Bytes": "88cacf813009061a35b835256afd7786c6d4ac70952eccd999df03c0155ca77e"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RestoreFixture.class",
+      "bytes": 12577,
+      "sha256Bytes": "97374143fb6e7cc874a5af386d61f19009a1bb5ac47c4fdd319ae236053e01a6"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RunFixtureKt$main$lambda$0$$inlined$sortedBy$1.class",
+      "bytes": 1987,
+      "sha256Bytes": "42c2629f4a775d2a556aecd5334540b32d0be23dc7893dd4c1bab29b025bfedb"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RunFixtureKt$main$listener$1.class",
+      "bytes": 5547,
+      "sha256Bytes": "9fd4a96cac2d472ac2b1a092179724898bbaad011f1d677172d584665b000812"
+    },
+    {
+      "path": "classes-patched/com/bilipai/desktop/backup/RunFixtureKt.class",
+      "bytes": 11736,
+      "sha256Bytes": "5f9d04f2a1a869fdf9d57f5864bb183dac1d0cd6c2068b411369ee808b4b3d3f"
+    },
+    {
+      "path": "classes-patched/META-INF/backup_restore_patched.kotlin_module",
+      "bytes": 143,
+      "sha256Bytes": "e64dd09ae5c94ac896a5058c254364c1850b84a9f7cd2c125b25242d284363be"
+    },
+    {
+      "path": "compile-evidence.json",
+      "bytes": 3207,
+      "sha256Bytes": "7bc4ed662155caba3caefb94257dd60c6b576a6b227cce6d9ee349b1ec2be094"
+    },
+    {
+      "path": "compile-fixtures.py",
+      "bytes": 4649,
+      "sha256Bytes": "b6c462c16bb3771e1cca0c7e09975247307c2a7dd3bb8d4642fef4b1dab53730"
+    },
+    {
+      "path": "dependency-identities.json",
+      "bytes": 85893,
+      "sha256Bytes": "5cd5ab075a2b3922eb5282eeb6942bf9739603cc40948c6ce5c466df8e48292b"
+    },
+    {
+      "path": "DesktopBackupArchive.kt.patch",
+      "bytes": 889,
+      "sha256Bytes": "ac600b9885e627883a98333331839326b0cf67298957fe193131ca3d912597ef"
+    },
+    {
+      "path": "DesktopBackupCoordinator.kt.patch",
+      "bytes": 3515,
+      "sha256Bytes": "c4ed276bc1529a8c732d6466aee163ea74862e5f152d83cbef1eec9537b28e14"
+    },
+    {
+      "path": "extract-upstream-settings.py.patch",
+      "bytes": 1563,
+      "sha256Bytes": "47ce0371078521df4113ec56afa4e9e89304c0f10e61d18d6f27744e878c1586"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 3169,
+      "sha256Bytes": "bafdacd313fb5e62917aaf0c6e1ea8b5d34873ec1b8a28266582133637272252"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/webdav/DesktopWebDavConfig.kt",
+      "bytes": 553,
+      "sha256Bytes": "444d126f9aca6126d36e8da7c372e869f289fe25471500593df879d7d50452b5"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt",
+      "bytes": 8778,
+      "sha256Bytes": "8d22f8eb879f7459419ce8a91dd304ca7b5c8f9d19fda54660d092871ccc59bf"
+    },
+    {
+      "path": "INTEGRATION.md",
+      "bytes": 5356,
+      "sha256Bytes": "87d77cd82ca615b97cbbd3915fbfd4b938be0598ce37d2d0dba02bdf21b2bd2c"
+    },
+    {
+      "path": "owned-base-files.json",
+      "bytes": 1104,
+      "sha256Bytes": "729461a1be95ebd0ff7c136cf6424e7742ac01f31e389ce9d60526d83abd9ea7"
+    },
+    {
+      "path": "owned-files.json",
+      "bytes": 1423,
+      "sha256Bytes": "5f6eac704378be1303c44044e5f067a8f2913e338a05f30f1b1f5c3627ef9b91"
+    },
+    {
+      "path": "patched-compile.log",
+      "bytes": 449,
+      "sha256Bytes": "7436b37192754e03f000546d6936bc71fcdc63150cb87f24b9b42ba159ed8c3e"
+    },
+    {
+      "path": "patched-compiler.args",
+      "bytes": 58326,
+      "sha256Bytes": "732838e4d4e8d2a9300b2381dba29790558f938d2746a00e8fe9c4d40bfd0442"
+    },
+    {
+      "path": "patched-report.json",
+      "bytes": 4147,
+      "sha256Bytes": "5ad757b2e2f23705ee49010409e09265730a870a11a2422ea443e7e7e720ce97"
+    },
+    {
+      "path": "patched-runtime.args",
+      "bytes": 56823,
+      "sha256Bytes": "a684a6b0753de81efb03bdbb8381a4169b42b9babaf4743babaed4c1406e7504"
+    },
+    {
+      "path": "patched-runtime.log",
+      "bytes": 2047,
+      "sha256Bytes": "2e1526cac28b1615987f61f61ee43bfa0a3c6079e45261ab26bd7c9f4ce8edb8"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 4907,
+      "sha256Bytes": "eb0574abf43deec0acdd7b34c56f361e71211a807499c80be21486bf8821b354"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "bytes": 10476,
+      "sha256Bytes": "1ce354b7ea45fef78563ad404c7c66c5dcc967164af50e7e92c803387471e41d"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+      "bytes": 7629,
+      "sha256Bytes": "81cf250ce2bf7669f5cd6be2d78a7bee5d36b06884af211050a40b5d795daccb"
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest.kt",
+      "bytes": 15470,
+      "sha256Bytes": "cd192567b94c587e4e247802004a24824416dcfbf697c42824970d1a3b8a909c"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-settings.py",
+      "bytes": 4251,
+      "sha256Bytes": "b6f7b94d0735f982a01859e1db92411997610bcc5f329ab0d4984bf905a17641"
+    },
+    {
+      "path": "RunFixture.kt",
+      "bytes": 2562,
+      "sha256Bytes": "ab1d49f4b7fc448cbcf71dbd79c70eb9ed5f6450013a1351d24ab0b45a2bd7f7"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 1122,
+      "sha256Bytes": "ae76546d2014863dcfc2bae8be4316e42af09a9f1dec2c46378d6c94e14486f1"
+    },
+    {
+      "path": "test_extraction.py",
+      "bytes": 2070,
+      "sha256Bytes": "5af6665c8347bcf7559aa4a409e966f1a16a413d478593dc289d730d663d1889"
+    }
+  ]
+}

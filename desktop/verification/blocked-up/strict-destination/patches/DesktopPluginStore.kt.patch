@@ -1,0 +1,15 @@
+--- after-stage1/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
++++ strict-review/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
+@@ -33,6 +33,12 @@
+ 
+     internal fun snapshot(name: String): StateFlow<DesktopPreferenceSnapshot> = synchronized(backing) {
+         backing.snapshots.getOrPut(name) { MutableStateFlow(DesktopPreferenceSnapshot(preferences(name))) }.asStateFlow()
++    }
++
++    /** Validate the cached generation; never reload disk or revive a frozen backing. */
++    internal fun requireObjectNamespace(name: String) = synchronized(backing) {
++        val namespace = backing.document[name]
++        require(namespace == null || namespace is JsonObject) { "设置命名空间格式无效" }
+     }
+ 
+     internal fun preferences(name: String): JsonObject = synchronized(backing) {

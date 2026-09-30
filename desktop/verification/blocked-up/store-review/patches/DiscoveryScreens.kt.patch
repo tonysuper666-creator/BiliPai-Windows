@@ -1,0 +1,22 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt
+@@ -155,6 +155,7 @@
+     val feedMode by discovery.feedMode.collectAsState(); val refreshCount by discovery.refreshCount.collectAsState()
+     val feedback by remember(discovery, accountMid) { discovery.feedback(accountMid) }.collectAsState()
+     val blockedCreators by remember(discovery, accountMid) { discovery.blockedCreators(accountMid) }.collectAsState()
++    val blockedMigrationError by discovery.blockedUps.migrationError.collectAsState()
+     val nativePlugins = runtime?.plugins?.collectAsState()?.value
+     val jsonPlugins = runtime?.jsonPlugins?.collectAsState()?.value
+     val pluginConfiguration = runtime?.store?.snapshot("plugin_prefs")?.collectAsState()?.value
+@@ -210,6 +211,11 @@
+                 if (cards.size < originals.size) Text("按筛选和反馈规则隐藏 ${originals.size - cards.size} 个视频", style = MaterialTheme.typography.bodySmall)
+                 feedbackMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+                 if (feedbackBusy) DesktopLoadingIndicator(Modifier.fillMaxWidth())
++
++                blockedMigrationError?.let { message ->
++                    Text(message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
++                    TextButton(onClick = { scope.launch(kotlinx.coroutines.Dispatchers.IO) { discovery.blockedUps.migrateLegacyDiscoveryMids() } }) { Text("重试黑名单迁移") }
++                }
+                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                     TextButton(enabled = !feedbackBusy, onClick = { showBlocked = true }) { Text("屏蔽名单 · ${blockedCreators.size}") }
+                     TextButton(enabled = !feedbackBusy && feedback.dislikedBvids.isNotEmpty(), onClick = { feedbackBusy = true; scope.launch {

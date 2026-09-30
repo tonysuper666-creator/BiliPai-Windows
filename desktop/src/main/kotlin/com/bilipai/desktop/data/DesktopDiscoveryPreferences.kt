@@ -16,23 +16,31 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.nio.file.Path
+import java.lang.ref.WeakReference
 
 typealias DesktopRecommendationMode = DesktopFeedSettings.FeedApiType
 
 /** Original feed settings and negative-feedback storage, bound to atomic Windows preferences. */
-class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null)) {
+class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null),
+    val blockedUps: DesktopBlockedUpStore = DesktopBlockedUpStore(DesktopPluginContext(DesktopPluginStore(root)))) {
+    init { blockedUps.migrateLegacyDiscoveryMids() }
     private class AccountPreferences(val context: DesktopPluginContext) {
         val feedback = DiscoveryPreferenceState(context, "today_watch_feedback") { TodayWatchFeedbackStore.getSnapshot(context) }
-        val blocked = DiscoveryPreferenceState(context, "blocked_ups") { runCatching {
-            Json.decodeFromString<List<Long>>(context.getSharedPreferences("blocked_ups", 0).getString("mids", null).orEmpty())
-                .filter { it > 0 }.toSet()
-        }.getOrDefault(emptySet()) }
     }
     private val lock = Any()
+    private val restoreLock = Any()
+    private var writesFrozen = false
     private val accounts = mutableMapOf<Long?, AccountPreferences>()
+    init {
+        synchronized(instances) {
+            instances.removeAll { it.get() == null }
+            instances.add(WeakReference(this))
+        }
+    }
     private fun state(mid: Long?): AccountPreferences = synchronized(lock) {
         require(mid == null || mid > 0)
         accounts.getOrPut(mid) {
+            checkWritesOpen()
             val accountRoot = if (mid == null) root else root.resolve("accounts").resolve(mid.toString())
             AccountPreferences(DesktopPluginContext(DesktopPluginStore(accountRoot.resolve("discovery"))))
         }
@@ -44,28 +52,31 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
         normalizeHomeRefreshCount(settings.getInt("home_refresh_count", DEFAULT_HOME_REFRESH_COUNT)) }
 
     suspend fun setFeedMode(value: DesktopRecommendationMode) = withContext(Dispatchers.IO) {
-        synchronized(lock) { settings.edit().putInt("type", value.value).apply() }
+        synchronized(lock) { checkWritesOpen(); settings.edit().putInt("type", value.value).apply() }
     }
     suspend fun setRefreshCount(value: Int) = withContext(Dispatchers.IO) {
         val normalized = normalizeHomeRefreshCount(value)
-        synchronized(lock) { settings.edit().putInt("home_refresh_count", normalized).apply() }
+        synchronized(lock) { checkWritesOpen(); settings.edit().putInt("home_refresh_count", normalized).apply() }
     }
     fun feedback(mid: Long?): StateFlow<TodayWatchFeedbackSnapshot> = state(mid).feedback
-    fun blockedCreators(mid: Long?): StateFlow<Set<Long>> = state(mid).blocked
+    fun blockedCreators(mid: Long?): StateFlow<Set<Long>> { require(mid == null || mid > 0); return blockedUps.mids }
     internal fun recommendationContext(mid: Long?): DesktopPluginContext = state(mid).context
 
     internal fun record(mid: Long?, video: TodayWatchDislikedVideoSnapshot, keywords: Set<String>, blockCreator: Boolean) = synchronized(lock) {
+        checkWritesOpen()
         val state = state(mid)
         val snapshot = state.feedback.value.withDislikedVideoFeedback(video, keywords, includeCreatorSignal = blockCreator)
         TodayWatchFeedbackStore.saveSnapshot(state.context, snapshot)
-        if (blockCreator && video.creatorMid > 0) changeBlocked(mid, video.creatorMid, true)
+        if (blockCreator && video.creatorMid > 0) blockedUps.upsert(com.android.purebilibili.core.database.entity.BlockedUp(
+            video.creatorMid, video.creatorName, "", blockedAt = video.dislikedAtMillis))
     }
 
     internal fun changeBlocked(mid: Long?, creatorMid: Long, blocked: Boolean) = synchronized(lock) {
+        checkWritesOpen()
         require(creatorMid > 0)
         val state = state(mid)
-        val updated = if (blocked) state.blocked.value + creatorMid else state.blocked.value - creatorMid
-        state.context.getSharedPreferences("blocked_ups", 0).edit().putString("mids", Json.encodeToString(updated.toList())).apply()
+        if (blocked) blockedUps.upsert(com.android.purebilibili.core.database.entity.BlockedUp(creatorMid, "", ""))
+        else blockedUps.remove(creatorMid)
         if (!blocked && creatorMid in state.feedback.value.dislikedCreatorMids) {
             val feedback = state.feedback.value.copy(dislikedCreatorMids = state.feedback.value.dislikedCreatorMids - creatorMid)
             TodayWatchFeedbackStore.saveSnapshot(state.context, feedback)
@@ -74,9 +85,32 @@ class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.direct
 
     suspend fun clearFeedback(mid: Long?) = withContext(Dispatchers.IO) {
         synchronized(lock) {
+            checkWritesOpen()
             val state = state(mid)
             TodayWatchFeedbackStore.clear(state.context)
         }
+    }
+
+    /** Root waits for accepted writes, then retires every held account/guest facade before restoration. */
+    fun freezeWritesForRestore(): Unit = synchronized(restoreLock) {
+        if (synchronized(lock) { writesFrozen }) return@synchronized
+        val key = root.toAbsolutePath().normalize()
+        val peers = synchronized(instances) {
+            instances.removeAll { it.get() == null }
+            instances.mapNotNull { it.get() }.filter { it.root.toAbsolutePath().normalize() == key }
+        }
+        peers.forEach { peer -> synchronized(peer.lock) {
+            peer.writesFrozen = true
+            peer.accounts.values.forEach { it.context.store.freezeWrites() }
+        } }
+        // The full-model blacklist shares the global backing, independent of account feedback.
+        peers.forEach { it.blockedUps.context.store.freezeWrites() }
+    }
+
+    private fun checkWritesOpen() = check(!writesFrozen) { "推荐设置已关闭，不能写入或创建旧会话数据" }
+
+    private companion object {
+        val instances = mutableListOf<WeakReference<DesktopDiscoveryPreferences>>()
     }
 }
 

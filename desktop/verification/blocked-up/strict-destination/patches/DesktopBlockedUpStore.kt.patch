@@ -1,0 +1,10 @@
+--- after-stage1/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
++++ strict-review/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
+@@ -33,6 +33,7 @@
+     }
+ 
+     private fun readRecords(): List<BlockedUp> {
++        context.store.requireObjectNamespace(NAMESPACE)
+         val preferences = context.store.preferences(NAMESPACE)
+         val raw = preferences[RECORDS] ?: run {
+             require(preferences[MIGRATION] == null) { "本地黑名单迁移标记缺少资料记录" }

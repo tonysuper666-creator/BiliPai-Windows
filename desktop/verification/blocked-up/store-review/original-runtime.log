@@ -1,0 +1,17 @@
+Exception in thread "main" java.lang.IllegalStateException: ��������ļ��޷���ȡ: C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\blocked-up-store-main-review\proof\original\child-qcryawmf\tmp\blocked-review-15641766854467637803\discovery\plugin-settings.json
+	at com.bilipai.desktop.plugins.DesktopPluginStore$Backing.<init>(DesktopPluginStore.kt:81)
+	at com.bilipai.desktop.plugins.DesktopPluginStore$Companion.backingFor(DesktopPluginStore.kt:97)
+	at com.bilipai.desktop.plugins.DesktopPluginStore.<init>(DesktopPluginStore.kt:21)
+	at com.bilipai.desktop.data.DesktopDiscoveryPreferences.state(DesktopDiscoveryPreferences.kt:35)
+	at com.bilipai.desktop.data.DesktopDiscoveryPreferences.<init>(DesktopDiscoveryPreferences.kt:38)
+	at com.bilipai.desktop.data.CachedDestinationReviewFixtureKt.main(CachedDestinationReviewFixture.kt:74)
+Caused by: kotlinx.serialization.json.JsonDecodingException: Unexpected JSON token at offset 5: Expected EOF after parsing, but had J instead at path: $
+JSON input: not JSON
+	at kotlinx.serialization.json.internal.JsonExceptionsKt.decodingExceptionOf(JsonExceptions.kt:48)
+	at kotlinx.serialization.json.internal.AbstractJsonLexer.fail(AbstractJsonLexer.kt:583)
+	at kotlinx.serialization.json.internal.AbstractJsonLexer.fail$default(AbstractJsonLexer.kt:582)
+	at kotlinx.serialization.json.internal.AbstractJsonLexer.expectEof(AbstractJsonLexer.kt:194)
+	at kotlinx.serialization.json.Json.decodeFromString(Json.kt:150)
+	at kotlinx.serialization.json.Json.parseToJsonElement(Json.kt:179)
+	at com.bilipai.desktop.plugins.DesktopPluginStore$Backing.<init>(DesktopPluginStore.kt:80)
+	... 5 more

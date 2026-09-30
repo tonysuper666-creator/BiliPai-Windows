@@ -1,0 +1,38 @@
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -363,6 +363,18 @@
+     inputs.files(sources.filter { "settings-storage-backup-entries" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+         .map { File(repositoryRoot, it["path"].toString()) })
+     outputs.dir(layout.buildDirectory.dir("generated/settings-storage-entries"))
++}
++
++val extractUpstreamBlockedUp by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamDiscovery)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-blocked-up-platform.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/blocked-up").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-blocked-up-platform.py", "tools/extract-discovery-platform.py", "tools/sync-upstream.py")
++    inputs.files(sources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/blocked-up"))
+ }
+ 
+ val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
+@@ -578,6 +590,7 @@
+     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-entries"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-storage-entries"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/native-music-root"))
++    kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-up"))
+     kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
+ }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
+@@ -585,7 +598,7 @@
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
+-tasks.named("compileKotlin") { dependsOn(extractUpstreamNetworkProxy) }
++tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamNetworkProxy) }
+ tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
+ sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
+ tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }

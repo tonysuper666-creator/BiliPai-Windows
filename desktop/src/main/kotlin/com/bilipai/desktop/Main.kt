@@ -142,7 +142,7 @@ fun main(args: Array<String>) {
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
                 }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
-                applicationPluginStore = applicationPluginStore)
+                applicationPluginStore = applicationPluginStore, isClosing = closing::get)
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
                     title = { androidx.compose.material3.Text("客户端重启") },

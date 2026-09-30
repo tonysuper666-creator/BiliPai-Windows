@@ -1,0 +1,15 @@
+--- desktop/tools/extract-upstream-settings.py
++++ desktop/tools/extract-upstream-settings.py
+@@ -35,10 +35,10 @@
+     pieces = ["package " + package,
+         "import kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\nimport okhttp3.*\nimport okhttp3.MediaType.Companion.toMediaType\nimport okhttp3.RequestBody.Companion.toRequestBody\nimport java.io.IOException",
+         'private const val XML_CONTENT_TYPE = "application/xml; charset=utf-8"\nprivate const val ZIP_CONTENT_TYPE = "application/zip"',
+-        "class WebDavBackupService(private val archive: com.bilipai.desktop.backup.DesktopBackupArchive) {",
++        "class WebDavBackupService @JvmOverloads constructor(private val archive: com.bilipai.desktop.backup.DesktopBackupArchive, private val onSuccessfulRestore: () -> Unit = {}) {",
+         "    private val httpClient = OkHttpClient.Builder().connectTimeout(15, java.util.concurrent.TimeUnit.SECONDS).readTimeout(20, java.util.concurrent.TimeUnit.SECONDS).writeTimeout(20, java.util.concurrent.TimeUnit.SECONDS).retryOnConnectionFailure(true).followRedirects(false).followSslRedirects(false).build()",
+         "    private fun buildBackupArchive(nowEpochMs: Long): ByteArray = archive.create(nowEpochMs)",
+-        "    private fun restoreFromBackupArchive(bytes: ByteArray): Int = archive.restore(bytes)",
++        "    private fun restoreFromBackupArchive(bytes: ByteArray): Int = archive.restore(bytes, onSuccessfulRestore)",
+     ]
+     for name in methods:
+         declaration = helper.function(source, name, parser)

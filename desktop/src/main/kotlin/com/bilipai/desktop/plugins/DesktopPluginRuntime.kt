@@ -32,7 +32,7 @@ data class DesktopEyePaint(val dimAlpha: Float, val warmAlpha: Float, val warmAr
 /** Windows binds the original plugin manager and original JSON engine to real storage. */
 class DesktopPluginRuntime(val store: DesktopPluginStore,
     repository: DesktopRepository? = null, community: DesktopCommunityRepository? = null,
-    discovery: DesktopDiscoveryRepository? = null) : AutoCloseable {
+    private val discovery: DesktopDiscoveryRepository? = null) : AutoCloseable {
     val context = DesktopPluginContext(store)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val configurationMutex = Mutex()
@@ -367,8 +367,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
                 }
                 castProxyConsumer.close()
                 LocalProxyServer.stopAndClear()
+                discovery?.freezeWritesForRestore()
                 store.freezeWrites()
-                runCatching { DesktopPluginRepositoryBinding.recommendationContext().store.freezeWrites() }
                 stopped = true
             }
         }

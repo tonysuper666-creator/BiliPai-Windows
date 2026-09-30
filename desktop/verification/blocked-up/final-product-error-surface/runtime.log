@@ -1,0 +1,36 @@
+PASS: MATERIAL3/actual-boundary: product constructor fails and keeps corrupt file
+PASS: MATERIAL3/actual-boundary: no ready consumer before actual repair
+PASS: MATERIAL3/actual-boundary: product error labels hide raw bytes and path
+PASS: MATERIAL3/actual-boundary: actual error/stopped render converges in three frames
+PASS: MATERIAL3/actual-boundary: product paints every error/stopped pixel opaque
+PASS: MATERIAL3/actual-boundary: actual product message pixels contrast with background
+PASS: MATERIAL3/actual-boundary: actual product action pixels contrast with background
+PASS: MATERIAL3/actual-boundary: actual same guard remains live after ready
+PASS: MATERIAL3/actual-boundary: ready uses same original global blocked-UP store
+PASS: MATERIAL3/actual-boundary: repair and unrelated namespace remain untouched
+PASS: MATERIAL3/actual-boundary: close disposes actual ready consumer
+PASS: MATERIAL3/actual-boundary: stopped branch contains usable restart action
+PASS: MATERIAL3/actual-boundary: actual stopped restart pointer invokes supplied callback
+PASS: MATERIAL3/actual-boundary: stopped retry cannot reopen product store
+PASS: MATERIAL3/actual-boundary: actual error/stopped render converges in three frames
+PASS: MATERIAL3/actual-boundary: product paints every error/stopped pixel opaque
+PASS: MATERIAL3/actual-boundary: actual product message pixels contrast with background
+PASS: MATERIAL3/actual-boundary: actual product action pixels contrast with background
+PASS: MIUIX/actual-boundary: product constructor fails and keeps corrupt file
+PASS: MIUIX/actual-boundary: no ready consumer before actual repair
+PASS: MIUIX/actual-boundary: product error labels hide raw bytes and path
+PASS: MIUIX/actual-boundary: actual error/stopped render converges in three frames
+PASS: MIUIX/actual-boundary: product paints every error/stopped pixel opaque
+PASS: MIUIX/actual-boundary: actual product message pixels contrast with background
+PASS: MIUIX/actual-boundary: actual product action pixels contrast with background
+PASS: MIUIX/actual-boundary: actual same guard remains live after ready
+PASS: MIUIX/actual-boundary: ready uses same original global blocked-UP store
+PASS: MIUIX/actual-boundary: repair and unrelated namespace remain untouched
+PASS: MIUIX/actual-boundary: close disposes actual ready consumer
+PASS: MIUIX/actual-boundary: stopped branch contains usable restart action
+PASS: MIUIX/actual-boundary: actual stopped restart pointer invokes supplied callback
+PASS: MIUIX/actual-boundary: stopped retry cannot reopen product store
+PASS: MIUIX/actual-boundary: actual error/stopped render converges in three frames
+PASS: MIUIX/actual-boundary: product paints every error/stopped pixel opaque
+PASS: MIUIX/actual-boundary: actual product message pixels contrast with background
+PASS: MIUIX/actual-boundary: actual product action pixels contrast with background

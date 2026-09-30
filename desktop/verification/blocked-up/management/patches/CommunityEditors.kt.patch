@@ -1,0 +1,12 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt
+@@ -154,6 +154,9 @@
+     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+         CommunityAction(if (comment.liked) "取消赞 (${comment.likeCount})" else "赞 (${comment.likeCount})", onLogin,
+             action = { community.setCommentLike(target, comment.id, !comment.liked) }, onSuccess = onChanged)
++        if (comment.memberId > 0 && account?.mid != comment.memberId) DesktopBlockedUpAction(
++            community.blockedUpRepository, comment.memberId, comment.author, comment.avatar, onLogin,
++            source = com.android.purebilibili.data.repository.BlockedUpRelationSource.COMMENT)
+         if (account?.mid == comment.memberId && comment.memberId > 0) TextButton(onClick = { deleting = true }) { Text("删除我的评论") }
+     }
+     if (deleting) AlertDialog(onDismissRequest = { deleting = false }, title = { Text("删除这条评论？") },

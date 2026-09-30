@@ -1,0 +1,11 @@
+{
+  "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\discovery-storage-product-ui-proof\\ProductStorageUiFixture.kt",
+  "originalSourceSha256Bytes": "0b17d5b7233ca6cb89a74ee11ee9617f44016267daa77b2e5ab29cddd6577cdc",
+  "changes": [
+    "omit previously verified management cases",
+    "add actual pixel opacity/contrast and three-frame convergence",
+    "no change to bare errorTheme or original disk/retry/stopped pointer flow"
+  ],
+  "finalSourceSha256Bytes": "fab13c956d8f713fb52e5f6c20a8091e530b386d294186b43d98b873d95f75f5",
+  "productionOverrides": 0
+}

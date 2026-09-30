@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "baseCommit": "ae57dc66884da3243a7f1d5c24bb734674069483",
+  "producerArtifactsVerified": 118,
+  "runtimeDependencyEntriesVerified": 234,
+  "originalSourcesVerified": 3,
+  "modifiedDiscoveryBaselinesVerified": 3,
+  "installerTargetCount": 8,
+  "sourceCounts": {
+    "before": 425,
+    "after": 427
+  },
+  "resourceCounts": {
+    "before": 201,
+    "after": 201
+  },
+  "preservedModes": true,
+  "duplicateSourceIdentities": false,
+  "actualProducerMethodsPassed": 8,
+  "junitEngineInvokedByProducer": false,
+  "producerRunner": "Direct invocation of eight executable @Test Unit methods against marked production overrides",
+  "currentProductTestsExecuted": false,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrUserFilesRead": false,
+  "networkRequests": false,
+  "actualReviewJUnitEngineFound": 8,
+  "actualReviewJUnitEnginePassed": 8,
+  "reviewJUnitEvidenceSha256Bytes": "82033f99df6bf02feabccaceb6dfbec8859d03aa09a049c78937234a46c44914"
+}

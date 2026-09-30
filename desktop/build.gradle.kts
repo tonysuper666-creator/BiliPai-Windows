@@ -43,7 +43,10 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
         (sources + originalResources).forEach { entry ->
             val source = File(repositoryRoot, entry["path"].toString())
             require(source.isFile) { "Required upstream source is missing: ${entry["path"]}" }
-            val normalized = source.readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)
+            val normalization = entry["hashNormalization"] ?: "lf"
+            require(normalization in setOf("lf", "raw")) { "Unknown upstream hash normalization: ${entry["path"]}" }
+            val normalized = if (normalization == "raw") source.readBytes()
+                else source.readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)
             val digest = MessageDigest.getInstance("SHA-256").digest(normalized)
                 .joinToString("") { "%02x".format(it) }
             require(digest == entry["sha256"]) {
@@ -365,6 +368,32 @@ val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/settings-storage-entries"))
 }
 
+val extractUpstreamBlockedUp by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamDiscovery)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-blocked-up-platform.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/blocked-up").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-blocked-up-platform.py", "tools/extract-discovery-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/blocked-up"))
+}
+
+val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamBlockedUp, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-blocked-list-ui.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/blocked-list-ui").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-blocked-list-ui.py", "tools/extract-upstream-blocked-up-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/blocked-list-ui"))
+}
+
 val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
@@ -578,6 +607,8 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-entries"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-storage-entries"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/native-music-root"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-up"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-list-ui"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
@@ -585,7 +616,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamNetworkProxy) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }

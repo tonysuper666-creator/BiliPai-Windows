@@ -1,0 +1,150 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt
+new file mode 100644
+--- /dev/null
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt
+@@ -0,0 +1,96 @@
++package com.bilipai.desktop.ui
++
++import com.bilipai.desktop.data.*
++import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++
++/** Transient UI classification, never a replacement preference or feedback schema. */
++internal class DesktopDiscoveryStorageFailure(
++    val failedConstructor:Boolean,
++    val accountFeedback:Boolean,
++    cause:Throwable,
++) : IllegalStateException(
++    (if(accountFeedback)"本地推荐反馈无法读取" else "发现页设置无法读取")+
++        "，原文件保持不变；"+if(failedConstructor)"请修复文件后重试；仍失败时请重新启动应用。" else "请修复文件后重新启动应用。",
++    cause,
++)
++
++/** Only a failed constructor permits another factory attempt. Existing decoded backing is not reloaded. */
++internal fun openDesktopDiscoveryStorage(
++    repository:DesktopRepository,
++    preferencesFactory:()->DesktopDiscoveryPreferences,
++):DesktopDiscoveryRepository {
++    val preferences=try {preferencesFactory()}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(failure:Exception){throw DesktopDiscoveryStorageFailure(true,false,failure)}
++    try {preferences.feedMode.value;preferences.refreshCount.value}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(failure:Exception){throw DesktopDiscoveryStorageFailure(false,false,failure)}
++    return DesktopDiscoveryRepository(repository,preferences)
++}
++
++/** Constructor and already-held decode failures have different truthful recovery actions. */
++internal fun openDesktopDiscoveryFeedback(
++    discovery:DesktopDiscoveryRepository,
++    accountMid:Long?,
++):StateFlow<TodayWatchFeedbackSnapshot> {
++    val source=try {discovery.feedback(accountMid)}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(failure:Exception){throw DesktopDiscoveryStorageFailure(true,true,failure)}
++    try {source.value}
++        catch(cancelled:CancellationException){throw cancelled}
++        catch(failure:Exception){throw DesktopDiscoveryStorageFailure(false,true,failure)}
++    return source
++}
++
++/** Retains one successful object; it never reopens an initialized/frozen preference generation. */
++internal class DesktopDiscoveryStorageGuard<T:Any>(
++    private val factory:()->T,
++    private val sessionEpoch:()->Long = {0L},
++    private val stillOwned:()->Boolean = {true},
++) : AutoCloseable {
++    private val lock=Any()
++    private val mutableResult=MutableStateFlow<Result<T>?>(null)
++    val result:StateFlow<Result<T>?> = mutableResult.asStateFlow()
++    private var generation=0L
++    private var pending:Pair<Long,Long>?=null
++    private var closed=false
++    private var retained:T?=null
++    val isActive:Boolean get() = synchronized(lock) { !closed&&stillOwned() }
++    val canRetry:Boolean get() = synchronized(lock) {
++        !closed&&stillOwned()&&pending==null&&
++            (mutableResult.value?.exceptionOrNull() as? DesktopDiscoveryStorageFailure)?.failedConstructor==true
++    }
++    suspend fun load():Boolean {
++        val epoch=sessionEpoch()
++        val request=synchronized(lock) {
++            if(closed||!stillOwned())return false
++            retained?.let{mutableResult.value=Result.success(it);return true}
++            val previous=mutableResult.value?.exceptionOrNull()
++            if(previous!=null&&(previous as? DesktopDiscoveryStorageFailure)?.failedConstructor!=true)return false
++            if(pending?.second==epoch)return false
++            (++generation).also{pending=it to epoch;mutableResult.value=null}
++        }
++        val loaded=try {Result.success(withContext(Dispatchers.IO){
++            currentCoroutineContext().ensureActive()
++            // Late coroutine scheduling must not even invoke a retired factory.
++            if(!owns(request,epoch))throw CancellationException("旧发现页存储读取已退役")
++            factory()
++        })} catch(cancelled:CancellationException) {
++            synchronized(lock){if(pending?.first==request)pending=null}
++            throw cancelled
++        } catch(failure:Exception){Result.failure<T>(failure)}
++        return synchronized(lock) {
++            if(!owns(request,epoch)){if(pending?.first==request)pending=null;return false}
++            pending=null
++            loaded.getOrNull()?.let{retained=it}
++            mutableResult.value=loaded
++            loaded.isSuccess
++        }
++    }
++    private fun owns(request:Long,epoch:Long):Boolean = synchronized(lock) {
++        !closed&&stillOwned()&&generation==request&&sessionEpoch()==epoch
++    }
++    override fun close()=synchronized(lock){closed=true;generation++;pending=null}
++}
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt
+new file mode 100644
+--- /dev/null
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt
+@@ -0,0 +1,44 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import androidx.compose.foundation.layout.*
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.unit.dp
++import com.android.purebilibili.core.ui.AppDialogAction
++import com.android.purebilibili.core.ui.components.AppText
++import kotlinx.coroutines.*
++
++/** A failure branch never composes the original feed; no empty feedback or fallback client is supplied. */
++@Composable
++internal fun <T:Any> DesktopDiscoveryStorageBoundary(
++    guard:DesktopDiscoveryStorageGuard<T>,
++    sessionEpoch:Long,
++    onRestart:(()->Unit)?,
++    modifier:Modifier=Modifier,
++    content:@Composable (T)->Unit,
++) {
++    val result by guard.result.collectAsState()
++    val scope=rememberCoroutineScope()
++    LaunchedEffect(guard,sessionEpoch){guard.load()}
++    DisposableEffect(guard){onDispose{guard.close()}}
++    if(!guard.isActive) {
++        AppText("此页面的存储读取已停止，请返回后重新打开。",modifier=modifier.padding(20.dp))
++        return
++    }
++    val ready=result?.getOrNull()
++    if(ready!=null){content(ready);return}
++    val failure=result?.exceptionOrNull()
++    Column(modifier.padding(20.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
++        if(failure==null)AppText("正在读取本地发现页设置…")
++        else {
++            AppText("本地存储无法读取")
++            // Only our fixed safe classification is displayed. Arbitrary raw JSON/path exceptions are not.
++            AppText((failure as? DesktopDiscoveryStorageFailure)?.message
++                ?: "发现页本地资料无法读取，原文件保持不变；请修复文件后重新启动应用。")
++            Row(horizontalArrangement=Arrangement.spacedBy(12.dp)) {
++                if(guard.canRetry)AppDialogAction(onClick={scope.launch{guard.load()}}){AppText("重试读取")}
++                onRestart?.let{restart->AppDialogAction(onClick=restart){AppText("重新启动应用")}}
++            }
++        }
++    }
++}

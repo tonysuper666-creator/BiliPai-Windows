@@ -1,0 +1,46 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt
+@@ -20,13 +20,11 @@
+ typealias DesktopRecommendationMode = DesktopFeedSettings.FeedApiType
+ 
+ /** Original feed settings and negative-feedback storage, bound to atomic Windows preferences. */
+-class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null)) {
++class DesktopDiscoveryPreferences(private val root: Path = DesktopLibrary.directoryForAccount(null),
++    val blockedUps: DesktopBlockedUpStore = DesktopBlockedUpStore(DesktopPluginContext(DesktopPluginStore(root)))) {
++    init { blockedUps.migrateLegacyDiscoveryMids() }
+     private class AccountPreferences(val context: DesktopPluginContext) {
+         val feedback = DiscoveryPreferenceState(context, "today_watch_feedback") { TodayWatchFeedbackStore.getSnapshot(context) }
+-        val blocked = DiscoveryPreferenceState(context, "blocked_ups") { runCatching {
+-            Json.decodeFromString<List<Long>>(context.getSharedPreferences("blocked_ups", 0).getString("mids", null).orEmpty())
+-                .filter { it > 0 }.toSet()
+-        }.getOrDefault(emptySet()) }
+     }
+     private val lock = Any()
+     private val accounts = mutableMapOf<Long?, AccountPreferences>()
+@@ -51,21 +49,22 @@
+         synchronized(lock) { settings.edit().putInt("home_refresh_count", normalized).apply() }
+     }
+     fun feedback(mid: Long?): StateFlow<TodayWatchFeedbackSnapshot> = state(mid).feedback
+-    fun blockedCreators(mid: Long?): StateFlow<Set<Long>> = state(mid).blocked
++    fun blockedCreators(mid: Long?): StateFlow<Set<Long>> { require(mid == null || mid > 0); return blockedUps.mids }
+     internal fun recommendationContext(mid: Long?): DesktopPluginContext = state(mid).context
+ 
+     internal fun record(mid: Long?, video: TodayWatchDislikedVideoSnapshot, keywords: Set<String>, blockCreator: Boolean) = synchronized(lock) {
+         val state = state(mid)
+         val snapshot = state.feedback.value.withDislikedVideoFeedback(video, keywords, includeCreatorSignal = blockCreator)
+         TodayWatchFeedbackStore.saveSnapshot(state.context, snapshot)
+-        if (blockCreator && video.creatorMid > 0) changeBlocked(mid, video.creatorMid, true)
++        if (blockCreator && video.creatorMid > 0) blockedUps.upsert(com.android.purebilibili.core.database.entity.BlockedUp(
++            video.creatorMid, video.creatorName, "", blockedAt = video.dislikedAtMillis))
+     }
+ 
+     internal fun changeBlocked(mid: Long?, creatorMid: Long, blocked: Boolean) = synchronized(lock) {
+         require(creatorMid > 0)
+         val state = state(mid)
+-        val updated = if (blocked) state.blocked.value + creatorMid else state.blocked.value - creatorMid
+-        state.context.getSharedPreferences("blocked_ups", 0).edit().putString("mids", Json.encodeToString(updated.toList())).apply()
++        if (blocked) blockedUps.upsert(com.android.purebilibili.core.database.entity.BlockedUp(creatorMid, "", ""))
++        else blockedUps.remove(creatorMid)
+         if (!blocked && creatorMid in state.feedback.value.dislikedCreatorMids) {
+             val feedback = state.feedback.value.copy(dislikedCreatorMids = state.feedback.value.dislikedCreatorMids - creatorMid)
+             TodayWatchFeedbackStore.saveSnapshot(state.context, feedback)

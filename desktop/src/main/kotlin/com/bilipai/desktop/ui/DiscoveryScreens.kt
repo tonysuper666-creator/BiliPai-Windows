@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot
 import com.android.purebilibili.data.model.response.PopularSeriesPeriod
 import com.android.purebilibili.data.model.response.VideoshotData
 import com.android.purebilibili.data.model.response.VideoItem
@@ -36,6 +37,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.StateFlow
 import java.util.WeakHashMap
 
 private val discoveryGridScroll = WeakHashMap<CommunityFeedState<*, *>, LazyGridState>()
@@ -54,12 +56,36 @@ private class DiscoveryScreenState(section: DiscoverySection, regionId: Int) {
 fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscoveryRepository, repository: DesktopRepository, plugins: DesktopPluginStore,
     onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit,
     onBangumiPartition: (Int) -> Unit, regionId: Int = 0,
-    onPlayQueue: (List<VideoCard>, VideoCard) -> Unit = { _, video -> onVideo(video) }, runtime: DesktopPluginRuntime? = null) {
+    onPlayQueue: (List<VideoCard>, VideoCard) -> Unit = { _, video -> onVideo(video) }, runtime: DesktopPluginRuntime? = null,
+    onRestart: (() -> Unit)? = null, isClosing: () -> Boolean = { false }) {
     val account by repository.account.collectAsState()
+    val epoch by repository.sessionEpochFlow.collectAsState()
+    val capturedEpoch = epoch
+    val capturedMid = account?.mid
+    val latestIsClosing by rememberUpdatedState(isClosing)
+    val feedbackGuard = remember(discovery, capturedMid, capturedEpoch) {
+        DesktopDiscoveryStorageGuard(
+            factory = { openDesktopDiscoveryFeedback(discovery, capturedMid) },
+            sessionEpoch = { repository.sessionEpoch },
+            stillOwned = { !latestIsClosing() && repository.sessionEpoch == capturedEpoch &&
+                repository.account.value?.mid == capturedMid },
+        )
+    }
+    DesktopDiscoveryStorageBoundary(feedbackGuard, capturedEpoch, onRestart, Modifier.fillMaxSize()) { feedback ->
+        DiscoveryContentReady(section, discovery, repository, plugins, onVideo, onUser, onLogin, onBangumiPartition,
+            regionId, onPlayQueue, runtime, capturedMid, feedback)
+    }
+}
+
+@Composable
+private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopDiscoveryRepository, repository: DesktopRepository,
+    plugins: DesktopPluginStore, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit,
+    onBangumiPartition: (Int) -> Unit, regionId: Int, onPlayQueue: (List<VideoCard>, VideoCard) -> Unit,
+    runtime: DesktopPluginRuntime?, accountMid: Long?, feedbackSource: StateFlow<TodayWatchFeedbackSnapshot>) {
     val inherited = LocalDesktopBrowseMemory.current
-    val fallback = remember(discovery, account?.mid) { DesktopBrowseMemory() }
+    val fallback = remember(discovery, accountMid) { DesktopBrowseMemory() }
     val memory = inherited ?: fallback
-    val screenKey = listOf("discovery-screen", section, regionId, account?.mid)
+    val screenKey = listOf("discovery-screen", section, regionId, accountMid)
     val state = remember(memory, screenKey) { memory.screen(screenKey) { DiscoveryScreenState(section, regionId) } }
     var mode by state::mode
     var selectedRegion by state::selectedRegion
@@ -68,7 +94,7 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
     var periods by state::periods
     var periodsError by state::periodsError
     var periodsRevision by state::periodsRevision
-    var preview by remember(account?.mid) { mutableStateOf<VideoCard?>(null) }
+    var preview by remember(accountMid) { mutableStateOf<VideoCard?>(null) }
     val feedMode by discovery.feedMode.collectAsState()
     val refreshCount by discovery.refreshCount.collectAsState()
     val scope = rememberCoroutineScope()
@@ -76,7 +102,7 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
     val config by plugins.feedFilterConfig.collectAsState()
     val enabled by plugins.feedFilterEnabled.collectAsState()
     val filters = remember(enabled, config) { DesktopDiscoveryFilters(enabled, config) }
-    var filterDialog by remember(account?.mid) { mutableStateOf(false) }
+    var filterDialog by remember(accountMid) { mutableStateOf(false) }
     LaunchedEffect(mode, periodsRevision) {
         if (mode != DiscoverySection.WEEKLY) return@LaunchedEffect
         if (periods != null && periodsRevision == 0) return@LaunchedEffect
@@ -139,7 +165,8 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
         }
         if (mode != DiscoverySection.WEEKLY || periods != null) {
             val requestRegion = if (mode == DiscoverySection.RANKING) rankingRegion else if (mode == DiscoverySection.REGION) selectedRegion else 0
-            DiscoveryFeed(mode, requestRegion, period, account?.mid, discovery, filters, runtime, onVideo, onUser, onLogin) { preview = it }
+            DiscoveryFeed(mode, requestRegion, period, accountMid, discovery, filters, runtime, onVideo, onUser, onLogin,
+                feedbackSource = feedbackSource, onPreview = { preview = it })
         }
     }
     }
@@ -150,11 +177,13 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
 
 @Composable
 private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?, accountMid: Long?, discovery: DesktopDiscoveryRepository,
-    filters: DesktopDiscoveryFilters, runtime: DesktopPluginRuntime?, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit, onPreview: (VideoCard) -> Unit) {
+    filters: DesktopDiscoveryFilters, runtime: DesktopPluginRuntime?, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit,
+    onLogin: () -> Unit, feedbackSource: StateFlow<TodayWatchFeedbackSnapshot>, onPreview: (VideoCard) -> Unit) {
     val scope = rememberCoroutineScope(); val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds; val namespace = LocalCommunityFeedNamespace.current
     val feedMode by discovery.feedMode.collectAsState(); val refreshCount by discovery.refreshCount.collectAsState()
-    val feedback by remember(discovery, accountMid) { discovery.feedback(accountMid) }.collectAsState()
+    val feedback by feedbackSource.collectAsState()
     val blockedCreators by remember(discovery, accountMid) { discovery.blockedCreators(accountMid) }.collectAsState()
+    val blockedMigrationError by discovery.blockedUps.migrationError.collectAsState()
     val nativePlugins = runtime?.plugins?.collectAsState()?.value
     val jsonPlugins = runtime?.jsonPlugins?.collectAsState()?.value
     val pluginConfiguration = runtime?.store?.snapshot("plugin_prefs")?.collectAsState()?.value
@@ -210,6 +239,11 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
                 if (cards.size < originals.size) Text("按筛选和反馈规则隐藏 ${originals.size - cards.size} 个视频", style = MaterialTheme.typography.bodySmall)
                 feedbackMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
                 if (feedbackBusy) DesktopLoadingIndicator(Modifier.fillMaxWidth())
+
+                blockedMigrationError?.let { message ->
+                    Text(message, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
+                    TextButton(onClick = { scope.launch(kotlinx.coroutines.Dispatchers.IO) { discovery.blockedUps.migrateLegacyDiscoveryMids() } }) { Text("重试黑名单迁移") }
+                }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TextButton(enabled = !feedbackBusy, onClick = { showBlocked = true }) { Text("屏蔽名单 · ${blockedCreators.size}") }
                     TextButton(enabled = !feedbackBusy && feedback.dislikedBvids.isNotEmpty(), onClick = { feedbackBusy = true; scope.launch {

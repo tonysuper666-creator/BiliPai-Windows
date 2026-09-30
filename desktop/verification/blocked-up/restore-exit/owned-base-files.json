@@ -1,0 +1,20 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "baseSha256Bytes": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "sha256Bytes": "1ce354b7ea45fef78563ad404c7c66c5dcc967164af50e7e92c803387471e41d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+    "baseSha256Bytes": "902e15d3d8223b5a81388bbe1c3c844eef31b0b73c2784f1b1805076bb2aaab8",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+    "sha256Bytes": "81cf250ce2bf7669f5cd6be2d78a7bee5d36b06884af211050a40b5d795daccb"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-settings.py",
+    "baseSha256Bytes": "a59a0c1182ec1432b1956658413c1b10c08f4c814130639e1dfbc49f8261b940",
+    "prepared": "prepared/desktop/tools/extract-upstream-settings.py",
+    "sha256Bytes": "b6f7b94d0735f982a01859e1db92411997610bcc5f329ab0d4984bf905a17641"
+  }
+]

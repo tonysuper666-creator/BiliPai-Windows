@@ -1,0 +1,405 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "ae57dc66884da3243a7f1d5c24bb734674069483",
+  "status": "originalBlockedUpManagementAndRestoreGuardsIntegratedAndVerifiedLocally",
+  "productFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "hashNormalization": "lf",
+      "sha256": "dee1b4f1c39e9a3450de8e9214d02662c173b8f8ae12ebf5706e543ddb6bae35"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "hashNormalization": "lf",
+      "sha256": "a0c93c18bff0aca482b6e8b50bdbbd258ee98bf85b1f9faf3d4ee299a57a16ab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "hashNormalization": "lf",
+      "sha256": "f2f73df28ca902d4d953560037ae78f7952cc3368e585a2c05a8dcb8719b7284"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "hashNormalization": "lf",
+      "sha256": "1ce354b7ea45fef78563ad404c7c66c5dcc967164af50e7e92c803387471e41d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+      "hashNormalization": "lf",
+      "sha256": "81cf250ce2bf7669f5cd6be2d78a7bee5d36b06884af211050a40b5d795daccb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpConsumers.kt",
+      "hashNormalization": "lf",
+      "sha256": "7561add47b68396f2b022e3998d9957407b74bb91df656c840804bbeb4620c85"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "hashNormalization": "lf",
+      "sha256": "ccce6dfea52a7306918f20817c61f31ca431fe6f9a6025c48223cc0eff09fe98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "hashNormalization": "lf",
+      "sha256": "d185957657265d4c3bdde40791ac488f1178d6b6d8e128f89749b78d0192d8ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "hashNormalization": "lf",
+      "sha256": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "hashNormalization": "lf",
+      "sha256": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "hashNormalization": "lf",
+      "sha256": "1bcfacea11859762befe41cb3a98e02e67d8e5d1349e11d1f4b9025da0f41543"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "hashNormalization": "lf",
+      "sha256": "ba2721350a0f4b0a8c11a2e299c984869378893cbe83e0b935c41069baf11676"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "hashNormalization": "lf",
+      "sha256": "f08bd4c99e87f79317da7ee4f0eb071b1003c3f6e573253e8a963f9bf014dd38"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "hashNormalization": "lf",
+      "sha256": "ac176bad668afb31864d4fcdb527a8e1946a89629f5ca502ccb927402331cfd2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+      "hashNormalization": "lf",
+      "sha256": "d59d7d1e79116dc4eca25d3c7b5291b19b560a7c7f3cd3b3feeecd33e943a366"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "fb7d69640d34b2332d8c8df0b8efd12934175bc1b018809e540aaf89bfda996d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBlockedListScreen.kt",
+      "hashNormalization": "lf",
+      "sha256": "ceeec042b1b273b3ac121325ad4195bb1e8df56e378aef848041227c96f3dc38"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "hashNormalization": "lf",
+      "sha256": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+      "hashNormalization": "lf",
+      "sha256": "8b40b9de6fb44165d2d6c8523f03789066091fb3375909a68aa6259acb74fa56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+      "hashNormalization": "lf",
+      "sha256": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv0.png",
+      "hashNormalization": "raw",
+      "sha256": "78b266a2e3dd2d650866e5da2f31c7d5aaa1fa70de4f65323fc4edc435bdaac3"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv1.png",
+      "hashNormalization": "raw",
+      "sha256": "08bc17c3d487ec64b5144d931ff57fab1f1f5ff5e59582916b9700c30e8a3958"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv2.png",
+      "hashNormalization": "raw",
+      "sha256": "8da5bf9b05be31307e0019218d64fd190eb6ac5ec07078fce2087a2e2af66637"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv3.png",
+      "hashNormalization": "raw",
+      "sha256": "24b7cfae4cc4bd98e15a994c1e4b9ebe12f982cdb2839939c1fa8ee92b22ff6a"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv4.png",
+      "hashNormalization": "raw",
+      "sha256": "7eac52d465d1a68921436b358e10f8f0c856cc66657719e824dd18bc8dd9837b"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv5.png",
+      "hashNormalization": "raw",
+      "sha256": "a16f559607a3236fd9cfe1e077cf6d882a959ad81ae634c348d7b7905924462e"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv6.png",
+      "hashNormalization": "raw",
+      "sha256": "2e76f7f9b33788e7de43be8ec616d265e9c92b3386a3ab04e2733ec91e562019"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv6_s.png",
+      "hashNormalization": "raw",
+      "sha256": "e49822ddc3f52fec582f7b9ce70757119882f77d41078e3de169fc7484d99339"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "cd192567b94c587e4e247802004a24824416dcfbf697c42824970d1a3b8a909c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepositoryTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "8f2c6843e774958a101b89a47d37cd20298b6debd938fcff2c047c19f545be4a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRestoreLifecycleTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "5207c441b36f21546d0b8ff1928e19511ea86527a0d7bba584c7320f9a0057c4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuardTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "0fa876c1b72759ef3ad7e0fd74bfc3a5900daeb06ee64b70c190771729c4e4c3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-list-ui.py",
+      "hashNormalization": "lf",
+      "sha256": "4a228e04bc73a0e6781591739c1b9f29d45e1a720790a1fee5d785dc9ce5192f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-up-platform.py",
+      "hashNormalization": "lf",
+      "sha256": "6e58c01f64e48843ee168a989390b3addb143c9141a1ceac8e560f2c882c8097"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings.py",
+      "hashNormalization": "lf",
+      "sha256": "b6f7b94d0735f982a01859e1db92411997610bcc5f329ab0d4984bf905a17641"
+    },
+    {
+      "path": "desktop/tools/source-parity-report.py",
+      "hashNormalization": "lf",
+      "sha256": "a8e28ab94c3e46bca8eeb3ebafc04739e12672ab618de7422e9ca944b7d7aad6"
+    },
+    {
+      "path": "desktop/tools/tests/test_backup_restore_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "2f4da4cda6b1c189834777672bb210a961401b2e3ea151a070ccd4e8104d0713"
+    },
+    {
+      "path": "desktop/tools/tests/test_blocked_list_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "7d15c680978f5019914f2c0739626d71a11102f6023f70ede2759fa8fa4e10c7"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "hashNormalization": "lf",
+      "sha256": "5105fe41e777782bcf23f6c70a0cc12859dcb6b1036022f7abeef81e3f66da65"
+    }
+  ],
+  "sourceAudit": "source9-blocked-up-source-audit.json",
+  "sourceIdentityCount": 431,
+  "resourceIdentityCount": 209,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "implementation": [
+    "One global original complete BlockedUp model with strict destination validation and atomic migration from guest/positive MID discovery stores.",
+    "Original blacklist management content, import/share/sync/profile policies, eight byte-identical original level badges, and bounded settings route.",
+    "Local-first authorized one-shot relation writes, original pacing and pagination, epoch checks and delayed-profile replacement guard.",
+    "Global store consumed by recommendation, original search UID types, dynamics, space/comments and related-card block actions.",
+    "Root startup and active discovery storage guards before their dependent constructors/effects, retained live guard, real restart entry and safe fixed messages.",
+    "Discovery restore fence drains accepted writers and rejects old guest/account instances; actual backup commit-to-exit notification survives initiating UI job cancellation.",
+    "Binary resources explicitly use raw SHA-256, while text provenance retains LF normalization."
+  ],
+  "verification": {
+    "frozenCohorts": [
+      {
+        "cohort": "store",
+        "manifestSha256Bytes": "8793d8cb7860406ac02891dc7d2c3253407e297043f25f12984709544b6fb039",
+        "verifiedFrozenArtifacts": 118
+      },
+      {
+        "cohort": "store-review",
+        "manifestSha256Bytes": "3f1d0f4bf92c750b4a3aade45b74bc45e640fd4dc18836b214901289f376b6df",
+        "verifiedFrozenArtifacts": 137
+      },
+      {
+        "cohort": "strict-destination",
+        "manifestSha256Bytes": "55de1bcab2f06353314a6e98e7ec1c510fc2ddb27be37a14fb5dfa31ee0d2874",
+        "verifiedFrozenArtifacts": 57
+      },
+      {
+        "cohort": "storage-guard",
+        "manifestSha256Bytes": "422f8f9a91cedfcd61a021f227566d73509e6daf8921b175fbfa91c9123588c4",
+        "verifiedFrozenArtifacts": 162
+      },
+      {
+        "cohort": "mounted-boundary",
+        "manifestSha256Bytes": "1784bf0286bd2e4a00c3e1f3d88b84f4f1c8d8756096be19c1edd9b30f2307cb",
+        "verifiedFrozenArtifacts": 489
+      },
+      {
+        "cohort": "management",
+        "manifestSha256Bytes": "fc356ace91bc57c487cb66e701ea9bbeb6a7dc7e19689d2825783f3dc9f715ee",
+        "verifiedFrozenArtifacts": 297
+      },
+      {
+        "cohort": "restore-exit",
+        "manifestSha256Bytes": "bb78e402609563cb1161c15cba82552de7b4e670f3811c1518269b19cb5141d2",
+        "verifiedFrozenArtifacts": 144
+      },
+      {
+        "cohort": "product-ui-before-surface-fix",
+        "manifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+        "verifiedFrozenArtifacts": 43
+      },
+      {
+        "cohort": "product-error-alpha-diagnosis",
+        "manifestSha256Bytes": "8cd0e13b25f2208da741e0110eb6c4f1205c58ffb3e7ec200609897a2a906ac3",
+        "verifiedFrozenArtifacts": 33
+      },
+      {
+        "cohort": "final-product-error-surface",
+        "manifestSha256Bytes": "93340f180cede3738be5ae86d747552f8739a76823e580a69db552053a475978",
+        "verifiedFrozenArtifacts": 49
+      }
+    ],
+    "mainCompilePassed": true,
+    "mainFocusedJUnitRuns": [
+      {
+        "snapshot": "blocked-up-main-product-snapshot",
+        "snapshotManifestSha256Bytes": "10e08fbc781a62ceff68c06c768677922925679b6121f59f7eb43ab56845cd7b",
+        "suites": [
+          {
+            "suite": "com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest",
+            "methods": 15
+          },
+          {
+            "suite": "com.bilipai.desktop.data.DesktopBlockedUpStoreTest",
+            "methods": 8
+          },
+          {
+            "suite": "com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest",
+            "methods": 5
+          },
+          {
+            "suite": "com.bilipai.desktop.data.DesktopRecommendationTest",
+            "methods": 17
+          },
+          {
+            "suite": "com.bilipai.desktop.settings.DesktopSettingsNavigatorTest",
+            "methods": 4
+          },
+          {
+            "suite": "com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest",
+            "methods": 11
+          }
+        ],
+        "methods": 60,
+        "mainCompilePassed": true,
+        "failureCount": 0,
+        "skipCount": 0
+      },
+      {
+        "snapshot": "blocked-up-final-product-snapshot",
+        "snapshotManifestSha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+        "suites": [
+          {
+            "suite": "com.bilipai.desktop.backup.DesktopBackupArchiveTest",
+            "methods": 9
+          },
+          {
+            "suite": "com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest",
+            "methods": 13
+          },
+          {
+            "suite": "com.bilipai.desktop.backup.DesktopWebDavTest",
+            "methods": 6
+          },
+          {
+            "suite": "com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest",
+            "methods": 11
+          }
+        ],
+        "methods": 39,
+        "mainCompilePassed": true,
+        "failureCount": 0,
+        "skipCount": 0
+      }
+    ],
+    "distinctMainJUnitMethods": 88,
+    "distinctMethodCountExcludesRepeatedGuardMethods": true,
+    "pythonProductSourceChecks": {
+      "methods": 5,
+      "blockedList": 3,
+      "backupRetention": 2,
+      "passed": true
+    },
+    "productUiBeforeSurfaceFix": {
+      "actualProductCases": 4,
+      "styles": 2,
+      "noProductionOverrides": true,
+      "screenshotCount": 10,
+      "freshJvmProductClassOrigins": 9,
+      "scope": "Mounted Boundary and actual settings tree/management; ready child is fixture, not full ReadyApp.",
+      "visualReview": "Original management screenshots render correctly; historical bare Material3 error/stopped renders had transparent background/black text, independently diagnosed and repaired in final product Boundary."
+    },
+    "baselineReproductions": {
+      "discoveryOldWriterOverwritesRestoredAccountFile": 1,
+      "committedBackupSkipsExitAfterPageJobCancellation": 2
+    },
+    "finalBoundaryUsesOriginalAppSurface": true,
+    "independentMainReadOnlyReviewBlockingIssues": 0,
+    "sourceOnlyFormattingAfterSnapshot": "Removed one extra test-source EOF blank line; production source and compiled product identities unchanged.",
+    "finalProductErrorSurface": {
+      "snapshotManifestSha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+      "actualProductStyles": 2,
+      "concreteAssertions": 36,
+      "errorAndStoppedImages": 4,
+      "opaquePixelsPerImage": 460800,
+      "zeroTransparentPixels": true,
+      "threeConsecutiveIdenticalPngHashes": true,
+      "actualPressReleaseRetryAndRestartCallbacks": true,
+      "productionSourceOverrides": 0,
+      "fixtureSurfaceHosts": 0,
+      "freshJvmProductClassOrigins": 9,
+      "rootVisuallyInspectedAllFourImages": true,
+      "scope": "Actual Boundary and original error Surface. Finite ready fixture; no Runtime, full Shell, Backup operation, HWND or process exit/restart."
+    }
+  },
+  "limits": [
+    "Offscreen callbacks do not prove actual process restart, Main exit, HWND or native file chooser acceptance.",
+    "Temporary disk and loopback HTTP prove bounded restore/network behavior; no real account mutation or remote blacklist metadata/sync service acceptance.",
+    "The earlier settings-management UI snapshot predates backup/error Surface fixes; final error Surface has separate new current-product pixels/pointers, while Backup behavior has separate main JUnit.",
+    "Malformed outer global plugin-settings JSON still fails its constructor before the new Root boundary; only covered namespace and discovery errors are claimed.",
+    "Feedback and blacklist are separate backing transactions; this is not a two-file transaction.",
+    "All original block menus/feeds, remaining settings/diagnostics/platform consumers and full visual/native/package acceptance are unfinished.",
+    "Diagnostics isolated review is prepared but not integrated; source updater still needs full source/resource schema and inventory-size work during the later updater phase."
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

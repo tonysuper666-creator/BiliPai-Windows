@@ -1,0 +1,20 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
+@@ -50,6 +50,8 @@
+     bodyTab: DesktopSpaceTab? = null, headerVisible: Boolean = true,
+     browseState: DesktopSpaceBrowseState? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
+     val account by repository.account.collectAsState()
++    val blocked by community.blockedUps.mids.collectAsState()
++    val dynamicTransform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
+     val epoch by repository.sessionEpochFlow.collectAsState()
+     val mid = requestedMid.takeIf { it > 0 } ?: account?.mid ?: 0
+     if (mid <= 0) { CommunityLoginGate(repository, onLogin) {}; return }
+@@ -126,7 +128,7 @@
+                 }
+                 DesktopSpaceTab.DYNAMIC -> CommunityLoginGate(repository, onLogin) {
+                     CommunityFeed(selectedTab, "", load = { offset -> community.spaceDynamics(mid, offset).let { CommunityBatch(it.items, it.nextOffset) } },
+-                        identity = { it.id_str }, onLogin = onLogin) { CommunityDynamicCard(it, community, navigation) }
++                        identity = { it.id_str }, onLogin = onLogin, transform = dynamicTransform) { CommunityDynamicCard(it, community, navigation) }
+                 }
+                 DesktopSpaceTab.FOLLOWINGS -> CommunityFeed(selectedTab, 1,
+                     load = { page -> community.followings(mid, page).let { CommunityBatch(it.items, it.nextPage) } },

@@ -28,6 +28,7 @@ internal fun DesktopSettingsTree(
     pluginsContent: @Composable () -> Unit,
     playbackContent: @Composable (onDismiss: () -> Unit) -> Unit,
     backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,
+    blockedListContent: @Composable () -> Unit,
     systemContent: @Composable () -> Unit,
 ) {
     val navigation by navigator.state.collectAsState()
@@ -53,7 +54,7 @@ internal fun DesktopSettingsTree(
                         AppTextButton(onClick = navigator::openSearch) { AppText("搜索设置") }
                     }
                     val nestedPageOwnsScroll = page is DesktopSettingsPage.Detail &&
-                        page.target in setOf(SettingsSearchTarget.APPEARANCE, SettingsSearchTarget.PLUGINS)
+                        page.target in setOf(SettingsSearchTarget.APPEARANCE, SettingsSearchTarget.PLUGINS, SettingsSearchTarget.BLOCKED_LIST)
                     Column(Modifier.weight(1f).fillMaxWidth()
                         .then(if (nestedPageOwnsScroll) Modifier else Modifier.verticalScroll(rememberScrollState()))
                         .padding(horizontal = 16.dp, vertical = 8.dp)) {
@@ -112,7 +113,7 @@ internal fun DesktopSettingsTree(
                                     }
                                     SettingsSearchTarget.PERMISSION -> AppText("Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。", Modifier.padding(12.dp))
                                     SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText("原版消息通知调度和 Windows 通知权限尚未接入。", Modifier.padding(12.dp))
-                                    SettingsSearchTarget.BLOCKED_LIST -> AppText("原版黑名单资料、导入导出和同步管理页尚未接入；推荐页已有的屏蔽列表可继续使用。", Modifier.padding(12.dp))
+                                    SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
                                     else -> AppText("该原版设置页面仍在移植中。", Modifier.padding(12.dp))
                                 }
                             }

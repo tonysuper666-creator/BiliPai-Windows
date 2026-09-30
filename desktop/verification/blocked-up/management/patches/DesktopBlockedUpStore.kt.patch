@@ -1,0 +1,18 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
+@@ -54,6 +54,15 @@
+         require(mid > 0) { "UP 主 UID 必须为正整数" }
+         migrateLegacyDiscoveryMids().getOrThrow()
+         persist(readRecords().filterNot { it.mid == mid })
++    }
++    /** A delayed profile response cannot resurrect an unblocked or newly replaced entry. */
++    fun replaceProfileIfUnchanged(previous: BlockedUp, next: BlockedUp): Boolean = synchronized(mutationLock) {
++        require(next.mid == previous.mid && next.blockedAt == previous.blockedAt)
++        migrateLegacyDiscoveryMids().getOrThrow()
++        val rows = readRecords()
++        if (rows.firstOrNull { it.mid == previous.mid } != previous) return@synchronized false
++        persist(rows.map { if (it.mid == previous.mid) next else it })
++        true
+     }
+     fun import(items: List<BlockedUpImportItem>): BlockedUpImportResult = synchronized(mutationLock) {
+         migrateLegacyDiscoveryMids().getOrThrow()

@@ -1,0 +1,1 @@
+Baseline bug reproduced: a blocked old-account writer overwrote actually restored feedback.

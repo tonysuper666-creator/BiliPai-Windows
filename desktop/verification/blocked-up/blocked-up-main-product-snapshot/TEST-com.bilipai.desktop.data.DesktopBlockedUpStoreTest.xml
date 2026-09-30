@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:01:13.845Z" hostname="TONYSUPER666" time="0.245">
+  <properties/>
+  <testcase name="retired legacy MID cannot resurrect after unblock and a fresh disk generation()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.013"/>
+  <testcase name="different global facades cannot lose concurrent local writes or fork by account()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.048"/>
+  <testcase name="original share format preserves profiles while import deduplicates and keeps existing records()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.016"/>
+  <testcase name="corrupt scoped input never commits partial records or marker and repaired input can retry()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.053"/>
+  <testcase name="unknown source or destination schema is visible and cannot be marked successful()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.018"/>
+  <testcase name="failed atomic persistence publishes neither a migrated marker nor updated records()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.017"/>
+  <testcase name="whitelisted legacy scopes migrate atomically with full metadata and original invalid UID policy()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.024"/>
+  <testcase name="actual archive restore fences a queued old IO writer and permits a new store generation()" classname="com.bilipai.desktop.data.DesktopBlockedUpStoreTest" time="0.053"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

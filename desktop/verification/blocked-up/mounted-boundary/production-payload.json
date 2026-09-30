@@ -1,0 +1,14 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+    "baselineSha256Bytes": "51ddfee496029ad6937ec8953df55ca1ac975e839b927403589ad631bcb45ffa",
+    "desiredSha256Bytes": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22",
+    "preparedPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDiscoveryStorageGuard.kt"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+    "baselineSha256Bytes": "182394e6f11dfb4ecf5a8c429415cf085b95c86165f118b99ad161684bfe17b5",
+    "desiredSha256Bytes": "9c20f7c1278e532e669d3d2bf5f594814762fa53bcfe5463d286ab916b166f3c",
+    "preparedPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDiscoveryStorageBoundary.kt"
+  }
+]

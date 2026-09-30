@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "activeClasses": "classes",
+  "actualSnapshotManifestSha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+  "original43ManifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+  "original43Unchanged": true,
+  "pureFixtureSourcesOnly": true,
+  "productionOverrides": 0,
+  "fixtureSurfaceHost": false,
+  "actualProductBoundarySurface": true,
+  "HWND": false,
+  "sharedGradle": false,
+  "HTTP": false,
+  "fullDesktopShellExecuted": false,
+  "PluginRuntimeConstructed": false,
+  "MpvPlayerConstructed": false,
+  "backupRestoreExecuted": false,
+  "actualProcessRestart": false
+}

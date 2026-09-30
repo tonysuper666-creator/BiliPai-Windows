@@ -27,9 +27,9 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneOffset
 
-private data class CommunitySearchRow(val key: String, val title: String, val description: String, val cover: String,
+internal data class CommunitySearchRow(val key: String, val title: String, val description: String, val cover: String,
     val video: VideoCard? = null, val rawVideo: VideoItem? = null, val user: Long = 0, val article: Long = 0, val live: Long = 0,
-    val season: Long = 0, val url: String = "")
+    val season: Long = 0, val url: String = "", val blockedOwnerMid: Long = 0)
 
 private class CommunitySearchState(initialQuery: String) {
     var draft by mutableStateOf(initialQuery)
@@ -55,8 +55,10 @@ private class CommunitySearchState(initialQuery: String) {
 internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRepository, navigation: CommunityNavigation,
     runtime: DesktopPluginRuntime? = null, defaultSearchHintEnabled: Boolean = true) {
     val account by community.account.collectAsState()
+    val epoch by community.accountEpoch.collectAsState()
+    val blocked by community.blockedUps.mids.collectAsState()
     val memory = LocalDesktopBrowseMemory.current
-    val stateKey = listOf("search-screen", account?.mid, initialQuery)
+    val stateKey = listOf("search-screen", epoch, account?.mid, initialQuery)
     val state = remember(memory, stateKey) { memory?.screen(stateKey) { CommunitySearchState(initialQuery) } ?: CommunitySearchState(initialQuery) }
     var draft by state::draft; var submitted by state::submitted; var type by state::type; var filters by state::filters
     val preferences = community.searchPreferences
@@ -73,10 +75,11 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     val nativePlugins = runtime?.plugins?.collectAsState()?.value
     val jsonPlugins = runtime?.jsonPlugins?.collectAsState()?.value
     val pluginConfig = runtime?.store?.snapshot("plugin_prefs")?.collectAsState()?.value
-    val transform = remember(runtime, nativePlugins, jsonPlugins, pluginConfig) { { rows: List<CommunitySearchRow> ->
-        if (runtime == null || rows.none { it.rawVideo != null }) rows else {
-            val originals = rows.associateBy { it.rawVideo?.bvid }
-            runtime.filterFeedItems(rows.mapNotNull { it.rawVideo }, FeedKind.SEARCH).mapNotNull { video ->
+    val transform = remember(runtime, nativePlugins, jsonPlugins, pluginConfig, blocked) { { rows: List<CommunitySearchRow> ->
+        val visible = desktopVisibleSearchRows(rows, blocked)
+        if (runtime == null || visible.none { it.rawVideo != null }) visible else {
+            val originals = visible.associateBy { it.rawVideo?.bvid }
+            runtime.filterFeedItems(visible.mapNotNull { it.rawVideo }, FeedKind.SEARCH).mapNotNull { video ->
                 originals[video.bvid]?.copy(video = discoveryVideoCard(video), rawVideo = video)
             }
         }
@@ -187,7 +190,7 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
                     } }
                 }
             } }
-        } else CommunityFeed<CommunitySearchRow, Int>(listOf(submitted, type, filters.requestKey(type)), 1, load = { page ->
+        } else CommunityFeed<CommunitySearchRow, Int>(listOf(epoch, submitted, type, filters.requestKey(type)), 1, load = { page ->
             val result = if (type == SearchType.VIDEO) search.videos(submitted, page, filters.videoOrder, filters.durations, filters.videoTid, filters.pubBegin, filters.pubEnd)
                 else community.typedSearch(submitted, type, page, filters.parameters(type))
             CommunityBatch(communitySearchRows(result.result), result.nextPage)
@@ -278,25 +281,25 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
 
 private fun searchDateLabel(value: Long?): String = value?.let { Instant.ofEpochSecond(it).atZone(ZoneOffset.UTC).toLocalDate().toString() } ?: "未选择"
 
-private fun communitySearchRows(result: CommunitySearchResult): List<CommunitySearchRow> = when (result) {
+internal fun communitySearchRows(result: CommunitySearchResult): List<CommunitySearchRow> = when (result) {
     is CommunitySearchResult.Videos -> result.data.result.orEmpty().map { raw ->
         val item = raw.toVideoItem()
         CommunitySearchRow("video:${item.bvid}", item.title, "", item.pic,
             rawVideo = item, video = VideoCard(item.bvid, item.title, item.pic, item.owner.name, item.stat.view.toLong(), item.duration,
-                publishedAt = item.pubdate, authorMid = item.owner.mid))
+                publishedAt = item.pubdate, authorMid = item.owner.mid), blockedOwnerMid = item.owner.mid)
     }
     is CommunitySearchResult.Users -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
-        CommunitySearchRow("user:${item.mid}", item.uname, "${item.fans} 粉丝 · ${item.videos} 个视频\n${item.usign}", item.upic, user = item.mid) }
+        CommunitySearchRow("user:${item.mid}", item.uname, "${item.fans} 粉丝 · ${item.videos} 个视频\n${item.usign}", item.upic, user = item.mid, blockedOwnerMid = item.mid) }
     is CommunitySearchResult.Media -> result.data.result.orEmpty().map { item ->
         CommunitySearchRow("season:${item.seasonId}:${item.mediaId}", cleanSearchText(item.title),
             listOf(item.seasonTypeName, item.indexShow, item.areas, item.desc).filter { it.isNotBlank() }.joinToString(" · "), item.cover,
             season = item.seasonId.takeIf { it > 0 } ?: item.pgcSeasonId, url = item.gotoUrl) }
     is CommunitySearchResult.LiveRooms -> result.data.result.orEmpty().map { item ->
         CommunitySearchRow("live:${item.roomid}", cleanSearchText(item.title), "${item.uname} · ${item.online} 人 · ${item.area_v2_name}",
-            item.user_cover.ifBlank { item.cover }, live = item.roomid) }
+            item.user_cover.ifBlank { item.cover }, live = item.roomid, blockedOwnerMid = item.uid) }
     is CommunitySearchResult.LiveUsers -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
         CommunitySearchRow("live-user:${item.uid}", item.uname, "${if (item.liveStatus == 1) "直播中" else "未开播"} · ${item.attentions} 关注", item.uface,
-            live = item.roomid, user = if (item.roomid <= 0) item.uid else 0) }
+            live = item.roomid, user = if (item.roomid <= 0) item.uid else 0, blockedOwnerMid = item.uid) }
     is CommunitySearchResult.Articles -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
         CommunitySearchRow("article:${item.id}", item.title, "${item.view} 阅读 · ${item.categoryName}\n${item.description}", item.imageUrls.firstOrNull().orEmpty(), article = item.id) }
     is CommunitySearchResult.Topics -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()
@@ -311,6 +314,8 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
     community: DesktopCommunityRepository, navigation: CommunityNavigation) {
     val account by repository.account.collectAsState()
     val mid = requestedMid.takeIf { it > 0 } ?: account?.mid ?: 0
+    val blocked by community.blockedUps.mids.collectAsState()
+    val dynamicTransform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
     var profile by remember(mid) { mutableStateOf<UserProfile?>(null) }
     var error by remember(mid) { mutableStateOf<Throwable?>(null) }
     var tab by remember(mid) { mutableIntStateOf(0) }
@@ -348,7 +353,7 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
                 }
                 1 -> CommunityLoginGate(repository, navigation.onLogin) {
                     CommunityFeed(Pair(mid, tab), "", load = { offset -> community.spaceDynamics(mid, offset).let { CommunityBatch(it.items, it.nextOffset) } },
-                        identity = { it.id_str }, onLogin = navigation.onLogin) { CommunityDynamicCard(it, community, navigation) }
+                        identity = { it.id_str }, onLogin = navigation.onLogin, transform = dynamicTransform) { CommunityDynamicCard(it, community, navigation) }
                 }
                 2 -> CommunityFeed(Pair(mid, tab), 1, load = { page -> community.followings(mid, page).let { CommunityBatch(it.items, it.nextPage) } },
                     identity = { it.mid }, onLogin = navigation.onLogin) { user ->
@@ -374,3 +379,7 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
         }
     }
 }
+
+/** Match the original video/UP/live-room/live-user categories; other search types keep their source behavior. */
+internal fun desktopVisibleSearchRows(rows: List<CommunitySearchRow>, blocked: Set<Long>): List<CommunitySearchRow> =
+    rows.filter { it.blockedOwnerMid !in blocked }

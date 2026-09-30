@@ -1,0 +1,12 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
+    "sha256Bytes": "d816e4011ff76aeed40f44505f870de5adde8de0d7dd6e8df0ade168191fc5b7",
+    "schemaUnchanged": true
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "sha256Bytes": "e40ba43b76fdd9f4698a8f1414ba71daf9db5bc05b6861ac05f904c7c5e022e2",
+    "schemaUnchanged": true
+  }
+]

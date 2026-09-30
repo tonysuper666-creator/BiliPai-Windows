@@ -1,0 +1,122 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "baseSha256Bytes": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e",
+    "sha256Bytes": "d185957657265d4c3bdde40791ac488f1178d6b6d8e128f89749b78d0192d8ff"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "baseSha256Bytes": "ca14d1c5c689893458f4dfb4a9ae134d38d9c5365918346d1167443aa6d289fc",
+    "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "baseSha256Bytes": "aae96711bbb1185e26eaa4588dcddaff0724bb85edc2c9a4189c2c664edd5108",
+    "sha256Bytes": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+    "baseSha256Bytes": "6dce89e8a14b7e00abf452ccc4c94ccf2d982ff2a4d3d34b87e6c1811bfd9cf6",
+    "sha256Bytes": "fb7d69640d34b2332d8c8df0b8efd12934175bc1b018809e540aaf89bfda996d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+    "baseSha256Bytes": "eca01dbf4ff52dddffdada4cba63ab7f283482eadccfa9a7b5424df697a24cac",
+    "sha256Bytes": "d59d7d1e79116dc4eca25d3c7b5291b19b560a7c7f3cd3b3feeecd33e943a366"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+    "baseSha256Bytes": "f196425096bb475090c32038711b4c2fea61445b2041143f176f0f7e97607e6a",
+    "sha256Bytes": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "baseSha256Bytes": "54002bb99bc77bdb9fe5e792a03540da88b32a8bb30025cc572709030ea4aa1e",
+    "sha256Bytes": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-blocked-list-ui.py",
+    "prepared": "prepared/desktop/tools/extract-upstream-blocked-list-ui.py",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "4a228e04bc73a0e6781591739c1b9f29d45e1a720790a1fee5d785dc9ce5192f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpConsumers.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpConsumers.kt",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "7561add47b68396f2b022e3998d9957407b74bb91df656c840804bbeb4620c85"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "ccce6dfea52a7306918f20817c61f31ca431fe6f9a6025c48223cc0eff09fe98"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBlockedListScreen.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBlockedListScreen.kt",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "ceeec042b1b273b3ac121325ad4195bb1e8df56e378aef848041227c96f3dc38"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv0.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv0.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "78b266a2e3dd2d650866e5da2f31c7d5aaa1fa70de4f65323fc4edc435bdaac3"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv1.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv1.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "08bc17c3d487ec64b5144d931ff57fab1f1f5ff5e59582916b9700c30e8a3958"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv2.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv2.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "8da5bf9b05be31307e0019218d64fd190eb6ac5ec07078fce2087a2e2af66637"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv3.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv3.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "24b7cfae4cc4bd98e15a994c1e4b9ebe12f982cdb2839939c1fa8ee92b22ff6a"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv4.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv4.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "7eac52d465d1a68921436b358e10f8f0c856cc66657719e824dd18bc8dd9837b"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv5.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv5.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "a16f559607a3236fd9cfe1e077cf6d882a959ad81ae634c348d7b7905924462e"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv6.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv6.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "2e76f7f9b33788e7de43be8ec616d265e9c92b3386a3ab04e2733ec91e562019"
+  },
+  {
+    "path": "desktop/src/main/resources/blocked-up-badges/lv6_s.png",
+    "prepared": "prepared/desktop/src/main/resources/blocked-up-badges/lv6_s.png",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "e49822ddc3f52fec582f7b9ce70757119882f77d41078e3de169fc7484d99339"
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepositoryTest.kt",
+    "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepositoryTest.kt",
+    "baseSha256Bytes": null,
+    "sha256Bytes": "8f2c6843e774958a101b89a47d37cd20298b6debd938fcff2c047c19f545be4a"
+  }
+]

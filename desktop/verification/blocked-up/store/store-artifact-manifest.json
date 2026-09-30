@@ -1,0 +1,595 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "2f9d52e3d0f9ae09b05896a4342de2bf6b4ac51be097e947599926bfb0f4c951",
+      "bytes": 5498
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "5263d414ce99a5efb13f619478131b119b889d3c0c9fae73789b03aeed6cb2ae",
+      "bytes": 14107
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "0780ee3261173c26de4c4c5653bf5a1612e9942e84267066aaeae97ec7c51ba0",
+      "bytes": 28766
+    },
+    {
+      "path": "compile-store.py",
+      "sha256Bytes": "8cc89bc3b53c5e6f48bea78fe6aa0f6e52f23feaac1dd8090dbb8302090595d7",
+      "bytes": 3932
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "e5e213328ce86262d5253b4a412bb0ffdfff7dd2c92a7bb4bc3762c4db0b51eb",
+      "bytes": 85869
+    },
+    {
+      "path": "freeze-store.py",
+      "sha256Bytes": "0831a6b1dce9b443af00fc74c4c75a334ad735cf3b7c841f3689c6232e9e0b09",
+      "bytes": 2682
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/database/entity/BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2",
+      "bytes": 513
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a",
+      "bytes": 7576
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90",
+      "bytes": 553
+    },
+    {
+      "path": "owned-files.json",
+      "sha256Bytes": "3c187809ded65c272b2c19b3b59cc34753ee9e673731f2bd63d62c60265472fd",
+      "bytes": 1481
+    },
+    {
+      "path": "patches/DesktopDiscoveryPreferences.kt.patch",
+      "sha256Bytes": "d702b45a4b74a77c9771f500d7b240d022191154cceae78dae8dddb663c797d1",
+      "bytes": 3418
+    },
+    {
+      "path": "patches/DesktopDiscoveryRepository.kt.patch",
+      "sha256Bytes": "2cdbdd5d204e63b5f2379c7dc21b043d8836578a2a362bf104c13c0d3cf7e731",
+      "bytes": 848
+    },
+    {
+      "path": "patches/DiscoveryScreens.kt.patch",
+      "sha256Bytes": "377fee49d70453a22d26274fac18a8eee4a294cd3551efcc95378b0b5936fe14",
+      "bytes": 1945
+    },
+    {
+      "path": "prepare-store.py",
+      "sha256Bytes": "14b8c057a76a4b3fde3c7d2c7fac6652d84ff4e978defd6a713d7769e2db36bf",
+      "bytes": 5202
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "d001a295f54c0665d978d4e6f5265a09a6c215bca6dc85e532867fb6824de746",
+      "bytes": 8831
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+      "bytes": 5452
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+      "bytes": 14180
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "fec66b5cb9daa617e42de87a5cbd0b79a8c30b48a2e2b7bcb79980124f6a723a",
+      "bytes": 29228
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "sha256Bytes": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0",
+      "bytes": 11767
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-blocked-up-platform.py",
+      "sha256Bytes": "6e58c01f64e48843ee168a989390b3addb143c9141a1ceac8e560f2c882c8097",
+      "bytes": 3953
+    },
+    {
+      "path": "RunBlockedStoreFixture.kt",
+      "sha256Bytes": "640fef2cf75addd79d45d53e9c6ae92d030ee0030fb40b8cac075d84cc121541",
+      "bytes": 1814
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "eb41b42f1ee023928850460d36f3529715a2b2fa921bccc485bb6a9576255fd8",
+      "bytes": 848
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/core/database/entity/BlockedUp$$serializer.class",
+      "sha256Bytes": "68d87f6a5d1da85b3187464880a870f578b1addc0537368821f22b4a18a28f11",
+      "bytes": 7607
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/core/database/entity/BlockedUp$Companion.class",
+      "sha256Bytes": "b7c9df40ae13a4cb7dee564c01404c94169797e1156c6dacbcc4fc4266c0676d",
+      "bytes": 1562
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/core/database/entity/BlockedUp.class",
+      "sha256Bytes": "0d52e5bd0e5cb3989846559326df8f8e008c59ec032e5d588c4df46ae143377e",
+      "bytes": 12237
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpImportItem.class",
+      "sha256Bytes": "9ad4570e8df77fac33e992c357d452b77f0ae830657cf220cc05dead45332b4f",
+      "bytes": 7430
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpImportPlan.class",
+      "sha256Bytes": "1f63ebfc4d9ded01088163cd8f6e73030b479c81c29fb779a395b4466b9547cd",
+      "bytes": 4119
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpImportResult.class",
+      "sha256Bytes": "a5fa5d9afac2e90c7512336a3465205103213740cb5855b884e7ed52a10871a1",
+      "bytes": 3889
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpMetadataRefreshResult.class",
+      "sha256Bytes": "fb4138d9aef68af8b69483a9bf8bd3329789d979812cf172491f92eb8d706a7a",
+      "bytes": 3937
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpShareItem$$serializer.class",
+      "sha256Bytes": "1ac9b5b39fe3d52b56cbd7dc4440ae38a4f7cad9c3b7176411d7d4df7a9e2913",
+      "bytes": 7448
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpShareItem$Companion.class",
+      "sha256Bytes": "5b31ec0b66f86ec8d544945c53ab30d8ab0f5c9122461de7101abb7c2627ee8d",
+      "bytes": 1614
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpShareItem.class",
+      "sha256Bytes": "4ae85e256bb8b075e415fed4f8ca99b4274b3f053dfa126293858d8533440bd1",
+      "bytes": 11139
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpSharePayload$$serializer.class",
+      "sha256Bytes": "bbcc453b2e5edf22903675ecd49433e2b717fcfc65ff9ddfe1cbad506dccd57f",
+      "bytes": 6031
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpSharePayload$Companion.class",
+      "sha256Bytes": "915ac80e09775ec8e6ae9fc61e56449efb4bf676831bbf2038f2d903b5fd133b",
+      "bytes": 1635
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/BlockedUpSharePayload.class",
+      "sha256Bytes": "15066d98d4a08ec4e1bf5befff488656289c1f3b21483a47e43332a98c764248",
+      "bytes": 7620
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicyKt.class",
+      "sha256Bytes": "1479818fe8f6217c3cb7023031a7cafd01937b4d1b0b0f548f6dd48e566db43b",
+      "bytes": 19739
+    },
+    {
+      "path": "store-classes/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicyKt.class",
+      "sha256Bytes": "c9a058f5bce81f44565c4daaaded0380abf104e6ea06255dd58f8ab70014f784",
+      "bytes": 5549
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$1.class",
+      "sha256Bytes": "1ff57f0e51d0264433e2de0c6702c9f8dc82790cbe270fc140fd948ebc98acf2",
+      "bytes": 1680
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$2$1.class",
+      "sha256Bytes": "560d5e8b9d545f282e4ac09efe64d76c653a79fac05b5314fd9f2e3583e629a9",
+      "bytes": 1675
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$2.class",
+      "sha256Bytes": "605ce2e79aea112bfa151f6205692ab23c4986d974e6467d4e986d6479291d13",
+      "bytes": 3823
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1.class",
+      "sha256Bytes": "84056181cff27807b997d4e6f6112e8e7c688e6e1f523fa0089bd1934d6ceb0f",
+      "bytes": 4026
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState$collect$1.class",
+      "sha256Bytes": "0e3643ea82616c8df5ff761ca2a5c89863d6b06e766f2c9a2d260caa038f2e1a",
+      "bytes": 1921
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/BlockedPreferenceState.class",
+      "sha256Bytes": "ef9ebe71e308059d7c26c87cbf8ca36e8cb775938a0790ecadbd2c9233b56138",
+      "bytes": 5860
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopBlockedUpStore$1.class",
+      "sha256Bytes": "515c37752ca8a3f4551ab88c7e6710e913cc3d6515ad2dbe5677a45494d2b0de",
+      "bytes": 1373
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopBlockedUpStore$Companion.class",
+      "sha256Bytes": "19f291a1373ba95b27860f549cd0afbbdbfbae2b14e37ae4bd0add24e2b73784",
+      "bytes": 1450
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopBlockedUpStore$readRecords$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "f65b72bbbaa86145fca04b4747795e712e0404a7ae88a9949008321c5cf87942",
+      "bytes": 2227
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopBlockedUpStore.class",
+      "sha256Bytes": "9f9d8bf3191904bfff5e4915f79533ebe9b2202e614ab0f37045a5d26ec9fc0d",
+      "bytes": 31692
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.class",
+      "sha256Bytes": "54e76a1769f6e6c16b79555e7f2d23827dfdf331aac6826f71ad9ce45992a3c2",
+      "bytes": 34465
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferences$AccountPreferences.class",
+      "sha256Bytes": "f874f64f8a8f1b997cb78df968e8921390dbec36bdc2733986cc6431b1c61ee6",
+      "bytes": 3268
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferences$clearFeedback$2.class",
+      "sha256Bytes": "ad4a0fe840571e8cb91ce8a0e05541ad8ba54f0b94354e00b8aa241554897f4e",
+      "bytes": 4401
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferences$setFeedMode$2.class",
+      "sha256Bytes": "716f4677be592e9efebfee1e484612227d68350a965b2037ede71041b1b80f67",
+      "bytes": 5171
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferences$setRefreshCount$2.class",
+      "sha256Bytes": "81ac3eb1ab0b32269aaa1ea43c97b9abc173bbc63a2d81016cca0d13f0df7725",
+      "bytes": 4896
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferences.class",
+      "sha256Bytes": "5ecd3ab096ec090d86459ff5b381a029aa7ad3b6b2c0123a8e2508ec70df8e10",
+      "bytes": 16470
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryPreferencesKt.class",
+      "sha256Bytes": "91e9034ca10ad58fc2756c8799870a2aecb8fe1c4c925de28adfe7c4dbdc0436",
+      "bytes": 468
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$clearFeedback$1.class",
+      "sha256Bytes": "533631420bf5d9aa3f56d84336db563344dcd94e8af4a6dc38e6bcda9cb3e51d",
+      "bytes": 2010
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$mutationApi$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "8beb2172cb666e89dc32d7068906a018022c34afedc8f750f2985bd98e03e70b",
+      "bytes": 2274
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$notInterested$2.class",
+      "sha256Bytes": "dd1a40eff0565c9f8613e7acbf88a4cef73966beede6576e8c389bd8ad4958be",
+      "bytes": 15364
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$result$1.class",
+      "sha256Bytes": "d6d29ce774ec69698a40433cebb7afc6ca16576ca3b7a5d43dfb540e98c629e0",
+      "bytes": 8473
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$result$2.class",
+      "sha256Bytes": "b0f3af692214157260f29909183d938f72cc7af3d207c1a25938ccf8c65804e7",
+      "bytes": 11615
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$WhenMappings.class",
+      "sha256Bytes": "e346f8578e3fdb41860eccb9ff9b0c2cd4b281f59d398ae912a45653fc93dab8",
+      "bytes": 1064
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2.class",
+      "sha256Bytes": "60384ad372ce0a1f4d2b5b87e9be55a17a66c95de714c4cb22d590dee3f7d3a4",
+      "bytes": 24894
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$ranking$1.class",
+      "sha256Bytes": "032ff74141c6b1d7c7946a2beb05a9b4db3474f7c98084ada2aa82e5d6f7f0f9",
+      "bytes": 1984
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$syncCreator$1.class",
+      "sha256Bytes": "96a771731ae39ca1bed775a082ac584d2f759b6960927fc1651a301834bb5181",
+      "bytes": 2237
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$unblockCreator$2.class",
+      "sha256Bytes": "df78804d29beded36a76ffb9d1665ff5e15d7059aec3509eaa90c70a030bff11",
+      "bytes": 6684
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$videoShots$2.class",
+      "sha256Bytes": "0f730c2cf5fae5bfa910fb6ad6a5760a4bd2aea560894fb839a60a23d5558ad5",
+      "bytes": 5254
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$weeklyPeriods$2$invokeSuspend$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "94be20239767e4e0e872cd57d7ffab85f544cab6e093ecec9ee61427ed3bdea6",
+      "bytes": 2400
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository$weeklyPeriods$2.class",
+      "sha256Bytes": "97c6a8680e6b8b69c1da36aeb74c29fe4b7e9514c5aa8dcadeda213f3df6c7d3",
+      "bytes": 7059
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DesktopDiscoveryRepository.class",
+      "sha256Bytes": "c9b3faa9a36c00043c359af9f71b173c3352760cb658d158b9aa123d9fe6b142",
+      "bytes": 31811
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState$collect$$inlined$map$1$1.class",
+      "sha256Bytes": "1b78c38d34997bbcd9fe4a9306d43e3fccced7a3aa514e9c0e4f8536d427691a",
+      "bytes": 1698
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState$collect$$inlined$map$1$2$1.class",
+      "sha256Bytes": "80478ffbf248dc9f22833e69459b9c268d5a8fd228720c712b796d5b9521ed94",
+      "bytes": 1693
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState$collect$$inlined$map$1$2.class",
+      "sha256Bytes": "b131fb565e9f0ed28febe8eb8304f28777b4f74f017440e1a79a88895ec0150c",
+      "bytes": 3821
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState$collect$$inlined$map$1.class",
+      "sha256Bytes": "165bc7ffbe611475c3d0277988aab6b1d134e4970010cc3c0ea50fa110127b85",
+      "bytes": 4044
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState$collect$1.class",
+      "sha256Bytes": "25af217dfa5ec4dc4629e6a537626790e7bedfabc1064258f36490731972246f",
+      "bytes": 1945
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/DiscoveryPreferenceState.class",
+      "sha256Bytes": "377d83c20495fc08f4079e37cb1fa64adb3d2d56d282d370d6d555eb59ec647b",
+      "bytes": 7094
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/data/RunBlockedStoreFixtureKt.class",
+      "sha256Bytes": "0ac5db23dd7ed8d265f4954e054eea08241c81b2501d6a53e646f4518c8896fe",
+      "bytes": 3663
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/ComposableSingletons$DiscoveryScreensKt.class",
+      "sha256Bytes": "a7f16aefb0ceee99dbfc8f6a73c5178eefb060886add7357c7bd8a372a34d3aa",
+      "bytes": 16658
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentScreen$2.class",
+      "sha256Bytes": "fe33fdea503c802a7fe0ef6732ce1466261e675a9cdb89e2fd63b2e014edec2b",
+      "bytes": 8178
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentScreen$3$1$4$1$1$1$1.class",
+      "sha256Bytes": "ca4a6d379dd97bf50dde0ae4a64964b228ffd7c65973a4f680a5c0e90eb40117",
+      "bytes": 5524
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryContentScreen$3$1$4$2$1$1$1.class",
+      "sha256Bytes": "3754e8658dbf921999443b47ba59139f0e0167084b23649365679bb937b70e45",
+      "bytes": 5097
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$1.class",
+      "sha256Bytes": "95558fd4f0991ca760b291e17e7edccc2cfc819d31edd0dbd0330335104a036e",
+      "bytes": 5719
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$10$1$1.class",
+      "sha256Bytes": "bb26563cc79606724284b4ebd80826f40d00869af36d163827da41372149872d",
+      "bytes": 5583
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$2$1$1$2$1.class",
+      "sha256Bytes": "790e03b9a462d29bdc9726b164d8d6b8337e1e089cd1e53cae075da9b3f282f1",
+      "bytes": 5693
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$2$1$6$1$1$1.class",
+      "sha256Bytes": "3fc91766b9aac56784b88223ca82e705c1e99d92640e31f9f019da5a6f2c1928",
+      "bytes": 3788
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$2$1$7$3$1.class",
+      "sha256Bytes": "e7bc687644becf635b3c315b367433e485fbbb2b32aae9d621eb473f9507785d",
+      "bytes": 5243
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$4$1$1$1.class",
+      "sha256Bytes": "a68a2f00ea9c9643c3e8cca0b867e9360c5be692ea27342e600a54e1bfb91a65",
+      "bytes": 1915
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$4$1$2$1$1.class",
+      "sha256Bytes": "cc34d45e4cd14c383944cd091573737e5eb6b347821d3157844c6633178bfe0c",
+      "bytes": 2017
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$4$1$2$2$1.class",
+      "sha256Bytes": "660d430ec1b598f9590bda438cd17a24a0bbae4e53d45fcaa714fc5e2dc39e8a",
+      "bytes": 1921
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$4$1$2$3$1.class",
+      "sha256Bytes": "2f91d1b54d2c750c2f6186c51e9a8d5029a9a364e2b93da1bb5662ea01fd36ec",
+      "bytes": 3985
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$6$1$1.class",
+      "sha256Bytes": "f17dc5dbb45745605612c05c7892ed95df53214dc96bc9378e41f1f75699616a",
+      "bytes": 5640
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$3$2$1.class",
+      "sha256Bytes": "98b8d0dc5a77034ade35dc79afa89e3451a7bc74eba4db5267a6cee89ca1e7ae",
+      "bytes": 6771
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$6$1$1$1$3$1.class",
+      "sha256Bytes": "e8403e27ce48f77b89a2fb4f68033c2659d8ddcdc6dbf5a2be9e12d4be390d48",
+      "bytes": 5431
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$fetch$1.class",
+      "sha256Bytes": "627c903f01c9a1a5e1469a431eafb75ec19cef1ef3ef750901104ed5476913d5",
+      "bytes": 2304
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$33$$inlined$items$default$1.class",
+      "sha256Bytes": "9b4714939545fb6d7a1c3220533e4b762b2ba43099ec953e0c1a64ccef6949ac",
+      "bytes": 2227
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$33$$inlined$items$default$2.class",
+      "sha256Bytes": "3969fed9c64401e8d1da69663675e6b94a781fb2f7a902956f338a65041b00ad",
+      "bytes": 2454
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$33$$inlined$items$default$3.class",
+      "sha256Bytes": "d0d2331bf412494bc056dc7d0c0416a3b9708dcc34031d13517428b5cc13225e",
+      "bytes": 2996
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$33$$inlined$items$default$4.class",
+      "sha256Bytes": "18f166ec5b40c47aefc3bcb7f954d0d86c612dc1efed8966334fa7d344e623ee",
+      "bytes": 2462
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$33$$inlined$items$default$5.class",
+      "sha256Bytes": "b975b101272a2ab4cbb275943759f7d9c0a7ab8955d6cb242f0c438332de53a9",
+      "bytes": 20190
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$1$1.class",
+      "sha256Bytes": "415706b05ba056cdb229b7dd4b3658e7417dcf25dbfe1724cd0f276486d5a312",
+      "bytes": 2131
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$2.class",
+      "sha256Bytes": "3d1bc7259c6c481a065788d6603de9772cafc6ab472d5f21c166618ad90314f0",
+      "bytes": 3882
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$1$1.class",
+      "sha256Bytes": "e0e9eecf0bcefae03485b64b7d14cfc53caa6b753a752ce056e90eca2507b1fe",
+      "bytes": 2757
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$2.class",
+      "sha256Bytes": "1d72df1b5c7f18adf4a3f3a0973738b5dfd661b0ec723560d24feb13ce8c480c",
+      "bytes": 3885
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$1.class",
+      "sha256Bytes": "2cf04fa4c5c20a2908baae81243118edc2703a6aa4781b47989a30dd9bf0d9a3",
+      "bytes": 1956
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$2.class",
+      "sha256Bytes": "34f81a296c06c7b363a3d9bee0e3a0b05e6115bbe647983036c2384d374ee41b",
+      "bytes": 2162
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$3.class",
+      "sha256Bytes": "53c1526d71f5ae48d35db6eefb5f8d88773d9684965d009962855eabebaed422",
+      "bytes": 2170
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$4.class",
+      "sha256Bytes": "48814225d3515375398118219625c26617038a3e1a1cc6c8137fd2cc2655fa34",
+      "bytes": 22563
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$2$1.class",
+      "sha256Bytes": "ce9fb85790430bf1dc5170aa4ecceffbe18e4d036786ce25a7a5b93a18a4686e",
+      "bytes": 7506
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$3$1.class",
+      "sha256Bytes": "34d54d1d052f44f1062c6c158dc35009abcaffe1d70e8dc47125254823fbda00",
+      "bytes": 6257
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreensKt.class",
+      "sha256Bytes": "dcf4db1ab44e2726a30faa677f0a0632536fa6b7445779fe82ec5ed776f1ebf0",
+      "bytes": 245728
+    },
+    {
+      "path": "store-classes/com/bilipai/desktop/ui/DiscoveryScreenState.class",
+      "sha256Bytes": "909db1004c11afb3de3b9c1950d5b619b2f0234b937f1a8183b0522564eade37",
+      "bytes": 9192
+    },
+    {
+      "path": "store-classes/META-INF/blocked_up_store_stage.kotlin_module",
+      "sha256Bytes": "e162960106bed7699463216b36867dc89d554badd69bcb32c73150772cf2dfeb",
+      "bytes": 274
+    },
+    {
+      "path": "store-compile-evidence.json",
+      "sha256Bytes": "0adc961ba63f664834bfd971bf97a3274515ba26d81c427eb8b04c0f3d714c7d",
+      "bytes": 2068
+    },
+    {
+      "path": "store-compile.log",
+      "sha256Bytes": "49eb45499f1cd9284e16a6c5ebdbbf60b98af882e703b52beff1bb247e87313a",
+      "bytes": 2326
+    },
+    {
+      "path": "store-compiler.args",
+      "sha256Bytes": "ea783edfddf556cbcca639f5c84c8764d49d9c9a0ad65b93c95f63aad58de282",
+      "bytes": 59415
+    },
+    {
+      "path": "store-contract.json",
+      "sha256Bytes": "5dac0250ccf68fd1e51993327d03c97c23f1773fc79994b2b63ae126069f5f36",
+      "bytes": 2384
+    },
+    {
+      "path": "STORE-INTEGRATION.md",
+      "sha256Bytes": "bf5b147a196d02325b1c471ba1f9a8b27c5ac6ba23212b828b8f59f2e36c2e69",
+      "bytes": 6857
+    },
+    {
+      "path": "store-proof/result.json",
+      "sha256Bytes": "63245e43ec1b0a9de12667453a121d410be853aa19113eeaa96535fd5ba1f6c2",
+      "bytes": 462
+    },
+    {
+      "path": "store-runtime.args",
+      "sha256Bytes": "9043ffbce13ce5cb8eeb1ebfc0b5db902ec86c5050e4434c96a3575e5d8325f0",
+      "bytes": 56614
+    },
+    {
+      "path": "store-runtime.log",
+      "sha256Bytes": "b32c4bc3fff6c17d4e85ff450497c3a50b7b19748aef3132f00fa22030661afc",
+      "bytes": 116
+    }
+  ]
+}

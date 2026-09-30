@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopRecommendationTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:01:14.195Z" hostname="TONYSUPER666" time="0.072">
+  <properties/>
+  <testcase name="originalModeDefaultsAndRefreshNormalizationArePreserved()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.002"/>
+  <testcase name="mobileModeUsesTvIdentityAndOriginalRefreshPullSemantics()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.002"/>
+  <testcase name="mobileFailuresAndEmptyResultsFallbackToOrdinaryWebWithHonestProvenance()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.003"/>
+  <testcase name="originalNegativeFilterSeparatesShortPartitionTermsFromTitleFalsePositives()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.007"/>
+  <testcase name="serverFeedbackUsesExactlyOneOriginalReasonFieldAndNeverInventsUnsupportedRequest()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.006"/>
+  <testcase name="successfulMobileModeDoesNotRequestWeb()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.001"/>
+  <testcase name="pluginFeedbackClearUpdatesTheSameObservableAccountSnapshot()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.007"/>
+  <testcase name="mergedSingleSourceFallbackIsReportedAndBothFailuresPreserveWebError()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.004"/>
+  <testcase name="originalRetrofitMergedEndpointDoesNotDoubleEncodeSignedValues()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.007"/>
+  <testcase name="cancellationNeverTriggersFallbackRequests()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.001"/>
+  <testcase name="homeAnonymizerUsesOriginalExactWebEndpointAndPreservesOtherCookies()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.002"/>
+  <testcase name="mergedRequestsRetainDistinctWebAndHdAppParameters()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.0"/>
+  <testcase name="localNegativeFeedbackIsPersistedPerAccountAndCreatorBlocksSurviveFeedbackClear()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.013"/>
+  <testcase name="mergedModeInterleavesAppFirstAndKeepsOneResourceWithOriginalMetadata()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.001"/>
+  <testcase name="originalFeedbackReasonsAndCreatorActionsRetainExactSemantics()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.004"/>
+  <testcase name="hdHeadersAndCookieStrippingApplyOnlyToExactMergedAppRequest()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.002"/>
+  <testcase name="oldAccountActionCannotWriteNewAccountsLocalFeedback()" classname="com.bilipai.desktop.data.DesktopRecommendationTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

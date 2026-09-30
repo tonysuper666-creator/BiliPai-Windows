@@ -1,0 +1,1570 @@
+{
+  "frozen": true,
+  "copiesKeepOriginalBytes": true,
+  "completeClassJarsKeptInLocalSnapshots": true,
+  "allCohortArtifactsVerified": 1529,
+  "cohorts": [
+    {
+      "cohort": "store",
+      "manifestSha256Bytes": "8793d8cb7860406ac02891dc7d2c3253407e297043f25f12984709544b6fb039",
+      "verifiedFrozenArtifacts": 118
+    },
+    {
+      "cohort": "store-review",
+      "manifestSha256Bytes": "3f1d0f4bf92c750b4a3aade45b74bc45e640fd4dc18836b214901289f376b6df",
+      "verifiedFrozenArtifacts": 137
+    },
+    {
+      "cohort": "strict-destination",
+      "manifestSha256Bytes": "55de1bcab2f06353314a6e98e7ec1c510fc2ddb27be37a14fb5dfa31ee0d2874",
+      "verifiedFrozenArtifacts": 57
+    },
+    {
+      "cohort": "storage-guard",
+      "manifestSha256Bytes": "422f8f9a91cedfcd61a021f227566d73509e6daf8921b175fbfa91c9123588c4",
+      "verifiedFrozenArtifacts": 162
+    },
+    {
+      "cohort": "mounted-boundary",
+      "manifestSha256Bytes": "1784bf0286bd2e4a00c3e1f3d88b84f4f1c8d8756096be19c1edd9b30f2307cb",
+      "verifiedFrozenArtifacts": 489
+    },
+    {
+      "cohort": "management",
+      "manifestSha256Bytes": "fc356ace91bc57c487cb66e701ea9bbeb6a7dc7e19689d2825783f3dc9f715ee",
+      "verifiedFrozenArtifacts": 297
+    },
+    {
+      "cohort": "restore-exit",
+      "manifestSha256Bytes": "bb78e402609563cb1161c15cba82552de7b4e670f3811c1518269b19cb5141d2",
+      "verifiedFrozenArtifacts": 144
+    },
+    {
+      "cohort": "product-ui-before-surface-fix",
+      "manifestSha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+      "verifiedFrozenArtifacts": 43
+    },
+    {
+      "cohort": "product-error-alpha-diagnosis",
+      "manifestSha256Bytes": "8cd0e13b25f2208da741e0110eb6c4f1205c58ffb3e7ec200609897a2a906ac3",
+      "verifiedFrozenArtifacts": 33
+    },
+    {
+      "cohort": "final-product-error-surface",
+      "manifestSha256Bytes": "93340f180cede3738be5ae86d747552f8739a76823e580a69db552053a475978",
+      "verifiedFrozenArtifacts": 49
+    }
+  ],
+  "currentProductUiOrderedDependenciesVerified": 234,
+  "files": [
+    {
+      "path": "desktop/verification/blocked-up/store/compile-store.py",
+      "sha256Bytes": "8cc89bc3b53c5e6f48bea78fe6aa0f6e52f23feaac1dd8090dbb8302090595d7",
+      "bytes": 3932
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/dependency-identities.json",
+      "sha256Bytes": "e5e213328ce86262d5253b4a412bb0ffdfff7dd2c92a7bb4bc3762c4db0b51eb",
+      "bytes": 85869
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/freeze-store.py",
+      "sha256Bytes": "0831a6b1dce9b443af00fc74c4c75a334ad735cf3b7c841f3689c6232e9e0b09",
+      "bytes": 2682
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/owned-files.json",
+      "sha256Bytes": "3c187809ded65c272b2c19b3b59cc34753ee9e673731f2bd63d62c60265472fd",
+      "bytes": 1481
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/patches/DesktopDiscoveryPreferences.kt.patch",
+      "sha256Bytes": "d702b45a4b74a77c9771f500d7b240d022191154cceae78dae8dddb663c797d1",
+      "bytes": 3418
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/patches/DesktopDiscoveryRepository.kt.patch",
+      "sha256Bytes": "2cdbdd5d204e63b5f2379c7dc21b043d8836578a2a362bf104c13c0d3cf7e731",
+      "bytes": 848
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/patches/DiscoveryScreens.kt.patch",
+      "sha256Bytes": "377fee49d70453a22d26274fac18a8eee4a294cd3551efcc95378b0b5936fe14",
+      "bytes": 1945
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/prepare-store.py",
+      "sha256Bytes": "14b8c057a76a4b3fde3c7d2c7fac6652d84ff4e978defd6a713d7769e2db36bf",
+      "bytes": 5202
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/RunBlockedStoreFixture.kt",
+      "sha256Bytes": "640fef2cf75addd79d45d53e9c6ae92d030ee0030fb40b8cac075d84cc121541",
+      "bytes": 1814
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/source-inventory.json",
+      "sha256Bytes": "eb41b42f1ee023928850460d36f3529715a2b2fa921bccc485bb6a9576255fd8",
+      "bytes": 848
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-compile-evidence.json",
+      "sha256Bytes": "0adc961ba63f664834bfd971bf97a3274515ba26d81c427eb8b04c0f3d714c7d",
+      "bytes": 2068
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-compile.log",
+      "sha256Bytes": "49eb45499f1cd9284e16a6c5ebdbbf60b98af882e703b52beff1bb247e87313a",
+      "bytes": 2326
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-contract.json",
+      "sha256Bytes": "5dac0250ccf68fd1e51993327d03c97c23f1773fc79994b2b63ae126069f5f36",
+      "bytes": 2384
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/STORE-INTEGRATION.md",
+      "sha256Bytes": "bf5b147a196d02325b1c471ba1f9a8b27c5ac6ba23212b828b8f59f2e36c2e69",
+      "bytes": 6857
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-proof/result.json",
+      "sha256Bytes": "63245e43ec1b0a9de12667453a121d410be853aa19113eeaa96535fd5ba1f6c2",
+      "bytes": 462
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-runtime.log",
+      "sha256Bytes": "b32c4bc3fff6c17d4e85ff450497c3a50b7b19748aef3132f00fa22030661afc",
+      "bytes": 116
+    },
+    {
+      "path": "desktop/verification/blocked-up/store/store-artifact-manifest.json",
+      "sha256Bytes": "8793d8cb7860406ac02891dc7d2c3253407e297043f25f12984709544b6fb039",
+      "bytes": 25824
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/CachedDestinationReviewFixture.kt",
+      "sha256Bytes": "9bacef6d43d5939ce45063b21cd4eada53e62c09a7ed80f78171dd4ddfc0c31c",
+      "bytes": 6732
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/compile-review.py",
+      "sha256Bytes": "3f97c90f4c35b31758fe424995887251a4c0bd1c16cdcac1d5e2731d10981fac",
+      "bytes": 4536
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/freeze-review.py",
+      "sha256Bytes": "f39ac456759d99aad549db50350859c3bc240be093fa9a9da8a7a306aae4b634",
+      "bytes": 2750
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/generated-verification.json",
+      "sha256Bytes": "cba1cbd0cbf04cd672dd81559eb87a941a2726624554596bc8ff19f8847adb89",
+      "bytes": 1027
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/input-verification.json",
+      "sha256Bytes": "0a8836ed40686a0d712317ddd6e7698737219d1b9cad791a2e3c6224d79090cf",
+      "bytes": 1014
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/install-plan.json",
+      "sha256Bytes": "19ca03407d64e4c4fce848aac01c7b2b88eb8f884ae49c9795e031c9b8258125",
+      "bytes": 133685
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/install-reviewed.py",
+      "sha256Bytes": "e72820b2db9b4b120f0127d03ba384a72feba2cdd7a420bf7e068c408eceb863",
+      "bytes": 4356
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/installer-test-result.json",
+      "sha256Bytes": "40ec98af7b6189d931a620e396f583968384686fe57a40c53261e6a93c1732fb",
+      "bytes": 228
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/installer-tests.log",
+      "sha256Bytes": "2a48bd3071293bd5753d73104e1f162ff5243772e5d244f8c7133fa5fdecb211",
+      "bytes": 1415
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/INTEGRATION.md",
+      "sha256Bytes": "6c8daf6ce5e17566a2f6348ce5a9f06a229c8d0f52ac2f5f61a5d06e320e9dbd",
+      "bytes": 10244
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/junit-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/junit-evidence.json",
+      "sha256Bytes": "82033f99df6bf02feabccaceb6dfbec8859d03aa09a049c78937234a46c44914",
+      "bytes": 1619
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/junit-runtime.log",
+      "sha256Bytes": "c11cdff79606dc5c36c1158036fba15934d21fac4b718c99a3386c08524f84af",
+      "bytes": 110
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/original-attempt2-compile.log",
+      "sha256Bytes": "ee2c8a65a5ed0a842081f1230c9699e5ff8d73cc44680c468b7fe80388bc85eb",
+      "bytes": 680
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/original-attempt2-runtime.log",
+      "sha256Bytes": "c3b557f6a70f98226a86cc13f673bdc8d625095cbfa619a4e08a23fd6fe3a8c0",
+      "bytes": 124
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/original-compile.log",
+      "sha256Bytes": "ee2c8a65a5ed0a842081f1230c9699e5ff8d73cc44680c468b7fe80388bc85eb",
+      "bytes": 680
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/original-runtime.log",
+      "sha256Bytes": "14fca3de9e44f80be000d4f2217783b8e73d452bbd54f3588801483cd817b0f6",
+      "bytes": 1707
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/build.gradle.kts.patch",
+      "sha256Bytes": "80125cb037029d89ee2a93197b9bbf158269f9040259102c53275083a6a3d781",
+      "bytes": 2980
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/cached-destination-error.patch",
+      "sha256Bytes": "ebff6912d755cea161dc518f0471f14908ffc6eaa6b731fe2d1a30546711465e",
+      "bytes": 2134
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/DesktopDiscoveryPreferences.kt.patch",
+      "sha256Bytes": "d702b45a4b74a77c9771f500d7b240d022191154cceae78dae8dddb663c797d1",
+      "bytes": 3418
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/DesktopDiscoveryRepository.kt.patch",
+      "sha256Bytes": "2cdbdd5d204e63b5f2379c7dc21b043d8836578a2a362bf104c13c0d3cf7e731",
+      "bytes": 848
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/DiscoveryScreens.kt.patch",
+      "sha256Bytes": "377fee49d70453a22d26274fac18a8eee4a294cd3551efcc95378b0b5936fe14",
+      "bytes": 1945
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/patches/upstream-sources.json.patch",
+      "sha256Bytes": "81029876aa23bf53c39c1a40e30abcca896621b211d9fd88fb9546ee8c4ea4fa",
+      "bytes": 1216
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+      "bytes": 9083
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+      "bytes": 5452
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+      "bytes": 14180
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "fec66b5cb9daa617e42de87a5cbd0b79a8c30b48a2e2b7bcb79980124f6a723a",
+      "bytes": 29228
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "sha256Bytes": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0",
+      "bytes": 11767
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/tools/extract-upstream-blocked-up-platform.py",
+      "sha256Bytes": "6e58c01f64e48843ee168a989390b3addb143c9141a1ceac8e560f2c882c8097",
+      "bytes": 3953
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/payload/desktop/upstream-sources.json",
+      "sha256Bytes": "de5839c52ce78bf4e36310e6f88ce549f90af81219b4ca7d0d538ddfb50411b9",
+      "bytes": 169299
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/prepare-review.py",
+      "sha256Bytes": "c47bdf907867b4beca71d447bf6307bbe93fad6d740d035ee10beb28ab7daf2d",
+      "bytes": 11988
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/proof/junit-engine/result.json",
+      "sha256Bytes": "b9347d3ecdc5a80f5d4a47ef24600393f0d9fe6bf3772ce6017cced3077e5a0a",
+      "bytes": 246
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/proof/original-attempt2/result.json",
+      "sha256Bytes": "bcd2daef9f2a7bb20867cc309083d5bc281262044af997a268f394eab0cdac88",
+      "bytes": 1393
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/result.json",
+      "sha256Bytes": "fa274b5b5cadccf9e70642ccc8bfc0a5fbd982620c8e385c590ee6b0f002b03a",
+      "bytes": 1394
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/regenerated/com/android/purebilibili/core/database/entity/BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2",
+      "bytes": 513
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/regenerated/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a",
+      "bytes": 7576
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/regenerated/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90",
+      "bytes": 553
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/review-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+      "bytes": 9083
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/review-evidence.json",
+      "sha256Bytes": "0d2bdb84dcfa179d714493147690015310d7023b5ebf130707502ddd2488218f",
+      "bytes": 4849
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/reviewed-attempt2-compile.log",
+      "sha256Bytes": "25e6458fb208a23d9157edd814d017f1338e670b27cd26a6f4dac59de52f3f0f",
+      "bytes": 686
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/reviewed-attempt2-runtime.log",
+      "sha256Bytes": "923efa4b05985af38e7f5a1627ead98a94bfa7c48814a8ebeec7f6b09ba43ca1",
+      "bytes": 123
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/run-junit-review.py",
+      "sha256Bytes": "f0ac6d06f99d2701173dcb31c6c4b2ebd9c6bd8a8cd5f7e7172b932e990e6e43",
+      "bytes": 3674
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/RunJUnitStoreReview.kt",
+      "sha256Bytes": "542907ca099c0ca4b8916f0ba5f4675260db26e74d00a2551f8ddcb8c7444802",
+      "bytes": 1308
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/test_install_reviewed.py",
+      "sha256Bytes": "9c249a8e155b748d3ffe1a8c1c9f80e5c9245031426fd442a14d04a6a048acec",
+      "bytes": 6069
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/verify-generated.py",
+      "sha256Bytes": "9d3abc0e33f64656397b22c11d549002eac9b3f6703db3ecc8144cbc9ea46135",
+      "bytes": 2871
+    },
+    {
+      "path": "desktop/verification/blocked-up/store-review/frozen-handoff.json",
+      "sha256Bytes": "3f1d0f4bf92c750b4a3aade45b74bc45e640fd4dc18836b214901289f376b6df",
+      "bytes": 29916
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/delta-contract.json",
+      "sha256Bytes": "27672271e03bfd972b988a3971a4ed6a2ca3ca737c46a2ace2d9798e8a7eaadd",
+      "bytes": 1035
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/evidence.json",
+      "sha256Bytes": "524fb8fdcb858e117d24c60c322425a028cabafb67c73e90bd7c67db26b51432",
+      "bytes": 3478
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/freeze-delta.py",
+      "sha256Bytes": "3531492e283ffdd2d5bcb18905acd6b7f28629663a3de028086b84fb06c2d340",
+      "bytes": 2262
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/INTEGRATION.md",
+      "sha256Bytes": "18b8730fb9da48ebbba72de767009720993e47d3f2de3cd01930edab9411e3bf",
+      "bytes": 2900
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/original-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/original-runtime.log",
+      "sha256Bytes": "9ef8dd2d47ce085997f9caae3edb8356f1d6bf5cff3ee1698211739cf66cc49e",
+      "bytes": 96
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/patches/DesktopBlockedUpStore.kt.patch",
+      "sha256Bytes": "fbb9ad3cd97bdf26ce578d102266956d957653feb53b1103965370e38e51c1e8",
+      "bytes": 535
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/patches/DesktopPluginStore.kt.patch",
+      "sha256Bytes": "8797da216ce28a391d0b0541de5b81d5d5f409bbf640154b297755d43cba99ea",
+      "bytes": 863
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e",
+      "bytes": 9139
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/payload/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4",
+      "bytes": 10365
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/prepare-and-prove.py",
+      "sha256Bytes": "258e53aa6fafbcf8a1678027bd5718c970d4df33e7b6e3d14d85d8a16eb26698",
+      "bytes": 7129
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/proof/original/result.json",
+      "sha256Bytes": "052c3baf96b2bcab5f8378346d102e91905de62ed2503ae2175d886b0fa61821",
+      "bytes": 398
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/proof/strict/result.json",
+      "sha256Bytes": "846fe43f8bf9c7571093eefa768b8b5bd69207da4ae87b22caf912f9d3b09ade",
+      "bytes": 396
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/strict-compile.log",
+      "sha256Bytes": "725942ccb3755caa604fb6240af922ec2b46ca77de60eae386a9f18c5f881d48",
+      "bytes": 637
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/strict-runtime.log",
+      "sha256Bytes": "6725484f313a3edadcd9043382efd2b27a9f076d46146cfee92db4c688b0a4fe",
+      "bytes": 95
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/StrictNamespaceFixture.kt",
+      "sha256Bytes": "5d0d640bf945d671d03d699aa516d4b83aec64070e7cfa9454a9a63d9e3db5c7",
+      "bytes": 3508
+    },
+    {
+      "path": "desktop/verification/blocked-up/strict-destination/frozen-handoff.json",
+      "sha256Bytes": "55de1bcab2f06353314a6e98e7ec1c510fc2ddb27be37a14fb5dfa31ee0d2874",
+      "bytes": 12843
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/compile-evidence.json",
+      "sha256Bytes": "5a5dfe43c284886483d355c5e062a48717259be77bf83113d5e68b3a2198d12a",
+      "bytes": 3213
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/compile.log",
+      "sha256Bytes": "33c2c1cd41b909a778161746ceaeb34374cf6514f27adf84468bfa90c99c16ae",
+      "bytes": 2374
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/dependency-identities.json",
+      "sha256Bytes": "e5e213328ce86262d5253b4a412bb0ffdfff7dd2c92a7bb4bc3762c4db0b51eb",
+      "bytes": 85869
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "182394e6f11dfb4ecf5a8c429415cf085b95c86165f118b99ad161684bfe17b5",
+      "bytes": 1984
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "51ddfee496029ad6937ec8953df55ca1ac975e839b927403589ad631bcb45ffa",
+      "bytes": 4653
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/DiscoveryStorageFixture.kt",
+      "sha256Bytes": "09b4e460635c5fceb5784c00fab1d09dc9318f5557f46754fcd12dc2c58b135c",
+      "bytes": 13999
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/DiscoveryStorageUiFixture.kt",
+      "sha256Bytes": "25ef30d4185772215a49afefbb721f26e42bc4b3431b544eb8839b3e137cf8b0",
+      "bytes": 7310
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/disk-guard-runtime.log",
+      "sha256Bytes": "a29b7800738e7e4491413c7b75d719704d094cc815c1bab9b66dcb49f4f0b1d5",
+      "bytes": 652
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/finalize-and-freeze.py",
+      "sha256Bytes": "8b2c3433d13df376f63269123ee27d6f926deed026ceacaf7e4c4d8f9f7cacf5",
+      "bytes": 4225
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/integration.patch",
+      "sha256Bytes": "c81c5caeeec3d0bedbadd15fd891b3922c4d0c5db08ad3bd7a789200fe5c38b3",
+      "bytes": 7406
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+      "bytes": 9083
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+      "bytes": 5452
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+      "bytes": 14180
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/marked-overrides.json",
+      "sha256Bytes": "bd5cd04ec7ea01adf96e36f1d2cfae22b89c8c8979d1938982a3b499a68659a3",
+      "bytes": 1632
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/original-source-identities.json",
+      "sha256Bytes": "68912f477f402aa1ed86a5acde15e268a507b30c6d806519be62e52d823363b3",
+      "bytes": 435
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/original-ui-runtime.log",
+      "sha256Bytes": "a76856fa3e101c0a76951a8e22efcf0183875c76d999216ab11130d113a23be3",
+      "bytes": 1600
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/original-ui-short-runtime.log",
+      "sha256Bytes": "82c7cbcae20e4dbd277746ae7d5e6b203d620f9d9383ff61fcc217e2b9405ac5",
+      "bytes": 99
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/prepare-compile-run.py",
+      "sha256Bytes": "c6ae31f0ce001abd247571de24daecb044ca9ea5a8c232dd43c1957b19106dcd",
+      "bytes": 5185
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/production-payload.json",
+      "sha256Bytes": "70a7c8fc21af7070c82cf117d22a454c48dd6d2d6712380c042a61f8bbd504de",
+      "bytes": 669
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/proof/disk-guard.json",
+      "sha256Bytes": "241b9ec9c5a8259a8f574ab3a86ed79aacdc109a45cac981bd5facc169585c6f",
+      "bytes": 828
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/proof/ui-short/result.json",
+      "sha256Bytes": "5cd27f588e2821c58a65b0ac00e04dd0f9a6d4dbb05217adfaba2d6a89ae3409",
+      "bytes": 2823
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/rerun-original-ui.py",
+      "sha256Bytes": "d9bc4a77a8b3e827bcc2306029986060a0cd788ebf4745e38d2dd42f84db45be",
+      "bytes": 2435
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/ROOT-INTEGRATION.md",
+      "sha256Bytes": "0687d40ee68ccc1dd95d21c4403255470cd66dee289a8ea56c1d6871050bdbf3",
+      "bytes": 8958
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/root-seam-baselines.json",
+      "sha256Bytes": "ff7baac29a27b47210b7fd8ba7b184f5bb48966c992bd033e0bdc068bbaf2db4",
+      "bytes": 1604
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/ui-short-runtime-evidence.json",
+      "sha256Bytes": "551074760e04c0d915cd9b76d4ef093214b1df24d840f4139d3b5bd2f709f960",
+      "bytes": 244
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/verify-frozen.py",
+      "sha256Bytes": "f5de6f75d1eb27d32f33e7ee2abbe5eea7843cb86c066e5f4f12a58681f724c6",
+      "bytes": 670
+    },
+    {
+      "path": "desktop/verification/blocked-up/storage-guard/verified-artifacts.json",
+      "sha256Bytes": "422f8f9a91cedfcd61a021f227566d73509e6daf8921b175fbfa91c9123588c4",
+      "bytes": 36062
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/actual-same-mid-runtime.log",
+      "sha256Bytes": "82f81f1854076ea2c679ae1ff100d476227a3e59d1cca713b1a49541e2dcf57f",
+      "bytes": 117
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/BoundaryMountedUiFixture.kt",
+      "sha256Bytes": "9ab00f9f5d24b8054108201934864c0ae5bf692e195ee4db339841bb6117f14f",
+      "bytes": 8459
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/compile-evidence.json",
+      "sha256Bytes": "b5f42008c947e364d4591155eca6bf9233dddfe65f2bd2597645dfe979f2ab6c",
+      "bytes": 4545
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/compile.log",
+      "sha256Bytes": "435ccf0d2086e9cd485cb66078281f27070bdd76b4f2fe23b3bb55a3fb2d1f4a",
+      "bytes": 2410
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/dependency-identities.json",
+      "sha256Bytes": "e5e213328ce86262d5253b4a412bb0ffdfff7dd2c92a7bb4bc3762c4db0b51eb",
+      "bytes": 85869
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "9c20f7c1278e532e669d3d2bf5f594814762fa53bcfe5463d286ab916b166f3c",
+      "bytes": 2218
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22",
+      "bytes": 4678
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/DiscoveryStorageFixture.kt",
+      "sha256Bytes": "09b4e460635c5fceb5784c00fab1d09dc9318f5557f46754fcd12dc2c58b135c",
+      "bytes": 13999
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/DiscoveryStorageUiFixture.kt",
+      "sha256Bytes": "25ef30d4185772215a49afefbb721f26e42bc4b3431b544eb8839b3e137cf8b0",
+      "bytes": 7310
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/finalize-and-freeze.py",
+      "sha256Bytes": "79b7b7ec97428cce03416ff2b7d6628ebd69bc66828eb348f33f4a9b72d8d5fb",
+      "bytes": 3821
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/integration.patch",
+      "sha256Bytes": "a2f14ebe6d826f5bc625c6337087dc608e90c43b0c4d2fbc42126db320c486a8",
+      "bytes": 3942
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+      "bytes": 9083
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+      "bytes": 5452
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/marked-overrides/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+      "bytes": 14180
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/mounted-pointer-runtime.log",
+      "sha256Bytes": "f97732bd725a727c9c15c5828a9cc6563fcca556cccf13f4f569a0aac0e4a201",
+      "bytes": 2155
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/old-disk-runtime.log",
+      "sha256Bytes": "a29b7800738e7e4491413c7b75d719704d094cc815c1bab9b66dcb49f4f0b1d5",
+      "bytes": 652
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/old-pointer-runtime.log",
+      "sha256Bytes": "82c7cbcae20e4dbd277746ae7d5e6b203d620f9d9383ff61fcc217e2b9405ac5",
+      "bytes": 99
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/patch-check/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "182394e6f11dfb4ecf5a8c429415cf085b95c86165f118b99ad161684bfe17b5",
+      "bytes": 1984
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/patch-check/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "51ddfee496029ad6937ec8953df55ca1ac975e839b927403589ad631bcb45ffa",
+      "bytes": 4653
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/prepare-compile-run.py",
+      "sha256Bytes": "2258bee5856daeb49d786996889397a08d9a7854e46558e99bda2345e5684999",
+      "bytes": 5948
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/production-payload.json",
+      "sha256Bytes": "3c78907e4dc7745c85116e06b35ed41d6d0e14800d66f24950072eaa60050cee",
+      "bytes": 831
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/proof/actual-same-mid.json",
+      "sha256Bytes": "1a668a265a28dc7d081cc8a0bd71662987b28f092b8bf8ac3132ec770d097697",
+      "bytes": 272
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/proof/mounted-pointer/result.json",
+      "sha256Bytes": "cedb23c86e8f119518172c66bad286b758d7e56c6cd13e218cae37647f7f0eae",
+      "bytes": 2119
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/proof/old-disk.json",
+      "sha256Bytes": "241b9ec9c5a8259a8f574ab3a86ed79aacdc109a45cac981bd5facc169585c6f",
+      "bytes": 828
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/proof/old-pointer/result.json",
+      "sha256Bytes": "5cd27f588e2821c58a65b0ac00e04dd0f9a6d4dbb05217adfaba2d6a89ae3409",
+      "bytes": 2823
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/ROOT-INTEGRATION.md",
+      "sha256Bytes": "a890f9b6ae4cfcbebffedd317f9dfcc1e5c5f7d82e6610479e46f124b29796c9",
+      "bytes": 7516
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/same-production-classes-regression.json",
+      "sha256Bytes": "16c1aaf3297785f07f6d5ef40988f5eab89eba3c10a33ff07a262621f017def3",
+      "bytes": 8665
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/SameMidEpochFixture.kt",
+      "sha256Bytes": "2f8ab0aaa63978ff53e964d3581a2a1e8f4ecd544e4d8c3fbf6c615b39c180ef",
+      "bytes": 3694
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/verify-frozen.py",
+      "sha256Bytes": "64ce297228729ddef2bc65c8d1ea8dac415e23d0bc51c2d7a8c3d3576676d925",
+      "bytes": 782
+    },
+    {
+      "path": "desktop/verification/blocked-up/mounted-boundary/verified-artifacts.json",
+      "sha256Bytes": "1784bf0286bd2e4a00c3e1f3d88b84f4f1c8d8756096be19c1edd9b30f2307cb",
+      "bytes": 112478
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/BlockedManagementComposeFixture.kt",
+      "sha256Bytes": "11fd8981780f9baeb52dbc09dc94bf37e57c4de654aceceb9118a0c17a399108",
+      "bytes": 7723
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/compile-evidence.json",
+      "sha256Bytes": "3b941f362077da757da16e7669b772b026a6c526ed4cfc2b72f47d9cf6e34246",
+      "bytes": 4488
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/compile-phase2.py",
+      "sha256Bytes": "8009ccb2613a740f7e3e7b40238d26e69783aad33a6082c0c04f431338815be2",
+      "bytes": 4816
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/compile.log",
+      "sha256Bytes": "3db2449a24db427bc5077b0e233cf933f14c7efae8aab9c7ce7a6db184a5bda3",
+      "bytes": 687
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/dependency-identities.json",
+      "sha256Bytes": "5cd5ab075a2b3922eb5282eeb6942bf9739603cc40948c6ce5c466df8e48292b",
+      "bytes": 85893
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/extraction-evidence.json",
+      "sha256Bytes": "e254df764653fde01bc57d1e69e209daaec6200e3ab7e581617e1b2e39b073c3",
+      "bytes": 124
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/freeze-phase2.py",
+      "sha256Bytes": "d58236843926fb9a812913401742305e0ff61054cbd9cf953ebc3db451db9d0b",
+      "bytes": 4928
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/INTEGRATION.md",
+      "sha256Bytes": "c218e362e995ea1557196fe78ebe40f19fe2c487332c189235a73df07288dfaf",
+      "bytes": 10349
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/origin-reference-identities.json",
+      "sha256Bytes": "6e6dec41d51666e65218b63a22eaa8c1b06bdb13bf10dea81d4f151c064fcb23",
+      "bytes": 872
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/owned-base-files.json",
+      "sha256Bytes": "ba34cb5c49d13a6a226c108f55e03852cb89b9b558ab8a4564e6e6459ef35147",
+      "bytes": 2634
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/owned-files.json",
+      "sha256Bytes": "7c4d05c3b08f22d6c65baf593f01e8d726b0f986ec33d38fc4dfa5f3eccf3d23",
+      "bytes": 6704
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/CommunityDynamicScreens.kt.patch",
+      "sha256Bytes": "dce7e61039e8448ad6f660946f9d1ed0604123c187c8ee3bcdd99800956dd121",
+      "bytes": 3000
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/CommunityEditors.kt.patch",
+      "sha256Bytes": "52dd625583a2ab43d32b7c6b35cef675a5eeac7c6ca3cf0e89b43484f91bf500",
+      "bytes": 1023
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/CommunitySearchScreens.kt.patch",
+      "sha256Bytes": "30a879ca5c02b7f57d20dd4ea7c78da42c1ee6e8dd2a97afbdf9e4fc2bfe1130",
+      "bytes": 8525
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/DesktopBlockedUpStore.kt.patch",
+      "sha256Bytes": "d98a299da6040f1f56533f524618eb6997939e6698271473c8e1de31cb6b321f",
+      "bytes": 1078
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/DesktopCommunityRepository.kt.patch",
+      "sha256Bytes": "c1748be0bfb193062fcc7158e560dac814fa2756b679e07fafdb8e8986dd4129",
+      "bytes": 1083
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/DesktopCompleteSpaceScreen.kt.patch",
+      "sha256Bytes": "588df2b15a27a656756a496eee9a04b8b269add441bd2d599e31abf0d5d04139",
+      "bytes": 1670
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/patches/DesktopSpaceScreens.kt.patch",
+      "sha256Bytes": "403d068822c9c8a6b153e37d235fb03d26602754067a67f5cf4a9c9ee939686e",
+      "bytes": 1581
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/prepare-phase2.py",
+      "sha256Bytes": "3a3e2dceb323d2de98854423df705cfe3da1aefa4a112c89ff17a7eae70d0b65",
+      "bytes": 9144
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/proof/result.json",
+      "sha256Bytes": "ebbab5ada8b8bf668dec2dfb50d66b13e2e694039a78f757718280ae71159c4b",
+      "bytes": 555
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/resource-inventory.json",
+      "sha256Bytes": "b9420415335ab11e619b69de9c9d716e2e5351f9508b4e0e227eff42589b10e0",
+      "bytes": 2191
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/RunBlockedManagementFixture.kt",
+      "sha256Bytes": "a8ce11c9d469c2c94fe03fa682db44be0d866ede544e32c2831047dbc4900b96",
+      "bytes": 2627
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/runtime.log",
+      "sha256Bytes": "9b18b37e0eef732c348b1eed926c2153717c35919adcd8e4a5410568a9343830",
+      "bytes": 87
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/source-inventory.json",
+      "sha256Bytes": "19e6ab0471f64d03757177c40bdbf2d67a41872c8bed31cfae4436a83b5ce32e",
+      "bytes": 1657
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/test_extraction.py",
+      "sha256Bytes": "f9cf7c2fb3f4f3f1a3103924ad44f6e5da83671afbd98867155ed6d1c203e510",
+      "bytes": 2563
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-proof/material3-dark-original-content.png",
+      "sha256Bytes": "2a8749c1f2a03ebbf7baaecef17f4d2f0ac6bfa0119384e1755aa6bbe430cbc0",
+      "bytes": 31538
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-proof/material3-light-original-content.png",
+      "sha256Bytes": "fc8d814e53a5b7abde1d0f00e073e9ce123b462a0ca47a1caf32aaea0288982f",
+      "bytes": 30839
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-proof/miuix-dark-original-content.png",
+      "sha256Bytes": "7c34d1aaf43a3784914efc9126138837cc4ea78ffbf295049712ae97affc2282",
+      "bytes": 28964
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-proof/miuix-light-original-content.png",
+      "sha256Bytes": "ccf5e860190a0ff1c3fe4f09aa471a92a117a1751e2e2d4a43ac68f1267c635c",
+      "bytes": 27805
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-proof/result.json",
+      "sha256Bytes": "20f6f132771c9f0e6a1047136fc34cd1b201141cb38f532e962a28cf89327286",
+      "bytes": 1234
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/ui-runtime.log",
+      "sha256Bytes": "a27f9e8e1c6f83e0db828aa9713877a1aaf97028602317164e8caa3c2406411d",
+      "bytes": 123
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/owned-files-final.json",
+      "sha256Bytes": "939429e5b5939efa9a6f1d9d06c7b686df17e25a4198dd9a1d4b09f06dd17c8e",
+      "bytes": 6387
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/FINAL-HANDOFF.md",
+      "sha256Bytes": "a9a14c66633e21e88d9211e4d52ae04aad7218d8fa6cf1b1e1178f612ed23523",
+      "bytes": 1040
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/freeze-final-metadata.py",
+      "sha256Bytes": "98d7615584b5d47f2037d0646aaca227cda367ce79af4470cae61aacb8c1b85a",
+      "bytes": 2220
+    },
+    {
+      "path": "desktop/verification/blocked-up/management/stage2-artifact-manifest.json",
+      "sha256Bytes": "fc356ace91bc57c487cb66e701ea9bbeb6a7dc7e19689d2825783f3dc9f715ee",
+      "bytes": 64111
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/baseline-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/baseline-report.json",
+      "sha256Bytes": "eaadddae3320e04e0313a9cf7bf8d3074b8b9a8f9eafcb86d6f1bd7f7dedd42b",
+      "bytes": 489
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/baseline-runtime.log",
+      "sha256Bytes": "2fcadc849fb46ec5ac15aa74f099de66185c61a5cbc24b19fd70fd1a27bd542c",
+      "bytes": 107
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/BaselineReproduction.kt",
+      "sha256Bytes": "78a252bffb3245072820999c4f7045a21cfa6b6f1281eaa6eedfdd6e76c9433b",
+      "bytes": 8101
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/BaselineReproduction.tail.kt",
+      "sha256Bytes": "bb7d91c3435627c3994d83faf7768a083585415c008766073ddcd3cbd17c0781",
+      "bytes": 1084
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/compile-evidence.json",
+      "sha256Bytes": "7bc4ed662155caba3caefb94257dd60c6b576a6b227cce6d9ee349b1ec2be094",
+      "bytes": 3207
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/compile-fixtures.py",
+      "sha256Bytes": "b6c462c16bb3771e1cca0c7e09975247307c2a7dd3bb8d4642fef4b1dab53730",
+      "bytes": 4649
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/dependency-identities.json",
+      "sha256Bytes": "5cd5ab075a2b3922eb5282eeb6942bf9739603cc40948c6ce5c466df8e48292b",
+      "bytes": 85893
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/DesktopBackupArchive.kt.patch",
+      "sha256Bytes": "ac600b9885e627883a98333331839326b0cf67298957fe193131ca3d912597ef",
+      "bytes": 889
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/DesktopBackupCoordinator.kt.patch",
+      "sha256Bytes": "c4ed276bc1529a8c732d6466aee163ea74862e5f152d83cbef1eec9537b28e14",
+      "bytes": 3515
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/extract-upstream-settings.py.patch",
+      "sha256Bytes": "47ce0371078521df4113ec56afa4e9e89304c0f10e61d18d6f27744e878c1586",
+      "bytes": 1563
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/freeze.py",
+      "sha256Bytes": "bafdacd313fb5e62917aaf0c6e1ea8b5d34873ec1b8a28266582133637272252",
+      "bytes": 3169
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/INTEGRATION.md",
+      "sha256Bytes": "87d77cd82ca615b97cbbd3915fbfd4b938be0598ce37d2d0dba02bdf21b2bd2c",
+      "bytes": 5356
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/owned-base-files.json",
+      "sha256Bytes": "729461a1be95ebd0ff7c136cf6424e7742ac01f31e389ce9d60526d83abd9ea7",
+      "bytes": 1104
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/owned-files.json",
+      "sha256Bytes": "5f6eac704378be1303c44044e5f067a8f2913e338a05f30f1b1f5c3627ef9b91",
+      "bytes": 1423
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/patched-compile.log",
+      "sha256Bytes": "7436b37192754e03f000546d6936bc71fcdc63150cb87f24b9b42ba159ed8c3e",
+      "bytes": 449
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/patched-report.json",
+      "sha256Bytes": "5ad757b2e2f23705ee49010409e09265730a870a11a2422ea443e7e7e720ce97",
+      "bytes": 4147
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/patched-runtime.log",
+      "sha256Bytes": "2e1526cac28b1615987f61f61ee43bfa0a3c6079e45261ab26bd7c9f4ce8edb8",
+      "bytes": 2047
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/prepare.py",
+      "sha256Bytes": "eb0574abf43deec0acdd7b34c56f361e71211a807499c80be21486bf8821b354",
+      "bytes": 4907
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/RunFixture.kt",
+      "sha256Bytes": "ab1d49f4b7fc448cbcf71dbd79c70eb9ed5f6450013a1351d24ab0b45a2bd7f7",
+      "bytes": 2562
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/source-inventory.json",
+      "sha256Bytes": "ae76546d2014863dcfc2bae8be4316e42af09a9f1dec2c46378d6c94e14486f1",
+      "bytes": 1122
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/test_extraction.py",
+      "sha256Bytes": "5af6665c8347bcf7559aa4a409e966f1a16a413d478593dc289d730d663d1889",
+      "bytes": 2070
+    },
+    {
+      "path": "desktop/verification/blocked-up/restore-exit/artifact-manifest.json",
+      "sha256Bytes": "bb78e402609563cb1161c15cba82552de7b4e670f3811c1518269b19cb5141d2",
+      "bytes": 32968
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/compile-evidence.json",
+      "sha256Bytes": "58221bda93100b1f9bff5f128107ecd5dd01c32aefdc1c83054e6db46ef9e501",
+      "bytes": 1961
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/compile-run.py",
+      "sha256Bytes": "3a0c27b54a87a265bcd9e736f0011d0fa22e84268e80d46845e99807cd57005c",
+      "bytes": 3823
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/dependency-identities.json",
+      "sha256Bytes": "6764596a77fa5e0dad3b1c1bc565d7a651f3ba25f0af52300d8d23eedd717628",
+      "bytes": 86081
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/freeze.py",
+      "sha256Bytes": "6a87c384fda0021c60dcd3a59a61e9b7ef5e07e8343c8dde41340c909c313bcb",
+      "bytes": 1715
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/origin-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/origin-runtime.log",
+      "sha256Bytes": "72e03257e5ec83c9f77c41d8f6095b9c8fbead9f5e135abf508e59d2b3cfeefb",
+      "bytes": 108
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/ProductClassOriginFixture.kt",
+      "sha256Bytes": "2098c2d6095ec6e1657b310a541da7387cc93d629f68badf2b0b440d24160780",
+      "bytes": 1448
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/ProductStorageUiFixture.kt",
+      "sha256Bytes": "0b17d5b7233ca6cb89a74ee11ee9617f44016267daa77b2e5ab29cddd6577cdc",
+      "bytes": 12954
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/class-origins.json",
+      "sha256Bytes": "befc8391da4c906db4ef793556f9d2cbf92db9a4f00a5a3b0dbb70a590a10e2f",
+      "bytes": 2459
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/material3-blocked-route.png",
+      "sha256Bytes": "6e22c6c5bd9d81ac347cce2b8e9fef4eb3f1942f798673491ebbbc4cd645dd6f",
+      "bytes": 24871
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/material3-blocked-unblock.png",
+      "sha256Bytes": "eeb87ac8ef43112e1815ffb9207a38647f7e91a210f4e8c252699aa216cd4ae9",
+      "bytes": 26575
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/material3-startup-error.png",
+      "sha256Bytes": "b4df537a821b272a3a3ba2d48b0c969a3fe752884e287975e85ec399bb4cc6cc",
+      "bytes": 7834
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/material3-startup-ready.png",
+      "sha256Bytes": "f9ef2790eac31d7fb5a8e8912797f8eabd5387abb13464af60678e133f683fbe",
+      "bytes": 3003
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/material3-stopped-restart.png",
+      "sha256Bytes": "d17b0338efd6f78d443142ac0d9a7a7d7e1adaf756905c0b608027ab3c6fca4f",
+      "bytes": 4795
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/miuix-blocked-route.png",
+      "sha256Bytes": "f4ffe25312af758f0a908b6a73bdb6fb7d1e50392712ac04d072aa339fbd59ba",
+      "bytes": 22974
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/miuix-blocked-unblock.png",
+      "sha256Bytes": "81d539250ecf0b512c6df534954f6e92559894c54879ea502a30cc01f563e992",
+      "bytes": 24409
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/miuix-startup-error.png",
+      "sha256Bytes": "a024d75d4c2ce285a87ace5ab7fa1fa959b3459930e1900df2d9f0059029501e",
+      "bytes": 9927
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/miuix-startup-ready.png",
+      "sha256Bytes": "1d4f68c1009938a3e41db3209504a21448653e78e8e60a8f4df3cae472fc58c6",
+      "bytes": 3427
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/miuix-stopped-restart.png",
+      "sha256Bytes": "5d7caddb394229d8e856d8d472fae63c20e57507e8abe9e3cdf266c43d8fbf1e",
+      "bytes": 6140
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/proof/result.json",
+      "sha256Bytes": "1e885bde22f0b8af6ef95d99e4001e27a0edaf4a69684879ba72d4d2c4ada7b4",
+      "bytes": 3142
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/ROOT-RESULT.md",
+      "sha256Bytes": "eacd627150ff9a4694c9d1137c8aba2c26dacdc67a28bf41046f07bca6d0e164",
+      "bytes": 4531
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/runtime.log",
+      "sha256Bytes": "99101521d699e268b02a1bf15c1a4150a18b9e7cefb3785d96a9d1c9fa697417",
+      "bytes": 2868
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/verify-frozen.py",
+      "sha256Bytes": "55913ebd96ed626d03a037664b7c66052eae900b538f122ced6458901a104eb1",
+      "bytes": 779
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/verify-origins.py",
+      "sha256Bytes": "47ae73754277a1c6b394a7ab007a1f7ea2fa5e0f1ed732168ed0a3c962a866da",
+      "bytes": 2169
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-ui-before-surface-fix/verified-artifacts.json",
+      "sha256Bytes": "78b134f0e122e02c626934f826dcf31762fc4dd19a6d5feee1c9bbb48f5515c6",
+      "bytes": 8403
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest.xml",
+      "sha256Bytes": "3b6c3b1249aa8c60e4c3878819167885f3e981b6da825bba68a1c9ac309dde68",
+      "bytes": 3193
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.data.DesktopBlockedUpStoreTest.xml",
+      "sha256Bytes": "8deb9acde2677a03eddb9aeb5fe7a5764371fb016cdd63fb7972d44998658d34",
+      "bytes": 1832
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest.xml",
+      "sha256Bytes": "fc2a718963b51cd6229bddf6b7ecbb18aa52fdaa92acaef5ae62dba02fb0d9c1",
+      "bytes": 1275
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.data.DesktopRecommendationTest.xml",
+      "sha256Bytes": "43ced1c6bc0ae2b9aa6d39f860294e7f4859db0b1b3183134e5bf2f09a24481e",
+      "bytes": 3088
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.settings.DesktopSettingsNavigatorTest.xml",
+      "sha256Bytes": "c0487dac5ab347c47a6a15e9f9916f5ea0da530896aa73516b294ecb8f04f269",
+      "bytes": 995
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/TEST-com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest.xml",
+      "sha256Bytes": "fdfd8b7c04e6f7045d32236ffb32d48d216a5138b46800d49b4eceea92d29903",
+      "bytes": 2084
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-main-product-snapshot/manifest.json",
+      "sha256Bytes": "10e08fbc781a62ceff68c06c768677922925679b6121f59f7eb43ab56845cd7b",
+      "bytes": 12724
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-final-product-snapshot/TEST-com.bilipai.desktop.backup.DesktopBackupArchiveTest.xml",
+      "sha256Bytes": "fedfd57a42beb1f3d60bcaf2421de43336f4d7e7684bb09aafdc951750f16a67",
+      "bytes": 1882
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-final-product-snapshot/TEST-com.bilipai.desktop.backup.DesktopBackupRestoreBarrierTest.xml",
+      "sha256Bytes": "55035bebe6f489c23ba0ad1ab588b8d5e8d7d3944127813d671643165d4f80d8",
+      "bytes": 2531
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-final-product-snapshot/TEST-com.bilipai.desktop.backup.DesktopWebDavTest.xml",
+      "sha256Bytes": "4f44cca8a93a3bed6b83e8142f4679ea2901829b3634ef61e7bf0222009b0c8e",
+      "bytes": 1351
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-final-product-snapshot/TEST-com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest.xml",
+      "sha256Bytes": "fa74befdb8fd5b11fcb76f9805d27740eb2fa4097af36bedbaedb58ec2c0665b",
+      "bytes": 2085
+    },
+    {
+      "path": "desktop/verification/blocked-up/blocked-up-final-product-snapshot/manifest.json",
+      "sha256Bytes": "38efc073ee76d2148e700582e0be468d4c0eea24cea1b5111943ac865402a919",
+      "bytes": 12959
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/baseline-evidence.json",
+      "sha256Bytes": "59233c6178c58c5593295e2f1815d805723d987fd5df9fad8d6945e427c586d1",
+      "bytes": 87523
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/baseline-runtime.log",
+      "sha256Bytes": "fc2f5ac9eaf8df5cb214aecb37606b03a045c5225679f15cd03be8ed2b8f4498",
+      "bytes": 93
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/BaselineDiscoveryRestoreRepro.kt",
+      "sha256Bytes": "73038b57be8c490e02c4674260dcc9c66832d3db53fb1145cd592735da5eba5f",
+      "bytes": 3115
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/compile-baseline.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/initial-test-mangled-method-failure.xml",
+      "sha256Bytes": "8c40a51a98802f9e7fdd283d13a32ed36841b4a47ea8d9c5a92882e23f5b0981",
+      "bytes": 8034
+    },
+    {
+      "path": "desktop/verification/blocked-up/discovery-restore-baseline/run-baseline.py",
+      "sha256Bytes": "47addb45892b98beb2ddde3deb0216ff40ec1699debf4f656871d62d32453bc0",
+      "bytes": 3749
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/verified-artifacts.json",
+      "sha256Bytes": "8cd0e13b25f2208da741e0110eb6c4f1205c58ffb3e7ec200609897a2a906ac3",
+      "bytes": 6440
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/compile-evidence.json",
+      "sha256Bytes": "2473049a2993090119e052ae5c000d79841a71fbe085dcb3870621b93c135051",
+      "bytes": 1573
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/compile-run.py",
+      "sha256Bytes": "cfd22c2bdeb0d36a0b7bf1e9ab83974ae10682959dc4af279800b268fc324f43",
+      "bytes": 4203
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/dependency-identities.json",
+      "sha256Bytes": "6764596a77fa5e0dad3b1c1bc565d7a651f3ba25f0af52300d8d23eedd717628",
+      "bytes": 86081
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/original-frozen-alpha-analysis.json",
+      "sha256Bytes": "6218d0c41d851f76136a6c2493f9079daf18642742b4a8a7cf3a32fdb009db01",
+      "bytes": 8379
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-bare-theme-after-restart-pointer.png",
+      "sha256Bytes": "c820031d0872289803bc62950dcc76445e8a6d74d1703ea35de36115e907ba8d",
+      "bytes": 4806
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-bare-theme-before-0.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-bare-theme-before-1.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-bare-theme-before-2.png",
+      "sha256Bytes": "10fc015904b8368924a7dc22f9bb85f5485ec4b51c8c3eb87fb3aafb416a688f",
+      "bytes": 4488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-original-surface-after-restart-pointer.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-original-surface-before-0.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-original-surface-before-1.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/material3-original-surface-before-2.png",
+      "sha256Bytes": "9dad237c8d96b507fcd146eb07d56e92fb8e9e617293a23be8d4c8c8ecf588ca",
+      "bytes": 7488
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-bare-theme-after-restart-pointer.png",
+      "sha256Bytes": "25ffb8bde3f6a3f6462b44ffefbe8fd7577291df79c7daaab2d110105a8184cf",
+      "bytes": 6163
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-bare-theme-before-0.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-bare-theme-before-1.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-bare-theme-before-2.png",
+      "sha256Bytes": "79e7d7f698be78e0c72c3a46ecf438af51d2b657130942ad51acd5ab7deca416",
+      "bytes": 5424
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-original-surface-after-restart-pointer.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-original-surface-before-0.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-original-surface-before-1.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/miuix-original-surface-before-2.png",
+      "sha256Bytes": "ddc76a660ffdac6cc36a388a9d72253d89e139ce01986a3b8c551e792007509c",
+      "bytes": 7748
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/proof/result.json",
+      "sha256Bytes": "e7b187451c1eb2a6607d5990065cc447ad6f5b19e06649ba068dc6ce3033393c",
+      "bytes": 2181
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/ROOT-RESULT.md",
+      "sha256Bytes": "507e0a9fbf9415b49256efce9f10de395dabb312817faa42c80a6cfd3275cbca",
+      "bytes": 2264
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/runtime.log",
+      "sha256Bytes": "c5aed79760ccdfdc2466629e50bedb69d3a6ae1b9b1aa1536dccac30a6448542",
+      "bytes": 418
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/StoppedCaptureFixture.kt",
+      "sha256Bytes": "50a16e444a974c5b0fd1303fee0e899f1b8c4a85fec859cafb48d5f6d96af547",
+      "bytes": 6732
+    },
+    {
+      "path": "desktop/verification/blocked-up/product-error-alpha-diagnosis/verify-frozen.py",
+      "sha256Bytes": "dbdf82f1043e506fb0e5011a4a80c1dbe6bab004d77812e0a79d5aaf3d975ed1",
+      "bytes": 1069
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/verified-artifacts.json",
+      "sha256Bytes": "93340f180cede3738be5ae86d747552f8739a76823e580a69db552053a475978",
+      "bytes": 9414
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/compile-evidence.json",
+      "sha256Bytes": "051b27164340f04e0846cd7185d45eefb0ffad0cef73d239c8f0daa50ec3ddad",
+      "bytes": 658
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/compile-run.py",
+      "sha256Bytes": "859f34acd86c1870addc2faa496f438b06b574f27b7022942534149d0b67cce5",
+      "bytes": 8949
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/dependency-identities.json",
+      "sha256Bytes": "71e926223cc107f2564253e0074731712a371935385fd10563f42aa39c0fd6a8",
+      "bytes": 85878
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/fixture-derivation.json",
+      "sha256Bytes": "beb9e89b36f311fe37c6b7a4afed2fd2d35ebac2c78cb249214473dc7510bd5b",
+      "bytes": 635
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/freeze-proof.py",
+      "sha256Bytes": "97c5c842434b938b4e00833936274a5d94139656467b058bbb54e8fa1ba693f2",
+      "bytes": 7800
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/origins.log",
+      "sha256Bytes": "72e03257e5ec83c9f77c41d8f6095b9c8fbead9f5e135abf508e59d2b3cfeefb",
+      "bytes": 108
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/ProductClassOriginFixture.kt",
+      "sha256Bytes": "2098c2d6095ec6e1657b310a541da7387cc93d629f68badf2b0b440d24160780",
+      "bytes": 1448
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/ProductStorageUiFixture.kt",
+      "sha256Bytes": "fab13c956d8f713fb52e5f6c20a8091e530b386d294186b43d98b873d95f75f5",
+      "bytes": 11166
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/class-origins.json",
+      "sha256Bytes": "56891cc87356ab2e79036191fb3d6f0ea06be6ba64bf6fd5d639828b1ab1ca07",
+      "bytes": 2468
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/material3-startup-error.png",
+      "sha256Bytes": "fdcdd390deea5463e26f5e32905714ebfc9320fde323b82d6688911075bee0ae",
+      "bytes": 12698
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/material3-startup-ready.png",
+      "sha256Bytes": "f9ef2790eac31d7fb5a8e8912797f8eabd5387abb13464af60678e133f683fbe",
+      "bytes": 3003
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/material3-stopped-restart.png",
+      "sha256Bytes": "c54ab425e525fa21e6114a23ea329f465342a4a2f9e8c1cefa5136f6ca1738b9",
+      "bytes": 7654
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/miuix-startup-error.png",
+      "sha256Bytes": "72e587d7c4bc2c9778024e742fa8dfd3e47ca26e311e20f05361e47c4477aa76",
+      "bytes": 12914
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/miuix-startup-ready.png",
+      "sha256Bytes": "1d4f68c1009938a3e41db3209504a21448653e78e8e60a8f4df3cae472fc58c6",
+      "bytes": 3427
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/miuix-stopped-restart.png",
+      "sha256Bytes": "2f3f2101de93c07a02a4a813783b54b3627431a96ae8c90197a6f5f71b613e58",
+      "bytes": 7868
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/result.json",
+      "sha256Bytes": "42434a28fe8ac3134fbc8f7278400db1f138e2b91935e6e43ee4d9732b1aae8c",
+      "bytes": 3190
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/proof/screenshot-metrics.json",
+      "sha256Bytes": "90d844ca1ba1cd67cc6b07b336881767b1b88672be049e90e16de361936bcb9b",
+      "bytes": 1759
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/ROOT-RESULT.md",
+      "sha256Bytes": "9df51dfb3fdd633ff8684ae4ffa93083880d46a80086bd16dc40fc55c4410202",
+      "bytes": 2825
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/runtime.log",
+      "sha256Bytes": "81e2b5d014b33dac4045e1f53e11ecf161b60d039c6a9e0fe12a21ad77a00ffb",
+      "bytes": 2870
+    },
+    {
+      "path": "desktop/verification/blocked-up/final-product-error-surface/verify-frozen.py",
+      "sha256Bytes": "dbdf82f1043e506fb0e5011a4a80c1dbe6bab004d77812e0a79d5aaf3d975ed1",
+      "bytes": 1069
+    }
+  ],
+  "nativeInfrastructureCrashLogsKeptOnlyInLocalCohorts": [
+    "desktop/verification/blocked-up/storage-guard/hs_err_pid37768.log"
+  ],
+  "temporarySyntheticFixtureDataKeptInLocalCohorts": [
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-12350993667936239242/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-12350993667936239242/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-12350993667936239242/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15477073898392231031/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15477073898392231031/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15477073898392231031/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/accounts/123/account.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/accounts/not-mid/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-15549399240430285206/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16906244513857904032/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16906244513857904032/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16906244513857904032/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16958116691230462983/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16958116691230462983/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-16958116691230462983/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-2564377867846437839/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-2564377867846437839/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3139771547410152032/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3139771547410152032/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3467479327149802816/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3467479327149802816/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3467479327149802816/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-3467479327149802816/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-7778297063434609294/fixture-owner.json",
+    "desktop/verification/blocked-up/store-review/proof/junit-engine/child-m8isfjw5/tmp/bp-blocked-7778297063434609294/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original/child-qcryawmf/tmp/blocked-review-15641766854467637803/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original/child-qcryawmf/tmp/blocked-review-5643525892610110097/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original/child-qcryawmf/tmp/blocked-review-6461110486139558567/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original/child-qcryawmf/tmp/blocked-review-6461110486139558567/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-136326062781669762/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-15566200119283658985/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-15566200119283658985/accounts/456/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-401664042368751558/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-401664042368751558/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/original-attempt2/child-j9t6gqdh/tmp/blocked-review-4125322044869330508/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-10752402400210360889/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-11942549588684730156/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-7550873089252548343/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-7550873089252548343/accounts/456/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-7794295166725042926/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/store-review/proof/reviewed-attempt2/child-wiab7zlm/tmp/blocked-review-7794295166725042926/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/original/child-2ebxb25m/tmp/strict-blocked-1123236713937415164/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/original/child-2ebxb25m/tmp/strict-blocked-16509419501894686483/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/original/child-2ebxb25m/tmp/strict-blocked-4367374763357271670/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/original/child-2ebxb25m/tmp/strict-blocked-valid-10313257471718350026/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/strict/child-m_sdg0n2/tmp/strict-blocked-15477620846544060084/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/strict/child-m_sdg0n2/tmp/strict-blocked-3169001635493147584/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/strict/child-m_sdg0n2/tmp/strict-blocked-7152857116491116837/plugin-settings.json",
+    "desktop/verification/blocked-up/strict-destination/proof/strict/child-m_sdg0n2/tmp/strict-blocked-valid-8762017184461761101/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-1000280767192844379/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-10391730273889354612/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-10391730273889354612/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-10461372912206559096/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-1413682241037648830/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-1413682241037648830/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-16021294689889556617/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-2474608552648853414/accounts/123/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-2474608552648853414/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-4352265117079759917/discovery/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-fixture-4587500178435450733/plugin-settings.json",
+    "desktop/verification/blocked-up/storage-guard/proof/sandbox-xjv78lpd/tmp/discovery-storage-ui-11945895372322153358/discovery/plugin-settings.json"
+  ]
+}

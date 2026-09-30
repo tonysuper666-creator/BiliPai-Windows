@@ -1,0 +1,44 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "baseSha256Bytes": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e",
+    "sha256Bytes": "d185957657265d4c3bdde40791ac488f1178d6b6d8e128f89749b78d0192d8ff"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "baseSha256Bytes": "ca14d1c5c689893458f4dfb4a9ae134d38d9c5365918346d1167443aa6d289fc",
+    "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "baseSha256Bytes": "aae96711bbb1185e26eaa4588dcddaff0724bb85edc2c9a4189c2c664edd5108",
+    "sha256Bytes": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+    "baseSha256Bytes": "6dce89e8a14b7e00abf452ccc4c94ccf2d982ff2a4d3d34b87e6c1811bfd9cf6",
+    "sha256Bytes": "fb7d69640d34b2332d8c8df0b8efd12934175bc1b018809e540aaf89bfda996d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+    "baseSha256Bytes": "eca01dbf4ff52dddffdada4cba63ab7f283482eadccfa9a7b5424df697a24cac",
+    "sha256Bytes": "d59d7d1e79116dc4eca25d3c7b5291b19b560a7c7f3cd3b3feeecd33e943a366"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+    "baseSha256Bytes": "f196425096bb475090c32038711b4c2fea61445b2041143f176f0f7e97607e6a",
+    "sha256Bytes": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "baseSha256Bytes": "54002bb99bc77bdb9fe5e792a03540da88b32a8bb30025cc572709030ea4aa1e",
+    "sha256Bytes": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+  }
+]

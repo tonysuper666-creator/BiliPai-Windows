@@ -33,6 +33,8 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
     suspend fun setFeedMode(value: DesktopRecommendationMode) = preferences.setFeedMode(value)
     suspend fun setRefreshCount(value: Int) = preferences.setRefreshCount(value)
     fun feedback(mid: Long?): StateFlow<TodayWatchFeedbackSnapshot> = preferences.feedback(mid)
+    val blockedUps: DesktopBlockedUpStore get() = preferences.blockedUps
+    internal fun freezeWritesForRestore() = preferences.freezeWritesForRestore()
     fun blockedCreators(mid: Long?): StateFlow<Set<Long>> = preferences.blockedCreators(mid)
     internal fun recommendationContext(mid: Long? = repository.account.value?.mid) = preferences.recommendationContext(mid)
     suspend fun clearFeedback(expectedAccountMid: Long? = repository.account.value?.mid) {

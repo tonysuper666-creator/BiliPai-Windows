@@ -1,0 +1,66 @@
+[
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv0.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv0.png",
+    "sha256": "78b266a2e3dd2d650866e5da2f31c7d5aaa1fa70de4f65323fc4edc435bdaac3",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv1.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv1.png",
+    "sha256": "08bc17c3d487ec64b5144d931ff57fab1f1f5ff5e59582916b9700c30e8a3958",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv2.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv2.png",
+    "sha256": "8da5bf9b05be31307e0019218d64fd190eb6ac5ec07078fce2087a2e2af66637",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv3.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv3.png",
+    "sha256": "24b7cfae4cc4bd98e15a994c1e4b9ebe12f982cdb2839939c1fa8ee92b22ff6a",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv4.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv4.png",
+    "sha256": "7eac52d465d1a68921436b358e10f8f0c856cc66657719e824dd18bc8dd9837b",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv5.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv5.png",
+    "sha256": "a16f559607a3236fd9cfe1e077cf6d882a959ad81ae634c348d7b7905924462e",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv6.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv6.png",
+    "sha256": "2e76f7f9b33788e7de43be8ec616d265e9c92b3386a3ab04e2733ec91e562019",
+    "features": [
+      "settings-blocked-up"
+    ]
+  },
+  {
+    "path": "app/src/main/res/drawable-nodpi/lv6_s.png",
+    "destination": "desktop/src/main/resources/blocked-up-badges/lv6_s.png",
+    "sha256": "e49822ddc3f52fec582f7b9ce70757119882f77d41078e3de169fc7484d99339",
+    "features": [
+      "settings-blocked-up"
+    ]
+  }
+]

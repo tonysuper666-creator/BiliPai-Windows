@@ -27,8 +27,13 @@ def audit(repo: Path) -> dict:
         relative = Path(item["path"])
         if relative.is_absolute() or ".." in relative.parts:
             raise ValueError("Source path escapes repository")
-        text = (repo / relative).read_text(encoding="utf-8").replace("\r\n", "\n")
-        if hashlib.sha256(text.encode()).hexdigest() != item["sha256"]:
+        normalization = item.get("hashNormalization", "lf")
+        if normalization not in {"lf", "raw"}:
+            raise ValueError("Unknown upstream hash normalization: " + item["path"])
+        contents = (repo / relative).read_bytes()
+        if normalization == "lf":
+            contents = contents.replace(b"\r\n", b"\n")
+        if hashlib.sha256(contents).hexdigest() != item["sha256"]:
             raise ValueError("Unreviewed source change: " + item["path"])
 
     spec = importlib.util.spec_from_file_location("bilipai_parity_structure", repo / "desktop/tools/sync-upstream.py")

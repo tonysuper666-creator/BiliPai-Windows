@@ -1,0 +1,20 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDiscoveryPreferences.kt",
+    "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34",
+    "currentMainSha256Bytes": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDiscoveryRepository.kt",
+    "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656",
+    "currentMainSha256Bytes": "1bcfacea11859762befe41cb3a98e02e67d8e5d1349e11d1f4b9025da0f41543"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\review-delta\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopBlockedUpStore.kt",
+    "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+    "currentMainSha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf"
+  }
+]

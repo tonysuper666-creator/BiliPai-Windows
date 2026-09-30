@@ -1,0 +1,96 @@
+{
+  "passed": true,
+  "activeClassDirectory": "classes-attempt4",
+  "oldRegressionClassDirectory": "classes-attempt3",
+  "historicalUnpassedClassDirectories": [
+    "classes-attempt1",
+    "classes-attempt2"
+  ],
+  "sources": [
+    {
+      "path": "marked-overrides\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopBlockedUpStore.kt",
+      "sha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf"
+    },
+    {
+      "path": "marked-overrides\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "acbdfef423102e3debd9ff6707cdbb7dae6be00c909e5d37fa4c8bc613b33b34"
+    },
+    {
+      "path": "marked-overrides\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "623b27b23bc6a7eb8006515b21a785ce942da2c1cddb3a2031a94e0c4085d656"
+    },
+    {
+      "path": "marked-overrides\\generated\\com\\android\\purebilibili\\core\\database\\entity\\BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2"
+    },
+    {
+      "path": "marked-overrides\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a"
+    },
+    {
+      "path": "marked-overrides\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90"
+    },
+    {
+      "path": "DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22"
+    },
+    {
+      "path": "DiscoveryStorageFixture.kt",
+      "sha256Bytes": "09b4e460635c5fceb5784c00fab1d09dc9318f5557f46754fcd12dc2c58b135c"
+    },
+    {
+      "path": "DiscoveryStorageUiFixture.kt",
+      "sha256Bytes": "25ef30d4185772215a49afefbb721f26e42bc4b3431b544eb8839b3e137cf8b0"
+    },
+    {
+      "path": "DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "9c20f7c1278e532e669d3d2bf5f594814762fa53bcfe5463d286ab916b166f3c"
+    },
+    {
+      "path": "BoundaryMountedUiFixture.kt",
+      "sha256Bytes": "9ab00f9f5d24b8054108201934864c0ae5bf692e195ee4db339841bb6117f14f"
+    },
+    {
+      "path": "SameMidEpochFixture.kt",
+      "sha256Bytes": "2f8ab0aaa63978ff53e964d3581a2a1e8f4ecd544e4d8c3fbf6c615b39c180ef"
+    }
+  ],
+  "productionPayload": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+      "baselineSha256Bytes": "51ddfee496029ad6937ec8953df55ca1ac975e839b927403589ad631bcb45ffa",
+      "desiredSha256Bytes": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22",
+      "preparedPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDiscoveryStorageGuard.kt"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+      "baselineSha256Bytes": "182394e6f11dfb4ecf5a8c429415cf085b95c86165f118b99ad161684bfe17b5",
+      "desiredSha256Bytes": "9c20f7c1278e532e669d3d2bf5f594814762fa53bcfe5463d286ab916b166f3c",
+      "preparedPath": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDiscoveryStorageBoundary.kt"
+    }
+  ],
+  "oldFrozenManifestSha256Bytes": "422f8f9a91cedfcd61a021f227566d73509e6daf8921b175fbfa91c9123588c4",
+  "productSnapshotJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "bc5ebafbdb5d14cfe07d6b5eb8074395e30d806e3e188a7e92363a68b398fa95"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+      "sha256Bytes": "0bd21a0ae1006a429b5370d927a26cb6b448285d21f98b1b307177238f6f38c8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "d9d59204e473e9fab73ea1219f604470cbad5be006fcaa09d5f936c988358142"
+    }
+  ],
+  "dependencyCount": 234,
+  "currentRootRestoreFenceClaimed": false,
+  "actualProcessRestartClaimed": false,
+  "actualArchiveRestoreClaimed": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false,
+  "userAccountFiles": false
+}

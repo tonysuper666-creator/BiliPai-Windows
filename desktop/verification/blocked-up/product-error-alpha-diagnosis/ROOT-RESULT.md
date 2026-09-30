@@ -1,0 +1,11 @@
+# Historical product capture diagnosis — additive frozen evidence
+
+The original 43-artifact proof stays byte-for-byte unchanged. Its `material3-stopped-restart.png` was captured after the real Press/Release handler had incremented the supplied restart callback to 1, after eight settled frames, and after `guard.load()` returned false. That proof established the UI semantics, button handler and retired guard behavior. It did not assert pixel contrast or a visible native window.
+
+The original PNG is not an empty render: 455,227 pixels are fully transparent, 5,573 have nonzero alpha, and its alpha bounding box is (20,26)–(297,97). Every RGB value is black. A viewer compositing transparency on black hides the rendered black text. The original startup-error/ready Material3 PNGs have the same transparent black-text limitation. Miuix rendered white text; management pages already used an opaque original surface.
+
+This new proof compiled only `StoppedCaptureFixture.kt`. It loaded the original immutable product jars pinned by manifest 10e08fbc781a62ceff68c06c768677922925679b6121f59f7eb43ab56845cd7b, plus the unchanged old pure fixture classes. No production class is overridden or modified. Four scenes compare the actual product Boundary with the current bare theme to an explicitly test-owned original `AppSurface` host. Each scene converged to three identical PNG hashes before the pointer; actual restart Press/Release called the supplied callback exactly once.
+
+Material3 bare theme: 458,410 transparent pixels; zero message/action contrasted ink. Original surface control: all 460,800 pixels opaque; message/action ink 1,733/657. Miuix bare theme: 458,166 transparent pixels; surface control makes all pixels opaque. This rules out a missing-frame explanation in the narrow offscreen seam and identifies absent background/content-color hosting. The control is not a claim that the old product already contained the fix.
+
+No HWND, Main/Runtime/Mpv construction, real process restart, Backup restore, HTTP or human-account data was used. The constructor is deliberately closed before composition for this stopped-only diagnosis. Current product repair is independently proven in the separate final-product cohort; these old bytes remain historical.

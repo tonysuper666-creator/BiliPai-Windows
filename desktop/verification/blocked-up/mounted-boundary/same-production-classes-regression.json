@@ -1,0 +1,196 @@
+{
+  "passed": true,
+  "oldDiskAndPointerActiveDirectory": "classes-attempt3",
+  "finalMountedPointerActiveDirectory": "classes-attempt4",
+  "unchangedClassCount": 47,
+  "unchangedClasses": [
+    {
+      "name": "DesktopDiscoveryStorageBoundaryKt$DesktopDiscoveryStorageBoundary$1$1.class",
+      "sha256Bytes": "3dd03f288d98fc6276154f912739160877e0a942d18e0ccdc048129dbf1a2cf5"
+    },
+    {
+      "name": "DesktopDiscoveryStorageBoundaryKt$DesktopDiscoveryStorageBoundary$4$1$1$1$1$1.class",
+      "sha256Bytes": "05515196ed6398810c8f6503dfdf6a29f5db754e15b749f6040b0ee1883b965c"
+    },
+    {
+      "name": "DesktopDiscoveryStorageBoundaryKt$DesktopDiscoveryStorageBoundary$lambda$2$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "624dd310ed5c506b06890dbf6815490d2fd66ddc6541d28318a8dfe671087f35"
+    },
+    {
+      "name": "DesktopDiscoveryStorageBoundaryKt.class",
+      "sha256Bytes": "6c34e1213a1ae630e67003666bfe52750737c554e8b0039182cb1d7e23123481"
+    },
+    {
+      "name": "DesktopDiscoveryStorageFailure.class",
+      "sha256Bytes": "ef57b526ad6f399e07239b6b5776b6a30cd7cbb253001791b7ed0dabc6a70f12"
+    },
+    {
+      "name": "DesktopDiscoveryStorageGuard$load$1.class",
+      "sha256Bytes": "3fd5188d59ae65b69763de4742cea7f9f5e840136f4addacb45d85a86f118eac"
+    },
+    {
+      "name": "DesktopDiscoveryStorageGuard$load$loaded$1.class",
+      "sha256Bytes": "d7a39a65f1de057691eb656d6dd77eec2f9ac7c72929dcc8272f11003b1e1587"
+    },
+    {
+      "name": "DesktopDiscoveryStorageGuard.class",
+      "sha256Bytes": "ecba7705f72210a6a0172bda38e8ee99f371aa615b2e24ba9a5e72ffa7c7bea2"
+    },
+    {
+      "name": "DesktopDiscoveryStorageGuardKt.class",
+      "sha256Bytes": "e1b4a77b10dff0fa623ab88df177c6fc38aadb994c837dc542a0caf2109e1bb9"
+    },
+    {
+      "name": "DiscoveryStorageFixture$actualGuestRepairRetriesFactoryAndKeepsOneSuccessfulRepository$1.class",
+      "sha256Bytes": "cf59ec0d4ac38549658867e391a22d099be800c4a95bca6be7cafb824db9cb95"
+    },
+    {
+      "name": "DiscoveryStorageFixture$cancellationIsNotPresentedAsDiskError$1$1.class",
+      "sha256Bytes": "c2cba61037c49a2e27cfefa5127bf50dd0642805a99f99d43e9a1172da0057df"
+    },
+    {
+      "name": "DiscoveryStorageFixture$cancellationIsNotPresentedAsDiskError$1$pending$1.class",
+      "sha256Bytes": "661ebaac3f550a29b4dba92c252353dfb8a9612405c238b027cb0f243ada1997"
+    },
+    {
+      "name": "DiscoveryStorageFixture$cancellationIsNotPresentedAsDiskError$1.class",
+      "sha256Bytes": "1c97468eb07d478ae6e36e15b209b5123bdb6be889ca33930da38f082d567e14"
+    },
+    {
+      "name": "DiscoveryStorageFixture$closedGuardDoesNotReopenOrReviveFrozenOriginalStore$1.class",
+      "sha256Bytes": "e277c1f311e0e347e1d92ee32f6b33abf5946b4cea36092cc1a066028d794ef5"
+    },
+    {
+      "name": "DiscoveryStorageFixture$closeRejectsActualInFlightResult$1$1.class",
+      "sha256Bytes": "4a6d5a6aa80d48caf8c0647063387ea79e34a4ac70fec2493108f22a970febce"
+    },
+    {
+      "name": "DiscoveryStorageFixture$closeRejectsActualInFlightResult$1$pending$1.class",
+      "sha256Bytes": "7ec38abc45e924b6c0679c667dcff23a991a4fa46e4fa60a5c9f6e539e5feede"
+    },
+    {
+      "name": "DiscoveryStorageFixture$closeRejectsActualInFlightResult$1.class",
+      "sha256Bytes": "9e888214fb791e562f095af42bc2eb6ced2d1edebee702a7b427bc324767d75e"
+    },
+    {
+      "name": "DiscoveryStorageFixture$corruptActiveFeedbackDoesNotDestroyValidGuestRepositoryAndRepairIsReal$1.class",
+      "sha256Bytes": "97c0a371c4f8dd3b770f8b522bb1fa8cb756c03756dad6de16ab759e5d307bdd"
+    },
+    {
+      "name": "DiscoveryStorageFixture$embeddedFeedbackPayloadFallbackIsOriginalAndDoesNotRewriteFile$1.class",
+      "sha256Bytes": "2b8e1655484f7c0fb7e2fb7de6c7d5d6e56ae513cc030088928a8ff98f5cb447"
+    },
+    {
+      "name": "DiscoveryStorageFixture$epochRetirementRejectsActualLateFactoryResult$1$1.class",
+      "sha256Bytes": "b2f241775d5e0e68e6a22c8d94b0cd2e9e36a277b6dfb325ac18f716c1ff1546"
+    },
+    {
+      "name": "DiscoveryStorageFixture$epochRetirementRejectsActualLateFactoryResult$1$pending$1.class",
+      "sha256Bytes": "6637e0db6fdfc5b1295f4da81054b43e38884bd3cbb35642aed4f7dc491a8556"
+    },
+    {
+      "name": "DiscoveryStorageFixture$epochRetirementRejectsActualLateFactoryResult$1.class",
+      "sha256Bytes": "4d6bbbb132450400650ee080481460ff0d6049c231d1e3359ba112c2fe5aa7db"
+    },
+    {
+      "name": "DiscoveryStorageFixture$explicitHeldDecodeFailureOnlyAllowsActualRestart$1.class",
+      "sha256Bytes": "6a659ad47950738dc3d748d2fb0f8a039efd05ea4f154573d8d724401d97295e"
+    },
+    {
+      "name": "DiscoveryStorageFixture$guestConstructorFailureIsRealAndPreservesBadBytes$1.class",
+      "sha256Bytes": "2301cad0a4c7bd7b1a07d921b4892b37dc7904c637d542e65e3fdea3a9a95cf1"
+    },
+    {
+      "name": "DiscoveryStorageFixture$initializedBackingRepairRequiresRestartAndIsNotFreshFacadeReload$1.class",
+      "sha256Bytes": "6677462d5f5704d166517c07e3caa4fc08668d1475542ccafc9e0e9803930275"
+    },
+    {
+      "name": "DiscoveryStorageFixture$replacementPendingCannotBeClearedByRetiredFinally$1$1.class",
+      "sha256Bytes": "4611712cf6950abb454034aba1d76503007725c831242fcaabdd5b72a1e0b061"
+    },
+    {
+      "name": "DiscoveryStorageFixture$replacementPendingCannotBeClearedByRetiredFinally$1$old$1.class",
+      "sha256Bytes": "f08b7f3c50185157b91d84fc490933c5145debe48e7c17556b07f96f866bba3c"
+    },
+    {
+      "name": "DiscoveryStorageFixture$replacementPendingCannotBeClearedByRetiredFinally$1.class",
+      "sha256Bytes": "a44eee01a4f12cc65d3586f0b47e1a89f03d9a5e8de1d39845d141a70f998f01"
+    },
+    {
+      "name": "DiscoveryStorageFixture.class",
+      "sha256Bytes": "e446b69d07643f7968b4d0d8f79a5a4a668c4600fbcc09005fa6f0e54d54b063"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$1.class",
+      "sha256Bytes": "459bc368916a3e9262fea409c48e74834e3a381db3cbb2c248a421d78534a7c5"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$10.class",
+      "sha256Bytes": "8b729f4b87b4c12df634fa050fb2cb130ec36fc88430d6b6ceb7fcd67b9a06ca"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$11.class",
+      "sha256Bytes": "a98f0bd4f13baa0094c5227102443225d210237186a7a3fc2fe8e3b3d5df2a95"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$2.class",
+      "sha256Bytes": "1351b3f2cac8992fa56cd746a4ddefea4874bf57dcddce6a14ab4dfa78fae18d"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$3.class",
+      "sha256Bytes": "1146018bcaa65a7659ab405399cff16c9c23a4f85c550732fa269ac914a86c71"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$4.class",
+      "sha256Bytes": "ba36be3dd512b1e2e23bfad691215be2ac31dd4299dcc73bb736ac0a529180cf"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$5.class",
+      "sha256Bytes": "ba8ae4bb301a9960ecc6827e1889e1c96674637a1f7640bc558e8027d8b8839d"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$6.class",
+      "sha256Bytes": "662f009e118b825b585098715cfe0d6b3c881b73fbbae76e0e8b1820e8e5d54e"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$7.class",
+      "sha256Bytes": "33099827935858b8420695981e51598b8ebb6afce6f80bdf84587624c72b9581"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$8.class",
+      "sha256Bytes": "6855475a4350af194ceaff779f39a5f4c3a3359bcb3a794be2b6fbd8629c9d51"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt$main$checks$9.class",
+      "sha256Bytes": "83d78d04472d66e15ec9d6f29bfa402eefd41994f11323594be2c7eb898cdaf1"
+    },
+    {
+      "name": "DiscoveryStorageFixtureKt.class",
+      "sha256Bytes": "cb9aa024132aa450d8f2b7a701ee6d5594a96f9734622949233faaff0792b5b4"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt$main$1$1$1$2$1.class",
+      "sha256Bytes": "95501f2b2f4464c790abe83493920300efbf38be9a33493faa0668250b6230d5"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt$main$1$click$1.class",
+      "sha256Bytes": "274190b34caeb47f045ed4f23babe0538e421cc83b26c30ab1cbfcc2bac5d946"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt$main$1$settleUntil$1.class",
+      "sha256Bytes": "82d269da6227cb2c1a861945f5446192bbbfd03cb6e4192223e4f17d91353018"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt$main$1$settleUntil$2.class",
+      "sha256Bytes": "8711356a0f8b6961c534a8865f0b99923a90cd19cb1ddd1d23c7bd331ae615ec"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt$main$1.class",
+      "sha256Bytes": "444bfa5181b357da8fae316f3b6e7c0879c47b93c7f51083427956b90aa75a9d"
+    },
+    {
+      "name": "DiscoveryStorageUiFixtureKt.class",
+      "sha256Bytes": "289728bddd2fad932246676954655d7083b9b2d946870862aed3966e51810ace"
+    }
+  ]
+}

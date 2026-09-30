@@ -1,0 +1,314 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "classes/original/com/bilipai/desktop/data/StrictNamespaceFixtureKt.class",
+      "sha256Bytes": "00219d5839fc4ae803caf8ae3d755259a74c78b9477d4a9c547863fe92d1e732",
+      "bytes": 11172
+    },
+    {
+      "path": "classes/original/META-INF/strict_namespace_review.kotlin_module",
+      "sha256Bytes": "abebfc08cfab8b585fc487148711d8189c7db7ecaf8a835e1ac3d22b1b710acd",
+      "bytes": 78
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$1.class",
+      "sha256Bytes": "1ff57f0e51d0264433e2de0c6702c9f8dc82790cbe270fc140fd948ebc98acf2",
+      "bytes": 1680
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$2$1.class",
+      "sha256Bytes": "560d5e8b9d545f282e4ac09efe64d76c653a79fac05b5314fd9f2e3583e629a9",
+      "bytes": 1675
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1$2.class",
+      "sha256Bytes": "1eab1425c59cdb73864aea381dc88dd09a2e9c0fc46c2ff70e6779aa018c706f",
+      "bytes": 3823
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState$collect$$inlined$map$1.class",
+      "sha256Bytes": "e3f1b240baa4085430af3a265465c91f43c279941fbb51017d1e4c9cc13bd302",
+      "bytes": 4026
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState$collect$1.class",
+      "sha256Bytes": "c3a48063cf36dfb5804643bfbb2dcb3d6bee6a8532817c0ed710bb93e89e81af",
+      "bytes": 1921
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/BlockedPreferenceState.class",
+      "sha256Bytes": "c4e1a21d764884a33174ecbee0bf88271a0a2a21dddbe7b6159258e7876979f0",
+      "bytes": 5861
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/DesktopBlockedUpStore$1.class",
+      "sha256Bytes": "515c37752ca8a3f4551ab88c7e6710e913cc3d6515ad2dbe5677a45494d2b0de",
+      "bytes": 1373
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/DesktopBlockedUpStore$Companion.class",
+      "sha256Bytes": "a071355b1be8ed661fb6131474f3728678284d04906ca960aba6b42732230dc5",
+      "bytes": 1451
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/DesktopBlockedUpStore$readRecords$$inlined$sortedByDescending$1.class",
+      "sha256Bytes": "0f4c38a827de69d31f60119936dd6b065bd51065d6e06474399895e448f6b217",
+      "bytes": 2227
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/DesktopBlockedUpStore.class",
+      "sha256Bytes": "683c4f93a276a9d879fc4df9651af3c6a8f064dcdf98e670c702a995b2ac5d1c",
+      "bytes": 31725
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/data/StrictNamespaceFixtureKt.class",
+      "sha256Bytes": "d30ebdcaf7738d8de1ac010a90c8aa563aaedf23d54fdc25ac53532bf2da0bdf",
+      "bytes": 11160
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginContext$Companion.class",
+      "sha256Bytes": "0c350522b65cf43ce9885d385eef037c68a8b245c6a29b55cbb46ade2851827d",
+      "bytes": 924
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginContext.class",
+      "sha256Bytes": "88e6d5aefa34f3fe99d49e25632a36bfe31f934051b6519e8bbabd3c36a7af04",
+      "bytes": 3176
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginDataStore$edit$2.class",
+      "sha256Bytes": "a1f48d897a67b9aada3c2f5b9890c79f9a38eebc2e139c5c85daae50420ed50e",
+      "bytes": 4217
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginDataStore.class",
+      "sha256Bytes": "78400ca6ffee94cbc0b129f099cbecb496e1dfd9d72ece28b7ed1ed3cb74637a",
+      "bytes": 3252
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginPreferences$Editor.class",
+      "sha256Bytes": "5169c48e4f08a2c7318026964a8883ec128652e8d6b9628b841277897af65bf3",
+      "bytes": 5188
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginPreferences.class",
+      "sha256Bytes": "c3240a4c2e61df0050f3e5ad2738125867a09b73a7da2a130c2be3b1d199929b",
+      "bytes": 6365
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStore$Backing.class",
+      "sha256Bytes": "5075c3111b7704caddf5054a7d93f00167fa76c68b5dea254e54840f7415ee1a",
+      "bytes": 6476
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStore$Companion.class",
+      "sha256Bytes": "a016c493f4c6b9bf8804f4b08228b59dc7145011ed5189545d76c962ef7ca714",
+      "bytes": 9580
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStore$setFeedFilterConfig$2.class",
+      "sha256Bytes": "e0a7d19a770d383260e3a8cc8a1fbd44b1d84772c817990855a74b825225e155",
+      "bytes": 5830
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStore$setFeedFilterEnabled$2.class",
+      "sha256Bytes": "12f37ab9c36851f197645b9dd2f6ad64d7a91488f1f152b31215fda15a7b32a7",
+      "bytes": 3907
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "sha256Bytes": "763710bfeb98d9918237701ad614980ae5dcd38666cb466f9d00b1207bf06957",
+      "bytes": 18129
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPluginStoreKt.class",
+      "sha256Bytes": "9f9d2f110a35c2a56a4f6cf3e4c36cff7110b619838012053fd445bb064349d8",
+      "bytes": 2699
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPreferenceEditor.class",
+      "sha256Bytes": "143c84b8fbea5258fbd7efc509ebfb6ee402c1d5382f8f7b21ab9cb845bb1459",
+      "bytes": 2670
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPreferenceKey.class",
+      "sha256Bytes": "fe958dae71c94da27084c4f54bf81498b054398c22fe3f259dd3088b962fc2b6",
+      "bytes": 1835
+    },
+    {
+      "path": "classes/strict/com/bilipai/desktop/plugins/DesktopPreferenceSnapshot.class",
+      "sha256Bytes": "84e7577c632828ce92917882bc02eba3ca6d809029e00d28c198b2fabcb97d31",
+      "bytes": 1869
+    },
+    {
+      "path": "classes/strict/META-INF/strict_namespace_review.kotlin_module",
+      "sha256Bytes": "14c0c5fcb00a815778d59721eb82ba8a3381a0a21673ded09ff7ad0cbedd6cad",
+      "bytes": 131
+    },
+    {
+      "path": "delta-contract.json",
+      "sha256Bytes": "27672271e03bfd972b988a3971a4ed6a2ca3ca737c46a2ace2d9798e8a7eaadd",
+      "bytes": 1035
+    },
+    {
+      "path": "evidence.json",
+      "sha256Bytes": "524fb8fdcb858e117d24c60c322425a028cabafb67c73e90bd7c67db26b51432",
+      "bytes": 3478
+    },
+    {
+      "path": "freeze-delta.py",
+      "sha256Bytes": "3531492e283ffdd2d5bcb18905acd6b7f28629663a3de028086b84fb06c2d340",
+      "bytes": 2262
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "18b8730fb9da48ebbba72de767009720993e47d3f2de3cd01930edab9411e3bf",
+      "bytes": 2900
+    },
+    {
+      "path": "original-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "original-compiler.args",
+      "sha256Bytes": "564b0b2c488c00bae945352ef4c7101ca7a91cf99bad603eddc68d14a6b8087f",
+      "bytes": 58053
+    },
+    {
+      "path": "original-runtime.args",
+      "sha256Bytes": "3fa7b1542def341ce6720218780e23a5613c071984a6ed2d7776fff45d59546e",
+      "bytes": 57504
+    },
+    {
+      "path": "original-runtime.log",
+      "sha256Bytes": "9ef8dd2d47ce085997f9caae3edb8356f1d6bf5cff3ee1698211739cf66cc49e",
+      "bytes": 96
+    },
+    {
+      "path": "patches/DesktopBlockedUpStore.kt.patch",
+      "sha256Bytes": "fbb9ad3cd97bdf26ce578d102266956d957653feb53b1103965370e38e51c1e8",
+      "bytes": 535
+    },
+    {
+      "path": "patches/DesktopPluginStore.kt.patch",
+      "sha256Bytes": "8797da216ce28a391d0b0541de5b81d5d5f409bbf640154b297755d43cba99ea",
+      "bytes": 863
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e",
+      "bytes": 9139
+    },
+    {
+      "path": "payload/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4",
+      "bytes": 10365
+    },
+    {
+      "path": "prepare-and-prove.py",
+      "sha256Bytes": "258e53aa6fafbcf8a1678027bd5718c970d4df33e7b6e3d14d85d8a16eb26698",
+      "bytes": 7129
+    },
+    {
+      "path": "proof/original/child-2ebxb25m/tmp/strict-blocked-1123236713937415164/plugin-settings.json",
+      "sha256Bytes": "67615ef40b6aec0d6210c9fec180dbfc9ec561bb15366bec3314cb4cde5214cc",
+      "bytes": 173
+    },
+    {
+      "path": "proof/original/child-2ebxb25m/tmp/strict-blocked-16509419501894686483/plugin-settings.json",
+      "sha256Bytes": "67615ef40b6aec0d6210c9fec180dbfc9ec561bb15366bec3314cb4cde5214cc",
+      "bytes": 173
+    },
+    {
+      "path": "proof/original/child-2ebxb25m/tmp/strict-blocked-4367374763357271670/plugin-settings.json",
+      "sha256Bytes": "67615ef40b6aec0d6210c9fec180dbfc9ec561bb15366bec3314cb4cde5214cc",
+      "bytes": 173
+    },
+    {
+      "path": "proof/original/child-2ebxb25m/tmp/strict-blocked-valid-10313257471718350026/plugin-settings.json",
+      "sha256Bytes": "8d6991ae2e83e9d81a8d18d2b87a9a4c953f158d950a9dfd607556663d1b020b",
+      "bytes": 554
+    },
+    {
+      "path": "proof/original/result.json",
+      "sha256Bytes": "052c3baf96b2bcab5f8378346d102e91905de62ed2503ae2175d886b0fa61821",
+      "bytes": 398
+    },
+    {
+      "path": "proof/strict/child-m_sdg0n2/tmp/strict-blocked-15477620846544060084/plugin-settings.json",
+      "sha256Bytes": "27ad779a60ed6c34bdd7e846c98fb991d0a531d7a53bfdb89c7f5c6623884fd5",
+      "bytes": 95
+    },
+    {
+      "path": "proof/strict/child-m_sdg0n2/tmp/strict-blocked-3169001635493147584/plugin-settings.json",
+      "sha256Bytes": "dfbd6d0169647e7a59e05ea7935899617943ee7c80ffd13468da4de0987c4ef3",
+      "bytes": 69
+    },
+    {
+      "path": "proof/strict/child-m_sdg0n2/tmp/strict-blocked-7152857116491116837/plugin-settings.json",
+      "sha256Bytes": "d9afd955f147873d8cbc4cf1b49aac8a7ede633e362e527ec25334383dff6278",
+      "bytes": 69
+    },
+    {
+      "path": "proof/strict/child-m_sdg0n2/tmp/strict-blocked-valid-8762017184461761101/plugin-settings.json",
+      "sha256Bytes": "01e6fdee75f73b03414badf757d737ed5934eac1123828a64a812faa6542ac11",
+      "bytes": 554
+    },
+    {
+      "path": "proof/strict/result.json",
+      "sha256Bytes": "846fe43f8bf9c7571093eefa768b8b5bd69207da4ae87b22caf912f9d3b09ade",
+      "bytes": 396
+    },
+    {
+      "path": "strict-compile.log",
+      "sha256Bytes": "725942ccb3755caa604fb6240af922ec2b46ca77de60eae386a9f18c5f881d48",
+      "bytes": 637
+    },
+    {
+      "path": "strict-compiler.args",
+      "sha256Bytes": "1b5c33699441746dbc32865f845fa4cfec61d285021e9b4df9998cd44eb4fe1f",
+      "bytes": 58535
+    },
+    {
+      "path": "strict-runtime.args",
+      "sha256Bytes": "d1216bb1a38010fef082a396a48734fb9dd59d6e38fcff39a3b193906cfdb496",
+      "bytes": 57494
+    },
+    {
+      "path": "strict-runtime.log",
+      "sha256Bytes": "6725484f313a3edadcd9043382efd2b27a9f076d46146cfee92db4c688b0a4fe",
+      "bytes": 95
+    },
+    {
+      "path": "StrictNamespaceFixture.kt",
+      "sha256Bytes": "5d0d640bf945d671d03d699aa516d4b83aec64070e7cfa9454a9a63d9e3db5c7",
+      "bytes": 3508
+    }
+  ],
+  "appliesAfterReviewStoreSha256Bytes": "188189ca9b0e009dda2fbca44d59fab7ca64ce33e93da87e9c5c68d3d87e90bf",
+  "previous137ArtifactsUnchanged": true,
+  "producer118ArtifactsUnchanged": true,
+  "actualUniqueRealDiskChecks": 5,
+  "variantRuns": 2,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "userAccountReads": false,
+  "networkRequests": false,
+  "rootOwnedIntegrationInProgress": true,
+  "rootWorkingTreeStatusAtIndependentFreeze": [
+    " M desktop/build.gradle.kts",
+    " M desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+    " M desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+    " M desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    " M desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+    " M desktop/upstream-sources.json",
+    "?? desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+    "?? desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+    "?? desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRestoreLifecycleTest.kt",
+    "?? desktop/tools/extract-upstream-blocked-up-platform.py"
+  ],
+  "deltaContractSha256Bytes": "27672271e03bfd972b988a3971a4ed6a2ca3ca737c46a2ace2d9798e8a7eaadd"
+}

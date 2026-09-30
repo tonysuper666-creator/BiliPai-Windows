@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:01:12.812Z" hostname="TONYSUPER666" time="1.03">
+  <properties/>
+  <testcase name="original profile missing card marks suspected deleted while transport error leaves metadata intact()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.395"/>
+  <testcase name="blacklist changes transform retained dynamic rows without losing cursor or scroll owner()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.053"/>
+  <testcase name="delayed real Retrofit profile cannot resurrect removed or reblocked record()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.024"/>
+  <testcase name="corrupt migration blocks manual pull before transport and reports a readable local error()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.014"/>
+  <testcase name="local guest block and unblock never make remote requests()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.011"/>
+  <testcase name="original pull total can stop a full page and page failure never partially imports()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.167"/>
+  <testcase name="search maps exact original video owner UP and both live uid fields without filtering photo media or article()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.031"/>
+  <testcase name="successful original relation returns full write message and persistence failure prevents POST()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.025"/>
+  <testcase name="original local first block and unblock retain local changes on remote code failure()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.011"/>
+  <testcase name="pull uses original pages defaults mapper delay and full real profile response()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.121"/>
+  <testcase name="same MID credential epoch change before request retains local action but rejects stale account POST()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.006"/>
+  <testcase name="profile account epoch change and cancellation never commit stale metadata()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.011"/>
+  <testcase name="actual loopback 503 retry after zero still receives exactly one original POST()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.056"/>
+  <testcase name="JSON file uses original share model with metadata and never remote import side effects()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.018"/>
+  <testcase name="original pull page bound is 120 even with a never ending full duplicate page()" classname="com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest" time="0.065"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

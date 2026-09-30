@@ -1,0 +1,124 @@
+{
+    "passed": true,
+    "actualAnnotatedMethods": 28,
+    "mainEdited": false,
+    "junitDiscoveredTests": 28,
+    "junitSkippedTests": 0,
+    "sharedGradleInvoked": false,
+    "headless": true,
+    "liveAccountRequests": false,
+    "tests": [
+        {
+            "test": "failureThenValidRestoreDoesNotReuseAStaleCommitFlag()",
+            "passed": true
+        },
+        {
+            "test": "successfulLocalRestoreInvokesExitOnceAfterBothFilesCommit()",
+            "passed": true
+        },
+        {
+            "test": "localCommitStillCompletesExitWhenBeforeRestoreDisposesInitiatingPage()",
+            "passed": true
+        },
+        {
+            "test": "cancellationBeforeStartingRestoreDoesNotReadNetworkOrExit()",
+            "passed": true
+        },
+        {
+            "test": "failedQuiescenceIsNotACommitAndDoesNotExecuteExit()",
+            "passed": true
+        },
+        {
+            "test": "secondConcurrentRestoreDoesNotExitBeforeTheAcceptedOperationCommits()",
+            "passed": true
+        },
+        {
+            "test": "replacementFailureRollsBackEarlierFileAndNeverSignalsSuccessfulExit()",
+            "passed": true
+        },
+        {
+            "test": "commitCallbackFiresBeforeOriginalWebDavWithContextLosesReturn()",
+            "passed": true
+        },
+        {
+            "test": "cancellationDuringRealDownloadPreventsRetirementAndReplacement()",
+            "passed": true
+        },
+        {
+            "test": "realDownloadFailureDoesNotInvokeCommitOrExit()",
+            "passed": true
+        },
+        {
+            "test": "invalidArchiveNeverRetiresPageReplacesFilesOrExits()",
+            "passed": true
+        },
+        {
+            "test": "archiveSuccessCallbackIsNotCalledAfterValidationOrRollbackFailure()",
+            "passed": true
+        },
+        {
+            "test": "realWebDavCommitStillCompletesExitWhenBeforeRestoreDisposesPage()",
+            "passed": true
+        },
+        {
+            "test": "an empty settings directory does not upload an empty backup()",
+            "passed": true
+        },
+        {
+            "test": "case aliases cannot overwrite one Windows path twice()",
+            "passed": true
+        },
+        {
+            "test": "round trip restores global account and JSON plugin settings while excluding credentials and media()",
+            "passed": true
+        },
+        {
+            "test": "restore quiesces old settings writers only after the entire backup is valid()",
+            "passed": true
+        },
+        {
+            "test": "Android protobuf backup is identified as incompatible before writes()",
+            "passed": true
+        },
+        {
+            "test": "checksum failure validates every entry before replacing earlier valid files()",
+            "passed": true
+        },
+        {
+            "test": "archive traversal and protected credential entries are rejected()",
+            "passed": true
+        },
+        {
+            "test": "same origin download excludes userinfo and alternate ports hosts or schemes()",
+            "passed": true
+        },
+        {
+            "test": "a later filesystem failure rolls back prior replacements()",
+            "passed": true
+        },
+        {
+            "test": "scheduled backup uses original daily cadence and persists success across process instances()",
+            "passed": true
+        },
+        {
+            "test": "Windows protects WebDAV password while retaining original normalized settings()",
+            "passed": true
+        },
+        {
+            "test": "original WebDAV protocol creates directories uploads lists and restores a real ZIP()",
+            "passed": true
+        },
+        {
+            "test": "failed scheduling does not silently enable automatic backup()",
+            "passed": true
+        },
+        {
+            "test": "daily backup uses original flex window across a 23 hour daylight saving day()",
+            "passed": true
+        },
+        {
+            "test": "WebDAV unauthorized result never creates or uploads a backup()",
+            "passed": true
+        }
+    ]
+}

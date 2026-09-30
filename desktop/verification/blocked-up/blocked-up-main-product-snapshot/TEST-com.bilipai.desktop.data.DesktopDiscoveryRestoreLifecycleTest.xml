@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-09-30T13:01:14.091Z" hostname="TONYSUPER666" time="0.103">
+  <properties/>
+  <testcase name="actual repository delegates restoration to all held preference scopes()" classname="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" time="0.013"/>
+  <testcase name="restoration drains a writer accepted on the real backing monitor()" classname="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" time="0.017"/>
+  <testcase name="all local preference operations and global blacklist reject retired generation writes()" classname="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" time="0.013"/>
+  <testcase name="existing same root peers are retired while a new generation stays writable()" classname="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" time="0.022"/>
+  <testcase name="actual archive restore rejects a blocked old account feedback writer()" classname="com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest" time="0.036"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,11 @@
+PASS: real guest constructor failure preserves original bad bytes
+PASS: actual repair retries factory once and successful repository stays retained
+PASS: real account feedback failure and repair preserve guest and same global store
+PASS: cached destination cannot reload or revive a frozen store
+PASS: original embedded payload fallback preserved, not claimed fixed
+PASS: epoch rejects real late factory result
+PASS: replacement result survives retired finally
+PASS: closed guard cannot create a new original backing
+PASS: close rejects real in-flight repository
+PASS: cancellation stays cancellation
+PASS: injected held decode failure is restart-only

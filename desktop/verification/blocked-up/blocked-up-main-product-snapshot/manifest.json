@@ -1,0 +1,263 @@
+{
+  "frozen": true,
+  "phase": "management-and-shell-storage-guards",
+  "afterSuccessfulMainCompile": true,
+  "mainCompile": {
+    "task": "test",
+    "successful": true,
+    "mainCompileSuccessful": true,
+    "elapsedSeconds": 29,
+    "focusedSuites": 6,
+    "tests": 60,
+    "failures": 0,
+    "skipped": 0
+  },
+  "windowsBaseCommit": "ae57dc66884da3243a7f1d5c24bb734674069483",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 6436,
+      "sha256Bytes": "0f4015a7895730df5ba15b5f69259ce0b147cd4599f5c4b5cdcea14921d317b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 141,
+      "sha256Bytes": "1d58606221c3513c170017fa04583fbb5972ba102c0edf499859d3cc2bfd1ccb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 56,
+      "sha256Bytes": "98212b1465c331f37ced7a4c921fd9720fb56b4391f349a2f5afbb9eeeb0eb3a"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "dee1b4f1c39e9a3450de8e9214d02662c173b8f8ae12ebf5706e543ddb6bae35"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "a0c93c18bff0aca482b6e8b50bdbbd258ee98bf85b1f9faf3d4ee299a57a16ab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "f2f73df28ca902d4d953560037ae78f7952cc3368e585a2c05a8dcb8719b7284"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpConsumers.kt",
+      "sha256Bytes": "7561add47b68396f2b022e3998d9957407b74bb91df656c840804bbeb4620c85"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "sha256Bytes": "ccce6dfea52a7306918f20817c61f31ca431fe6f9a6025c48223cc0eff09fe98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "d185957657265d4c3bdde40791ac488f1178d6b6d8e128f89749b78d0192d8ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "1bcfacea11859762befe41cb3a98e02e67d8e5d1349e11d1f4b9025da0f41543"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "ee761b8cc2da47b7db588a317a4912ac368d9aea7598ea120efbac5bd0951495"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Bytes": "ac176bad668afb31864d4fcdb527a8e1946a89629f5ca502ccb927402331cfd2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+      "sha256Bytes": "d59d7d1e79116dc4eca25d3c7b5291b19b560a7c7f3cd3b3feeecd33e943a366"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Bytes": "fb7d69640d34b2332d8c8df0b8efd12934175bc1b018809e540aaf89bfda996d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBlockedListScreen.kt",
+      "sha256Bytes": "ceeec042b1b273b3ac121325ad4195bb1e8df56e378aef848041227c96f3dc38"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "sha256Bytes": "d6751e49f4c4c25cfc3821db56960743750d86796b3f946a0bcf37257c7f527e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "def674ba4f82b1c145c7162913eaebc9b84070eb4a60dad1fe017eefabb475c5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "168b6a54c15c786c60e23fbef1d6fc32e489d7377e34a25eb5b5ba79792ffe22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "sha256Bytes": "cc28816657c9417c6cd163472458929d473f0b945b8b409439728fe3a2a97809"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv0.png",
+      "sha256Bytes": "78b266a2e3dd2d650866e5da2f31c7d5aaa1fa70de4f65323fc4edc435bdaac3"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv1.png",
+      "sha256Bytes": "08bc17c3d487ec64b5144d931ff57fab1f1f5ff5e59582916b9700c30e8a3958"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv2.png",
+      "sha256Bytes": "8da5bf9b05be31307e0019218d64fd190eb6ac5ec07078fce2087a2e2af66637"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv3.png",
+      "sha256Bytes": "24b7cfae4cc4bd98e15a994c1e4b9ebe12f982cdb2839939c1fa8ee92b22ff6a"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv4.png",
+      "sha256Bytes": "7eac52d465d1a68921436b358e10f8f0c856cc66657719e824dd18bc8dd9837b"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv5.png",
+      "sha256Bytes": "a16f559607a3236fd9cfe1e077cf6d882a959ad81ae634c348d7b7905924462e"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv6.png",
+      "sha256Bytes": "2e76f7f9b33788e7de43be8ec616d265e9c92b3386a3ab04e2733ec91e562019"
+    },
+    {
+      "path": "desktop/src/main/resources/blocked-up-badges/lv6_s.png",
+      "sha256Bytes": "e49822ddc3f52fec582f7b9ce70757119882f77d41078e3de169fc7484d99339"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepositoryTest.kt",
+      "sha256Bytes": "8f2c6843e774958a101b89a47d37cd20298b6debd938fcff2c047c19f545be4a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "sha256Bytes": "3094b3c67d9fb4289c60f192a0c20ac00cbe35b8c1c010b8e0751f4cf370f1f0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRestoreLifecycleTest.kt",
+      "sha256Bytes": "5207c441b36f21546d0b8ff1928e19511ea86527a0d7bba584c7320f9a0057c4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuardTest.kt",
+      "sha256Bytes": "f9e04cb9425e0fa707f9a07cf3d4be19ce0f7dac30188a4be0474a3f32ffbb4c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-list-ui.py",
+      "sha256Bytes": "4a228e04bc73a0e6781591739c1b9f29d45e1a720790a1fee5d785dc9ce5192f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-up-platform.py",
+      "sha256Bytes": "6e58c01f64e48843ee168a989390b3addb143c9141a1ceac8e560f2c882c8097"
+    },
+    {
+      "path": "desktop/tools/source-parity-report.py",
+      "sha256Bytes": "a8e28ab94c3e46bca8eeb3ebafc04739e12672ab618de7422e9ca944b7d7aad6"
+    },
+    {
+      "path": "desktop/tools/tests/test_blocked_list_sources.py",
+      "sha256Bytes": "7d15c680978f5019914f2c0739626d71a11102f6023f70ede2759fa8fa4e10c7"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "5105fe41e777782bcf23f6c70a0cc12859dcb6b1036022f7abeef81e3f66da65"
+    }
+  ],
+  "generatedProductFiles": [
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/core/database/entity/BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+      "sha256Bytes": "c39269a35a197de003c19144e4179bb9ef20a76471b9d5c2c7feadf1eb6ab04a"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/data/repository/DesktopUpstreamBlockedListPacing.kt",
+      "sha256Bytes": "0cb511796e1af44196a9cf46329aca80fa8cd6a2f18cc6525618ab905340eefd"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListContent.kt",
+      "sha256Bytes": "90ce9ac48d1b776395796de9db1cf43fed4b311b78b13a7fc3b9b13a2caf7d2e"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListFilename.kt",
+      "sha256Bytes": "c459b1760f4033650356bc82e5f1c45c89d8fa1e55ffb1f38516142cc520cf02"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt",
+      "sha256Bytes": "2928c6738b243ccbcf0af4e74021ec0e781fb3742981a4a8892eb5861215f6da"
+    }
+  ],
+  "testReports": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopBlockedUpRepositoryTest.xml",
+      "sha256Bytes": "3b6c3b1249aa8c60e4c3878819167885f3e981b6da825bba68a1c9ac309dde68",
+      "tests": 15
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopBlockedUpStoreTest.xml",
+      "sha256Bytes": "8deb9acde2677a03eddb9aeb5fe7a5764371fb016cdd63fb7972d44998658d34",
+      "tests": 8
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopDiscoveryRestoreLifecycleTest.xml",
+      "sha256Bytes": "fc2a718963b51cd6229bddf6b7ecbb18aa52fdaa92acaef5ae62dba02fb0d9c1",
+      "tests": 5
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopRecommendationTest.xml",
+      "sha256Bytes": "43ced1c6bc0ae2b9aa6d39f860294e7f4859db0b1b3183134e5bf2f09a24481e",
+      "tests": 17
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.settings.DesktopSettingsNavigatorTest.xml",
+      "sha256Bytes": "c0487dac5ab347c47a6a15e9f9916f5ea0da530896aa73516b294ecb8f04f269",
+      "tests": 4
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-main-product-snapshot\\TEST-com.bilipai.desktop.ui.DesktopDiscoveryStorageGuardTest.xml",
+      "sha256Bytes": "fdfd8b7c04e6f7045d32236ffb32d48d216a5138b46800d49b4eceea92d29903",
+      "tests": 11
+    }
+  ],
+  "originalSourceIdentities": 431,
+  "originalResourceIdentities": 209,
+  "mainShellGuardMounted": true,
+  "originalManagementMounted": true,
+  "backupCallbackCancellationFixPending": true,
+  "nativeWindowOrPackageTested": false,
+  "realAccountRequests": false
+}

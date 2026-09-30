@@ -1,0 +1,50 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BlockedListScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "5c4f172ac7b12135a927a849c5e1f31c9ce0cc42b0eed219ba2da0b726e89a65"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BlockedListFileService.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "cde89b56f678c1266f2fc2c969f1da1628e203216aa1b23027bc560326c2be9f"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "efd8d810300de3dc98dd2a695fb441b16d13720fbb54ab3a8b9e142ccc185d53"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "28c40af8019e3d10f7c36f05404f300f7728bc2a196010a7bbe1663270270fe7"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/BilibiliBlockedListSyncRepository.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "ca2c80ac44966c155f8f73583adc548388c278b3fa84b5d1d1f9b9c8cd8407a2"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UserLevelBadge.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-blocked-up"
+    ],
+    "sha256": "e6caf2c89424ed46d1018bd9846becc8f391ee1140f5f268df802e17846a522e"
+  }
+]

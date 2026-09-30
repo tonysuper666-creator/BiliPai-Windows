@@ -1,0 +1,38 @@
+--- frozen-stage1/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
++++ review-delta/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt
+@@ -28,7 +28,7 @@
+     private fun readableRecords(): List<BlockedUp> = try { readRecords() }
+     catch (cancelled: CancellationException) { throw cancelled }
+     catch (_: Exception) {
+-        mutableMigrationError.value = "本地黑名单资料无法读取，原数据保持不变；请修复文件后重试。"
++        mutableMigrationError.value = "本地黑名单资料无法读取，原数据保持不变；请修复文件后重新启动应用。"
+         emptyList()
+     }
+ 
+@@ -69,6 +69,7 @@
+ 
+     /** Records and completion marker share one backing's atomic replacement; failure preserves every input. */
+     fun migrateLegacyDiscoveryMids(): Result<Int> = synchronized(mutationLock) {
++        var readingDestination = true
+         try {
+             val namespace = context.store.preferences(NAMESPACE)
+             val marker = namespace[MIGRATION]
+@@ -79,6 +80,7 @@
+                 return@synchronized Result.success(0)
+             }
+             val previous = readRecords()
++            readingDestination = false
+             val paths = legacyDiscoveryFiles()
+             val incoming = paths.flatMap { path ->
+                 val file = UpdateStorage.existingPathWithoutLinks(path)
+@@ -106,7 +108,9 @@
+             Result.success(added.size)
+         } catch (cancelled: CancellationException) { throw cancelled
+         } catch (_: Exception) {
+-            val error = IllegalStateException("旧屏蔽名单迁移失败，原文件和现有黑名单保持不变；请修复旧文件后重试。")
++            val error = IllegalStateException(if (readingDestination)
++                "本地黑名单资料无法读取，原数据保持不变；请修复文件后重新启动应用。"
++                else "旧屏蔽名单迁移失败，原文件和现有黑名单保持不变；请修复旧文件后重试。")
+             mutableMigrationError.value = error.message
+             Result.failure(error)
+         }

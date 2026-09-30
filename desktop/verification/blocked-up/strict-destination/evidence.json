@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "variants": [
+    {
+      "variant": "original",
+      "passed": true,
+      "sourceSha256Bytes": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\StrictNamespaceFixture.kt": "5d0d640bf945d671d03d699aa516d4b83aec64070e7cfa9454a9a63d9e3db5c7"
+      },
+      "sandbox": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\proof\\original\\child-2ebxb25m",
+      "markedRootStoreAndBlockedStoreOverrides": false,
+      "currentProductJars": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar"
+      ]
+    },
+    {
+      "variant": "strict",
+      "passed": true,
+      "sourceSha256Bytes": {
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\StrictNamespaceFixture.kt": "5d0d640bf945d671d03d699aa516d4b83aec64070e7cfa9454a9a63d9e3db5c7",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginStore.kt": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\payload\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopBlockedUpStore.kt": "fa504be22b623b53cff12ab1e3cb54f66181eac448807055a6611656d12eaa2e"
+      },
+      "sandbox": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\blocked-up-store-main-review\\strict-destination-review\\proof\\strict\\child-m_sdg0n2",
+      "markedRootStoreAndBlockedStoreOverrides": true,
+      "currentProductJars": [
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-kotlin.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-java.jar",
+        "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\network-proxy-product-snapshot\\main-resources.jar"
+      ]
+    }
+  ],
+  "uniqueBoundaryChecks": 5,
+  "originalNamespacePrimitiveOverwriteVerified": true,
+  "strictCachedValidationPreservesMalformedBytes": true,
+  "priorReview137AndProducer118Unchanged": true,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "userAccountReads": false,
+  "networkRequests": false
+}
