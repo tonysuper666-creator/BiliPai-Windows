@@ -1,0 +1,26 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "1c928f19348b2596826a42c1602c0d94809f0f2edc143a97fb436a2986928da8"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/hwndownerprobe/ProbeKernel32.class",
+    "sha256Bytes": "a978f8dfb0681a767e1897c0f9a732454e6545f30e6cd958053528ca5d5ca7de"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/hwndownerprobe/ProbeUser32.class",
+    "sha256Bytes": "7fa720df4eb2229e150aa896f95e0eab84238f1be240b0923cc64f97e96d3df3"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/hwndownerprobe/ProbeFence.class",
+    "sha256Bytes": "df8b9e689f80822e5ca7e28bbf31354fb3c0358386fad50a5b2d4b91b8568918"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/hwndownerprobe/HwndOwnerProbeKt.class",
+    "sha256Bytes": "e1e2289994cb3430a4e0fcb4e759ea4dcb88d8abb3858618b2362427e2a1e0ec"
+  },
+  {
+    "entry": "META-INF/native_share_hwnd_owner_probe.kotlin_module",
+    "sha256Bytes": "b025dd249f2f4e7741f03661f84e0ce1aa8fb5831646aa6d4024952fedaf654a"
+  }
+]

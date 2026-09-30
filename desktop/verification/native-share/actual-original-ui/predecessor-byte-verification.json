@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "cohorts": [
+    {
+      "cohort": "diagnostics-native-share-parity/terminal-leases",
+      "manifestSha256Bytes": "1ffdfd72f9445ac035f6179d3214c93e138cb4a3707263d018caa3d976d215f9",
+      "artifactCount": 189,
+      "allBytesVerified": true,
+      "preparedOnly": true
+    },
+    {
+      "cohort": "native-share-current-main-review",
+      "manifestSha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1",
+      "artifactCount": 118,
+      "allBytesVerified": true,
+      "preparedOnly": true
+    },
+    {
+      "cohort": "native-share-community-toolchain-parity",
+      "manifestSha256Bytes": "17d368c4e7803f88aea39414ccce115e3ebfa1ae8dad703ecf7939c67fdb3cad",
+      "artifactCount": 31,
+      "allBytesVerified": true,
+      "preparedOnly": true
+    }
+  ],
+  "actualMainAcceptance": false
+}

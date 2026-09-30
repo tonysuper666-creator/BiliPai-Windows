@@ -1,0 +1,18 @@
+{
+  "verifiedPreparedCohorts": [
+    {
+      "artifacts": 189,
+      "manifestSha256Bytes": "1ffdfd72f9445ac035f6179d3214c93e138cb4a3707263d018caa3d976d215f9"
+    },
+    {
+      "artifacts": 118,
+      "manifestSha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1"
+    },
+    {
+      "artifacts": 31,
+      "manifestSha256Bytes": "17d368c4e7803f88aea39414ccce115e3ebfa1ae8dad703ecf7939c67fdb3cad"
+    }
+  ],
+  "mainHunksOnly": true,
+  "rootShellAndPluginRuntimePreserved": true
+}

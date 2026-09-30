@@ -1,0 +1,219 @@
+{
+  "reviewCompleted": true,
+  "scope": "actual frozen 4e97 source/producer/UI review; HWND guard blocker confirmed before native slice freeze",
+  "actualSnapshot": {
+    "manifestPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\manifest.json",
+    "sha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+    "runtimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+    "actualArtifacts": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\main-kotlin.jar",
+        "source": "desktop/build/classes/kotlin/main",
+        "entries": 7489,
+        "sha256Bytes": "a988ad58a727676e89b1d1dde3cb24c11f16e38988c4dec84ef330c0018c5b87"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\main-java.jar",
+        "source": "desktop/build/classes/java/main",
+        "entries": 149,
+        "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\main-resources.jar",
+        "source": "desktop/build/resources/main",
+        "entries": 67,
+        "sha256Bytes": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909"
+      }
+    ],
+    "all89CpArtifactsByteVerified": true,
+    "sourceFilesByteVerifiedAtReview": 369
+  },
+  "sourceBytePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "4b8fd9401be5eb89e7121161f8c34542b4d151d60426e816b13cd9bd8c7e80f4",
+      "bytes": 12279
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "fd5293150f0e2a61d42c092a5bbacd4d27d0964193e425214437a8c5c276cdb0",
+      "bytes": 100862
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "bytes": 24272
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "7015df8a029eb7d5235f544ae62207a0af348c9581d591e2507b4aca4a609a71",
+      "bytes": 61003
+    },
+    {
+      "path": "desktop/tools/prepare-native-diagnostic-share.py",
+      "sha256Bytes": "12fad7f1b62ff1241f8e6f4eebbded06b9cfb46a687af0c2fda4f6d02a6a30cd",
+      "bytes": 5948
+    },
+    {
+      "path": "desktop/tools/compile-native-diagnostic-share.py",
+      "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+      "bytes": 5052
+    },
+    {
+      "path": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+      "bytes": 11219
+    },
+    {
+      "path": "desktop/native/diagnostic-share/approved-development-build.json",
+      "sha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a",
+      "bytes": 79188
+    },
+    {
+      "path": "desktop/build/generated/native-diagnostic-share/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeDiagnosticShareAssetHash.kt",
+      "sha256Bytes": "0131089a6c7dff727d8ce74fe148762f668b55ed0e35fd736150f470471b4b82",
+      "bytes": 273
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/MainActivity.kt",
+      "sha256Bytes": "cd0e3185a9832579f69133973a63aeebdcb7c716d8cc5b78db0ee49021c0e2ca",
+      "bytes": 133908
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/Logger.kt",
+      "sha256Bytes": "9b919c4fb266f811a0f559376d4f2c32e37f4ad86c0f34110b1f23cbb91ccb10",
+      "bytes": 43556
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "33a276ea46e578ba8b8a63abbe5b1b68e2cacc2fe14942bcd0c639e487356014",
+      "bytes": 13759
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.kt",
+      "sha256Bytes": "92ff39ed81926ab9b422f3395a6b094bc1d5a61ab5cd73e70c349837ce747233",
+      "bytes": 5515
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.kt",
+      "sha256Bytes": "ae11ee72af85268e29b3dac3b297ba58b83fce8510533af6e8a3cace09d539a2",
+      "bytes": 2476
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare.kt",
+      "sha256Bytes": "2b4ca7bc011e259f7bd19239817977d63300e8ca20d91aa6e209c1215333cb65",
+      "bytes": 9518
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashShareCache.kt",
+      "sha256Bytes": "aeee090ef9dca73208bfdfaa25018a6bf0ee4b76602f46cd3aa867aea9d46eb6",
+      "bytes": 6506
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptHost.kt",
+      "sha256Bytes": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804",
+      "bytes": 1421
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "3da8e066f7badc3c3fe093dd10d9e6a2201ca176d90b2806337643952fda44ac",
+      "bytes": 3242
+    }
+  ],
+  "producer": {
+    "approvalManifestSha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a",
+    "receiptSha256Bytes": "2adfeb685faea4d1def4ea9cf8209e6fd504862234a7eacaa1ed16d82ea1b319",
+    "graphSha256Bytes": "a56bd301aa709c013fc698ec50ac3371a0735b1cdcbcad1588a176436c8fafea",
+    "freshAndStagedDllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f",
+    "compiledActualMainTrustedConstantMatches": true,
+    "headers": 363,
+    "libraries": 11,
+    "compilerFiles": 64,
+    "allGraphPinsVerified": true,
+    "outputsUpToDateAlwaysFalse": true,
+    "runtimeConstantNotDerivedFromInstalledDll": true,
+    "publicReleaseAuthorizationVerified": false
+  },
+  "staticPackPath": {
+    "composePluginPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose\\compose-gradle-plugin\\1.12.1\\44480059e10d65d4b1fb19779c67f92074a6285f\\compose-gradle-plugin-1.12.1.jar",
+    "composePluginSha256Bytes": "f02445941fc50c7fdde9fe6da709b793199c7dc97ee08cf15fee6e99ccb4dcca",
+    "localPluginBytecodeReadOnlyInspected": true,
+    "root": "desktop/resources",
+    "flatCommonFrom": "desktop/resources/common",
+    "stagedDll": "native/windows-x64/bilipai-diagnostic-share.dll",
+    "MainLookup": "Path.of(compose.application.resources.dir,native,windows-x64,bilipai-diagnostic-share.dll)",
+    "gradleTaskDependencies": [
+      "compileKotlin",
+      "processResources",
+      "prepareAppResources"
+    ],
+    "resourcesJarNotRequiredToContainAppResourcesDll": true,
+    "packagedLauncherActuallyVerified": false
+  },
+  "semantics": {
+    "originalShareAndDismissClearMarkerOnly": true,
+    "originalIgnoreKeepsMarker": true,
+    "originalTitleMessageAndButtonsRetained": true,
+    "sameOriginalSnapshotFilenameSubjectAndText": true,
+    "failureKeepsSnapshotAndActualLocalViewer": true,
+    "originalVisibleReadRetryIsLoadNotReShare": true,
+    "clearFailureRetryUsesOriginalAction": true,
+    "singleActorRequiredByLifecycle": true
+  },
+  "concurrency": {
+    "poll250msNotExpiry": true,
+    "durableMayExposeBeforeShow": true,
+    "safeDeleteOnlyTerminalOrNoDataSupplyAfterDrain": true,
+    "unknownCopiesPreservedAcrossRetirementAndRestart": true,
+    "clearAllHookOutsideWriterQueue": true,
+    "shutdownRejectsBeforePromptDrainThenNativeAndActorThenFreeze": true,
+    "actualUiEvidence": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\accepted-evidence.json",
+      "sha256Bytes": "f704883bb860247614238a4d95f57fab8058532883957e8989e6e6df83df2cfe",
+      "passed": true,
+      "checks": 18,
+      "pointerPairs": 41,
+      "screenshots": 64,
+      "actualLoadedClasses": 20,
+      "syntheticTransportOnly": true
+    },
+    "actualLeaseEvidence": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\accepted-evidence.json",
+      "sha256Bytes": "383a606c2b665f93eb069977cd5bceea9b214246ec647a816938e38aafbce6e7",
+      "passed": true,
+      "freshJvmCases": 8,
+      "assertions": 50,
+      "syntheticTransportOnly": true
+    },
+    "historicalLease01Failure": "read-only Files.walk observer raced product watcher deletion; observer-only02 patch retained; not product failure"
+  },
+  "confirmedBlockers": [
+    {
+      "id": "hwnd-owner-edt-mismatch",
+      "severity": "blocking-native-share-current-4e97",
+      "guard": "C++ requires GetWindowThreadProcessId(hwnd)==GetCurrentThreadId; Kotlin invokes on Dispatchers.Swing",
+      "probePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\proof\\result.json",
+      "probeSha256Bytes": "09366b168ab59414568655ba67536a6d7b47f0a1bdbfa84c968b0a9e3241b5a6",
+      "nativeEdtThreadId": 26164,
+      "nativeHwndOwnerThreadId": 22820,
+      "sameProcess": true,
+      "nativeThreadGuardWouldRejectObservedPair": true,
+      "actualShareShowCalled": false,
+      "cannotConcludeFunctionalShareFromSyntheticUi": true
+    }
+  ],
+  "reviewExecuted": {
+    "ownHiddenComposeWindowAddNotifyAndThreadRead": true,
+    "alwaysInvisible": true,
+    "softwareRendererOnlyFixture": true,
+    "ownWindowDisposedAndEdtDrained": true,
+    "MainOrShellOrAccount": false,
+    "SharePrepare": false,
+    "ShareShow": false,
+    "ShareUI": false,
+    "receiver": false,
+    "package": false,
+    "externalSocketOrChildApp": false
+  },
+  "nextStep": "Isolated owner-thread dispatcher implementation/probe; do not delete guard or bless new installed DLL hash."
+}

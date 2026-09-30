@@ -84,7 +84,21 @@ fun main(args: Array<String>) {
                 runCatching { DesktopUpdater.packagedVersion() }.getOrDefault("unpackaged-development"))
         }
         val diagnostics = diagnosticsResult.getOrNull()
-        val diagnosticLifecycle = remember(diagnostics) { diagnostics?.let { DesktopDiagnosticLifecycle(it) } }
+        val diagnosticWindow = remember { java.util.concurrent.atomic.AtomicReference<java.awt.Window?>(null) }
+        val nativeCrashShare = remember(diagnostics) {
+            diagnostics?.let { actor ->
+                DesktopNativeCrashShare(
+                    nativeDll = {
+                        java.nio.file.Path.of(requireNotNull(System.getProperty("compose.application.resources.dir")),
+                            "native", "windows-x64", "bilipai-diagnostic-share.dll")
+                    },
+                    expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,
+                    window = diagnosticWindow::get, diagnostics = actor)
+            }
+        }
+        val diagnosticLifecycle = remember(diagnostics, nativeCrashShare) {
+            diagnostics?.let { DesktopDiagnosticLifecycle(it, nativeCrashShare) }
+        }
         val diagnosticStartupError = if (diagnosticsResult.isFailure)
             "诊断配置无法读取，请检查配置并重新启动。" else null
         val diagnosticHandler = remember(diagnostics) {
@@ -136,6 +150,10 @@ fun main(args: Array<String>) {
             state = windowState,
             icon = painterResource("app-icon.png")
         ) {
+            DisposableEffect(window, diagnosticWindow) {
+                diagnosticWindow.set(window)
+                onDispose { diagnosticWindow.compareAndSet(window, null) }
+            }
             window.minimumSize = Dimension(960, 680)
             LaunchedEffect(Unit) {
                 withFrameNanos { }

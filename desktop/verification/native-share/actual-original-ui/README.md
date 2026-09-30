@@ -1,0 +1,15 @@
+# Actual Main native diagnostic SHARE UI lane
+
+This new lane prepares an isolated, fixture-only UI acceptance against the next immutable Main snapshot supplied by Root. The preceding dynamic-card snapshot `04e5d4e...` is a baseline, not native-share integration evidence. No prepared actor, controller, lifecycle, cache, host or Main class is compiled or placed before the product.
+
+The three prepared native cohorts are read-only references. `verify-predecessors.py` checks their complete byte manifests; their successful prepared probes are not counted as this lane's actual Main UI results. The Community cohort records a blocked Community installation and a Build Tools /MD DLL, not an installed Community toolchain or packaged runtime proof.
+
+The fixture constructs one actual `openDesktopDiagnostics` actor, the actual `DesktopNativeCrashShare` and the actual `DesktopDiagnosticLifecycle`, and mounts the actual `DesktopCrashPromptHost` inside the actual Root appearance theme. The Root prompt branch has a theme-only parent; the fixture reproduces that seam. It does not run DesktopApp, Main's Window, native DLL loading, an HWND, the Windows share pane or a receiver. A task-owned synthetic implementation of the existing `DesktopNativeShareTransport` port supplies only native events. The actual provider creates and owns its actual actor's lease files and watcher. Its transport event trace identifies this substitution explicitly.
+
+All SHARE, DISMISS, retry, viewer-dismiss and viewer-clear interactions use finite-viewport pointer press/release pairs on the original UI. The clear-marker failure uses a real Windows file handle that permits reads/writes but denies deletion. Releasing that handle and clicking the original `重试清理` button tests a real filesystem retry. No controller result or prompt callback is substituted. A fallback's `重试读取` retains its original meaning: it reloads prompt state; it does not invent a second native SHARE after the original marker was cleared.
+
+The planned matrix is Material 3 and Miuix, each in explicit light and dark appearance. Each cell covers original SHARE with explicit terminal completion, native-unavailable viewer fallback, visible failure retry, and original DISMISS. Additional focused cases cover late failure with an exposed uncertain copy, explicit viewer clear through the same actor hook, and shutdown of a nonterminal lease before Store freeze. Completion is delivered explicitly by the event port; bounded waits only wait for product acknowledgments and never infer receiver completion from elapsed time.
+
+`runner.py` requires both independently supplied snapshot and ordered-classpath hashes. It verifies all three actual Main JARs, all ordered external artifacts, fixture source hashes, emitted namespace and zero class overlap, then checks loaded production class hashes and code sources. Fresh attempt directories preserve compile/run failures. Environment and synthetic log files remain task-owned, with no account data or external connection.
+
+Current status: preparation only, waiting for Root's new Main snapshot. No actual native integration acceptance result exists in this lane yet.

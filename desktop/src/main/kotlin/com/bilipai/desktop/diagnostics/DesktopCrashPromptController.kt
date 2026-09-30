@@ -11,7 +11,16 @@ internal data class DesktopCrashPromptState(
     val pending:Boolean=false,val handled:Boolean=false,val loaded:Boolean=false,val busy:Boolean=false,
     val error:String?=null,val closed:Boolean=false,val viewerRequested:Boolean=false,val retryAction:CrashLogPromptAction?=null,
 )
-internal class DesktopCrashPromptController(val diagnostics:DesktopDiagnostics):AutoCloseable {
+internal class DesktopCrashPromptController(val diagnostics:DesktopDiagnostics,
+    private val nativeShare:(suspend (()->Unit)->Boolean)?=null,
+    private val nativeShareFailureReason:()->String?={null}):AutoCloseable {
+    private fun nativeFailureMessage():String = when(nativeShareFailureReason()) {
+        "未确认的分享副本已达到16MiB保护上限，请显式清理本地日志后重试。" ->
+            "未确认的分享副本已达到16MiB保护上限，请显式清理本地日志后重试。已打开本地诊断日志；原快照已保留。"
+        "分享副本数量已达到安全上限，请显式清理本地日志后重试。" ->
+            "分享副本数量已达到安全上限，请显式清理本地日志后重试。已打开本地诊断日志；原快照已保留。"
+        else -> "系统分享不可用，已打开本地诊断日志；原快照已保留。"
+    }
     private val gate=Any();private val operations=Mutex();private var generation=0L
     private val mutable=MutableStateFlow(DesktopCrashPromptState())
     val state:StateFlow<DesktopCrashPromptState> = mutable.asStateFlow()
@@ -34,16 +43,32 @@ internal class DesktopCrashPromptController(val diagnostics:DesktopDiagnostics):
                 publish(token){it.copy(busy=false)};return@withLock
             }
             var shareReadable=true
+            var nativeShown=false
+            val nativeFailed=java.util.concurrent.atomic.AtomicBoolean()
             if(action==CrashLogPromptAction.SHARE) {
-                try {diagnostics.viewLocal()}
-                catch(cancelled:CancellationException){throw cancelled}
-                catch(_:Exception){shareReadable=false}
+                val fail={
+                    nativeFailed.set(true)
+                    publish(token){it.copy(viewerRequested=true,error=nativeFailureMessage())}
+                }
+                if(nativeShare!=null) {
+                    try {nativeShown=nativeShare.invoke(fail)}
+                    catch(cancelled:CancellationException){throw cancelled}
+                    catch(_:Exception){nativeFailed.set(true)}
+                    if(!nativeShown)nativeFailed.set(true)
+                }
+                if(!nativeShown || nativeFailed.get()) {
+                    try {diagnostics.viewLocal()}
+                    catch(cancelled:CancellationException){throw cancelled}
+                    catch(_:Exception){shareReadable=false}
+                }
             }
             // An unfulfilled share/read on an already retired UI must not enqueue a new marker mutation.
             if(!owns(token))return@withLock
             diagnostics.clearCrashPrompt()
-            publish(token){it.copy(pending=false,busy=false,viewerRequested=action==CrashLogPromptAction.SHARE&&shareReadable,
-                error=if(!shareReadable)"本地崩溃日志无法读取，原快照已保留。" else null)}
+            publish(token){it.copy(pending=false,busy=false,
+                viewerRequested=action==CrashLogPromptAction.SHARE&&shareReadable&&(!nativeShown||nativeFailed.get()),
+                error=if(!shareReadable)"本地崩溃日志无法读取，原快照已保留。"
+                    else if(nativeFailed.get())nativeFailureMessage() else null)}
         } catch(cancelled:CancellationException){throw cancelled}
         catch(_:Exception){publish(token){it.copy(busy=false,error="崩溃日志标记无法清理，原快照已保留。",retryAction=action)}}
         finally{publish(token){it.copy(busy=false)}}

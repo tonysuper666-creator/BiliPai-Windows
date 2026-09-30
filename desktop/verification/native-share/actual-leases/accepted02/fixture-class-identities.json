@@ -1,0 +1,46 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "588c558449e9b84fd3c4154d12bff101ac266aa3d6684dc2c524205e3ab1e368"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/Fence.class",
+    "sha256Bytes": "2334b9d36984b7e635d6b67da1ccd8cd94287f879ec0ab718d3328accb9cfcaf"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/EventPort.class",
+    "sha256Bytes": "7c26ad5cd28c67ef6fbe8f1b9d33e8340453ac72d4e4609201dad09c521ff729"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/EventPort$Item.class",
+    "sha256Bytes": "9a2c725e0c89ecb349b48c18e8aa01973310efb7520baca05c78c086af0e5186"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt.class",
+    "sha256Bytes": "e720350b5f1dfaf8d9ad780ce4dfe96ac55181dbe6cd01f4fb63c49eb96a422f"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$cacheIsEmpty$1$1.class",
+    "sha256Bytes": "12279a7103a299b0b35e1864b95452ef1c1b05dc4c39910cf7b1d09238b86d2f"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$eventually$2.class",
+    "sha256Bytes": "75d6c3d930ad683752a3207b324dafb7b700d5d2971f9cd518f494157f811935"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1.class",
+    "sha256Bytes": "5eaacae4a21144a524adf217c2d7e3ead5f84133aba35690b9634c6b8f6760ce"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1$share$1.class",
+    "sha256Bytes": "b3145a085eded369acfca09b7dc5f304421384393ff1b1f228fe90937d298951"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1$clear$1.class",
+    "sha256Bytes": "eef583d55a7cf736d91480ac629b15d4239c7a27a8fed5b8e99486088c27a8d7"
+  },
+  {
+    "entry": "META-INF/native_share_actual_product_lease_proof.kotlin_module",
+    "sha256Bytes": "b44dc9525e2da5011d3233072e36c89717002889252a96c4c48abdbfbb0de7f8"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "passed": false,
+  "ownJVMKilled": true,
+  "ownJVMOnly": true,
+  "ShareShow": false,
+  "reason": "Hidden window fixture did not complete; inspect stage and own JVM stack."
+}

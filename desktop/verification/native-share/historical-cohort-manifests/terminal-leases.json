@@ -1,0 +1,977 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "scope": "Same-actor native diagnostic SHARE terminal sessions, persistent leases and clear-all retirement",
+  "precedingFrozenManifestSha256Bytes": "689d8bc21e974bdcaf9938f03574160b51da1fdba7ea2cdd0ac38e12a67bf475",
+  "precedingFrozenArtifactsVerified": 145,
+  "artifactCount": 189,
+  "artifacts": [
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "ec48473841212b4db72cac9416c4d546cc8b5a8bb9e81f2e803729b0a028540e",
+      "sizeBytes": 11823
+    },
+    {
+      "path": "NativeShareLeaseFixture.kt",
+      "sha256Bytes": "97f442bf6b38d2a92b307e1c52d4684207aeca5667bb829c3efc4182ef500da0",
+      "sizeBytes": 15072
+    },
+    {
+      "path": "audit-final.py",
+      "sha256Bytes": "f4af984a7273180853c691dbf91cbaeed1d1fb7828bedbd2d173447d7c9d2a53",
+      "sizeBytes": 4315
+    },
+    {
+      "path": "build-native.py",
+      "sha256Bytes": "653f387d2d7ce316bdd452b747e1623f8a785968efee5df9e752d2465382859e",
+      "sizeBytes": 2597
+    },
+    {
+      "path": "compatibility-and-evidence.json",
+      "sha256Bytes": "983807b7fa7759499bd8a5da269b5f88bc7d25ea446c5f38b7366cffbe091917",
+      "sizeBytes": 1283
+    },
+    {
+      "path": "compile-fixture.py",
+      "sha256Bytes": "a58cce9196d3842fe89275f55f568496f5d4180ead5392ef56ba89c20cfcbcd6",
+      "sizeBytes": 3801
+    },
+    {
+      "path": "final-audit-result.json",
+      "sha256Bytes": "0d64b91148d4ae9504325d80c08b3701ed5fe9ba253d79a414b6e972b61cf8fd",
+      "sizeBytes": 356
+    },
+    {
+      "path": "final-v2-native-dependents.log",
+      "sha256Bytes": "b74d2d594bf53e871f16188c0972232c2527939e72a8cf3e7f78c07cdc9e5d0f",
+      "sizeBytes": 703
+    },
+    {
+      "path": "final-v2-native-dependents.raw.log",
+      "sha256Bytes": "3c0d2548ddbf7f9af360d658de2c40532ae8c29f9fc2239bdac9052ae47ba651",
+      "sizeBytes": 678
+    },
+    {
+      "path": "final-v2-native-exports.log",
+      "sha256Bytes": "47778188240b9ace9bb14e0213caf4b413641b33dd77bac6a5a333332c53c760",
+      "sizeBytes": 1078
+    },
+    {
+      "path": "final-v2-native-exports.raw.log",
+      "sha256Bytes": "fb44dad9244db6768119e289849cd91d491ee210bc35c1a80f6af45b67f58fe0",
+      "sizeBytes": 1044
+    },
+    {
+      "path": "final-v2-native-headers.log",
+      "sha256Bytes": "d2433658ee0c94253569285386ae625d184cc2ef820131cd33dd263e89b8eadb",
+      "sizeBytes": 6070
+    },
+    {
+      "path": "final-v2-native-headers.raw.log",
+      "sha256Bytes": "f486b975913473b04d7e3dbcd337e587582d90b25bed64b1e9fc9de3575bfbf7",
+      "sizeBytes": 5901
+    },
+    {
+      "path": "final-v2-native-object-directives.log",
+      "sha256Bytes": "9823981925bc48a1eb32731e429eea0ea2e505f28dfa082d1ad282a6b942b931",
+      "sizeBytes": 6716
+    },
+    {
+      "path": "final-v2-native-object-directives.raw.log",
+      "sha256Bytes": "b75b1b63c0523781db6ef51811565be66a4e00fef97febe302be7f44a40f8074",
+      "sizeBytes": 6589
+    },
+    {
+      "path": "final-v2-reproducibility-proof.json",
+      "sha256Bytes": "836dcb85ada7366f9aedc4dba55202196f3c4467b4ed38e47a93b54953e5ff38",
+      "sizeBytes": 1679
+    },
+    {
+      "path": "freeze-final.py",
+      "sha256Bytes": "10e09202308346aa61016b0d78e1590dfb2d063b289aa68f87a61eec920a500d",
+      "sizeBytes": 3443
+    },
+    {
+      "path": "installation-plan.json",
+      "sha256Bytes": "3e0a4e5900189a40b2a75be6b7bc2564c76176834b7047e7ef5937b5a7dd3e83",
+      "sizeBytes": 6507
+    },
+    {
+      "path": "integration-final/DesktopCrashPromptController.kt",
+      "sha256Bytes": "92ff39ed81926ab9b422f3395a6b094bc1d5a61ab5cd73e70c349837ce747233",
+      "sizeBytes": 5515
+    },
+    {
+      "path": "integration-final/DesktopCrashPromptController.kt.patch",
+      "sha256Bytes": "273f4f9cdc98a34f763b5f14c818f46cd8e264d102df890af50e91ba21fbc4e7",
+      "sizeBytes": 2870
+    },
+    {
+      "path": "integration-final/DesktopDiagnosticLifecycle.kt",
+      "sha256Bytes": "ae11ee72af85268e29b3dac3b297ba58b83fce8510533af6e8a3cace09d539a2",
+      "sizeBytes": 2476
+    },
+    {
+      "path": "integration-final/DesktopDiagnosticLifecycle.kt.patch",
+      "sha256Bytes": "72e12133f4e5f3f6ffbb89efacfc9d344bd7b7049524a9659548da8af4ca1b41",
+      "sizeBytes": 1139
+    },
+    {
+      "path": "integration-final/DesktopDiagnostics.kt",
+      "sha256Bytes": "33a276ea46e578ba8b8a63abbe5b1b68e2cacc2fe14942bcd0c639e487356014",
+      "sizeBytes": 13759
+    },
+    {
+      "path": "integration-final/DesktopDiagnostics.kt.patch",
+      "sha256Bytes": "bc2d5aecad0d7ed34e9c8674367a0ac21a3323cad156af3ebd0ffbad140b89dc",
+      "sizeBytes": 3166
+    },
+    {
+      "path": "integration-final/delta-contract.json",
+      "sha256Bytes": "42fb68f26aee9951ee8c753840c693627e85d9ff4d3a40d8bed18741b33bb5a9",
+      "sizeBytes": 2469
+    },
+    {
+      "path": "license-audit/BiliPai-GPLv3-LICENSE.txt",
+      "sha256Bytes": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+      "sizeBytes": 35823
+    },
+    {
+      "path": "license-audit/LICENSE-DECISION.md",
+      "sha256Bytes": "fd0d8d1f0719c9c08a278b42d03341a689bb0667363ffa2a26d19ade0de7c856",
+      "sizeBytes": 6005
+    },
+    {
+      "path": "license-audit/MSVC-STL-notices.extracted.txt",
+      "sha256Bytes": "9b3c84b9dfe9a6761d8e3ac66f91bd8c6ee68eeb739d76d0791bfc15e960df01",
+      "sizeBytes": 6129
+    },
+    {
+      "path": "license-audit/MSVC-STL-vs-2022-17.14-LICENSE.txt",
+      "sha256Bytes": "1fc6b6db121d4555d8f661937d7f6013693cd8fd67495d5e5d98c1d18fb83eda",
+      "sizeBytes": 12550
+    },
+    {
+      "path": "license-audit/STL-license-download.json",
+      "sha256Bytes": "05f4e9b663fbfcd0afb55723fea36b13741cd48c113828b90aaa77084fa36334",
+      "sizeBytes": 506
+    },
+    {
+      "path": "license-audit/audit-artifacts.json",
+      "sha256Bytes": "175759e248697ef8bcb5e92e9fe54246c37179360e0cde969a9261bce2fef37c",
+      "sizeBytes": 6552
+    },
+    {
+      "path": "license-audit/cppwinrt-2.0.250303.1-LICENSE.txt",
+      "sha256Bytes": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383",
+      "sizeBytes": 1141
+    },
+    {
+      "path": "license-audit/cppwinrt-tag.json",
+      "sha256Bytes": "5724c45aa64c0ad283de762ceddbc9bac5a6a7250c97eb7e024aeb86a7e4c5d0",
+      "sizeBytes": 365
+    },
+    {
+      "path": "license-audit/download-manifest-2.json",
+      "sha256Bytes": "7a2626760ad670ce120248769dd2eb12a53027ad57bc52cd28337b05ab05a13d",
+      "sizeBytes": 3724
+    },
+    {
+      "path": "license-audit/download-manifest.json",
+      "sha256Bytes": "a1bb364643cb27a23be147c90005a01caf03b601c904ebd8090086f2cb855671",
+      "sizeBytes": 2253
+    },
+    {
+      "path": "license-audit/gpl-faq.html",
+      "sha256Bytes": "c44b2b3dd4b512367a8d09c35814625e43e71616db67a5b2bff8588087d4e027",
+      "sizeBytes": 197518
+    },
+    {
+      "path": "license-audit/gpl-v3.html",
+      "sha256Bytes": "73cd8ecdcf33b5923f3c092fba6d8f8c3faecf64d84a9ecfa6c5e028f980211a",
+      "sizeBytes": 50244
+    },
+    {
+      "path": "license-audit/installed-buildtools-product-license-link.json",
+      "sha256Bytes": "38cfec7c9a77b6c435096b04595ae83a16f7217c175063cefc781bf73d7a09c0",
+      "sizeBytes": 864
+    },
+    {
+      "path": "license-audit/license-decision.json",
+      "sha256Bytes": "afd55ad83acf655b4b0ae6f32ef659ef56f9621882617c5d8dc691df000dbac7",
+      "sizeBytes": 2138
+    },
+    {
+      "path": "license-audit/local-license-manifest.json",
+      "sha256Bytes": "bdd8682c44d29f2daff0fbbdfd39b83867c16f98213dff0b68f90b86b47e965f",
+      "sizeBytes": 1411
+    },
+    {
+      "path": "license-audit/native-build-2-object-directives.txt",
+      "sha256Bytes": "dbcb50dafdf164face32cf199f2e8a7494412b86e8adcf936fd006fb48383318",
+      "sizeBytes": 6479
+    },
+    {
+      "path": "license-audit/native-library-license-input-pins.json",
+      "sha256Bytes": "989e3afffc496caa5cd3916b7c6c0eec14c4d89da295f3be1ae97588451892f4",
+      "sizeBytes": 3215
+    },
+    {
+      "path": "license-audit/relevant-header-license-pins.json",
+      "sha256Bytes": "6958b3f32e61e3f3c164be993c2ca88755dcc71f05d8f8d76047edc4de5c9311",
+      "sizeBytes": 4295
+    },
+    {
+      "path": "license-audit/sdk-10.0.26100.0-license.extracted.txt",
+      "sha256Bytes": "41a2fa9982a35b87637dad6dfea166aed95fb8e52b5acaba7c73d9a8efd0b7fa",
+      "sizeBytes": 28195
+    },
+    {
+      "path": "license-audit/sdk-10.0.26100.0-license.rtf",
+      "sha256Bytes": "0f4a26ac9dc50066f8a1bfeaaf3f092d1b9e4791df5487b9f3c31e7c3dc4d7f5",
+      "sizeBytes": 248573
+    },
+    {
+      "path": "license-audit/sdk-10.0.26100.0-third-party-notices.rtf",
+      "sha256Bytes": "ebb6640a8246b39b70322c5cec9aad7a71e86ea7b86c9c604d3a7f3ff1b30e89",
+      "sizeBytes": 22279
+    },
+    {
+      "path": "license-audit/sdk-redist.html",
+      "sha256Bytes": "3631545b35c665d28767625550eae9543a62d59621dfe4409762a3e4daa18a19",
+      "sizeBytes": 38644
+    },
+    {
+      "path": "license-audit/vs2022-BuildTools-third-party-notices.txt",
+      "sha256Bytes": "782815bd1256f9ad798211eee4b0e574ddd113bd07700c6921ab25c591fbcda7",
+      "sizeBytes": 7043986
+    },
+    {
+      "path": "license-audit/vs2022-buildtools-license.docx",
+      "sha256Bytes": "2f66b86a00e8d9833789897ce23d05a4a2dbea370cf39c8c1098dbc17d0e7bdc",
+      "sizeBytes": 34395
+    },
+    {
+      "path": "license-audit/vs2022-buildtools-license.extracted.txt",
+      "sha256Bytes": "a042d13500cc2d6b587c6c66fd634338a5602a6794c30f315fc7f5851699eeea",
+      "sizeBytes": 11286
+    },
+    {
+      "path": "license-audit/vs2022-buildtools.product-license.docx",
+      "sha256Bytes": "2f66b86a00e8d9833789897ce23d05a4a2dbea370cf39c8c1098dbc17d0e7bdc",
+      "sizeBytes": 34395
+    },
+    {
+      "path": "license-audit/vs2022-buildtools.product-license.extracted.txt",
+      "sha256Bytes": "c577c6137db9df991585f4988c019761b8dd59578870925b401327ffa3a285aa",
+      "sizeBytes": 11288
+    },
+    {
+      "path": "license-audit/vs2022-buildtools.product-license.html",
+      "sha256Bytes": "7d8ff0e5ae0c2775691435a29c2e702077938f71ab3510348ec9a42b7fc93ed2",
+      "sizeBytes": 237272
+    },
+    {
+      "path": "license-audit/vs2022-community-license.docx",
+      "sha256Bytes": "41a207b10c8ab91d0d2f10a854715f73dca54509581692d2fe179aa3ffcb8540",
+      "sizeBytes": 62859
+    },
+    {
+      "path": "license-audit/vs2022-community-license.extracted.txt",
+      "sha256Bytes": "a38d10afc3ef8fb2e64af972a9c64d998ef964de8101b9f7a59703f72fa3a5ab",
+      "sizeBytes": 19043
+    },
+    {
+      "path": "license-audit/vs2022-community-license.html",
+      "sha256Bytes": "e4c0bfa9c08ecaa7e83859008c1ee9c1b607755b8e0f252fcd796dfde49a9993",
+      "sizeBytes": 235322
+    },
+    {
+      "path": "license-audit/vs2022-cruntime-license.docx",
+      "sha256Bytes": "f1e3d56ceb2ad68aae0711b910375009e651ac5530fa0760f0dea6e81e54fae1",
+      "sizeBytes": 39644
+    },
+    {
+      "path": "license-audit/vs2022-cruntime-license.extracted.txt",
+      "sha256Bytes": "2dd434a15fb5f9d28c33211a5af471eb719acba5db65e5103e0db95e7869a2fb",
+      "sizeBytes": 6624
+    },
+    {
+      "path": "license-audit/vs2022-cruntime-license.html",
+      "sha256Bytes": "18cc861a15e6a6871d162703f77bf8c12357aaf5bbe03d900c2ded048e260f60",
+      "sizeBytes": 235003
+    },
+    {
+      "path": "license-audit/vs2022-license-directory.html",
+      "sha256Bytes": "d4c5910dd9aeb2b82c035ca398050f4b2c4e88a8a358de7175a2c353d9608546",
+      "sizeBytes": 253613
+    },
+    {
+      "path": "license-audit/vs2022-licensing-guidance.redirect.html",
+      "sha256Bytes": "d4e8443a04ae26e464e7b3827797019a1a4c530e92e792401e5402ba638d84ed",
+      "sizeBytes": 359795
+    },
+    {
+      "path": "license-audit/vs2022-local-Redist.txt",
+      "sha256Bytes": "da53b097e02b08e0fc69706102a60bc384fe756426ae4dc4a855e96f95cb2b9c",
+      "sizeBytes": 187
+    },
+    {
+      "path": "license-audit/vs2022-redist.html",
+      "sha256Bytes": "fb6ddff96c3b9744d6bc3f82cd5ab1c6f26fb9a2cac764002e06e2d05c14547a",
+      "sizeBytes": 62969
+    },
+    {
+      "path": "native-build-4/DesktopDiagnosticShare.obj",
+      "sha256Bytes": "d96f46caf79da6451bcfaca9bfb8fbb2950f9fd6ab5646770a3c4323c10677e6",
+      "sizeBytes": 1619975
+    },
+    {
+      "path": "native-build-4/bilipai-diagnostic-share.dll",
+      "sha256Bytes": "f8462f047db79e79405a096862b40216a1e456b917287955e78604f58e5d0bd7",
+      "sizeBytes": 214528
+    },
+    {
+      "path": "native-build-4/bilipai-diagnostic-share.exp",
+      "sha256Bytes": "86071c129b94c2f992dbc0ec82c6d50b11dfabf3c8bba50528e08fffa643c620",
+      "sizeBytes": 1686
+    },
+    {
+      "path": "native-build-4/bilipai-diagnostic-share.lib",
+      "sha256Bytes": "8808586496830b250765bdd9a86563bbec29fa1e4d199e151147046ef8aa78f7",
+      "sizeBytes": 3190
+    },
+    {
+      "path": "native-build-4/compile-evidence.json",
+      "sha256Bytes": "a308d4f30ca62413144c6da788cf28285fb7fb3dfe73aa52161183ee1d881fa8",
+      "sizeBytes": 3739
+    },
+    {
+      "path": "native-build-4/compile.log",
+      "sha256Bytes": "247115d475f3b1d8f43b6fa14813d339c73d13a2b92ca9d16e765eb7594e388b",
+      "sizeBytes": 449
+    },
+    {
+      "path": "native-build-4/compile.raw.log",
+      "sha256Bytes": "89d29666acae31ebc920c3a8e82fb9efe9966f194034e7b70a11bb2efdcc8bb6",
+      "sizeBytes": 447
+    },
+    {
+      "path": "native-build-5/DesktopDiagnosticShare.obj",
+      "sha256Bytes": "3d91c43ab8c46f1899d89a76b848a1688271a830d8bfd50a855d43562396fe69",
+      "sizeBytes": 1619975
+    },
+    {
+      "path": "native-build-5/bilipai-diagnostic-share.dll",
+      "sha256Bytes": "f8462f047db79e79405a096862b40216a1e456b917287955e78604f58e5d0bd7",
+      "sizeBytes": 214528
+    },
+    {
+      "path": "native-build-5/bilipai-diagnostic-share.exp",
+      "sha256Bytes": "df62b38030c0cbf8c28bd7e3dee1edfc61e1d22af2f6668852e0d2d21bbf310d",
+      "sizeBytes": 1686
+    },
+    {
+      "path": "native-build-5/bilipai-diagnostic-share.lib",
+      "sha256Bytes": "8808586496830b250765bdd9a86563bbec29fa1e4d199e151147046ef8aa78f7",
+      "sizeBytes": 3190
+    },
+    {
+      "path": "native-build-5/compile-evidence.json",
+      "sha256Bytes": "9d0983e624d5085b10662ec2ff38ec792d0b4b8dc02a95f31343da1e7eb2d48f",
+      "sizeBytes": 3739
+    },
+    {
+      "path": "native-build-5/compile.log",
+      "sha256Bytes": "42ee76aebc0b2caf3dee4eef74323c704ff7fa7e0cd87c8980cae58cf13b2df5",
+      "sizeBytes": 449
+    },
+    {
+      "path": "native-build-5/compile.raw.log",
+      "sha256Bytes": "d71715627b2cf04fd1599878638fd9eed513b89ff29c87556e056fa4ee94e239",
+      "sizeBytes": 447
+    },
+    {
+      "path": "native-retire-2/result.json",
+      "sha256Bytes": "1f1bedc8ddd341543521c3a0c96274fc80f925de007845a3646ee64fabf7af0e",
+      "sizeBytes": 966
+    },
+    {
+      "path": "native/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "0dae4afdb3025271c463b3752e597f4e2bc521d9cd78ca39130cbfe18e8e1d5a",
+      "sizeBytes": 11124
+    },
+    {
+      "path": "official-session-policy-audit.json",
+      "sha256Bytes": "623f099d2e699490c364ab3d8b6e5025526a1b3a721c7fc569a3aacc853a2cc0",
+      "sizeBytes": 2176
+    },
+    {
+      "path": "prepare-delta.py",
+      "sha256Bytes": "7449ebce0b737f7c9d361ff525e92a0e2bba34e938057c9979c3887dc6a17d07",
+      "sizeBytes": 6125
+    },
+    {
+      "path": "prepared/DesktopCrashShareCache.kt",
+      "sha256Bytes": "aeee090ef9dca73208bfdfaa25018a6bf0ee4b76602f46cd3aa867aea9d46eb6",
+      "sizeBytes": 6506
+    },
+    {
+      "path": "prepared/DesktopNativeCrashShare.kt",
+      "sha256Bytes": "2b4ca7bc011e259f7bd19239817977d63300e8ca20d91aa6e209c1215333cb65",
+      "sizeBytes": 9518
+    },
+    {
+      "path": "probe-retire.py",
+      "sha256Bytes": "6f7848b60587590dfe7bff11b1dc508ecb48cde0854a74345ead54dca184d79a",
+      "sizeBytes": 2891
+    },
+    {
+      "path": "proof-1/compile.log",
+      "sha256Bytes": "8975679da5be96f4cb141814d346d8a4ffa95cb537fc2c0ba9de5d901ca65468",
+      "sizeBytes": 1871
+    },
+    {
+      "path": "proof-2/locked-copy.log",
+      "sha256Bytes": "2cf3919e106d9aa463e490b40ff5c7ccd169da211830006b6394b7d853b4aa6e",
+      "sizeBytes": 1292
+    },
+    {
+      "path": "proof-3/budget.log",
+      "sha256Bytes": "a1889698a6698eef89d30c2e837e4d38c193de506263dfe1962970c55686d952",
+      "sizeBytes": 1738
+    },
+    {
+      "path": "proof-4/repeat-terminal.log",
+      "sha256Bytes": "318d1645f29ce9cbce907cacccc20a1f9515225e5dd80469718dd3aadb43e6cc",
+      "sizeBytes": 1664
+    },
+    {
+      "path": "proof-5/before-data.args",
+      "sha256Bytes": "8fac29d5fcdef54825320790dde63dc8babfbd7514b7c6b648f91345f98f3eff",
+      "sizeBytes": 56903
+    },
+    {
+      "path": "proof-5/before-data.log",
+      "sha256Bytes": "c38fa313c711c4f7fac28c4a490bdf8dba999bbfa915f1622ab734c7f6384fdf",
+      "sizeBytes": 1117
+    },
+    {
+      "path": "proof-5/before-data/result.json",
+      "sha256Bytes": "1443aa819c4b93018f1172bfa25da3cd6dd5c5dc06e637161a4585bfda02c571",
+      "sizeBytes": 762
+    },
+    {
+      "path": "proof-5/budget.args",
+      "sha256Bytes": "15eab9faf4e55e88cc4649a3d521a557ef2704edc5b986c876f9dd5d565ab074",
+      "sizeBytes": 56893
+    },
+    {
+      "path": "proof-5/budget.log",
+      "sha256Bytes": "e1860b1f849303b6c853cba6aac6c56f08c7d4240e740d80a5b5e5cb67a6453a",
+      "sizeBytes": 1376
+    },
+    {
+      "path": "proof-5/budget/result.json",
+      "sha256Bytes": "1762773ffe0000e256a4b66ac6501b2420d44b631908cabe358a7d5d3bbc51f4",
+      "sizeBytes": 1006
+    },
+    {
+      "path": "proof-5/classes/META-INF/com.bilipai.desktop.bilipai_windows.kotlin_module",
+      "sha256Bytes": "14441cd7152512b0f884221b14f841884d030914a4def095a971a0d0aff45f69",
+      "sizeBytes": 184
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$handle$1.class",
+      "sha256Bytes": "fad62775e887b8b77cd743cd948bd545c2924f0183315f5c4065b9e64eed077c",
+      "sizeBytes": 2373
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$load$1.class",
+      "sha256Bytes": "afd60836a5892ddc67444fdaa262b3037b7b89b9ee364de7d142b47ea2615297",
+      "sizeBytes": 1969
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$shutdownForRestore$2.class",
+      "sha256Bytes": "7224bab669c688424ea19e583885cc476969c43ae007a98312da3aa4f12c777d",
+      "sizeBytes": 5144
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.class",
+      "sha256Bytes": "8c3bbbf126d76775c8c848c29e37c92e156c0ee207c700153d106033ddb28042",
+      "sizeBytes": 21518
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptState.class",
+      "sha256Bytes": "5d8b878f18fe540da23d0ddce92881e6084f242cd223eac2e3220ba14df0670d",
+      "sizeBytes": 5730
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashShareCache.class",
+      "sha256Bytes": "7384d25c9e3396da8edec4d6ae236720daccdb62358ccc8f00bea19592cce437",
+      "sizeBytes": 16418
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashShareCapacityException.class",
+      "sha256Bytes": "c69bd9d473dcb3a8ce1edd0c7d8a4d070c84652cfdb122057cf58c2d16a90c88",
+      "sizeBytes": 1217
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopCrashShareLease.class",
+      "sha256Bytes": "e9c6804082905cd044a680ee457c6853934a927f58c6adb1f39beb61ae338acb",
+      "sizeBytes": 1561
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle$crashPrompt$1.class",
+      "sha256Bytes": "8490b9ccd5074ae9b793e65ef4bbdf5816eea45e5d62b5dc8b11d25546d1737a",
+      "sizeBytes": 2260
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle$requestNativeShare$1.class",
+      "sha256Bytes": "c04de8689f2081570e47b2894580f5996d459fb49ea72a418d6106ba474cc669",
+      "sizeBytes": 2140
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle$shutdownForRestore$2.class",
+      "sha256Bytes": "eef95df369e5136b96d4527e318843ea8243c68224751860d4ef850561c06365",
+      "sizeBytes": 9425
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.class",
+      "sha256Bytes": "fecb23e2209dcdbc2dddf3520b91db99d700a60e69f58ec54c6670bb206f6f25",
+      "sizeBytes": 10428
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycleKt.class",
+      "sha256Bytes": "1bffd92a74cb098b90a58f4ced10a4d3698699d7203e33ea736e059bac1a3c7c",
+      "sizeBytes": 2310
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$1.class",
+      "sha256Bytes": "9b58987879cbd4b2c42df104e4ba6674c32ba146a351159b5e003ca0ddcd9b42",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$Companion.class",
+      "sha256Bytes": "031271121480ad8581b31b8378255d89f9045349837e81b91b7cf53f901f1c51",
+      "sizeBytes": 1800
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$await$2.class",
+      "sha256Bytes": "424d3f21ae8078a1ad08a3e87cf3eca8726fcf836cfec47b78fb81386c103af2",
+      "sizeBytes": 3572
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$clearAll$action$1.class",
+      "sha256Bytes": "e6046954da18cea01727e55890b23953fb26053489b366816892fed0a07ec4dc",
+      "sizeBytes": 6113
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$exportTo$1.class",
+      "sha256Bytes": "df9522fed4e9af61713f1c527e834040f164c7b9b33908f5fa73e04aafb66ff4",
+      "sizeBytes": 1835
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics$shutdownForRestore$2.class",
+      "sha256Bytes": "e16f6b71c95f79a3a2574af2f3065d562c614ba65d9fc9d5369342caaf984cbb",
+      "sizeBytes": 3254
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnostics.class",
+      "sha256Bytes": "500d2a767227b3f58ee609e4fed5751b6b9276f3b08c3eeb96582941efd33deb",
+      "sizeBytes": 40196
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticsBridge.class",
+      "sha256Bytes": "3a69eb89c0e21f2b458e3d39aa98967c21255e67aca36d9a8bae46ec1e89c337",
+      "sizeBytes": 3395
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopDiagnosticsKt.class",
+      "sha256Bytes": "c8d4c0bf4f8ce76c50236c2e2b5f1bdf6df10fac6cbc658fec79ce8747e0851b",
+      "sizeBytes": 1570
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$1.class",
+      "sha256Bytes": "8f4203883027b12759847687a7fc57addf98e1cf8da7a41a1c2e546272ebb5ba",
+      "sizeBytes": 2360
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$Active.class",
+      "sha256Bytes": "1d87fb634eb87537b2e6a9f202dc6580d8b5b94ece36e0d7e45659cda14ad12c",
+      "sizeBytes": 4779
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$Api.class",
+      "sha256Bytes": "3e08f7021ed91a64df1decc44978b15ec26ca9a49049092afc961b01ca809c91",
+      "sizeBytes": 1462
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$clearAllOwned$2.class",
+      "sha256Bytes": "7a177994ac4d6f0d02473217f00b37de0c56e22c9184370ac28d2eb6857726b1",
+      "sizeBytes": 9710
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$releaseLocked$2$outcome$1.class",
+      "sha256Bytes": "dff26bc5a3be32fb4ad26f025f8e3343c2cbb51a05fb1fb35b8cb89370c213f8",
+      "sizeBytes": 4129
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$releaseLocked$2.class",
+      "sha256Bytes": "a92ae3b1477112703e74f27e40f97df0ad80c64eb5589f6dc31ac1966368d69a",
+      "sizeBytes": 5367
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$settleLocked$1.class",
+      "sha256Bytes": "8d0fac117a3a51cf751a3aa2c808ec2f1092bf6e74a09d8445676df3d4a6975d",
+      "sizeBytes": 2039
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$1.class",
+      "sha256Bytes": "51619e814e1b03a73e1199bdb49c852e4ee26069dd0fb17557a61a88b748e02e",
+      "sizeBytes": 3373
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$3$2.class",
+      "sha256Bytes": "e5f070002af65cfd7b1a7a00820a5f669ed741744dd0719153f298af75fdd045",
+      "sizeBytes": 4194
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$3$3.class",
+      "sha256Bytes": "e8c5bb80b5cd35e52b98859f4cbd6473c339b9d373da276db584d3902ae7b570",
+      "sizeBytes": 7897
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$3$6$safe$1.class",
+      "sha256Bytes": "561f3c3b67c95da1f78af075b6549c532783294e5c357e506a39cfc0af17110a",
+      "sizeBytes": 4078
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$3$6.class",
+      "sha256Bytes": "17347819c96fa6c787d198c396aefdc3d37b8f539eed59a5f3a4e124e2c24d5a",
+      "sizeBytes": 6335
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shareSnapshot$3$shown$1.class",
+      "sha256Bytes": "246b06ea211ff2c376d29923bb7b65d2944f833c4d613871f507c81faebf2126",
+      "sizeBytes": 4092
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$shutdownForRestore$2.class",
+      "sha256Bytes": "03eef0493524b4460b9e32b93549c9e6e110e6c49b65730538a8dfc0471e3afc",
+      "sizeBytes": 7370
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$stopWatcher$1.class",
+      "sha256Bytes": "59a53a07efef3b92c21ec0120b868ea92dfab6a2c1db6faf9f761c9641170505",
+      "sizeBytes": 1971
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare$transport$2$1$2.class",
+      "sha256Bytes": "35687c2c95fd22a78940786a10291b8bb8effb3f93b2ec1c2b9404de424af48b",
+      "sizeBytes": 4777
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare.class",
+      "sha256Bytes": "3c60e64f2b42eee32a59ddf75622a8eab29e4d4af7e4f4902aef5b9a65a3e1b6",
+      "sizeBytes": 32597
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeShareRetirement.class",
+      "sha256Bytes": "f2b34562e644ad6bb82c59f5f43545a9ad62ed7802ea4e507c367de08264176b",
+      "sizeBytes": 2810
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/DesktopNativeShareTransport.class",
+      "sha256Bytes": "68ff90c5d5901a4cf7599634f37093ecdf9f3b40a7b083b5eb8a1e693bb009ce",
+      "sizeBytes": 1006
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/EventPort$Item.class",
+      "sha256Bytes": "4e73376e192229756e20618f6f57a0df9ddb88bb9506e76417c63bc0b3b0693d",
+      "sizeBytes": 4354
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/EventPort.class",
+      "sha256Bytes": "bb27b45c1bfbce052cb75f5fab0307fead42c733d461a69985f7cc3815884be7",
+      "sizeBytes": 7573
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/Fence.class",
+      "sha256Bytes": "29eb9344d415ee243563551de436579a1e5915640d7cbbe705eb7d68aca402a0",
+      "sizeBytes": 2358
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$cacheFiles$1$1.class",
+      "sha256Bytes": "c5bdff61867f67233ff6fedab0cdc028346bd13477f631739ba508a4b2e65883",
+      "sizeBytes": 1664
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$eventually$2.class",
+      "sha256Bytes": "ca2f848dea8f0977ffc7ac3adefe75298d3655e2bcff5e3a9ef97d4e5c628dc4",
+      "sizeBytes": 3648
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1$clear$1.class",
+      "sha256Bytes": "0b6e66dd888a420bcabfaa1f68afa4955b06ab64ba26b1ee1ae8e21476107d39",
+      "sizeBytes": 3437
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1$share$1.class",
+      "sha256Bytes": "9d12aa6217444b534bb7e46a724ef3f594c29e4e502d7c4375f2da88c6431e98",
+      "sizeBytes": 3592
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt$main$1.class",
+      "sha256Bytes": "6ba578298158a0b3f7f43c7c06661b037d23fa0b2ea3e6fcdc17d1f0c5bf7aab",
+      "sizeBytes": 81876
+    },
+    {
+      "path": "proof-5/classes/com/bilipai/desktop/diagnostics/leaseproof/NativeShareLeaseFixtureKt.class",
+      "sha256Bytes": "cff6c8862210d145707546018143fa32b8ca8af2fae67f0b37738ae1f4451b59",
+      "sizeBytes": 7059
+    },
+    {
+      "path": "proof-5/clear-live-retry.args",
+      "sha256Bytes": "4660a01c10f34bb7f369f1980293ea0c7e98c72b1f4e62948264439f92a5f537",
+      "sizeBytes": 56913
+    },
+    {
+      "path": "proof-5/clear-live-retry.log",
+      "sha256Bytes": "ab6307b25ddd4d0c6db47072b5f8d7e0feb77b4322e5c8131129c1223d168095",
+      "sizeBytes": 1180
+    },
+    {
+      "path": "proof-5/clear-live-retry/result.json",
+      "sha256Bytes": "94e943385ebe1a37366b707983f9de035b883e2b12ca2486da551d4534dfb7ea",
+      "sizeBytes": 826
+    },
+    {
+      "path": "proof-5/clear-queued.args",
+      "sha256Bytes": "2d852fa35a4dce8c47ba43b858645c83fab8434e79d4cc0aebb8779470e0a701",
+      "sizeBytes": 56905
+    },
+    {
+      "path": "proof-5/clear-queued.log",
+      "sha256Bytes": "8d738b4386cc3f14bca5ad6536e085922d46b91caf389f3fbda5ec5f5e5fbaaa",
+      "sizeBytes": 1187
+    },
+    {
+      "path": "proof-5/clear-queued/result.json",
+      "sha256Bytes": "e3fdeffbd9d34f37184e2d3207431cd930e9adbf1c388abad44a60fb117b8f6c",
+      "sizeBytes": 830
+    },
+    {
+      "path": "proof-5/compile-evidence.json",
+      "sha256Bytes": "5c5d7a9a8c22ca80c72ad5173417e5c3ef8fea76f7d095ef72a107535dc456cb",
+      "sizeBytes": 3688
+    },
+    {
+      "path": "proof-5/compile.args",
+      "sha256Bytes": "235fd9b45154cc9f044419d60c13369873517569799cdcbb38b3f8c45cf5f27e",
+      "sizeBytes": 59962
+    },
+    {
+      "path": "proof-5/compile.log",
+      "sha256Bytes": "601d4c8566432ab0184ba7819adad6919d3d96fcc133416b511d66be2d2dfc70",
+      "sizeBytes": 151
+    },
+    {
+      "path": "proof-5/dependency-identities.json",
+      "sha256Bytes": "d6c52e4c274964b1f19d9b197b3a0b81cbab585805c7d2aeb96e8eb3685b064b",
+      "sizeBytes": 87067
+    },
+    {
+      "path": "proof-5/locked-copy.args",
+      "sha256Bytes": "00647280b63418d5f0d997af401ebb649ce443db2bb912ca563491b3d1bdfeee",
+      "sizeBytes": 56903
+    },
+    {
+      "path": "proof-5/locked-copy.log",
+      "sha256Bytes": "3cc0f3d1f9ab743447add04dd66a58ef70b187ca663ff6dffe3241d83f000052",
+      "sizeBytes": 1122
+    },
+    {
+      "path": "proof-5/locked-copy/result.json",
+      "sha256Bytes": "7c47cda9a83429b1ba334c624052d3b6a670e61880c724e00a22e37afd6e318a",
+      "sizeBytes": 767
+    },
+    {
+      "path": "proof-5/missing-events.args",
+      "sha256Bytes": "dc0a036f51ba386b4451a81c5cf5608d966fc9a44dd1dec36e10f05843ac7cea",
+      "sizeBytes": 56909
+    },
+    {
+      "path": "proof-5/missing-events.log",
+      "sha256Bytes": "da01ca4da595df40872e600fd87fef7e038acc24765b5fa049a7d1cfa0d33aa8",
+      "sizeBytes": 1359
+    },
+    {
+      "path": "proof-5/missing-events/result.json",
+      "sha256Bytes": "2ff32d06b671e47b5b028061ba35d59dea0e077815a445cbf2f7e28fdbb3fe17",
+      "sizeBytes": 995
+    },
+    {
+      "path": "proof-5/repeat-terminal.args",
+      "sha256Bytes": "513fffd170696ed5254f695f3a096e408f458de5ad8de5c7366e0db0c7fe9fb6",
+      "sizeBytes": 56911
+    },
+    {
+      "path": "proof-5/repeat-terminal.log",
+      "sha256Bytes": "49617c7131c223e8adfaab076798ef3afe85a8ac23b037a07f951649b6cdcdb2",
+      "sizeBytes": 1226
+    },
+    {
+      "path": "proof-5/repeat-terminal/result.json",
+      "sha256Bytes": "da15d8341c83fadf90ee9c8de183953c0607b0f9ff9b3baf2c8332b6453972d2",
+      "sizeBytes": 874
+    },
+    {
+      "path": "proof-5/restore-retirement.args",
+      "sha256Bytes": "98e2391719d6a20d08ab2524c1c94225620c4b12ec795f9c8719e17244e198ca",
+      "sizeBytes": 56917
+    },
+    {
+      "path": "proof-5/restore-retirement.log",
+      "sha256Bytes": "f5c8534b95720045b8e9d379eb2c6f39d11fe73d58e84debf7f6399bd4ef8299",
+      "sizeBytes": 1170
+    },
+    {
+      "path": "proof-5/restore-retirement/result.json",
+      "sha256Bytes": "58c6e00ef2773101508180ea03704854e75e50a317a19a6dfb74ef4a12b4e054",
+      "sizeBytes": 818
+    },
+    {
+      "path": "raw-synthetic-disk-manifest.json",
+      "sha256Bytes": "9665bba6ceaff57351709f242498d1010695ecb70482dfe921b30ffb43f5275f",
+      "sizeBytes": 11820
+    },
+    {
+      "path": "raw-synthetic-disk/before-data/logs/basic.log",
+      "sha256Bytes": "4d691c5edcd3aa394254330152d1803285f04a7daf43b92d1c52a935ef175917",
+      "sizeBytes": 105
+    },
+    {
+      "path": "raw-synthetic-disk/before-data/logs/last_crash_log.txt",
+      "sha256Bytes": "cc40312ed98e9ec2c41d9f723b8af65b6ffdb5bdbb9191e3146608b1120ecd21",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "raw-synthetic-disk/before-data/logs/pending_crash.marker",
+      "sha256Bytes": "76c91e248c442ee5fdd43cc01629b8f2f89a747eb4fae6d0bf3c98e1e6b816d8",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/budget/logs/last_crash_log.txt",
+      "sha256Bytes": "33fc3332cb52996d917eda6463438014704bfe606a09afd502dd627188f181e6",
+      "sizeBytes": 1593
+    },
+    {
+      "path": "raw-synthetic-disk/budget/logs/pending_crash.marker",
+      "sha256Bytes": "8e43ea9ffa42fca84968652f7cdfc5b98f31d04f7b8759e01dd8cf3e1c33589a",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/clear-live-retry/logs/last_crash_log.txt",
+      "sha256Bytes": "730e36fa36a516832e1cbeab82bc802a7f1cc583492e1dc67147636f7862f151",
+      "sizeBytes": 1567
+    },
+    {
+      "path": "raw-synthetic-disk/clear-live-retry/logs/pending_crash.marker",
+      "sha256Bytes": "b85e68e2732d8b952af942d7b22659a4b7533abe28b4561d8e3c2a86754d04ce",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/clear-queued/logs/last_crash_log.txt",
+      "sha256Bytes": "179ef421a6425a28fee3c9f3f22a19455ef74f12d001daa4235f92567232a64c",
+      "sizeBytes": 1351
+    },
+    {
+      "path": "raw-synthetic-disk/clear-queued/logs/pending_crash.marker",
+      "sha256Bytes": "e66a1911fc648b5abaf95ee418dd77a16f294387b5ff085ed019cf3999c8c1b2",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/locked-copy/logs/basic.log",
+      "sha256Bytes": "5cd960c2c7c6cfecfd10e548c489c52166fd26d7fed360a9663fd8bb1539ce4e",
+      "sizeBytes": 105
+    },
+    {
+      "path": "raw-synthetic-disk/locked-copy/logs/last_crash_log.txt",
+      "sha256Bytes": "f24fd1cea7c8fcda8335f34079d3a3ff1a86f193b6c005b90f178e51be551e89",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "raw-synthetic-disk/locked-copy/logs/pending_crash.marker",
+      "sha256Bytes": "408f1c568f5406a0d28c6a3349212e6cdaa7802a1ffc939db3507b53360ac2c1",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/native-retire/last_crash_log.txt",
+      "sha256Bytes": "8bd19b03d6138cbd3c3d04878a4aee6592849df3b12d5295a6b8a00fcf1784f1",
+      "sizeBytes": 56
+    },
+    {
+      "path": "raw-synthetic-disk/repeat-terminal/logs/basic.log",
+      "sha256Bytes": "23b8bbe5b1848624f45b0257fe778124ae531e1a80da4b5bdd92cb1aa5d2f867",
+      "sizeBytes": 105
+    },
+    {
+      "path": "raw-synthetic-disk/repeat-terminal/logs/last_crash_log.txt",
+      "sha256Bytes": "3cd983ce1dbfd1e2896c04a6fcec1b943685fb637b9e14d5a472c6ab59cd116f",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "raw-synthetic-disk/repeat-terminal/logs/pending_crash.marker",
+      "sha256Bytes": "98b5994b0b2792d1826817b1a114cfd1e000d226f234aa1aa185320a938e3f27",
+      "sizeBytes": 13
+    },
+    {
+      "path": "raw-synthetic-disk/restore-retirement/cache/diagnostic-share/edf6819f-544a-482c-a4fc-54d0fdd1dcc4/.lease",
+      "sha256Bytes": "6cd86f6568a98dd3f2c2b94a176b44f75464759480d62dd6a362ece69320ba40",
+      "sizeBytes": 45
+    },
+    {
+      "path": "raw-synthetic-disk/restore-retirement/cache/diagnostic-share/edf6819f-544a-482c-a4fc-54d0fdd1dcc4/last_crash_log.txt",
+      "sha256Bytes": "6c51d433c5b2e679ee635c97c06cd5161e32e5e29c5182ba8dd402a742da3de1",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "raw-synthetic-disk/restore-retirement/logs/basic.log",
+      "sha256Bytes": "060cc7a7ce1741e29c8189076b85ee472d36551882133dc8083c6912640ea79c",
+      "sizeBytes": 105
+    },
+    {
+      "path": "raw-synthetic-disk/restore-retirement/logs/last_crash_log.txt",
+      "sha256Bytes": "6c51d433c5b2e679ee635c97c06cd5161e32e5e29c5182ba8dd402a742da3de1",
+      "sizeBytes": 1441
+    },
+    {
+      "path": "raw-synthetic-disk/restore-retirement/logs/pending_crash.marker",
+      "sha256Bytes": "06451742a4562d0bb30f882bbbefc3240e2da810bfab796a26f6c98fb9579e21",
+      "sizeBytes": 13
+    }
+  ],
+  "preparedFixtureScenarios": 8,
+  "preparedFixtureAssertions": 50,
+  "newActualRetireAbiChecks": 5,
+  "assertionDomainsSeparate": true,
+  "currentProductSnapshotManifestSha256Bytes": "3bfc84927aacc353adb0aadabf375242918fca0d98b41cb3dc115e248898eeb7",
+  "preparedProducerOverrides": 3,
+  "syntheticNativeEventsInJvm": true,
+  "realCompletionCancellationEvents": false,
+  "actualSystemShareUI": false,
+  "HWND": false,
+  "mainOrSharedGradleMutations": false,
+  "newOriginalIdentities": 0,
+  "newMavenDependencies": 0,
+  "finalDllSha256Bytes": "f8462f047db79e79405a096862b40216a1e456b917287955e78604f58e5d0bd7",
+  "immutableLicenseAuditSha256Bytes": "175759e248697ef8bcb5e92e9fe54246c37179360e0cde969a9261bce2fef37c",
+  "releaseAllowed": false,
+  "entitlementStatus": "not_inspected_unverified_does_not_assert_missing_license",
+  "finalPayload": "integration-final + prepared + native + build-native.py; Main/Gradle ports Root-owned",
+  "syntheticRawFileCopies": 21,
+  "largeUnrelatedSyntheticInputPinnedNotCopied": true,
+  "historicalFailureLogsIncluded": 4,
+  "excludedHistoricalOutputs": "Earlier integration draft, native builds1-3, old Retire1, failed fixture classes. They remain unmodified on disk, not accepted final proof."
+}

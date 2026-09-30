@@ -1,6 +1,12 @@
 /build/
 /.gradle/
 /native/
+!/native/
+/native/*
+!/native/diagnostic-share/
+/native/diagnostic-share/*
+!/native/diagnostic-share/DesktopDiagnosticShare.cpp
+!/native/diagnostic-share/approved-development-build.json
 /resources/common/native/
 /resources/common/js-engine/
 /resources/common/notices/appearance/

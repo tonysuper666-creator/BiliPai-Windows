@@ -1,0 +1,9 @@
+PASS real Windows file handle can reject unlink after native terminal retirement
+PASS filesystem failure leaves visible safe error and no retained native session
+PASS next explicit request prunes known-terminal disk lease after lock release
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-actual-lease-proof-02/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

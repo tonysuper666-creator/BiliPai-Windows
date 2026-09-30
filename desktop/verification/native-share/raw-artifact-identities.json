@@ -1,0 +1,2091 @@
+{
+  "frozen": true,
+  "selectedNonbinaryEvidence": true,
+  "artifacts": [
+    {
+      "path": "desktop/verification/native-share/historical-cohort-manifests/terminal-leases.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-native-share-parity\\terminal-leases\\frozen-handoff.json",
+      "sha256Bytes": "1ffdfd72f9445ac035f6179d3214c93e138cb4a3707263d018caa3d976d215f9",
+      "sizeBytes": 39609
+    },
+    {
+      "path": "desktop/verification/native-share/historical-cohort-manifests/native-share-current-main-review.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-current-main-review\\frozen-handoff.json",
+      "sha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1",
+      "sizeBytes": 28740
+    },
+    {
+      "path": "desktop/verification/native-share/historical-cohort-manifests/native-share-community-toolchain-parity.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-community-toolchain-parity\\frozen-handoff.json",
+      "sha256Bytes": "17d368c4e7803f88aea39414ccce115e3ebfa1ae8dad703ecf7939c67fdb3cad",
+      "sizeBytes": 6689
+    },
+    {
+      "path": "desktop/verification/native-share/actual-main-snapshot/manifest.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\manifest.json",
+      "sha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+      "sizeBytes": 265262
+    },
+    {
+      "path": "desktop/verification/native-share/actual-main-snapshot/ordered-runtime-cp.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\ordered-runtime-cp.json",
+      "sha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+      "sizeBytes": 33328
+    },
+    {
+      "path": "desktop/verification/native-share/actual-main-snapshot/TEST-com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest.xml",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-product-snapshot-01\\TEST-com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest.xml",
+      "sha256Bytes": "6bf83e29a0148251d4297243ccf89dbc1d3890876f35dd8e68840c7ffca14664",
+      "sizeBytes": 3343
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-main-tests-01.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-tests-01.log",
+      "sha256Bytes": "c80c49030da507e1f9c076f87df1f988d8f45e5382686f0d494d96f5601a8e84",
+      "sizeBytes": 9741
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-main-runtime-export.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-main-runtime-export.log",
+      "sha256Bytes": "f62f29da67c777258a938b0bcfde44e0c9bc9460717632c61712df723d787a6f",
+      "sizeBytes": 298
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/export-native-share-runtime.gradle",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\export-native-share-runtime.gradle",
+      "sha256Bytes": "ace82c765fd5d5a9103f0b118a0877aa59c061b24ddea76efa8f6ea8fe026952",
+      "sizeBytes": 598
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-root-source-install.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-root-source-install.json",
+      "sha256Bytes": "b85752d02e3ec694e2d452e20b008583c94c02e71544d6f48e9eb24111f25bda",
+      "sizeBytes": 507
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/snapshot-native-share-main-product-01.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\snapshot-native-share-main-product-01.py",
+      "sha256Bytes": "4b6c01130a6dbadc172b88d3dd4d981ff58b706f9aefbccd06bb7b450da8f365",
+      "sizeBytes": 5859
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-actual-lease-proof.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof.py",
+      "sha256Bytes": "b6cf052788e3e157c7850c8d92c5120331cd74680f72660be8e3445acf747433",
+      "sizeBytes": 5169
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-actual-lease-proof-02.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02.py",
+      "sha256Bytes": "8eae60d9e2447bdd407e62c16ea76921c710d441037fa4b40707c82c75b76181",
+      "sizeBytes": 5146
+    },
+    {
+      "path": "desktop/verification/native-share/root-recipes/native-share-lease-fixture-stable-observation-02.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-lease-fixture-stable-observation-02.kt",
+      "sha256Bytes": "fdcbfb52bf0c2bc97d0385c8b6c961dde8896fcf9bbdc537207bb96c27f38d66",
+      "sizeBytes": 15217
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/fixture-source-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\fixture-source-identities.json",
+      "sha256Bytes": "08c3dde6ba11d9a0f94b1005b803a086586dd986e90208758a7507a2242607c5",
+      "sizeBytes": 220
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/NativeShareProductUiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\NativeShareProductUiFixture.kt",
+      "sha256Bytes": "c3697c72c87dd2f3be3f8484007a729b3739a06cb41ac52d5540c9331522a045",
+      "sizeBytes": 22085
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/predecessor-byte-verification.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\predecessor-byte-verification.json",
+      "sha256Bytes": "32560af612b108f7f92dcab049d165d54d02ce500ad4ce738584674fed80a30a",
+      "sizeBytes": 841
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/preparation-manifest.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\preparation-manifest.json",
+      "sha256Bytes": "927e3b52952cec4f489ec75fc1df02b5c7ae33be91c95273a31824c1d37762ff",
+      "sizeBytes": 1155
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/README.md",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\README.md",
+      "sha256Bytes": "72f2f25b3cfbbc43ec6c037c4d5983f2b07352f0caa4c97d2bfc1fc581ca2567",
+      "sizeBytes": 3178
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runner.py",
+      "sha256Bytes": "9a7b402418679de02001961b6615d5a23d60bdde92d424a918cae2a2b4970ee6",
+      "sizeBytes": 10111
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/compile-evidence.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\compile-evidence.json",
+      "sha256Bytes": "837161a2506e1e57c6fd476c865554f8cf8bebd8d22e2198e631475f7134d689",
+      "sizeBytes": 38670
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\compile.log",
+      "sha256Bytes": "70ecc5628c8dd9433921fd7274ae268ca04d393264125e63c731b221eb2beaf3",
+      "sizeBytes": 214
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/compiler.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\compiler.args",
+      "sha256Bytes": "fb2e76de4169f33fa134f5588008806438ecee04f070fa176953b619115dabd3",
+      "sizeBytes": 22763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\fixture-class-identities.json",
+      "sha256Bytes": "06147be47321cb513e035f6c1ec26105283a2a8cbd5372033b4e004eb5f9f1c1",
+      "sizeBytes": 3842
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/frozen-fixture-sources/fixture-source-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\frozen-fixture-sources\\fixture-source-identities.json",
+      "sha256Bytes": "08c3dde6ba11d9a0f94b1005b803a086586dd986e90208758a7507a2242607c5",
+      "sizeBytes": 220
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/frozen-fixture-sources/NativeShareProductUiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\frozen-fixture-sources\\NativeShareProductUiFixture.kt",
+      "sha256Bytes": "c3697c72c87dd2f3be3f8484007a729b3739a06cb41ac52d5540c9331522a045",
+      "sizeBytes": 22085
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/frozen-fixture-sources/README.md",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\frozen-fixture-sources\\README.md",
+      "sha256Bytes": "72f2f25b3cfbbc43ec6c037c4d5983f2b07352f0caa4c97d2bfc1fc581ca2567",
+      "sizeBytes": 3178
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/frozen-fixture-sources/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\frozen-fixture-sources\\runner.py",
+      "sha256Bytes": "9a7b402418679de02001961b6615d5a23d60bdde92d424a918cae2a2b4970ee6",
+      "sizeBytes": 10111
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/product-class-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\product-class-pins.json",
+      "sha256Bytes": "a0dc3e1344da0877881e6d1beaed1e7326dcac3b183c05598fa3be1f9fc77cd1",
+      "sizeBytes": 7692
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/accepted-evidence.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\accepted-evidence.json",
+      "sha256Bytes": "f704883bb860247614238a4d95f57fab8058532883957e8989e6e6df83df2cfe",
+      "sizeBytes": 35074
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/actual-loaded-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\actual-loaded-class-identities.json",
+      "sha256Bytes": "b0920e785e206f4234ed3ee565aa8eb206b5cfa4ae505206b9e3e3ebfb2e1c07",
+      "sizeBytes": 7090
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\01-original-crash-prompt.png",
+      "sha256Bytes": "53e5259c62157d65ee9dd5b08329b6a8308bab51860fc8f4b146ae2361939a25",
+      "sizeBytes": 20297
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\01-state.json",
+      "sha256Bytes": "631a8d82fdb1376084c90f6cad4afc0608546623755179b27323fe85f47761e8",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/02-dismiss-marker-only-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\02-dismiss-marker-only-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/02-dismiss-marker-only.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\02-dismiss-marker-only.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\actual-pointer-events.json",
+      "sha256Bytes": "9e20fa6aa0e7de9864b7f1a4834969cfc59f954a86ca4f85a724c3f9c8dbb13a",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\final-state.json",
+      "sha256Bytes": "442b5c24465ae27db537d01b37547c836af22b3f5d42d58059540304c6993733",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-dismiss/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-dismiss\\synthetic-native-transport-events.json",
+      "sha256Bytes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "sizeBytes": 2
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\01-original-crash-prompt.png",
+      "sha256Bytes": "53e5259c62157d65ee9dd5b08329b6a8308bab51860fc8f4b146ae2361939a25",
+      "sizeBytes": 20297
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\01-state.json",
+      "sha256Bytes": "3c36cc4fb38b2240e00a8f6478b3e30ad87160ec32e2baf3aff0f0784b300090",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\02-after-original-share-semantics.json",
+      "sha256Bytes": "66800d68a3373b9677ba234c5a37e9d3f5fbfa6f66c2d8dac3bcb6767ee1b333",
+      "sizeBytes": 983
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\02-after-original-share.png",
+      "sha256Bytes": "d71a3cd5c6f98b048482fdb8aeb50967f06d930f7612f96d21483f1deefd5b81",
+      "sizeBytes": 13900
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\02-state.json",
+      "sha256Bytes": "8c6cdeca0a7bc3c49d77ff2076e40abc23ebcb5a7bc9fe4eca1e0a1579d832e5",
+      "sizeBytes": 370
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/03-real-marker-denial-retry-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\03-real-marker-denial-retry-semantics.json",
+      "sha256Bytes": "66800d68a3373b9677ba234c5a37e9d3f5fbfa6f66c2d8dac3bcb6767ee1b333",
+      "sizeBytes": 983
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/03-real-marker-denial-retry.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\03-real-marker-denial-retry.png",
+      "sha256Bytes": "d71a3cd5c6f98b048482fdb8aeb50967f06d930f7612f96d21483f1deefd5b81",
+      "sizeBytes": 13900
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "5263511cf12e26dd408f9af9a5264caa72c99e5fd489358df898676cb7fcce7f",
+      "sizeBytes": 4896
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\04-original-failure-dialog.png",
+      "sha256Bytes": "459b028ee1b471c49073fc112041affdc9ccaf5333b9774d97138958b64981c0",
+      "sizeBytes": 47642
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\04-state.json",
+      "sha256Bytes": "cdda143ea4c0a1172a55e0d7738fb1addfd21b0c13f2b507a04d3e5b901b6ffa",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "5ee9c1559e932e7f2f27755166152ed4e6c48f2ef3925a171c7d33895195e979",
+      "sizeBytes": 3967
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\05-original-local-viewer.png",
+      "sha256Bytes": "b4658b3f53730053f2562af8060dc05f69153970ea7b2ca656668610c0d6f37c",
+      "sizeBytes": 48843
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\actual-pointer-events.json",
+      "sha256Bytes": "1b0042166e9543a80659231ad07f5cbbed5459e18f08ebcf04816c1b01542e67",
+      "sizeBytes": 635
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\final-state.json",
+      "sha256Bytes": "c1762b163c9077bdb7b7a107e71d9cf748ff708fe94391843bbe2bce036c681b",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-marker_retry/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-marker_retry\\synthetic-native-transport-events.json",
+      "sha256Bytes": "058734f6ce2f73fa3d9f8e1ef08cee27e4ba087f51ca8ffc4e4f425ba19cd2a0",
+      "sizeBytes": 3217
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\01-original-crash-prompt.png",
+      "sha256Bytes": "53e5259c62157d65ee9dd5b08329b6a8308bab51860fc8f4b146ae2361939a25",
+      "sizeBytes": 20297
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\01-state.json",
+      "sha256Bytes": "8ad8010f8880bd62d9f487d0fe267b7a326ec6f6a9324897ebd2c84df79d0b18",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\02-state.json",
+      "sha256Bytes": "af51c114c01e7e7b3f594ad59be779d37d54c5719dac5b2ae477d77835bc4532",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/03-after-explicit-completion-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\03-after-explicit-completion-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/03-after-explicit-completion.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\03-after-explicit-completion.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/03-before-explicit-completion.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\03-before-explicit-completion.json",
+      "sha256Bytes": "60f59f93cd3e1388c3324ad38eb7c576cb73db1fa3acd1362d1f95cb91d72d58",
+      "sizeBytes": 182
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\actual-pointer-events.json",
+      "sha256Bytes": "7dc3c21f15bfa0018835eeb9f8f206ba849aa9dd8998da650cd43d5b7ad31c90",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\final-state.json",
+      "sha256Bytes": "a93e8ee72cf6bf1bfa791d935be750433a42357649da302c8c3b90feddd23389",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-terminal/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-terminal\\synthetic-native-transport-events.json",
+      "sha256Bytes": "e980325ad0a1d70ec0602958da2fe7a8df42f4ff46d771615ee674d439c9328d",
+      "sizeBytes": 2140
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\01-original-crash-prompt.png",
+      "sha256Bytes": "53e5259c62157d65ee9dd5b08329b6a8308bab51860fc8f4b146ae2361939a25",
+      "sizeBytes": 20297
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\01-state.json",
+      "sha256Bytes": "de2be057acc537b792624f7ca65b43071f797e0a00117d98c3394e263ba36b29",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\02-after-original-share-semantics.json",
+      "sha256Bytes": "0fe58b3b287980c7ce8a1c4451d87cedccfe0a6c8d585edfa3a1a0cb93e7569d",
+      "sizeBytes": 4763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\02-after-original-share.png",
+      "sha256Bytes": "b4ec08c2f8e6c52a72480b9375178581d32cb15182c1b7d9aa3a91e33dc92a78",
+      "sizeBytes": 46167
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\02-state.json",
+      "sha256Bytes": "24a0b177bf40ee0650dcd6bebec47e94ff10af932ee0cf0b4e57dbe87045d85e",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "0fe58b3b287980c7ce8a1c4451d87cedccfe0a6c8d585edfa3a1a0cb93e7569d",
+      "sizeBytes": 4763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\04-original-failure-dialog.png",
+      "sha256Bytes": "b4ec08c2f8e6c52a72480b9375178581d32cb15182c1b7d9aa3a91e33dc92a78",
+      "sizeBytes": 46167
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\04-state.json",
+      "sha256Bytes": "24a0b177bf40ee0650dcd6bebec47e94ff10af932ee0cf0b4e57dbe87045d85e",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "bfe3cc270c22a52268f201285932b9e7f961d93f12dddad79f2b7324ad793269",
+      "sizeBytes": 3834
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\05-original-local-viewer.png",
+      "sha256Bytes": "9e1961b8acbbf89450473d4c55121a48ecffef79f531492fdd454c420fbe7b32",
+      "sizeBytes": 47679
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\actual-pointer-events.json",
+      "sha256Bytes": "a372ed18bef236ed3385e918704ac3093dd6d040877268913f13c8063d7da5d9",
+      "sizeBytes": 478
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\final-state.json",
+      "sha256Bytes": "517f4f08df4aca1cd23f0fe1949e303a4718323caca930c6ef0ed146263bf113",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-dark-unavailable/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-dark-unavailable\\synthetic-native-transport-events.json",
+      "sha256Bytes": "58c5a251e70a7ae52e02268a088c25d1934fcafd0823927efa013330f69af9f0",
+      "sizeBytes": 1606
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\01-state.json",
+      "sha256Bytes": "be78c358e82862114438aa2bd18b8d3befae2197027391be237bca339c72edce",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/02-dismiss-marker-only-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\02-dismiss-marker-only-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/02-dismiss-marker-only.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\02-dismiss-marker-only.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\actual-pointer-events.json",
+      "sha256Bytes": "9e20fa6aa0e7de9864b7f1a4834969cfc59f954a86ca4f85a724c3f9c8dbb13a",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\final-state.json",
+      "sha256Bytes": "21e000c822d9fd1bf8041ec01203fb4c920eb57a2fb95d81b5951a459f1de923",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-dismiss/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-dismiss\\synthetic-native-transport-events.json",
+      "sha256Bytes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "sizeBytes": 2
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\01-state.json",
+      "sha256Bytes": "844d483d80936a90a789638b23c90b4bb0c42867db1997c1ae3e13dcbc6931e7",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\02-state.json",
+      "sha256Bytes": "93c90ffc6cbe2f13bf016980c8318e5c5e72cf03eca976da456bbad889ad3018",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "b0227d4b422d538ea9846fb1c4338bc3ac58cc2d3fdee27fa1eb4597422d8a9b",
+      "sizeBytes": 4763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\04-original-failure-dialog.png",
+      "sha256Bytes": "29217325dc1c5ac48e889ed13b834a511edf345b93e27890ae2fb266e2a40de7",
+      "sizeBytes": 45512
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\04-state.json",
+      "sha256Bytes": "93034d90fbab14880a6ef97789ca37d360668b4a8f8f8e69aed3b8cf41175a2a",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "9a8627de98a2ad8c957a83f041d202c1cdb5bf8c7d6039309c798f9d448edebb",
+      "sizeBytes": 3834
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\05-original-local-viewer.png",
+      "sha256Bytes": "b238bccf4e3e6f0ce7515eef6740e967b52a7f615bc80899615eaa520fabdeca",
+      "sizeBytes": 46699
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/06-explicit-viewer-clear-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\06-explicit-viewer-clear-semantics.json",
+      "sha256Bytes": "62ec9f2b559e41739ba9758fb099ba7d270b294253df1b2f80a81654989f9957",
+      "sizeBytes": 1476
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/06-explicit-viewer-clear.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\06-explicit-viewer-clear.png",
+      "sha256Bytes": "67f7e35c769c5ad7aea87fb30993ba8f95eb90e40c5af53ec551eff7a19bd016",
+      "sizeBytes": 17954
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\actual-pointer-events.json",
+      "sha256Bytes": "252bd1fb28eaaee3377e83f7279dfc85fcb50de734c9f83aef2961375f8bc102",
+      "sizeBytes": 635
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\final-state.json",
+      "sha256Bytes": "1ea14f1bad76bcec44a1795f7a96a2a2aec1bb0f82f07bbdffba73614de6f67e",
+      "sizeBytes": 228
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-late_failure/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-late_failure\\synthetic-native-transport-events.json",
+      "sha256Bytes": "0b18302977f86b909b7c6e1ed39f3c47c4b27765329d870c201ef0f171f53c54",
+      "sizeBytes": 2160
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\01-state.json",
+      "sha256Bytes": "1aef660a8b1869536c5fa28f6b60608a376ab8cddde38be907e42ef8d6120029",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\02-after-original-share-semantics.json",
+      "sha256Bytes": "66800d68a3373b9677ba234c5a37e9d3f5fbfa6f66c2d8dac3bcb6767ee1b333",
+      "sizeBytes": 983
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\02-after-original-share.png",
+      "sha256Bytes": "b24dd255ce43e31d200f61761474340a4183b4de156c30b31e5d944a88bca21d",
+      "sizeBytes": 14038
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\02-state.json",
+      "sha256Bytes": "e13c4b75b1d9ed42d5753d2ca8e4b3a54c09884a5ea74a92318979fc4e9ee2b3",
+      "sizeBytes": 370
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/03-real-marker-denial-retry-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\03-real-marker-denial-retry-semantics.json",
+      "sha256Bytes": "66800d68a3373b9677ba234c5a37e9d3f5fbfa6f66c2d8dac3bcb6767ee1b333",
+      "sizeBytes": 983
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/03-real-marker-denial-retry.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\03-real-marker-denial-retry.png",
+      "sha256Bytes": "b24dd255ce43e31d200f61761474340a4183b4de156c30b31e5d944a88bca21d",
+      "sizeBytes": 14038
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "b9b5d2210498a4c4d56df6d12ef71929f0e405503ac0a43f087e6675892b502a",
+      "sizeBytes": 4896
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\04-original-failure-dialog.png",
+      "sha256Bytes": "795d72e0a41c4011c65444a2f966f65586f12de54c00527052ec5a0e21eff438",
+      "sizeBytes": 46915
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\04-state.json",
+      "sha256Bytes": "787d58edd3cc1d1bf869c5a5d6dc1cdea5ca82694ae5d13e11a98e912c0ca5d0",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "10551375f009384fcc7f6b7435de8ef6c01fadb95f3e27ea98781e3f94eae655",
+      "sizeBytes": 3967
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\05-original-local-viewer.png",
+      "sha256Bytes": "90c90333ebd4180d3cf69e2d82ae1eaae5df8b98af1ea74436a8e995a1910614",
+      "sizeBytes": 48155
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\actual-pointer-events.json",
+      "sha256Bytes": "1b0042166e9543a80659231ad07f5cbbed5459e18f08ebcf04816c1b01542e67",
+      "sizeBytes": 635
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\final-state.json",
+      "sha256Bytes": "46d88e9fc9555e7b01809178838cd34bfa79768c0bdaa1ed0c82fd5838905fad",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-marker_retry/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-marker_retry\\synthetic-native-transport-events.json",
+      "sha256Bytes": "95eaa535e18fcb05e8700ae0a729b6e0d07c7c038c994f0e9e768f193b058f8d",
+      "sizeBytes": 3223
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\01-state.json",
+      "sha256Bytes": "7a5a2305bbc3966fd86f2fedf0ce5642da6c21529c3dda4c6334529c7601b323",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\02-state.json",
+      "sha256Bytes": "24885aa140fe5787a40e1f2df0be8cc64cdcb69eba3a87f36442aaab571e4e90",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/03-after-drained-lifecycle-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\03-after-drained-lifecycle-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/03-after-drained-lifecycle.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\03-after-drained-lifecycle.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\actual-pointer-events.json",
+      "sha256Bytes": "7dc3c21f15bfa0018835eeb9f8f206ba849aa9dd8998da650cd43d5b7ad31c90",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\final-state.json",
+      "sha256Bytes": "b59628ac1ff645acc089b2fc078cef8ef964cb5c0b76950dcb0d2471acc399f0",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-shutdown/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-shutdown\\synthetic-native-transport-events.json",
+      "sha256Bytes": "adb2de0d51ca924d332b3fa8f42505accc564c7a8e66fd82822985e1467103e9",
+      "sizeBytes": 2152
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\01-state.json",
+      "sha256Bytes": "df32ba6ca54b4c4fa0c9dec1fe0c2ae25140d938b896502182b5a61a48865902",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\02-state.json",
+      "sha256Bytes": "a7da217534641f982f6c35f7cbd058bc61698edddf5a0eef486e3033d206912a",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/03-after-explicit-completion-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\03-after-explicit-completion-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/03-after-explicit-completion.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\03-after-explicit-completion.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/03-before-explicit-completion.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\03-before-explicit-completion.json",
+      "sha256Bytes": "d848b536b41b728cc9626a5cfa616fa1672f0b88ebb0a86900b60ec632e0e350",
+      "sizeBytes": 182
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\actual-pointer-events.json",
+      "sha256Bytes": "7dc3c21f15bfa0018835eeb9f8f206ba849aa9dd8998da650cd43d5b7ad31c90",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\final-state.json",
+      "sha256Bytes": "5e1afc2891cd0ab2f4b598328cbeda2f242cdcff20c0c2e09920ca67c36d598e",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-terminal/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-terminal\\synthetic-native-transport-events.json",
+      "sha256Bytes": "75af523d1c9f222978d2fd74cf758c9916703d2dd69500b4990fabed2a1dc6ea",
+      "sizeBytes": 2144
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "f8f7919e37b9e2cdacca657d4aa2fb0ef5de165c319986cba5abce3477631a8b",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\01-original-crash-prompt.png",
+      "sha256Bytes": "df43bdc67b421d4a78355f54cd60b45ff196df4eb524c979b398ecd761e51f8e",
+      "sizeBytes": 20253
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\01-state.json",
+      "sha256Bytes": "4ae3101a52545931e93bbfdbd68b4dfe0f713d0c7acec65a3ebdc89f7c4c009a",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\02-after-original-share-semantics.json",
+      "sha256Bytes": "778e28e96b0c259067f4d807727fc06a46bf5e521d4f54637d05ed909899ceef",
+      "sizeBytes": 4763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\02-after-original-share.png",
+      "sha256Bytes": "29217325dc1c5ac48e889ed13b834a511edf345b93e27890ae2fb266e2a40de7",
+      "sizeBytes": 45512
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\02-state.json",
+      "sha256Bytes": "dc222f6ec5563d8956e1efb7842b003ef5d754ac25d19d3f755357b0bc68d570",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "778e28e96b0c259067f4d807727fc06a46bf5e521d4f54637d05ed909899ceef",
+      "sizeBytes": 4763
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\04-original-failure-dialog.png",
+      "sha256Bytes": "29217325dc1c5ac48e889ed13b834a511edf345b93e27890ae2fb266e2a40de7",
+      "sizeBytes": 45512
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\04-state.json",
+      "sha256Bytes": "dc222f6ec5563d8956e1efb7842b003ef5d754ac25d19d3f755357b0bc68d570",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "efd723cd2258256a56d665f9b4b9f35b894977173437a770ad8e7c0e29ce80f8",
+      "sizeBytes": 3834
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\05-original-local-viewer.png",
+      "sha256Bytes": "92021343f10dc093204743bcec6b2aa5f97a0f3698ff28883a66bad1db67db41",
+      "sizeBytes": 46938
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\actual-pointer-events.json",
+      "sha256Bytes": "a372ed18bef236ed3385e918704ac3093dd6d040877268913f13c8063d7da5d9",
+      "sizeBytes": 478
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\final-state.json",
+      "sha256Bytes": "4617b0381f37187c1002a33459a1a938ee8ff883a3557d1034d1d37b7239bdc0",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/material3-light-unavailable/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\material3-light-unavailable\\synthetic-native-transport-events.json",
+      "sha256Bytes": "4c0fbeb10104818c66b9bb3b77bfd593b4011889f5bd79fc7b7c0b28987f9b5f",
+      "sizeBytes": 1609
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\01-original-crash-prompt.png",
+      "sha256Bytes": "0d89ef58118692e02dc8c9a45dda4a4f758963928ff081863ceb968a23da150a",
+      "sizeBytes": 21877
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\01-state.json",
+      "sha256Bytes": "3a2b95e69b2d41298b78e628b9f7ffdb83831eb820dc1979db89376668bbf0d9",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/02-dismiss-marker-only-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\02-dismiss-marker-only-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/02-dismiss-marker-only.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\02-dismiss-marker-only.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\actual-pointer-events.json",
+      "sha256Bytes": "719e210a5794ec799dbbf20bfc346f58bb2d35a7684e70f2b86bc4b5f2205e32",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\final-state.json",
+      "sha256Bytes": "6bf5ae8c672aa2a2dfe58885291779b5bae2baedcfb6d03a2714b92f2cb54491",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-dismiss/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-dismiss\\synthetic-native-transport-events.json",
+      "sha256Bytes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "sizeBytes": 2
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\01-original-crash-prompt.png",
+      "sha256Bytes": "0d89ef58118692e02dc8c9a45dda4a4f758963928ff081863ceb968a23da150a",
+      "sizeBytes": 21877
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\01-state.json",
+      "sha256Bytes": "faf611fa82fc0f6f1f25eaa4847082a32ed054041d69b3b65d2d855ec20614de",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\02-after-original-share-semantics.json",
+      "sha256Bytes": "151ff530563b0069b104d94384ceb784443722f0fa30948f0502c32665fe4f59",
+      "sizeBytes": 1060
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\02-after-original-share.png",
+      "sha256Bytes": "793383f18750867d10a276126e8d07e17f99e3c6d8f43f7bdb85871f273b54c1",
+      "sizeBytes": 13597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\02-state.json",
+      "sha256Bytes": "12ed8d0d611576c90ab723416a80966b30265a2924aee89763ef93131ffa433f",
+      "sizeBytes": 370
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/03-real-marker-denial-retry-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\03-real-marker-denial-retry-semantics.json",
+      "sha256Bytes": "151ff530563b0069b104d94384ceb784443722f0fa30948f0502c32665fe4f59",
+      "sizeBytes": 1060
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/03-real-marker-denial-retry.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\03-real-marker-denial-retry.png",
+      "sha256Bytes": "793383f18750867d10a276126e8d07e17f99e3c6d8f43f7bdb85871f273b54c1",
+      "sizeBytes": 13597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "3e6c35d641fe9da4f0d672d1f55ae71be1378d19a1417dc5b1b0f35b2fef18d6",
+      "sizeBytes": 5050
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\04-original-failure-dialog.png",
+      "sha256Bytes": "975b546018b41b13bbe4f73a459a60904122c14279151a30651870c0c77df1ee",
+      "sizeBytes": 33814
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\04-state.json",
+      "sha256Bytes": "71d93100ecebc3ab884cbd2c136095d611f63f56858d8b3ef182396b276dd88b",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "f2b3bdd52b5279108cbf70efd1e5c29c6e51ee65132e3ac49bdcbc8cae57dc9e",
+      "sizeBytes": 4044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\05-original-local-viewer.png",
+      "sha256Bytes": "745643746b2b3da4b568b5832caeb24972434925eb1015184e3cf63fce890010",
+      "sizeBytes": 42188
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\actual-pointer-events.json",
+      "sha256Bytes": "e83fd072eda669a1d65b0df258648d6a0c1a337ebc2debe83dc8e9718fbe1f4c",
+      "sizeBytes": 635
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\final-state.json",
+      "sha256Bytes": "f8b91765d9489bba1f22a07a4a824bc7b679b315593c117386aa70fa5b125812",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-marker_retry/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-marker_retry\\synthetic-native-transport-events.json",
+      "sha256Bytes": "cc546551ec607ac2d99fc1bb5c5053ce07fe8138439cec2d158775187b43e187",
+      "sizeBytes": 3193
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\01-original-crash-prompt.png",
+      "sha256Bytes": "0d89ef58118692e02dc8c9a45dda4a4f758963928ff081863ceb968a23da150a",
+      "sizeBytes": 21877
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\01-state.json",
+      "sha256Bytes": "055963e9b6cfe608f3d6e3b58496b74ba526dc4ec0a059bc80c92e9d5389999a",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\02-state.json",
+      "sha256Bytes": "19a4e46537421a76a741335eac47d767f3b40b7ebf6a066ebea73a502c03375c",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/03-after-explicit-completion-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\03-after-explicit-completion-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/03-after-explicit-completion.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\03-after-explicit-completion.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/03-before-explicit-completion.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\03-before-explicit-completion.json",
+      "sha256Bytes": "3233869790f644fc24e003465011b3bdb5f8aa8c7ed47fb5ea948265b857e566",
+      "sizeBytes": 182
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\actual-pointer-events.json",
+      "sha256Bytes": "3353ea657cedec10977856302c9b5226834a7e433d79961dc3907ffb4a815dfb",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\final-state.json",
+      "sha256Bytes": "48432b1bde7041777ce1c7c196ed6218ddccec6bd8b77f72b583b567bf7fecd2",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-terminal/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-terminal\\synthetic-native-transport-events.json",
+      "sha256Bytes": "6c704e91c08d8e330df506f2ea9a7ced661bbc1728c779ec1ca0b261cef1b79d",
+      "sizeBytes": 2124
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\01-original-crash-prompt.png",
+      "sha256Bytes": "0d89ef58118692e02dc8c9a45dda4a4f758963928ff081863ceb968a23da150a",
+      "sizeBytes": 21877
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\01-state.json",
+      "sha256Bytes": "3fe33b1536c5454d243f5de7524fc046d7906f24648cb757d9a6beec9185b79d",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\02-after-original-share-semantics.json",
+      "sha256Bytes": "e7c5f015ad401e6a8d639f10a5912600d466518f9bed10c96d42abff5387d9b1",
+      "sizeBytes": 4917
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\02-after-original-share.png",
+      "sha256Bytes": "2e8ec756d2e55c2d43421c9000255e8e2d552d025c749782534dd2a81a1b101f",
+      "sizeBytes": 30825
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\02-state.json",
+      "sha256Bytes": "4bfb0a28114e8f94144f3cd2cef21ba59d3da871e2f5bd4dc19713604e8f3dd7",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "e7c5f015ad401e6a8d639f10a5912600d466518f9bed10c96d42abff5387d9b1",
+      "sizeBytes": 4917
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\04-original-failure-dialog.png",
+      "sha256Bytes": "2e8ec756d2e55c2d43421c9000255e8e2d552d025c749782534dd2a81a1b101f",
+      "sizeBytes": 30825
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\04-state.json",
+      "sha256Bytes": "4bfb0a28114e8f94144f3cd2cef21ba59d3da871e2f5bd4dc19713604e8f3dd7",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "b85fbe7f8546c83a09282331d1e24ff1ad621d777b47608676af10723dd6f3c4",
+      "sizeBytes": 3911
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\05-original-local-viewer.png",
+      "sha256Bytes": "89cc57f872c71fb60d7d871385f42a3dad2b7826d13fee889a625c79eaef44c3",
+      "sizeBytes": 39864
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\actual-pointer-events.json",
+      "sha256Bytes": "db2fae51849391149a7423c847ddbd5226fcf225c735116382cff1756b685653",
+      "sizeBytes": 478
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\final-state.json",
+      "sha256Bytes": "3ce33140282a5e34d9d1b47689bcda60773b12139b3f0af4a82bff8aca3fcb0e",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-dark-unavailable/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-dark-unavailable\\synthetic-native-transport-events.json",
+      "sha256Bytes": "11ab1e88d936a1d242d0ac26446af981ea851f5d1cce462d63c6b0b5fc3803f5",
+      "sizeBytes": 1594
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\01-original-crash-prompt.png",
+      "sha256Bytes": "493cc4f8c502bc17839b03470c62370e07ca838ae82a0a10b8ba4a43f5c81fda",
+      "sizeBytes": 21044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\01-state.json",
+      "sha256Bytes": "3514f1d883caf374dea36a29aad95bafd182dfd93c091e348735bc85fc4385dd",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/02-dismiss-marker-only-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\02-dismiss-marker-only-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/02-dismiss-marker-only.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\02-dismiss-marker-only.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\actual-pointer-events.json",
+      "sha256Bytes": "719e210a5794ec799dbbf20bfc346f58bb2d35a7684e70f2b86bc4b5f2205e32",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\final-state.json",
+      "sha256Bytes": "109a90e3c0b88d2b06e3a83b631f0002c098ca49f34ee984e39f3837308bcc02",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-dismiss/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-dismiss\\synthetic-native-transport-events.json",
+      "sha256Bytes": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "sizeBytes": 2
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\01-original-crash-prompt.png",
+      "sha256Bytes": "493cc4f8c502bc17839b03470c62370e07ca838ae82a0a10b8ba4a43f5c81fda",
+      "sizeBytes": 21044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\01-state.json",
+      "sha256Bytes": "87c5108676ba525c7746d4bd7a49f1f949f07720343da8d0b2be9db4c1366979",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\02-after-original-share-semantics.json",
+      "sha256Bytes": "151ff530563b0069b104d94384ceb784443722f0fa30948f0502c32665fe4f59",
+      "sizeBytes": 1060
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\02-after-original-share.png",
+      "sha256Bytes": "13ea751f1687370e2c02c2cdd80761cf48913d55cf06624a79471030306aa065",
+      "sizeBytes": 13211
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\02-state.json",
+      "sha256Bytes": "98136c25922fba135a5aa02076a83d785dd0517cf20988aa7f216d19612d6612",
+      "sizeBytes": 370
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/03-real-marker-denial-retry-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\03-real-marker-denial-retry-semantics.json",
+      "sha256Bytes": "151ff530563b0069b104d94384ceb784443722f0fa30948f0502c32665fe4f59",
+      "sizeBytes": 1060
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/03-real-marker-denial-retry.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\03-real-marker-denial-retry.png",
+      "sha256Bytes": "13ea751f1687370e2c02c2cdd80761cf48913d55cf06624a79471030306aa065",
+      "sizeBytes": 13211
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "0e4f0edb70d143628f7e3fd39888fac6f5faa15d1d23a5cceb8889cfef729939",
+      "sizeBytes": 5050
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\04-original-failure-dialog.png",
+      "sha256Bytes": "57fbb78b5f4fc93145198f239cc37c1a55364d490b82c5fd0e0aa766a6c9e2e8",
+      "sizeBytes": 34333
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\04-state.json",
+      "sha256Bytes": "103ea5aad2b67272a3efb3633dd19c9fe11be4925c4ff6d6a160ee592c58ccdf",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "a530d7b759a93361189b041fab748eee8336b41073f5b3ffb6006216e8dcf841",
+      "sizeBytes": 4044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\05-original-local-viewer.png",
+      "sha256Bytes": "f4d4d8190f595426169541ee686ba64a38c8eaf2c2899a94befe08b66ff1c0a1",
+      "sizeBytes": 40493
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\actual-pointer-events.json",
+      "sha256Bytes": "e83fd072eda669a1d65b0df258648d6a0c1a337ebc2debe83dc8e9718fbe1f4c",
+      "sizeBytes": 635
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\final-state.json",
+      "sha256Bytes": "f274e6a18e65fddc91a824b16067c8875225d904c159f35d09963e139c6a36fb",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-marker_retry/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-marker_retry\\synthetic-native-transport-events.json",
+      "sha256Bytes": "bb2f3086cd288144ba6170b08f528416c6230c9eec6ef6f41cfffc191fe6249a",
+      "sizeBytes": 3199
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\01-original-crash-prompt.png",
+      "sha256Bytes": "493cc4f8c502bc17839b03470c62370e07ca838ae82a0a10b8ba4a43f5c81fda",
+      "sizeBytes": 21044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\01-state.json",
+      "sha256Bytes": "9a20d30c42e05f85e32246c84c4551b294b36fd0b4b099d0b23e0bef751c2b41",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\02-after-original-share.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\02-state.json",
+      "sha256Bytes": "748c0e01e5b7ef93a39087b02e8818caece5c5d501b5ec2bfcf496e9c78777b0",
+      "sizeBytes": 317
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/03-after-explicit-completion-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\03-after-explicit-completion-semantics.json",
+      "sha256Bytes": "8e25b1b727bb7c712537ec33353ec99115821f2862ce3d0e942ac4def0da69f1",
+      "sizeBytes": 75
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/03-after-explicit-completion.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\03-after-explicit-completion.png",
+      "sha256Bytes": "53bb57571a4451559123f14bd7fa8a22595fe47e7a54d67a0c2265055c433a26",
+      "sizeBytes": 3445
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/03-before-explicit-completion.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\03-before-explicit-completion.json",
+      "sha256Bytes": "157052eef3e2313c4a027808426a31a5fe45c827bb0560d3167961a064e3a556",
+      "sizeBytes": 182
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\actual-pointer-events.json",
+      "sha256Bytes": "3353ea657cedec10977856302c9b5226834a7e433d79961dc3907ffb4a815dfb",
+      "sizeBytes": 158
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\final-state.json",
+      "sha256Bytes": "b0d914b520c51dd55700c54565f3f1f072d3a640cbf11a9f8fd2ddf4122e99b4",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-terminal/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-terminal\\synthetic-native-transport-events.json",
+      "sha256Bytes": "d80b94f4094522691dad5d904352cbe8b9dc6d41871f4ef44881af1d376bcd35",
+      "sizeBytes": 2128
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/01-original-crash-prompt-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\01-original-crash-prompt-semantics.json",
+      "sha256Bytes": "5db4f740d18ef90699b47bdfdf2924717840076a036d9c0121007c94bd410490",
+      "sizeBytes": 1189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/01-original-crash-prompt.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\01-original-crash-prompt.png",
+      "sha256Bytes": "493cc4f8c502bc17839b03470c62370e07ca838ae82a0a10b8ba4a43f5c81fda",
+      "sizeBytes": 21044
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/01-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\01-state.json",
+      "sha256Bytes": "1b32ae482489bbc4f9ecaffdf47db9faa99b39bbbe974c37f66baabbb45db041",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/02-after-original-share-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\02-after-original-share-semantics.json",
+      "sha256Bytes": "8e8bbd10f13757bc79527d70ed11e17bfe10142eb9f19ea5c0bcc7016f0fdabe",
+      "sizeBytes": 4917
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/02-after-original-share.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\02-after-original-share.png",
+      "sha256Bytes": "b920494389cbb5a61e9dc47eaa8cc7d5cb9a0da10039b9ee68796d7b405f6799",
+      "sizeBytes": 31382
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/02-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\02-state.json",
+      "sha256Bytes": "d8dd78e025446701534303d27795aafb9431809478ce5ac60c60c3f554355344",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/04-original-failure-dialog-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\04-original-failure-dialog-semantics.json",
+      "sha256Bytes": "8e8bbd10f13757bc79527d70ed11e17bfe10142eb9f19ea5c0bcc7016f0fdabe",
+      "sizeBytes": 4917
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/04-original-failure-dialog.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\04-original-failure-dialog.png",
+      "sha256Bytes": "b920494389cbb5a61e9dc47eaa8cc7d5cb9a0da10039b9ee68796d7b405f6799",
+      "sizeBytes": 31382
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/04-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\04-state.json",
+      "sha256Bytes": "d8dd78e025446701534303d27795aafb9431809478ce5ac60c60c3f554355344",
+      "sizeBytes": 389
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/05-original-local-viewer-semantics.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\05-original-local-viewer-semantics.json",
+      "sha256Bytes": "3b9da455717088b9713b3175e4f76889ce154430a7bbab0571ac03cd2955a89d",
+      "sizeBytes": 3911
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/05-original-local-viewer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\05-original-local-viewer.png",
+      "sha256Bytes": "9a5644a948855e0a2f1f12bafb485695ce00c24c71548d8a1a2974e11133a647",
+      "sizeBytes": 38171
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/actual-pointer-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\actual-pointer-events.json",
+      "sha256Bytes": "db2fae51849391149a7423c847ddbd5226fcf225c735116382cff1756b685653",
+      "sizeBytes": 478
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/final-state.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\final-state.json",
+      "sha256Bytes": "95cc9b4c75316b28605c3dcbf361801b2d5c0f597df78cf0e8c192230954ac0d",
+      "sizeBytes": 316
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/miuix-light-unavailable/synthetic-native-transport-events.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\miuix-light-unavailable\\synthetic-native-transport-events.json",
+      "sha256Bytes": "8f520520be8b2e6dd7578af28cc856a0e55be5fba334705d4a9921d457d26bb4",
+      "sizeBytes": 1597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/proof/ui.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\proof\\ui.json",
+      "sha256Bytes": "6d2a0160915011625a8d0c908b4fa7e6297af02f1a12a0413593afd0e6e84603",
+      "sizeBytes": 7615
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/task-owned-environment.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\task-owned-environment.json",
+      "sha256Bytes": "826413cb498625d5bc1cf11e323eceed89d3ce1f5854552d83ef8a3e89064aed",
+      "sizeBytes": 136
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/ui.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\ui.args",
+      "sha256Bytes": "9bd50214592890142e71b6b727727c02ce28f1fe38f5bccaba948e23a0bc039a",
+      "sizeBytes": 22707
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/runs/01/ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\runs\\01\\ui.log",
+      "sha256Bytes": "e2b17eb8029d68bb61976b7028d60edbd08db021e4d337e40344e1f49d454b43",
+      "sizeBytes": 2719
+    },
+    {
+      "path": "desktop/verification/native-share/actual-original-ui/verify-predecessors.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-product-ui-proof\\verify-predecessors.py",
+      "sha256Bytes": "0380a720ad3c09c6e7e82ef4f6061a404f16468a8cc0c3c124fec9ecd8adbe30",
+      "sizeBytes": 1546
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/compile.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\compile.args",
+      "sha256Bytes": "317a34eb67b5a84f1242ac8f276d6a33225b951bb2f9d0d82499d0f1439233b6",
+      "sizeBytes": 24520
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\fixture-class-identities.json",
+      "sha256Bytes": "2af1bc3acfbe026e3fcf7f05605f1f6e80a438379ab56bb2f8831dd3933889f0",
+      "sizeBytes": 2001
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/NativeShareLeaseFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\NativeShareLeaseFixture.kt",
+      "sha256Bytes": "97f442bf6b38d2a92b307e1c52d4684207aeca5667bb829c3efc4182ef500da0",
+      "sizeBytes": 15072
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/repeat-terminal.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\repeat-terminal.args",
+      "sha256Bytes": "239fd40ca689f7339a284565c21f279154925a6f49ac062395bde987420c2a2b",
+      "sizeBytes": 22473
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/history01-observation-race/repeat-terminal.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-01\\repeat-terminal.log",
+      "sha256Bytes": "aaf86396098adbb5bdf6349774585b5d6e29af6a126a9203c17cd2305fc07fdd",
+      "sizeBytes": 4838
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/accepted-evidence.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\accepted-evidence.json",
+      "sha256Bytes": "383a606c2b665f93eb069977cd5bceea9b214246ec647a816938e38aafbce6e7",
+      "sizeBytes": 42644
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/before-data/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\before-data\\result.json",
+      "sha256Bytes": "33a72efe722da55f756abdafbba807e1befd94aa377c7905a879a9a47cb7bfaa",
+      "sizeBytes": 711
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/before-data.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\before-data.args",
+      "sha256Bytes": "a4c05d852478e0d4f59a4f160dcb2ec1a784d1a1ae126e9d0bb4f046565ece0a",
+      "sizeBytes": 22465
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/before-data.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\before-data.log",
+      "sha256Bytes": "d9e0eeb5c31347427fd3cf3b2eec018e19f0409c124965faf91f4d043f20f03a",
+      "sizeBytes": 944
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/budget/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\budget\\result.json",
+      "sha256Bytes": "89b630304cbc7f3ae0fd24df230ddd19694952befa19027e292c164a6cfaf8fa",
+      "sizeBytes": 954
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/budget.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\budget.args",
+      "sha256Bytes": "2926bc116defbc84951f760951653d778dc28e006e72a7ba1ee74945c7eec56d",
+      "sizeBytes": 22455
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/budget.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\budget.log",
+      "sha256Bytes": "47fda021f0aab2ad769cd6a0bc5b71cc2c1e0143e11714d50a462f0c21df73b8",
+      "sizeBytes": 1200
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-live-retry/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-live-retry\\result.json",
+      "sha256Bytes": "771f6f35b620fc3547d1f02466120934905df1e3203c4d06a7fdee967b8169dc",
+      "sizeBytes": 775
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-live-retry.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-live-retry.args",
+      "sha256Bytes": "24e98660a58775483c8646843ce1d0a1e5fb74589bbbc391ce9bed4d3a190514",
+      "sizeBytes": 22475
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-live-retry.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-live-retry.log",
+      "sha256Bytes": "2e05024d2f11579822a80696808cdbc65025f6f60866a73d5eb64ae42d5b1a21",
+      "sizeBytes": 1006
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-queued/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-queued\\result.json",
+      "sha256Bytes": "37d70f2769ab6a45714c4623a8ce01b78e09d98c2bc22f340058533bfa85f33f",
+      "sizeBytes": 777
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-queued.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-queued.args",
+      "sha256Bytes": "aa5f81a2148d94955340ffe098fb6911718afab6c0427bbd814a9de8cc10d8cd",
+      "sizeBytes": 22467
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/clear-queued.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\clear-queued.log",
+      "sha256Bytes": "6c76de81ae808313053795b56f88576e92fb3dbebb3c1fbe349abf24e08e7846",
+      "sizeBytes": 1013
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/compile.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\compile.args",
+      "sha256Bytes": "c19874aa2b07fdbc6f83d5d533913aa96ca2c7a1de2626cbf9ffdab00d121b59",
+      "sizeBytes": 24520
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\fixture-class-identities.json",
+      "sha256Bytes": "91cb09fd016bb2e6e36edd34e9bb816acb1edb9ad078e1fd548931ff95572139",
+      "sizeBytes": 2003
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/locked-copy/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\locked-copy\\result.json",
+      "sha256Bytes": "d32d172b591030c0394637c50a3150fd6107f3645f21b6d0bff28018dba2f770",
+      "sizeBytes": 716
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/locked-copy.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\locked-copy.args",
+      "sha256Bytes": "8fb6454704ddfa958de1caece269af619415e0c4e6fe7d4191a9fd885c049201",
+      "sizeBytes": 22465
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/locked-copy.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\locked-copy.log",
+      "sha256Bytes": "221090df6d38c27f56d8b31aeb4f9750d742ed3021ab69cd1dab1fe668c73527",
+      "sizeBytes": 949
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/missing-events/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\missing-events\\result.json",
+      "sha256Bytes": "acd4155016fbfdbd9ea10567f12057bb2924ecbb19b591fe1c19e8a03f6d66a7",
+      "sizeBytes": 944
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/missing-events.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\missing-events.args",
+      "sha256Bytes": "30d5e2e3cf988d4ec71b0dd85bead178db8d1f1892b119556d87f909d179b585",
+      "sizeBytes": 22471
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/missing-events.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\missing-events.log",
+      "sha256Bytes": "c3dbd10b10a98a884a80e59ba9c149d938ea637fd81872731ce693605e2ca3fd",
+      "sizeBytes": 1183
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/NativeShareLeaseFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\NativeShareLeaseFixture.kt",
+      "sha256Bytes": "fdcbfb52bf0c2bc97d0385c8b6c961dde8896fcf9bbdc537207bb96c27f38d66",
+      "sizeBytes": 15217
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/repeat-terminal/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\repeat-terminal\\result.json",
+      "sha256Bytes": "8e4120ce8ded520bf45beaf9c0c6413f0f5318877fa28f4896689c8863bd675a",
+      "sizeBytes": 822
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/repeat-terminal.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\repeat-terminal.args",
+      "sha256Bytes": "4c8f8306b06318e147314fcdd2633e2b00e6c677322c3002c63d3cd1aeee0f0d",
+      "sizeBytes": 22473
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/repeat-terminal.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\repeat-terminal.log",
+      "sha256Bytes": "64c5474abd8d570de0059b88c1277545119e082bfa5065438e7f5c4fff1cbd1f",
+      "sizeBytes": 1052
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/restore-retirement/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\restore-retirement\\result.json",
+      "sha256Bytes": "4c3665307a2e93faa809bb090bba0cd78c45e3804ffa24b77d8790d265ea1cfa",
+      "sizeBytes": 766
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/restore-retirement.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\restore-retirement.args",
+      "sha256Bytes": "371bf9e2f65778029dd9da0b80340b3c09b645a0488ec5d31fb5dbc42b5ce981",
+      "sizeBytes": 22479
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/accepted02/restore-retirement.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-actual-lease-proof-02\\restore-retirement.log",
+      "sha256Bytes": "d35d244ec8e6050f7c819f59e429ae9b76d1caa549851e8538d2347b587233fa",
+      "sizeBytes": 996
+    },
+    {
+      "path": "desktop/verification/native-share/actual-leases/original-prepared-fixture.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-native-share-parity\\terminal-leases\\NativeShareLeaseFixture.kt",
+      "sha256Bytes": "97f442bf6b38d2a92b307e1c52d4684207aeca5667bb829c3efc4182ef500da0",
+      "sizeBytes": 15072
+    },
+    {
+      "path": "desktop/verification/native-share/actual-native-producer/producer-input-graph.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\e07dbe32-123d-4d46-a48b-a1b734deb808\\producer-input-graph.json",
+      "sha256Bytes": "a56bd301aa709c013fc698ec50ac3371a0735b1cdcbcad1588a176436c8fafea",
+      "sizeBytes": 115350
+    },
+    {
+      "path": "desktop/verification/native-share/actual-native-producer/source-dependencies.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\e07dbe32-123d-4d46-a48b-a1b734deb808\\source-dependencies.json",
+      "sha256Bytes": "d96801c8b9ce8859f5a4d22068c8680fa2ff2967641581f2dbd23e26812a131f",
+      "sizeBytes": 51664
+    },
+    {
+      "path": "desktop/verification/native-share/actual-native-producer/compile.raw.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\e07dbe32-123d-4d46-a48b-a1b734deb808\\compile.raw.log",
+      "sha256Bytes": "960d9b17170b62b5d11aee8d5dd34fe890b0f5f50d1be801e04590133d725b19",
+      "sizeBytes": 11281
+    },
+    {
+      "path": "desktop/verification/native-share/actual-native-producer/compile.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\e07dbe32-123d-4d46-a48b-a1b734deb808\\compile.log",
+      "sha256Bytes": "6217ca4ef68b4bd0cc052dedae691119528f525896ffe4bf5e19c3b9933d08c9",
+      "sizeBytes": 13304
+    },
+    {
+      "path": "desktop/verification/native-share/actual-native-producer/producer-receipt.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\producer-receipt.json",
+      "sha256Bytes": "2adfeb685faea4d1def4ea9cf8209e6fd504862234a7eacaa1ed16d82ea1b319",
+      "sizeBytes": 1237
+    },
+    {
+      "path": "desktop/verification/native-share/installed-source-review/lease-observer-fixture-only.patch",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-installed-source-review\\lease-observer-fixture-only.patch",
+      "sha256Bytes": "3b48d8244c3657b294978ea9f09873af290636c6523f55d4fa2c33218ebf4bc6",
+      "sizeBytes": 9450
+    },
+    {
+      "path": "desktop/verification/native-share/installed-source-review/README.md",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-installed-source-review\\README.md",
+      "sha256Bytes": "2abdacd97dba403058df56fc652673b2d09b5740f150bdf9707287036ec3bf0c",
+      "sizeBytes": 2173
+    },
+    {
+      "path": "desktop/verification/native-share/installed-source-review/review.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-installed-source-review\\review.json",
+      "sha256Bytes": "a26e02f75c477d6a301ca74327f2d94327ddf070cd9dc67d4cfdc3aeae6a45e3",
+      "sizeBytes": 10399
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/compile.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\compile.args",
+      "sha256Bytes": "0f3ca797ba4e7d3d980b995bf1159b19c710ee7885e586cbd3529697e541ea2a",
+      "sizeBytes": 22557
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\compile.log",
+      "sha256Bytes": "6377d3596b33e946299b3f5805791dc830823a0d2f69f0f1db6b2320b62a4534",
+      "sizeBytes": 290
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\fixture-class-identities.json",
+      "sha256Bytes": "b1dc6f0ef4657b285cc72f4c4e347f8dc07639674c99b0734bbfd6d3f9b0e91e",
+      "sizeBytes": 1009
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/frozen-fixture-sources/HwndOwnerProbe.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\frozen-fixture-sources\\HwndOwnerProbe.kt",
+      "sha256Bytes": "f95ce1b03f791ca844878d36cb35358a2fe50fb31670c7defd36d89ebcc13d84",
+      "sizeBytes": 5861
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/frozen-fixture-sources/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\frozen-fixture-sources\\runner.py",
+      "sha256Bytes": "692b9c735413f33112d905e3db283cd4ba926c3f1da55384671f12e800bd4713",
+      "sizeBytes": 4666
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/input-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\input-pins.json",
+      "sha256Bytes": "14019eb89807193a8bebe5c57ca01e5276fb994121a3c6f1a8fba6667a20c947",
+      "sizeBytes": 34597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/product-and-library-class-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\product-and-library-class-pins.json",
+      "sha256Bytes": "33592ed59a4d21d9e47980e5d1e15ae3fa74631d89709b8af4e8c7510c1f3d41",
+      "sizeBytes": 1199
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/proof/actual-loaded-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\proof\\actual-loaded-class-identities.json",
+      "sha256Bytes": "4ea30408b62f6b0e6bfc579952600f1638726509b150e2300234b38e905b9a09",
+      "sizeBytes": 1125
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/run.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\run.args",
+      "sha256Bytes": "5dbbbbbc2d8adabce1e31584af575484888abef3c9c52ffbae377196c159b2e6",
+      "sizeBytes": 22684
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt01/task-owned-environment.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt01\\task-owned-environment.json",
+      "sha256Bytes": "f342ab2613a5b30b2769a2e58cd8ff2f6434b0f6fa7ae902f16c6f640530da26",
+      "sizeBytes": 222
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/compile.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\compile.args",
+      "sha256Bytes": "e61cb0209108e4ae3cbbed1aca33d22dc078777fd72590cac3829d7ac972827f",
+      "sizeBytes": 22557
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\compile.log",
+      "sha256Bytes": "edd0348dc130358d7a9acf5af2a56b3b22d3ccaec18948882e24fce49a7d9b37",
+      "sizeBytes": 290
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\fixture-class-identities.json",
+      "sha256Bytes": "9cd00221371f94df432af74e3b1d857c64311cc94fa2d82f756c6218034e724a",
+      "sizeBytes": 1009
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/frozen-fixture-sources/HwndOwnerProbe.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\frozen-fixture-sources\\HwndOwnerProbe.kt",
+      "sha256Bytes": "38a8922ce3aef20092f1adcac6879e2d8f92b4cb30c187718ca3b2d9fbb53711",
+      "sizeBytes": 6569
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/frozen-fixture-sources/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\frozen-fixture-sources\\runner.py",
+      "sha256Bytes": "9c898010bb57c35d86c04ef9f770ca8f4194cc53c6382e5707f824aac9e8b415",
+      "sizeBytes": 5575
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/input-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\input-pins.json",
+      "sha256Bytes": "f61999048efbfc6e6e2f5e6397edb984dd794ca5d19c3cde36b165b9678abd79",
+      "sizeBytes": 34597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/own-jvm-stack.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\own-jvm-stack.log",
+      "sha256Bytes": "1221331e0041abbdae8a51745e52657d0b8288543f7a855aee4147aa7bb4b665",
+      "sizeBytes": 20368
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/product-and-library-class-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\product-and-library-class-pins.json",
+      "sha256Bytes": "33592ed59a4d21d9e47980e5d1e15ae3fa74631d89709b8af4e8c7510c1f3d41",
+      "sizeBytes": 1199
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/proof/actual-loaded-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\proof\\actual-loaded-class-identities.json",
+      "sha256Bytes": "4ea30408b62f6b0e6bfc579952600f1638726509b150e2300234b38e905b9a09",
+      "sizeBytes": 1125
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/run-timeout.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\run-timeout.json",
+      "sha256Bytes": "5c7f164c593038e0eeb537a0019abc39dc8edafe892d6fef02d6a1f74c9f4b71",
+      "sizeBytes": 178
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/run.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\run.args",
+      "sha256Bytes": "0d8e1f20b5f2e89853f0b46a59afca8e4e4a94702bc90b7f8a4eed025d5d8088",
+      "sizeBytes": 22684
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/run.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\run.log",
+      "sha256Bytes": "03e544d5676eba555bdd8f56a6e5d2c1472d4b366fd2ba3f0867c1b413107107",
+      "sizeBytes": 748
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/task-owned-environment.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\task-owned-environment.json",
+      "sha256Bytes": "b354f40318773e28969824585a8c8e495e3056cfe93fa85474920bc1ac2fd964",
+      "sizeBytes": 222
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt02/task-process.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt02\\task-process.json",
+      "sha256Bytes": "d28517bedcd31ea9bee42798353c4b52e28389c86fc0a661a74862ccbe85c329",
+      "sizeBytes": 189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/compile.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\compile.args",
+      "sha256Bytes": "e4c83b67af747e3e741c1a3dbfa7741f5444110c4f97c6058c0104021ddc90aa",
+      "sizeBytes": 22557
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\compile.log",
+      "sha256Bytes": "70966f077ccd10d227ac09f04c46103b21e3ba80e474d4316234c26717895ed3",
+      "sizeBytes": 290
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/fixture-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\fixture-class-identities.json",
+      "sha256Bytes": "ea20c1cc1da693eea37437f860d080d236d35544c1939869b965e691a6bc8848",
+      "sizeBytes": 1009
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/frozen-fixture-sources/HwndOwnerProbe.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\frozen-fixture-sources\\HwndOwnerProbe.kt",
+      "sha256Bytes": "bfa99339d014b056e2325f86f9ae6c3ac8c32c355be9cbcd387ac70a5b952e4f",
+      "sizeBytes": 6738
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/frozen-fixture-sources/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\frozen-fixture-sources\\runner.py",
+      "sha256Bytes": "d9b33b3660f7725350b53494ef90f8c1fd83ad1c971361b71e8646b2035f96c5",
+      "sizeBytes": 5604
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/input-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\input-pins.json",
+      "sha256Bytes": "ebb41806993b4f65614141b4935cb8647f875a3f1a00137d969ea4e488418148",
+      "sizeBytes": 34597
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/product-and-library-class-pins.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\product-and-library-class-pins.json",
+      "sha256Bytes": "33592ed59a4d21d9e47980e5d1e15ae3fa74631d89709b8af4e8c7510c1f3d41",
+      "sizeBytes": 1199
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/proof/actual-loaded-class-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\proof\\actual-loaded-class-identities.json",
+      "sha256Bytes": "4ea30408b62f6b0e6bfc579952600f1638726509b150e2300234b38e905b9a09",
+      "sizeBytes": 1125
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/proof/result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\proof\\result.json",
+      "sha256Bytes": "09366b168ab59414568655ba67536a6d7b47f0a1bdbfa84c968b0a9e3241b5a6",
+      "sizeBytes": 855
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/run.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\run.args",
+      "sha256Bytes": "37152942a812741616011b2086ecf4b66d8f3546b111960fe22765c3bfcb0307",
+      "sizeBytes": 22713
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/run.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\run.log",
+      "sha256Bytes": "be72e901f2a880a4ed725f8afc15f06b756a825b72ba13f10828601695640303",
+      "sizeBytes": 1829
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/task-owned-environment.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\task-owned-environment.json",
+      "sha256Bytes": "8910722e4352328d0ade024b2137cd47171930c3719661886a484709d5c1f66f",
+      "sizeBytes": 222
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/task-process.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\attempt03\\task-process.json",
+      "sha256Bytes": "6940466ad9035078da2975049797236ee8e59e3b3d0d37870a7a09e67eeba176",
+      "sizeBytes": 189
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/HwndOwnerProbe.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\HwndOwnerProbe.kt",
+      "sha256Bytes": "bfa99339d014b056e2325f86f9ae6c3ac8c32c355be9cbcd387ac70a5b952e4f",
+      "sizeBytes": 6738
+    },
+    {
+      "path": "desktop/verification/native-share/actual-hwnd-ownership-probe/runner.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-hwnd-owner-probe\\runner.py",
+      "sha256Bytes": "d9b33b3660f7725350b53494ef90f8c1fd83ad1c971361b71e8646b2035f96c5",
+      "sizeBytes": 5604
+    },
+    {
+      "path": "desktop/verification/native-share/history.json",
+      "sourcePath": "Root verification history",
+      "sha256Bytes": "76ec84413ce2526b111c4ee3636c0bb698bb02caff296a033d879935d0fb5c61",
+      "sizeBytes": 2524
+    }
+  ],
+  "artifactCount": 347,
+  "artifactBytes": 3203560,
+  "completePreparedBinaryCohortsInGit": false
+}

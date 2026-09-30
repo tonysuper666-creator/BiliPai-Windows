@@ -28,6 +28,23 @@ val upstreamVersionCode = Regex("versionCode\\s*=\\s*(\\d+)")
 val windowsRevision = manifest["windowsRevision"]?.toString() ?: "1"
 val windowsVersion = "0.2.$upstreamVersionCode.$windowsRevision"
 val generatedUpstream = layout.buildDirectory.dir("generated/upstream")
+val nativeDiagnosticShareOutput = layout.buildDirectory.dir("generated/native-diagnostic-share")
+
+val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/prepare-native-diagnostic-share.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", nativeDiagnosticShareOutput.get().asFile.absolutePath,
+        "--asset-dir", file("resources/common/native/windows-x64").absolutePath)
+    inputs.files("tools/prepare-native-diagnostic-share.py", "tools/compile-native-diagnostic-share.py",
+        "native/diagnostic-share/DesktopDiagnosticShare.cpp", "native/diagnostic-share/approved-development-build.json")
+    outputs.file(nativeDiagnosticShareOutput.map { it.file("kotlin/com/bilipai/desktop/diagnostics/DesktopNativeDiagnosticShareAssetHash.kt") })
+    outputs.file(nativeDiagnosticShareOutput.map { it.file("producer-receipt.json") })
+    outputs.file(file("resources/common/native/windows-x64/bilipai-diagnostic-share.dll"))
+    // Resolve the SDK/STL/library graph afresh, including newly shadowing files.
+    // Mutable cached DLL metadata is never a runtime trust root.
+    outputs.upToDateWhen { false }
+}
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
@@ -717,6 +734,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
+    kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
@@ -731,6 +749,9 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstreamDynamicTabs) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
+tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }
+tasks.named("processResources") { dependsOn(prepareNativeDiagnosticShare) }
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareNativeDiagnosticShare) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

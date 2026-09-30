@@ -1,0 +1,129 @@
+DesktopDiagnosticShare.cpp
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+
+����ɿ�����
+  ���ڴ����� C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\build\generated\native-diagnostic-share\builds\e07dbe32-123d-4d46-a48b-a1b734deb808\bilipai-diagnostic-share.lib �Ͷ��� C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\build\generated\native-diagnostic-share\builds\e07dbe32-123d-4d46-a48b-a1b734deb808\bilipai-diagnostic-share.exp
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+����ɿ�����
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+
+����ɿ�����
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+����ɿ�����
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+����ɿ�����
+
+����������
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    �������� C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    �������� C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+
+����ɿ�����

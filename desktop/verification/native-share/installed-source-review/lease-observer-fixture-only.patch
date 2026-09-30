@@ -1,0 +1,109 @@
+--- lease-fixture-01
++++ lease-fixture-02
+@@ -44,10 +44,17 @@
+         retired++;return DesktopNativeShareRetirement(item.state.get(),item.supplied.get())
+     }
+ }
+-private fun cacheFiles(root:Path):List<Path> {
++/** A concurrently disappearing entry is an unstable observation, never completion. */
++private fun cacheIsEmpty(root:Path):Boolean {
+     val cache=root.resolve("cache/diagnostic-share")
+-    if(!Files.exists(cache))return emptyList()
+-    return Files.walk(cache).use{it.filter(Files::isRegularFile).toList()}
++    if(!Files.exists(cache))return true
++    return try {
++        Files.walk(cache).use{it.noneMatch(Files::isRegularFile)}
++    }catch(failure:java.io.UncheckedIOException) {
++        if(failure.cause is NoSuchFileException)false else throw failure
++    }catch(failure:NoSuchFileException) {
++        false
++    }
+ }
+ private suspend fun eventually(test:()->Boolean)=withTimeout(5000){while(!test())delay(10)}
+ 
+@@ -70,11 +77,11 @@
+                 repeat(40){index->
+                     api.mode=if(index%2==0)3 else 4
+                     check(provider.shareSnapshot())
+-                    eventually{api.live.isEmpty()&&cacheFiles(root).isEmpty()};actor.flush()
+-                    check(cacheFiles(root).isEmpty())
++                    eventually{api.live.isEmpty()&&cacheIsEmpty(root)};actor.flush()
++                    check(cacheIsEmpty(root))
+                 }
+                 verify("40 completed/canceled event-contract shares free every native session and private lease",api.retired==40&&api.shown==40&&api.maxLive==1)
+-                verify("terminal sharing exceeds prior 8 and 16 limits without cumulative degradation",cacheFiles(root).isEmpty())
++                verify("terminal sharing exceeds prior 8 and 16 limits without cumulative degradation",cacheIsEmpty(root))
+                 verify("original crash snapshot and pending marker remain owned by original action policy",Files.readAllBytes(snapshot).contentEquals(original)&&Files.exists(marker))
+                 verify("exposure intent is durable before transport Show and retirement runs on EDT",api.exposureWasDurable&&api.retiredOnEdt)
+             }
+@@ -95,14 +102,14 @@
+                     check(provider2.shareSnapshot());eventually{api2.live.isEmpty()};actor2.flush()
+                     verify("fresh actor keeps persistent unknown leases while completing a new share",Files.exists(first)&&Files.exists(second)&&api2.retired==1)
+                     actor2.clearAll()
+-                    verify("explicit same-actor clearAll removes persistent copies and original diagnostic files",cacheFiles(root).isEmpty()&&!Files.exists(snapshot)&&!Files.exists(marker))
++                    verify("explicit same-actor clearAll removes persistent copies and original diagnostic files",cacheIsEmpty(root)&&!Files.exists(snapshot)&&!Files.exists(marker))
+                 }finally{lifecycle2.shutdownForRestore()}
+             }
+             "before-data"->{
+                 api.mode=1;check(provider.shareSnapshot());val old=api.history.last().path
+                 api.mode=0;check(!provider.shareSnapshot())
+                 verify("unfulfilled pane request is distinguished from an exposed copy by post-drain outcome",!Files.exists(old)&&api.retired==2&&api.live.isEmpty())
+-                verify("Show false and no supplied storage items leave no private lease",cacheFiles(root).isEmpty())
++                verify("Show false and no supplied storage items leave no private lease",cacheIsEmpty(root))
+                 verify("failed or unfulfilled native pane leaves original crash evidence intact",Files.readAllBytes(snapshot).contentEquals(original)&&Files.exists(marker))
+             }
+             "clear-queued"->{
+@@ -114,22 +121,22 @@
+                 delay(50)
+                 verify("clearAll waits the accepted actor copy while retiring its generation",share.isActive&&clear.isActive&&api.next.get()==0L)
+                 release.countDown();check(!share.await());clear.await()
+-                verify("late accepted copy never calls native Show and cannot resurrect cleared cache",api.shown==0&&api.next.get()==0L&&cacheFiles(root).isEmpty())
++                verify("late accepted copy never calls native Show and cannot resurrect cleared cache",api.shown==0&&api.next.get()==0L&&cacheIsEmpty(root))
+                 verify("same actor clearAll finishes original diagnostic deletion after the share drain",!Files.exists(snapshot)&&!Files.exists(marker))
+                 check(actor.persistLocalCrash(IllegalStateException("new-crash-after-explicit-clear")))
+-                api.mode=3;check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheFiles(root).isEmpty()};actor.flush()
+-                verify("successful clearAll reopens only a fresh share generation",api.retired==1&&cacheFiles(root).isEmpty())
++                api.mode=3;check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheIsEmpty(root)};actor.flush()
++                verify("successful clearAll reopens only a fresh share generation",api.retired==1&&cacheIsEmpty(root))
+             }
+             "clear-live-retry"->{
+                 api.mode=2;check(provider.shareSnapshot());val copy=api.history.last().path
+                 api.failRetireOnce.set(true)
+                 verify("COM retirement failure blocks deletion and retains retry ownership",runCatching{actor.clearAll()}.isFailure&&Files.exists(copy)&&Files.exists(snapshot)&&api.live.size==1)
+                 actor.clearAll()
+-                verify("clearAll retry revokes native before deleting unknown lease and original files",api.live.isEmpty()&&!Files.exists(copy)&&!Files.exists(snapshot)&&cacheFiles(root).isEmpty())
++                verify("clearAll retry revokes native before deleting unknown lease and original files",api.live.isEmpty()&&!Files.exists(copy)&&!Files.exists(snapshot)&&cacheIsEmpty(root))
+                 verify("retired old source cannot publish or supply new data after clearAll",api.history.first().state.get()==2&&api.live.isEmpty())
+                 check(actor.persistLocalCrash(IllegalStateException("fresh-crash")));api.mode=4
+-                check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheFiles(root).isEmpty()};actor.flush()
+-                verify("new source after retry uses a distinct lease and remains usable",api.retired==2&&cacheFiles(root).isEmpty())
++                check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheIsEmpty(root)};actor.flush()
++                verify("new source after retry uses a distinct lease and remains usable",api.retired==2&&cacheIsEmpty(root))
+             }
+             "locked-copy"->{
+                 api.mode=2;check(provider.shareSnapshot());val copy=api.history.last().path
+@@ -139,8 +146,8 @@
+                     verify("real Windows file handle can reject unlink after native terminal retirement",Files.exists(copy)&&Files.readString(copy.parent.resolve(".lease")).startsWith("TERMINAL\n"))
+                     verify("filesystem failure leaves visible safe error and no retained native session",actor.error.value!=null&&api.live.isEmpty())
+                 }
+-                api.mode=3;check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheFiles(root).isEmpty()};actor.flush()
+-                verify("next explicit request prunes known-terminal disk lease after lock release",!Files.exists(copy)&&cacheFiles(root).isEmpty()&&api.retired==2)
++                api.mode=3;check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheIsEmpty(root)};actor.flush()
++                verify("next explicit request prunes known-terminal disk lease after lock release",!Files.exists(copy)&&cacheIsEmpty(root)&&api.retired==2)
+             }
+             "budget"->{
+                 check(actor.persistLocalCrash(IllegalStateException(("G".repeat(127)+"\n").repeat(300*1024/128))))
+@@ -157,10 +164,10 @@
+                 lifecycle.crashPrompt.load();lifecycle.crashPrompt.handle(com.android.purebilibili.CrashLogPromptAction.SHARE)
+                 verify("same lifecycle original SHARE exposes the fixed 16MiB reason and real local-viewer fallback",lifecycle.crashPrompt.state.value.viewerRequested&&lifecycle.crashPrompt.state.value.error?.contains("16MiB")==true&&!Files.exists(marker)&&Files.exists(snapshot))
+                 actor.clearAll()
+-                verify("explicit clear releases full managed budget while leaving unrelated files untouched",cacheFiles(root).isEmpty()&&Files.size(external)==32L*1024*1024)
++                verify("explicit clear releases full managed budget while leaving unrelated files untouched",cacheIsEmpty(root)&&Files.size(external)==32L*1024*1024)
+                 check(actor.persistLocalCrash(IllegalStateException("fresh-after-budget-clear")));api.mode=3
+-                check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheFiles(root).isEmpty()};actor.flush()
+-                verify("native sharing recovers after explicit budget cleanup",api.retired==65&&cacheFiles(root).isEmpty())
++                check(provider.shareSnapshot());eventually{api.live.isEmpty()&&cacheIsEmpty(root)};actor.flush()
++                verify("native sharing recovers after explicit budget cleanup",api.retired==65&&cacheIsEmpty(root))
+             }
+             "restore-retirement"->{
+                 api.mode=2;check(provider.shareSnapshot());val copy=api.history.last().path

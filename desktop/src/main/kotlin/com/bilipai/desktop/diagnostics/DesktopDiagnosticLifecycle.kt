@@ -8,8 +8,13 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /** The same retained process owner is drained by Main, restore and Runtime disposal. */
-internal class DesktopDiagnosticLifecycle(val diagnostics: DesktopDiagnostics) {
-    val crashPrompt = DesktopCrashPromptController(diagnostics)
+internal class DesktopDiagnosticLifecycle(val diagnostics: DesktopDiagnostics,
+    private val nativeShare:DesktopNativeCrashShare?=null) {
+    private suspend fun requestNativeShare(onLateFailure:()->Unit):Boolean {
+        return nativeShare?.shareSnapshot(onLateFailure)?:false
+    }
+    init {require(nativeShare==null || nativeShare.diagnostics===diagnostics){"原生分享必须复用同一诊断记录器"}}
+    val crashPrompt = DesktopCrashPromptController(diagnostics,if(nativeShare==null)null else ::requestNativeShare,{nativeShare?.error?.value})
     private val gate = Any()
     private val shutdown = Mutex()
     private val observers = mutableListOf<Job>()
@@ -26,7 +31,9 @@ internal class DesktopDiagnosticLifecycle(val diagnostics: DesktopDiagnostics) {
             if (completed) return@withLock
             val jobs = synchronized(gate) { closing = true; observers.toList() }
             jobs.forEach { it.cancel() }
+            nativeShare?.retire() // Reject late queued preparation before waiting for the prompt operation.
             crashPrompt.shutdownForRestore()
+            nativeShare?.shutdownForRestore()
             jobs.forEach { it.join() }
             diagnostics.shutdownForRestore()
             completed = true

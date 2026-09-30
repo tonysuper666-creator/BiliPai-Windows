@@ -1,0 +1,185 @@
+{
+  "frozen": true,
+  "artifactCount": 31,
+  "artifactBytes": 7467193,
+  "previous118VerifiedUnchanged": true,
+  "previous118ManifestSha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1",
+  "CommunityInstalled": false,
+  "CommunityInstallBlockedBy": "Current process token is not administrator",
+  "installerExecuted": false,
+  "UacLaunched": false,
+  "rebootInitiated": false,
+  "officialBootstrapperSignature": "Valid/Microsoft",
+  "guardExitCode": 740,
+  "guardIsNotMicrosoftInstallerExitCode": true,
+  "actualMdBuildProduct": "BuildTools, not Community",
+  "mdDllSha256Bytes": "c3aadd623841be22465638f806c14c2c0e63955073597838b13300a8886ebcff",
+  "actualMdStorageFileRetireCycles": 3,
+  "headers": 363,
+  "searchedLibraries": 11,
+  "compilerFiles": 64,
+  "packagedAppLocalRuntimeProved": false,
+  "noMissingLicenceInference": true,
+  "publicReleaseAuthorizationVerified": false,
+  "mainWritten": false,
+  "sharedGradle": false,
+  "ShareUI": false,
+  "HWND": false,
+  "artifacts": [
+    {
+      "path": "admin-guard-result.json",
+      "sha256Bytes": "dcab554280dea07c698956e0e4fe745745fc61ecf6161dbab6f7d49603935596",
+      "sizeBytes": 153
+    },
+    {
+      "path": "admin-guard.raw.log",
+      "sha256Bytes": "617df88d56718837459474db1ff9db54fa03719157db8b2dd89919af7e8cde7d",
+      "sizeBytes": 456
+    },
+    {
+      "path": "build-md-input-graph.py",
+      "sha256Bytes": "45286c0fbd55089ee74e59e6bb422a83e09472959312c15dfbd2c5bd4667ffcf",
+      "sizeBytes": 5079
+    },
+    {
+      "path": "downloads/community-2022-license.docx",
+      "sha256Bytes": "41a207b10c8ab91d0d2f10a854715f73dca54509581692d2fe179aa3ffcb8540",
+      "sizeBytes": 62859
+    },
+    {
+      "path": "downloads/community-2022-license.html",
+      "sha256Bytes": "e4c0bfa9c08ecaa7e83859008c1ee9c1b607755b8e0f252fcd796dfde49a9993",
+      "sizeBytes": 235322
+    },
+    {
+      "path": "downloads/official-command-line-install.html",
+      "sha256Bytes": "5123cb73ff5ba459dd086d84d092ba98f57d3dcdc384d7e67e1bd5d15b0bf1a1",
+      "sizeBytes": 102456
+    },
+    {
+      "path": "downloads/official-component-directory.html",
+      "sha256Bytes": "b8e8d887d4e7e69c65d4961573d4b5065f20b50e3a8f2dd80d0844b6335d4a7a",
+      "sizeBytes": 328856
+    },
+    {
+      "path": "downloads/official-release-history.html",
+      "sha256Bytes": "a990def67c3c6b545c5676283b6285ad9d0540ca06efa25a5632253ad3d59b65",
+      "sizeBytes": 289465
+    },
+    {
+      "path": "downloads/vs_community.exe",
+      "sha256Bytes": "e6b61fd64e03ffa252060602e3873ef09dff477c168d3aeab233e07299e82344",
+      "sizeBytes": 4474136
+    },
+    {
+      "path": "environment-and-authenticode.json",
+      "sha256Bytes": "7032d16eb0be2296f3070d7216e597503698bd138bfe8874bdf8cc45939dec03",
+      "sizeBytes": 988
+    },
+    {
+      "path": "freeze-toolchain.py",
+      "sha256Bytes": "0da16e395c351a2a6f9b97b090bd4d1e9f6ee1f08c07600a535f52d8b2134c3d",
+      "sizeBytes": 2746
+    },
+    {
+      "path": "install-community.ps1",
+      "sha256Bytes": "f0c2d56205567f6a3d9e53dcd5b8ff9b879206429e03999b354dff23b87d2b31",
+      "sizeBytes": 2907
+    },
+    {
+      "path": "md-build-current-buildtools/bilipai-diagnostic-share.dll",
+      "sha256Bytes": "c3aadd623841be22465638f806c14c2c0e63955073597838b13300a8886ebcff",
+      "sizeBytes": 101376
+    },
+    {
+      "path": "md-build-current-buildtools/bilipai-diagnostic-share.exp",
+      "sha256Bytes": "f4dbf194e86afbe33d8016c68ce22527f8e5b8baf13697b2b98e2d074b9c829b",
+      "sizeBytes": 1696
+    },
+    {
+      "path": "md-build-current-buildtools/bilipai-diagnostic-share.lib",
+      "sha256Bytes": "8808586496830b250765bdd9a86563bbec29fa1e4d199e151147046ef8aa78f7",
+      "sizeBytes": 3190
+    },
+    {
+      "path": "md-build-current-buildtools/compile.log",
+      "sha256Bytes": "229883ebf480563472072d43b34d075e6308eacea341276de42060fd3a4639a7",
+      "sizeBytes": 9692
+    },
+    {
+      "path": "md-build-current-buildtools/compile.raw.log",
+      "sha256Bytes": "abbf024a7008845e5ea3329f11e7ba32e5fedfec484e431180101dc37751c552",
+      "sizeBytes": 9583
+    },
+    {
+      "path": "md-build-current-buildtools/DesktopDiagnosticShare.obj",
+      "sha256Bytes": "f6570793286348da8844ee98a315c94c76856a291d883dffaecc50f394d0171f",
+      "sizeBytes": 1644767
+    },
+    {
+      "path": "md-build-current-buildtools/producer-input-graph.json",
+      "sha256Bytes": "4387c00c9626ba8f65defa3448e1c74c41fe599fc6da170da4802decb707f2ba",
+      "sizeBytes": 115345
+    },
+    {
+      "path": "md-build-current-buildtools/source-dependencies.json",
+      "sha256Bytes": "8cfde2f086a08a4b50a30b114dc4d4e239013a6c6a1a66297c657c06689bee7f",
+      "sizeBytes": 51705
+    },
+    {
+      "path": "md-dependents.raw.log",
+      "sha256Bytes": "f8e81c4bcd95112104cbc289b5c330cf6373d42a73621c14b584621d6ad9691e",
+      "sizeBytes": 749
+    },
+    {
+      "path": "md-draft-delta.json",
+      "sha256Bytes": "7ea253e5cbfa6391c973dfeabd38d910c072ec684d4dbee2b8af924ac3159050",
+      "sizeBytes": 530
+    },
+    {
+      "path": "md-object-directives.raw.log",
+      "sha256Bytes": "5627ce9935933009078a6a8936b222491bd95c8e94caa01502b19c76c27b54fb",
+      "sizeBytes": 6507
+    },
+    {
+      "path": "md-runtime-proof/result.json",
+      "sha256Bytes": "5758b48152aee4195fc9166af903177a6e8581b6d96674bd24b434e0078c9eca",
+      "sizeBytes": 1586
+    },
+    {
+      "path": "md-runtime-proof/synthetic-crash.txt",
+      "sha256Bytes": "f342b0b509e3ff29f7875808ddb0bf5592c2e972d6d5376a3bc344be61115ed1",
+      "sizeBytes": 59
+    },
+    {
+      "path": "minimal.vsconfig",
+      "sha256Bytes": "75e0b1d23d191cbf13d4773c1c62d367c495b06539bb48f42830d970edccd29e",
+      "sizeBytes": 269
+    },
+    {
+      "path": "official-downloads.json",
+      "sha256Bytes": "3f454bb1bd55622adfb43b4383555343f38624c1c6ab8384ecd421f1fc6d157d",
+      "sizeBytes": 2950
+    },
+    {
+      "path": "prepare-md-draft.py",
+      "sha256Bytes": "33b9a560c539b75467e10b627399e73c087fa1dcedba983b37d32fb5e6af87b6",
+      "sizeBytes": 1631
+    },
+    {
+      "path": "prepare-official.py",
+      "sha256Bytes": "128a40ea8318c991a3885295c2b020a4f5579074bd6bfbca1b97f93d0a05d4aa",
+      "sizeBytes": 1955
+    },
+    {
+      "path": "probe-md-runtime.py",
+      "sha256Bytes": "5985f0fb95a58845da87b4c0a30fcafc72406035931f2463eb41889263c9bb88",
+      "sizeBytes": 2753
+    },
+    {
+      "path": "STATUS.md",
+      "sha256Bytes": "8fe786d5c12542c6c04120c030dd2042a4f16b4b325e5f60e95f5c6589ef025e",
+      "sizeBytes": 5427
+    }
+  ]
+}

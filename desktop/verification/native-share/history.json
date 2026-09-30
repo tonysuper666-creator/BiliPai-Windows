@@ -1,0 +1,43 @@
+{
+  "preparedCohortsVerifiedUnchanged": [
+    {
+      "cohort": "diagnostics-native-share-parity/terminal-leases",
+      "manifestSha256Bytes": "1ffdfd72f9445ac035f6179d3214c93e138cb4a3707263d018caa3d976d215f9",
+      "verifiedOriginalArtifactCount": 189,
+      "fullPreparedCohortRetainedLocally": true,
+      "binariesCopiedIntoGit": false,
+      "actualCurrentMainProof": false
+    },
+    {
+      "cohort": "native-share-current-main-review",
+      "manifestSha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1",
+      "verifiedOriginalArtifactCount": 118,
+      "fullPreparedCohortRetainedLocally": true,
+      "binariesCopiedIntoGit": false,
+      "actualCurrentMainProof": false
+    },
+    {
+      "cohort": "native-share-community-toolchain-parity",
+      "manifestSha256Bytes": "17d368c4e7803f88aea39414ccce115e3ebfa1ae8dad703ecf7939c67fdb3cad",
+      "verifiedOriginalArtifactCount": 31,
+      "fullPreparedCohortRetainedLocally": true,
+      "binariesCopiedIntoGit": false,
+      "actualCurrentMainProof": false
+    }
+  ],
+  "ui01": "Accepted actual Main UI with only explicit synthetic native events; 18 checks, zero product overrides.",
+  "lease01": "Failed task observation: Files.walk raced successful product watcher deletion and threw NoSuchFileException. This attempt is retained and not accepted.",
+  "lease02": "Task-only empty-cache observer treats a concurrently disappearing entry as unstable and retries. All eight fresh JVM scenarios passed; no production source changed between 01 and 02.",
+  "nativeProductionWindowsTransport": "Fresh reviewed-source DLL built successfully; actual hidden ComposeWindow probe disproves its Swing EDT equals HWND-owner assumption. Original prompt/actor UI and event leases passed, but native SHARE is runtime-blocked by that guard.",
+  "hwndProbe01And02": "Hidden default Direct3D fixture stopped before HWND reads. Retained timeouts and stack evidence are not visible Main acceptance or an application rendering diagnosis.",
+  "hwndProbe03": "Task-only SOFTWARE renderer and invisible displayable actual ComposeWindow. Native EDT and HWND-owner thread IDs differ; window disposed and IsWindow=false. No SharePrepare/ShareShow or receiver.",
+  "excluded": [
+    "Product/dependency JARs",
+    "Native DLLs/objects/libraries/PDBs/EXEs",
+    "Task-private synthetic filesystem/log caches"
+  ],
+  "fullHistoricalBinaryCohortsCopied": false,
+  "HWNDAccepted": false,
+  "packageAccepted": false,
+  "publicReleaseAuthorizationVerified": false
+}

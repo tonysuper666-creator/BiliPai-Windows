@@ -25,3 +25,6 @@ desktop/src/main/resources/licenses/home-card-platform/** -text
 desktop/third-party/home-card-palette/upstream/** -text
 desktop/verification/dynamic-cache/** -text
 desktop/verification/dynamic-full-card/** -text
+desktop/native/diagnostic-share/** -text
+desktop/tools/compile-native-diagnostic-share.py -text
+desktop/verification/native-share/** -text

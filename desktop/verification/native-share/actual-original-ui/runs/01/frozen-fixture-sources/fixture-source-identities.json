@@ -1,0 +1,10 @@
+{
+  "fixtureOnly": true,
+  "productionOverrides": 0,
+  "files": [
+    {
+      "path": "NativeShareProductUiFixture.kt",
+      "sha256Bytes": "c3697c72c87dd2f3be3f8484007a729b3739a06cb41ac52d5540c9331522a045"
+    }
+  ]
+}

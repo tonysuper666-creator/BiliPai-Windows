@@ -102,6 +102,23 @@ internal class DesktopDiagnostics(
         ensurePrivateFile(path);if(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))Files.size(path) else 0L
     }})
     suspend fun viewLocal():String = await(submit {buildExport()})
+    private val nativeShareCache=DesktopCrashShareCache(root)
+    private var nativeShareClearHook:(suspend (suspend ()->Unit)->Unit)?=null
+    internal fun installNativeShareClearHook(hook:suspend (suspend ()->Unit)->Unit)=synchronized(gate) {
+        check(!closing && nativeShareClearHook==null){"诊断分享已经绑定"};nativeShareClearHook=hook
+    }
+    internal suspend fun prepareNativeCrashShareLease():DesktopCrashShareLease? = await(submit {
+        val snapshot=resolveCrashSnapshotFile(root.toFile()).toPath()
+        val marker=resolveCrashSnapshotMarkerFile(root.toFile()).toPath()
+        ensurePrivateFile(snapshot);ensurePrivateFile(marker)
+        if(!hasPendingCrashSnapshot(Files.isRegularFile(marker,LinkOption.NOFOLLOW_LINKS),
+                Files.isRegularFile(snapshot,LinkOption.NOFOLLOW_LINKS)))null
+        else nativeShareCache.create(readBounded(snapshot,256*1024))
+    })
+    internal suspend fun markNativeCrashShareMayExpose(lease:DesktopCrashShareLease):Unit =
+        await(submit {nativeShareCache.mayExpose(lease)})
+    internal suspend fun retireNativeCrashShareLease(lease:DesktopCrashShareLease,safeToDelete:Boolean):Unit =
+        await(submit {nativeShareCache.retire(lease,safeToDelete)})
     /** Explicit caller-selected local file only. CREATE_NEW never overwrites another artifact. */
     suspend fun exportTo(selectedPath:Path):Path = await(submit {
         val target=selectedPath.toAbsolutePath().normalize()
@@ -109,9 +126,14 @@ internal class DesktopDiagnostics(
         Files.write(target,buildExport().toByteArray(Charsets.UTF_8),StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)
         target
     })
-    suspend fun clearAll():Unit = await(submit {
-        collector.clear();privatePaths().forEach(::deletePrivate);mutableError.value=null
-    })
+    suspend fun clearAll():Unit {
+        val action:suspend ()->Unit={ await(submit {
+            nativeShareCache.clearExplicit()
+            collector.clear();privatePaths().forEach(::deletePrivate);mutableError.value=null
+        }) }
+        val hook=synchronized(gate){check(!closing){"诊断记录器已经停止"};nativeShareClearHook}
+        if(hook==null)action() else hook(action)
+    }
     suspend fun clearCrashPrompt():Unit = await(submit {deletePrivate(resolveCrashSnapshotMarkerFile(root.toFile()).toPath())})
     suspend fun hasPendingCrash():Boolean = await(submit {
         val snapshot=resolveCrashSnapshotFile(root.toFile()).toPath();val marker=resolveCrashSnapshotMarkerFile(root.toFile()).toPath()

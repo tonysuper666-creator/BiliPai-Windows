@@ -1,0 +1,11 @@
+stage:main-entry
+stage:class-pins-verified
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.hwndownerprobe.HwndOwnerProbeKt (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-hwnd-owner-probe/attempt02/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.hwndownerprobe.HwndOwnerProbeKt
+WARNING: System::setSecurityManager will be removed in a future release
+stage:fence-installed
+stage:kernel-user-libraries-loaded
+stage:EDT-entered
+stage:before-ComposeWindow-constructor
+stage:before-addNotify

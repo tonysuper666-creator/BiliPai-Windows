@@ -1,0 +1,39 @@
+{
+  "preparedOnly": true,
+  "actualMainRun": false,
+  "compiled": false,
+  "productionOverrides": 0,
+  "awaitingNewRootProductPins": true,
+  "files": [
+    {
+      "path": "fixture-source-identities.json",
+      "sha256Bytes": "08c3dde6ba11d9a0f94b1005b803a086586dd986e90208758a7507a2242607c5",
+      "sizeBytes": 220
+    },
+    {
+      "path": "NativeShareProductUiFixture.kt",
+      "sha256Bytes": "c3697c72c87dd2f3be3f8484007a729b3739a06cb41ac52d5540c9331522a045",
+      "sizeBytes": 22085
+    },
+    {
+      "path": "predecessor-byte-verification.json",
+      "sha256Bytes": "32560af612b108f7f92dcab049d165d54d02ce500ad4ce738584674fed80a30a",
+      "sizeBytes": 841
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "72f2f25b3cfbbc43ec6c037c4d5983f2b07352f0caa4c97d2bfc1fc581ca2567",
+      "sizeBytes": 3178
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "9a7b402418679de02001961b6615d5a23d60bdde92d424a918cae2a2b4970ee6",
+      "sizeBytes": 10111
+    },
+    {
+      "path": "verify-predecessors.py",
+      "sha256Bytes": "0380a720ad3c09c6e7e82ef4f6061a404f16468a8cc0c3c124fec9ecd8adbe30",
+      "sizeBytes": 1546
+    }
+  ]
+}

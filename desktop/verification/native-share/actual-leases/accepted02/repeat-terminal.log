@@ -1,0 +1,10 @@
+PASS 40 completed/canceled event-contract shares free every native session and private lease
+PASS terminal sharing exceeds prior 8 and 16 limits without cumulative degradation
+PASS original crash snapshot and pending marker remain owned by original action policy
+PASS exposure intent is durable before transport Show and retirement runs on EDT
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-actual-lease-proof-02/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

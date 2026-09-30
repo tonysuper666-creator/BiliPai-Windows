@@ -1,0 +1,82 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "faf7252ac4e966d20dcc591baeb40b9c6ddffa33b0913897fc1252e58c55a02e"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Case.class",
+    "sha256Bytes": "cc438e685efd54a4c993c5c15e10ad428843fe3cf0a3f5a9650e9524df163b9d"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/TaskConnectionFence.class",
+    "sha256Bytes": "417e5003198148e03fdc803b6344037fd5d7724db13dc9d686fed9eb0d97ca93"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/MarkerLockKernel32.class",
+    "sha256Bytes": "0169a00c4469af42d521b790b45cf508613873f9b1f66ace671a1b1f1b0e49af"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeEventPort.class",
+    "sha256Bytes": "33d2cfcf1ad2f9167abf8b633df018c210233a55d09c2a961a7dee04ee3d7941"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeEventPort$Event.class",
+    "sha256Bytes": "bb58817d8bacfdc0cc718c9eb41cd594d1423e8aaf62416f13cbb47e40b8011a"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui.class",
+    "sha256Bytes": "d940791c40574e8b17692297ec492f5fd9fe8cbdfdd14011b2bb36a48d046d7b"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "1899e3da25d8db3204c2e998f3afbbcf402dcbeef84e6b939f44e12f9e74d9a1"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui$settle$1.class",
+    "sha256Bytes": "9abafb47cac71f3cfd22c41271525978de2663341d67ad51a9248023df13bda6"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui$await$2.class",
+    "sha256Bytes": "a162ed15c7c3bbf20e19ba6ca32841a9e43fc1956c41dbb544d6d0c786a00629"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui$await$1.class",
+    "sha256Bytes": "13a910af27e2ef9d0b2a50d56ae9d98c1e267b1b03f3c85fa9a0ee54aeca0b12"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/Ui$click$1.class",
+    "sha256Bytes": "5697558f73a99dc79394ccc4fe78e2f01a8d4c840f34a73df5e74a8c7fbcbe81"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt.class",
+    "sha256Bytes": "065e1d5b5ba232b403b7b9cb6113d04c25e3f4f527e0d28f3d06fc38281d6592"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$runCase$provider$2.class",
+    "sha256Bytes": "b9d5cad753b5c68b25a6898569c84df16509f0094b6bc368a4b13a35e7c9d7ea"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$runCase$1.class",
+    "sha256Bytes": "48a3f7e8905593eeca85d7b31e8a2e67a9449ad54ef48c6d42b0339af55cc2ee"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$main$1.class",
+    "sha256Bytes": "f7d1dc6486cccce362d1c415a90eaafd9f0c2086273160faf671b9a2dcc58f85"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$runCase$fallbackViewer$1.class",
+    "sha256Bytes": "c6463c11f6ffc229d76c9880a23377123ce28a96d80cb986a109c8ee1d3abed2"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$runCase$2$1$1.class",
+    "sha256Bytes": "d686bb9ae0935c2d263990906db814776bfba2be3338d0ae7f733c25929e1255"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/nativeproductuiproof/NativeShareProductUiFixtureKt$WhenMappings.class",
+    "sha256Bytes": "415e4844d4650c01c478d55ad2559aaed1f12bc4afd451e30280324456eee35b"
+  },
+  {
+    "entry": "META-INF/native_share_actual_product_ui_proof.kotlin_module",
+    "sha256Bytes": "6e832941df4201bd17b1fa419b3a57d77d79ff616d07cc20312478b9c5ffb45c"
+  }
+]
