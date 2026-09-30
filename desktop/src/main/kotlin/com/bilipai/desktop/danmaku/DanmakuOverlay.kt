@@ -399,12 +399,16 @@ class DanmakuOverlay(
         check(SwingUtilities.isEventDispatchThread())
         val surface = player.surface
         val window = overlay
+        val ancestor = SwingUtilities.getWindowAncestor(surface)
+        val playerState = player.state.value
         val native = window?.takeIf { it.isDisplayable }?.let { nativeWindow ->
             runCatching { "nativeExtendedStyle=0x${user32.GetWindowLongW(Native.getWindowPointer(nativeWindow), -20).toString(16)}" }.getOrElse { "nativeExtendedStyle=unavailable" }
         } ?: "nativeWindow=absent"
-        return "surface=${surface.bounds}, showing=${surface.isShowing}, owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, " +
+        return "surface=${surface.bounds}, showing=${surface.isShowing}, ancestor=${ancestor?.javaClass?.simpleName}, ancestorVisible=${ancestor?.isVisible}, ancestorFrameState=${(ancestor as? Frame)?.extendedState}, " +
+            "owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, timerRunning=${timer.isRunning}, enabled=$enabled, " +
             "overlay=${window?.bounds}, showing=${window?.isShowing}, overlayTopmost=${window?.isAlwaysOnTop}, panel=${panel.bounds}, comments=${mutableCount.value}, " +
-            "mediaTime=$displayTime, firstFrame=${player.state.value.firstVideoFrameReady}, nativePaused=${player.state.value.nativePaused}, $native"
+            "mediaTime=$displayTime, ready=${playerState.ready}, firstFrame=${playerState.firstVideoFrameReady}, nativePaused=${playerState.nativePaused}, " +
+            "videoCodecPresent=${playerState.videoCodec != null}, ended=${playerState.ended}, audioOnly=${playerState.audioOnly}, errorPresent=${playerState.error != null}, $native"
     }
 
     override fun close() {
