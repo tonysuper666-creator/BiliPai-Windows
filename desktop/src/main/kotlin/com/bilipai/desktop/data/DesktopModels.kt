@@ -10,7 +10,19 @@ data class VideoCard(
     val author: String,
     val playCount: Long,
     val duration: Int,
+    val progressSeconds: Int? = null,
+    val preferredCid: Long = 0,
+    val pageIndex: Int = 0,
+    val viewedAt: Long = 0,
+    val publishedAt: Long = 0,
+    val authorMid: Long = 0,
 )
+
+data class CloudFavoriteFolder(val id: Long, val title: String, val cover: String, val mediaCount: Int)
+data class VideoPage(val items: List<VideoCard>, val hasMore: Boolean, val totalCount: Int? = null)
+data class CloudHistoryCursor(val max: Long, val viewAt: Long, val business: String)
+data class CloudHistoryPage(val items: List<VideoCard>, val nextCursor: CloudHistoryCursor?)
+data class FollowingVideoPage(val items: List<VideoCard>, val nextOffset: String?, val updateBaseline: String)
 
 data class VideoPart(val cid: Long, val title: String, val duration: Long)
 
@@ -24,6 +36,8 @@ data class VideoDetails(
     val playCount: Long,
     val likeCount: Long,
     val pages: List<VideoPart>,
+    val authorMid: Long = 0,
+    val raw: com.android.purebilibili.data.model.response.ViewInfo? = null,
 )
 
 data class PlaybackSource(
@@ -33,7 +47,13 @@ data class PlaybackSource(
     val referer: String,
     val cookieHeader: String = "",
     val quality: Int = 0,
+    val availableQualities: List<PlaybackQuality> = emptyList(),
+    val videoAlternatives: List<String> = emptyList(),
+    val audioAlternatives: List<String> = emptyList(),
+    val progressiveSegments: List<com.bilipai.desktop.player.PlaybackSegment> = emptyList(),
 )
+
+data class PlaybackQuality(val id: Int, val label: String)
 
 data class Comment(
     val id: Long,
@@ -42,6 +62,11 @@ data class Comment(
     val text: String,
     val likeCount: Int,
     val timestamp: Long,
+    val replyCount: Int = 0,
+    val memberId: Long = 0,
+    val rootId: Long = 0,
+    val previewReplies: List<Comment> = emptyList(),
+    val liked: Boolean = false,
 )
 
 @Serializable

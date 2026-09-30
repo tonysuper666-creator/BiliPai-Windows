@@ -133,5 +133,6 @@ internal fun PlaybackSource.mpvFileOptions(): Map<String, String> = buildMap {
     put("user-agent", userAgent)
     if (cookieHeader.isNotBlank()) put("http-header-fields", escapeMpvListItem("Cookie: $cookieHeader", ','))
     put("force-media-title", title)
-    put("pause", "no")
+    put("start", startPositionSeconds.toString())
+    put("pause", if (startPaused) "yes" else "no")
 }

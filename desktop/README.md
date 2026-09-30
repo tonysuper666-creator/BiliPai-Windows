@@ -6,21 +6,22 @@
 
 ## 当前功能范围
 
-| 功能 | Windows 状态 |
+| 功能 | Windows 当前源码状态 |
 | --- | --- |
-| 推荐、热门、搜索 | 已实现 |
-| 视频详情和分 P | 已实现 |
-| 扫码登录、Cookie 导入 | 已实现，需要用户自己的账号完成实际登录 |
-| 评论阅读 | 已实现 |
-| 原生 DASH 视频和音频播放 | 已实现 |
-| 暂停、拖动进度、速度、音量 | 已实现 |
-| 历史、收藏 | 本地保存 |
-| 深色模式 | 已实现 |
-| 普通 XML 弹幕 | 部分实现，支持滚动、顶部、底部；视觉效果需要用户验证 |
-| 高级弹幕、代码弹幕、直播、番剧 | 尚未完成移植 |
-| 云端收藏等账号写入操作、下载、插件 | 尚未完成移植 |
+| 推荐、热门、九类搜索、UP 空间与合集 | 原接口/模型与实际页面已接；分区和排行榜继续对齐 |
+| 云端历史/收藏/稍后再看/关注/赞过、本地续播 | 读取、类型路由、账号隔离与收藏夹操作已实现，需用户账号验收 |
+| Web/TV 扫码、密码/短信、验证码、多账号 | 原登录参数/RSA/会话策略与 Windows DPAPI 已接；实际登录需用户操作 |
+| 评论、动态、消息、专栏、视频笔记/AI | 读取与用户主动发布/互动已接，账号操作待验收 |
+| 普通视频、番剧/课程、直播 | 原取流/权益与原生页面已接，实际线上体验仍需验收 |
+| 下载、离线、多段流、FFmpeg 合并 | 原续传/任务/资产策略已接；实际打包的六种合并输出均已解码验证 |
+| 播放控制、主副字幕、标准/高级/直播弹幕 | 原算法与 Windows 原生绑定已接，完整交互仍在验收 |
+| 听视频、歌词、队列、收藏、定时 | 原策略与独立原生音频会话已接；实际原生验收继续进行 |
+| 独立画中画、系统媒体控制 | Windows 原生浮窗/还原、元数据/状态/进度读回检查通过；完整媒体队列仍在对齐 |
+| 内置/JSON/包插件、投屏、主题、备份 | 继续移植，未宣称完整对齐 |
 
-`upstream-sources.json` 明确记录复用的文件、SHA-256、上游 tag 和完整 commit SHA，以及 Windows 功能覆盖范围。摘要采用 `hashNormalization=lf`：计算前将 CRLF 转为 LF，Windows Git 换行转换不会触发错误的源码变化判断，实际内容变化仍会使校验失败。网络接口从上游选定声明生成，缺失或不兼容的声明会让构建失败。
+完整差距与验收记录见 [PARITY.md](PARITY.md)。该表描述当前分支源码；桌面原测试包未因此自动更新。
+
+`upstream-sources.json` 记录复用文件、LF SHA-256、上游 tag 和完整 commit SHA。网络构建保留上游全部 303 个 Retrofit 接口方法及 45 份响应模型，`tools/source-parity-report.py` 逐一审计声明。来源复用与接口数量不能证明完整功能对齐。
 
 ## 本地构建
 
@@ -32,7 +33,7 @@
 pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21'
 ```
 
-该脚本校验并下载固定 SHA-256 的 libmpv，执行 Windows 单元测试和 `createDistributable`，然后生成 `desktop/build/distributions/BiliPai-Windows-<Windows版本>-x64.zip` 及相邻的 `.zip.sha256`。默认生成便携包。需要 MSI 时加 `-Installer`，并准备 Compose 打包所需的 WiX 工具。
+该脚本校验并下载固定 SHA-256 的 libmpv 与 FFmpeg/FFprobe，执行 Windows 单元测试和 `createDistributable`，然后生成 `desktop/build/distributions/BiliPai-Windows-<Windows版本>-x64.zip` 及相邻的 `.zip.sha256`。默认生成便携包。需要 MSI 时加 `-Installer`，并准备 Compose 打包所需的 WiX 工具。
 
 发布前的完整检查：
 
@@ -41,6 +42,8 @@ pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21' -R
 ```
 
 用 `-NativeSmoke` 可以单独执行打包后的原生播放器检查并产生原生报告。Windows CI 对每次普通构建也执行此检查；完整发行仍须通过 `-ReleaseGate` 的所有门槛。
+
+用 `-NativeMuxSmoke` 可以单独验证打包后的 FFmpeg/FFprobe，检查双轨、音频、渐进流及三种多段合并文件的编解码、时长和二进制摘要；六种输出必须全部通过，缺报告即失败。
 
 用 `-UpdaterSmoke` 可以在 ZIP 和 SHA-256 文件生成后，单独执行隔离的更新集成检查。它通过 loopback HTTP 测试服务下载真实便携 ZIP，校验哈希与安装根目录，并验证实际 EXE 的启动、激活和失败回退；报告固定为 `desktop/build/reports/updater-smoke-*/updater-smoke.json`，绑定本次 Windows 版本和 ZIP SHA-256。测试使用独立的用户数据目录，不读取真实账号；新版本健康检查窗口可能发起隔离访客请求，因此这项检查并非完全离线。它不证明 GitHub 正式发行流程或线上 B 站 DASH 已通过。可选 `-PreviousUpdateTestPackage <旧版ZIP>` 用于额外检查真实旧版 EXE 的更新转发。Windows CI 默认执行此检查并单独上传报告与日志。独立 smoke 开关不会生成完整发布通过证据；`-SkipTests` 不会跳过所选 smoke。
 

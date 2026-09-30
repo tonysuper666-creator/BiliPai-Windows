@@ -103,7 +103,7 @@ fun main(args: Array<String>) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
-                })
+                }, hostWindow = window)
         }
     }
 }

@@ -7,15 +7,18 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 from pathlib import Path
 import re
+import textwrap
 
 
 METHODS = {
-    "BilibiliApi": ["getNavInfo", "getRecommendParams", "getPopularVideos", "getVideoInfo", "getVideoInfoByAid", "getPlayUrl", "getPlayUrlLegacy", "getRelatedVideos", "getReplyListLegacy"],
+    "BilibiliApi": ["getNavInfo", "getRecommendParams", "getPopularVideos", "getVideoInfo", "getVideoInfoByAid", "getPlayUrl", "getPlayUrlLegacy", "getRelatedVideos", "getReplyListLegacy", "getFavFolders", "getFavoriteList", "getHistoryList", "getWatchLaterPage"],
     "SearchApi": ["search"],
     "PassportApi": ["validateCookieSession", "generateQrCode", "pollQrCode"],
     "BuvidApi": ["getSpi"],
+    "DynamicApi": ["getDynamicFeed"],
 }
 
 
@@ -72,37 +75,110 @@ def extract_method(body: str, name: str) -> str:
 def generate(repo: Path, output: Path) -> Path:
     source_path = repo / "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
     source = source_path.read_text(encoding="utf-8")
-    constant = re.search(r'(?m)^internal const val FORCE_COOKIE_HEADER\s*=\s*"[^"\n]+"', source)
-    if constant is None:
-        raise ValueError("Upstream FORCE_COOKIE_HEADER changed; review session adapter")
-    sections = []
-    for model in ["BuvidSpiData", "BuvidSpiResponse"]:
-        marker = re.search(r"@kotlinx\.serialization\.Serializable\s+data class\s+" + model + r"\s*\(", source)
-        if marker is None:
-            raise ValueError(f"Upstream visitor model {model} missing")
-        opening = source.find("(", marker.start())
-        closing = matching_bracket(source, opening, "(", ")")
-        sections.append(source[marker.start():closing + 1])
-    for interface, methods in METHODS.items():
-        marker = re.search(r"\binterface\s+" + re.escape(interface) + r"\s*\{", source)
-        if marker is None:
-            raise ValueError(f"Upstream interface {interface} missing")
-        start = source.find("{", marker.start())
-        end = matching_bracket(source, start, "{", "}")
-        body = source[start + 1:end]
-        declarations = [extract_method(body, name) for name in methods]
-        sections.append("interface " + interface + " {\n" + "\n\n".join(declarations) + "\n}")
+    spec = importlib.util.spec_from_file_location("bilipai_kotlin_structure", repo / "desktop/tools/sync-upstream.py")
+    parser = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(parser)
+    tokens = parser.kotlin_tokens(source)
+    sections = [match.group(0) for match in re.finditer(
+        r'(?m)^internal const val \w+\s*=\s*"[^"\n]+"', source)]
+    # Keep every actual Retrofit interface and request DTO. Android transport/session
+    # implementations remain in the platform adapter; no endpoint is retyped here.
+    interfaces = list(re.finditer(r"(?m)^interface\s+(\w+)\s*\{", source))
+    if not interfaces or not set(METHODS).issubset({match.group(1) for match in interfaces}):
+        raise ValueError("An upstream interface disappeared; review before building.")
+    for marker in interfaces:
+        _, end = parser.kotlin_structure(tokens, "interface", marker.group(1))
+        sections.append(source[marker.start():tokens[end][2]])
+    for marker in re.finditer(r"@kotlinx\.serialization\.Serializable\s+data class\s+(\w+)\s*\(", source):
+        _, end = parser.kotlin_structure(tokens, "class", marker.group(1), constructor_only=True)
+        sections.append(source[marker.start():tokens[end][2]])
+    for name in ("buildDynamicRepostRequest", "buildFavoriteFolderDynamicRequest"):
+        start, end = parser.kotlin_structure(tokens, "fun", name)
+        beginning = source.rfind("\n", 0, tokens[start][1]) + 1
+        sections.append(source[beginning:tokens[end][2]])
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),
         "package com.android.purebilibili.core.network", "",
         "import com.android.purebilibili.data.model.response.*",
-        "import retrofit2.Response", "import retrofit2.http.*", "",
-        constant.group(0), "", "\n\n".join(sections), "",
+        "import retrofit2.Response", "import retrofit2.http.*", "import okhttp3.ResponseBody", "",
+        "\n\n".join(sections), "",
     ])
     destination = output / "com/android/purebilibili/core/network/DesktopUpstreamApi.kt"
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(generated, encoding="utf-8")
+    policies = [
+        ("app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+         "com.android.purebilibili.data.repository", ["buildBangumiPlayUrlParams"], [],
+         "import com.android.purebilibili.core.util.IdUtils"),
+        ("app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+         "com.android.purebilibili.feature.download", ["isValidPartialContentResponse", "shouldRefreshDownloadUrlAfterFailure"],
+         ["PARTIAL_CONTENT_RANGE_REGEX"], ""),
+    ]
+    for relative, package, functions, constants, imports in policies:
+        policy_source = (repo / relative).read_text(encoding="utf-8")
+        policy_tokens = parser.kotlin_tokens(policy_source)
+        pieces = ["// GENERATED verbatim from " + relative, "package " + package, imports]
+        for name in constants:
+            marker = re.search(r"(?m)^private val " + re.escape(name) + r"\s*=\s*[^\n]+", policy_source)
+            if marker is None:
+                raise ValueError("Required upstream policy constant missing: " + name)
+            pieces.append(marker.group(0))
+        for name in functions:
+            if name == "shouldRefreshDownloadUrlAfterFailure":
+                positions = [index for index, token in enumerate(policy_tokens[:-1])
+                             if token[0] == "fun" and policy_tokens[index + 1][0] == name]
+                if len(positions) != 1:
+                    raise ValueError("Missing or duplicate upstream URL refresh policy")
+                start = positions[0]
+                end = start + 2
+                while policy_tokens[end][0] != "{":
+                    end += 1
+                depth = 1
+                while depth:
+                    end += 1
+                    depth += (policy_tokens[end][0] == "{") - (policy_tokens[end][0] == "}")
+            else:
+                start, end = parser.kotlin_structure(policy_tokens, "fun", name)
+            beginning = policy_source.rfind("\n", 0, policy_tokens[start][1]) + 1
+            declaration = textwrap.dedent(policy_source[beginning:policy_tokens[end][2]])
+            # Only visibility changes: the original Android manager used a private
+            # helper; the Windows adapter needs access from its own package.
+            declaration = re.sub(r"^private fun ", "internal fun ", declaration)
+            pieces.append(declaration)
+        target = output / (package.replace(".", "/") + "/DesktopUpstreamPolicies.kt")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
+    history_path = "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt"
+    history = (repo / history_path).read_text(encoding="utf-8")
+    history_tokens = parser.kotlin_tokens(history)
+    pieces = ["// GENERATED verbatim from " + history_path, "package com.android.purebilibili.data.repository"]
+    for kind, name, constructor_only in [("class", "HistoryCursorQuery", True), ("fun", "resolveHistoryCursorQuery", False)]:
+        start, end = parser.kotlin_structure(history_tokens, kind, name, constructor_only=constructor_only)
+        begin = history.rfind("\n", 0, history_tokens[start][1]) + 1
+        pieces.append(history[begin:history_tokens[end][2]])
+    target = output / "com/android/purebilibili/data/repository/DesktopHistoryCursorPolicy.kt"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
+
+    token_path = "app/src/main/java/com/android/purebilibili/core/store/TokenManager.kt"
+    token_source = (repo / token_path).read_text(encoding="utf-8")
+    platform_constants = []
+    for name in ["ACCESS_TOKEN_PLATFORM_TV", "ACCESS_TOKEN_PLATFORM_ANDROID"]:
+        matches = list(re.finditer(r'(?m)^\s*const val ' + name + r'\s*=\s*"[^"\n]+"', token_source))
+        if len(matches) != 1:
+            raise ValueError("Upstream token platform constant changed: " + name)
+        platform_constants.append(matches[0].group(0).strip())
+    # This alias changes only the Android store binding. The original signed parameter
+    # function below remains verbatim; actual Windows credentials are passed explicitly.
+    target = output / "com/android/purebilibili/core/network/DesktopSpaceRequestPolicy.kt"
+    start, end = parser.kotlin_structure(tokens, "fun", "buildSpaceLikedArchiveParams")
+    begin = source.rfind("\n", 0, tokens[start][1]) + 1
+    pieces = ["// GENERATED from ApiClient.kt and TokenManager.kt platform constants; algorithm is unchanged.",
+        "package com.android.purebilibili.core.network", "import com.android.purebilibili.core.network.DesktopTokenPlatform as TokenManager",
+        "internal object DesktopTokenPlatform {\n" + "\n".join("    " + line for line in platform_constants) + "\n}",
+        source[begin:tokens[end][2]]]
+    target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
     return destination
 
 

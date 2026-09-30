@@ -71,5 +71,50 @@ class DanmakuTest {
         assertTrue(resized.all { it.baseline <= 72 && it.x < first.first().x })
     }
 
+    @Test fun `settings changes immediately rebuild visible comments and apply type color keyword filters`() {
+        val comments = listOf(comment(0, 0.0), comment(1, 0.0, 5), comment(2, 0.0, 4),
+            comment(3, 0.0).copy(color = 0xff0000), comment(4, 0.0).copy(text = "包含剧透内容"))
+        val scheduler = DanmakuScheduler(comments)
+        assertTrue(scheduler.frame(1.0, 640, 360, 36) { 90 }.size > 1)
+        scheduler.applySettings(DanmakuSettings(displayAreaRatio = 1f, allowTop = false, allowBottom = false,
+            allowColorful = false, blockedKeywords = listOf("剧透")))
+        assertEquals(listOf(0), scheduler.frame(1.0, 640, 360, 36) { 90 }.map { it.comment.id })
+        scheduler.applySettings(DanmakuSettings(enabled = false))
+        assertTrue(scheduler.frame(1.0, 640, 360, 36) { 90 }.isEmpty())
+    }
+
+    @Test fun `area and speed settings reserve the chosen screen band after seeking`() {
+        val settings = DanmakuSettings(displayAreaRatio = 0.25f, scrollDurationSeconds = 7f, speedFactor = 2f)
+        val scheduler = DanmakuScheduler((0 until 20).map { comment(it, 0.0) }, settings)
+        val frame = scheduler.frame(10.0, 640, 400, 40) { 100 }
+        assertTrue(frame.isNotEmpty(), "Slower scrolling comments remain visible beyond the old eight second seek window")
+        assertTrue(frame.all { it.baseline <= 100 })
+        assertTrue(scheduler.frame(15.0, 640, 400, 40) { 100 }.isEmpty())
+    }
+
+    @Test fun `reverse scrolling comments move left to right without crossing forward comments`() {
+        val parsed = DanmakuParser.parse("""<i><d p="0,6,25,16777215">reverse</d></i>""")
+        assertEquals(6, parsed.single().mode)
+        val scheduler = DanmakuScheduler(listOf(comment(0, 0.0, 6), comment(1, 1.0)))
+        val earlier = scheduler.frame(1.0, 640, 36, 36) { 100 }.single()
+        val later = scheduler.frame(2.0, 640, 36, 36) { 100 }.single()
+        assertEquals(0, earlier.comment.id)
+        assertTrue(later.x > earlier.x)
+    }
+
+    @Test fun `duplicate merging keeps the original timing and styles and can be disabled`() {
+        val comments = listOf(comment(0, 0.0).copy(text = "same"), comment(1, 0.3).copy(text = "same"),
+            comment(2, 1.5).copy(text = "same"), comment(3, 0.2).copy(text = "same", color = 0xff0000))
+        val merged = mergeDuplicateDanmaku(comments)
+        assertEquals(listOf(0, 3, 2), merged.map { it.id })
+        assertEquals("same x2", merged.first().text)
+        assertEquals(0.0, merged.first().timeSeconds)
+        assertEquals(0xff0000, merged[1].color)
+        val scheduler = DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio = 1f, allowColorful = false))
+        assertEquals(listOf("same x2"), scheduler.frame(0.4, 640, 360, 36) { 100 }.map { it.comment.text })
+        scheduler.applySettings(DanmakuSettings(displayAreaRatio = 1f, allowColorful = false, mergeDuplicates = false))
+        assertEquals(listOf(0, 1), scheduler.frame(0.4, 640, 360, 36) { 100 }.map { it.comment.id })
+    }
+
     private fun comment(id: Int, time: Double, mode: Int = 1) = DanmakuComment(id, time, mode, 25, 0xffffff, "Comment $id")
 }

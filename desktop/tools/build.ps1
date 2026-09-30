@@ -6,6 +6,7 @@ param(
     [switch]$SkipTests,
     [switch]$ReleaseGate,
     [switch]$NativeSmoke,
+    [switch]$NativeMuxSmoke,
     [switch]$UpdaterSmoke,
     [string]$PreviousUpdateTestPackage
 )
@@ -48,11 +49,15 @@ try {
     $fetchArguments = @{}
     if ($SevenZipPath) { $fetchArguments.SevenZipPath = $SevenZipPath }
     & (Join-Path $PSScriptRoot 'fetch-mpv.ps1') @fetchArguments
+    & (Join-Path $PSScriptRoot 'fetch-ffmpeg.ps1')
 
     $nativeSource = Join-Path $desktopRoot 'native/windows-x64'
     $nativeResources = Join-Path $desktopRoot 'resources/common/native/windows-x64'
     New-Item -ItemType Directory -Path $nativeResources -Force | Out-Null
     Copy-Item -LiteralPath (Join-Path $nativeSource 'libmpv-2.dll') -Destination $nativeResources -Force
+    foreach ($fileName in @('ffmpeg.exe', 'ffprobe.exe', 'ffmpeg-provenance.json')) {
+        Copy-Item -LiteralPath (Join-Path $nativeSource $fileName) -Destination $nativeResources -Force
+    }
     $licenseSource = Join-Path $nativeSource 'licenses'
     if (Test-Path -LiteralPath $licenseSource) {
         Copy-Item -LiteralPath $licenseSource -Destination $nativeResources -Recurse -Force
@@ -73,6 +78,32 @@ try {
     $appRoot = Join-Path $desktopRoot 'build/compose/binaries/main/app'
     $executable = Get-ChildItem -LiteralPath $appRoot -Filter 'BiliPai Windows.exe' -File -Recurse | Select-Object -First 1
     if (-not $executable) { throw 'createDistributable did not produce a native Windows launcher.' }
+    if ($ReleaseGate -or $NativeMuxSmoke) {
+        $packagedNativeRoot = Join-Path $executable.DirectoryName 'app/resources/native/windows-x64'
+        $muxSmokeRoot = Join-Path $desktopRoot ('build/reports/native-mux-' + [Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $muxSmokeRoot -Force | Out-Null
+        $muxReportPath = Join-Path $muxSmokeRoot 'native-download-mux.json'
+        $packagedFfmpeg = Join-Path $packagedNativeRoot 'ffmpeg.exe'
+        $packagedFfprobe = Join-Path $packagedNativeRoot 'ffprobe.exe'
+        Push-Location $repoRoot
+        try {
+            & (Join-Path $repoRoot 'gradlew.bat') -p desktop --console=plain nativeMuxSmoke `
+                "-PnativeMuxFfmpeg=$packagedFfmpeg" "-PnativeMuxFfprobe=$packagedFfprobe" "-PnativeMuxReport=$muxReportPath"
+            if ($LASTEXITCODE -ne 0) { throw "Packaged native download mux test failed ($LASTEXITCODE)." }
+        } finally { Pop-Location }
+        if (-not (Test-Path -LiteralPath $muxReportPath -PathType Leaf)) { throw 'Packaged native download mux produced no report.' }
+        $muxReport = Get-Content -LiteralPath $muxReportPath -Raw | ConvertFrom-Json
+        if ($muxReport.passed -ne $true -or
+            $muxReport.ffmpegSha256 -cne (Get-FileHash -LiteralPath $packagedFfmpeg -Algorithm SHA256).Hash.ToLowerInvariant() -or
+            $muxReport.ffprobeSha256 -cne (Get-FileHash -LiteralPath $packagedFfprobe -Algorithm SHA256).Hash.ToLowerInvariant()) {
+            throw 'Native download mux evidence differs from the packaged binaries.'
+        }
+        foreach ($check in @('dualTrackCopyMux', 'audioOnlyCopyMux', 'progressiveCopyMux',
+            'multiSegmentCopyMux', 'audioOnlyMultiSegmentCopyMux', 'videoOnlyMultiSegmentCopyMux', 'decodedAllOutputs')) {
+            if ($muxReport.$check -ne $true) { throw "Native download mux did not verify $check." }
+        }
+        if (@($muxReport.outputs).Count -ne 6) { throw 'Native download mux must decode all six output variants.' }
+    }
     if ($ReleaseGate -or $NativeSmoke) {
         $smokePrefix = if ($ReleaseGate) { 'release-gate-' } else { 'native-smoke-' }
         $smokeRoot = Join-Path $desktopRoot ('build/reports/' + $smokePrefix + [Guid]::NewGuid().ToString('N'))
@@ -132,10 +163,12 @@ try {
             guestNetworkBackendSmoke = 'passed'
             packagedNativePlayerSmoke = 'passed'
             packagedUpdaterSmoke = 'passed'
+            packagedNativeDownloadMuxSmoke = 'passed'
             windowsVersion = $windowsVersion
             portableZipSha256 = $digest
             nativeReport = $nativeReportPath
             updaterReport = $updaterReportPath
+            nativeMuxReport = $muxReportPath
             verifiedAtUtc = [DateTime]::UtcNow.ToString('o')
         }
         $releaseGateReport | ConvertTo-Json | Set-Content -LiteralPath $gatePath -Encoding utf8

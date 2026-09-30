@@ -2,10 +2,12 @@ package com.bilipai.desktop.data
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.BuvidApi
+import com.android.purebilibili.core.network.DynamicApi
 import com.android.purebilibili.core.network.FORCE_COOKIE_HEADER
 import com.android.purebilibili.core.network.PassportApi
 import com.android.purebilibili.core.network.SearchApi
 import com.android.purebilibili.core.network.WbiUtils
+import com.android.purebilibili.core.network.resolveAndroidHdLoginAppKeyHeader
 import com.android.purebilibili.data.model.response.NavData
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.data.model.response.VideoItem
@@ -23,12 +25,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.Cookie
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.HttpUrl
+import okhttp3.CookieJar
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import retrofit2.Retrofit
 import retrofit2.HttpException
@@ -36,10 +41,13 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 /** Windows platform adapter around upstream API declarations, models, signing and playback policies. */
+private data class DesktopSessionEpoch(val value: Long)
 class DesktopRepository internal constructor(private val sessions: DesktopSessionStore) {
     constructor() : this(DesktopSessionStore())
 
     val account: StateFlow<AccountSummary?> = sessions.account
+    val savedAccounts: StateFlow<List<DesktopStoredAccountInfo>> = sessions.accounts
+    private val authMutex = Mutex()
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val client = OkHttpClient.Builder()
         .cookieJar(sessions)
@@ -47,13 +55,24 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         .readTimeout(25, TimeUnit.SECONDS)
         .addInterceptor { chain ->
             val original = chain.request()
-            val builder = original.newBuilder().header("User-Agent", USER_AGENT)
+            val expectedEpoch = sessions.generation
+            val builder = original.newBuilder().tag(DesktopSessionEpoch::class.java, DesktopSessionEpoch(expectedEpoch))
+                .header("User-Agent", resolvePlatformUserAgent(original.url, original.header("User-Agent")))
+            if (original.url.host == "app.bilibili.com" && original.url.encodedPath in setOf("/x/v2/space", "/x/v2/space/likearc")) {
+                val buvid = original.header("X-BiliPai-Login-Buvid") ?: sessions.currentCookies()["buvid3"].orEmpty()
+                if (buvid.isNotBlank()) builder.header("buvid", buvid)
+                builder.removeHeader("X-BiliPai-Login-Buvid").header("bili-http-engine", "cronet").header("env", "prod")
+                    .header("app-key", "android64").header("x-bili-aurora-zone", "sh001")
+            }
             val referer = resolveReferer(original.url, original.header("Referer"))
             if (referer == null) builder.removeHeader("Referer") else builder.header("Referer", referer)
-            if (original.header("Origin").isNullOrBlank()) builder.header("Origin", "https://www.bilibili.com")
+            if (original.header("Origin").isNullOrBlank() && original.url.host != "app.bilibili.com" &&
+                resolveAndroidHdLoginAppKeyHeader(original.url.encodedPath) == null) builder.header("Origin", "https://www.bilibili.com")
             if (original.header("Accept").isNullOrBlank()) builder.header("Accept", "application/json, text/plain, */*")
             builder.header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-            val response = chain.proceed(builder.build())
+            sessions.requestGeneration.set(expectedEpoch)
+            val response = try { chain.proceed(builder.build()) } finally { sessions.requestGeneration.remove() }
+            if (expectedEpoch != sessions.generation) { response.close(); throw BiliApiException(-101, "账号已切换，请重新加载") }
             if (response.code == 412 || response.code == 429) {
                 val code = response.code
                 response.close()
@@ -66,11 +85,17 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         // OkHttp's CookieJar runs after application interceptors. Imported cookies must be applied here.
         .addNetworkInterceptor { chain ->
             val request = chain.request()
+            val epoch = request.tag(DesktopSessionEpoch::class.java)?.value ?: sessions.generation
+            if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新操作")
             val forcedCookie = request.header(FORCE_COOKIE_HEADER)
             val replacement = if (forcedCookie != null) {
                 request.newBuilder().header("Cookie", forcedCookie).removeHeader(FORCE_COOKIE_HEADER).build()
             } else request
-            chain.proceed(replacement)
+            val response = chain.proceed(replacement)
+            // BridgeInterceptor saves response cookies after this interceptor returns. An old
+            // account's in-flight response must never populate the newly activated account jar.
+            if (epoch != sessions.generation) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
+            else response
         }
         .build()
     private fun retrofit(baseUrl: String): Retrofit = Retrofit.Builder()
@@ -79,12 +104,132 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     private val api = retrofit("https://api.bilibili.com/").create(BilibiliApi::class.java)
     private val searchApi = retrofit("https://api.bilibili.com/").create(SearchApi::class.java)
     private val passportApi = retrofit("https://passport.bilibili.com/").create(PassportApi::class.java)
+    private val validationPassportApi = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
+        .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES).build())
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(PassportApi::class.java)
     private val buvidApi = retrofit("https://api.bilibili.com/").create(BuvidApi::class.java)
+    private val dynamicApi = retrofit("https://api.bilibili.com/").create(DynamicApi::class.java)
     private val visitorMutex = Mutex()
     @Volatile private var visitorInitialized = false
+    @Volatile private var visitorGeneration = -1L
     private val wbiMutex = Mutex()
     private var wbiKeys: Pair<String, String>? = null
-    private var wbiExpiresAt = 0L
+    @Volatile private var wbiExpiresAt = 0L
+    private var wbiGeneration = -1L
+
+    internal val httpClient: OkHttpClient get() = client
+    internal suspend fun ensureSession() = ensureVisitorSession()
+    internal suspend fun signWebParams(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
+        forceRefresh: Boolean = false) = sign(params, includeRiskFingerprint, forceRefresh)
+    internal fun accessTokenCredentials(): Pair<String?, String> = sessions.accessTokenCredentials()
+    internal fun appCredentials(): DesktopAppCredentials? = sessions.appCredentials()
+    internal fun loginIdentityBuvid(): String = sessions.loginIdentityBuvid()
+    internal fun saveLoginIdentityBuvid(value: String) = sessions.saveLoginIdentityBuvid(value)
+    internal fun authCookies(): Map<String, String> = sessions.currentCookies().filterKeys { it in DesktopSessionStore.PERSISTED_COOKIE_NAMES }
+
+    internal suspend fun installLogin(cookies: Map<String, String>, credentials: DesktopAppCredentials? = null,
+        snapshot: DesktopSessionStore.CookieSnapshot? = null, expectedMid: Long? = null,
+        expectedActiveMid: Long? = null): AccountSummary = withContext(Dispatchers.IO) {
+        authMutex.withLock {
+            val epoch = sessions.generation
+            if (expectedActiveMid != null && account.value?.mid != expectedActiveMid) throw BiliApiException(-101, "账号已切换，请重新操作")
+            val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
+            if (expectedMid != null) require(summary.mid == expectedMid) { "登录返回的账号与验证结果不一致" }
+            if (expectedActiveMid != null && account.value?.mid != expectedActiveMid) throw BiliApiException(-101, "账号已切换，请重新操作")
+            if (epoch != sessions.generation) throw BiliApiException(-101, "账号已变化，请重新登录")
+            currentCoroutineContext().ensureActive()
+            resetAuthentication()
+            sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
+            summary
+        }
+    }
+
+    suspend fun switchAccount(mid: Long): AccountSummary = withContext(Dispatchers.IO) {
+        authMutex.withLock {
+            val epoch = sessions.generation
+            val header = sessions.accountCookieHeader(mid) ?: throw IllegalArgumentException("此账号已被移除，请重新登录")
+            val summary = validateCookieHeader(header)
+            require(summary.mid == mid) { "保存的账号会话与资料不一致，请重新登录" }
+            if (epoch != sessions.generation) throw BiliApiException(-101, "账号已变化，请重新切换")
+            currentCoroutineContext().ensureActive()
+            resetAuthentication()
+            check(sessions.activateAccount(mid, summary)) { "无法切换账号" }
+            summary
+        }
+    }
+
+    suspend fun removeSavedAccount(mid: Long) = withContext(Dispatchers.IO) { authMutex.withLock {
+        if (account.value?.mid == mid) resetAuthentication()
+        sessions.removeAccount(mid)
+    } }
+
+    private fun resetAuthentication() { client.dispatcher.cancelAll(); visitorInitialized = false; wbiExpiresAt = 0 }
+
+    internal fun requireAccount(): AccountSummary = account.value?.takeIf { it.mid > 0 }
+        ?: throw BiliApiException(-101, "请先登录后查看账号内容")
+
+    internal fun requireCsrf(): String {
+        requireAccount()
+        return sessions.currentCookies()["bili_jct"]?.takeIf { it.isNotBlank() }
+            ?: throw BiliApiException(-101, "登录凭证缺少 CSRF，请重新登录后重试")
+    }
+
+    suspend fun cloudFavoriteFolders(): List<CloudFavoriteFolder> = withContext(Dispatchers.IO) {
+        val loggedIn = requireAccount()
+        ensureVisitorSession()
+        val response = api.getFavFolders(loggedIn.mid)
+        checkPersonalCode(response.code, response.message)
+        val data = response.data ?: throw BiliApiException(-1, "云端收藏夹响应为空")
+        data.list.orEmpty().filter { it.id > 0 }.distinctBy { it.id }.map {
+            CloudFavoriteFolder(it.id, it.title, normalizeUrl(it.cover), it.media_count.coerceAtLeast(0))
+        }
+    }
+
+    suspend fun cloudFavoriteVideos(folderId: Long, page: Int = 1): VideoPage = withContext(Dispatchers.IO) {
+        require(folderId > 0 && page > 0)
+        requireAccount()
+        ensureVisitorSession()
+        val response = api.getFavoriteList(mediaId = folderId, pn = page, ps = 20)
+        checkPersonalCode(response.code, response.message)
+        val data = response.data ?: throw BiliApiException(-1, "云端收藏内容响应为空")
+        personalFavoritePage(data)
+    }
+
+    suspend fun cloudHistory(cursor: CloudHistoryCursor? = null): CloudHistoryPage = withContext(Dispatchers.IO) {
+        require(cursor == null || cursor.max >= 0 && cursor.viewAt >= 0)
+        requireAccount()
+        ensureVisitorSession()
+        val response = api.getHistoryList(ps = 30, max = cursor?.max?.takeIf { it > 0 },
+            viewAt = cursor?.viewAt?.takeIf { it > 0 }, business = cursor?.business?.trim()?.takeIf { it.isNotBlank() }, type = "archive")
+        checkPersonalCode(response.code, response.message)
+        val data = response.data ?: throw BiliApiException(-1, "云端历史响应为空")
+        personalHistoryPage(data, cursor)
+    }
+
+    suspend fun watchLater(page: Int = 1): VideoPage = withContext(Dispatchers.IO) {
+        require(page > 0)
+        requireAccount()
+        ensureVisitorSession()
+        val response = api.getWatchLaterPage(sign(personalWatchLaterParams(page)))
+        checkPersonalCode(response.code, response.message)
+        val data = response.data ?: throw BiliApiException(-1, "稍后再看响应为空")
+        personalWatchLaterPage(data, page)
+    }
+
+    suspend fun followingVideos(offset: String = ""): FollowingVideoPage = withContext(Dispatchers.IO) {
+        require(offset.length <= 256)
+        requireAccount()
+        ensureVisitorSession()
+        val response = dynamicApi.getDynamicFeed(type = "video", offset = offset.trim())
+        checkPersonalCode(response.code, response.message)
+        val data = response.data ?: throw BiliApiException(-1, "关注视频动态响应为空")
+        personalFollowingPage(data, offset.trim())
+    }
+
+    private fun checkPersonalCode(code: Int, message: String) {
+        if (code == -101) throw BiliApiException(code, "登录已失效，请重新登录后重试")
+        checkCode(code, message)
+    }
 
     suspend fun popular(page: Int = 1): List<VideoCard> = withContext(Dispatchers.IO) {
         require(page > 0)
@@ -135,7 +280,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         val pages = info.pages.map { VideoPart(it.cid, it.part, it.duration) }
             .ifEmpty { if (info.cid > 0) listOf(VideoPart(info.cid, info.title, 0)) else emptyList() }
         VideoDetails(info.bvid, info.aid, info.title, info.desc, normalizeUrl(info.pic), info.owner.name,
-            info.stat.view.toLong(), info.stat.like.toLong(), pages)
+            info.stat.view.toLong(), info.stat.like.toLong(), pages, authorMid = info.owner.mid, raw = info)
     }
 
     suspend fun playback(details: VideoDetails, pageIndex: Int = 0, quality: Int = 80): PlaybackSource = withContext(Dispatchers.IO) {
@@ -175,7 +320,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     suspend fun related(bvid: String): List<VideoCard> = withContext(Dispatchers.IO) {
         ensureVisitorSession()
         api.getRelatedVideos(bvid).data.orEmpty().map {
-            VideoCard(it.bvid, it.title, normalizeUrl(it.pic), it.owner.name, it.stat.view.toLong(), it.duration)
+            VideoCard(it.bvid, it.title, normalizeUrl(it.pic), it.owner.name, it.stat.view.toLong(), it.duration, authorMid = it.owner.mid)
         }.filter { it.bvid.isNotBlank() }
     }
 
@@ -191,64 +336,40 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         }
     }
 
-    suspend fun beginQrLogin(): QrLogin = withContext(Dispatchers.IO) {
-        ensureVisitorSession()
-        val response = passportApi.generateQrCode()
-        checkCode(response.code, response.message)
-        val data = response.data ?: throw BiliApiException(-1, "二维码响应为空")
-        QrLogin(data.qrcode_key?.takeIf { it.isNotBlank() } ?: throw BiliApiException(-1, "二维码缺少标识"),
-            data.url?.takeIf { it.isNotBlank() } ?: throw BiliApiException(-1, "二维码链接为空"))
-    }
-
-    suspend fun pollQrLogin(key: String): QrLoginState = withContext(Dispatchers.IO) {
-        val response = passportApi.pollQrCode(key)
-        if (!response.isSuccessful) throw BiliApiException(response.code(), "二维码请求失败 (${response.code()})")
-        val body = response.body() ?: throw BiliApiException(-1, "二维码状态为空")
-        checkCode(body.code, body.message)
-        val data = body.data ?: throw BiliApiException(-1, "二维码状态为空")
-        when (data.code) {
-            86101 -> QrLoginState.Waiting
-            86090 -> QrLoginState.Scanned
-            86038 -> QrLoginState.Expired
-            0 -> {
-                val cookies = resolveQrLoginCookies(response.raw().request.url, response.headers().values("Set-Cookie"),
-                    data.url, sessions.currentCookies())
-                if (cookies["SESSDATA"].isNullOrBlank()) throw BiliApiException(-1, "二维码登录响应缺少登录凭证，请刷新二维码后重试")
-                val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
-                sessions.saveAccount(cookies, summary)
-                QrLoginState.Complete(summary)
-            }
-            else -> throw BiliApiException(data.code, data.message)
-        }
-    }
+    private val webLogin by lazy { DesktopLoginRepository(this) }
+    suspend fun beginQrLogin(): QrLogin = webLogin.beginWebQr()
+    suspend fun pollQrLogin(key: String): QrLoginState = webLogin.pollWebQr(key)
 
     suspend fun importCookies(raw: String): AccountSummary = withContext(Dispatchers.IO) {
         val parsed = parseLoginCookieHeader(raw) ?: throw IllegalArgumentException("Cookie 中缺少 SESSDATA")
-        val summary = validateCookieHeader(parsed.toCookieHeader())
-        sessions.saveAccount(parsed.values, summary, imported = true)
-        summary
+        installLogin(parsed.values)
     }
 
     suspend fun refreshAccount(): AccountSummary? = withContext(Dispatchers.IO) {
-        if (sessions.currentCookies()["SESSDATA"].isNullOrBlank()) return@withContext null
-        val response = api.getNavInfo()
-        if (response.code == -101 || response.data?.isLogin == false) {
-            sessions.logout()
-            return@withContext null
+        authMutex.withLock {
+            val cookies = sessions.currentCookies()
+            if (cookies["SESSDATA"].isNullOrBlank()) return@withLock null
+            val epoch = sessions.generation
+            try {
+                val summary = validateCookieHeader(cookies.entries.joinToString("; ") { "${it.key}=${it.value}" })
+                if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新加载")
+                sessions.saveAccount(cookies, summary)
+                summary
+            } catch (error: BiliApiException) {
+                if (error.apiCode != -101 || epoch != sessions.generation) throw error
+                resetAuthentication(); sessions.logout(); null
+            }
         }
-        checkCode(response.code, "无法验证登录状态")
-        val summary = response.data?.toAccount() ?: throw BiliApiException(-1, "登录资料为空")
-        sessions.saveAccount(sessions.currentCookies(), summary)
-        summary
     }
 
     fun logout() {
+        resetAuthentication()
         sessions.logout()
-        visitorInitialized = false
     }
 
     private suspend fun ensureVisitorSession() = visitorMutex.withLock {
-        if (visitorInitialized) return@withLock
+        val generation = sessions.generation
+        if (visitorInitialized && visitorGeneration == generation) return@withLock
         // Standard visitor bootstrap, once per process. It does not attempt to bypass a security challenge.
         client.newCall(Request.Builder().url("https://www.bilibili.com/")
             .header("Accept", "text/html,application/xhtml+xml").build()).execute().use { response ->
@@ -261,37 +382,42 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             data.b_3.takeIf { it.isNotBlank() }?.let { visitors["buvid3"] = it }
             data.b_4.takeIf { it.isNotBlank() }?.let { visitors["buvid4"] = it }
         }
-        sessions.saveSpiCookies(visitors)
+        sessions.saveSpiCookies(visitors, generation)
+        visitorGeneration = generation
         visitorInitialized = true
     }
 
     private suspend fun validateCookieHeader(header: String): AccountSummary {
         require(!header.contains('\n') && !header.contains('\r')) { "Cookie 格式不正确" }
-        val response = passportApi.validateCookieSession(header)
+        val response = validationPassportApi.validateCookieSession(header)
         checkCode(response.code, "Cookie 已失效，请重新登录")
         val nav = response.data?.takeIf { it.isLogin } ?: throw BiliApiException(-101, "Cookie 已失效，请重新登录")
         return nav.toAccount()
     }
 
-    private suspend fun sign(params: Map<String, String>): Map<String, String> {
+    private suspend fun sign(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
+        forceRefresh: Boolean = false): Map<String, String> {
         val keys = wbiMutex.withLock {
             val now = System.currentTimeMillis()
-            if (wbiKeys == null || now >= wbiExpiresAt) {
+            val generation = sessions.generation
+            if (forceRefresh || wbiKeys == null || now >= wbiExpiresAt || wbiGeneration != generation) {
                 // The anonymous nav response can carry WBI keys with code -101.
                 val img = api.getNavInfo().data?.wbi_img ?: throw BiliApiException(-1, "无法获取接口签名信息")
                 val imageKey = img.img_url.substringAfterLast('/').substringBefore('.')
                 val subKey = img.sub_url.substringAfterLast('/').substringBefore('.')
                 require(imageKey.length == 32 && subKey.length == 32) { "接口签名信息格式异常" }
                 wbiKeys = imageKey to subKey
+                wbiGeneration = generation
                 wbiExpiresAt = now + TimeUnit.MINUTES.toMillis(5)
             }
             requireNotNull(wbiKeys)
         }
-        return WbiUtils.sign(params, keys.first, keys.second)
+        return WbiUtils.sign(params, keys.first, keys.second, includeRiskFingerprint = includeRiskFingerprint)
     }
 
     private fun PlayUrlData.toPlaybackSource(details: VideoDetails, requestedQuality: Int): PlaybackSource? {
         val referer = "https://www.bilibili.com/video/${details.bvid}"
+        val qualities = acceptQuality.mapIndexed { index, id -> PlaybackQuality(id, acceptDescription.getOrNull(index) ?: id.toString()) }
         dash?.let { streams ->
             val video = streams.getBestVideo(requestedQuality, preferCodec = "avc1", secondPreferCodec = "hev1",
                 isHevcSupported = true, isAv1Supported = true)
@@ -299,22 +425,32 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             val videoUrl = video?.getValidUrl()?.takeIf { it.isNotBlank() }
             if (videoUrl != null) return PlaybackSource(normalizeUrl(videoUrl),
                 audio?.getValidUrl()?.takeIf { it.isNotBlank() }?.let(::normalizeUrl), details.title, referer,
-                quality = video?.id ?: quality)
+                quality = video?.id ?: quality, availableQualities = qualities,
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                audioAlternatives = audio?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl))
         }
         val progressive = durl.orEmpty()
         // The player facade supports one muxed URL; concatenated FLV segments require another adapter.
         if (progressive.size == 1 && progressive.first().url.isNotBlank()) {
-            return PlaybackSource(normalizeUrl(progressive.first().url), null, details.title, referer, quality = quality)
+            return PlaybackSource(normalizeUrl(progressive.first().url), null, details.title, referer, quality = quality,
+                availableQualities = qualities, videoAlternatives = progressive.first().backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl))
         }
         return null
     }
 
-    private fun VideoItem.toCard() = VideoCard(bvid, title, normalizeUrl(pic), owner.name, stat.view.toLong(), duration)
+    private fun VideoItem.toCard() = VideoCard(bvid, title, normalizeUrl(pic), owner.name, stat.view.toLong(), duration, authorMid = owner.mid)
     private fun NavData.toAccount() = AccountSummary(mid, uname, normalizeUrl(face), vip.status == 1)
 
     companion object {
         const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
         private val QR_ACCOUNT_COOKIE_NAMES = setOf("SESSDATA", "bili_jct", "DedeUserID", "DedeUserID__ckMd5")
+
+        internal fun resolvePlatformUserAgent(url: HttpUrl, explicit: String?): String = when {
+            !explicit.isNullOrBlank() -> explicit
+            resolveAndroidHdLoginAppKeyHeader(url.encodedPath) != null -> "Mozilla/5.0 BiliDroid/2.0.1 (bbcallen@gmail.com) os/android model/android_hd mobi_app/android_hd build/2001100 channel/master innerVer/2001100 osVer/15 network/2"
+            url.host == "app.bilibili.com" -> "Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2"
+            else -> USER_AGENT
+        }
 
         /** Authorize only the current QR response; stored credentials can belong to a different account. */
         internal fun resolveQrLoginCookies(
@@ -350,7 +486,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         // Mirror upstream ApiClient: explicit headers win, WBI omits Referer, video APIs use the video page.
         internal fun resolveReferer(url: HttpUrl, explicit: String?): String? {
             explicit?.takeIf { it.isNotBlank() }?.let { return it }
-            if (url.encodedPath.contains("/wbi/") || url.host == "app.bilibili.com") return null
+            if (url.encodedPath.contains("/wbi/") || url.host == "app.bilibili.com" ||
+                resolveAndroidHdLoginAppKeyHeader(url.encodedPath) != null) return null
             return url.queryParameter("bvid")?.takeIf { it.isNotBlank() }?.let { "https://www.bilibili.com/video/$it" }
                 ?: "https://www.bilibili.com"
         }

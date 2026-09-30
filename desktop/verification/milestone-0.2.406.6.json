@@ -1,0 +1,188 @@
+{
+  "kind": "development-milestone",
+  "windowsVersion": "0.2.406.6",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sourceCount": 138,
+  "apiMethodsVerbatim": 303,
+  "responseFilesAdopted": 45,
+  "focusedKotlinUniqueTestsPassed": 113,
+  "pythonTestsPassed": 59,
+  "nativePlayer": {
+    "passed": true,
+    "videoCodec": "Motion JPEG",
+    "audioCodec": "PCM signed 16-bit little-endian",
+    "nativeVersion": "mpv v0.41.0-1023-g69e63f425",
+    "audioOutputMode": "Windows audio device",
+    "avSyncSeconds": "8.0E-6",
+    "nativeVideoRendering": "passed",
+    "pause": "passed",
+    "nativeFrameScreenshot": "passed",
+    "windowsMediaSessionNativeReadback": "passed",
+    "screenshotErrorIsolation": "passed",
+    "muteAndAudioOnly": "passed",
+    "seek": "passed",
+    "surfaceReattachmentAndSubtitleRetention": "passed",
+    "nativeFloatingWindowAndRestore": "passed",
+    "externalSubtitlesAndTrackSelection": "passed",
+    "bilingualSubtitles": "passed",
+    "volume": "37.0",
+    "speed": "1.5",
+    "singleFileLoop": "passed",
+    "endOfFile": "passed",
+    "replayAfterEndOfFile": "passed",
+    "progressiveSegmentsDurationSeekAndTransition": "passed",
+    "invalidMedia": "passed",
+    "errorRecoveryAndAudioIsolation": "passed",
+    "sourceResumePositionAndPause": "passed",
+    "sourceOwnershipAndSameSourceReplay": "passed",
+    "nativeClosed": "true"
+  },
+  "packagedFfmpegMux": {
+    "passed": true,
+    "testedAt": "2026-09-30T01:28:34.035546Z",
+    "ffmpegSha256": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+    "ffprobeSha256": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+    "ffmpegVersion": "ffmpeg version n8.1.2-50-g1a748fe2cd-20260831 Copyright (c) 2000-2026 the FFmpeg developers",
+    "dualTrackCopyMux": true,
+    "audioOnlyCopyMux": true,
+    "progressiveCopyMux": true,
+    "multiSegmentCopyMux": true,
+    "audioOnlyMultiSegmentCopyMux": true,
+    "videoOnlyMultiSegmentCopyMux": true,
+    "decodedAllOutputs": true,
+    "outputs": [
+      {
+        "name": "merged.mp4",
+        "bytes": 21978,
+        "sha256": "b2fc8db49d61fc88a2d79ae83274464aafa1a20cdff977a76c24d57d648fbea4",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "mpeg4",
+              "codec_type": "video"
+            },
+            {
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "format": {
+            "duration": "1.000000"
+          }
+        }
+      },
+      {
+        "name": "audio-only.m4a",
+        "bytes": 9994,
+        "sha256": "0c893c6b4251dda82635114f753514ce56f2095c91f70a3746c60b0e3a93fab9",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "format": {
+            "duration": "1.000000"
+          }
+        }
+      },
+      {
+        "name": "progressive.mp4",
+        "bytes": 21978,
+        "sha256": "b2fc8db49d61fc88a2d79ae83274464aafa1a20cdff977a76c24d57d648fbea4",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "mpeg4",
+              "codec_type": "video"
+            },
+            {
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "format": {
+            "duration": "1.000000"
+          }
+        }
+      },
+      {
+        "name": "joined.mp4",
+        "bytes": 42510,
+        "sha256": "0cdbc5d704dd0fc44949da2a8d23595a81f01291f087a64fd1ce8d0eb0cbe3b6",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "mpeg4",
+              "codec_type": "video"
+            },
+            {
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "format": {
+            "duration": "2.021333"
+          }
+        }
+      },
+      {
+        "name": "joined-audio.m4a",
+        "bytes": 19205,
+        "sha256": "e4e365727d9558999eb1cb4db35f0a6e3921331a01947352cffac310d8a2dbae",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "aac",
+              "codec_type": "audio"
+            }
+          ],
+          "format": {
+            "duration": "2.021333"
+          }
+        }
+      },
+      {
+        "name": "joined-video.mp4",
+        "bytes": 23255,
+        "sha256": "2932b2717fe122d10f097f11ee74b6db62aee2ce0ecd255214c4902791ee524d",
+        "probe": {
+          "programs": [],
+          "stream_groups": [],
+          "streams": [
+            {
+              "codec_name": "mpeg4",
+              "codec_type": "video"
+            }
+          ],
+          "format": {
+            "duration": "2.000000"
+          }
+        }
+      }
+    ]
+  },
+  "portableZipSha256": "2a7083aa2980b59beabf5aa5487751c6ba28afd87050380be6edc8e28932ac2d",
+  "guestNetwork": {
+    "popular": "passed",
+    "search": "passed",
+    "details": "HTTP 412",
+    "playback": "not reached"
+  },
+  "fullReleaseGatePassed": false,
+  "fullFunctionalParityVerified": false,
+  "deployedToDesktop": false,
+  "accountWriteOperationsTested": false
+}

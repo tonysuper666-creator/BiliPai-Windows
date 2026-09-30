@@ -57,14 +57,62 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/api").get().asFile.absolutePath)
     inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file("tools/extract-upstream-api.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { it["mode"] == "policy-extract" }.map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/api"))
+}
+val extractUpstreamDanmaku by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/danmaku").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-danmaku.py")
+    inputs.files(sources.filter { it["mode"] == "extracted" }.map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/danmaku"))
+}
+val extractUpstreamMedia by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/media").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-media.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { "media" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/media"))
+}
+val extractUpstreamAudio by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-audio.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/audio").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-audio.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { "listen-video" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/audio"))
+}
+val extractUpstreamLogin by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-login-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/login").get().asFile.absolutePath)
+    inputs.file("tools/extract-login-platform.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { "auth" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/login"))
 }
 
 kotlin.sourceSets.named("main") {
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/danmaku"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/media"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/audio"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/login"))
 }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamApi) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin) }
 
 dependencies {
     implementation(compose.desktop.currentOs)
@@ -79,11 +127,26 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.5.0")
     implementation("com.google.zxing:core:3.5.4")
     implementation("net.java.dev.jna:jna:5.17.0")
+    implementation("org.json:json:20240303")
+    implementation("org.brotli:dec:0.1.2")
     testImplementation(kotlin("test-junit5"))
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.test { useJUnitPlatform { excludeTags("packaged-updater") } }
+tasks.test { useJUnitPlatform { excludeTags("packaged-updater", "native-mux") } }
+tasks.register<Test>("nativeMuxSmoke") {
+    group = "verification"
+    description = "Verify the packaged Windows FFmpeg CLI through the real download muxer."
+    dependsOn("testClasses")
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform { includeTags("native-mux") }
+    outputs.upToDateWhen { false }
+    listOf("nativeMuxFfmpeg", "nativeMuxFfprobe", "nativeMuxReport").forEach { name ->
+        providers.gradleProperty(name).orNull?.let { systemProperty("bilipai.$name", it) }
+    }
+    testLogging { events("passed", "failed", "skipped") }
+}
 tasks.register<Test>("updaterSmoke") {
     group = "verification"
     description = "Exercise the updater against a real packaged EXE in isolated user data."
@@ -151,7 +214,7 @@ compose.desktop {
             vendor = "BiliPai community"
             licenseFile.set(File(repositoryRoot, "LICENSE"))
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
-            modules("java.net.http", "java.desktop", "java.logging", "java.sql", "jdk.unsupported")
+            modules("java.net.http", "java.desktop", "java.logging", "java.sql", "jdk.unsupported", "jdk.httpserver")
             windows {
                 iconFile.set(project.file("src/main/resources/app-icon.ico"))
                 menuGroup = "BiliPai"

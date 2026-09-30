@@ -1,5 +1,6 @@
 package com.bilipai.desktop.player
 
+import kotlinx.coroutines.runBlocking
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
@@ -31,6 +32,8 @@ object PlayerSelfTest {
         // Windows runner without a sound device. Local runs use real audio output.
         val player = MpvPlayer(useNullAudioOutput)
         var frame: JFrame? = null
+        var mediaSession: WindowsMediaSession? = null
+        var pip: PictureInPictureController? = null
         val checks = linkedMapOf<String, String>()
         var passed = false
         try {
@@ -69,9 +72,112 @@ object PlayerSelfTest {
             Thread.sleep(500)
             check(abs(player.state.value.positionSeconds - pausedPosition) < 0.15) { "Playback advanced while paused." }
             checks["pause"] = "passed"
+            val captured = File(outputDirectory, "native-video-screenshot.png")
+            captured.delete()
+            runBlocking { player.captureScreenshot(captured.toPath(), includeSubtitles = false) }
+            val capturedImage = requireNotNull(ImageIO.read(captured)) { "Native screenshot is not an image." }
+            check(capturedImage.width == WIDTH && capturedImage.height == HEIGHT) { "Screenshot did not use the decoded video frame size." }
+            checkRenderedVideo(capturedImage)
+            checks["nativeFrameScreenshot"] = "passed"
+            mediaSession = WindowsMediaSession(requireNotNull(frame), {}, {})
+            requireNotNull(mediaSession).update(WindowsMediaSnapshot("BiliPai 原生媒体测试", "本地音轨", "native-smoke", player.state.value,
+                isAudio = true, hasPrevious = true, hasNext = true))
+            val smtcDeadline = System.nanoTime() + 10_000_000_000L
+            while (System.nanoTime() < smtcDeadline && requireNotNull(mediaSession).status.value.publishedTitle.isEmpty() &&
+                requireNotNull(mediaSession).status.value.error == null) Thread.sleep(50)
+            val smtc = requireNotNull(mediaSession).status.value
+            check(smtc.available && smtc.error == null && smtc.publishedTitle == "BiliPai 原生媒体测试" && smtc.publishedPlaybackStatus == 4 &&
+                abs(smtc.publishedPositionSeconds - pausedPosition) < 0.3) { "Native SMTC metadata/status/timeline failed: $smtc" }
+            checks["windowsMediaSessionNativeReadback"] = "passed"
+            check(runCatching { runBlocking { player.captureScreenshot(captured.toPath()) } }.isFailure) { "Screenshot overwrote an existing destination." }
+            check(player.state.value.error == null) { "A screenshot destination error damaged playback." }
+            checks["screenshotErrorIsolation"] = "passed"
+
+            player.setMuted(true)
+            Thread.sleep(500) // Allow native-property polling to replace the optimistic UI value.
+            check(player.state.value.muted) { "Native mute did not remain enabled." }
+            player.setAudioOnly(true)
+            player.setPaused(false)
+            val audioOnlyStart = player.state.value.positionSeconds
+            waitFor(player, "audio-only mode") {
+                it.audioOnly && it.videoCodec == null && it.audioCodec != null && it.positionSeconds > audioOnlyStart + 0.3
+            }
+            player.setPaused(true)
+            player.setAudioOnly(false)
+            waitFor(player, "restore video from audio-only mode") { !it.audioOnly && it.videoCodec != null && it.audioCodec != null }
+            player.setMuted(false)
+            Thread.sleep(500)
+            check(!player.state.value.muted) { "Native unmute did not remain disabled." }
+            checks["muteAndAudioOnly"] = "passed"
+
             player.seekTo(4.0)
             waitFor(player, "absolute seek") { abs(it.positionSeconds - 4.0) < 0.3 }
             checks["seek"] = "passed"
+            val subtitle = File(outputDirectory, "native-smoke-subtitle.srt")
+            subtitle.writeText("1\n00:00:00,000 --> 00:00:09,800\nBiliPai subtitle smoke\n", Charsets.UTF_8)
+            player.addSubtitle(subtitle.toPath(), "Native subtitle smoke", "en")
+            waitFor(player, "external subtitle selection") {
+                it.tracks.any { track -> track.type == "sub" && track.selected && track.external } &&
+                    it.subtitleText?.contains("BiliPai subtitle smoke") == true
+            }
+            val subtitleId = player.state.value.tracks.first { it.type == "sub" && it.selected }.id
+            player.setSubtitlesVisible(false)
+            waitFor(player, "hide subtitles") { !it.subtitlesVisible && it.subtitleText == null }
+            player.setSubtitlesVisible(true)
+            waitFor(player, "show subtitles") { it.subtitlesVisible && it.subtitleText?.contains("BiliPai subtitle smoke") == true }
+            player.selectSubtitleTrack(null)
+            waitFor(player, "disable subtitle track") { it.tracks.none { track -> track.type == "sub" && track.selected } }
+            player.selectSubtitleTrack(subtitleId)
+            waitFor(player, "restore subtitle track") { it.tracks.any { track -> track.type == "sub" && track.selected } }
+            val secondarySubtitle = File(outputDirectory, "native-smoke-secondary-subtitle.srt")
+            secondarySubtitle.writeText("1\n00:00:00,000 --> 00:00:09,800\nSecondary subtitle smoke\n", Charsets.UTF_8)
+            player.addSubtitle(secondarySubtitle.toPath(), "Secondary subtitle smoke", "en", select = false)
+            waitFor(player, "load secondary subtitle track") { it.tracks.count { track -> track.type == "sub" } == 2 }
+            val secondaryId = player.state.value.tracks.first { it.type == "sub" && it.id != subtitleId }.id
+            player.selectSecondarySubtitleTrack(secondaryId)
+            waitFor(player, "bilingual subtitle selection") {
+                it.subtitleText?.contains("BiliPai subtitle smoke") == true &&
+                    it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true &&
+                    it.tracks.count { track -> track.type == "sub" && track.selected } == 2
+            }
+            val reattachPosition = player.state.value.positionSeconds
+            SwingUtilities.invokeAndWait {
+                requireNotNull(frame).contentPane.apply {
+                    remove(player.surface)
+                    validate()
+                    add(player.surface)
+                    validate()
+                }
+            }
+            waitFor(player, "surface reattachment preserves pause position and bilingual subtitles") {
+                it.ready && !it.loading && it.paused && abs(it.positionSeconds - reattachPosition) < 0.3 &&
+                    it.videoCodec != null && it.audioCodec != null &&
+                    it.subtitleText?.contains("BiliPai subtitle smoke") == true &&
+                    it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true
+            }
+            checks["surfaceReattachmentAndSubtitleRetention"] = "passed"
+            var pipRestored = false
+            pip = PictureInPictureController(player, onRestore = {
+                requireNotNull(frame).contentPane.add(player.surface)
+                requireNotNull(frame).validate()
+                pipRestored = true
+            })
+            SwingUtilities.invokeAndWait { requireNotNull(pip).open(requireNotNull(frame), "Native PiP smoke") }
+            waitFor(player, "floating native player preserves position/subtitles") {
+                requireNotNull(pip).active.value && player.surface.isShowing && SwingUtilities.getWindowAncestor(player.surface) !== frame &&
+                    it.ready && !it.loading && it.paused && abs(it.positionSeconds - reattachPosition) < 0.3 &&
+                    it.subtitleText?.contains("BiliPai subtitle smoke") == true && it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true
+            }
+            SwingUtilities.invokeAndWait { requireNotNull(pip).restore() }
+            waitFor(player, "restore floating native player") {
+                pipRestored && !requireNotNull(pip).active.value && it.ready && !it.loading && it.paused &&
+                    it.videoCodec != null && abs(it.positionSeconds - reattachPosition) < 0.3
+            }
+            checks["nativeFloatingWindowAndRestore"] = "passed"
+            player.selectSecondarySubtitleTrack(null)
+            waitFor(player, "disable secondary subtitle") { it.secondarySubtitleText == null && it.tracks.count { track -> track.type == "sub" && track.selected } == 1 }
+            checks["externalSubtitlesAndTrackSelection"] = "passed"
+            checks["bilingualSubtitles"] = "passed"
             player.setVolume(37.0)
             player.setSpeed(1.5)
             waitFor(player, "volume and speed") { abs(it.volume - 37.0) < 0.1 && abs(it.speed - 1.5) < 0.01 }
@@ -81,21 +187,55 @@ object PlayerSelfTest {
             checks["volume"] = player.state.value.volume.toString()
             checks["speed"] = player.state.value.speed.toString()
             player.seekTo(9.0)
+            player.setLoop(true)
+            waitFor(player, "repeat current file") { !it.ended && it.positionSeconds < 2.0 && !it.paused }
+            checks["singleFileLoop"] = "passed"
+            player.setLoop(false)
+            player.seekTo(9.0)
             waitFor(player, "end of file") { it.ended }
             checks["endOfFile"] = "passed"
+            val replayOwnership = player.currentSourceVersion
+            player.togglePause()
+            waitFor(player, "replay after end of file") { !it.loading && !it.ended && !it.paused && it.positionSeconds < 2.0 && it.videoCodec != null }
+            checks["replayAfterEndOfFile"] = "passed"
+            check(player.currentSourceVersion == replayOwnership) { "Same-source replay changed media ownership." }
+
+            player.setSpeed(1.0)
+            val segments = listOf(PlaybackSegment(video.toURI().toASCIIString(), 3.0), PlaybackSegment(video.toURI().toASCIIString(), 4.0))
+            player.load(PlaybackSource(video.absolutePath, referer = "", title = "Two progressive segments", progressiveSegments = segments,
+                startPositionSeconds = 4.2, startPaused = true))
+            waitFor(player, "progressive EDL continuous duration and cross-segment seek") {
+                !it.loading && it.paused && abs(it.durationSeconds - 7.0) < 0.15 && abs(it.positionSeconds - 4.2) < 0.3 && it.videoCodec != null
+            }
+            player.seekTo(2.6)
+            player.setPaused(false)
+            waitFor(player, "progressive EDL automatic segment transition") { !it.loading && !it.ended && it.positionSeconds > 3.3 && it.positionSeconds < 6.5 && it.videoCodec != null }
+            player.seekTo(6.5)
+            waitFor(player, "progressive EDL end of whole timeline") { it.ended }
+            checks["progressiveSegmentsDurationSeekAndTransition"] = "passed"
 
             player.load(PlaybackSource(File(outputDirectory, "intentionally-missing-media.avi").absolutePath, referer = ""))
             waitFor(player, "invalid media error", allowError = true) { it.error != null }
             checks["invalidMedia"] = "passed"
-            player.load(PlaybackSource(video.absolutePath, referer = "", title = "Video only recovery"))
-            waitFor(player, "error recovery") { it.error == null && !it.loading && it.positionSeconds > 0.3 && it.videoCodec != null }
+            val recoveryOwnership = player.loadVersioned(PlaybackSource(video.absolutePath, referer = "", title = "Video only recovery",
+                startPositionSeconds = 2.0, startPaused = true))
+            waitFor(player, "error recovery and resume position") {
+                it.error == null && !it.loading && abs(it.positionSeconds - 2.0) < 0.3 && it.paused && it.videoCodec != null
+            }
             check(player.state.value.audioCodec == null) { "The previous DASH audio track leaked into the next video." }
+            check(player.state.value.tracks.none { it.type == "sub" }) { "The previous subtitle track leaked into the next video." }
             checks["errorRecoveryAndAudioIsolation"] = "passed"
+            checks["sourceResumePositionAndPause"] = "passed"
+            check(!player.stopIfSourceVersion(replayOwnership) && player.state.value.videoCodec != null) { "An old source owner stopped the newer video." }
+            check(player.stopIfSourceVersion(recoveryOwnership)) { "The current source owner could not release its stream." }
+            checks["sourceOwnershipAndSameSourceReplay"] = "passed"
             passed = true
         } catch (failure: Throwable) {
             val cause = (failure as? InvocationTargetException)?.targetException ?: failure
             checks["failure"] = cause.message ?: cause.javaClass.simpleName
         } finally {
+            mediaSession?.close()
+            pip?.close()
             player.close()
             SwingUtilities.invokeAndWait {
                 frame?.let { window ->
