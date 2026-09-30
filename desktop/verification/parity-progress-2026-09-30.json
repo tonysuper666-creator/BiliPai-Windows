@@ -1,0 +1,1435 @@
+{
+  "auditedAtUtc": "2026-09-30T05:33:50.938064+00:00",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "auditedCommittedWindowsSource": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+  "sourceVersion": "0.2.406.9",
+  "deployedDesktopVersion": "0.2.406.5",
+  "deployedSourceAnchor": "8cd8861",
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 85.25,
+    "isolatedReadyPoints": 3.5,
+    "unfinishedOrUnverifiedPoints": 49.25,
+    "weightedReviewedProgressPercent": 61.8,
+    "presentation": "约六成；不是精确验收百分比。约55–70%的人工评估带，不是统计置信区间。",
+    "rawSourceCountUsedAsProgress": false,
+    "testCountUsedAsProgress": false,
+    "allApiDeclarationsUsedAsProgress": false,
+    "fullParityVerified": false,
+    "fullReleaseGatePassed": false
+  },
+  "method": [
+    "以有独立用户目标的功能组计权：普通播放/请求与隔离较重，辅助入口较轻；权重不是源码体积。",
+    "组内仅给实际主产品行为及有意义离线/平台证据部分credit；剩余同时含缺功能、未整合和未验收，不能将其全说成没有代码。",
+    "组件/平台native通过可证明对应行为；账号/设备/远端服务尚未测的组最多是partial-main。全表没有标记任何整组全量parity完成。",
+    "隔离Appearance和Cast headers有实际实现及测试，但本审计6dab源码快照不给main完成分；Root之后成功整合验收再重估。",
+    "并非完整逐项原ViewModel分支审计；没有看到对应实现的项列为missing/待核对，不推断所有303接口都会成为独立产品功能。"
+  ],
+  "deployed": {
+    "confirmedByUser": [
+      "普通视频能正常播放"
+    ],
+    "sourceVisible": [
+      "推荐/热门",
+      "视频搜索",
+      "本地历史/收藏",
+      "视频详情/只读评论/相关推荐",
+      "基础native播放和弹幕",
+      "Web扫码/Cookie登录",
+      "浅深色切换/安全更新"
+    ],
+    "notDeployedFromLaterSource": [
+      "community/cloud个人列表/高级登录",
+      "直播/PGC/下载/听视频扩展",
+      "新plugins/Cast/WebDAV/JS/原两套主题与语言"
+    ],
+    "percentage": null,
+    "percentageReason": "未对已部署.5完整行为逐项实机验收，不从当前源码百分比反推已交付。"
+  },
+  "evidenceSnapshots": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "63aebe90cfbee73c73da4d4bb9f09cd372259e8aec95c707fcfc1369999052d9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "cb499d724e35447458bee1baf0e2a8adfcaf168fc5f4dccfed3468f6999c0f3e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9b357a10af215d7613c0e34ec83032e0412aef1c84d3b71202c82b7edec80c46"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "902e15d3d8223b5a81388bbe1c3c844eef31b0b73c2784f1b1805076bb2aaab8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "695b44ab64e2f0a9ceb29d3960c4bb20898b498a164e34115f373dc05bf88341"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "f7a1bd101c9766c4cb2a620e8fd480ce1ccce841db301b5bd68995bcdc350a01"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "6c7a7940d5d8986ba8c401f5c1ef7faef9cbd99bc57f13e54888b16d8ee0d57b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "a31114146152227ba50efd89fbc7c98f0dcd810ba3450a6ca73f399d7c1651cb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryReporter.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "a0a796b75ee7a63d400f2c59670ac68a19dfe72646c8ab8680faa8a8c8d3ec78"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "f8f65078d18ca6aab5fa142e1c35eef9c4bd60e017ce51894f568cfb12d2915a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "5263d414ce99a5efb13f619478131b119b889d3c0c9fae73789b03aeed6cb2ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLiveSession.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "7351720196e42bee1969d519636506ec93d219ffa34867e937f112a6e49644aa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "b33ec9cfbcc70e299fc0f9e0a8a2170bb7aa0036113f1115965c4cd966e41a2a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "da0f2585564de455f8d331b3f6b7a265c5b7f7256b5a09a610219f08cbd4ea98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "c2fe10f0b42e69aac2c7e4e2574bedf0a5c900f643afe360590af42c94650da1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9fcad48cfd88318a86493a0ce7fffec20cfddf93fbebc0a2e37712448a4fcc8b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9e5320d0fd004707f805a44b151c98ee118c15212413bea9506cfe6846c4fb4c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "509c1326d363cebdfacdd7cdf4e0749ed2cee8c0d5a9aaa62ee37a9702e6138c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "c471aad118d68bc593889ae562b796050a03fdbc1528e81ee7621c5cbf121d87"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "5243a0fcd9289a7b4dad08303e8c062bcd479570c733841af7239e50cc693eda"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoShaders.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9eec29c87d04370087555a4e1ea582c0b4c2284398689c21315a636775758c1f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/WindowsMediaSession.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9cacb096304b467a90e6651e7ac14b1598d347b4957c2c35b6a4c7449e7027a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "7f1c2197b6a2564f890f33fb7a3b970d6af34e67471026c21ccba668942a86be"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "e1499808b029e77bca1eca81e20d1eb3b5186e8eac3fd933b3cad1e88803ce17"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginHost.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "771cd922afdd065d5ba3658068dfe9371772e43e127f404bcd3fc0ec170c83d8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "bc213b312f9b5e44d549804f6e0cc101f809ffe0708e4e6c55ff196f20178ca3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "cf9f5646539428f4d731111b18d91bb51bb6ccaab8d013e60bb5ac54d91971ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityCollectionScreen.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "76f9ad7cba0117a46cf61d92dc73726f162aea0447888d54f620dd805934fec2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "d7c1f2c631f444ceefc5693ebd00539c3536107dbb5928aed68673fff18eec70"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "eca01dbf4ff52dddffdada4cba63ab7f283482eadccfa9a7b5424df697a24cac"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "8577901730e19dc2eff2cd54597834ca32790bc53ab4efe191a08b3a1309fb0c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityReadingScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "23d7e1a951e794feeb33e94bab54d1799dc48467270b4247afe5d6eadccc1d72"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "fd0f0f1a5152e177aa2325ccc3607e4b3b25187069455a1f5ae01ef7670f43ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityUiSupport.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "68d4d800a91d7492c37fdace3d5a7bbb1809c024e40652d6051d66c94a9adbf6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "842839ca4fba9d43a1fe7797f605aef1cd31bd90ad3b253c684bdd433f5ecf00"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopExternalMediaScreen.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "3b5c2e9bbc0a98d5e05b186a654a743276ac68872128c0eacee96d7ca5467000"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedMedia.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "4f9715137820e31db8cb669aa22d4cbc7770d064ca3c802e811568d06f14674a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "0780ee3261173c26de4c4c5653bf5a1612e9942e84267066aaeae97ec7c51ba0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "0d27f68b7022dc0850588b95aaa1b0211d2e423a0933c0007218b56b99e2685d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "82913ae632361a13ad7e5fd96bc92d853d2e331bb566345840fdfa05e2412c0f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "884bff23c3c24309a782777d4aca4cd00cde8682f83df531c348c7e9ae838691"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "06e612646a2b7edd633a2b8553d0c1d2a4133aaf87e9a1e4193e178873900780"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PersonalScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "042f91a18c86005e9034fe61899e99e6c8e854289f6394034c7840f15955c77f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "7de772086fcad39cb8b73af270e3a688bdd3efc88da431c602ee8b894086132f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "0fcb357427e2375603a0e8acc83b690a59bcc4c6978b9837b3a6c081260c508c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginPackageScreens.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "1a9d40af15469530bccecaef54ddd487741c4eba8ac75fac1abc02085291d70d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinSurfaceHooks.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "44a3bf0ae945e95810e83ec4c4fd055d7a5985e0a0219fa6422f8ab3d89e7a39"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "a5970b25443fd93f3ba5456e540eac10cb3bb31ae15f0a28ba573c45e3df229c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "03bc98ffd493bd28a40fcd044301116ae3e02ccd9aae56ef8c942887f7f4c346"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/StartupHealth.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "020c2a0ea79f759dd5dfa94c608cf63a4bc83f5d26fb5c287b1f27544a6e798f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "7c7234bbe6e98716bc0bd426aeddc3b743d5bf043ad4e66e8508d8bc0ddbec6a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "486558f5b3c03c8102136f5d008a8c7b720e23cdf99b0048f19153c8860f5577"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "77ddd4f2a9a9d597377b5268cb82ff5ee389fe894998a7373ab0c01a0588ff0b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityRepositoryTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "1a5cfcbf1b5910d9d26e7281881dcb1e465fb6eaaa16f7901f8eb69340e6c214"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "f0a6f073f6a8f8da7e87afa71268f35e19d3b01d0401e53415272133eeb221f1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLoginTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "0e5f26500ab5a76d8f1548040b19efbb8dbbe7755bcaba425a04ae361c3d5dab"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopPersonalContentTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "9572465bd8e9050643c6713d0f0b50f7f490deb63e93b412feb4a9efc4edc09c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopQrLoginCookiesTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "ba055a0faf547c03f034122ff1db43add6a5b928c51d01bedda4ebdcac9f67aa"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopRecommendationTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "e71552ea6461fd8c8ab96c7784fccdd80a06f2d401302d1bc518c0e4ea7c2cef"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "1994dba4c684d8f2ec6ea55ecab78ac1333e53614586c69dd260523d3a2735ac"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSessionStoreTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "14ac6ca35ae8ea868f9c29d5ec91f1b74842d0fa90f26b5dcf6d197e7b81ac22"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginServicesTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "653fd38e31f8cad2a59422e64ea1cda19f86ad05e7685c542313029335dd6ee0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginStoreSharingTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "291a85f9df350da140fac3d84cc6d41121cdff56e18977891c10d010b065333f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "7e3c4658157b0a4aa051fec010d37f66957dc02fa3952f4e3fbd8adcf6b56234"
+    },
+    {
+      "path": "desktop/verification/milestone-0.2.406.6.json",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "48fb5f9fb78a01276529bd9a4a4dc0bdadc405e10598c70f6c32ab828cd2cc68"
+    },
+    {
+      "path": "desktop/verification/milestone-0.2.406.8.json",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "5abd059d8bbb337e2fe580320d336ac5ebe22de8472558effaf59719d75f683a"
+    },
+    {
+      "path": "desktop/verification/source9-js-integration.json",
+      "commit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+      "sha256": "3ecfb033a54a5254bb292212645a2cf5b605c9f6efa3fa4c3c7bc80dd54f8c69"
+    }
+  ],
+  "groups": [
+    {
+      "id": "navigation",
+      "title": "导航、保留页面与桌面可达性",
+      "weight": 6,
+      "creditedMainPoints": 3,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 3,
+      "implementedSlices": [
+        "实际多类入口、账号隔离浏览状态、保留行/分页/滚动、媒体宿主保留"
+      ],
+      "remainingSlices": [
+        "完整原底栏排序/可见性/重选回顶/返回栈语义",
+        "自有Profile主页、完整键盘与无障碍验收",
+        "原入门引导与图标/动效选择"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+        "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "discovery",
+      "title": "推荐、热门、分区、排行榜与负反馈",
+      "weight": 6,
+      "creditedMainPoints": 5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "WEB/MOBILE/MERGED来源与Cookie策略",
+        "热门/分区/排行/必看/每周",
+        "分页/原过滤/不感兴趣/账号反馈缓存"
+      ],
+      "remainingSlices": [
+        "原单列/瀑布流/密度/缩放全部选项",
+        "真实账号推荐与服务端负反馈验收",
+        "完整原卡片视觉和刷新交互"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedMergePolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeNotInterestedPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopRecommendationTest.kt",
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "search",
+      "title": "九类搜索、建议、热搜、本地历史和筛选",
+      "weight": 4,
+      "creditedMainPoints": 3,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "九类真实接口与类型路由",
+        "建议/发现/搜索历史/无痕",
+        "分页与原筛选策略"
+      ],
+      "remainingSlices": [
+        "完整原结果卡片和联想交互验收",
+        "原话题详情页另列缺失",
+        "真人结果/排序与失效cursor回归"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "personal",
+      "title": "云收藏、历史、稍后再看、关注与点赞列表",
+      "weight": 5,
+      "creditedMainPoints": 4,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "原全业务资源和游标",
+        "收藏夹创建/删除、单项增删",
+        "PGC/直播/文章/课程/合集导航、历史刷新"
+      ],
+      "remainingSlices": [
+        "批量管理与完整列表播放队列",
+        "收藏夹重命名/收藏列表所有筛选入口",
+        "真人跨业务列表与删除回归"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/list/HistoryNavigationPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/PersonalScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopPersonalContentTest.kt",
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "dynamic",
+      "title": "全类型动态、图文、转发与发布",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "视频/文章/图文/转发/Opus正文",
+        "评论与转发、文字/图片发布原DTO",
+        "保留分页与手动写请求"
+      ],
+      "remainingSlices": [
+        "投票/预约/图片保存与完整富卡交互",
+        "全动态类型与附件视觉",
+        "真人发布/删除/转发验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "space",
+      "title": "UP空间、个人资料与合集",
+      "weight": 4,
+      "creditedMainPoints": 2,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [
+        "资料、投稿、动态、关注列表",
+        "原合集/系列真实ID路由",
+        "关注/取消关注"
+      ],
+      "remainingSlices": [
+        "粉丝列表、收藏/专栏/充电/舰队等完整空间子页",
+        "投稿筛选/搜索/排序UI与自身资料编辑",
+        "完整Profile主页与账号验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+        "app/src/main/java/com/android/purebilibili/navigation/ScreenRoutes.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityCollectionScreen.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityRepositoryTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "engagement",
+      "title": "点赞、投币、收藏、评论和楼中楼",
+      "weight": 5,
+      "creditedMainPoints": 3.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "点赞、选择1/2币及同时点赞",
+        "收藏夹选择与稍后再看",
+        "评论分页/楼中楼/发布/赞/删除、UP关注"
+      ],
+      "remainingSlices": [
+        "表情/图片评论全部原交互",
+        "举报/安全交互另列",
+        "真人权限/限额/风控/成功状态回归"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "messages",
+      "title": "站内消息、会话及私信写操作",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "回复/@/点赞/系统/会话分类和游标",
+        "私信文字/图片/撤回/显式已读",
+        "基础链接/视频/图片正文"
+      ],
+      "remainingSlices": [
+        "全部消息类型和富内容卡片",
+        "会话入口/定位目标评论完整回归",
+        "真人发送/撤回与权限状态；系统通知另列"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/message/ChatScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "reading",
+      "title": "专栏、视频笔记、章节与AI摘要",
+      "weight": 4,
+      "creditedMainPoints": 3,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "文章富文本与原历史表单/隐私gate",
+        "笔记读取/编辑/删除/分享、时间戳",
+        "章节/摘要及时间跳转"
+      ],
+      "remainingSlices": [
+        "完整富文本编辑与图片布局/缩放",
+        "真人笔记公开状态和权限",
+        "原文/笔记链接与全部附件回归"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteContentCodec.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityReadingScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryReporter.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryTest.kt",
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "video-source",
+      "title": "普通视频取流、队列与故障恢复",
+      "weight": 8,
+      "creditedMainPoints": 7,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "原DASH/单段/多段、主备URL、画质与编码选择",
+        "分P/UGC队列、续播/所有权",
+        "错误预算、启动/卡顿watchdog、HTTP403授权CDN与软件恢复"
+      ],
+      "remainingSlices": [
+        "真实线上失败恢复与所有权益/高级音轨",
+        "原用户codec/音质偏好设置另列",
+        "完整产品点击队列和自动选择验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository/VideoLoadPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "player-controls",
+      "title": "播放控制、字幕、截图和键盘",
+      "weight": 6,
+      "creditedMainPoints": 4.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "暂停/进度/0.1–8倍/音量/静音/音轨",
+        "在线与本地主副字幕、截图",
+        "循环/分P/基本快捷键"
+      ],
+      "remainingSlices": [
+        "原自动字幕策略、进度预览",
+        "全部手势/锁定/影院模式与快捷键",
+        "无障碍/完整窗口UI验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "danmaku",
+      "title": "弹幕、过滤、插件样式与交互",
+      "weight": 5,
+      "creditedMainPoints": 3,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [
+        "标准protobuf/XML分段与窗口加载",
+        "JSON高级弹幕、过滤/合并、插件字体/颜色/时机",
+        "透明叠层与护眼实际屏幕像素验证"
+      ],
+      "remainingSlices": [
+        "完整BAS脚本引擎；当前mode7/9只走JSON高级解析，不等于BAS实现",
+        "指令互动UI/避挡/多帧GIF-APNG",
+        "普通视频弹幕发送/点赞/举报及线上长时稳定"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "pgc",
+      "title": "番剧、影视和课程",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "原PGC/PUGV季/集/index/品质与fallback",
+        "筛选/时间表/追番状态、指定分集续播",
+        "原多段映射与真实媒体屏幕"
+      ],
+      "remainingSlices": [
+        "完整评分/评论/付费权益/课程页面",
+        "真人分集与权益验收",
+        "完整番剧详情视觉与错误流程"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "live",
+      "title": "直播分区、关注、HLS与实时弹幕",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "分区/搜索/关注/品质",
+        "原WebSocket/Brotli鉴权协议、SC期限/删除",
+        "实时弹幕/SC显示和用户发送入口"
+      ],
+      "remainingSlices": [
+        "真实平台连接/重连/在线生命周期",
+        "完整主播资料/礼物/排行/互动",
+        "直播投屏兼容性不从HLS入口推断"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/live"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLiveSession.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "download",
+      "title": "下载、任务管理和离线播放",
+      "weight": 5,
+      "creditedMainPoints": 4,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "续传/队列/任务/资产及恢复",
+        "原FFmpeg视频双轨/单轨/音频六输出真实完整解码",
+        "离线弹幕/续播/媒体保活"
+      ],
+      "remainingSlices": [
+        "批量选择/存储路径/完整缓存管理",
+        "真实账号下载/失败重试与离线长片回归",
+        "完整下载页面验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/download"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.6.json",
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "listen",
+      "title": "听视频、队列、歌词和睡眠定时",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "常驻独立音频会话",
+        "播放队列/随机历史/收藏最近",
+        "歌词/双字幕/睡眠定时"
+      ],
+      "remainingSlices": [
+        "完整Listen产品原生流程、外部歌单",
+        "黑胶/沉浸视觉和恢复UI",
+        "音乐目录原MusicDetail另列"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/audio"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "background",
+      "title": "后台、浮窗和Windows系统媒体",
+      "weight": 4,
+      "creditedMainPoints": 3.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 0.5,
+      "implementedSlices": [
+        "真实PiP浮窗/还原与SMTC状态读回",
+        "换宿主后保活/返回/旧owner隔离",
+        "直播/PGC/离线作业生命周期"
+      ],
+      "remainingSlices": [
+        "完整窗口用户流程和线上长时播放",
+        "各模式队列/关闭/权限体验回归"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/video",
+        "app/src/main/java/com/android/purebilibili/feature/audio/player/MusicPlaybackContract.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedMedia.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/player/WindowsMediaSession.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "builtins",
+      "title": "内置增强插件及原配置生命周期",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        "11个实际provider：过滤/匿名/广告/CDN/推荐/订阅/弹幕/护眼/跳赞助/Cast",
+        "原成功seek和补充缓存策略",
+        "Anime4K FAST/QUALITY实际GPU执行和像素改变"
+      ],
+      "remainingSlices": [
+        "原12-provider中Anime4K尚未由Runtime注册；GPU开关不能等同原插件生命周期",
+        "FSR、CDN预取明确关闭待缓存adapter",
+        "完整配置和线上插件验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/app/PureApplication.kt",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoShaders.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "packages-skin",
+      "title": "JSON规则、外部包与装扮",
+      "weight": 4,
+      "creditedMainPoints": 2,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [
+        "真实规则执行/启停、包校验/权限选择/安全保存",
+        "装扮激活与多个真实UI槽",
+        "Lottie/WebP和独立静音皮肤视频实现"
+      ],
+      "remainingSlices": [
+        "视频/文字/头像完整层级和原视觉",
+        "资产备份/迁移/产品窗口验收",
+        "原Kotlin包执行边界原版也仅预览授权保存，不能虚列新增未实现需求"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/plugin",
+        "app/src/main/java/com/android/purebilibili/core/plugin/kotlinpkg"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginPackageScreens.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinSurfaceHooks.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json",
+        "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginServicesTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "js",
+      "title": "JS插件、订阅和外部媒体",
+      "weight": 3,
+      "creditedMainPoints": 1.75,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.25,
+      "implementedSlices": [
+        "原模型/包装/安装/私有存储、独立固定Graal worker",
+        "真实权限/启停/模块内容/线路与immutable headers",
+        "JS独立订阅、账号代际、退出join"
+      ],
+      "remainingSlices": [
+        "远程JS导入与原完整内容视觉",
+        ".9整包原生/外部媒体/真实窗口验收",
+        "运行时许可证目录完整确认"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/plugin/js",
+        "app/src/main/java/com/android/purebilibili/core/plugin/js"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginHost.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopExternalMediaScreen.kt"
+      ],
+      "evidence": [
+        "desktop/verification/source9-js-integration.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "cast",
+      "title": "DLNA和Google Cast",
+      "weight": 3,
+      "creditedMainPoints": 1.5,
+      "isolatedReadyPoints": 0.5,
+      "remainingPoints": 1.0,
+      "implementedSlices": [
+        "DLNA真实UDP/SOAP/Range-HEAD代理",
+        "Google V2真实TLS/认证/Protobuf/JmDNS隔离协议",
+        "实际设备发现/transport界面与默认关闭"
+      ],
+      "remainingSlices": [
+        "两类真实接收设备；Google nonce/PSS等明确兼容风险",
+        "JS原生streamHeaders代理补丁隔离就绪，仍未主整合",
+        "共享代理全部idle后清理；音频/多段/HLS完整兼容"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/cast",
+        "app/src/main/java/com/android/purebilibili/feature/plugin/googlecast"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json",
+        "desktop/.local/cast-stream-headers/integration-contract.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "login",
+      "title": "扫码、密码/短信、验证码及多账号",
+      "weight": 3,
+      "creditedMainPoints": 2,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "Web/TV扫码及原参数/RSA",
+        "密码/短信/用户浏览器captcha",
+        "DPAPI凭证、账号增删切换及代际缓存"
+      ],
+      "remainingSlices": [
+        "真实用户每种登录和captcha流程",
+        "原App-token更新与账号权限全回归",
+        "未操作/读取用户真实凭证来验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/login",
+        "app/src/main/java/com/android/purebilibili/core/store/TokenManager.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLoginTest.kt",
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSessionStoreTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "backup",
+      "title": "本地/WebDAV备份和恢复",
+      "weight": 2,
+      "creditedMainPoints": 1.25,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 0.75,
+      "implementedSlices": [
+        "原九HTTP方法/调度策略",
+        "受限ZIP/摘要/回滚/停旧写入器/锁/DPAPI",
+        "真实loopback DAV与DST恢复"
+      ],
+      "remainingSlices": [
+        "真实远端服务与Windows计划任务",
+        "Android备份格式迁移",
+        "皮肤/外部包资产备份完整性"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "appearance",
+      "title": "两套外观、语言、大屏和可访问性",
+      "weight": 5,
+      "creditedMainPoints": 1,
+      "isolatedReadyPoints": 3,
+      "remainingPoints": 1,
+      "implementedSlices": [
+        "当前已提交主程序只有基础浅/深色与双栏"
+      ],
+      "remainingSlices": [
+        "精确Miuix5157、Material3原palette/偏好/三语言补丁由Root正在整合，未获main验证",
+        "全Shell/内容硬编码文案、原全部组件/视觉",
+        "Windows字体/壁纸取色平台适配、玻璃/导航/键盘可达性"
+      ],
+      "upstreamAnchors": [
+        "design-system/src/main/java/com/android/purebilibili/core/theme",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+      ],
+      "evidence": [
+        "desktop/.local/source9-appearance/integration-contract.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "settings",
+      "title": "完整设置、隐私权限和诊断",
+      "weight": 5,
+      "creditedMainPoints": 1.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 3.5,
+      "implementedSlices": [
+        "播放倍速/音量/弹幕设置",
+        "搜索无痕与播放/专栏历史实际共享privacy gate",
+        "更新/备份/插件相关实际设置"
+      ],
+      "remainingSlices": [
+        "原设置搜索/分类/导航图标/动效/设置分享",
+        "可配置硬解/codec优先后备/默认音质/自动字幕/响度等",
+        "Windows隐私内容解锁/权限/HTTP代理/日志开关与诊断导出"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "session",
+      "title": "请求行为、凭证、账号隔离和隐私底层",
+      "weight": 8,
+      "creditedMainPoints": 6,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [
+        "原WBI/App签名、Referer/cookie来源和精确Cookie作用域",
+        "CSRF、同账号epoch与旧Jar写隔离",
+        "QR原字面凭证优先、DPAPI与无痕gate"
+      ],
+      "remainingSlices": [
+        "访客详情HTTP412仍阻断线上取流门槛",
+        "全原请求到产品行为对应及真实token刷新",
+        "登录/账号写操作端到端验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopQrLoginCookiesTest.kt",
+        "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSessionStoreTest.kt",
+        "desktop/verification/milestone-0.2.406.8.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "storage",
+      "title": "文件边界、恢复、任务停止和数据所有权",
+      "weight": 4,
+      "creditedMainPoints": 3.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 0.5,
+      "implementedSlices": [
+        "安全ZIP/路径/junction拒绝与Windows短别名归一",
+        "共享store backing/unknown-key保留/冻结旧代际",
+        "退出join、下载完成清理顺序、恢复前停止作业"
+      ],
+      "remainingSlices": [
+        "所有功能restore后writer/窗口完整回归",
+        "各类资产恢复与Windows安装路径覆盖",
+        "符号链接安全用例本机权限导致skip，不能声称该用例实跑"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/core/plugin",
+        "app/src/main/java/com/android/purebilibili/feature/settings/webdav"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json",
+        "desktop/verification/source9-js-integration.json",
+        "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginStoreSharingTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "updater",
+      "title": "Windows更新准备、激活和回退",
+      "weight": 2,
+      "creditedMainPoints": 1.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 0.5,
+      "implementedSlices": [
+        "真实HTTP哈希/解压/新EXE实际版本健康握手",
+        "atomic idle激活、旧入口转发、失败注册不变与回退",
+        "失败Prepared撤销、仅直接获得子进程及观察后代停止"
+      ],
+      "remainingSlices": [
+        "用户要求先对齐：自动发布仍关闭",
+        "新cohort包完整更新端到端门槛和在线发布恢复",
+        "没有伪造完整ReleaseGate或将未通过线上包发布"
+      ],
+      "upstreamAnchors": [
+        "desktop/tools/publish-release.py"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/update/StartupHealth.kt"
+      ],
+      "evidence": [
+        "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "release",
+      "title": "Windows打包、许可证和完整交付门槛",
+      "weight": 4,
+      "creditedMainPoints": 2.5,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1.5,
+      "implementedSlices": [
+        ".8真实打包EXE/固定native/FFmpeg/Cast jar核验",
+        "固定源和依赖许可基础目录",
+        ".9主产品定向编译与VM整合记录"
+      ],
+      "remainingSlices": [
+        ".9全部新依赖/许可/原生窗口打包验收",
+        "完整线上账户/设备/远端服务门槛",
+        "当前桌面仍.5；未将源码或fixture当完整交付"
+      ],
+      "upstreamAnchors": [
+        "desktop/README.md",
+        "desktop/PARITY.md"
+      ],
+      "windowsAnchors": [
+        "desktop/verification"
+      ],
+      "evidence": [
+        "desktop/verification/milestone-0.2.406.8.json",
+        "desktop/verification/source9-js-integration.json"
+      ],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "story",
+      "title": "原竖屏Story连续浏览和播放",
+      "weight": 2,
+      "creditedMainPoints": 0,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [],
+      "remainingSlices": [
+        "原Story路由/Feed/纵向连续播放未见Windows产品入口或实现"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/story/StoryFeedPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+      ],
+      "evidence": [],
+      "status": "missing",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "topic",
+      "title": "原话题详情及发现页面",
+      "weight": 1,
+      "creditedMainPoints": 0,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [],
+      "remainingSlices": [
+        "搜索Topics存在；TopicDetail由外部浏览器URL代替，缺原详情/互动页"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt"
+      ],
+      "evidence": [],
+      "status": "missing",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "native-music",
+      "title": "原MusicDetail/NativeMusic路由",
+      "weight": 1,
+      "creditedMainPoints": 0,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 1,
+      "implementedSlices": [],
+      "remainingSlices": [
+        "听视频已存在，但原音乐sid详情与NativeMusic独立路由未见对应产品路径"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt",
+        "app/src/main/java/com/android/purebilibili/navigation/ScreenRoutes.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt"
+      ],
+      "evidence": [],
+      "status": "missing",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "safety-report",
+      "title": "举报与AICU发评反诈查询",
+      "weight": 2,
+      "creditedMainPoints": 0,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [],
+      "remainingSlices": [
+        "未见视频/评论/动态举报交互",
+        "原AICU同意/查询/历史路径未见对应产品入口"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt",
+        "app/src/main/java/com/android/purebilibili/feature/aicu/AicuConsentPolicy.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt"
+      ],
+      "evidence": [],
+      "status": "missing",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "notifications",
+      "title": "后台消息通知和直播预约提醒",
+      "weight": 2,
+      "creditedMainPoints": 0,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 2,
+      "implementedSlices": [],
+      "remainingSlices": [
+        "消息页面不等于Windows后台通知",
+        "原后台同步/未读分类开关/直播预约提醒缺Windows调度与toast"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/feature/message/notification",
+        "app/src/main/java/com/android/purebilibili/feature/dynamic/notification"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+      ],
+      "evidence": [],
+      "status": "missing",
+      "accountOrPhysicalAcceptance": false
+    },
+    {
+      "id": "links-web",
+      "title": "完整链接导航与原Web内容宿主",
+      "weight": 1,
+      "creditedMainPoints": 0.25,
+      "isolatedReadyPoints": 0,
+      "remainingPoints": 0.75,
+      "implementedSlices": [
+        "部分BV/业务ID导航、外部浏览器链接"
+      ],
+      "remainingSlices": [
+        "系统深链接关联、原Web页状态与完整comment target路由未验收"
+      ],
+      "upstreamAnchors": [
+        "app/src/main/java/com/android/purebilibili/navigation/BilibiliLinkNavigationPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/web/WebViewScreen.kt"
+      ],
+      "windowsAnchors": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityUiSupport.kt"
+      ],
+      "evidence": [],
+      "status": "partial-main",
+      "accountOrPhysicalAcceptance": false
+    }
+  ],
+  "exclusions": [
+    "Android APK构建/运行不参与Windows产品；Android专有权限服务需功能等价Windows适配而非逐API照搬。",
+    "Kotlin包原版自身预览/授权保存边界不被虚列为Windows新增执行缺口。",
+    "来源/接口/资源/test数量只说明审计覆盖，不能代替完成度。"
+  ],
+  "parentIntegrationInProgress": "Root is integrating appearance after this committed snapshot; no shared source/build/manifest files were modified by this audit."
+}

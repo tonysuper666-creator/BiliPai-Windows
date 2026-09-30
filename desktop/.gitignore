@@ -3,6 +3,7 @@
 /native/
 /resources/common/native/
 /resources/common/js-engine/
+/resources/common/notices/appearance/
 /.local/
 *.log
 __pycache__/

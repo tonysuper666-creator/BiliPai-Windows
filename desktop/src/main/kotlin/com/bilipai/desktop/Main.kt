@@ -3,6 +3,9 @@ package com.bilipai.desktop
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.painterResource
@@ -75,10 +78,22 @@ fun main(args: Array<String>) {
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember { java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({}) }
         val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }
-        fun closeApp() {
+        var restartFailure by remember { mutableStateOf<String?>(null) }
+        fun closeApp(restart: Boolean = false) {
+            val restartPlan = if (restart) try { DesktopApplicationRestart.prepare() }
+                catch (failure: Exception) { restartFailure = failure.message ?: "重启准备失败"; return }
+                else null
             if (closing.compareAndSet(false, true)) applicationScope.launch {
-                try { shutdown.get().invoke(); playerResult.getOrNull()?.close(); exitApplication() }
-                catch (failure: Exception) { closing.set(false); System.err.println("Application shutdown did not finish (${failure.javaClass.simpleName}).") }
+                try {
+                    shutdown.get().invoke()
+                    if (restartPlan != null) withContext(Dispatchers.IO) { restartPlan.launch() }
+                    playerResult.getOrNull()?.close()
+                    exitApplication()
+                } catch (failure: Exception) {
+                    closing.set(false)
+                    if (restart) restartFailure = "重启未成功，请关闭客户端后从原文件夹重新打开。"
+                    System.err.println("Application shutdown did not finish (${failure.javaClass.simpleName}).")
+                }
             }
         }
         Window(
@@ -121,7 +136,13 @@ fun main(args: Array<String>) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
-                }, hostWindow = window, registerShutdown = shutdown::set)
+                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) })
+            restartFailure?.let { message ->
+                androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },
+                    title = { androidx.compose.material3.Text("客户端重启") },
+                    text = { androidx.compose.material3.Text(message) },
+                    confirmButton = { androidx.compose.material3.TextButton(onClick = { restartFailure = null }) { androidx.compose.material3.Text("关闭") } })
+            }
         }
     }
 }

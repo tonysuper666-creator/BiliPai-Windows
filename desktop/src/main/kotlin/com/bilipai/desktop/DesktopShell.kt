@@ -1,5 +1,11 @@
 package com.bilipai.desktop
 
+import com.bilipai.desktop.appearance.DesktopAppearanceSettings
+import com.bilipai.desktop.appearance.DesktopAppearanceTheme
+import com.bilipai.desktop.appearance.DesktopThemePrefs
+import com.bilipai.desktop.appearance.DesktopStrings
+import com.bilipai.desktop.appearance.LocalDesktopStrings
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
@@ -70,13 +76,31 @@ private enum class DesktopSection(val label: String, val symbol: String) {
     FOLLOWINGS("我的关注", "♧"), LIKED("赞过的视频", "♥"), LISTEN("听视频", "♫"), DOWNLOADS("下载与离线", "↓"), MESSAGES("消息", "✉"),
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
     ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
-    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷")
+    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐")
+}
+
+private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = when (this) {
+    DesktopSection.HOME -> strings["bottom_nav_home"]
+    DesktopSection.POPULAR -> strings["home_category_popular"]
+    DesktopSection.RANKING -> strings["home_popular_subcategory_ranking"]
+    DesktopSection.PRECIOUS -> strings["home_popular_subcategory_precious"]
+    DesktopSection.WEEKLY -> strings["home_popular_subcategory_weekly"]
+    DesktopSection.DYNAMIC -> strings["bottom_nav_dynamic"]
+    DesktopSection.LIVE -> strings["bottom_nav_live"]
+    DesktopSection.CLOUD_HISTORY -> strings["bottom_nav_history"]
+    DesktopSection.CLOUD_FAVORITES -> strings["bottom_nav_favorite"]
+    DesktopSection.WATCH_LATER -> strings["bottom_nav_watch_later"]
+    DesktopSection.FOLLOWINGS -> strings["home_category_follow"]
+    DesktopSection.LISTEN -> strings["bottom_nav_listen_video"]
+    DesktopSection.SEARCH -> strings["common_search"]
+    DesktopSection.APPEARANCE -> strings["appearance_settings_title"]
+    else -> label
 }
 
 @Composable
 fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
     onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
-    registerShutdown: ((suspend () -> Unit) -> Unit)? = null) {
+    registerShutdown: ((suspend () -> Unit) -> Unit)? = null, onRestart: (() -> Unit)? = null) {
     val account by repository.account.collectAsState()
     val sessionEpoch by repository.sessionEpochFlow.collectAsState()
     val settingsLibrary = remember { DesktopLibrary() }
@@ -90,6 +114,16 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
     val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
+    val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
+    val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
+    var appearanceReady by remember(appearance) { mutableStateOf(false) }
+    var appearanceError by remember(appearance) { mutableStateOf<String?>(null) }
+    var appearanceRetry by remember { mutableIntStateOf(0) }
+    LaunchedEffect(appearance, appearanceRetry) {
+        try { appearance.ensureMigrated(); appearanceReady = true; appearanceError = null }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) { appearanceError = failure.message ?: failure.javaClass.simpleName }
+    }
     val pluginRuntime = remember(pluginStore) { DesktopPluginRuntime(pluginStore, repository, community, discovery) }
     val jsExecutionRevision by pluginRuntime.jsPlugins.host.executionRevision.collectAsState()
     val packages by pluginRuntime.packages.state.collectAsState()
@@ -122,7 +156,6 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val native by (player?.state ?: emptyNativeState).collectAsState()
     val subtitleAssets = remember(repository) { DesktopSubtitleAssets(repository.httpClient) }
     var subtitleDialog by remember { mutableStateOf(false) }
-    var dark by remember { mutableStateOf(settingsLibrary.dark) }
     var section by remember { mutableStateOf(DesktopSection.HOME) }
     var showVideo by remember { mutableStateOf(initialVideo != null) }
     var lastMediaSection by remember { mutableStateOf<DesktopSection?>(null) }
@@ -457,12 +490,23 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         }
     }
 
-    val scheme = if (dark) darkColorScheme(primary = Color(0xFF83CDD1), primaryContainer = Color(0xFF294A4F), background = Color(0xFF101719),
-        surface = Color(0xFF182226), surfaceVariant = Color(0xFF233034))
-    else lightColorScheme(primary = Color(0xFF256D77), primaryContainer = Color(0xFFD8E7E9), background = Color(0xFFF4F8F9),
-        surface = Color.White, surfaceVariant = Color(0xFFEAF0F2))
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+    DesktopAppearanceTheme(themeSettings, windowSmallestWidthDp = minOf(maxWidth.value, maxHeight.value).toInt()) {
+    val scheme = MaterialTheme.colorScheme
+    val strings = LocalDesktopStrings.current
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin) {
-    MaterialTheme(colorScheme = scheme, shapes = Shapes(medium = RoundedCornerShape(18.dp), large = RoundedCornerShape(24.dp))) {
+        if (!appearanceReady) {
+            Surface(Modifier.fillMaxSize()) {
+                Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (appearanceError == null) CircularProgressIndicator()
+                    else {
+                        Text(requireNotNull(appearanceError), color = scheme.error)
+                        TextButton(onClick = { appearanceRetry++ }) { Text(strings["common_retry"]) }
+                    }
+                }
+            }
+            return@CompositionLocalProvider
+        }
         Box(Modifier.fillMaxSize()) {
         // libmpv's audio worker needs a retained native host even when its screen is not visible.
         if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
@@ -496,18 +540,18 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     Text("BiliPai", Modifier.padding(12.dp), style = MaterialTheme.typography.headlineSmall, color = scheme.primary, fontWeight = FontWeight.Bold)
                     Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
-                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA) }.forEach { item ->
+                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE) }.forEach { item ->
                             Surface(Modifier.fillMaxWidth().height(48.dp).clickable { navigate(item) }, shape = RoundedCornerShape(24.dp),
                                 color = if (section == item && !showVideo) scheme.primaryContainer else Color.Transparent) {
                                 Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                                    Text(item.symbol, style = MaterialTheme.typography.titleLarge); Text(item.label)
+                                    Text(item.symbol, style = MaterialTheme.typography.titleLarge); Text(item.localizedLabel(strings))
                                 }
                             }
                         }
                     }
-                    TextButton(onClick = { playerSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("播放与弹幕设置") }
+                    TextButton(onClick = { playerSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["playback_settings_title"]) }
                     TextButton(onClick = { backupSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("WebDAV 与备份") }
-                    TextButton(onClick = { dark = !dark; settingsLibrary.setDark(dark) }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(if (dark) "☀ 浅色外观" else "☾ 深色外观") }
+                    TextButton(onClick = { navigate(DesktopSection.APPEARANCE) }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["appearance_settings_title"]) }
                     Box(Modifier.fillMaxWidth().height(64.dp)) {
                         DesktopUiSkinDecoration(UiSkinSurface.PROFILE,
                             { it.homeProfileVideoBackground ?: it.homeProfileSquaredBackground ?: it.homeProfileBackground },
@@ -522,7 +566,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.topAtmosphere }, Modifier.matchParentSize(), onError = { error = it })
                     DesktopUiSkinDecoration(UiSkinSurface.HOME_TOP_CHROME, { it.searchCapsuleBackground }, Modifier.matchParentSize(), onError = { error = it })
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        if (showVideo) OutlinedButton(onClick = { playback.checkpoint(); showVideo = false }, modifier = Modifier.height(52.dp)) { Text("‹ 返回") }
+                        if (showVideo) OutlinedButton(onClick = { playback.checkpoint(); showVideo = false }, modifier = Modifier.height(52.dp)) { Text("‹ ${strings["common_back"]}") }
                         OutlinedTextField(query, { query = it }, singleLine = true, placeholder = { Text("搜索视频、UP 主、番剧、专栏，或粘贴 BV / 链接") },
                             shape = RoundedCornerShape(26.dp), modifier = Modifier.weight(1f).onFocusChanged { searchFocused = it.hasFocus },
                             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submitSearch() }))
@@ -625,6 +669,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                 }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true })
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
+                            section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
+                                onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
                             section == DesktopSection.JS_CONTENT -> DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
                                 onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
@@ -657,8 +703,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime)
                             else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                                    Text(section.label, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)
-                                    TextButton(onClick = { refresh++ }, enabled = !feedLoading) { Text("刷新") }
+                                    Text(section.localizedLabel(strings), Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)
+                                    TextButton(onClick = { refresh++ }, enabled = !feedLoading) { Text(strings["common_refresh"]) }
                                     if (section in listOf(DesktopSection.HOME, DesktopSection.POPULAR)) {
                                         TextButton(onClick = { page = (page - 1).coerceAtLeast(1) }, enabled = page > 1 && !feedLoading) { Text("上一页") }
                                         Text("$page"); TextButton(onClick = { page++ }, enabled = !feedLoading) { Text("下一页") }
@@ -711,6 +757,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })
+    }
     }
     }
 }

@@ -4,6 +4,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("jvm") version "2.4.0"
+    kotlin("multiplatform") version "2.4.0" apply false
     kotlin("plugin.serialization") version "2.4.0"
     id("org.jetbrains.kotlin.plugin.compose") version "2.4.0"
     id("org.jetbrains.compose") version "1.12.1"
@@ -239,6 +240,47 @@ val extractUpstreamJs by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/js"))
 }
 
+val generatedAppearance = layout.buildDirectory.dir("generated/appearance")
+val generatedAppearanceResources = layout.buildDirectory.dir("generated/appearance-resources")
+val extractUpstreamAppearance by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-appearance-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--policy-only",
+        "--output", generatedAppearance.get().asFile.absolutePath,
+        "--resource-output", generatedAppearanceResources.get().asFile.absolutePath)
+    inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "appearance-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "appearance-language" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(generatedAppearance)
+    outputs.dir(generatedAppearanceResources)
+}
+
+val verifyAppearanceDependencies by tasks.registering {
+    inputs.file("third-party/miuix5157/dependency-pins.json")
+    inputs.dir("src/main/resources/licenses/appearance")
+    doLast {
+        val pins = JsonSlurper().parse(file("third-party/miuix5157/dependency-pins.json")) as Map<*, *>
+        val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
+        val dependencies = pins["dependencies"] as List<*>
+        require(dependencies.size == 8) { "The fixed appearance dependency inventory changed." }
+        fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
+        dependencies.forEach { item ->
+            val entry = item as Map<*, *>
+            val artifact = artifacts.filter { it.moduleVersion.id.toString() == entry["coordinate"] }.singleOrNull()
+                ?: error("Appearance dependency was replaced or duplicated: ${entry["coordinate"]}")
+            require(digest(artifact.file) == entry["sha256"]) { "Appearance dependency checksum failed: ${entry["coordinate"]}" }
+        }
+        (pins["notices"] as List<*>).forEach { item ->
+            val entry = item as Map<*, *>
+            require(digest(file("src/main/resources/${entry["resource"]}")) == entry["sha256"]) { "Appearance notice checksum failed: ${entry["resource"]}" }
+        }
+        logger.lifecycle("Verified eight fixed appearance runtime dependencies and six source notices.")
+    }
+}
+
 // The guest VM has a closed classpath and its own minimal runtime, separate from app dependencies.
 val jsWorkerCache = providers.gradleProperty("jsWorkerCache").orElse(file(".gradle/js-worker-cache").absolutePath).get()
 val jsWorkerJdkArchive = providers.gradleProperty("jsWorkerJdkArchive").orElse(File(jsWorkerCache, "fixed-jdk.zip").absolutePath).get()
@@ -305,9 +347,13 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/google-cast"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/js"))
     kotlin.srcDir(jsWorkerGenerated)
+    kotlin.srcDir(generatedAppearance)
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
+sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
+tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 
 val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     dependsOn(prepareUpstreamSources)
@@ -329,6 +375,14 @@ val prepareGoogleCastNotices by tasks.registering(Sync::class) {
 }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareGoogleCastNotices) }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareJsWorkerResources) }
+val prepareAppearanceNotices by tasks.registering(Sync::class) {
+    dependsOn(verifyAppearanceDependencies)
+    from("src/main/resources/licenses/appearance")
+    from("third-party/miuix5157/dependency-pins.json")
+    from("third-party/miuix5157/upstream-provenance.json")
+    into("resources/common/notices/appearance")
+}
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareAppearanceNotices) }
 tasks.withType<JavaExec>().configureEach {
     dependsOn(prepareJsWorker)
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
@@ -336,7 +390,10 @@ tasks.withType<JavaExec>().configureEach {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    implementation(compose.material3)
+    implementation("org.jetbrains.compose.material3:material3:1.12.0-alpha03")
+    implementation(project(":miuix5157"))
+    implementation("com.materialkolor:material-kolor:4.1.1")
+    implementation("com.materialkolor:material-color-utilities:5.0.1")
     implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")

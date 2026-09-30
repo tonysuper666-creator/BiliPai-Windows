@@ -29,7 +29,7 @@
 | DLNA/Google Cast | 原 `feature/plugin/dlna`, `googlecast` | DLNA 原策略与实际界面、11 项协议 fixture 通过；Google Cast V2 使用固定原 Java API 与窄平台适配，官方根证书、真实 TLS/Protobuf/JmDNS 的 25 项隔离验证通过，等待完整 TXT 元数据后发布及更新发现结果 | 两类真实接收设备；Google Cast 严格 nonce 等兼容差异、音频设备限制及线上行为仍需实机验证 |
 | 登录与多账号 | `feature/login`, `TokenManager` | Web/TV 扫码、密码/短信/真实浏览器验证、多账号与 DPAPI 已接并单测 | 实际账号登录/验证码与切换验收；账号缓存 owner 回归已通过 |
 | WebDAV与数据备份 | `feature/settings/webdav`, 原 Backup policies | 原九个 WebDAV HTTP 方法和调度策略复用；Windows 受限 ZIP/摘要/回滚、旧写入器停止、DPAPI、本地/跨进程锁与设置对话框已接；真实 loopback DAV、恢复和 DST 周期离线测试通过 | 实际 WebDAV 服务与打包的 Windows 调度验收；Android 备份格式迁移未实现；皮肤/外部包资产未纳入 |
-| 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 桌面双栏、浅/深色 | 系统主题、原当前两套运行时样式/壁纸/取色/玻璃/皮肤、简繁英、导航与键盘可达性 |
+| 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原两值主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/界面缩放/DPI、简繁英 XML 与外观入口已接入主程序；固定原 Miuix 5157 源码构建及 29 项主题/迁移/重启准备测试通过 | 全部组件切换、剩余原界面文案、玻璃/皮肤、导航/键盘可达性与实际整包窗口/语言重启验收；壁纸色采用原非 Android S 分支的预设色 |
 | 诊断与隐私设置 | 原诊断/遥测与设置 | Windows 本地诊断已有基础 | 用户开关、日志脱敏、诊断导出与上游设置语义核对 |
 | 跟随更新 | `desktop/tools` 与 Windows updater | 既有更新监测保留，自动发布关闭 | 按用户要求先完成上述对齐，再扩大完整功能验证和更新机制 |
 
@@ -42,3 +42,5 @@ Windows revision 8 已归档验证：256 份 Kotlin 来源和 12 个原资源摘
 上一已归档里程碑 revision 6：138 个原源、113 个不同 Kotlin 回归和 59 项 Python 脚本测试通过；固定 FFmpeg/FFprobe 的六种合并输出均已实际完整解码。真实打包原生播放器已通过画面和声音设备、SMTC 元数据/状态/进度读回、主副字幕、表面重建、独立浮窗/还原、静音/只音频、循环/复播、多段持续播放/跨段跳转/整段 EOF、故障恢复、续播与源所有权。
 
 访客网络检查在视频详情阶段返回 HTTP 412，未通过完整线上网络门槛；没有把它标记为发布通过，也没有测试用户账号写操作。桌面仍为用户确认普通视频能播放的 revision 5，未将开发中的新增功能当作桌面已交付。完整功能对齐仍未完成。
+
+Windows revision 9 的外观接入保存为另一个开发阶段记录 `verification/source9-appearance-integration.json`：283 份 Kotlin 来源和 15 个原资源继续审计；原 Miuix 固定提交的 169 个文件按原字节校验，143 个原 Kotlin 文件及原 SDF 生成器进入实际 Gradle JVM 构建。原主题、迁移/语言策略和资源已接入主界面，外观设置沿用原稳定键与同一备份存储，旧 Windows 深浅色仅在真实字段存在时迁移。八个实际运行依赖与六份来源许可按摘要核验。29 项定向测试通过；原 SDF 262144 字节与隔离验证一致。此记录不包含新整包、主窗口、语言重启或全部 Miuix 控件验收，许可目录仍未标完整，桌面仍为 revision 5。完整对齐按功能与底层行为审查仍粗估约六成，来源数和测试数不用于换算百分比。

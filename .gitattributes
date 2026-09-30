@@ -2,3 +2,5 @@
 desktop/third-party/ffmpeg/licenses/** -text
 desktop/third-party/libmpv/licenses/** -text
 desktop/third-party/graaljs/licenses/** -text
+desktop/third-party/miuix5157/upstream/** -text
+desktop/src/main/resources/licenses/appearance/** -text

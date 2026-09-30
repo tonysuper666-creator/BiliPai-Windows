@@ -6,6 +6,16 @@ import java.nio.file.Path
 import kotlin.test.*
 
 class DesktopLibraryTest {
+    @Test fun `only an explicitly stored old dark preference migrates`() = withLibrary { directory ->
+        assertNull(DesktopLibrary(directory).storedDark)
+        Files.writeString(directory.resolve("library.json"), """{"history":[],"favorites":[]}""")
+        assertNull(DesktopLibrary(directory).storedDark)
+        Files.writeString(directory.resolve("library.json"), """{"dark":false}""")
+        assertEquals(false, DesktopLibrary(directory).storedDark)
+        Files.writeString(directory.resolve("library.json"), """{"dark":true}""")
+        assertEquals(true, DesktopLibrary(directory).storedDark)
+    }
+
     @Test fun `old library migrates and resume survives restart without losing preferences or favorites`() = withLibrary { directory ->
         Files.writeString(directory.resolve("library.json"), """{"history":[{"bvid":"BV1test000001","title":"旧视频","cover":"","author":"UP","playCount":5,"duration":300,"timestamp":1}],"favorites":[],"dark":true,"automaticUpdates":false}""")
         val library = DesktopLibrary(directory)

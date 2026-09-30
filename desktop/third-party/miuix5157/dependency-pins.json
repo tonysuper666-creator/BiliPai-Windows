@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "dependencies": [
+    {
+      "coordinate": "com.materialkolor:material-kolor-jvm:4.1.1",
+      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-kolor-jvm/4.1.1/material-kolor-jvm-4.1.1.jar",
+      "sha256": "0125a24ca92662320ef2409b8d439409174cb4b11f70afff466fe11272876d66",
+      "artifactName": "material-kolor-jvm.jar"
+    },
+    {
+      "coordinate": "com.materialkolor:material-color-utilities-jvm:5.0.1",
+      "url": "https://repo.maven.apache.org/maven2/com/materialkolor/material-color-utilities-jvm/5.0.1/material-color-utilities-jvm-5.0.1.jar",
+      "sha256": "a997ae8bcbdddc5baeca01c64d03f8d5014a186ae3f3a7f93ce9abbee93c7f9a",
+      "artifactName": "material-color-utilities-jvm.jar"
+    },
+    {
+      "coordinate": "com.github.ajalt.colormath:colormath-jvm:3.6.1",
+      "url": "https://repo.maven.apache.org/maven2/com/github/ajalt/colormath/colormath-jvm/3.6.1/colormath-jvm-3.6.1.jar",
+      "sha256": "a1853ee4a5fec636dbbb8c44955b7a3015f02ce8f9cfa1c2350791c2c2d3639c",
+      "artifactName": "colormath-jvm.jar"
+    },
+    {
+      "coordinate": "androidx.navigationevent:navigationevent-compose-desktop:1.1.2",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/navigationevent/navigationevent-compose-desktop/1.1.2/navigationevent-compose-desktop-1.1.2.jar",
+      "sha256": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b",
+      "artifactName": "navigationevent-compose-desktop-1.1.2.jar"
+    },
+    {
+      "coordinate": "androidx.navigationevent:navigationevent-desktop:1.1.2",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/navigationevent/navigationevent-desktop/1.1.2/navigationevent-desktop-1.1.2.jar",
+      "sha256": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b",
+      "artifactName": "navigationevent-desktop-1.1.2.jar"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3:material3-window-size-class-desktop:1.12.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/material3-window-size-class-desktop/1.12.0-alpha03/material3-window-size-class-desktop-1.12.0-alpha03.jar",
+      "sha256": "a8488465bb2d652b475b85187bbbd01919a8065fc592812069b47e2fa1e051bd",
+      "artifactName": "material3-window-size-class-desktop-1.12.0-alpha03.jar"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3:material3-desktop:1.12.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/material3-desktop/1.12.0-alpha03/material3-desktop-1.12.0-alpha03.jar",
+      "sha256": "27ac80da1c3f65b67311bfae57d79f130b7d4d0ac8e1c5be1ca7ce8b04b7d0d7",
+      "artifactName": "material3-desktop-1.12.0-alpha03.jar"
+    },
+    {
+      "coordinate": "androidx.graphics:graphics-shapes-desktop:1.1.0",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/graphics/graphics-shapes-desktop/1.1.0/graphics-shapes-desktop-1.1.0.jar",
+      "sha256": "8d7a4d3812cae2e3ef8272e97f6e9917ae45931f17cf1391f0246a92c955d9f4",
+      "artifactName": "graphics-shapes-desktop-1.1.0.jar"
+    }
+  ],
+  "notices": [
+    {
+      "repository": "https://github.com/jordond/MaterialKolor",
+      "tag": "4.1.1",
+      "commit": "473e6c7a5c603e51944fcf53402cc30bd4ab0586",
+      "path": "LICENSE",
+      "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
+      "resource": "licenses/appearance/materialkolor-4.1.1-LICENSE.txt"
+    },
+    {
+      "repository": "https://github.com/jordond/MaterialKolor",
+      "tag": "4.1.1",
+      "commit": "473e6c7a5c603e51944fcf53402cc30bd4ab0586",
+      "path": "material-color-utilities/src/commonMain/kotlin/com/materialkolor/LICENSE",
+      "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
+      "resource": "licenses/appearance/materialkolor-4.1.1-1-LICENSE.txt"
+    },
+    {
+      "repository": "https://github.com/jordond/MaterialKolor",
+      "tag": "5.0.1",
+      "commit": "cc4d2cb931ba0a45995abe988717a2cea9ed478e",
+      "path": "LICENSE",
+      "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
+      "resource": "licenses/appearance/material-color-utilities-5.0.1-LICENSE.txt"
+    },
+    {
+      "repository": "https://github.com/jordond/MaterialKolor",
+      "tag": "5.0.1",
+      "commit": "cc4d2cb931ba0a45995abe988717a2cea9ed478e",
+      "path": "material-color-utilities/src/commonMain/kotlin/com/materialkolor/LICENSE",
+      "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
+      "resource": "licenses/appearance/material-color-utilities-5.0.1-1-LICENSE.txt"
+    },
+    {
+      "repository": "https://github.com/ajalt/colormath",
+      "tag": "3.6.1",
+      "commit": "5e776b66ea6ffc5dc5dc360ab88ca5aefbd2a310",
+      "path": "LICENSE",
+      "sha256": "ab1cd8a3d0e92e1f69e95e8ca839127c52d4bd32fa2824d683d0dc66cc8fe21f",
+      "resource": "licenses/appearance/colormath-3.6.1-LICENSE.txt"
+    },
+    {
+      "repository": "https://github.com/compose-miuix-ui/miuix",
+      "commit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+      "path": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "resource": "licenses/appearance/miuix-5157-APACHE-2.0.txt"
+    }
+  ],
+  "completeLicenseInventory": false,
+  "remaining": "Reconcile AndroidX/JetBrains transitive licenses and packaged inventory before a release milestone."
+}

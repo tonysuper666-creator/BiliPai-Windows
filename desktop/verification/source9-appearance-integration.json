@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "scope": "Source9 appearance main integration, before packaged native/window/restart acceptance",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseWindowsSourceCommit": "6dab6a9be99c38cfef8c02f7dc371f2a0d3ac540",
+  "sourceAudit": {
+    "adoptedSourceCount": 283,
+    "adoptionModes": {
+      "direct": 199,
+      "api-extract": 1,
+      "policy-extract": 32,
+      "extracted": 43,
+      "platform-rewrite": 8
+    },
+    "adoptedResourceCount": 15,
+    "resourceHashesVerified": true,
+    "apiInterfacesVerbatim": true,
+    "apiMethodCount": 303,
+    "responseFiles": {
+      "upstreamCount": 45,
+      "adoptedCount": 45,
+      "unadopted": []
+    }
+  },
+  "verification": {
+    "sharedKotlinAndComposeCompilation": true,
+    "targetedJUnitTests": 29,
+    "targetedJUnitFailures": 0,
+    "suites": [
+      {
+        "suite": "com.bilipai.desktop.appearance.DesktopAppearanceTest",
+        "tests": 23,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xmlSha256": "984114ca571a15673429ea369efea081fc0ecf90780a776f2d908019635ecca5"
+      },
+      {
+        "suite": "com.bilipai.desktop.DesktopApplicationRestartTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xmlSha256": "1a720146b7fdce6d92d0a8caa537b0e4749e2e9bbb17ed4e50e37239c0b9c1a4"
+      },
+      {
+        "suite": "com.bilipai.desktop.DesktopLibraryTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xmlSha256": "5857785aeb7177b1abceb24fd69dbb0638525006e54b38805d60620b4ed3c10b"
+      }
+    ],
+    "exactMiuixCommit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+    "pinnedOriginalFiles": 169,
+    "compiledOriginalKotlinFiles": 143,
+    "originalSdfGeneratorGradleExecution": true,
+    "bakedSdfSourceSha256": "15643a6f1eb2ba429028cf76ccdb24be68a393e683425a85affeb0b4a7f0477f",
+    "bakedSdfDecodedBytes": 262144,
+    "bakedSdfDecodedSha256": "f586da99820fa946f886cb5ed90aad6d75c418f8a87fb0c796fa34477dab1afc",
+    "fixedAppearanceRuntimeDependencies": 8,
+    "sourceNoticesVerified": 6,
+    "dependencyCatalogSha256": "9c5ba96b98110a5ba73f1aae9bb82d63be5dd86e42d8cee747381c2cec7e13a6",
+    "isolatedCpuScenePreviews": 4,
+    "sharedProductWindowVerified": false,
+    "packagedLanguageRestartVerified": false,
+    "fullFunctionalParityVerified": false
+  },
+  "implementation": [
+    "Original stable theme keys, migration and light/dark/AMOLED palettes in the shared plugin store",
+    "Original two-value theme style and three-language XML resources wrap actual retained shell and dialogs",
+    "Appearance entry, font/UI scaling and role overrides; startup migration gates interaction",
+    "Old Windows dark imported only when the actual original library field exists",
+    "Production restart waits for shutdown; launcher planning tested, packaged restart still pending"
+  ],
+  "limitations": [
+    "Remaining Miuix public component facades and hardcoded original-screen text are not all aligned",
+    "Windows uses original non-Android-S preset color fallback; desktop wallpaper extraction is not implemented",
+    "New package, main window, retained/native overlay compatibility and actual language restart are not verified in this slice",
+    "Complete license inventory remains false"
+  ],
+  "delivery": {
+    "sourceVersion": "0.2.406.9",
+    "desktopDeployedVersion": "0.2.406.5",
+    "newDesktopPackageDeployed": false,
+    "publicRelease": false,
+    "userAccountWriteOperations": false
+  }
+}

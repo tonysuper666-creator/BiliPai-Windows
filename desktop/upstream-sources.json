@@ -1690,7 +1690,8 @@
       "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
       "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010",
       "features": [
-        "discovery"
+        "discovery",
+        "appearance-parity"
       ],
       "mode": "policy-extract"
     },
@@ -2222,6 +2223,174 @@
         "js-plugins"
       ],
       "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppThemeMode.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "75beb9d1ba36ec1b64b904324717aebc2c8371a8f670fc97c12a1a204a6ffcb0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/DarkThemeStyle.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "4acfb0f85ef881bc94d7f0f7bba59a6271dbbbc4deb84ef02a8151127ee744c7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ThemePreferencePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "f1e442c0e6b1a58bf887f0a10aed4125ec43bfb478f3dba98c17fb92b2a4833d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppLanguage.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "02da0966d16c50d5fa8bedddeed370381d77ad7a115449f39f9a0cf69ccac3ce"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceUiPresetDescriptionPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "0110cb1ab24ad388bf51b6be6af9cad9d9741c194e77e1cbe0f70245098afb39"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceUiPresetSegmentPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "a28a313607e6eb97a62713004d17a23f8e56b0d9900ee193181c640bac1a4bf9"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/UiPreset.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "c79b671e69bbde17cdc09f8884d3654815d4f13968f5755ef57ab8ae54f050cb"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "57232489067aac602f2621833fb87b709e9aa21e07a2852d3083badbcf235097"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Shape.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "422a37285de7bf27b7ab0bea28586b362f2a4966425998d9d3aac9b7a1ff9d92"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/Type.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "491f30cdc0229eac0f70be29b94178b6b18fe4c8f4277d7924a856b3e949e391"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AndroidNativeVariantThemePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "0ee25ebec33e0aba2bdb9b7f286d45d6a59710d21e499e7775b10e27ae4f3e0a"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AppDisplayPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "a774e9a8b34a563da1cd6a5e0cf3fbdf3f57b11f2a7160f6e56049b2be5a5de6"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "e3c7ce709da2d46bad78455ca51fcbe76361095a9498becdf75134d952dca7f3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/theme/AdaptiveAccentColorPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "99b41df93d0cae5dec1256b2e1ec31ff327709802d292f898c481a243b3d6f05"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/ThemeRoleOverridePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "0705822c1e6defc7439b49b29ec0b8a8be494cada5d02e0bb08be5c06d79f123"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixText.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "40295d37406fc27e51e06f46f8676985dfbad3bc8a1cb030625cb0e921c0512e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixProgressIndicator.kt",
+      "mode": "direct",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "54e6711f9f65b0af112d1a89ab1a59a00edf161aa78afef70699c03533d31bf8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/theme/Theme.kt",
+      "mode": "policy-extract",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "f830c00affafbc5394833fdc83bce3f868825f17c7d401805bed0f6fbcda4b7d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/theme/ThemeSelectionStore.kt",
+      "mode": "policy-extract",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "e79ad08fe64f8bf5ab0ea8e77ef82fed73857be341fe13a11b2a345f5f5121dc"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppearanceThemeSegmentPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "7712250ade7a8a7898a865ad785a9466d81f0cc26e55dc358c8f62c657e4b845"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
+      "mode": "policy-extract",
+      "features": [
+        "appearance-parity"
+      ],
+      "sha256": "6468adc8903659d043c30a444c5272f16219c5b47cfaa6e8c8c31bf94028c392"
     }
   ],
   "featureCoverage": {
@@ -2347,6 +2516,30 @@
         "packages",
         "skins"
       ]
+    },
+    {
+      "path": "app/src/main/res/values/strings.xml",
+      "mode": "resource-adapt",
+      "features": [
+        "appearance-language"
+      ],
+      "sha256": "1c698f101a92c528d86af0eaaa6cbd2b1e02d4c535d1292c135aa733c3357f60"
+    },
+    {
+      "path": "app/src/main/res/values-en/strings.xml",
+      "mode": "resource-adapt",
+      "features": [
+        "appearance-language"
+      ],
+      "sha256": "940292e7ddef7233e39e7e5ff6a38ec8b9e5c33858d79151e8525dc7347948e2"
+    },
+    {
+      "path": "app/src/main/res/values-zh-rTW/strings.xml",
+      "mode": "resource-adapt",
+      "features": [
+        "appearance-language"
+      ],
+      "sha256": "6d4746789d01394ec9084b5a84140e0ad820e1ff9ae6a160c2c8e0684e817b40"
     }
   ]
 }

@@ -3,6 +3,9 @@ package com.bilipai.desktop
 import com.bilipai.desktop.data.VideoCard
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -20,6 +23,10 @@ class DesktopLibrary(private val directory: Path = Path.of(
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
     private val file = directory.resolve("library.json")
     private var data = runCatching { json.decodeFromString<LibraryData>(Files.readString(file)) }.getOrDefault(LibraryData())
+    /** An absent old preference must keep the original FOLLOW_SYSTEM default. */
+    internal val storedDark: Boolean? = runCatching {
+        ((json.parseToJsonElement(Files.readString(file)) as? JsonObject)?.get("dark") as? JsonPrimitive)?.booleanOrNull
+    }.getOrNull()
     val dark: Boolean get() = data.dark
     val automaticUpdates: Boolean get() = data.automaticUpdates
     @Synchronized fun history(): List<VideoCard> = data.history.map { it.toCard() }
