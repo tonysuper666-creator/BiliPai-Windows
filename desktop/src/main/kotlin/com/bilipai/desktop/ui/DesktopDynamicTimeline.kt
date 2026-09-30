@@ -31,15 +31,22 @@ internal class DesktopDynamicTimelineState(
     var initialized by mutableStateOf(false);private set
     var busy by mutableStateOf(false);private set
     var error by mutableStateOf<Throwable?>(null);private set
+    suspend fun initialize(incrementalRefresh:Boolean):Boolean=requests.withLock {
+        if(initialized||error!=null)return@withLock false
+        fetchLocked(refresh=true,incrementalRefresh=incrementalRefresh)
+    }
     suspend fun fetch(refresh:Boolean,incrementalRefresh:Boolean):Boolean=requests.withLock {
-        if(!stillOwned())return@withLock false
+        fetchLocked(refresh,incrementalRefresh)
+    }
+    private suspend fun fetchLocked(refresh:Boolean,incrementalRefresh:Boolean):Boolean {
+        if(!stillOwned())return false
         val snapshot=page
         busy=true;error=null
         page=resolveDynamicTimelinePageForLoadStart(snapshot,refresh,true)
         try {
             val result=original.getDynamicFeed(refresh=refresh,type=type,incrementalRefresh=incrementalRefresh).getOrThrow()
             currentCoroutineContext().ensureActive()
-            if(!stillOwned())return@withLock false
+            if(!stillOwned())return false
             var successPage=resolveDynamicTimelinePageAfterSuccess(snapshot,result.items,refresh,incrementalRefresh,result.hasMore)
             // Same post-refresh synchronization as original DynamicViewModel; a replacement
             // must not continue paging through the retired tail of the old list.
@@ -50,13 +57,13 @@ internal class DesktopDynamicTimelineState(
             }
             page=successPage
             initialized=true
-            true
+            return true
         }catch(cancelled:CancellationException){
             if(stillOwned())page=snapshot
             throw cancelled
         }catch(failure:Exception){
             if(stillOwned()){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot,failure.message.orEmpty(),refresh)}
-            false
+            return false
         }finally{busy=false}
     }
 }
@@ -76,7 +83,7 @@ internal fun DesktopDynamicTimelineFeed(
     val displayed=remember(state.page.items,transform){transform(state.page.items)}
     val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
     val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
-    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+    LaunchedEffect(state){state.initialize(incrementalRefresh=incremental)}
     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {

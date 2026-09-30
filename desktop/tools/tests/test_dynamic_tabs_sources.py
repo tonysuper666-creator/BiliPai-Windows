@@ -26,6 +26,12 @@ class DynamicTabsSourcesTest(unittest.TestCase):
    production={p.name for p in output.rglob('*.kt')}
    self.assertTrue({Path(p).name for p in g.DIRECT}.isdisjoint(production))
    self.assertEqual(len(self.files)-len(g.DIRECT),len(production))
+ def test_startup_plan_and_followings_page_budget_are_original_declarations(self):
+  original=g.read(REPO,g.BASE+'feature/dynamic/DynamicViewModel.kt')
+  actual=self.generated('DesktopOriginalDynamicUsers.kt')
+  self.assertEqual(self.media.data_class(original,'DynamicStartupLoadPlan',self.parser),self.media.data_class(actual,'DynamicStartupLoadPlan',self.parser))
+  for name in ['resolveDynamicStartupLoadPlan','resolveDynamicFollowingsPageLimit','hasLoadedAllDynamicFollowings']:
+   self.assertEqual(self.media.function(original,name,self.parser),self.media.function(actual,name,self.parser))
  def test_settings_getters_setters_and_original_controls_are_preserved(self):
   original=g.read(REPO,g.BASE+'core/store/SettingsManager.kt');actual=self.generated('DesktopDynamicTabsSettings.kt')
   for name in ['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder','getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']:

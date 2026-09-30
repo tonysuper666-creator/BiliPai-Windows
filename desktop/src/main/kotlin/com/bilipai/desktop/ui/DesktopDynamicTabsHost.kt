@@ -13,6 +13,7 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.dynamic.*
 import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -39,7 +40,10 @@ import kotlinx.coroutines.sync.withLock
     fun write(block:suspend()->Unit){scope.launch{try{writer.withLock{block()}}catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){settingError=error}}}
     LaunchedEffect(users,visible,order){users.applyTabs(visible,order)}
     LaunchedEffect(users,pinned,hidden){users.updateUserPreferences(pinned,hidden)}
-    LaunchedEffect(users){users.hydrateUsers()}
+    LaunchedEffect(users){users.activateStartupLoads {
+        timeline(resolveDynamicFeedRequestType(users.selectedLogicalTab))
+            .initialize(timelinePreferences.incrementalRefresh.first())
+    }}
     val selectedType=resolveDynamicFeedRequestType(users.selectedLogicalTab)
     val activeTimeline=if(users.selectedLogicalTab==4)null else timeline(selectedType)
     val allItems=timeline("all").page.items

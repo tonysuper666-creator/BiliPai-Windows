@@ -8,6 +8,7 @@ import com.bilipai.desktop.settings.DesktopDynamicTabsPreferences
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import java.util.concurrent.ConcurrentHashMap
 
 /** Windows task ownership around the original selected-UP policies, fetch loop and MID cursor. */
 internal class DesktopDynamicUsersState(
@@ -20,6 +21,8 @@ internal class DesktopDynamicUsersState(
     requestPage:suspend (Map<String,String>)->DynamicFeedResponse,
     private val stillOwned:()->Boolean,
     private val selfFace:String="",
+    private val nowMs:()->Long=System::currentTimeMillis,
+    private val startupDelay:suspend (Long)->Unit={delay(it)},
 ) {
     var selectedLogicalTab by mutableIntStateOf(resolveDynamicSelectedTabWithinVisibleTabs(preferences.selectedTab,
         resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder)));private set
@@ -39,13 +42,44 @@ internal class DesktopDynamicUsersState(
     private var dynamics:List<DynamicItem> = emptyList()
     private var pinned:Set<Long> = preferences.initialPinned
     private var hidden:Set<Long> = preferences.initialHidden
-    private var closed=false
+    @Volatile private var closed=false
     private var requestToken=0L
     private var userJob:Job?=null
+    private var startupLoadsActivated=false
+    private var isFollowingsLoading=false
+    private var followingsFullyLoaded=false
+    private var completeFollowingsLoadRequested=false
+    private var lastFollowingsLoadMs=0L
+    private val ownedJobs=ConcurrentHashMap.newKeySet<Job>()
     private val requests=Mutex()
     private val original=DesktopOriginalDynamicUserRepository(requestPage){owned()}
     val hiddenCount:Int get()=hidden.size
     private fun owned()=!closed&&stillOwned()
+    private fun launchOwned(inScope:CoroutineScope=scope,block:suspend CoroutineScope.()->Unit):Job {
+        val job=inScope.launch(start=CoroutineStart.LAZY){if(owned())block()}
+        ownedJobs+=job
+        job.invokeOnCompletion{ownedJobs-=job}
+        if(owned())job.start()else job.cancel()
+        return job
+    }
+    /** Original primary feed/live barrier, then delayed one-page following hydration. */
+    fun activateStartupLoads(refreshFeed:suspend ()->Unit) {
+        if(!owned()||startupLoadsActivated)return
+        startupLoadsActivated=true
+        val plan=resolveDynamicStartupLoadPlan()
+        launchOwned{loadUnreadUsers()}
+        launchOwned {
+            coroutineScope {
+                val feed=async{if(plan.refreshFeedImmediately)refreshFeed()}
+                val status=async{if(plan.loadLiveStatusImmediately)loadLiveUsers()}
+                feed.await();status.await()
+            }
+            if(!plan.loadFollowingsImmediately)startupDelay(plan.followingsHydrationDelayMs.coerceAtLeast(0L))
+            currentCoroutineContext().ensureActive()
+            if(owned())loadAllFollowings(force=false,pageLimit=plan.initialFollowingsPageLimit)
+        }
+        if(selectedLogicalTab==4)requestCompleteFollowingsLoad()
+    }
     suspend fun applyTabs(visible:Set<String>,order:List<String>) {
         if(!owned())return
         visibleTabs=resolveDynamicVisibleTabs(visible,order)
@@ -59,27 +93,60 @@ internal class DesktopDynamicUsersState(
         if(next!=4)clearSelection()
         selectedLogicalTab=next
         preferences.setSelectedTab(next)
+        if(next==4)requestCompleteFollowingsLoad()
     }
     suspend fun hydrateUsers()=coroutineScope {
         if(!owned())return@coroutineScope
-        val following=launch {
-            try {
-                val collected=mutableListOf<FollowingUser>();var page=1
-                while(true){
-                    val data=followingPage(page);currentCoroutineContext().ensureActive();if(!owned())return@launch
-                    val rows=data.list.orEmpty();collected+=rows
-                    if(hasLoadedAllDynamicFollowings(rows.size,collected.size,data.total))break
-                    page++
-                }
-                followings=collected;followingsError=null;rebuild()
-            }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){if(owned())followingsError=error}
+        val following=launchOwned(this) {
+            if(isFollowingsLoading)completeFollowingsLoadRequested=true
+            else loadAllFollowings(force=true,pageLimit=null)
         }
-        val liveJob=launch {try{val rows=liveRooms();currentCoroutineContext().ensureActive();if(owned()){live=rows;rebuild()}}
-            catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}}
-        val unreadJob=launch {try{val data=unreadUsers();currentCoroutineContext().ensureActive();if(owned())unread=data?.items
-            ?.filter{it.has_update==1}?.mapNotNull{it.user_profile?.info?.uid}?.filter{it>0}.orEmpty().toSet()}
-            catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}}
+        val liveJob=launchOwned(this){loadLiveUsers()}
+        val unreadJob=launchOwned(this){loadUnreadUsers()}
         joinAll(following,liveJob,unreadJob)
+    }
+    private suspend fun loadLiveUsers(){
+        if(!owned())return
+        try{val rows=liveRooms();currentCoroutineContext().ensureActive();if(owned()){live=rows;rebuild()}}
+            catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
+    }
+    private suspend fun loadUnreadUsers(){
+        if(!owned())return
+        try{val data=unreadUsers();currentCoroutineContext().ensureActive();if(owned())unread=data?.items
+            ?.filter{it.has_update==1}?.mapNotNull{it.user_profile?.info?.uid}?.filter{it>0}.orEmpty().toSet()}
+            catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
+    }
+    private suspend fun loadAllFollowings(force:Boolean,pageLimit:Int?){
+        if(!owned()||isFollowingsLoading)return
+        val now=nowMs()
+        if(!force&&!shouldReloadFollowings(nowMs=now,lastLoadMs=lastFollowingsLoadMs))return
+        isFollowingsLoading=true
+        try {
+            val collected=mutableListOf<FollowingUser>()
+            var reachedEnd=false
+            for(page in 1..(pageLimit?.coerceAtLeast(1)?:Int.MAX_VALUE)) {
+                currentCoroutineContext().ensureActive();if(!owned())return
+                val data=followingPage(page)
+                currentCoroutineContext().ensureActive();if(!owned())return
+                val rows=data.list?:break
+                collected+=rows
+                if(hasLoadedAllDynamicFollowings(rows.size,collected.size,data.total)){reachedEnd=true;break}
+            }
+            if(owned()){followings=collected;followingsFullyLoaded=reachedEnd;lastFollowingsLoadMs=now;followingsError=null;rebuild()}
+        }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){if(owned())followingsError=error}
+        finally {
+            isFollowingsLoading=false
+            if(owned()&&completeFollowingsLoadRequested&&!followingsFullyLoaded){
+                completeFollowingsLoadRequested=false
+                launchOwned{loadAllFollowings(force=true,pageLimit=null)}
+            }
+        }
+    }
+    private fun requestCompleteFollowingsLoad(){
+        if(!owned()||followingsFullyLoaded)return
+        if(isFollowingsLoading){completeFollowingsLoadRequested=true;return}
+        completeFollowingsLoadRequested=false
+        launchOwned{loadAllFollowings(force=true,pageLimit=null)}
     }
     fun updateTimeline(rows:List<DynamicItem>){if(owned()){dynamics=rows;rebuild()}}
     fun updateUserPreferences(pinned:Set<Long>,hidden:Set<Long>){if(owned()){this.pinned=pinned;this.hidden=hidden;rebuild()}}
@@ -95,13 +162,13 @@ internal class DesktopDynamicUsersState(
         val next=resolveDynamicSelectedUserIdAfterClick(previous,uid)
         val tab=resolveDynamicTabAfterUserSelection(previous,uid,selectedLogicalTab)
         selectedUid=next;selectedLogicalTab=tab
-        scope.launch{if(owned())preferences.setSelectedTab(tab)}
+        launchOwned{preferences.setSelectedTab(tab);if(tab==4)requestCompleteFollowingsLoad()}
         if(next==null){clearSelection();return}
         unread=unread-next
         if(!shouldReloadSelectedUserDynamics(previous,next,userItems,userError?.message))return
         if(previous!=next){userItems=emptyList();hasUserMore=true;filter=DynamicUserContentFilter.ALL}
         userJob?.cancel();val token=++requestToken;userLoading=true;userError=null
-        userJob=scope.launch {
+        userJob=launchOwned {
             try{delay(120);loadUser(true,next,token)}
             finally{if(owned()&&shouldApplyUserDynamicsResult(selectedUid,next,requestToken,token))userLoading=false}
         }
@@ -112,7 +179,7 @@ internal class DesktopDynamicUsersState(
         val uid=selectedUid?:return
         if(!owned()||userLoading||(!refresh&&!hasUserMore))return
         val token=++requestToken;userLoading=true;userError=null
-        userJob=scope.launch{try{loadUser(refresh,uid,token)}finally{if(owned()&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userLoading=false}}
+        userJob=launchOwned{try{loadUser(refresh,uid,token)}finally{if(owned()&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userLoading=false}}
     }
     private suspend fun loadUser(refresh:Boolean,uid:Long,token:Long)=requests.withLock {
         if(!owned()||!shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))return@withLock
@@ -126,5 +193,5 @@ internal class DesktopDynamicUsersState(
         }
     }
     private fun clearSelection(){userJob?.cancel();requestToken++;selectedUid=null;userItems=emptyList();userLoading=false;userError=null;hasUserMore=true}
-    fun close(){if(closed)return;closed=true;requestToken++;userJob?.cancel()}
+    fun close(){if(closed)return;closed=true;requestToken++;ownedJobs.toList().forEach{it.cancel()}}
 }

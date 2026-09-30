@@ -89,7 +89,7 @@ import com.android.purebilibili.feature.dynamic.*
  emit(path,'''package com.android.purebilibili.feature.dynamic
 import com.android.purebilibili.data.model.response.*
 private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
-'''+media.data_class(s,'SidebarUser',parser)+'\n\ninternal object DesktopOriginalDynamicUserPreferenceKeys {\n'+textwrap.indent('\n'.join(keyLines),'    ')+'\n}\n\n'+functions(s,['hasLoadedAllDynamicFollowings'])+'\n\n'+mapped,'DesktopOriginalDynamicUsers.kt')
+'''+media.data_class(s,'SidebarUser',parser)+'\n\n'+media.data_class(s,'DynamicStartupLoadPlan',parser)+'\n\ninternal object DesktopOriginalDynamicUserPreferenceKeys {\n'+textwrap.indent('\n'.join(keyLines),'    ')+'\n}\n\n'+functions(s,['resolveDynamicStartupLoadPlan','resolveDynamicFollowingsPageLimit','hasLoadedAllDynamicFollowings'])+'\n\n'+mapped,'DesktopOriginalDynamicUsers.kt')
  path=BASE+'data/repository/LiveRepository.kt';s=read(repo,path);method=media.function(s,'getFollowedLivePage',parser)
  start=method.index('        val followedRooms =');end=method.index('        val pageInfo =',start)
  pure=textwrap.dedent(method[start:end]);assert 'followedRooms.map { it.toLiveRoom() }' in pure

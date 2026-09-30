@@ -1,0 +1,11 @@
+{
+    "passed": true,
+    "actualFrozenMainClassPins": 8,
+    "productionOverrides": 0,
+    "originalStartupBarrierAndOnePageHydration": true,
+    "originalUPCompleteReload": true,
+    "sameMIDChangedEpochAndRetirement": true,
+    "actualOriginalTimelineRequestDeduplication": true,
+    "nativeWindowOrPackageTested": false,
+    "realAccountOrSocket": false
+}

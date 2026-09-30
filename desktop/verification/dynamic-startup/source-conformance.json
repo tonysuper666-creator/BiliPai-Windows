@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "tests": 11,
+  "failures": 0,
+  "source": "Recorded successful functions.exec Python unittest result before product freezing",
+  "suites": {
+    "DynamicTabsSourcesTest": 6,
+    "DynamicTimelineSources": 5
+  },
+  "exactOriginalDeclarations": [
+    "DynamicStartupLoadPlan",
+    "resolveDynamicStartupLoadPlan",
+    "resolveDynamicFollowingsPageLimit",
+    "hasLoadedAllDynamicFollowings",
+    "shouldReloadFollowings",
+    "FOLLOWINGS_REFRESH_TTL_MS"
+  ],
+  "sourceIdentityInventoryChanged": false
+}

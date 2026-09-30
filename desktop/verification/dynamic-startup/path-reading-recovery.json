@@ -1,0 +1,5 @@
+{
+  "firstAttemptReachedCompiler": false,
+  "firstAttemptFailure": "Win32 MAX_PATH reading an existing dependency without extended-path prefix; product and dependencies unchanged",
+  "correctedOnlyHarnessPathReading": true
+}

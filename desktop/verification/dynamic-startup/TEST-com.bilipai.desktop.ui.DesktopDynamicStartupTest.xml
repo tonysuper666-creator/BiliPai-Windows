@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicStartupTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-09-30T16:34:43.321Z" hostname="TONYSUPER666" time="0.414">
+  <properties/>
+  <testcase name="staleFullListIsHydratedAgainAtTheOriginalFiveMinuteBoundary()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.194"/>
+  <testcase name="concurrentHostAndFeedInitializationMakeOneOriginalRequest()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.087"/>
+  <testcase name="changedCredentialEpochDuringDelayCannotStartFollowingRequests()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.004"/>
+  <testcase name="startupWaitsForFeedAndLiveThenLoadsOnlyOneFollowingPage()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.039"/>
+  <testcase name="restoredUPTabLoadsAllFollowingsWhilePrimaryFeedIsStillPending()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.013"/>
+  <testcase name="closingStartupCancelsFeedLiveUnreadAndNeverSchedulesFollowings()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.012"/>
+  <testcase name="enteringUPDuringPartialHydrationQueuesOneCompleteReload()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.018"/>
+  <testcase name="closingAnInFlightFollowingPageRejectsLateRowsAndFurtherPages()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.032"/>
+  <testcase name="failedInitializationWaitsForExplicitRetry()" classname="com.bilipai.desktop.ui.DesktopDynamicStartupTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

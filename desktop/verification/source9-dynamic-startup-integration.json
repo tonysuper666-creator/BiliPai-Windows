@@ -1,0 +1,150 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "6967f3b629e141b229da1c17b1a6f9d8d6d82e4c",
+  "previousSlice": "desktop/verification/source9-home-tabs-integration.json",
+  "frozenSnapshotManifestSha256Bytes": "a90b32d0433f9632d94cd6d434292ade1857351baf91fab368be2b24f8fb511c",
+  "sourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Lf": "2219009955b1c59f44965c3f6590938873073fedbeded7a57dc841adf7f1d4b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Lf": "af9e5e6b21876e80ab76fa541ccc895002dfbf79befbe5e99e2bb3fef15499c9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Lf": "48c48ca4b15b83358f6e2d41d1f91423daa608ee4542e3950e90f938a3729b4c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicStartupTest.kt",
+      "sha256Lf": "5258afb4b02ab5275c98a1184043017f695f244e616227fbeecee3806a9371f3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Lf": "2d7b703ec3596fb26ff2902a4d020754f4a7d415be080eeec1b5cb7d2bc2b4c0"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Lf": "a86fc4a67cf832d9e334697ec0a2f28a2d60f1053c4ff88f5508e0c554fcfabc"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "sha256Lf": "df56993eaa3d61a14dddcc65be5410e31ce182357424ac5361b1201e1c538622"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "sha256Lf": "8ab7c9d6a31d589420fdb5c6428789bc11087d1c1049debde60845f0b4b309d3"
+    }
+  ],
+  "selectedRawEvidence": [
+    {
+      "path": "desktop/verification/dynamic-startup/frozen-main-manifest.json",
+      "sha256Bytes": "a90b32d0433f9632d94cd6d434292ade1857351baf91fab368be2b24f8fb511c"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/TEST-com.bilipai.desktop.ui.DesktopDynamicStartupTest.xml",
+      "sha256Bytes": "0eddc21cd347ff790434637ad5612267bd7dd2c217d70880b52adbaf79e26f7c"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/frozen-runtime-proof.json",
+      "sha256Bytes": "c5c51dcdd7ca071cf3382545dc9005b08226215296a54e86c730a52737c220e0"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/runtime-result.json",
+      "sha256Bytes": "3aedd4a4489f9bac7892d4dde4b9ba61c144c4a8c8fbcc4240d95bf00dca6c90"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/DynamicStartupFrozenProbe.kt",
+      "sha256Bytes": "6194c2ce66d3db1158362214cb6c29cd04dbb792746dfc8740f1a8d3623b786b"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/fixture-compile.log",
+      "sha256Bytes": "5db917a29a549066d6cd3ce338d8b0385f84d84da256d33116337ed6dbf68c57"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/fixture-run.log",
+      "sha256Bytes": "0eeb1c8359b6b4a2f894279e9e9fbb6d77fe7e39138e509328386de6287591e2"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/path-reading-recovery.json",
+      "sha256Bytes": "c28be12db47242301a82f1339268ce61606852e436ef0feee8d2534e94890e18"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/generated/DesktopOriginalDynamicUsers.kt",
+      "sha256Bytes": "a33ac590425d2801ca8fc132ec01748dabd0a31254eb393c9cdb7daa1e5b89eb"
+    },
+    {
+      "path": "desktop/verification/dynamic-startup/generated/DesktopOriginalDynamicIncrementalPolicy.kt",
+      "sha256Bytes": "c6d576ed6eb3d5158d9bec11e30fbc2d38a0824fd7aae22a08666a64a95ef9fb"
+    }
+  ],
+  "originalSourceIdentities": 461,
+  "originalResourceIdentities": 210,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "behavior": [
+    "Original feed and live-status work completes before 1200ms delayed following hydration",
+    "Startup fetches one 50-user page; UP selection and stored UP tab request complete original pagination",
+    "Original short-page/reported-total completion and five-minute memory TTL are preserved",
+    "UP selection during a partial request queues one complete reload after it finishes",
+    "Host and visible timeline share an initialization mutex; explicit refresh remains available",
+    "Retirement cancels all owned jobs, including live, unread, delayed startup and following work",
+    "Immutable MID and credential epoch guards reject retired results and further requests"
+  ],
+  "verification": {
+    "finalProductJUnit": {
+      "task": "test --tests com.bilipai.desktop.ui.DesktopDynamicStartupTest",
+      "passed": true,
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "precedingFocusedRun": {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "remainingChange": "closed field made volatile; final startup suite repeated"
+    },
+    "sourceContracts": {
+      "passed": true,
+      "tests": 11,
+      "failures": 0,
+      "source": "Recorded successful functions.exec Python unittest result before product freezing",
+      "suites": {
+        "DynamicTabsSourcesTest": 6,
+        "DynamicTimelineSources": 5
+      },
+      "exactOriginalDeclarations": [
+        "DynamicStartupLoadPlan",
+        "resolveDynamicStartupLoadPlan",
+        "resolveDynamicFollowingsPageLimit",
+        "hasLoadedAllDynamicFollowings",
+        "shouldReloadFollowings",
+        "FOLLOWINGS_REFRESH_TTL_MS"
+      ],
+      "sourceIdentityInventoryChanged": false
+    },
+    "frozenMainRuntime": {
+      "passed": true,
+      "actualClassPins": 8,
+      "productionOverrides": 0,
+      "compiledFixtureSources": 1,
+      "fixtureClasses": 20,
+      "externalClasspathEntries": 231,
+      "realAccountOrSocket": false
+    }
+  },
+  "limitations": [
+    "Persistent dynamic_items_cache, not-interested persistence and original cache-placeholder restoration are not implemented",
+    "Follow-state event invalidation and pull/manual refresh of live/unread data still need original orchestration",
+    "Automatic near-end pagination, swipe/reselect gestures and original sidebar/drawer hosts remain incomplete",
+    "This is source and frozen-JVM verification; no native HWND, installed EXE or real account acceptance"
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}

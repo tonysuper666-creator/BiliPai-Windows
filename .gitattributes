@@ -16,3 +16,5 @@ desktop/verification/diagnostics/** -text
 desktop/verification/dynamic-crash/** -text
 
 desktop/verification/home-tabs/** -text
+
+desktop/verification/dynamic-startup/** -text

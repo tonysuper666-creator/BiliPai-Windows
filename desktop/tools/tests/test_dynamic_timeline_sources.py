@@ -27,10 +27,14 @@ class DynamicTimelineSources(unittest.TestCase):
         groups=[('feature/dynamic/DynamicScreenStatePolicy.kt','DesktopOriginalDynamicTimelinePolicy.kt',
             ['resolveDynamicTimelinePageForLoadStart','resolveDynamicTimelinePageAfterSuccess','resolveDynamicTimelinePageAfterFailure','sortDynamicTimelineItemsByPublishTime']),
             ('feature/dynamic/DynamicIncrementalRefreshPolicy.kt','DesktopOriginalDynamicIncrementalPolicy.kt',
-            ['dynamicFeedItemKey','dynamicTimelineItemsOverlap','canPerformIncrementalTimelineRefresh','resolveIncrementalRefreshBoundary','resolveOldContentDividerIndex','resolveDynamicRefreshDividerGridIndex'])]
+            ['dynamicFeedItemKey','dynamicTimelineItemsOverlap','canPerformIncrementalTimelineRefresh','resolveIncrementalRefreshBoundary','resolveOldContentDividerIndex','resolveDynamicRefreshDividerGridIndex','shouldReloadFollowings'])]
         for path,file,names in groups:
             original=extractor.read(REPO,extractor.BASE+path);actual=self.generated(file)
             for name in names:self.assertEqual(helper.function(original,name,parser),helper.function(actual,name,parser),name)
+    def test_followings_ttl_uses_the_exact_original_constant(self):
+        original=extractor.read(REPO,extractor.BASE+'feature/dynamic/DynamicIncrementalRefreshPolicy.kt')
+        expected=next(line for line in original.splitlines() if line.startswith('internal const val FOLLOWINGS_REFRESH_TTL_MS:'))
+        self.assertIn(expected,self.generated('DesktopOriginalDynamicIncrementalPolicy.kt'))
     def test_original_fetch_loop_has_only_documented_transport_cancellation_and_safe_log_bindings(self):
         original=extractor.read(REPO,extractor.BASE+'data/repository/DynamicRepository.kt')
         expected=helper.function(original,'getDynamicFeed',parser).replace('NetworkModule.dynamicApi.getDynamicFeed(','getPage(').replace(

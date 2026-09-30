@@ -94,8 +94,9 @@ internal fun DesktopDynamicTimelineSettingsFields(
  body='package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.core.util.*\nimport com.android.purebilibili.data.model.response.DynamicItem\nimport kotlinx.collections.immutable.toImmutableList\n\n'+decl(source,'class','DynamicFeedErrorSource')+'\n\n'+'\n\n'.join(media.function(source,n,parser) for n in selected)
  emit(path,body,'DesktopOriginalDynamicTimelinePolicy.kt')
  path=BASE+'feature/dynamic/DynamicIncrementalRefreshPolicy.kt';source=read(repo,path)
- selected=['dynamicFeedItemKey','dynamicTimelineItemsOverlap','canPerformIncrementalTimelineRefresh','resolveIncrementalRefreshBoundary','resolveOldContentDividerIndex','resolveDynamicRefreshDividerGridIndex']
- body='package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.DynamicItem\n\n'+media.data_class(source,'IncrementalRefreshBoundary',parser)+'\n\n'+appearance.declarations(parser,source,selected)
+ selected=['dynamicFeedItemKey','dynamicTimelineItemsOverlap','canPerformIncrementalTimelineRefresh','resolveIncrementalRefreshBoundary','resolveOldContentDividerIndex','resolveDynamicRefreshDividerGridIndex','shouldReloadFollowings']
+ ttl=next(line for line in source.splitlines() if line.startswith('internal const val FOLLOWINGS_REFRESH_TTL_MS:'))
+ body='package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.DynamicItem\n\n'+ttl+'\n\n'+media.data_class(source,'IncrementalRefreshBoundary',parser)+'\n\n'+appearance.declarations(parser,source,selected)
  emit(path,body,'DesktopOriginalDynamicIncrementalPolicy.kt')
  path=BASE+'feature/dynamic/DynamicLayoutPolicy.kt';source=read(repo,path)
  selected=['resolveDynamicTimelineMaxWidth','resolveDynamicTimelineMinColumnWidth','resolveDynamicTimelineHorizontalSpacing','resolveDynamicTimelineVerticalSpacing','shouldUseDynamicManualPrependAnchor']
