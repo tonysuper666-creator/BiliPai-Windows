@@ -26,6 +26,7 @@ class DesktopCommunityRepository(private val repository: DesktopRepository) {
     val search by lazy { DesktopSearchRepository(repository) }
     val searchPreferences by lazy { DesktopSearchPreferences() }
     private val heartbeatReporter by lazy { DesktopPlaybackHeartbeatReporter(repository, searchPreferences) }
+    private val articleHistoryReporter by lazy { DesktopArticleHistoryReporter(repository, searchPreferences) }
 
     suspend fun reportPlayHeartbeat(bvid: String, cid: Long, playedTimeSec: Long = 0,
         realPlayedTimeSec: Long = playedTimeSec, startTsSec: Long = System.currentTimeMillis() / 1000,
@@ -434,11 +435,15 @@ class DesktopCommunityRepository(private val repository: DesktopRepository) {
         }
 
     suspend fun articleDetail(articleId: Long, includeOpus: Boolean = true): ArticleDocument = read(validate = { require(articleId > 0) }) {
+        val expectedEpoch = repository.sessionEpoch
+        val expectedAccountMid = repository.account.value?.mid
         val response = article.getArticleView(repository.signWebParams(mapOf("id" to articleId.toString(),
             "gaia_source" to "main_web", "web_location" to "333.976")))
         val data = verified(response.code, response.message, response.data, "专栏详情")
         val opus = if (includeOpus && data.dynamicId.isNotBlank()) fetchOpus(data.dynamicId) else null
-        communityArticleDocument(data, opus)
+        articleContentWithBestEffortHistory(communityArticleDocument(data, opus)) {
+            articleHistoryReporter.report(data.id, expectedEpoch, expectedAccountMid)
+        }
     }
 
     suspend fun playerMetadata(bvid: String, cid: Long): PlayerInfoData = read(validate = { require(bvid.isNotBlank() && cid > 0) }) {

@@ -82,7 +82,7 @@ class DesktopSearchPreferences(private val root: Path = DesktopLibrary.directory
         if (value.isEmpty()) return
         // Like SearchViewModel.saveHistory: incognito suppresses writes, not access to saved history.
         withContext(Dispatchers.IO) { synchronized(lock) {
-            if (!_privacyMode.value) {
+            if (!isPrivacyModeEnabledSync()) {
                 val target = dao(mid)
                 target.insertNow(SearchHistory(value))
             }
