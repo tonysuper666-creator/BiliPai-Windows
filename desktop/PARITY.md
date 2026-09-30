@@ -29,7 +29,7 @@
 | DLNA/Google Cast | 原 `feature/plugin/dlna`, `googlecast` | 原 DLNA 与固定 Google Cast V2 Java/官方根证书已接；当前播放源、双轨 DASH 与单文件私有请求头代理、两类投屏共享代理生命周期已整合；14 项实际 HTTP/清理、11 项 DLNA 协议及 25 项 TLS/Protobuf/JmDNS 隔离回归通过 | 两类真实接收设备、完整窗口/账号切换与停止验收；Google Cast 严格 nonce 等兼容差异、音频设备限制及线上行为仍需实机验证；本地离线文件投屏未实现 |
 | 登录与多账号 | `feature/login`, `TokenManager` | Web/TV 扫码、密码/短信/真实浏览器验证、多账号与 DPAPI 已接并单测 | 实际账号登录/验证码与切换验收；账号缓存 owner 回归已通过 |
 | WebDAV与数据备份 | `feature/settings/webdav`, 原 Backup policies | 原九个 WebDAV HTTP 方法和调度策略复用；Windows 受限 ZIP/摘要/回滚、旧写入器停止、DPAPI、本地/跨进程锁与设置对话框已接；真实 loopback DAV、恢复和 DST 周期离线测试通过 | 实际 WebDAV 服务与打包的 Windows 调度验收；Android 备份格式迁移未实现；皮肤/外部包资产未纳入 |
-| 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原两值主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/界面缩放/DPI、简繁英 XML 与外观入口已接入主程序；固定原 Miuix 5157 源码构建及 29 项主题/迁移/重启准备测试通过 | 全部组件切换、剩余原界面文案、玻璃/皮肤、导航/键盘可达性与实际整包窗口/语言重启验收；壁纸色采用原非 Android S 分支的预设色 |
+| 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/缩放/DPI、简繁英 XML 与固定 Miuix 5157 已接；原 App* 控件和偏好/导航图进入主构建，四个桌面控件入口及外观选择器使用原实现；新增原图标/列表样式和点击复制键、宿主配置与错误展示已接，28 项定向 JUnit 和 103 个真实离屏输入检查通过 | 全 Shell 控件/文案迁移、玻璃/皮肤、完整导航/可访问性与实际窗口菜单/弹窗/语言重启验收；壁纸色采用原非 Android S 分支预设色，未实现 Windows 玻璃 |
 | 诊断与隐私设置 | 原诊断/遥测与设置 | Windows 本地诊断已有基础 | 用户开关、日志脱敏、诊断导出与上游设置语义核对 |
 | 跟随更新 | `desktop/tools` 与 Windows updater | 既有更新监测保留，自动发布关闭 | 按用户要求先完成上述对齐，再扩大完整功能验证和更新机制 |
 
@@ -46,3 +46,7 @@ Windows revision 8 已归档验证：256 份 Kotlin 来源和 12 个原资源摘
 Windows revision 9 的外观接入保存为另一个开发阶段记录 `verification/source9-appearance-integration.json`：283 份 Kotlin 来源和 15 个原资源继续审计；原 Miuix 固定提交的 169 个文件按原字节校验，143 个原 Kotlin 文件及原 SDF 生成器进入实际 Gradle JVM 构建。原主题、迁移/语言策略和资源已接入主界面，外观设置沿用原稳定键与同一备份存储，旧 Windows 深浅色仅在真实字段存在时迁移。八个实际运行依赖与六份来源许可按摘要核验。29 项定向测试通过；原 SDF 262144 字节与隔离验证一致。此记录不包含新整包、主窗口、语言重启或全部 Miuix 控件验收，许可目录仍未标完整，桌面仍为 revision 5。完整对齐按功能与底层行为审查仍粗估约六成，来源数和测试数不用于换算百分比。
 
 Windows revision 9 的远程 JS/图片和投屏整合记录为 `verification/source9-remote-cast-integration.json`：284 份 Kotlin 来源、15 个资源、303 个 Retrofit 方法及 45/45 响应文件继续审计一致。101 项普通 JUnit 和 4 个实际独立 VM 方法通过，无失败或跳过；后者保留原宿主 14、安装恢复 10、运行资源 4 个检查，并新增远程安装/图片/直接账号代际 6 个检查。远程 HTTP 9、真实图片解码/参数 5 个检查及 21 项 Python 测试通过。投屏代理保留原播放头和显式空值，双轨 DASH 均经过不含凭据的随机标识地址；源准备期间和任一接收端仍活动时不会清理共享代理，最终空闲和退出会撤销注册。根界面接入外部媒体/直播/PGC 投屏与账号切换清理。当前播放源读取已验证不能采用旧账号或外来所有者；新增两个实际 native 控制器断言只已编译，需新整包执行。本记录不证明真实接收设备、主窗口、账号切换或整包验收；许可目录仍未标完整，桌面仍为 revision 5，完整功能对齐仍在推进。
+
+Windows revision 9 的新 EXE/便携包验收记录为 `verification/source9-native-package.json`：整包构建前全量 498 项 JUnit 中 497 通过、1 跳过，无失败；真实 EXE 的完整原生播放验证通过，包含上述两个控制器投屏源归属断言和六种真实 HTTP 请求头场景，弹幕/插件样式/护眼与 Anime4K 仍保持实际屏幕像素门槛。第一次整包运行在弹幕前出现黑色表面，后续只补充有限窗口/播放器状态诊断便通过；原因尚未解释，不把这次通过宣称为已修复偶发黑屏。新包未部署桌面，完整 release gate、真实账号与投屏设备仍未验收。
+
+原控件/偏好接入另保存为 `verification/source9-components-integration.json`：两个来源批次共新增 78 个不同原文件身份，主来源审计合计 362/15，303 个 Retrofit 声明和 45/45 响应文件继续一致。原 public App* 的 48 个签名、偏好/导航 32 个泛型/receiver 签名保留；仅剪贴板、单调时钟、桌面窗口 dp 高度及 Android 专用文本/对话框字段采用薄绑定。主产品实际编译和 28 项定向 JUnit 通过，原控件 44、偏好/导航 59 个实际鼠标/拖动/键盘/窗口 dp 传播检查及 19 项 Python 来源检查通过。八张明暗/两套主题离屏渲染已留存；这不证明原生菜单、弹窗、语言重启或全 Shell 控件完成迁移。桌面仍为 revision 5。

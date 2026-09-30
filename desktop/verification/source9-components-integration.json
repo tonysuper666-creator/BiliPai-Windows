@@ -1,0 +1,178 @@
+{
+  "auditedAtUtc": "2026-09-30T06:49:20.581713+00:00",
+  "baseCommit": "fa83d500c2b8ad8288566eba1d77c9b45fd7f56f",
+  "scope": "Original App* components and preference/navigation graph integrated into product build; root theme providers, four public facades and appearance preferences use the original implementations.",
+  "sourceAudit": {
+    "upstreamTag": "v0.2.3-alpha.9",
+    "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+    "windowsSourceCommit": "fa83d500c2b8ad8288566eba1d77c9b45fd7f56f",
+    "workingTreeDirty": true,
+    "adoptedSourceCount": 362,
+    "adoptionModes": {
+      "direct": 270,
+      "api-extract": 1,
+      "policy-extract": 34,
+      "extracted": 43,
+      "platform-rewrite": 8,
+      "platform-adapter-reference": 6
+    },
+    "adoptedResourceCount": 15,
+    "resourceHashesVerified": true,
+    "apiInterfacesVerbatim": true,
+    "apiMethodCount": 303,
+    "responseFiles": {
+      "upstreamCount": 45,
+      "adoptedCount": 45,
+      "unadopted": []
+    },
+    "acceptanceMatrix": "desktop/PARITY.md",
+    "fullFunctionalParityVerified": false
+  },
+  "adoptedCohorts": {
+    "componentOriginalIdentities": 53,
+    "preferenceOriginalIdentities": 28,
+    "uniqueNewOriginalIdentities": 78,
+    "publicAppSignatures": 48,
+    "preferenceGenericReceiverSignatures": 32
+  },
+  "junit": {
+    "suites": 4,
+    "tests": 28,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "python": {
+    "componentExtractionTests": 9,
+    "preferenceExtractionTests": 10,
+    "failed": 0
+  },
+  "fixtures": {
+    "components": {
+      "result": {
+        "passed": true,
+        "styles": 2,
+        "modes": 2,
+        "actualInteractionAssertions": 44,
+        "clipboard": "injected; user clipboard untouched",
+        "verificationSurface": "ImageComposeScene",
+        "nativeWindowTested": false
+      },
+      "rasters": [
+        {
+          "path": "desktop/build/reports/component-parity-integration/components/material3-dark.png",
+          "sha256": "5fd1e8120037ea9784d4249b315a061298a6033f5d80ef010cb299564c379e20",
+          "bytes": 34543
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/components/material3-light.png",
+          "sha256": "5d0577631a74a5403835c336b21b46cae734c6fb7083d5a3b51b62bf3f33b909",
+          "bytes": 33733
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/components/miuix-dark.png",
+          "sha256": "b670d615404d096111e3b5d4e36849af3cbc186b38ea79e29fb3f3e46a046860",
+          "bytes": 31913
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/components/miuix-light.png",
+          "sha256": "1af9a8932b084b99b010e7bcff292a0e401513aede74cca25530fb068ba79f23",
+          "bytes": 30945
+        }
+      ]
+    },
+    "preferences": {
+      "result": {
+        "passed": true,
+        "styles": 2,
+        "modes": 2,
+        "actualInteractionAssertions": 59,
+        "nativePopup": "not opened; parent native gate pending",
+        "userClipboard": "untouched",
+        "verificationSurface": "ImageComposeScene",
+        "nativeWindowTested": false
+      },
+      "rasters": [
+        {
+          "path": "desktop/build/reports/component-parity-integration/preferences/material3-dark.png",
+          "sha256": "41cd0b21c83415a59cb782cd375366316ed0bb507f85f21656794e90e93e6ae1",
+          "bytes": 51083
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/preferences/material3-light.png",
+          "sha256": "76ae46b9b03446ba7ee0345b7038c73720436abbac998bffdcd5d2b6b0fb72ee",
+          "bytes": 50722
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/preferences/miuix-dark.png",
+          "sha256": "fc11eb8a21ec06fc404ed456e8972d4f2a962e55f9fa0f3ebf539ba21eb731c2",
+          "bytes": 50063
+        },
+        {
+          "path": "desktop/build/reports/component-parity-integration/preferences/miuix-light.png",
+          "sha256": "7e6abd2b82109aa673452e4a9c8aed3ea6ccf75773b69c321ed28e5fb7589df4",
+          "bytes": 50124
+        }
+      ]
+    }
+  },
+  "ownedIntegration": [
+    {
+      "path": "desktop/tools/extract-upstream-components.py",
+      "preparedSha256": "9f11249c136f0479738fd822ab520eb839247af929c67725bf185a9268eb51af",
+      "integratedSha256": "9f11249c136f0479738fd822ab520eb839247af929c67725bf185a9268eb51af"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_components.py",
+      "preparedSha256": "3a0f040e6e7aa95e65aed60b6f351345996ed0ed52c0aac389926833c7f894c8",
+      "integratedSha256": "3a0f040e6e7aa95e65aed60b6f351345996ed0ed52c0aac389926833c7f894c8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopTextClipboard.kt",
+      "preparedSha256": "acde01528e619fa18406a8f0066a2f5750498ba43a4076f98c66c0f667e63c62",
+      "integratedSha256": "acde01528e619fa18406a8f0066a2f5750498ba43a4076f98c66c0f667e63c62"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopMonotonicClock.kt",
+      "preparedSha256": "721b4d201eba5329d5ea24d33299aa31bf25958167c330153a04f6c718c5be3c",
+      "integratedSha256": "721b4d201eba5329d5ea24d33299aa31bf25958167c330153a04f6c718c5be3c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppComponentsTest.kt",
+      "preparedSha256": "6e66830e0591e33684b1b75d7312af1fbcda0147eb5c6298be75f642ba6c69e8",
+      "integratedSha256": "852226d4806b79bd8469a7eb591e939e1581551e7fadbaa1ec3f0c109d39a0c7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-preferences.py",
+      "preparedSha256": "b5aaad06ddfd84c761febe547f8a71174a78b482496f6a2ead2c797eb441d6a5",
+      "integratedSha256": "b5aaad06ddfd84c761febe547f8a71174a78b482496f6a2ead2c797eb441d6a5"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_preferences.py",
+      "preparedSha256": "a58a5e51cd876149aa017632e10f534a578b103dca481551927c8eefbfa9b08b",
+      "integratedSha256": "a58a5e51cd876149aa017632e10f534a578b103dca481551927c8eefbfa9b08b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopWindowConfiguration.kt",
+      "preparedSha256": "0f86ba6a2c1466abc579cda29c1e96696747b63ff6b4333a00b35c7d6cdd904a",
+      "integratedSha256": "0f86ba6a2c1466abc579cda29c1e96696747b63ff6b4333a00b35c7d6cdd904a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppPreferenceComponentsTest.kt",
+      "preparedSha256": "7cf01a78d29ddd5808895ead08be8da8aa3593f5a4db052096409853a4c3af67",
+      "integratedSha256": "001d602f1b54c9a42836b739246d616038d011840f377ec31edfc0f37c3f3ec3"
+    }
+  ],
+  "hostChanges": [
+    "AppThemeConfig and original icon/list style providers observe shared persisted settings.",
+    "Original AppText/Card/Button/Progress replace four desktop facade implementations.",
+    "Appearance uses original generic single-choice, outlined text-field labels, switch preference and alert dialog.",
+    "Clipboard writes occur on AWT and failures reach the root error surface; fixture copies are injected."
+  ],
+  "nativeWindowDialogPopupTested": false,
+  "packagedLanguageRestartTested": false,
+  "allShellComponentsMigrated": false,
+  "windowsBlurOrLiquidGlassImplemented": false,
+  "deployedToUserDesktop": false,
+  "fullFeatureParityComplete": false
+}

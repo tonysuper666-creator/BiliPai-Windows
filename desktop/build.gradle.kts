@@ -258,6 +258,30 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
     outputs.dir(generatedAppearanceResources)
 }
 
+val extractUpstreamComponents by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-components.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-components.py")
+    inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/components"))
+}
+
+val extractUpstreamPreferences by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-preferences.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/preferences").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-preferences.py")
+    inputs.files(sources.filter { "preference-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/preferences"))
+}
+
 val verifyAppearanceDependencies by tasks.registering {
     inputs.file("third-party/miuix5157/dependency-pins.json")
     inputs.dir("src/main/resources/licenses/appearance")
@@ -348,10 +372,13 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/js"))
     kotlin.srcDir(jsWorkerGenerated)
     kotlin.srcDir(generatedAppearance)
+    kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

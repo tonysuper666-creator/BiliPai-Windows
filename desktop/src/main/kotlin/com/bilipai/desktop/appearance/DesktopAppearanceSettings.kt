@@ -12,11 +12,18 @@ import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.ThemeModeRoleOverrides
 import com.android.purebilibili.core.store.ThemeRoleOverrides
 import com.android.purebilibili.core.theme.*
+import com.android.purebilibili.core.ui.AppIconStyle
+import com.android.purebilibili.core.ui.AppListItemStyle
+import com.android.purebilibili.core.ui.AppAlertDialog
+import com.android.purebilibili.core.ui.components.AppChoiceOption
 import com.android.purebilibili.core.ui.components.AppSegmentOption
+import com.android.purebilibili.core.ui.components.AppSingleChoicePreference
+import com.android.purebilibili.core.ui.components.AppSwitchPreference
+import com.android.purebilibili.core.ui.components.AppSwitch
+import com.android.purebilibili.core.ui.components.AppOutlinedTextField
 import com.android.purebilibili.feature.settings.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
-import top.yukonga.miuix.kmp.preference.WindowDropdownPreference
 
 @Composable
 fun DesktopAppearanceSettings(
@@ -74,8 +81,8 @@ fun DesktopAppearanceSettings(
             } else {
                 var custom by remember(settings.md3CustomColorHex) { mutableStateOf(settings.md3CustomColorHex) }
                 Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    OutlinedTextField(custom, { custom = it }, Modifier.weight(1f), singleLine = true,
-                        isError = !isValidMd3CustomColorHex(custom), enabled = !busy, label = { DesktopAppearanceText("#RRGGBB") })
+                    AppOutlinedTextField(custom, { custom = it }, Modifier.weight(1f), singleLine = true,
+                        isError = !isValidMd3CustomColorHex(custom), enabled = !busy, labelText = "#RRGGBB")
                     DesktopAppearanceButton(strings["common_save"], { update { prefs.setCustomColor(custom) } },
                         enabled = !busy && isValidMd3CustomColorHex(custom))
                 }
@@ -103,6 +110,22 @@ fun DesktopAppearanceSettings(
         }
         RoleOverridesEditor(settings, !busy) { update { prefs.setRoleOverrides(it) } }
         DesktopAppearanceCard(Modifier.fillMaxWidth()) {
+            AppearanceChoice(strings.desktop("图标样式", "圖示樣式", "Icon style"), settings.appIconStyle,
+                listOf(AppSegmentOption(AppIconStyle.AUTO, strings["theme_mode_follow_system"]),
+                    AppSegmentOption(AppIconStyle.THEME_CONTAINER, strings.desktop("主题色容器", "主題色容器", "Theme container")),
+                    AppSegmentOption(AppIconStyle.MD3_STANDARD, strings.desktop("Material 标准", "Material 標準", "Material standard"))), !busy) { update { prefs.setIconStyle(it) } }
+            AppearanceChoice(strings.desktop("列表样式", "清單樣式", "List style"), settings.appListItemStyle,
+                listOf(AppSegmentOption(AppListItemStyle.AUTO, strings["theme_mode_follow_system"]),
+                    AppSegmentOption(AppListItemStyle.NATIVE, strings.desktop("原生组件", "原生元件", "Native components")),
+                    AppSegmentOption(AppListItemStyle.CUSTOM, strings.desktop("自定义组件", "自訂元件", "Custom components"))), !busy) { update { prefs.setListItemStyle(it) } }
+            AppSwitchPreference(title = strings.desktop("点击文字复制", "點擊文字複製", "Tap text to copy"),
+                checked = settings.globalTextTapCopyEnabled, enabled = !busy,
+                onCheckedChange = { update { prefs.setGlobalTextTapCopy(it) } })
+            AppSwitchPreference(title = strings.desktop("入场动画", "入場動畫", "Entrance animations"),
+                checked = settings.uiEntranceAnimationEnabled, enabled = !busy,
+                onCheckedChange = { update { prefs.setUiEntranceAnimation(it) } })
+        }
+        DesktopAppearanceCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 DesktopAppearanceText(strings.desktop("外观预览", "外觀預覽", "Appearance preview"), style = MaterialTheme.typography.titleLarge)
                 DesktopAppearanceText(strings.desktop("标题、正文、控件与卡片会随当前选择变化。", "標題、內文、控制項與卡片會隨目前選擇變更。", "Titles, text, controls and cards follow the selected appearance."))
@@ -111,7 +134,7 @@ fun DesktopAppearanceSettings(
         }
     }
     requestedLanguage?.let { requested ->
-        AlertDialog(onDismissRequest = { if (!busy) requestedLanguage = null },
+        AppAlertDialog(onDismissRequest = { if (!busy) requestedLanguage = null },
             title = { DesktopAppearanceText(strings["app_language_restart_dialog_title"]) },
             text = { DesktopAppearanceText(strings["app_language_restart_dialog_message"]) },
             confirmButton = { TextButton(enabled = !busy, onClick = {
@@ -126,22 +149,9 @@ fun DesktopAppearanceSettings(
 
 @Composable
 private fun <T> AppearanceChoice(title: String, value: T, options: List<AppSegmentOption<T>>, enabled: Boolean, onSelect: (T) -> Unit) {
-    val index = options.indexOfFirst { it.value == value }.coerceAtLeast(0)
-    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) {
-        WindowDropdownPreference(title = title, items = options.map { it.label }, selectedIndex = index,
-            enabled = enabled, modifier = Modifier.fillMaxWidth(), onSelectedIndexChange = { onSelect(options[it].value) })
-    } else {
-        var expanded by remember { mutableStateOf(false) }
-        ListItem(colors = ListItemDefaults.colors(containerColor = Color.Transparent), headlineContent = { DesktopAppearanceText(title) }, trailingContent = {
-            Box {
-                OutlinedButton(enabled = enabled, onClick = { expanded = true }) { DesktopAppearanceText(options[index].label) }
-                DropdownMenu(expanded, { expanded = false }) {
-                    options.forEach { option -> DropdownMenuItem(text = { DesktopAppearanceText(option.label) },
-                        onClick = { expanded = false; onSelect(option.value) }) }
-                }
-            }
-        })
-    }
+    AppSingleChoicePreference(title = title, selectedValue = value,
+        options = options.map { AppChoiceOption(it.value, it.label) }, enabled = enabled,
+        modifier = Modifier.fillMaxWidth(), onValueChange = onSelect)
 }
 
 @Composable
@@ -153,9 +163,7 @@ private fun RoleOverridesEditor(settings: DesktopThemeSettings, enabled: Boolean
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 DesktopAppearanceText(strings.desktop("自定义颜色角色", "自訂顏色角色", "Custom color roles"))
-                if (LocalAppUiStyle.current == AppUiStyle.MIUIX) top.yukonga.miuix.kmp.basic.Switch(
-                    draft.enabled, { draft = draft.copy(enabled = it) }, enabled = enabled && applicable,
-                ) else Switch(draft.enabled, { draft = draft.copy(enabled = it) }, enabled = enabled && applicable)
+                AppSwitch(draft.enabled, { draft = draft.copy(enabled = it) }, enabled = enabled && applicable)
             }
             if (draft.enabled) {
                 for ((dark, roles) in listOf(false to draft.light, true to draft.dark)) {
@@ -166,7 +174,7 @@ private fun RoleOverridesEditor(settings: DesktopThemeSettings, enabled: Boolean
                         Triple(strings.desktop("主要文字", "主要文字", "Primary text"), roles.primaryTextHex, { text: String -> replace(roles.copy(primaryTextHex = text)) }),
                         Triple(strings.desktop("次要文字", "次要文字", "Secondary text"), roles.secondaryTextHex, { text: String -> replace(roles.copy(secondaryTextHex = text)) }),
                         Triple(strings.desktop("控件强调色", "控制項強調色", "Control accent"), roles.controlAccentHex, { text: String -> replace(roles.copy(controlAccentHex = text)) }),
-                    )) OutlinedTextField(value, action, Modifier.fillMaxWidth(), label = { DesktopAppearanceText(label) },
+                    )) AppOutlinedTextField(value, action, Modifier.fillMaxWidth(), labelText = label,
                         singleLine = true, enabled = enabled && applicable, isError = !isValidMd3CustomColorHex(value))
                 }
             }

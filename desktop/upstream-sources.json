@@ -2348,7 +2348,8 @@
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixText.kt",
       "mode": "direct",
       "features": [
-        "appearance-parity"
+        "appearance-parity",
+        "component-parity"
       ],
       "sha256": "40295d37406fc27e51e06f46f8676985dfbad3bc8a1cb030625cb0e921c0512e"
     },
@@ -2356,7 +2357,8 @@
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixProgressIndicator.kt",
       "mode": "direct",
       "features": [
-        "appearance-parity"
+        "appearance-parity",
+        "component-parity"
       ],
       "sha256": "54e6711f9f65b0af112d1a89ab1a59a00edf161aa78afef70699c03533d31bf8"
     },
@@ -2388,7 +2390,8 @@
       "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSegmentedControl.kt",
       "mode": "policy-extract",
       "features": [
-        "appearance-parity"
+        "appearance-parity",
+        "component-parity"
       ],
       "sha256": "6468adc8903659d043c30a444c5272f16219c5b47cfaa6e8c8c31bf94028c392"
     },
@@ -2399,6 +2402,630 @@
         "js-plugins"
       ],
       "sha256": "174f9296e9bda46f51ac7c884e44734da7892c0d837f4212aee05d8bb6a872e8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppThemeConfig.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "0beae34bfc8d5923fea684219d190a8443cb4ebd6ec9c7e689e0a66d63ca1566"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "315eaecd33a0676521eed8b044a6cbf66554c7887ae59cfc142c185340608a3a"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "8f8ccb3410151a4f1156fd4807db71277bad3b353bc6b275b9bf25475bdae8cc"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSpacingTokens.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "954aad31a2ca37ac016de1768daa99098e19e78f4135ed0392080dbdb6e86ca7"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "c40c3386b880659f0c1ecf2b33195134c65e70bcfa618a6bac41ee657548649d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPopupSurface.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "3e0a0836c3bbad5f17655c6e8bba634c6a4757e3cc7282f9877f994bec40d559"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppDialogComponents.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "22a9464097503174e8028dcb8291db75b325a58951c154a344cbb3a5d480e28c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "99ddd98a5156b8dd17cc988d6e5d6468331103a6d7a461a00a3316df0ae1e4f8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ButtonVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "f888d7e5a5f14cd71d1f7fbf83ece711bffe8fcb4b77208fd4450dda5579a078"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPrimitiveThemeDefaults.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "4f3898c44a2be0067e5d447fc4da8618dc1bcc5e0a5efa4482084589bd328a51"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurIntensity.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "f6b75c21f3841e60f564a39559fb3a1fbe74cc55c7d1b0626df4732d23090d0c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/MiuixPressFeedbackModifier.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "f30582009e6b0dc725196cb931b352bef3ae31d33c98ca5c1dd2ec7b0090f78c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "4c2d29399537b0973b4d998ff1586efc5fcb9ba5dd4ac8e5cabcc6283108b1be"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveRendererPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "6c3a8e224fd9e9b97055da2413e074e6d9ef9935c492ba7f3d190a67e0d81a07"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppDesktopInteraction.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "68d9e682eb65a25ff33e5bac5d1d6c79c29b951a7c276a2abbcc7b290d50a693"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimaryButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "99d52e42a7c765b5e63a521e7b9db6e67ed74c754ee6d0c23cae3b094b6e35f1"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCheckbox.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "80f5e509d45a630424850f12a995d9fbf608050d2e181582e70a7f35297a6af4"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "2f3a9aeb4eb7f2d45ad3d8a8ef1fffc57558e778ca5c25525be1b18fb69cd2b3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "6e975a3a20ac6bc1cdf802d4a810755ed88716a0c1460d4650b5ac5531937827"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSwitch.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "db3dd216dc118f3ec6c708e387b24c1d9fb5786f0eeeb4b40d659b4df3128657"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSurface.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "8b96adb336031daf4e6f633283b6451c5c0ff7ab952dd1583e2473d0aecca09e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppRadioButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "4060b44db4eda24f90752296ab9633da79d57d6618bb7744db58cc29b3331a55"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIconButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "7996f3abdfc20a44b5504f6e6f91303971953aed308415a7cf54002862028153"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppProgressIndicator.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "cc746486c636288ff8e3755d327a2fe12bb86b8c2fe24c30741f9765b3be8f48"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBadge.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "8fd4b7ad80d91a149ae5b15b30778c6a04fda2d33ca0209fd1c2033ba9bff972"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Checkbox.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "9f82516e376f4a9874e7e588d0aa4c1f4ccad1b07b0c7a56d3e6d9aae6803ce1"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Card.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "e5330863f09a10d6c39a5b5ecdc1ef42aa362a5ad6a912a11eec6de150a5f83c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Icon.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "b57a2bcb2fdc72028915a3e651c5f7b9a1dd1f6b7342fbf94e84960d9a05f02f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Switch.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "e344c155eced3af0d40a7ae67a1041c0a1c0145f74fee1b291da8da2777dae6a"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Surface.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "e78e9b78ff6d9fa37a1e873f9bf9978e327d651dc5046e06a51325791df25b38"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Slider.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "6186371b495c371106bea1a6d3c395af2d99e83532436e1a66e147f4d98d2a95"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3RadioButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "a056a644bdf45a1ef18807a1c0583be726edc0f8ca3cb65c79d6845bae506143"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3IconButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "35edf50f21109ba6377b5c9d33b9f18347174d75b4f97aa542a61663b2930559"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Text.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "fcaf44558f8494f3159bae86ae79ee8c23e69bdd0e874a53b3e298968e8bb6f0"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3ProgressIndicator.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "5550ebd0ad61e6103f9dc759f6a90a49a7aa9386c6e51f5b9250451f61f43894"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3Badge.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "fe98e2b53f980f54e7ff64730412abc812a74fcec9b29c28162eaed32337c28e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixActionPrimitives.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "8866e6099641ef6dda8f44d1d42ac9637fa4e412ebca0b9728fbc8a538e1f726"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCheckbox.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "27f6eee8c039dcf5cdac931457df91181369284a0e322955ca45c8372dba9bfe"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixCard.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "02331a57d5478897ba2218ab8cf92068d83c5eb40425b31f93b593f504618476"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIcon.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "b88e6e93ede1e61cf61fe1e83f932d05ca99433f782ce626d282693a7f91bd9b"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSwitch.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "7b44ff0e431a1c1cb413c27c125690330f92a393dd41d8ba27da532b76372937"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSurface.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "e86ce9f4a17da6a36ce11fbbcaf819d6c72f60f0091d9c5a99b5d64af499887d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixSlider.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "2c10b878617b2598bfccafc0e442e93ac2d3e83b4c0e815bd32bca13b1ef49cc"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixRadioButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "33839a6326ad0836b8ca25ad393cda9ba598dfb36cefe512355e6e7dad0e7a9c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixIconButton.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "560ff2f0a70bd251ff1c2b74f2692c1e182c7eeab3248cb6ba17ff95e6cca03d"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixHapticFeedback.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "c4b30e84770b3126f0e374cf91a80c493cc53ac156e0797365e8269110424d40"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixBadge.kt",
+      "mode": "direct",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "22fd4e6b0bb76be1c34685daaeccb1a857868b19afeaf7a4ead8997441efd6cd"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppText.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "01a3c95ad79ad533d9e1fec846cd728b6cb21a5cfbb09de6c3f32f6b420430c3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppContentDialogLayoutPolicy.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "3a705865ff36c816e16fb637efdd61ff9a443288ed3d193be638c5f7f3e8e631"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSlider.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "component-parity"
+      ],
+      "sha256": "ea32a33d0287110bcb96da481b0d68167ebe76732649e1f8a6da39a52b52be44"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "14427ed67f09f279e1d02a33358ce2d1e19b0609f7e832b36a87db8650e189cf"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "6383d0beb96863fa52534897e4463409ecbc194d8603db72d955607339be1bbf"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppListItemPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "4574df5f87d921507dfb47a307e824adc864718eb100aeb987c0b0be5e40ea63"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppDrawerVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "7b77decf4a360b1fe53a9ac126985913e40d974d793b538474e426c8004ae02f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppNavigationCapabilities.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "01ec92fdf82942cfb0cd8507442c561ed2ac2ad49f7ae98851d80537e7b4140e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "3f56233873de83cfc35042c8a93a24192e36b10215c57e2332c72b39e7a8ed45"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicator.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "cb3d5757d0c82193b841499fce91fea907ac114ccf29c0cc5dbb6c88c1ef01d9"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicatorPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "61dda62a57e86627d03d7d0cd3b8b7e0f968e7bc5ede9a12a041d2f1015659c0"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/PresetPrimitiveRenderer.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "ed42e30853066bc212da0661126f014c412bff65b749d912d2526914cd22403a"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppBottomNavigationHost.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "df28c31d9bef0543d9e5dae064aa2d2ee3fb6a0cba42e898cc834e5e94a4f7d3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AppSquircleModifiers.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "ecfff801d77cd3cbdfab01a3516513823d856ef9b8a5bfd0f9f071415b15e343"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppMotionTokens.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "4152991b8bc04ca3e08faa4ede87a664143694edc6581f5e83924db3db64c1b4"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "b5d249b50434e18986dd93cf049513499b07d12efa3563786120b8703ac29eb7"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppListItem.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "d45c6533bc44bde6b477f48944864cc67d49f37ba65d917e3635e1f785f96a5a"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSingleChoiceRow.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "ad7edc46a57b498e715c104ce2f1e1d758c9a3d1c3f737fd8ed29e39e09b3a53"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppWindowActionMenu.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "9cae0b83f6bd28cbb0db7c708e18cdbfbc447533114ae9d451be9516a891ea23"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppNavigationComponents.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "b56abc3373ce305105852842239c642d55e64d471389fbce9ace4d9a129676da"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSplitLayout.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "2e117b80331ab223e9fe3947f855b09a5d30d80a188ca0c2448226c30b9bd6e5"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppBackToTopButton.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "4200556dafc1307b67897de2e19c5d34e71e0a8b8cff1e00694067b884431b6f"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppContentStateComponents.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "0ef22ee0d8aaae98348fbd234983d7f40095981bea2ec5c57baf69f66e2e9a15"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptiveListItemPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "c098c41a7bbdac2cda1d22f4dca1da5f24dbf720b742a9f69a07a94cc38e76df"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/LongPressActionModifier.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "e179ef56950b8e81b55720dbd4edb71720ab09d311ed41b0c31863a6f5f8615e"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3ListItem.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "79a505170cd76addcdc92a64a9fd3387f6e72f11d08a1f03d100b1291c99c652"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/renderer/miuix/AppMiuixListItem.kt",
+      "mode": "direct",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "c6359f5262ce52540b5af1e57546e2cd7f8365bd00ecd4e3fbee8184e292fc86"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "f4a1fbaf5d25526754512a5d4e416521b442de4d8a408362a1fe71ef920b814c"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSelectionPreferenceComponents.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "1c5ba9272e0b40f35454f26304140c05c5e6d7a5735f3d2e0562179daa352f54"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptiveContentCardComponents.kt",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "4099b280109d4725a71a1ae59c6bec7916050bffa6b580e05a1294db88986d75"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveChrome.kt",
+      "mode": "policy-extract",
+      "features": [
+        "preference-parity"
+      ],
+      "sha256": "0f74b73b447149b3ad44011ad55ba0bf3ac6338b08392ba7f858459e132f1ecb"
     }
   ],
   "featureCoverage": {

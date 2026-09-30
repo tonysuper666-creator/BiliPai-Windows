@@ -5,6 +5,7 @@ import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemePrefs
 import com.bilipai.desktop.appearance.DesktopStrings
 import com.bilipai.desktop.appearance.LocalDesktopStrings
+import com.bilipai.desktop.appearance.WindowsTextClipboard
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -208,6 +209,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var cards by remember { mutableStateOf(emptyList<VideoCard>()) }
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    val clipboardFailure by WindowsTextClipboard.lastFailure.collectAsState()
     var loginDialog by remember { mutableStateOf(false) }
     var playerSettings by remember { mutableStateOf(false) }
     var backupSettings by remember { mutableStateOf(false) }
@@ -618,10 +620,14 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         Button(onClick = ::submitSearch, modifier = Modifier.height(52.dp)) { Text("搜索") }
                     }
                     }
-                    (error ?: playing.error)?.let { text ->
+                    (error ?: playing.error ?: clipboardFailure?.let { when (strings.languageTag) {
+                        "en" -> "Could not write to the clipboard. Please try again."
+                        "zh-TW" -> "無法寫入系統剪貼簿，請稍後重試"
+                        else -> it
+                    } })?.let { text ->
                         Surface(color = scheme.errorContainer, shape = RoundedCornerShape(14.dp)) {
                             Row(Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
-                                Text(text, Modifier.weight(1f)); TextButton(onClick = { error = null; playback.dismissError() }) { Text("收起") }
+                                Text(text, Modifier.weight(1f)); TextButton(onClick = { error = null; playback.dismissError(); WindowsTextClipboard.clearFailure() }) { Text("收起") }
                             }
                         }
                     }

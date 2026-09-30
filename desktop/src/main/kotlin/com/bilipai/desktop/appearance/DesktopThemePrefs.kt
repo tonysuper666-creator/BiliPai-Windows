@@ -4,6 +4,10 @@ import com.android.purebilibili.core.store.ThemeModeRoleOverrides
 import com.android.purebilibili.core.store.ThemeRoleOverrides
 import com.android.purebilibili.core.store.parseThemeSelectionString
 import com.android.purebilibili.core.theme.*
+import com.android.purebilibili.core.ui.AppIconStyle
+import com.android.purebilibili.core.ui.AppListItemStyle
+import com.android.purebilibili.core.ui.resolveAppIconStylePreference
+import com.android.purebilibili.core.ui.resolveAppListItemStylePreference
 import com.android.purebilibili.feature.settings.*
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.materialkolor.PaletteStyle
@@ -31,6 +35,12 @@ data class DesktopThemeSettings(
     val appFontWeightPreset: AppFontWeightPreset = AppFontWeightPreset.FOLLOW_THEME,
     val appUiScalePreset: AppUiScalePreset = AppUiScalePreset.STANDARD,
     val appDpiOverridePercent: Int = 0,
+    val appIconStyle: AppIconStyle = AppIconStyle.AUTO,
+    val appListItemStyle: AppListItemStyle = AppListItemStyle.AUTO,
+    val hapticFeedbackEnabled: Boolean = true,
+    val globalTextTapCopyEnabled: Boolean = false,
+    val uiEntranceAnimationEnabled: Boolean = true,
+    val runtimeVisualGuardEnabled: Boolean = true,
 )
 
 class DesktopThemePrefs(
@@ -90,6 +100,12 @@ class DesktopThemePrefs(
     suspend fun setFontWeight(preset: AppFontWeightPreset) = save("app_font_weight", JsonPrimitive(preset.value))
     suspend fun setUiScale(preset: AppUiScalePreset) = save("app_ui_scale_preset", JsonPrimitive(preset.value))
     suspend fun setDpiOverride(percent: Int) = save("app_dpi_override_percent", JsonPrimitive(if (percent == 0) 0 else percent.coerceIn(90, 115)))
+    suspend fun setIconStyle(style: AppIconStyle) = save("app_icon_style", JsonPrimitive(style.name))
+    suspend fun setListItemStyle(style: AppListItemStyle) = save("app_list_item_style", JsonPrimitive(style.name))
+    suspend fun setHapticFeedback(value: Boolean) = save("haptic_feedback_enabled", JsonPrimitive(value))
+    suspend fun setGlobalTextTapCopy(value: Boolean) = save("global_text_tap_copy_enabled", JsonPrimitive(value))
+    suspend fun setUiEntranceAnimation(value: Boolean) = save("ui_entrance_animation_enabled", JsonPrimitive(value))
+    suspend fun setRuntimeVisualGuard(value: Boolean) = save("runtime_visual_guard_enabled", JsonPrimitive(value))
     suspend fun setRoleOverrides(overrides: ThemeRoleOverrides) = save(buildMap {
         put("theme_role_overrides_enabled", JsonPrimitive(overrides.enabled))
         val defaults = ThemeRoleOverrides()
@@ -136,6 +152,12 @@ internal fun decodeDesktopThemeSettings(
         appFontWeightPreset = AppFontWeightPreset.fromValue(values.int("app_font_weight") ?: AppFontWeightPreset.FOLLOW_THEME.value),
         appUiScalePreset = AppUiScalePreset.fromValue(values.int("app_ui_scale_preset") ?: AppUiScalePreset.STANDARD.value),
         appDpiOverridePercent = if (dpi == 0) 0 else dpi.coerceIn(90, 115),
+        appIconStyle = resolveAppIconStylePreference(values.string("app_icon_style")),
+        appListItemStyle = resolveAppListItemStylePreference(values.string("app_list_item_style")),
+        hapticFeedbackEnabled = values.boolean("haptic_feedback_enabled") ?: true,
+        globalTextTapCopyEnabled = values.boolean("global_text_tap_copy_enabled") ?: false,
+        uiEntranceAnimationEnabled = values.boolean("ui_entrance_animation_enabled") ?: true,
+        runtimeVisualGuardEnabled = values.boolean("runtime_visual_guard_enabled") ?: true,
     )
 }
 private fun JsonObject.int(key: String) = (get(key) as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull

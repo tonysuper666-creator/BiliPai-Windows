@@ -2,6 +2,7 @@ package com.bilipai.desktop.appearance
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -9,18 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.ThemeRoleOverrides
 import com.android.purebilibili.core.theme.*
-import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixCircularProgressIndicator
-import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixText
+import com.android.purebilibili.core.ui.AppThemeConfig
+import com.android.purebilibili.core.ui.ProvideAppThemeConfig
+import com.android.purebilibili.core.ui.LocalAppIconStyle
+import com.android.purebilibili.core.ui.LocalAppListItemStyle
+import com.android.purebilibili.core.ui.components.AppButton
+import com.android.purebilibili.core.ui.components.AppCard
+import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
+import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.feature.settings.resolveThemePreferenceState
-import top.yukonga.miuix.kmp.basic.Card as MiuixCard
-import top.yukonga.miuix.kmp.basic.Button as MiuixButton
 import top.yukonga.miuix.kmp.theme.Colors
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import top.yukonga.miuix.kmp.theme.ThemeController
@@ -86,6 +89,8 @@ fun DesktopAppearanceTheme(
     }
     CompositionLocalProvider(
         LocalAppUiStyle provides settings.uiStyle,
+        LocalAppIconStyle provides settings.appIconStyle,
+        LocalAppListItemStyle provides settings.appListItemStyle,
         LocalDynamicColorActive provides false,
         LocalBaseThemeRoleOverrides provides palette.baseRoles,
         LocalCornerRadiusScale provides resolveCornerRadiusScale(settings.uiStyle),
@@ -95,36 +100,40 @@ fun DesktopAppearanceTheme(
     ) {
         MiuixTheme(controller = controller, textStyles = textStyles) {
             MaterialTheme(colorScheme = palette.material, typography = typography,
-                shapes = resolveMaterialShapes(settings.uiStyle), motionScheme = resolveMaterialMotionScheme(settings.uiStyle), content = content)
+                shapes = resolveMaterialShapes(settings.uiStyle), motionScheme = resolveMaterialMotionScheme(settings.uiStyle)) {
+                ProvideAppThemeConfig(buildDesktopAppThemeConfig(settings), content)
+            }
         }
     }
 }
 
-/** Thin Windows public boundary; the Miuix text/progress renderers are exact upstream files. */
+internal fun buildDesktopAppThemeConfig(settings: DesktopThemeSettings) = AppThemeConfig(
+    hapticFeedbackEnabled = settings.hapticFeedbackEnabled,
+    globalTextTapCopyEnabled = settings.globalTextTapCopyEnabled,
+    uiEntranceAnimationEnabled = settings.uiEntranceAnimationEnabled,
+    runtimeVisualGuardEnabled = settings.runtimeVisualGuardEnabled,
+)
+
+/** Thin Windows public boundary; selection and rendering use the original App* components. */
 @Composable
 fun DesktopAppearanceText(text: String, modifier: Modifier = Modifier, color: Color = Color.Unspecified,
     style: TextStyle = MaterialTheme.typography.bodyLarge, maxLines: Int = Int.MAX_VALUE) {
-    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) AppMiuixText(
-        text, modifier, color, null, TextUnit.Unspecified, null, null, null, TextUnit.Unspecified,
-        null, null, TextUnit.Unspecified, TextOverflow.Clip, true, maxLines, 1, null, style,
-    ) else androidx.compose.material3.Text(text, modifier, color = color, style = style, maxLines = maxLines)
+    AppText(text, modifier, color = color, style = style, maxLines = maxLines)
 }
 
 @Composable
 fun DesktopAppearanceCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
-    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) MiuixCard(modifier = modifier, content = content)
-    else androidx.compose.material3.Card(modifier = modifier, content = content)
+    AppCard(modifier = modifier, content = content)
 }
 
 @Composable
 fun DesktopAppearanceButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true) {
-    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) MiuixButton(onClick = onClick, modifier = modifier, enabled = enabled, minHeight = 48.dp) {
+    AppButton(onClick = onClick, modifier = modifier.heightIn(min = 48.dp), enabled = enabled) {
         DesktopAppearanceText(text)
-    } else androidx.compose.material3.Button(onClick, modifier = modifier, enabled = enabled) { DesktopAppearanceText(text) }
+    }
 }
 
 @Composable
 fun DesktopAppearanceProgress(modifier: Modifier = Modifier, strokeWidth: Dp = 4.dp) {
-    if (LocalAppUiStyle.current == AppUiStyle.MIUIX) AppMiuixCircularProgressIndicator(modifier, Color.Unspecified, strokeWidth, Color.Unspecified)
-    else androidx.compose.material3.CircularProgressIndicator(modifier = modifier, strokeWidth = strokeWidth)
+    AppCircularProgressIndicator(modifier = modifier, strokeWidth = strokeWidth)
 }
