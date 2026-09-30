@@ -1,0 +1,48 @@
+{
+  "auditedCommittedWindowsSource": "e78961e",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "scope": "The same 35 weighted functional groups as the baseline; only the appearance and Cast isolated-to-product credits are reassessed here. Historical baseline descriptions retain their original snapshot date.",
+  "changes": [
+    {
+      "group": "appearance",
+      "weight": 5,
+      "previousMainCredit": 1,
+      "currentMainCredit": 3,
+      "previousIsolatedReadyCredit": 3,
+      "currentIsolatedReadyCredit": 1,
+      "remainingCredit": 1,
+      "basis": "The product now consumes the original theme, typography, density and strings, original App* graph, four public control facades, actual generic appearance selectors and persisted icon/list/copy host preferences. Actual product compile, raster pointer/keyboard/drag and observed provider propagation passed.",
+      "remaining": "Full Shell widget/text migration, native popup/dialog and packaged language restart acceptance, complete navigation/accessibility, wallpaper/platform visual effects.",
+      "evidence": ["desktop/verification/source9-appearance-integration.json", "desktop/verification/source9-components-integration.json"]
+    },
+    {
+      "group": "cast",
+      "weight": 3,
+      "previousMainCredit": 1.5,
+      "currentMainCredit": 2,
+      "previousIsolatedReadyCredit": 0.5,
+      "currentIsolatedReadyCredit": 0,
+      "remainingCredit": 1,
+      "basis": "Original and explicit stream headers, opaque relay registrations and shared receiver/preparation lifecycle are integrated. Real HTTP fixtures passed; the new packaged EXE executed both controller source-ownership checks and all six native HTTP-header stages.",
+      "remaining": "Physical receiving devices, full account/window lifecycle, protocol compatibility and supported media variants; offline-file casting remains absent.",
+      "evidence": ["desktop/verification/source9-remote-cast-integration.json", "desktop/verification/source9-native-package.json"]
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 87.75,
+    "isolatedReadyPoints": 1,
+    "unfinishedOrUnverifiedPoints": 49.25,
+    "weightedReviewedProgressPercent": 63.6,
+    "presentation": "约65%，人工粗估；保留此前55–70%的评估带。这不是精确验收百分比或统计置信区间。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "uncreditedPreparedWork": ["Three Space slices", "Story and Topic", "Native music details", "Advanced playback preferences", "FSR native integration"],
+  "nativeIntermittency": "The first Source9 overlay run captured a black surface; the fresh run passed unchanged pixel thresholds after adding diagnostics. The cause remains unexplained and no fix is claimed."
+}
