@@ -37,6 +37,8 @@ import com.android.purebilibili.feature.video.player.*
 import com.android.purebilibili.feature.list.HistoryNavigationKind
 import com.android.purebilibili.feature.list.resolveHistoryNavigationKind
 import com.android.purebilibili.feature.list.resolveHistoryResumePositionMs
+import com.android.purebilibili.feature.audio.player.MusicPlaybackSource
+import com.android.purebilibili.feature.space.SpaceWatchProgress
 import com.android.purebilibili.feature.bangumi.policy.parseCourseNavigation
 import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
 import com.android.purebilibili.core.plugin.skin.UiSkinSurface
@@ -79,7 +81,7 @@ private enum class DesktopSection(val label: String, val symbol: String) {
     FOLLOWINGS("我的关注", "♧"), LIKED("赞过的视频", "♥"), LISTEN("听视频", "♫"), DOWNLOADS("下载与离线", "↓"), MESSAGES("消息", "✉"),
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
     ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
-    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐")
+    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐"), MUSIC("音乐详情", "♫")
 }
 
 private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = when (this) {
@@ -114,6 +116,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val scope = rememberCoroutineScope()
     val social = remember(repository) { DesktopSocialRepository(repository) }
     val community = remember(repository) { DesktopCommunityRepository(repository) }
+    val space = remember(repository) { DesktopSpaceRepository(repository) }
+    val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
     val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
     val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
@@ -219,6 +223,9 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var dlnaDialog by remember { mutableStateOf(false) }
     var googleCastDialog by remember { mutableStateOf(false) }
     var userId by remember { mutableLongStateOf(0) }
+    var dynamicId by remember { mutableStateOf<String?>(null) }
+    var musicSource by remember(sessionEpoch) { mutableStateOf<MusicPlaybackSource?>(null) }
+    var musicReturnSection by remember { mutableStateOf(DesktopSection.LISTEN) }
     var articleId by remember { mutableLongStateOf(0) }
     var roomId by remember { mutableLongStateOf(0) }
     var seasonId by remember { mutableLongStateOf(0) }
@@ -285,6 +292,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (activatingUpdate) return
         playback.checkpoint()
         showVideo = false; section = target; page = 1; error = null
+        if (target == DesktopSection.DYNAMIC) dynamicId = null
         if (target == DesktopSection.HISTORY) cards = library.history()
         if (target == DesktopSection.FAVORITES) cards = library.favorites()
     }
@@ -300,6 +308,13 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         showVideo = true; mediaActive = false; playback.openQueue(videos, index)
     }
     fun openUser(id: Long) { userId = id; navigate(DesktopSection.USER) }
+    fun openDynamic(id: String) { navigate(DesktopSection.DYNAMIC); dynamicId = id }
+    fun openMusic(sid: Long) {
+        if (activatingUpdate || sid <= 0) return
+        musicReturnSection = section
+        musicSource = MusicPlaybackSource.AudioSong(sid)
+        navigate(DesktopSection.MUSIC)
+    }
     fun openArticle(id: Long) { articleId = id; navigate(DesktopSection.ARTICLE) }
     fun openNotes(info: VideoDetails) { noteVideo = info; navigate(DesktopSection.NOTES) }
     fun openJsPlugin(id: String) { jsPluginId = id; navigate(DesktopSection.JS_CONTENT) }
@@ -587,7 +602,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     Text("BiliPai", Modifier.padding(12.dp), style = MaterialTheme.typography.headlineSmall, color = scheme.primary, fontWeight = FontWeight.Bold)
                     Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
-                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE) }.forEach { item ->
+                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE, DesktopSection.MUSIC) }.forEach { item ->
                             Surface(Modifier.fillMaxWidth().height(48.dp).clickable { navigate(item) }, shape = RoundedCornerShape(24.dp),
                                 color = if (section == item && !showVideo) scheme.primaryContainer else Color.Transparent) {
                                 Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -740,7 +755,28 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku, retainedMedia)
                             section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
                                 else Text(playerError ?: "音频播放器未能初始化")
-                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
+                            section == DesktopSection.MUSIC -> {
+                                val source = musicSource
+                                if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,
+                                    { navigate(musicReturnSection) }, ::openUser, ::openVideo)
+                                else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
+                            }
+                            section == DesktopSection.USER -> {
+                                val history = library.history().filter { it.authorMid == userId }
+                                val progress = history.associate { card -> card.bvid to SpaceWatchProgress(card.bvid, card.preferredCid, card.title,
+                                    card.progressSeconds ?: 0, card.duration, card.viewedAt) }
+                                DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,
+                                    ::openVideo, ::openUser, ::openArticle, ::openDynamic, ::openLive, ::openBangumi, ::openMusic,
+                                    { showSeason(it, course = true) }, ::openResource, ::openCollection,
+                                    onPlaylist = { playlist -> desktopSpacePlaybackQueue(playlist, userId, history)?.let { (rows, index) -> openQueue(rows, rows[index]) } },
+                                    onLogin = { loginDialog = true }, onExternalUrl = { raw ->
+                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+                                            runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                                        }
+                                    }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
+                                    locateBvid = playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid)
+                            }
+                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
                                 CommunityContentScreen(when(section) {
                                     DesktopSection.DYNAMIC -> CommunitySection.DYNAMIC
                                     DesktopSection.SEARCH -> CommunitySection.SEARCH
@@ -749,7 +785,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     DesktopSection.ARTICLE -> CommunitySection.ARTICLE
                                     else -> CommunitySection.NOTES
                                 }, repository, social, community, submitted, userId, articleId, noteVideo,
-                                    ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime)
+                                    ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime,
+                                    initialDynamicId = dynamicId.takeIf { section == DesktopSection.DYNAMIC })
                             else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                     Text(section.localizedLabel(strings), Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)

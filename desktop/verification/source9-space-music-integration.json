@@ -1,0 +1,288 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "91d20c366ec105d428e52c04a67007d33bb2877f",
+  "developmentIntegration": true,
+  "deployedDesktopVersion": "0.2.406.5",
+  "sourceAudit": "desktop/verification/source9-space-music-source-audit.json",
+  "sourceCounts": {
+    "kotlin": 381,
+    "resources": 15,
+    "apiDeclarationsVerbatim": 303,
+    "responseFiles": 45
+  },
+  "space": {
+    "frozenSlices": 3,
+    "backendAndBrowseJUnit": 50,
+    "host": "DesktopCompleteSpaceScreen",
+    "behavior": [
+      "Original aggregate header/home preview ordering and limits, plus real pinned/notice reads",
+      "Server main/secondary tab titles and first-load defaults; refresh preserves user selection",
+      "Original signed VIDEO/CHARGING_VIDEO, category/search/four sorts/grid/list/guarded locate pagination",
+      "Real collection/series IDs; preserve server IDs until a successful collections response",
+      "Created/subscribed favorites, raw favorite_season routes, article/opus navigation",
+      "Original charge privilege ranks, guard podium and pagination",
+      "Public UP coins/liked/audio/followed bangumi/courses use original requests and pagination",
+      "Local account history provides exact CID/progress; original queue order/start index reaches Root",
+      "Blacklist status 128 uses authorized act=6 instead of ordinary follow act=1"
+    ],
+    "remaining": [
+      "Native fans page",
+      "Native signature editing, follow groups/special follow/full menus",
+      "Dynamic search and complete refresh/scroll/header/original visual orchestration",
+      "Account/service/window acceptance"
+    ]
+  },
+  "music": {
+    "originalStateSource": "feature/audio/viewmodel/MusicViewModel.kt::MusicUiState",
+    "bodySha256LfWithoutTrailingWhitespace": "80dc0220a1a08a94ea3b7e6b251a5db9fb756742a51f99ecb02b1dd21b4edea7",
+    "originalAudioApi": true,
+    "sidDetailsRoutedFromSpace": true,
+    "retainedSession": true,
+    "reentryPreservesOwnedSongPosition": true,
+    "videoAudioAdapterExactCid": true,
+    "videoNativeMusicRootEntryExposed": false,
+    "actualOfflineCases": 18,
+    "physicalAudioOutputTestedForAU": false,
+    "realAccountTested": false,
+    "platformBoundary": "Original MusicUiState/identity/API/lyrics with Windows retained ListenAudioSession and actual sourceVersion; not an Android ViewModel instance",
+    "remaining": [
+      "Video NativeMusic Root entry",
+      "Complete original detail/immersive visual surface",
+      "Real AU service/codec/native output/window acceptance"
+    ]
+  },
+  "verification": {
+    "productCompilePassed": true,
+    "focusedJUnit": {
+      "tests": 66,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suiteNames": [
+      "com.bilipai.desktop.audio.DesktopNativeMusicIntegrationTest",
+      "com.bilipai.desktop.audio.DesktopNativeMusicRouteTest",
+      "com.bilipai.desktop.data.DesktopSocialRepositoryTest",
+      "com.bilipai.desktop.data.DesktopSpaceContributionsTest",
+      "com.bilipai.desktop.data.DesktopSpaceOverviewTest",
+      "com.bilipai.desktop.data.DesktopSpaceRelationActionTest",
+      "com.bilipai.desktop.data.DesktopSpaceRepositoryTest",
+      "com.bilipai.desktop.ui.DesktopCompleteSpaceTest",
+      "com.bilipai.desktop.ui.DesktopCompleteSpaceUiTest",
+      "com.bilipai.desktop.ui.DesktopSpaceBrowseTest",
+      "com.bilipai.desktop.ui.DesktopSpaceContributionBrowseTest",
+      "com.bilipai.desktop.ui.DesktopSpaceVideoBrowserTest"
+    ],
+    "pythonExtractionTests": {
+      "tests": 2,
+      "passed": 2
+    },
+    "composePointer": {
+      "surface": "ImageComposeScene",
+      "combinations": 8,
+      "themes": [
+        "MATERIAL3",
+        "MIUIX"
+      ],
+      "modes": [
+        "LIGHT",
+        "DARK"
+      ],
+      "widths": [
+        640,
+        960
+      ],
+      "actualSongSid": 501,
+      "relatedVideoAid": 997,
+      "nativeWindowTested": false,
+      "httpRequestsIssued": false,
+      "images": [
+        {
+          "path": "desktop/build/reports/space-parity-integration/material3-dark-640.png",
+          "sha256": "8afb143545b9b6ad7bd04e61033cb8e8799320d03d6e9913f338313a8733824c"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/material3-dark-960.png",
+          "sha256": "78c820130d9b2706cc7a81a43a73b4cd888cb208ffea0b5d522de4684789b4b2"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/material3-light-640.png",
+          "sha256": "56ed9b927d9c1a961add38424809add54b9b8b979c188faa45bc05b4e2faad82"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/material3-light-960.png",
+          "sha256": "bf1c46f2b620a3b55a4c001e42b6108c55161659b0ff0f837333ace4c33ecb9a"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/miuix-dark-640.png",
+          "sha256": "4b34f49547648f280e8fc82b8979f265fe8c557ef157e7989b2be8cbd3a6c990"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/miuix-dark-960.png",
+          "sha256": "29419a6cee58c569ee0429b9187a61f415f86ef5476b979af1f1a626b979deda"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/miuix-light-640.png",
+          "sha256": "cb48cd52b66649dad9dcca7ac5a23a700e3ea6a3c9e7bbff8f7df632167f7821"
+        },
+        {
+          "path": "desktop/build/reports/space-parity-integration/miuix-light-960.png",
+          "sha256": "e782b1cda8d17c115f87cc0341548e93a40a864f912e3690a5b309cd370266ad"
+        }
+      ]
+    },
+    "firstHostRegression": "A focused test found aggregate SERIES IDs were removed before collections loaded; the host now preserves them until a successful collection response. All focused tests passed afterward."
+  },
+  "inputs": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "rawSha256": "64e2b079718bddf90a64142c153da3f0adb6c88a98b57172e7f6ce7d7596edde"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "rawSha256": "b025c3035240d87532f11fe70d0091ecb02f706f54b7e2fcbafae373b8336290"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "rawSha256": "0e29b2f3838aea8e65bcfba4dc4558dc0253acbcbe71cad9a1abcf4df5062607"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "rawSha256": "d31909db8dd5bde47c9401e27bba256ea8ead7579a2c49aeced77df37dcd5ab4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "rawSha256": "4950b9fa13382a3f8768abaa41df6a43228b6d782216d443f384324738bcd7a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "rawSha256": "c751de1c67809fc7ab4511de4b82239ce73be2e61705dd7de82d1dfe1be16d56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
+      "rawSha256": "87ac89bbc23bf82c8d472ce7aa5568c0d046053ca527fc5ca42755768f7d73b3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-audio.py",
+      "rawSha256": "168375cadb076abf9dabd8d49a10131c82556732b5276fe4de68cb72bbbb9d91"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "rawSha256": "a55fbf6b8337aa39e3084ae88b5f7f959c72018c0a5855e1dfa8fffbfe96bb0a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicDetail.kt",
+      "rawSha256": "d666b7813552b29362631688fa47d5d2beee9dfdeedd5763e044eed93b2cc4e9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceContributionsRepository.kt",
+      "rawSha256": "e4557a9949c0bcb612c0e00213d8a2f1d11c464127b1cffb4567cfaccb69e9a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceOverview.kt",
+      "rawSha256": "e14bbfa5e795e10686009bbfaa14a1c71695e375109251fe412cada4bdee0cd7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceRepository.kt",
+      "rawSha256": "91a2ae2db377a20d1d1fc7865db4368922c68560bb3be2776630b97922e1c840"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "rawSha256": "937679beaebb6bfb0f17042e168ca16c3badb048c05e1ebc139b4d951edc3653"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNativeMusicDetailScreen.kt",
+      "rawSha256": "d173d829ad96e0768e10b5e86ffb725ca404b33069db1657913d4a1a860b4656"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceContributionScreens.kt",
+      "rawSha256": "5b18572293fd1c8c22ba1aba20fc28ad201a2347d8b524eeb50311a8a04250f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "rawSha256": "e4ea71b8d97eb9a855051adde64fa749e9f0759ea92c167b2a276c3c02679241"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpacePlaybackBridge.kt",
+      "rawSha256": "219e599be0f6d3233cfc4c75ef9dc99fccfa01114343df3b25f0d5c3308dde92"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "rawSha256": "dde626b06368de1689aadb4ed72043ba3bebf69612793cc4c24ef5cbe3c17a71"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceVideoBrowser.kt",
+      "rawSha256": "eb9d92a4db4ae8efaf35ec495a7fe4a4842da0be5a728ee29fa20571e8b7bc8e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicIntegrationTest.kt",
+      "rawSha256": "da8a6cb3414aa5a9a4096ffeceecdd188765f103c2d60878d1ba978ec8096745"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicRouteTest.kt",
+      "rawSha256": "07bbaa6061619a2e12c69a889122b3519474d6eb7474a13700b192df1a47e170"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceContributionsTest.kt",
+      "rawSha256": "42b44b2948d12fc25ac6b83416ed7b18f188d5fb25ccdcc3b73775b28dbaf9f1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceOverviewTest.kt",
+      "rawSha256": "2075b08fec3c3734dbe34979a0b4b2d02e84a228d657f9b32ff659b10556f26b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceRelationActionTest.kt",
+      "rawSha256": "1aa1763e75f46a35f3fed73d08112fabc04e1d7a3a94f3ff8c24146a98f7a32c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceRepositoryTest.kt",
+      "rawSha256": "1cb1c898899422631db2b09b1561a2e802ddf690abcfc9487d3c071c273ee166"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceTest.kt",
+      "rawSha256": "7b48634bb1a5cb9812d0baaeb09e02cf46d7de7f6843ec4839c41ba58464c917"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceUiTest.kt",
+      "rawSha256": "fd84eea08c413b2f557549cc8f71a8c5923d3b073d761a8ee50da812055f7b97"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceBrowseTest.kt",
+      "rawSha256": "daf56aa6fdca024980694ccd40c3df8387c844b290b88001ef17eb29e943a757"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceContributionBrowseTest.kt",
+      "rawSha256": "341e57b62b1732f0d573cd12f9c5b729193653a8b57df9ce672fb02adffe582b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceVideoBrowserTest.kt",
+      "rawSha256": "d2122b686d24adb7efdf42471ec04a074b6cfa57d5b26250c484d05b40a1dc3b"
+    },
+    {
+      "path": "desktop/tools/extract-space-contributions.py",
+      "rawSha256": "6c9cbf1c962dcde902b86dfe7441de79a8ad75f20d88fe8cf8e9c1a9d706545d"
+    },
+    {
+      "path": "desktop/tools/extract-space-overview.py",
+      "rawSha256": "a17641bd785b665eeeb1f43cdf95d4de51696a840d8e19f7a06ac7e9e0d4ca43"
+    },
+    {
+      "path": "desktop/tools/extract-space-platform.py",
+      "rawSha256": "16af650a2360d00887b2c14008ee5d519d173bb9d2a0c9d793c75620f90c2fef"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_audio.py",
+      "rawSha256": "53a2653e0f7c0eb9d9c4080c640e739ba4ef5e397ffe69b45486db6ceeb39385"
+    },
+    {
+      "path": "desktop/verification/source9-space-music-source-audit.json",
+      "rawSha256": "fc2d99ac91a380a32101c56f95765f52ba8e785548e79b4c26c9ebea5dd80449"
+    }
+  ],
+  "fullFunctionalParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newPackageBuilt": false,
+  "desktopDeployed": false,
+  "priorNativeIntermittency": "Source9 first overlay run had an unexplained black surface; these offline checks do not resolve it."
+}

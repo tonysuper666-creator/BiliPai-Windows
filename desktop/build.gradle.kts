@@ -282,6 +282,42 @@ val extractUpstreamPreferences by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/preferences"))
 }
 
+val extractUpstreamSpace by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--policy-only",
+        "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath)
+    inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "space" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/space"))
+}
+
+val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-contributions.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/space-contributions").get().asFile.absolutePath)
+    inputs.files("tools/extract-space-contributions.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "space-contributions" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/space-contributions"))
+}
+
+val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-space-overview.py",
+        "--repo", repositoryRoot.absolutePath, "--policy-only",
+        "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
+    inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
+}
+
 val verifyAppearanceDependencies by tasks.registering {
     inputs.file("third-party/miuix5157/dependency-pins.json")
     inputs.dir("src/main/resources/licenses/appearance")
@@ -372,6 +408,9 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/js"))
     kotlin.srcDir(jsWorkerGenerated)
     kotlin.srcDir(generatedAppearance)
+    kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/components"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
 }
@@ -379,6 +418,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanm
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

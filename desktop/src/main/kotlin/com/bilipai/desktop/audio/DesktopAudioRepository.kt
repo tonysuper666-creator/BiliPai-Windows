@@ -17,6 +17,8 @@ import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -37,7 +39,7 @@ import java.io.IOException
 import java.nio.file.Path
 import java.util.concurrent.TimeUnit
 
-internal data class PreparedListenAudio(val item: PlaylistItem, val source: PlaybackSource, val aid: Long = 0, val songLyrics: String? = null)
+internal data class PreparedListenAudio(val item: PlaylistItem, val source: PlaybackSource, val aid: Long = 0, val songLyrics: String? = null, val songInfo: SongInfoData? = null)
 
 /** Only transport and native stream adaptation live here; library pagination and lyrics remain upstream source. */
 internal class DesktopAudioRepository(val repository: DesktopRepository, private val community: DesktopCommunityRepository) : ListenPlaybackDataSource {
@@ -81,26 +83,39 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
     }
 
     override suspend fun prepare(item: PlaylistItem): PreparedListenAudio = withContext(Dispatchers.IO) {
+        val epoch = repository.sessionEpoch
+        suspend fun ensureAccount() {
+            currentCoroutineContext().ensureActive()
+            check(repository.sessionEpoch == epoch) { "账号已切换，请重新加载音频。" }
+        }
         val sid = Regex("(?i)^au([1-9][0-9]*)$").matchEntire(item.bvid)?.groupValues?.get(1)?.toLongOrNull()
         if (sid != null) {
             repository.ensureSession()
+            ensureAccount()
             val infoReply = audioApi.getSongInfo(sid)
+            ensureAccount()
             songCode(infoReply.code, infoReply.msg)
             val info = infoReply.data ?: throw IOException("音频信息为空。")
             val streamReply = audioApi.getSongStream(sid)
+            ensureAccount()
             songCode(streamReply.code, streamReply.msg)
             val address = streamReply.data?.cdns.orEmpty().firstOrNull { it.toHttpUrlOrNullAudio() != null }
                 ?: throw IOException("没有可播放的音频地址。")
             val songLyrics = try { audioApi.getSongLyric(sid).takeIf { it.code == 0 }?.data }
                 catch (failure: Exception) { if (failure is CancellationException) throw failure; null }
+            ensureAccount()
             val cookies = repository.httpClient.cookieJar.loadForRequest(requireNotNull(address.toHttpUrlOrNullAudio()))
                 .joinToString("; ") { "${it.name}=${it.value}" }
             val actual = item.copy(title = info.title.ifBlank { item.bvid }, cover = info.cover, owner = info.author.ifBlank { info.uname }, duration = info.duration.toLong())
-            PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title), songLyrics = songLyrics)
+            ensureAccount()
+            PreparedListenAudio(actual, PlaybackSource(address, cookieHeader = cookies, title = actual.title),
+                songLyrics = songLyrics, songInfo = info)
         } else {
             val details = repository.videoDetails(item.bvid)
             val part = details.pages.indexOfFirst { it.cid == item.cid }.takeIf { it >= 0 } ?: 0
+            ensureAccount()
             val media = repository.playback(details, part)
+            ensureAccount()
             val page = details.pages.getOrNull(part) ?: throw IOException("视频没有可播放分 P。")
             val actual = item.copy(bvid = details.bvid, cid = page.cid, title = item.title.takeUnless { it.isBlank() || it == item.bvid } ?: details.title,
                 cover = details.cover, owner = details.author, duration = page.duration)

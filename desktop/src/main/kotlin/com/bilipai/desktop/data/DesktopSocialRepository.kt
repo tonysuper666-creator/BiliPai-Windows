@@ -95,6 +95,12 @@ class DesktopSocialRepository(private val repository: DesktopRepository) {
         mutate { csrf -> check(api.modifyRelation(mid, if (follow) 1 else 2, csrf)) }
     }
 
+    suspend fun removeBlacklist(mid: Long) {
+        require(mid > 0)
+        require(repository.requireAccount().mid != mid) { "不能修改自己的关注关系" }
+        mutate { csrf -> check(api.modifyRelation(mid, 6, csrf)) }
+    }
+
     suspend fun commentPage(aid: Long, page: Int = 1, sort: Int = 1): CommentPage = withContext(Dispatchers.IO) {
         require(aid > 0 && page > 0 && sort in 0..2)
         repository.ensureSession()

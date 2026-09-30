@@ -143,7 +143,8 @@
         "feed",
         "login",
         "playback",
-        "search"
+        "search",
+        "space-contributions"
       ],
       "mode": "api-extract"
     },
@@ -3026,6 +3027,163 @@
         "preference-parity"
       ],
       "sha256": "0f74b73b447149b3ad44011ad55ba0bf3ac6338b08392ba7f858459e132f1ecb"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "space"
+      ],
+      "sha256": "da5fc386d02ae1a4b7ecb7832857dc5ebecf16b82fa21511f344ff7c771419cc"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceArticlePresentationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "space"
+      ],
+      "sha256": "ad316ea87890ab5cf40f44c11533085002db0d257a62c113fb626ce5b034b876"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceProfileEnhancementPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space",
+        "space-contributions"
+      ],
+      "sha256": "75e4bf39a45d7cc0596a66ef547c2138bff6e598de6660554602f20737256590"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicNavigationPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space"
+      ],
+      "sha256": "87b1ba33fed13e0284b2af43e3252e9ff08ade19929803618fdbce7b1af09b6b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space"
+      ],
+      "sha256": "54883c176bc76af98289fd1a62e16b6ecf7bf5b19267ae73ecf94ffe83f64776"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space",
+        "space-contributions",
+        "space-overview"
+      ],
+      "sha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space"
+      ],
+      "sha256": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space"
+      ],
+      "sha256": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "mode": "direct",
+      "features": [
+        "space"
+      ],
+      "sha256": "ce1aa9c7f2575c5fe0e0dfeaafab59b61ef5f5f15d11b9eb7269f50b36d99ddf"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliUrlParser.kt",
+      "mode": "platform-rewrite",
+      "features": [
+        "space"
+      ],
+      "sha256": "2745eaab0773f5049f8d9b7f9c997700e8c2f4a8ce779f955d097f80b51b2835"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/UrlDecodeCompat.kt",
+      "mode": "direct",
+      "features": [
+        "space"
+      ],
+      "sha256": "f375442bdfd8dfb25ddd738e4a7079a1e33a0f6a24df4196a0f6b32ac07f324a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space-contributions",
+        "space-overview"
+      ],
+      "sha256": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LikedVideosRepository.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space-contributions"
+      ],
+      "sha256": "4295264225343d4cb82eca9df937c738855dabe48b80d2632106dfb27aa44d2c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space-contributions"
+      ],
+      "sha256": "3b7f9f11283ced21a58739277ec270e086991d630c2af24c3c33d770d87ee4c4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "space-overview"
+      ],
+      "sha256": "a2c297f8da21d8956d4ca23c0671fe727e809a3b9848384ecc5a93fa9a1fc597"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceHeaderPresentationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "space-overview"
+      ],
+      "sha256": "bc138c172c47341e04ec16c073c9ad0b00457923ef32ddd939dee7ade9c648d4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpacePlaybackPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "space-overview"
+      ],
+      "sha256": "c5ff00dfb6891e6b11800d51be191be7e7e9a7baa426103b97495517745c6cda"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceChargeBadgePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "space-overview"
+      ],
+      "sha256": "35f011010c3ae5eac7c10457dc47464eb0d28c38c33876d625d373f3d986c3dc"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt",
+      "sha256": "d9705a700bbe14722b79d9bb484d70da0afb97ae1c9df393e7a271e4a0173d0c",
+      "features": [
+        "listen-video",
+        "native-music"
+      ],
+      "mode": "extracted"
     }
   ],
   "featureCoverage": {
@@ -3050,7 +3208,9 @@
     "system-media-controls": "native-metadata-status-timeline-readback-tested",
     "community": "native-adapter-awaiting-account-validation",
     "full-functional-parity": "not-yet-complete",
-    "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler"
+    "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler",
+    "space": "integrated-original-overview-tabs-contributions-offline-tested-account-acceptance-pending",
+    "native-music": "integrated-au-sid-detail-retained-session-video-root-entry-and-live-acceptance-pending"
   },
   "windowsRevision": 9,
   "hashNormalization": "lf",

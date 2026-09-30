@@ -22,8 +22,9 @@ internal class CommunityNavigation(val onVideo: (VideoCard) -> Unit, val onUser:
 fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, query: String = "", userId: Long = 0, articleId: Long = 0,
     noteVideo: VideoDetails? = null, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onArticle: (Long) -> Unit,
-    onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null) {
-    var dynamicDetail by remember(section, userId, query) { mutableStateOf<String?>(null) }
+    onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null,
+    initialDynamicId: String? = null) {
+    var dynamicDetail by remember(section, userId, query, initialDynamicId) { mutableStateOf(initialDynamicId) }
     val account by repository.account.collectAsState()
     val inherited = LocalDesktopBrowseMemory.current
     val fallback = remember(account?.mid) { DesktopBrowseMemory() }

@@ -34,6 +34,7 @@ internal data class ListenAudioState(
     val secondarySubtitleKey: String? = null,
     val sleepRemainingMs: Long? = null,
     val sleepAfterTrack: Boolean = false,
+    val songInfo: com.android.purebilibili.data.model.response.SongInfoData? = null,
 ) { val current: PlaylistItem? get() = queue.getOrNull(currentIndex) }
 
 /** Retained by the application window, not the browsing screen, so navigation does not end audio or its queue. */
@@ -59,6 +60,10 @@ internal class ListenAudioSession(
     private var lyricsOffsetSavingJob: Job? = null
     private var playGeneration = 0L
     private var ownedSourceVersion: Long? = null
+    /** Actual ownership, including stopped/closed native players, without exposing a source or its credentials. */
+    internal val ownedPlaybackSourceVersion: Long? get() = if (closed) null else ownedSourceVersion?.takeIf {
+        player.currentSourceSnapshot()?.sourceVersion == it
+    }
     private var lyricsGeneration = 0L
     private var sleepDeadlineNanos: Long? = null
     private var resumedPositionSeconds = saved.positionSeconds
@@ -124,15 +129,21 @@ internal class ListenAudioSession(
         playJob?.cancel(); lyricsJob?.cancel(); playGeneration++; lyricsGeneration++
         val generation = playGeneration
         player.stop()
+        val pendingSourceVersion = player.currentSourceVersion
         ownedSourceVersion = null
         musicLyrics = null; subtitleLyrics = null
-        mutableState.update { it.copy(currentIndex = index, loading = true, active = true, error = null, lyrics = null,
+        mutableState.update { it.copy(currentIndex = index, loading = true, active = true, error = null, lyrics = null, songInfo = null,
             lyricsLoading = false, lyricsError = null, candidates = emptyList(), subtitles = emptyList(), primarySubtitleKey = null, secondarySubtitleKey = null) }
         persist()
         playJob = scope.launch {
             try {
                 val prepared = playback.prepare(item)
+                currentCoroutineContext().ensureActive()
                 if (generation != playGeneration || closed) return@launch
+                if (player.currentSourceVersion != pendingSourceVersion || player.currentSourceSnapshot() != null) {
+                    mutableState.update { it.copy(loading = false, active = false, error = "当前播放已切换，请重新加载音频。") }
+                    return@launch
+                }
                 val resolvedIndex = mutableState.value.queue.indexOfFirst { it.bvid == item.bvid }
                 if (resolvedIndex < 0) return@launch
                 preferences = preferences.copy(speed = preferences.preferredSpeed)
@@ -140,7 +151,7 @@ internal class ListenAudioSession(
                 ownedSourceVersion = player.loadVersioned(prepared.source.copy(startPositionSeconds = startPosition))
                 val current = mutableState.value
                 val queue = current.queue.toMutableList().also { it[resolvedIndex] = prepared.item }
-                mutableState.update { it.copy(queue = queue, currentIndex = resolvedIndex, loading = false,
+                mutableState.update { it.copy(queue = queue, currentIndex = resolvedIndex, loading = false, songInfo = prepared.songInfo,
                     recent = (listOf(prepared.item) + it.recent.filter { recent -> recent.bvid != prepared.item.bvid }).take(300)) }
                 persist()
                 loadLyrics(prepared)

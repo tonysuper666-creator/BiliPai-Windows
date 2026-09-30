@@ -297,7 +297,7 @@ private fun ListenTrackRow(item: PlaylistItem, session: ListenAudioSession, sele
 }
 
 @Composable
-private fun ListenTransportPanel(session: ListenAudioSession, preferences: PlayerPreferences,
+internal fun ListenTransportPanel(session: ListenAudioSession, preferences: PlayerPreferences,
     onPreferencesChange: (PlayerPreferences) -> Unit, onVideo: (VideoCard) -> Unit) {
     val state by session.state.collectAsState()
     val native by session.player.state.collectAsState()
@@ -363,7 +363,7 @@ private fun ListenSleepDialog(session: ListenAudioSession, onDismiss: () -> Unit
 }
 
 @Composable
-private fun ListenLyricsPanel(session: ListenAudioSession, modifier: Modifier) {
+internal fun ListenLyricsPanel(session: ListenAudioSession, modifier: Modifier) {
     val state by session.state.collectAsState()
     val native by session.player.state.collectAsState()
     val document = state.lyrics

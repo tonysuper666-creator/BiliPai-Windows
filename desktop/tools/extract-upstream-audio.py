@@ -17,6 +17,7 @@ SOURCES = {
     AUDIO + "lyrics/halcyon/HalcyonLyricTextHelpers.kt": "direct",
     AUDIO + "library/ListenVideoLibraryPolicy.kt": "direct",
     AUDIO + "player/MusicPlaybackContract.kt": "direct",
+    AUDIO + "viewmodel/MusicViewModel.kt": "extracted",
     "app/src/main/java/com/android/purebilibili/feature/video/subtitle/BiliSubtitlePolicy.kt": "direct",
     **{"app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/" + name + ".kt": "direct" for name in (
         "MiniPlayerOverlayLayoutPolicy", "MiniPlayerOverlayChromePolicy", "MiniPlayerOverlayPositionPolicy", "MiniPlayerOverlayPollingPolicy")},
@@ -44,6 +45,22 @@ def write(output: Path, relative: str, source: str, original: str, body: str) ->
 
 def generate(repo: Path, output: Path) -> list[Path]:
     generated = []
+    source = AUDIO + "viewmodel/MusicViewModel.kt"
+    original = read_source(repo, source)
+    music = section(original, "internal data class MusicUiState(", "internal class MusicViewModel : ViewModel() {")
+    imports = "\n".join(
+        line for line in original.splitlines()
+        if line in (
+            "import com.android.purebilibili.data.model.response.SongInfoData",
+            "import com.android.purebilibili.feature.audio.lyrics.LyricDocument",
+            "import com.android.purebilibili.feature.audio.lyrics.LyricCandidate",
+            "import com.android.purebilibili.feature.audio.player.MusicPlaybackSource",
+        )
+    )
+    if len(imports.splitlines()) != 4:
+        raise ValueError("Upstream MusicUiState imports changed")
+    generated.append(write(output, "com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt", source,
+        original, "package com.android.purebilibili.feature.audio.viewmodel\n\n" + imports + "\n\n" + music))
     source = "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"
     original = read_source(repo, source)
     queue = section(original, "/**\n * 播放列表项", "/**\n *  播放列表管理器")
