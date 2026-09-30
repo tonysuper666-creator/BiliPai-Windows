@@ -51,6 +51,8 @@ data class PlaybackSource(
     val videoAlternatives: List<String> = emptyList(),
     val audioAlternatives: List<String> = emptyList(),
     val progressiveSegments: List<com.bilipai.desktop.player.PlaybackSegment> = emptyList(),
+    val videoCodecFamily: String? = null,
+    val cachedDashData: com.android.purebilibili.data.model.response.Dash? = null,
 )
 
 data class PlaybackQuality(val id: Int, val label: String)

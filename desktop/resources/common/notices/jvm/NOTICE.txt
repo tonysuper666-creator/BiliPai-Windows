@@ -1,0 +1,21 @@
+BiliPai Windows — JVM additions in Windows revision 7
+
+org.nanohttpd:nanohttpd:2.3.1
+Project: https://github.com/NanoHttpd/nanohttpd
+License: BSD 3-Clause, declared in the 2.3.1 parent Maven POM.
+Copyright and full redistribution terms: nanohttpd-2.3.1-LICENSE.md.
+The Windows platform binding adapts HTTP HEAD and response framing;
+the original project sources remain unchanged.
+
+org.jetbrains.compose.material:material-icons-extended:1.7.3
+Project: https://github.com/JetBrains/compose-multiplatform
+License: Apache License 2.0, declared in the 1.7.3 Maven POM.
+Full license and upstream copyright appendix:
+compose-multiplatform-1.7.3-LICENSE.txt.
+
+These notices cover the two newly added JVM components. They are not a
+complete third-party inventory for BiliPai Windows. Native libraries and
+FFmpeg have their own provenance and license records.
+
+The original source URLs, byte lengths and SHA-256 values for these
+license records are stored in SOURCES.json.

@@ -33,6 +33,10 @@ internal class CommunityFeedState<T, C> {
     var rows by mutableStateOf(emptyList<T>())
     var next by mutableStateOf<C?>(null)
     var initialized by mutableStateOf(false)
+    var failure by mutableStateOf<Throwable?>(null)
+    var failedCursor by mutableStateOf<C?>(null)
+    var failedReplace by mutableStateOf(false)
+    var statusMessage by mutableStateOf<String?>(null)
     val scroll = LazyListState()
 }
 internal val LocalCommunityFeedMemory = staticCompositionLocalOf<CommunityFeedMemory?> { null }
@@ -40,26 +44,26 @@ internal val LocalCommunityFeedNamespace = staticCompositionLocalOf<Any?> { null
 
 @Composable
 internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> CommunityBatch<T, C>,
-    identity: (T) -> Any, onLogin: () -> Unit, header: @Composable () -> Unit = {},
+    identity: (T) -> Any, onLogin: () -> Unit, header: @Composable () -> Unit = {}, transform: (List<T>) -> List<T> = { it },
     row: @Composable (T) -> Unit) {
     val scope = rememberCoroutineScope()
-    val memory = LocalCommunityFeedMemory.current
+    val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds
     val namespace = LocalCommunityFeedNamespace.current
     val page = remember(memory, namespace, key) { memory?.page<T, C>(Pair(namespace, key)) ?: CommunityFeedState() }
     val scroll = page.scroll
-    var refresh by remember { mutableIntStateOf(0) }
+    var refresh by remember(page) { mutableIntStateOf(0) }
     var rows by page::rows
     var next by page::next
-    var busy by remember { mutableStateOf(false) }
-    var failure by remember { mutableStateOf<Throwable?>(null) }
-    var failedMore by remember { mutableStateOf(false) }
-    val generation = remember(key, refresh) { Any() }
+    var busy by remember(page) { mutableStateOf(false) }
+    var failure by page::failure
+    val generation = remember(page, refresh) { Any() }
     val activeGeneration by rememberUpdatedState(generation)
     val currentLoad by rememberUpdatedState(load)
     val currentIdentity by rememberUpdatedState(identity)
+    val displayed = remember(rows, transform) { transform(rows).distinctBy(identity) }
     suspend fun fetch(cursor: C, replace: Boolean) {
         val request = generation
-        busy = true; failure = null; failedMore = false
+        busy = true; failure = null; page.failedCursor = null
         try {
             val result = currentLoad(cursor)
             if (activeGeneration === request) {
@@ -69,30 +73,30 @@ internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> Comm
             }
         } catch (error: Exception) {
             if (error is CancellationException) throw error
-            if (activeGeneration === request) { failure = error; failedMore = !replace }
+            if (activeGeneration === request) { failure = error; page.failedCursor = cursor; page.failedReplace = replace }
         } finally { if (activeGeneration === request) busy = false }
     }
-    LaunchedEffect(generation) { if (!page.initialized || refresh > 0) { rows = emptyList(); next = null; fetch(first, true) } }
+    LaunchedEffect(generation) { if ((!page.initialized && failure == null) || refresh > 0) fetch(first, true) }
     LazyColumn(state = scroll, modifier = Modifier.fillMaxSize(), contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween) {
-                Text("${rows.size} 项", style = MaterialTheme.typography.labelLarge)
+                Text("${displayed.size} 项", style = MaterialTheme.typography.labelLarge)
                 TextButton(onClick = { refresh++ }, enabled = !busy) { Text("刷新") }
             }
             header()
         }
-        items(rows, key = identity) { row(it) }
+        items(displayed, key = identity) { row(it) }
         if (failure != null) item { CommunityFailure(failure!!, onLogin) {
             if (!busy) {
-                val cursor = next
-                if (failedMore && cursor != null) { busy = true; scope.launch { fetch(cursor, false) } }
+                val cursor = page.failedCursor
+                if (cursor != null) { busy = true; scope.launch { fetch(cursor, page.failedReplace) } }
                 else refresh++
             }
         } }
         if (busy) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
-        if (!busy && rows.isEmpty() && failure == null) item { Text("暂无内容", color = MaterialTheme.colorScheme.onSurfaceVariant) }
+        if (!busy && displayed.isEmpty() && failure == null) item { Text(if (rows.isEmpty()) "暂无内容" else "当前筛选隐藏了这一批内容", color = MaterialTheme.colorScheme.onSurfaceVariant) }
         if (next != null && !busy) item {
             Button(onClick = {
                 if (busy) return@Button

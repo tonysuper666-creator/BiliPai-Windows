@@ -138,11 +138,12 @@
       "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
       "sha256": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd",
       "features": [
+        "comments",
+        "discovery",
         "feed",
-        "search",
         "login",
         "playback",
-        "comments"
+        "search"
       ],
       "mode": "api-extract"
     },
@@ -1189,6 +1190,818 @@
         "downloads"
       ],
       "sha256": "9117507dd3735b0c6871ed7c665d452006a934ae6dcb5eca20c4ee900e26dd9b"
+    },
+    {
+      "path": "plugin-sdk/src/main/java/com/android/purebilibili/plugin/sdk/PluginCapabilityManifest.kt",
+      "sha256": "f2e2bd11caa6fa23175fee7cda303c903d67b287855923c127a13757a2edc726",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "plugin-sdk/src/main/java/com/android/purebilibili/plugin/sdk/PlayerPluginApi.kt",
+      "sha256": "9b51ff9a738ecd1f3b8b4b48245a4b67670ebd1c6c246fa09a98d07a82019d01",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "plugin-sdk/src/main/java/com/android/purebilibili/plugin/sdk/DanmakuPluginApi.kt",
+      "sha256": "ed05205654b7ce2ea7abfe86574cff41dbd42218199dbccc7576e1f1bc7718ec",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "plugin-sdk/src/main/java/com/android/purebilibili/plugin/sdk/RecommendationPluginApi.kt",
+      "sha256": "0ee4672c6b694aeba99f59c01eafd566d0d57c15502c18d8d0189d52aed2116f",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/Plugin.kt",
+      "sha256": "7a014b4de02bf8ade666a12a2cf31a23c1469b315fbc04ea7ad49171999ca4d4",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PlayerPlugin.kt",
+      "sha256": "7a821d22f7054ca5be810fc95df05be48261c2f88441ab05d2dc59653cb8c8ec",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/DanmakuPlugin.kt",
+      "sha256": "25ad3538067b7ba5fa82cf62aaafb51ce6faac0a264e349a7b9ecbdf00192d8f",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/TypedPluginApis.kt",
+      "sha256": "9ef4f23f88dfe1d81ad2be35dcbf90a1c755a05f305d002072203591a915c089",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/FeedPlugin.kt",
+      "sha256": "18bea5c94b37a91fd3bf58c4581abe2cf3dd7f386af00893151c8a57c13d423c",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/RecommendationPluginApi.kt",
+      "sha256": "d23dcfe12e6c029b9bae59f593390c46fff1388562f76dfa93c1cad82bbdb869",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginCapabilityManifest.kt",
+      "sha256": "dec48a79f3f9e9b49014b127644a6609125cdd7eba76d2086c71cb0218680b39",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/BuiltinPluginDefaultPolicy.kt",
+      "sha256": "9d4c52b077efd9783900208b2f6e6222438c9df72df7723ab2572635d5ea2c1e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/ExternalPluginInstallPolicy.kt",
+      "sha256": "37f5e24bb03717ddaf64cbf8c3b22625d6ec368537c0890f69d72ff7be893e1e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginEffectHintPolicy.kt",
+      "sha256": "d2ca084d1cb5558b968d1303926d816befc69fea5bfa3fec26efd3b68542b1ce",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginEffectHintBus.kt",
+      "sha256": "272fd3050356ba768bf31c9d69819fb1bd76fc00fd83c9047e8aaf7bfd0181be",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/json/JsonRulePlugin.kt",
+      "sha256": "463c3860a68e1caa3d7b1379195580ae35ddefc3a8ee5f605307bc20a08edcec",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedModels.kt",
+      "sha256": "3276d1a66b8682508a2b17a03d3063368d4a8f94e730e679d8e4728002521b5f",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedArticleExtractor.kt",
+      "sha256": "86a312780455a57c143e3deed1acb772c19ed49a415b9615f6b567c896960081",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedHtmlParser.kt",
+      "sha256": "a92c0a3e72478e15c30d170aad90a7d8ea83975acc0e037aa66e157c6f5a5015",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedDocumentParser.kt",
+      "sha256": "d65f0be3d9f705c8ccb88a82bb1940d9e1ab459d79d678f3d07c03ec113de87e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedImportParser.kt",
+      "sha256": "4fe53d795378083418e1ab02e25fb5ac6d40e05c20cf414eee45c0245b3a6de0",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedLayoutAllocation.kt",
+      "sha256": "005bacf925078fec59524a78bd23bd717c21e682f1a9df867149dc3c97447630",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt",
+      "sha256": "2bdfd821d4f0d03f1a7dad1c06779df254d7cfc5763c36e917ea981f7dd712b7",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/EyeProtectionPolicy.kt",
+      "sha256": "e9f8358b25fbfce94f9fc8a8ef1f13cc0a102a317c46305a72070d570d93e7f0",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPolicy.kt",
+      "sha256": "1419a6b4af976d3f94480db781c08356c4cebd4d598f520268e2516b7f63bc16",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnOptimizationPolicy.kt",
+      "sha256": "a5b48465e48d9bf3f48a586674d5a977349ef36839a412b135f2aec6b4179de7",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchCandidatePoolPolicy.kt",
+      "sha256": "1e257a61e2a75a8c80666a3aa668aa772abac1f5f15b1f695a8e7975e9098c9c",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockCommunityPolicy.kt",
+      "sha256": "92ca9301326c5a17b983359896c1a239a90c5f4b8f9fbd8820782aa5e74926c2",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "sha256": "04a12ad24b0ff6393d727638e61e348d115e617b3dd9a9e604cac59deae9ece8",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "sha256": "0b1dc7ee2dd74747079e35135691882c1b8d0d98783b788a2e91802a1f682b4d",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "sha256": "e986c7459b03ab892fded08b72ed9428c09c8534e1ab927ca906b9d9b2e89db6",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "sha256": "4029618eaa257de61158db7678fbc172273b31556bd013cc29c8102b45b1ed17",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "sha256": "11aee696482b130ad399f12fbb79ff488ff914f1c44c9b4ae8837bee9f6db4e3",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "sha256": "0bacdd2cde780e52aff8c48453931a0b5f8bd687054d453b33767740db993d92",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/SubscriptionFeedStore.kt",
+      "sha256": "204b5891d005c0cac525ca6fdd328b4534c4f3a6a3966917610eee528d3b2785",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "sha256": "e0d4be5b5b9dc6e62b4eba98f38536952681f488403270d0f605274c0b76242e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "sha256": "9c98ff6a159c7f4e5a32f18ab8ed5659d860990af500ad603cad4960413290ea",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "sha256": "fff5ef372b6c01b092b7d4541e029bbd78b73fa11dc4785d8293925875cd5113",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "sha256": "8643811bb3c103a2b615fff6043de0297495587ed7b7699196518354d66a1b36",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "sha256": "6594a35c9cb55e7536c1b281d7f09737a34e9f377673afd92b29e90742865da9",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "sha256": "981179d2b0828afc35df97bedb6b7d6c8283f7c7f9a1762415f40eb2b55fd113",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "sha256": "60d650b911ff786909dbaf3e2197d7a7a523f280fbb1ca5041b39e3773b5f783",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256": "141160bfeda1f8aec86c08068cb78c153bb6cff8feccc8c2f2be4ac0672f3560",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "sha256": "3dd55fff4015adb388f9a403e6ae585a01b4a81f9aff3502a3af97f069187939",
+      "features": [
+        "discovery",
+        "plugins"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "sha256": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa",
+      "features": [
+        "discovery",
+        "plugins"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+      "sha256": "f49e12ce614e9fa3d20710bf1b2d212e56188a26d935bb550d0900ca3f39137b",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256": "dea41511bfe71392e4d5915bc700a31ddbd0f28906b595db578ed8c28afd6eea",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt",
+      "sha256": "10c8ec1f6ae455fc6e488908c948a8e424080faa3c772788194dcdd3bd2adff3",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/PopularFeedPolicy.kt",
+      "sha256": "2df87700fbd98a4c083e54dafc09ecab7065f6e8fb23d0baf349e4ea425b1fe2",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt",
+      "sha256": "0ff1fbdac4c8eef23a369c2c62db39b3fee1f8d0d2d13de50ca05e4e11fe5ee8",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionEpisodePolicy.kt",
+      "sha256": "3f8aebb1b67f89ee2702a8cab9a1f9087a201bf3d9d6b7d74ecf715ea9d42ee0",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt",
+      "sha256": "9b29621df7f64a524bd90044ee606bf08ee2dfa1220c2a8cef04c89c637e90a5",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "playback",
+        "codec-recovery"
+      ],
+      "sha256": "ad9aedd9f6888dfd6cbe7cef1bbafda68fe9d09d73e264742ff484f1734955e6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedConditionalStore.kt",
+      "sha256": "b1258797c1a69a32c40cf194113af80df3d9983ea12446ae589a80b60d145daf",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupPolicy.kt",
+      "sha256": "a6fc02bbb34c9a6f539cc784087798e34cad6c051c5bf4e37d34a44fdc3abc6f",
+      "features": [
+        "settings",
+        "backup"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupAutoSchedulePolicy.kt",
+      "sha256": "c5bc58fc8eb1764d139b88e5109a4e68bce312f380da26a0635eb0c1300817c9",
+      "features": [
+        "settings",
+        "backup"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupStore.kt",
+      "sha256": "ffa867fd010ef4c75a50b09ea476fe0a735ea7d5445c25cdbb35e547da4e047a",
+      "features": [
+        "settings",
+        "backup"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupService.kt",
+      "sha256": "04f46bedef25085b658d0edb04e6e430e5b0cb774d85c5690b34e3d14b081704",
+      "features": [
+        "settings",
+        "backup"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedMergePolicy.kt",
+      "sha256": "93b2ba527c3ffd786620d4016ac5f324c8cc9f3de7e9f60bc04e06601217d61c",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeNotInterestedPolicy.kt",
+      "sha256": "b8ee05057d102d553720f926aa9f3c81d789201835a47d51ffda8f04882b8570",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/MergedAppFeedCookiePolicy.kt",
+      "sha256": "335ff4ca558e2896676a53e4071081a0654013d6fa5e2abdd3e5366521a8b3e1",
+      "features": [
+        "discovery"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
+      "sha256": "c5a13d5bed751c048d3ec872e1a6a82fc418571f1403aa0723c1bb433843d1e9",
+      "features": [
+        "discovery"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BlockedUpRepository.kt",
+      "sha256": "28c40af8019e3d10f7c36f05404f300f7728bc2a196010a7bbe1663270270fe7",
+      "features": [
+        "discovery"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicy.kt",
+      "sha256": "dfed73641c8157bf640f9d167154f1ffa531a8a88675081f6e5938b3b764b61d",
+      "features": [
+        "playback",
+        "recovery"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "network-core/src/main/java/com/android/purebilibili/core/network/policy/HomeFeedAnonymizerPolicy.kt",
+      "sha256": "22488dbe71fa53a464bb28c0e9925f0532d1ae20c7ffd8f7f2ed9011209684af",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementConfigLoadGuard.kt",
+      "sha256": "d95d0f746ec76f99f00b5642ff382e45135e3aab2cc9e506a61318b68938a7d6",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchPolicy.kt",
+      "sha256": "89311171602dd7c5a9e16917f5c53b773023b17035168d0bebbde1759534bd8f",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchQueuePolicy.kt",
+      "sha256": "618f2836f085299c4aacb18f25b76234bf4ccce8fab4742e0244bd7901dd2ee1",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementSessionPolicy.kt",
+      "sha256": "3407bb28525601c6c63af00c9e7a3b9cd6eb5e51ee01f1ca5ffd3017467c6a9d",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/MpvAnime4KShader.kt",
+      "sha256": "98979f7ea08b39405c6339f30dc28156c01f75c68e0b7d4d870cb22d6ebb0270",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KDisplayPolicy.kt",
+      "sha256": "d07d85ceeb8185773f58f7dd2721c4299f12ae3bacd021b7db6e2d5ca29ec666",
+      "features": [
+        "plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "sha256": "a20b4f40c3de9f5e508c9f23350a782b22137348a8b99b2d786e94a868586cf0",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "sha256": "60d09297b13cc6af088e8681f927545924b11eafae4978752d178eb7820d7ef9",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "sha256": "0979f3131d293cddfdeec2b41e00eb89d90a49043c1782e1a105e1b99b11baab",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "sha256": "432f17f7bdd2e2dc1bd0ff53dc6229ce7280bb7efb7baf6f5cdba7c63e551060",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "sha256": "b096b031d53aa9078a1f6e6a3c519efa0f0e68f254ed7dde6126429de6fe42fa",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "sha256": "d289cc728e86ffb16b8a5c222fe02397b84d5a19e1fcad9e41bf7ca5a1bc30be",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "sha256": "043f356998e8bac5f4d3d17759767b80b7c47a7d11787d5b4e134b00d61b8193",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt",
+      "sha256": "4bda89a5f97a455931ec77c225ea0a7a2f5a725f58ca3655314c2679a9e4f89b",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "sha256": "b4b65ab198829186889637e4eaa3f89f825f0634df262bbda3f2777895bcb050",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "sha256": "d0e1c74436524d943c6b044ea984ad5564b6f3b4ee1b686883ead67a095094b9",
+      "features": [
+        "plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "sha256": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "features": [
+        "search-native"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+      "sha256": "0e18a5f0f548544f95584ba535e674e62e2666cb48c87727a3629d84af943475",
+      "features": [
+        "search-native"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRecommendPolicy.kt",
+      "sha256": "4b2c8e16077beee8e2a02076571fe3e3beae9e8dde6f269c404e835d1ad5b368",
+      "features": [
+        "search-native"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterPolicy.kt",
+      "sha256": "fc1198b6fe287c7a3a3521ae0a0bb871bdfdc2d5fb16b7d2ca6ff4381bdf8d1d",
+      "features": [
+        "search-native"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/entity/SearchHistory.kt",
+      "sha256": "eb8a776c2f9b11582486bda58d9f24d536381a0915f655890fa2a726b88227c9",
+      "features": [
+        "search-native"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/dao/SearchHistoryDao.kt",
+      "sha256": "083984280c6bd796439978e19c3d75bd6d8ffd77390d793ba9e6d010b50ca1c2",
+      "features": [
+        "search-native"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/SsdpDiscovery.kt",
+      "sha256": "8de9ebb5394531f92f657e12c7fd60ef7c8f8237e6eef9d8e1e74b8a95eecd5b",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/SsdpLocalNetworkPolicy.kt",
+      "sha256": "a715ca4ce9f3daec550c4a19c8040ec4fff91793ff188dcc9245bf0458376e1a",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/SsdpCastClient.kt",
+      "sha256": "1785721a68d9d478a1ba05274d6b7574e6498470652a84e51604b5ef6dd028e1",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/LocalProxyServer.kt",
+      "sha256": "4b856ad11976bce136898ab66246e4708520b98e3acfd909d7c1364c04729be6",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/cast/SsdpDevicePresentationPolicy.kt",
+      "sha256": "a2030581744dda331d701fefe32ec02a750622387df5715db1fd1f4a98563e25",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastRoutePolicy.kt",
+      "sha256": "27eb8ba5c3e36f169a02938c2f5abcd4664749e14129c7f9d2bd8e910034b684",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/dlna/DlnaCastPlugin.kt",
+      "sha256": "0abedfc3d7ab2d4440c0dba0b6b78115ba061c5b71bd64212069d4dc2968a7f4",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "platform-rewrite"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoCastPolicy.kt",
+      "sha256": "d856735c91f8af1b17dc8344416a875293e7f36b30fe5eb2f793b23336fdafc2",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/LocalDashManifestBuilder.kt",
+      "sha256": "3dda3626683858145b251115aa4e715ec2320a2b012b65103ba7678443bfc9df",
+      "features": [
+        "dlna-cast"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackAncillaryTaskPolicy.kt",
+      "sha256": "2beee745e5503f00020fa52f78015cd03a6b748251837359f77b8a6d83d3a0c1",
+      "features": [
+        "playback",
+        "history",
+        "heartbeat"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/PlaybackHeartbeatPolicy.kt",
+      "sha256": "9a82ecd34977fe3302e8f9ba84f934f6250191d23d23fe4ae5fd075ea22f98d8",
+      "features": [
+        "playback",
+        "history",
+        "heartbeat"
+      ],
+      "mode": "direct"
     }
   ],
   "featureCoverage": {
@@ -1205,15 +2018,106 @@
     "live": "native-adapter-awaiting-live-validation",
     "bangumi": "native-pgc-pugv-adapter-awaiting-account-validation",
     "danmaku": "native-protobuf-xml-advanced-live-awaiting-visual-validation",
-    "plugins": "not-ported",
+    "plugins": "native-sdk-nine-providers-json-awaiting-full-integration",
     "downloads": "native-resume-offline-multi-segment-tested",
     "listen-video": "native-audio-lyrics-queue-awaiting-native-validation",
     "auth": "native-web-tv-password-sms-multi-account-awaiting-account-validation",
     "picture-in-picture": "native-window-and-restore-tested",
     "system-media-controls": "native-metadata-status-timeline-readback-tested",
     "community": "native-adapter-awaiting-account-validation",
-    "full-functional-parity": "not-yet-complete"
+    "full-functional-parity": "not-yet-complete",
+    "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler"
   },
-  "windowsRevision": 6,
-  "hashNormalization": "lf"
+  "windowsRevision": 7,
+  "hashNormalization": "lf",
+  "resources": [
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_AutoDownscalePre_x2.glsl",
+      "sha256": "8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_AutoDownscalePre_x4.glsl",
+      "sha256": "5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Clamp_Highlights.glsl",
+      "sha256": "6dafe6d4ccaed8f1675d1b5b13e2d1a981f1f65849f54ea71b897f2f439ecfed",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Restore_CNN_M.glsl",
+      "sha256": "67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Restore_CNN_S.glsl",
+      "sha256": "97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Restore_CNN_VL.glsl",
+      "sha256": "35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Upscale_CNN_x2_M.glsl",
+      "sha256": "716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Upscale_CNN_x2_S.glsl",
+      "sha256": "4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/Anime4K_Upscale_CNN_x2_VL.glsl",
+      "sha256": "5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/anime4k/LICENSE",
+      "sha256": "edc7f247e1189b61c2d5970d162a14f6affbf03d8f5eb65930d5389c69372867",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/res/raw/cdn_region_catalog.json",
+      "sha256": "6aa92e74534ebb9735dd5dc19509b7919d7499dca556dcae89d0ae781da69328",
+      "features": [
+        "plugins"
+      ],
+      "mode": "resource"
+    }
+  ]
 }

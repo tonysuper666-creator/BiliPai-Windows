@@ -44,8 +44,10 @@ internal class ListenAudioSession(
     initialPreferences: PlayerPreferences = PlayerPreferences(),
     private val onAcquirePlayback: () -> Unit = {},
     private val store: ListenAudioStore = ListenAudioStore(),
+    playbackDataSource: ListenPlaybackDataSource? = null,
 ) : AutoCloseable {
     val audio = DesktopAudioRepository(repository, community)
+    private val playback: ListenPlaybackDataSource = playbackDataSource ?: audio
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
     private val saved = store.read()
     private val mutableState = MutableStateFlow(ListenAudioState(saved.queue, saved.currentIndex, saved.recent, saved.favorites))
@@ -103,6 +105,7 @@ internal class ListenAudioSession(
     }
 
     fun play(items: List<PlaylistItem>, index: Int = 0) {
+        if (closed) return
         val clicked = items.getOrNull(index)?.bvid ?: return
         val queue = normalizeListenQueue(items)
         if (queue.isEmpty()) return
@@ -125,9 +128,10 @@ internal class ListenAudioSession(
         musicLyrics = null; subtitleLyrics = null
         mutableState.update { it.copy(currentIndex = index, loading = true, active = true, error = null, lyrics = null,
             lyricsLoading = false, lyricsError = null, candidates = emptyList(), subtitles = emptyList(), primarySubtitleKey = null, secondarySubtitleKey = null) }
+        persist()
         playJob = scope.launch {
             try {
-                val prepared = audio.prepare(item)
+                val prepared = playback.prepare(item)
                 if (generation != playGeneration || closed) return@launch
                 val resolvedIndex = mutableState.value.queue.indexOfFirst { it.bvid == item.bvid }
                 if (resolvedIndex < 0) return@launch
@@ -165,6 +169,7 @@ internal class ListenAudioSession(
     }
 
     fun next() {
+        if (closed) return
         val current = mutableState.value
         val index = if (preferences.playbackMode == PlaybackMode.SHUFFLE) {
             val next = advanceShuffleProgress(current.queue.size, current.currentIndex, shuffle) { it.random() }
@@ -174,6 +179,7 @@ internal class ListenAudioSession(
     }
 
     fun previous() {
+        if (closed) return
         val current = mutableState.value
         val index = if (preferences.playbackMode == PlaybackMode.SHUFFLE && shuffle.historyIndex > 0) {
             shuffle = shuffle.copy(historyIndex = shuffle.historyIndex - 1)
@@ -182,15 +188,17 @@ internal class ListenAudioSession(
         if (index != null) playAt(index)
     }
 
-    fun enqueue(items: List<PlaylistItem>) = changeQueue(normalizeListenQueue(mutableState.value.queue + items))
+    fun enqueue(items: List<PlaylistItem>) { if (!closed) changeQueue(normalizeListenQueue(mutableState.value.queue + items)) }
 
     fun moveQueueItem(index: Int, target: Int) {
+        if (closed) return
         val queue = mutableState.value.queue.toMutableList()
         if (index !in queue.indices || target !in queue.indices) return
         queue.add(target, queue.removeAt(index)); changeQueue(queue)
     }
 
     fun removeQueueItem(index: Int) {
+        if (closed) return
         val current = mutableState.value
         if (index !in current.queue.indices) return
         val removingCurrent = index == current.currentIndex
@@ -199,14 +207,16 @@ internal class ListenAudioSession(
             if (current.active && mutableState.value.queue.isNotEmpty()) playAt(index.coerceAtMost(mutableState.value.queue.lastIndex))
             else {
                 playJob?.cancel(); lyricsJob?.cancel(); playGeneration++; lyricsGeneration++
-                player.stop(); mutableState.update { it.copy(active = false, loading = false, lyricsLoading = false, lyrics = null) }
+                stopOwnedSource(); resumedPositionSeconds = 0.0
+                mutableState.update { it.copy(active = false, loading = false, lyricsLoading = false, lyrics = null) }; persist()
             }
         }
     }
 
     fun clearQueue() {
+        if (closed) return
         playJob?.cancel(); lyricsJob?.cancel(); playGeneration++; lyricsGeneration++
-        player.stop(); shuffle = ShuffleProgress()
+        stopOwnedSource(); resumedPositionSeconds = 0.0; shuffle = ShuffleProgress()
         mutableState.update { it.copy(queue = emptyList(), currentIndex = -1, active = false, loading = false,
             lyrics = null, lyricsLoading = false, lyricsError = null, candidates = emptyList(), subtitles = emptyList(), error = null) }; persist()
     }
@@ -219,13 +229,15 @@ internal class ListenAudioSession(
     }
 
     fun toggleFavorite(item: PlaylistItem) {
+        if (closed) return
         mutableState.update { it.copy(favorites = if (it.favorites.any { favorite -> favorite.bvid == item.bvid })
             it.favorites.filter { favorite -> favorite.bvid != item.bvid } else (listOf(item) + it.favorites).take(5_000)) }; persist()
     }
 
-    fun clearRecent() { mutableState.update { it.copy(recent = emptyList()) }; persist() }
+    fun clearRecent() { if (closed) return; mutableState.update { it.copy(recent = emptyList()) }; persist() }
 
     fun setSleepMinutes(minutes: Int) {
+        if (closed) return
         require(minutes in 1..1_440)
         sleepDeadlineNanos = System.nanoTime() + minutes * 60_000_000_000L
         mutableState.update { it.copy(sleepRemainingMs = minutes * 60_000L, sleepAfterTrack = false) }
@@ -233,12 +245,14 @@ internal class ListenAudioSession(
     }
 
     fun setSleepAfterCurrentTrack() {
+        if (closed) return
         sleepDeadlineNanos = null
         mutableState.update { it.copy(sleepRemainingMs = null, sleepAfterTrack = true) }
         player.setLoop(false)
     }
 
     fun cancelSleepTimer() {
+        if (closed) return
         sleepDeadlineNanos = null
         mutableState.update { it.copy(sleepRemainingMs = null, sleepAfterTrack = false) }
         player.setLoop(preferences.playbackMode == PlaybackMode.REPEAT_ONE)
@@ -250,14 +264,14 @@ internal class ListenAudioSession(
         mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
         lyricsJob = scope.launch {
             try {
-                val external = async { audio.lyrics.load(cacheKey(prepared.item), LyricQuery(prepared.item.title, prepared.item.owner, prepared.item.duration * 1_000L), prepared.songLyrics, forceRefresh) }
+                val external = async { playback.lyrics.load(cacheKey(prepared.item), LyricQuery(prepared.item.title, prepared.item.owner, prepared.item.duration * 1_000L), prepared.songLyrics, forceRefresh) }
                 try {
-                    val tracks = withTimeout(20_000) { audio.subtitleTracks(prepared.item) }
+                    val tracks = withTimeout(20_000) { playback.subtitleTracks(prepared.item) }
                     val language = resolveDefaultSubtitleLanguages(tracks)
                     val primary = tracks.firstOrNull { it.lan == language.primaryLanguage }
                     if (generation != lyricsGeneration) return@launch
                     mutableState.update { it.copy(subtitles = tracks, primarySubtitleKey = primary?.trackKey, secondarySubtitleKey = null) }
-                    val cues = primary?.let { withTimeout(20_000) { audio.subtitleCues(it) } }.orEmpty()
+                    val cues = primary?.let { withTimeout(20_000) { playback.subtitleCues(it) } }.orEmpty()
                     subtitleLyrics = BiliSubtitleLyricsPolicy.convertSubtitlesToLyricDocument(cues,
                         isAiGenerated = primary?.let(::isLikelyAiSubtitleTrack) == true, languageLabel = primary?.lanDoc)
                 } catch (failure: Exception) { if (failure is CancellationException && failure !is TimeoutCancellationException) throw failure }
@@ -273,6 +287,7 @@ internal class ListenAudioSession(
     }
 
     fun selectSubtitles(primaryKey: String?, secondaryKey: String?) {
+        if (closed) return
         val current = mutableState.value
         val currentItem = current.current ?: return
         lyricsJob?.cancel(); lyricsGeneration++
@@ -282,14 +297,14 @@ internal class ListenAudioSession(
             try {
                 val primary = current.subtitles.firstOrNull { it.trackKey == primaryKey }
                 val secondary = current.subtitles.firstOrNull { it.trackKey == secondaryKey && it.trackKey != primaryKey }
-                val primaryCues = primary?.let { audio.subtitleCues(it) }.orEmpty()
-                val secondaryCues = secondary?.let { audio.subtitleCues(it) }.orEmpty()
+                val primaryCues = primary?.let { playback.subtitleCues(it) }.orEmpty()
+                val secondaryCues = secondary?.let { playback.subtitleCues(it) }.orEmpty()
                 if (generation != lyricsGeneration) return@launch
                 subtitleLyrics = BiliSubtitleLyricsPolicy.convertSubtitlesToLyricDocument(primaryCues, secondaryCues,
                     primary?.let(::isLikelyAiSubtitleTrack) == true, primary?.lanDoc)
                 musicLyrics = null
                 publishLyrics()
-                mutableState.value.lyrics?.let { audio.lyrics.save(cacheKey(currentItem), it) }
+                mutableState.value.lyrics?.let { playback.lyrics.save(cacheKey(currentItem), it) }
             } catch (failure: Exception) {
                 if (failure is CancellationException) throw failure
                 if (generation == lyricsGeneration) mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message ?: "字幕歌词加载失败。") }
@@ -298,13 +313,14 @@ internal class ListenAudioSession(
     }
 
     fun searchLyrics() {
+        if (closed) return
         val current = mutableState.value.current ?: return
         lyricsJob?.cancel(); lyricsGeneration++
         val generation = lyricsGeneration
         mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
         lyricsJob = scope.launch {
             try {
-                val candidates = audio.lyrics.search(LyricQuery(current.title, current.owner, current.duration * 1_000L))
+                val candidates = playback.lyrics.search(LyricQuery(current.title, current.owner, current.duration * 1_000L))
                 if (generation == lyricsGeneration) mutableState.update { it.copy(candidates = candidates, lyricsLoading = false,
                     lyricsError = if (candidates.isEmpty()) "未找到匹配歌词。" else null) }
             } catch (failure: Exception) {
@@ -315,13 +331,14 @@ internal class ListenAudioSession(
     }
 
     fun selectLyrics(candidate: LyricCandidate) {
+        if (closed) return
         val current = mutableState.value.current ?: return
         lyricsJob?.cancel(); lyricsGeneration++
         val generation = lyricsGeneration
         mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
         lyricsJob = scope.launch {
             try {
-                val result = audio.lyrics.select(cacheKey(current), candidate)
+                val result = playback.lyrics.select(cacheKey(current), candidate)
                 if (generation != lyricsGeneration) return@launch
                 if (result is LyricsLoadResult.Found) { musicLyrics = result.document; publishLyrics() }
                 else mutableState.update { it.copy(lyricsLoading = false, lyricsError = "所选歌词未能加载。") }
@@ -333,6 +350,7 @@ internal class ListenAudioSession(
     }
 
     fun importLyrics(text: String) {
+        if (closed) return
         require(text.length <= 2 * 1024 * 1024) { "歌词文件过大。" }
         val current = mutableState.value.current ?: return
         val document = parseSplLyrics(text, source = LyricSource.MANUAL).copy(manuallySelected = true)
@@ -340,15 +358,16 @@ internal class ListenAudioSession(
         lyricsJob?.cancel(); lyricsGeneration++
         musicLyrics = document; subtitleLyrics = null; publishLyrics()
         lyricsOffsetSavingJob?.cancel()
-        lyricsOffsetSavingJob = scope.launch { delay(200); audio.lyrics.save(cacheKey(current), document) }
+        lyricsOffsetSavingJob = scope.launch { delay(200); playback.lyrics.save(cacheKey(current), document) }
     }
 
     fun setLyricsOffset(offsetMs: Long) {
+        if (closed) return
         val current = mutableState.value.current ?: return
         val document = mutableState.value.lyrics?.withOffset(offsetMs) ?: return
         mutableState.update { it.copy(lyrics = document) }
         lyricsOffsetSavingJob?.cancel()
-        lyricsOffsetSavingJob = scope.launch { delay(200); audio.lyrics.save(cacheKey(current), document) }
+        lyricsOffsetSavingJob = scope.launch { delay(200); playback.lyrics.save(cacheKey(current), document) }
     }
 
     private fun publishLyrics() {
@@ -381,9 +400,13 @@ internal class ListenAudioSession(
         } catch (failure: Exception) { mutableState.update { it.copy(error = "听视频状态保存失败：${failure.message}") } }
         finally {
             scope.cancel()
-            ownedSourceVersion?.let(player::stopIfSourceVersion)
-            ownedSourceVersion = null
+            stopOwnedSource()
         }
+    }
+
+    private fun stopOwnedSource() {
+        ownedSourceVersion?.let(player::stopIfSourceVersion)
+        ownedSourceVersion = null
     }
 
     private fun ownsSource(): Boolean = ownedSourceVersion != null && ownedSourceVersion == player.currentSourceVersion

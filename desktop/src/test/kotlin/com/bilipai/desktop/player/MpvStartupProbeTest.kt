@@ -53,6 +53,7 @@ class MpvStartupProbeTest {
             return if (name == failedOption) -1 else 0
         }
         override fun mpv_initialize(handle: Pointer): Int { initialized = true; return initializeResult }
+        override fun mpv_request_log_messages(handle: Pointer, level: String): Int = error("Unexpected playback log subscription")
         override fun mpv_terminate_destroy(handle: Pointer) { destroyCount++ }
         override fun mpv_error_string(error: Int): String = "test native error"
         override fun mpv_set_property_string(handle: Pointer, name: String, value: String): Int = error("Unexpected playback call")

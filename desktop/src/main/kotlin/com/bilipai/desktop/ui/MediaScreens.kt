@@ -205,6 +205,7 @@ fun BangumiBrowserScreen(
     onToggleFullscreen: () -> Unit = {}, playerContent: @Composable (MpvPlayer) -> Unit = { NativeMediaPlayer(it) },
     initialSeasonId: Long = 0, sharedDanmaku: DanmakuOverlay? = null,
     initialIsCourse: Boolean = false, initialEpisodeId: Long = 0, initialProgressSeconds: Double = 0.0,
+    initialSeasonType: Int = 1,
 ) {
     val media = remember(repository) { DesktopMediaRepository(repository) }
     val scope = rememberCoroutineScope()
@@ -213,7 +214,7 @@ fun BangumiBrowserScreen(
     var section by remember { mutableStateOf("索引") }
     var courseUrl by remember { mutableStateOf("") }
     var timetable by remember { mutableStateOf(emptyList<com.android.purebilibili.data.model.response.TimelineDay>()) }
-    var seasonType by remember { mutableIntStateOf(1) }
+    var seasonType by remember(initialSeasonType) { mutableIntStateOf(initialSeasonType.takeIf { it in setOf(1, 2, 3, 4, 5, 7) } ?: 1) }
     var query by remember { mutableStateOf("") }
     var submitted by remember { mutableStateOf("") }
     var page by remember { mutableIntStateOf(1) }
@@ -288,7 +289,7 @@ fun BangumiBrowserScreen(
         }
     }
     LaunchedEffect(account) { if (sessionAccount != account) { sessionAccount = account; closeSeason(); cards = emptyList(); timetable = emptyList(); generation++ } }
-    LaunchedEffect(initialSeasonId, initialEpisodeId, initialIsCourse) {
+    LaunchedEffect(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds) {
         if (initialSeasonId > 0 || initialEpisodeId > 0) openSeasonId(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds)
     }
     LaunchedEffect(seasonType, submitted, page, generation, season?.seasonId, section, account) {

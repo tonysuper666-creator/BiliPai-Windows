@@ -1,0 +1,12 @@
+{
+  "sourceUrl": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar",
+  "version": "1.10.1",
+  "sourceArchiveSha256": "472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba",
+  "constants": {
+    "ERROR_CODE_IO_UNSPECIFIED": 2000,
+    "ERROR_CODE_IO_NETWORK_CONNECTION_FAILED": 2001,
+    "ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT": 2002,
+    "ERROR_CODE_IO_BAD_HTTP_STATUS": 2004,
+    "ERROR_CODE_IO_FILE_NOT_FOUND": 2005
+  }
+}

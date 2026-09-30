@@ -24,7 +24,8 @@ import javax.swing.SwingUtilities
 
 /** Swing rendering adapter for the original realtime item model; every queue/cache has a bound. */
 internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
-    private data class Entry(val item: LiveDanmakuItem, val comment: DanmakuComment, val receivedNanos: Long)
+    private data class Entry(val item: LiveDanmakuItem, val comment: DanmakuComment, val receivedNanos: Long,
+        val rendered: StyledDesktopDanmaku?)
     private val entries = ArrayDeque<Entry>()
     private val superChats = linkedMapOf<Long, Entry>()
     private val images = LinkedHashMap<String, BufferedImage>(16, 0.75f, true)
@@ -37,8 +38,17 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
     private var scheduler = DanmakuScheduler(emptyList())
     private var lastSettings: DanmakuSettings? = null
     private var lastRebuild = 0L
+    private var processor: DanmakuPluginProcessor? = null
 
-    val size: Int get() = entries.size + superChats.size
+    val size: Int get() = entries.count { it.rendered != null } + superChats.values.count { it.rendered != null }
+    fun setProcessor(next: DanmakuPluginProcessor?) {
+        check(SwingUtilities.isEventDispatchThread())
+        processor = next
+        val mapped = entries.map { it.copy(rendered = applyDesktopDanmakuPlugin(it.comment, next)) }
+        entries.clear(); entries.addAll(mapped)
+        superChats.replaceAll { _, value -> value.copy(rendered = applyDesktopDanmakuPlugin(value.comment, next)) }
+        dirty = true
+    }
     fun reset() {
         entries.clear(); superChats.clear(); originNanos = System.nanoTime(); nextId = 1; dirty = true
         scheduler = DanmakuScheduler(emptyList()); lastSettings = null; lastRebuild = 0L
@@ -50,8 +60,9 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
         val now = System.nanoTime()
         val id = nextId++
         val text = item.text.replace("\u0000", "").take(2_000).ifBlank { "[表情]" }
-        val entry = Entry(item.copy(text = text), DanmakuComment(id, seconds(now), if (item.mode in listOf(1, 4, 5)) item.mode else 1,
-            25, item.color and 0xffffff, text, userHash = item.uid.toString()), now)
+        val comment = DanmakuComment(id, seconds(now), if (item.mode in listOf(1, 4, 5)) item.mode else 1,
+            25, item.color and 0xffffff, text, serverId = item.superChatId, userHash = item.uid.toString())
+        val entry = Entry(item.copy(text = text), comment, now, applyDesktopDanmakuPlugin(comment, processor))
         if (item.isSuperChat) {
             val key = item.superChatId.takeIf { it != 0L } ?: -id.toLong()
             superChats.remove(key); superChats[key] = entry
@@ -76,13 +87,17 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
         expire(now)
         val safeSettings = settings.normalized()
         if (lastSettings != safeSettings || (dirty && now - lastRebuild > 100_000_000L)) {
-            scheduler = DanmakuScheduler(entries.map { it.comment }, safeSettings)
+            scheduler = DanmakuScheduler(entries.mapNotNull { it.rendered?.comment }, safeSettings)
             lastSettings = safeSettings; lastRebuild = now; dirty = false
         }
-        val fontSize = (25 * scale * 0.9f * safeSettings.fontScale).toInt().coerceIn(10, 96)
-        val font = Font("Microsoft YaHei UI", if (safeSettings.fontWeight >= 5) Font.BOLD else Font.PLAIN, fontSize)
-        val rowHeight = (48 * scale * 0.9f * safeSettings.fontScale * safeSettings.lineHeight).toInt().coerceAtLeast(18)
+        val largestScale = entries.maxOfOrNull { it.rendered?.style?.scale ?: 1f }?.coerceAtLeast(1f) ?: 1f
+        val rowHeight = (48 * scale * 0.9f * safeSettings.fontScale * safeSettings.lineHeight * largestScale).toInt().coerceAtLeast(18)
         val indexed = entries.associateBy { it.comment.id }
+        fun font(entry: Entry?): Font {
+            val style = entry?.rendered?.style
+            val size = (25 * scale * 0.9f * safeSettings.fontScale * (style?.scale ?: 1f)).toInt().coerceIn(10, 192)
+            return Font("Microsoft YaHei UI", if (safeSettings.fontWeight >= 5 || style?.bold == true) Font.BOLD else Font.PLAIN, size)
+        }
         fun image(entry: Entry?): BufferedImage? {
             val raw = entry?.item?.emoticonUrl ?: return null
             val url = trustedImageUrl(raw) ?: return null
@@ -91,35 +106,52 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
         scheduler.frame(seconds(now), width, height, rowHeight) { comment ->
             val graphic = image(indexed[comment.id])
             if (graphic != null) (rowHeight * graphic.width.toDouble() / graphic.height.coerceAtLeast(1)).toInt().coerceIn(rowHeight, rowHeight * 5)
-            else context.getFontMetrics(font).stringWidth(comment.text)
+            else context.getFontMetrics(font(indexed[comment.id])).stringWidth(comment.text)
         }.forEach { positioned ->
             val graphic = image(indexed[positioned.comment.id])
+            val entry = indexed[positioned.comment.id]
+            val style = entry?.rendered?.style
+            val font = font(entry)
+            pluginAwtColor(style?.backgroundColor)?.let { color ->
+                val metrics = context.getFontMetrics(font)
+                context.color = color
+                context.fillRoundRect(positioned.x.toInt() - 4, positioned.baseline.toInt() - metrics.ascent - 2,
+                    positioned.textWidth + 8, metrics.height + 4, 6, 6)
+            }
             if (graphic != null) {
                 context.drawImage(graphic, positioned.x.toInt(), (positioned.baseline - rowHeight + 6).toInt(), positioned.textWidth, rowHeight - 2, null)
             } else {
                 val shape = font.createGlyphVector(context.fontRenderContext, positioned.comment.text).getOutline(positioned.x.toFloat(), positioned.baseline.toFloat())
                 if (safeSettings.strokeEnabled && safeSettings.strokeWidth > 0) {
-                    context.color = Color.BLACK; context.stroke = BasicStroke(safeSettings.strokeWidth * scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); context.draw(shape)
+                    context.color = pluginAwtColor(style?.borderColor) ?: Color.BLACK
+                    context.stroke = BasicStroke(safeSettings.strokeWidth * scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND); context.draw(shape)
                 }
-                context.color = Color(positioned.comment.color)
+                context.color = pluginAwtColor(style?.textColor) ?: Color(positioned.comment.color)
                 context.fill(shape)
             }
         }
         if (shouldShowLiveSuperChatFlash(true, safeSettings.enabled, safeSettings.allowSpecial)) {
             val cardWidth = (width * 0.38).toInt().coerceIn(130, 360).coerceAtMost(width - 12)
-            val cardFont = Font("Microsoft YaHei UI", Font.PLAIN, (14 * scale).toInt().coerceIn(11, 24))
             var top = 8
             superChats.values.toList().takeLast(3).asReversed().forEach { entry ->
-                if (!safeSettings.allows(entry.comment)) return@forEach
+                val rendered = entry.rendered ?: return@forEach
+                if (!safeSettings.allows(rendered.comment)) return@forEach
+                val style = rendered.style
+                val cardFont = Font("Microsoft YaHei UI", if (style?.bold == true) Font.BOLD else Font.PLAIN,
+                    (14 * scale * (style?.scale ?: 1f)).toInt().coerceIn(11, 64))
                 val elapsed = ((now - entry.receivedNanos) / 1_000_000_000).toInt()
                 val remaining = resolveLiveSuperChatRemainingSec(entry.item.superChatDuration, elapsed)
                 val metrics = context.getFontMetrics(cardFont)
-                val body = wrap(entry.comment.text, cardWidth - 16, metrics::stringWidth).take(4)
+                val body = wrap(rendered.comment.text, cardWidth - 16, metrics::stringWidth).take(4)
                 val cardHeight = (body.size + 1) * metrics.height + 14
                 if (top + cardHeight > height) return@forEach
-                context.color = Color(entry.item.superChatBackgroundColor.takeIf { it != 0 } ?: 0xdd5b6a)
+                context.color = pluginAwtColor(style?.backgroundColor) ?: Color(entry.item.superChatBackgroundColor.takeIf { it != 0 } ?: 0xdd5b6a)
                 context.fillRoundRect(width - cardWidth - 8, top, cardWidth, cardHeight, 12, 12)
-                context.color = Color.WHITE; context.font = cardFont
+                pluginAwtColor(style?.borderColor)?.let { color ->
+                    context.color = color; context.stroke = BasicStroke(2f)
+                    context.drawRoundRect(width - cardWidth - 8, top, cardWidth, cardHeight, 12, 12)
+                }
+                context.color = pluginAwtColor(style?.textColor) ?: Color.WHITE; context.font = cardFont
                 val headline = "${entry.item.uname.take(14)} ¥${entry.item.superChatPrice} · ${formatLiveSuperChatCountdown(remaining)}"
                 context.drawString(headline.take(60), width - cardWidth, top + metrics.ascent + 5)
                 body.forEachIndexed { index, line -> context.drawString(line, width - cardWidth, top + (index + 2) * metrics.height) }

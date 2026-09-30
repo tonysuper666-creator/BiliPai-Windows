@@ -110,9 +110,10 @@ object PlayerSelfTest {
             check(!player.state.value.muted) { "Native unmute did not remain disabled." }
             checks["muteAndAudioOnly"] = "passed"
 
-            player.seekTo(4.0)
-            waitFor(player, "absolute seek") { abs(it.positionSeconds - 4.0) < 0.3 }
+            val seekId = requireNotNull(player.seekToTracked(4.0)) { "Native seek was not submitted" }
+            waitFor(player, "native seek completion event") { it.seekCompletedId == seekId && abs((it.seekCompletedPositionSeconds ?: 0.0) - 4.0) < 0.3 }
             checks["seek"] = "passed"
+            checks["seekCompletionEvent"] = "passed"
             val subtitle = File(outputDirectory, "native-smoke-subtitle.srt")
             subtitle.writeText("1\n00:00:00,000 --> 00:00:09,800\nBiliPai subtitle smoke\n", Charsets.UTF_8)
             player.addSubtitle(subtitle.toPath(), "Native subtitle smoke", "en")
@@ -156,6 +157,18 @@ object PlayerSelfTest {
                     it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true
             }
             checks["surfaceReattachmentAndSubtitleRetention"] = "passed"
+            val recoveryVersion = player.currentSourceVersion
+            check(player.recoverSource(recoveryVersion, positionSeconds = reattachPosition, paused = true, forceSoftwareDecoding = true)) {
+                "Same-source decoder fallback was rejected."
+            }
+            waitFor(player, "software-decoding recovery preserves source ownership position and bilingual subtitles") {
+                it.ready && !it.loading && it.paused && it.softwareDecodingRequested && it.hardwareDecoder == null &&
+                    player.currentSourceVersion == recoveryVersion && abs(it.positionSeconds - reattachPosition) < 0.3 &&
+                    it.videoCodec != null && it.audioCodec != null &&
+                    it.subtitleText?.contains("BiliPai subtitle smoke") == true &&
+                    it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true
+            }
+            checks["softwareRecoveryOwnershipPositionAndSubtitleRetention"] = "passed"
             var pipRestored = false
             pip = PictureInPictureController(player, onRestore = {
                 requireNotNull(frame).contentPane.add(player.surface)
@@ -214,8 +227,32 @@ object PlayerSelfTest {
             waitFor(player, "progressive EDL end of whole timeline") { it.ended }
             checks["progressiveSegmentsDurationSeekAndTransition"] = "passed"
 
+            // Saturate the native event queue with old sources; only the latest playlist entry may publish state.
+            repeat(20) { index ->
+                val source = if (index % 2 == 0) File(outputDirectory, "rapid-missing-$index.avi").absolutePath else video.absolutePath
+                player.load(PlaybackSource(source, referer = "", title = "Rapid source $index", startPositionSeconds = 1.5, startPaused = true))
+            }
+            waitFor(player, "latest source after rapid replacement") {
+                !it.loading && it.paused && it.videoCodec != null && abs(it.positionSeconds - 1.5) < 0.3
+            }
+            check(player.state.value.sourceTitle == "Rapid source 19" && player.state.value.failure == null && !player.state.value.ended)
+            val latestVersion = player.currentSourceVersion
+            repeat(10) { index ->
+                val source = if (index % 2 == 0) File(outputDirectory, "rapid-recovery-missing-$index.avi").absolutePath else video.absolutePath
+                check(player.recoverSource(latestVersion, PlaybackSource(source, referer = "", title = "Rapid recovery $index"), 2.2, true))
+            }
+            waitFor(player, "latest same-owner recovery after rapid replacement") {
+                !it.loading && it.paused && it.videoCodec != null && abs(it.positionSeconds - 2.2) < 0.3
+            }
+            check(player.currentSourceVersion == latestVersion && player.state.value.sourceTitle == "Rapid recovery 9" &&
+                player.state.value.failure == null && !player.state.value.ended)
+            checks["rapidReplacementAndSameOwnerRecoveryIsolation"] = "passed"
+
             player.load(PlaybackSource(File(outputDirectory, "intentionally-missing-media.avi").absolutePath, referer = ""))
             waitFor(player, "invalid media error", allowError = true) { it.error != null }
+            check(player.state.value.failure?.kind == PlayerFailureKind.FILE_IO && !player.state.value.failure?.diagnostics.isNullOrEmpty()) {
+                "Missing local media did not publish typed, bounded native diagnostics: ${player.state.value.failure}"
+            }
             checks["invalidMedia"] = "passed"
             val recoveryOwnership = player.loadVersioned(PlaybackSource(video.absolutePath, referer = "", title = "Video only recovery",
                 startPositionSeconds = 2.0, startPaused = true))
@@ -224,6 +261,7 @@ object PlayerSelfTest {
             }
             check(player.state.value.audioCodec == null) { "The previous DASH audio track leaked into the next video." }
             check(player.state.value.tracks.none { it.type == "sub" }) { "The previous subtitle track leaked into the next video." }
+            check(!player.state.value.softwareDecodingRequested && player.state.value.failure == null) { "A prior fallback or failure leaked into a new source." }
             checks["errorRecoveryAndAudioIsolation"] = "passed"
             checks["sourceResumePositionAndPause"] = "passed"
             check(!player.stopIfSourceVersion(replayOwnership) && player.state.value.videoCodec != null) { "An old source owner stopped the newer video." }

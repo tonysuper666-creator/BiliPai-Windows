@@ -54,6 +54,14 @@ fun main(args: Array<String>) {
     }
     val initialVideo = args.firstOrNull { it.startsWith("--video=") }?.substringAfter('=')
     if (DesktopUpdater.launchInstalledUpdateIfNewer(args)) return
+    if (args.firstOrNull() == "--webdav-auto-backup") {
+        val result = runBlocking {
+            com.bilipai.desktop.backup.DesktopBackupCoordinator(
+                com.bilipai.desktop.backup.DesktopBackupStore(DesktopLibrary.directoryForAccount(null))).automaticBackupIfDue()
+        }
+        if (result.isFailure) System.err.println("WebDAV scheduled backup failed; open backup settings for details.")
+        kotlin.system.exitProcess(if (result.isSuccess) 0 else 1)
+    }
     val healthIndex = args.indexOf("--update-health-file")
     val tokenIndex = args.indexOf("--update-health-token")
     val healthPath = args.getOrNull(healthIndex + 1)?.takeIf { healthIndex >= 0 }

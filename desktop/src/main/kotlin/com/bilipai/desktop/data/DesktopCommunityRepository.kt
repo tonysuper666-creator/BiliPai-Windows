@@ -23,6 +23,15 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 /** Upstream web API contracts, sharing the desktop's authorized cookie jar and WBI keys. */
 class DesktopCommunityRepository(private val repository: DesktopRepository) {
     val account get() = repository.account
+    val search by lazy { DesktopSearchRepository(repository) }
+    val searchPreferences by lazy { DesktopSearchPreferences() }
+    private val heartbeatReporter by lazy { DesktopPlaybackHeartbeatReporter(repository, searchPreferences) }
+
+    suspend fun reportPlayHeartbeat(bvid: String, cid: Long, playedTimeSec: Long = 0,
+        realPlayedTimeSec: Long = playedTimeSec, startTsSec: Long = System.currentTimeMillis() / 1000,
+        aid: Long = 0, epid: Long = 0, sid: Long = 0, videoType: Int = 3, subType: Int? = null,
+        expectedSessionEpoch: Long = repository.sessionEpoch): Boolean = heartbeatReporter.report(bvid, cid,
+        playedTimeSec, realPlayedTimeSec, startTsSec, aid, epid, sid, videoType, subType, expectedSessionEpoch)
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val client = repository.httpClient.newBuilder().retryOnConnectionFailure(false).build()
     private fun retrofit(base: String) = Retrofit.Builder().baseUrl(base).client(client)
@@ -566,8 +575,7 @@ internal fun communityNoteFields(aid: Long, document: VideoNoteEditorDocument, e
 }
 
 internal fun communitySearchParams(keyword: String, type: SearchType, page: Int, filters: Map<String, String>): Map<String, String> =
-    mapOf("keyword" to keyword, "search_type" to type.value, "page" to page.toString(), "page_size" to "20",
-        "platform" to "pc", "web_location" to "1430654") + filters
+    com.android.purebilibili.data.repository.desktopSearchTypeParams(keyword, type.value, page, filters)
 
 internal fun communitySpaceDynamicParams(mid: Long, offset: String): Map<String, String> =
     mapOf("host_mid" to mid.toString(), "offset" to offset, "features" to SPACE_DYNAMIC_FEATURES,

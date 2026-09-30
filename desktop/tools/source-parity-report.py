@@ -18,9 +18,12 @@ import subprocess
 def audit(repo: Path) -> dict:
     manifest = json.loads((repo / "desktop/upstream-sources.json").read_text(encoding="utf-8-sig"))
     entries = manifest["sources"]
+    resources = manifest.get("resources", [])
     if len({item["path"] for item in entries}) != len(entries):
         raise ValueError("Duplicate upstream provenance entry")
-    for item in entries:
+    if len({item["path"] for item in resources}) != len(resources):
+        raise ValueError("Duplicate upstream resource provenance entry")
+    for item in entries + resources:
         relative = Path(item["path"])
         if relative.is_absolute() or ".." in relative.parts:
             raise ValueError("Source path escapes repository")
@@ -69,6 +72,7 @@ def audit(repo: Path) -> dict:
         "windowsSourceCommit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip(),
         "workingTreeDirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=repo, text=True).strip()),
         "adoptedSourceCount": len(entries), "adoptionModes": dict(Counter(item["mode"] for item in entries)),
+        "adoptedResourceCount": len(resources), "resourceHashesVerified": True,
         "apiInterfacesVerbatim": True, "apiInterfaces": original,
         "apiMethodCount": sum(len(item["methods"]) for item in original.values()),
         "responseFiles": {"upstreamCount": len(response_files), "adoptedCount": len([p for p in response_files if p in adopted]),

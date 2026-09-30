@@ -18,6 +18,10 @@ import com.android.purebilibili.data.repository.buildPlayUrlWbiBaseParams
 import com.android.purebilibili.data.repository.resolveDashRetryDelays
 import com.android.purebilibili.data.repository.resolveVideoInfoLookupInput
 import com.android.purebilibili.feature.login.parseLoginCookieHeader
+import com.android.purebilibili.feature.bangumi.collectPlayableDurlUrls
+import com.android.purebilibili.feature.video.viewmodel.normalizeCodecFamilyKey
+import com.android.purebilibili.feature.video.viewmodel.resolveEffectiveVideoSecondCodecPreference
+import com.android.purebilibili.feature.video.viewmodel.resolvePlaybackVideoCodec
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -39,6 +43,7 @@ import retrofit2.Retrofit
 import retrofit2.HttpException
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
+import com.bilipai.desktop.player.PlaybackSegment
 
 /** Windows platform adapter around upstream API declarations, models, signing and playback policies. */
 private data class DesktopSessionEpoch(val value: Long)
@@ -47,6 +52,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     val account: StateFlow<AccountSummary?> = sessions.account
     val savedAccounts: StateFlow<List<DesktopStoredAccountInfo>> = sessions.accounts
+    internal val sessionEpoch: Long get() = sessions.generation
     private val authMutex = Mutex()
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val client = OkHttpClient.Builder()
@@ -58,6 +64,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             val expectedEpoch = sessions.generation
             val builder = original.newBuilder().tag(DesktopSessionEpoch::class.java, DesktopSessionEpoch(expectedEpoch))
                 .header("User-Agent", resolvePlatformUserAgent(original.url, original.header("User-Agent")))
+            applyDesktopMergedRecommendationHeaders(builder, original.url, sessions.currentCookies()["buvid3"].orEmpty())
             if (original.url.host == "app.bilibili.com" && original.url.encodedPath in setOf("/x/v2/space", "/x/v2/space/likearc")) {
                 val buvid = original.header("X-BiliPai-Login-Buvid") ?: sessions.currentCookies()["buvid3"].orEmpty()
                 if (buvid.isNotBlank()) builder.header("buvid", buvid)
@@ -91,7 +98,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             val replacement = if (forcedCookie != null) {
                 request.newBuilder().header("Cookie", forcedCookie).removeHeader(FORCE_COOKIE_HEADER).build()
             } else request
-            val response = chain.proceed(replacement)
+            val response = chain.proceed(stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement)))
             // BridgeInterceptor saves response cookies after this interceptor returns. An old
             // account's in-flight response must never populate the newly activated account jar.
             if (epoch != sessions.generation) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
@@ -116,6 +123,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     private var wbiKeys: Pair<String, String>? = null
     @Volatile private var wbiExpiresAt = 0L
     private var wbiGeneration = -1L
+    private val playbackCache = DesktopPlaybackCache()
 
     internal val httpClient: OkHttpClient get() = client
     internal suspend fun ensureSession() = ensureVisitorSession()
@@ -163,7 +171,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         sessions.removeAccount(mid)
     } }
 
-    private fun resetAuthentication() { client.dispatcher.cancelAll(); visitorInitialized = false; wbiExpiresAt = 0 }
+    private fun resetAuthentication() { client.dispatcher.cancelAll(); visitorInitialized = false; wbiExpiresAt = 0; playbackCache.clear() }
 
     internal fun requireAccount(): AccountSummary = account.value?.takeIf { it.mid > 0 }
         ?: throw BiliApiException(-101, "请先登录后查看账号内容")
@@ -283,17 +291,38 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             info.stat.view.toLong(), info.stat.like.toLong(), pages, authorMid = info.owner.mid, raw = info)
     }
 
-    suspend fun playback(details: VideoDetails, pageIndex: Int = 0, quality: Int = 80): PlaybackSource = withContext(Dispatchers.IO) {
+    suspend fun playback(details: VideoDetails, pageIndex: Int = 0, quality: Int = 80,
+        codecOverride: String? = null, forceRefresh: Boolean = false): PlaybackSource = withContext(Dispatchers.IO) {
         ensureVisitorSession()
         val part = details.pages.getOrNull(pageIndex) ?: throw IllegalArgumentException("视频分 P 不存在")
+        val codec = normalizeCodecFamilyKey(codecOverride)
+        require(codec == null || codec in setOf("avc1", "hev1", "av01")) { "不支持的视频编码" }
+        val epoch = sessions.generation
+        val cacheKey = DesktopPlaybackCache.Key(epoch, details.bvid, part.cid, quality, codec)
+        if (forceRefresh) playbackCache.invalidateVideo(epoch, details.bvid, part.cid)
+        else playbackCache.get(cacheKey)?.let { cached ->
+            cached.data.toPlaybackSource(details, cached.selectionQuality, codec)?.let {
+                if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新加载")
+                return@withContext it
+            }
+        }
+        fun selected(data: PlayUrlData?, targetQuality: Int): PlaybackSource? {
+            val source = data?.toPlaybackSource(details, targetQuality, codec) ?: return null
+            if (epoch != sessions.generation) throw BiliApiException(-101, "账号已切换，请重新加载")
+            playbackCache.put(cacheKey, requireNotNull(data), targetQuality)
+            return source
+        }
         var lastError: Exception? = null
+        var refreshSignature = forceRefresh
         for ((index, targetQuality) in buildDashAttemptQualities(quality).withIndex()) {
             for (retryDelay in resolveDashRetryDelays(targetQuality, isPrimaryAttempt = index == 0)) {
                 if (retryDelay > 0) delay(retryDelay)
                 try {
-                    val response = api.getPlayUrl(sign(buildPlayUrlWbiBaseParams(details.bvid, part.cid, targetQuality)))
+                    val params = sign(buildPlayUrlWbiBaseParams(details.bvid, part.cid, targetQuality), forceRefresh = refreshSignature)
+                    refreshSignature = false
+                    val response = api.getPlayUrl(params)
                     checkCode(response.code, response.message)
-                    response.data?.toPlaybackSource(details, targetQuality)?.let { return@withContext it }
+                    selected(response.data, targetQuality)?.let { return@withContext it }
                     lastError = BiliApiException(-1, "播放接口未返回可用媒体流")
                 } catch (cancelled: CancellationException) {
                     throw cancelled
@@ -308,7 +337,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         try {
             val response = api.getPlayUrlLegacy(details.bvid, part.cid, qn = quality)
             checkCode(response.code, response.message)
-            response.data?.toPlaybackSource(details, quality)?.let { return@withContext it }
+            selected(response.data, quality)?.let { return@withContext it }
         } catch (cancelled: CancellationException) {
             throw cancelled
         } catch (error: Exception) {
@@ -415,11 +444,12 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         return WbiUtils.sign(params, keys.first, keys.second, includeRiskFingerprint = includeRiskFingerprint)
     }
 
-    private fun PlayUrlData.toPlaybackSource(details: VideoDetails, requestedQuality: Int): PlaybackSource? {
+    internal fun PlayUrlData.toPlaybackSource(details: VideoDetails, requestedQuality: Int, codecOverride: String? = null): PlaybackSource? {
         val referer = "https://www.bilibili.com/video/${details.bvid}"
         val qualities = acceptQuality.mapIndexed { index, id -> PlaybackQuality(id, acceptDescription.getOrNull(index) ?: id.toString()) }
         dash?.let { streams ->
-            val video = streams.getBestVideo(requestedQuality, preferCodec = "avc1", secondPreferCodec = "hev1",
+            val video = streams.getBestVideo(requestedQuality, preferCodec = normalizeCodecFamilyKey(codecOverride) ?: "avc1",
+                secondPreferCodec = resolveEffectiveVideoSecondCodecPreference(codecOverride, "hev1"),
                 isHevcSupported = true, isAv1Supported = true)
             val audio = streams.getBestAudio()
             val videoUrl = video?.getValidUrl()?.takeIf { it.isNotBlank() }
@@ -427,13 +457,24 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                 audio?.getValidUrl()?.takeIf { it.isNotBlank() }?.let(::normalizeUrl), details.title, referer,
                 quality = video?.id ?: quality, availableQualities = qualities,
                 videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
-                audioAlternatives = audio?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl))
+                audioAlternatives = audio?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                videoCodecFamily = resolvePlaybackVideoCodec(videoUrl, streams.video), cachedDashData = streams)
         }
         val progressive = durl.orEmpty()
-        // The player facade supports one muxed URL; concatenated FLV segments require another adapter.
-        if (progressive.size == 1 && progressive.first().url.isNotBlank()) {
-            return PlaybackSource(normalizeUrl(progressive.first().url), null, details.title, referer, quality = quality,
-                availableQualities = qualities, videoAlternatives = progressive.first().backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl))
+        val progressiveUrls = collectPlayableDurlUrls(progressive)
+        // Preserve the upstream sequence, including each duration. Missing segments must not
+        // silently turn a complete video into a truncated first segment.
+        if (progressive.isNotEmpty() && progressiveUrls.size == progressive.size) {
+            val urls = progressiveUrls.map { normalizeUrl(it).toHttpUrlOrNull()?.toString() }
+            if (urls.any { it == null }) return null
+            val parts = progressive.zip(urls).map { (segment, url) ->
+                PlaybackSegment(requireNotNull(url), segment.length.takeIf { it > 0 }?.div(1000.0))
+            }
+            return PlaybackSource(parts.first().url, null, details.title, referer, quality = quality,
+                availableQualities = qualities,
+                videoAlternatives = if (parts.size == 1) progressive.first().backupUrl.orEmpty()
+                    .mapNotNull { normalizeUrl(it).toHttpUrlOrNull()?.toString() } else emptyList(),
+                progressiveSegments = if (parts.size > 1) parts else emptyList())
         }
         return null
     }
@@ -447,7 +488,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
         internal fun resolvePlatformUserAgent(url: HttpUrl, explicit: String?): String = when {
             !explicit.isNullOrBlank() -> explicit
-            resolveAndroidHdLoginAppKeyHeader(url.encodedPath) != null -> "Mozilla/5.0 BiliDroid/2.0.1 (bbcallen@gmail.com) os/android model/android_hd mobi_app/android_hd build/2001100 channel/master innerVer/2001100 osVer/15 network/2"
+            resolveAndroidHdLoginAppKeyHeader(url.encodedPath) != null || isDesktopMergedFeedRequest(url) -> "Mozilla/5.0 BiliDroid/2.0.1 (bbcallen@gmail.com) os/android model/android_hd mobi_app/android_hd build/2001100 channel/master innerVer/2001100 osVer/15 network/2"
             url.host == "app.bilibili.com" -> "Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2"
             else -> USER_AGENT
         }

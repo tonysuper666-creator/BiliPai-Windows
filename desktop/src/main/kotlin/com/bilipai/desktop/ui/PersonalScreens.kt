@@ -25,7 +25,8 @@ fun PersonalContentScreen(section: PersonalSection, repository: DesktopRepositor
     community: DesktopCommunityRepository, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit,
     onResource: (PersonalResource) -> Unit = {}, onCollection: (mid: Long, collectionId: Long, collectionType: String) -> Unit = { _, _, _ -> }) {
     CommunityLoginGate(repository, onLogin) { mid ->
-        val feedMemory = remember(mid) { CommunityFeedMemory() }
+        val retained = LocalDesktopBrowseMemory.current
+        val feedMemory = retained?.feeds ?: remember(mid) { CommunityFeedMemory() }
         CompositionLocalProvider(LocalCommunityFeedMemory provides feedMemory, LocalCommunityFeedNamespace provides section) {
         Column(Modifier.fillMaxSize()) {
             Text(section.title, modifier = Modifier.padding(20.dp, 14.dp), style = MaterialTheme.typography.headlineSmall)

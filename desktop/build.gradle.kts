@@ -19,6 +19,7 @@ val manifest = if (sourceManifest.exists()) {
     JsonSlurper().parse(sourceManifest) as Map<*, *>
 } else emptyMap<Any, Any>()
 val sources = (manifest["sources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
+val originalResources = (manifest["resources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
 val upstreamBuildFile = File(repositoryRoot, "app/build.gradle.kts")
 val upstreamBuild = upstreamBuildFile.readText()
 val upstreamVersionCode = Regex("versionCode\\s*=\\s*(\\d+)")
@@ -34,10 +35,11 @@ val prepareUpstreamSources by tasks.registering(Sync::class) {
     into(generatedUpstream)
     inputs.file(sourceManifest)
     inputs.files(sources.map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
     doFirst {
         require(sources.isNotEmpty()) { "The upstream source manifest is missing or empty." }
         require(manifest["hashNormalization"] == "lf") { "The upstream source inventory must use LF-normalized hashes." }
-        sources.forEach { entry ->
+        (sources + originalResources).forEach { entry ->
             val source = File(repositoryRoot, entry["path"].toString())
             require(source.isFile) { "Required upstream source is missing: ${entry["path"]}" }
             val normalized = source.readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)
@@ -103,6 +105,71 @@ val extractUpstreamLogin by tasks.registering(Exec::class) {
         .map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/login"))
 }
+val extractUpstreamPlugins by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-plugins.py")
+    inputs.file("tools/extract-upstream-media.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { "plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/plugins"))
+}
+val extractUpstreamDiscovery by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-discovery-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/discovery").get().asFile.absolutePath)
+    inputs.file("tools/extract-discovery-platform.py")
+    inputs.file("tools/extract-upstream-media.py")
+    inputs.file("tools/sync-upstream.py")
+    inputs.files(sources.filter { "discovery" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/discovery"))
+}
+val extractUpstreamSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/settings").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "backup" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings"))
+}
+val extractUpstreamPlayback by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/playback").get().asFile.absolutePath)
+    inputs.files("tools/extract-playback-platform.py", "third-party/media3-error-codes.json")
+    inputs.files(sources.filter { "recovery" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/playback"))
+}
+val extractUpstreamSearch by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-search-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/search").get().asFile.absolutePath)
+    inputs.files("tools/extract-search-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "search-native" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/search"))
+}
+val extractUpstreamCast by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-cast-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/cast").get().asFile.absolutePath)
+    inputs.files("tools/extract-cast-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "dlna-cast" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/cast"))
+}
 
 kotlin.sourceSets.named("main") {
     kotlin.srcDir(generatedUpstream)
@@ -111,15 +178,36 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/media"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/audio"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/login"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/plugins"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/discovery"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/playback"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/search"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/cast"))
 }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast) }
+
+val prepareOriginalPluginResources by tasks.registering(Sync::class) {
+    dependsOn(prepareUpstreamSources)
+    from(File(repositoryRoot, "app/src/main/assets/anime4k")) { into("anime4k"); include(originalResources.filter {
+        it["path"].toString().startsWith("app/src/main/assets/anime4k/") }.map { File(it["path"].toString()).name }) }
+    from(File(repositoryRoot, "app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
+    into(layout.buildDirectory.dir("generated/plugin-resources"))
+    inputs.file(sourceManifest)
+    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
+}
+sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/plugin-resources")) }
+tasks.named("processResources") { dependsOn(prepareOriginalPluginResources) }
 
 dependencies {
     implementation(compose.desktop.currentOs)
     implementation(compose.material3)
+    implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
+    implementation("org.nanohttpd:nanohttpd:2.3.1")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
@@ -214,7 +302,7 @@ compose.desktop {
             vendor = "BiliPai community"
             licenseFile.set(File(repositoryRoot, "LICENSE"))
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
-            modules("java.net.http", "java.desktop", "java.logging", "java.sql", "jdk.unsupported", "jdk.httpserver")
+            modules("java.net.http", "java.desktop", "java.logging", "java.sql", "java.xml", "jdk.unsupported", "jdk.httpserver")
             windows {
                 iconFile.set(project.file("src/main/resources/app-icon.ico"))
                 menuGroup = "BiliPai"

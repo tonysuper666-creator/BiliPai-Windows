@@ -5690,11 +5690,39 @@
       "path": "licenses/rav1e-crate-wit-bindgen-rt-0.39.0-upstream-LICENSE-MIT",
       "sourceUrl": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-MIT",
       "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+    },
+    {
+      "path": "licenses/libplacebo-jinja-LICENSE.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/pallets/jinja/15206881c006c79667fe5154fe80c01c65410679/LICENSE.txt",
+      "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+    },
+    {
+      "path": "licenses/libplacebo-markupsafe-LICENSE.txt",
+      "sourceUrl": "https://raw.githubusercontent.com/pallets/markupsafe/297fc8e356e6836a62087949245d09a28e9f1b13/LICENSE.txt",
+      "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea"
+    },
+    {
+      "path": "licenses/rav1e-crate-r-efi-5.2.0-AUTHORS",
+      "sourceUrl": "https://static.crates.io/crates/r-efi/r-efi-5.2.0.crate",
+      "sha256": "c42285aa32440c3b5358fd4805b817cd8d6e1795111d2e4c547530be41896b2d",
+      "sourcePath": "AUTHORS"
+    },
+    {
+      "path": "licenses/rav1e-crate-winapi-i686-pc-windows-gnu-0.4.0-src_lib.rs",
+      "sourceUrl": "https://static.crates.io/crates/winapi-i686-pc-windows-gnu/winapi-i686-pc-windows-gnu-0.4.0.crate",
+      "sha256": "79212a91f610f8a77aa6ed4cc77212c2531eeb35630388bf07323cc328fcca42",
+      "sourcePath": "src/lib.rs"
+    },
+    {
+      "path": "licenses/rav1e-crate-winapi-x86_64-pc-windows-gnu-0.4.0-src_lib.rs",
+      "sourceUrl": "https://static.crates.io/crates/winapi-x86_64-pc-windows-gnu/winapi-x86_64-pc-windows-gnu-0.4.0.crate",
+      "sha256": "79212a91f610f8a77aa6ed4cc77212c2531eeb35630388bf07323cc328fcca42",
+      "sourcePath": "src/lib.rs"
     }
   ],
   "dependencyLicenseInventory": {
     "complete": false,
-    "scope": "All directly enabled recipe notices, known transitive source notices, exact embedded Rust runtime notices, and all registry Cargo.lock package notices are inventoried. Source-distribution and remaining missing package notices still require reconciliation before public release.",
+    "scope": "Direct recipes, exact known nested licenses, embedded Rust runtime and Cargo.lock notices are inventoried. difflib and simd_helpers published packages declare MIT but omit a notice; source-distribution reconciliation and those missing notices remain before public release.",
     "recipes": [
       {
         "recipe": "scripts.d/10-mingw-std-threads.sh",
@@ -7579,8 +7607,10 @@
         "commit": "15206881c006c79667fe5154fe80c01c65410679",
         "pinSource": "https://github.com/haasn/libplacebo/tree/22ee762e8e0890fc54068beb670310f0edce7263/3rdparty/jinja",
         "role": "generation tool only",
-        "licensePaths": [],
-        "status": "missing"
+        "licensePaths": [
+          "licenses/libplacebo-jinja-LICENSE.txt"
+        ],
+        "status": "collected"
       },
       {
         "owner": "libplacebo-markupsafe",
@@ -7588,8 +7618,10 @@
         "commit": "297fc8e356e6836a62087949245d09a28e9f1b13",
         "pinSource": "https://github.com/haasn/libplacebo/tree/22ee762e8e0890fc54068beb670310f0edce7263/3rdparty/markupsafe",
         "role": "generation tool only",
-        "licensePaths": [],
-        "status": "missing"
+        "licensePaths": [
+          "licenses/libplacebo-markupsafe-LICENSE.txt"
+        ],
+        "status": "collected"
       },
       {
         "owner": "libplacebo-nuklear",
@@ -9337,8 +9369,10 @@
           "version": "5.2.0",
           "sourceArchiveUrl": "https://static.crates.io/crates/r-efi/r-efi-5.2.0.crate",
           "sourceArchiveSha256": "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5",
-          "licensePaths": [],
-          "status": "requires-review",
+          "licensePaths": [
+            "licenses/rav1e-crate-r-efi-5.2.0-AUTHORS"
+          ],
+          "status": "collected",
           "sourceRepository": "r-efi/r-efi",
           "sourceCommitFromCargoVcsInfo": "db87f6c8c6346d66750b5bda6befebafa0dc0c4c",
           "licenseDeclarationFromPackage": "MIT OR Apache-2.0 OR LGPL-2.1-or-later"
@@ -10186,9 +10220,13 @@
           "version": "0.4.0",
           "sourceArchiveUrl": "https://static.crates.io/crates/winapi-i686-pc-windows-gnu/winapi-i686-pc-windows-gnu-0.4.0.crate",
           "sourceArchiveSha256": "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6",
-          "licensePaths": [],
-          "status": "requires-review",
-          "licenseDeclarationFromPackage": "MIT/Apache-2.0"
+          "licensePaths": [
+            "licenses/rav1e-crate-winapi-i686-pc-windows-gnu-0.4.0-src_lib.rs",
+            "licenses/rav1e-crate-winapi-0.3.9-LICENSE-APACHE"
+          ],
+          "status": "collected",
+          "licenseDeclarationFromPackage": "MIT/Apache-2.0",
+          "noticeLicenseChoice": "Apache-2.0; exact GNU crate copyright header plus the Apache text supplied by the pinned winapi parent crate"
         },
         {
           "name": "winapi-util",
@@ -10206,9 +10244,13 @@
           "version": "0.4.0",
           "sourceArchiveUrl": "https://static.crates.io/crates/winapi-x86_64-pc-windows-gnu/winapi-x86_64-pc-windows-gnu-0.4.0.crate",
           "sourceArchiveSha256": "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f",
-          "licensePaths": [],
-          "status": "requires-review",
-          "licenseDeclarationFromPackage": "MIT/Apache-2.0"
+          "licensePaths": [
+            "licenses/rav1e-crate-winapi-x86_64-pc-windows-gnu-0.4.0-src_lib.rs",
+            "licenses/rav1e-crate-winapi-0.3.9-LICENSE-APACHE"
+          ],
+          "status": "collected",
+          "licenseDeclarationFromPackage": "MIT/Apache-2.0",
+          "noticeLicenseChoice": "Apache-2.0; exact GNU crate copyright header plus the Apache text supplied by the pinned winapi parent crate"
         },
         {
           "name": "windows-sys",

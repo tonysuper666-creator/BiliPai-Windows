@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bilipai.desktop.data.*
+import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import java.awt.Desktop
 import java.net.URI
 
@@ -21,12 +22,15 @@ internal class CommunityNavigation(val onVideo: (VideoCard) -> Unit, val onUser:
 fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, query: String = "", userId: Long = 0, articleId: Long = 0,
     noteVideo: VideoDetails? = null, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onArticle: (Long) -> Unit,
-    onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}) {
+    onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null) {
     var dynamicDetail by remember(section, userId, query) { mutableStateOf<String?>(null) }
     val account by repository.account.collectAsState()
-    val feedMemory = remember(account?.mid) { CommunityFeedMemory() }
+    val inherited = LocalDesktopBrowseMemory.current
+    val fallback = remember(account?.mid) { DesktopBrowseMemory() }
+    val browseMemory = inherited ?: fallback
+    val feedMemory = browseMemory.feeds
     val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, { dynamicDetail = it })
-    CompositionLocalProvider(LocalCommunityFeedMemory provides feedMemory,
+    CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalCommunityFeedMemory provides feedMemory,
         LocalCommunityFeedNamespace provides listOf(section, userId, articleId, noteVideo?.aid)) {
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(20.dp, 14.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -38,7 +42,7 @@ fun CommunityContentScreen(section: CommunitySection, repository: DesktopReposit
         else key(section, userId, articleId) {
             when (section) {
                 CommunitySection.DYNAMIC -> CommunityLoginGate(repository, onLogin) { mid -> CommunityDynamicFeed(mid, community, navigation) }
-                CommunitySection.SEARCH -> CommunitySearch(query, community, navigation)
+                CommunitySection.SEARCH -> CommunitySearch(query, community, navigation, runtime)
                 CommunitySection.USER -> CommunityUserSpace(userId, repository, social, community, navigation)
                 CommunitySection.MESSAGES -> CommunityLoginGate(repository, onLogin) { mid -> CommunityMessages(mid, community, navigation) }
                 CommunitySection.ARTICLE -> CommunityArticle(articleId, community, navigation)

@@ -42,6 +42,7 @@ fun PlayerPanel(
     onMessage: (String) -> Unit = {},
     renderSurface: Boolean = true,
     onPictureInPicture: (() -> Unit)? = null,
+    onSeekTo: ((Double) -> Unit)? = null,
 ) {
     val state by player.state.collectAsState()
     val scope = rememberCoroutineScope()
@@ -55,6 +56,7 @@ fun PlayerPanel(
     val duration = state.durationSeconds.takeIf { it.isFinite() && it > 0 }?.toFloat() ?: 1f
     fun update(next: PlayerPreferences) { onPreferencesChange(next.normalized()) }
     fun message(text: String) { status = text; onMessage(text) }
+    fun seekTo(seconds: Double) { (onSeekTo ?: player::seekTo)(seconds.coerceAtLeast(0.0)) }
 
     Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black)) {
@@ -63,15 +65,15 @@ fun PlayerPanel(
         }
         Slider(value = (seeking ?: state.positionSeconds.toFloat()).let { if (it.isFinite()) it.coerceIn(0f, duration) else 0f },
             onValueChange = { seeking = it }, onValueChangeFinished = {
-                seeking?.let { player.seekTo(it.toDouble()) }; seeking = null
+                seeking?.let { seekTo(it.toDouble()) }; seeking = null
             }, valueRange = 0f..duration, enabled = state.durationSeconds > 0 && state.error == null,
             modifier = Modifier.fillMaxWidth())
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             FilledTonalButton(onClick = { player.togglePause() }, enabled = state.ready && (state.durationSeconds > 0 || state.ended)) {
                 Text(if (state.paused || state.ended) "播放" else "暂停")
             }
-            TextButton(onClick = { player.seekBy(-5.0) }, enabled = state.ready) { Text("−5秒") }
-            TextButton(onClick = { player.seekBy(5.0) }, enabled = state.ready) { Text("+5秒") }
+            TextButton(onClick = { seekTo(state.positionSeconds - 5.0) }, enabled = state.ready) { Text("−5秒") }
+            TextButton(onClick = { seekTo(state.positionSeconds + 5.0) }, enabled = state.ready) { Text("+5秒") }
             if (onPreviousPart != null) TextButton(onClick = onPreviousPart) { Text("上一集") }
             if (onNextPart != null) TextButton(onClick = onNextPart) { Text("下一集") }
             Text("${playerTime(state.positionSeconds)} / ${playerTime(state.durationSeconds)}",

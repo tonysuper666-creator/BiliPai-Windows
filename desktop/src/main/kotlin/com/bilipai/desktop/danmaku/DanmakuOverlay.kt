@@ -3,6 +3,7 @@ package com.bilipai.desktop.danmaku
 import com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.feature.live.LiveDanmakuItem
+import com.android.purebilibili.core.plugin.DanmakuStyle
 import com.bilipai.desktop.player.MpvPlayer
 import com.sun.jna.Native
 import com.sun.jna.Pointer
@@ -15,6 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,10 +53,12 @@ class DanmakuOverlay(
 ) : AutoCloseable {
     private val closed = AtomicBoolean(false)
     private val generation = AtomicLong()
+    private val documentRevision = AtomicLong()
     private val requestLock = Any()
     private val requests = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var loadJob: Job? = null
     private var windowJob: Job? = null
+    private var pluginJob: Job? = null
     private val mutableError = MutableStateFlow<String?>(null)
     val loadError: StateFlow<String?> = mutableError.asStateFlow()
     private val mutableCount = MutableStateFlow(0)
@@ -64,6 +68,10 @@ class DanmakuOverlay(
     private val mutableFormat = MutableStateFlow<DanmakuFormat?>(null)
     val format: StateFlow<DanmakuFormat?> = mutableFormat.asStateFlow()
     @Volatile private var settings = DanmakuSettings()
+    @Volatile private var eyeTint = DesktopEyeTint()
+    @Volatile private var pluginProcessor: DanmakuPluginProcessor? = null
+    @Volatile private var rawDocument = DanmakuDocument()
+    private var styles = emptyMap<Int, DanmakuStyle>()
     var enabled: Boolean
         get() = settings.enabled
         set(value) { applySettings(settings.copy(enabled = value)) }
@@ -80,7 +88,7 @@ class DanmakuOverlay(
     private val liveRenderer = LiveDanmakuRenderer(requests)
     private data class PendingLive(val generation: Long, val item: LiveDanmakuItem)
     private val pendingLive = ArrayBlockingQueue<PendingLive>(600)
-    private val measuredWidths = mutableMapOf<Pair<Int, Int>, Int>()
+    private val measuredWidths = mutableMapOf<Triple<Int, Int, Int>, Int>()
     private val panel = object : JComponent() {
         override fun paintComponent(graphics: Graphics) {
             val context = graphics.create() as Graphics2D
@@ -94,39 +102,51 @@ class DanmakuOverlay(
                 val density = graphicsConfiguration?.defaultTransform?.scaleX?.toFloat() ?: 1f
                 val viewport = resolveDanmakuViewport(width, height, density, 360f) ?: return
                 val configuration = settings
-                context.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, configuration.opacity)
-                if (liveMode) {
+                if (configuration.enabled) {
+                  context.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, configuration.opacity)
+                  if (liveMode) {
                     liveRenderer.paint(context, width, height, viewport.scale, configuration)
-                    return
-                }
+                  } else {
                 if (measuredWidths.size > 5_000) measuredWidths.clear()
                 fun fontSize(comment: DanmakuComment): Int =
-                    (comment.size * viewport.scale * 0.9f * configuration.fontScale).toInt().coerceIn(10, 96)
-                val fontStyle = if (configuration.fontWeight >= 5) Font.BOLD else Font.PLAIN
-                val rowHeight = (48 * viewport.scale * 0.9f * configuration.fontScale * configuration.lineHeight).toInt().coerceAtLeast(18)
+                    (comment.size * viewport.scale * 0.9f * configuration.fontScale * (styles[comment.id]?.scale ?: 1f)).toInt().coerceIn(10, 192)
+                fun fontStyle(comment: DanmakuComment): Int = if (configuration.fontWeight >= 5 || styles[comment.id]?.bold == true) Font.BOLD else Font.PLAIN
+                val largestScale = styles.values.maxOfOrNull { it.scale }?.coerceAtLeast(1f) ?: 1f
+                val rowHeight = (48 * viewport.scale * 0.9f * configuration.fontScale * configuration.lineHeight * largestScale).toInt().coerceAtLeast(18)
                 val positioned = scheduler.frame(displayTime, width, height, rowHeight) { comment ->
                     val size = fontSize(comment)
-                    measuredWidths.getOrPut(comment.id to size) {
-                        getFontMetrics(Font("Microsoft YaHei UI", fontStyle, size)).stringWidth(comment.text)
+                    val weight = fontStyle(comment)
+                    measuredWidths.getOrPut(Triple(comment.id, size, weight)) {
+                        getFontMetrics(Font("Microsoft YaHei UI", weight, size)).stringWidth(comment.text)
                     }
                 }
                 positioned.forEach { item ->
-                    val font = Font("Microsoft YaHei UI", fontStyle, fontSize(item.comment))
+                    val style = styles[item.comment.id]
+                    val font = Font("Microsoft YaHei UI", fontStyle(item.comment), fontSize(item.comment))
+                    pluginAwtColor(style?.backgroundColor)?.let { color ->
+                        val metrics = context.getFontMetrics(font)
+                        context.color = color
+                        context.fillRoundRect(item.x.toInt() - 4, item.baseline.toInt() - metrics.ascent - 2,
+                            item.textWidth + 8, metrics.height + 4, 6, 6)
+                    }
                     val shape = font.createGlyphVector(context.fontRenderContext, item.comment.text)
                         .getOutline(item.x.toFloat(), item.baseline.toFloat())
                     if (configuration.strokeEnabled && configuration.strokeWidth > 0f) {
-                        context.color = Color.BLACK
+                        context.color = pluginAwtColor(style?.borderColor) ?: Color.BLACK
                         context.stroke = BasicStroke(configuration.strokeWidth * viewport.scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
                         context.draw(shape)
                     }
-                    if (item.comment.isVipGradualColor) {
+                    if (item.comment.isVipGradualColor && style?.textColor == null) {
                         val x = item.x.toFloat()
                         context.paint = LinearGradientPaint(x, 0f, x + item.textWidth.coerceAtLeast(1), 0f,
                             floatArrayOf(0f, 0.5f, 1f), arrayOf(Color(0xff7cba), Color(0xa798ff), Color(0x70d6ff)))
-                    } else context.color = Color(item.comment.color)
+                    } else context.color = pluginAwtColor(style?.textColor) ?: Color(item.comment.color)
                     context.fill(shape)
                 }
                 advancedRenderer.paint(context, (displayTime * 1000).toLong(), width, height, viewport.scale, configuration)
+                  }
+                }
+                eyeTint.paint(context, width, height)
             } finally { context.dispose() }
         }
     }.apply { isOpaque = false }
@@ -144,6 +164,21 @@ class DanmakuOverlay(
                 panel.repaint()
             }
         }
+    }
+
+    fun setEyeProtection(dimAlpha: Float, warmAlpha: Float, warmArgb: Int = 0xffffc07a.toInt()) {
+        eyeTint = DesktopEyeTint(dimAlpha.takeIf(Float::isFinite)?.coerceIn(0f, 1f) ?: 0f,
+            warmAlpha.takeIf(Float::isFinite)?.coerceIn(0f, 1f) ?: 0f, warmArgb)
+        SwingUtilities.invokeLater { if (!closed.get()) panel.repaint() }
+    }
+
+    fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) {
+        val vod = synchronized(requestLock) {
+            pluginProcessor = processor
+            if (!liveMode) rawDocument to generation.get() else null
+        }
+        vod?.let { (document, version) -> installDocument(document, version) }
+        SwingUtilities.invokeLater { if (!closed.get()) { liveRenderer.setProcessor(processor); panel.repaint() } }
     }
 
     suspend fun load(cid: Long, aid: Long = 0L, durationSeconds: Double = 0.0) {
@@ -255,14 +290,40 @@ class DanmakuOverlay(
     }
 
     private fun installDocument(document: DanmakuDocument, version: Long) {
-        SwingUtilities.invokeLater {
-            if (!closed.get() && version == generation.get()) {
-                mutableCount.value = document.size
-                scheduler = DanmakuScheduler(document.comments, settings)
-                advancedRenderer = AdvancedDanmakuRenderer(document.advanced)
+        val (revision, processor) = synchronized(requestLock) {
+            if (version != generation.get() || closed.get()) return
+            pluginJob?.cancel()
+            rawDocument = document
+            documentRevision.incrementAndGet() to pluginProcessor
+        }
+        fun install(processed: DanmakuDocument, nextStyles: Map<Int, DanmakuStyle>) = SwingUtilities.invokeLater {
+            if (!closed.get() && version == generation.get() && revision == documentRevision.get()) {
+                mutableCount.value = processed.size
+                styles = nextStyles
+                scheduler = DanmakuScheduler(processed.comments, settings)
+                advancedRenderer = AdvancedDanmakuRenderer(processed.advanced)
                 measuredWidths.clear()
                 panel.repaint()
             }
+        }
+        if (processor == null) install(document, emptyMap())
+        else {
+          val processing = requests.launch(Dispatchers.Default) {
+            val next = mutableListOf<DanmakuComment>()
+            val nextStyles = mutableMapOf<Int, DanmakuStyle>()
+            document.comments.forEachIndexed { index, comment ->
+                if (index % 128 == 0) ensureActive()
+                applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->
+                    next += transformed.comment
+                    transformed.style?.let { nextStyles[transformed.comment.id] = it }
+                }
+            }
+            install(document.copy(comments = next), nextStyles)
+          }
+          synchronized(requestLock) {
+              if (version == generation.get() && revision == documentRevision.get() && !closed.get()) pluginJob = processing
+              else processing.cancel()
+          }
         }
     }
 
@@ -278,10 +339,10 @@ class DanmakuOverlay(
         }
         val currentOwner = SwingUtilities.getWindowAncestor(surface)
         val playerState = player.state.value
-        val visible = enabled && surface.isShowing && surface.width > 0 && surface.height > 0 &&
+        val visible = ((enabled && mutableCount.value > 0) || eyeTint.visible) && surface.isShowing && surface.width > 0 && surface.height > 0 &&
             currentOwner != null && currentOwner.isVisible &&
             (currentOwner !is Frame || currentOwner.extendedState and Frame.ICONIFIED == 0) &&
-            playerState.ready && playerState.error == null && !playerState.ended && !playerState.audioOnly && mutableCount.value > 0
+            playerState.ready && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
         if (!visible) { overlay?.isVisible = false; return }
         if (currentOwner != owner) {
             overlay?.dispose()
@@ -327,7 +388,7 @@ class DanmakuOverlay(
 
     override fun close() {
         if (closed.compareAndSet(false, true)) {
-            synchronized(requestLock) { generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel() }
+            synchronized(requestLock) { generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel() }
             requests.cancel()
             SwingUtilities.invokeLater { timer.stop(); overlay?.dispose(); overlay = null }
         }

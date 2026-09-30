@@ -1,6 +1,8 @@
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -13,72 +15,181 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.android.purebilibili.core.plugin.FeedKind
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.repository.*
+import com.android.purebilibili.feature.search.*
 import com.bilipai.desktop.data.*
+import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneOffset
 
 private data class CommunitySearchRow(val key: String, val title: String, val description: String, val cover: String,
-    val video: VideoCard? = null, val user: Long = 0, val article: Long = 0, val live: Long = 0,
+    val video: VideoCard? = null, val rawVideo: VideoItem? = null, val user: Long = 0, val article: Long = 0, val live: Long = 0,
     val season: Long = 0, val url: String = "")
+
+private class CommunitySearchState(initialQuery: String) {
+    var draft by mutableStateOf(initialQuery)
+    var submitted by mutableStateOf(initialQuery.trim())
+    var type by mutableStateOf(SearchType.VIDEO)
+    var filters by mutableStateOf(DesktopSearchFilters())
+    var hot by mutableStateOf<SearchTrendingBundle?>(null)
+    var defaultTerm by mutableStateOf("")
+    var hintError by mutableStateOf<Throwable?>(null)
+    var trendingError by mutableStateOf<Throwable?>(null)
+    var discover by mutableStateOf<List<HotItem>?>(null)
+    var discoverError by mutableStateOf<Throwable?>(null)
+    var historyError by mutableStateOf<Throwable?>(null)
+    var hintsRevision by mutableIntStateOf(0)
+    var discoverRevision by mutableIntStateOf(0)
+    var filterExpanded by mutableStateOf(false)
+    var initialRecorded by mutableStateOf(false)
+    val landingScroll = ScrollState(0)
+}
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
-    var draft by remember(initialQuery) { mutableStateOf(initialQuery) }
-    var submitted by remember(initialQuery) { mutableStateOf(initialQuery.trim()) }
-    var type by remember { mutableStateOf(SearchType.VIDEO) }
-    var order by remember { mutableStateOf("totalrank") }
-    var suggestions by remember { mutableStateOf(emptyList<SearchSuggestTag>()) }
-    var hot by remember { mutableStateOf(emptyList<HotItem>()) }
-    var defaultTerm by remember { mutableStateOf("") }
-    var hintError by remember { mutableStateOf<Throwable?>(null) }
-    var suggestionsError by remember { mutableStateOf<Throwable?>(null) }
-    LaunchedEffect(community) {
-        try { hot = community.searchHotWords().trending?.list.orEmpty(); defaultTerm = community.searchDefault().showName }
-        catch (error: Exception) { if (error is CancellationException) throw error; hintError = error }
+internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRepository, navigation: CommunityNavigation,
+    runtime: DesktopPluginRuntime? = null) {
+    val account by community.account.collectAsState()
+    val memory = LocalDesktopBrowseMemory.current
+    val stateKey = listOf("search-screen", account?.mid, initialQuery)
+    val state = remember(memory, stateKey) { memory?.screen(stateKey) { CommunitySearchState(initialQuery) } ?: CommunitySearchState(initialQuery) }
+    var draft by state::draft; var submitted by state::submitted; var type by state::type; var filters by state::filters
+    val preferences = community.searchPreferences
+    val history by remember(preferences, account?.mid) { preferences.history(account?.mid) }.collectAsState()
+    val privacy by preferences.privacyMode.collectAsState()
+    val suggestionsEnabled by preferences.suggestionsEnabled.collectAsState()
+    val search = community.search
+    val scope = rememberCoroutineScope()
+    var suggestions by remember(state) { mutableStateOf(emptyList<SearchSuggestTag>()) }
+    var suggestionsError by remember(state) { mutableStateOf<Throwable?>(null) }
+    var settingsBusy by remember(state) { mutableStateOf(false) }
+    val nativePlugins = runtime?.plugins?.collectAsState()?.value
+    val jsonPlugins = runtime?.jsonPlugins?.collectAsState()?.value
+    val pluginConfig = runtime?.store?.snapshot("plugin_prefs")?.collectAsState()?.value
+    val transform = remember(runtime, nativePlugins, jsonPlugins, pluginConfig) { { rows: List<CommunitySearchRow> ->
+        if (runtime == null || rows.none { it.rawVideo != null }) rows else {
+            val originals = rows.associateBy { it.rawVideo?.bvid }
+            runtime.filterFeedItems(rows.mapNotNull { it.rawVideo }, FeedKind.SEARCH).mapNotNull { video ->
+                originals[video.bvid]?.copy(video = discoveryVideoCard(video), rawVideo = video)
+            }
+        }
+    } }
+    fun saveHistory(term: String) { val mid = account?.mid; scope.launch {
+        try { preferences.record(mid, term); state.historyError = null }
+        catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
+    } }
+    fun submit(term: String) { val value = term.trim(); if (value.isNotEmpty()) {
+        draft = value; submitted = value; suggestions = emptyList(); saveHistory(value)
+    } }
+    LaunchedEffect(state) { if (!state.initialRecorded && submitted.isNotBlank()) {
+        state.initialRecorded = true; saveHistory(submitted)
+    } }
+    LaunchedEffect(search, state, state.hintsRevision) {
+        if (state.defaultTerm.isBlank() || state.hintsRevision > 0) {
+            state.hintError = null
+            try { state.defaultTerm = search.defaultHint() }
+            catch (error: Exception) { if (error is CancellationException) throw error; state.hintError = error }
+        }
     }
-    LaunchedEffect(draft, submitted) {
+    LaunchedEffect(search, state, state.hintsRevision) {
+        if (state.hot == null || state.hintsRevision > 0) {
+            state.trendingError = null
+            try { state.hot = search.trending() }
+            catch (error: Exception) { if (error is CancellationException) throw error; state.trendingError = error }
+        }
+    }
+    LaunchedEffect(search, state, history, privacy, state.discoverRevision) {
+        state.discoverError = null
+        try { state.discover = search.discover(history.map { it.keyword }, personalized = !privacy) }
+        catch (error: Exception) { if (error is CancellationException) throw error; state.discoverError = error }
+    }
+    LaunchedEffect(draft, submitted, suggestionsEnabled) {
         suggestions = emptyList(); suggestionsError = null
-        if (draft.isNotBlank() && draft.trim() != submitted) {
+        if (suggestionsEnabled && draft.isNotBlank() && draft.trim() != submitted) {
             delay(300)
-            try { suggestions = community.searchSuggestions(draft) }
+            try { suggestions = community.searchSuggestions(draft).filter { it.term.isNotBlank() || it.value.isNotBlank() || it.name.isNotBlank() } }
             catch (error: Exception) { if (error is CancellationException) throw error; suggestionsError = error }
         }
     }
-    fun submit(term: String) { val value = term.trim(); if (value.isNotEmpty()) { draft = value; submitted = value; suggestions = emptyList() } }
-    Column(Modifier.fillMaxSize()) {
+    Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(draft, { draft = it }, singleLine = true, placeholder = { Text(defaultTerm.ifBlank { "搜索视频、UP 主或专栏" }) },
-                modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(draft) }))
-            Button(onClick = { submit(draft.ifBlank { defaultTerm }) }) { Text("搜索") }
+            OutlinedTextField(draft, { draft = it }, singleLine = true, placeholder = { Text(state.defaultTerm.ifBlank { "搜索视频、UP 主或专栏" }) },
+                modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(draft.ifBlank { state.defaultTerm }) }))
+            Button(onClick = { submit(draft.ifBlank { state.defaultTerm }) }) { Text("搜索") }
+            if (submitted.isNotBlank()) TextButton(onClick = { draft = ""; submitted = ""; suggestions = emptyList() }) { Text("搜索首页") }
+        }
+        Row(Modifier.padding(horizontal = 20.dp).horizontalScroll(rememberScrollState()), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text("无痕搜索"); Switch(privacy, { enabled -> if (!settingsBusy) { settingsBusy = true; scope.launch {
+                try { preferences.setPrivacyMode(enabled) } catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
+                finally { settingsBusy = false }
+            } } }, enabled = !settingsBusy)
+            Text("搜索建议"); Switch(suggestionsEnabled, { enabled -> if (!settingsBusy) { settingsBusy = true; scope.launch {
+                try { preferences.setSuggestionsEnabled(enabled) } catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
+                finally { settingsBusy = false }
+            } } }, enabled = !settingsBusy)
+            if (privacy) Text("不保存本次搜索历史", style = MaterialTheme.typography.bodySmall)
         }
         if (suggestions.isNotEmpty()) FlowRow(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            suggestions.take(10).forEach { suggestion -> SuggestionChip(onClick = { submit(suggestion.value.ifBlank { suggestion.term }) }, label = { Text(cleanSearchText(suggestion.name.ifBlank { suggestion.value })) }) }
+            suggestions.take(10).forEach { suggestion -> SuggestionChip(onClick = { submit(suggestion.value.ifBlank { suggestion.term.ifBlank { cleanSearchText(suggestion.name) } }) }, label = { Text(cleanSearchText(suggestion.name.ifBlank { suggestion.value })) }) }
         }
         suggestionsError?.let { Text(it.message ?: "搜索建议加载失败", Modifier.padding(horizontal = 20.dp), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
-        FlowRow(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        state.historyError?.let { Text(it.message ?: "搜索历史保存失败", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.error) }
+        Row(Modifier.padding(horizontal = 20.dp).horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             SearchType.entries.forEach { candidate -> FilterChip(selected = type == candidate, onClick = { type = candidate }, label = { Text(candidate.displayName) }) }
         }
-        if (type == SearchType.VIDEO && submitted.isNotBlank()) Row(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            listOf("totalrank" to "综合", "click" to "最多播放", "pubdate" to "最新发布").forEach { (value, label) ->
-                FilterChip(selected = order == value, onClick = { order = value }, label = { Text(label) })
-            }
-        }
-        if (submitted.isBlank()) Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text("热搜", style = MaterialTheme.typography.titleLarge)
-            hintError?.let { CommunityFailure(it, navigation.onLogin) }
-            hot.forEachIndexed { index, item ->
-                Row(Modifier.fillMaxWidth().clickable { submit(item.keyword.ifBlank { item.show_name }) }.padding(10.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text("${index + 1}", color = MaterialTheme.colorScheme.primary)
-                    Text(item.show_name.ifBlank { item.keyword }, modifier = Modifier.weight(1f))
-                    if (item.icon.isNotBlank()) AsyncImage(model = imageUrl(item.icon), contentDescription = item.recommend_reason, modifier = Modifier.size(24.dp))
+        if (submitted.isNotBlank()) CommunitySearchFilters(type, filters, { filters = it }, state.filterExpanded, { state.filterExpanded = it })
+        if (submitted.isBlank()) Column(Modifier.fillMaxSize().verticalScroll(state.landingScroll).padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            resolveSearchLandingSectionOrder().forEach { section -> when (section) {
+                SearchLandingSection.TRENDING -> {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("热搜", style = MaterialTheme.typography.titleLarge); TextButton(onClick = { state.hintsRevision++ }) { Text("刷新") }
+                    }
+                    state.hintError?.let { Text(it.message ?: "默认搜索词加载失败", style = MaterialTheme.typography.bodySmall) }
+                    state.trendingError?.let { CommunityFailure(it, navigation.onLogin) { state.hintsRevision++ } }
+                    if (state.hot == null && state.trendingError == null) LinearProgressIndicator(Modifier.fillMaxWidth())
+                    state.hot?.pinnedItems?.forEach { item -> CommunitySearchHotRow(item, "置顶", ::submit) }
+                    state.hot?.items?.forEachIndexed { index, item -> CommunitySearchHotRow(item, (index + 1).toString(), ::submit) }
                 }
-            }
-        } else CommunityFeed<CommunitySearchRow, Int>(Triple(submitted, type, order), 1, load = { page ->
-            val result = community.typedSearch(submitted, type, page, if (type == SearchType.VIDEO) mapOf("order" to order) else emptyMap())
+                SearchLandingSection.HISTORY -> {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                        Text("搜索历史", style = MaterialTheme.typography.titleLarge)
+                        TextButton(enabled = history.isNotEmpty(), onClick = { val mid = account?.mid; scope.launch {
+                            try { preferences.clear(mid); state.historyError = null }
+                            catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
+                        } }) { Text("清空") }
+                    }
+                    if (history.isEmpty()) Text("暂无搜索历史", style = MaterialTheme.typography.bodySmall)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) { history.forEach { item ->
+                        InputChip(selected = false, onClick = { submit(item.keyword) }, label = { Text(item.keyword) },
+                            trailingIcon = { TextButton(onClick = { val mid = account?.mid; scope.launch {
+                                try { preferences.delete(mid, item); state.historyError = null }
+                                catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
+                            } }, contentPadding = PaddingValues(4.dp)) { Text("×") } })
+                    } }
+                }
+                SearchLandingSection.DISCOVER -> {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text("搜索发现", style = MaterialTheme.typography.titleLarge); TextButton(onClick = { state.discoverRevision++ }) { Text("换一批") }
+                    }
+                    state.discoverError?.let { CommunityFailure(it, navigation.onLogin) { state.discoverRevision++ } }
+                    if (state.discover == null && state.discoverError == null) LinearProgressIndicator(Modifier.fillMaxWidth())
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) { state.discover.orEmpty().forEach { item ->
+                        SuggestionChip(onClick = { submit(item.keyword.ifBlank { item.show_name }) }, label = { Column {
+                            Text(item.show_name.ifBlank { item.keyword }); if (item.recommend_reason.isNotBlank()) Text(item.recommend_reason, style = MaterialTheme.typography.labelSmall)
+                        } })
+                    } }
+                }
+            } }
+        } else CommunityFeed<CommunitySearchRow, Int>(listOf(submitted, type, filters.requestKey(type)), 1, load = { page ->
+            val result = if (type == SearchType.VIDEO) search.videos(submitted, page, filters.videoOrder, filters.durations, filters.videoTid, filters.pubBegin, filters.pubEnd)
+                else community.typedSearch(submitted, type, page, filters.parameters(type))
             CommunityBatch(communitySearchRows(result.result), result.nextPage)
-        }, identity = { it.key }, onLogin = navigation.onLogin) { item ->
+        }, identity = { it.key }, onLogin = navigation.onLogin, transform = transform) { item ->
             val video = item.video
             if (video != null) CommunityVideoRow(video, navigation.onVideo, navigation.onUser)
             else CommunityLinkCard(item.title, item.cover, item.description) {
@@ -94,11 +205,82 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     }
 }
 
+@Composable private fun CommunitySearchHotRow(item: HotItem, position: String, submit: (String) -> Unit) {
+    Row(Modifier.fillMaxWidth().clickable { submit(item.keyword.ifBlank { item.show_name }) }.padding(10.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(position, color = MaterialTheme.colorScheme.primary)
+        Text(item.show_name.ifBlank { item.keyword }, Modifier.weight(1f))
+        if (item.icon.isNotBlank()) AsyncImage(imageUrl(item.icon), item.recommend_reason, Modifier.size(24.dp))
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@Composable private fun CommunitySearchFilters(type: SearchType, filters: DesktopSearchFilters,
+    onChange: (DesktopSearchFilters) -> Unit, expanded: Boolean, onExpanded: (Boolean) -> Unit) {
+    var dates by remember { mutableStateOf(false) }
+    Column(Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        when (type) {
+            SearchType.VIDEO -> {
+                Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    resolveSearchVideoOrderOptions().forEach { value -> FilterChip(filters.videoOrder == value, { onChange(filters.copy(videoOrder = value)) }, label = { Text(resolveSearchOrderChipLabel(value)) }) }
+                    TextButton(onClick = { onExpanded(!expanded) }) { Text(if (expanded) "收起筛选" else "时长 / 分区 / 发布时间") }
+                }
+                if (expanded) {
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        resolveSearchVideoDurationOptions().forEach { value -> FilterChip(if (value == SearchDuration.ALL) filters.durations.isEmpty() else value in filters.durations,
+                            { onChange(filters.copy(durations = toggleSearchDurationSelection(filters.durations, value))) }, label = { Text(resolveSearchDurationChipLabel(value)) }) }
+                    }
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        resolveSearchVideoZoneOptions().forEach { value -> FilterChip(filters.videoTid == value.tid, { onChange(filters.copy(videoTid = value.tid)) }, label = { Text(value.label) }) }
+                    }
+                    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        SearchVideoPubTimeType.entries.forEach { value -> FilterChip(filters.pubType == value, {
+                            if (value == SearchVideoPubTimeType.CUSTOM) dates = true else onChange(filters.withPubType(value))
+                        }, label = { Text(value.label) }) }
+                        if (filters.pubType == SearchVideoPubTimeType.CUSTOM) TextButton(onClick = { dates = true }) { Text("${searchDateLabel(filters.pubBegin)} – ${searchDateLabel(filters.pubEnd)}") }
+                        TextButton(onClick = { onChange(filters.copy(videoOrder = SearchOrder.TOTALRANK, durations = emptySet(), videoTid = 0).withPubType(SearchVideoPubTimeType.ALL)) }) { Text("重置视频筛选") }
+                    }
+                }
+            }
+            SearchType.UP -> {
+                CommunitySearchOptions(SearchUpOrder.entries, filters.upOrder, { it.displayName }) { onChange(filters.copy(upOrder = it)) }
+                CommunitySearchOptions(SearchOrderSort.entries, filters.upSort, { it.displayName }) { onChange(filters.copy(upSort = it)) }
+                CommunitySearchOptions(SearchUserType.entries, filters.userType, { it.displayName }) { onChange(filters.copy(userType = it)) }
+            }
+            SearchType.LIVE -> CommunitySearchOptions(SearchLiveOrder.entries, filters.liveOrder, { it.displayName }) { onChange(filters.copy(liveOrder = it)) }
+            SearchType.ARTICLE -> {
+                CommunitySearchOptions(SearchOrder.entries, filters.articleOrder, { it.displayName }) { onChange(filters.copy(articleOrder = it)) }
+                CommunitySearchOptions(SearchArticleCategory.entries, filters.articleCategory, { it.displayName }) { onChange(filters.copy(articleCategory = it)) }
+            }
+            SearchType.PHOTO -> {
+                CommunitySearchOptions(SearchOrder.entries.filter { it != SearchOrder.ATTENTION }, filters.photoOrder, { it.displayName }) { onChange(filters.copy(photoOrder = it)) }
+                CommunitySearchOptions(SearchPhotoCategory.entries, filters.photoCategory, { it.displayName }) { onChange(filters.copy(photoCategory = it)) }
+            }
+            else -> Unit
+        }
+    }
+    if (dates) {
+        val selected = rememberDateRangePickerState(initialSelectedStartDateMillis = filters.pubBegin?.times(1000), initialSelectedEndDateMillis = filters.pubEnd?.times(1000))
+        DatePickerDialog(onDismissRequest = { dates = false }, confirmButton = {
+            TextButton(enabled = selected.selectedStartDateMillis != null && selected.selectedEndDateMillis != null, onClick = {
+                onChange(filters.withCustomRange(requireNotNull(selected.selectedStartDateMillis) / 1000, requireNotNull(selected.selectedEndDateMillis) / 1000)); dates = false
+            }) { Text("确定") }
+        }, dismissButton = { TextButton(onClick = { dates = false }) { Text("取消") } }) { DateRangePicker(selected, Modifier.heightIn(max = 510.dp)) }
+    }
+}
+
+@Composable private fun <T> CommunitySearchOptions(values: List<T>, selected: T, label: (T) -> String, choose: (T) -> Unit) {
+    Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        values.forEach { value -> FilterChip(value == selected, { choose(value) }, label = { Text(label(value)) }) }
+    }
+}
+
+private fun searchDateLabel(value: Long?): String = value?.let { Instant.ofEpochSecond(it).atZone(ZoneOffset.UTC).toLocalDate().toString() } ?: "未选择"
+
 private fun communitySearchRows(result: CommunitySearchResult): List<CommunitySearchRow> = when (result) {
     is CommunitySearchResult.Videos -> result.data.result.orEmpty().map { raw ->
         val item = raw.toVideoItem()
         CommunitySearchRow("video:${item.bvid}", item.title, "", item.pic,
-            video = VideoCard(item.bvid, item.title, item.pic, item.owner.name, item.stat.view.toLong(), item.duration,
+            rawVideo = item, video = VideoCard(item.bvid, item.title, item.pic, item.owner.name, item.stat.view.toLong(), item.duration,
                 publishedAt = item.pubdate, authorMid = item.owner.mid))
     }
     is CommunitySearchResult.Users -> result.data.result.orEmpty().map { raw -> val item = raw.cleanupFields()

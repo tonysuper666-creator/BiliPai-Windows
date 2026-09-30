@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit
 internal data class PreparedListenAudio(val item: PlaylistItem, val source: PlaybackSource, val aid: Long = 0, val songLyrics: String? = null)
 
 /** Only transport and native stream adaptation live here; library pagination and lyrics remain upstream source. */
-internal class DesktopAudioRepository(val repository: DesktopRepository, private val community: DesktopCommunityRepository) {
+internal class DesktopAudioRepository(val repository: DesktopRepository, private val community: DesktopCommunityRepository) : ListenPlaybackDataSource {
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val retrofit = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(repository.httpClient)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
@@ -50,7 +50,7 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
     private val subtitleClient = boundedAudioClient(repository.httpClient)
     private val fileLyricsCache = FileLyricsCache(Path.of(System.getenv("LOCALAPPDATA") ?: System.getProperty("java.io.tmpdir"), "BiliPaiWindows", "lyrics").toFile())
     private val lyricsCacheMutex = Mutex()
-    val lyrics = LyricsRepository(listOf(NeteaseLyricsProvider(lyricsClient), QqMusicLyricsProvider(lyricsClient), KugouLyricsProvider(lyricsClient)),
+    override val lyrics = LyricsRepository(listOf(NeteaseLyricsProvider(lyricsClient), QqMusicLyricsProvider(lyricsClient), KugouLyricsProvider(lyricsClient)),
         object : LyricsCache {
             override suspend fun read(key: String) = lyricsCacheMutex.withLock { fileLyricsCache.read(key) }
             override suspend fun write(key: String, document: LyricDocument) = lyricsCacheMutex.withLock { fileLyricsCache.write(key, document) }
@@ -80,7 +80,7 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
         }
     }
 
-    suspend fun prepare(item: PlaylistItem): PreparedListenAudio = withContext(Dispatchers.IO) {
+    override suspend fun prepare(item: PlaylistItem): PreparedListenAudio = withContext(Dispatchers.IO) {
         val sid = Regex("(?i)^au([1-9][0-9]*)$").matchEntire(item.bvid)?.groupValues?.get(1)?.toLongOrNull()
         if (sid != null) {
             repository.ensureSession()
@@ -106,16 +106,17 @@ internal class DesktopAudioRepository(val repository: DesktopRepository, private
                 cover = details.cover, owner = details.author, duration = page.duration)
             // DASH audio is loaded as the sole stream. Combined streams retain the same native vid=no policy.
             PreparedListenAudio(actual, PlaybackSource(media.audioUrl ?: media.videoUrl, referer = media.referer,
-                cookieHeader = media.cookieHeader, title = actual.title), details.aid)
+                cookieHeader = media.cookieHeader, title = actual.title,
+                progressiveSegments = if (media.audioUrl == null) media.progressiveSegments else emptyList()), details.aid)
         }
     }
 
-    suspend fun subtitleTracks(item: PlaylistItem): List<SubtitleTrackMeta> {
+    override suspend fun subtitleTracks(item: PlaylistItem): List<SubtitleTrackMeta> {
         if (item.cid <= 0 || item.bvid.startsWith("au", true)) return emptyList()
         return mapPlayerInfoSubtitleTracks(community.playerMetadata(item.bvid, item.cid).subtitle?.subtitles.orEmpty()).take(50)
     }
 
-    suspend fun subtitleCues(track: SubtitleTrackMeta): List<SubtitleCue> {
+    override suspend fun subtitleCues(track: SubtitleTrackMeta): List<SubtitleCue> {
         val url = ApiDesktopDanmakuSource.trustedSpecialUrl(track.subtitleUrl)
         val text = subtitleClient.readAudioText(url)
         return withContext(Dispatchers.Default) { parseBiliSubtitleBody(text).take(50_000) }

@@ -18,6 +18,7 @@ internal interface MpvNative : Library {
     fun mpv_get_property_string(handle: Pointer, name: String): Pointer?
     fun mpv_command(handle: Pointer, args: StringArray): Int
     fun mpv_command_node(handle: Pointer, args: Pointer, result: Pointer?): Int
+    fun mpv_request_log_messages(handle: Pointer, level: String): Int
     fun mpv_wait_event(handle: Pointer, timeout: Double): Pointer
     fun mpv_error_string(error: Int): String
     fun mpv_free(data: Pointer)

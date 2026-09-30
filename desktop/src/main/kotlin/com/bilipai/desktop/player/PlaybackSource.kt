@@ -1,5 +1,10 @@
 package com.bilipai.desktop.player
 
+/** Source values used by the app's authorized proxy; default logging deliberately contains no source or headers. */
+internal class OwnedPlaybackSourceSnapshot(val sourceVersion: Long, val source: PlaybackSource) {
+    override fun toString(): String = "OwnedPlaybackSourceSnapshot(sourceVersion=$sourceVersion)"
+}
+
 /** The two DASH streams are decoded together by one native mpv playback clock. */
 data class PlaybackSource(
     val videoUrl: String,
@@ -85,6 +90,11 @@ data class PlayerState(
     val videoWidth: Int = 0,
     val videoHeight: Int = 0,
     val sourceTitle: String = "BiliPai",
+    val failure: PlayerFailure? = null,
+    val softwareDecodingRequested: Boolean = false,
+    val hardwareDecoder: String? = null,
+    val seekCompletedId: Long = 0,
+    val seekCompletedPositionSeconds: Double? = null,
 )
 
 data class PlayerTrack(

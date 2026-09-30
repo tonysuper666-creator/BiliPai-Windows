@@ -46,13 +46,23 @@ import com.bilipai.desktop.player.PictureInPictureController
 import com.bilipai.desktop.player.WindowsMediaSession
 import com.bilipai.desktop.player.WindowsMediaCommand
 import com.bilipai.desktop.player.WindowsMediaSnapshot
+import com.bilipai.desktop.plugins.DesktopPluginRuntime
+import com.bilipai.desktop.plugins.DesktopPluginStore
+import com.bilipai.desktop.plugins.DesktopEyePaint
+import com.bilipai.desktop.backup.DesktopBackupCoordinator
+import com.bilipai.desktop.backup.DesktopBackupStore
+import com.bilipai.desktop.cast.DesktopCastController
+import com.bilipai.desktop.cast.DesktopCastMediaResolver
+import com.bilipai.desktop.cast.DesktopCastDialog
 import com.bilipai.desktop.ui.*
 import com.bilipai.desktop.update.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 
 private enum class DesktopSection(val label: String, val symbol: String) {
-    HOME("推荐", "⌂"), POPULAR("热门", "◉"), DYNAMIC("动态", "▤"), LIVE("直播", "◉"), BANGUMI("番剧影视", "▷"),
+    HOME("推荐", "⌂"), POPULAR("热门", "◉"), REGION("分区", "▦"), RANKING("排行榜", "↗"), PRECIOUS("入站必刷", "★"), WEEKLY("每周必看", "▤"),
+    DYNAMIC("动态", "▤"), LIVE("直播", "◉"), BANGUMI("番剧影视", "▷"), PLUGINS("插件", "◇"),
     CLOUD_HISTORY("云端历史", "◷"), CLOUD_FAVORITES("云端收藏", "♥"), WATCH_LATER("稍后再看", "▣"),
     FOLLOWINGS("我的关注", "♧"), LIKED("赞过的视频", "♥"), LISTEN("听视频", "♫"), DOWNLOADS("下载与离线", "↓"), MESSAGES("消息", "✉"),
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
@@ -71,10 +81,20 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val scope = rememberCoroutineScope()
     val social = remember(repository) { DesktopSocialRepository(repository) }
     val community = remember(repository) { DesktopCommunityRepository(repository) }
+    val discovery = remember(repository) { DesktopDiscoveryRepository(repository) }
+    val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
+    val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
+    val pluginRuntime = remember(pluginStore) { DesktopPluginRuntime(pluginStore, repository, community, discovery) }
+    val cast = remember(pluginRuntime) { DesktopCastController(pluginRuntime.context, pluginRuntime.dlnaCast) }
+    val castResolver = remember(repository, pluginRuntime) { DesktopCastMediaResolver(repository, pluginRuntime.context) }
+    val casting by cast.playbackState.collectAsState()
+    val castBusy by cast.isBusy.collectAsState()
+    val eyePlaybackActive = remember { MutableStateFlow(false) }
+    var eyePaint by remember { mutableStateOf(DesktopEyePaint(0f, 0f)) }
     val downloads = remember(repository) { DesktopDownloadManager(repository) }
     val danmaku = remember(player, repository) { player?.let { DanmakuOverlay(it, httpClient = repository.httpClient) } }
     val playback = remember(repository, player, danmaku, library) {
-        DesktopPlaybackController(repository, player, playerError, danmaku, library, { latestPreferences }, scope)
+        DesktopPlaybackController(repository, player, playerError, danmaku, library, { latestPreferences }, scope, plugins = pluginRuntime, community = community)
     }
     var systemTargetAudio by remember { mutableStateOf(false) }
     val audioPlayer = remember(player) { player?.let { MpvPlayer() } }
@@ -93,12 +113,18 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var section by remember { mutableStateOf(DesktopSection.HOME) }
     var showVideo by remember { mutableStateOf(initialVideo != null) }
     val pip = remember(player, playback) { player?.let { PictureInPictureController(it, onRestore = { showVideo = playback.state.value.details != null },
-        onPrevious = { playback.playPart(playback.state.value.currentPart - 1) },
-        onNext = { playback.playPart(playback.state.value.currentPart + 1) }) } }
+        onPrevious = { playback.previous() }, onNext = { playback.next() }) } }
     val emptyPipState = remember { MutableStateFlow(false) }
     val pipActive by (pip?.active ?: emptyPipState).collectAsState()
     val emptyPipError = remember { MutableStateFlow<String?>(null) }
     val pipError by (pip?.error ?: emptyPipError).collectAsState()
+    val backup = remember(playback, listen, pip, pluginRuntime, cast) {
+        DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
+            withContext(Dispatchers.Main) { pip?.close(); playback.close(); listen?.close() }
+            cast.quiesce()
+            pluginRuntime.shutdownForRestore()
+        }, afterRestore = { withContext(Dispatchers.Main) { onExit() } })
+    }
     var mediaActive by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
     var submitted by remember { mutableStateOf("") }
@@ -111,6 +137,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var error by remember { mutableStateOf<String?>(null) }
     var loginDialog by remember { mutableStateOf(false) }
     var playerSettings by remember { mutableStateOf(false) }
+    var backupSettings by remember { mutableStateOf(false) }
+    var castDialog by remember { mutableStateOf(false) }
     var userId by remember { mutableLongStateOf(0) }
     var articleId by remember { mutableLongStateOf(0) }
     var roomId by remember { mutableLongStateOf(0) }
@@ -118,6 +146,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var episodeId by remember { mutableLongStateOf(0) }
     var seasonProgress by remember { mutableDoubleStateOf(0.0) }
     var isCourse by remember { mutableStateOf(false) }
+    var seasonType by remember { mutableIntStateOf(1) }
     var collectionMid by remember { mutableLongStateOf(0) }
     var collectionId by remember { mutableLongStateOf(0) }
     var collectionType by remember { mutableStateOf("season") }
@@ -131,14 +160,22 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var manuallyRequested by remember { mutableStateOf(false) }
     var activatingUpdate by remember { mutableStateOf(false) }
     var hostDisplayable by remember(hostWindow) { mutableStateOf(hostWindow?.isDisplayable == true) }
+    var hostVisible by remember(hostWindow) { mutableStateOf(hostWindow?.isShowing == true) }
     DisposableEffect(hostWindow) {
+        fun updateVisibility() {
+            hostVisible = hostWindow?.isShowing == true && (hostWindow !is java.awt.Frame || hostWindow.extendedState and java.awt.Frame.ICONIFIED == 0)
+        }
         val listener = java.awt.event.HierarchyListener { event ->
             if (event.changeFlags and java.awt.event.HierarchyEvent.DISPLAYABILITY_CHANGED.toLong() != 0L)
                 hostDisplayable = hostWindow?.isDisplayable == true
+            updateVisibility()
         }
+        val windowStateListener = java.awt.event.WindowStateListener { updateVisibility() }
         hostWindow?.addHierarchyListener(listener)
+        (hostWindow as? java.awt.Frame)?.addWindowStateListener(windowStateListener)
         hostDisplayable = hostWindow?.isDisplayable == true
-        onDispose { hostWindow?.removeHierarchyListener(listener) }
+        updateVisibility()
+        onDispose { hostWindow?.removeHierarchyListener(listener); (hostWindow as? java.awt.Frame)?.removeWindowStateListener(windowStateListener) }
     }
     val systemMedia = remember(hostWindow, hostDisplayable, player, playback, listen) {
         hostWindow?.takeIf { hostDisplayable }?.let { owner -> WindowsMediaSession(owner, onCommand = { command ->
@@ -148,12 +185,13 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     else target?.let { if (it.state.value.ended) it.replay() else it.setPaused(false) }
                 WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause() else target?.setPaused(true)
                 WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else { pip?.close(); playback.stop(); target?.stop() }
-                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else playback.playPart(playback.state.value.currentPart + 1)
-                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else playback.playPart(playback.state.value.currentPart - 1)
-                WindowsMediaCommand.FAST_FORWARD -> target?.seekBy(10.0)
-                WindowsMediaCommand.REWIND -> target?.seekBy(-10.0)
+                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else playback.next()
+                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else playback.previous()
+                WindowsMediaCommand.FAST_FORWARD -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekBy(10.0) else target?.seekBy(10.0)
+                WindowsMediaCommand.REWIND -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekBy(-10.0) else target?.seekBy(-10.0)
             }
-        }, onSeek = { seconds -> (if (systemTargetAudio) audioPlayer else player)?.seekTo(seconds) }) }
+        }, onSeek = { seconds -> if (!systemTargetAudio && playback.state.value.details != null) playback.seekTo(seconds)
+            else (if (systemTargetAudio) audioPlayer else player)?.seekTo(seconds) }) }
     }
 
     fun changePreferences(next: PlayerPreferences) {
@@ -176,6 +214,12 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (activatingUpdate) return
         listen?.pause(); systemTargetAudio = false
         showVideo = true; mediaActive = false; playback.open(card)
+    }
+    fun openQueue(videos: List<VideoCard>, selected: VideoCard) {
+        if (activatingUpdate || videos.isEmpty()) return
+        val index = videos.indexOfFirst { it.bvid == selected.bvid && it.preferredCid == selected.preferredCid }.takeIf { it >= 0 } ?: 0
+        listen?.pause(); systemTargetAudio = false
+        showVideo = true; mediaActive = false; playback.openQueue(videos, index)
     }
     fun openUser(id: Long) { userId = id; navigate(DesktopSection.USER) }
     fun openArticle(id: Long) { articleId = id; navigate(DesktopSection.ARTICLE) }
@@ -240,7 +284,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         }.also { it.start() }
     }
 
-    DisposableEffect(playback) { onDispose { playback.stop() } }
+    DisposableEffect(playback) { onDispose { playback.close() } }
+    DisposableEffect(pluginRuntime) { onDispose { pluginRuntime.close() } }
     DisposableEffect(downloads) { onDispose { downloads.close() } }
     DisposableEffect(danmaku) { onDispose { danmaku?.close() } }
     DisposableEffect(listen) { onDispose { listen?.close() } }
@@ -249,11 +294,25 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     DisposableEffect(pip) { onDispose { pip?.close() } }
     DisposableEffect(systemMedia) { onDispose { systemMedia?.close() } }
     LaunchedEffect(player, danmaku) { player?.applyPreferences(preferences); danmaku?.applySettings(preferences.danmaku) }
+    LaunchedEffect(pluginRuntime, danmaku) {
+        pluginRuntime.danmakuRevision.collect { danmaku?.setPluginDanmakuProcessor(pluginRuntime::processDanmaku) }
+    }
+    LaunchedEffect(native.paused, native.loading, native.durationSeconds, native.error) {
+        eyePlaybackActive.value = !native.paused && !native.loading && native.durationSeconds > 0 && native.error == null
+    }
+    LaunchedEffect(pluginRuntime, danmaku) {
+        pluginRuntime.eyePaint(eyePlaybackActive).collect { paint ->
+            eyePaint = paint
+            danmaku?.setEyeProtection(paint.dimAlpha, paint.warmAlpha, paint.warmArgb)
+        }
+    }
+    LaunchedEffect(backup) { backup.automaticBackupIfDue() }
+    LaunchedEffect(playback, hostVisible, pipActive) { playback.setInBackground(!hostVisible && !pipActive) }
+    LaunchedEffect(casting.isActive) { if (casting.isActive) playback.pause() }
     LaunchedEffect(Unit) { runCatching { repository.refreshAccount() }; initialVideo?.let { playback.open(it) } }
     LaunchedEffect(playing.details?.bvid, playing.currentPart) {
         while (playing.details != null) { delay(5000); withContext(Dispatchers.IO) { playback.checkpoint() } }
     }
-    LaunchedEffect(native.ended) { if (native.ended && playing.details != null) playback.nextAtEnd() }
     LaunchedEffect(native.paused, native.loading) {
         if (!native.paused && (native.loading || native.durationSeconds > 0) && (playing.details != null || mediaActive)) {
             listen?.pause(); systemTargetAudio = false
@@ -262,8 +321,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     LaunchedEffect(native.sourceTitle) { pip?.updateTitle(native.sourceTitle) }
     LaunchedEffect(playing.details, playing.currentPart, mediaActive) {
         val ordinary = playing.details.takeIf { !mediaActive }
-        pip?.updateQueueControls(ordinary != null && playing.currentPart > 0,
-            ordinary != null && playing.currentPart < ordinary.pages.size - 1)
+        pip?.updateQueueControls(ordinary != null && playback.hasPrevious, ordinary != null && playback.hasNext)
     }
     LaunchedEffect(pipError) { pipError?.let { error = it } }
     LaunchedEffect(systemMedia, playback, listen) {
@@ -277,19 +335,17 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                 artist = if (audioTarget) audio!!.current!!.owner else current.details?.author.orEmpty(),
                 mediaId = if (audioTarget) audio!!.current!!.bvid else current.details?.bvid ?: state.sourceTitle,
                 state = state, isAudio = audioTarget || state.audioOnly,
-                hasPrevious = if (audioTarget) audio!!.currentIndex > 0 else current.currentPart > 0 && current.details != null,
-                hasNext = if (audioTarget) audio!!.currentIndex < audio.queue.size - 1 else current.details?.pages?.let { current.currentPart < it.size - 1 } == true,
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else playback.hasPrevious,
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else playback.hasNext,
                 enabled = state.loading || state.durationSeconds > 0 || state.ended))
             delay(500)
         }
     }
     LaunchedEffect(section, page, refresh, account?.mid) {
-        if (section !in listOf(DesktopSection.HOME, DesktopSection.POPULAR, DesktopSection.HISTORY, DesktopSection.FAVORITES)) return@LaunchedEffect
+        if (section !in listOf(DesktopSection.HISTORY, DesktopSection.FAVORITES)) return@LaunchedEffect
         feedLoading = true; error = null
         try {
             cards = when (section) {
-                DesktopSection.HOME -> repository.recommendations(page)
-                DesktopSection.POPULAR -> repository.popular(page)
                 DesktopSection.HISTORY -> library.history()
                 else -> library.favorites()
             }.distinctBy { it.bvid }
@@ -298,11 +354,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         finally { feedLoading = false }
     }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, casting.isActive, castBusy, pipActive, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !casting.isActive && !castBusy && !pipActive) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -317,6 +373,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         surface = Color(0xFF182226), surfaceVariant = Color(0xFF233034))
     else lightColorScheme(primary = Color(0xFF256D77), primaryContainer = Color(0xFFD8E7E9), background = Color(0xFFF4F8F9),
         surface = Color.White, surfaceVariant = Color(0xFFEAF0F2))
+    CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory) {
     MaterialTheme(colorScheme = scheme, shapes = Shapes(medium = RoundedCornerShape(18.dp), large = RoundedCornerShape(24.dp))) {
         Box(Modifier.fillMaxSize()) {
         // libmpv's audio worker needs a retained native host even when its screen is not visible.
@@ -327,15 +384,15 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                 // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
                 when (val action = resolvePlayerKeyAction(event, isTextInputActive = searchFocused)) {
                     PlayerKeyAction.PlayPause -> { player.togglePause(); true }
-                    is PlayerKeyAction.SeekRelative -> { player.seekBy(action.deltaMs / 1000.0); true }
-                    is PlayerKeyAction.SeekPercent -> { player.seekTo(native.durationSeconds * action.fraction); true }
+                    is PlayerKeyAction.SeekRelative -> { playback.seekBy(action.deltaMs / 1000.0); true }
+                    is PlayerKeyAction.SeekPercent -> { playback.seekTo(native.durationSeconds * action.fraction); true }
                     PlayerKeyAction.VolumeUp -> { changePreferences(preferences.copy(volume = native.volume + 5)); true }
                     PlayerKeyAction.VolumeDown -> { changePreferences(preferences.copy(volume = native.volume - 5)); true }
                     PlayerKeyAction.ToggleMute -> { changePreferences(preferences.copy(muted = !native.muted)); true }
                     PlayerKeyAction.ToggleFullscreen -> { onToggleFullscreen(); true }
                     PlayerKeyAction.ToggleDanmaku -> { changePreferences(preferences.copy(danmaku = preferences.danmaku.copy(enabled = !preferences.danmaku.enabled))); true }
-                    PlayerKeyAction.PreviousPart -> { playback.playPart(playing.currentPart - 1); true }
-                    PlayerKeyAction.NextPart -> { playback.playPart(playing.currentPart + 1); true }
+                    PlayerKeyAction.PreviousPart -> { playback.previous(); true }
+                    PlayerKeyAction.NextPart -> { playback.next(); true }
                     is PlayerKeyAction.SetSpeed -> { changePreferences(preferences.copy(speed = action.speed.toDouble())); true }
                     else -> false
                 }
@@ -355,6 +412,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         }
                     }
                     TextButton(onClick = { playerSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("播放与弹幕设置") }
+                    TextButton(onClick = { backupSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("WebDAV 与备份") }
                     TextButton(onClick = { dark = !dark; settingsLibrary.setDark(dark) }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(if (dark) "☀ 浅色外观" else "☾ 深色外观") }
                     TextButton(onClick = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(account?.name ?: "扫码登录", maxLines = 1) }
                     TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("Windows 更新") }
@@ -375,6 +433,12 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         }
                     }
                     if (listen != null && section != DesktopSection.LISTEN) ListenNowPlayingBar(listen, { navigate(DesktopSection.LISTEN) })
+                    if (casting.isActive) TextButton(onClick = { castDialog = true }) { Text("投屏：${casting.deviceLabel.ifBlank { "播放设备" }} · 打开控制") }
+                    if (playing.recovering) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        LinearProgressIndicator(Modifier.fillMaxWidth())
+                        playing.recoveryMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+                    }
+                    playing.manualSkip?.let { action -> Button(onClick = playback::executeManualSkip) { Text(action.label) } }
                     if (!showVideo && playing.details != null && player != null) {
                         Surface(color = scheme.surfaceVariant, shape = RoundedCornerShape(14.dp)) {
                             Row(Modifier.fillMaxWidth().height(118.dp).padding(8.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -390,9 +454,10 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     val playerContent: @Composable (MpvPlayer) -> Unit = { initialized ->
                         PlayerPanel(initialized, preferences, ::changePreferences, onToggleFullscreen,
                             modifier = Modifier.onFocusChanged { playerFocused = it.hasFocus }.focusable(), onMessage = { error = it },
-                            onPreviousPart = if (showVideo && playing.currentPart > 0) ({ playback.playPart(playing.currentPart - 1) }) else null,
-                            onNextPart = if (showVideo && playing.details?.pages?.let { playing.currentPart < it.size - 1 } == true) ({ playback.playPart(playing.currentPart + 1) }) else null,
+                            onPreviousPart = if (showVideo && playback.hasPrevious) ({ playback.previous() }) else null,
+                            onNextPart = if (showVideo && playback.hasNext) ({ playback.next() }) else null,
                             onOnlineSubtitles = if (showVideo && playing.details != null) ({ subtitleDialog = true }) else null,
+                            onSeekTo = if (showVideo && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
                     }
                     Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -401,9 +466,16 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             showVideo && playing.details != null -> DesktopVideoPage(playing, player, playerContent, favorite,
                                 onVideo = ::openVideo, onPart = playback::playPart, onQuality = playback::switchQuality,
                                 onFavorite = { library.toggleFavorite(playing.details!!.asCard()); favorite = library.isFavorite(playing.details!!.bvid) },
-                                engagement = { VideoEngagementPanel(playing.details!!, repository, social, community,
+                                onCast = { scope.launch {
+                                    try { pluginRuntime.setEnabled(pluginRuntime.dlnaCast.id, true); castDialog = true }
+                                    catch (failure: Exception) { error = failure.message ?: "无法启用 DLNA" }
+                                } },
+                                engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) { VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
-                                    cid = playing.details!!.pages[playing.currentPart].cid) },
+                                    cid = playing.details!!.pages[playing.currentPart].cid)
+                                    DiscoveryUgcCollectionPanel(playing.details!!, ::openVideo, ::openQueue,
+                                        currentCid = playing.details!!.pages[playing.currentPart].cid)
+                                } },
                                 onDownload = { scope.launch {
                                     try {
                                         val info = playing.details!!
@@ -426,9 +498,20 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     else -> PersonalSection.FOLLOWINGS
                                 }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true })
+                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue)
+                            section in listOf(DesktopSection.HOME, DesktopSection.POPULAR, DesktopSection.REGION, DesktopSection.RANKING, DesktopSection.PRECIOUS, DesktopSection.WEEKLY) ->
+                                DiscoveryContentScreen(when (section) {
+                                    DesktopSection.HOME -> DiscoverySection.RECOMMEND
+                                    DesktopSection.POPULAR -> DiscoverySection.POPULAR
+                                    DesktopSection.REGION -> DiscoverySection.REGION
+                                    DesktopSection.RANKING -> DiscoverySection.RANKING
+                                    DesktopSection.PRECIOUS -> DiscoverySection.PRECIOUS
+                                    else -> DiscoverySection.WEEKLY
+                                }, discovery, repository, pluginStore, ::openVideo, ::openUser, { loginDialog = true },
+                                    onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime)
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku)
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
-                                initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress)
+                                initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType)
                             section == DesktopSection.DOWNLOADS -> DownloadBrowserScreen(downloads, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, danmaku)
                             section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
                                 else Text(playerError ?: "音频播放器未能初始化")
@@ -441,7 +524,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     DesktopSection.ARTICLE -> CommunitySection.ARTICLE
                                     else -> CommunitySection.NOTES
                                 }, repository, social, community, submitted, userId, articleId, noteVideo,
-                                    ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi)
+                                    ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime)
                             else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                     Text(section.label, Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)
@@ -463,9 +546,23 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                 }
             }
         }
+        if (eyePaint.dimAlpha > 0f) Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = eyePaint.dimAlpha)))
+        if (eyePaint.warmAlpha > 0f) Box(Modifier.fillMaxSize().background(Color(eyePaint.warmArgb).copy(alpha = eyePaint.warmAlpha)))
         }
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (playerSettings) PlaybackSettingsDialog(preferences, ::changePreferences, { playerSettings = false })
+        if (backupSettings) BackupSettingsDialog(backup, { backupSettings = false }, onExit)
+        if (castDialog) DesktopCastDialog(cast, media = {
+            val current = playback.state.value
+            val info = current.details ?: error("请先打开需要投屏的视频")
+            val token = player?.currentSourceVersion
+            val epoch = repository.sessionEpoch
+            val source = repository.playback(info, current.currentPart, current.quality)
+            check(epoch == repository.sessionEpoch && token == player?.currentSourceVersion && playback.state.value.details?.bvid == info.bvid &&
+                playback.state.value.currentPart == current.currentPart) { "当前播放视频已切换，请重新开始投屏" }
+            castResolver.video(info, current.currentPart, source, ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong())
+        }, onDismiss = { castDialog = false })
+        PluginCareReminder(pluginRuntime)
         if (subtitleDialog && playing.details != null) {
             val info = playing.details!!
             val cid = info.pages.getOrNull(playing.currentPart)?.cid ?: 0
@@ -477,9 +574,10 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                 }, onDismiss = { subtitleDialog = false }) }
         }
         if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate,
-            playing.details != null || playing.opening || mediaActive || listening.active,
+            playing.details != null || playing.opening || mediaActive || listening.active || casting.isActive || castBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })
+    }
     }
 }
 
@@ -488,7 +586,7 @@ private fun VideoDetails.asCard() = VideoCard(bvid, title, cover, author, playCo
 @Composable
 private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, playerContent: @Composable (MpvPlayer) -> Unit,
     favorite: Boolean, onVideo: (VideoCard) -> Unit, onPart: (Int) -> Unit, onQuality: (Int) -> Unit, onFavorite: () -> Unit,
-    engagement: @Composable () -> Unit, onDownload: () -> Unit) {
+    engagement: @Composable () -> Unit, onDownload: () -> Unit, onCast: () -> Unit) {
     val info = playing.details ?: return
     Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         Column(Modifier.weight(1f).fillMaxHeight().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -500,6 +598,7 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
                 }
                 OutlinedButton(onClick = onFavorite) { Text(if (favorite) "已存本地收藏" else "本地收藏") }
                 OutlinedButton(onClick = onDownload) { Text("下载本集") }
+                OutlinedButton(onClick = onCast) { Text("投屏") }
             }
             if (playing.effectiveQuality > 0 && playing.effectiveQuality != playing.quality)
                 Text("服务器返回画质：${playing.availableQualities.firstOrNull { it.id == playing.effectiveQuality }?.label ?: playing.effectiveQuality}",
