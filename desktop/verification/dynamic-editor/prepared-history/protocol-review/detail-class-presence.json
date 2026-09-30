@@ -1,0 +1,523 @@
+{
+  "artifact": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-kotlin.jar",
+  "sha256Bytes": "4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc",
+  "inspection": "ZIP exact JVM class-entry presence; objects/named classes versus top-level Kt classes explicitly distinguished; presence alone is not API/body equivalence",
+  "classEntries": 7461,
+  "checks": [
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicDetailScreenKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicDetailScreenKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicViewModel",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicViewModel.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicCommentTarget",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicCommentTarget.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicCommentTargetPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentTargetPolicyKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicCommentReplyPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicCommentReplyPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicCommentLoadPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicCommentLoadPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicCommentPayload",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicCommentPayload.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.DynamicDetailInteractionModel",
+      "classEntry": "com/android/purebilibili/feature/dynamic/DynamicDetailInteractionModel.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.DynamicCommentSheetKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/DynamicCommentSheetKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.DynamicCommentActionPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/DynamicCommentActionPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.DynamicSubReplyPreviewHostKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/DynamicSubReplyPreviewHostKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.ReplyComponentsKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/ReplyComponentsKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.TransparentBoundsCropTransformation",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/TransparentBoundsCropTransformation.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.ReplyItemLayoutPolicy",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/ReplyItemLayoutPolicy.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.RichCommentLinkAction",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.SubReplySheetKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/SubReplySheetKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.SubReplyDetailComponentsKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponentsKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.CommentThreadDragKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/CommentThreadDragKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.CommentInputBarKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/CommentInputBarKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.BottomInputBarKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/BottomInputBarKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.VideoCommentAppearance",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.VideoCommentAppearanceKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/VideoCommentAppearanceKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.VideoCommentTypographyTokens",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/VideoCommentTypographyTokens.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.ReplyCommentImageSaverKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/ReplyCommentImageSaverKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.viewmodel.CommentSortMode",
+      "classEntry": "com/android/purebilibili/feature/video/viewmodel/CommentSortMode.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.viewmodel.SubReplySortMode",
+      "classEntry": "com/android/purebilibili/feature/video/viewmodel/SubReplySortMode.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.viewmodel.SubReplyUiState",
+      "classEntry": "com/android/purebilibili/feature/video/viewmodel/SubReplyUiState.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.viewmodel.CommentUiState",
+      "classEntry": "com/android/purebilibili/feature/video/viewmodel/CommentUiState.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.viewmodel.SubReplySortPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/video/viewmodel/SubReplySortPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.CommentRepository",
+      "classEntry": "com/android/purebilibili/data/repository/CommentRepository.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.CommentGrpcRepository",
+      "classEntry": "com/android/purebilibili/data/repository/CommentGrpcRepository.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.CommentReadAccessPolicyKt",
+      "classEntry": "com/android/purebilibili/data/repository/CommentReadAccessPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.CommentReadPlan",
+      "classEntry": "com/android/purebilibili/data/repository/CommentReadPlan.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.DynamicRepository",
+      "classEntry": "com/android/purebilibili/data/repository/DynamicRepository.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.DynamicDetailFallbackPolicyKt",
+      "classEntry": "com/android/purebilibili/data/repository/DynamicDetailFallbackPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.BlockedUpRepository",
+      "classEntry": "com/android/purebilibili/data/repository/BlockedUpRepository.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.BlockedUpRelationSource",
+      "classEntry": "com/android/purebilibili/data/repository/BlockedUpRelationSource.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyItem",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyItem.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyData",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyData.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyContent",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyContent.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplyControl",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplyControl.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.ReplySailingPendant",
+      "classEntry": "com/android/purebilibili/data/model/response/ReplySailingPendant.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.model.response.DynamicItem",
+      "classEntry": "com/android/purebilibili/data/model/response/DynamicItem.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.article.ArticleContentBlock",
+      "classEntry": "com/android/purebilibili/feature/article/ArticleContentBlock.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.network.BilibiliApi",
+      "classEntry": "com/android/purebilibili/core/network/BilibiliApi.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.network.DynamicApi",
+      "classEntry": "com/android/purebilibili/core/network/DynamicApi.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.network.grpc.ProtoWire",
+      "classEntry": "com/android/purebilibili/core/network/grpc/ProtoWire.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient",
+      "classEntry": "com/android/purebilibili/core/network/grpc/DesktopDynamicBiliGrpcClient.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.store.SettingsManager",
+      "classEntry": "com/android/purebilibili/core/store/SettingsManager.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.store.HomeSettings",
+      "classEntry": "com/android/purebilibili/core/store/HomeSettings.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.store.DesktopDynamicCardSettings",
+      "classEntry": "com/android/purebilibili/core/store/DesktopDynamicCardSettings.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.OfficialVerifyBadgePolicyKt",
+      "classEntry": "com/android/purebilibili/core/ui/OfficialVerifyBadgePolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.OfficialVerifyBadgeSpec",
+      "classEntry": "com/android/purebilibili/core/ui/OfficialVerifyBadgeSpec.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.OfficialVerifyBadgeTone",
+      "classEntry": "com/android/purebilibili/core/ui/OfficialVerifyBadgeTone.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.UserAvatarCornerMarkKt",
+      "classEntry": "com/android/purebilibili/core/ui/UserAvatarCornerMarkKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.common.TextSelectionPolicy",
+      "classEntry": "com/android/purebilibili/core/ui/common/TextSelectionPolicy.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.common.DesktopOriginalTextSelectionPolicyKt",
+      "classEntry": "com/android/purebilibili/core/ui/common/DesktopOriginalTextSelectionPolicyKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.common.DesktopOriginalTextSelectionBottomSheetKt",
+      "classEntry": "com/android/purebilibili/core/ui/common/DesktopOriginalTextSelectionBottomSheetKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.common.TextSelectionHostKt",
+      "classEntry": "com/android/purebilibili/core/ui/common/TextSelectionHostKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.skeleton.ContentLoadingSkeletonsKt",
+      "classEntry": "com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletonsKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.animation.ParticleDissolveEffectKt",
+      "classEntry": "com/android/purebilibili/core/ui/animation/ParticleDissolveEffectKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.CommentWindowNavigationKt",
+      "classEntry": "com/android/purebilibili/core/ui/CommentWindowNavigationKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.LocalNavigationBackHandlerKt",
+      "classEntry": "com/android/purebilibili/core/ui/LocalNavigationBackHandlerKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.SplitLayoutKt",
+      "classEntry": "com/android/purebilibili/core/ui/SplitLayoutKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.components.AppSplitLayoutKt",
+      "classEntry": "com/android/purebilibili/core/ui/components/AppSplitLayoutKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.components.DesktopUpstreamUserLevelBadgeKt",
+      "classEntry": "com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadgeKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.components.UserUpBadgeKt",
+      "classEntry": "com/android/purebilibili/core/ui/components/UserUpBadgeKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.theme.ThemeContrastPolicyKt",
+      "classEntry": "com/android/purebilibili/core/theme/ThemeContrastPolicyKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.util.BilibiliUrlParser",
+      "classEntry": "com/android/purebilibili/core/util/BilibiliUrlParser.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.util.FormatUtils",
+      "classEntry": "com/android/purebilibili/core/util/FormatUtils.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.util.HtmlEntityUtils",
+      "classEntry": "com/android/purebilibili/core/util/HtmlEntityUtils.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.util.PermissionHelperKt",
+      "classEntry": "com/android/purebilibili/core/util/PermissionHelperKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.aicu.AicuNavigationPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/aicu/AicuNavigationPolicyKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.BottomBarMatchedLiquidChromeKt",
+      "classEntry": "com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChromeKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControlKt",
+      "classEntry": "com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControlKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.FloatingBottomBarGeometryKt",
+      "classEntry": "com/android/purebilibili/feature/home/components/FloatingBottomBarGeometryKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.DesktopOriginalDynamicCardKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCardKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.DesktopOriginalImagePreviewRendererKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRendererKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.ImagePreviewTextContent",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/ImagePreviewTextContent.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/ImagePreviewSourceAnchor.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.dynamic.components.ImagePreviewDecodePolicyKt",
+      "classEntry": "com/android/purebilibili/feature/dynamic/components/ImagePreviewDecodePolicyKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+      "classEntry": "com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.ui.DesktopDynamicCardSession",
+      "classEntry": "com/bilipai/desktop/ui/DesktopDynamicCardSession.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.ui.DesktopDynamicCardBindings",
+      "classEntry": "com/bilipai/desktop/ui/DesktopDynamicCardBindings.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.ui.DesktopDynamicCardPlatform",
+      "classEntry": "com/bilipai/desktop/ui/DesktopDynamicCardPlatform.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.ui.DesktopDynamicDetailReadbackKt",
+      "classEntry": "com/bilipai/desktop/ui/DesktopDynamicDetailReadbackKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.data.DesktopBlockedUpRepository",
+      "classEntry": "com/bilipai/desktop/data/DesktopBlockedUpRepository.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.data.DesktopBlockedUpStore",
+      "classEntry": "com/bilipai/desktop/data/DesktopBlockedUpStore.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.data.DesktopCommunityRepository",
+      "classEntry": "com/bilipai/desktop/data/DesktopCommunityRepository.class",
+      "present": true
+    },
+    {
+      "fqn": "com.bilipai.desktop.data.CommentPage",
+      "classEntry": "com/bilipai/desktop/data/CommentPage.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.article.ArticleContentBlockParserKt",
+      "classEntry": "com/android/purebilibili/feature/article/ArticleContentBlockParserKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.article.ArticleContentLoadPolicyKt",
+      "classEntry": "com/android/purebilibili/feature/article/ArticleContentLoadPolicyKt.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.video.ui.components.VideoCommentSheetHostKt",
+      "classEntry": "com/android/purebilibili/feature/video/ui/components/VideoCommentSheetHostKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.OpticalContrastPaletteKt",
+      "classEntry": "com/android/purebilibili/core/ui/OpticalContrastPaletteKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.LiquidGlassTuning",
+      "classEntry": "com/android/purebilibili/feature/home/components/LiquidGlassTuning.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.LiquidGlassRenderConfig",
+      "classEntry": "com/android/purebilibili/feature/home/components/LiquidGlassRenderConfig.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.feature.home.components.liquid.CombinedBackdropKt",
+      "classEntry": "com/android/purebilibili/feature/home/components/liquid/CombinedBackdropKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.motion.BottomBarMotionSpec",
+      "classEntry": "com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.motion.BottomBarMotionSpecKt",
+      "classEntry": "com/android/purebilibili/core/ui/motion/BottomBarMotionSpecKt.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.BlockedUpWriteResult",
+      "classEntry": "com/android/purebilibili/data/repository/BlockedUpWriteResult.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.data.repository.BilibiliBlockedListRemoteStatus",
+      "classEntry": "com/android/purebilibili/data/repository/BilibiliBlockedListRemoteStatus.class",
+      "present": true
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.animation.DampedDragAnimationState",
+      "classEntry": "com/android/purebilibili/core/ui/animation/DampedDragAnimationState.class",
+      "present": false
+    },
+    {
+      "fqn": "com.android.purebilibili.core.ui.animation.DampedDragAnimationKt",
+      "classEntry": "com/android/purebilibili/core/ui/animation/DampedDragAnimationKt.class",
+      "present": false
+    }
+  ]
+}

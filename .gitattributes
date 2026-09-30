@@ -28,3 +28,4 @@ desktop/verification/dynamic-full-card/** -text
 desktop/native/diagnostic-share/** -text
 desktop/tools/compile-native-diagnostic-share.py -text
 desktop/verification/native-share/** -text
+desktop/verification/dynamic-editor/** -text

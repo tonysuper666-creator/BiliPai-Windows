@@ -1,0 +1,1709 @@
+{
+  "formatVersion": 1,
+  "scope": "Prepared original native-style dynamic editor/publish plus detail foundations",
+  "MainIntegration": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "realAccount": false,
+  "sockets": false,
+  "originalTag": "v0.2.3-alpha.9",
+  "originalCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseSnapshotManifestSha256Bytes": "04e5d4e029621ffa34d360dd590beede56ff9c9110634cc0d1b1bdb181c5e3f3",
+  "baseOrderedRuntimeCpSha256Bytes": "9a5c2a6ff1d34547ab0c6a15f97ce8d0166dd9ad8cc7d50c442508a3e4b34f00",
+  "currentMainOperationsBaselineSha256Bytes": "50aece83a0efe799e48947f62b3c5f47cbe1ed6c32ce5457a2e74b2701292ac7",
+  "currentMainOperationsDesiredSha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd",
+  "fixtureDependencies": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 7461,
+      "sha256Bytes": "4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 67,
+      "sha256Bytes": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+      "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\dev.chrisbanes.haze\\haze-blur-materials-jvm\\2.0.0-alpha03\\dedaca75036f0f8d89c6d9ecdec2a33002ff2bf5\\haze-materials-jvm.jar",
+      "sha256Bytes": "e3a200418c558185582968e73cd70d409d64063268172ae6d3d95f8232e07f2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\dev.chrisbanes.haze\\haze-blur-jvm\\2.0.0-alpha03\\a07a2ef1dc8bcc6aff5dab2d8337ac378df8c6be\\haze-blur-jvm.jar",
+      "sha256Bytes": "1e2959edfff3c967e860275602c638f46a2eace4805c03a644c2a96ea8deb739"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\dev.chrisbanes.haze\\haze-jvm\\2.0.0-alpha03\\b189bc81bcbfc6f8f679ccf10708deafa0a20071\\haze-jvm.jar",
+      "sha256Bytes": "d6383d1186d7a27932350a3637ce6446f2a7e283a562de08de0a6602e5f96f1e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\dev.chrisbanes.haze\\haze-utils-jvm\\2.0.0-alpha03\\e8e9823d0a9795533ba8787e4b451e2c104479d1\\haze-utils-jvm.jar",
+      "sha256Bytes": "4d080fc15ebbaec2aabdd9de9c9e12b82392498fe64889558542d8a41ab251e4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.desktop\\desktop-jvm\\1.12.1\\55722afc383641f44e5059e3a87e076436190826\\desktop-jvm-1.12.1.jar",
+      "sha256Bytes": "adaea6ec630420712dcfd52a356b46aef603129ca7f76cba204569112fa80e1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt-runtime-windows-x64\\0.150.1\\f709996c593fdd677168a054d09f7dcd91b6b51e\\skiko-awt-runtime-windows-x64-0.150.1.jar",
+      "sha256Bytes": "22a5e52c9fb4278f998785c5029d96f007c8eb8944f6eb0d3f4b06fb3775edcf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.materialkolor\\material-kolor-jvm\\4.1.1\\44284b75142a842e3f58f8228ca90fcc6efa6c0f\\material-kolor-jvm.jar",
+      "sha256Bytes": "0125a24ca92662320ef2409b8d439409174cb4b11f70afff466fe11272876d66"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material3\\material3-window-size-class-desktop\\1.12.0-alpha03\\306e29dfac12368e16dde12e5c4e023fc932553c\\material3-window-size-class-desktop-1.12.0-alpha03.jar",
+      "sha256Bytes": "a8488465bb2d652b475b85187bbbd01919a8065fc592812069b47e2fa1e051bd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material3\\material3-desktop\\1.12.0-alpha03\\aa400c3f70e5a2c03f2e1882ea18bea44fb8d6a8\\material3-desktop-1.12.0-alpha03.jar",
+      "sha256Bytes": "27ac80da1c3f65b67311bfae57d79f130b7d4d0ac8e1c5be1ca7ce8b04b7d0d7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-compose-jvm\\3.5.0\\820523ee39decd98eecdb61a7fc03412eedbbabc\\coil-compose-jvm-3.5.0.jar",
+      "sha256Bytes": "ec78dd5eaa0c4326b197880e5e7a44c31b0e6daa6cd2b8636ca7e1c032ce3567"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-compose-core-jvm\\3.5.0\\8ebdd416d1157820ca47dc6a7644c56716a9c8fa\\coil-compose-core-jvm-3.5.0.jar",
+      "sha256Bytes": "38d80e53cd9dcda1fa84470bd3aa7a6080451b6cc52b03c9dffa22570b7f0e3b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-desktop\\1.12.1\\6d090e795e1575f46fcd5f993f38c2e34b976a32\\material-desktop-1.12.1.jar",
+      "sha256Bytes": "0c1dd397b45a7cd830234ddf30d253b586259e726a5cd816cca2e79119a47fa2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.animation\\animation-core-desktop\\1.12.1\\a14cdb09ab8792b6b20d298d0a26530969228b0f\\animation-core-desktop-1.12.1.jar",
+      "sha256Bytes": "d988b6b7d867146825a9da38e1522fc50580aa14986ab22a8b724fcdcef17875"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-ripple-desktop\\1.12.1\\b4b34a8be94b8c41526d448a58d7ce2256872df5\\material-ripple-desktop-1.12.1.jar",
+      "sha256Bytes": "06ac72a5f57b2e724ea129efbc71973a27a9e1ceeb7f568281dcb0d1ef4448fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.animation\\animation-desktop\\1.12.1\\4e815509a4bedbf3ff9f3ce292c548989a00ff53\\animation-desktop-1.12.1.jar",
+      "sha256Bytes": "755ca81764d5aae7afb2d5f72e3253a44a1cc9c0f890d1dcc319f0eb8f00736b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.foundation\\foundation-layout-desktop\\1.12.1\\64d4f43ec090a85f3069762a5c39a147c6d2c9aa\\foundation-layout-desktop-1.12.1.jar",
+      "sha256Bytes": "57b54c104bae9eea0e90bb26487f8b64ead09a473f1b32cbed8579084f485e7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.foundation\\foundation-desktop\\1.12.1\\cb418f810ab36f9268c13816a6b21d9cd6ffa4b7\\foundation-desktop-1.12.1.jar",
+      "sha256Bytes": "e1dc29cd9de2f1628a741866a112eedc62fec43bc548d0e4f434bf31207fd1e3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-network-okhttp-jvm\\3.5.0\\e988cf6fa65f8b93287f98a6ec36e54e39f72fc9\\coil-network-okhttp-jvm-3.5.0.jar",
+      "sha256Bytes": "73b11895e324812a4403d32d6c5d8cb67dad3fc3f1d57ffb0555da06c592965f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-jvm\\3.5.0\\602087c06fa4b1795a1572a26b174516c4d932e5\\coil-jvm-3.5.0.jar",
+      "sha256Bytes": "a280d338cb22a6bdc2f7f27aca1feccc3142a67c29f5cd945bd948d5b312727c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-network-core-jvm\\3.5.0\\5a995a2262efe8e8569b40fee8ce223aaa5599d8\\coil-network-core-jvm-3.5.0.jar",
+      "sha256Bytes": "3eb2ea78232460c9b9ae5ebe96e3bfb3b50b2c41b39277efb4ae454ad8652d6a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\io.coil-kt.coil3\\coil-core-jvm\\3.5.0\\5e82ee4827a88516057cb4ebd22871f6672643a8\\coil-core-jvm-3.5.0.jar",
+      "sha256Bytes": "479311df567a435d88aef4fabbec04585556770e7881d86c1758b07d5b126f40"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-icons-extended-desktop\\1.7.3\\c7c5465dd754043076875b32bce0dd7f5a354fe8\\material-icons-extended-desktop-1.7.3.jar",
+      "sha256Bytes": "dc55d383dca8279e353917e5c5a93d192a95e7ca4f926ee55ee0b4627f99d860"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.material\\material-icons-core-desktop\\1.7.3\\414b3096050fe647b0638832eace80f22c06b85c\\material-icons-core-desktop-1.7.3.jar",
+      "sha256Bytes": "bcf6c853b6db2ff148d2d3aad3b7a7ea54d93fc7b42e0afd840eb6daf1a1c681"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-geometry-desktop\\1.12.1\\21ca5715bcde50586e57506f07b280ff8b626bdb\\ui-geometry-desktop-1.12.1.jar",
+      "sha256Bytes": "2cde44d95ba21654dcced3a3098bdd171b3ef5b17ef7fc6cec0d25983dbc9fa0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-backhandler-desktop\\1.12.1\\170494f680ff0f7532eeba0f4ba936b54224ed32\\ui-backhandler-desktop-1.12.1.jar",
+      "sha256Bytes": "0bc021accc616c2a99afe0c39ca1ec29082fa78a7b99868ed122d162eab828bd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-unit-desktop\\1.12.1\\e0670f2fc4ace09368fdba41c15558e1fa79e866\\ui-unit-desktop-1.12.1.jar",
+      "sha256Bytes": "7c4998f1224f241dbe88fa59701d697d598fe8979a4acaed717b8365d4cd9300"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-graphics-desktop\\1.12.1\\dc0dbaa823b75a72d2306459e0a118b65769aa22\\ui-graphics-desktop-1.12.1.jar",
+      "sha256Bytes": "92fddd7609d77a803f7083b1b7dd5a651cba10be27c105361a5d0b3894932085"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-text-desktop\\1.12.1\\af2aab56220491e300daa1def6ce1e586f18d84\\ui-text-desktop-1.12.1.jar",
+      "sha256Bytes": "672331d7e1440f2406f6a9b6d3d61475316cf622d0dbbe910e47bdbd69861c38"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-tooling-preview-desktop\\1.12.1\\9871d626c28849c2f353e15d7694e38d7996ddcc\\ui-tooling-preview-desktop-1.12.1.jar",
+      "sha256Bytes": "19f5005baa27dfbf3f435feed44dfba9c938ba386ac6753d00a67a270cd72231"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-util-desktop\\1.12.1\\2d41b1dcda0c16efa86718f309fe2159a2890028\\ui-util-desktop-1.12.1.jar",
+      "sha256Bytes": "bb81e9748c9bcadeaeb99bab647e21442e62e253a3a497a213c68e040cb2b385"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.ui\\ui-desktop\\1.12.1\\a6d765fb5086ca7046af0172a7fc2ff3b32a3e59\\ui-desktop-1.12.1.jar",
+      "sha256Bytes": "eaee42812c81cf1f1a925088bd7e847a343decbc3ccb1682f00f203123a51a17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt\\0.150.1\\e03fd8140c0e331c3c7018b00a9710ec98d78fc1\\skiko-awt-0.150.1.jar",
+      "sha256Bytes": "bb610ada28509ebee3a623c0469aff3665689fbec73d118055f3dbf5a37211f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-desktop\\1.1.2\\10a65e605d90c6dc98f3de9d32ae32824a7d0a1f\\navigationevent-desktop-1.1.2.jar",
+      "sha256Bytes": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.navigationevent\\navigationevent-compose-desktop\\1.1.0\\d4c4408fbc6ac4dbddaef91d82013f435c02a9c5\\navigationevent-compose-desktop-1.1.0.jar",
+      "sha256Bytes": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.navigationevent\\navigationevent-compose-desktop\\1.1.2\\ef8d1270c6439178474691b1886e2c3dc97f9ce\\navigationevent-compose-desktop-1.1.2.jar",
+      "sha256Bytes": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-desktop\\2.11.0\\156dea0e0e4862b60bc14881891bae1e5df64f81\\lifecycle-viewmodel-desktop-2.11.0.jar",
+      "sha256Bytes": "175c349266ccbb6a2036615725b7066ee3f3319665c98af42206ab3a582a43c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.11.0\\8a85615b7e4f5728106bf7bc3cfa95f429eb6264\\lifecycle-runtime-compose-desktop-2.11.0.jar",
+      "sha256Bytes": "d5336753ea4d5881ccfb8b0613e034eb241f0d8b4349536df1cd0ec86cf63664"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-runtime-desktop\\2.11.0\\c2b5e2f7d739375538c2a74757531a30607f85ff\\lifecycle-runtime-desktop-2.11.0.jar",
+      "sha256Bytes": "09f75a4a8d763cee5d6af36f422139a0205d3f6df2e2c5288cae42836f0b36ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.savedstate\\savedstate-compose-desktop\\1.3.6\\63692375ffe667f12cb3ea8aa1e605d659ed2add\\savedstate-compose-desktop-1.3.6.jar",
+      "sha256Bytes": "0f3d045c5fd7e1301ab6c38cd0778067b0484cf39acac1233be71a723a6a8075"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.savedstate\\savedstate-compose-desktop\\1.4.0\\d3d6e0e2108528eb6080dc250da925a572be4202\\savedstate-compose-desktop-1.4.0.jar",
+      "sha256Bytes": "c02a98b0c2b35cdde245c0bfe6e7ff453c7b6d06a5eb8681d25b7f54b874ea48"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.savedstate\\savedstate-desktop\\1.4.0\\3b049a0f81643d6b4b900de95bc23efc085c32d5\\savedstate-desktop-1.4.0.jar",
+      "sha256Bytes": "e965ed7a011be83a271ac7d82249a776368479ee3a2b07948c3445b51d640856"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-common-jvm\\2.11.0\\2c4f7d92f1fd723121d394c93455f50158403ad9\\lifecycle-common-jvm-2.11.0.jar",
+      "sha256Bytes": "e6a66e67b9f63a0fb6344f165c1d872376e5fe6d235bffb138af45122cf452a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-savedstate-desktop\\2.11.0\\4e8025bc47a196b0ee403b8d915393ae7922c21a\\lifecycle-viewmodel-savedstate-desktop-2.11.0.jar",
+      "sha256Bytes": "ca21720ce7f370cb21cabb5329b959eda624107ec06282e3bdc92582917b1d27"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.lifecycle\\lifecycle-viewmodel-compose-desktop\\2.11.0\\29daa46bc0d2d574ee95309be1f325764f40b35b\\lifecycle-viewmodel-compose-desktop-2.11.0.jar",
+      "sha256Bytes": "1b4c58125c7b3693444f40c8ab76881d17fa74726860c24872a3dec3e0fad34b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-annotation-jvm\\1.12.1\\4cf2b71ea98c0d69c95a2885e521ba28af5fa7a0\\runtime-annotation-jvm-1.12.1.jar",
+      "sha256Bytes": "e291a6ae01ab71a7f48a568ec9744c6bf9b3f46ef72fbcdeb28c3407ae531c5e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-retain-desktop\\1.12.1\\3aa3ec26ef2a3d26bc556b51b33d09efc1a198e8\\runtime-retain-desktop-1.12.1.jar",
+      "sha256Bytes": "9b7e62a7df333c33eff9e1a6d6c2508a4d8fe4b7a43778075538fe3da4bc4485"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-saveable-desktop\\1.12.1\\8cacc17c590b2ac5fabf040c4f66d432092a821\\runtime-saveable-desktop-1.12.1.jar",
+      "sha256Bytes": "069949667409ab6de21053f9fdbff0869ae2a1f70a7212cdb89e7d409fd2552c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.runtime\\runtime-saveable-desktop\\1.12.1\\b4a48d211ac0281b049bf42cb21f715c71b69145\\runtime-saveable-desktop-1.12.1.jar",
+      "sha256Bytes": "d81973dced223d6aea7bf9f6d4ead285494c656ea003b59072babefd25470c7b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.androidx.lifecycle\\lifecycle-runtime-compose-desktop\\2.9.6\\7b6b6793f3c4c5996b20d1d99cf728e5fac00364\\lifecycle-runtime-compose-desktop-2.9.6.jar",
+      "sha256Bytes": "31c3c4b6dea38f078c46829dee2c43abba2bf8757b7ee8a0f660f31217364898"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.compose.runtime\\runtime-desktop\\1.12.1\\d9b0c5277cd9ba7a116fbb06e1716d02d0b33401\\runtime-desktop-1.12.1.jar",
+      "sha256Bytes": "9a40fb9ac9b98a1b2d8be51ce57dbcf733e768fa06a9e4859a1775cb52bf6806"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.compose.runtime\\runtime-desktop\\1.12.1\\82e40832ddf785e9c0c15c4186d32f8c894fd914\\runtime-desktop-1.12.1.jar",
+      "sha256Bytes": "ed390d7bf7bdba951359d127f4c1ddd223f535f5a6a63078c5c5ac6b6924eb08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.10.2\\4a9f78ef49483748e2c129f3d124b8fa249dafbf\\kotlinx-coroutines-core-jvm-1.10.2.jar",
+      "sha256Bytes": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-swing\\1.10.2\\ccb5a2e7c83fa76da0ba4677f05678d3bd3eed57\\kotlinx-coroutines-swing-1.10.2.jar",
+      "sha256Bytes": "02bdb85f20ec08004429abf6887e8d0e40f3ab637d7462f817f0f8abbe7d1eb5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.retrofit2\\converter-kotlinx-serialization\\3.0.0\\3541df11c0990f4a25610480c990d0e071a81e48\\converter-kotlinx-serialization-3.0.0.jar",
+      "sha256Bytes": "e9078b659251a2ef63e70729e0dec5f6cb57d220a1002948dc24b865fa6b42b0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.retrofit2\\retrofit\\3.0.0\\c0cdf6d243c5187732134129fda05a74f9197874\\retrofit-3.0.0.jar",
+      "sha256Bytes": "69c6a2d3451b6df9549a93fab744094ebf07a4b0ce4f453d6c8f575ef0fec9a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.materialkolor\\material-color-utilities-jvm\\5.0.1\\50b65097b0efc8d68cd05f735dbd9154e1ad680a\\material-color-utilities-jvm.jar",
+      "sha256Bytes": "a997ae8bcbdddc5baeca01c64d03f8d5014a186ae3f3a7f93ce9abbee93c7f9a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-serialization-core-jvm\\1.11.0\\c1905c9bf7452b045d5af9248835abe64ddad6bf\\kotlinx-serialization-core-jvm-1.11.0.jar",
+      "sha256Bytes": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-serialization-json-jvm\\1.11.0\\e7e045e99e56f07599bb9ccb708c2190e2af0606\\kotlinx-serialization-json-jvm-1.11.0.jar",
+      "sha256Bytes": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-collections-immutable-jvm\\0.4.0\\82499bf608b0fc3ae6737a5eac1a1f1325279bbf\\kotlinx-collections-immutable-jvm-0.4.0.jar",
+      "sha256Bytes": "d767014ad0c9a27d27d26fd38e7afa030aee0d141338f108781ff02ecf2fdab5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.okhttp3\\okhttp-jvm\\5.3.2\\f31e8de27feebe1e56d6c9d354a0986b65be0e1d\\okhttp-jvm-5.3.2.jar",
+      "sha256Bytes": "c771f48075b763f6c322055e21129a94b7de4c1faf3f8f58ace320b0c9517a30"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.graphics\\graphics-shapes-desktop\\1.1.0\\a5d2198960bdc0915f74c6b2954d3323f35f40ea\\graphics-shapes-desktop-1.1.0.jar",
+      "sha256Bytes": "8d7a4d3812cae2e3ef8272e97f6e9917ae45931f17cf1391f0246a92c955d9f4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.collection\\collection-jvm\\1.6.0\\f53ad8c314e5fb7acad45fab5ee00ee3e8c5ca07\\collection-jvm-1.6.0.jar",
+      "sha256Bytes": "839fcec147704611a222159fa84e3e062f68eee80caa549ddd1222d5210a13df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\atomicfu-jvm\\0.28.0\\6a9ac536f4b2144e57c176fd4e26821eb12084f4\\atomicfu-jvm-0.28.0.jar",
+      "sha256Bytes": "39576ec46b83412ff7a2909d24cccbba90400e91f9aa67b250309bc0872ecf52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-datetime-jvm\\0.7.1\\81c2e0246bd28cc2dcbdf0ab53628322e66a9de9\\kotlinx-datetime-jvm-0.7.1.jar",
+      "sha256Bytes": "3b8b98657c9aff3be7f6b4b575e9f3fb9a3a1f452a801da0f438901734acdade"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.github.ajalt.colormath\\colormath-jvm\\3.6.1\\19f3cd8b791bf1d866f2e48f2e2c82c377a81bb3\\colormath-jvm.jar",
+      "sha256Bytes": "a1853ee4a5fec636dbbb8c44955b7a3015f02ce8f9cfa1c2350791c2c2d3639c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\dev.drewhamilton.poko\\poko-annotations-jvm\\0.23.1\\e515d91b95ee82085f76f708d1d6870fca5c9b3d\\poko-annotations-jvm-0.23.1.jar",
+      "sha256Bytes": "9042e6da375ffa8e201d349e7ac926d1bab7694a818102c3a6a2f7d6e014bcc8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.arch.core\\core-common\\2.2.0\\5e1b8b81dfd5f52c56a8d53b18ca759c19a301f3\\core-common-2.2.0.jar",
+      "sha256Bytes": "65308a06b1c00ee186cb9e19321383f043b993813f1522c47f4a3e3303bdba41"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\androidx.annotation\\annotation-jvm\\1.9.1\\b17951747e38bf3986a24431b9ba0d039958aa5f\\annotation-jvm-1.9.1.jar",
+      "sha256Bytes": "1e343917ebf27ba96fe4dc52b1cad7fd32b738fbc6355bb6cd5b3b305d7212d0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.squareup.okio\\okio-jvm\\3.17.0\\a12d684ec0df9541b3869ae60a4a5257fd3613df\\okio-jvm-3.17.0.jar",
+      "sha256Bytes": "3b13dcc3e1573047c2d507fc4f7fcb0bb0cbcd9d395da21d20e09406e2cd6a73"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.10\\8943c84ddc6d5cc00a10dbc3736c397066eeaab5\\kotlin-stdlib-2.4.10.jar",
+      "sha256Bytes": "4ec0293bc3751423b203f1d8493251c57c42e73eb6377a6b8560d0974ff0a6df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.nanohttpd\\nanohttpd\\2.3.1\\a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c\\nanohttpd-2.3.1.jar",
+      "sha256Bytes": "de864c47818157141a24c9acb36df0c47d7bf15b7ff48c90610f3eb4e5df0e58"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jmdns\\jmdns\\3.6.3\\14e89b6d4cb6fb27194d48c353e4fb78486dabb\\jmdns-3.6.3.jar",
+      "sha256Bytes": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.protobuf\\protobuf-javalite\\4.33.2\\3a0984fa90730fa7f54fe6027c41320b2a1c6833\\protobuf-javalite-4.33.2.jar",
+      "sha256Bytes": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-core\\2.20.0\\3c97f7fad069f7cfae639d790bd93d6a0b2dff31\\jackson-core-2.20.0.jar",
+      "sha256Bytes": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-databind\\2.20.0\\f0a5e62fbd21285e9a5498a60dccb097e1ef793b\\jackson-databind-2.20.0.jar",
+      "sha256Bytes": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.fasterxml.jackson.core\\jackson-annotations\\2.20\\6a5e7291ea3f2b590a7ce400adb7b3aea4d7e12c\\jackson-annotations-2.20.jar",
+      "sha256Bytes": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.slf4j\\slf4j-api\\2.0.17\\d9e58ac9c7779ba3bf8142aff6c830617a7fe60f\\slf4j-api-2.0.17.jar",
+      "sha256Bytes": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.google.zxing\\core\\3.5.4\\955fcd6bcd0723ddfb8ee6ed502d5fdf0e9676a9\\core-3.5.4.jar",
+      "sha256Bytes": "71de5d89341b5fcf5dd89da7f44e84d825d0e084cdf3ec77c9abe26b0f0ceb13"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\net.java.dev.jna\\jna\\5.17.0\\33d12735bef894440780fce64f9758d420c7bae2\\jna-5.17.0.jar",
+      "sha256Bytes": "b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.json\\json\\20240303\\ebb88e8fb5122b7506d5cf1d69f1ccdb790d22a\\json-20240303.jar",
+      "sha256Bytes": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.belerweb\\pinyin4j\\2.5.0\\5a620aedec0f779f2123ba60fd4b74bfbd3e2646\\pinyin4j-2.5.0.jar",
+      "sha256Bytes": "282de2b3f2558b4f1c86dfd2fd6550500f838a178ef8b7acf34863f7d814fa35"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.brotli\\dec\\0.1.2\\c26a897ae0d524809eef1c786cc6183b4ddcc3b\\dec-0.1.2.jar",
+      "sha256Bytes": "615c0c3efef990d77831104475fba6a1f7971388691d4bad1471ad84101f6d52"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\23.0.0\\8cc20c07506ec18e0834947b84a864bfc094484e\\annotations-23.0.0.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.runtime\\jbr-api\\1.9.0\\2bc161f5472b5fd5610740e4d6ebe896c811cb0e\\jbr-api-1.9.0.jar",
+      "sha256Bytes": "7e37284e33b5b304ee6174dcaa92db949b257cc4c8991ca865e7daf5113d8279"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jspecify\\jspecify\\1.0.0\\7425a601c1c7ec76645a78d22b8c6a627edee507\\jspecify-1.0.0.jar",
+      "sha256Bytes": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test\\2.4.0\\c9a0c254adade886172cb021c0b099d8be1a5fc4\\kotlin-test-2.4.0.jar",
+      "sha256Bytes": "38099e38d81f394d7ae3eb73ad0a2b6379629a293ba8cfe5485ee7f836124943"
+    }
+  ],
+  "preparedProductOverrideFQNs": [
+    "com.bilipai.desktop.data.DesktopDynamicCardOperations"
+  ],
+  "selectedOriginalIdentityCount": 22,
+  "auditedOriginalIdentityCount": 52,
+  "generatedKotlinFiles": 13,
+  "generatedSourceModeCounts": {
+    "direct": 6,
+    "selected": 7
+  },
+  "sourceRegistryDeltaCounts": {
+    "new": 20,
+    "existingMerge": 2
+  },
+  "resourcesAdded": 0,
+  "verification": {
+    "compile": true,
+    "freshJvmProcesses": 3,
+    "originalNativeThemes": 2,
+    "actualPressReleasePairsPerTheme": 27,
+    "screenshots": 10,
+    "originalPolicyAndSelectedLocalFile": true,
+    "actualRetrofitProtocolGroups": 9,
+    "patchApplyCheck": true,
+    "applied": false,
+    "originalFieldsAndAlgorithms": true,
+    "MainZeroOverride": false
+  },
+  "remaining": [
+    "Full original liquid editor dock/segmented closure",
+    "Full original DynamicDetail/ReplyItemView/SubReply/raw comment REST-gRPC flow",
+    "Full comment decoration bitmap/export ReplyCommentImageSpec/QR/native clipboard-share seams",
+    "Actual Windows file/date dialogs and live authorized publish/edit validation",
+    "Android predictive back/MotionPhoto/platform routes"
+  ],
+  "installPayloads": [
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "bytes": 23062,
+      "sha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.kt",
+      "bytes": 2895,
+      "sha256Bytes": "6d1e1c00ded1899851b0424879a842c470db89c0445715de108af496fb343681"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "bytes": 1849,
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "bytes": 2943,
+      "sha256Bytes": "a3145a3338402012fa5ad46a5396b30c36cf194522f763951c475364f7f7e7bc"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "bytes": 3540,
+      "sha256Bytes": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "bytes": 7337,
+      "sha256Bytes": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor.py",
+      "bytes": 12021,
+      "sha256Bytes": "8d833e2a4f9b367e7bc4f48d3c63283c7beae1b582359e9c121ff37883bcad88"
+    }
+  ],
+  "artifactCount": 250,
+  "artifacts": [
+    {
+      "path": "PRELIMINARY-12-CORRECTION.txt",
+      "bytes": 594,
+      "sha256Bytes": "ca03c47f4398f91451162859cec70077743e12b42323cadfb8f440cc454bf134"
+    },
+    {
+      "path": "PolicyFixture.kt",
+      "bytes": 4390,
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13"
+    },
+    {
+      "path": "ROOT-INTEGRATION.txt",
+      "bytes": 8862,
+      "sha256Bytes": "771dce13775bd54b4f93957ec592230566dc0629ba193c10f7059ced75d8a4c1"
+    },
+    {
+      "path": "UiFixture.kt",
+      "bytes": 12814,
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1"
+    },
+    {
+      "path": "baseline.json",
+      "bytes": 605,
+      "sha256Bytes": "069863ae9a3d2d5d5de2c29ae690a6d069dfa7016432cf96b36c1277df773380"
+    },
+    {
+      "path": "class-overlap-evidence.json",
+      "bytes": 4004,
+      "sha256Bytes": "0d40a4375a7e21ecf613b242f21b3b8ce5a4a1b3687f16107566348ae569bd14"
+    },
+    {
+      "path": "classes-attempt13/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "bytes": 958,
+      "sha256Bytes": "6e3f7cbb244296e052866b5653818808d4c6134e7f7b14b25f94de3a2172f260"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/core/ui/DesktopOriginalOfficialVerifyBadgePolicyKt$WhenMappings.class",
+      "bytes": 965,
+      "sha256Bytes": "17fa47f85a80087bc6153ffff197c2aa06fad103ff6ae6b5fa17358213e41d00"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/core/ui/DesktopOriginalOfficialVerifyBadgePolicyKt.class",
+      "bytes": 16348,
+      "sha256Bytes": "c1428320596f50ae8e45bbb993f0436d0a6856d9e16a9eca4eb0741e696a8d13"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/core/ui/OfficialVerifyBadgeSpec.class",
+      "bytes": 4102,
+      "sha256Bytes": "6542ea6d1f7cd5949a4fd0cc8a780f22a513aebec655146dcdca2840c42b1b92"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/core/ui/OfficialVerifyBadgeTone.class",
+      "bytes": 2009,
+      "sha256Bytes": "c15b3ebf7eda98ad6ae4ddea3980b7812deaa6e3109e48d6880bb4c0befd5d50"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt$selectPreferredDynamicCommentAttempt$$inlined$compareBy$1.class",
+      "bytes": 2895,
+      "sha256Bytes": "647185214d1c394e442b094d3712878f43eabf10aabfce6d876aea03ef47c93c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt$selectPreferredDynamicCommentAttempt$$inlined$thenBy$1.class",
+      "bytes": 3042,
+      "sha256Bytes": "2147166df454bde9cd91259aac64b3ee4c4143c30a56f04d841a2eaaf6d2dd82"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt$selectPreferredDynamicCommentAttempt$$inlined$thenBy$2.class",
+      "bytes": 2821,
+      "sha256Bytes": "103ae838a0884056a44740d0f2f1444ed172b02b67ddfe4ebcb6f1022a950720"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt$selectPreferredDynamicCommentAttempt$$inlined$thenByDescending$1.class",
+      "bytes": 2887,
+      "sha256Bytes": "5c97373c0d67fa69552164f2ee0c5d61510787773273c3532ab10d34ad5b46c0"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt$selectPreferredDynamicCommentAttempt$$inlined$thenByDescending$2.class",
+      "bytes": 2952,
+      "sha256Bytes": "6d20424a6ad3a981f4da0fcdab21775211e8a68d0e119ea2494682b590fbf566"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicyKt.class",
+      "bytes": 11689,
+      "sha256Bytes": "c186a450682748e8d208288b9b8df597ca4c34c8cc0b27be2f6051c43000c83c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentReplyPolicyKt.class",
+      "bytes": 12725,
+      "sha256Bytes": "5a5a6cdb8b08926f5bca30d4c258e3cf2aec5fb8c495c24238d6c849f7fdd9f8"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DynamicCommentComposerTarget.class",
+      "bytes": 3610,
+      "sha256Bytes": "86a3a8c394d8fcf4550a7d0cf364f0dd10c84b25f154d1fd6783f8ac68cffc93"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DynamicCommentLoadAttempt.class",
+      "bytes": 6683,
+      "sha256Bytes": "4fec6c881be34077e7b0294e847c1f41fd84ee3fd0a6cb742e35f0d27734759c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DynamicCommentPayload.class",
+      "bytes": 3761,
+      "sha256Bytes": "a4f81c5dfdda7791a8c0601b64551b0c409cf55b6b19fc8395bc6f18aae2f353"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DynamicCommentSheetHostContent.class",
+      "bytes": 2116,
+      "sha256Bytes": "9b41b510143579477e54c8e9cfad83a0294abe22ad8b1161d3f79dc404cf1fbe"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/DynamicDetailInteractionModel.class",
+      "bytes": 4524,
+      "sha256Bytes": "560a46a2775f23d054a72fadf6cc291cd533eed9822978b702ccae7f1339429d"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicCreateReserveDialogKt.class",
+      "bytes": 5807,
+      "sha256Bytes": "d713cb677eda235d91b7585e9d73d24328713877384bfee77b4cb579fa9a6086"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicCreateVoteDialogKt.class",
+      "bytes": 4335,
+      "sha256Bytes": "9763e7cf3b7f245068f74d9386c42658eceb168237537e7afdeb977c174e9f40"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicPublishComposerKt.class",
+      "bytes": 8677,
+      "sha256Bytes": "5d019a684a0e9ef46420febb3af9f30c2863830bbc9bb8cc9ccd5546fd857036"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/ComposableSingletons$DesktopOriginalDynamicPublishPickersKt.class",
+      "bytes": 9143,
+      "sha256Bytes": "ae052e9efe5f72d2e0f693220034a0b58b768ddc51fca607555b5179184fe245"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCommentActionPolicyKt.class",
+      "bytes": 4677,
+      "sha256Bytes": "4ed914464187ac044174bfcd295080681f9aa62acdcbaf400a7f9ec6045fb3cc"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialogKt$DynamicCreateReserveDialog$2$1$1$1.class",
+      "bytes": 6861,
+      "sha256Bytes": "e8b4fed8b737dbd67d4643c71ac0c52e75d0a7e21d3eeb72152c2ec6d738e92b"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialogKt.class",
+      "bytes": 40080,
+      "sha256Bytes": "629bbb5a7e4520ebf72f18a4b1cdb7fda231b5b26a1dfc4e3cf57d4474064818"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialogKt$DynamicCreateVoteDialog$2$1$1$1.class",
+      "bytes": 7976,
+      "sha256Bytes": "3db32db691ee209d9365fe9bee067d2835766361d98cabb7b070b65fee74fe6f"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialogKt.class",
+      "bytes": 51565,
+      "sha256Bytes": "d90242cd7156c3c28a3800295b6126f4e530aca44062dd199a551e8d5496e3ea"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineCommentHeaderKt.class",
+      "bytes": 27315,
+      "sha256Bytes": "27ea88bb9a472a0dc3a3e12ea12d55b510cc5b339b0e368233c71a878cafeef0"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt$DynamicPublishComposer$2$1$1$3$1$2$1$1$1.class",
+      "bytes": 2160,
+      "sha256Bytes": "4216f00d4831de7765e4863324eb9e8cbc5ebcc74cfe0987dfc935fe2eb26b36"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt$DynamicPublishComposer$lambda$43$1$0$2$0$$inlined$items$default$1.class",
+      "bytes": 2107,
+      "sha256Bytes": "596f1d49c1a87dbb27bd83edde8b7193fb6859e7efab0c688045a685bccd9de9"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt$DynamicPublishComposer$lambda$43$1$0$2$0$$inlined$items$default$2.class",
+      "bytes": 2352,
+      "sha256Bytes": "c8fc43589dd64b99208d8d9b038b14a3e806e48d703ac363e4663f1b53c18dc4"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt$DynamicPublishComposer$lambda$43$1$0$2$0$$inlined$items$default$3.class",
+      "bytes": 2360,
+      "sha256Bytes": "7a1b7143ee5b89b5d3c58609b53c2aa926e7102cf66e3bd732dfebf21450a775"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt$DynamicPublishComposer$lambda$43$1$0$2$0$$inlined$items$default$4.class",
+      "bytes": 14345,
+      "sha256Bytes": "10d2807824025ffcc341b85d77805bfe8d79f7cde2bffb63162fe99c41ef0ed5"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposerKt.class",
+      "bytes": 86020,
+      "sha256Bytes": "7e3f38af1e59fdd5eb3ab535a9e01d675ee681ccebf811d1e751bff1c20e9c2f"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt$DynamicEmotePickerDialog$1$1.class",
+      "bytes": 4473,
+      "sha256Bytes": "c716c5fdf689541c3c7f18810c36100b04a0fa96666e78fea9f3da324c174c25"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt$DynamicMentionPickerDialog$1$2$1.class",
+      "bytes": 3217,
+      "sha256Bytes": "55e57a9b3989ceb008a7890db3db0e0389feda52f2b9f56e15632017635e3c63"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt$DynamicMentionPickerDialog$search$1.class",
+      "bytes": 6395,
+      "sha256Bytes": "ce2fefcec94f7d1fce233e26e3da4e597af0cc20883cff5a87de01262c8bb1f8"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt$DynamicTopicPickerDialog$1$2$1.class",
+      "bytes": 3218,
+      "sha256Bytes": "0230373765d2efd38222ed31dfa4fd8062830f8edcca57794b5e9c49b38d2ff3"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt$DynamicTopicPickerDialog$search$1.class",
+      "bytes": 6385,
+      "sha256Bytes": "48a4b4f3d15c99be9cf37d1feb6d16fbb077907dd8fc09439323faf885d2fb7d"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickersKt.class",
+      "bytes": 69600,
+      "sha256Bytes": "83da479330888ae0ca06d3ccb89f68066d2341a49fde6418071fde7a93cc67ab"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DynamicCommentActionCapabilities.class",
+      "bytes": 3623,
+      "sha256Bytes": "091dd748acee66c1cc1633d63dc7b9e27722bf2a28466e4abf60f81245bd2e55"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DynamicCommentReportReason.class",
+      "bytes": 3274,
+      "sha256Bytes": "ffb7fc29df9cc91c07fe14d9a2a597beb4b3c7c8a0a39077674b6489d8951465"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/dynamic/components/DynamicCommentSortControlSpec.class",
+      "bytes": 3297,
+      "sha256Bytes": "30b668891f18f756ea237cf42a5b40545f78a45d7ba44ab1014604866dd16904"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$WhenMappings.class",
+      "bytes": 1907,
+      "sha256Bytes": "d1d7175fbab32ce7a91ac25bd1ec1fdb9180351502f847e151270f0029e98f97"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$buildRichCommentAnnotatedString$1$MatchInfo.class",
+      "bytes": 6573,
+      "sha256Bytes": "fb60436c64a4d87a688b93167507ce0add0e29091bb8a8ff59ef3284076f271a"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$buildRichCommentAnnotatedString_CPnMtzw$lambda$0$$inlined$compareBy$1.class",
+      "bytes": 3094,
+      "sha256Bytes": "74fafffb183e799da1b253e350c694d4576a3171edd91b97c4ef320ce7fed970"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$buildRichCommentAnnotatedString_CPnMtzw$lambda$0$$inlined$thenBy$1.class",
+      "bytes": 3226,
+      "sha256Bytes": "ebdad001e6a628c9924e58bad21d7b5cdaca1fc9f54bb06b08c39375b48355a9"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$resolveReplyMemberPendantImage$2.class",
+      "bytes": 1683,
+      "sha256Bytes": "7a9b0a09bea6677e899f0c56a27e5be0c57eba3f5eef5e4fbbbe862c1deb6f2c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt$resolveReplyVideoTitle$1.class",
+      "bytes": 2086,
+      "sha256Bytes": "1054db7ba0ef7f0d33f7d37033aaea4eecb0d78113f51bdd4125c108e1f2ea40"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicyKt.class",
+      "bytes": 87674,
+      "sha256Bytes": "d0dd4788f13570f409196fcda5650928756cf0a17e2ab87b14e02c5523d561ad"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentAppearanceKt.class",
+      "bytes": 5261,
+      "sha256Bytes": "f0de55f6964a0939f66a13b2b269bb2e3fb3ae6abdbc051f7dafffe70888a0e9"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/FanGroupTagVisual.class",
+      "bytes": 4053,
+      "sha256Bytes": "a197a90da38adfdfd92fc74ff27ef7d9acb36a06af7889e05f21f3f938f159b9"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/ReplyActionSheetAction.class",
+      "bytes": 2781,
+      "sha256Bytes": "edef0d0559fca7d1cd5380ced833c6345a54f7ebfd9def835573520cb9bb405c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/ReplyItemLayoutPolicy.class",
+      "bytes": 5396,
+      "sha256Bytes": "78772f26987681c495e69edcf95829ff7070a1ea10144d87934b9fb824cdfdd4"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/ReplyLeadingRichTextReference.class",
+      "bytes": 3422,
+      "sha256Bytes": "8ef4a7c91dc6c19bcb0e41fa198a96891e998e3ec47a4b1c7051ebf063243c7c"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/ReplyLevelBadgeAsset.class",
+      "bytes": 2499,
+      "sha256Bytes": "53b75ab3ff8906951a5fc00089d9742198049de1cc4e04e8224ed3473afeedb4"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/ReplyVideoReference.class",
+      "bytes": 3359,
+      "sha256Bytes": "d2bffcbdc2e92439e109112476879435867499f7d19983350af2401d42bd1f07"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction$Timestamp.class",
+      "bytes": 2818,
+      "sha256Bytes": "3f6c41387270ff14852e028b0081ea107fa37b69f7b889c90334b21c6f45d166"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction$Topic.class",
+      "bytes": 3103,
+      "sha256Bytes": "a068a476eed80f23d256e5871918b0c02cdd5865ff0433048a6a051969db997a"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction$Url.class",
+      "bytes": 3083,
+      "sha256Bytes": "3e55e9b9bae586d20ef07096870e901590834f06521da2da3e7d3264b4971cf3"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction$User.class",
+      "bytes": 2771,
+      "sha256Bytes": "4cfef2de9f6320eab0796924c97bde1444ab5776e22a033ded65507ec552eeca"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction$Vote.class",
+      "bytes": 2780,
+      "sha256Bytes": "0782f17575f84b7801467a9103fc408ae6cac74de11ff5814193e792a87c279b"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/RichCommentLinkAction.class",
+      "bytes": 1570,
+      "sha256Bytes": "f034d26666ae159ec2432fd27c7a86a95f91113f30e73bb2e15630188f378be5"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/VideoCommentAppearance.class",
+      "bytes": 9121,
+      "sha256Bytes": "600a9c9777050a029ef7baddca4b3ce01717d0cafe4aa4c6cd45dd073b38a490"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/ui/components/VideoCommentTypographyTokens.class",
+      "bytes": 2040,
+      "sha256Bytes": "0ff2914b2b037b49385cacf5e176136bbdfe237e015ae4eade4ce4d57026d995"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/viewmodel/CommentSortMode$Companion.class",
+      "bytes": 2384,
+      "sha256Bytes": "4bace24b997350522b5d8edcce03ca193f15184ca98c0909bb28ea76b56ad8e8"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/viewmodel/CommentSortMode.class",
+      "bytes": 2846,
+      "sha256Bytes": "a1bfd7e6ed935b153b137f41d75b17fb3920b69d2e44caab9f7283b6c16528b3"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicyKt.class",
+      "bytes": 2649,
+      "sha256Bytes": "44a3bb06ec9cb16040b435bb7617f9bc45e6acaf00de8cc1a587e75a4cb54c52"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/viewmodel/SubReplySortMode.class",
+      "bytes": 2750,
+      "sha256Bytes": "123c39fecf8c6473bef2eb9161efbd9c25a2f5adfc4c080be3c07bd33ebe9c22"
+    },
+    {
+      "path": "classes-attempt13/com/android/purebilibili/feature/video/viewmodel/SubReplyUiState.class",
+      "bytes": 14247,
+      "sha256Bytes": "6592c9c1756034bda173ed3a96dacd909f134b5afecbeab5307800fabe79a606"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$addWatchLater$2.class",
+      "bytes": 4266,
+      "sha256Bytes": "46a9b0bacb8bd69a340f883f2dc48b4a14f338cf191a8af2ca1401eab967e998"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$1.class",
+      "bytes": 2223,
+      "sha256Bytes": "3ee7d0f7bf6b3169011d53cef0979277f2d13d75ec26360f433b2982d8fc1bb4"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2$1.class",
+      "bytes": 6484,
+      "sha256Bytes": "dd4663e21851c75b9562375cb3954c170d7674c73b17c3932d4ca8d2cfbed78c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2.class",
+      "bytes": 3852,
+      "sha256Bytes": "52ce923336cd8977d89105fe23df13b11c7d6e70f7f05bf5b459e7faf0e34402"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$1.class",
+      "bytes": 2305,
+      "sha256Bytes": "5251449774ee51f4f21e1f87e4d53905a6da751a5bba6fbe5f53883dcc233b7d"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2$1.class",
+      "bytes": 10518,
+      "sha256Bytes": "79dc78872f1e3a9d9753131ece7091e9444f4641564522409b8b731d153893c0"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2.class",
+      "bytes": 4145,
+      "sha256Bytes": "11fa06bce7210b0db280d4be32bf44561878bfdf18a67247fc91472df9648a52"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$delete$2.class",
+      "bytes": 5221,
+      "sha256Bytes": "ef20a38bed5a4792606c1337e8251e506098808fccbb9ceba136a2eb39e6484b"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$1.class",
+      "bytes": 2298,
+      "sha256Bytes": "551ba7e77a3c5491de5b5f75cde44cde4a24ae43e28d709550b26e045989429e"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2$1.class",
+      "bytes": 17926,
+      "sha256Bytes": "96fe51b04eb6aacf276ec807198a91c46a414004c6d13da60a180bebc70676dc"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2.class",
+      "bytes": 4443,
+      "sha256Bytes": "ca9fe87cc30f702ed575598d9a5b6632076da6c0c394817579e5c36cb1765e7c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$emotes$3.class",
+      "bytes": 1399,
+      "sha256Bytes": "dba485bd7e92dfeea5bb43afaac3834ec7ffc9969adaa7ee4a5f29eef6575ad9"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+      "bytes": 3490,
+      "sha256Bytes": "644067cfb92fed16f2eb0197ff03adaea45cf210588f10cf6e767fdc98489689"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$1.class",
+      "bytes": 2134,
+      "sha256Bytes": "b2a137f27ec93b22d05c01475468faf652f5c333cfa17fbc3fa531dca5d6000c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+      "bytes": 3733,
+      "sha256Bytes": "82b994380630ae9f04d3cedbd04cca77c69c6c5c72283e0bf65f9c75bd279d1a"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2.class",
+      "bytes": 3502,
+      "sha256Bytes": "d28b7b1fc6d721208a2b1499eac4b71c741bdbed1a35db6154bd12ff35c2573b"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$1.class",
+      "bytes": 2122,
+      "sha256Bytes": "fa14af0e143dface2aa0b568dfdb84499025137938f408f9c94adea9e7c5c4c5"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2$1.class",
+      "bytes": 3675,
+      "sha256Bytes": "c8452f271c8882d1124a5a247b250fd4b59585f06032e910b57c2334614cffc1"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2.class",
+      "bytes": 3534,
+      "sha256Bytes": "e4d4c01c8719e200d6fc9fd98453918074739377b99799f0f024da3f81449d88"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$1.class",
+      "bytes": 2112,
+      "sha256Bytes": "08cb6e17102cd383e299f7edf0678a9a32ffc20532366b4adc2cd80631ee379e"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+      "bytes": 3584,
+      "sha256Bytes": "139b415f8db88114d4d7584918d6bb2e34d2a67326ce050eb83267d9379d937d"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2.class",
+      "bytes": 3467,
+      "sha256Bytes": "a6d48e3cc50b2e65dce19844d6d9b9246dcf88786feaedef4d1628df03092062"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$grpc$4.class",
+      "bytes": 1395,
+      "sha256Bytes": "0b6e70455bf731d27d5e5b319a3f1f90d92aa5f282baa9d6d1ecf60f8c4cfd2e"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+      "bytes": 2551,
+      "sha256Bytes": "1a089a14aaaa72cd38eb7e9fcc7eb1a940eba4e25c20aad18e71aa61452d297a"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+      "bytes": 4718,
+      "sha256Bytes": "749851138de774daec356f2ae4a3f92452f27d92a1789ef332200ef3d1b9cb76"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$jar$1.class",
+      "bytes": 2739,
+      "sha256Bytes": "85c2a6ec999f7f38cf33de07f1036a22d00e28dce0839dd3d1f78e4ed64b5073"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+      "bytes": 4249,
+      "sha256Bytes": "93b64d6857b2cfe32005ce7aa19eebf9b050edef5e0a85b18b9a4f37f9adc0b3"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$messageShare$1.class",
+      "bytes": 2057,
+      "sha256Bytes": "cd1eb4b12b225e5fba928e6481d87350c561fdaed6bd607b8484037ac3a7a907"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$modifyReplySubject$2.class",
+      "bytes": 4772,
+      "sha256Bytes": "47d1047ed293da81615384cdf70dcbb5b9de73f0fa4951d875a8c56269b4def8"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$1.class",
+      "bytes": 2204,
+      "sha256Bytes": "bafbdd29fab9f92bcb563838329db0ce4fff8781bdab2ada1e8905adf471265a"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$2$1.class",
+      "bytes": 3818,
+      "sha256Bytes": "c2aaaa2618d00eb61be82b15c350ef8eac4e40ecfbb89fdd9df051238f92db78"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$1.class",
+      "bytes": 2019,
+      "sha256Bytes": "da82d69856dd9ce602eb9f3886a1b7fff8d7b2a9f4a25d0ec0d06c1378867054"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$2.class",
+      "bytes": 5020,
+      "sha256Bytes": "cab5134af593f923b5475a81c82d2d843c339ea06e62dc5ef22e58a3a8057b7c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$1.class",
+      "bytes": 2256,
+      "sha256Bytes": "ba02f515cb551ed87f7f006c32dde3cfeac408e96e423d992e776bdeb596169c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2$1.class",
+      "bytes": 16295,
+      "sha256Bytes": "a77350456cc503e59b6e89a63e64eb83fcdde6009f40bfe2eced96b53e655fbb"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2.class",
+      "bytes": 4123,
+      "sha256Bytes": "a1e1746b6cb264b0217c4054df9d383bfb48c2fd4cf09c459d4b20a5f7445820"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$read$2.class",
+      "bytes": 5093,
+      "sha256Bytes": "1c0429fdc8e37972f626f20a8081503be06e403613faa7519a950b43cdceb5d5"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$report$2.class",
+      "bytes": 5224,
+      "sha256Bytes": "10bbe18de54d2a0098742525362db1cf139425d3fe3b3ca230f0bc9a053805f0"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$repost$2.class",
+      "bytes": 5048,
+      "sha256Bytes": "fbe4b0aedf3f3969f8a4744df531f515c58f3157159077153fcffd204183b1fc"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$1.class",
+      "bytes": 2165,
+      "sha256Bytes": "6fcd35114c5d5e75e4af2eebf87294f3eb20cc0c2b2cae8fa7d95b4b040af8ea"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2$1.class",
+      "bytes": 5414,
+      "sha256Bytes": "a6f8119ef18cf4213903068413258783911bb4c6183df6faf7090874dcecf6a6"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2.class",
+      "bytes": 4408,
+      "sha256Bytes": "55d73cb9912ca5e21fc07b81d416ae68bd7361bce1a4e556932b827420e12f2c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$result$1.class",
+      "bytes": 2371,
+      "sha256Bytes": "674bbefcd662e0dbd4db0f05af2b74dd81b834599dc97645463706a467444df5"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$1.class",
+      "bytes": 2154,
+      "sha256Bytes": "8c418a5b2c067025e003c2bf810fc33d72cba30f3ff2ac5d67f7eb21def622fb"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+      "bytes": 9087,
+      "sha256Bytes": "20513f1aa3c90fc83ba942dfe5add52cd749671cb8c784b7e0bd6c7621ae0ca7"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2.class",
+      "bytes": 3636,
+      "sha256Bytes": "cf007c034d9894294def9d189814a6daa23892bed59b736b1d95c8648da1b1f6"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$1.class",
+      "bytes": 2158,
+      "sha256Bytes": "77e8304351381ee77f3f7ee54ca1c7b3a556cc2fde8de392e2f9c6b64ad9e687"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+      "bytes": 7994,
+      "sha256Bytes": "9b64797547ec5aa50016537c828979749c49664bb6f7ff903dc376ef7c10b0e0"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2.class",
+      "bytes": 3657,
+      "sha256Bytes": "da05f8a4aa9e845b554868a315a2b26297aadd0574d57f9cb0267fa3df12f697"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$1.class",
+      "bytes": 2111,
+      "sha256Bytes": "79ce35be47d55b9b32426da73af923f4c7763a535fe58a2b586dc127a7957219"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2$1.class",
+      "bytes": 4404,
+      "sha256Bytes": "e196eb3af8c8d0f041f7b252702713f7ebc0ad7e9aaa088406e5bf19993eb699"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2.class",
+      "bytes": 4024,
+      "sha256Bytes": "2e92b3484e7e5e07f0fcc760c684d72f294b52aa6a13cd9efa3c3b909d789306"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$1.class",
+      "bytes": 2188,
+      "sha256Bytes": "cc8ba72a8eb4c2070b2ad7a9b05b610404774a66150b207c4b715fa1b3cc801d"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+      "bytes": 3861,
+      "sha256Bytes": "59dd9dc65d14ab1fe4814a6454e5ad46724988d0d6baa0b6f7f43a12f865ff9a"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2.class",
+      "bytes": 3513,
+      "sha256Bytes": "338ca21134112f279900c1ceaddf0480be22b89af79a1ed4e26734319b51db65"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$setLike$2.class",
+      "bytes": 5035,
+      "sha256Bytes": "fdde0a71321ca881d1e725e77042d159938aecaf5f145810c7e417ee0e20d384"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$setTop$2.class",
+      "bytes": 5457,
+      "sha256Bytes": "9e314996d65c8183e076428804af7b641a32095d8f594e2cfb25e2e031f2c702"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$setVisibility$2.class",
+      "bytes": 5466,
+      "sha256Bytes": "23f623ec87ad797e45fb241566ade9cf6922b8b65e9e964761150d5469d83847"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$1.class",
+      "bytes": 2253,
+      "sha256Bytes": "8e57dac00503bae3a7a856fe55243732b90e210e3679ec384e5906dcf0b86f1d"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2$1.class",
+      "bytes": 4207,
+      "sha256Bytes": "2457e33499f7248b2673fae30df2b9f355b90558c7271cd74dfcadf4bebd4c01"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2.class",
+      "bytes": 3880,
+      "sha256Bytes": "4c724d72869dbf4798a53ba3fd9afc938ac28a74141910c8a93527737312b83b"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$upSearch$1.class",
+      "bytes": 4805,
+      "sha256Bytes": "a20584b2012608fb4d1015584dbf772c9896fe92ba3b518841e93ac7c01adb39"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorCommentImage$1.class",
+      "bytes": 2508,
+      "sha256Bytes": "d1c11925f0be3d101bbfdf7427b975021db045e8ff25927ed8c3f7038e82f04f"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorImage$1.class",
+      "bytes": 2219,
+      "sha256Bytes": "a971578af86a60c25104e58033a36b6b8717b2e71786b48f32dcef5474a55d1f"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations$userInfo$1.class",
+      "bytes": 4805,
+      "sha256Bytes": "c992e0c336fc25359713d55993b8bd9ec03ec973b8042ce052c94acbfb9cb04e"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/DesktopDynamicCardOperations.class",
+      "bytes": 61571,
+      "sha256Bytes": "db961cc8bd0f82b583c4b03952074a94f937a6823d6a630179f6b088f7e6890c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$14.class",
+      "bytes": 3057,
+      "sha256Bytes": "e5fc644ed4fee7b44d4784491b3ee210605c18bc12d1132619c2de50964b2d97"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$15.class",
+      "bytes": 3063,
+      "sha256Bytes": "b42061f51eebcc3975aed8415a58d679754c8cba6f91367e02f58ad50692cb66"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$16.class",
+      "bytes": 4062,
+      "sha256Bytes": "8a13caeee10b398e371ebfd27108b76b8f7171c1208db144f534441cb4ed5ac4"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$18.class",
+      "bytes": 3828,
+      "sha256Bytes": "881a7d778e94e3dbaedcccfec844c2179cdf182cf1954a42b98646b4265a3ae7"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$20.class",
+      "bytes": 3828,
+      "sha256Bytes": "483027e237d87d35ca74bffd8ad699cc1f564b19cc3157330668b50b48367580"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$22.class",
+      "bytes": 3828,
+      "sha256Bytes": "b800a6027377a3abb3a4efa9b26f6bc4eb16c9247a7f014ec076d836926735f9"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$24.class",
+      "bytes": 3828,
+      "sha256Bytes": "d57964cf1e0f7933e2207b4a9bc922c0ce5c5537f39be9c8ec6d7e3619d5c776"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$cancelled$1$1.class",
+      "bytes": 3807,
+      "sha256Bytes": "2ff9ddd19ab06b91a18d0f7159d126671c765d671f397c8e0eb1f1df257babb6"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$cancelled$1.class",
+      "bytes": 5396,
+      "sha256Bytes": "04a630e7dbbc0b09b4172802b9cc24471cac58606e5c64544cbe6b9490bee509"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$imageProvider$1.class",
+      "bytes": 4714,
+      "sha256Bytes": "4f823ae5c08e8af1b5f3a50e2ca8fad98bc3e6c3505aec2429ed50ee7bb4c645"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "bytes": 7873,
+      "sha256Bytes": "35cda7f476e1169f0f1bb7adf37bde217802dee3d212426ee81ec9745f459458"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$retired$1$1.class",
+      "bytes": 3790,
+      "sha256Bytes": "17cecde831ab2408794b20a47dea185b90a96fd4a99871e69ede7aaf1be474e2"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1$retired$1.class",
+      "bytes": 5365,
+      "sha256Bytes": "f225fbab028467ecaf3cfa77dca06dc287fe7e87248cb2f7deb04e9b24cee761"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt$main$1.class",
+      "bytes": 97060,
+      "sha256Bytes": "2220266ce373650670d7b7bb76e0b299c86d616d6dd2d67a0244736d9eb7d5d6"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/data/EditorTransportFixtureKt.class",
+      "bytes": 1194,
+      "sha256Bytes": "aea4869f5e2f14fb3c868a07e0c37c98caa4662c9c84b03883021d4351b6a280"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorOperationsBinding$createReserve$1.class",
+      "bytes": 2279,
+      "sha256Bytes": "16da3ff1a188aebd7252c7f570caa0ee32eaf3e513a562585c02458e8b674529"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorOperationsBinding$createVote$1.class",
+      "bytes": 2361,
+      "sha256Bytes": "9ef91fedbd53970e52298568fa126ec804e98b2c769223c31f75f58528e1f138"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorOperationsBinding$searchMentionUsers$1.class",
+      "bytes": 2208,
+      "sha256Bytes": "91bf40d10ce56bfbbaebc8e6b30b6fecdcc442aaf4ac1dd024a0256293ec9d65"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorOperationsBinding$searchPublishTopics$1.class",
+      "bytes": 2212,
+      "sha256Bytes": "ac52715f1497ca76a5ad541d0538d38466630ffa25e30eda8c40e51ded49f705"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorOperationsBinding.class",
+      "bytes": 12233,
+      "sha256Bytes": "007a3bd22786d08a42b56859ec5a1fd432316b1545ea59022ccb4597619cd2a1"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.class",
+      "bytes": 3787,
+      "sha256Bytes": "d7623c01aebed0435c3d17bcdc8d0952fae16a11e2a6c480659c165258ab9f76"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorPlatformKt.class",
+      "bytes": 2091,
+      "sha256Bytes": "ef2548db77501b07e61184283a54e3b7b6c235061251d13fed2f746aa6b09cf1"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages$read$2.class",
+      "bytes": 4664,
+      "sha256Bytes": "28f401c607882e4b94a593d091eb88d487a3a51eba301d3726c13397f23689a4"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.class",
+      "bytes": 7304,
+      "sha256Bytes": "0df848f145b31aa3220ed166d85e7da874e1f88f6ad0945cc4f49b6296b85d2c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.class",
+      "bytes": 11155,
+      "sha256Bytes": "2e97ca215e384bbf330a921b56cd3c45afd497cdab94b8fd849bc528c19b7da8"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHostKt$DesktopOriginalDynamicEditorHost$2$2$1$1.class",
+      "bytes": 9623,
+      "sha256Bytes": "3f2f642e2e396ba9ad4a84b1e0678da4fd24a55477a7b36d85102fc68fd91326"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHostKt$DesktopOriginalDynamicEditorHost$platform$1$1.class",
+      "bytes": 1873,
+      "sha256Bytes": "014fae450419813cd84caa6a4e384643b7f18b24e510b43cefb116cdab9b78f9"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHostKt.class",
+      "bytes": 26049,
+      "sha256Bytes": "6fc37b17cc1032dd4dbf90dee303fae778c1966545b633b3001aca20698d7bb5"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorPlatform$emotes$1.class",
+      "bytes": 2037,
+      "sha256Bytes": "3cc91498a5d2987ff0d650999df22dce6d6b655ac127bfd77af9aeb271ed4046"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorPlatform.class",
+      "bytes": 10511,
+      "sha256Bytes": "576a6fc3b418f082b99a5519394042e855f55e5a418a4b03f6e19889db3fe390"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorScene$await$1.class",
+      "bytes": 1818,
+      "sha256Bytes": "38f4df4f802c84bf0699d6f638f51013c1ae50f272403938390aa4b6b281727c"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorScene$await$2.class",
+      "bytes": 3586,
+      "sha256Bytes": "cb66aa4961c83a073b18fdc5646cad6a1efdd04088b5adc445ee73f9d3cf5d53"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorScene$press$1.class",
+      "bytes": 1782,
+      "sha256Bytes": "dc6919da9b7f6b67e2cbff3b94f0dbf2a589aec5f420863117fcac98c8f146f3"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorScene$setText$1.class",
+      "bytes": 1839,
+      "sha256Bytes": "ca9c1204ff5e9631b3685ef9396cc7c30735fa420fb905db0bf1f1cf244baecd"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/EditorScene.class",
+      "bytes": 18836,
+      "sha256Bytes": "d0caf31f507264d1b58162327fffdd7039d335814158f778b73d8b3b452ec42e"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/PolicyFixtureKt$main$1.class",
+      "bytes": 22660,
+      "sha256Bytes": "7cc41f332846bc9ea0b4fcf9f86e1e47973a84b89d3be417d183dc786f52a239"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/PolicyFixtureKt.class",
+      "bytes": 4758,
+      "sha256Bytes": "96aa696f9beab691d59bd525189ea2078156cd2effde0f4441bcedd7e4199f10"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/UiFixtureKt$main$1$invokeSuspend$$inlined$sortedBy$1.class",
+      "bytes": 2222,
+      "sha256Bytes": "9902cb06ccb3cb0b7eea296280a0fa3ea1d94fe2b49db8ead8c3bf8aeb9485a4"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/UiFixtureKt$main$1$loader$1$1.class",
+      "bytes": 1789,
+      "sha256Bytes": "1e9d09c5083e2c4c6faf9fe542c61cc8cf23f794a5722a60afab7fc503b80ac3"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/UiFixtureKt$main$1.class",
+      "bytes": 80715,
+      "sha256Bytes": "e9f9e165622370b06fa88dfa2104908888ad11194f0c41062e0599248c7ff23d"
+    },
+    {
+      "path": "classes-attempt13/com/bilipai/desktop/ui/UiFixtureKt.class",
+      "bytes": 1282,
+      "sha256Bytes": "dfecef76250554ba951564006173e6025393a2645e6e3556a50b5286928de990"
+    },
+    {
+      "path": "collect-reused-callable-proof.py",
+      "bytes": 2374,
+      "sha256Bytes": "9be7f50402025daa50d5c8bae76f9f6f4af5ff7dce45917954bbd33613f78428"
+    },
+    {
+      "path": "compile-13.log",
+      "bytes": 786,
+      "sha256Bytes": "f7ff2b700ae998db98de16ecd8175ae7c30e065af94587c4adf752325c0b07b2"
+    },
+    {
+      "path": "compile-evidence.json",
+      "bytes": 9360,
+      "sha256Bytes": "d665759267f06ecec5635d21aae95c1c2cbc9e4a74f837e1638a533897da35be"
+    },
+    {
+      "path": "compile-fixture.py",
+      "bytes": 3049,
+      "sha256Bytes": "9a82602cc241d0c1d79385d9dab66d019f9b0f6a1d3b985620b02edd26ae33b5"
+    },
+    {
+      "path": "compiler-13.args",
+      "bytes": 28015,
+      "sha256Bytes": "8c0b58c3367ef6e90f3680021ae2784da647edba226ebd0688f1ce357c79d332"
+    },
+    {
+      "path": "dependency-identities.json",
+      "bytes": 33740,
+      "sha256Bytes": "eda9b5cda1ac474e7e01e4a21459ad039cc7a3d81508066c33cb392e15b93742"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 9794,
+      "sha256Bytes": "7affd1584e1f8b22ba7fc18a079a66798c9de35a4822af9ebba716fc95a1101e"
+    },
+    {
+      "path": "generated-protocol-members.kt",
+      "bytes": 11823,
+      "sha256Bytes": "8d85bd9a0ba09125a9391089fef43e621576f587bae9d887993ee000b231a71d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/DesktopOriginalOfficialVerifyBadgePolicy.kt",
+      "bytes": 4915,
+      "sha256Bytes": "c674ef6d33a0a775b507c1cba0bd8893a51dc7d60e005751f51344459651db8d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicy.kt",
+      "bytes": 4778,
+      "sha256Bytes": "36a217e53af655c53c4e0dcad41e9ca7d51ccdb6198662b669550cefb5d6296e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentReplyPolicy.kt",
+      "bytes": 5308,
+      "sha256Bytes": "7f7d3d24dc20702948905cfc70bf8654e5a23b53a6e9f56e5574137245da7eb3"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCommentActionPolicy.kt",
+      "bytes": 1830,
+      "sha256Bytes": "72f7339f046f616d404fa5cd846ceabb4028da48586c5a52628e260a1a2717ae"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt",
+      "bytes": 5438,
+      "sha256Bytes": "5c2f7a8490b9ad29d89d7b4f64216c4b9720802b97803978e4f891f471a0c206"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialog.kt",
+      "bytes": 7413,
+      "sha256Bytes": "77f30c2a2fa21184c0278e445b79093ee83c5599605a6dd4eb055a6f7825556b"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineCommentHeader.kt",
+      "bytes": 4420,
+      "sha256Bytes": "0bee8b4665f65c7de8f7a00c58d56abb781149d1c719a93396f04bc6de1df80e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt",
+      "bytes": 13678,
+      "sha256Bytes": "680bd1b8ff2d68239dea819f55b28d84a4fe95f1e49893678b77d9517dc91c2a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt",
+      "bytes": 9442,
+      "sha256Bytes": "46666bc7ba3cd9f078aced7dfd6b8449c6502a961a57ed1595e0f3fb9559be25"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicy.kt",
+      "bytes": 39744,
+      "sha256Bytes": "3302d6dc02aa116ef6b01f9b31dc163667ac96b0a1c13f260be77a03285f79f6"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentAppearance.kt",
+      "bytes": 3554,
+      "sha256Bytes": "c7b35702a44196cae951dc53a424549d2ecbe8a0d66ec374acfdc5700a965d9d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicCommentModels.kt",
+      "bytes": 1441,
+      "sha256Bytes": "792274f00942e5538e3e3b3bdb80e77fe92641ddf10f9390e627175511e099de"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicy.kt",
+      "bytes": 1095,
+      "sha256Bytes": "1cc357fe6aede84caf9e5e4730588b884855a032da2172ba34e42576646ed052"
+    },
+    {
+      "path": "operations.patch",
+      "bytes": 12918,
+      "sha256Bytes": "0bb1ae78935c6369726c576544b7cfecf4d747d25cd7f25da1ed192167c173b3"
+    },
+    {
+      "path": "original-source-evidence.json",
+      "bytes": 15461,
+      "sha256Bytes": "7a81f4a0596455a4862bca53910dc7f69e8ddf0aa54b4a66a31dace7d0c94436"
+    },
+    {
+      "path": "patch-check.json",
+      "bytes": 450,
+      "sha256Bytes": "b16fef8c68791a459fd146313092b21fc1f861533d0bec0c0dba309ede792e9c"
+    },
+    {
+      "path": "policy-13.args",
+      "bytes": 22745,
+      "sha256Bytes": "ed4ffa2fb44aea302e4bfcb0ba10cfe406e535a358beb0be850190d7b2ff1938"
+    },
+    {
+      "path": "policy-13.log",
+      "bytes": 110,
+      "sha256Bytes": "9df05e99077413f00cf9f8c098937cf0754062123b119a6c330f3e99b8a2958a"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 2151,
+      "sha256Bytes": "5ab90e09aca992b72cfccc2dce1f1dfa99e2e747d9d0f5fc2a6156475fe06464"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "bytes": 23062,
+      "sha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.kt",
+      "bytes": 2895,
+      "sha256Bytes": "6d1e1c00ded1899851b0424879a842c470db89c0445715de108af496fb343681"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "bytes": 1849,
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "bytes": 2943,
+      "sha256Bytes": "a3145a3338402012fa5ad46a5396b30c36cf194522f763951c475364f7f7e7bc"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "bytes": 3540,
+      "sha256Bytes": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "bytes": 7337,
+      "sha256Bytes": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-dynamic-editor.py",
+      "bytes": 12021,
+      "sha256Bytes": "8d833e2a4f9b367e7bc4f48d3c63283c7beae1b582359e9c121ff37883bcad88"
+    },
+    {
+      "path": "proof-attempt13/editor-protocol-result.json",
+      "bytes": 550,
+      "sha256Bytes": "e71b53b6295f04ebe3925b45cdcf3d4f3309a8eedda9fd9eb8533b18f63c3324"
+    },
+    {
+      "path": "proof-attempt13/material3-original-comment-header.png",
+      "bytes": 10487,
+      "sha256Bytes": "aac80f1e2df3591b24d71ca70457020b06b49ccfd1ce56f69b3615117150d843"
+    },
+    {
+      "path": "proof-attempt13/material3-original-composer.png",
+      "bytes": 23928,
+      "sha256Bytes": "7b420024f0ba3685ee6ff0621851aaefde111a66308409d5ae4d9282eb0c54b0"
+    },
+    {
+      "path": "proof-attempt13/material3-original-image-edit.png",
+      "bytes": 21588,
+      "sha256Bytes": "5e4068de1f609f6f86a685c8fdf7c930184e6417a3bced39568b8e339da0b016"
+    },
+    {
+      "path": "proof-attempt13/material3-original-reserve.png",
+      "bytes": 19564,
+      "sha256Bytes": "c8efd826cf0dd281da6770dc3aae549eed2cb9a4f0db56a625ca0af2bef46d4e"
+    },
+    {
+      "path": "proof-attempt13/material3-original-vote.png",
+      "bytes": 26323,
+      "sha256Bytes": "e83f37522128e2f08e5731c6392b6e474a40b7c57c55c61f3fce9473bb5717c9"
+    },
+    {
+      "path": "proof-attempt13/miuix-original-comment-header.png",
+      "bytes": 10195,
+      "sha256Bytes": "0574dd89eb493ab0b9276a9ba67a92d1d104434e4d6286259ea949e44d7e547d"
+    },
+    {
+      "path": "proof-attempt13/miuix-original-composer.png",
+      "bytes": 20622,
+      "sha256Bytes": "fa9bc0cd0a092798105d8e666f7bdd45e32911ac6e1b753350abcf5c184529cc"
+    },
+    {
+      "path": "proof-attempt13/miuix-original-image-edit.png",
+      "bytes": 19739,
+      "sha256Bytes": "65038118d9d6f2e689ad32a5d72ee21faa73e042164ef4e5bd35a7f18b29f689"
+    },
+    {
+      "path": "proof-attempt13/miuix-original-reserve.png",
+      "bytes": 18310,
+      "sha256Bytes": "4b05f4dda7c4c8a05547c4b74d47a08d73c051befdec32d2b602d9547164109b"
+    },
+    {
+      "path": "proof-attempt13/miuix-original-vote.png",
+      "bytes": 25128,
+      "sha256Bytes": "c48d637a2c499edbd0167809f9ce9996483512e8461812e7f2a7979c413c4e68"
+    },
+    {
+      "path": "proof-attempt13/policy-result.json",
+      "bytes": 232,
+      "sha256Bytes": "74de2f2276fb2507618ab95d9c0600ee198ed054f4aae7bb755ac3da79cac2b0"
+    },
+    {
+      "path": "proof-attempt13/ui-result.json",
+      "bytes": 593,
+      "sha256Bytes": "1a3f12032ee26b0249b7117f115e3467e906730d90bdcec31f62237dc3064025"
+    },
+    {
+      "path": "proof-attempt5/editor-protocol-result.json",
+      "bytes": 550,
+      "sha256Bytes": "e71b53b6295f04ebe3925b45cdcf3d4f3309a8eedda9fd9eb8533b18f63c3324"
+    },
+    {
+      "path": "protocol-13.args",
+      "bytes": 22756,
+      "sha256Bytes": "4ac7d1c76bab2a6cf2f61c1057ae1e92cf6e72864ab1f85bd872a27a214c7c5a"
+    },
+    {
+      "path": "protocol-13.log",
+      "bytes": 120,
+      "sha256Bytes": "ea37cdbbdfe474bb8550ca02025a4b8ce79dd1dc43f3a51156f13cdda442130f"
+    },
+    {
+      "path": "protocol-5.log",
+      "bytes": 120,
+      "sha256Bytes": "ea37cdbbdfe474bb8550ca02025a4b8ce79dd1dc43f3a51156f13cdda442130f"
+    },
+    {
+      "path": "protocol-review/EditorTransportFixture.kt",
+      "bytes": 21252,
+      "sha256Bytes": "7cc9789850699ab0c4fa09b574b5a9649b693466261a543bb124b35b402cdd33"
+    },
+    {
+      "path": "protocol-review/detail-class-presence.json",
+      "bytes": 22707,
+      "sha256Bytes": "f359cc2ec9c36ba856d83da6b53cc465b12ccbbbe92f1ad0a6d8fd284e534af7"
+    },
+    {
+      "path": "protocol-review/detail-dependency-review.txt",
+      "bytes": 22789,
+      "sha256Bytes": "cbd17d230e8948cd6464cb5a0eb530d13b1a0413e13c3f8b73f2bdb9bcc049a8"
+    },
+    {
+      "path": "protocol-review/detail-source-identities.json",
+      "bytes": 18509,
+      "sha256Bytes": "dcf0a021ecf0895802b382ca889f422e8c9d3e5a7b9fecf64678eb8f08c87dce"
+    },
+    {
+      "path": "protocol-review/fake-api-cases.txt",
+      "bytes": 3850,
+      "sha256Bytes": "2e9180637ca5f752bea7ac7cf6f2a2f99ed112e55c3a5a253425f45114406c9a"
+    },
+    {
+      "path": "protocol-review/fixture-source-identities.json",
+      "bytes": 941,
+      "sha256Bytes": "fa27dbe29671fe47e86cdb5e01da0d39190e07c9c7fd1ff53dcf084e80b43b51"
+    },
+    {
+      "path": "protocol-review/fixture-source-selection.txt",
+      "bytes": 4282,
+      "sha256Bytes": "747961733602917880ce50f86a27214160fa1afd66f774ccacd6030a01187654"
+    },
+    {
+      "path": "protocol-review/original-identities.json",
+      "bytes": 4217,
+      "sha256Bytes": "c50afb05b54c56a2411fbcffef1da2d938a635c3994056c236ae7b288129f0ec"
+    },
+    {
+      "path": "protocol-review/protocol-contract.txt",
+      "bytes": 10619,
+      "sha256Bytes": "21370e4e0eb3ad7b078d9c7506525fd37a484109eaae660a23b454a185289d7b"
+    },
+    {
+      "path": "reused-callable-evidence.json",
+      "bytes": 1357,
+      "sha256Bytes": "3882d3bd4123abe67ee2adc78aaf9167bdff16c3a6778e87d0e51547018ffbf4"
+    },
+    {
+      "path": "reused-callable-javap.log",
+      "bytes": 1068,
+      "sha256Bytes": "3331ba56de014e5d8a859f191ccfd0625ab86f0801ddb83fdb4ff03bafa355f9"
+    },
+    {
+      "path": "run-evidence-13.json",
+      "bytes": 1460,
+      "sha256Bytes": "bb9a954daa5d18ba6d75a35bab2906eafa83c9ea946e4c701b9c02f67cb2ce59"
+    },
+    {
+      "path": "run-fixtures.py",
+      "bytes": 2543,
+      "sha256Bytes": "3beb49c7dc7728be4285b96c966c35f9d6d8e7c203d72a5bf7f06023d7d51199"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 6338,
+      "sha256Bytes": "63ed62d5c1df29617e352413654da06abaf0e5526d706fe0d34719dff4bcca19"
+    },
+    {
+      "path": "source-registry-delta.json",
+      "bytes": 6730,
+      "sha256Bytes": "d801e85dec1b0ea12a2fa568b04419167d087c4ff7bcc6ab75687d4ffc7872e7"
+    },
+    {
+      "path": "ui-13.args",
+      "bytes": 22741,
+      "sha256Bytes": "8fdf1834b9c9d9c4b04b90b10167308aaeee0bdfe005cf45a93ca909bda41bb4"
+    },
+    {
+      "path": "ui-13.log",
+      "bytes": 163,
+      "sha256Bytes": "402ae9d2147107b276d052e1fef66ab47ac99dee0b895a2a40466086c910760c"
+    }
+  ],
+  "historicalEvidencePolicy": "Only final attempt13 classes and proof are authoritative. Protocol review cites unchanged attempt5 logs retained as historical evidence. Earlier manual fragments and compiled attempts are not install payloads."
+}

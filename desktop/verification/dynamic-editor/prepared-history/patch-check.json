@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "applied": false,
+  "baselinePath": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+  "baselineSha256Bytes": "50aece83a0efe799e48947f62b3c5f47cbe1ed6c32ce5457a2e74b2701292ac7",
+  "desiredSha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd",
+  "patchSha256Bytes": "0bb1ae78935c6369726c576544b7cfecf4d747d25cd7f25da1ed192167c173b3",
+  "stdout": "",
+  "stderr": ""
+}

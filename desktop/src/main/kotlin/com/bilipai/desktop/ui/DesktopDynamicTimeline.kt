@@ -34,6 +34,7 @@ internal class DesktopDynamicTimelineState(
         DynamicTimelinePageState(items=initialCachedItems.toImmutableList(),isCachePlaceholder=true)
         else DynamicTimelinePageState());private set
     var initialized by mutableStateOf(false);private set
+    internal var editorRefreshRevision=0L
     var busy by mutableStateOf(false);private set
     var error by mutableStateOf<Throwable?>(null);private set
     val isAllTimeline: Boolean get() = type == "all"

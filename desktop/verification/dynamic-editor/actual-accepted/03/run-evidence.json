@@ -1,0 +1,127 @@
+{
+  "passed": true,
+  "actualMainSnapshotSha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+  "actualRuntimeCpSha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+  "productClasspathEntries": 89,
+  "fixtureSources": [
+    {
+      "path": "EditorTransportFixture.kt",
+      "sha256Bytes": "196857202079025678a887fb36b84649436fe42696769cdf125433b617e86379"
+    },
+    {
+      "path": "PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13"
+    },
+    {
+      "path": "RootUiFixture.kt",
+      "sha256Bytes": "2284b22c0c8ad87c35bf96b916ded18dc7f95ccb0c8ad49bda9a26ad50acdbec"
+    },
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1"
+    }
+  ],
+  "zeroProductOverrides": true,
+  "unchangedUiPolicyProtocolAcceptedFromAttempt01": true,
+  "rootUiRerunAfterNewObservation": true,
+  "results": [
+    {
+      "path": "runs/01/editor-protocol-result.json",
+      "sha256Bytes": "8b58284d0babe565b0b6cc9e126f3c32465b643e1d8fa51e713fe82d3b25652c"
+    },
+    {
+      "path": "runs/01/material3-dark-root-edit.png",
+      "sha256Bytes": "66fed6f7f726739baaf137976506c465962dd88a4ac58174d5391380c520d35c"
+    },
+    {
+      "path": "runs/01/material3-dark-root-publish.png",
+      "sha256Bytes": "851591b1d6589b3b86ea43b8b754fa71bd0e71fd0b22cbc7b953d4dab87900c4"
+    },
+    {
+      "path": "runs/01/material3-light-root-edit.png",
+      "sha256Bytes": "b2272e73d54124390eab2d32712fb95682bf1ed4cb780da2fd70be8800084f00"
+    },
+    {
+      "path": "runs/01/material3-light-root-publish.png",
+      "sha256Bytes": "2684c9a2e5af8ac07585bb563a98b60e116362c4f4fa63ecbe20098257134dba"
+    },
+    {
+      "path": "runs/01/material3-original-comment-header.png",
+      "sha256Bytes": "aac80f1e2df3591b24d71ca70457020b06b49ccfd1ce56f69b3615117150d843"
+    },
+    {
+      "path": "runs/01/material3-original-composer.png",
+      "sha256Bytes": "7b420024f0ba3685ee6ff0621851aaefde111a66308409d5ae4d9282eb0c54b0"
+    },
+    {
+      "path": "runs/01/material3-original-image-edit.png",
+      "sha256Bytes": "5e4068de1f609f6f86a685c8fdf7c930184e6417a3bced39568b8e339da0b016"
+    },
+    {
+      "path": "runs/01/material3-original-reserve.png",
+      "sha256Bytes": "c8efd826cf0dd281da6770dc3aae549eed2cb9a4f0db56a625ca0af2bef46d4e"
+    },
+    {
+      "path": "runs/01/material3-original-vote.png",
+      "sha256Bytes": "e83f37522128e2f08e5731c6392b6e474a40b7c57c55c61f3fce9473bb5717c9"
+    },
+    {
+      "path": "runs/01/miuix-dark-root-edit.png",
+      "sha256Bytes": "54a229a3881e5ab48d8f6254cdc128a04d197b5405e1be82cece8ae0404e837b"
+    },
+    {
+      "path": "runs/01/miuix-dark-root-publish.png",
+      "sha256Bytes": "40135856ad184ad8a9c4b1486146752ca2b043249a2c7b40c75b0374d20a78b5"
+    },
+    {
+      "path": "runs/01/miuix-light-root-edit.png",
+      "sha256Bytes": "a120d1f42b3fcd0e068068ad4e59411a4b7c6b6c9edf63dea8cc3936357d3a7c"
+    },
+    {
+      "path": "runs/01/miuix-light-root-publish.png",
+      "sha256Bytes": "09bb7335c291ef88df01eef458fe9bfcd8f5b0fdb760e9039e54c4fb33c07c64"
+    },
+    {
+      "path": "runs/01/miuix-original-comment-header.png",
+      "sha256Bytes": "0574dd89eb493ab0b9276a9ba67a92d1d104434e4d6286259ea949e44d7e547d"
+    },
+    {
+      "path": "runs/01/miuix-original-composer.png",
+      "sha256Bytes": "fa9bc0cd0a092798105d8e666f7bdd45e32911ac6e1b753350abcf5c184529cc"
+    },
+    {
+      "path": "runs/01/miuix-original-image-edit.png",
+      "sha256Bytes": "65038118d9d6f2e689ad32a5d72ee21faa73e042164ef4e5bd35a7f18b29f689"
+    },
+    {
+      "path": "runs/01/miuix-original-reserve.png",
+      "sha256Bytes": "4b05f4dda7c4c8a05547c4b74d47a08d73c051befdec32d2b602d9547164109b"
+    },
+    {
+      "path": "runs/01/miuix-original-vote.png",
+      "sha256Bytes": "c48d637a2c499edbd0167809f9ce9996483512e8461812e7f2a7979c413c4e68"
+    },
+    {
+      "path": "runs/01/policy-result.json",
+      "sha256Bytes": "74de2f2276fb2507618ab95d9c0600ee198ed054f4aae7bb755ac3da79cac2b0"
+    },
+    {
+      "path": "runs/01/root-edit-sent.json",
+      "sha256Bytes": "cd27a49a4ca6b87ba33e6fbec1f35078e50e1d7e6fda232c4a4fdd644a348a0f"
+    },
+    {
+      "path": "runs/01/root-ui-result.json",
+      "sha256Bytes": "7ed8f9e01adfa01b06b97df141e498c9b62a66588b46f0f5e477370569396e59"
+    },
+    {
+      "path": "runs/01/ui-result.json",
+      "sha256Bytes": "1a3f12032ee26b0249b7117f115e3467e906730d90bdcec31f62237dc3064025"
+    }
+  ],
+  "HTTP": false,
+  "HWND": false,
+  "nativeChooser": false,
+  "persistentCredentials": false,
+  "fullFeatureParity": false,
+  "packaging": false
+}

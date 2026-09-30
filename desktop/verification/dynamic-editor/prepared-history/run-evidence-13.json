@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "productJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 7461,
+      "sha256Bytes": "4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 67,
+      "sha256Bytes": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909"
+    }
+  ],
+  "classes": "classes-attempt13",
+  "proof": "proof-attempt13",
+  "preparedProductOverrideFQNs": [
+    "com.bilipai.desktop.data.DesktopDynamicCardOperations"
+  ],
+  "MainIntegration": false,
+  "mainChanged": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "realAccount": false
+}

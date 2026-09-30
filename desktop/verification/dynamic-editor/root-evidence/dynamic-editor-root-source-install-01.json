@@ -1,0 +1,13 @@
+{
+  "preparedManifestSha256Bytes": "15465a9bf04fe3ac59839bfcf3717a3c35ac2ae45e4073d8452a29e2064c65a2",
+  "preparedArtifactsVerified": 250,
+  "sourceIdentitiesTagVerified": 22,
+  "newSourceIdentities": 20,
+  "featureMerges": 2,
+  "existingSourceModesPreserved": true,
+  "preparedPayloadInstalled": 7,
+  "soleOperationsProducer": true,
+  "patchRawCrLfNormalizedToFrozenLf": true,
+  "MainHostMounted": false,
+  "compiledActualMain": false
+}

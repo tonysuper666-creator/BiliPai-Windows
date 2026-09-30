@@ -36,6 +36,7 @@ internal class CommunityFeedMemory {
 }
 internal class CommunityFeedState<T, C>(val scroll: LazyListState = LazyListState()) : DesktopDynamicCardItemsOwner {
     var reloadRevision by mutableLongStateOf(0L); private set
+    internal var editorRefreshRevision=0L
     var rows by mutableStateOf(emptyList<T>())
     var next by mutableStateOf<C?>(null)
     var initialized by mutableStateOf(false)
@@ -83,12 +84,20 @@ internal val LocalCommunityFeedNamespace = staticCompositionLocalOf<Any?> { null
 @Composable
 internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> CommunityBatch<T, C>,
     identity: (T) -> Any, onLogin: () -> Unit, header: @Composable () -> Unit = {}, transform: (List<T>) -> List<T> = { it },
-    row: @Composable (T) -> Unit) {
+    dynamicContent: Boolean = false, row: @Composable (T) -> Unit) {
     val scope = rememberCoroutineScope()
     val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds
     val namespace = LocalCommunityFeedNamespace.current
     val page = remember(memory, namespace, key) { memory?.page<T, C>(Pair(namespace, key)) ?: CommunityFeedState() }
     LocalDesktopDynamicCardStateRegistry.current?.register(page)
+    val session=LocalDesktopDynamicCardSession.current
+    val contentRevision by (session?.contentRevision ?: remember { kotlinx.coroutines.flow.MutableStateFlow(0L) }).collectAsState()
+    LaunchedEffect(page,dynamicContent,contentRevision) {
+        if(dynamicContent&&contentRevision>page.editorRefreshRevision) {
+            page.editorRefreshRevision=contentRevision
+            page.invalidate()
+        }
+    }
     val scroll = page.scroll
     var refresh by remember(page) { mutableIntStateOf(0) }
     var rows by page::rows

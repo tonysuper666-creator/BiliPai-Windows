@@ -76,6 +76,8 @@ internal val LocalDesktopDynamicCardRepository=staticCompositionLocalOf<DesktopR
     val latestRemoved by rememberUpdatedState(onRemoved)
     val latestNotInterested by rememberUpdatedState(onNotInterested)
     val latestComment by rememberUpdatedState(onCommentClick)
+    val rootEditor = LocalDesktopDynamicEditorActions.current
+    val latestEdit by rememberUpdatedState(onEdit ?: rootEditor?.edit)
     val detailLayout by DesktopDynamicCardSettings.getDynamicDetailImageLayout(preferences.context).collectAsState(
         initial=DesktopDynamicCardSettings.peekDynamicDetailImageLayout(preferences.context))
     val previewText by DesktopDynamicCardSettings.getDynamicImagePreviewTextVisible(preferences.context).collectAsState(initial=true)
@@ -151,7 +153,7 @@ internal val LocalDesktopDynamicCardRepository=staticCompositionLocalOf<DesktopR
         onManageAction={action->guarded{
             when(action){
                 is DynamicManageAction.Report->report=action
-                is DynamicManageAction.Edit->if(onEdit!=null)onEdit(action)else show("完整动态编辑器尚未接入 Windows")
+                is DynamicManageAction.Edit->latestEdit?.invoke(action)?:show("动态编辑器未挂载")
                 is DynamicManageAction.NotInterested->runAction("已标记为不感兴趣"){latestNotInterested(action.dynamicId)}
                 is DynamicManageAction.ToggleTop->runAction(if(action.isCurrentlyTop)"已取消置顶"else"已置顶"){operations.setTop(action)}
                 is DynamicManageAction.SetVisibility->runAction(if(action.isPrivate)"已设为仅自己可见"else"已设为公开"){operations.setVisibility(action)}

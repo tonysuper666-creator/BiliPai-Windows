@@ -1,0 +1,6 @@
+desktop\.local\dynamic-editor-actual-main-proof-01\RootUiFixture.kt:88:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^
+desktop\.local\dynamic-editor-actual-main-proof-01\UiFixture.kt:90:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^

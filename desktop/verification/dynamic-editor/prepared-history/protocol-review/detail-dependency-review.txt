@@ -1,0 +1,281 @@
+Detail / inline raw-comment dependency review — source inventory, prepared work only
+
+Scope and evidence
+- This is an implementation handoff, not a claim that Detail or full Reply UI is in Main.
+- Read-only source/JAR inspection; no Gradle, test execution, HTTP, account or window use here.
+- Upstream: v0.2.3-alpha.9, commit fcf84853b287662e8a9129ea0d38576c36522a34.
+- All 46 sources in detail-source-identities.json match that tag exactly. The file records
+  repository paths, original Git blobs and LF/UTF-8 SHA-256, including design-system sources.
+- Frozen product inspected: desktop/.local/dynamic-full-card-main-product-snapshot-lifecycle-final.
+  manifest.json SHA-256: 04e5d4e029621ffa34d360dd590beede56ff9c9110634cc0d1b1bdb181c5e3f3.
+  main-kotlin.jar SHA-256: 4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc.
+  Ordered runtime CP: 89 entries; identity SHA-256
+  9a5c2a6ff1d34547ab0c6a15f97ce8d0166dd9ad8cc7d50c442508a3e4b34f00.
+- detail-class-presence.json checks exact JVM entries, not Kotlin filenames. Named objects
+  have named classes; top-level functions have the actual producer's Kt wrapper. Presence
+  does not establish API/body equivalence. Root's newer prepared classes/pure fixtures are
+  outside this frozen product: their absence here is an inventory fact, not a defect in them.
+- Separate editor protocol proof is real: Root compiled/reran EditorTransportFixture in a
+  fresh JVM on exact 89 CP; protocol-5.log and proof-attempt5/editor-protocol-result.json
+  report PASS for 9 grouped cases, actualSockets=false, persistentCredentials=false.
+  Only prepared Operations was overridden; API/models/WBI came from Main. This does not
+  prove integration of prepared editor/detail adapters into Main.
+
+Path prefixes (repository-relative; identities retain full exact paths)
+A = app/src/main/java/com/android/purebilibili/
+D = design-system/src/main/java/com/android/purebilibili/
+M = desktop/src/main/kotlin/com/bilipai/desktop/
+G = desktop/build/generated/dynamic-full-card/com/android/purebilibili/
+
+1. Exact rendered chain and minimum state contract
+- A/feature/dynamic/DynamicDetailScreen.kt:122 is the screen entry. :158-183 starts with
+  a peekDynamicDetailSeed and then fetches full detail with Success/Error/retry state.
+  :323 onward opens the comment subject from basic.comment_id_str/comment_type and route
+  openCommentRootRpid/openCommentTargetRpid. :424-467 uses DynamicInlineCommentHeader
+  and dynamicInlineCommentItems; :470-481 uses DynamicInlineCommentComposer; :673-704
+  uses DynamicSubReplyPreviewHost. Existing DynamicCardV2 is the full card renderer.
+- A/feature/dynamic/components/DynamicCommentSheet.kt:768-831 is the ACTUAL inline list.
+  :801 directly calls ReplyItemView(item = raw ReplyItem). The older private CommentItem
+  at :1016 is not the inline renderer and is not an equivalent extraction target.
+- A/feature/dynamic/DynamicViewModel.kt:1035-1290 owns selected subject, raw replies,
+  HOT=3/NEWEST=2 sort, count, page, end flag, grpcNextOffset, load jobs and request ID.
+  :1304-1509 owns subreply route/root/target/sort/page/cursor/base mirrors/error/visible.
+  :1515 resolves composer root=(reply.root>0 ? root : rpid), parent=rpid, uname.
+- A/feature/video/viewmodel/VideoCommentViewModel.kt:124-144 is SubReplyUiState:
+  sortMode, visible, rootReply, items/baseItems, totalCount, isLoading, page/basePage,
+  isEnd/baseIsEnd, error, upMid, grpcNextOffset/baseGrpcNextOffset, conversationAnchor,
+  targetReplyId, dissolvingIds. Select this state and :146-218 count/routed-root helpers;
+  do not import the entire Android video VM or make a new substitute state schema.
+- A/feature/video/viewmodel/SubReplySortPolicy.kt declares TIME=2/HOT=3, resetForSort
+  and sorted page end (cursor.isEnd OR blank grpcNextOffset). Reuse Root's already
+  prepared selected state/policy producers where present; one original FQN only.
+- A/feature/dynamic/DynamicCommentLoadPolicy.kt:31 merges top + HOT hots + replies,
+  distinct by rpid; :54 chooses candidate by renderability/count/order; :77 main end;
+  :90 load-more threshold; :113 subreply success preserves base state/cursors.
+  A/feature/dynamic/DynamicInteractionPolicy.kt:12 compares request ID, target and sort.
+  Its DynamicCommentTarget is already Main: do not produce that class again.
+
+2. Raw fields that cannot pass through the existing simplified CommentPage
+- A/data/model/response/ResponseModels.kt:44-67 ReplyData has cursor/page/config,
+  replies/root/topReplies/hots/top/upper/control/grpcNextOffset. Keep allCount, both REST
+  page counts and gRPC cursor; totalCount is not simply page.count.
+- :157-204 ReplyItem retains rpid/root/oid/mid/count/rcount/like/ctime/action, member,
+  content, nested replies, cardLabels/upAction/replyControl/invisible, parent/dialog,
+  noteCvidStr and replyType. action=1 is liked, action=2 is hated in the original UI policy.
+- :529-543 ReplyContent retains message/device/emote/vote/richText/urls/topics/
+  atNameToMid/pictures. ReplyControl :682-696 retains location/isUpTop/upReply/
+  supportShare/translationSwitch. Member contains original identity/medal/nameplate/
+  sailing/card background/official verification metadata. Original models are in Main.
+- M/data/DesktopModels.kt:61 Comment has only basic text/author/count/preview fields;
+  M/data/DesktopSocialModels.kt:10 CommentPage and :27/:33 conversion lose rich fields,
+  hots and gRPC cursor. M/data/DesktopCommunityRepository.kt:262/:268 read legacy REST
+  pages into that wrapper. This is useful existing functionality but is not raw ReplyItem
+  parity; do not recover rich fields by inventing wrapper defaults or round-tripping it.
+
+3. Main-list read protocol and fallback order
+- A/data/repository/CommentRepository.kt:398 exact signature:
+  getCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int=20,mode:Int=3,
+    paginationOffset:String?=null,fallbackOnMissingLocation:Boolean=false):Result<ReplyData>.
+  DynamicViewModel :1086-1221 iterates resolveDynamicCommentTargets; count via :557
+  getCommentCountForSubject(oid:Long,type:Int):Result<Int>, then page 1/ps20/main mode,
+  fallbackOnMissingLocation=(target.type != 11). Preserve that caller choice.
+- :988-1030 tries gRPC MainList for type != 17, mode 2/3, and (page<=1 OR nonblank cursor).
+  :421-453 falls back for empty HOT first page, positive-count empty renderable payload,
+  or missing location when caller opts in; a valid missing-location gRPC payload is saved
+  and restored if REST subsequently fails. Guest reads can use MainList too.
+- :146-212 REST WBI main query: oid/type/mode=2 or3/ps/plat=1/web_location=1315875.
+  :1003-1015 page<=1 => pagination_str={"offset":""}; next cursor => JSON offset;
+  otherwise next=page. Sign original query using existing repository WBI signer.
+  Modes 1/4 use legacy pn/ps/sort=2/1, respectively; Detail UI only offers 3/2.
+- :119-143 non-WBI fallback order: current API main, guest main, current API legacy,
+  guest legacy; success code0 or renderable payload accepted. Legacy mode2 -> sort0,
+  otherwise sort1. :214-271 and :273-372 contain guest HOT / empty-success compatibility
+  reads; preserve them as policy, not an unconditional second request after every page.
+- A/data/repository/CommentReadAccessPolicy.kt:16 logged AUTH->GUEST, guest GUEST->AUTH;
+  :30 fallback codes {-101,-111,-352,-403,-412}; :56 missing-location policy; :78/:90
+  empty success policy; :100 read error text. This source is not yet in frozen Main.
+- Existing services live in A/core/network/ApiClient.kt, BilibiliApi FQN already Main:
+  :1107 x/v2/reply/wbi/main; :1111 x/v2/reply/main; :1116 x/v2/reply;
+  :1125 x/v2/reply/reply; :1134 x/v2/reply/count. Reuse these methods/models.
+
+4. Sorted subreply / translation gRPC contract (not REST pn paging)
+- CommentRepository :589-614 exact signature:
+  getSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,
+    paginationOffset:String?=null,targetReplyId:Long=0L):Result<ReplyData>.
+  It REQUIRES mode2/3 and ONLY calls gRPC DetailList. Its :587 comment explicitly forbids
+  mixing REST pn ranking into this cursor sequence. Generic getSubCommentsForSubject
+  :617-712 is a different path with preferRestPaging=true by default, identity fallback
+  and saved gRPC restoration; do not substitute it for sorted subreply UI.
+- A/data/repository/CommentGrpcRepository.kt:35-40 original paths:
+  /bilibili.main.community.reply.v1.Reply/{MainList,DetailList,DialogList,TranslateReply}.
+  MainList :42-64 = oid field1/int64, type2/int64, mode9/int32; nonblank cursor field10
+  message {1:int32 pageSize20, 2:string offset, 3:bool false}.
+  DetailList :89-116 = oid1/type2/root3/rpid4 int64, field6:int32=0, mode7:int32;
+  nonblank cursor field8 with the same nested 1/2/3. Initial target rpid is forwarded
+  only for first-page routing by DynamicViewModel :1449-1509; later pages use 0.
+  DialogList :118-142 = oid1/type2/root3/dialog4 int64; cursor field6 nested 1/2/3.
+  TranslateReply :194-210 signature (type:Long,oid:Long,rpid:Long):Result<String?>;
+  request fields type1/int64, oid2/int64, rpid-list3/packedInt64. Response :219-247
+  reads matching map entry; translated Content is ReplyInfo field17 -> Content field1.
+- Parser closure :250 onward constructs the ORIGINAL ReplyData/ReplyItem/ReplyMember/
+  ReplyContent/control/emote/url/vote/richText/picture/card-label models. Select the full
+  parser closure and adapt ONLY transport. No generated protobuf or new DTO schema needed.
+- Main already has core.network.grpc.ProtoWire and DesktopDynamicBiliGrpcClient. Its
+  producer is G/core/network/grpc/DesktopDynamicBiliGrpcClient.kt; constructor injects
+  guarded client, cookies, MID, access token, stillOwned. Reuse Operations' owner-bound
+  grpc::request; do not revive original static BiliGrpcClient/TokenManager transport.
+
+5. Original detail fallback is larger than the one web-detail endpoint
+- A/data/repository/DynamicRepository.kt:277-350 selects/merges web detail, signed opus
+  detail, desktop longer WORD text, nonrenderable fallback, seed.basic.rid/type2 fallback,
+  richer opus media, article/CV fallback and seed interaction metadata. :352 web,
+  :372 opus, :396 signing, :416 desktop fallback. Static Android transport is reference;
+  extract the algorithm into the same owner-bound existing Operations instance.
+- A/data/repository/DynamicDetailFallbackPolicy.kt holds renderability/candidate/WORD/
+  richer-opus/seed-stat/AT-emote/article merge decisions. It references ArticleContentBlock
+  and scoreOpusContentBlocks; Main already has ArticleContentBlock,
+  ArticleContentBlockParserKt and ArticleContentLoadPolicyKt. Avoid duplicate producers.
+- A/core/network/ApiClient.kt:1785 DynamicApi web detail has id/rid/type + features,
+  timezone_offset=-480/gaia_source=Athena/web_location=333.1330; :1797 desktop detail;
+  :1805 opus QueryMap with htmlNewStyle. Existing Main DynamicApi/model reuse suffices.
+- M/data/DesktopCommunityRepository.kt:253 is web detail only, :258 opus separately.
+  M/ui/DesktopDynamicDetailReadback.kt is confirmed mutation readback policy, not the
+  original full-detail fallback. Reuse both where appropriate without claiming equivalence.
+  Main com.bilipai.desktop.ui.DesktopDynamicCardBindings already owns remembered detail
+  seeds (actual generated producer DesktopOriginalDynamicDetailSeeds.kt), not a second LRU.
+
+6. Render closure / platform seams
+- A/feature/video/ui/components/ReplyComponents.kt:1201 ReplyItemView has raw item,
+  author/top flags, emoteMap, light/identity flags, click/subclick, timestamps, image-preview
+  anchor+text content, like/hate/reply/delete/fraud/report/top callbacks, location/url,
+  maxTimestampMs, hideSubPreview and avatar callback. Preserve nullable action callbacks:
+  null controls availability; default action states come from raw reply.action.
+  :741-998 rich-text builder and :2193 action dispatcher preserve URL/User/Topic/Vote/
+  Timestamp semantics, AT maps, note/CV/opus links and selection annotations.
+- A/feature/dynamic/components/DynamicCommentSheet.kt:801 inline currently supplies
+  nonnull delete/report and canToggleTop=(authorMid>0). The private older CommentItem
+  :1016 uses DynamicCommentActionCapabilities. Do not claim that capability helper already
+  gates the actual inline list. API authorization/errors remain required.
+- ReplyComponents :1358/:1414-1422/:1491 uses block-confirm -> original global block
+  result. Reuse M/data/DesktopBlockedUpRepository.kt:31 with relationSource=COMMENT and
+  expectedSessionEpoch, SAME global DesktopBlockedUpStore. Original BlockedUpWriteResult,
+  BilibiliBlockedListRemoteStatus and BlockedUpRelationSource FQNs are already Main.
+  Keep localChanged/remoteStatus/message: local success with remote failure is meaningful.
+- ReplyComponents :1364 enables translation iff translationSwitch==2; :1722-1742 retains
+  loading, translated/original toggle, empty-result and failure feedback. Inject the original
+  translateReply signature above through owner-bound Operations; avoid requests from UI.
+- :725 already accepts suspend titleProvider(bvid)->String?; :2056 directly calls original
+  VideoRepository. Inject the SAME provider there; its :192-198 title cache is bounded512.
+- Copy/free-copy/share: A/core/ui/common/Modifiers.kt:59, ClipboardUtils.kt:7,
+  TextSelectionBottomSheet.kt:67/212/232/246/286 and TextSelectionHost.kt:172/274/328.
+  Original TextSelectionPolicy.kt includes Android Intent, so it is not whole-file pure.
+  Main has selected TextSelectionPolicy and DesktopOriginalTextSelectionPolicyKt plus
+  DesktopOriginalTextSelectionBottomSheetKt using LocalDesktopDynamicCardBindings.
+  Reuse those for original selection state, partial-copy/all-select/share selected text.
+  Minimal native callbacks: copyText(text,label?), shareText(text,title), showMessage(text).
+- ReplyComponents :205-234 transparent alpha-edge Bitmap crop is used at :2612-2616;
+  max decoration decode512 at :188. Inject decorationImageModel(url,maxDecodePx)->Any
+  or equivalent Coil request factory preserving crop; do not transport Android Bitmap.
+- A/feature/video/ui/components/ReplyCommentImageSaver.kt:23 ReplyCommentImageSpec;
+  :32 raw-reply spec builder; :54/:69 Android Canvas/text measure/QR/PNG; :172/:183 target
+  selection/SAF/MediaStore. Inject suspend saveCommentImage(originalSpec)->Boolean with
+  destination/render/permission/write encapsulated. ReplyComponents :1381-1404 and
+  SubReplyDetailComponents :1087 need the SAME seam. Existing saveImage(URL) is insufficient.
+  A/feature/dynamic/components/ImageSaveLocationPolicy.kt:27/29/35/75 and
+  A/core/util/PermissionHelper.kt:183/224 are platform/reference dependencies.
+  Existing ORIGINAL share URL helper ReplyComponents :493-504 always /video/av{oid};
+  image spec :36 reuses it for QR. Record this video-specific original limitation when
+  displaying a dynamic reply; do not silently claim a dynamic-correct sharing route.
+- Reply action Aicu callback is OPTIONAL: ReplyComponents :2784-2785/:2821;
+  A/feature/aicu/AicuNavigationPolicy.kt:9 Local has ((Long?)->Unit)?. Null/uid<=0 hides
+  history query. Bind existing navigation if available; no fake history implementation.
+- Appearance: A/feature/video/ui/components/VideoCommentAppearance.kt entire source;
+  D/core/ui/OfficialVerifyBadgePolicy.kt (official badge is different from avatar corner mark).
+  Root has independently prepared/compiled/tested pure Reply rich-text/layout/decorations,
+  VideoAppearance/Badge selected/direct pieces. That proof is separate from full ReplyItemView.
+- A/feature/dynamic/components/DynamicSubReplyPreviewHost.kt:19 ->
+  A/feature/video/ui/components/SubReplySheet.kt:26 -> SubReplyDetailComponents.kt:485.
+  Select SubReplyDetailContent and helpers :118-410/private SubReplyDetailItem :970 onward;
+  VideoInlineSubReplyDetailContent :411 needs CommentUiState and is not required by this path.
+  Root and nested rows use the original subreply renderer/shared Reply helper closure.
+  A/core/ui/animation/ParticleDissolveEffect.kt:402 is MaybeDissolvableVideoCard's actual
+  source/Kt class, not a fictitious MaybeDissolvableVideoCard.kt/class.
+- SubReplySheet also needs CommentThreadDrag.kt:53, selected VideoCommentSheetHost.kt
+  :210/:215 progress helpers, and platform CommentWindowNavigation/predictive-back seam.
+  Main adapted adaptive dialogs/controls can serve native transport; full drag/reveal/
+  scroll-restore/target-highlight/sort/error/manual-more renderer stays original.
+- Comment skeleton can select ContentLoadingSkeletons.kt:52/:73/:89/:296 rather than
+  importing unrelated media/article skeletons. ReportReasonDialog can select
+  CommentInputBar.kt:269-304. Its reasons 1/2/3/4/5/7/8/0 differ from dynamic policy's
+  1..7 list; preserve the renderer actually chosen, do not normalize them silently.
+- Settings are real pending glue: SettingsManager.kt comment collapsed-preview key
+  :6954/default3 :6976/clamp1..10 :6980/read+write :7350-7369; loaded-subreply-count
+  key :1664/defaultfalse read :6150/write :6154. Existing DesktopDynamicCardSettings
+  handles other card settings only. Add selected preference methods to existing shared
+  global preferences/store; do not construct fake original HomeSettings/SettingsManager.
+
+7. Owner / refresh / mutation application requirements
+- Reuse existing DesktopDynamicCardSession (M/ui/DesktopDynamicCardSession.kt:19-36) expectedEpoch/isOwned/emotes/
+  likeGate/likeOverrides and same CardOperations instance. Session currently keeps
+  operations private: expose the agreed bindings delegate rather than make new transport.
+- M/data/DesktopDynamicCardOperations.kt:37-105 already has owner-bound cookie jars,
+  guest service, gRPC, read/mutate/result; use that guarded client and rethrow cancellation.
+  Original CommentRepository count/actions/fallback runCatching and DynamicRepository
+  catch(Exception) may swallow cancellation. Do not copy that behavior to desktop.
+- A/feature/dynamic/DynamicViewModel.kt:1086-1290 guards main results by requestID/target/sort. Subreply
+  success :1449-1509 guards visible/root/subject/sort; original failure omits sort check.
+  Desktop must also guard failures/loading-finally/callbacks by same captured owner and
+  generation; closing, refreshing, sort-switch or same-MID epoch replacement retires work.
+- Like/hate :1563-1649 updates raw main/nested/subroot/items then rolls back snapshots.
+  A late failure must not restore a snapshot over newer refresh/page/sort data. Apply an
+  owner+subject+generation-safe inverse or per-rpid pending state, not whole old lists.
+  Source action feedback: like "已点赞"/"已取消"; hate "点踩成功"/"已取消点踩".
+  Post :1530 onward clears composer + "评论成功" + reload. Delete :1660-1688 recursively
+  removes comment, resets substate if root removed, decrements counts clamp0 + "评论已删除".
+  Top :1691-1713 reads replyControl.isUpTop then reloads + "已取消置顶"/"已置顶".
+  Report :1716-1737 gives "举报成功". BilibiliApi existing methods :1155/:1196-1246:
+  addReply root/parent, like/hate action1-or0, delete, top action0-if-currently-top-else1,
+  report reason/content, all original oid/type/rpid/CSRF; use same account mutation guard.
+- Await/IO ownership guards are necessary but not sufficient: immediately before state
+  write, success feedback, shared timeline count update or reload verify captured ownership.
+  Existing confirmed card state registry/readback should remain the shared mutation source;
+  raw Detail state must not introduce independent double increments for the same success.
+
+8. Reuse / selected / reference / pending minimum closure
+REUSE actual frozen Main: original API and raw Reply/Dynamic models; ProtoWire;
+  DesktopDynamicBiliGrpcClient; DynamicCommentTarget+DesktopOriginalDynamicCommentTargetPolicyKt;
+  DesktopOriginalDynamicCardKt (actual wrapper containing DynamicCardV2); full existing
+  card Actions/Navigation/Interaction/Presentation, detail seeds and mutation readback;
+  image-preview models/renderer/decode policy, FormatUtils/BilibiliUrlParser/HTML helpers;
+  UserAvatarCornerMarkKt/selected UserLevelBadge/UserUpBadge; selected text selection;
+  App adaptive primitives; shared blocked repository/store/result models; Session/emotes.
+SELECT original with one producer: comment state/count/sort/load/reply policies; selected
+  pure detail fallback; raw gRPC builders+full parser closure with transport injected;
+  inline header/list/composer; SubReplyDetailContent helper and renderer closure. Root's
+  prepared pure producers should be reused, not regenerated with duplicate original FQNs.
+DIRECT where imports allow: VideoCommentAppearance, OfficialVerifyBadge policy/UI and
+  appropriate existing rich-text/layout/decoration policies; Root already tests prepared pieces.
+REFERENCE platform algorithms: original static repositories/TokenManager/NetworkModule,
+  Android save/share/permission/Bitmap/CommentWindowNavigation/RenderEffect/back handlers.
+  Keep algorithm contracts; adapt through owned Operations and native callbacks.
+PENDING FULL PARITY: full ReplyItemView+SubReply renderer/platform binding, raw MainList
+  fallback chain+sorted DetailList chain, full detail fallback, real comment preference glue,
+  responsive/immersive/predictive-back shell. These are acknowledged unfinished layers,
+  not reasons to present the current CommentPage wrapper as completed original Reply UI.
+
+Appendix: original editor liquid branch remains explicit pending
+- A/feature/dynamic/components/DynamicPublishComposer.kt:113 layerBackdrop, :181
+  BottomBarMatchedReusableLiquidDock, :248 BottomBarLiquidSegmentedControl. Original
+  DynamicCommentSheet.kt:891 composer geometry and bottom-input helpers share this closure.
+- Original sources: BottomBarMatchedLiquidChrome.kt:292 reusable dock; BottomBarLiquidSegmentedControl.kt
+  :389; FloatingBottomBarGeometry.kt:81 geometry; LiquidGlassTuning.kt; CombinedBackdrop.kt:39;
+  D/core/ui/animation/DampedDragAnimation.kt:107; D/core/ui/motion/BottomBarMotionSpec.kt;
+  D/core/ui/OpticalContrastPalette.kt; real HomeSettings/BottomBarLiquidGlassPreset settings.
+  These full implementations are outside frozen Main. Existing selected native tabs/
+  native segmented renderers and MatchedLiquidIndicatorGeometry do not establish closure.
+  Preserve the original native branch and list liquid pending until these real dependencies
+  are adapted; do not fake HomeSettings flags to advertise or silently erase the branch.
+
+Stable handoff: this review adds no production/schema/build changes. Prepared editor fixture
+and Operations fragment are unchanged after Root's passing run. Detail review is source/field/
+parameter evidence only; final product parity remains bounded by the pending layers above.

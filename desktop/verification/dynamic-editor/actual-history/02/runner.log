@@ -1,0 +1,39 @@
+desktop\.local\dynamic-editor-actual-main-proof-02\RootUiFixture.kt:88:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^
+desktop\.local\dynamic-editor-actual-main-proof-02\UiFixture.kt:90:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^
+
+root-ui: Exception in thread "main" java.lang.AssertionError: Changed title missing: {"dyn_req":{"content":{"contents":[{"raw_text":"Root edit","type":1,"biz_id":""}],"title":"Original edit title"},"scene":1,"upload_id":"42_1790808880_9806"},"dyn_id_str":"9001"}
+	at kotlin.test.DefaultAsserter.fail(DefaultAsserter.kt:16)
+Traceback (most recent call last):
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:767)
+	at kotlin.test.DefaultAsserter.assertTrue(DefaultAsserter.kt:11)
+	at kotlin.test.Asserter.assertTrue(Assertions.kt:777)
+	at kotlin.test.DefaultAsserter.assertTrue(DefaultAsserter.kt:11)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertTrue(Assertions.kt:44)
+	at kotlin.test.AssertionsKt.assertTrue(Unknown Source)
+	at com.bilipai.desktop.ui.RootUiFixtureKt$main$1.invokeSuspend(RootUiFixture.kt:124)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\dynamic-editor-actual-main-proof-02\compile-run.py", line 43, in <module>
+    write(HERE/(name+'.log'),r.stdout+r.stderr);print(name+': '+r.stdout+r.stderr);r.check_returncode()
+                                                                                   ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\subprocess.py", line 502, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+subprocess.CalledProcessError: Command '['C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe', '@C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\root-ui.args']' returned non-zero exit status 1.
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.RootUiFixtureKt.main(RootUiFixture.kt:63)
+

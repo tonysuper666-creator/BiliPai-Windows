@@ -1,0 +1,58 @@
+Fixture handoff: Root compiled attempt5 and ran this source in a fresh JVM; 9 groups passed.
+No compile/run was performed by protocol-review. The adapter remains prepared, outside Main.
+Evidence: ../protocol-5.log and ../proof-attempt5/editor-protocol-result.json.
+
+Fixture entry point:
+  com.bilipai.desktop.data.EditorTransportFixtureKt
+  source: EditorTransportFixture.kt
+
+Operations substitution:
+  DesktopDynamicCardOperations.kt in THIS directory is the unchanged production CardOperations
+  snapshot plus required imports and DesktopDynamicEditorOperations.fragment.kt inserted inside
+  its existing class. It defines the SAME existing FQN solely as an isolated fixture substitution.
+  fixture-source-identities.json identifies the exact production base, fragment and combined file.
+  It is not a second product producer and must never be added to normal desktop sourceSets.
+
+Root compilation options (choose one, do not combine):
+  A. Compile the unified production slice after installing the fragment into its sole CardOperations,
+     then compile only EditorTransportFixture.kt with the production jar as a friend path.
+  B. Before product integration, compile THIS augmented Operations source + EditorTransportFixture.kt
+     in an isolated fixture jar with existing production dependencies/friend access. Do not compile
+     the production CardOperations SOURCE in that same module. Put the fixture jar before any old
+     production binary containing CardOperations at runtime so the augmented class is selected.
+
+Reuse existing API/model/card closure exactly once:
+  com.android.purebilibili.core.network.BilibiliApi, DynamicApi, WbiUtils,
+  DynamicCreateModels.kt (including its internal helper functions), ResponseModels.kt, NavModels.kt,
+  and the existing desktop Repository/SessionStore/card support classes.
+  No new protocol schema, Retrofit interface, domain DTO, or original model FQN is defined here.
+  Use the same Kotlin serialization plugin + friend access convention as the card transport fixture.
+  No Gradle file or dependency changes are needed. Root owns all compilation and execution.
+
+Safety and scope:
+  The existing shared Repository HTTP client is copied, then a last application interceptor returns
+  every fake response without chain.proceed. Unexpected paths throw IOException. No sockets.
+  Repository private client AND api are substituted: the original api was already bound to the old
+  client at construction; changing client alone would allow WBI nav to use its original transport.
+  Visitor initialization is marked warm for the temporary fake session generation. Only the actual
+  original WBI nav request, signing and edit query go through the fake api; keys are not stubbed.
+  SessionStore is persistent=false at a fresh temp path. Only fake MID42/SESSDATA/CSRF are supplied.
+  No user account/configuration, Android context, real file picker, network or window is accessed.
+  Application responses bypass OkHttp BridgeInterceptor; the fixture makes NO cookie-save claim.
+  It tests request content/order, Result vs CancellationException, and suppression of late callbacks.
+
+Implemented cases:
+  vote-only public publish; upload multipart with original rich nodes/reserve/topic/privacy and
+  server pic metadata; edit existing remote metadata/order/removal + only new local image upload;
+  original nav-backed WBI query; mention/topic trim/filter/dedupe/defaults; vote days-to-seconds once;
+  reserve exact seconds/form; title/reserve-only and size rejection; second upload failure stops final create;
+  original created-ID precedence/fallback; cancelled upload; same-MID credential epoch retirement;
+  closed owner rejects without any request. Optional CLI arg writes editor-protocol-result.json.
+
+Not implemented in this protocol fixture:
+  Composer UI state/feedback/picker selection/native branch behavior; BridgeInterceptor cookie save;
+  delayed authenticated detail verification; edit detail ReplyItem source closure. Root owns these.
+  Additional edge-case suggestions remain in fake-api-cases.txt; they are not advertised as passing.
+
+Initial handoff status was source-ready/uncompiled/unexecuted (preserved in identity metadata).
+Current evidence: Root attempt5 compilation + fresh JVM PASS, 9 grouped cases, no sockets.

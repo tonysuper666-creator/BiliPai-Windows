@@ -1,0 +1,53 @@
+Focused fake-API suggestions for this editor slice (suggestions only; not executed)
+
+Use the existing intercepted OkHttp/Retrofit fixture approach in a NEW editor lane. Fake responses
+must terminate the interceptor without external proceed. Reuse sole generated API/models/helpers.
+Use isolated in-memory fake credential/epoch state; never import/use a user's stored account.
+
+1. Publish request trace with title/text/mention/emote/topic/private/vote/reserve plus one local image.
+   Assert upload request precedes create request. Assert multipart file_up/category=daily/biz=new_dyn/
+   csrf, selected MIME/name, and response image metadata copied unchanged (including Float img_size).
+   Assert create query defaults and JSON ordered content nodes match original helper output;
+   scene=2, private_pub=1, reserve common_card type=14, positive topic, upload_id shape.
+
+2. Public text-only and vote-only publish.
+   Public has no option and no pics. Vote-only must reach create API and succeed.
+   Capture title-only/reserve-only empty rejection before create (original repository boundary).
+   Fake response ID precedence dyn_id_str > dynamic_id_str > dyn_id; missing data returns "ok" success.
+
+3. Edit retains one known remote picture, removes another and adds one local picture.
+   imageProvider must be called ONLY for the new local source; retain exact reused metadata/order.
+   Capture JSON dyn_id_str unchanged. Capture query w_dyn_req.upload_id == body upload_id and
+   exact device/meta Strings. WBI query should contain wts/w_rid (allow nav keys fake response).
+   No alternate management visibility POST. Public/private must be represented in edit dyn_req.
+
+4. Multi-image partial failure, cancel and same-MID epoch replacement.
+   First upload succeeds; second fails -> no final create/edit request, failure Result, no success callback.
+   Cancel deferred upload -> CancellationException, not Result.failure; no later images/final mutation.
+   Change epoch while upload/signing/final create is held -> old response/cookie write/results discarded,
+   even when MID is unchanged. Ensure fixture stores/credentials and real cookie jar are untouched.
+   UI cancellation suppresses feedback/new-ID navigation and clears submitting only for its owner.
+
+5. Upload size/MIME/name boundaries.
+   Empty and >15MiB rejected; exactly 15MiB allowed. Null MIME -> image/jpeg; null name -> dyn_<ms>.jpg;
+   blank name -> comment_image.jpg. code=0,data=null fails. Server img_size copied without scaling.
+
+6. Mention/topic result normalization.
+   Empty/whitespace query omits keyword(s). Flatten mention groups; remove uid<=0/name blank and
+   duplicate UID. Mention -101 gets original login text. Topics defaults 20/1 and filter/dedupe by ID.
+   Cancel/epoch retires read without late UI list or error updates; fake API never external proceeds.
+
+7. Vote/reserve units and success IDs.
+   3 days must send 259200 seconds once, cleaned options, choice_cnt clamped, captured MID.
+   Blank title/<2 options fails; code=0 with vote_id<=0 fails. Reserve sends type=2/from=1/sub_type,
+   chosen millis divided to seconds only once by UI. code=0 with sid<=0 fails.
+
+8. Binding/source inventory checks.
+   Original Composer submit passes all DynamicPublishDraft fields, including filtered existingImages.
+   Editor and picker use the Root shared CardOperations/Session.emotes/global context.
+   Generated source path/FQN sets must not overlap existing API/model/card producers.
+   Preserve original native branch source; don't replace a pending UI branch with a generic dialog.
+
+These cases validate externally observable requests and ownership; avoid tests that merely mirror
+every builder line or add dependencies. Root can choose the smallest shared fixture containing 1-4
+plus unit cases 5-7, then compilation of the owning desktop slice after integration.

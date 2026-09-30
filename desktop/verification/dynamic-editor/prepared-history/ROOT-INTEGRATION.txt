@@ -1,0 +1,129 @@
+Prepared editor + original detail foundations; not a Main integration receipt.
+
+Base and identity
+-----------------
+Use lifecycle-final immutable Main, manifest 04e5d4e029621ffa34d360dd590beede56ff9c9110634cc0d1b1bdb181c5e3f3.
+Its ordered 89-entry runtime CP is 9a5c2a6ff1d34547ab0c6a15f97ce8d0166dd9ad8cc7d50c442508a3e4b34f00.
+Only one extra pinned kotlin-test jar is used for fixtures. Do not reuse the old 231-item mixed CP.
+Kotlin Main jar is 4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc.
+This is the previous actual product base, not the newer diagnostic-share Main.
+All 22 selected/reference original files were checked against alpha.9 fcf84853b287662e8a9129ea0d38576c36522a34.
+source-registry-delta.json gives current metadata overlap: 20 new identities, 2 existing feature merges.
+Counts are source identities, not claims of completed editor/detail functions.
+
+Install payload
+---------------
+1. The two prepared/desktop/tools generators are independent and task-only.
+   UI generate(repo, output, standalone=False) skips DIRECT sources in production.
+   Main prepareUpstreamSources must copy those six originals once, not also emit a
+   standalone duplicate. The seven selected UI/model/policy outputs are generated.
+   This is 13 isolated generated Kotlin files; it is not 14 newly implemented pages.
+2. Protocol generate_members(repo) selects actual alpha.9 repository method bodies
+   with Kotlin tokens. It preserves requests/builders, upload metadata, 15MiB limit,
+   exact edit image matching, WBI params, error strings and created-ID fallback.
+   It generates members for EXISTING DesktopDynamicCardOperations, not another repo.
+   Its --output is a member fragment, not an independent sourceSet file/package.
+3. operations.patch applies only imports + generated members to the existing class.
+   git apply --check passed against baseline SHA
+   50aece83a0efe799e48947f62b3c5f47cbe1ed6c32ce5457a2e74b2701292ac7.
+   Do not overwrite later Root changes if this SHA differs; append the selected members.
+   Original API/interfaces/models/WBI remain the Main's sole producers.
+   The augmented prepared file is an explicit sole-FQN test override, not zero override.
+4. Four new platform/host payloads under prepared/desktop/src/ui are ordinary
+   Windows glue. No account, global preference, business draft schema or cache is added.
+   No build.gradle, manifest, Shell, Community file or previously frozen artifact is edited.
+
+Exact Root seams
+----------------
+DesktopOriginalDynamicEditorHost(
+  initialDraft: DynamicPublishDraft, dynamicId: String?,
+  operations: DesktopDynamicCardOperations, session: DesktopDynamicCardSession,
+  imagePicker: (Int, (List<String>) -> Unit) -> Unit,
+  dateTimePicker: (Long, (Int, Int, Int, Int, Int) -> Unit) -> Unit,
+  imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>,
+  onDismiss: () -> Unit, onPublished: (String) -> Unit,
+  onEdited: (String, DynamicPublishDraft) -> Unit)
+
+Root supplies the existing LocalDesktopDynamicCardSession captured epoch and emotes.
+The same existing Operations type uses repository, session.expectedEpoch,
+stillOwned={editorAlive && session.isOwned()}, sharedEmotes=session.emotes.
+Do not reuse a scrolling card's disposable scope for an independently mounted editor.
+Key the modal owner by repository/epoch/selected action; close its selected-image
+reader and child scope on dismissal/epoch/Root close. Keep all business cache ownership
+in Root's existing registry + DynamicCacheSession.
+
+Card onEdit receives original DynamicManageAction.Edit(dynamicId, initialDraft).
+Use those untouched original fields; no reconstruction from simplified Comment/VideoCard.
+The dynamic publish entry uses DynamicPublishDraft(text="") and dynamicId=null.
+On edit success refresh actual affected feeds/detail. Do not replace every timeline
+with one captured stale DynamicItem or insert a synthetic edited item; the existing
+like/repost/delete/unfold reducer and readback-version safeguards must remain intact.
+On publish success refresh the current feed as the original ViewModel did. The API
+may legitimately return sentinel "ok" without an ID: it is success, not a detail route.
+
+DesktopDynamicEditorSelectedImages(stillOwned) reads only its actual picked local
+Paths. accept(paths) gives original URI strings; read(source) returns filename/MIME/
+bytes. Existing remote images bypass it via original exact img_src edit matching.
+DesktopDynamicEditorWindowsPickers(selectedImages, stillOwned, parent, onFailure)
+provides ::pickImages and ::chooseDateAndTime. These real user-invoked Swing adapters
+are compiled only here; their actual native dialogs have not been run/accepted.
+Keep the supplied UI callbacks required; do not mount unsupported dead buttons.
+
+Original prepared public UI
+--------------------------
+DynamicPublishComposer retains original fields, limits, 9-unique-image selection,
+remaining existingImages, private option, original native themed components and
+child @/topic/shared-emote/vote/reserve dialogs. Voting converts days exactly once;
+the original provider still clamps durationSeconds to >=60. Calendar callback retains
+zero-based month and original seconds/millisecond normalization.
+DynamicInlineCommentHeader retains original count formatting, geometry and HOT3/NEW2.
+Original CommentSortMode/SubReplyUiState and load/reply/action/rich-text policies are
+source foundations. They are not a working comment transport/session/full Detail.
+
+Evidence and strict limits
+--------------------------
+Final attempt13 compiles exact selected source + payload against pinned Main/CP.
+Three fresh JVMs: original native-style UI, policy/local-file, actual Retrofit request
+fixtures. Both original themes have 27 actual Press/Release pairs each plus actual
+editable field semantics, and five PNGs each. @/topic/vote/reserve use injected fixture
+callbacks; the protocol fixture separately exercises actual Main API/model/Retrofit
+and WBI with a terminal application interceptor that never calls chain.proceed.
+It covers nine grouped cases, including actual multipart/request nodes and metadata,
+edit remote reuse/removal/order/signing, empty/size/upload failure, cancellation,
+same-MID credential epoch and closed owner. No sockets, persistent credentials,
+real account writes, HWND, native chooser, packaging or Main mutation occur.
+Coil fixtures return synthetic pixel images; no claim of real image download/export.
+Actual cookie BridgeInterceptor persistence and live service mutation remain untested.
+
+Remaining original closure (do not credit as complete)
+----------------------------------------------------
+- Full original liquid toolbar/dock/segmented rendering. This producer explicitly
+  extracts the original native fallback body; it neither emits fake liquid functions
+  nor creates false HomeSettings. Liquid preferences are not consumed by this slice.
+- Full DynamicDetailScreen/AppScaffold/split layout, inline ReplyItemView, comment
+  composer/keyboard, main comment transport candidates/count/fallback, gRPC offsets,
+  sorted SubReply, dialog conversation, routed root/target RPID and thread UI.
+  Current Windows simplified REST CommentPage is not the original raw ReplyItem path.
+- Full comment badges/avatar decorations/transparent-bounds bitmap adapter, translate,
+  text/link routing, export entire ReplyCommentImageSpec/QR, and same global blocked
+  store consumer. Pure rich-text/layout/badge declarations here do not prove UI use.
+- Android predictive-back, MotionPhoto, Windows system-share, actual native file/date
+  dialogs and real authorized publish/edit/service validation are outside this proof.
+protocol-review/detail-dependency-review.txt lists exact confirmed follow-up sources.
+
+Root validation after installing must use a NEW actual Main snapshot, no Operations
+override, followed by narrow original UI/API fixtures. Existing full Card lifecycle/
+Emote/caching/owner gates remain unchanged; source count does not replace those gates.
+
+Production single-owner correction
+----------------------------------
+Actual Main dynamic-tabs already produces DynamicAdaptiveSegmentedControl in
+DesktopOriginalDynamicNativeSegmentedControlKt. Editor reuses that actual class;
+its generator now references, and does not emit, that original renderer. Keep the
+existing source-registry policy-extract mode and add only the feature attribution.
+Class overlap alone did not detect the preliminary differently named Kt wrapper's
+same top-level signature. Parent attempt12 is retained as preliminary historical
+compiler evidence, not an installable production closure. This final attempt13
+does not compile a second declaration or class for the shared Control.
+reused-callable-evidence.json pins the actual Main class and original identity.
+No extra AppSegmentedControl/native-tabs or original API/model producer is added.

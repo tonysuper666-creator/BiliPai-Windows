@@ -1,0 +1,141 @@
+Original editor protocol contract (read-only audit + prepared integration adapter)
+
+Actual protocol evidence
+- Root unified compilation attempt5 used the frozen lifecycle-final exact 89-entry classpath.
+- Root then ran EditorTransportFixture in a fresh JVM; all 9 grouped protocol cases passed.
+- Evidence: desktop/.local/dynamic-editor-detail-parity/protocol-5.log and
+  desktop/.local/dynamic-editor-detail-parity/proof-attempt5/editor-protocol-result.json.
+- The result records actualSockets=false, persistentCredentials=false and sole original API/models.
+- Only the prepared Operations adapter was overridden. API/models/WBI came from actual Main.
+- This proves the prepared protocol adapter, not integration of editor/detail into Main product.
+- Protocol-review inspected those result files; it did not invoke Gradle, run tests, HTTP or windows.
+
+Identity
+- Upstream tag: v0.2.3-alpha.9
+- Tag commit: fcf84853b287662e8a9129ea0d38576c36522a34
+- Main HEAD when reviewed: 263d55f01d61b9c2366816c68d1b1094cf78b4e0
+- All 13 original files listed in original-identities.json match the tag's contents.
+- That JSON contains exact repository paths, Git blob IDs and LF-normalized SHA-256.
+- Root compiled and tested the prepared adapter as described above; no real credentials or sockets.
+
+Producer division
+- Root owns Composer/Pickers/CreateVote/CreateReserve/Detail UI source adaptation and bindings.
+- This directory owns protocol audit and a method fragment for the existing CardOperations class.
+- No second Retrofit API, DynamicCreateModels, MentionSearchUser, upload model or other original FQN.
+- extract-upstream-api.py already retains all original Retrofit interfaces + Serializable request DTOs.
+- upstream-sources.json directly copies DynamicCreateModels.kt and ResponseModels.kt including helpers.
+- Keep those sole producers. Do not add these original model files to the new UI generated directory.
+
+Existing Operations integration
+- Paste DesktopDynamicEditorOperations.fragment.kt members into DesktopDynamicCardOperations.
+- LocalDesktopDynamicEditorBindings delegates the SAME owner-bound CardOperations instance.
+- Use its api/dynamic/read/mutate/result/assertOwned; do not create a new DesktopRepository/session.
+- imageProvider: suspend (String) -> Triple<String?, String?, ByteArray>.
+  Triple fields are displayName, MIME type and bytes; String argument is opaque selected source.
+  Provider reads local picked files only. It must not fetch an http(s) URL.
+  edit bypasses provider for a URL exactly present in existingImages; publish always uploads imageUris.
+- mutate holds one mutex for the whole upload + final mutation transaction.
+  uploadEditorImage takes the captured csrf directly; nesting mutate would deadlock its Mutex.
+- Shared Session.emotes feeds the original emote picker; no second catalog/API loader.
+- Every new task is card/editor lifetime-bound, with cancellation rethrown and post-await owner checks.
+- Root global store/context remains the existing one; original Composer does not persist draft text.
+  Do not introduce a parallel store or new draft persistence merely to support this UI adaptation.
+
+Publish
+- Original DynamicCreateRepository.kt:35-76; API ApiClient.kt:1866-1873.
+- POST x/dynamic/feed/create/dyn, JSON DynamicCreateFeedRequest(dyn_req).
+- Query csrf; default platform=web; x-bili-device-req-json={"platform":"web","device":"pc"};
+  x-bili-web-req-json={"spm_id":"333.999"}.
+- dyn_req.content.contents uses original buildDynamicCreateContents, not flattened plain text.
+- Empty contents with images uses one ordinary node raw_text=" ", type=1, biz_id="".
+- Optional title is trimmed then omitted when blank. scene=2 with images, else scene=1.
+- pics is omitted when empty; each pic has img_src, img_width:Int, img_height:Int, img_size:Float.
+- reserveId>0 adds attach_card.common_card={type:14,biz_id:<Long>,reserve_source:0,reserve_lottery:0}.
+- private=true adds option.private_pub=1; public keeps option=null (it is not private_pub=0).
+- Valid topic.id>0 adds topic(id,name), with model defaults from_source="dyn.web.list", from_topic_id=0.
+- upload_id is MID_unixSeconds_randomFourDigits, random in [1000,10000).
+- code!=0 fails; created ID prefers trimmed dyn_id_str, then dynamic_id_str, then positive dyn_id.
+  Original returns sentinel "ok" on code=0 without an ID. Preserve success separately from navigable ID.
+- Original Json in ApiClient.kt:2921-2924 and existing CardOperations have matching defaults:
+  ignoreUnknownKeys/coerceInputValues=true; encodeDefaults remains false.
+  DynamicCreateFeedReq.meta is a model default; don't force defaults into the body only on desktop.
+
+Edit
+- Original DynamicCreateRepository.kt:79-138; API ApiClient.kt:1875-1879.
+- POST x/dynamic/feed/edit/dyn; JSON DynamicEditFeedRequest(dyn_req,dyn_id_str).
+- Reject blank dynamicId; otherwise pass original String unchanged.
+- Preserve exact image order from imageUris. Reuse existingImages FIRST exact img_src match.
+  Removing a remote image removes it from submitted pics; a new selected source uploads once.
+- Same content/scene/pics/reserve/private/topic logic as publish.
+- WBI-sign exact query using existing repository.signWebParams (same WbiUtils algorithm):
+  platform=web; csrf; x-bili-device-req-json={"platform":"web","device":"pc","spmid":"333.1368"};
+  w_dyn_req.upload_id=<the SAME value as body dyn_req.upload_id>;
+  w_dyn_req.meta={"app_meta":{"from":"create.dynamic.web","mobi_app":"web"}}.
+- WBI adds wts/w_rid; don't sign JSON body, drop w_dyn_req.*, or use repost/create defaults for edit.
+- code=0 is Result<Unit> success. ViewModel:2175-2177 says "已更新动态" and refreshes afterward.
+
+Content, mention and emote
+- Original DynamicCreateModels.kt:167-217 is already direct-generated. Call it unchanged.
+- Trim whole text; ordinary nodes type=1,biz_id="".
+- Registered mention uid>0/name nonblank matches "@name " or "@name"; type=2,biz_id=uid String.
+  Longer tokens win ties before selecting earliest occurrence; duplicate appearances remain nodes.
+- Registered nonblank distinct emote text produces type=9,biz_id="".
+- Unregistered text stays ordinary, even if it resembles @ or an emote token.
+- voteId>0 appends type=4,biz_id=voteId String, text voteTitle or "投票", followed by ordinary " ".
+- CommentRepository.kt:785-806 / ApiClient.kt:1140-1143 mention lookup:
+  GET x/polymer/web-dynamic/v1/mention/search, keyword=trimmed or omitted when empty.
+  Flatten data.groups[].items, valid uid>0/nonblank name, distinctBy(uid), preserve first order.
+  -101 message is "请先登录后使用@好友". This read does not pre-require a logged-in account.
+- DynamicCreateRepository.kt:176-187 / ApiClient.kt:1145-1150 topic lookup:
+  GET x/topic/pub/search; keywords=trimmed or omitted; page_size=20,page_num=1 defaults.
+  Return valid id>0/nonblank name, distinctBy(id), preserving first order.
+- Original picker catalog is shared dynamic-first/reply-second merge, max 40 displayed entries.
+  Map storage/display URLs are not embedded in draft.emotes; draft holds shortcode Strings only.
+
+Upload
+- DynamicCreateRepository.kt:213-240 reads URI bytes, rejects empty or >15*1024*1024 bytes.
+- MIME falls back only on null to image/jpeg. Display name null falls back to dyn_<millis>.jpg.
+- CommentRepository.kt:914-969 / ApiClient.kt:1167-1175:
+  multipart POST x/dynamic/feed/draw/upload_bfs.
+  file_up has selected MIME; blank filename fallback comment_image.jpg.
+  Text/plain parts: category=daily, biz=new_dyn, csrf=<captured csrf>.
+- Success requires code=0 AND data != null. Map server image_url/image_width/image_height/img_size
+  directly to DynamicCreatePic; img_size is server Float, not locally recomputed bytes or KiB.
+- Original does not validate image signatures or a MIME whitelist at this repository layer.
+  Native selection restrictions can match original picker capabilities without changing builders.
+- Original runCatching/catch(Exception) can swallow cancellation; desktop seam rethrows cancellation.
+  Do not copy raw filename/MIME/byte details into desktop diagnostics from original Logger calls.
+
+Vote and reserve creation
+- DynamicCreateRepository.kt:140-174 / ApiClient.kt:1881-1885:
+  POST x/vote/create JSON vote_info; csrf query.
+  Trim/filter options, require nonblank title and >=2 nonempty options.
+  title/desc trimmed; choice_cnt clamped 1..options.size; duration seconds clamped >=60.
+  type=0, only_fans_level=0, option.img_url="" are original model defaults.
+  vote_publisher is captured MID. Success requires positive data.vote_id.
+- UI durationDays -> seconds is original DynamicCreateVoteDialog.kt:117: days*24*60*60.
+  The agreed desktop binding takes days and fragment performs that conversion exactly once.
+- DynamicCreateRepository.kt:189-210 / ApiClient.kt:1887-1896:
+  form POST x/new-reserve/up/reserve/create; type=2,sub_type=<0/1>,from=1,title trimmed,
+  live_plan_start_time=seconds, csrf form. Success requires positive data.sid.
+- Root date/time callback returns chosen millis; original dialog converts /1000 once before binding.
+
+Visibility distinction
+- Publish/edit visibility lives in dyn_req.option.private_pub, as above.
+- Existing CardOperations.setVisibility is the separately selected card management API:
+  POST x/dynamic/feed/dyn/private_pub_setting with object_id JSON String and private_pub/public_pub.
+  Do not call that management API instead of preserving the create/edit request option.
+
+Original practical boundaries to preserve/declare
+- Vote-only draft is valid because buildDynamicCreateContents emits vote nodes.
+  Existing DesktopCommunityRepository.publishDynamic:135 incorrectly rejects it before building.
+  Use this complete original path for Composer, not that old plain-text/images entry point.
+- Title-only and reserve-only blank draft are rejected by original CreateRepository:50/99,
+  despite ViewModel:2000 allowing reserveId through its earlier UI gate. Don't invent filler text.
+- The original image-count restriction belongs to picker UI (9); repository itself only size-checks.
+- Original initial edit draft is resolveDynamicEditDraft, already emitted by card closure.
+  It retains mentions/emotes/topic/reserve/vote/private and exact remote picture metadata.
+- ViewModel:2027-2039 gives publish success, refreshes, then delays 5 seconds and checks authenticated
+  dynamic detail; this differs from the separate cookie-free public visibility card action.
+  Any verification callback must retain editor/session ownership and cancellation guards.
+- No changes to main, shared Gradle, existing frozen lanes, API/model producers or account state here.

@@ -46,6 +46,7 @@ internal class DesktopDynamicUsersState(
     private var requestToken=0L
     private var userJob:Job?=null
     private var startupLoadsActivated=false
+    internal var editorRefreshRevision=0L
     private var isFollowingsLoading=false
     private var followingsFullyLoaded=false
     private var completeFollowingsLoadRequested=false
@@ -180,6 +181,19 @@ internal class DesktopDynamicUsersState(
         }
     }
     fun refreshUser()=requestUser(true)
+    /** Original refresh gate selects the current UP or timeline and then refreshes unread markers. */
+    fun refreshAfterEditor(timeline:DesktopDynamicTimelineState,incrementalRefresh:Boolean) {
+        val refreshUserId=resolveDynamicRefreshUserId(selectedLogicalTab,selectedUid)
+        val activeSourceLocked=if(refreshUserId!=null)userLoading else timeline.busy
+        if(!owned()||!shouldStartDynamicRefresh(false,activeSourceLocked))return
+        launchOwned {
+            if(refreshUserId!=null) {
+                refreshUser()
+                userJob?.join()
+            } else timeline.fetch(refresh=true,incrementalRefresh=incrementalRefresh)
+            loadUnreadUsers()
+        }
+    }
     fun loadMoreUser()=requestUser(false)
     private fun requestUser(refresh:Boolean){
         val uid=selectedUid?:return

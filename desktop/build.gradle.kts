@@ -499,6 +499,33 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
 }
 
+val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-editor.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-editor").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-editor"))
+}
+
+val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-editor-protocol.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json").get().asFile.absolutePath)
+    inputs.files("tools/verify-upstream-dynamic-editor-protocol.py", "tools/extract-upstream-dynamic-editor-protocol.py",
+        "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
+        "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
+    inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.file(layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json"))
+}
+
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
@@ -734,6 +761,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-editor"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
@@ -749,6 +777,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstreamDynamicTabs) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicFullCard) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicEditor, verifyUpstreamDynamicEditorProtocol) }
 tasks.named("compileKotlin") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.named("processResources") { dependsOn(prepareNativeDiagnosticShare) }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareNativeDiagnosticShare) }

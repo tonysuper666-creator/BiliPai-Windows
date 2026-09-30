@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "upstream_tag": "v0.2.3-alpha.9",
+  "upstream_commit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "main_head_at_review": "263d55f01d61b9c2366816c68d1b1094cf78b4e0",
+  "normalization": "UTF-8 without BOM; CRLF and lone CR normalized to LF; no other text changes",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt",
+      "git_blob": "84fa65e41c2c0b43b1c3fc6914a84009e10d09f6",
+      "lf_normalized_sha256": "f204c21e0e5a21e83b5b2b20ce59d822f8ac74cc8f109663da408e250506a373"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+      "git_blob": "a79cbbadfce81cfe3854b6350d11f20e75c14042",
+      "lf_normalized_sha256": "319289227083e60e04943ab9bb15c0c500dd5bab452ca658f1372937cda4afaa"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "git_blob": "e1541bca3d243fef9a93497f460731a784127868",
+      "lf_normalized_sha256": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "git_blob": "abd81bdbe2797a2b61afb8e33fd5617fae5ca8d4",
+      "lf_normalized_sha256": "0c4502996df04147f5b5dd98414ad53d0390d91a14aa8baa9099863623ffea1d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "git_blob": "6dae77c3ee324c40003a311b0365773af6229547",
+      "lf_normalized_sha256": "33e0d081fc70ab587d333eb52a21a193932be2dbc5835f409901139d7a8212dd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/WbiUtils.kt",
+      "git_blob": "07a45176f6cbab274c832f798e9e561272ebe783",
+      "lf_normalized_sha256": "2c57fe898b380ed8a517652a6b3e8dc1c446fca01eb7c30f94f7f1bf723061cd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "git_blob": "d3566c26a7e063f3b629c822a5abfdf5deecd9d1",
+      "lf_normalized_sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+      "git_blob": "65415ab1b9985fe21ce5d0d610db48b9e6e06688",
+      "lf_normalized_sha256": "875a12047cb71c0cdfcf893538f56f3b20ae2e75894a6326c66d264a3175bad1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+      "git_blob": "53f76199dcaea738b25f4ea064ba5a3916d48c98",
+      "lf_normalized_sha256": "be5e3aa6604fe22801c414366da78afb15184082dee71f548dd15a243646609a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateVoteDialog.kt",
+      "git_blob": "391dc5f38ba65b8e95b6cee8dc535369b690c194",
+      "lf_normalized_sha256": "9c25035c25bc149016db553e2a916516fd4dc63ac14f65862f17b5b24ef47e4e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCreateReserveDialog.kt",
+      "git_blob": "f76067097b4bbe86011c5e944ee35dc275e8e4f0",
+      "lf_normalized_sha256": "4f1ae75ed1d8779ef2ecb0c53808fa63860dfc906de45c0e99dededa7dd80191"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicMenuActionPolicy.kt",
+      "git_blob": "66d602cc7ea92a5f2c9b463b76f9080d5c81aec2",
+      "lf_normalized_sha256": "f2f46de1c57338ada427bfc8c0ebe10cd83efc5a25200b81ba25a0b9ae36a377"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicEmoteCatalog.kt",
+      "git_blob": "ffad53713c480d6fe5a5e3d34ac145a12f428ebb",
+      "lf_normalized_sha256": "4ee03d2e2a37524cb2b1dfe60d8fe2c7c314d4198b794a1faa85c3eda8a26ef9"
+    }
+  ],
+  "generated_api_reuse": "desktop/tools/extract-upstream-api.py retains every original Retrofit interface and request DTO",
+  "models_reuse": "desktop/upstream-sources.json direct DynamicCreateModels.kt and ResponseModels.kt; no duplicate FQN producer"
+}

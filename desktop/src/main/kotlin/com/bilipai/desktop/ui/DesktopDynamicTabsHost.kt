@@ -46,6 +46,17 @@ import kotlinx.coroutines.sync.withLock
     }}
     val selectedType=resolveDynamicFeedRequestType(users.selectedLogicalTab)
     val activeTimeline=if(users.selectedLogicalTab==4)null else timeline(selectedType)
+    val cardSession=LocalDesktopDynamicCardSession.current
+    val contentRevision by (cardSession?.contentRevision ?: remember { kotlinx.coroutines.flow.MutableStateFlow(0L) }).collectAsState()
+    LaunchedEffect(users,selectedType,users.selectedUid,contentRevision) {
+        if(contentRevision<=0L)return@LaunchedEffect
+        val current=timeline(selectedType)
+        val refreshUserId=resolveDynamicRefreshUserId(users.selectedLogicalTab,users.selectedUid)
+        val seen=if(refreshUserId!=null)users.editorRefreshRevision else current.editorRefreshRevision
+        if(contentRevision<=seen)return@LaunchedEffect
+        if(refreshUserId!=null)users.editorRefreshRevision=contentRevision else current.editorRefreshRevision=contentRevision
+        users.refreshAfterEditor(current,timelinePreferences.incrementalRefresh.first())
+    }
     val allItems=timeline("all").page.items
     LaunchedEffect(users,allItems){users.updateTimeline(allItems)}
     val listState=rememberLazyListState()

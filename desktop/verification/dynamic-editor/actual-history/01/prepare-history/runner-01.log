@@ -1,0 +1,4 @@
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\dynamic-editor-actual-main-proof-01\compile-run.py", line 6
+    v=str(Path(p).absolute());return Path(v if v.startswith('\\?\') else '\\?\'+v)
+                                                                           ^
+SyntaxError: unexpected character after line continuation character

@@ -1,0 +1,6 @@
+desktop\.local\dynamic-editor-detail-parity\final-production-safe\UiFixture.kt:90:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^
+desktop\.local\dynamic-editor-detail-parity\final-production-safe\generated\com\android\purebilibili\feature\dynamic\components\DesktopOriginalDynamicPublishComposer.kt:174:88: warning: redundant call of conversion method.
+                                                imageUris = (imageUris + uris.map { it.toString() }).distinct().take(9)
+                                                                                       ^^^^^^^^^^

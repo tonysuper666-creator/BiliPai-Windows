@@ -1,0 +1,13 @@
+{
+  "status": "source-ready-uncompiled-unexecuted",
+  "hashNormalization": "UTF-8 no BOM; CRLF/lone CR to LF",
+  "originalOperationsPath": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+  "originalOperationsLfSha256": "50aece83a0efe799e48947f62b3c5f47cbe1ed6c32ce5457a2e74b2701292ac7",
+  "fragmentPath": "DesktopDynamicEditorOperations.fragment.kt",
+  "fragmentLfSha256": "f9673b26a03c62296ca968cef8a0925adfd6b25b6b911398c635dce5104d5073",
+  "augmentedOperationsPath": "DesktopDynamicCardOperations.kt",
+  "augmentedOperationsLfSha256": "491ee13d48fd99fc53a6413b1b69f6ffae701e2c20dd820f05c7bfcf899a006c",
+  "fixturePath": "EditorTransportFixture.kt",
+  "fixtureLfSha256": "7cc9789850699ab0c4fa09b574b5a9649b693466261a543bb124b35b402cdd33",
+  "modification": "Original production Operations text plus imports and member fragment only; existing FQN isolated substitution; not product source."
+}

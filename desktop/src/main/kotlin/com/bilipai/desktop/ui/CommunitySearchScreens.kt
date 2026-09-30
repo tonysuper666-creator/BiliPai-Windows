@@ -353,7 +353,7 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
                 }
                 1 -> CommunityLoginGate(repository, navigation.onLogin) {
                     CommunityFeed(Pair(mid, tab), "", load = { offset -> community.spaceDynamics(mid, offset).let { CommunityBatch(it.items, it.nextOffset) } },
-                        identity = { it.id_str }, onLogin = navigation.onLogin, transform = dynamicTransform) { CommunityDynamicCard(it, community, navigation) }
+                        identity = { it.id_str }, onLogin = navigation.onLogin, transform = dynamicTransform, dynamicContent = true) { CommunityDynamicCard(it, community, navigation) }
                 }
                 2 -> CommunityFeed(Pair(mid, tab), 1, load = { page -> community.followings(mid, page).let { CommunityBatch(it.items, it.nextPage) } },
                     identity = { it.mid }, onLogin = navigation.onLogin) { user ->

@@ -1,0 +1,116 @@
+{
+  "passed": true,
+  "activeClasses": "classes-attempt13",
+  "productJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 7461,
+      "sha256Bytes": "4d618a3446c8a17c50287f12fd060073aca23c24af08bf2b0c3b6f00bd488ffc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-full-card-main-product-snapshot-lifecycle-final\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 67,
+      "sha256Bytes": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909"
+    }
+  ],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalOfficialVerifyBadgePolicy.kt",
+      "sha256Bytes": "c674ef6d33a0a775b507c1cba0bd8893a51dc7d60e005751f51344459651db8d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicCommentLoadPolicy.kt",
+      "sha256Bytes": "36a217e53af655c53c4e0dcad41e9ca7d51ccdb6198662b669550cefb5d6296e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicCommentReplyPolicy.kt",
+      "sha256Bytes": "7f7d3d24dc20702948905cfc70bf8654e5a23b53a6e9f56e5574137245da7eb3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCommentActionPolicy.kt",
+      "sha256Bytes": "72f7339f046f616d404fa5cd846ceabb4028da48586c5a52628e260a1a2717ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sha256Bytes": "5c2f7a8490b9ad29d89d7b4f64216c4b9720802b97803978e4f891f471a0c206"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sha256Bytes": "77f30c2a2fa21184c0278e445b79093ee83c5599605a6dd4eb055a6f7825556b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sha256Bytes": "0bee8b4665f65c7de8f7a00c58d56abb781149d1c719a93396f04bc6de1df80e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishComposer.kt",
+      "sha256Bytes": "680bd1b8ff2d68239dea819f55b28d84a4fe95f1e49893678b77d9517dc91c2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishPickers.kt",
+      "sha256Bytes": "46666bc7ba3cd9f078aced7dfd6b8449c6502a961a57ed1595e0f3fb9559be25"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicCommentModels.kt",
+      "sha256Bytes": "792274f00942e5538e3e3b3bdb80e77fe92641ddf10f9390e627175511e099de"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalSubReplySortPolicy.kt",
+      "sha256Bytes": "1cc357fe6aede84caf9e5e4730588b884855a032da2172ba34e42576646ed052"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sha256Bytes": "3302d6dc02aa116ef6b01f9b31dc163667ac96b0a1c13f260be77a03285f79f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalVideoCommentAppearance.kt",
+      "sha256Bytes": "c7b35702a44196cae951dc53a424549d2ecbe8a0d66ec374acfdc5700a965d9d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorPlatform.kt",
+      "sha256Bytes": "6d1e1c00ded1899851b0424879a842c470db89c0445715de108af496fb343681"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "a3145a3338402012fa5ad46a5396b30c36cf194522f763951c475364f7f7e7bc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\EditorTransportFixture.kt",
+      "sha256Bytes": "7cc9789850699ab0c4fa09b574b5a9649b693466261a543bb124b35b402cdd33"
+    }
+  ],
+  "explicitProductOverride": [
+    "com.bilipai.desktop.data.DesktopDynamicCardOperations"
+  ],
+  "sharedGradle": false,
+  "mainChanged": false,
+  "HWND": false
+}

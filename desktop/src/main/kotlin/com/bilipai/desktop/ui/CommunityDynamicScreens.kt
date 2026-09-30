@@ -50,11 +50,9 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     cardRegistry.register(users)
     val transform=remember(blocked,notInterested){{rows:List<DynamicItem>->desktopVisibleDynamicItems(rows,blocked)
         .filterNot{it.id_str in notInterested}}}
-    var composing by remember {mutableStateOf(false)}
-    var revision by remember {mutableIntStateOf(0)}
-    var published by remember {mutableStateOf(false)}
+    val editor=checkNotNull(LocalDesktopDynamicEditorActions.current){"Root dynamic editor is not mounted"}
     val memory=LocalDesktopBrowseMemory.current
-    val timelines=remember(memory,mid,capturedEpoch,revision){mutableMapOf<String,DesktopDynamicTimelineState>()}
+    val timelines=remember(memory,mid,capturedEpoch){mutableMapOf<String,DesktopDynamicTimelineState>()}
     fun timeline(type:String)=timelines.getOrPut(type) {
         val create={
             lateinit var model:DesktopDynamicTimelineState
@@ -67,19 +65,15 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
             onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows)})
             model
         }
-        (memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision),create)?:create()).also(cardRegistry::register)
+        (memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type),create)?:create()).also(cardRegistry::register)
     }
     Column {
         cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items)}}
-        if(published)com.android.purebilibili.core.ui.components.AppText("动态已提交",Modifier.padding(horizontal=20.dp))
         DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
-            trailing={Button(onClick={composing=true}){DesktopSkinDynamicPublishIcon(composing);Text("发布动态")}}) {
+            trailing={Button(onClick={editor.publish(DynamicPublishDraft(text=""))}){DesktopSkinDynamicPublishIcon(false);Text("发布动态")}}) {
             CommunityDynamicCard(it,community,navigation)
         }
     }
-    if(composing)CommunityDynamicComposer(community,navigation,onDismiss={composing=false},onPublished={id->
-        composing=false;revision++;published=true;if(id!=null)navigation.onDynamic(id)
-    })
 }
 
 @Composable
@@ -95,6 +89,8 @@ internal fun CommunityDynamicDetail(id: String, community: DesktopCommunityRepos
     var forwardVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
     var foldVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
     var removedVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
+    val session=checkNotNull(LocalDesktopDynamicCardSession.current)
+    val contentRevision by session.contentRevision.collectAsState()
     val rootMutations=checkNotNull(LocalDesktopDynamicCardMutations.current)
     fun mutateDetail(transform:(List<DynamicItem>)->List<DynamicItem>) {
         if(!owned())return
@@ -112,7 +108,7 @@ internal fun CommunityDynamicDetail(id: String, community: DesktopCommunityRepos
         unfoldRelated={target->if(owned()&&target==id)foldVersion++;rootMutations.unfoldRelated(target);mutateDetail{
             com.android.purebilibili.feature.dynamic.components.unfoldRelatedDynamicItems(it,target)}},
     )
-    LaunchedEffect(id,revision,capturedEpoch) {
+    LaunchedEffect(id,revision,capturedEpoch,contentRevision) {
         loading = true; error = null
         val beforeLike=likeVersion;val beforeForward=forwardVersion;val beforeFold=foldVersion;val beforeRemoved=removedVersion
         fun mergeReadback(incoming:DynamicDetailData)=mergeDesktopDynamicDetailReadback(incoming,data,

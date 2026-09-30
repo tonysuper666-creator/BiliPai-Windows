@@ -1,0 +1,18 @@
+[
+  {
+    "path": "EditorTransportFixture.kt",
+    "sha256Bytes": "196857202079025678a887fb36b84649436fe42696769cdf125433b617e86379"
+  },
+  {
+    "path": "PolicyFixture.kt",
+    "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13"
+  },
+  {
+    "path": "RootUiFixture.kt",
+    "sha256Bytes": "2284b22c0c8ad87c35bf96b916ded18dc7f95ccb0c8ad49bda9a26ad50acdbec"
+  },
+  {
+    "path": "UiFixture.kt",
+    "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1"
+  }
+]

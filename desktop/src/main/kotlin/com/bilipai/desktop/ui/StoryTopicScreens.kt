@@ -171,18 +171,25 @@ internal fun DesktopTopicDetailScreen(topicId: Long, data: DesktopStoryTopicData
         }
     }}
     LocalDesktopDynamicCardStateRegistry.current?.register(cardOwner)
-    var composing by remember(controller) { mutableStateOf(false) }
+    val editor=checkNotNull(LocalDesktopDynamicEditorActions.current){"Root dynamic editor is not mounted"}
+    val session=checkNotNull(LocalDesktopDynamicCardSession.current)
+    val contentRevision by session.contentRevision.collectAsState()
+    var seenContentRevision by remember(controller) { mutableLongStateOf(contentRevision) }
     DisposableEffect(controller) { onDispose { controller.close() } }
     LaunchedEffect(controller) { controller.load() }
+    LaunchedEffect(controller,contentRevision) {
+        if(contentRevision>seenContentRevision) {
+            seenContentRevision=contentRevision
+            controller.refreshSelectedFeed()
+        }
+    }
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(20.dp, 12.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
             AppTextButton(onBack) { AppText("‹ 返回") }
             AppText(state.details?.topicItem?.name.orEmpty().ifBlank { "话题" }, style = MaterialTheme.typography.headlineSmall, modifier = Modifier.weight(1f))
-            AppButton({ composing = !composing }, enabled = state.details?.topicItem?.id?.let { it > 0 } == true,
-                modifier = Modifier.width(TOPIC_PARTICIPATE_BUTTON_WIDTH_DP.dp)) { AppText(if (composing) "收起发布" else "参与话题") }
+            AppButton({ state.details?.topicItem?.let { editor.publish(desktopTopicDraft(it,"","",false)) } }, enabled = state.details?.topicItem?.id?.let { it > 0 } == true,
+                modifier = Modifier.width(TOPIC_PARTICIPATE_BUTTON_WIDTH_DP.dp)) { AppText("参与话题") }
         }
-        if (composing) state.details?.topicItem?.let { topic -> DesktopTopicComposer(topic, epoch, data, community, navigation,
-            onDismiss = { composing = false }, onPublished = { composing = false; controller.refreshSelectedFeed() }) }
         DesktopTopicContent(state, onUser = navigation.onUser, onSort = controller::selectSort,
             onMore = controller::loadMore, onRetry = controller::load) { item ->
             CommunityDynamicCard(item, community, navigation)
@@ -229,31 +236,3 @@ internal fun DesktopTopicContent(state: TopicDetailUiState, onUser: (Long) -> Un
 internal fun desktopTopicDraft(topic: TopicItem, text: String, title: String, private: Boolean): DynamicPublishDraft =
     DynamicPublishDraft(text = text, title = title, private = private, topic = topic.takeIf { it.id > 0 }?.let { DynamicPublishTopic(it.id, it.name) })
 
-@Composable
-private fun DesktopTopicComposer(topic: TopicItem, epoch: Long, data: DesktopStoryTopicDataSource,
-    community: DesktopCommunityRepository, navigation: CommunityNavigation, onDismiss: () -> Unit, onPublished: () -> Unit) {
-    val scope = rememberCoroutineScope()
-    var text by remember { mutableStateOf("") }; var title by remember { mutableStateOf("") }
-    var private by remember { mutableStateOf(false) }; var images by remember { mutableStateOf(emptyList<CommunityLocalImage>()) }
-    var busy by remember { mutableStateOf(false) }; var error by remember { mutableStateOf<Throwable?>(null) }
-    fun ensureOwner() { if (epoch != data.sessionEpoch.value) throw CancellationException("账号已切换") }
-    Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        AppText("参与 #${topic.name}", style = MaterialTheme.typography.titleMedium)
-        AppOutlinedTextField(title, { title = it }, Modifier.fillMaxWidth(), enabled = !busy, singleLine = true, labelText = "标题（可选）")
-        AppOutlinedTextField(text, { text = it }, Modifier.fillMaxWidth(), enabled = !busy, minLines = 3, labelText = "分享你的想法")
-        Row(verticalAlignment = Alignment.CenterVertically) { AppCheckbox(private, { private = it }, enabled = !busy); AppText("仅自己可见") }
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            AppTextButton({ scope.launch { try { ensureOwner(); val chosen = selectCommunityImages(true); ensureOwner()
-                require(images.size + chosen.size <= 9) { "最多选择 9 张图片" }; images = images + chosen
-            } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure } } }, enabled = !busy) { AppText("选择图片 (${images.size}/9)") }
-            AppButton({ busy = true; error = null; scope.launch {
-                try { ensureOwner(); val uploads = images.map { image -> ensureOwner(); community.uploadDynamicImage(image.name, image.mime, image.bytes()).also { ensureOwner() } }
-                    ensureOwner(); community.publishDynamic(desktopTopicDraft(topic, text, title, private), uploads); ensureOwner(); onPublished()
-                } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure } finally { busy = false }
-            } }, enabled = !busy && (text.isNotBlank() || images.isNotEmpty())) { AppText(if (busy) "发布中…" else "发布") }
-            AppTextButton(onDismiss, enabled = !busy) { AppText("取消") }
-        }
-        images.forEach { image -> Row { AppText(image.name, Modifier.weight(1f)); AppTextButton({ images = images - image }, enabled = !busy) { AppText("移除") } } }
-        error?.let { CommunityFailure(it, navigation.onLogin) }
-    }
-}

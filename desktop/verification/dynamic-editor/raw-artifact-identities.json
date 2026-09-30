@@ -1,0 +1,1082 @@
+{
+  "frozen": true,
+  "selectedNonbinaryEvidence": true,
+  "artifacts": [
+    {
+      "path": "desktop/verification/dynamic-editor/actual-main/manifest.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\manifest.json",
+      "sha256Bytes": "bc6cf9ef064ba68f28f36c3bbf2b59721629405567c7ced7e4799a844ff7b062",
+      "bytes": 270504
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-main/ordered-runtime-cp.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-main-product-snapshot-01\\ordered-runtime-cp.json",
+      "sha256Bytes": "515bf598f56b27de45aa04d63493e1f8ad38b7e4710ef358fea97b9fc9d620c1",
+      "bytes": 33334
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/frozen-handoff.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\frozen-handoff.json",
+      "sha256Bytes": "15465a9bf04fe3ac59839bfcf3717a3c35ac2ae45e4073d8452a29e2064c65a2",
+      "bytes": 94841
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/PRELIMINARY-12-CORRECTION.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\PRELIMINARY-12-CORRECTION.txt",
+      "sha256Bytes": "ca03c47f4398f91451162859cec70077743e12b42323cadfb8f440cc454bf134",
+      "bytes": 594
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/PolicyFixture.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13",
+      "bytes": 4390
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/ROOT-INTEGRATION.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\ROOT-INTEGRATION.txt",
+      "sha256Bytes": "771dce13775bd54b4f93957ec592230566dc0629ba193c10f7059ced75d8a4c1",
+      "bytes": 8862
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/UiFixture.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1",
+      "bytes": 12814
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/baseline.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\baseline.json",
+      "sha256Bytes": "069863ae9a3d2d5d5de2c29ae690a6d069dfa7016432cf96b36c1277df773380",
+      "bytes": 605
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/class-overlap-evidence.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\class-overlap-evidence.json",
+      "sha256Bytes": "0d40a4375a7e21ecf613b242f21b3b8ce5a4a1b3687f16107566348ae569bd14",
+      "bytes": 4004
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/collect-reused-callable-proof.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\collect-reused-callable-proof.py",
+      "sha256Bytes": "9be7f50402025daa50d5c8bae76f9f6f4af5ff7dce45917954bbd33613f78428",
+      "bytes": 2374
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/compile-13.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\compile-13.log",
+      "sha256Bytes": "f7ff2b700ae998db98de16ecd8175ae7c30e065af94587c4adf752325c0b07b2",
+      "bytes": 786
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/compile-evidence.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\compile-evidence.json",
+      "sha256Bytes": "d665759267f06ecec5635d21aae95c1c2cbc9e4a74f837e1638a533897da35be",
+      "bytes": 9360
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/compile-fixture.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\compile-fixture.py",
+      "sha256Bytes": "9a82602cc241d0c1d79385d9dab66d019f9b0f6a1d3b985620b02edd26ae33b5",
+      "bytes": 3049
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/compiler-13.args",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\compiler-13.args",
+      "sha256Bytes": "8c0b58c3367ef6e90f3680021ae2784da647edba226ebd0688f1ce357c79d332",
+      "bytes": 28015
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/dependency-identities.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\dependency-identities.json",
+      "sha256Bytes": "eda9b5cda1ac474e7e01e4a21459ad039cc7a3d81508066c33cb392e15b93742",
+      "bytes": 33740
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/freeze.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\freeze.py",
+      "sha256Bytes": "7affd1584e1f8b22ba7fc18a079a66798c9de35a4822af9ebba716fc95a1101e",
+      "bytes": 9794
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated-protocol-members.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated-protocol-members.kt",
+      "sha256Bytes": "8d85bd9a0ba09125a9391089fef43e621576f587bae9d887993ee000b231a71d",
+      "bytes": 11823
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/core/ui/DesktopOriginalOfficialVerifyBadgePolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalOfficialVerifyBadgePolicy.kt",
+      "sha256Bytes": "c674ef6d33a0a775b507c1cba0bd8893a51dc7d60e005751f51344459651db8d",
+      "bytes": 4915
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentLoadPolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicCommentLoadPolicy.kt",
+      "sha256Bytes": "36a217e53af655c53c4e0dcad41e9ca7d51ccdb6198662b669550cefb5d6296e",
+      "bytes": 4778
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicCommentReplyPolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicCommentReplyPolicy.kt",
+      "sha256Bytes": "7f7d3d24dc20702948905cfc70bf8654e5a23b53a6e9f56e5574137245da7eb3",
+      "bytes": 5308
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCommentActionPolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCommentActionPolicy.kt",
+      "sha256Bytes": "72f7339f046f616d404fa5cd846ceabb4028da48586c5a52628e260a1a2717ae",
+      "bytes": 1830
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateReserveDialog.kt",
+      "sha256Bytes": "5c2f7a8490b9ad29d89d7b4f64216c4b9720802b97803978e4f891f471a0c206",
+      "bytes": 5438
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicCreateVoteDialog.kt",
+      "sha256Bytes": "77f30c2a2fa21184c0278e445b79093ee83c5599605a6dd4eb055a6f7825556b",
+      "bytes": 7413
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicInlineCommentHeader.kt",
+      "sha256Bytes": "0bee8b4665f65c7de8f7a00c58d56abb781149d1c719a93396f04bc6de1df80e",
+      "bytes": 4420
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishComposer.kt",
+      "sha256Bytes": "680bd1b8ff2d68239dea819f55b28d84a4fe95f1e49893678b77d9517dc91c2a",
+      "bytes": 13678
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishPickers.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicPublishPickers.kt",
+      "sha256Bytes": "46666bc7ba3cd9f078aced7dfd6b8449c6502a961a57ed1595e0f3fb9559be25",
+      "bytes": 9442
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalDynamicRichCommentPolicy.kt",
+      "sha256Bytes": "3302d6dc02aa116ef6b01f9b31dc163667ac96b0a1c13f260be77a03285f79f6",
+      "bytes": 39744
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/video/ui/components/DesktopOriginalVideoCommentAppearance.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalVideoCommentAppearance.kt",
+      "sha256Bytes": "c7b35702a44196cae951dc53a424549d2ecbe8a0d66ec374acfdc5700a965d9d",
+      "bytes": 3554
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalDynamicCommentModels.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalDynamicCommentModels.kt",
+      "sha256Bytes": "792274f00942e5538e3e3b3bdb80e77fe92641ddf10f9390e627175511e099de",
+      "bytes": 1441
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalSubReplySortPolicy.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalSubReplySortPolicy.kt",
+      "sha256Bytes": "1cc357fe6aede84caf9e5e4730588b884855a032da2172ba34e42576646ed052",
+      "bytes": 1095
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/operations.patch",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\operations.patch",
+      "sha256Bytes": "0bb1ae78935c6369726c576544b7cfecf4d747d25cd7f25da1ed192167c173b3",
+      "bytes": 12918
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/original-source-evidence.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\original-source-evidence.json",
+      "sha256Bytes": "7a81f4a0596455a4862bca53910dc7f69e8ddf0aa54b4a66a31dace7d0c94436",
+      "bytes": 15461
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/patch-check.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\patch-check.json",
+      "sha256Bytes": "b16fef8c68791a459fd146313092b21fc1f861533d0bec0c0dba309ede792e9c",
+      "bytes": 450
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/policy-13.args",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\policy-13.args",
+      "sha256Bytes": "ed4ffa2fb44aea302e4bfcb0ba10cfe406e535a358beb0be850190d7b2ff1938",
+      "bytes": 22745
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/policy-13.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\policy-13.log",
+      "sha256Bytes": "9df05e99077413f00cf9f8c098937cf0754062123b119a6c330f3e99b8a2958a",
+      "bytes": 110
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepare.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepare.py",
+      "sha256Bytes": "5ab90e09aca992b72cfccc2dce1f1dfa99e2e747d9d0f5fc2a6156475fe06464",
+      "bytes": 2151
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "f7a776b41950ef075fc37d35e5dbbdbe86bc89db4a0faf64fba2dd8ab18b96cd",
+      "bytes": 23062
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorPlatform.kt",
+      "sha256Bytes": "6d1e1c00ded1899851b0424879a842c470db89c0445715de108af496fb343681",
+      "bytes": 2895
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "84389c917a95da7d5f4626565785f7ccec7e947b807ee1dbe0d45744edc012eb",
+      "bytes": 1849
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "a3145a3338402012fa5ad46a5396b30c36cf194522f763951c475364f7f7e7bc",
+      "bytes": 2943
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "7a4e8a76945d923dc6bcc1ff1d10ee623253330e70fb04c932424ee458a2c718",
+      "bytes": 3540
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\tools\\extract-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "85efcbef79934a5444fa53f417a9f2f949d4ea4ee38e8b232418c07f95fcaaae",
+      "bytes": 7337
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/prepared/desktop/tools/extract-upstream-dynamic-editor.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\prepared\\desktop\\tools\\extract-upstream-dynamic-editor.py",
+      "sha256Bytes": "8d833e2a4f9b367e7bc4f48d3c63283c7beae1b582359e9c121ff37883bcad88",
+      "bytes": 12021
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/editor-protocol-result.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\editor-protocol-result.json",
+      "sha256Bytes": "e71b53b6295f04ebe3925b45cdcf3d4f3309a8eedda9fd9eb8533b18f63c3324",
+      "bytes": 550
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/material3-original-comment-header.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\material3-original-comment-header.png",
+      "sha256Bytes": "aac80f1e2df3591b24d71ca70457020b06b49ccfd1ce56f69b3615117150d843",
+      "bytes": 10487
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/material3-original-composer.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\material3-original-composer.png",
+      "sha256Bytes": "7b420024f0ba3685ee6ff0621851aaefde111a66308409d5ae4d9282eb0c54b0",
+      "bytes": 23928
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/material3-original-image-edit.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\material3-original-image-edit.png",
+      "sha256Bytes": "5e4068de1f609f6f86a685c8fdf7c930184e6417a3bced39568b8e339da0b016",
+      "bytes": 21588
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/material3-original-reserve.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\material3-original-reserve.png",
+      "sha256Bytes": "c8efd826cf0dd281da6770dc3aae549eed2cb9a4f0db56a625ca0af2bef46d4e",
+      "bytes": 19564
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/material3-original-vote.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\material3-original-vote.png",
+      "sha256Bytes": "e83f37522128e2f08e5731c6392b6e474a40b7c57c55c61f3fce9473bb5717c9",
+      "bytes": 26323
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/miuix-original-comment-header.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\miuix-original-comment-header.png",
+      "sha256Bytes": "0574dd89eb493ab0b9276a9ba67a92d1d104434e4d6286259ea949e44d7e547d",
+      "bytes": 10195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/miuix-original-composer.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\miuix-original-composer.png",
+      "sha256Bytes": "fa9bc0cd0a092798105d8e666f7bdd45e32911ac6e1b753350abcf5c184529cc",
+      "bytes": 20622
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/miuix-original-image-edit.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\miuix-original-image-edit.png",
+      "sha256Bytes": "65038118d9d6f2e689ad32a5d72ee21faa73e042164ef4e5bd35a7f18b29f689",
+      "bytes": 19739
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/miuix-original-reserve.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\miuix-original-reserve.png",
+      "sha256Bytes": "4b05f4dda7c4c8a05547c4b74d47a08d73c051befdec32d2b602d9547164109b",
+      "bytes": 18310
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/miuix-original-vote.png",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\miuix-original-vote.png",
+      "sha256Bytes": "c48d637a2c499edbd0167809f9ce9996483512e8461812e7f2a7979c413c4e68",
+      "bytes": 25128
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/policy-result.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\policy-result.json",
+      "sha256Bytes": "74de2f2276fb2507618ab95d9c0600ee198ed054f4aae7bb755ac3da79cac2b0",
+      "bytes": 232
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt13/ui-result.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt13\\ui-result.json",
+      "sha256Bytes": "1a3f12032ee26b0249b7117f115e3467e906730d90bdcec31f62237dc3064025",
+      "bytes": 593
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/proof-attempt5/editor-protocol-result.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\proof-attempt5\\editor-protocol-result.json",
+      "sha256Bytes": "e71b53b6295f04ebe3925b45cdcf3d4f3309a8eedda9fd9eb8533b18f63c3324",
+      "bytes": 550
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-13.args",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-13.args",
+      "sha256Bytes": "4ac7d1c76bab2a6cf2f61c1057ae1e92cf6e72864ab1f85bd872a27a214c7c5a",
+      "bytes": 22756
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-13.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-13.log",
+      "sha256Bytes": "ea37cdbbdfe474bb8550ca02025a4b8ce79dd1dc43f3a51156f13cdda442130f",
+      "bytes": 120
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-5.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-5.log",
+      "sha256Bytes": "ea37cdbbdfe474bb8550ca02025a4b8ce79dd1dc43f3a51156f13cdda442130f",
+      "bytes": 120
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/EditorTransportFixture.kt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\EditorTransportFixture.kt",
+      "sha256Bytes": "7cc9789850699ab0c4fa09b574b5a9649b693466261a543bb124b35b402cdd33",
+      "bytes": 21252
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/detail-class-presence.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\detail-class-presence.json",
+      "sha256Bytes": "f359cc2ec9c36ba856d83da6b53cc465b12ccbbbe92f1ad0a6d8fd284e534af7",
+      "bytes": 22707
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/detail-dependency-review.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\detail-dependency-review.txt",
+      "sha256Bytes": "cbd17d230e8948cd6464cb5a0eb530d13b1a0413e13c3f8b73f2bdb9bcc049a8",
+      "bytes": 22789
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/detail-source-identities.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\detail-source-identities.json",
+      "sha256Bytes": "dcf0a021ecf0895802b382ca889f422e8c9d3e5a7b9fecf64678eb8f08c87dce",
+      "bytes": 18509
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/fake-api-cases.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\fake-api-cases.txt",
+      "sha256Bytes": "2e9180637ca5f752bea7ac7cf6f2a2f99ed112e55c3a5a253425f45114406c9a",
+      "bytes": 3850
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/fixture-source-identities.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\fixture-source-identities.json",
+      "sha256Bytes": "fa27dbe29671fe47e86cdb5e01da0d39190e07c9c7fd1ff53dcf084e80b43b51",
+      "bytes": 941
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/fixture-source-selection.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\fixture-source-selection.txt",
+      "sha256Bytes": "747961733602917880ce50f86a27214160fa1afd66f774ccacd6030a01187654",
+      "bytes": 4282
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/original-identities.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\original-identities.json",
+      "sha256Bytes": "c50afb05b54c56a2411fbcffef1da2d938a635c3994056c236ae7b288129f0ec",
+      "bytes": 4217
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/protocol-review/protocol-contract.txt",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\protocol-review\\protocol-contract.txt",
+      "sha256Bytes": "21370e4e0eb3ad7b078d9c7506525fd37a484109eaae660a23b454a185289d7b",
+      "bytes": 10619
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/reused-callable-evidence.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\reused-callable-evidence.json",
+      "sha256Bytes": "3882d3bd4123abe67ee2adc78aaf9167bdff16c3a6778e87d0e51547018ffbf4",
+      "bytes": 1357
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/reused-callable-javap.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\reused-callable-javap.log",
+      "sha256Bytes": "3331ba56de014e5d8a859f191ccfd0625ab86f0801ddb83fdb4ff03bafa355f9",
+      "bytes": 1068
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/run-evidence-13.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\run-evidence-13.json",
+      "sha256Bytes": "bb9a954daa5d18ba6d75a35bab2906eafa83c9ea946e4c701b9c02f67cb2ce59",
+      "bytes": 1460
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/run-fixtures.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\run-fixtures.py",
+      "sha256Bytes": "3beb49c7dc7728be4285b96c966c35f9d6d8e7c203d72a5bf7f06023d7d51199",
+      "bytes": 2543
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/source-inventory.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\source-inventory.json",
+      "sha256Bytes": "63ed62d5c1df29617e352413654da06abaf0e5526d706fe0d34719dff4bcca19",
+      "bytes": 6338
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/source-registry-delta.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\source-registry-delta.json",
+      "sha256Bytes": "d801e85dec1b0ea12a2fa568b04419167d087c4ff7bcc6ab75687d4ffc7872e7",
+      "bytes": 6730
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/ui-13.args",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\ui-13.args",
+      "sha256Bytes": "8fdf1834b9c9d9c4b04b90b10167308aaeee0bdfe005cf45a93ca909bda41bb4",
+      "bytes": 22741
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/prepared-history/ui-13.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-detail-parity\\final-production-safe\\ui-13.log",
+      "sha256Bytes": "402ae9d2147107b276d052e1fef66ab47ac99dee0b895a2a40466086c910760c",
+      "bytes": 163
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/class-overlap.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\class-overlap.json",
+      "sha256Bytes": "fdd9d86fd70693fcd6faac253277098b251fc44fbdf9e1ea831ae693d7ed41ee",
+      "bytes": 109
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/compile-run.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\compile-run.py",
+      "sha256Bytes": "1ef455278d5d229c457368390ac7853931a2958563483c383c9fa1a8acc0a289",
+      "bytes": 4885
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\compile.log",
+      "sha256Bytes": "38ea0b1427d536daef63d09d068ec5fdb1d5679c6368e1a515faa348bd4f86d0",
+      "bytes": 664
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/compiler.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\compiler.args",
+      "sha256Bytes": "a962ea07ff941baac11664ecc38d31f4057bd9e9098261a9a6e77239576c256e",
+      "bytes": 23449
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/dependency-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\dependency-identities.json",
+      "sha256Bytes": "02e11258a059707900bf57e6e33574c477cbc5181f12758a3e4102a4b022a7f8",
+      "bytes": 33692
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/EditorTransportFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\EditorTransportFixture.kt",
+      "sha256Bytes": "196857202079025678a887fb36b84649436fe42696769cdf125433b617e86379",
+      "bytes": 26195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/fixture-source-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\fixture-source-identities.json",
+      "sha256Bytes": "9965af4704845690c6caea2d28ff2d2f518671b949106835fbf366a0e1934912",
+      "bytes": 516
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/policy.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\policy.args",
+      "sha256Bytes": "a8a6c829dc55505b64d1a811efc1665252e63987bce9cb1682e9011ef8e592a6",
+      "bytes": 22667
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/policy.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\policy.log",
+      "sha256Bytes": "9df05e99077413f00cf9f8c098937cf0754062123b119a6c330f3e99b8a2958a",
+      "bytes": 110
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/PolicyFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13",
+      "bytes": 4390
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/prepare-history/runner-01.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\prepare-history\\runner-01.log",
+      "sha256Bytes": "17adce14cc7e4cb0bb7fb50329c88f9ba9f1679527f3a8fbaafadcb4c68f0d4b",
+      "bytes": 403
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/prepare-history/runner-01.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\prepare-history\\runner-01.py",
+      "sha256Bytes": "947fbaddbcc3cd2795bf0713f6eb483a6ede290c8830a53e7b4ac88cb5471ec3",
+      "bytes": 4856
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/protocol.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\protocol.args",
+      "sha256Bytes": "84efe0ab22b9dfc86be5ed77cf21586b78ee2221af80e2ffbc6f92cbc72ed126",
+      "bytes": 22678
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/protocol.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\protocol.log",
+      "sha256Bytes": "bdcd1c1f72f661a0f284fd1b9b06baff148f2dd5ea55fc4a93d3701cb8b40ddd",
+      "bytes": 116
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/root-ui.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\root-ui.args",
+      "sha256Bytes": "028c44df106df3a484abaa099da65a06eec11b0a917fe7afc294e9ad5c2db6ed",
+      "bytes": 22667
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/root-ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\root-ui.log",
+      "sha256Bytes": "ef8b03913eead4bf45d1785825f1221e448a106226e3ca7c921887a2560b8796",
+      "bytes": 2031
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/RootUiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\RootUiFixture.kt",
+      "sha256Bytes": "74e5a09c89bb30b0fde093dc46a049efb12c93b7ceb03f6ea7172647e8e24b00",
+      "bytes": 8977
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runner.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runner.log",
+      "sha256Bytes": "c91c6174288bd6192a85b731a91c8a6309a19ef1dd56fd592db6fd4e9a48773c",
+      "bytes": 4183
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/editor-protocol-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\editor-protocol-result.json",
+      "sha256Bytes": "8b58284d0babe565b0b6cc9e126f3c32465b643e1d8fa51e713fe82d3b25652c",
+      "bytes": 912
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-light-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-light-root-edit.png",
+      "sha256Bytes": "06ac9a66a2968f307bb74b657300628279d9b985c39581f61da3077bf706a147",
+      "bytes": 20019
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-light-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-light-root-publish.png",
+      "sha256Bytes": "2684c9a2e5af8ac07585bb563a98b60e116362c4f4fa63ecbe20098257134dba",
+      "bytes": 19618
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-original-comment-header.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-original-comment-header.png",
+      "sha256Bytes": "aac80f1e2df3591b24d71ca70457020b06b49ccfd1ce56f69b3615117150d843",
+      "bytes": 10487
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-original-composer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-original-composer.png",
+      "sha256Bytes": "7b420024f0ba3685ee6ff0621851aaefde111a66308409d5ae4d9282eb0c54b0",
+      "bytes": 23928
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-original-image-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-original-image-edit.png",
+      "sha256Bytes": "5e4068de1f609f6f86a685c8fdf7c930184e6417a3bced39568b8e339da0b016",
+      "bytes": 21588
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-original-reserve.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-original-reserve.png",
+      "sha256Bytes": "c8efd826cf0dd281da6770dc3aae549eed2cb9a4f0db56a625ca0af2bef46d4e",
+      "bytes": 19564
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/material3-original-vote.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\material3-original-vote.png",
+      "sha256Bytes": "e83f37522128e2f08e5731c6392b6e474a40b7c57c55c61f3fce9473bb5717c9",
+      "bytes": 26323
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/miuix-original-comment-header.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\miuix-original-comment-header.png",
+      "sha256Bytes": "0574dd89eb493ab0b9276a9ba67a92d1d104434e4d6286259ea949e44d7e547d",
+      "bytes": 10195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/miuix-original-composer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\miuix-original-composer.png",
+      "sha256Bytes": "fa9bc0cd0a092798105d8e666f7bdd45e32911ac6e1b753350abcf5c184529cc",
+      "bytes": 20622
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/miuix-original-image-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\miuix-original-image-edit.png",
+      "sha256Bytes": "65038118d9d6f2e689ad32a5d72ee21faa73e042164ef4e5bd35a7f18b29f689",
+      "bytes": 19739
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/miuix-original-reserve.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\miuix-original-reserve.png",
+      "sha256Bytes": "4b05f4dda7c4c8a05547c4b74d47a08d73c051befdec32d2b602d9547164109b",
+      "bytes": 18310
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/miuix-original-vote.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\miuix-original-vote.png",
+      "sha256Bytes": "c48d637a2c499edbd0167809f9ce9996483512e8461812e7f2a7979c413c4e68",
+      "bytes": 25128
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/policy-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\policy-result.json",
+      "sha256Bytes": "74de2f2276fb2507618ab95d9c0600ee198ed054f4aae7bb755ac3da79cac2b0",
+      "bytes": 232
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/runs/01/ui-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\runs\\01\\ui-result.json",
+      "sha256Bytes": "1a3f12032ee26b0249b7117f115e3467e906730d90bdcec31f62237dc3064025",
+      "bytes": 593
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/ui.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\ui.args",
+      "sha256Bytes": "c74b322d3320043ca94f56f1be780c9ab4823f761b0eecaf69ab503f0a279c04",
+      "bytes": 22663
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\ui.log",
+      "sha256Bytes": "402ae9d2147107b276d052e1fef66ab47ac99dee0b895a2a40466086c910760c",
+      "bytes": 163
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/01/UiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-01\\UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1",
+      "bytes": 12814
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/class-overlap.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\class-overlap.json",
+      "sha256Bytes": "fdd9d86fd70693fcd6faac253277098b251fc44fbdf9e1ea831ae693d7ed41ee",
+      "bytes": 109
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/compile-run.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\compile-run.py",
+      "sha256Bytes": "7e79293ae16158620b05fe4412d11fad7b746b03169c1b0365b881aede3d60e7",
+      "bytes": 5641
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\compile.log",
+      "sha256Bytes": "04ea8f06373ee854c6da61634bacc02a5e129e0869792e5ee8df44a463bcc1ef",
+      "bytes": 664
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/compiler.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\compiler.args",
+      "sha256Bytes": "07bde09a215be99ceafca0df4d4c22671a999baed9b7442f876aca874b74adb7",
+      "bytes": 23449
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/dependency-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\dependency-identities.json",
+      "sha256Bytes": "02e11258a059707900bf57e6e33574c477cbc5181f12758a3e4102a4b022a7f8",
+      "bytes": 33692
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/EditorTransportFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\EditorTransportFixture.kt",
+      "sha256Bytes": "196857202079025678a887fb36b84649436fe42696769cdf125433b617e86379",
+      "bytes": 26195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/fixture-source-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\fixture-source-identities.json",
+      "sha256Bytes": "50ca749e1eec7bc9da7967e5d434c29872ed93914ccaf0a7a8d9d4edd8b47a53",
+      "bytes": 516
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/PolicyFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13",
+      "bytes": 4390
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/root-ui.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\root-ui.args",
+      "sha256Bytes": "d52aab6571f056f19386834bf410c249c1777620d6fce8b85bce122e791a729c",
+      "bytes": 22667
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/root-ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\root-ui.log",
+      "sha256Bytes": "f02cc9c63e2608018e4082e2760a8367d9fb7bf76fb40705c7db4d890fe54c3c",
+      "bytes": 2061
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/RootUiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\RootUiFixture.kt",
+      "sha256Bytes": "fccaea5f4be6a4a3daa5be441452877462b4f41d1d2a8654c3fa2fb4b740bd9d",
+      "bytes": 9143
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/runner.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\runner.log",
+      "sha256Bytes": "eb19c27e17fe7b1585235e4b938a07672312941992a635ab8312854233a6b763",
+      "bytes": 3791
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/runs/01/material3-light-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\runs\\01\\material3-light-root-edit.png",
+      "sha256Bytes": "06ac9a66a2968f307bb74b657300628279d9b985c39581f61da3077bf706a147",
+      "bytes": 20019
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/runs/01/material3-light-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\runs\\01\\material3-light-root-publish.png",
+      "sha256Bytes": "2684c9a2e5af8ac07585bb563a98b60e116362c4f4fa63ecbe20098257134dba",
+      "bytes": 19618
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/runs/01/root-edit-sent.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\runs\\01\\root-edit-sent.json",
+      "sha256Bytes": "8a4c7a47e75e28a1a0eaa1385697b7de6faacd5b478f619f882ffb4f5c1ca554",
+      "bytes": 177
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-history/02/UiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-02\\UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1",
+      "bytes": 12814
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/accepted-previous-policy.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\accepted-previous-policy.log",
+      "sha256Bytes": "9df05e99077413f00cf9f8c098937cf0754062123b119a6c330f3e99b8a2958a",
+      "bytes": 110
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/accepted-previous-protocol.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\accepted-previous-protocol.log",
+      "sha256Bytes": "bdcd1c1f72f661a0f284fd1b9b06baff148f2dd5ea55fc4a93d3701cb8b40ddd",
+      "bytes": 116
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/accepted-previous-ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\accepted-previous-ui.log",
+      "sha256Bytes": "402ae9d2147107b276d052e1fef66ab47ac99dee0b895a2a40466086c910760c",
+      "bytes": 163
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/class-overlap.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\class-overlap.json",
+      "sha256Bytes": "fdd9d86fd70693fcd6faac253277098b251fc44fbdf9e1ea831ae693d7ed41ee",
+      "bytes": 109
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/compile-run.py",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\compile-run.py",
+      "sha256Bytes": "7e79293ae16158620b05fe4412d11fad7b746b03169c1b0365b881aede3d60e7",
+      "bytes": 5641
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/compile.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\compile.log",
+      "sha256Bytes": "ddc714abfcae4ee317cefadfff03df6677f778467539a50be3c4bdc0aae65881",
+      "bytes": 664
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/compiler.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\compiler.args",
+      "sha256Bytes": "46eb4ed7a82acfd187664af404e11ae9e6bb889af7c3e1e9c7e383f096f8c9a6",
+      "bytes": 23449
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/dependency-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\dependency-identities.json",
+      "sha256Bytes": "02e11258a059707900bf57e6e33574c477cbc5181f12758a3e4102a4b022a7f8",
+      "bytes": 33692
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/EditorTransportFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\EditorTransportFixture.kt",
+      "sha256Bytes": "196857202079025678a887fb36b84649436fe42696769cdf125433b617e86379",
+      "bytes": 26195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/fixture-source-identities.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\fixture-source-identities.json",
+      "sha256Bytes": "351623233369a6a5ed2d8ef14962253197098b9f3990dc3a3bae1ea076259c15",
+      "bytes": 516
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/PolicyFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\PolicyFixture.kt",
+      "sha256Bytes": "1d1fcaca11816bd8f4c554582c98be145cc78028447c9ce0b4e70486ff064c13",
+      "bytes": 4390
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/root-ui.args",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\root-ui.args",
+      "sha256Bytes": "88f50f99c76a168fae493cd79fde7abeb1e17d59fbaeab50a10c69d44d7b6784",
+      "bytes": 22667
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/root-ui.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\root-ui.log",
+      "sha256Bytes": "cbafa81d3ea27e95b47d41eb76cf456dcdc20d2e576a76b9d902592ea647122a",
+      "bytes": 129
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/RootUiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\RootUiFixture.kt",
+      "sha256Bytes": "2284b22c0c8ad87c35bf96b916ded18dc7f95ccb0c8ad49bda9a26ad50acdbec",
+      "bytes": 9399
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/run-evidence.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\run-evidence.json",
+      "sha256Bytes": "7678f343aad555eb0bab6c069a7d6f951c410e4951ddc94e0e34c3178ae844eb",
+      "bytes": 4663
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runner.log",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runner.log",
+      "sha256Bytes": "6ed1dcdecf9f4899f7dca8b30ebdaa0ca4003309de9f7d57ea7305ca1dc352ef",
+      "bytes": 813
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/editor-protocol-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\editor-protocol-result.json",
+      "sha256Bytes": "8b58284d0babe565b0b6cc9e126f3c32465b643e1d8fa51e713fe82d3b25652c",
+      "bytes": 912
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-dark-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-dark-root-edit.png",
+      "sha256Bytes": "66fed6f7f726739baaf137976506c465962dd88a4ac58174d5391380c520d35c",
+      "bytes": 19360
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-dark-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-dark-root-publish.png",
+      "sha256Bytes": "851591b1d6589b3b86ea43b8b754fa71bd0e71fd0b22cbc7b953d4dab87900c4",
+      "bytes": 19117
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-light-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-light-root-edit.png",
+      "sha256Bytes": "b2272e73d54124390eab2d32712fb95682bf1ed4cb780da2fd70be8800084f00",
+      "bytes": 19831
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-light-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-light-root-publish.png",
+      "sha256Bytes": "2684c9a2e5af8ac07585bb563a98b60e116362c4f4fa63ecbe20098257134dba",
+      "bytes": 19618
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-original-comment-header.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-original-comment-header.png",
+      "sha256Bytes": "aac80f1e2df3591b24d71ca70457020b06b49ccfd1ce56f69b3615117150d843",
+      "bytes": 10487
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-original-composer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-original-composer.png",
+      "sha256Bytes": "7b420024f0ba3685ee6ff0621851aaefde111a66308409d5ae4d9282eb0c54b0",
+      "bytes": 23928
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-original-image-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-original-image-edit.png",
+      "sha256Bytes": "5e4068de1f609f6f86a685c8fdf7c930184e6417a3bced39568b8e339da0b016",
+      "bytes": 21588
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-original-reserve.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-original-reserve.png",
+      "sha256Bytes": "c8efd826cf0dd281da6770dc3aae549eed2cb9a4f0db56a625ca0af2bef46d4e",
+      "bytes": 19564
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/material3-original-vote.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\material3-original-vote.png",
+      "sha256Bytes": "e83f37522128e2f08e5731c6392b6e474a40b7c57c55c61f3fce9473bb5717c9",
+      "bytes": 26323
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-dark-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-dark-root-edit.png",
+      "sha256Bytes": "54a229a3881e5ab48d8f6254cdc128a04d197b5405e1be82cece8ae0404e837b",
+      "bytes": 18769
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-dark-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-dark-root-publish.png",
+      "sha256Bytes": "40135856ad184ad8a9c4b1486146752ca2b043249a2c7b40c75b0374d20a78b5",
+      "bytes": 17291
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-light-root-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-light-root-edit.png",
+      "sha256Bytes": "a120d1f42b3fcd0e068068ad4e59411a4b7c6b6c9edf63dea8cc3936357d3a7c",
+      "bytes": 17672
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-light-root-publish.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-light-root-publish.png",
+      "sha256Bytes": "09bb7335c291ef88df01eef458fe9bfcd8f5b0fdb760e9039e54c4fb33c07c64",
+      "bytes": 16570
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-original-comment-header.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-original-comment-header.png",
+      "sha256Bytes": "0574dd89eb493ab0b9276a9ba67a92d1d104434e4d6286259ea949e44d7e547d",
+      "bytes": 10195
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-original-composer.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-original-composer.png",
+      "sha256Bytes": "fa9bc0cd0a092798105d8e666f7bdd45e32911ac6e1b753350abcf5c184529cc",
+      "bytes": 20622
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-original-image-edit.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-original-image-edit.png",
+      "sha256Bytes": "65038118d9d6f2e689ad32a5d72ee21faa73e042164ef4e5bd35a7f18b29f689",
+      "bytes": 19739
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-original-reserve.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-original-reserve.png",
+      "sha256Bytes": "4b05f4dda7c4c8a05547c4b74d47a08d73c051befdec32d2b602d9547164109b",
+      "bytes": 18310
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/miuix-original-vote.png",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\miuix-original-vote.png",
+      "sha256Bytes": "c48d637a2c499edbd0167809f9ce9996483512e8461812e7f2a7979c413c4e68",
+      "bytes": 25128
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/policy-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\policy-result.json",
+      "sha256Bytes": "74de2f2276fb2507618ab95d9c0600ee198ed054f4aae7bb755ac3da79cac2b0",
+      "bytes": 232
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/root-edit-sent.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\root-edit-sent.json",
+      "sha256Bytes": "cd27a49a4ca6b87ba33e6fbec1f35078e50e1d7e6fda232c4a4fdd644a348a0f",
+      "bytes": 171
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/root-ui-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\root-ui-result.json",
+      "sha256Bytes": "7ed8f9e01adfa01b06b97df141e498c9b62a66588b46f0f5e477370569396e59",
+      "bytes": 983
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/runs/01/ui-result.json",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\runs\\01\\ui-result.json",
+      "sha256Bytes": "1a3f12032ee26b0249b7117f115e3467e906730d90bdcec31f62237dc3064025",
+      "bytes": 593
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/actual-accepted/03/UiFixture.kt",
+      "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-actual-main-proof-03\\UiFixture.kt",
+      "sha256Bytes": "90c720f5a5e7a15846e736ec06d12dd37b0fb4ae88a8bb4a5e92e6942421a9a1",
+      "bytes": 12814
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/dynamic-editor-root-main-compile-01.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-root-main-compile-01.log",
+      "sha256Bytes": "47f83d1ab7d0aaab896190a9dda5c2e1f5a354ba35ddb96c16b7883307a51158",
+      "bytes": 7400
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/dynamic-editor-root-main-compile-02.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-root-main-compile-02.log",
+      "sha256Bytes": "ec4c167b02f509548f5f5db6e9033292f5baeaa35c5fcc23f786a74be40f6266",
+      "bytes": 11594
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/dynamic-editor-root-source-install-01.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-root-source-install-01.json",
+      "sha256Bytes": "97584329b5a0868b660aa8da07fb38f5846c992aee17a57bd61dd68b5702a006",
+      "bytes": 451
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/dynamic-editor-root-conformance-01.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-root-conformance-01.json",
+      "sha256Bytes": "9bf860ab64142ec1a27863935a86a407ff43278e394d0a60c75dd62e855ef4f6",
+      "bytes": 7870
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/dynamic-editor-original-timeline-conformance-01.log",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-editor-original-timeline-conformance-01.log",
+      "sha256Bytes": "9f0e1daa23d3224ea5299e02b8772dfac99c70c5c09bb0bc28e4f6cebf9b7336",
+      "bytes": 108
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-evidence/selected-member-verification.json",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\dynamic-editor-protocol\\verification.json",
+      "sha256Bytes": "e156655734bb36a67ce9e668de996349b29b5b040881d9e8f0fe090db21e330d",
+      "bytes": 373
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-recipes/snapshot-dynamic-editor-main-01.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\snapshot-dynamic-editor-main-01.py",
+      "sha256Bytes": "a2e8fcaa55ab05de2f046792739653524ca34e129b61e2af10369819544de683",
+      "bytes": 5766
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-recipes/verify-dynamic-editor-root-01.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\verify-dynamic-editor-root-01.py",
+      "sha256Bytes": "a9922174a75cd8f6768f84ed77ef758945208559d113b270caf1ede278cffed5",
+      "bytes": 2764
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/root-recipes/freeze-dynamic-editor-main-01.py",
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\freeze-dynamic-editor-main-01.py",
+      "sha256Bytes": "4c138d5b2becb2d99314497efa8e87363e78e348cf6af3793065a73ca38d666a",
+      "bytes": 9370
+    },
+    {
+      "path": "desktop/verification/dynamic-editor/history.json",
+      "sourcePath": "Root verification history",
+      "sha256Bytes": "b241d2e80534a25ba7e33c746e6ffb1aedeb33aa5290d07bf913451b64a363bb",
+      "bytes": 1398
+    }
+  ],
+  "artifactCount": 179,
+  "artifactBytes": 2291857
+}

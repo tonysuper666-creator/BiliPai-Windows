@@ -49,43 +49,6 @@ internal suspend fun selectCommunityImages(multiple: Boolean): List<CommunityLoc
 }
 
 @Composable
-internal fun CommunityDynamicComposer(community: DesktopCommunityRepository, navigation: CommunityNavigation,
-    onDismiss: () -> Unit, onPublished: (String?) -> Unit) {
-    val scope = rememberCoroutineScope()
-    var text by remember { mutableStateOf("") }; var title by remember { mutableStateOf("") }
-    var private by remember { mutableStateOf(false) }; var images by remember { mutableStateOf(emptyList<CommunityLocalImage>()) }
-    var busy by remember { mutableStateOf(false) }; var error by remember { mutableStateOf<Throwable?>(null) }
-    AlertDialog(onDismissRequest = { if (!busy) onDismiss() }, title = { Text("发布动态") }, text = {
-        Column(Modifier.width(650.dp).heightIn(max = 600.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            OutlinedTextField(title, { title = it }, enabled = !busy, singleLine = true, label = { Text("标题（可选）") }, modifier = Modifier.fillMaxWidth())
-            OutlinedTextField(text, { text = it }, enabled = !busy, minLines = 5, label = { Text("分享你的想法") }, modifier = Modifier.fillMaxWidth())
-            Row(verticalAlignment = Alignment.CenterVertically) { Checkbox(private, { private = it }, enabled = !busy); Text("仅自己可见") }
-            TextButton(enabled = !busy, onClick = { scope.launch {
-                try { val chosen = selectCommunityImages(true); require(images.size + chosen.size <= 9) { "最多选择 9 张图片" }; images = images + chosen }
-                catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
-            } }) { Text("选择图片 (${images.size}/9)") }
-            images.forEach { image -> Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(image.name, Modifier.weight(1f)); TextButton(enabled = !busy, onClick = { images = images - image }) { Text("移除") }
-            } }
-            if (busy) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text("上传图片并发布…") }
-            error?.let { CommunityFailure(it, navigation.onLogin) }
-        }
-    }, confirmButton = {
-        Button(enabled = !busy && (text.isNotBlank() || images.isNotEmpty()), onClick = {
-            busy = true; error = null
-            scope.launch {
-                try {
-                    val uploads = images.map { image -> withContext(Dispatchers.IO) { community.uploadDynamicImage(image.name, image.mime, image.bytes()) } }
-                    val result = community.publishDynamic(DynamicPublishDraft(text = text, title = title, private = private), uploads)
-                    onPublished(resolveCreatedDynamicId(result).takeIf { it.isNotBlank() })
-                } catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
-                finally { busy = false }
-            }
-        }) { Text("发布") }
-    }, dismissButton = { TextButton(enabled = !busy, onClick = onDismiss) { Text("取消") } })
-}
-
-@Composable
 internal fun CommunityNoteEditor(video: VideoDetails, document: VideoNoteEditorDocument, noteId: String?,
     community: DesktopCommunityRepository, onLogin: () -> Unit, onDismiss: () -> Unit, onSaved: () -> Unit) {
     val scope = rememberCoroutineScope()

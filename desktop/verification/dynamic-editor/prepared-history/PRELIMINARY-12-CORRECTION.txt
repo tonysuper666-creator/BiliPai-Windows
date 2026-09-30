@@ -1,0 +1,7 @@
+Parent frozen-handoff.json remains byte-identical historical preliminary proof.
+Its duplicate top-level DynamicAdaptiveSegmentedControl was shadowable when compiling
+against a product JAR under a different Kt wrapper; class-entry overlap alone could
+not prove a unique production callable. That preliminary payload is not installable.
+Final producer reuses the actual Main class without generating that callable. Final13
+reruns the same narrow original UI/policy/protocol proof, not a new counted feature.
+Parent source, artifacts, failed attempts and historical child review remain unchanged.

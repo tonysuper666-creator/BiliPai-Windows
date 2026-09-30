@@ -223,6 +223,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val dynamicCardSession = remember(repository, sessionEpoch) {
         DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
     }
+    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)
     val dynamicCardRegistry = remember(repository, dynamicCache, sessionEpoch) {
         DesktopDynamicCardStateRegistry(repository.dynamicCacheSessionGuard, dynamicCache, sessionEpoch,
             stillOwned = dynamicCardSession::isOwned)
@@ -864,6 +865,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCache provides dynamicCache,
         LocalDesktopDynamicCardRepository provides repository,
         LocalDesktopDynamicCardSession provides dynamicCardSession,
+        LocalDesktopDynamicEditorActions provides dynamicEditor.actions,
         LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
         LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
@@ -886,6 +888,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             }
             return@CompositionLocalProvider
         }
+        DesktopDynamicEditorRootHost(dynamicEditor, hostWindow)
         Box(Modifier.fillMaxSize()) {
         // libmpv's audio worker needs a retained native host even when its screen is not visible.
         if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))

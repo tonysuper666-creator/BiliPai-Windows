@@ -27,6 +27,11 @@ internal class DesktopDynamicCardSession(
     val likeGate = DynamicLikeRequestGate()
     private val confirmedLikes = MutableStateFlow<Map<String, Boolean>>(emptyMap())
     val likeOverrides = confirmedLikes.asStateFlow()
+    private val confirmedContentRevision = MutableStateFlow(0L)
+    val contentRevision = confirmedContentRevision.asStateFlow()
+    fun confirmContentChange() {
+        if (isOwned()) confirmedContentRevision.update { it + 1L }
+    }
     fun confirmLike(id: String, liked: Boolean) {
         if (isOwned()) confirmedLikes.update { it + (id to liked) }
     }

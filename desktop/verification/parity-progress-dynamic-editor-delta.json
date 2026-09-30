@@ -1,0 +1,39 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "8b3ef8be95888c9a9266220fada36aba34eb625c",
+  "previousDelta": "desktop/verification/parity-progress-dynamic-full-card-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts and prepared isolated work excluded from main progress.",
+  "changes": [
+    {
+      "group": "dynamic",
+      "weight": 4,
+      "previousMainCredit": 3.25,
+      "currentMainCredit": 3.4,
+      "remainingCredit": 0.6,
+      "basis": "Actual Main original editor/publish requests and modal/session integration accepted with four theme cells and original post-publish verification; native chooser, full liquid and live services remain unverified.",
+      "remaining": [
+        "Complete original DynamicDetail/Reply and sub-reply transport/UI",
+        "Original full liquid dock and segmented rendering",
+        "Actual native image/calendar chooser and live authorized service mutation",
+        "Original follow-event/navigation/motion-photo/system image share parity",
+        "Packaged EXE and real account regression"
+      ]
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 96.15,
+    "isolatedReadyPoints": 0.5,
+    "unfinishedOrUnverifiedPoints": 41.35,
+    "weightedReviewedProgressPercent": 69.7,
+    "presentation": "About70%, manual assessment against all original features and behavior.",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-dynamic-editor-integration.json",
+  "newDesktopDeployment": false
+}
