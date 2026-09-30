@@ -1,0 +1,14 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+    "baselineSha256Bytes": "0af27de3f459f3f7525edf01d7aa02960ab4b713d3540c3ce19353a209659360",
+    "desiredPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\subtitle-cancellation-parity\\DesktopSubtitleAssets.kt",
+    "desiredSha256Bytes": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+    "baselineSha256Bytes": "7724a3e30b1d928064f7d4dec9436e8aa9d742f260a2e565b8c370b704bc0d99",
+    "desiredPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\subtitle-cancellation-parity\\DesktopAutomaticSubtitles.kt",
+    "desiredSha256Bytes": "6bd1bda74e7584791c3aaeedadb5b0be6ae38ab720c402226762e176eab661dc"
+  }
+]

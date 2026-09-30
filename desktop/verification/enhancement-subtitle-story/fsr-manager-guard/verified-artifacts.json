@@ -1,0 +1,733 @@
+{
+  "passed": true,
+  "originalJUnitReplayed": 16,
+  "narrowDiagnosticCasesPassed": 2,
+  "historicalManifestUnchangedSha256": "ca9df17c367d0177c0bc39cbca20d4b95ec78188e23ebe033758f372a5cf928d",
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowOpened": false,
+  "gpuClaimed": false,
+  "accountHttpRequested": false,
+  "files": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\baseline.json",
+      "relativePath": "baseline.json",
+      "sha256Bytes": "6174c65f03d75ac21d30877ad569938c565e8b54312f852d94f1e430bec0ce03"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$disabledSavedConfigLoadsWithoutEnablingTheOriginalProvider$1$configuration$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$disabledSavedConfigLoadsWithoutEnablingTheOriginalProvider$1$configuration$1.class",
+      "sha256Bytes": "6d7e28ce7effa2ebd7bf9e868bbdab99f471d872c01f2f0f706985ac7cb6c4a6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$disabledSavedConfigLoadsWithoutEnablingTheOriginalProvider$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$disabledSavedConfigLoadsWithoutEnablingTheOriginalProvider$1.class",
+      "sha256Bytes": "2447cee1644520e3e0484b02abaf5709c95a92ac1cc4c0d215179808f190fb9e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$failedActualAtomicDiskWriteIsReportedAndAFollowingChangedSetterRecovers$1$configuration$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$failedActualAtomicDiskWriteIsReportedAndAFollowingChangedSetterRecovers$1$configuration$1.class",
+      "sha256Bytes": "569b017c938b678c00359671fa68d790ddf5536889f8062121154fd9c29cabf3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$failedActualAtomicDiskWriteIsReportedAndAFollowingChangedSetterRecovers$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$failedActualAtomicDiskWriteIsReportedAndAFollowingChangedSetterRecovers$1.class",
+      "sha256Bytes": "521b7436807b7553736194d6d087a7a9d8ed968024059fd4948f3ca5ae5550e9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$nextSetterWaitsForTheActualOriginalIoChildAndDiskKeepsTheLatestFields$1$configuration$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$nextSetterWaitsForTheActualOriginalIoChildAndDiskKeepsTheLatestFields$1$configuration$1.class",
+      "sha256Bytes": "9777118a8f58223be473e1b68a7356a1274e2a83febb136c1b252cf64f6af821"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$nextSetterWaitsForTheActualOriginalIoChildAndDiskKeepsTheLatestFields$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$nextSetterWaitsForTheActualOriginalIoChildAndDiskKeepsTheLatestFields$1.class",
+      "sha256Bytes": "35993b5667f913c36f1f653fe2dc10debca250569234b90d8d07572b02d7ddeb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1$configuration$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1$configuration$1.class",
+      "sha256Bytes": "cf79300f2e0b2a36de2ce6c957107f85df71bcc9b56ecb36d570c43deb5c9e92"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1$shutdown$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1$shutdown$1.class",
+      "sha256Bytes": "95f0995b214c855e80be35b1c652e5c8e9cbe0361880ca232e00c5ca5fc80d6b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof$shutdownDrainsAlreadyAcceptedPendingSettersBeforeFreezingTheRealStore$1.class",
+      "sha256Bytes": "2daa14250d34cf1015e257f117dd0017ad1a04156ab32adcbc736813e5470ee4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProof.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProof.class",
+      "sha256Bytes": "aed2164ced9fc4c341094dad1ae51d2e16a79b613fa716e27a47f903ea3980d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProofKt$actualDiskConfig$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProofKt$actualDiskConfig$1.class",
+      "sha256Bytes": "a17c3691f702e4f3a3a4c6746f266d732c809300e40dabc77adca044e52c45e9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProofKt$waitUntil$2.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProofKt$waitUntil$2.class",
+      "sha256Bytes": "c2623fee7e95486389829dc470059fcb2c68602ec7f837ce2857c2c411a5af99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\ConfigurationProofKt.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/ConfigurationProofKt.class",
+      "sha256Bytes": "0580ab86a3fd47fa058573a166a169514d66cc6eac5d4e66e6fa96083a5e1a3d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\GatedDispatcher$finish$2.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/GatedDispatcher$finish$2.class",
+      "sha256Bytes": "b537416a258d9b795f78853c56904ba1a39189432935aaa9fd70592f24d72f0e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\GatedDispatcher.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/GatedDispatcher.class",
+      "sha256Bytes": "e221bbed39c6c419d3939e1ca5168d18524af607d9f794a9c15972146b4d4719"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\LauncherKt$main$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/LauncherKt$main$1.class",
+      "sha256Bytes": "110bfb15d19f87f25796677d707cf40c22551ac1988d9dfa1d68e4a75aecf7ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\LauncherKt.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/LauncherKt.class",
+      "sha256Bytes": "c76f70e0571ab0b470cb7a06adad37664712316391cdd71a668f7600c050ce7a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$1.class",
+      "sha256Bytes": "bd6893419f5aa93c69598a6be1b1fa3ebdfaa123259f015c2dab5c4752b432aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$5.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$5.class",
+      "sha256Bytes": "2c80202a929dd150b9ba6417837da1d99c1b79ef5aa1f90130646bbfa4d93fba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$6.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$6.class",
+      "sha256Bytes": "12980cf61bda7b9384bce47e8615ed01b02c4dc557e0c6f0cadbdf0deceff8a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$beforeMutex$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$beforeMutex$1.class",
+      "sha256Bytes": "2540b661994574545e3c74b4a13564c22dc20b59fcf07bff9e877d2e910cefe0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$beforeReady$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$beforeReady$1.class",
+      "sha256Bytes": "a6b6c730695d4d4ab53010ace34930be77e5ddad220b92f08d000aec20791476"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$close$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1$close$1.class",
+      "sha256Bytes": "21cbd2e43ce4e38f881cee96cd5747665954eefee236234069bdd6f9172d5dab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof$originalRuntimeRegistersOneProviderRejectsLateEnableAndDrainsPendingConfigBeforeClose$1.class",
+      "sha256Bytes": "3f64add4f2514f3ef0be96ee0521368d6eb65ebe70ce82c8794b819599103370"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\RuntimeProof.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/RuntimeProof.class",
+      "sha256Bytes": "1d6310448f86a0d1b8d35a5d246236f9eedf348aaa0e7ab24fbf6a04aabf1caf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$actualEnableExceptionBecomesSafeStateAndANewBvRetiresItsFailure$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$actualEnableExceptionBecomesSafeStateAndANewBvRetiresItsFailure$1$1.class",
+      "sha256Bytes": "ec87c9658d7cac5299940ef6de5d71ad4832448d88378ce280f2a708bb87e7d4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$actualEnableExceptionBecomesSafeStateAndANewBvRetiresItsFailure$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$actualEnableExceptionBecomesSafeStateAndANewBvRetiresItsFailure$1.class",
+      "sha256Bytes": "2cfd1934aca0f6b0ac4489577b0afbd44e7569c785dc28aad6031acfa1d3bab5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$closeCancelsPendingToggleAndLateComposeBindIsAnIdempotentNoOp$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$closeCancelsPendingToggleAndLateComposeBindIsAnIdempotentNoOp$1.class",
+      "sha256Bytes": "9a7677fc2aafc6ed17ff607a9cdae61cdf3ff736801024d306823404842ea295"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$delayedToggleEntryCannotEnableOrRememberAfterAnotherBvOwnsThePlayer$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$delayedToggleEntryCannotEnableOrRememberAfterAnotherBvOwnsThePlayer$1.class",
+      "sha256Bytes": "84ff13d609a4be8397cecb000d985fca143a2c78dff4855f5c612b23fea7114b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$delayedToggleEntryRejectsForeignNativeOwnerEvenBeforeUiIdentityRebind$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$delayedToggleEntryRejectsForeignNativeOwnerEvenBeforeUiIdentityRebind$1.class",
+      "sha256Bytes": "0b8cd725f58242943be2dcf4c03df7ee6c48129265cf8f56bc61568300340db5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$delayedToggleEntryRejectsSameMidCredentialEpochChangeWithoutANewNativeToken$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$delayedToggleEntryRejectsSameMidCredentialEpochChangeWithoutANewNativeToken$1.class",
+      "sha256Bytes": "c5ceba8fff86c0c2c4950787b9e690a2c01087716744e8cca0fe45e92df68af5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$1.class",
+      "sha256Bytes": "99f0e41beec7f493b472bf66cac0e6102d275549c1655ce26f171c3d96d0dc1a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$2$1.class",
+      "sha256Bytes": "eb567532bfc4b780f6470ba89b3bc3e29ea415d387c512817b8ff3d56ddd0e65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$2$2.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1$2$2.class",
+      "sha256Bytes": "5ca47c117a66ba0fb9e4be2231a9d48c3190ff040e9e484a21016c0951d1f07b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$disablingSameVideoWhileProviderEnableIsSuspendedRetiresTheActualPassedGuard$1.class",
+      "sha256Bytes": "d99c2603d6f0ba56a6ab4e9a1c3332c276839018971259b761551e0e8abfb133"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$epochRebindResetsTheOldFailureAndManualOverrideButSameOwnerPartDoesNot$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$epochRebindResetsTheOldFailureAndManualOverrideButSameOwnerPartDoesNot$1.class",
+      "sha256Bytes": "12504f3978c240ac58032bb4e4ab17547c5b6c56becc9a431ad110f5cc902738"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$Fixture$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$Fixture$1.class",
+      "sha256Bytes": "1892f06874401b0ab3ee93a781cdc2b56de5502b4e266b5ca1bb3d4edd908642"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$Fixture$session$2.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$Fixture$session$2.class",
+      "sha256Bytes": "e7f96b4c12ad8e79e79baeb2aeb8e11d0695176ba41ca08b585f9ccefe885ec5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$Fixture$session$3.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$Fixture$session$3.class",
+      "sha256Bytes": "da37f29713afe3d416aa32e0670a02487fcafc04e01801ab74f2394a2e0b731a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$Fixture$session$5.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$Fixture$session$5.class",
+      "sha256Bytes": "f09c5eec872a3297bb143285cdbb88b3d4fb5f9430a68b75be0be5e27b869d2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$Fixture.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$Fixture.class",
+      "sha256Bytes": "d58925208c0c008dfbdab2b7e2870739b6689834b07cd25708693fa0669c20be"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$oneBvFailureDoesNotDisableTheNextBvAndSameBvPartsKeepTheirOverride$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$oneBvFailureDoesNotDisableTheNextBvAndSameBvPartsKeepTheirOverride$1.class",
+      "sha256Bytes": "916478e280e9f6a94aabf576b3bc31c601b959aee7e7509b39ad2ac49f9cf502"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$sourceEpochPipVisibilityAudioAndHdrFlowsUseTheOriginalOutputPolicyWithoutInstallingShaders$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$sourceEpochPipVisibilityAudioAndHdrFlowsUseTheOriginalOutputPolicyWithoutInstallingShaders$1.class",
+      "sha256Bytes": "76ffbda8846e1ffb83449d19d588ba41e0370baf8e5b111bdb4ad867af06d55e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$1.class",
+      "sha256Bytes": "3d406182093a71320662a0cfa6c68c07cee00d6ea5bc511257c512e279763572"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$2$1.class",
+      "sha256Bytes": "37724351e60632097af929e28a55a28fe359c874f8390adaf1f2404d3afd59ff"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$2$2.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1$2$2.class",
+      "sha256Bytes": "6c15adb002a8d180a5c7aa8b7273f9dba09bb8796c20dfe651b55e79e0741866"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof$suspendedEnableRejectsSameMidEpochChangeAndNewBvBeforeItsSideEffect$1.class",
+      "sha256Bytes": "1353a6649a10657fa2b6d44749667fe7ef09d5ec6f5fef0f3ab4feda7ed922c6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\SessionProof.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/SessionProof.class",
+      "sha256Bytes": "8c5a07f66422289d0c4b43ec5021f916d170ca5f9064bdeb44f860a13e12bc5d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1$configuration$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1$configuration$1.class",
+      "sha256Bytes": "e427d14a9623dbf2b1611fb453539f9c8da070471616bf87c6cc7ed6533c6665"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1$settle$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1$settle$1.class",
+      "sha256Bytes": "8a7e4cb8d6d3b671499c931137cb482e72f3972810644bdbb91ea990bbaa11de"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/UiProof$originalM3AndMiuixControlsWriteTheOriginalProviderAndRealDiskViaPointerEvents$1.class",
+      "sha256Bytes": "042cb64a3e05da26a6443113ebdc280687a0e3a289cd5d0a96415fb625372a02"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\UiProof.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/UiProof.class",
+      "sha256Bytes": "94493ec65a74eb0f5764dcff85a17caa389d64d0d6a572ba4df877f5944594ec"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\enhancementfixture\\UiProofKt.class",
+      "relativePath": "classes/com/bilipai/desktop/enhancementfixture/UiProofKt.class",
+      "sha256Bytes": "519c02dd1b918deae8f7bb33cf21efeafb2cee00d80fc086e85bf92b6857c8ab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$1.class",
+      "sha256Bytes": "7b2a52b24ecf3e3c1aa169a78ad66861f8bad62d04cd723b84bd96d3c37deed1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$10.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$10.class",
+      "sha256Bytes": "109435d6b845d3b6da7a7dfabdf191954e28a6bb36b645a68e1fe6aaf632eee8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$13.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$13.class",
+      "sha256Bytes": "c6a57c570051720c10913de80936f4ce9915edf51635b0ba36440c1d7c28cb95"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$2$1.class",
+      "sha256Bytes": "bc54f59a94d6252f61b552d4061e37dbc5057ab443ca9fd2c81d7eef9a799d98"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$2.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$2.class",
+      "sha256Bytes": "763fd0f04ed5a399d74a7b8956f88b458466c6cf6b184b77c9cbb74817a919f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$5.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$5.class",
+      "sha256Bytes": "0126e881fae764cd499f0e09a3264ebcb441b877aed94df3f32ca2a63bd720f4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$6.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$6.class",
+      "sha256Bytes": "305831fe7a9e7abddda5b4b86939cdffc6d330cc0cc0da432c354920f7cdec1a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$7.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$7.class",
+      "sha256Bytes": "89ed65388b1f2183da36fe91e484f4ad45ce7d2072597edfd09327c3502ec9f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$9.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$9.class",
+      "sha256Bytes": "c3020b50cc48d3dc9a90b4eac4d78fd8fa20bf0bdd7b14c351629a4214b403bc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$session$2.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$session$2.class",
+      "sha256Bytes": "a9473c14944e00ac5fcbc22be1a0cc46355705572fdbd984c8dd4ad07c21f310"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1$session$4.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1$session$4.class",
+      "sha256Bytes": "186b59f9e90793578afc1c638731d812fb60861c84f2b6f90444fa70c77c62eb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt$main$1.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt$main$1.class",
+      "sha256Bytes": "a51b5c33bbbb40b79ada5a09a2f3a610a46b2121636a38130539297ca894bcbe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\guardregression\\GuardRegressionKt.class",
+      "relativePath": "classes/com/bilipai/desktop/guardregression/GuardRegressionKt.class",
+      "sha256Bytes": "f2ab1a9fea5b1be3ae1761f3fcf2a06a0ef199bf84424833492ecf00d37fb2e2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2$2.class",
+      "sha256Bytes": "6ab09bf18e0d043b6156d3db84902c7d558373a81183a7a3c17d97a05c785fe3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "71d7e432eaf254cbe1a3dd7856c502548d6696d42cf15871ac98c22e657764ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "c9879bb3bc853d6b4d5fece64801a28b7a85ca1632a5e50bcc545c2c5b9b5e08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "cc6fff992a471acf511714db43415273ef47b35fd23317859c0346c26ab58280"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "0e644e5da090029826ed73b6b4b224168e473baac74b87b92744b2120814527c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$2.class",
+      "sha256Bytes": "a2fad5c33115a9727b3d34807ccf505a2a8691d487dcc7b998e5f8515173af20"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$3$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$3$1.class",
+      "sha256Bytes": "e8a375f0c268475e5e75519eaa6d8d8556876b4cff7cf5c7950f15ac81912e0a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$3.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$3.class",
+      "sha256Bytes": "d9ce6abe3a9d7815f5fa7efa324ed42600ab3d18d606e3e793b23afc0e2bc85c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$1.class",
+      "sha256Bytes": "4e3ac326dc483df24c8ffae24938418ab24dec3ce37633b70798fceb96fb3d90"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$2.class",
+      "sha256Bytes": "a2a810d89ad713ad55e87740fac40947c8e37d712bb5910eb1bd0e37d4fff5b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$1.class",
+      "sha256Bytes": "91a3b5db592b0a6b01f04da94cf1dcc071abb6733e0611a284d6875688b13f64"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$2$1.class",
+      "sha256Bytes": "eb5744f99a9eb0f551baf51540ed4fa777ed5a27def15a2039074e31ec5158a7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1$2.class",
+      "sha256Bytes": "897b7da6705f6fcaf752463e778b2f098b4b3b97831474410e53f4fffe7162e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "1698779c9e34bd319cd304ac6b9dba8d0af2120a104fdb3ef89a38680128d01a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$1.class",
+      "sha256Bytes": "86d151448edf34615cdfbc3b1c125f1b547bdcc572dd83b19a7f75824aae9de0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$2$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$2$1.class",
+      "sha256Bytes": "4fb1991d55ec79165d649e16d60abf8017acee26243d80feb5ced67c7b4e45fc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2$2.class",
+      "sha256Bytes": "cb2a2eb76e9fce8afb545c471ac8bb00365c15ce5a6447992415505e2ad99c2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$invokeSuspend$$inlined$map$2.class",
+      "sha256Bytes": "c73785ef93eb4c47ca0b9a6025d9ddfdf732de6f34bc50e1aa69fe66402bd74a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4$settings$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4$settings$1.class",
+      "sha256Bytes": "dec0f2b114539871ae79ae0dc2d4f8f13d4c016ddbbd8b9736f442f6434ab914"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$4.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$4.class",
+      "sha256Bytes": "8b2914fa8c736011b753a8c0722e283c2374f9996e6ef772bbdd2da83ed3bfc3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$apply$1.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$apply$1.class",
+      "sha256Bytes": "e2dddf0cc5f2dac2362354a9f11d0b713571e4289c983d0fde3aab727eafa192"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$Frame.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$Frame.class",
+      "sha256Bytes": "ec47eeb10c1477b1cc647920b0519edb31a59ed60d7dbbdaa595ee70598bcc7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$Identity.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$Identity.class",
+      "sha256Bytes": "1689c77bdba482e6e738faf00ca0d096d1f0d5eca87d2be901a66c2779050b65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$Input.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$Input.class",
+      "sha256Bytes": "7c239089ac28e6560d6b4bc3b6b2153c0ff951d12fd71111af854280c9913589"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$Output.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$Output.class",
+      "sha256Bytes": "70d2ee83107d7249dd2a14a15b679ff15a5db0db052acb89029c24858fb370fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$OwnedShaders.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$OwnedShaders.class",
+      "sha256Bytes": "788780db1a8e7175654c633ce1dc32ee1bce8acd71f22c38c54279e0205bee3f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$setCurrentVideoEnabled$2.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$setCurrentVideoEnabled$2.class",
+      "sha256Bytes": "5e327d3b90a412d5fd7dcf4d0bdbcbe7be3798f3befe3be5cbfbad1c18785904"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$Settings.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$Settings.class",
+      "sha256Bytes": "7af17a0f05f8e40951df146128cf3fd2ba0568a3b0395dc9825c4ef0b07ebc76"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession$WhenMappings.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession$WhenMappings.class",
+      "sha256Bytes": "3e5abc1311adb16c444b898672a931b041c87c9e3be672eaa1fee10bc2963dcd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementSession.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementSession.class",
+      "sha256Bytes": "4afd495e1be47a5f5a01395ff9118ed042176204de1ce25264b4809f8dc8ee92"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\player\\DesktopVideoEnhancementState.class",
+      "relativePath": "classes/com/bilipai/desktop/player/DesktopVideoEnhancementState.class",
+      "sha256Bytes": "65a8ddd41a1843baacfa7379d7de8c7a22076fec97f538eba4adafc88a564201"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\ui\\ComposableSingletons$DesktopVideoEnhancementSettingsContentKt.class",
+      "relativePath": "classes/com/bilipai/desktop/ui/ComposableSingletons$DesktopVideoEnhancementSettingsContentKt.class",
+      "sha256Bytes": "4d90b4c9c98bed55da3f7aad12627ed1ae25334956aacdde93eee87c7a19c3f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\ui\\DesktopVideoEnhancementSettingsContentKt$WhenMappings.class",
+      "relativePath": "classes/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContentKt$WhenMappings.class",
+      "sha256Bytes": "41a90e22a200e89c5979b09902bf590501a5936881f2c98419330ed4286c3516"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\com\\bilipai\\desktop\\ui\\DesktopVideoEnhancementSettingsContentKt.class",
+      "relativePath": "classes/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContentKt.class",
+      "sha256Bytes": "21172fbf417ccf36bdaf509da34a89b0ff09c4f34c4c809fd93ca2470146b24a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\classes\\META-INF\\fsr_manager_guard_proof.kotlin_module",
+      "relativePath": "classes/META-INF/fsr_manager_guard_proof.kotlin_module",
+      "sha256Bytes": "f403417c5fe87edcd36f5caf85a87795c309a58d357475aa6132db5d3e00d609"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\compile-run.py",
+      "relativePath": "compile-run.py",
+      "sha256Bytes": "e43d80c58e74059f260b9f2ba4f18f426aaf714f796191143d16ea293d383b21"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\compile.log",
+      "relativePath": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\compiler.args",
+      "relativePath": "compiler.args",
+      "sha256Bytes": "be6f2f8f6da54a9c2b0f9fecffa070fbcf8c72006913a3f8b201a3cf14f38043"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\config-read-result.json",
+      "relativePath": "config-read-result.json",
+      "sha256Bytes": "da7fefb3e4d8ad2b38dfe7f59488f0b6e4c504788407ac12a3839739b2c65793"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\config-read-runtime.args",
+      "relativePath": "config-read-runtime.args",
+      "sha256Bytes": "479e459b96b0b246e3db1aab04e2a9e5cd8cdf19d4ab70106cae0f323cfc884e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\config-read-tests.log",
+      "relativePath": "config-read-tests.log",
+      "sha256Bytes": "799df32cdc088418e9b9e2014c44a9bc2ffe219668ed703353146287ec461668"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ConfigurationProof.kt",
+      "relativePath": "ConfigurationProof.kt",
+      "sha256Bytes": "cb650b5d2edba7be97a61ccff3f4f2c706d6638f17d319278ccc61f6e2044674"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\dependency-classpath.txt",
+      "relativePath": "dependency-classpath.txt",
+      "sha256Bytes": "f1639907071ca902509d702d406eeb397af146a5073c661dca25beb523cd5e2d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\dependency-identities.json",
+      "relativePath": "dependency-identities.json",
+      "sha256Bytes": "b8c642eede192489f8a9db2231667bbc5c61d2eb6ebab9b041c36aa979eb3c6e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\DesktopVideoEnhancementSession.kt",
+      "relativePath": "DesktopVideoEnhancementSession.kt",
+      "sha256Bytes": "5b84b94455c159199d5e9dc9f331d8f5cc44e5ef8a417cda6a4bda75812e8fec"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\DesktopVideoEnhancementSettingsContent.kt",
+      "relativePath": "DesktopVideoEnhancementSettingsContent.kt",
+      "sha256Bytes": "57122be0b70c01783c5234abb96c1ca9c882c9508b1c5f7fb349a6a714a423f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\diagnostic-first-config-read.log",
+      "relativePath": "diagnostic-first-config-read.log",
+      "sha256Bytes": "b5b2d2d89e6b8caa2adcf0d4e05023d831848aa8d065712370c756caba33d0b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\freeze.py",
+      "relativePath": "freeze.py",
+      "sha256Bytes": "64e9134a8379b0faedfeb182f6e82e187b6557f6453e2918f1e5a60c33cf8360"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\GuardRegression.kt",
+      "relativePath": "GuardRegression.kt",
+      "sha256Bytes": "c9dfe734ecbaa18811955ce3b247ede99db3c111a49f0cb472f9432971683d0e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\Launcher.kt",
+      "relativePath": "Launcher.kt",
+      "sha256Bytes": "6946be269608417d5c68482159fa23d94b463619f71e8b797325b08b1b4662ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\logic-result.json",
+      "relativePath": "logic-result.json",
+      "sha256Bytes": "c29bf8ead4b0b2f770a5b4cddb308ccd5ab2e6c17b9b3e95f5db0f4ed634cc85"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\logic-runtime.args",
+      "relativePath": "logic-runtime.args",
+      "sha256Bytes": "a6359c65ebf9b102fe3583b0b57c4b67bf9dc66d801325fc0b833c32117bc562"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\logic-tests.log",
+      "relativePath": "logic-tests.log",
+      "sha256Bytes": "2de415ff09bf219efc9699e95091778299447dd743e54263a18ecaee61184e8c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\manager-result.json",
+      "relativePath": "manager-result.json",
+      "sha256Bytes": "3b5bcee6a58d27141496975caa782cc7654d177c23d735a0a3698cd825f6408e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\manager-runtime.args",
+      "relativePath": "manager-runtime.args",
+      "sha256Bytes": "07e88c7989c34dfb821264901bb9109fa61d68cecafbe4b6f7ce12fd5e0ddf84"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\manager-tests.log",
+      "relativePath": "manager-tests.log",
+      "sha256Bytes": "73190a72a3efaf0ae5b8d5d5750492d8494c759bd6a06fc6fda6305d35280668"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\prepare.py",
+      "relativePath": "prepare.py",
+      "sha256Bytes": "8cd24b9a0f7a4ab11133477e378e8d4858fb03d9b5ed68ef431214407a269fa6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\product-java-snapshot.jar",
+      "relativePath": "product-java-snapshot.jar",
+      "sha256Bytes": "cf0fa6eb5b835cb0c33466b5f29ed1ffe0b0e4a3347ef87b5a9c65da512e95ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\product-main-snapshot.jar",
+      "relativePath": "product-main-snapshot.jar",
+      "sha256Bytes": "f864fc80a93a58c54235988c3cc4cdfd2140e417f44ec26f3c7187c77b981883"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\product-resources-snapshot.jar",
+      "relativePath": "product-resources-snapshot.jar",
+      "sha256Bytes": "39a5592ad4ddd95cecc90285ee10d18c89217c417fe05bd9a1283e7c527fc47c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ROOT-REVIEW.md",
+      "relativePath": "ROOT-REVIEW.md",
+      "sha256Bytes": "1e560a2773ce3f842ebaaeae895c2c725ecc02750fd71b059cac2abad5d24018"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\runtime-result.json",
+      "relativePath": "runtime-result.json",
+      "sha256Bytes": "dbf493b56774a327f8672286a5aaf0cde9eb6db731733406763d114b75e0d8e3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\runtime-runtime.args",
+      "relativePath": "runtime-runtime.args",
+      "sha256Bytes": "9c0c50c70551ba2948ae19dab5be27a6a74936beb0605c5fc62a526e47a4814d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\runtime-tests.log",
+      "relativePath": "runtime-tests.log",
+      "sha256Bytes": "258716f9a8dbfba85e5f9e1c70257bb0d9d235bb411cefb1927bed01e9f2c454"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\RuntimeProof.kt",
+      "relativePath": "RuntimeProof.kt",
+      "sha256Bytes": "871a1dafcc710bfce5b91069cfff5ce2cc9588747a9e4d853ed05a6631c1a809"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\SessionProof.kt",
+      "relativePath": "SessionProof.kt",
+      "sha256Bytes": "28837cd51e730ea4bd03aafa9adc48b3bc42b68d2fc25845b00d90a9c5e97713"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\material3-anime4k-final.png",
+      "relativePath": "ui/material3-anime4k-final.png",
+      "sha256Bytes": "f84acc9f18396fb5a9af1a67ffb1200d59c6a371055a7639237101bb0f6f0948"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\material3-fsr-pointer.png",
+      "relativePath": "ui/material3-fsr-pointer.png",
+      "sha256Bytes": "b2dc97cd462518c887dc4ea2f9e58b0803495436f0c6829532be1b37cbb86c88"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\material3-remember-confirm.png",
+      "relativePath": "ui/material3-remember-confirm.png",
+      "sha256Bytes": "23da53dce659ecb3e572a2264d0566f35f5414203648d484c2f741a202f568d8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\miuix-anime4k-final.png",
+      "relativePath": "ui/miuix-anime4k-final.png",
+      "sha256Bytes": "a9c6565fa7348ca03c91ea10fc538a3c0d91db87e20ecd536812bae81c00fbbe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\miuix-fsr-pointer.png",
+      "relativePath": "ui/miuix-fsr-pointer.png",
+      "sha256Bytes": "fcc279ffcb6acfe2e824602129bbd24fcc6f609e4fe2448e24275faf94adf5c2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui\\miuix-remember-confirm.png",
+      "relativePath": "ui/miuix-remember-confirm.png",
+      "sha256Bytes": "51eaaceb889c372b7d6307cf7591f4777dc7b188c02f129d1b117b22b17bb357"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui-result.json",
+      "relativePath": "ui-result.json",
+      "sha256Bytes": "0e61653b7a5c7aa74d0f80d308936ba0b7099ce302c3985f02d7019d8a0451cf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui-runtime.args",
+      "relativePath": "ui-runtime.args",
+      "sha256Bytes": "916e86d2a076a83b40c568d29aaa2aeefbd89a39967ea847dc446b9322391f68"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\ui-tests.log",
+      "relativePath": "ui-tests.log",
+      "sha256Bytes": "a8b0d42942f4d96dda919cffbe747d32e4fa9e8f7e38e37e8d89e2f373f35c2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\UiProof.kt",
+      "relativePath": "UiProof.kt",
+      "sha256Bytes": "1ade46a7e1bd8b05dfa0a46e11fc7f33e99685172ddfa6a5b4ed25f1dde5137a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-manager-guard-proof\\verify-frozen.py",
+      "relativePath": "verify-frozen.py",
+      "sha256Bytes": "99276bc66121cb1fb90ca9a4640e1e0206e5def39793bb8dcaf212059dd9de1a"
+    }
+  ]
+}

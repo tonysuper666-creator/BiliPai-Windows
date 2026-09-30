@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.DesktopPlaybackControllerTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:13.560Z" hostname="TONYSUPER666" time="0.668">
+  <properties/>
+  <testcase name="same BV collection preserves distinct CIDs and goes directly to the selected queue item()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.533"/>
+  <testcase name="closing the old account controller cannot release a newer native source()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.016"/>
+  <testcase name="pause cancels outstanding stream preparation and cannot start sound when it finally completes()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.011"/>
+  <testcase name="casting cannot read a previous account or a foreign native source before flow delivery()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.009"/>
+  <testcase name="shuffle retains original history so previous then next returns to the same item()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.034"/>
+  <testcase name="a newer source also prevents a delayed initial stream request from taking ownership()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.006"/>
+  <testcase name="ordinary queue walks each video parts before advancing to the next video()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.011"/>
+  <testcase name="quality switch and explicit retry preserve native source ownership CID position and pause()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.008"/>
+  <testcase name="details alone do not finish opening or enable queue navigation before the stream is installed()" classname="com.bilipai.desktop.DesktopPlaybackControllerTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

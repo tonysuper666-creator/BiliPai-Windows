@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:14.537Z" hostname="TONYSUPER666" time="0.012">
+  <properties/>
+  <testcase name="sharpnessUsesOriginalNormalizationAndRcasStopMappingWithoutRewritingShaders()" classname="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" time="0.007"/>
+  <testcase name="unknownGpuLimitCannotGenerateAFakeReadyProgramAndHigherResolutionUsesOriginalBypass()" classname="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" time="0.001"/>
+  <testcase name="pureOriginalOutputDecisionUsesOfficialHdrValuesAndOriginalBypassOrder()" classname="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" time="0.001"/>
+  <testcase name="adaptedShaderBodiesContainTheEntireOriginalAlgorithmsWithoutMathChanges()" classname="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" time="0.001"/>
+  <testcase name="easuUsesOriginalTwoTimesAreaPolicyAndActualTextureLimitWhileRcasTargetsDisplay()" classname="com.bilipai.desktop.player.DesktopFsrHookAdapterTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

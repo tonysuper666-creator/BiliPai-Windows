@@ -1,0 +1,571 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "ccbbbf3af507ff5764cf39f1fccd295ae27c5fef",
+  "developmentIntegration": true,
+  "deployedDesktopVersion": "0.2.406.5",
+  "sourceAudit": "desktop/verification/source9-enhancement-subtitle-source-audit.json",
+  "sourceCounts": {
+    "kotlinIdentities": 402,
+    "resources": 15,
+    "verbatimApiDeclarations": 303,
+    "responseFiles": 45
+  },
+  "verification": {
+    "productCompilePassed": true,
+    "focusedJUnit": {
+      "tests": 132,
+      "suites": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "suiteResults": [
+      {
+        "name": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.DesktopPlaybackQueueOwnershipTest",
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopAdvancedPlaybackSettingsTest",
+        "tests": 25,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopFsrHookAdapterTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopFsrVideoShaderResourcesTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopPremiumAudioControllerTest",
+        "tests": 11,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopPremiumAudioRecoveryTest",
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopSubtitleCancellationTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopSubtitleSessionParityTest",
+        "tests": 19,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.PlayerVideoOutputTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.player.PlayerVideoShaderPathTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.plugins.DesktopPluginParityTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "name": "com.bilipai.desktop.ui.DesktopStoryNativeInputTest",
+        "tests": 18,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "pythonSourceTests": {
+      "passed": 20,
+      "failed": 0
+    },
+    "frozenCohortsVerifiedByRoot": [
+      {
+        "manifest": "desktop/.local/fsr-runtime-root-proof/verified-artifacts.json",
+        "rawSha256": "ca9df17c367d0177c0bc39cbca20d4b95ec78188e23ebe033758f372a5cf928d",
+        "filesVerified": 132
+      },
+      {
+        "manifest": "desktop/.local/subtitle-cancellation-parity/verified-artifacts.json",
+        "rawSha256": "15753497c90b96c1103e597dcafcc2b4a79cdb84055407bb0bb22ef7e421a6ec",
+        "filesVerified": 226
+      },
+      {
+        "manifest": "desktop/.local/story-native-input-parity/evidence.json",
+        "rawSha256": "c6e1db4db488ba68ecaeec9887f75255b48310a120eade26a22d899f76cdfbc6",
+        "filesVerified": 17
+      },
+      {
+        "manifest": "desktop/.local/fsr-runtime-native-proof/artifact-manifest-corrected.json",
+        "rawSha256": "89ace442ad7a4de172a5b9abe2af29af8a25ecfc4723d1033f296b7f63eef915",
+        "filesVerified": 85
+      },
+      {
+        "manifest": "desktop/.local/fsr-manager-guard-proof/verified-artifacts.json",
+        "rawSha256": "bdea2eefd7d1f209ec6671b85aaaee6b6b806a135047d663f1270272dedf81a2",
+        "filesVerified": 144
+      }
+    ],
+    "fsrRootHistorical": {
+      "tests": 16,
+      "samePriorSessionSource": true,
+      "managerGuardFixFollowed": true
+    },
+    "fsrRootCurrent": {
+      "originalConfigurationSessionUiRuntimeTests": 16,
+      "passed": 16,
+      "actualManagerLockAndOriginalConfigReadRegressions": 2,
+      "guardRegressionsPassed": 2,
+      "freshJvms": true,
+      "currentFullProductEntries": 6176,
+      "completeProductSnapshotRawSha256": "f864fc80a93a58c54235988c3cc4cdfd2140e417f44ec26f3c7187c77b981883",
+      "scope": "Actual original provider/store/manager/Runtime and actual offscreen input in both styles; confirmation OS primitive is a headless seam. No native GPU, account request or packaged EXE claim."
+    },
+    "fsrNative": {
+      "checks": 19,
+      "passed": 19,
+      "actualFsrIntermediate": "rgba8",
+      "actualAnime4kIntermediate": "rgba16hf",
+      "originalStrictChecksRetained": 11,
+      "provider": "actual unique original Runtime.videoEnhancement",
+      "networkAttempts": 0,
+      "ownWindowExited": true,
+      "runtimeManagerGuardFixFollowed": true,
+      "scope": "Exact complete main snapshot before the two narrow manager/Runtime ownership guards; renderer sources unchanged afterward. Current manager behavior is separately checked in fresh JVMs."
+    },
+    "storyNative": {
+      "checks": 14,
+      "passed": 14,
+      "actualCanvasHwnd": true,
+      "scope": "Actual native pointer/key input and controlled streams in an owned portrait fixture; Root forwards the same original pager and player-key executor. Complete application window not tested."
+    }
+  },
+  "subtitles": {
+    "focusedActualTcpAndActorTests": 31,
+    "accountEpochRetiresOwnedPair": true,
+    "ownedHttpHeaderAndBodyCancellation": true,
+    "atomicBoundedCache": true,
+    "originalAuthorizationRefreshAtMostOnce": true,
+    "originalBindingAndCueQualityDecisions": true,
+    "successfulOtherTrackPreserved": true
+  },
+  "videoEnhancement": {
+    "singleOriginalProviderRegistered": true,
+    "originalAlgorithmsAndSettingsContent": true,
+    "originalConfigStoreAndQueuedActualIoDrain": true,
+    "rootOwnerEpochAndLifecycleBindings": true,
+    "ownerGuardsAcrossReadyPlayerAndManagerLocksAndOnEnable": true
+  },
+  "story": {
+    "nativeInputBridgeIntegrated": true,
+    "originalWheelRetained": true,
+    "releaseOnlyDragSettledCommit": true,
+    "spaceAndArrowKeysShareRootExecutor": true,
+    "typedSpaceAndForeignOwnerDoNotLeak": true
+  },
+  "notClaimed": [
+    "New EXE or desktop deployment",
+    "Complete original feature/visual parity",
+    "Live account/service acceptance",
+    "Physical HiRes/audio output failure",
+    "Dolby Vision native FSR/Anime4K",
+    "Full Story touch/fling/zoom/double-tap/long-press",
+    "Original settings search/privacy/proxy/permissions/diagnostics are still prepared or partial",
+    "Resolution of the earlier Source9 intermittent black surface"
+  ],
+  "fullReleaseGatePassed": false,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "inputs": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "rawSha256": "36f3e227e7667f49119ad1bf70f75ec91a9244d67a5420b0b7fd25a56c19bc28"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "rawSha256": "9003afee69a90809619b1af03c44fac17a124a58d7b32875b208214c0f57dbed"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "rawSha256": "6bd1bda74e7584791c3aaeedadb5b0be6ae38ab720c402226762e176eab661dc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrHookAdapter.kt",
+      "rawSha256": "ac59f212d49820d59d2df468daa4832ce8742121bde9b57e166969e57702d3a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrVideoShaderResources.kt",
+      "rawSha256": "96c47e4615dd434d523098f1fad664dc441f1741a4f925e245735a8c4e1403b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "rawSha256": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+      "rawSha256": "5b84b94455c159199d5e9dc9f331d8f5cc44e5ef8a417cda6a4bda75812e8fec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "rawSha256": "7512241bb6a2f06d560eabb53cbb0d465faace2e6441543a4a1de3d9ad82d924"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "rawSha256": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoShaders.kt",
+      "rawSha256": "4831109a2c811fe06c4c0e4ba68a54cdaa6635aead44821704cc89a330b48d9e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "rawSha256": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfiguration.kt",
+      "rawSha256": "fcb5eb2bbd39fd0527438c55d2a0b3eed30948bead336c5d4bb149fe79aa4707"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInput.kt",
+      "rawSha256": "b8ca238b195a93b1d7b10a18fa15036e985b380b9231d5543c56f90452821565"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoEnhancementControls.kt",
+      "rawSha256": "20bf16772e5c8f0df1ef0627d5aa038b80f67322f5becfcb4c82fe21026fce21"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginScreens.kt",
+      "rawSha256": "f93e7548df1292aa05a98356fdb77e3de6fe6d8c2694fdaf79201585eee678ec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "rawSha256": "05182bd97d1cc6656404f45435d856f496a71a0e247ceb82db793d4b724373d4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopFsrHookAdapterTest.kt",
+      "rawSha256": "81ea02c23494f587ed33035c2d00048d58e6a0e497e4a9da4a74ae3f4ace6cf4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopFsrVideoShaderResourcesTest.kt",
+      "rawSha256": "84c79002b15cdff5133d62cb8c4a51e94db29236a23e198c8fbc7ac1261e5288"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopSubtitleCancellationTest.kt",
+      "rawSha256": "f7a17a91beeba135614ecd550c0a0067d8df0a2b68dcbb0e3232066da54f3b6b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
+      "rawSha256": "9d011ff0dd1edee09e9b66d7e776d65238ebc0e0308b9228e9d54fe484a429be"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerVideoOutputTest.kt",
+      "rawSha256": "71925e816a2ecd4c77ccd5efe3e36b80231044946b80a1b6751e4c14b8406bf3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInputTest.kt",
+      "rawSha256": "15b7b41b2093d5e9c44639107a67aec8d44805a1fe25a5e69aa385865552b490"
+    },
+    {
+      "path": "desktop/third-party/fsr-hdr-platform.json",
+      "rawSha256": "302856b6fde528be0b61fffaac6238a0fdfc28b26b8a18c00969106801ef0a73"
+    },
+    {
+      "path": "desktop/tools/extract-subtitle-load-policy.py",
+      "rawSha256": "040f19ac0ec67785cbe8c44e718ed22800af62a0b9400bc4ae5dede2efd553d8"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "rawSha256": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4"
+    },
+    {
+      "path": "desktop/tools/extract-video-enhancement.py",
+      "rawSha256": "141609f5ab12698e8ad925437ac78f0395731c49393c006d6bcd1c3558d91690"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_subtitle_load_policy.py",
+      "rawSha256": "daee1fa6c5cb1016fd58006ed71b21f3b8038f51384ba20772c606ebb1c634bd"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_plugins.py",
+      "rawSha256": "3addb196ccdca8b15368b2496eb7be123c80c0da0b6ffac6e082b51184263409"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_video_enhancement.py",
+      "rawSha256": "ddb2f5b525dc4ffb45bdcb426c4dcd939579aac7756431c5976d2109cbeee99d"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "rawSha256": "8d9f54a6df8a20617baded806ec6ddf3f1f7003e12abf1d334c76bfebae802e8"
+    }
+  ],
+  "retainedEvidenceFiles": [
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/contract-corrected.json",
+      "rawSha256": "f5596ac6134c74c635774c747ae8fa32ea7b76ae7158afc580fa5c85bc98adb7"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/snapshot-identity-corrected.json",
+      "rawSha256": "614dd86100ed4948bcf60c527681ac1386032ffef7141e74e4ea5dbdaacd28b2"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/compact-source-identity.json",
+      "rawSha256": "544948dd5c57e8ca0043a5aa8e0b64b01d8693ed1351f83c685422242e17be3a"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/snapshot-long-path-difference.json",
+      "rawSha256": "0e7c012bc463c6be2082c4ecb025995b8b47b540a1935d28187f65d131385a96"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/long-path-audit-result.json",
+      "rawSha256": "63b61be7d0feff92d9beae732657a93105524b4ff6ac07ebc0b25aed44afbbaa"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/verification-scope.json",
+      "rawSha256": "787c3ba711e4d69f7f6ce7e12fbd75f686410091df9c8f343f7e1352d371cdd0"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/artifact-manifest-corrected.json",
+      "rawSha256": "89ace442ad7a4de172a5b9abe2af29af8a25ecfc4723d1033f296b7f63eef915"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/owned-cache-path-manifest.json",
+      "rawSha256": "a58e24289751844337439811874762a751dae8ca473be04639f58ace750f7273"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/INTEGRATION.md",
+      "rawSha256": "e0e3c2d4371c5a91232200d161f893e539dcf684aa658afb46574ff8f2af0bb5"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/RuntimeFsrNativeSmoke.kt",
+      "rawSha256": "161a5c5d9e5583c697ec90a79df55f18ecf06a47c1c4d24599b25d129ddbf6c8"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/RunRuntimeNativeProbe.kt",
+      "rawSha256": "648af9cd5acc5b698d03740fa1bc98d21f397479091c45ec4dec5b824db83de0"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/runtime-native-report.json",
+      "rawSha256": "7dd70f5d588e5f6d59425f249df32a44a625ff2e3c7ca95439d6bcce331faa19"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/execution-identity.json",
+      "rawSha256": "5939eadacee89054270cdb2eddbbea273e56165ecfbab02ecc6f3a538b3798c1"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/process-completion.json",
+      "rawSha256": "764999d487bcd724d05c5cae462d90374502a8dc1a025673ae505723d440e306"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/native-fsr-before.png",
+      "rawSha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/native-fsr-weak.png",
+      "rawSha256": "bc7897fb63746fa46addcdae8d919ce60af3aa9be8e1e32d2a332a30a8b16fb6"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/native-fsr-strong.png",
+      "rawSha256": "63895392443e05bdc3febbbc7aa31d56d267d7953a5d530a1cb7158f0f61fc38"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/runtime-anime4k-fast.png",
+      "rawSha256": "74fc47323bcbc12c19e0f6933bc60cd78314bff4c4094418c7687cd46b73dd21"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-native/evidence-corrected/runtime-anime4k-quality.png",
+      "rawSha256": "72db4e4f0894c73748a8dfdd84a4ace9aadb109faa7a50e7f11a3d1ec7493763"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/ROOT-PROOF.md",
+      "rawSha256": "84c0a998add87dbac97e070224cc3b61c3ec3ae98f92f78f2e536952fc62fad2"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/original-source-inventory.json",
+      "rawSha256": "ec07fa844ea3e7665a192fab19910f800a2415345d1f0e57e06ffd1f58435ade"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/session-override-identity.json",
+      "rawSha256": "a9f46f93484aea54aa4663ae0c41d75bda2499743d569c83eed7c871fd0bf948"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/logic-result.json",
+      "rawSha256": "c29bf8ead4b0b2f770a5b4cddb308ccd5ab2e6c17b9b3e95f5db0f4ed634cc85"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/ui-result.json",
+      "rawSha256": "0e61653b7a5c7aa74d0f80d308936ba0b7099ce302c3985f02d7019d8a0451cf"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-root-historical/runtime-result.json",
+      "rawSha256": "dbf493b56774a327f8672286a5aaf0cde9eb6db731733406763d114b75e0d8e3"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/evidence.json",
+      "rawSha256": "c6e1db4db488ba68ecaeec9887f75255b48310a120eade26a22d899f76cdfbc6"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/contract.json",
+      "rawSha256": "dff5de5c6ef7745b8becddba25dd404478555615eb97144e9d458d8743586213"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/source-inventory.json",
+      "rawSha256": "6552982e43b92f7557ef515e616ef570d9db956e9e972f8ce67bf5c22cddec47"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/INTEGRATION.md",
+      "rawSha256": "9bb61afca3df63ab04c2ad62778aef7bbf9544d0ae69718c5ab39145c68c9b47"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/bridged-evidence/native-input-observations.json",
+      "rawSha256": "2419e2e9efb1f274a4d83e9504f43a3abae7f5a77099c2a3792090d177030cef"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/story-native/bridged-evidence/native-after-epoch-retry.png",
+      "rawSha256": "e2e0a76907d4658aafe7ed115b67530d49ff403e56cda9be40d03c79a243ef96"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/subtitles/ROOT-INTEGRATION.md",
+      "rawSha256": "6fc5d4609a08cadfdce62082fd4611e22f92d6fbb11351518eb39dcc5b426f66"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/subtitles/owned-files.json",
+      "rawSha256": "34827981f47d6eacf31b17b9d855a7dc72ae68a86bd9d2601893ee9f118b33f0"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/subtitles/source-inventory.json",
+      "rawSha256": "88e80adbecc384e3c23a60225b02b8c4c4920ceab39969bf35d3cbfc6f20124e"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/subtitles/long-path-verification.json",
+      "rawSha256": "3fa21943fa9fd63d774c2890e0991ded7c85df7f6aa83887153009b9a02fd289"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ConfigurationProof.kt",
+      "rawSha256": "cb650b5d2edba7be97a61ccff3f4f2c706d6638f17d319278ccc61f6e2044674"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/DesktopVideoEnhancementSession.kt",
+      "rawSha256": "5b84b94455c159199d5e9dc9f331d8f5cc44e5ef8a417cda6a4bda75812e8fec"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/DesktopVideoEnhancementSettingsContent.kt",
+      "rawSha256": "57122be0b70c01783c5234abb96c1ca9c882c9508b1c5f7fb349a6a714a423f1"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/GuardRegression.kt",
+      "rawSha256": "c9dfe734ecbaa18811955ce3b247ede99db3c111a49f0cb472f9432971683d0e"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/Launcher.kt",
+      "rawSha256": "6946be269608417d5c68482159fa23d94b463619f71e8b797325b08b1b4662ea"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ROOT-REVIEW.md",
+      "rawSha256": "1e560a2773ce3f842ebaaeae895c2c725ecc02750fd71b059cac2abad5d24018"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/RuntimeProof.kt",
+      "rawSha256": "871a1dafcc710bfce5b91069cfff5ce2cc9588747a9e4d853ed05a6631c1a809"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/SessionProof.kt",
+      "rawSha256": "28837cd51e730ea4bd03aafa9adc48b3bc42b68d2fc25845b00d90a9c5e97713"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/UiProof.kt",
+      "rawSha256": "1ade46a7e1bd8b05dfa0a46e11fc7f33e99685172ddfa6a5b4ed25f1dde5137a"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/config-read-result.json",
+      "rawSha256": "da7fefb3e4d8ad2b38dfe7f59488f0b6e4c504788407ac12a3839739b2c65793"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/logic-result.json",
+      "rawSha256": "c29bf8ead4b0b2f770a5b4cddb308ccd5ab2e6c17b9b3e95f5db0f4ed634cc85"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/manager-result.json",
+      "rawSha256": "3b5bcee6a58d27141496975caa782cc7654d177c23d735a0a3698cd825f6408e"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/runtime-result.json",
+      "rawSha256": "dbf493b56774a327f8672286a5aaf0cde9eb6db731733406763d114b75e0d8e3"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui-result.json",
+      "rawSha256": "0e61653b7a5c7aa74d0f80d308936ba0b7099ce302c3985f02d7019d8a0451cf"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/material3-anime4k-final.png",
+      "rawSha256": "f84acc9f18396fb5a9af1a67ffb1200d59c6a371055a7639237101bb0f6f0948"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/material3-fsr-pointer.png",
+      "rawSha256": "b2dc97cd462518c887dc4ea2f9e58b0803495436f0c6829532be1b37cbb86c88"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/material3-remember-confirm.png",
+      "rawSha256": "23da53dce659ecb3e572a2264d0566f35f5414203648d484c2f741a202f568d8"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/miuix-anime4k-final.png",
+      "rawSha256": "a9c6565fa7348ca03c91ea10fc538a3c0d91db87e20ecd536812bae81c00fbbe"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/miuix-fsr-pointer.png",
+      "rawSha256": "fcc279ffcb6acfe2e824602129bbd24fcc6f609e4fe2448e24275faf94adf5c2"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/ui/miuix-remember-confirm.png",
+      "rawSha256": "51eaaceb889c372b7d6307cf7591f4777dc7b188c02f129d1b117b22b17bb357"
+    },
+    {
+      "path": "desktop/verification/enhancement-subtitle-story/fsr-manager-guard/verified-artifacts.json",
+      "rawSha256": "bdea2eefd7d1f209ec6671b85aaaee6b6b806a135047d663f1270272dedf81a2"
+    }
+  ]
+}

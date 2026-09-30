@@ -1,0 +1,10 @@
+{
+  "media3SourceUrl": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar",
+  "media3ArchiveSha256": "472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba",
+  "androidSourceUrl": "https://raw.githubusercontent.com/aosp-mirror/platform_frameworks_base/android-16.0.0_r1/media/java/android/media/MediaFormat.java",
+  "androidSourceSha256": "9fce180442a494f0be975df8b42219d578d0a7eff19d3605b797df49370f1701",
+  "constants": {
+    "COLOR_TRANSFER_ST2084": 6,
+    "COLOR_TRANSFER_HLG": 7
+  }
+}

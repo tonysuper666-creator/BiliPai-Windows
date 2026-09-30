@@ -45,6 +45,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val currentVideo = AtomicReference<CurrentVideo?>()
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
     val eyeProtection = EyeProtectionPlugin()
+    val videoEnhancement = Anime4KPlugin()
+    val enhancementConfiguration: DesktopVideoEnhancementConfiguration
     private val danmakuEnhance = DanmakuEnhancePlugin()
     private val sponsorBlock = SponsorBlockPlugin()
     val todayWatch = TodayWatchPlugin { DesktopPluginRepositoryBinding.recommendationContext() }
@@ -81,6 +83,12 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         PluginManager.register(sponsorBlock)
         PluginManager.register(danmakuEnhance)
         PluginManager.register(eyeProtection)
+        PluginManager.register(videoEnhancement)
+        enhancementConfiguration = DesktopVideoEnhancementConfiguration(videoEnhancement,
+            ready = { PluginManager.awaitPluginReady(Anime4KPlugin.PLUGIN_ID) },
+            // Accepted config writes drain even after shutdown begins, before store.freezeWrites().
+            serialize = { operation -> configurationMutex.withLock { operation() } },
+            acceptChanges = { !closing.get() })
         PluginManager.register(DesktopFeedFilterPlugin(store))
         PluginManager.register(HomeFeedAnonymizerPlugin())
         PluginManager.register(adFilter)
@@ -115,15 +123,18 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         }
     }
 
-    suspend fun setEnabled(id: String, enabled: Boolean) {
+    suspend fun setEnabled(id: String, enabled: Boolean, stillOwned: () -> Boolean = { true }) {
         checkOpen()
+        if (!stillOwned()) return
         require(id in setOf(SPONSOR_BLOCK_PLUGIN_ID, "danmaku_enhance", EYE_PROTECTION_PLUGIN_ID, "bilipai_feed_filter") || plugins.value.any { it.plugin.id == id }) { "插件不存在" }
         PluginManager.awaitPluginReady(id)
         val info = plugins.value.firstOrNull { it.plugin.id == id } ?: error("插件不存在")
         require(!info.plugin.unavailable) { info.plugin.unavailableReason }
         playerMutex.withLock {
             checkOpen()
-            PluginManager.setEnabled(id, enabled)
+            if (!stillOwned()) return@withLock
+            PluginManager.setEnabled(id, enabled, stillOwned)
+            if (!stillOwned()) return@withLock
             check(plugins.value.firstOrNull { it.plugin.id == id }?.enabled == enabled) { "插件启用失败，请检查配置" }
             if (enabled && info.plugin is PlayerPlugin) {
                 currentVideo.get()?.takeIf { it.generation == playerGeneration.get() }?.let { video ->
@@ -342,6 +353,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         recommendations.shutdownForRestore()
         packages.shutdownForRestore()
         DesktopSkinVideoRegistry.shutdownForRestore()
+        enhancementConfiguration.flushAndClose()
         configurationMutex.withLock {
             playerMutex.withLock {
                 DesktopPluginScopeRegistry.shutdown()

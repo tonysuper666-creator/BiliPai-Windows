@@ -1,0 +1,76 @@
+[
+  {
+    "part": "kotlin",
+    "missingFromInitial": [
+      {
+        "path": "com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicyKt$buildJsonPluginStatsSummaryNotification$$inlined$compareByDescending$1.class",
+        "sha256": "a4ecbf8b5c22442606cda53a6e12640ddaa1bef7d3b47decd08ff1fc89fa8d22",
+        "absolutePathLength": 276
+      },
+      {
+        "path": "com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicyKt$buildJsonPluginStatsSummaryNotification$$inlined$thenBy$1.class",
+        "sha256": "04fabf9620c27ad4104ddd4ac771f1ee1b3213b6e8ee1481dc9bd51b933adf67",
+        "absolutePathLength": 263
+      },
+      {
+        "path": "com/android/purebilibili/feature/plugin/AdFilterInsightPolicyKt$resolveAdFilterBlockedUpProfiles$lambda$0$$inlined$sortedByDescending$1.class",
+        "sha256": "4aa3624f996b0e1a883bb9dfb8c2e33e3050ef18661d29aa84b84a63e415cfa9",
+        "absolutePathLength": 263
+      },
+      {
+        "path": "com/android/purebilibili/feature/plugin/AdFilterPluginKt$refreshMissingAdFilterUpProfiles$2$invokeSuspend$$inlined$sortedByDescending$1.class",
+        "sha256": "4e5bf2858498f805b59306f9fa2e481d0085835b4430b75d5a1aa2a1048e05bd",
+        "absolutePathLength": 263
+      },
+      {
+        "path": "com/android/purebilibili/feature/space/DesktopOriginalSpaceOverviewKt$desktopOriginalSpaceVideoCategories$$inlined$sortedByDescending$1.class",
+        "sha256": "12aa1085aa9961280b9f65f889d4bad97abe5aacf60dbf6fc3bf96a3a285ef7b",
+        "absolutePathLength": 263
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicyKt$buildAvailableAudioQualityOptions$$inlined$compareBy$1.class",
+        "sha256": "ea52b505a45faad1a41a1cf062f8415d8e2370f2bddaaa0d520f59d20db77efc",
+        "absolutePathLength": 265
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicyKt$buildAvailableAudioQualityOptions$$inlined$thenByDescending$1.class",
+        "sha256": "7037d95b7d40deea3b0df7c77d1361ca8cbb3520c711863821187e5c56a4f4e7",
+        "absolutePathLength": 272
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$compareByDescending$1.class",
+        "sha256": "d80ebb4395fbbda968ec6b0d1a71dda7be82c095c1aca68ab6dc545aae4e80a1",
+        "absolutePathLength": 265
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$sortedByDescending$1.class",
+        "sha256": "a96dfc7d0719f42ecdb28227729ad090117c9e3bb9df2b64fe6c925dd8e39d47",
+        "absolutePathLength": 264
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$thenByDescending$1.class",
+        "sha256": "3cd871914f4add4a0e150432446c857ad992d3a1f7c7a3de459b725c4948fe2e",
+        "absolutePathLength": 262
+      },
+      {
+        "path": "com/android/purebilibili/feature/video/playback/policy/AdaptiveDashTrackPolicyKt$buildAdaptiveDashTrackSet$$inlined$thenByDescending$2.class",
+        "sha256": "e4bb3ce37135b87a72c7303d1a727276115900e7dfa221413abfb868d5a3255d",
+        "absolutePathLength": 262
+      }
+    ],
+    "contentChanged": [],
+    "removedFromCurrent": []
+  },
+  {
+    "part": "java",
+    "missingFromInitial": [],
+    "contentChanged": [],
+    "removedFromCurrent": []
+  },
+  {
+    "part": "resources",
+    "missingFromInitial": [],
+    "contentChanged": [],
+    "removedFromCurrent": []
+  }
+]

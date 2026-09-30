@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:14.575Z" hostname="TONYSUPER666" time="0.171">
+  <properties/>
+  <testcase name="changed account rejects an old source AO failure and stale preferences()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.105"/>
+  <testcase name="direct prior account recovery cannot write health or consume video budget()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.009"/>
+  <testcase name="same CID quality codec and network refresh keep AAC failure fallback until explicit reselection()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.011"/>
+  <testcase name="paired subtitle metadata rejects NUL before any native selection is mutated()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.002"/>
+  <testcase name="new video reads requested premium setting after previous video temporarily fell back()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.007"/>
+  <testcase name="actual AO init failure chooses original cached AAC and retains owner CID pause position and user intent()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.006"/>
+  <testcase name="missing AAC pauses only this owned failed source without pretending fallback succeeded()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.006"/>
+  <testcase name="stale failure attempt cannot pause or recover a newer attempt of the same media owner()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.001"/>
+  <testcase name="unknown video output failure never impersonates premium audio recovery()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.018"/>
+  <testcase name="refresh metadata preservation only labels an actual standard AAC selection()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.0"/>
+  <testcase name="direct obsolete recovery cannot penalize CDN or consume a new owners budget()" classname="com.bilipai.desktop.player.DesktopPremiumAudioControllerTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

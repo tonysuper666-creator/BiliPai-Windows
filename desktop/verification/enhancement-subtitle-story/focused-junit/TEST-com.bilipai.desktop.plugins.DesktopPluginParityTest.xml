@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.plugins.DesktopPluginParityTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:16.895Z" hostname="TONYSUPER666" time="0.098">
+  <properties/>
+  <testcase name="original nested JSON rules evaluate owner numbers and regex titles()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.033"/>
+  <testcase name="external plugin policy rejects version drift and still requires explicit grants()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.004"/>
+  <testcase name="JSON stats and enabled preferences keep independent namespaces()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.014"/>
+  <testcase name="shared filter configuration and original plugin preferences survive reopening()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.021"/>
+  <testcase name="original danmaku chain falls back after plugin failure and merges style precedence()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.013"/>
+  <testcase name="invalid regex cannot replace the prior configuration()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.005"/>
+  <testcase name="color and URI bindings preserve upstream validation behavior()" classname="com.bilipai.desktop.plugins.DesktopPluginParityTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Plugin DanmakuManager failure: IllegalStateException
+]]></system-err>
+</testsuite>

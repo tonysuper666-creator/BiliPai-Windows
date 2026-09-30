@@ -1,0 +1,515 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "contract-corrected.json",
+      "sha256": "f5596ac6134c74c635774c747ae8fa32ea7b76ae7158afc580fa5c85bc98adb7",
+      "bytes": 1247,
+      "absolutePathLength": 151
+    },
+    {
+      "path": "snapshot-identity-corrected.json",
+      "sha256": "614dd86100ed4948bcf60c527681ac1386032ffef7141e74e4ea5dbdaacd28b2",
+      "bytes": 3359,
+      "absolutePathLength": 160
+    },
+    {
+      "path": "snapshot-long-path-difference.json",
+      "sha256": "0e7c012bc463c6be2082c4ecb025995b8b47b540a1935d28187f65d131385a96",
+      "bytes": 3733,
+      "absolutePathLength": 162
+    },
+    {
+      "path": "historical-evidence-retained.json",
+      "sha256": "b5d9bce494e4a5b34f9b699fb300ce43673ef0817736dae116134d4d009d6289",
+      "bytes": 4634,
+      "absolutePathLength": 161
+    },
+    {
+      "path": "compact-source-identity.json",
+      "sha256": "544948dd5c57e8ca0043a5aa8e0b64b01d8693ed1351f83c685422242e17be3a",
+      "bytes": 8816,
+      "absolutePathLength": 156
+    },
+    {
+      "path": "owned-cache-path-manifest.json",
+      "sha256": "a58e24289751844337439811874762a751dae8ca473be04639f58ace750f7273",
+      "bytes": 6576,
+      "absolutePathLength": 158
+    },
+    {
+      "path": "verification-scope.json",
+      "sha256": "787c3ba711e4d69f7f6ce7e12fbd75f686410091df9c8f343f7e1352d371cdd0",
+      "bytes": 2372,
+      "absolutePathLength": 151
+    },
+    {
+      "path": "long-path-audit-result.json",
+      "sha256": "63b61be7d0feff92d9beae732657a93105524b4ff6ac07ebc0b25aed44afbbaa",
+      "bytes": 4258,
+      "absolutePathLength": 155
+    },
+    {
+      "path": "original-evidence-inventory.json",
+      "sha256": "8c457fca1fa417d0c83534fbb974445294311ad348a621cd89a5d9047c5a7a17",
+      "bytes": 918,
+      "absolutePathLength": 160
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256": "e0e3c2d4371c5a91232200d161f893e539dcf684aa658afb46574ff8f2af0bb5",
+      "bytes": 5497,
+      "absolutePathLength": 142
+    },
+    {
+      "path": "main-kotlin-snapshot-corrected.jar",
+      "sha256": "1f2ef8d279cdba238bc2605806821b0658cd11148a9097c8a2c2b05452632d6f",
+      "bytes": 43032588,
+      "absolutePathLength": 162
+    },
+    {
+      "path": "main-java-snapshot-corrected.jar",
+      "sha256": "96f913e8d4c869f15b12f887627d3a3505bd3dd0010382c1cd213fdcfcfd89b1",
+      "bytes": 445025,
+      "absolutePathLength": 160
+    },
+    {
+      "path": "main-resources-snapshot-corrected.jar",
+      "sha256": "495f697befdd31e0002e10a80dade041d2891c038c468e8ffe3d95fff272a5f0",
+      "bytes": 1498314,
+      "absolutePathLength": 165
+    },
+    {
+      "path": "main-kotlin-entries-corrected.json",
+      "sha256": "0d51d39e941688f8eec5367eacbec5090927de9cb361e01435794e91034e7b04",
+      "bytes": 1334562,
+      "absolutePathLength": 162
+    },
+    {
+      "path": "main-java-entries-corrected.json",
+      "sha256": "b5525447f1664de36f14743e6e0e79008824b72099cfdfa2595da6327f942fac",
+      "bytes": 28295,
+      "absolutePathLength": 160
+    },
+    {
+      "path": "main-resources-entries-corrected.json",
+      "sha256": "e7b92bb2ae6b3526f48abb619a8d9182e1d8e8d38ea69540a8afd9036574a443",
+      "bytes": 7799,
+      "absolutePathLength": 165
+    },
+    {
+      "path": "RuntimeFsrNativeSmoke.kt",
+      "sha256": "161a5c5d9e5583c697ec90a79df55f18ecf06a47c1c4d24599b25d129ddbf6c8",
+      "bytes": 23027,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "RunRuntimeNativeProbe.kt",
+      "sha256": "648af9cd5acc5b698d03740fa1bc98d21f397479091c45ec4dec5b824db83de0",
+      "bytes": 7657,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "compile-corrected-run.py",
+      "sha256": "d1c6a355031d53751dd56e7066808d5ab7c2cf30052344a307133476c93957bf",
+      "bytes": 3599,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "freeze-corrected-evidence.py",
+      "sha256": "fe2edd50975e27ca8ae97970ed27c89e7811672fcaf05729d79a369093ebccee",
+      "bytes": 12096,
+      "absolutePathLength": 156
+    },
+    {
+      "path": "evidence-corrected/execution-identity.json",
+      "sha256": "5939eadacee89054270cdb2eddbbea273e56165ecfbab02ecc6f3a538b3798c1",
+      "bytes": 4050,
+      "absolutePathLength": 170
+    },
+    {
+      "path": "evidence-corrected/fixture-owner.json",
+      "sha256": "918b3f2edb48e1b08785c9acc6b3066946a6973a9cd5a1c285d38bb1c055844d",
+      "bytes": 195,
+      "absolutePathLength": 165
+    },
+    {
+      "path": "evidence-corrected/native-fsr-before.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 168
+    },
+    {
+      "path": "evidence-corrected/native-fsr-hlg-bypass.png",
+      "sha256": "4efeec0521ac522cf3c2d7b70da267d1ffaa18aa52b99d27193d5ddcc7ba2de6",
+      "bytes": 144695,
+      "absolutePathLength": 172
+    },
+    {
+      "path": "evidence-corrected/native-fsr-pip-bypass.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 172
+    },
+    {
+      "path": "evidence-corrected/native-fsr-pq-bypass.png",
+      "sha256": "b7c6816521ec2d2a67e54889e17509eeaa88c0ade0442fc9a3d726fde394b304",
+      "bytes": 136424,
+      "absolutePathLength": 171
+    },
+    {
+      "path": "evidence-corrected/native-fsr-strong.png",
+      "sha256": "63895392443e05bdc3febbbc7aa31d56d267d7953a5d530a1cb7158f0f61fc38",
+      "bytes": 90448,
+      "absolutePathLength": 168
+    },
+    {
+      "path": "evidence-corrected/native-fsr-weak.png",
+      "sha256": "bc7897fb63746fa46addcdae8d919ce60af3aa9be8e1e32d2a332a30a8b16fb6",
+      "bytes": 83811,
+      "absolutePathLength": 166
+    },
+    {
+      "path": "evidence-corrected/native-process.log",
+      "sha256": "cc4f364c18f3a8b1325ec6a6b1bd3b7818566ca8dad64ca4fce4799460f622b9",
+      "bytes": 522,
+      "absolutePathLength": 165
+    },
+    {
+      "path": "evidence-corrected/pixel-metrics.json",
+      "sha256": "f5ea27561c7d5a13175c1ffaf63c31c136f821434a72a923a16522a3649de6f8",
+      "bytes": 1349,
+      "absolutePathLength": 165
+    },
+    {
+      "path": "evidence-corrected/process-completion.json",
+      "sha256": "764999d487bcd724d05c5cae462d90374502a8dc1a025673ae505723d440e306",
+      "bytes": 47,
+      "absolutePathLength": 170
+    },
+    {
+      "path": "evidence-corrected/process-id.txt",
+      "sha256": "ff108b68b0e9bc1e5a744f80f9ef1b8575c7d041eeb3e8d2eae300347de6e7fc",
+      "bytes": 3,
+      "absolutePathLength": 161
+    },
+    {
+      "path": "evidence-corrected/runtime-anime4k-fast.png",
+      "sha256": "74fc47323bcbc12c19e0f6933bc60cd78314bff4c4094418c7687cd46b73dd21",
+      "bytes": 147064,
+      "absolutePathLength": 171
+    },
+    {
+      "path": "evidence-corrected/runtime-anime4k-hlg-bypass.png",
+      "sha256": "c2cea80618a15d9b5391c71fea72fac85e84744f2d45269477f642b9040f3873",
+      "bytes": 144945,
+      "absolutePathLength": 177
+    },
+    {
+      "path": "evidence-corrected/runtime-anime4k-pip-bypass.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 177
+    },
+    {
+      "path": "evidence-corrected/runtime-anime4k-pq-bypass.png",
+      "sha256": "299963178121f4fee1e653cef2c15e8ca7430b04aac006131abaf8a8ead4957a",
+      "bytes": 135833,
+      "absolutePathLength": 176
+    },
+    {
+      "path": "evidence-corrected/runtime-anime4k-quality.png",
+      "sha256": "72db4e4f0894c73748a8dfdd84a4ace9aadb109faa7a50e7f11a3d1ec7493763",
+      "bytes": 169423,
+      "absolutePathLength": 174
+    },
+    {
+      "path": "evidence-corrected/runtime-disabled-fsr.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 171
+    },
+    {
+      "path": "evidence-corrected/runtime-native-report.json",
+      "sha256": "7dd70f5d588e5f6d59425f249df32a44a625ff2e3c7ca95439d6bcce331faa19",
+      "bytes": 1242,
+      "absolutePathLength": 173
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/NativeProofWindowGuard.class",
+      "sha256": "c62d32412d725b92ded92feb9d662e3f561e6b6c8cf5c0e35affaef90c156151",
+      "bytes": 11144,
+      "absolutePathLength": 201
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/NoNetwork.class",
+      "sha256": "5138c8f4135d05b683f6401d5070be4569cc2e225c8a866ae87bfa6d82051940",
+      "bytes": 2415,
+      "absolutePathLength": 188
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/OwnUser32.class",
+      "sha256": "2beb38747dd403716780c0cc9b079daa30dffc594d10ea82c7198fad07e1b2ad",
+      "bytes": 1650,
+      "absolutePathLength": 188
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt$main$2.class",
+      "sha256": "14892947f56e10def4898cc7e230c870688c0433b1050075a0cf7e193ef94539",
+      "bytes": 5460,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt$main$3$1.class",
+      "sha256": "6c236091b024b7f6c30c1465cd407874b1b99591b29a6bba7629ce3c46e7dd10",
+      "bytes": 5102,
+      "absolutePathLength": 211
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt$main$3.class",
+      "sha256": "136dc2f2333f03725e05ca16b7a1154c1fb320d36bf87559e8ac4d2f8a86dc74",
+      "bytes": 3407,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt$main$9$1$1.class",
+      "sha256": "cc4508c9234a1e13283538a4e1e22bec623bbf7573400ff37322da8ce12cbf40",
+      "bytes": 3330,
+      "absolutePathLength": 213
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt$main$9$1.class",
+      "sha256": "e563d99851a99e1074c7a29a31ef5b4824cbe959d939a6973ba24e1a0c37ad96",
+      "bytes": 3451,
+      "absolutePathLength": 211
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RunRuntimeNativeProbeKt.class",
+      "sha256": "9409ed69be3f61e99239bd5bb63b1419501175ad0c74e93751724c289363ea43",
+      "bytes": 21414,
+      "absolutePathLength": 202
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$$inlined$map$1$1.class",
+      "sha256": "4cea6c7908581d99ba1a617f3b04efe69b4f9b3743215837b88ab5df52709066",
+      "bytes": 1662,
+      "absolutePathLength": 221
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$$inlined$map$1$2$1.class",
+      "sha256": "073d28905091c516a88ed896e914db8c3e1a298fa0d5b0d162a1853b886dd25c",
+      "bytes": 1657,
+      "absolutePathLength": 223
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$$inlined$map$1$2.class",
+      "sha256": "76a7bb811d35b603c02dd5ddbd040d1f6ce5cdc664b580f41bcf8549006d348b",
+      "bytes": 5081,
+      "absolutePathLength": 221
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$$inlined$map$1.class",
+      "sha256": "af8e91c4fe84128a82346a93b91b1b377cbc32e9584f50b6b71d11a01cca437f",
+      "bytes": 4291,
+      "absolutePathLength": 219
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$1.class",
+      "sha256": "f5593711a74fffcafb18c91f509c7b65c1065f593a720e263e8dd62aed10b8ef",
+      "bytes": 4308,
+      "absolutePathLength": 206
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$11.class",
+      "sha256": "c3f385dd6a17ffa49e35f50333d9aea5e3973d4051e391be5f899b726107421f",
+      "bytes": 2888,
+      "absolutePathLength": 207
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$13.class",
+      "sha256": "3cc7c05f8bd6a523f309b50134254fb50d0f5b57041d499bbb3261b6359edd38",
+      "bytes": 1514,
+      "absolutePathLength": 207
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$14.class",
+      "sha256": "926625becf86849185c47d5bf344bc2e91a444fc3134d647a4d4b1f35100fae6",
+      "bytes": 4490,
+      "absolutePathLength": 207
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$15$1$1.class",
+      "sha256": "13aceb7fe853694eea9f3d2cc47e98f80a2ebb6406013961ae8c8ba09a2526f6",
+      "bytes": 3355,
+      "absolutePathLength": 211
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$15$1.class",
+      "sha256": "60794217862560a5af967a4bfc9b4143abe42db30f96ab862219dd4f2252a8d1",
+      "bytes": 3708,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$15$2$1.class",
+      "sha256": "e368c28ded1fa6d38c53a053904005afb26d4198635f7c5fd1def5caa7bdd79d",
+      "bytes": 3205,
+      "absolutePathLength": 211
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$15$2.class",
+      "sha256": "0277baedbe23f0d4eae17514b1695ff2e6cc0a4c59d5f6b9026530d64d3f9024",
+      "bytes": 3575,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$15$4.class",
+      "sha256": "c893060c51d442edd47932c0a4fab511d560fbcf0c38ea6a8fddcc6f96a98f7d",
+      "bytes": 3833,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$4.class",
+      "sha256": "4b3ff819e80e2e5e774c7bb7bc501fc3d70bfa94d231e21e79b738b57a9b036f",
+      "bytes": 3341,
+      "absolutePathLength": 206
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$6.class",
+      "sha256": "e7c758ae412e84aa353ced3ef07a43d1cb4d8e7c23f7a512934f82a9cdcdcae8",
+      "bytes": 1512,
+      "absolutePathLength": 206
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$7.class",
+      "sha256": "8536663a4b661470de047fd8896fccc9cd8f34a7abef986b8de2db9530cbbaac",
+      "bytes": 3834,
+      "absolutePathLength": 206
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$10.class",
+      "sha256": "26f322d80ebbb99ca5210ef2baecf983d857e922396613a690a0c10cff9315a8",
+      "bytes": 4370,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$16.class",
+      "sha256": "7a4280a2e2bb5440ec6a566196320b279e38092b707868c71947489de8c5b503",
+      "bytes": 3823,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$19.class",
+      "sha256": "12fa7549575ef8c007c45489ab9c82a84ea8217032af3cbe41fa1ecbf46987bc",
+      "bytes": 4052,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$2.class",
+      "sha256": "4021fbc451d37e06d43e90c22742ce4dfa51d9a7322add49200f4c9b5256391f",
+      "bytes": 3819,
+      "absolutePathLength": 208
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$20.class",
+      "sha256": "e68577a12ae61de8901c55c25f0bb792e38584c04217ed317cbf0d7ce2c91572",
+      "bytes": 3823,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$21.class",
+      "sha256": "0aaf0da581c78bdfd9cf06b7568f3526a03c53ab30c5973f54a1da093599d3d0",
+      "bytes": 3586,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$26.class",
+      "sha256": "78f8be770274b78e7759a76cfe9a77f2fbf5eb266f5963d27da874b46cd35338",
+      "bytes": 3823,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$29.class",
+      "sha256": "0deda83b3d029f1852bf0cd96c5fe7e84b16f006451596427a2d8a45cbcbae13",
+      "bytes": 3823,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$3.class",
+      "sha256": "c4ef873c282d5cacd4373d6573397f4152e4f8f781ba0e484cd864a40976c2a2",
+      "bytes": 3819,
+      "absolutePathLength": 208
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$31.class",
+      "sha256": "75796e59c37bcb8371d1063bbfeb888268dc0186ab1ed4984953ef0142dcf3f5",
+      "bytes": 3833,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$32.class",
+      "sha256": "cec2e6651be0c1073ed56ee1c3e86eca68cafe059c7864aa01c1ac73fd257ff8",
+      "bytes": 3353,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$34.class",
+      "sha256": "edf08e6620930b95f3c03393fa99a52dfe35b19b84ce47897abba7f6db2a39a7",
+      "bytes": 1518,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$35.class",
+      "sha256": "b57e0930c003676c164cc1d05497962971473b3c9394fb3a2a583d52f1800e59",
+      "bytes": 3846,
+      "absolutePathLength": 209
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$36$paths$1.class",
+      "sha256": "55d3cc82c73aacd364d1e626cd566d9dc274945fabaaff2fe2d486affe1d7b07",
+      "bytes": 4131,
+      "absolutePathLength": 217
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$7.class",
+      "sha256": "41458eb6c276de47a8075eaa07fd2f18d7d96d3380af625230b47a6364d8d663",
+      "bytes": 3685,
+      "absolutePathLength": 208
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$9.class",
+      "sha256": "ed3c3a86602dae4731e196405b09082bd2282dd0e5934cdc9695cb028cb91cb2",
+      "bytes": 4048,
+      "absolutePathLength": 208
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$persisted$1.class",
+      "sha256": "78a29a747472f7490051b16344ad7f775f0069f62c4c65b1545e83ac35805e24",
+      "bytes": 4137,
+      "absolutePathLength": 218
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$8$prepared$1.class",
+      "sha256": "92948239609d78ee89a16c81e86bc571e13b8855f31accd878e5c0ae5897d2c0",
+      "bytes": 3975,
+      "absolutePathLength": 217
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke$run$9.class",
+      "sha256": "4eff2de6be9b1d0d852af7a5789362e028a30d877eb8a0d29c2c30279aa28aaa",
+      "bytes": 3677,
+      "absolutePathLength": 206
+    },
+    {
+      "path": "classes-corrected/com/bilipai/desktop/player/RuntimeFsrNativeSmoke.class",
+      "sha256": "6625863ed958b807c1596a63cf1deaa07c20e5bd4ad276b3d53e813ebb375d75",
+      "bytes": 46790,
+      "absolutePathLength": 200
+    },
+    {
+      "path": "classes-corrected/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256": "58546421265eaa22cd762582efd7fa90db9f66cab35057b143e9d6f523a4c0fa",
+      "bytes": 79,
+      "absolutePathLength": 204
+    }
+  ]
+}

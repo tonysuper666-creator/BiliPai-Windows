@@ -128,6 +128,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         "bilipai_feed_filter" -> DiscoveryFilterDialog(DesktopDiscoveryFilters(enabled, config), runtime.store, { selected = null }, { selected = null })
         "danmaku_enhance" -> DanmakuPluginSettings(runtime, { selected = null })
         "eye_protection" -> EyePluginSettings(runtime, { selected = null })
+        Anime4KPlugin.PLUGIN_ID -> DesktopVideoEnhancementSettingsDialog(runtime.enhancementConfiguration) { selected = null }
         SPONSOR_BLOCK_PLUGIN_ID -> SponsorPluginSettings(runtime, { selected = null })
         runtime.googleCast.id -> DesktopGoogleCastDialog(runtime.context, runtime.googleCast, media = { null }, onDismiss = { selected = null })
         else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, { selected = null }, onVideo, onPlayQueue) }

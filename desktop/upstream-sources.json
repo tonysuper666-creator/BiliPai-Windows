@@ -2147,7 +2147,8 @@
       "features": [
         "playback",
         "cdn",
-        "watchdogs"
+        "watchdogs",
+        "subtitle"
       ],
       "sha256": "f6a6a54e2befcea408a0632c364c2957fcb7e6da505450fbb30650281b8af7c9"
     },
@@ -3318,6 +3319,60 @@
         "audio",
         "playback-settings-parity"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Fsr1Shaders.kt",
+      "sha256": "30c236d0d39527593d2fcafdeec7ace30c7f0ac69c2461219f8d5de7df0ce256",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt",
+      "sha256": "09c549db26fcf29beaeea70f6e34aa6a244295d1373b6695b71ec1cad39de73d",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "sha256": "bb02db22bcefb15717915d384c2385d4d462cf443cb543941264ccae576ac0ab",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KPipelineRenderer.kt",
+      "sha256": "7f776ae9941e7e3890180edf703be10272dd0a29181f2e8cc7c6035bfd032252",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "reference-only"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/FboManager.kt",
+      "sha256": "fd31cd2134c9eec750f2404b16c793c5359346c5b02c29f7c86125e839a12dfe",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "reference-only"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "sha256": "2acf91ceb3649329590b1f52c24835914b22ea9a73b1b038c26531bc1b7b073a",
+      "features": [
+        "plugins",
+        "playback"
+      ],
+      "mode": "policy-extract"
     }
   ],
   "featureCoverage": {

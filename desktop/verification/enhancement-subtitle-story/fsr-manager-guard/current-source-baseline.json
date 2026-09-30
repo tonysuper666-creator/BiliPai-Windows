@@ -1,0 +1,48 @@
+{
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "691e7bc7da901d1357e1b2d5d0b9788b481cfb426973ae1cceda09939a491df4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfiguration.kt",
+      "sha256Bytes": "fcb5eb2bbd39fd0527438c55d2a0b3eed30948bead336c5d4bb149fe79aa4707"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+      "sha256Bytes": "5b84b94455c159199d5e9dc9f331d8f5cc44e5ef8a417cda6a4bda75812e8fec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "7512241bb6a2f06d560eabb53cbb0d465faace2e6441543a4a1de3d9ad82d924"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "9003afee69a90809619b1af03c44fac17a124a58d7b32875b208214c0f57dbed"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "ea352c89b896559f3bce812e21a6bfb4ae49e0bfbfc9f220d2ab5defcdb31359"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "a118c2da5c4cd43a0796f8f4d4ce7acfacbe4ed22809f2685a5bd0c7ce2e09d4"
+    },
+    {
+      "path": "desktop/build/generated/plugins/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "sha256Bytes": "a2700036d9eaa98662c694fbed4f6186c9929042e3001cb039db826a22f93082"
+    },
+    {
+      "path": "desktop/build/generated/plugins/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "sha256Bytes": "defeb391ed207f673cf1db3ba7e8142a79e1c4c7624bf89851a8382890528db0"
+    },
+    {
+      "path": "desktop/build/generated/plugins/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "sha256Bytes": "2adee7194347497119a1efa09a39cf81cfd62285443d6ead54284f510e682cbc"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "additions": [],
+  "alreadyRegisteredReferences": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlayerKeyboardPolicy.kt",
+      "sha256": "d9315792c605c4acc4f7c3de98c888b335de729fba741c6e7f0eb966a3101441"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitPagerSwitchPolicy.kt",
+      "sha256": "6805c3dfcd1f853d5251c47001cbb5a16adfa070e46971468dd84e3c7c0c59c0"
+    }
+  ]
+}

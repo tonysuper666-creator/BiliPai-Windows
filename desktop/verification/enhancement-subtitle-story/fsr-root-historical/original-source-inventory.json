@@ -1,0 +1,57 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+    "sha256Bytes": "2ed6919a7fe02e8ed5575f1610a1d4a9f127bc61d997e08c7b39a86a38592557",
+    "sha256Lf": "0979f3131d293cddfdeec2b41e00eb89d90a49043c1782e1a105e1b99b11baab"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginManager.kt",
+    "sha256Bytes": "68092e50c2e764b614f72874e7b76d74d083683c7c8817e821deb402d77c8e57",
+    "sha256Lf": "0b1dc7ee2dd74747079e35135691882c1b8d0d98783b788a2e91802a1f682b4d"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/plugin/PluginStore.kt",
+    "sha256Bytes": "f291b150d36cf935ab4e816dd1979eeb2aabe0dd54edecfb9f3b1e14d60ebcdf",
+    "sha256Lf": "04a12ad24b0ff6393d727638e61e348d115e617b3dd9a9e604cac59deae9ece8"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/plugin/BuiltinPluginDefaultPolicy.kt",
+    "sha256Bytes": "3d0707de80b0d29570815088a7f4eed4a3e771d67d0ed9dc18b509fa4eb683b8",
+    "sha256Lf": "9d4c52b077efd9783900208b2f6e6222438c9df72df7723ab2572635d5ea2c1e"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt",
+    "sha256Bytes": "303e9c6bb77332cca34311cceb53fb72df500e28488aed431725e3ff4eeb3059",
+    "sha256Lf": "2bdfd821d4f0d03f1a7dad1c06779df254d7cfc5763c36e917ea981f7dd712b7"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementConfigLoadGuard.kt",
+    "sha256Bytes": "505869c4ed633135e99cca30745ddbb7610e0bdd76236bad1c4b92aff34ccbc2",
+    "sha256Lf": "d95d0f746ec76f99f00b5642ff382e45135e3aab2cc9e506a61318b68938a7d6"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/VideoEnhancementSessionPolicy.kt",
+    "sha256Bytes": "ccb1378a91c2a047d63652c545c5638fc5bbbc61625f21e314002caef5199af7",
+    "sha256Lf": "3407bb28525601c6c63af00c9e7a3b9cd6eb5e51ee01f1ca5ffd3017467c6a9d"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt",
+    "sha256Bytes": "362b74ba0525e3f3537d6e37c518a77d2cc42c224845244b8a187a0ff5e4198d",
+    "sha256Lf": "09c549db26fcf29beaeea70f6e34aa6a244295d1373b6695b71ec1cad39de73d"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+    "sha256Bytes": "2eeccf85ff60123b8e52aeb7e4d5ff22c97e6d97a465e783c0a99d74809c9ce7",
+    "sha256Lf": "bb02db22bcefb15717915d384c2385d4d462cf443cb543941264ccae576ac0ab"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AdaptivePreferenceComponents.kt",
+    "sha256Bytes": "2b392cf12165efb83558b38b26a12ea5115c238d088fba7cfa8596c460320d41",
+    "sha256Lf": "f4a1fbaf5d25526754512a5d4e416521b442de4d8a408362a1fe71ef920b814c"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt",
+    "sha256Bytes": "0935f9876f097d9fa33ba70e373b1dcd049371a10a21ae7224642cb1ff3a21e8",
+    "sha256Lf": "99ddd98a5156b8dd17cc988d6e5d6468331103a6d7a461a00a3316df0ae1e4f8"
+  }
+]

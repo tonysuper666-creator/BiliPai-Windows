@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:16.994Z" hostname="TONYSUPER666" time="0.032">
+  <properties/>
+  <testcase name="downwardDragUsesSamePagerStepContract()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.007"/>
+  <testcase name="foreignRouteOrNativeTakeoverCannotReuseInputLease()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.002"/>
+  <testcase name="textControlClickAndTabReturnKeyboardToCompose()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.0"/>
+  <testcase name="rejectedNavigationDoesNotConsumeAndDoesNotArmRepeat()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="smallHorizontalAndNonPrimaryDragsDoNotSwitch()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="spaceUsesOriginalPolicyAndSuppressesKeyRepeatUntilRelease()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.009"/>
+  <testcase name="verticalDragCommitsOnlyAtReleaseAndOnce()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="changedAccountEpochDuringDragCannotCommit()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="typedCharacterIsConsumedOnlyForOwnedHandledKey()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="changedNativeSourceDuringDragCannotCommit()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.0"/>
+  <testcase name="keypadLocationIsPreservedForOriginalKeyboardPolicy()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="pageKeysAndArrowsUsePagerWithoutPlayerVolumeActions()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="inactiveWindowCannotSwitchOrPause()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.0"/>
+  <testcase name="disposeRemovesAwtListenerAndMakesFurtherEventsInert()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="nextSourceWithSameOwnedRouteCanUseNewKeyboardToken()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="nativeFocusCallbackRequiresOwnedActivePointer()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="systemAndShiftShortcutsKeepOriginalPolicy()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <testcase name="staleReleaseDoesNotConsumeForeignOwnersKey()" classname="com.bilipai.desktop.ui.DesktopStoryNativeInputTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

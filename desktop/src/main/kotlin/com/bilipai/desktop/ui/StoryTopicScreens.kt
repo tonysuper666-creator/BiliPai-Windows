@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.unit.dp
@@ -32,6 +33,7 @@ fun DesktopStoryScreen(data: DesktopStoryTopicDataSource, seed: DesktopStorySeed
     onReleasePlayback: (DesktopStoryOwner) -> Unit,
     onBack: () -> Unit, onUser: (Long) -> Unit, onSearch: () -> Unit,
     onRetryPlayback: (DesktopStoryOwner) -> Unit = {},
+    nativeInput: DesktopStoryNativeInputBinding? = null,
     playerContent: @Composable (DesktopStoryOwner, VideoCard, Modifier) -> Unit) {
     val epoch by data.sessionEpoch.collectAsState()
     val scope = rememberCoroutineScope()
@@ -46,6 +48,35 @@ fun DesktopStoryScreen(data: DesktopStoryTopicDataSource, seed: DesktopStorySeed
     var revision by remember(controller) { mutableLongStateOf(0) }
     val pager = rememberPagerState { state.pages.size }
     val queue = remember(state.pages) { controller.queue() }
+    val focusManager = LocalFocusManager.current
+    val latestActive by rememberUpdatedState(isActive)
+    val latestNativeInput by rememberUpdatedState(nativeInput)
+    DisposableEffect(controller, nativeInput?.surface) {
+        val surface = nativeInput?.surface
+        val bridge = surface?.let {
+            DesktopStoryNativeInputBridge(it, token = {
+                val binding = latestNativeInput
+                if (!latestActive || binding == null || !controller.currentEpochIsOwned() || !binding.owns(controller.owner)) null
+                else DesktopStoryNativeInputToken(controller.owner, binding.sourceVersion())
+            }, onPageStep = { direction, expected ->
+                val binding = latestNativeInput
+                val target = pager.settledPage + direction
+                if (!latestActive || binding == null || !binding.owns(controller.owner) ||
+                    !controller.currentEpochIsOwned() || binding.sourceVersion() != expected.sourceVersion ||
+                    controller.owner != expected.owner || pager.isScrollInProgress || target !in 0 until pager.pageCount) false
+                else { scope.launch {
+                    val current = latestNativeInput
+                    if (latestActive && controller.currentEpochIsOwned() && current?.owns(expected.owner) == true &&
+                        current.sourceVersion() == expected.sourceVersion) pager.animateScrollToPage(target)
+                }; true }
+            }, onPlayerKey = { action, expected ->
+                val current = latestNativeInput
+                latestActive && controller.currentEpochIsOwned() && current?.owns(expected.owner) == true &&
+                    current.sourceVersion() == expected.sourceVersion && current.onPlayerKey(action, expected.sourceVersion)
+            }, onNativeFocus = { focusManager.clearFocus(force = true) })
+        }
+        onDispose { bridge?.close() }
+    }
     DisposableEffect(controller) { onDispose {
         controller.close()
         if (hasRequestedPlayback) latestRelease(controller.owner)

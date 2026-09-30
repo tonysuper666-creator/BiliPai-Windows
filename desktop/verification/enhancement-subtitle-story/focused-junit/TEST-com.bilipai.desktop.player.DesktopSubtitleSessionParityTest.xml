@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:16.158Z" hostname="TONYSUPER666" time="0.681">
+  <properties/>
+  <testcase name="repeatedAuthFailureStopsAfterOneRefreshAndKeepsHealthyTrack()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.018"/>
+  <testcase name="nonAuthFailureDoesNotRefreshAndPromotesSuccessfulSecondary()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.009"/>
+  <testcase name="sameMidEpochChangeCancelsActualPlayerInfoConnectionBeforeAnyImport()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.161"/>
+  <testcase name="epochChangeDuringBothBodyImportsCancelsOnlyThoseOwnedCalls()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.317"/>
+  <testcase name="epochGuardAfterCueImportRejectsOldPairWithoutDeletingLegalCache()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.008"/>
+  <testcase name="secondaryFailureKeepsOriginalPrimaryWithoutDiscardingItsNativeAsset()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.008"/>
+  <testcase name="sourceOrManualControlChangedDuringRefreshCannotInstallOldPair()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.041"/>
+  <testcase name="epochRetiresOwnedBindingManualLockAndModeButPreservesNativeCacheFiles()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="actual HTTP 401 refreshes original playerinfo once and retains healthy track" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.011"/>
+  <testcase name="actual HTTP 403 refreshes original playerinfo once and retains healthy track" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="actual HTTP 404 refreshes original playerinfo once and retains healthy track" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="actual HTTP 410 refreshes original playerinfo once and retains healthy track" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="actual HTTP 412 refreshes original playerinfo once and retains healthy track" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="epochRetirementDoesNotTouchForeignSourceOrNewManualControlVersion()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.008"/>
+  <testcase name="originalCueQualityPolicyPromotesDenseSecondaryOverOneLongPrimary()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.01"/>
+  <testcase name="epochChangeDuringOneTimeMetadataRefreshCancelsRefreshAndCannotInstallOldHealthyTrack()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.009"/>
+  <testcase name="refreshMatchesOriginalBindingKeyBeforeLanguageWhenSignedQueryChanges()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.011"/>
+  <testcase name="nonCooperativeMetadataReturnedAfterEpochChangeCannotStartImports()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.005"/>
+  <testcase name="epochRetirementInvalidatesActuallyQueuedMpvSubtitleTransaction()" classname="com.bilipai.desktop.player.DesktopSubtitleSessionParityTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

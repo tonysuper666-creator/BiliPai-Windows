@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:14.759Z" hostname="TONYSUPER666" time="1.398">
+  <properties/>
+  <testcase name="cancelAfterHeadersWhileBodyBlocksClosesActualConnection()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.184"/>
+  <testcase name="cancelBeforeHeadersClosesActualConnectionAndWritesNothing()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.16"/>
+  <testcase name="declaredEightMiBLimitRemainsEnforcedWithoutCacheWrite()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.005"/>
+  <testcase name="assetsCloseCancelsAllOwnedHeaderAndBodyCallsWithoutNewFiles()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.316"/>
+  <testcase name="malformedResponseFailsWithoutDamagingPreviouslySuccessfulTrack()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.02"/>
+  <testcase name="canceledDuplicateDoesNotDeleteAnotherSuccessfulImportOfSameUrl()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.181"/>
+  <testcase name="untrustedAddressRejectedBeforeAnyCall()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.003"/>
+  <testcase name="unknownLengthChunkedEightMiBLimitRemainsEnforcedWhileReading()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.028"/>
+  <testcase name="closedAssetsRejectNewImportBeforeAnyCall()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.004"/>
+  <testcase name="automaticSessionCloseCancelsBothImportsButKeepsApplicationCacheOwnerAlive()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.322"/>
+  <testcase name="cancelOneTrackDoesNotCancelIndependentSuccessfulTrackOrDeleteItsCache()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.165"/>
+  <testcase name="completedCacheReusedBySameOwnerUntilAssetsCloseWithoutAnotherRequest()" classname="com.bilipai.desktop.player.DesktopSubtitleCancellationTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

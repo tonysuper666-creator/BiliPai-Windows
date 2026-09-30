@@ -13,10 +13,14 @@ data class PlayerVideoShaderState(
     val executedPasses: List<String> = emptyList(),
     val active: Boolean = false,
     val error: String? = null,
+    val requestedIntermediateFormat: String = "auto",
+    val actualIntermediateFormat: String? = null,
 )
 
-internal data class PreparedVideoShaders(val paths: List<String>, val descriptions: Set<String>) {
-    fun executed(passes: List<String>): Boolean = passes.any { pass -> descriptions.any { description -> pass.contains(description) } }
+internal data class PreparedVideoShaders(val paths: List<String>, val descriptions: Set<String>, val options: PlayerVideoShaderOptions = PlayerVideoShaderOptions()) {
+    fun executed(passes: List<String>): Boolean = if (options.requiredPassDescriptions.isEmpty())
+        passes.any { pass -> descriptions.any { description -> pass.contains(description) } }
+    else options.requiredPassDescriptions.all { description -> passes.any { pass -> pass.contains(description) } }
 }
 
 /** Resource selection and hash checking belong to the upstream plugin asset adapter. */

@@ -1,0 +1,92 @@
+{
+  "snapshot": {
+    "sourceBaseline": [
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+        "sha256": "7512241bb6a2f06d560eabb53cbb0d465faace2e6441543a4a1de3d9ad82d924"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoShaders.kt",
+        "sha256": "4831109a2c811fe06c4c0e4ba68a54cdaa6635aead44821704cc89a330b48d9e"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+        "sha256": "44352defeeb3cd3ec0c9a8902a6311d91bacea779accdbab7689b1483611d34c"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+        "sha256": "5b84b94455c159199d5e9dc9f331d8f5cc44e5ef8a417cda6a4bda75812e8fec"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrHookAdapter.kt",
+        "sha256": "ac59f212d49820d59d2df468daa4832ce8742121bde9b57e166969e57702d3a8"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrVideoShaderResources.kt",
+        "sha256": "96c47e4615dd434d523098f1fad664dc441f1741a4f925e245735a8c4e1403b7"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+        "sha256": "1a59bda9a50f618190bdb1d3a67c2217dc5321eb38610ec7e4f3e8f6b8a513ab"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfiguration.kt",
+        "sha256": "fcb5eb2bbd39fd0527438c55d2a0b3eed30948bead336c5d4bb149fe79aa4707"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+        "sha256": "21de676a1625bebeb955dc2c3e9f535a1e889c943770b45b057cdfa296c19faf"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoShaderResources.kt",
+        "sha256": "da0b8e4a66f8ddc24c451f7974f8efb6ccf87d6ff0045866dc3e8cb43552dc42"
+      },
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoEnhancementControls.kt",
+        "sha256": "20bf16772e5c8f0df1ef0627d5aa038b80f67322f5becfcb4c82fe21026fce21"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+        "sha256": "2ed6919a7fe02e8ed5575f1610a1d4a9f127bc61d997e08c7b39a86a38592557"
+      }
+    ],
+    "archives": [
+      {
+        "part": "kotlin",
+        "path": "main-kotlin-snapshot-corrected.jar",
+        "sha256": "1f2ef8d279cdba238bc2605806821b0658cd11148a9097c8a2c2b05452632d6f",
+        "entries": 6176,
+        "classContentSha256": "23d3276c92525244098ab5c63c72559a2c5dfc5f7af8b922ed61364d6ab48309"
+      },
+      {
+        "part": "java",
+        "path": "main-java-snapshot-corrected.jar",
+        "sha256": "96f913e8d4c869f15b12f887627d3a3505bd3dd0010382c1cd213fdcfcfd89b1",
+        "entries": 141,
+        "classContentSha256": "aa586e8b5220603b4b52ee10e6a0a256fbf1bb0777daffdabd2a8da625f4bbf6"
+      },
+      {
+        "part": "resources",
+        "path": "main-resources-snapshot-corrected.jar",
+        "sha256": "495f697befdd31e0002e10a80dade041d2891c038c468e8ffe3d95fff272a5f0",
+        "entries": 42,
+        "classContentSha256": "59a751b92e820a4aacf8eda1ce6ee28ca416ac67563b6afd70c8ddd4643a2362"
+      }
+    ],
+    "extendedWin32PathTraversal": true,
+    "sharedGradleInvoked": false
+  },
+  "fixtureSources": [
+    {
+      "path": "RuntimeFsrNativeSmoke.kt",
+      "sha256": "161a5c5d9e5583c697ec90a79df55f18ecf06a47c1c4d24599b25d129ddbf6c8"
+    },
+    {
+      "path": "RunRuntimeNativeProbe.kt",
+      "sha256": "648af9cd5acc5b698d03740fa1bc98d21f397479091c45ec4dec5b824db83de0"
+    }
+  ],
+  "nativeDllSha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+  "ownedTemporaryRoot": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-fsr-p3qr42pj",
+  "sharedGradleInvoked": false
+}

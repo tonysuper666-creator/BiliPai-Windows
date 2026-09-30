@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "actualNativeChecks": 19,
+  "originalStrictChecks": [
+    "originalFsrEasuAndRcasExecuted",
+    "actualFsrIntermediateFormat",
+    "actualGpuMaximumTextureDimension",
+    "originalFsrVisibleReconstruction",
+    "originalRcasUniformChangesPixelsWithoutRewritingAssets",
+    "fsrPausedOwnerPositionAndTrackedSeekPreserved",
+    "originalPipAndLifecycleBypassAndResume",
+    "originalSameBvPartsAndNewBvSwitchPolicy",
+    "realPqAndHlgMetadataUsesOriginalHdrBypass",
+    "rendererClosePreservesNativeMediaOwner",
+    "oldRendererClosePreservesForeignMediaAndGpuConfiguration"
+  ],
+  "extraRuntimeChecks": [
+    "allNonNecessaryProvidersDisabledBeforeRuntimeInitialization",
+    "realRuntimeUsesVerifiedEmptyLocalJsHost",
+    "uniqueOriginalRuntimeProviderAndOriginalConfigFlow",
+    "originalRuntimeAnime4KFastQualityRgba16hfPixelsAndPausedSeek",
+    "originalRuntimeAnime4KPipHostAndPqHlgBypassResume",
+    "runtimeSetterOffOnAlgorithmSwitchAndSharedStore",
+    "realRuntimeGuardedEnableRejectsChangedAccountEpochAndNativeSource",
+    "noUnexpectedJavaNetworkConnectionsOrListeners"
+  ],
+  "thresholds": {
+    "changedMeanRgbDelta": "> max(0.1, measuredBaselineNoise * 3.0)",
+    "changedPixelsAnyChannelOver8": "> 100",
+    "bypassMeanRgbDelta": "<= max(0.1, measuredBaselineNoise * 2.0)",
+    "pausedPositionAbsoluteDeltaSeconds": "< 0.15",
+    "sourceVersionAndSeekCompletedId": "unchanged",
+    "fsrPasses": [
+      "BiliPai original AMD FSR 1.0 EASU",
+      "BiliPai original AMD FSR 1.0 RCAS"
+    ],
+    "fsrActualFbo": "rgba8",
+    "anime4KActualFbo": "rgba16hf",
+    "nativeWaitDeadlineSeconds": 15,
+    "pixelChangeDeadlineSeconds": 5
+  },
+  "guard": "own PID/HWND, foreground root, WindowFromPoint actual SunAwtCanvas before native stages/captures",
+  "limitations": [
+    "Runtime/config UI callbacks invoked directly; settings-control clicks belong to separate evidence",
+    "Paused baseline starts at 2 seconds; proves seekCompletedId preservation, no newly requested user seek",
+    "Hardware proof covers this machine/native DLL; PQ/HLG bypass only, no Dolby Vision device proof",
+    "Network barrier is Java-only; native media inputs are exclusively pinned local synthetic files",
+    "Temporary PluginStore and synthetic session epoch; no real account access or user settings"
+  ]
+}

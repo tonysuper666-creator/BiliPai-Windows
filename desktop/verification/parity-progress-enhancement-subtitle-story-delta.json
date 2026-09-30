@@ -1,0 +1,61 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "ccbbbf3af507ff5764cf39f1fccd295ae27c5fef",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-story-playback-delta.json",
+  "scope": "The same 35 manually weighted functional groups. Previous reviewed credits are carried forward; unimplemented and unverified behavior remains outstanding. This is a rough engineering assessment, not a measured acceptance percentage.",
+  "changes": [
+    {
+      "group": "story",
+      "weight": 2,
+      "previousMainCredit": 1,
+      "currentMainCredit": 1.5,
+      "remainingCredit": 0.5,
+      "basis": "The native Canvas input bridge is integrated into Root's original pager/keyboard executor. Actual native pointer/key checks cover release-only vertical drag, pause/up/down, focus, retired epoch and foreign owner; existing wheel handling is retained.",
+      "remaining": "Complete original touch/fling/zoom/double-tap/long-press and overlay/control visual behavior, packaged application window and live account/service acceptance."
+    },
+    {
+      "group": "settings",
+      "weight": 5,
+      "previousMainCredit": 2.25,
+      "currentMainCredit": 2.75,
+      "remainingCredit": 2.25,
+      "basis": "Automatic subtitles now retire credential epochs and exact owned actor transactions, cancel actual HTTP headers/body, preserve atomic bounded cache, use the original one-time authorization refresh and retain the healthy track. Thirty-one actual TCP/actor tests pass in the shared product build.",
+      "remaining": "Original settings search/category/focus/privacy/proxy/permissions/diagnostics and complete UI; real subtitle service/package rendering and physical HiRes audio output failure acceptance. Prepared isolated work is not credited here."
+    },
+    {
+      "group": "builtins",
+      "weight": 4,
+      "previousMainCredit": 2.5,
+      "currentMainCredit": 3,
+      "remainingCredit": 1,
+      "basis": "The single original Anime4K/FSR provider, original configuration and both styles of original settings controls reach Root. Actual original IO writes are serialized and drained at exit. Native rendering proves original EASU/RCAS RGBA8 and FAST/QUALITY RGBA16HF. Current Runtime/manager lock and onEnable ownership guards have fresh-JVM regressions; this guard cohort is distinct from the preceding native snapshot.",
+      "remaining": "Complete original plugin UI/online behavior, packaged Root/lifecycle acceptance and deferred CDN prefetch. Native proof is machine/backend-specific; Dolby Vision is not exercised."
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 93.25,
+    "isolatedReadyPoints": 1,
+    "unfinishedOrUnverifiedPoints": 43.75,
+    "weightedReviewedProgressPercent": 67.6,
+    "presentation": "约68%，按完整原项目功能和底层行为对齐计算；人工粗估，不是精确验收统计。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-enhancement-subtitle-story-integration.json",
+  "uncreditedPreparedWork": [
+    "Settings search and incognito visible-history writes",
+    "AICU and reports",
+    "Space actions and original dynamic search",
+    "Original dynamic vote/create-vote/create-reserve",
+    "Original native component popup width fix",
+    "Native music Root entry, full Shell controls/visual and real service acceptance"
+  ],
+  "nativeIntermittency": "The earlier Source9 initial black surface remains unexplained. This cohort does not prove its cause resolved.",
+  "delivery": "No new EXE was packaged or deployed in this slice. Desktop remains the version with ordinary playback confirmed by the user."
+}

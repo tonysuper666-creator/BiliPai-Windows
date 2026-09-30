@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:16.839Z" hostname="TONYSUPER666" time="0.043">
+  <properties/>
+  <testcase name="closingAnUnmountedNativePlayerRevokesItsOwnerEvenWhenItsNumericVersionDidNotChange()" classname="com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest" time="0.008"/>
+  <testcase name="manualVideoSwitchPersistsAcrossPartsOfTheSameBvAndResetsForTheNextBv()" classname="com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest" time="0.03"/>
+  <testcase name="aLateEnableCompletionCannotRememberTheSwitchForAReplacedNativeOwner()" classname="com.bilipai.desktop.player.DesktopVideoEnhancementSessionTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

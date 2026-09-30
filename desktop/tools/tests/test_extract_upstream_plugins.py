@@ -3,6 +3,7 @@ import hashlib
 from pathlib import Path
 import tempfile
 import unittest
+import re
 
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -49,6 +50,19 @@ class PluginExtractorTest(unittest.TestCase):
         body = self.output_for("com.android.purebilibili.core.plugin.json", "RuleEngine")
         expected = source.replace("android.graphics.Color.parseColor(it)", "com.bilipai.desktop.plugins.DesktopPluginColor.parseColor(it)")
         self.assertEqual(body.split("\n", 2)[2], expected.strip() + "\n")
+
+    def test_media_owner_guard_keeps_the_original_manager_transaction(self):
+        original = EXTRACTOR.read(ROOT, EXTRACTOR.BASE + "core/plugin/PluginManager.kt")
+        body = self.output_for("com.android.purebilibili.core.plugin", "PluginManager")
+        selector, parser = EXTRACTOR.media_extractor(ROOT), EXTRACTOR.parser_for(ROOT)
+        actual = selector.function(body, "setEnabled", parser)
+        actual = EXTRACTOR.substitute(actual,
+            'enabled: Boolean, stillOwned: () -> Boolean = { true }', 'enabled: Boolean')
+        actual = EXTRACTOR.substitute(actual,
+            '        if (!stillOwned()) return@withLock\n', '')
+        actual = EXTRACTOR.substitute(actual,
+            '                if (!stillOwned()) {\n                    plugin.onDisable()\n                    return@withLock\n                }\n', '')
+        self.assertEqual(selector.function(original, "setEnabled", parser), actual)
 
     def test_live_rules_configs_and_json_validation_keep_original_code(self):
         body = self.output_for("com.android.purebilibili.feature.plugin", "DanmakuEnhancePlugin")
@@ -99,7 +113,8 @@ class PluginExtractorTest(unittest.TestCase):
             files = EXTRACTOR.generate(ROOT, output)
             self.assertFalse(generated.exists())
             self.assertEqual(prior, foreign.read_bytes())
-            self.assertEqual(len(EXTRACTOR.EXTRACTED) + 1, len(files))
+            self.assertEqual(len(files), len(set(files)))
+            self.assertTrue(all(path.is_file() and path.resolve().is_relative_to(output.resolve()) for path in files))
 
     def test_canonical_target_cannot_escape_output_on_windows(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -135,7 +150,20 @@ class PluginExtractorTest(unittest.TestCase):
     def test_inventory_has_one_unique_source_and_lf_hash(self):
         inventory = EXTRACTOR.inventory(ROOT)
         self.assertEqual(len(inventory), len({row["path"] for row in inventory}))
-        self.assertEqual(sum(row["mode"] != "direct" for row in inventory) + 1, len(self.files))
+        # A source can yield its original provider plus UI/aliases, and renderer references
+        # yield no Kotlin file. Validate exact provenance instead of one-file-per-source counts.
+        registered = {row["path"]: row["sha256"] for row in inventory + EXTRACTOR.asset_inventory(ROOT)}
+        origins = set()
+        for path in self.files:
+            lines = path.read_text(encoding="utf-8").splitlines()
+            match = re.fullmatch(r"// GENERATED from (.+); do not edit\.", lines[0])
+            self.assertIsNotNone(match)
+            origin = match[1]
+            self.assertIn(origin, registered)
+            self.assertEqual("// LF-normalized SHA-256: " + registered[origin], lines[1])
+            origins.add(origin)
+        required = {row["path"] for row in inventory if row["mode"] not in ("direct", "reference-only")}
+        self.assertTrue(required.issubset(origins), required - origins)
         self.assertTrue(all(len(row["sha256"]) == 64 for row in inventory))
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp)

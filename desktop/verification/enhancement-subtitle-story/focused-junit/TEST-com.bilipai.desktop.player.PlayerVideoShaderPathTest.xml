@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.player.PlayerVideoShaderPathTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-09-30T09:36:16.894Z" hostname="TONYSUPER666" time="0.001">
+  <properties/>
+  <testcase name="native shader paths preserve unicode and long absolute drive paths without changing the asset()" classname="com.bilipai.desktop.player.PlayerVideoShaderPathTest" time="0.001"/>
+  <testcase name="network shares use the correct extended UNC path while other platforms keep ordinary paths()" classname="com.bilipai.desktop.player.PlayerVideoShaderPathTest" time="0.0"/>
+  <testcase name="relative Windows paths cannot become native device namespace paths()" classname="com.bilipai.desktop.player.PlayerVideoShaderPathTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

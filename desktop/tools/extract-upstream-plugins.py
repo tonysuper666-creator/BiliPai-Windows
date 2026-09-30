@@ -48,6 +48,12 @@ SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path 
 SOURCES[BASE + "feature/home/HomeUiState.kt"] = "policy-extract"
 EXTRACTED.append(BASE + "feature/home/HomeViewModel.kt")
 SOURCES[BASE + "feature/home/HomeViewModel.kt"] = "policy-extract"
+DIRECT += [BASE + 'feature/anime4k/gl/Fsr1Shaders.kt', BASE + 'feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt']
+SOURCES.update({path: 'direct' for path in DIRECT[-2:]})
+SOURCES[BASE + 'feature/anime4k/Anime4KOutputPolicy.kt'] = 'policy-extract'
+SOURCES[BASE + 'feature/anime4k/gl/Anime4KPipelineRenderer.kt'] = 'reference-only'
+SOURCES[BASE + 'feature/anime4k/gl/FboManager.kt'] = 'reference-only'
+SOURCES[BASE + 'feature/video/ui/components/Anime4KSettingsUi.kt'] = 'policy-extract'
 PLUGIN_ASSETS = ["app/src/main/assets/anime4k/" + name for name in (
     "Anime4K_AutoDownscalePre_x2.glsl", "Anime4K_AutoDownscalePre_x4.glsl", "Anime4K_Clamp_Highlights.glsl",
     "Anime4K_Restore_CNN_M.glsl", "Anime4K_Restore_CNN_S.glsl", "Anime4K_Restore_CNN_VL.glsl",
@@ -207,6 +213,13 @@ def generate(repo: Path, output: Path) -> list[Path]:
         body = platform_context(source)
         if name == "PluginManager":
             body = platform_logger(body)
+            # Retired desktop media requests must be checked after the original manager lock.
+            body = substitute(body, 'suspend fun setEnabled(pluginId: String, enabled: Boolean) {',
+                'suspend fun setEnabled(pluginId: String, enabled: Boolean, stillOwned: () -> Boolean = { true }) {')
+            body = substitute(body, '        pluginStateMutex.withLock {\n            val info = _pluginsFlow.value.firstOrNull',
+                '        pluginStateMutex.withLock {\n            if (!stillOwned()) return@withLock\n            val info = _pluginsFlow.value.firstOrNull')
+            body = substitute(body, '                    plugin.onEnable()\n                    Logger.d(TAG, " Plugin enabled: ${plugin.name}")',
+                '                    plugin.onEnable()\n                    if (!stillOwned()) {\n                        plugin.onDisable()\n                        return@withLock\n                    }\n                    Logger.d(TAG, " Plugin enabled: ${plugin.name}")')
         generated.append(write(output, path, source, body))
 
     path = BASE + "core/plugin/PluginStore.kt"
@@ -384,6 +397,22 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
             method = selector.function(original, 'resolveImportPayload', parser)
             method = substitute(method, 'private suspend fun resolveImportPayload', 'internal suspend fun resolveImportPayload')
             body += '\n\n' + method
+        elif name == 'Anime4KPlugin':
+            # Platform visibility and actual IO drain only; original config decisions stay intact.
+            body = substitute(body, 'private suspend fun loadConfig()', 'internal suspend fun loadConfig()')
+            body = substitute(body, '    private var config = Anime4KConfig()',
+                '    @Volatile private var desktopPersistenceError: Throwable? = null\n    private var config = Anime4KConfig()')
+            body = substitute(body, '        configLoadGuard.markLocalChange()',
+                '        desktopPersistenceError = null\n        configLoadGuard.markLocalChange()')
+            body = substitute(body, '                Logger.e(TAG, "保存画质增强配置失败", error)',
+                '                desktopPersistenceError = error\n                Logger.e(TAG, "保存画质增强配置失败", error)')
+            method = '''    internal suspend fun awaitDesktopConfigurationWrites() {
+        ioScope.coroutineContext[kotlinx.coroutines.Job]?.children?.toList()?.forEach { it.join() }
+        desktopPersistenceError?.let { throw IllegalStateException("画质增强配置保存失败", it) }
+    }
+
+'''
+            body = substitute(body, '    companion object {', method + '    companion object {')
         generated.append(write(output, path, original, body))
 
     path = BASE + 'feature/plugin/AdFilterInsightPolicy.kt'
@@ -473,6 +502,10 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
         'com.bilipai.desktop.plugins.DesktopPluginResource.open("plugin/cdn_region_catalog.json")')
     generated.append(write(output, path, original, platform_logger(platform_context(body))))
 
+    spec = importlib.util.spec_from_file_location('video_enhancement_platform', repo / 'desktop/tools/extract-video-enhancement.py')
+    enhancement = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(enhancement)
+    generated.extend(enhancement.generate(repo, output, selector, parser, write, substitute))
     return generated
 
 def inventory(repo: Path) -> list[dict]:

@@ -1,0 +1,18 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "mode": "extracted",
+    "features": [
+      "playback",
+      "subtitle"
+    ],
+    "sha256": "f6a6a54e2befcea408a0632c364c2957fcb7e6da505450fbb30650281b8af7c9",
+    "symbols": [
+      "SubtitleTrackLoadDecision",
+      "buildSubtitleTrackBindingKey",
+      "shouldRetrySubtitleLoadWithPlayerInfo",
+      "isLikelyLowQualitySubtitleTrack",
+      "resolveSubtitleTrackLoadDecision"
+    ]
+  }
+]

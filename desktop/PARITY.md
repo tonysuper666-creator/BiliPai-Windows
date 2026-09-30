@@ -16,7 +16,7 @@
 | UP 空间与合集 | `feature/space`, `SpaceApi` | 原聚合主页/头图、服务端一级与投稿二级栏目；投稿筛选/四种排序/搜索/网格、收藏子页、专栏/图文、充电/舰队、投币/赞过/音频/追番/课程及真实合集ID已接；续播CID、原队列与主页SID点击通过离线验证 | 原粉丝专用网页的桌面内置承载、签名编辑/关注分组/特别关注及完整菜单、动态搜索和全部窗口/账号验收 |
 | 历史、收藏、稍后再看、点赞 | `feature/list`, `feature/watchlater` | 云端原业务类型列表、收藏夹管理；本地续播迁移测试通过；原历史刷新总线与详情页抑制策略接入实际心跳及列表 | PGC/直播/文章/课程与合集路由及文章阅读历史上报已接，历史/隐私相关 31 项定向测试通过；删除/批量/播放队列与账号验收 |
 | 普通视频取流 | `VideoLoadPolicy.kt`, `VideoResponse.kt` | 真实 DASH/单段与多段 MP4；原画质/音轨选择、UGC 合集/播放队列；原错误恢复预算、启动/卡顿 watchdog 与 CDN/编码失败切换已接；整包真实隔离 HTTP 403 恢复和脱敏通过 | 真实在线恢复、PremiumAudio 与高级媒体验收 |
-| 播放控制 | `PlaybackSpeedPolicy.kt`, `PlayerKeyboardPolicy.kt` | 原生暂停/进度/0.1–8倍/音量/静音/音轨/主副字幕/截图/分P/循环；新原生测试已确认字幕/浮窗/系统媒体同步；多段连续播放/跨段跳转实际通过 | 默认自动字幕/原音质选择已接且硬解/双字幕 native 部分通过；账号代际、取消/授权重取/单轨降级、进度预览、手势、全屏影院/锁定与所有快捷键仍在推进 |
+| 播放控制 | `PlaybackSpeedPolicy.kt`, `PlayerKeyboardPolicy.kt` | 原生暂停/进度/0.1–8倍/音量/静音/音轨/主副字幕/截图/分P/循环；新原生测试已确认字幕/浮窗/系统媒体同步；多段连续播放/跨段跳转实际通过；自动字幕账号代际、真实HTTP取消、原授权一次重取与单轨保留已接且定向测试通过 | 新字幕传输的实际服务与整包字体/渲染验收；进度预览、完整手势、全屏影院/锁定与所有快捷键仍在推进 |
 | 弹幕 | `DanmakuProto.kt`, 原分段/过滤/高级模型与 parser | 标准 protobuf/XML、高级 JSON 弹幕、原窗口/过滤、离线分段；原插件字体、颜色、时机与隐藏适配已接；新增首帧/层级同步后，整包透明 Windows 叠层、过滤/样式和护眼实际屏幕像素验证通过 | 长期叠层稳定性、指令互动、避挡、GIF/APNG 多帧、BAS 与发送/点赞及直播线上验收 |
 | 后台/PiP/系统媒体控制 | 原 `MusicPlaybackContract`, PiP/player policies | 页面外迷你画面；听视频独立常驻原生会话；直播/PGC/离线请求、播放及实时会话提升至窗口/账号生命周期，PiP/系统媒体按钮按实际所有者路由；原生换宿主后保活/返回、旧所有者隔离和根关闭验证通过 | 完整产品界面切换、线上直播生命周期与完整队列验收 |
 | 听视频 | `feature/audio/lyrics`, `library`, 原 `PlaylistManager` 纯策略 | 真实音轨、队列/随机历史、持久收藏/最近、歌词与双字幕、睡眠定时已整合 | 队列/恢复/账号释放的 4 项测试通过；完整原生音频流程、外部歌单、沉浸/黑胶视觉 |
@@ -24,16 +24,16 @@
 | 番剧/影视/课程 | `BangumiRepository.kt`, `BangumiIndexFilterPolicy`, PGC/PUGV APIs | 原 PGC 校验/fallback/季与分集/index；实际播放屏幕 | 原追番/状态、时间表/筛选、课程、权益与指定分集续播已接；多段原生播放与真人验收 |
 | 直播 | `feature/live`, `LiveApi` | 真实分区/搜索/关注/HLS与品质选择 | 原 WebSocket/Brotli 协议、鉴权、实时弹幕/SC期限/删除/发送已接并测试；线上连接生命周期 |
 | 下载与离线 | 原 `ResumableAssetDownloader`, Download/Offline policies | 原续传/分片/队列/任务/资产、离线弹幕与续播；实际 Kotlin FFmpeg 双轨/音频/单轨合并解码通过 | 整包真实 FFmpeg 的六种合并输出通过；批量选择、存储管理与真实下载验收 |
-| 内置插件与增强 | `feature/plugin` 实际注册的原十二个插件/策略 | 十一个实际 provider 已接，包含新增 Google Cast；原 SDK/配置/生命周期与成功 seek 回调、今日推荐原补充/缓存策略已整合并离线测试；Anime4K 原 FAST/QUALITY 实际 GPU hook、像素变化、暂停位置与清除还原通过 | Anime4K 完整插件注册与 FSR、完整界面及线上插件验收；CDN prefetch 暂未开放 |
+| 内置插件与增强 | `feature/plugin` 实际注册的原十二个插件/策略 | 十二个实际 provider 已接，含唯一原画质增强实例；原 Anime4K/FSR 配置、M3/Miuix 设置控件与顺序落盘/退出等待接入 Root；真实原生 EASU/RCAS、RGBA8、FAST/QUALITY RGBA16HF、像素、PiP/宿主/HDR旁路及源归属已验证；原manager锁与onEnable等待后的开关守卫已实测 | 完整 Shell/整包与线上插件验收；CDN prefetch 暂未开放 |
 | JSON/包插件、皮肤 | `plugin-sdk`, `feature/plugin/js` | 原 JSON 规则执行与启停已接；原包/皮肤预览、校验、权限选择、安全存储、装扮激活及实际界面已接；JS 运行环境、完整线路/请求头、原远程 URL 下载与不可变预览安装、原字符串参数和图片候选已整合；图片授权检查直接账号代际；共享设置及旧实例冻结已验证 | 打包外部媒体验收、原内容完整视觉与动画图片、皮肤视频与文字/头像层级、完整桌面视觉；原 Kotlin 包仅预览/授权保存的边界保持一致 |
 | DLNA/Google Cast | 原 `feature/plugin/dlna`, `googlecast` | 原 DLNA 与固定 Google Cast V2 Java/官方根证书已接；当前播放源、双轨 DASH 与单文件私有请求头代理、两类投屏共享代理生命周期已整合；14 项实际 HTTP/清理、11 项 DLNA 协议及 25 项 TLS/Protobuf/JmDNS 隔离回归通过 | 两类真实接收设备、完整窗口/账号切换与停止验收；Google Cast 严格 nonce 等兼容差异、音频设备限制及线上行为仍需实机验证；本地离线文件投屏未实现 |
 | 登录与多账号 | `feature/login`, `TokenManager` | Web/TV 扫码、密码/短信/真实浏览器验证、多账号与 DPAPI 已接并单测 | 实际账号登录/验证码与切换验收；账号缓存 owner 回归已通过 |
 | WebDAV与数据备份 | `feature/settings/webdav`, 原 Backup policies | 原九个 WebDAV HTTP 方法和调度策略复用；Windows 受限 ZIP/摘要/回滚、旧写入器停止、DPAPI、本地/跨进程锁与设置对话框已接；真实 loopback DAV、恢复和 DST 周期离线测试通过 | 实际 WebDAV 服务与打包的 Windows 调度验收；Android 备份格式迁移未实现；皮肤/外部包资产未纳入 |
 | 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/缩放/DPI、简繁英 XML 与固定 Miuix 5157 已接；原 App* 控件和偏好/导航图进入主构建，四个桌面控件入口及外观选择器使用原实现；新增原图标/列表样式和点击复制键、宿主配置与错误展示已接，28 项定向 JUnit 和 103 个真实离屏输入检查通过 | 全 Shell 控件/文案迁移、玻璃/皮肤、完整导航/可访问性与实际窗口菜单/弹窗/语言重启验收；壁纸色采用原非 Android S 分支预设色，未实现 Windows 玻璃 |
 | 诊断与隐私设置 | 原诊断/遥测与设置 | Windows 本地诊断已有基础 | 用户开关、日志脱敏、诊断导出与上游设置语义核对 |
-| 竖屏 Story | 原 StoryFeed/PortraitPager policies | 原推荐映射、洗牌/追加与settled页提交接Root原生队列；初始失败可见、同页重试和下一页的取消/账号/外源守卫通过 | 真实Canvas输入桥、完整原控制与视觉、主窗口/打包与线上验收 |
+| 竖屏 Story | 原 StoryFeed/PortraitPager policies | 原推荐映射、洗牌/追加与settled页提交接Root原生队列；初始失败/重试与账号/外源守卫通过；真实Canvas鼠标释放翻页、Space暂停、上下键及焦点/旧所有者隔离接入并验证 | 完整原触摸/惯性/缩放/双击/长按、控制与视觉；主窗口/打包与线上验收 |
 | 话题详情 | 原 TopicRepository/UiState/VisualPolicy/RichTextPolicy | 客户端详情、排序/追加、参与草稿及真实Topic ID；原关键词回退、嵌套返回和动态页面保留已接，真实Compose点击通过 | 完整原发现/详情视觉、页面保留和线上/账号/主窗口验收 |
-| 高级播放设置 | 原音轨/默认音质/codec/subtitle/HiRes failure policies | 默认字段、缓存维度、当前音质切换与成功后记忆已接；单写入队列保留最新完整快照；同源字幕/硬解恢复实际native通过 | 自动字幕epoch/HTTP取消/授权一次重取/单轨降级、完整原设置界面、真实HiRes设备和整包验收 |
+| 高级播放设置 | 原音轨/默认音质/codec/subtitle/HiRes failure policies | 默认字段、缓存维度、当前音质切换与成功后记忆已接；单写入队列保留最新完整快照；同源字幕/硬解恢复实际native通过；新增31项实际TCP/原字幕策略与旧actor请求退休测试通过 | 完整原设置搜索/界面、真实HiRes设备和新字幕整包验收 |
 | 跟随更新 | `desktop/tools` 与 Windows updater | 既有更新监测保留，自动发布关闭 | 按用户要求先完成上述对齐，再扩大完整功能验证和更新机制 |
 
 Windows revision 7 已归档验证：238 份上游 Kotlin 来源和 11 个原资源摘要审计通过；全部 303 个 Retrofit 方法声明逐字一致，45/45 响应文件采用。全量 Kotlin 共 291 项、43 个 suite：290 通过、0 失败、1 因 Windows 主机不能创建符号链接而跳过；Python 脚本 70 项通过。新打包 EXE 的真实原生整轮验证通过，包括画面/声音、SMTC、主副字幕、浮窗/还原、多段/循环与所有权，并新增实际 seek 完成事件、软件解码恢复保留位置/字幕，以及快速替换和同源恢复隔离。完整可复查记录在 `verification/milestone-0.2.406.7.json`。DLNA 仍仅协议 fixture 通过，WebDAV 仍仅 loopback 服务通过，尚未声称真实接收设备/远端服务/Windows 定时任务验收。
@@ -57,3 +57,5 @@ Windows revision 9 的新 EXE/便携包验收记录为 `verification/source9-nat
 空间三批与原 AU 音乐详情已实际接入主程序，记录为 `verification/source9-space-music-integration.json`：381 份 Kotlin、15 个资源、303 个 Retrofit 声明和 45/45 响应文件继续审计一致。主产品 12 个 suite 共 66 项定向 JUnit 全部通过，其中 1 个音乐方法实际运行 18 个 API/歌词/账号代际/源归属用例；原音乐状态类按原连续源码抽取，两个 Python 提取检查通过。空间宿主保留服务端默认栏目、刷新后的用户选择、真实歌曲 SID 和原队列顺序/分P续播；两套主题、明暗和 640/960 宽共八次实际 Compose 点击验证 SID501 不会被相关视频 aid997 替代。该界面证据是离屏 Compose，没有声称真实 AU 解码、主窗口或线上账号验收。原空间底层已有 50 项测试；完整资料动作、粉丝原生页、视频 NativeMusic 根入口和全视觉仍在推进。没有生成或部署新桌面包。
 
 Story/Topic 与高级播放/HiRes 的本批主程序整合记录为 `verification/source9-story-playback-integration.json`：396 份原 Kotlin、15 个资源、303 个 Retrofit 声明和45/45响应来源继续核验。12个suite的75项定向JUnit、18项Python来源检查通过；其中原Story/Topic两个方法分别包含26个数据与46个实际Compose交互检查。独立编译的精确main播放器在自建窗口使用固定DLL，12个原生门槛通过：本机真实d3d11va、关闭/恢复硬解、主副字幕四种模式、真实像素、同源暂停/2秒位置和双字幕恢复，以及换源后的旧请求拒绝。该原生验证采用null音频输出和fixture元数据，不代表真实HiRes声音、实际AO初始化故障、账号字幕传输或新EXE/Shell验收。当前已明确自动字幕账号epoch/HTTP取消/原授权重取/单轨降级等底层差异正在下一切片修正，Story Canvas输入与完整界面仍待接。未打包或部署新桌面版本，完整release gate未通过。
+
+最新画质增强/字幕/Story 接入记录为 `verification/source9-enhancement-subtitle-story-integration.json`：402 个原 Kotlin 来源身份、15 个资源、303 个原 Retrofit 声明与45个响应文件核验通过，来源数不用于换算进度。主产品14个suite共132项定向JUnit、20项Python来源测试通过。原画质增强单一provider、两套原设置控件与真实顺序落盘进入Root；独立当前主线的16项配置/Session/UI/Runtime测试及两项实际锁等待回归通过。后两项确认原manager锁和原onEnable配置读取期间，关闭同视频增强或退休owner后不会发布、提示或持久化启用。完整原生快照另通过19项原FSR/Anime4K/Runtime检查，保留原11项严格像素/格式/位置门槛；它绑定这两处窄守卫修改之前的快照，GPU播放器源之后未改，当前manager守卫由独立回归验证。Story实际Canvas的14项输入检查通过，自动字幕31项实际TCP/actor测试纳入共享构建。原生与UI证据使用隔离状态及合成输入，不代表真实账号、完整Shell/Story视觉或新EXE验收。全部冻结产物由Root按长路径安全摘要复验，初次不完整Windows类快照保留为历史，修正后重新执行才计入本批。桌面仍为revision 5，未部署新包；同一35组功能权重的人工评估为67.6%，对外约68%，完整对齐与release gate仍未完成。

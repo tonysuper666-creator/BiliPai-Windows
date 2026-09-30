@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "actualJUnitMethods": 18,
+  "realNativeInputChecks": 14,
+  "actualCanvasHwndTargetCheck": true,
+  "baselineNineInputsObserved": true,
+  "baselineWheelWorks": true,
+  "baselineDragAndKeyboardDoNotWork": true,
+  "compiledKotlinCompose": true,
+  "noSharedGradle": true,
+  "noExternalNetwork": true,
+  "noRealAccount": true,
+  "nativePixelsVerified": true,
+  "completeOriginalVisualParity": false,
+  "fullTouchGestureParity": false,
+  "contractSha256": "6ae3c056f47a80c3dbf915f96609ed506bf986f768217ab5357f2fb1ecef72db",
+  "mainBytecodeSha256": "cd7eed85db41036e0d713f18a73e4f90211b7788399edf02776613b7c9821282",
+  "artifacts": [
+    {
+      "path": "contract.json",
+      "sha256": "dff5de5c6ef7745b8becddba25dd404478555615eb97144e9d458d8743586213"
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256": "6552982e43b92f7557ef515e616ef570d9db956e9e972f8ce67bf5c22cddec47"
+    },
+    {
+      "path": "story-screen.patch",
+      "sha256": "367739613b709f1564fbc674f48ceee1a6e3da25539f17c9beaf2350d3f3a444"
+    },
+    {
+      "path": "StoryNativeInputProof.kt",
+      "sha256": "64cce124b6ce474dcb1cdcec403c91b06b55e9773f6df1d16f7e58155f4a1562"
+    },
+    {
+      "path": "compile-proof.py",
+      "sha256": "2bad00f4cd55f9ccd81deb4d83f8e3f10220f335ec85c4a8989692b1752bb76b"
+    },
+    {
+      "path": "compile-tests.py",
+      "sha256": "2cf766abde518b2a897b5ae1d0e3d62f493472b3d831001bbd15c7ab4c71b3e6"
+    },
+    {
+      "path": "unit-evidence.json",
+      "sha256": "e559da157b0677bd58b4dc7fa0bdb870a944824be27773f43f476b539ca624fa"
+    },
+    {
+      "path": "baseline-execution-identity.json",
+      "sha256": "157b3b8a980c24a0b33df7324125713f4eece1acb2894973f09a1ca3f816cc0a"
+    },
+    {
+      "path": "bridged-execution-identity.json",
+      "sha256": "e47b042cf43b1059f15f1e498066eea34194faaa6829db80940dac128a9c3442"
+    },
+    {
+      "path": "baseline-evidence/native-input-observations.json",
+      "sha256": "12eff53184b351cd9e21ef012cc88efe356f919a1f8b5c6004bb88ebdc55fcef"
+    },
+    {
+      "path": "bridged-evidence/native-input-observations.json",
+      "sha256": "2419e2e9efb1f274a4d83e9504f43a3abae7f5a77099c2a3792090d177030cef"
+    },
+    {
+      "path": "baseline-evidence/process-completion.json",
+      "sha256": "acb41799305e5d88408f6e59c35205725172a7306948743cb59aa450b405d7e4"
+    },
+    {
+      "path": "bridged-evidence/process-completion.json",
+      "sha256": "d51b88a23c56addc01213d13ffbe39b0cfe2ccc6b51a24aeb80048ec2acf8bab"
+    },
+    {
+      "path": "bridged-evidence/native-baseline.png",
+      "sha256": "393b842de4199a9ff8071d179f2b7e6bf7c93c89e742c2355cdf431755ff65d8"
+    },
+    {
+      "path": "bridged-evidence/native-after-inputs.png",
+      "sha256": "723056de52a73a488f4433ef1f1923b0b815bc1ba4288f88ff43c0e9b5569405"
+    },
+    {
+      "path": "bridged-evidence/native-after-epoch-retry.png",
+      "sha256": "e2e0a76907d4658aafe7ed115b67530d49ff403e56cda9be40d03c79a243ef96"
+    },
+    {
+      "path": "verified-runtime-main.jar",
+      "sha256": "cd7eed85db41036e0d713f18a73e4f90211b7788399edf02776613b7c9821282"
+    }
+  ]
+}

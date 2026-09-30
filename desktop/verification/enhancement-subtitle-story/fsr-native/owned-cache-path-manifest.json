@@ -1,0 +1,171 @@
+{
+  "owner": {
+    "owner": "bilipai-runtime-fsr-native",
+    "sourceRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\fsr-runtime-native-proof"
+  },
+  "absoluteRoot": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-fsr-p3qr42pj",
+  "traversal": "Win32 extended absolute paths",
+  "allEntriesWithinOwnedRoot": true,
+  "reparsePoints": 0,
+  "recursiveDeletionPerformed": false,
+  "shaderAssetCount": 11,
+  "longestShaderAssetPath": 157,
+  "files": [
+    {
+      "path": "cnn-cache/35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e/Anime4K_Restore_CNN_VL.glsl",
+      "sha256": "35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e",
+      "bytes": 144075,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "cnn-cache/4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4/Anime4K_Upscale_CNN_x2_S.glsl",
+      "sha256": "4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4",
+      "bytes": 18638,
+      "absolutePathLength": 154
+    },
+    {
+      "path": "cnn-cache/5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d/Anime4K_Upscale_CNN_x2_VL.glsl",
+      "sha256": "5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d",
+      "bytes": 146743,
+      "absolutePathLength": 155
+    },
+    {
+      "path": "cnn-cache/5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41/Anime4K_AutoDownscalePre_x4.glsl",
+      "sha256": "5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41",
+      "bytes": 1568,
+      "absolutePathLength": 157
+    },
+    {
+      "path": "cnn-cache/67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41/Anime4K_Restore_CNN_M.glsl",
+      "sha256": "67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41",
+      "bytes": 35916,
+      "absolutePathLength": 151
+    },
+    {
+      "path": "cnn-cache/6dafe6d4ccaed8f1675d1b5b13e2d1a981f1f65849f54ea71b897f2f439ecfed/Anime4K_Clamp_Highlights.glsl",
+      "sha256": "6dafe6d4ccaed8f1675d1b5b13e2d1a981f1f65849f54ea71b897f2f439ecfed",
+      "bytes": 2779,
+      "absolutePathLength": 154
+    },
+    {
+      "path": "cnn-cache/716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e/Anime4K_Upscale_CNN_x2_M.glsl",
+      "sha256": "716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e",
+      "bytes": 37685,
+      "absolutePathLength": 154
+    },
+    {
+      "path": "cnn-cache/8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656/Anime4K_AutoDownscalePre_x2.glsl",
+      "sha256": "8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656",
+      "bytes": 1560,
+      "absolutePathLength": 157
+    },
+    {
+      "path": "cnn-cache/97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427/Anime4K_Restore_CNN_S.glsl",
+      "sha256": "97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427",
+      "bytes": 17136,
+      "absolutePathLength": 151
+    },
+    {
+      "path": "fixture-owner.json",
+      "sha256": "918b3f2edb48e1b08785c9acc6b3066946a6973a9cd5a1c285d38bb1c055844d",
+      "bytes": 195,
+      "absolutePathLength": 68
+    },
+    {
+      "path": "fsr-cache/1da723f62cbf3fbeed6f10bd137014fe10666bed993b7ab0636ad6bc40644f34/bilipai-fsr-easu.glsl",
+      "sha256": "66204c976fbf38a822dbaf84f6d1c4feac4a0f32871b26c460c71cc5e248ef27",
+      "bytes": 7861,
+      "absolutePathLength": 146
+    },
+    {
+      "path": "fsr-cache/1da723f62cbf3fbeed6f10bd137014fe10666bed993b7ab0636ad6bc40644f34/bilipai-fsr-rcas.glsl",
+      "sha256": "1d2061ec5b735fd053b849944742d567b2af3bfc12e7e50d02a6323e80445f1c",
+      "bytes": 3323,
+      "absolutePathLength": 146
+    },
+    {
+      "path": "native-fsr-before.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 71
+    },
+    {
+      "path": "native-fsr-hlg-bypass.png",
+      "sha256": "4efeec0521ac522cf3c2d7b70da267d1ffaa18aa52b99d27193d5ddcc7ba2de6",
+      "bytes": 144695,
+      "absolutePathLength": 75
+    },
+    {
+      "path": "native-fsr-pip-bypass.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 75
+    },
+    {
+      "path": "native-fsr-pq-bypass.png",
+      "sha256": "b7c6816521ec2d2a67e54889e17509eeaa88c0ade0442fc9a3d726fde394b304",
+      "bytes": 136424,
+      "absolutePathLength": 74
+    },
+    {
+      "path": "native-fsr-strong.png",
+      "sha256": "63895392443e05bdc3febbbc7aa31d56d267d7953a5d530a1cb7158f0f61fc38",
+      "bytes": 90448,
+      "absolutePathLength": 71
+    },
+    {
+      "path": "native-fsr-weak.png",
+      "sha256": "bc7897fb63746fa46addcdae8d919ce60af3aa9be8e1e32d2a332a30a8b16fb6",
+      "bytes": 83811,
+      "absolutePathLength": 69
+    },
+    {
+      "path": "plugin-root/plugin-settings.json",
+      "sha256": "ca86600970bce9d9a404fbaeb62a227d90b8b6d5d979132689c0a123281b4af7",
+      "bytes": 757,
+      "absolutePathLength": 82
+    },
+    {
+      "path": "runtime-anime4k-fast.png",
+      "sha256": "74fc47323bcbc12c19e0f6933bc60cd78314bff4c4094418c7687cd46b73dd21",
+      "bytes": 147064,
+      "absolutePathLength": 74
+    },
+    {
+      "path": "runtime-anime4k-hlg-bypass.png",
+      "sha256": "c2cea80618a15d9b5391c71fea72fac85e84744f2d45269477f642b9040f3873",
+      "bytes": 144945,
+      "absolutePathLength": 80
+    },
+    {
+      "path": "runtime-anime4k-pip-bypass.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 80
+    },
+    {
+      "path": "runtime-anime4k-pq-bypass.png",
+      "sha256": "299963178121f4fee1e653cef2c15e8ca7430b04aac006131abaf8a8ead4957a",
+      "bytes": 135833,
+      "absolutePathLength": 79
+    },
+    {
+      "path": "runtime-anime4k-quality.png",
+      "sha256": "72db4e4f0894c73748a8dfdd84a4ace9aadb109faa7a50e7f11a3d1ec7493763",
+      "bytes": 169423,
+      "absolutePathLength": 77
+    },
+    {
+      "path": "runtime-disabled-fsr.png",
+      "sha256": "5f9418b08b77875ba35e575e0ea9db3a51c096dfad54b887f7bee296a1b7c9d3",
+      "bytes": 131597,
+      "absolutePathLength": 74
+    },
+    {
+      "path": "runtime-native-report.json",
+      "sha256": "7dd70f5d588e5f6d59425f249df32a44a625ff2e3c7ca95439d6bcce331faa19",
+      "bytes": 1242,
+      "absolutePathLength": 76
+    }
+  ]
+}

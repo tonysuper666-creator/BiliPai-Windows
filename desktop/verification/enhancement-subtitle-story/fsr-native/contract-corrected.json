@@ -1,0 +1,38 @@
+{
+  "status": "frozen",
+  "purpose": "complete long-path-corrected current-main Runtime/native evidence",
+  "productionFiles": [],
+  "sourceInventoryAdditions": [],
+  "sharedGradleInvoked": false,
+  "realAccountRequests": false,
+  "actualNativeChecks": 19,
+  "baseOriginalNativeChecks": 11,
+  "initialHistoricalEvidenceReplaced": false,
+  "files": [
+    {
+      "path": "RuntimeFsrNativeSmoke.kt",
+      "sha256": "161a5c5d9e5583c697ec90a79df55f18ecf06a47c1c4d24599b25d129ddbf6c8",
+      "bytes": 23027,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "RunRuntimeNativeProbe.kt",
+      "sha256": "648af9cd5acc5b698d03740fa1bc98d21f397479091c45ec4dec5b824db83de0",
+      "bytes": 7657,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "compile-corrected-run.py",
+      "sha256": "d1c6a355031d53751dd56e7066808d5ab7c2cf30052344a307133476c93957bf",
+      "bytes": 3599,
+      "absolutePathLength": 152
+    },
+    {
+      "path": "freeze-corrected-evidence.py",
+      "sha256": "fe2edd50975e27ca8ae97970ed27c89e7811672fcaf05729d79a369093ebccee",
+      "bytes": 12096,
+      "absolutePathLength": 156
+    }
+  ],
+  "sha256": "a1c38e9435ef87150547bdf458bad0d52cb8ce5b69690211f083687a0789d6b0"
+}

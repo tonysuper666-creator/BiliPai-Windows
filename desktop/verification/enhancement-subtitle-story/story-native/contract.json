@@ -1,0 +1,33 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInput.kt",
+      "prepared": "desktop/.local/story-native-input-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInput.kt",
+      "sha256": "b8ca238b195a93b1d7b10a18fa15036e985b380b9231d5543c56f90452821565",
+      "baselineSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "prepared": "desktop/.local/story-native-input-parity/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "sha256": "05182bd97d1cc6656404f45435d856f496a71a0e247ceb82db793d4b724373d4",
+      "baselineSha256": "5dfba965d83bbdf2f8235464c13a442b13d6995cef969a7ab32bfbfd8285260f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInputTest.kt",
+      "prepared": "desktop/.local/story-native-input-parity/prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInputTest.kt",
+      "sha256": "15b7b41b2093d5e9c44639107a67aec8d44805a1fe25a5e69aa385865552b490",
+      "baselineSha256": null
+    }
+  ],
+  "ownedFileCount": 3,
+  "rootOwnedHooks": [
+    "DesktopShell.kt"
+  ],
+  "sourceInventoryAdditions": [],
+  "dependencyAdditions": [],
+  "sharedGradleInvoked": false,
+  "mainFilesEdited": false,
+  "realAccountRequests": false,
+  "sha256": "6ae3c056f47a80c3dbf915f96609ed506bf986f768217ab5357f2fb1ecef72db"
+}

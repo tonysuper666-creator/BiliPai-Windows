@@ -112,6 +112,8 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-plugins.py")
+    inputs.file("tools/extract-video-enhancement.py")
+    inputs.file("third-party/fsr-hdr-platform.json")
     inputs.file("tools/extract-upstream-media.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -434,6 +436,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(generatedAppearance)
     kotlin.srcDir(layout.buildDirectory.dir("generated/story-topic"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/playback-settings"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/subtitle-load"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-contributions"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/space-overview"))
@@ -622,4 +625,13 @@ compose.desktop {
     }
 }
 
-tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings) }
+val extractSubtitleLoadPolicy by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-subtitle-load-policy.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/subtitle-load").get().asFile.absolutePath)
+    inputs.files("tools/extract-subtitle-load-policy.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"))
+    outputs.dir(layout.buildDirectory.dir("generated/subtitle-load"))
+}
+tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings, extractSubtitleLoadPolicy) }
