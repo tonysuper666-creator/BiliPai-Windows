@@ -1,0 +1,92 @@
+
+PASS 40 completed/canceled event-contract shares free every native session and private lease
+PASS terminal sharing exceeds prior 8 and 16 limits without cumulative degradation
+PASS original crash snapshot and pending marker remain owned by original action policy
+PASS exposure intent is durable before transport Show and retirement runs on EDT
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS no completion event and no timeout deletes an exposed copy
+PASS new explicit SHARE retires the old window session before a fresh single source
+PASS retired unknown first copy remains unchanged while new copy is granted
+PASS shutdown retires source references but preserves both unknown receiver copies
+PASS fresh actor keeps persistent unknown leases while completing a new share
+PASS explicit same-actor clearAll removes persistent copies and original diagnostic files
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS unfulfilled pane request is distinguished from an exposed copy by post-drain outcome
+PASS Show false and no supplied storage items leave no private lease
+PASS failed or unfulfilled native pane leaves original crash evidence intact
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS clearAll waits the accepted actor copy while retiring its generation
+PASS late accepted copy never calls native Show and cannot resurrect cleared cache
+PASS same actor clearAll finishes original diagnostic deletion after the share drain
+PASS successful clearAll reopens only a fresh share generation
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS COM retirement failure blocks deletion and retains retry ownership
+PASS clearAll retry revokes native before deleting unknown lease and original files
+PASS retired old source cannot publish or supply new data after clearAll
+PASS new source after retry uses a distinct lease and remains usable
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS real Windows file handle can reject unlink after native terminal retirement
+PASS filesystem failure leaves visible safe error and no retained native session
+PASS next explicit request prunes known-terminal disk lease after lock release
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS only managed private snapshot bytes count toward the exact 16MiB budget
+PASS budget is checked before another native grant without mutating old copies
+PASS budget exhaustion exposes safe degradation state rather than fake receiver completion
+PASS same lifecycle original SHARE exposes the fixed 16MiB reason and real local-viewer fallback
+PASS explicit clear releases full managed budget while leaving unrelated files untouched
+PASS native sharing recovers after explicit budget cleanup
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS restore drains native and actor before the authoritative global backing freezes
+PASS retired provider and actor reject all new lease writes or grants
+PASS old existing global facade cannot write after restore freeze
+PASS unknown exposed read-only bytes stay intact across retirement
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+
+PASS 8 actual product lease scenarios, zero product overrides

@@ -1,0 +1,56 @@
+{
+  "beforeCompile": true,
+  "productionCompile": false,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1\\bin\\java.exe",
+      "sha256Bytes": "82051fdab26319d77d20cc0065045d05ec00b3e3d05f44935d7c06b96b621d55",
+      "bytes": 50304
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\compile-miuix.py",
+      "sha256Bytes": "1721b77c3e3c453eb609fe68408cc5853da923c59468368ec71fc0ce3bca3cbc",
+      "bytes": 5045
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compiler-embeddable\\2.4.0\\f1a24af8bd111a83950236b1aec7a6d72a97e92c\\kotlin-compiler-embeddable-2.4.0.jar",
+      "sha256Bytes": "c2b25e8c1c93ec416ba4327f5e31eaec0f0c8847241b9353e294b8db9dce564f",
+      "bytes": 60351320
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-build-tools-api\\2.4.0\\46429d5887df2d02f33fe11a0c8444c5be5fd8da\\kotlin-build-tools-api-2.4.0.jar",
+      "sha256Bytes": "66917335497f9ab75a36c34b3d90bad2bc8dc256c34b2413ecd0c9467fcf597d",
+      "bytes": 310931
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-stdlib\\2.4.0\\4e9f4b531dce5c7dee58ed2de9a8b9a763c8dc6c\\kotlin-stdlib-2.4.0.jar",
+      "sha256Bytes": "ccb14ff83fabcb11458b798dbc9824748ccdffeec79c9aba789e6ed1cda86b1c",
+      "bytes": 1841929
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-script-runtime\\2.4.0\\1de03f0ef3e208ab5f97ee6a587e9b8480447df6\\kotlin-script-runtime-2.4.0.jar",
+      "sha256Bytes": "196e8ecbf63daf477e34e67c2f871ee232ae7bf8b377432d876d1bbf9d273de3",
+      "bytes": 46564
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-daemon-embeddable\\2.4.0\\1ecabef3a8ba6a8e25654573d54edb7e4136e903\\kotlin-daemon-embeddable-2.4.0.jar",
+      "sha256Bytes": "383093af5e078435b60043d19bfa83eb6191be0f4d13a28fb1c8a0f3ab24fe66",
+      "bytes": 381838
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-reflect\\1.6.10\\1cbe9c92c12a94eea200d23c2bbaedaf3daf5132\\kotlin-reflect-1.6.10.jar",
+      "sha256Bytes": "3277ac102ae17aad10a55abec75ff5696c8d109790396434b496e75087854203",
+      "bytes": 3038560
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlinx\\kotlinx-coroutines-core-jvm\\1.8.0\\ac1dc37a30a93150b704022f8d895ee1bd3a36b3\\kotlinx-coroutines-core-jvm-1.8.0.jar",
+      "sha256Bytes": "9860906a1937490bf5f3b06d2f0e10ef451e65b95b269f22daf68a3d1f5065c5",
+      "bytes": 1548360
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\annotations\\23.0.0\\8cc20c07506ec18e0834947b84a864bfc094484e\\annotations-23.0.0.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05",
+      "bytes": 29371
+    }
+  ]
+}

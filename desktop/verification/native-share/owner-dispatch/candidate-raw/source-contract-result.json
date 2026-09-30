@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "label": "original reviewed source byte pin",
+      "passed": true
+    },
+    {
+      "label": "candidate reviewed source byte pin",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiShareProbe",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiSharePrepare",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiShareState",
+      "passed": true
+    },
+    {
+      "label": "verbatim original HRESULT revokePackage() noexcept",
+      "passed": true
+    },
+    {
+      "label": "verbatim weak DataRequested and original metadata/storage/completion/cancel handlers",
+      "passed": true
+    },
+    {
+      "label": "original close body plus truthful owner release flag only",
+      "passed": true
+    },
+    {
+      "label": "exact own process/thread checked before native Bind admission",
+      "passed": true
+    },
+    {
+      "label": "actual owner STA binding retains exact process/thread guard",
+      "passed": true
+    },
+    {
+      "label": "native owner only, no global hook or injection module",
+      "passed": true
+    },
+    {
+      "label": "exact HWND, private message, zero lparam and owned command lookup",
+      "passed": true
+    },
+    {
+      "label": "normal Show reuses Bind then actual owner Show",
+      "passed": true
+    },
+    {
+      "label": "Bind has no share-pane or storage supply statement",
+      "passed": true
+    },
+    {
+      "label": "Send timeout cannot assign receiver terminal states",
+      "passed": true
+    },
+    {
+      "label": "Close authority revoked immediately before native drain",
+      "passed": true
+    },
+    {
+      "label": "Close retries reuse pending command and Bind/Show admission rejects duplicate",
+      "passed": true
+    },
+    {
+      "label": "completed-phase acknowledgement is checked before generic Windows timeout",
+      "passed": true
+    },
+    {
+      "label": "WM_NCDESTROY closes authority then actual owner drains; running COM defers cleanup",
+      "passed": true
+    },
+    {
+      "label": "hook release and callback quiescence explicitly required",
+      "passed": true
+    },
+    {
+      "label": "failed Retire remains fail closed",
+      "passed": true
+    },
+    {
+      "label": "no native HTTP, new windows, shell or receiver APIs",
+      "passed": true
+    },
+    {
+      "label": "single token registry remains bounded at eight",
+      "passed": true
+    }
+  ],
+  "checksCount": 23,
+  "originalSourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+  "candidateSourceSha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+  "staticOnly": true,
+  "actualRuntimeProof": "bind-proof05/accepted-evidence.json",
+  "arbitraryConcurrentNativeApiSupported": false,
+  "productionNativeTransportIsSerializedByOperationsMutex": true,
+  "ShareShowExecuted": false,
+  "MainAccepted": false
+}

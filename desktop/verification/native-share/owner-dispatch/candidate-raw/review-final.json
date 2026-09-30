@@ -1,0 +1,170 @@
+{
+  "preparedNativeOwnerBoundaryReadyForRootReviewAndInstallation": true,
+  "independentSourceReview": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\independent-review.json",
+    "sha256Bytes": "b5a63a273c08c542e8e5ac59d06a089a2604c1153f5833402cc94721c1469426",
+    "bytes": 3932
+  },
+  "nativeShareFeatureAccepted": false,
+  "actualMainWithCandidateAccepted": false,
+  "DesktopDeployment": false,
+  "MainAndApprovalModifiedByThisTask": false,
+  "createdUtc": "2026-09-30T23:11:11.383320+00:00",
+  "candidateSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate06\\DesktopDiagnosticShare.cpp",
+    "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+    "bytes": 27693
+  },
+  "candidateDll": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06\\bilipai-diagnostic-share.dll",
+    "sha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+    "bytes": 232960
+  },
+  "controlledCompilerDriver": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\tools\\compile-native-diagnostic-share.py",
+    "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+    "bytes": 5052
+  },
+  "nativeGraphCohorts": [
+    {
+      "graph": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06\\producer-input-graph.json",
+        "sha256Bytes": "83da8fb2aede9fc3e9b9ac0ccb7b269bd64678d4a70c98753d38997a07e1dadf",
+        "bytes": 115223
+      },
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate06\\DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+        "bytes": 27693
+      },
+      "dll": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06\\bilipai-diagnostic-share.dll",
+        "sha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+        "bytes": 232960
+      },
+      "transitiveHeaders": 363,
+      "conservativeSearchedLibraries": 11,
+      "conservativeCompilerFiles": 64,
+      "allRealGraphInputsRechecked": true,
+      "staticArchiveMemberSelectionClaimed": false,
+      "taskFaultHelper": false
+    },
+    {
+      "graph": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06-repro\\producer-input-graph.json",
+        "sha256Bytes": "c38b3b954649fee4b56bdc666d859d9d814e73f366eb4b3e344cd139fa8cb669",
+        "bytes": 115265
+      },
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate06\\DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+        "bytes": 27693
+      },
+      "dll": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06-repro\\bilipai-diagnostic-share.dll",
+        "sha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+        "bytes": 232960
+      },
+      "transitiveHeaders": 363,
+      "conservativeSearchedLibraries": 11,
+      "conservativeCompilerFiles": 64,
+      "allRealGraphInputsRechecked": true,
+      "staticArchiveMemberSelectionClaimed": false,
+      "taskFaultHelper": false
+    },
+    {
+      "graph": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\native-helper-build06-attempt01\\producer-input-graph.json",
+        "sha256Bytes": "a05b5335db1c86e6938d443047c8bb934e3c2a7b6f1c04e0ae8015d727faffa3",
+        "bytes": 115738
+      },
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\native-helper06\\GuardRevokeTaskHelper.cpp",
+        "sha256Bytes": "3e99f085ed55b4f262b110c27e26403399ee4b72d5c48b9de73ce6c24466ed29",
+        "bytes": 9511
+      },
+      "dll": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\native-helper-build06-attempt01\\bilipai-diagnostic-share.dll",
+        "sha256Bytes": "93ed97330684a2a38c871aeb09504e5915df8f8826031bc0d0d6b01305f0ba0b",
+        "bytes": 248832
+      },
+      "transitiveHeaders": 364,
+      "conservativeSearchedLibraries": 11,
+      "conservativeCompilerFiles": 64,
+      "allRealGraphInputsRechecked": true,
+      "staticArchiveMemberSelectionClaimed": false,
+      "taskFaultHelper": true
+    }
+  ],
+  "twoFreshCandidateOutputDllBytesEqual": true,
+  "historicalActualMainRuntimeDependencies": {
+    "manifestSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+    "orderedCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+    "orderedCount": 89,
+    "externalCount": 86,
+    "zeroProductionClassOverrides": true,
+    "MainOrShellExecuted": false
+  },
+  "plainCandidateNativeProof": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\bind-proof08\\accepted-evidence.json",
+    "sha256Bytes": "204f0718a3611710644c324447014030c5cb66cea592bb1f73d72d433b97ece4",
+    "bytes": 884
+  },
+  "plainCandidateAssertions": 106,
+  "declaredSyntheticCallbackAndAbiFaultProof": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\guard-proof03\\accepted-evidence.json",
+    "sha256Bytes": "5b42e64f2d2ff587e4d6ef9d1866f1d970f25cd81f2892776e979837b115175b",
+    "bytes": 1038
+  },
+  "guardAssertions": 99,
+  "sourceContractAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\source-contract06-result.json",
+    "sha256Bytes": "39df7ab6175991a64453ccccc2be6d213d45fb48b7465015fb9d0a98fc842d76",
+    "bytes": 3972
+  },
+  "sourceContractChecks": 31,
+  "confirmedOldIssuesResolved": [
+    "Swing EDT is not actual ComposeWindow HWND owner; Bind/Show/Close now dispatch to exact checked owner",
+    "asynchronous callbacks are not drained by a recursive mutex alone; lifetime depth tracks all three event bodies",
+    "WinRT projected event removal ignores HRESULT; checked ABI remove preserves failed registrations and apartment for real retry",
+    "deferred destruction leaves refs alive; closed storage admission is checked after all preparatory COM calls immediately before a possible grant"
+  ],
+  "actualNativeProofBoundary": [
+    "plain candidate DLL actually initializes owner STA/GetForWindow/subscription and retires it on hidden own ComposeWindow",
+    "8 Bind/Retire cycles, second-source rejection, owner pump blockage, unknown timeouts, bounded Close retry and actual WM_NCDESTROY passed",
+    "guard helper includes candidate source exactly, then adds task-only exports and a declared synthetic CallbackScope/ABI forwarding fault",
+    "real STA manager/file/local package stay intact through depth2 nested Close/Retire and actual own-window destruction; inner unwind never releases them",
+    "outer unwind performs actual owner cleanup; failed native Retire leaves (-1,supplied1) and token/copy before retry",
+    "ABI fault first returns E_FAIL before removing the real DataRequested registration; second retry calls actual WinRT remove once successfully",
+    "recursive Close during remove is pending and does not empty actual COM refs/apartment",
+    "actual beginStorageSupply member rejects closed authority without executing SetStorageItems"
+  ],
+  "preconditionsAndRemainingBoundaries": [
+    "Main provider operationsMutex serializes native transport operations; arbitrary concurrent exported-API callers are not proven",
+    "no actual ShareShow, system share pane, real DataRequested body, SetStorageItems, receiver or terminal OS event trace",
+    "guard03 is a synthetic callback/fault test against actual native Session/manager, not an OS sharing or receiver acceptance claim",
+    "no actual Main actor/cache with candidate DLL integration, packaged-runtime or deployment acceptance",
+    "package ShareCompleted/ShareCanceled removal uses the same checked-ABI policy but failure injection covered DataRequested only",
+    "non-owner callback exit cannot clean owner COM resources; unacknowledged drain retains unknown token/copy for owner retry",
+    "no public toolchain redistribution authorization claimed; actual producer is installed BuildTools /MT"
+  ],
+  "history": [
+    "candidate04/review-candidate and proof06 are historical before confirmed async callback/revoke blockers",
+    "candidate05/proof07 fixes callback/revoke but precedes the final post-COM storage admission guard",
+    "bind-proof04 retained fixture deadline/assertion failure; direct existing caller retries in later proofs avoid repeated Swing enqueue assumptions",
+    "guard-proof01 retained failure: helper called nested actual AWT DestroyWindow while synchronously blocking EDT; later destruction helper uses existing non-owner caller",
+    "guard-proof02 runtime passed but copied input metadata field still pinned candidate05; guard-proof03 corrected it and freshly reran all cases",
+    "native-helper-build05-attempt01 compile error preserved with source-at-compile; attempt02 basic helper and attempt03 stable-interface pin remain history",
+    "all prior source/native graphs, logs/args, proof receipts and failure bytes remain unchanged"
+  ],
+  "mainNativeStillOriginal": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\diagnostic-share\\DesktopDiagnosticShare.cpp",
+    "sha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+    "bytes": 11219
+  },
+  "mainApprovedDigestStillOriginal": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\diagnostic-share\\approved-development-build.json",
+    "sha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a",
+    "bytes": 79188
+  }
+}

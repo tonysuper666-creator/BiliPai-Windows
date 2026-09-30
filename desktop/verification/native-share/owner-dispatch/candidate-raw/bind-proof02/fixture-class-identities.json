@@ -1,0 +1,38 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "315872a331fbd96fb4eede72c8cd63bb49a0072ec1369f0969bae60aef1bec51"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Bridge.class",
+    "sha256Bytes": "130b33198ac19df615bbdfd28dc834f9fd33d48fab7925eb3a5999af2aa82ae6"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Kernel.class",
+    "sha256Bytes": "b63eb04d4ce377c847eb3f61e890d1d0b81bb5fc37b6f36e57163c88b4da14a1"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/HookProc.class",
+    "sha256Bytes": "dc51a4bd57fe5c7face2e6aa3b645ff862e05f007d5e16912ebfc2de97255ae3"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/User.class",
+    "sha256Bytes": "5ded1ae98c807874d4e2bf736c2990e430ddf5f9ca13782dfe7e7be6e08760f5"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Fence.class",
+    "sha256Bytes": "e44d36c6387078ec1d1a87f79a676f95a525beb424a080919f44e816177158db"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/OwnerBindFixtureKt.class",
+    "sha256Bytes": "cea2ed7fc72720a7615bb3000dcbcea45017bb8b1dd25f5a41f4ffd28c876981"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/OwnerBindFixtureKt$main$callback$1.class",
+    "sha256Bytes": "c29b7e7b837feecc9e32d15cb7e02c0861a23d24fa11d644516c51f94f890d2f"
+  },
+  {
+    "entry": "META-INF/owner_bind_native_task_proof.kotlin_module",
+    "sha256Bytes": "289713a618b5723078fd1ff8dd1b356745a95df503f5cfd172bb1526a73fd719"
+  }
+]

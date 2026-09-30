@@ -1,0 +1,26 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "2ae02c40bbd9a92b02892677ecd7882475bf026a782a20b1d8b0853f5e1acf20"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/defaultnativeproof/Fence.class",
+    "sha256Bytes": "ba3328758d66a30194effceab720910d44af50a1d1ae10b7a282c15fb3781f32"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/defaultnativeproof/DefaultNativeTransportFixtureKt.class",
+    "sha256Bytes": "ff00f6b7956aa0cc5c02341fa9940eb402c3d793b420510a1cc9b61e9b4f3d49"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/defaultnativeproof/DefaultNativeTransportFixtureKt$cacheIsEmpty$1$1.class",
+    "sha256Bytes": "e0813129ce8ca7ccf0a77e8a67484de0ab910fce5f1bf56e81d3e9d2ae00b412"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/defaultnativeproof/DefaultNativeTransportFixtureKt$main$1.class",
+    "sha256Bytes": "8974268324d83b0a7c88ba0da36d144ab6f933c1af40840a5e3c849841c1a551"
+  },
+  {
+    "entry": "META-INF/default_native_actual_main_proof.kotlin_module",
+    "sha256Bytes": "f8a64b4bc87350833eb397bb857a2381074642b6906c061712913305e8b135be"
+  }
+]

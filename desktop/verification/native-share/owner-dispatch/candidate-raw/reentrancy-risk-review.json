@@ -1,0 +1,30 @@
+{
+  "status": "pending independent source review; not runtime confirmed",
+  "candidateSourceSha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+  "originalSourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+  "discoveredAfter": "review-candidate.json",
+  "potentialInterleaving": [
+    "Show owner command completes and dispatcher.executing becomes false",
+    "original weak DataRequested callback later runs holding recursive callbackGate",
+    "its COM operation pumps a nested WM_NCDESTROY for the same HWND",
+    "ownerHook sees executing=false and recursively calls closeOnOwnerThread",
+    "recursive mutex admits cleanup even though the DataRequested body has not unwound",
+    "package/file/apartment can be reset while that original callback still uses them"
+  ],
+  "actualHiddenBindProofCoversThis": false,
+  "ShareShowOrReceiverExecuted": false,
+  "MainOrApprovalChanged": false,
+  "candidate04MustNotBeApprovedBeforeResolution": true,
+  "possibleMinimalResolution": "Session callback depth/active-COM guard must refuse recursive close while an event body is active; never claim a drained token or delete an unknown copy. Owner-close scheduling after body unwinds, including a destroyed-window boundary, needs review.",
+  "independentReviewer": "/root/player_parity/dynamic_action_review",
+  "primarySources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/com/single-threaded-apartments",
+      "supports": "STA outbound COM calls can reenter the object on the same apartment thread"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/roapi/nf-roapi-rouninitialize",
+      "supports": "RoUninitialize tears down current-thread WinRT resources and RPC connections"
+    }
+  ]
+}

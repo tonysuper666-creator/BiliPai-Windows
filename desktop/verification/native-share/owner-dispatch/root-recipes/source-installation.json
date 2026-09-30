@@ -1,0 +1,20 @@
+{
+  "sourceInstalled": true,
+  "windowsBaseCommit": "44b9f6723a65678bd59dedf44bb6fd641d40355f",
+  "verifiedFrozenRawFiles": 234,
+  "handoffManifestSha256Bytes": "3ca2b5767f69af7e1f0d3db3f084516376d0bdc3d3119f6548c9c33245a4ea24",
+  "independentReviewSha256Bytes": "b5a63a273c08c542e8e5ac59d06a089a2604c1153f5833402cc94721c1469426",
+  "sourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+  "approvalSha256Bytes": "499a28ba7dec7a34cad1c7e63a051aa33739dc52b701f9423cdffb3bc670c238",
+  "expectedDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+  "graphInputs": [
+    363,
+    11,
+    64
+  ],
+  "twoFreshCandidatesRechecked": true,
+  "taskHelperOrDllCopiedIntoMain": false,
+  "freshMainRebuildPending": true,
+  "nativeShareFeatureAccepted": false,
+  "publicReleaseAuthorizationVerified": false
+}

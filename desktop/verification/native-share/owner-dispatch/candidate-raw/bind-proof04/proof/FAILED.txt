@@ -1,0 +1,3 @@
+java.lang.IllegalStateException: repeated blocked Close retry 0 remains unknown
+	at com.bilipai.desktop.diagnostics.ownerbindproof.OwnerBindFixtureKt.main$requireFact(OwnerBindFixture.kt:55)
+	at com.bilipai.desktop.diagnostics.ownerbindproof.OwnerBindFixtureKt.main(OwnerBindFixture.kt:109)

@@ -1,0 +1,108 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDynamicEditor UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 363, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\40e36168-78a9-4928-a857-27569ba03d2a", "approvedSourceManifestSha256Bytes": "499a28ba7dec7a34cad1c7e63a051aa33739dc52b701f9423cdffb3bc670c238", "sourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514", "stagedDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\40e36168-78a9-4928-a857-27569ba03d2a\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "4d789710471ac2aec3850d799e7de09ccd1c274fa37b6932aff27d49d1ae503e", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5157 pinned source PASS: 169 files; 143 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :assembleTestResources UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt:151:20 'fun painterResource(resourcePath: String): Painter' is deprecated. Migrate to the Compose resources library. See https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-images-resources.html If you need to load resources specificly from Java classpath, you should still use the new resource library and use a snippet from https://github.com/JetBrains/compose-multiplatform-core/pull/1457.
+
+> Task :compileJava UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jar
+> Task :compileTestKotlin
+> Task :compileTestJava UP-TO-DATE
+> Task :testClasses UP-TO-DATE
+> Task :test
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 27s
+66 actionable tasks: 10 executed, 56 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

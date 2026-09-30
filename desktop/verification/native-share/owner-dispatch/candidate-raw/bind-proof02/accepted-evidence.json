@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "actualMainSnapshotSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+  "runtimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+  "taskFixtureJarSha256Bytes": "2b54f042777c624fa43f9b54da7423513debe24d7885de89525a8559d0cec2ea",
+  "taskFixtureSourceSha256Bytes": "c78ef9d64ebd408040dd0034c3c08da94b747bcd940458f0be34a14121d2031f",
+  "taskDllSha256Bytes": "70faf082751c2f5544e1a7b7c96a0d2226eb50df6d6eb1beea22092a231eb617",
+  "nativeGraphSha256Bytes": "9f725e0653f70c796dc0f9e21c855321d272adb63a4d246147a131add82a7cb1",
+  "resultSha256Bytes": "9edb4c63581a593edf2bad405ac96d44d5b2ad96d77271bcc1b6e35e722173bf",
+  "assertions": 94,
+  "actualHiddenHwndNativeBindAndRetire": true,
+  "MainIntegrated": false,
+  "ShareShow": false,
+  "ShareUI": false,
+  "receiver": false,
+  "productionOverrides": 0
+}

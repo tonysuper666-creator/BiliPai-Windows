@@ -1,0 +1,55 @@
+{
+  "reviewer": "/root/player_parity/dynamic_action_review",
+  "kind": "independent read-only source and existing evidence review",
+  "candidate": "desktop/.local/native-share-owner-thread-dispatch-parity/candidate06/DesktopDiagnosticShare.cpp",
+  "candidateSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+  "plainDll": "desktop/.local/native-share-owner-thread-dispatch-parity/build06/bilipai-diagnostic-share.dll",
+  "plainDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+  "secondFreshBuildDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+  "bindAcceptedEvidence": "desktop/.local/native-share-owner-thread-dispatch-parity/bind-proof08/accepted-evidence.json",
+  "bindAcceptedEvidenceSha256Bytes": "204f0718a3611710644c324447014030c5cb66cea592bb1f73d72d433b97ece4",
+  "bindResultSha256Bytes": "d96494ee47428e17f139df38ea7932ebefefcb5a79d782e3f7c18ed6f33ab081",
+  "bindAssertions": 106,
+  "guardAcceptedEvidence": "desktop/.local/native-share-owner-thread-dispatch-parity/guard-proof03/accepted-evidence.json",
+  "guardAcceptedEvidenceSha256Bytes": "5b42e64f2d2ff587e4d6ef9d1866f1d970f25cd81f2892776e979837b115175b",
+  "guardResultSha256Bytes": "ebc4fcdc88498aaa645296714f1284c7549ce5f0f56e310eafb6b8d004338dc2",
+  "guardAssertions": 99,
+  "guardKotlinAssertions": 50,
+  "guardNativeAssertions": 49,
+  "sourceContractSha256Bytes": "39df7ab6175991a64453ccccc2be6d213d45fb48b7465015fb9d0a98fc842d76",
+  "conclusion": "No new blocker found in the reviewed owner-thread dispatcher, callback lifetime, checked revoke, and closed storage-admission slice. The two candidate04 findings and the candidate05 late storage-admission finding are closed by the candidate06 source.",
+  "requiredAssumption": "Main provider operationsMutex serializes native transport operations; this review does not establish arbitrary concurrent native API safety.",
+  "sourceFindings": [
+    {
+      "lines": [55, 57, 353, 360],
+      "finding": "After all preparatory COM calls, beginStorageSupply refuses closed authority immediately before SetStorageItems; no COM call separates that check from the conservative possible-supply flag. An already attempted storage call remains unknown if it fails."
+    },
+    {
+      "lines": [142, 154, 319, 336, 344],
+      "finding": "All three event scopes are constructed after their callback gate and before local COM values. Only the outermost same-owner callback can drain after locals unwind, and a running owner command keeps cleanup in its final path."
+    },
+    {
+      "lines": [59, 106],
+      "finding": "Active callbacks and recursive teardown return pending without resetting COM references. Each checked ABI removal clears its flag only after actual success; any failure preserves the remaining registration, object ownership and apartment for explicit retry."
+    },
+    {
+      "lines": [207, 265, 408, 415, 453, 471],
+      "finding": "Pending Close retries reuse one owned command; timeout does not authorize token/copy retirement. WM_NCDESTROY closes admission, and hook unregister/quiescence waits hold neither registry gate. Failed/unknown drain retains the token."
+    }
+  ],
+  "evidenceScope": {
+    "actualHiddenComposeHwndBindGetForWindowRetire": true,
+    "actualTimeoutRetryWindowDestroy": true,
+    "taskHelperIncludesExactCandidate": true,
+    "actualWinrtManagerAndCheckedRevokeRetry": true,
+    "syntheticCallbackScopeAndAbiFault": true,
+    "realDataRequestedBodyExecuted": false,
+    "SetStorageItemsExecuted": false,
+    "ShareShowExecuted": false,
+    "receiverExecuted": false,
+    "MainActorIntegrated": false,
+    "reviewerRanWindowsOrNativeFixture": false,
+    "candidateOrFrozenEvidenceModified": false
+  },
+  "payloadLocation": "New reviewer-owned additive protocol/native-owner-review06 directory; not part of the previously frozen comment175 or detail194 manifests."
+}

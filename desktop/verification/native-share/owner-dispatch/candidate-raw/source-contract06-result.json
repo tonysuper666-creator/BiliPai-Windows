@@ -1,0 +1,139 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "label": "original reviewed source byte pin",
+      "passed": true
+    },
+    {
+      "label": "candidate reviewed source byte pin",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiShareProbe",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiSharePrepare",
+      "passed": true
+    },
+    {
+      "label": "verbatim original BilipaiShareState",
+      "passed": true
+    },
+    {
+      "label": "original weak callback, metadata, storage call and terminal algorithms match after declared lifetime/admission additions only",
+      "passed": true
+    },
+    {
+      "label": "three event lifetimes are tracked after callback gate",
+      "passed": true
+    },
+    {
+      "label": "local callback COM values unwind before lifetime guard",
+      "passed": true
+    },
+    {
+      "label": "actual owner only outermost callback cleanup",
+      "passed": true
+    },
+    {
+      "label": "active callback/recursive cleanup returns unknown without resetting COM refs",
+      "passed": true
+    },
+    {
+      "label": "no projected HRESULT-discarding remove remains",
+      "passed": true
+    },
+    {
+      "label": "checked ABI remove and successful flag clearing DataRequested",
+      "passed": true
+    },
+    {
+      "label": "checked ABI remove and successful flag clearing ShareCompleted",
+      "passed": true
+    },
+    {
+      "label": "checked ABI remove and successful flag clearing ShareCanceled",
+      "passed": true
+    },
+    {
+      "label": "failed revoke preserves native COM object/file/apartment for genuine retry",
+      "passed": true
+    },
+    {
+      "label": "closed storage admission has no intervening COM call",
+      "passed": true
+    },
+    {
+      "label": "exact own process/thread checked before native Bind admission",
+      "passed": true
+    },
+    {
+      "label": "actual owner STA binding retains exact process/thread guard",
+      "passed": true
+    },
+    {
+      "label": "native owner only, no global hook or injection module",
+      "passed": true
+    },
+    {
+      "label": "exact HWND, private message, zero lparam and owned command lookup",
+      "passed": true
+    },
+    {
+      "label": "normal Show reuses Bind then actual owner Show",
+      "passed": true
+    },
+    {
+      "label": "Bind has no share-pane or storage supply statement",
+      "passed": true
+    },
+    {
+      "label": "Send timeout cannot assign receiver terminal states",
+      "passed": true
+    },
+    {
+      "label": "Close authority revoked immediately before native drain",
+      "passed": true
+    },
+    {
+      "label": "Close retries reuse pending command and Bind/Show admission rejects duplicate",
+      "passed": true
+    },
+    {
+      "label": "completed-phase acknowledgement is checked before generic Windows timeout",
+      "passed": true
+    },
+    {
+      "label": "WM_NCDESTROY closes authority then actual owner drains; running COM defers cleanup",
+      "passed": true
+    },
+    {
+      "label": "hook release and callback quiescence explicitly required",
+      "passed": true
+    },
+    {
+      "label": "failed Retire remains fail closed",
+      "passed": true
+    },
+    {
+      "label": "no native HTTP, new windows, shell or receiver APIs",
+      "passed": true
+    },
+    {
+      "label": "single token registry remains bounded at eight",
+      "passed": true
+    }
+  ],
+  "checksCount": 31,
+  "originalSourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+  "candidateSourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+  "staticOnly": true,
+  "actualRuntimeProof": "bind-proof08/accepted-evidence.json",
+  "guardAndCheckedAbiFaultProof": "guard-proof03/accepted-evidence.json",
+  "arbitraryConcurrentNativeApiSupported": false,
+  "productionNativeTransportIsSerializedByOperationsMutex": true,
+  "ShareShowExecuted": false,
+  "MainAccepted": false
+}

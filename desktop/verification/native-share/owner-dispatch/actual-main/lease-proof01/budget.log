@@ -1,0 +1,12 @@
+PASS only managed private snapshot bytes count toward the exact 16MiB budget
+PASS budget is checked before another native grant without mutating old copies
+PASS budget exhaustion exposes safe degradation state rather than fake receiver completion
+PASS same lifecycle original SHARE exposes the fixed 16MiB reason and real local-viewer fallback
+PASS explicit clear releases full managed budget while leaving unrelated files untouched
+PASS native sharing recovers after explicit budget cleanup
+PASS repeated shutdown remains idempotent after lease changes
+PASS no network listener multicast process or real share receiver
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/lease-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.leaseproof.NativeShareLeaseFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

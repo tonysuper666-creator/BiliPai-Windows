@@ -1,0 +1,3 @@
+desktop\.local\native-share-owner-thread-dispatch-parity\OwnerBindFixture.kt:69:90: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Pointer'.
+            requireFact(value.isDisplayable&&!value.isVisible&&!user.IsWindowVisible(hwnd!!),"own actual ComposeWindow is displayable and always invisible")
+                                                                                         ^^

@@ -1,9 +1,9 @@
 {
   "approvedDevelopmentBuild": true,
   "publicReleaseAuthorizationVerified": false,
-  "sourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+  "sourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
   "controlledCompilerScriptSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
-  "dllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f",
+  "dllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
   "sdkVersion": "10.0.26100.0",
   "msvcVersion": "14.44.35207",
   "flags": [
@@ -18,701 +18,6 @@
     "/utf-8"
   ],
   "transitiveHeaders": [
-    {
-      "path": "vc/include/__msvc_bit_utils.hpp",
-      "sha256Bytes": "fd07ec800d789d222ba2b98c8ddcc3354930bd83e5ebd3ebc2491f35d047b331",
-      "bytes": 15274
-    },
-    {
-      "path": "vc/include/__msvc_chrono.hpp",
-      "sha256Bytes": "0fefff2b74e2fe60ef89d42042d8f9ecc7bda3f60472d353c84bb1a3fce7cb9c",
-      "bytes": 33686
-    },
-    {
-      "path": "vc/include/__msvc_format_ucd_tables.hpp",
-      "sha256Bytes": "0011433c71c625191e10d074d06bae571eb9cfcff979bd5650bb436fa6cda9fa",
-      "bytes": 50758
-    },
-    {
-      "path": "vc/include/__msvc_formatter.hpp",
-      "sha256Bytes": "fc22eb5e9c24a0e72f0f2a07fd0e5d2c619da57ad2b10cce988a4f229b0053d3",
-      "bytes": 17301
-    },
-    {
-      "path": "vc/include/__msvc_heap_algorithms.hpp",
-      "sha256Bytes": "56c6be67b7c0ff9b3ffb7d48943c1ec01728f41f0663dca2c49c296f492bf619",
-      "bytes": 5973
-    },
-    {
-      "path": "vc/include/__msvc_iter_core.hpp",
-      "sha256Bytes": "4fe1273bd571601435c7032dabf6e57b88f84b1740bc65768e00ccdc60b1c9ad",
-      "bytes": 19655
-    },
-    {
-      "path": "vc/include/__msvc_minmax.hpp",
-      "sha256Bytes": "2f899749842ccf2adbeabca98f1bba634d787a96f1ddebf62a2c5d0c6a83c8b2",
-      "bytes": 1473
-    },
-    {
-      "path": "vc/include/__msvc_ostream.hpp",
-      "sha256Bytes": "e2016938b271458a2ed0e04ffbf5dd38ca219755f8ec6c7b0447d46ae112cea5",
-      "bytes": 37634
-    },
-    {
-      "path": "vc/include/__msvc_print.hpp",
-      "sha256Bytes": "29413fa5b9d6b3af7fbda3b6e0d4918cc65fbb1afa160ad2f61a356cdbe6da26",
-      "bytes": 3310
-    },
-    {
-      "path": "vc/include/__msvc_ranges_tuple_formatter.hpp",
-      "sha256Bytes": "0efb7bfc2323b6c40e9d174ea4aa86f4f65722a4a13694cc1de24be33255a2ac",
-      "bytes": 53328
-    },
-    {
-      "path": "vc/include/__msvc_sanitizer_annotate_container.hpp",
-      "sha256Bytes": "50d83b50fd98df02f58c3c643b5bc26313968a9edd75a485f7af4a24cfcef8e1",
-      "bytes": 7597
-    },
-    {
-      "path": "vc/include/__msvc_string_view.hpp",
-      "sha256Bytes": "957ae97e03169f46d8d9b77c9dc5ab3f66c619be5a228d062499b60b8d336c47",
-      "bytes": 83111
-    },
-    {
-      "path": "vc/include/__msvc_system_error_abi.hpp",
-      "sha256Bytes": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
-      "bytes": 1224
-    },
-    {
-      "path": "vc/include/__msvc_threads_core.hpp",
-      "sha256Bytes": "e29bc7049cc854234dbc1b332e1f7118aa0cc3b495fe538dfda9e7fbd0374529",
-      "bytes": 3051
-    },
-    {
-      "path": "vc/include/__msvc_tzdb.hpp",
-      "sha256Bytes": "8bb96dcb97cbe29f9475c35b4c5536cbe7524686f3e7a82a0b18264a10a86917",
-      "bytes": 5301
-    },
-    {
-      "path": "vc/include/__msvc_xlocinfo_types.hpp",
-      "sha256Bytes": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
-      "bytes": 1207
-    },
-    {
-      "path": "vc/include/algorithm",
-      "sha256Bytes": "e4cfb31da8ec07af89834d829ea72b20c7e3202476af3b0641cfe8d6ebb245d7",
-      "bytes": 533492
-    },
-    {
-      "path": "vc/include/ammintrin.h",
-      "sha256Bytes": "267f97d9d269e39204b31efcdc2a7a32fd63b2e15dc21a80fb18d739d3d03b12",
-      "bytes": 16722
-    },
-    {
-      "path": "vc/include/array",
-      "sha256Bytes": "48d2c6c4926e08d0d96f41e59f69513737f76107530f68c94d5d9fe668689a15",
-      "bytes": 29292
-    },
-    {
-      "path": "vc/include/atomic",
-      "sha256Bytes": "76a3e00e57e342f26eb5db7a0e38002b0f5db850ac2fe33d026733bf8217b4b4",
-      "bytes": 125337
-    },
-    {
-      "path": "vc/include/bit",
-      "sha256Bytes": "f08c873229e5c11b6e89a0d47c5ca5e2555947321aa382bf52224d041648d483",
-      "bytes": 8838
-    },
-    {
-      "path": "vc/include/cctype",
-      "sha256Bytes": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18",
-      "bytes": 1113
-    },
-    {
-      "path": "vc/include/cerrno",
-      "sha256Bytes": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74",
-      "bytes": 314
-    },
-    {
-      "path": "vc/include/cfloat",
-      "sha256Bytes": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
-      "bytes": 242
-    },
-    {
-      "path": "vc/include/charconv",
-      "sha256Bytes": "ca94da19ba8b2c4e2156559b9bf2921739c3fe09182f1429661199ae20e54b5f",
-      "bytes": 123112
-    },
-    {
-      "path": "vc/include/chrono",
-      "sha256Bytes": "8af902a185268ba20756a2c4b5fb309c80e03c2a6fe3f166c67c3eb3aa6ffc4d",
-      "bytes": 275223
-    },
-    {
-      "path": "vc/include/climits",
-      "sha256Bytes": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
-      "bytes": 319
-    },
-    {
-      "path": "vc/include/clocale",
-      "sha256Bytes": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38",
-      "bytes": 744
-    },
-    {
-      "path": "vc/include/cmath",
-      "sha256Bytes": "3f10507b4bca07cd07b7b4ae1403377634a37e91459305094e9f8cba34dd8ca5",
-      "bytes": 71762
-    },
-    {
-      "path": "vc/include/compare",
-      "sha256Bytes": "8f185f3771075b2dd0c41c13f4c12ff4995566c1f7240a2881d810ced72679ae",
-      "bytes": 38666
-    },
-    {
-      "path": "vc/include/concepts",
-      "sha256Bytes": "cadf7ebe363fa04b56e84d664d0e3cf5683eabe2e671d3d38f4c1f95efabea56",
-      "bytes": 11976
-    },
-    {
-      "path": "vc/include/concurrencysal.h",
-      "sha256Bytes": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
-      "bytes": 17273
-    },
-    {
-      "path": "vc/include/coroutine",
-      "sha256Bytes": "1fd6004a2eb2bd54d29d06cf4c19d9014f00f99285175e9d3e9550cbb2100c26",
-      "bytes": 8210
-    },
-    {
-      "path": "vc/include/crtdefs.h",
-      "sha256Bytes": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
-      "bytes": 2581
-    },
-    {
-      "path": "vc/include/cstddef",
-      "sha256Bytes": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
-      "bytes": 4015
-    },
-    {
-      "path": "vc/include/cstdint",
-      "sha256Bytes": "7e608450751cd44f43942b20e1c1c455d42872e78e7119361316850644f1fb75",
-      "bytes": 2674
-    },
-    {
-      "path": "vc/include/cstdio",
-      "sha256Bytes": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
-      "bytes": 2511
-    },
-    {
-      "path": "vc/include/cstdlib",
-      "sha256Bytes": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
-      "bytes": 2532
-    },
-    {
-      "path": "vc/include/cstring",
-      "sha256Bytes": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
-      "bytes": 1532
-    },
-    {
-      "path": "vc/include/ctime",
-      "sha256Bytes": "6d807f129b2ac76e16769464ab789b9a7980ecdd39041c02bf2974e2301aa485",
-      "bytes": 2950
-    },
-    {
-      "path": "vc/include/cwchar",
-      "sha256Bytes": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
-      "bytes": 3044
-    },
-    {
-      "path": "vc/include/eh.h",
-      "sha256Bytes": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
-      "bytes": 2206
-    },
-    {
-      "path": "vc/include/emmintrin.h",
-      "sha256Bytes": "0088e279e28e47717d37096a52a328c6068ef41a33b8f8804e463e1e2984017e",
-      "bytes": 16131
-    },
-    {
-      "path": "vc/include/exception",
-      "sha256Bytes": "f656e780c4b7de2d580f34e2c96d9992f8f0d154d068235ba5bee709ae0334a2",
-      "bytes": 13509
-    },
-    {
-      "path": "vc/include/excpt.h",
-      "sha256Bytes": "191ab83e320a5e9712fe483257fecae14cb0c158a4517b620f3fddb1aa6ef23b",
-      "bytes": 2511
-    },
-    {
-      "path": "vc/include/format",
-      "sha256Bytes": "b87d42ec97598dc6d003901948e15bd45f3db5d56841dee66cfc833ebd989f32",
-      "bytes": 141869
-    },
-    {
-      "path": "vc/include/forward_list",
-      "sha256Bytes": "81ec7d91f571a65cce9065c9fd80b1c022c7b3fbcd3fa7137b241339b06a5cbf",
-      "bytes": 63150
-    },
-    {
-      "path": "vc/include/immintrin.h",
-      "sha256Bytes": "fb8a3706c9013407f918ed92585be0eab7034ef124ec4c88f9ff4b00915d1cfa",
-      "bytes": 121773
-    },
-    {
-      "path": "vc/include/initializer_list",
-      "sha256Bytes": "6ff91697d3fc1734976f2290dca64db6ff910a7d7add242029f692c745ac4558",
-      "bytes": 1888
-    },
-    {
-      "path": "vc/include/intrin.h",
-      "sha256Bytes": "b1cfcc48e6e64200641d677886f63473e3d4135209bcc3438d5a73a298293e0d",
-      "bytes": 66891
-    },
-    {
-      "path": "vc/include/intrin0.h",
-      "sha256Bytes": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
-      "bytes": 543
-    },
-    {
-      "path": "vc/include/intrin0.inl.h",
-      "sha256Bytes": "be7631000a4e89dda44873b0c5e6336c8d3a2f4fdf594365b16f8aaaf7177aeb",
-      "bytes": 21923
-    },
-    {
-      "path": "vc/include/iomanip",
-      "sha256Bytes": "f39b13944cb0e111ee6d81f1d842d25aae2c0cf570efbc26b031eb170a4c312d",
-      "bytes": 16228
-    },
-    {
-      "path": "vc/include/ios",
-      "sha256Bytes": "f0114492124ab2dc5eff7fda5dfacc836ab0a84efbde4d6207c93a23efdd7373",
-      "bytes": 10615
-    },
-    {
-      "path": "vc/include/iosfwd",
-      "sha256Bytes": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
-      "bytes": 11546
-    },
-    {
-      "path": "vc/include/istream",
-      "sha256Bytes": "55f487a42ace45ef5262b5b895605f3ec305209eac02efb32f11969f29731029",
-      "bytes": 34901
-    },
-    {
-      "path": "vc/include/iterator",
-      "sha256Bytes": "c26eadf25004e352bbb57d189820392aefaf08a82b15027f18b32725ba106db2",
-      "bytes": 68697
-    },
-    {
-      "path": "vc/include/limits",
-      "sha256Bytes": "5cda311b1b514cdea1fdda5c1b53865a85c9288ef50d59b7b8f09802bf9bc60b",
-      "bytes": 27227
-    },
-    {
-      "path": "vc/include/limits.h",
-      "sha256Bytes": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
-      "bytes": 1919
-    },
-    {
-      "path": "vc/include/list",
-      "sha256Bytes": "4e3d4a6f46c2b07b18b22b1b12a003511e87b271f009786a45736a8fe67c9cb7",
-      "bytes": 75494
-    },
-    {
-      "path": "vc/include/locale",
-      "sha256Bytes": "f45bb27d685f45610de3bd3dd1f122667c4a51caf820238b8b7f2ab7081272d3",
-      "bytes": 8346
-    },
-    {
-      "path": "vc/include/map",
-      "sha256Bytes": "626f4bda2f71ec89ae1b7bac7b13d4b2a0483a8c8b70e777f66dd50238d47277",
-      "bytes": 30356
-    },
-    {
-      "path": "vc/include/memory",
-      "sha256Bytes": "ebe9836c7d6460e9a414bcbf8e7a57d67a4760ab5f217c1ff1a06cee95af57bb",
-      "bytes": 177948
-    },
-    {
-      "path": "vc/include/mmintrin.h",
-      "sha256Bytes": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
-      "bytes": 6634
-    },
-    {
-      "path": "vc/include/mutex",
-      "sha256Bytes": "b8a1b115e4f763429314e6bd80460beecbc07206955ccdecd3bb6b0b3e10aa63",
-      "bytes": 26948
-    },
-    {
-      "path": "vc/include/new",
-      "sha256Bytes": "101647348d130ff13563e2e8b07af3390a6dcfc0bea675207375eb493b213009",
-      "bytes": 2014
-    },
-    {
-      "path": "vc/include/nmmintrin.h",
-      "sha256Bytes": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
-      "bytes": 4632
-    },
-    {
-      "path": "vc/include/optional",
-      "sha256Bytes": "c597c685b29c361cf9689b1b7fd19b42155982dbef5729e9a21c033f73c24a88",
-      "bytes": 40581
-    },
-    {
-      "path": "vc/include/ostream",
-      "sha256Bytes": "f3b25a4f7905c3a19309673cc773c7d7b6ec56c72111a33eeac0d2d840dad479",
-      "bytes": 12851
-    },
-    {
-      "path": "vc/include/pmmintrin.h",
-      "sha256Bytes": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
-      "bytes": 3208
-    },
-    {
-      "path": "vc/include/ratio",
-      "sha256Bytes": "1d195b2c2d72c73c9a728d3d9d516d87aa62bbab80335a9d8e81e7f0f97b019b",
-      "bytes": 10992
-    },
-    {
-      "path": "vc/include/sal.h",
-      "sha256Bytes": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
-      "bytes": 213957
-    },
-    {
-      "path": "vc/include/setjmp.h",
-      "sha256Bytes": "529dce71c496d77b104b85876c65d8d6e61d7aed2d9e4b64c1011491fd566f10",
-      "bytes": 4342
-    },
-    {
-      "path": "vc/include/smmintrin.h",
-      "sha256Bytes": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
-      "bytes": 10000
-    },
-    {
-      "path": "vc/include/source_location",
-      "sha256Bytes": "9c0bb82229074091cf9b643677b49e76dccdbb9129bf9419a4ad8a2c6fb408de",
-      "bytes": 2397
-    },
-    {
-      "path": "vc/include/span",
-      "sha256Bytes": "ffd080146fdde499a87fbb8a8e0babb7e192d3a61b1cfa0d29889770457dad38",
-      "bytes": 22350
-    },
-    {
-      "path": "vc/include/sstream",
-      "sha256Bytes": "cff76f476a58ba328e60c70b7a008b0fdf335bc1482b349632fdfe6b7b6949d3",
-      "bytes": 37478
-    },
-    {
-      "path": "vc/include/stdarg.h",
-      "sha256Bytes": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
-      "bytes": 554
-    },
-    {
-      "path": "vc/include/stdexcept",
-      "sha256Bytes": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
-      "bytes": 5213
-    },
-    {
-      "path": "vc/include/stdint.h",
-      "sha256Bytes": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
-      "bytes": 4114
-    },
-    {
-      "path": "vc/include/stop_token",
-      "sha256Bytes": "b691531ef9e1dbfaceddda6f8d94b5ae89750edf942b89014a01b07eb8b707b2",
-      "bytes": 12970
-    },
-    {
-      "path": "vc/include/streambuf",
-      "sha256Bytes": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478",
-      "bytes": 15129
-    },
-    {
-      "path": "vc/include/string",
-      "sha256Bytes": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05",
-      "bytes": 16455
-    },
-    {
-      "path": "vc/include/string_view",
-      "sha256Bytes": "4954e7353138c42fec445ac2357cdb90278807a57e395bb3e7a6a1e5b1007f3a",
-      "bytes": 833
-    },
-    {
-      "path": "vc/include/system_error",
-      "sha256Bytes": "2749bc4705adc1b6cfc7e488f2fa9f3db4231990a33a5f5ec63c6568fdcba753",
-      "bytes": 29123
-    },
-    {
-      "path": "vc/include/thread",
-      "sha256Bytes": "028f328b217c689a2c37c978371defc1c8835be98238fac814d61e0596f80060",
-      "bytes": 14103
-    },
-    {
-      "path": "vc/include/tmmintrin.h",
-      "sha256Bytes": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
-      "bytes": 4763
-    },
-    {
-      "path": "vc/include/tuple",
-      "sha256Bytes": "feb355a9d1552af6e7b8cbdb3a6a2540604ae14ee5ed8f3dd6649bba46b3cd1d",
-      "bytes": 58581
-    },
-    {
-      "path": "vc/include/type_traits",
-      "sha256Bytes": "357e102b4e6ab85a864980a01bba28440791311df288b8987b580e577c928d5c",
-      "bytes": 108106
-    },
-    {
-      "path": "vc/include/typeinfo",
-      "sha256Bytes": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2",
-      "bytes": 2112
-    },
-    {
-      "path": "vc/include/unordered_map",
-      "sha256Bytes": "989a75d74b4b4370bc4a610dc1555db4be223f3ae184fe81fb0d5cf06d104edd",
-      "bytes": 42678
-    },
-    {
-      "path": "vc/include/use_ansi.h",
-      "sha256Bytes": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
-      "bytes": 1330
-    },
-    {
-      "path": "vc/include/utility",
-      "sha256Bytes": "403bcf5919d0e0371f25a929752f0a05aae7b0667129d65cfe3a8dff858e97d6",
-      "bytes": 42347
-    },
-    {
-      "path": "vc/include/vadefs.h",
-      "sha256Bytes": "200b49c2efd26bc7a92e9dfa3b847cc612b237dff5c7291d9f901d39b4a5e52e",
-      "bytes": 7800
-    },
-    {
-      "path": "vc/include/vcruntime.h",
-      "sha256Bytes": "a2fe9117dc2640e243f91fa94e1d05fc35083218c2a67a446db9e34cece779b5",
-      "bytes": 11851
-    },
-    {
-      "path": "vc/include/vcruntime_exception.h",
-      "sha256Bytes": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
-      "bytes": 3143
-    },
-    {
-      "path": "vc/include/vcruntime_new.h",
-      "sha256Bytes": "8ee45e7db7f08475d1ddf33d493fd7cb5cd10b54b4756b39156c8548281b3e63",
-      "bytes": 5531
-    },
-    {
-      "path": "vc/include/vcruntime_new_debug.h",
-      "sha256Bytes": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
-      "bytes": 1578
-    },
-    {
-      "path": "vc/include/vcruntime_startup.h",
-      "sha256Bytes": "fb0bcd4cc6af20cedc3ddc02bdddd7e95cde5ede5c5c4aefa720702a2a75557a",
-      "bytes": 1272
-    },
-    {
-      "path": "vc/include/vcruntime_string.h",
-      "sha256Bytes": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
-      "bytes": 2959
-    },
-    {
-      "path": "vc/include/vcruntime_typeinfo.h",
-      "sha256Bytes": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
-      "bytes": 5313
-    },
-    {
-      "path": "vc/include/vector",
-      "sha256Bytes": "351604d91a2ceac79f9bd9448c0553cccc22711e22955b5938eaf41de98334a6",
-      "bytes": 161282
-    },
-    {
-      "path": "vc/include/version",
-      "sha256Bytes": "f9c5a2952c6053e3bf8a50c7599dfba75815666ebfd963779c5698118915dbde",
-      "bytes": 257
-    },
-    {
-      "path": "vc/include/wmmintrin.h",
-      "sha256Bytes": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
-      "bytes": 2615
-    },
-    {
-      "path": "vc/include/xatomic.h",
-      "sha256Bytes": "769a41b38adbc4760a70feb5678a843e1df91ae33b64c60da2c993d8ad768d9c",
-      "bytes": 5088
-    },
-    {
-      "path": "vc/include/xatomic_wait.h",
-      "sha256Bytes": "9048eb4c65793df84d037413206471c41859cb02e12c95816dc1e77fdbad4e0b",
-      "bytes": 3448
-    },
-    {
-      "path": "vc/include/xbit_ops.h",
-      "sha256Bytes": "ce23055e9f7d2fe88d0e4733848c9374db361ab610fa512cbbebb3c01765e0b8",
-      "bytes": 2743
-    },
-    {
-      "path": "vc/include/xcall_once.h",
-      "sha256Bytes": "6d0dd9d0c84f4a4baf7969e257b9013ba73b8b2e4061abab626c2621f326c03d",
-      "bytes": 3856
-    },
-    {
-      "path": "vc/include/xcharconv.h",
-      "sha256Bytes": "7372e9cd682c47df5b0c5b5b0adbe0a1f1c41ffd908950a77afd037cdf77802d",
-      "bytes": 1260
-    },
-    {
-      "path": "vc/include/xcharconv_ryu.h",
-      "sha256Bytes": "265b74f46e8815f6e2eb4868cd0e5f4b5a28a52d68411805249c991062980090",
-      "bytes": 102081
-    },
-    {
-      "path": "vc/include/xcharconv_ryu_tables.h",
-      "sha256Bytes": "18e4dc7b7783d788f3123f9e871b00754521264e199608a908887a692c311f13",
-      "bytes": 6943
-    },
-    {
-      "path": "vc/include/xcharconv_tables.h",
-      "sha256Bytes": "291ec21d518f16a3c1399ae4bd269fa25d5288c4b71597fde600b476e2d170e8",
-      "bytes": 4728
-    },
-    {
-      "path": "vc/include/xerrc.h",
-      "sha256Bytes": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
-      "bytes": 6445
-    },
-    {
-      "path": "vc/include/xfacet",
-      "sha256Bytes": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312",
-      "bytes": 1473
-    },
-    {
-      "path": "vc/include/xfilesystem_abi.h",
-      "sha256Bytes": "66e149294f6c93ecc10b7a934c39cb6b276bc09e6dbdbdc2c637175cf82c38fc",
-      "bytes": 17434
-    },
-    {
-      "path": "vc/include/xhash",
-      "sha256Bytes": "b5b183c4fb05fa5c1079a6eb79b7de6b395bd5cb405c09832820e89e82423435",
-      "bytes": 84812
-    },
-    {
-      "path": "vc/include/xiosbase",
-      "sha256Bytes": "6fa886b895d0ee805985b9ef57d96d7e372431acc87184cfc02b7d65ea0a82fc",
-      "bytes": 16925
-    },
-    {
-      "path": "vc/include/xkeycheck.h",
-      "sha256Bytes": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
-      "bytes": 20754
-    },
-    {
-      "path": "vc/include/xlocale",
-      "sha256Bytes": "cbaf5f6a4b5609dac0ce91facab9812b0f0400ce0ea13689b8e3eecbf8431ee1",
-      "bytes": 129272
-    },
-    {
-      "path": "vc/include/xlocbuf",
-      "sha256Bytes": "5b0fbdec54a6501ccb7cb66d1f31e4f3c207cb8a3f11e0876ab762d8a85e1a61",
-      "bytes": 18574
-    },
-    {
-      "path": "vc/include/xlocinfo",
-      "sha256Bytes": "3577fc29730c92dc4878003f0877695f6c7a8ad782d61be534c765a65661f741",
-      "bytes": 16020
-    },
-    {
-      "path": "vc/include/xlocmes",
-      "sha256Bytes": "fda364686c3132ef20c94db904334cf52071e154d4875c8883525e1a7b1b69b1",
-      "bytes": 4634
-    },
-    {
-      "path": "vc/include/xlocmon",
-      "sha256Bytes": "3a60a39b65c8abd859a61a784e4132e5d859b485501bda03776353a38070cda3",
-      "bytes": 37495
-    },
-    {
-      "path": "vc/include/xlocnum",
-      "sha256Bytes": "f02525562ce44675849016b2182a3e41105e329c790ece37a6d5f109f2599e11",
-      "bytes": 71094
-    },
-    {
-      "path": "vc/include/xloctime",
-      "sha256Bytes": "25a52e6e11c644fd3c630ed6e15e1da956f553987a083125d2f5c44c17e0fab9",
-      "bytes": 48694
-    },
-    {
-      "path": "vc/include/xmemory",
-      "sha256Bytes": "76359d0893ef63b0baa617e3f2d8729c50a24d349b41af51ad8e00ad7be82d70",
-      "bytes": 112178
-    },
-    {
-      "path": "vc/include/xmmintrin.h",
-      "sha256Bytes": "1f2376321c0f53c06cca13a354a519e2870b7cb1e6e0f223c242390b9114dd48",
-      "bytes": 20079
-    },
-    {
-      "path": "vc/include/xnode_handle.h",
-      "sha256Bytes": "559b99d9f52414b17923f7f791028ad50e310ebbcfb4ef4bee9d7c5d930c4935",
-      "bytes": 7078
-    },
-    {
-      "path": "vc/include/xpolymorphic_allocator.h",
-      "sha256Bytes": "df09c8ef5650c7e4980da1254f4d422fc0385e9852bb009e70449190a29db0f9",
-      "bytes": 16963
-    },
-    {
-      "path": "vc/include/xsmf_control.h",
-      "sha256Bytes": "b69b98ce04a1d505f2f7fcf8a610664682c3a754d85b4bb2f857f09bce61f3dd",
-      "bytes": 7671
-    },
-    {
-      "path": "vc/include/xstring",
-      "sha256Bytes": "9407c290a1d0c6bebc42cf131bd04f09a9892f61b713eecb12827c0f6bbc3045",
-      "bytes": 161127
-    },
-    {
-      "path": "vc/include/xthreads.h",
-      "sha256Bytes": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
-      "bytes": 4138
-    },
-    {
-      "path": "vc/include/xtimec.h",
-      "sha256Bytes": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
-      "bytes": 1755
-    },
-    {
-      "path": "vc/include/xtr1common",
-      "sha256Bytes": "f9afdc2123d09c564f42552e160e7a558b87c8f0f63939e98bfcadb7dbf913ba",
-      "bytes": 7672
-    },
-    {
-      "path": "vc/include/xtree",
-      "sha256Bytes": "06b661c5906bcc6eae0078851b60898a2ec9c7af81e53c988d78e713a4e6952b",
-      "bytes": 79561
-    },
-    {
-      "path": "vc/include/xutility",
-      "sha256Bytes": "d5959e0964ea09991888e5b45eecfd8c71c094034261489fbb450c2f2f450ef5",
-      "bytes": 331853
-    },
-    {
-      "path": "vc/include/yvals.h",
-      "sha256Bytes": "a186476441eaa158056be01da9a1473217e14a7cc33365cbd0b6c9115833e0dc",
-      "bytes": 17704
-    },
-    {
-      "path": "vc/include/yvals_core.h",
-      "sha256Bytes": "5070449e37a1735adf49204a12c7a7d5efa145d6aa607720aef5adbd2c57ef83",
-      "bytes": 104524
-    },
-    {
-      "path": "vc/include/zmmintrin.h",
-      "sha256Bytes": "ee8d0c6ce34ae423958ec2abc61d31e2a18a00d99761fcec8f4775c8775fdcc2",
-      "bytes": 493060
-    },
     {
       "path": "sdk/Include/10.0.26100.0/cppwinrt/winrt/base.h",
       "sha256Bytes": "55f61aeaf89109ed2f46c4054a8355cd9c48a3113150e3090a2214322f8675ac",
@@ -1832,13 +1137,713 @@
       "path": "sdk/Include/10.0.26100.0/winrt/roapi.h",
       "sha256Bytes": "07c564d33b64745ed92c5dccf7915e4191083aebe84a4c7d6a7c87561ab0245e",
       "bytes": 7794
+    },
+    {
+      "path": "vc/include/__msvc_bit_utils.hpp",
+      "sha256Bytes": "fd07ec800d789d222ba2b98c8ddcc3354930bd83e5ebd3ebc2491f35d047b331",
+      "bytes": 15274
+    },
+    {
+      "path": "vc/include/__msvc_chrono.hpp",
+      "sha256Bytes": "0fefff2b74e2fe60ef89d42042d8f9ecc7bda3f60472d353c84bb1a3fce7cb9c",
+      "bytes": 33686
+    },
+    {
+      "path": "vc/include/__msvc_format_ucd_tables.hpp",
+      "sha256Bytes": "0011433c71c625191e10d074d06bae571eb9cfcff979bd5650bb436fa6cda9fa",
+      "bytes": 50758
+    },
+    {
+      "path": "vc/include/__msvc_formatter.hpp",
+      "sha256Bytes": "fc22eb5e9c24a0e72f0f2a07fd0e5d2c619da57ad2b10cce988a4f229b0053d3",
+      "bytes": 17301
+    },
+    {
+      "path": "vc/include/__msvc_heap_algorithms.hpp",
+      "sha256Bytes": "56c6be67b7c0ff9b3ffb7d48943c1ec01728f41f0663dca2c49c296f492bf619",
+      "bytes": 5973
+    },
+    {
+      "path": "vc/include/__msvc_iter_core.hpp",
+      "sha256Bytes": "4fe1273bd571601435c7032dabf6e57b88f84b1740bc65768e00ccdc60b1c9ad",
+      "bytes": 19655
+    },
+    {
+      "path": "vc/include/__msvc_minmax.hpp",
+      "sha256Bytes": "2f899749842ccf2adbeabca98f1bba634d787a96f1ddebf62a2c5d0c6a83c8b2",
+      "bytes": 1473
+    },
+    {
+      "path": "vc/include/__msvc_ostream.hpp",
+      "sha256Bytes": "e2016938b271458a2ed0e04ffbf5dd38ca219755f8ec6c7b0447d46ae112cea5",
+      "bytes": 37634
+    },
+    {
+      "path": "vc/include/__msvc_print.hpp",
+      "sha256Bytes": "29413fa5b9d6b3af7fbda3b6e0d4918cc65fbb1afa160ad2f61a356cdbe6da26",
+      "bytes": 3310
+    },
+    {
+      "path": "vc/include/__msvc_ranges_tuple_formatter.hpp",
+      "sha256Bytes": "0efb7bfc2323b6c40e9d174ea4aa86f4f65722a4a13694cc1de24be33255a2ac",
+      "bytes": 53328
+    },
+    {
+      "path": "vc/include/__msvc_sanitizer_annotate_container.hpp",
+      "sha256Bytes": "50d83b50fd98df02f58c3c643b5bc26313968a9edd75a485f7af4a24cfcef8e1",
+      "bytes": 7597
+    },
+    {
+      "path": "vc/include/__msvc_string_view.hpp",
+      "sha256Bytes": "957ae97e03169f46d8d9b77c9dc5ab3f66c619be5a228d062499b60b8d336c47",
+      "bytes": 83111
+    },
+    {
+      "path": "vc/include/__msvc_system_error_abi.hpp",
+      "sha256Bytes": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "bytes": 1224
+    },
+    {
+      "path": "vc/include/__msvc_threads_core.hpp",
+      "sha256Bytes": "e29bc7049cc854234dbc1b332e1f7118aa0cc3b495fe538dfda9e7fbd0374529",
+      "bytes": 3051
+    },
+    {
+      "path": "vc/include/__msvc_tzdb.hpp",
+      "sha256Bytes": "8bb96dcb97cbe29f9475c35b4c5536cbe7524686f3e7a82a0b18264a10a86917",
+      "bytes": 5301
+    },
+    {
+      "path": "vc/include/__msvc_xlocinfo_types.hpp",
+      "sha256Bytes": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "bytes": 1207
+    },
+    {
+      "path": "vc/include/algorithm",
+      "sha256Bytes": "e4cfb31da8ec07af89834d829ea72b20c7e3202476af3b0641cfe8d6ebb245d7",
+      "bytes": 533492
+    },
+    {
+      "path": "vc/include/ammintrin.h",
+      "sha256Bytes": "267f97d9d269e39204b31efcdc2a7a32fd63b2e15dc21a80fb18d739d3d03b12",
+      "bytes": 16722
+    },
+    {
+      "path": "vc/include/array",
+      "sha256Bytes": "48d2c6c4926e08d0d96f41e59f69513737f76107530f68c94d5d9fe668689a15",
+      "bytes": 29292
+    },
+    {
+      "path": "vc/include/atomic",
+      "sha256Bytes": "76a3e00e57e342f26eb5db7a0e38002b0f5db850ac2fe33d026733bf8217b4b4",
+      "bytes": 125337
+    },
+    {
+      "path": "vc/include/bit",
+      "sha256Bytes": "f08c873229e5c11b6e89a0d47c5ca5e2555947321aa382bf52224d041648d483",
+      "bytes": 8838
+    },
+    {
+      "path": "vc/include/cctype",
+      "sha256Bytes": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18",
+      "bytes": 1113
+    },
+    {
+      "path": "vc/include/cerrno",
+      "sha256Bytes": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74",
+      "bytes": 314
+    },
+    {
+      "path": "vc/include/cfloat",
+      "sha256Bytes": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
+      "bytes": 242
+    },
+    {
+      "path": "vc/include/charconv",
+      "sha256Bytes": "ca94da19ba8b2c4e2156559b9bf2921739c3fe09182f1429661199ae20e54b5f",
+      "bytes": 123112
+    },
+    {
+      "path": "vc/include/chrono",
+      "sha256Bytes": "8af902a185268ba20756a2c4b5fb309c80e03c2a6fe3f166c67c3eb3aa6ffc4d",
+      "bytes": 275223
+    },
+    {
+      "path": "vc/include/climits",
+      "sha256Bytes": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
+      "bytes": 319
+    },
+    {
+      "path": "vc/include/clocale",
+      "sha256Bytes": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38",
+      "bytes": 744
+    },
+    {
+      "path": "vc/include/cmath",
+      "sha256Bytes": "3f10507b4bca07cd07b7b4ae1403377634a37e91459305094e9f8cba34dd8ca5",
+      "bytes": 71762
+    },
+    {
+      "path": "vc/include/compare",
+      "sha256Bytes": "8f185f3771075b2dd0c41c13f4c12ff4995566c1f7240a2881d810ced72679ae",
+      "bytes": 38666
+    },
+    {
+      "path": "vc/include/concepts",
+      "sha256Bytes": "cadf7ebe363fa04b56e84d664d0e3cf5683eabe2e671d3d38f4c1f95efabea56",
+      "bytes": 11976
+    },
+    {
+      "path": "vc/include/concurrencysal.h",
+      "sha256Bytes": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "bytes": 17273
+    },
+    {
+      "path": "vc/include/coroutine",
+      "sha256Bytes": "1fd6004a2eb2bd54d29d06cf4c19d9014f00f99285175e9d3e9550cbb2100c26",
+      "bytes": 8210
+    },
+    {
+      "path": "vc/include/crtdefs.h",
+      "sha256Bytes": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "bytes": 2581
+    },
+    {
+      "path": "vc/include/cstddef",
+      "sha256Bytes": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+      "bytes": 4015
+    },
+    {
+      "path": "vc/include/cstdint",
+      "sha256Bytes": "7e608450751cd44f43942b20e1c1c455d42872e78e7119361316850644f1fb75",
+      "bytes": 2674
+    },
+    {
+      "path": "vc/include/cstdio",
+      "sha256Bytes": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
+      "bytes": 2511
+    },
+    {
+      "path": "vc/include/cstdlib",
+      "sha256Bytes": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
+      "bytes": 2532
+    },
+    {
+      "path": "vc/include/cstring",
+      "sha256Bytes": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
+      "bytes": 1532
+    },
+    {
+      "path": "vc/include/ctime",
+      "sha256Bytes": "6d807f129b2ac76e16769464ab789b9a7980ecdd39041c02bf2974e2301aa485",
+      "bytes": 2950
+    },
+    {
+      "path": "vc/include/cwchar",
+      "sha256Bytes": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
+      "bytes": 3044
+    },
+    {
+      "path": "vc/include/eh.h",
+      "sha256Bytes": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "bytes": 2206
+    },
+    {
+      "path": "vc/include/emmintrin.h",
+      "sha256Bytes": "0088e279e28e47717d37096a52a328c6068ef41a33b8f8804e463e1e2984017e",
+      "bytes": 16131
+    },
+    {
+      "path": "vc/include/exception",
+      "sha256Bytes": "f656e780c4b7de2d580f34e2c96d9992f8f0d154d068235ba5bee709ae0334a2",
+      "bytes": 13509
+    },
+    {
+      "path": "vc/include/excpt.h",
+      "sha256Bytes": "191ab83e320a5e9712fe483257fecae14cb0c158a4517b620f3fddb1aa6ef23b",
+      "bytes": 2511
+    },
+    {
+      "path": "vc/include/format",
+      "sha256Bytes": "b87d42ec97598dc6d003901948e15bd45f3db5d56841dee66cfc833ebd989f32",
+      "bytes": 141869
+    },
+    {
+      "path": "vc/include/forward_list",
+      "sha256Bytes": "81ec7d91f571a65cce9065c9fd80b1c022c7b3fbcd3fa7137b241339b06a5cbf",
+      "bytes": 63150
+    },
+    {
+      "path": "vc/include/immintrin.h",
+      "sha256Bytes": "fb8a3706c9013407f918ed92585be0eab7034ef124ec4c88f9ff4b00915d1cfa",
+      "bytes": 121773
+    },
+    {
+      "path": "vc/include/initializer_list",
+      "sha256Bytes": "6ff91697d3fc1734976f2290dca64db6ff910a7d7add242029f692c745ac4558",
+      "bytes": 1888
+    },
+    {
+      "path": "vc/include/intrin.h",
+      "sha256Bytes": "b1cfcc48e6e64200641d677886f63473e3d4135209bcc3438d5a73a298293e0d",
+      "bytes": 66891
+    },
+    {
+      "path": "vc/include/intrin0.h",
+      "sha256Bytes": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "bytes": 543
+    },
+    {
+      "path": "vc/include/intrin0.inl.h",
+      "sha256Bytes": "be7631000a4e89dda44873b0c5e6336c8d3a2f4fdf594365b16f8aaaf7177aeb",
+      "bytes": 21923
+    },
+    {
+      "path": "vc/include/iomanip",
+      "sha256Bytes": "f39b13944cb0e111ee6d81f1d842d25aae2c0cf570efbc26b031eb170a4c312d",
+      "bytes": 16228
+    },
+    {
+      "path": "vc/include/ios",
+      "sha256Bytes": "f0114492124ab2dc5eff7fda5dfacc836ab0a84efbde4d6207c93a23efdd7373",
+      "bytes": 10615
+    },
+    {
+      "path": "vc/include/iosfwd",
+      "sha256Bytes": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
+      "bytes": 11546
+    },
+    {
+      "path": "vc/include/istream",
+      "sha256Bytes": "55f487a42ace45ef5262b5b895605f3ec305209eac02efb32f11969f29731029",
+      "bytes": 34901
+    },
+    {
+      "path": "vc/include/iterator",
+      "sha256Bytes": "c26eadf25004e352bbb57d189820392aefaf08a82b15027f18b32725ba106db2",
+      "bytes": 68697
+    },
+    {
+      "path": "vc/include/limits",
+      "sha256Bytes": "5cda311b1b514cdea1fdda5c1b53865a85c9288ef50d59b7b8f09802bf9bc60b",
+      "bytes": 27227
+    },
+    {
+      "path": "vc/include/limits.h",
+      "sha256Bytes": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "bytes": 1919
+    },
+    {
+      "path": "vc/include/list",
+      "sha256Bytes": "4e3d4a6f46c2b07b18b22b1b12a003511e87b271f009786a45736a8fe67c9cb7",
+      "bytes": 75494
+    },
+    {
+      "path": "vc/include/locale",
+      "sha256Bytes": "f45bb27d685f45610de3bd3dd1f122667c4a51caf820238b8b7f2ab7081272d3",
+      "bytes": 8346
+    },
+    {
+      "path": "vc/include/map",
+      "sha256Bytes": "626f4bda2f71ec89ae1b7bac7b13d4b2a0483a8c8b70e777f66dd50238d47277",
+      "bytes": 30356
+    },
+    {
+      "path": "vc/include/memory",
+      "sha256Bytes": "ebe9836c7d6460e9a414bcbf8e7a57d67a4760ab5f217c1ff1a06cee95af57bb",
+      "bytes": 177948
+    },
+    {
+      "path": "vc/include/mmintrin.h",
+      "sha256Bytes": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "bytes": 6634
+    },
+    {
+      "path": "vc/include/mutex",
+      "sha256Bytes": "b8a1b115e4f763429314e6bd80460beecbc07206955ccdecd3bb6b0b3e10aa63",
+      "bytes": 26948
+    },
+    {
+      "path": "vc/include/new",
+      "sha256Bytes": "101647348d130ff13563e2e8b07af3390a6dcfc0bea675207375eb493b213009",
+      "bytes": 2014
+    },
+    {
+      "path": "vc/include/nmmintrin.h",
+      "sha256Bytes": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "bytes": 4632
+    },
+    {
+      "path": "vc/include/optional",
+      "sha256Bytes": "c597c685b29c361cf9689b1b7fd19b42155982dbef5729e9a21c033f73c24a88",
+      "bytes": 40581
+    },
+    {
+      "path": "vc/include/ostream",
+      "sha256Bytes": "f3b25a4f7905c3a19309673cc773c7d7b6ec56c72111a33eeac0d2d840dad479",
+      "bytes": 12851
+    },
+    {
+      "path": "vc/include/pmmintrin.h",
+      "sha256Bytes": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "bytes": 3208
+    },
+    {
+      "path": "vc/include/ratio",
+      "sha256Bytes": "1d195b2c2d72c73c9a728d3d9d516d87aa62bbab80335a9d8e81e7f0f97b019b",
+      "bytes": 10992
+    },
+    {
+      "path": "vc/include/sal.h",
+      "sha256Bytes": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "bytes": 213957
+    },
+    {
+      "path": "vc/include/setjmp.h",
+      "sha256Bytes": "529dce71c496d77b104b85876c65d8d6e61d7aed2d9e4b64c1011491fd566f10",
+      "bytes": 4342
+    },
+    {
+      "path": "vc/include/smmintrin.h",
+      "sha256Bytes": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "bytes": 10000
+    },
+    {
+      "path": "vc/include/source_location",
+      "sha256Bytes": "9c0bb82229074091cf9b643677b49e76dccdbb9129bf9419a4ad8a2c6fb408de",
+      "bytes": 2397
+    },
+    {
+      "path": "vc/include/span",
+      "sha256Bytes": "ffd080146fdde499a87fbb8a8e0babb7e192d3a61b1cfa0d29889770457dad38",
+      "bytes": 22350
+    },
+    {
+      "path": "vc/include/sstream",
+      "sha256Bytes": "cff76f476a58ba328e60c70b7a008b0fdf335bc1482b349632fdfe6b7b6949d3",
+      "bytes": 37478
+    },
+    {
+      "path": "vc/include/stdarg.h",
+      "sha256Bytes": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "bytes": 554
+    },
+    {
+      "path": "vc/include/stdexcept",
+      "sha256Bytes": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
+      "bytes": 5213
+    },
+    {
+      "path": "vc/include/stdint.h",
+      "sha256Bytes": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "bytes": 4114
+    },
+    {
+      "path": "vc/include/stop_token",
+      "sha256Bytes": "b691531ef9e1dbfaceddda6f8d94b5ae89750edf942b89014a01b07eb8b707b2",
+      "bytes": 12970
+    },
+    {
+      "path": "vc/include/streambuf",
+      "sha256Bytes": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478",
+      "bytes": 15129
+    },
+    {
+      "path": "vc/include/string",
+      "sha256Bytes": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05",
+      "bytes": 16455
+    },
+    {
+      "path": "vc/include/string_view",
+      "sha256Bytes": "4954e7353138c42fec445ac2357cdb90278807a57e395bb3e7a6a1e5b1007f3a",
+      "bytes": 833
+    },
+    {
+      "path": "vc/include/system_error",
+      "sha256Bytes": "2749bc4705adc1b6cfc7e488f2fa9f3db4231990a33a5f5ec63c6568fdcba753",
+      "bytes": 29123
+    },
+    {
+      "path": "vc/include/thread",
+      "sha256Bytes": "028f328b217c689a2c37c978371defc1c8835be98238fac814d61e0596f80060",
+      "bytes": 14103
+    },
+    {
+      "path": "vc/include/tmmintrin.h",
+      "sha256Bytes": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "bytes": 4763
+    },
+    {
+      "path": "vc/include/tuple",
+      "sha256Bytes": "feb355a9d1552af6e7b8cbdb3a6a2540604ae14ee5ed8f3dd6649bba46b3cd1d",
+      "bytes": 58581
+    },
+    {
+      "path": "vc/include/type_traits",
+      "sha256Bytes": "357e102b4e6ab85a864980a01bba28440791311df288b8987b580e577c928d5c",
+      "bytes": 108106
+    },
+    {
+      "path": "vc/include/typeinfo",
+      "sha256Bytes": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2",
+      "bytes": 2112
+    },
+    {
+      "path": "vc/include/unordered_map",
+      "sha256Bytes": "989a75d74b4b4370bc4a610dc1555db4be223f3ae184fe81fb0d5cf06d104edd",
+      "bytes": 42678
+    },
+    {
+      "path": "vc/include/use_ansi.h",
+      "sha256Bytes": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "bytes": 1330
+    },
+    {
+      "path": "vc/include/utility",
+      "sha256Bytes": "403bcf5919d0e0371f25a929752f0a05aae7b0667129d65cfe3a8dff858e97d6",
+      "bytes": 42347
+    },
+    {
+      "path": "vc/include/vadefs.h",
+      "sha256Bytes": "200b49c2efd26bc7a92e9dfa3b847cc612b237dff5c7291d9f901d39b4a5e52e",
+      "bytes": 7800
+    },
+    {
+      "path": "vc/include/vcruntime.h",
+      "sha256Bytes": "a2fe9117dc2640e243f91fa94e1d05fc35083218c2a67a446db9e34cece779b5",
+      "bytes": 11851
+    },
+    {
+      "path": "vc/include/vcruntime_exception.h",
+      "sha256Bytes": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "bytes": 3143
+    },
+    {
+      "path": "vc/include/vcruntime_new.h",
+      "sha256Bytes": "8ee45e7db7f08475d1ddf33d493fd7cb5cd10b54b4756b39156c8548281b3e63",
+      "bytes": 5531
+    },
+    {
+      "path": "vc/include/vcruntime_new_debug.h",
+      "sha256Bytes": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "bytes": 1578
+    },
+    {
+      "path": "vc/include/vcruntime_startup.h",
+      "sha256Bytes": "fb0bcd4cc6af20cedc3ddc02bdddd7e95cde5ede5c5c4aefa720702a2a75557a",
+      "bytes": 1272
+    },
+    {
+      "path": "vc/include/vcruntime_string.h",
+      "sha256Bytes": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "bytes": 2959
+    },
+    {
+      "path": "vc/include/vcruntime_typeinfo.h",
+      "sha256Bytes": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "bytes": 5313
+    },
+    {
+      "path": "vc/include/vector",
+      "sha256Bytes": "351604d91a2ceac79f9bd9448c0553cccc22711e22955b5938eaf41de98334a6",
+      "bytes": 161282
+    },
+    {
+      "path": "vc/include/version",
+      "sha256Bytes": "f9c5a2952c6053e3bf8a50c7599dfba75815666ebfd963779c5698118915dbde",
+      "bytes": 257
+    },
+    {
+      "path": "vc/include/wmmintrin.h",
+      "sha256Bytes": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "bytes": 2615
+    },
+    {
+      "path": "vc/include/xatomic.h",
+      "sha256Bytes": "769a41b38adbc4760a70feb5678a843e1df91ae33b64c60da2c993d8ad768d9c",
+      "bytes": 5088
+    },
+    {
+      "path": "vc/include/xatomic_wait.h",
+      "sha256Bytes": "9048eb4c65793df84d037413206471c41859cb02e12c95816dc1e77fdbad4e0b",
+      "bytes": 3448
+    },
+    {
+      "path": "vc/include/xbit_ops.h",
+      "sha256Bytes": "ce23055e9f7d2fe88d0e4733848c9374db361ab610fa512cbbebb3c01765e0b8",
+      "bytes": 2743
+    },
+    {
+      "path": "vc/include/xcall_once.h",
+      "sha256Bytes": "6d0dd9d0c84f4a4baf7969e257b9013ba73b8b2e4061abab626c2621f326c03d",
+      "bytes": 3856
+    },
+    {
+      "path": "vc/include/xcharconv.h",
+      "sha256Bytes": "7372e9cd682c47df5b0c5b5b0adbe0a1f1c41ffd908950a77afd037cdf77802d",
+      "bytes": 1260
+    },
+    {
+      "path": "vc/include/xcharconv_ryu.h",
+      "sha256Bytes": "265b74f46e8815f6e2eb4868cd0e5f4b5a28a52d68411805249c991062980090",
+      "bytes": 102081
+    },
+    {
+      "path": "vc/include/xcharconv_ryu_tables.h",
+      "sha256Bytes": "18e4dc7b7783d788f3123f9e871b00754521264e199608a908887a692c311f13",
+      "bytes": 6943
+    },
+    {
+      "path": "vc/include/xcharconv_tables.h",
+      "sha256Bytes": "291ec21d518f16a3c1399ae4bd269fa25d5288c4b71597fde600b476e2d170e8",
+      "bytes": 4728
+    },
+    {
+      "path": "vc/include/xerrc.h",
+      "sha256Bytes": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "bytes": 6445
+    },
+    {
+      "path": "vc/include/xfacet",
+      "sha256Bytes": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312",
+      "bytes": 1473
+    },
+    {
+      "path": "vc/include/xfilesystem_abi.h",
+      "sha256Bytes": "66e149294f6c93ecc10b7a934c39cb6b276bc09e6dbdbdc2c637175cf82c38fc",
+      "bytes": 17434
+    },
+    {
+      "path": "vc/include/xhash",
+      "sha256Bytes": "b5b183c4fb05fa5c1079a6eb79b7de6b395bd5cb405c09832820e89e82423435",
+      "bytes": 84812
+    },
+    {
+      "path": "vc/include/xiosbase",
+      "sha256Bytes": "6fa886b895d0ee805985b9ef57d96d7e372431acc87184cfc02b7d65ea0a82fc",
+      "bytes": 16925
+    },
+    {
+      "path": "vc/include/xkeycheck.h",
+      "sha256Bytes": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "bytes": 20754
+    },
+    {
+      "path": "vc/include/xlocale",
+      "sha256Bytes": "cbaf5f6a4b5609dac0ce91facab9812b0f0400ce0ea13689b8e3eecbf8431ee1",
+      "bytes": 129272
+    },
+    {
+      "path": "vc/include/xlocbuf",
+      "sha256Bytes": "5b0fbdec54a6501ccb7cb66d1f31e4f3c207cb8a3f11e0876ab762d8a85e1a61",
+      "bytes": 18574
+    },
+    {
+      "path": "vc/include/xlocinfo",
+      "sha256Bytes": "3577fc29730c92dc4878003f0877695f6c7a8ad782d61be534c765a65661f741",
+      "bytes": 16020
+    },
+    {
+      "path": "vc/include/xlocmes",
+      "sha256Bytes": "fda364686c3132ef20c94db904334cf52071e154d4875c8883525e1a7b1b69b1",
+      "bytes": 4634
+    },
+    {
+      "path": "vc/include/xlocmon",
+      "sha256Bytes": "3a60a39b65c8abd859a61a784e4132e5d859b485501bda03776353a38070cda3",
+      "bytes": 37495
+    },
+    {
+      "path": "vc/include/xlocnum",
+      "sha256Bytes": "f02525562ce44675849016b2182a3e41105e329c790ece37a6d5f109f2599e11",
+      "bytes": 71094
+    },
+    {
+      "path": "vc/include/xloctime",
+      "sha256Bytes": "25a52e6e11c644fd3c630ed6e15e1da956f553987a083125d2f5c44c17e0fab9",
+      "bytes": 48694
+    },
+    {
+      "path": "vc/include/xmemory",
+      "sha256Bytes": "76359d0893ef63b0baa617e3f2d8729c50a24d349b41af51ad8e00ad7be82d70",
+      "bytes": 112178
+    },
+    {
+      "path": "vc/include/xmmintrin.h",
+      "sha256Bytes": "1f2376321c0f53c06cca13a354a519e2870b7cb1e6e0f223c242390b9114dd48",
+      "bytes": 20079
+    },
+    {
+      "path": "vc/include/xnode_handle.h",
+      "sha256Bytes": "559b99d9f52414b17923f7f791028ad50e310ebbcfb4ef4bee9d7c5d930c4935",
+      "bytes": 7078
+    },
+    {
+      "path": "vc/include/xpolymorphic_allocator.h",
+      "sha256Bytes": "df09c8ef5650c7e4980da1254f4d422fc0385e9852bb009e70449190a29db0f9",
+      "bytes": 16963
+    },
+    {
+      "path": "vc/include/xsmf_control.h",
+      "sha256Bytes": "b69b98ce04a1d505f2f7fcf8a610664682c3a754d85b4bb2f857f09bce61f3dd",
+      "bytes": 7671
+    },
+    {
+      "path": "vc/include/xstring",
+      "sha256Bytes": "9407c290a1d0c6bebc42cf131bd04f09a9892f61b713eecb12827c0f6bbc3045",
+      "bytes": 161127
+    },
+    {
+      "path": "vc/include/xthreads.h",
+      "sha256Bytes": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "bytes": 4138
+    },
+    {
+      "path": "vc/include/xtimec.h",
+      "sha256Bytes": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "bytes": 1755
+    },
+    {
+      "path": "vc/include/xtr1common",
+      "sha256Bytes": "f9afdc2123d09c564f42552e160e7a558b87c8f0f63939e98bfcadb7dbf913ba",
+      "bytes": 7672
+    },
+    {
+      "path": "vc/include/xtree",
+      "sha256Bytes": "06b661c5906bcc6eae0078851b60898a2ec9c7af81e53c988d78e713a4e6952b",
+      "bytes": 79561
+    },
+    {
+      "path": "vc/include/xutility",
+      "sha256Bytes": "d5959e0964ea09991888e5b45eecfd8c71c094034261489fbb450c2f2f450ef5",
+      "bytes": 331853
+    },
+    {
+      "path": "vc/include/yvals.h",
+      "sha256Bytes": "a186476441eaa158056be01da9a1473217e14a7cc33365cbd0b6c9115833e0dc",
+      "bytes": 17704
+    },
+    {
+      "path": "vc/include/yvals_core.h",
+      "sha256Bytes": "5070449e37a1735adf49204a12c7a7d5efa145d6aa607720aef5adbd2c57ef83",
+      "bytes": 104524
+    },
+    {
+      "path": "vc/include/zmmintrin.h",
+      "sha256Bytes": "ee8d0c6ce34ae423958ec2abc61d31e2a18a00d99761fcec8f4775c8775fdcc2",
+      "bytes": 493060
     }
   ],
   "searchedLibrariesConservativePins": [
     {
-      "path": "sdk/Lib/10.0.26100.0/um/x64/runtimeobject.lib",
-      "sha256Bytes": "b53777f7426c9118e3c2b7b87d8bfe9117e448886bd3b8b835b48a8d277a7864",
-      "bytes": 32130
+      "path": "sdk/Lib/10.0.26100.0/ucrt/x64/libucrt.lib",
+      "sha256Bytes": "2b247d6a27c22c520c34134b8acf2da3366175a4690886927a51929f37725fdd",
+      "bytes": 43336396
+    },
+    {
+      "path": "sdk/Lib/10.0.26100.0/um/x64/kernel32.Lib",
+      "sha256Bytes": "341c7d56125a03b458e4d5093e4c79b33123ccfdfd610fe236937b8e6f3134bb",
+      "bytes": 311908
     },
     {
       "path": "sdk/Lib/10.0.26100.0/um/x64/Ole32.Lib",
@@ -1851,6 +1856,11 @@
       "bytes": 82126
     },
     {
+      "path": "sdk/Lib/10.0.26100.0/um/x64/runtimeobject.lib",
+      "sha256Bytes": "b53777f7426c9118e3c2b7b87d8bfe9117e448886bd3b8b835b48a8d277a7864",
+      "bytes": 32130
+    },
+    {
       "path": "sdk/Lib/10.0.26100.0/um/x64/User32.Lib",
       "sha256Bytes": "f45759349ad08b848bdd4eee39cd9b428b2a7ae63a09889c09a197fe7b01421d",
       "bytes": 167864
@@ -1861,24 +1871,14 @@
       "bytes": 8936424
     },
     {
-      "path": "vc/lib/x64/libcpmt.lib",
-      "sha256Bytes": "da86944db1497552c378e6252a7177fbefbdaeba4e69a6457de4db7fb2d235de",
-      "bytes": 21684758
-    },
-    {
       "path": "vc/lib/x64/libcmt.lib",
       "sha256Bytes": "8fe40dd342b90b35d62b8f5d55b4e92df7785c122976618365cfe3b014cc857a",
       "bytes": 6534094
     },
     {
-      "path": "vc/lib/x64/oldnames.lib",
-      "sha256Bytes": "35bd82cfb02a0146ff9c0ca6bf7dbde61d49c6d4f3493befe584218c370ff41d",
-      "bytes": 157422
-    },
-    {
-      "path": "sdk/Lib/10.0.26100.0/um/x64/kernel32.Lib",
-      "sha256Bytes": "341c7d56125a03b458e4d5093e4c79b33123ccfdfd610fe236937b8e6f3134bb",
-      "bytes": 311908
+      "path": "vc/lib/x64/libcpmt.lib",
+      "sha256Bytes": "da86944db1497552c378e6252a7177fbefbdaeba4e69a6457de4db7fb2d235de",
+      "bytes": 21684758
     },
     {
       "path": "vc/lib/x64/libvcruntime.lib",
@@ -1886,9 +1886,9 @@
       "bytes": 2087406
     },
     {
-      "path": "sdk/Lib/10.0.26100.0/ucrt/x64/libucrt.lib",
-      "sha256Bytes": "2b247d6a27c22c520c34134b8acf2da3366175a4690886927a51929f37725fdd",
-      "bytes": 43336396
+      "path": "vc/lib/x64/oldnames.lib",
+      "sha256Bytes": "35bd82cfb02a0146ff9c0ca6bf7dbde61d49c6d4f3493befe584218c370ff41d",
+      "bytes": 157422
     }
   ],
   "compilerBinDirectoryConservativePins": [
@@ -2213,7 +2213,10 @@
       "bytes": 42368
     }
   ],
-  "sourceApprovalEvidenceManifestSha256Bytes": "d9687e0aa7e4d2f780fd144195498b67289759102c4ed2651daa5cf0852418e1",
+  "sourceApprovalEvidenceManifestSha256Bytes": "3ca2b5767f69af7e1f0d3db3f084516376d0bdc3d3119f6548c9c33245a4ea24",
   "runtimeTrustComesFromReviewedSourceNotMutableCache": true,
-  "namespaceSourcePathIndependent": true
+  "namespaceSourcePathIndependent": true,
+  "independentSourceReviewSha256Bytes": "b5a63a273c08c542e8e5ac59d06a089a2604c1153f5833402cc94721c1469426",
+  "nativeShareFeatureAccepted": false,
+  "actualShareShowOrReceiverAccepted": false
 }

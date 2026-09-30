@@ -1,0 +1,133 @@
+struct OwnerDispatcher;
+enum class OwnerOperation { Bind, Show, Close };
+struct OwnerCommand {
+    uint64_t id=0;
+    OwnerOperation operation=OwnerOperation::Bind;
+    std::shared_ptr<Session> session;
+    std::atomic<int> phase{0}; // 0 queued, 1 running, 2 explicitly finished
+    std::atomic<bool> canceled{false};
+    HRESULT result=E_PENDING;
+};
+struct OwnerDispatcher {
+    HWND window=nullptr;
+    DWORD thread=0;
+    HHOOK hook=nullptr;
+    std::atomic<bool> destroying{false};
+    std::atomic<bool> detaching{false};
+    bool executing=false; // owner-thread-only; nested messages may not overlap COM work
+    std::mutex commandsGate;
+    std::map<uint64_t,std::shared_ptr<OwnerCommand>> commands;
+    unsigned callbacks=0; // protected by dispatchersGate, never held while executing COM
+    HANDLE quiescent=CreateEventW(nullptr,TRUE,TRUE,nullptr);
+    ~OwnerDispatcher() { if(quiescent) CloseHandle(quiescent); }
+};
+std::mutex dispatchersGate;
+std::map<HWND,std::shared_ptr<OwnerDispatcher>> dispatchers;
+std::atomic<uint64_t> nextCommand{1};
+std::atomic<unsigned> hookRegistrations{0},hookUnregistrations{0},commandCompletions{0},commandTimeouts{0},destroyDrains{0};
+LRESULT CALLBACK ownerHook(int code,WPARAM wparam,LPARAM lparam) noexcept;
+HRESULT runOwnerCommand(std::shared_ptr<OwnerCommand> const&,std::shared_ptr<OwnerDispatcher> const&) noexcept;
+UINT ownerMessage() {
+    static UINT const value=RegisterWindowMessageW(L"BiliPai.DiagnosticShare.OwnerCommand.31416e2e-9ca6-411a-9375-0c35e6f20a85");
+    check_bool(value!=0); return value;
+}
+std::shared_ptr<OwnerDispatcher> dispatcherFor(HWND window,DWORD thread) {
+    {
+        std::lock_guard lock(dispatchersGate);
+        auto found=dispatchers.find(window);
+        if(found!=dispatchers.end()) {
+            check_bool(found->second->thread==thread && !found->second->destroying && !found->second->detaching);
+            return found->second;
+        }
+    }
+    auto value=std::make_shared<OwnerDispatcher>();value->window=window;value->thread=thread;check_bool(value->quiescent!=nullptr);
+    ownerMessage();
+    {
+        std::lock_guard lock(dispatchersGate);
+        if(dispatchers.contains(window))throw hresult_error(HRESULT_FROM_WIN32(ERROR_BUSY));
+        dispatchers.emplace(window,value);
+    }
+    // This is a checked current-process thread. NULL hmod follows the Win32
+    // same-process hook contract; no global hook or DLL injection is requested.
+    auto hook=SetWindowsHookExW(WH_CALLWNDPROC,ownerHook,nullptr,thread);
+    if(!hook) {std::lock_guard lock(dispatchersGate);dispatchers.erase(window);throw_last_error();}
+    value->hook=hook;++hookRegistrations;return value;
+}
+void finishCommand(std::shared_ptr<OwnerDispatcher> const& dispatcher,std::shared_ptr<OwnerCommand> const& command,HRESULT result) {
+    command->result=result;command->phase.store(2,std::memory_order_release);++commandCompletions;
+    std::lock_guard lock(dispatcher->commandsGate);dispatcher->commands.erase(command->id);
+}
+void discardCanceledQueued(std::shared_ptr<OwnerDispatcher> const& dispatcher,std::shared_ptr<Session> const& session) {
+    std::map<uint64_t,std::shared_ptr<OwnerCommand>> canceled;
+    {
+        std::lock_guard lock(dispatcher->commandsGate);
+        for(auto const& entry:dispatcher->commands)if(entry.second->session==session&&entry.second->canceled) {
+            int queued=0;if(entry.second->phase.compare_exchange_strong(queued,1))canceled.emplace(entry);
+        }
+    }
+    // The exact owner acknowledges cancellation; a missing timed-out Windows
+    // message can no longer leave an uncollectable Session->command cycle.
+    for(auto const& entry:canceled)finishCommand(dispatcher,entry.second,E_ABORT);
+}
+// A timeout changes no native state to terminal. An in-flight command retains its
+// Session and dispatcher until owner execution/drain acknowledges it explicitly.
+HRESULT dispatchOwner(std::shared_ptr<Session> const& session,OwnerOperation operation) noexcept {
+    try {
+        auto dispatcher=session->dispatcher;
+        if(!dispatcher)return E_UNEXPECTED;
+        if(dispatcher->destroying && operation!=OwnerOperation::Close)return HRESULT_FROM_WIN32(ERROR_INVALID_WINDOW_HANDLE);
+        auto command=std::make_shared<OwnerCommand>();command->id=nextCommand.fetch_add(1);command->operation=operation;command->session=session;
+        if(GetCurrentThreadId()==dispatcher->thread) {
+            if(dispatcher->executing)return HRESULT_FROM_WIN32(ERROR_BUSY);
+            dispatcher->executing=true;command->phase=1;auto result=runOwnerCommand(command,dispatcher);command->result=result;command->phase=2;++commandCompletions;dispatcher->executing=false;return result;
+        }
+        {
+            std::lock_guard lock(dispatcher->commandsGate);
+            if(dispatcher->detaching)return HRESULT_FROM_WIN32(ERROR_INVALID_STATE);
+            for(auto const& entry:dispatcher->commands)if(entry.second->session==session&&entry.second->operation==operation) {
+                if(operation!=OwnerOperation::Close)return HRESULT_FROM_WIN32(ERROR_BUSY);
+                // A timed-out Close is safe to resend, using the same owned
+                // command/phase. Its cancellation can never grant data. This
+                // bounds repeated retry admission while the owner is stalled.
+                command=entry.second;break;
+            }
+            dispatcher->commands.emplace(command->id,command);
+        }
+        DWORD_PTR ignored=0;
+        auto delivered=SendMessageTimeoutW(dispatcher->window,ownerMessage(),static_cast<WPARAM>(command->id),0,
+            SMTO_ABORTIFHUNG|SMTO_BLOCK|SMTO_ERRORONEXIT,2000,&ignored);
+        if(command->phase.load(std::memory_order_acquire)==2)return command->result;
+        // Cancellation prevents a still-queued command from gaining authority.
+        // Running work cannot be discarded or interpreted as successful cleanup.
+        command->canceled=true;++commandTimeouts;
+        return delivered ? E_UNEXPECTED : HRESULT_FROM_WIN32(ERROR_TIMEOUT);
+    }catch(...){return to_hresult();}
+}
+HRESULT detachDispatcher(std::shared_ptr<OwnerDispatcher> const& dispatcher) noexcept {
+    try {
+        {
+            std::lock_guard lock(registryGate);
+            for(auto const& entry:sessions)if(entry.second->dispatcher==dispatcher&&!entry.second->ownerReleased)return S_FALSE;
+        }
+        dispatcher->detaching=true;
+        {
+            std::lock_guard lock(dispatchersGate);
+            auto it=dispatchers.find(dispatcher->window);if(it!=dispatchers.end()&&it->second==dispatcher)dispatchers.erase(it);
+        }
+        if(dispatcher->hook) {
+            if(!UnhookWindowsHookEx(dispatcher->hook)) {
+                std::lock_guard lock(dispatchersGate);dispatchers.emplace(dispatcher->window,dispatcher);dispatcher->detaching=false;return HRESULT_FROM_WIN32(GetLastError());
+            }
+            dispatcher->hook=nullptr;++hookUnregistrations;
+        }
+        // No future hook callback can acquire this removed registry entry.
+        // Existing callbacks decrement/signal under dispatchersGate. Never wait
+        // while holding that gate or the native Session registry gate.
+        if(WaitForSingleObject(dispatcher->quiescent,2000)!=WAIT_OBJECT_0)return HRESULT_FROM_WIN32(ERROR_TIMEOUT);
+        {
+            std::lock_guard lock(dispatcher->commandsGate);
+            if(!dispatcher->commands.empty())return HRESULT_FROM_WIN32(ERROR_IO_PENDING);
+        }
+        return S_OK;
+    }catch(...){return to_hresult();}
+}

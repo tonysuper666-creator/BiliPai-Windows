@@ -1,0 +1,37 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-thread-dispatch-parity/guard-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt
+WARNING: System::setSecurityManager will be removed in a future release
+PASS 0 exact own ComposeWindow always invisible
+PASS 0 HWND actual owner differs from Swing EDT
+PASS 0 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-close hr=0 fields=[0, 1, 10, -2147023899, 66, 66, 1, 0, 0, 1, 0, 0, 0, 0, 0, 31408, 0, 0, 0, 0, 0, 0, 0, 0]
+PASS 0 actual candidate Session guard assertions pass
+PASS 0 helper body and cleanup execute on exact HWND owner
+PASS 0 only acknowledged final unwind/retry releases apartment/package
+PASS 0 nested close is unknown and keeps real apartment/package/file before outer unwind
+PASS 0 token removed only after confirmed outer unwind or real retry
+PASS 0 immutable synthetic copy is retained
+PASS 0 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 0
+PASS 1 exact own ComposeWindow always invisible
+PASS 1 HWND actual owner differs from Swing EDT
+PASS 1 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-retire hr=0 fields=[0, 1, 11, -2147023899, -1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 31408, 0, 0, 0, 0, 0, 0, 0, 0]
+PASS 1 actual candidate Session guard assertions pass
+PASS 1 helper body and cleanup execute on exact HWND owner
+PASS 1 only acknowledged final unwind/retry releases apartment/package
+PASS 1 nested close is unknown and keeps real apartment/package/file before outer unwind
+PASS 1 nested Retire fail-closed output preserves copy authority
+PASS 1 token removed only after confirmed outer unwind or real retry
+PASS 1 immutable synthetic copy is retained
+PASS 1 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 1
+PASS 2 exact own ComposeWindow always invisible
+PASS 2 HWND actual owner differs from Swing EDT
+PASS 2 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-real-window-destroy hr=800705b4 fields=[0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31408, 0, 0, 0, 0, 0, 0, 0, 0]
+DISPOSE_DRAIN 2
+Exception in thread "main" java.lang.IllegalStateException: 2 actual candidate Session guard assertions pass
+	at com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt.main$fact(OwnerGuardFixture.kt:27)
+	at com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt.main(OwnerGuardFixture.kt:41)

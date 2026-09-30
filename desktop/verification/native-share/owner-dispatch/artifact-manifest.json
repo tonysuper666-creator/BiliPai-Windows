@@ -1,0 +1,1742 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "44b9f6723a65678bd59dedf44bb6fd641d40355f",
+  "MainIntegrated": true,
+  "sourceSnapshotManifestSha256Bytes": "9f58369713e6738bea2a6cde03c586768fa414188a82f127b0b0771ca8e50151",
+  "runtimeCpSha256Bytes": "334d1947e200a659f06ab4002bf4b94870bb6ffa369a72a994bd1afbe69d88a2",
+  "actualMainSourceFiles": 378,
+  "actualOrderedRuntimeArtifacts": 89,
+  "productionOverridesInAcceptedTests": 0,
+  "actualDiagnosticJUnit": {
+    "tests": 18,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "acceptedChanges": [
+    "Dispatch bind, Show and close commands to the exact current-process HWND owner thread",
+    "Keep native callback depth and COM registrations until nested callback bodies have unwound",
+    "Check ABI removal HRESULT before clearing registration flags; keep failure state for bounded retry",
+    "Recheck closed state after asynchronous COM preparation before marking storage supply possible",
+    "Actual Main operations mutex serializes the private native transport calls",
+    "Source-controlled expected DLL digest from two independent fresh native builds; actual Main producer rebuild is byte identical"
+  ],
+  "nativeBuild": {
+    "sourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+    "sourceControlledApprovalSha256Bytes": "499a28ba7dec7a34cad1c7e63a051aa33739dc52b701f9423cdffb3bc670c238",
+    "dllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+    "graphSha256Bytes": "4d789710471ac2aec3850d799e7de09ccd1c274fa37b6932aff27d49d1ae503e",
+    "headers": 363,
+    "libraries": 11,
+    "compilerFiles": 64,
+    "freshCompilationEveryInvocation": true,
+    "runtimeTrustedHashFromSourceApproval": true,
+    "mutableDllCacheTrusted": false,
+    "candidateGraphCount": 2,
+    "MainGraphRebuilt": true
+  },
+  "actualHiddenHwndNative": {
+    "assertions": 106,
+    "ownComposeWindowAlwaysHidden": true,
+    "BindAndRetire": true,
+    "RetireTimeoutAndRetry": true,
+    "secondSourceRebind": true,
+    "windowDestroyed": true,
+    "ShareShow": false,
+    "MainRootWindowExecuted": false
+  },
+  "actualDefaultMainTransport": {
+    "freshJvms": 4,
+    "checks": 36,
+    "syntheticTransportFactory": false,
+    "WinRtPrepareStateRetire": true,
+    "repeatedNoWindowCycles": 40,
+    "compiledMainTrustedHash": true,
+    "tamperedDllRejectedBeforeNativeCall": true,
+    "retiredOwnerRejectsBeforeLoad": true,
+    "HWND": false,
+    "ShareShow": false,
+    "DataRequested": false,
+    "SetStorageItems": false
+  },
+  "actualLeaseScenarios": {
+    "freshJvms": 8,
+    "checks": 50,
+    "syntheticNativeEvents": true,
+    "clearRetryRestoreFreeze": true,
+    "managed16MiBBudget": true
+  },
+  "preparedNativeGuardProof": {
+    "assertions": 99,
+    "kotlin": 50,
+    "native": 49,
+    "syntheticCallbackScopes": true,
+    "realAbiRemovalFault": true,
+    "actualDataRequestedBodyExecuted": false,
+    "actualSetStorageItemsExecuted": false
+  },
+  "previousUiProof": {
+    "path": "desktop/verification/native-share/owner-dispatch/historical/previous-main-integration.json",
+    "sha256Bytes": "fc42ff0051d6fd49efff73931358e9a89ff317443110b3fe6d7f7c1d3aa0dc58",
+    "originalUiAlreadyAcceptedOnEarlierMain": true,
+    "UIAndPromptSourcesUnchangedByThisSlice": true,
+    "UiNotRerunAgainstNewNativeDll": true
+  },
+  "confirmedRuntimeBlocker": {
+    "SwingEdtDiffersFromActualComposeHwndOwner": true,
+    "currentCppShowGuardRejectsSwingCaller": false,
+    "ownerDispatchCorrectionCompiledAndHiddenBindRetireVerified": true,
+    "realMainShowStillUnverified": true
+  },
+  "remaining": [
+    "Real Main HWND ShareShow and Windows system pane interaction",
+    "Real DataRequested body, SetStorageItems and chosen receiver consumption",
+    "Packaged application resource flattening/DLL/runtime acceptance",
+    "Full original feature parity and final Desktop deployment"
+  ],
+  "nativeShareFeatureAccepted": false,
+  "MainRootWindowExecuted": false,
+  "ShareUiAccepted": false,
+  "receiverAccepted": false,
+  "packagedRuntimeAccepted": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
+  "publicReleaseAuthorizationVerified": false,
+  "fullFeatureParityVerified": false,
+  "progressEstimateChanged": false,
+  "weightedReviewedProgressPercent": 69.7,
+  "rawEvidence": {
+    "files": [
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/accepted-evidence.json",
+        "sha256Bytes": "28fae5740640f2dd9c1fd3efbafe92ca7dee5e523ae8221b4893430a1dc99f35",
+        "bytes": 925
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/compile.args",
+        "sha256Bytes": "a6fdc6eaa2489e43ee70079e35dfbb6f55821f29c37fff1b6f7b2190736c706a",
+        "bytes": 22340
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/compile.log",
+        "sha256Bytes": "d2c9f4b9d5fda4304b81dada343ee148d16cf50d434c5d232e81202c71740afe",
+        "bytes": 862
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/fixture-class-identities.json",
+        "sha256Bytes": "8691c5707854bdbd664585b2956d6e8f716642ba5a71ed7cc6509cdc58d63f28",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/frozen-sources/run-bind-main.py",
+        "sha256Bytes": "917400d3995cecdc2d3e0e68fee478bf8322b11f0b2bff00c000a7038a5cb6ff",
+        "bytes": 6412
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/input-pins.json",
+        "sha256Bytes": "8dd89b8dbe9ef6cb2f9bac5ddd9ffaa18b6a351b7628042f5e6455e3751853bb",
+        "bytes": 34894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/own-process.json",
+        "sha256Bytes": "94f4b161536c2a940ec172b3a6d3685e570d8f3f21ca2c117a9591044ed68643",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/proof/result.json",
+        "sha256Bytes": "1e735c9c998b28d3f6055bff0180379261e887d35963c3df22b27ce6c7ee1204",
+        "bytes": 3691
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/proof/stats-final.json",
+        "sha256Bytes": "79be8c680108e0102ad54dc003c706e8256505551dba9609cefb2c0bb1c628f1",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/run.args",
+        "sha256Bytes": "183b6a89b4c041323407e5fb28f511f0e4bec6ab7812ecefd66065135e670ef3",
+        "bytes": 22851
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/run.log",
+        "sha256Bytes": "63efd3c9ca3ebe5b35b651fc2a91d4f3cc232f64d49b51eec1bf002faa9ec979",
+        "bytes": 6876
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/bind-proof01/task-owned-environment.json",
+        "sha256Bytes": "b6387b7c59dcdf8fe1d6c46254efaec7b4b1e185ee75f09891a83899adef6b6c",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/DefaultNativeTransportFixture.kt",
+        "sha256Bytes": "25d93584ced11da434276cba70f09b36fde9e9d589b0e8a7ae8a2f429e2f9978",
+        "bytes": 7526
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/accepted-evidence.json",
+        "sha256Bytes": "07f173c3ac39359e72c78293895d684c33fddeb864c775bfe3fb82b4e6b05802",
+        "bytes": 44701
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/compile.args",
+        "sha256Bytes": "8190339ded93fcc3cb9de06479a1e7fe1eb02ec109ff92f31d17db35e1519226",
+        "bytes": 24659
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/compile.log",
+        "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/fixture-class-identities.json",
+        "sha256Bytes": "ff1e9eb11e74f9699925f2d58bee525fef54702900f254da2edd1ae9b0805484",
+        "bytes": 1100
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/hash-mismatch.args",
+        "sha256Bytes": "4d14f57e124aea44f82a23cccf0ca5b66b79c82f066dbb454da313923a3579fe",
+        "bytes": 22727
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/hash-mismatch.log",
+        "sha256Bytes": "06fab3784f8abe54b48b0b4a61f646cd56fd46ea402fe4480ab039c7f6d9c3a3",
+        "bytes": 1282
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/hash-mismatch/result.json",
+        "sha256Bytes": "cec7407c036059e3d7c1b47d726e4d976186c3e03e43f678298403a6e6dc3081",
+        "bytes": 1241
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/input-pins.json",
+        "sha256Bytes": "585bcbba9c36964b5052bdf82abfe3a17849bd0aa409b8709948b1dc8ac8389e",
+        "bytes": 38282
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/missing-window.args",
+        "sha256Bytes": "9013ed08c4e4c0f0a26f08adb33aa0c798588f14a1e35cd77c95b2461b30c831",
+        "bytes": 22729
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/missing-window.log",
+        "sha256Bytes": "b7a4e54c3ec9a845c19721ba2f24a87e9d863c60471ff9157671b3e2a8ebd551",
+        "bytes": 1307
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/missing-window/result.json",
+        "sha256Bytes": "ec3e8bc2254e8feca9302b50b791382fbf63bdc5306a9b3cb2a13df2a3df5bea",
+        "bytes": 1268
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/repeat-no-window.args",
+        "sha256Bytes": "7c023cd31dc67a556b3b4764ac068881df1ba980618065a94125106dc397076c",
+        "bytes": 22733
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/repeat-no-window.log",
+        "sha256Bytes": "d6ca1ce0dc155001cd0c11af3f99bcb90ebc1014707d9cbae272d2e66aaa16b2",
+        "bytes": 1294
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/repeat-no-window/result.json",
+        "sha256Bytes": "6940f5434f0cd7c803f806863a45962db69ff0f13d71bc6ea31b4a1e547d86a4",
+        "bytes": 1258
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/retired-owner.args",
+        "sha256Bytes": "ada9b2c8d1695532f77f32510436bc68429c8f49675cd986a7d0c5d5816e5917",
+        "bytes": 22727
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/retired-owner.log",
+        "sha256Bytes": "7da281d00f37a074ad6fdd43c1bdaad54479b82122c4a2e9e9f200e4374b1c55",
+        "bytes": 1267
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/default-native-proof01/retired-owner/result.json",
+        "sha256Bytes": "2e7b0908501860cd3e2ae2cfa74f32d5fb78afa30d684346ef7cd7b1a74dae21",
+        "bytes": 1226
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/NativeShareLeaseFixture.kt",
+        "sha256Bytes": "fdcbfb52bf0c2bc97d0385c8b6c961dde8896fcf9bbdc537207bb96c27f38d66",
+        "bytes": 15217
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/accepted-evidence.json",
+        "sha256Bytes": "222e9d51b2d8dcb5ce0d440d7ecd583022b0ded31ac36d22afb981ec3e4b8281",
+        "bytes": 42717
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/before-data.args",
+        "sha256Bytes": "c504ae73e2447a59f2ade0f8dc803efcae5b06fca4af564690b1d84efe99a3c3",
+        "bytes": 22564
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/before-data.log",
+        "sha256Bytes": "d83172da07707277bc71ca88316333291299f7de85c86fa4a5c5acddd6c12612",
+        "bytes": 959
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/before-data/result.json",
+        "sha256Bytes": "c4885825c489eaabbff764d2ecbbb3a851a53f7e948409dbd47285b213122017",
+        "bytes": 711
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/budget.args",
+        "sha256Bytes": "34b4b2589f96c72e43a350955b638479b5ce584f4e3e9b8e57b8a5db861099e2",
+        "bytes": 22554
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/budget.log",
+        "sha256Bytes": "91324689e02a0d97ef30677cffabfedcb3bbc7a63d03fe28789617fa16a3a37e",
+        "bytes": 1215
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/budget/result.json",
+        "sha256Bytes": "e7cdca7065488a72941c61315925dafef7bfc49ef00b0abc1ab8c676f6a7ce53",
+        "bytes": 954
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-live-retry.args",
+        "sha256Bytes": "bec21734e03c0fc51dcb5a401c86737ef2663b61fca09cedfeddca999d36b183",
+        "bytes": 22574
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-live-retry.log",
+        "sha256Bytes": "54b71a66150dcb01a79f00639f031c4ddb32b273167c1077fd3bba01d29dee37",
+        "bytes": 1021
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-live-retry/result.json",
+        "sha256Bytes": "7670d4d18ad34b13604206075f13843c2a977148f35f364eb36df8c5acb4ab30",
+        "bytes": 775
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-queued.args",
+        "sha256Bytes": "3924e48464230e08c6acc49e2cea9cd0ec7960faed528f4787ef178dfbe73054",
+        "bytes": 22566
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-queued.log",
+        "sha256Bytes": "b292c6f130a2f81d513ea824155bb0a2ae24db3300c812b7a2a6f7b4ee6ea576",
+        "bytes": 1028
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/clear-queued/result.json",
+        "sha256Bytes": "9f86803e086e7314d0dc1fc5d42c028b3071af6b486ff609578cc6aef4e54ded",
+        "bytes": 778
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/compile.args",
+        "sha256Bytes": "897ce1c867191386a7f80db3e7f828e27ae48dcc41b5c1cd0f71c6c088130ce2",
+        "bytes": 24642
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/compile.log",
+        "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/fixture-class-identities.json",
+        "sha256Bytes": "91cb09fd016bb2e6e36edd34e9bb816acb1edb9ad078e1fd548931ff95572139",
+        "bytes": 2003
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/locked-copy.args",
+        "sha256Bytes": "2bb25665001d337afbb0b840af4b6b15238c815453d17975c18f5f2f4ec2b039",
+        "bytes": 22564
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/locked-copy.log",
+        "sha256Bytes": "854cfd6d82c99f02ce94f6156177c63d83c5573093ae309b14fdbd382ae72314",
+        "bytes": 964
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/locked-copy/result.json",
+        "sha256Bytes": "f6a98728dcc9ed59672fd062980d674fc3c331105ec62bdc21d60fc0651ab772",
+        "bytes": 716
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/missing-events.args",
+        "sha256Bytes": "d52969d342c763d830e7aebde7bb2d027c305879ab9d2d6e1d227f00a032dbc2",
+        "bytes": 22570
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/missing-events.log",
+        "sha256Bytes": "83f5ec2e83676e0498ef3f74988f1220f2f7f1812f6b98c95dd947099e20ee8b",
+        "bytes": 1198
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/missing-events/result.json",
+        "sha256Bytes": "b1a9f45ad7ec118e5deec3afde3dba332f784071f2ba8e31e89f8555a326a23c",
+        "bytes": 944
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/repeat-terminal.args",
+        "sha256Bytes": "790c0553e59a7be472a0ea0c22706b42855f554c0dd482e4d998193bd7d3fd34",
+        "bytes": 22572
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/repeat-terminal.log",
+        "sha256Bytes": "2a573e878e4679d2e4297d3e7c8f89e796e63c7a82bd9935365a1d03d8badbba",
+        "bytes": 1067
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/repeat-terminal/result.json",
+        "sha256Bytes": "eeee58e09bcef7c175624c9f0da68e18056813f1b193339d484c2f5b1a1dd7aa",
+        "bytes": 821
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/restore-retirement.args",
+        "sha256Bytes": "5540b1b35783f1a315c41491be21ca3c503cdea43af0e837fa28aa0e79efd928",
+        "bytes": 22578
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/restore-retirement.log",
+        "sha256Bytes": "721941c27a5472ba645bcebf6f93941162e7ad57c3b54d7ba740d0a034cff3c9",
+        "bytes": 1011
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/lease-proof01/restore-retirement/result.json",
+        "sha256Bytes": "d01f344fbbc67446a90da000c3184bb4f4950c4a80f4406c327941c4023b6005",
+        "bytes": 767
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/main-product-snapshot-01/TEST-com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest.xml",
+        "sha256Bytes": "8f44024ece006c6602914c3fbea8cd3d5b2944cc8dc7ea5b8559979db9869719",
+        "bytes": 3344
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/main-product-snapshot-01/manifest.json",
+        "sha256Bytes": "9f58369713e6738bea2a6cde03c586768fa414188a82f127b0b0771ca8e50151",
+        "bytes": 271383
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/main-product-snapshot-01/ordered-runtime-cp.json",
+        "sha256Bytes": "334d1947e200a659f06ab4002bf4b94870bb6ffa369a72a994bd1afbe69d88a2",
+        "bytes": 33400
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/native-producer-input-graph.json",
+        "sha256Bytes": "4d789710471ac2aec3850d799e7de09ccd1c274fa37b6932aff27d49d1ae503e",
+        "bytes": 115350
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/actual-main/native-producer-receipt.json",
+        "sha256Bytes": "33d7531d0557fc411f9a5ef9101e115e8b000f57a22e5d75192bb2e2d746b0a2",
+        "bytes": 1237
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/OwnerGuardFixture.kt",
+        "sha256Bytes": "304af866cefbac109befd944c7fe316b36f4310ea3d13efd271b7a6009ed2444",
+        "bytes": 6940
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/README.md",
+        "sha256Bytes": "fb5d0a905acdf45d5198b95696ac21c79cf08f8a4ff4b9efbaf01784267676a5",
+        "bytes": 6324
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/accepted-evidence.json",
+        "sha256Bytes": "6c92fac6ab32ab82bce4b92aa0840a84ae56e74a50b7be7a77cbd4cef6fd8d18",
+        "bytes": 883
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/compile.args",
+        "sha256Bytes": "2d7cf5c051b9d3be282b3c698d5210519ed269f47537668f50b0f0c85f56779e",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/compile.log",
+        "sha256Bytes": "eb525d198c301a8f4ef677472200b67cf784cf360776c8553ff8edd5d76b47b3",
+        "bytes": 423
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/fixture-class-identities.json",
+        "sha256Bytes": "fd73db7ce75fe19d484b22bfa02fb512f876080f9dac3a12d6c51b1183b86ef7",
+        "bytes": 1162
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "0a030dc4e342f635f20de4664033d856c53de43ca01504ede404a4cee4541cbb",
+        "bytes": 8309
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "ae16df3cd2fd26f9f6882ed6e5782713a6c2095c1669aa4ccf1cd2ec79214a92",
+        "bytes": 5615
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/input-pins.json",
+        "sha256Bytes": "bf3518f95215b17957542f8ec13a6eb24f0961ec5f90c5c4d571e3465cabaacc",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/own-process.json",
+        "sha256Bytes": "f5982a8c9784b07b4ec62e6d8f337449949920d681075f2086fe4a2b9d82ca47",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/proof/result.json",
+        "sha256Bytes": "34673b36411a9a5c9605d1719f407bca39bbd05889a800e7f959822cc77f30ea",
+        "bytes": 2996
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/proof/stats-final.json",
+        "sha256Bytes": "ae370077129cb2a27beeff0be4aa6cf0cafe046c3b4d50fa3273ee3b7b33f591",
+        "bytes": 141
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/run.args",
+        "sha256Bytes": "4989e9e27cfb8732ba710ea81458c8650a73d3d00eb5f6058a15a7a386e93b73",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/run.log",
+        "sha256Bytes": "fa7931cdf0a21ffa8e3f2eb8b89a2ee773104789d93531f32b3895415bd7595c",
+        "bytes": 5341
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof01/task-owned-environment.json",
+        "sha256Bytes": "44cdfafbe965f168b92aa99d628a2a378697551f842b3f9e72bdd2b964c10c82",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/accepted-evidence.json",
+        "sha256Bytes": "1cee5d7829fad398056e857a2a61dc2282e54691919d8a333e5785bde51877ff",
+        "bytes": 883
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/compile.args",
+        "sha256Bytes": "eb6131ca5b7e48b4ce7ba87645fc03804636e6ca3674878d55fad4a15a8ebda3",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/compile.log",
+        "sha256Bytes": "fc695073ed51c6c39da45b670c995969ed7f4c74951c63dbbef2ec6e69e3c740",
+        "bytes": 423
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/fixture-class-identities.json",
+        "sha256Bytes": "afa0458188afc46d1cef9a68c48936bfb32a160e13123c963f35fed0b37b9f51",
+        "bytes": 1534
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "c78ef9d64ebd408040dd0034c3c08da94b747bcd940458f0be34a14121d2031f",
+        "bytes": 11907
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "2eac7cd08a4e9a9f79be4e9ed249795a4f4069b2948beefe1db05e1d6f02a121",
+        "bytes": 5615
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/input-pins.json",
+        "sha256Bytes": "b3739302ce88492f358d7014aafc3b89369ea322cdd35c2db9f0a789a4441a44",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/own-process.json",
+        "sha256Bytes": "3d95862f1ff10adbb0c946d9c8cc46a31e7a4e9d22a12d8714fab92e51aed546",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/proof/result.json",
+        "sha256Bytes": "9edb4c63581a593edf2bad405ac96d44d5b2ad96d77271bcc1b6e35e722173bf",
+        "bytes": 3316
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/proof/stats-final.json",
+        "sha256Bytes": "59a4f2f426927a91206d96c31fb7abc12dd1910e2628fb71a24e8edc464d486f",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/run.args",
+        "sha256Bytes": "87295abcb77f2c12fa96a99b815645be029564e47aa85f63f2c65b129141bee1",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/run.log",
+        "sha256Bytes": "8e04cbdf18e099a7e3e83d2c58032270e1c77227f4c9f53e5c717b75e45d6dec",
+        "bytes": 6038
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof02/task-owned-environment.json",
+        "sha256Bytes": "52f9dc7d0a95fe65affdc8d0a9675369a6dfc1e92ce86863a02ae54ce8ca41d2",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/accepted-evidence.json",
+        "sha256Bytes": "edc5375fc5000540972f20ec1480a6ef9582e8c6d76970406c233802e56202cd",
+        "bytes": 884
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/compile.args",
+        "sha256Bytes": "e279503c923cc021ba1f47aea5379dd1b4e90c1b7fff21a3e293b191c0e913fa",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/compile.log",
+        "sha256Bytes": "2e4c847d1ff84dddde97d3b42283951d031f339cbe021992848964af536ef9f2",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/fixture-class-identities.json",
+        "sha256Bytes": "67522e508305685a5da03388bd4e119dbc2e1939c083076736005e98ab6b1a7e",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "1cda3c2f329020d53fbc8c35a604a4d7fc45c9e4292a461b232e3406faa94674",
+        "bytes": 14882
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "6145ddf696828b3a46c68e0253cb2e43366666064896d1481e1e025749174937",
+        "bytes": 5615
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/input-pins.json",
+        "sha256Bytes": "4700701aca423281c1a280138049d67da741b1f158b2b7197bdb921a69a6a65f",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/own-process.json",
+        "sha256Bytes": "e12e4dff346e733ad96603882bb036e1a4d1a2648a870a1a2b76adee1d0fb2bf",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/proof/result.json",
+        "sha256Bytes": "091d22d34b44e52a307f119261dfb789d90b89a062ceda71d0e7316a43fec868",
+        "bytes": 3637
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/proof/stats-final.json",
+        "sha256Bytes": "86f7957a2ad371f49ac86041ee639d24046649ad0bbe8a94a789ff70d32e13a9",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/run.args",
+        "sha256Bytes": "321b7fae52a0d697a97605eb462c86b7093f92bfe40abff9a24628c78b1ec2c0",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/run.log",
+        "sha256Bytes": "29e1c9e2d3c9708f8137ce7d4b91f409cea3f535a699e930c2a9151e36c13ccd",
+        "bytes": 6584
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof03/task-owned-environment.json",
+        "sha256Bytes": "743356f8a02b2dbe7fcf70335aac6a0153a808bc4af6fca0d8a814850a545b22",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/compile.args",
+        "sha256Bytes": "8eba3bc65e10dd4a6ce0f6b516a4f29412214101eb00b85ce995c715ee9dac57",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/compile.log",
+        "sha256Bytes": "6b6ce6fb74937ddc77476a3605c3d601c74233cb676c80582c940da86d4687b1",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/fixture-class-identities.json",
+        "sha256Bytes": "93a5df2c66595d894a9d34991ed412bc986171089319a6c165b4982fdf84b680",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "e7ced3c52cdb57c4121834beda7bef458da2213b7d8da0ccfd698f385ceac0f9",
+        "bytes": 15501
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "8dd3f58f397bc88c258ad1602c9e2e622ae63af6661d54a7b574d4cfc5ae0a1a",
+        "bytes": 5615
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/input-pins.json",
+        "sha256Bytes": "8e81a664a348d751dea40e196796dd6ed511ee57415a0cf46865ad1bd2a2b01b",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/own-process.json",
+        "sha256Bytes": "739e5e80c7c527c7c13cc57bde33b99793afd908d4bb68711354f534657a532a",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/proof/FAILED.txt",
+        "sha256Bytes": "612a2abdef1a4f702455c20e03f6f4379f62ad065407de49db3a2bff04ad73e9",
+        "bytes": 294
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/proof/stats-final.json",
+        "sha256Bytes": "cf8a5064205ac8ea6c74a77297140b85bcca47c8589a0d79e58bcc1078b5979c",
+        "bytes": 141
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/run.args",
+        "sha256Bytes": "28179528f1d0f10e2c5e622a05db9e7e5fb003981d20148fce29c66bd9813415",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/run.log",
+        "sha256Bytes": "36fd4a57be53e7c92610b59af2fecb9d7becea04857d3d9e87f9c3e85604549f",
+        "bytes": 6637
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof04/task-owned-environment.json",
+        "sha256Bytes": "0e1f3d3607547cbd9aeba0c7050020b7b4d24bddc478ec8de04be2dc36e58d55",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/accepted-evidence.json",
+        "sha256Bytes": "a9d08fdf2fa3df79641d58f3bfd95bf24b4d8726dc5a88cac1ea6b78d96820a7",
+        "bytes": 884
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/compile.args",
+        "sha256Bytes": "29b184efaf83bc120536432755c77296c967db8689aa23257419e69dd0682518",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/compile.log",
+        "sha256Bytes": "a7da2979deadf048db69f94df34a76cde07a620deed3def3d3043597a120131a",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/fixture-class-identities.json",
+        "sha256Bytes": "8691c5707854bdbd664585b2956d6e8f716642ba5a71ed7cc6509cdc58d63f28",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "0320355fd30c28dce4c424c127071e033ac660262c269485078c85814523ac19",
+        "bytes": 5615
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/input-pins.json",
+        "sha256Bytes": "625e3583d7094a31d966958772e6b51fa616f60c3920205c9ef2eece97cae896",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/own-process.json",
+        "sha256Bytes": "c044a08a36f34fcc850147be19ab977985b34d499f3849b4183c519ff44cc389",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/proof/result.json",
+        "sha256Bytes": "8505a147a5fc0a1cb4a5c3003b9abe5dbb3681cc9ecf2c06dc0c69feba36a996",
+        "bytes": 3691
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/proof/stats-final.json",
+        "sha256Bytes": "79be8c680108e0102ad54dc003c706e8256505551dba9609cefb2c0bb1c628f1",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/run.args",
+        "sha256Bytes": "87243f1c21fcd8214411b994c7ea19d4ae2e4024f297bb18ff3703221bc803c9",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/run.log",
+        "sha256Bytes": "f453715fa3043353a1d7a5443219939141575c1c6d84fd902e4ab911abe131e4",
+        "bytes": 6882
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof05/task-owned-environment.json",
+        "sha256Bytes": "2f8303b74c04e0c2d31c95caebc698fb68518018ef1ba864bab5dbe7def454f1",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/accepted-evidence.json",
+        "sha256Bytes": "85d385805301dbe24fda6bad513b7d58e75488fd670aafcc2c0c722a406e57e9",
+        "bytes": 884
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/compile.args",
+        "sha256Bytes": "a699a6db61f7f8f7282aad9e882f751f2ce5628ae9a2721411724cf1d202262a",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/compile.log",
+        "sha256Bytes": "a7da2979deadf048db69f94df34a76cde07a620deed3def3d3043597a120131a",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/fixture-class-identities.json",
+        "sha256Bytes": "8691c5707854bdbd664585b2956d6e8f716642ba5a71ed7cc6509cdc58d63f28",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "a771b4688a441f19397647e793db62e417dabb4412409f2d61653526bd9a93de",
+        "bytes": 6190
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/input-pins.json",
+        "sha256Bytes": "625e3583d7094a31d966958772e6b51fa616f60c3920205c9ef2eece97cae896",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/own-process.json",
+        "sha256Bytes": "133b8cc34a60e4a967d5ffceb4e01f586edad5393810f70b2fe4cb6ca5e240f7",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/proof/result.json",
+        "sha256Bytes": "26f1afc1ec09938c7712815d6036f5302ddfde7c0cf4ce38a5ea6b25bb9177b3",
+        "bytes": 3690
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/proof/stats-final.json",
+        "sha256Bytes": "79be8c680108e0102ad54dc003c706e8256505551dba9609cefb2c0bb1c628f1",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/run.args",
+        "sha256Bytes": "8435759db55de44a1eb8f199c491ab749b0920e815c4b291e14251f23a7f76f8",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/run.log",
+        "sha256Bytes": "e37f86aaa7ecce62622aa075cfeb29a36141dd6c41625bee1b8592ab7ac377c9",
+        "bytes": 6882
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof06/task-owned-environment.json",
+        "sha256Bytes": "dcdf23d974d6218f9481b1f8f0cd9f03b08d830b71a745e5c61f87a94f38862a",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/accepted-evidence.json",
+        "sha256Bytes": "e5fec67272688ded5a3b21b9c93456970d7e7bdd9cb874c4e7cf9c2125442b9a",
+        "bytes": 884
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/compile.args",
+        "sha256Bytes": "55a61de6d81e2517370c87472abae56d379174b8cb58b4e753441c26e10bf9a8",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/compile.log",
+        "sha256Bytes": "a7da2979deadf048db69f94df34a76cde07a620deed3def3d3043597a120131a",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/fixture-class-identities.json",
+        "sha256Bytes": "8691c5707854bdbd664585b2956d6e8f716642ba5a71ed7cc6509cdc58d63f28",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "f45c23ad0ec1ea6c64d25bb2243a362cb50fdc9ee006c299de93164c9c1c8459",
+        "bytes": 6190
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/input-pins.json",
+        "sha256Bytes": "08448ae489f613a4804b724c2882bb0d750b24afafc9ad6cd9dd1bbdb04b1c0f",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/own-process.json",
+        "sha256Bytes": "5cbd623c07ebcdf2c5aa4ae68e542fac226895a83253647d274edcdacb4e7d28",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/proof/result.json",
+        "sha256Bytes": "76df111569fe3a942e1e6c49f9d28b55979d10aee585152a2311d55c7ebbf5ac",
+        "bytes": 3691
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/proof/stats-final.json",
+        "sha256Bytes": "79be8c680108e0102ad54dc003c706e8256505551dba9609cefb2c0bb1c628f1",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/run.args",
+        "sha256Bytes": "9336065c17ad0553dc0c036fbeef7f3087a63567ae7ef2b277243ef298e4d7d0",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/run.log",
+        "sha256Bytes": "f4d11d8485096ff16d025bad42b52282c53860f3c3a85c3f902ee368d76d4a74",
+        "bytes": 6882
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof07/task-owned-environment.json",
+        "sha256Bytes": "a28cbf8f383d3ebe7037b64d9dda447bb3c1f70ad7cfad0ece1739a37c1036ed",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/accepted-evidence.json",
+        "sha256Bytes": "204f0718a3611710644c324447014030c5cb66cea592bb1f73d72d433b97ece4",
+        "bytes": 884
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/compile.args",
+        "sha256Bytes": "f54d536540295a7f2e298ff80a2e914d35a9c7e940003c9477199397ad770921",
+        "bytes": 22283
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/compile.log",
+        "sha256Bytes": "a7da2979deadf048db69f94df34a76cde07a620deed3def3d3043597a120131a",
+        "bytes": 874
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/fixture-class-identities.json",
+        "sha256Bytes": "8691c5707854bdbd664585b2956d6e8f716642ba5a71ed7cc6509cdc58d63f28",
+        "bytes": 1737
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/frozen-sources/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/frozen-sources/run-bind-proof.py",
+        "sha256Bytes": "aec48ba77e7a16690e38986413061b7e98fa7c6ab79053434ec7691a5e9056f8",
+        "bytes": 6190
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/input-pins.json",
+        "sha256Bytes": "1550e631021cfa8a1c3ab8d3339e24ae7046a1ee81e86834c823f0a3333fa5c8",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/own-process.json",
+        "sha256Bytes": "7f536eb746ad84ab2a4d75f050f83d670c85669bd929e592b55eec19e15041f2",
+        "bytes": 18
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/proof/result.json",
+        "sha256Bytes": "d96494ee47428e17f139df38ea7932ebefefcb5a79d782e3f7c18ed6f33ab081",
+        "bytes": 3690
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/proof/stats-final.json",
+        "sha256Bytes": "79be8c680108e0102ad54dc003c706e8256505551dba9609cefb2c0bb1c628f1",
+        "bytes": 143
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/run.args",
+        "sha256Bytes": "49865ccd933aa125768f380f87b5fdcdfcbabbc5870b51b35492ff861dbcc16f",
+        "bytes": 22815
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/run.log",
+        "sha256Bytes": "809d55a4ca46c79720eec13b614a0935e3e33f55ff60cbd4e41710883cb0b53a",
+        "bytes": 6882
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/bind-proof08/task-owned-environment.json",
+        "sha256Bytes": "3eacd4273a8d742c04517d85a1dbdf194b9d7f46eac8c319f0bea61a9ce29214",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build01/compile.log",
+        "sha256Bytes": "0d44e595ebe12c98539d674d7cf37c0747992a7b315a7f0e85aaa45abeedc638",
+        "bytes": 1510
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build01/compile.raw.log",
+        "sha256Bytes": "8cf84f50fec43be59dc530e3537f6562db8fec0c74849c042746697317b79dde",
+        "bytes": 1505
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build01/source-dependencies.json",
+        "sha256Bytes": "77407dbe105a1b9928f20b4c29c6f7778df80c4ffe40a3213c38e7a7f166da3c",
+        "bytes": 51700
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build02/compile.log",
+        "sha256Bytes": "5f1867a651cc4f0688b3a16accf2e00e5a32f3c37d87c006f0089f6da56549d1",
+        "bytes": 11455
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build02/compile.raw.log",
+        "sha256Bytes": "ed2888625ce8f99aeff16c90492d82258b6ea6cf33038034eaad1523f33c59d0",
+        "bytes": 11329
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build02/producer-input-graph.json",
+        "sha256Bytes": "e5910be4816d4de85930f5c954cbde3b4e0f436bdd8fe4202c2d74c7f77773c6",
+        "bytes": 115223
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build02/source-dependencies.json",
+        "sha256Bytes": "0abbc41f5c3ab385654649ba65157b5362293b287dbe5792233acfc9c92248f0",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build03/compile.log",
+        "sha256Bytes": "755d91bdbd9acae24831125a0d78cd8d747dabd0e1b7ee22f8adcec2a7d7221d",
+        "bytes": 11455
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build03/compile.raw.log",
+        "sha256Bytes": "7395d1ce82a0d8ab096402fc4725c4e6f676c915976730c41c5f3d14cb7e1276",
+        "bytes": 11329
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build03/producer-input-graph.json",
+        "sha256Bytes": "9f725e0653f70c796dc0f9e21c855321d272adb63a4d246147a131add82a7cb1",
+        "bytes": 115223
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build03/source-dependencies.json",
+        "sha256Bytes": "17cba5a8218ca6519c0d15c5c6467b05a2512c5d1e8bb7b918572f4a00828f1e",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04-repro/compile.log",
+        "sha256Bytes": "6d4c3023c2acdf4b353737ee8e3a497c064d7b78c03ec90ed95e0c1be7c13e86",
+        "bytes": 11467
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04-repro/compile.raw.log",
+        "sha256Bytes": "5c1e79da6452cc601c8b863919b4891c926f5ea8dc5a33baca8faa3a8dc63f76",
+        "bytes": 11341
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04-repro/producer-input-graph.json",
+        "sha256Bytes": "9eaca9ef67954dc6e6e704c77298058af6c917bd0d568cf1ef627c663a69babe",
+        "bytes": 115265
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04-repro/source-dependencies.json",
+        "sha256Bytes": "5efd4250f2743b4c6adc825d991e5e26d47823d60ef9808d507ac8358b7ad5f1",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04/compile.log",
+        "sha256Bytes": "14d096782294b2e38b113f310600e94aa66db67d40328c3dc89a8cf0ac2b9bd6",
+        "bytes": 11455
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04/compile.raw.log",
+        "sha256Bytes": "24190aca3043904a738aab9db205e80259436fc7f6589fdcb0f23725d46cb46f",
+        "bytes": 11329
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04/producer-input-graph.json",
+        "sha256Bytes": "2af39e30f1febbdb43e5e02e17f290fff42775757d416ac0fa2c22c8546b5360",
+        "bytes": 115223
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build04/source-dependencies.json",
+        "sha256Bytes": "5efd4250f2743b4c6adc825d991e5e26d47823d60ef9808d507ac8358b7ad5f1",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build05/compile.log",
+        "sha256Bytes": "a4b63fb7bf18b943dcd4e36d102fa834222a793736171c390a520800e5c8d01d",
+        "bytes": 11455
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build05/compile.raw.log",
+        "sha256Bytes": "200b5ed7ad5cf1af585a39c630ea40b1b99c9b126e7200284aba8aee5089c168",
+        "bytes": 11329
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build05/producer-input-graph.json",
+        "sha256Bytes": "24837def707ce2d62cb8f316bbedebce0a07d9accb390a8eddafed6c6bf9c0de",
+        "bytes": 115223
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build05/source-dependencies.json",
+        "sha256Bytes": "bf3f0e07c442606d6c169b0b22433095bfd9b149bd9165be086fe2433560529e",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06-repro/compile.log",
+        "sha256Bytes": "a7b93f81bbec33341e34e639acea97cb81010b377242ba3b20f8ff50628a6481",
+        "bytes": 11467
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06-repro/compile.raw.log",
+        "sha256Bytes": "6a41273d28e4cfe1e3e4c3ced70aef6846a5ed9efe083d6c009a5174e98a2069",
+        "bytes": 11341
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06-repro/producer-input-graph.json",
+        "sha256Bytes": "c38b3b954649fee4b56bdc666d859d9d814e73f366eb4b3e344cd139fa8cb669",
+        "bytes": 115265
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06-repro/source-dependencies.json",
+        "sha256Bytes": "044dd7d24f9a05183a0d6e337c77b7ea47c61961c12b3775551a6b9aad862f0c",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06/compile.log",
+        "sha256Bytes": "ff410c308d57b4c989c5fb57b4869d677b742781cf2ea24dff70cab1d40ab204",
+        "bytes": 11455
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06/compile.raw.log",
+        "sha256Bytes": "f1aeb49f49cd8b619f0d277cd131ad4d5cc1d582a0a7c6e82b81775d0985a6b8",
+        "bytes": 11329
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06/producer-input-graph.json",
+        "sha256Bytes": "83da8fb2aede9fc3e9b9ac0ccb7b269bd64678d4a70c98753d38997a07e1dadf",
+        "bytes": 115223
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/build06/source-dependencies.json",
+        "sha256Bytes": "044dd7d24f9a05183a0d6e337c77b7ea47c61961c12b3775551a6b9aad862f0c",
+        "bytes": 51702
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "02854defaccb3dc509a736dd06ac92bde105aff24059f4711eb9b5fbfa50707a",
+        "bytes": 22095
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate02/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "10b9e6ea8a43ea2cdca21adc4397b494c06bd07a2fef54198c809e0d0127ed0f",
+        "bytes": 22200
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate03/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "9d3e303cb28c89eb16f2d5d5feacf9d57bf2323f3660f1d9190e724172874e8d",
+        "bytes": 24070
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate04-against-reviewed-original.patch",
+        "sha256Bytes": "8113fdcd139c85a0de367e38f481f7b0c3fd15a4153855541a0132afaf199cb3",
+        "bytes": 20596
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate04/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+        "bytes": 24428
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate05/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "93cd216e5e47db41b7db45f550d735f76c32f19e836bce92641413cfd606b90b",
+        "bytes": 27322
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate06-against-reviewed-original.patch",
+        "sha256Bytes": "00a26c904616cd2430dd21c07a2a35f3f8f71843a9c2385218223506f5d9c68d",
+        "bytes": 27559
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/candidate06/DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+        "bytes": 27693
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/dispatcher-support.txt",
+        "sha256Bytes": "a256890068b2e546239e39e1c408b115ea2eb25a6032f5b542d98771b8493a47",
+        "bytes": 7526
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/finalize-evidence.py",
+        "sha256Bytes": "73621273273638a887ef422a1afb383787916efeac2a23227ded0f584972d991",
+        "bytes": 18053
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/frozen-handoff.json",
+        "sha256Bytes": "3ca2b5767f69af7e1f0d3db3f084516376d0bdc3d3119f6548c9c33245a4ea24",
+        "bytes": 41565
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/compile.args",
+        "sha256Bytes": "891aa7a5b4b7024bc8d32338fbf6693d8c019904be74b842954aa45781dfe9d5",
+        "bytes": 22285
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/compile.log",
+        "sha256Bytes": "df31a961b565001be3528cb7c95397c0d725a4d61ef81d4b9b4d795c350250be",
+        "bytes": 1080
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/fixture-class-identities.json",
+        "sha256Bytes": "f566507a6524e40ec6103f75c3b59a3cf7fdd65c92ab8be7dc576837afa6e87c",
+        "bytes": 1168
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/frozen-sources/OwnerGuardFixture.kt",
+        "sha256Bytes": "9e6499261914ed469cd1a20da7856d50f45eafc37ad115d29fd2b933d1e7ed80",
+        "bytes": 6606
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/frozen-sources/run-guard-proof.py",
+        "sha256Bytes": "6e90a7f409d21f602e4fe754134e4950b633a803b702cc29ff417881cb296f1a",
+        "bytes": 6566
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/input-pins.json",
+        "sha256Bytes": "9d3302501bf55fb8d56e719dec90e669f029132c2c6ac2fd5d81c3cf314cab23",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/own-process.json",
+        "sha256Bytes": "78903cf5a508f501dd992e6db03c536e61c7823f793a6f2ddd444e02f81b2c82",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/proof/FAILED-2.txt",
+        "sha256Bytes": "2557889286ed8593ba4815499016f4bcd4bada95696cddf73331d4c28e2575df",
+        "bytes": 294
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/run.args",
+        "sha256Bytes": "bd373f7e7350e96c0baae24dd4e7a2de28c49ae31b7f06462e22d94fe70146ca",
+        "bytes": 22843
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/run.log",
+        "sha256Bytes": "41865525bce5126a45f371b4bdacbea82a5aab0bfa168fde2643022708e1cedb",
+        "bytes": 2743
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof01/task-owned-environment.json",
+        "sha256Bytes": "60c17cf247c1a0bed7b9ed5fb8510a541280aef7354186280b9fe0c210dc2fa8",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/accepted-evidence.json",
+        "sha256Bytes": "6dec851247a98492cb9797f73916411b6f1a60f731289af57111252ad749afd1",
+        "bytes": 938
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/compile.args",
+        "sha256Bytes": "299f6c518bde7e79e4a1267128fe2c3194fe2dfbd87ee5be158184b0d266d5a2",
+        "bytes": 22285
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/compile.log",
+        "sha256Bytes": "df31a961b565001be3528cb7c95397c0d725a4d61ef81d4b9b4d795c350250be",
+        "bytes": 1080
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/fixture-class-identities.json",
+        "sha256Bytes": "c754ed4a8ec0adbd2b3283d18edc166edd1d2ed0a07190a3b20809c2906ad0b7",
+        "bytes": 1168
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/frozen-sources/OwnerGuardFixture.kt",
+        "sha256Bytes": "304af866cefbac109befd944c7fe316b36f4310ea3d13efd271b7a6009ed2444",
+        "bytes": 6940
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/frozen-sources/run-guard-proof.py",
+        "sha256Bytes": "64129cf06463cde9d8261f6346db812b23b73e9e18b40a376a01980ffee60f61",
+        "bytes": 6560
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/input-pins.json",
+        "sha256Bytes": "5f975885ba0561679a55290bb613d5aca3d347a25ee7611335ffa0e5d260758a",
+        "bytes": 34779
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/own-process.json",
+        "sha256Bytes": "343913fd67c89d655881fc62b7d1c9e493b4f55b79bbdb72d0fdc153b6f5c717",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/proof/result.json",
+        "sha256Bytes": "80b3583119973ec33eeaa975014d1f1dcb2869423bf524b206262b8e9fdb09a9",
+        "bytes": 1750
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/run.args",
+        "sha256Bytes": "29e9a8bf1a23a93290f83dbd87d958229d6919c0fb51172977625efbec6ba5fe",
+        "bytes": 22843
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/run.log",
+        "sha256Bytes": "584cfec0226bcadb7e920f96a1b6c2b34894dc34b29f4c129c99ef56500694e2",
+        "bytes": 4286
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof02/task-owned-environment.json",
+        "sha256Bytes": "9714e0615372e27d4bd269e51726d762d2761df4dd3085b4e03fd90f82149909",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/accepted-evidence.json",
+        "sha256Bytes": "5b42e64f2d2ff587e4d6ef9d1866f1d970f25cd81f2892776e979837b115175b",
+        "bytes": 1038
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/compile.args",
+        "sha256Bytes": "e80b46909a57bd5d6e5dd8455fce0dfd5c2a3992e3b3f8e98766131435b14b06",
+        "bytes": 22285
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/compile.log",
+        "sha256Bytes": "df31a961b565001be3528cb7c95397c0d725a4d61ef81d4b9b4d795c350250be",
+        "bytes": 1080
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/fixture-class-identities.json",
+        "sha256Bytes": "c754ed4a8ec0adbd2b3283d18edc166edd1d2ed0a07190a3b20809c2906ad0b7",
+        "bytes": 1168
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/fixture-compiler-tool-pins-postrun.json",
+        "sha256Bytes": "aadf37a09ebf26f08963c49de7809aff0d0fca18c1e107634f45b7e69845cb2f",
+        "bytes": 3888
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/fixture-compiler-tool-pins.json",
+        "sha256Bytes": "84eb2d8ff76c5cbb5e5785c34d9aed0915fd4c51d8054ecb105fe13c8357f461",
+        "bytes": 3894
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/frozen-sources/OwnerGuardFixture.kt",
+        "sha256Bytes": "304af866cefbac109befd944c7fe316b36f4310ea3d13efd271b7a6009ed2444",
+        "bytes": 6940
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/frozen-sources/run-guard-proof.py",
+        "sha256Bytes": "51973bb67a6f79080c751e44feb4e132bf8fb129ac310de44e1709e8a35a27e8",
+        "bytes": 6730
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/input-pins.json",
+        "sha256Bytes": "a8d6b50fa14c3f8b6d933b58d27d039b86271b64e341067cb8e6d49fd1627037",
+        "bytes": 34886
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/own-process.json",
+        "sha256Bytes": "cbe1c11ed909dac23c09bd38e470adeeddf88ed3c9dbabd62c5dfdcef5e49ccf",
+        "bytes": 19
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/proof/result.json",
+        "sha256Bytes": "ebc4fcdc88498aaa645296714f1284c7549ce5f0f56e310eafb6b8d004338dc2",
+        "bytes": 1750
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/run.args",
+        "sha256Bytes": "7924707b78fd0ec7bb02ce087adb2a903e53f60e510d12ecbd320668b6b9d52f",
+        "bytes": 22843
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/run.log",
+        "sha256Bytes": "e7b4b9c14aad26f2419ba75fae81d86f3442d81a0b7f10d04c06c2f6eb90fefe",
+        "bytes": 4286
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/guard-proof03/task-owned-environment.json",
+        "sha256Bytes": "6ad4dcb1be6d391ddfa9013214da3fd00cc8fed3e10ecd1341a806cda7c082d1",
+        "bytes": 99
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/history/README-candidate04-review.txt",
+        "sha256Bytes": "f30af5d88d8e041a783c76aedf54f81c9016f2e8324ec09529945e753f77331d",
+        "bytes": 7114
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/independent-review.json",
+        "sha256Bytes": "b5a63a273c08c542e8e5ac59d06a089a2604c1153f5833402cc94721c1469426",
+        "bytes": 3932
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/controlled-compiler-driver.py",
+        "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+        "bytes": 5052
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/historical-actual-main-manifest.json",
+        "sha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+        "bytes": 265262
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/historical-actual-main-ordered-runtime-cp.json",
+        "sha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+        "bytes": 33328
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/historical-approved-development-build.json",
+        "sha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a",
+        "bytes": 79188
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/historical-own-HWND-thread-proof03.json",
+        "sha256Bytes": "09366b168ab59414568655ba67536a6d7b47f0a1bdbfa84c968b0a9e3241b5a6",
+        "bytes": 855
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/inputs/reviewed-original-DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+        "bytes": 11219
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/make-candidate.py",
+        "sha256Bytes": "3d243297767a9310f0adf38d1748bbb8c8a6cd3db2789ee5fc66721ae90d5373",
+        "bytes": 9990
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/make-candidate05.py",
+        "sha256Bytes": "bd5d4fcf7200281db2fd4909d3c122d9f7117c5c23c3f08ce4c93f0645e78126",
+        "bytes": 5741
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/make-candidate06.py",
+        "sha256Bytes": "a5adf37a2f03e1052af0c1e56936a4992395ba2786899906cbe25b94d9344841",
+        "bytes": 1176
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt01/compile.log",
+        "sha256Bytes": "c11825a1bf1fd483d023073f7c4e5063f2dda576e5430e83728fed37c27e0331",
+        "bytes": 5077
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt01/compile.raw.log",
+        "sha256Bytes": "58370a370afee0e33bba5db9a7428e1fde062262e75853a02b8b98d318ebc1c8",
+        "bytes": 5058
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt01/source-at-compile.cpp",
+        "sha256Bytes": "c26b972c204bff8ce8eb4d4f24946c4da0daf143f369093efae64cf84aa73835",
+        "bytes": 9222
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt01/source-dependencies.json",
+        "sha256Bytes": "43add7ff618838f59e33ecbd4d27776fefb0e1bce096493185604213a14bb31d",
+        "bytes": 51918
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt02/compile.log",
+        "sha256Bytes": "91e514df457e69e43c9e4e253c4e8907bc583a94b2fb738cb9f7ead58e7690d5",
+        "bytes": 11502
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt02/compile.raw.log",
+        "sha256Bytes": "a0a4759c4075e77a50cd3c0bf726015a171f3f9d4fc622ad6c7e9821c898972c",
+        "bytes": 11376
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt02/producer-input-graph.json",
+        "sha256Bytes": "63d9db694440cd181bfb214b2287723d972812e0d2691b6fc87047f5c5831007",
+        "bytes": 115738
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt02/source-dependencies.json",
+        "sha256Bytes": "43add7ff618838f59e33ecbd4d27776fefb0e1bce096493185604213a14bb31d",
+        "bytes": 51918
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt03/compile.log",
+        "sha256Bytes": "8e20e024647c277fc2576c14ba53ef452fe7a044007eaed39acddf7da39fc034",
+        "bytes": 11502
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt03/compile.raw.log",
+        "sha256Bytes": "051c7e995a32a619898cb5c9729f79d05179e78c9194737cafea9c64786ce78b",
+        "bytes": 11376
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt03/producer-input-graph.json",
+        "sha256Bytes": "ca63cc693e527089fc3f6091b07e1834b4f330fb907b6cded9134e3dfbf8e736",
+        "bytes": 115750
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build05-attempt03/source-dependencies.json",
+        "sha256Bytes": "0911d8b26aa832f6e7198b9f1b19c79d5baa6f787497321b739408b86fe3dbce",
+        "bytes": 51924
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build06-attempt01/compile.log",
+        "sha256Bytes": "8367d487a107bf0b76326ad86fc1f786efbf0d30d932572d2d888babde983111",
+        "bytes": 11502
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build06-attempt01/compile.raw.log",
+        "sha256Bytes": "d7f1af97571579826c94ae4ff869cb05335a83c49adc20025da7d3610ae55431",
+        "bytes": 11376
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build06-attempt01/producer-input-graph.json",
+        "sha256Bytes": "a05b5335db1c86e6938d443047c8bb934e3c2a7b6f1c04e0ae8015d727faffa3",
+        "bytes": 115738
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper-build06-attempt01/source-dependencies.json",
+        "sha256Bytes": "0d930c992cd07f6ddfdfbc86356e0bd7eac22f4af67fdf4f373f31bcec07a2b8",
+        "bytes": 51918
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper05-final/GuardRevokeTaskHelper.cpp",
+        "sha256Bytes": "14af06bf60f91bd6f146147325a644bb26622d1f468a16c1d92b23145776045d",
+        "bytes": 9323
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper05/GuardRevokeTaskHelper.cpp",
+        "sha256Bytes": "b6474e4ad4f4c94b1f1aee5ca0c9181dad90c02804f145f423ac86c6ca150331",
+        "bytes": 9253
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/native-helper06/GuardRevokeTaskHelper.cpp",
+        "sha256Bytes": "3e99f085ed55b4f262b110c27e26403399ee4b72d5c48b9de73ce6c24466ed29",
+        "bytes": 9511
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/prepare-review.py",
+        "sha256Bytes": "007b9d211f293a289fe5702e3a236218d7020a219d8e6ce482dd8eb8918a3ede",
+        "bytes": 9194
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/reentrancy-risk-review.json",
+        "sha256Bytes": "5e92f5b1dcd9d37151e247d90fbc7ef832498f9bcdf0352a49024a7eb8e80892",
+        "bytes": 1806
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/review-candidate.json",
+        "sha256Bytes": "cec61e0894d32c23e592b9e09bbe77e803b68f8ae52b021e1839d82e41a43170",
+        "bytes": 10612
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/review-final.json",
+        "sha256Bytes": "4dddf870da667e5b6b2b94c53bd4450315b1f0b0a16fdf547007393cfc8a6454",
+        "bytes": 11376
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/root-installation-checklist.json",
+        "sha256Bytes": "bf564b37fe24fd51e75b2a6e0530689f01a804ad1332510d7a6860106bc43e6b",
+        "bytes": 3482
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/run-bind-proof.py",
+        "sha256Bytes": "aec48ba77e7a16690e38986413061b7e98fa7c6ab79053434ec7691a5e9056f8",
+        "bytes": 6190
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/run-guard-proof.py",
+        "sha256Bytes": "51973bb67a6f79080c751e44feb4e132bf8fb129ac310de44e1709e8a35a27e8",
+        "bytes": 6730
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/source-contract-result.json",
+        "sha256Bytes": "af428de95cd098ec11d95b3332013a1d6f8c1845c221eb02198fe877a671ffc7",
+        "bytes": 2957
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/source-contract.py",
+        "sha256Bytes": "cc0558571deab6f959756bb8b1271c9b7cc93f96c24b4d6bc8677fec9b725719",
+        "bytes": 5580
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/source-contract06-result.json",
+        "sha256Bytes": "39df7ab6175991a64453ccccc2be6d213d45fb48b7465015fb9d0a98fc842d76",
+        "bytes": 3972
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/candidate-raw/source-contract06.py",
+        "sha256Bytes": "031c5edc484fc0a85f16c9f33235b92f72460069f22e5339a4f3c0b301db59ec",
+        "bytes": 7746
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/historical/previous-main-integration.json",
+        "sha256Bytes": "fc42ff0051d6fd49efff73931358e9a89ff317443110b3fe6d7f7c1d3aa0dc58",
+        "bytes": 3582
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/DefaultNativeTransportFixture.kt",
+        "sha256Bytes": "25d93584ced11da434276cba70f09b36fde9e9d589b0e8a7ae8a2f429e2f9978",
+        "bytes": 7526
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/NativeShareLeaseFixture.kt",
+        "sha256Bytes": "fdcbfb52bf0c2bc97d0385c8b6c961dde8896fcf9bbdc537207bb96c27f38d66",
+        "bytes": 15217
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/OwnerBindFixture.kt",
+        "sha256Bytes": "61b1ec53a1d7282f2fc1a8f10b8857f5e3ceb8d945b0795ead89b1b67dc65b45",
+        "bytes": 15880
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/bind-runner-01.log",
+        "sha256Bytes": "cbcc314fe0e4fc8e11f3d5a3057cb5fd6bc7d3d4ed84efa16fb1fc8689638470",
+        "bytes": 7825
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/default-native-runner-01.log",
+        "sha256Bytes": "9fbb13dcef319a98ed2dbed237b74fcc0671067e07bf13c35ef3fe95cd9746d0",
+        "bytes": 5291
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/freeze-main-acceptance.py",
+        "sha256Bytes": "58e397c0133a217c3fb4112cfaaa24e1ff006247f0805997b7bb2ee6972574e2",
+        "bytes": 9427
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/install-reviewed-source.py",
+        "sha256Bytes": "bd9a5c84321232d986f6ef8af4d2eda9153915acd972d514149f8ccabba6476d",
+        "bytes": 4545
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/lease-runner-01.log",
+        "sha256Bytes": "4058dea5aabc234de4047790e4782ab44e3fd18bf0025b3bf9640146c8e1d374",
+        "bytes": 8626
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/main-snapshot-01.log",
+        "sha256Bytes": "eea61b582cece8601cd772e4aa40e5dd24fa0a4824317479e341bada35a979af",
+        "bytes": 1736
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/main-tests-01.log",
+        "sha256Bytes": "36e81bb66baa9b892421635000ba87de6417c1ea3501f27addb46d8cf9fcf908",
+        "bytes": 6564
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/prepare-bind-proof.py",
+        "sha256Bytes": "07902dd84496e51c34013deabfbe8fe795426bb4f3b78cf6c53c104eaa49f898",
+        "bytes": 2361
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/prepare-lease-proof.py",
+        "sha256Bytes": "ae4fa9cb1a93e7a315aaaac51f832296586fc8704fe3d08fc91935908a264331",
+        "bytes": 1589
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/prepare-main-snapshot.py",
+        "sha256Bytes": "0648cabed05fd4bc0fbcbae24666258c443d001263f1e3e11d2a5ac61985d32b",
+        "bytes": 2356
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/run-bind-main.py",
+        "sha256Bytes": "917400d3995cecdc2d3e0e68fee478bf8322b11f0b2bff00c000a7038a5cb6ff",
+        "bytes": 6412
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/run-default-native-main.py",
+        "sha256Bytes": "25fd0882fcbd5e1428ff56a4548e69cacacc0f5df32e4616b12747e44bdbdeac",
+        "bytes": 6109
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/run-lease-main.py",
+        "sha256Bytes": "51c72854acb27bec6fc81c3ddede6ea3b61146c6ed135ef46367e72e949e97c2",
+        "bytes": 5128
+      },
+      {
+        "path": "desktop/verification/native-share/owner-dispatch/root-recipes/source-installation.json",
+        "sha256Bytes": "7545bde7967f2eccf542029b347cd5e1e1a77872ba1e88dd8a98d08545b3c1c9",
+        "bytes": 862
+      }
+    ],
+    "fileCount": 320,
+    "binariesJarsDllsExePrivateStoresIncluded": false,
+    "candidateFrozenHandoffSha256Bytes": "3ca2b5767f69af7e1f0d3db3f084516376d0bdc3d3119f6548c9c33245a4ea24"
+  },
+  "integrationPoints": [
+    {
+      "path": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea"
+    },
+    {
+      "path": "desktop/native/diagnostic-share/approved-development-build.json",
+      "sha256Bytes": "499a28ba7dec7a34cad1c7e63a051aa33739dc52b701f9423cdffb3bc670c238"
+    },
+    {
+      "path": "desktop/tools/compile-native-diagnostic-share.py",
+      "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861"
+    },
+    {
+      "path": "desktop/tools/prepare-native-diagnostic-share.py",
+      "sha256Bytes": "12fad7f1b62ff1241f8e6f4eebbded06b9cfb46a687af0c2fda4f6d02a6a30cd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare.kt",
+      "sha256Bytes": "2b4ca7bc011e259f7bd19239817977d63300e8ca20d91aa6e209c1215333cb65"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "4b8fd9401be5eb89e7121161f8c34542b4d151d60426e816b13cd9bd8c7e80f4"
+    }
+  ]
+}

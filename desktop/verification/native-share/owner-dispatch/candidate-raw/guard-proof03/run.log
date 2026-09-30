@@ -1,0 +1,62 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-thread-dispatch-parity/guard-proof03/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.ownerguardproof.OwnerGuardFixtureKt
+WARNING: System::setSecurityManager will be removed in a future release
+PASS 0 exact own ComposeWindow always invisible
+PASS 0 HWND actual owner differs from Swing EDT
+PASS 0 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-close hr=0 fields=[0, 1, 11, -2147023899, 66, 66, 1, 0, 0, 1, 0, 0, 0, 0, 0, 27832, 0, 0, 0, 0, 0, 1, 0, 0]
+PASS 0 actual candidate Session guard assertions pass
+PASS 0 helper body and cleanup execute on exact HWND owner
+PASS 0 only acknowledged final unwind/retry releases apartment/package
+PASS 0 actual beginStorageSupply refuses closed authority before any storage attempt
+PASS 0 nested close is unknown and keeps real apartment/package/file before outer unwind
+PASS 0 token removed only after confirmed outer unwind or real retry
+PASS 0 immutable synthetic copy is retained
+PASS 0 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 0
+PASS 1 exact own ComposeWindow always invisible
+PASS 1 HWND actual owner differs from Swing EDT
+PASS 1 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-retire hr=0 fields=[0, 1, 12, -2147023899, -1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 27832, 0, 0, 0, 0, 0, 1, 0, 0]
+PASS 1 actual candidate Session guard assertions pass
+PASS 1 helper body and cleanup execute on exact HWND owner
+PASS 1 only acknowledged final unwind/retry releases apartment/package
+PASS 1 actual beginStorageSupply refuses closed authority before any storage attempt
+PASS 1 nested close is unknown and keeps real apartment/package/file before outer unwind
+PASS 1 nested Retire fail-closed output preserves copy authority
+PASS 1 token removed only after confirmed outer unwind or real retry
+PASS 1 immutable synthetic copy is retained
+PASS 1 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 1
+PASS 2 exact own ComposeWindow always invisible
+PASS 2 HWND actual owner differs from Swing EDT
+PASS 2 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE nested-real-window-destroy hr=0 fields=[0, 1, 13, -2147023899, -1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 27832, 0, 0, 0, 0, 0, 1, 0, 0]
+PASS 2 actual candidate Session guard assertions pass
+PASS 2 helper body and cleanup execute on exact HWND owner
+PASS 2 only acknowledged final unwind/retry releases apartment/package
+PASS 2 actual beginStorageSupply refuses closed authority before any storage attempt
+PASS 2 nested close is unknown and keeps real apartment/package/file before outer unwind
+PASS 2 nested Retire fail-closed output preserves copy authority
+PASS real DestroyWindow nested in callback scope destroys own HWND
+PASS 2 token removed only after confirmed outer unwind or real retry
+PASS 2 immutable synthetic copy is retained
+PASS 2 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 2
+PASS 3 exact own ComposeWindow always invisible
+PASS 3 HWND actual owner differs from Swing EDT
+PASS 3 actual STA/GetForWindow Bind succeeds
+NATIVE_CASE checked-abi-revoke-fail-retry hr=0 fields=[0, 1, 13, -2147467259, -1, 1, 0, 0, 1, 1, 0, 0, 2, 1, -2147023899, 27832, 0, 0, 0, 1, 1, 1, 0, 0]
+PASS 3 actual candidate Session guard assertions pass
+PASS 3 helper body and cleanup execute on exact HWND owner
+PASS 3 only acknowledged final unwind/retry releases apartment/package
+PASS 3 actual beginStorageSupply refuses closed authority before any storage attempt
+PASS actual failed registration and STA are retained after E_FAIL
+PASS two ABI remove attempts include exactly one actual successful WinRT revoke
+PASS recursive cleanup during revoke is pending and retains actual refs
+PASS 3 token removed only after confirmed outer unwind or real retry
+PASS 3 immutable synthetic copy is retained
+PASS 3 product hooks unregistered and callback-drained
+DISPOSE_DRAIN 3
+PASS no socket/listener/exec attempts

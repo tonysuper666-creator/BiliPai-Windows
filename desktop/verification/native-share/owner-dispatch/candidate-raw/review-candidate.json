@@ -1,0 +1,183 @@
+{
+  "preparedCandidateReadyForIndependentReview": true,
+  "independentReview": "pending",
+  "sourceControlledApprovalChanged": false,
+  "MainIntegrated": false,
+  "nativeShareFeatureAccepted": false,
+  "DesktopDeployment": false,
+  "createdUtc": "2026-09-30T22:46:19.171805+00:00",
+  "baselineHistoricalActualMain": {
+    "manifest.json": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+    "ordered-runtime-cp.json": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc"
+  },
+  "currentNativeMainStillOriginal": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\diagnostic-share\\DesktopDiagnosticShare.cpp",
+    "sha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
+    "bytes": 11219
+  },
+  "currentApprovalStillOriginal": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\diagnostic-share\\approved-development-build.json",
+    "sha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a",
+    "bytes": 79188
+  },
+  "candidateSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate04\\DesktopDiagnosticShare.cpp",
+    "sha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+    "bytes": 24428
+  },
+  "controlledCompilerDriver": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\tools\\compile-native-diagnostic-share.py",
+    "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+    "bytes": 5052
+  },
+  "freshControlledNativeBuilds": [
+    {
+      "graph": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build04\\producer-input-graph.json",
+        "sha256Bytes": "2af39e30f1febbdb43e5e02e17f290fff42775757d416ac0fa2c22c8546b5360",
+        "bytes": 115223
+      },
+      "dll": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build04\\bilipai-diagnostic-share.dll",
+        "sha256Bytes": "726a3b2a036533dc2bf5913f77512a706c261ddb3aabbec92179a0293de3e65d",
+        "bytes": 230400
+      },
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate04\\DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+        "bytes": 24428
+      },
+      "headers": 363,
+      "conservativeLibraries": 11,
+      "conservativeCompilerFiles": 64,
+      "fullRealInputHashesRechecked": true,
+      "actualStaticArchiveMemberSelectionClaimed": false
+    },
+    {
+      "graph": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build04-repro\\producer-input-graph.json",
+        "sha256Bytes": "9eaca9ef67954dc6e6e704c77298058af6c917bd0d568cf1ef627c663a69babe",
+        "bytes": 115265
+      },
+      "dll": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build04-repro\\bilipai-diagnostic-share.dll",
+        "sha256Bytes": "726a3b2a036533dc2bf5913f77512a706c261ddb3aabbec92179a0293de3e65d",
+        "bytes": 230400
+      },
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate04\\DesktopDiagnosticShare.cpp",
+        "sha256Bytes": "5eba2101f6019c0f04a47df7202396bf0cf526967aee2abbee2f79466ed21b59",
+        "bytes": 24428
+      },
+      "headers": 363,
+      "conservativeLibraries": 11,
+      "conservativeCompilerFiles": 64,
+      "fullRealInputHashesRechecked": true,
+      "actualStaticArchiveMemberSelectionClaimed": false
+    }
+  ],
+  "twoFreshOutputDllBytesEqual": true,
+  "actualHiddenWindowEvidence": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\bind-proof06\\accepted-evidence.json",
+    "sha256Bytes": "85d385805301dbe24fda6bad513b7d58e75488fd670aafcc2c0c722a406e57e9",
+    "bytes": 884
+  },
+  "actualNativeResult": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\bind-proof06\\proof\\result.json",
+    "sha256Bytes": "26f1afc1ec09938c7712815d6036f5302ddfde7c0cf4ce38a5ea6b25bb9177b3",
+    "bytes": 3690
+  },
+  "actualRuntimeDependencies": {
+    "orderedCpCount": 89,
+    "externalCount": 86,
+    "productionOverrideClasses": 0,
+    "MainOrShellExecuted": false
+  },
+  "actualAssertions": 106,
+  "sourceContracts": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\source-contract-result.json",
+    "sha256Bytes": "af428de95cd098ec11d95b3332013a1d6f8c1845c221eb02198fe877a671ffc7",
+    "bytes": 2957
+  },
+  "actualNativeCases": [
+    "same-process actual ComposeWindow HWND owner differs from Swing EDT",
+    "8 actual STA/GetForWindow Bind and owner Retire cycles on invisible own HWND",
+    "second source for same HWND rejected until prior owner retired",
+    "actual native owner pump blocked by task-only exact-window/thread WH_CALLWNDPROC hook",
+    "Retire timeout has fail-closed (-1, supplied1), token and immutable copy retained",
+    "two additional direct caller native retries measured 2004/2005ms in proof05; one pending Close command reused",
+    "Bind timeout cannot acquire owner apartment or report pane or terminal",
+    "explicit owner Close/Retire retry acknowledges canceled queued commands, only then erases token",
+    "WM_NCDESTROY closes native authority and releases actual owner COM resources",
+    "11 product hooks registered, 11 unregistered, callback quiescence drained, no live dispatcher"
+  ],
+  "cppBoundary": {
+    "PrepareMtaAndWeakDataRequestedBodyVerbatim": true,
+    "originalTitleDescriptionTextStorageSupplyTerminalCallbacksVerbatim": true,
+    "singleSessionRegistryCap": 8,
+    "oneBoundSourcePerHwnd": true,
+    "onlyCheckedOwnHwndThreadHook": true,
+    "globalOrForeignProcessHook": false,
+    "ShowUsesSameActualOwnerBind": true,
+    "newBindShowsPaneOrGrantsStorage": false,
+    "registryLockHeldAcrossOwnerSendOrQuiescenceWait": false,
+    "sameProcessHookModuleIsNull": true,
+    "immediateClosedAuthorityOnRetire": true,
+    "elapsedTimeCreatesTerminalEvent": false,
+    "unknownDrainRetainsTokenAndCannotAuthorizeCopyDeletion": true,
+    "nestedOwnerCommandRejectOrDeferWhileComExecuting": "static review only; no injected COM-body seam",
+    "parallelPublicNativeApiContract": "Root provider transport calls are serialized by operations Mutex; arbitrary concurrent native Bind/Retire admission is not claimed"
+  },
+  "history": [
+    {
+      "path": "build01",
+      "outcome": "compile FAIL: ambiguous forward namespace declaration, raw source/log preserved"
+    },
+    {
+      "path": "candidate02 + build02 + bind-proof01",
+      "outcome": "historical basic Bind/Retire + WM_NCDESTROY PASS; precedes timeout/nesting hardening"
+    },
+    {
+      "path": "candidate03 + build03 + bind-proof02/03",
+      "outcome": "historical timeout unknown/owner retry PASS; precedes bounded pending Close and null module"
+    },
+    {
+      "path": "candidate04 + build04 + bind-proof04",
+      "outcome": "fixture FAIL: 14s blocker deadline expired before repeated Swing-enqueued native call; successful real Retire violated an unsupported fixture timing expectation. The JNA task callback logged deadline exception. Native product failure is not established; queue-delay attribution is an inference."
+    },
+    {
+      "path": "candidate04 + build04 + bind-proof05",
+      "outcome": "106 PASS; additional retries call native directly on existing non-owner caller to avoid a second Swing enqueue while AWT owner intentionally held; raw native durations recorded"
+    },
+    {
+      "path": "candidate04 + build04 + bind-proof06",
+      "outcome": "final 106 PASS on same candidate; compiler and 89 runtime input pins checked before/after, no fixture production overlap"
+    }
+  ],
+  "boundariesNotAccepted": [
+    "No BilipaiShareShow call, system share pane, DataRequested or receiver acceptance in this lane",
+    "No actual SetStorageItems/terminal ShareCompleted/ShareCanceled receiver trace",
+    "No actual Main/provider/actor/cache integration using the candidate DLL; earlier actual Main UI/actor evidence used a declared synthetic native transport",
+    "No packaged runtime, public toolchain release authorization or deployment claim",
+    "No arbitrary concurrent external native API caller, injected COM event revocation failure or reentrant pane teardown proof",
+    "Unknown outcomes stay retained; process-exit retention and actual actor deletion policy require Root integration evidence"
+  ],
+  "primaryDocs": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowshookexw",
+      "claim": "thread-scoped WH_CALLWNDPROC supported; current-process callback uses NULL hmod"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendmessagetimeoutw",
+      "claim": "timeout/error differs from successful window-message processing; ERRORONEXIT observes destroyed target; same-queue timeout may be ignored"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-unhookwindowshookex",
+      "claim": "unhook can return while an existing callback is still executing, so separate callback drain is required"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/apps/develop/windows-integration/integrate-sharesheet-send",
+      "claim": "desktop share uses IDataTransferManagerInterop per HWND; hidden Bind is a limited pre-pane runtime check"
+    }
+  ]
+}

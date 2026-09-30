@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-09-30T23:23:16.451Z" hostname="TONYSUPER666" time="11.254">
+  <properties/>
+  <testcase name="closingWaitsForBlockedAcceptedDiskJobsAndRejectsConcurrentLateRecords()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.166"/>
+  <testcase name="consentPersistsAtomicallyInTheSingleOriginalGlobalSettingsKey()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.133"/>
+  <testcase name="aColdJvmReadsPersistedConsentFromTheSameGlobalKeyBeforeFirstDetail()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.499"/>
+  <testcase name="explicitExportIsBoundedAndCannotOverwriteAnExistingOrActiveFile()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.08"/>
+  <testcase name="taskOwnedUncaughtHandlerKeepsLocalCrashEvidenceWithoutEnhancedConsent()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.047"/>
+  <testcase name="historicalOversizedFileIsBoundedAndSanitizedAgainOnActualRead()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.08"/>
+  <testcase name="falseConsentKeepsOnlyBasicWarningsErrorsAndFixedStartup()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.024"/>
+  <testcase name="realRingAndRollingFilesKeepOriginalBoundsWithoutSplittingUtf8()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="9.653"/>
+  <testcase name="actualAncestorJunctionCannotBeReadExportedOrCleared()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.068"/>
+  <testcase name="realPlaybackStateObserverRecordsFiniteStateWithoutMediaOrAccountText()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.073"/>
+  <testcase name="bothActualUpstreamBridgesRedactBeforeMemoryDiskAndExport()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.092"/>
+  <testcase name="actualWindowsSharingDenialIsReportedSafelyAndDoesNotProduceAnExport()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.085"/>
+  <testcase name="realConsentPersistenceFailureKeepsFalseStateAndCanRetry()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.032"/>
+  <testcase name="serializedClearDeletesOnlyKnownArtifactsAndTheActualRing()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.076"/>
+  <testcase name="originalCollectorSuppressesBurstDuplicatesButAcceptsLaterEvents()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.003"/>
+  <testcase name="restoreShutdownDrainsAcceptedWritesAndRejectsTheRetiredFacade()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.027"/>
+  <testcase name="actualLogsDirectoryJunctionCannotBeReadExportedOrCleared()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.055"/>
+  <testcase name="disablingConsentRemovesDetailedFilesAndCannotBeUndoneByQueuedDetails()" classname="com.bilipai.desktop.diagnostics.DesktopDiagnosticsTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,13 @@
+PASS compiled Main generated hash is the reviewed newly rebuilt production DLL
+PASS default transport executes actual compiled Main Kotlin artifact
+PASS Main provider construction keeps native initialization lazy
+PASS 40 actual default native prepare state and retire cycles exceed the prior native session cap
+PASS the actual native DLL is loaded only once per provider
+PASS default transport leaves original crash bytes and pending marker intact
+PASS default Main owner shutdown is idempotent and closes future admission
+PASS original staged Main DLL remains byte identical after acceptance
+PASS no network listener multicast process or share receiver is used
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.defaultnativeproof.DefaultNativeTransportFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-main-integration/default-native-proof01/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.defaultnativeproof.DefaultNativeTransportFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

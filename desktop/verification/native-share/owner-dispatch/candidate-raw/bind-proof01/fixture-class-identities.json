@@ -1,0 +1,30 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "315872a331fbd96fb4eede72c8cd63bb49a0072ec1369f0969bae60aef1bec51"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Bridge.class",
+    "sha256Bytes": "130b33198ac19df615bbdfd28dc834f9fd33d48fab7925eb3a5999af2aa82ae6"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Kernel.class",
+    "sha256Bytes": "b63eb04d4ce377c847eb3f61e890d1d0b81bb5fc37b6f36e57163c88b4da14a1"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/User.class",
+    "sha256Bytes": "0dd649d93741d885c631e40491fad0b94098f431767d206d2b294a49b3b6866b"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/Fence.class",
+    "sha256Bytes": "469490bd78ccfebaa232604c668e18c65f5ab3c27d57cbd31db40656dcb91603"
+  },
+  {
+    "entry": "com/bilipai/desktop/diagnostics/ownerbindproof/OwnerBindFixtureKt.class",
+    "sha256Bytes": "c3981f219fa6691f723db49812633bee1fa662cfdd0bd8a35340ebfb54446386"
+  },
+  {
+    "entry": "META-INF/owner_bind_native_task_proof.kotlin_module",
+    "sha256Bytes": "289713a618b5723078fd1ff8dd1b356745a95df503f5cfd172bb1526a73fd719"
+  }
+]

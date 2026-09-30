@@ -1,0 +1,126 @@
+DesktopDiagnosticShare.cpp
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+
+已完成库搜索
+  正在创建库 C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\native-share-owner-thread-dispatch-parity\build06\bilipai-diagnostic-share.lib 和对象 C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\native-share-owner-thread-dispatch-parity\build06\bilipai-diagnostic-share.exp
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+已完成库搜索
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+
+已完成库搜索
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+已完成库搜索
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\ucrt\x64\libucrt.lib:
+
+已完成库搜索
+
+正在搜索库
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\runtimeobject.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\ole32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\oleaut32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\user32.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\uuid.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libcpmt.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\LIBCMT.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\OLDNAMES.lib:
+    正在搜索 C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x64\kernel32.lib:
+    正在搜索 C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\lib\x64\libvcruntime.lib:
+
+已完成库搜索

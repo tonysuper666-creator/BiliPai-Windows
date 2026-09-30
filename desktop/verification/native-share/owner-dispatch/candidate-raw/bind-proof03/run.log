@@ -1,0 +1,107 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.ownerbindproof.OwnerBindFixtureKt (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/native-share-owner-thread-dispatch-parity/bind-proof03/fixture-only.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.ownerbindproof.OwnerBindFixtureKt
+WARNING: System::setSecurityManager will be removed in a future release
+PASS own actual ComposeWindow is displayable and always invisible
+PASS same-process HWND owner differs from caller EDT
+PASS Bind HRESULT success round0: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS second source cannot bind same HWND before first Retire
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round0
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round1: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round1
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round2: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round2
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round3: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round3
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round4: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round4
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round5: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round5
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round6: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round6
+PASS original task copy bytes remain immutable
+PASS Bind HRESULT success round7: 0
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS only one exact-window dispatcher while bound
+PASS post-owner-drain Retire explicitly confirms no supply
+PASS retired token is removed only after drain
+PASS hook unregister and dispatcher drain round7
+PASS original task copy bytes remain immutable
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS task-only exact owner-thread blocker hook installed
+PASS task blocker holds actual HWND owner pump
+PASS timed-out Retire is unknown, never no-data or terminal success
+PASS unacknowledged Retire retains actual prepared token
+PASS unknown native outcome retains task file copy
+PASS timeout telemetry preserves live owner dispatcher
+PASS explicit owner Retire retry confirms no-data and removes token
+PASS retry acknowledges canceled queued commands and unhooks dispatcher
+PASS second task blocker holds HWND before Bind
+PASS blocked Bind returns unacknowledged failure
+PASS Bind timeout leaves real token prepared, not pane or terminal
+PASS no owner execution or bound apartment invented for queued Bind
+PASS queued Bind and Retire remain unknown while owner cannot acknowledge
+PASS blocked Bind retains immutable task copy
+PASS explicit Close after Bind timeout drains owner queued commands
+PASS Close erases token after real acknowledgement
+PASS Bind timeout and Close retry leave no installed native hooks
+PASS actual WinRT binding executed on HWND owner, distinct from Swing EDT
+PASS actual bound owner has not been released before explicit Retire
+PASS Bind stays prepared; no pane requested and no storage supplied
+PASS own HWND destroyed after EDT dispose
+PASS WM_NCDESTROY revoked and drained native source on owner thread
+PASS Retire after destroyed HWND preserves truthful no-data outcome
+PASS destroyed-window dispatcher unregistered and drained
+PASS no external socket/listener/process or share receiver

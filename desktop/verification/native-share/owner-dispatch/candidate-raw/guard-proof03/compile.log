@@ -1,0 +1,9 @@
+desktop\.local\native-share-owner-thread-dispatch-parity\OwnerGuardFixture.kt:33:17: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ComposeWindow'.
+    fact(!window!!.isVisible&&window!!.isDisplayable&&!user.IsWindowVisible(hwnd!!),"$mode exact own ComposeWindow always invisible")
+                ^^
+desktop\.local\native-share-owner-thread-dispatch-parity\OwnerGuardFixture.kt:33:37: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ComposeWindow'.
+    fact(!window!!.isVisible&&window!!.isDisplayable&&!user.IsWindowVisible(hwnd!!),"$mode exact own ComposeWindow always invisible")
+                                    ^^
+desktop\.local\native-share-owner-thread-dispatch-parity\OwnerGuardFixture.kt:33:81: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Pointer'.
+    fact(!window!!.isVisible&&window!!.isDisplayable&&!user.IsWindowVisible(hwnd!!),"$mode exact own ComposeWindow always invisible")
+                                                                                ^^

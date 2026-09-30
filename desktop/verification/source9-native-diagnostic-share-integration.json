@@ -1,83 +1,114 @@
 {
   "upstreamTag": "v0.2.3-alpha.9",
   "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
-  "windowsBaseCommit": "f899a5f4e8494c1fc2a79eb461f7524d0bece0c1",
-  "scope": "Original diagnostic prompt/actor/lease integration and controlled bridge build; native SHARE remains blocked pending HWND owner dispatch correction.",
-  "sourceSnapshotManifestSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
-  "runtimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
-  "actualMainSourceFiles": 369,
+  "windowsBaseCommit": "44b9f6723a65678bd59dedf44bb6fd641d40355f",
+  "MainIntegrated": true,
+  "sourceSnapshotManifestSha256Bytes": "9f58369713e6738bea2a6cde03c586768fa414188a82f127b0b0771ca8e50151",
+  "runtimeCpSha256Bytes": "334d1947e200a659f06ab4002bf4b94870bb6ffa369a72a994bd1afbe69d88a2",
+  "actualMainSourceFiles": 378,
   "actualOrderedRuntimeArtifacts": 89,
-  "productionOverridesInAcceptedUiAndLeaseTests": 0,
+  "productionOverridesInAcceptedTests": 0,
   "actualDiagnosticJUnit": {
     "tests": 18,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
-  "actualOriginalUi": {
-    "matrixCells": 4,
-    "focusedCases": 18,
-    "pointerPairs": 41,
-    "screenshots": 64,
-    "syntheticNativeTransport": true,
-    "markerDeletionFailureUsesRealWindowsFileHandle": true,
-    "originalPromptAndViewer": true
-  },
-  "actualLeaseScenarios": {
-    "freshJvms": 8,
-    "checks": 50,
-    "syntheticNativeEvents": true,
-    "repeatedExplicitTerminalShares": 40,
-    "unknownExposedCopiesSurviveRestart": true,
-    "clearAllRetryAndRestoreFreeze": true,
-    "realWindowsLockedCopy": true,
-    "exact16MiBManagedBudget": true
-  },
+  "acceptedChanges": [
+    "Dispatch bind, Show and close commands to the exact current-process HWND owner thread",
+    "Keep native callback depth and COM registrations until nested callback bodies have unwound",
+    "Check ABI removal HRESULT before clearing registration flags; keep failure state for bounded retry",
+    "Recheck closed state after asynchronous COM preparation before marking storage supply possible",
+    "Actual Main operations mutex serializes the private native transport calls",
+    "Source-controlled expected DLL digest from two independent fresh native builds; actual Main producer rebuild is byte identical"
+  ],
   "nativeBuild": {
-    "sourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a",
-    "dllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f",
-    "graphSha256Bytes": "a56bd301aa709c013fc698ec50ac3371a0735b1cdcbcad1588a176436c8fafea",
+    "sourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+    "sourceControlledApprovalSha256Bytes": "499a28ba7dec7a34cad1c7e63a051aa33739dc52b701f9423cdffb3bc670c238",
+    "dllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+    "graphSha256Bytes": "4d789710471ac2aec3850d799e7de09ccd1c274fa37b6932aff27d49d1ae503e",
     "headers": 363,
     "libraries": 11,
     "compilerFiles": 64,
     "freshCompilationEveryInvocation": true,
     "runtimeTrustedHashFromSourceApproval": true,
-    "mutableDllCacheTrusted": false
+    "mutableDllCacheTrusted": false,
+    "candidateGraphCount": 2,
+    "MainGraphRebuilt": true
   },
-  "reviewedChanges": [
-    "Same original diagnostic actor/controller/lifecycle/window",
-    "Original SHARE/DISMISS marker rules and viewer fallback",
-    "Durable private lease ownership before native data grant",
-    "Explicit native completion/cancel events; no TTL completion inference",
-    "Native retire/drain before accepted actor writes and Store freeze",
-    "Controlled fresh Windows C++ source build; runtime DLL hash from reviewed source approval"
-  ],
-  "rawArtifacts": {
-    "path": "desktop/verification/native-share/raw-artifact-identities.json",
-    "sha256Bytes": "f19d0c2cbbfe37f971a651078af50b963f88f497591f3b92b63bbb54720fcdb0",
-    "files": 347
+  "actualHiddenHwndNative": {
+    "assertions": 106,
+    "ownComposeWindowAlwaysHidden": true,
+    "BindAndRetire": true,
+    "RetireTimeoutAndRetry": true,
+    "secondSourceRebind": true,
+    "windowDestroyed": true,
+    "ShareShow": false,
+    "MainRootWindowExecuted": false
+  },
+  "actualDefaultMainTransport": {
+    "freshJvms": 4,
+    "checks": 36,
+    "syntheticTransportFactory": false,
+    "WinRtPrepareStateRetire": true,
+    "repeatedNoWindowCycles": 40,
+    "compiledMainTrustedHash": true,
+    "tamperedDllRejectedBeforeNativeCall": true,
+    "retiredOwnerRejectsBeforeLoad": true,
+    "HWND": false,
+    "ShareShow": false,
+    "DataRequested": false,
+    "SetStorageItems": false
+  },
+  "actualLeaseScenarios": {
+    "freshJvms": 8,
+    "checks": 50,
+    "syntheticNativeEvents": true,
+    "clearRetryRestoreFreeze": true,
+    "managed16MiBBudget": true
+  },
+  "preparedNativeGuardProof": {
+    "assertions": 99,
+    "kotlin": 50,
+    "native": 49,
+    "syntheticCallbackScopes": true,
+    "realAbiRemovalFault": true,
+    "actualDataRequestedBodyExecuted": false,
+    "actualSetStorageItemsExecuted": false
+  },
+  "previousUiProof": {
+    "path": "desktop/verification/native-share/owner-dispatch/historical/previous-main-integration.json",
+    "sha256Bytes": "fc42ff0051d6fd49efff73931358e9a89ff317443110b3fe6d7f7c1d3aa0dc58",
+    "originalUiAlreadyAcceptedOnEarlierMain": true,
+    "UIAndPromptSourcesUnchangedByThisSlice": true,
+    "UiNotRerunAgainstNewNativeDll": true
   },
   "confirmedRuntimeBlocker": {
     "SwingEdtDiffersFromActualComposeHwndOwner": true,
-    "currentCppShowGuardRejectsSwingCaller": true,
-    "pendingFix": "Dispatch native bind/show/revoke/drain to the exact owned HWND native thread; do not remove the guard as a substitute.",
-    "evidence": "desktop/verification/native-share/actual-hwnd-ownership-probe/attempt03/proof/result.json"
+    "currentCppShowGuardRejectsSwingCaller": false,
+    "ownerDispatchCorrectionCompiledAndHiddenBindRetireVerified": true,
+    "realMainShowStillUnverified": true
   },
-  "nativeShareFeatureAccepted": false,
   "remaining": [
-    "Correct and verify owned-HWND native thread dispatch",
-    "Real Main HWND and Windows share pane interaction",
-    "Actual chosen receiver consumption",
-    "Packaged application resource/DLL/runtime acceptance",
-    "Full original feature parity and release gate"
+    "Real Main HWND ShareShow and Windows system pane interaction",
+    "Real DataRequested body, SetStorageItems and chosen receiver consumption",
+    "Packaged application resource flattening/DLL/runtime acceptance",
+    "Full original feature parity and final Desktop deployment"
   ],
+  "nativeShareFeatureAccepted": false,
   "MainRootWindowExecuted": false,
-  "HWNDAccepted": false,
   "ShareUiAccepted": false,
   "receiverAccepted": false,
+  "packagedRuntimeAccepted": false,
   "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
   "publicReleaseAuthorizationVerified": false,
   "fullFeatureParityVerified": false,
   "progressEstimateChanged": false,
-  "progressPresentation": "About 70%; compiled sources and tests are not progress points."
+  "weightedReviewedProgressPercent": 69.7,
+  "rawArtifacts": {
+    "path": "desktop/verification/native-share/owner-dispatch/artifact-manifest.json",
+    "sha256Bytes": "e679b59475e785bddc52ee740769557c65df6cf266e72aedda164e5873969f64",
+    "files": 320
+  }
 }

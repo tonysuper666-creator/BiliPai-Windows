@@ -1,0 +1,58 @@
+{
+  "rootActionsRequired": [
+    {
+      "step": 1,
+      "action": "Review this immutable raw handoff and independent source review; verify exact candidate source/graph/DLL hashes",
+      "candidateSourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+      "candidateDllSha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514"
+    },
+    {
+      "step": 2,
+      "action": "Copy only candidate06/DesktopDiagnosticShare.cpp to desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp; never copy task helper exports/DLL into Main"
+    },
+    {
+      "step": 3,
+      "action": "Update source-controlled approved-development-build.json using reviewed source SHA, compiler-script SHA, all same normalized tool/header/library input pins, and this handoff manifest SHA; DLL expected digest comes from two fresh controlled builds"
+    },
+    {
+      "step": 4,
+      "action": "Let the controlled Gradle native producer rebuild from the installed source and verify fresh complete graph/input pins and resulting expected DLL. Do not trust an old mutable cache DLL/receipt"
+    },
+    {
+      "step": 5,
+      "action": "Confirm staged common/native/windows-x64/bilipai-diagnostic-share.dll and generated DesktopNativeDiagnosticShareAssetHash use the fresh approved digest; Compose app resources flatten common into native/windows-x64"
+    },
+    {
+      "step": 6,
+      "action": "Compile actual Main, freeze new immutable Kotlin/Java/resources JARs and actual ordered CP, rerun relevant actual UI/actor/native tests against those current bytes"
+    },
+    {
+      "step": 7,
+      "action": "Keep nativeShareFeatureAccepted=false until actual Show/system pane/receiver and packaged runtime boundaries are separately verified. Do not call a hidden Bind or synthetic guard proof feature acceptance"
+    }
+  ],
+  "installableProductionInputs": {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\candidate06\\DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+      "bytes": 27693
+    },
+    "freshCandidateDllForDigestReview": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06\\bilipai-diagnostic-share.dll",
+      "sha256Bytes": "2a36fd5c59cd0957fa9934f1c634635db414b7bdc863b92a943edb53107b6514",
+      "bytes": 232960
+    },
+    "graph": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\native-share-owner-thread-dispatch-parity\\build06\\producer-input-graph.json",
+      "sha256Bytes": "83da8fb2aede9fc3e9b9ac0ccb7b269bd64678d4a70c98753d38997a07e1dadf",
+      "bytes": 115223
+    },
+    "compilerDriver": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\tools\\compile-native-diagnostic-share.py",
+      "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+      "bytes": 5052
+    }
+  },
+  "mustNeverInstall": "native-helper*/GuardRevokeTaskHelper.cpp, native-helper-build*/bilipai-diagnostic-share.dll, fixture-only jars, task/private synthetic files",
+  "noInstallationPerformedByThisTask": true
+}

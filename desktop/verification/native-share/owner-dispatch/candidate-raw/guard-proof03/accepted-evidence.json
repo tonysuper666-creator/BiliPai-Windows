@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "actualMainSnapshotSha256Bytes": "4e97c4c054a7ec0ed8f064319009bcfb9b68f9c191ef089a6bf677f163df959f",
+  "runtimeCpSha256Bytes": "a733a3435e18c5dac83ff155023c36e6d0d1997822b0a6b77ba7d4efeff63fcc",
+  "taskFixtureJarSha256Bytes": "5916dc132dcefebebdd355bbbaffb39429d59d7ec43604fd892d41e4b79a97a9",
+  "taskFixtureSourceSha256Bytes": "304af866cefbac109befd944c7fe316b36f4310ea3d13efd271b7a6009ed2444",
+  "taskDllSha256Bytes": "93ed97330684a2a38c871aeb09504e5915df8f8826031bc0d0d6b01305f0ba0b",
+  "candidateSourceSha256Bytes": "1606f70eb26cbff4d4e3278703753b27d271996b4971dae2abf13fbd50d5d8ea",
+  "nativeGraphSha256Bytes": "a05b5335db1c86e6938d443047c8bb934e3c2a7b6f1c04e0ae8015d727faffa3",
+  "resultSha256Bytes": "ebc4fcdc88498aaa645296714f1284c7549ce5f0f56e310eafb6b8d004338dc2",
+  "assertions": 99,
+  "syntheticNativeCallbackAndAbiFaultHelper": true,
+  "actualHwndWinrtManagerAndCheckedRevoke": true,
+  "MainIntegrated": false,
+  "ShareShow": false,
+  "ShareUI": false,
+  "receiver": false,
+  "productionOverrides": 0
+}
