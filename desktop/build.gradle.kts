@@ -427,6 +427,33 @@ val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
     // Own the reference-only output too; the network-proxy producer has its own copy.
 }
 
+val extractUpstreamDynamicSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamSettingsHome)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-settings.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/dynamic-settings").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-dynamic-settings.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
+        "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-home-dynamic-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/dynamic-settings"))
+}
+
+val extractUpstreamCrashPrompt by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-crash-prompt.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/crash-prompt/sources").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-crash-prompt.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-crash-prompt-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/crash-prompt"))
+}
+
 val extractNativeMusicRoot by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -628,6 +655,8 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/blocked-list-ui"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/network-proxy"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/diagnostics/sources"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-settings"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/crash-prompt/sources"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
@@ -637,6 +666,8 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstr
 tasks.named("compileKotlin") { dependsOn(extractUpstreamBlockedUp, extractUpstreamBlockedListUi, extractUpstreamNetworkProxy) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 

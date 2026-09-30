@@ -1,0 +1,584 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "artifactCount": 114,
+  "artifacts": [
+    {
+      "path": "actual-1/compile.args",
+      "sha256Bytes": "cc7f835599db34ac19618a9d0c4001e4e4e90a9bb8823fe3c41eafe89d494639",
+      "sizeBytes": 59962
+    },
+    {
+      "path": "actual-1/compile.log",
+      "sha256Bytes": "6e87c44bb1de7be2da905599e2fd14a6307f403df7926d4a50a3746a5e48eebd",
+      "sizeBytes": 631
+    },
+    {
+      "path": "actual-2/classes/com/android/purebilibili/ComposableSingletons$DesktopPendingCrashLogPromptKt.class",
+      "sha256Bytes": "7a6fc1e6b1839430c3b79ec6c7f24d4c60bd51ac0b25fba02d2a09a0932408fc",
+      "sizeBytes": 5669
+    },
+    {
+      "path": "actual-2/classes/com/android/purebilibili/CrashLogPromptAction.class",
+      "sha256Bytes": "b10ace19690630bca408f6a7c98ef341e8ebea78bd811b790ca8b3a90a557437",
+      "sizeBytes": 1971
+    },
+    {
+      "path": "actual-2/classes/com/android/purebilibili/DesktopCrashLogPromptPolicyKt.class",
+      "sha256Bytes": "835c34b5056b319124e514610f3b2a21f191d200bff08cf274f3349d43b1fcf6",
+      "sizeBytes": 1202
+    },
+    {
+      "path": "actual-2/classes/com/android/purebilibili/DesktopPendingCrashLogPromptKt.class",
+      "sha256Bytes": "36d3940821ad54f01d98bdf0d3b50a8e4d439d72e80a05d9c45324350abec2ac",
+      "sizeBytes": 9616
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/ComposableSingletons$DesktopCrashPromptHostKt.class",
+      "sha256Bytes": "706841d13bf43643ed5cb515cd22903789dc02f3751179df570acc2a173793e7",
+      "sizeBytes": 4140
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$4.class",
+      "sha256Bytes": "92fe1ddd22410289b4e1112e9eacaacf186a4a3f00e1da9aea5e6f8a222453fc",
+      "sizeBytes": 3548
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$operation$1.class",
+      "sha256Bytes": "14735152d77f884222b52d4c89bae6755fd5a64d1270461f32189535f9e929d4",
+      "sizeBytes": 3822
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$shutdown$1.class",
+      "sha256Bytes": "59abc6984a63190a5c19c05f8c7af7725eca8a05f3a34b99947194193e3f30a1",
+      "sizeBytes": 3469
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2.class",
+      "sha256Bytes": "614b5bfadf732419f41d84673fcd6f44186568ef457b3064b4955bd4b4870621",
+      "sizeBytes": 28966
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$main$1.class",
+      "sha256Bytes": "d4b9687c8dd9427475d6bd72745129a84880a3ec9c9493afa20ba3593f6fad8f",
+      "sizeBytes": 10539
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$populate$1.class",
+      "sha256Bytes": "5bb2717cb1ab7a8ea9d920fdf5156301633b48c9612b873ea9c007a7ca737e5f",
+      "sizeBytes": 1725
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$ui$1.class",
+      "sha256Bytes": "f10995da038a83e968e611a8b78dfd17125d2aa733db413e8b26bbe7bad0302f",
+      "sizeBytes": 5255
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$ui$2$1$1$1.class",
+      "sha256Bytes": "46e87ce5460b9cd256dfd4ef177ab4a760b0b6028ba7acaca5c1a597e955b42b",
+      "sizeBytes": 3199
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$waitFor$1.class",
+      "sha256Bytes": "21ab458ffdb3ab3451b4238c5b0684ccda968b3924849cbb7472da93dfa549fa",
+      "sizeBytes": 1726
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$waitFor$2.class",
+      "sha256Bytes": "1f60124f9f1e3c78cc2e63556627096b529f7d2d3c5e1fda6f2afd77bcf2782c",
+      "sizeBytes": 3626
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt.class",
+      "sha256Bytes": "31fc69c1400b9f4906fe10d458c95cf8b50a1c9f83ffe29e8e257c63941a1c30",
+      "sizeBytes": 39450
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Fence.class",
+      "sha256Bytes": "f43678d571e0965ce3908572c1e502b283acfda02ba99117bce8e7fb19d68b6e",
+      "sizeBytes": 2309
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$png$1.class",
+      "sha256Bytes": "52b98ab102205de5d022094e1fc3e5ca17f434fd92f45dfe18b0d3506da4e10b",
+      "sizeBytes": 1842
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$pointer$1.class",
+      "sha256Bytes": "52596bac2dcd7c573ade6e455ba522de9a45fccde168667b893e1f1dedd54d9e",
+      "sizeBytes": 1852
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$wait$1.class",
+      "sha256Bytes": "ff622c57a010e4f4b1385b382b5babd7059b3c94d8be60a5331f737adfd617a1",
+      "sizeBytes": 1939
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$wait$2.class",
+      "sha256Bytes": "c20931a8a87b534eab3b283ee7a4607072cc43216d694fa61cd91aee6e83bf25",
+      "sizeBytes": 3706
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/crashproof/Scene.class",
+      "sha256Bytes": "ab31241d4e4fb3ac0c7982c5f8a12b2f0f5528b950240ddfb0f2c41bdb315d32",
+      "sizeBytes": 15804
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$handle$1.class",
+      "sha256Bytes": "ea7b1451553ca2436c25539deb47818d5594571aa3501868a92dde06730e3c80",
+      "sizeBytes": 2157
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$load$1.class",
+      "sha256Bytes": "ab4c258c26e65ee5e44a8e12f2b454044ea84ee416c78df518c19976189c271c",
+      "sizeBytes": 1969
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController$shutdownForRestore$2.class",
+      "sha256Bytes": "04e68ac51b0b23d280d04048381afbe12201647359f2bdbd90b2eaf6bb6a2b06",
+      "sizeBytes": 5144
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.class",
+      "sha256Bytes": "44b37b48e9e4d7eee0f85e8c4cd2914de5baa919cc32e7f6eca18cf377392cae",
+      "sizeBytes": 16754
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$1$1.class",
+      "sha256Bytes": "7bd75eb9f35ef5e57fcd9e87a69bad2e5868540961b0cd1c67d1ba8f31241861",
+      "sizeBytes": 3616
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$3$1$1.class",
+      "sha256Bytes": "373fed489cafda44f362868c04511085518a97b894defa7812eaef9acec20949",
+      "sizeBytes": 3868
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$4$1.class",
+      "sha256Bytes": "31024512857f97383c3332c9cc88402f705ed8c4200981ffc147d4483bee9d69",
+      "sizeBytes": 1505
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$5$1$1.class",
+      "sha256Bytes": "f030b9aa01fd164d307346c494059f7eabb711361bfd96425ad203a2adf6ddc2",
+      "sizeBytes": 1507
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$5$3$1$1$1.class",
+      "sha256Bytes": "05d2fe9152e07a73e8d955390de9a8f1f9515d48eae76efee9780eb70c8d6cce",
+      "sizeBytes": 5469
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt$DesktopCrashPromptHost$5$4$1$1.class",
+      "sha256Bytes": "b7780f46a5a0b0cb419c4ec5b5da6482444229403efd43a4575e36c8b50704bf",
+      "sizeBytes": 1511
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptHostKt.class",
+      "sha256Bytes": "88a1edf4b6eea07c58d2d20db66180ce99d60c139470638ccc193d2f2200221f",
+      "sizeBytes": 21647
+    },
+    {
+      "path": "actual-2/classes/com/bilipai/desktop/diagnostics/DesktopCrashPromptState.class",
+      "sha256Bytes": "a6e4689481b943656a672f2d717ecd87ea81d9bb38cab4221d4c89a80494f220",
+      "sizeBytes": 5937
+    },
+    {
+      "path": "actual-2/classes/META-INF/com.bilipai.desktop_bilipai-windows.kotlin_module",
+      "sha256Bytes": "e435e42f544871a8b86c950975ed6f0dd1f010c389e9e50aef25a695832b0f13",
+      "sizeBytes": 244
+    },
+    {
+      "path": "actual-2/compile-evidence.json",
+      "sha256Bytes": "f477137a3aa22e952f09a25c5fe6e6febad2de165d4be196e7f67aa0d326f8ba",
+      "sizeBytes": 1238
+    },
+    {
+      "path": "actual-2/compile.args",
+      "sha256Bytes": "95b82e5ee4e7cf4555f61f822fd1460eb13b112ebb9191a591ef292231d5428e",
+      "sizeBytes": 59962
+    },
+    {
+      "path": "actual-2/compile.log",
+      "sha256Bytes": "b2653e48ceb951e4a663809110716056f9c9e522f3245d140e56e3d1ccd0c4e9",
+      "sizeBytes": 145
+    },
+    {
+      "path": "actual-2/dependency-identities.json",
+      "sha256Bytes": "c88937ee257f63e3c1632d9782dbf26cd6efd9f1f53bb52676a7ce92e4c95544",
+      "sizeBytes": 86090
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/clear-failure/logs/basic.log",
+      "sha256Bytes": "2030e35eca45d374d5d557f4315af6b1adafaced79b2e7421aa1ac59b83b81c5",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/clear-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "e977af651ac8aaf9830ca2ce1e21572f32af3e376b5cdf25a42758525718795b",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/DISMISS/logs/basic.log",
+      "sha256Bytes": "5acf1f5648f5b2c2485ad0805fb3d7b51bb3b0f744df88795cf667c3d41391f1",
+      "sizeBytes": 162
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/DISMISS/logs/last_crash_log.txt",
+      "sha256Bytes": "80aacc8da286e912fe94802f1b55ff995b796529984ce4f77f77ed68a283097d",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/IGNORE/logs/basic.log",
+      "sha256Bytes": "f79effbef17f773f3359ba0b4352b58653102c4909f318e29bd7708ed6f16bce",
+      "sizeBytes": 162
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/IGNORE/logs/last_crash_log.txt",
+      "sha256Bytes": "078a42a9a896530924defeb14fbca5610bb5d6019f96e4833b4f7be951ffaf3f",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/IGNORE/logs/pending_crash.marker",
+      "sha256Bytes": "e0f37ccea21b6773dbde06f6a7e11fe39bd593f92fa6e1099fc6cf6fc7a867a0",
+      "sizeBytes": 13
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-read/logs/basic.log",
+      "sha256Bytes": "3930991645ed9d5cfca264f8c880c9ab435793d5e3c130869f3a9f460b1e9759",
+      "sizeBytes": 155
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-read/logs/last_crash_log.txt",
+      "sha256Bytes": "b5bff1380b1ee2f49420fd25a12625248ccc4860fbdf9af558dacab8cedf645c",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-read/logs/pending_crash.marker",
+      "sha256Bytes": "8856db9b2fdce5b22be8c3721a98812dc8e21bb53a77aa3334ea8f08c58b6c17",
+      "sizeBytes": 13
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-share/logs/basic.log",
+      "sha256Bytes": "44303879660f5f1a74ecbd56a5aee5de16125b39098c078212fc7e295d9a2c4e",
+      "sizeBytes": 155
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-share/logs/last_crash_log.txt",
+      "sha256Bytes": "1fdf511dbff351237646d16ce07c3a9d745572cafd5a1add9a7625705aaf54f9",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/late-share/logs/pending_crash.marker",
+      "sha256Bytes": "7b768b105c21743d8110be8e411566daada65bc8228bbdebb62e10738fece4c8",
+      "sizeBytes": 13
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/SHARE/logs/basic.log",
+      "sha256Bytes": "4aa117d939e35c7474be20860c3a1b39acc401a3590fe72eb4658379ef7ff489",
+      "sizeBytes": 162
+    },
+    {
+      "path": "actual-2/disk/actual-task-storage/SHARE/logs/last_crash_log.txt",
+      "sha256Bytes": "aebddc11bc7ee4290314a3d8e21c05d1e5fae811bfe9f5380182ef56d31be6e9",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/disk/result.json",
+      "sha256Bytes": "ea3aabed4b895968a9c258e1e20c2ccd0087804dbffd3d922fe13c96a44ac191",
+      "sizeBytes": 2669
+    },
+    {
+      "path": "actual-2/disk.args",
+      "sha256Bytes": "e28392f7b54afaba6345b46ad4213bdc00207eb4f607c52ea59f81e90c7d3f35",
+      "sizeBytes": 56985
+    },
+    {
+      "path": "actual-2/disk.log",
+      "sha256Bytes": "54323820ce7e44beaa5616af284ce818f74c268ff3d3b1ef2dcd74e9c8af2bba",
+      "sizeBytes": 3266
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/dismiss/logs/basic.log",
+      "sha256Bytes": "be7fb5df37927da26cb9c1624cb162efae27c0d44b2aba89ff1a1d2308dd2250",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/dismiss/logs/last_crash_log.txt",
+      "sha256Bytes": "6e1d0fb0ddd034148737e765b9f94a5b31fd607a99b50f448ab19749f871f020",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/dismiss/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/outside/logs/basic.log",
+      "sha256Bytes": "6e68b9eca3633928fdce945a0032cdeb1a43b89d10553f52d3cf07e57b3f1aad",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/outside/logs/last_crash_log.txt",
+      "sha256Bytes": "28fa498ebc52ddee37e31ffd949ec8966c0b12c91c61348c9d781477c9781004",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/outside/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/read-failure/logs/basic.log",
+      "sha256Bytes": "6030ab2f4f0c131ad9c51fca26fedf808cb353828778938c27c31b2eec8deb83",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/read-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "596e24d2f4bc8710fbc7a6ef261e1e5f05fdf964e1294cbe7c9965c3162b3d6b",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/read-failure/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/share/explicit-fixture-export.txt",
+      "sha256Bytes": "68e167b2922c435e65d700a4027b2e4a4c00043a6eb9b5b96124edfd24d70e45",
+      "sizeBytes": 2010
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/share/logs/basic.log",
+      "sha256Bytes": "99b40914c2030c3073f971d9202b1a0ea6aff5c402f0e034ce27cec8e64c1091",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/share/logs/last_crash_log.txt",
+      "sha256Bytes": "c5e248027a27685fc32273c0474e40d3cea1e8f2696c01735b71e26747970727",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/material3/actual-task-storage/share/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "actual-2/material3/material3-actual-viewer-export.png",
+      "sha256Bytes": "0f9102e68bbe315a8135e82e0ce2766c81cb7f0753ebbbd3b2b11be4cb937fe6",
+      "sizeBytes": 48604
+    },
+    {
+      "path": "actual-2/material3/material3-dismiss-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "actual-2/material3/material3-outside-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "actual-2/material3/material3-safe-read-failure.png",
+      "sha256Bytes": "ec99a5ec7f31545cb350f6e7df9b17d50fa04e9a2f5faaafc2fb510a73ef1830",
+      "sizeBytes": 13702
+    },
+    {
+      "path": "actual-2/material3/material3-share-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "actual-2/material3/result.json",
+      "sha256Bytes": "438edd85ab16e7089a988bc6f3dbf39045f6fade2b3001e281e3bd5d26caabb1",
+      "sizeBytes": 1636
+    },
+    {
+      "path": "actual-2/material3.args",
+      "sha256Bytes": "0a8ade3f70a8199bea9620af0f3978d527c37c69f725d04eb7fa7c7c144d697c",
+      "sizeBytes": 56995
+    },
+    {
+      "path": "actual-2/material3.log",
+      "sha256Bytes": "ceaa632191a0dc4e81192f10967f6d25504fbb95338bb94b99ada7a8ab96ca7e",
+      "sizeBytes": 2125
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/dismiss/logs/basic.log",
+      "sha256Bytes": "4964e162ae61b5da1020da92c91b04c2cdb72d893077b059e6f9d0c09cedb6bb",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/dismiss/logs/last_crash_log.txt",
+      "sha256Bytes": "b1ee113d7c04df6c549a0b50ea129f27277fe515b6c3689c12e62f9895a44a78",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/dismiss/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/outside/logs/basic.log",
+      "sha256Bytes": "65083ce467c8b3fb6c06d3c9390e968c08513600a3407407578e3537314ec2d2",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/outside/logs/last_crash_log.txt",
+      "sha256Bytes": "6f4a3e16dcfd6766a88d43fc39a5f74efe6dad981b63cb1cf9450cec5a260d03",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/outside/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/read-failure/logs/basic.log",
+      "sha256Bytes": "94d8b9cdc1731edd5ac0ed4ca8fdde7a0039020157334b6cf1469a9ffda48e0a",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/read-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "521e1031c2f91de24364896235656ecbe8f78e44c58b935a21a36ec868569f51",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/read-failure/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/share/explicit-fixture-export.txt",
+      "sha256Bytes": "49924e9777a1674918392e7e03555c826dfa0707d4730a924116e7c05bbe3f25",
+      "sizeBytes": 2010
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/share/logs/basic.log",
+      "sha256Bytes": "513ba9e95c58a7e38286061ec6490fed9288e459d0cdce1e1e1eed10d40a2abb",
+      "sizeBytes": 99
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/share/logs/last_crash_log.txt",
+      "sha256Bytes": "275d22b28aa9b1adb1dd691495b15a4d48b2fc1360613ea3f629be2cdf2469a2",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "actual-2/miuix/actual-task-storage/share/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "actual-2/miuix/miuix-actual-viewer-export.png",
+      "sha256Bytes": "ffa58556f65e6f55cdbd3777a69ee4f13053728d615930b4de43966327d5d837",
+      "sizeBytes": 42402
+    },
+    {
+      "path": "actual-2/miuix/miuix-dismiss-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "actual-2/miuix/miuix-outside-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "actual-2/miuix/miuix-safe-read-failure.png",
+      "sha256Bytes": "b0935f7b6606fd45affbe3b25d8caca2d79badd375225076a4d196be8a694fb6",
+      "sizeBytes": 13181
+    },
+    {
+      "path": "actual-2/miuix/miuix-share-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "actual-2/miuix/result.json",
+      "sha256Bytes": "b1ee42efca3f5fa566fbdfb7361959a4ac56a93d3b4d3cb28c77b08e0f1b93cc",
+      "sizeBytes": 1601
+    },
+    {
+      "path": "actual-2/miuix.args",
+      "sha256Bytes": "b6d140f37df8cae0acc205311134cb30982e692efa98aa008d72e956913dd62f",
+      "sizeBytes": 56987
+    },
+    {
+      "path": "actual-2/miuix.log",
+      "sha256Bytes": "857d6f1f322b9f9f713b27f581797eea586970b6595ad92a199fa2cdf4148cbc",
+      "sizeBytes": 2093
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "e42ef66d970fd295defe1b5d79b5e7e7e408626dabf32fa5474b5729f1874203",
+      "sizeBytes": 4253
+    },
+    {
+      "path": "contract.json",
+      "sha256Bytes": "b2646b051d167083fc04b0e77efb3db19c2430e90380ba4b455e1cbb8fa6a2a4",
+      "sizeBytes": 13810
+    },
+    {
+      "path": "CrashPromptFixture.kt",
+      "sha256Bytes": "c04bc86ec8b8bc7845499eeeb6e0a713e51b39f31fc631f4bd52e8b50449ddcb",
+      "sizeBytes": 13178
+    },
+    {
+      "path": "extract-crash-prompt.py",
+      "sha256Bytes": "c478fd880736a6a12cfdf5ed4f55e1b596e88f370da2369619e26c39a8612a94",
+      "sizeBytes": 4269
+    },
+    {
+      "path": "extractor-test.log",
+      "sha256Bytes": "89debf07dd8ffaa6f7211ed47c540176fb40ce8fa1627b007e7e94b185286523",
+      "sizeBytes": 106
+    },
+    {
+      "path": "freeze-proof.py",
+      "sha256Bytes": "83a77dbaa1ba631ac0d81ae04299ab794aa36895f5e76f22bb8dfcc060be27b6",
+      "sizeBytes": 5352
+    },
+    {
+      "path": "generated/reference-only/OriginalCrashLogPrompt.kt",
+      "sha256Bytes": "663cd5b6b322d6faad25d66c41a40e709926411f87ffa5b06c0e418b3cfa9a3e",
+      "sizeBytes": 2512
+    },
+    {
+      "path": "generated/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b",
+      "sizeBytes": 613
+    },
+    {
+      "path": "generated/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91",
+      "sizeBytes": 1892
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "3653f2fbe8ea1711bd74a32ec4388a405a882e8a327d918488a2bac90225c35d",
+      "sizeBytes": 6032
+    },
+    {
+      "path": "prepared/DesktopCrashPromptController.kt",
+      "sha256Bytes": "525d607caea356a08942668e5e3c338e875d007bf5fb78ece30d3056bc385912",
+      "sizeBytes": 3881
+    },
+    {
+      "path": "prepared/DesktopCrashPromptHost.kt",
+      "sha256Bytes": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804",
+      "sizeBytes": 1421
+    },
+    {
+      "path": "test_extractor.py",
+      "sha256Bytes": "9a85ac31d210bd1a00801e60fbb7c0b51e6ef3194af254938bfc6d1603e0f0ce",
+      "sizeBytes": 2708
+    }
+  ],
+  "contractSha256Bytes": "b2646b051d167083fc04b0e77efb3db19c2430e90380ba4b455e1cbb8fa6a2a4",
+  "snapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+  "fixtureAssertionCount": 98,
+  "extractorTests": 3,
+  "actualPointerPairs": 14,
+  "actualPngs": 10,
+  "actualTaskStorageFileCount": 41
+}

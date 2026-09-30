@@ -1,0 +1,19 @@
+PASS: actual retained actor saves synthetic crash
+PASS: Root uses exactly the lifecycle retained controller and same actor
+PASS: Root failure keeps original guest bytes and no account
+PASS: original prompt and actual storage boundary coexist
+PASS: actual Root original action preserves snapshot bytes
+PASS: Root handled state hides repeat prompt
+PASS: Root local viewer uses retained controller
+PASS: actual Root viewer close keeps snapshot
+PASS: controller is retired before Root shutdown returns
+PASS: same actor rejects work after actual Root lifecycle drain
+PASS: actual Root freezes existing global and peer facades after actor drain
+PASS: Root shutdown preserves original corrupt discovery bytes
+PASS: actual Root shutdown repeat remains safe
+PASS: no exit/restart or automatic external sharing
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/cmp-current-product-1/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.rootcrashproof.RootCrashPromptFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/crash-prompt-main-product-proof/current-product-1/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.rootcrashproof.RootCrashPromptFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

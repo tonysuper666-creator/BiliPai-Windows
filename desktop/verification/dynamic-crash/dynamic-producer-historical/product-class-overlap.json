@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "onlyExistingConsumerClassFamilies": true,
+  "activeClassCount": 115,
+  "overriddenClassCount": 11,
+  "overriddenClasses": [
+    "com/bilipai/desktop/settings/DesktopHomeRecommendationSettingsKt$DesktopHomeRecommendationSettings$1$1$1$1.class",
+    "com/bilipai/desktop/settings/DesktopHomeRecommendationSettingsKt$DesktopHomeRecommendationSettings$1$2$1$1.class",
+    "com/bilipai/desktop/settings/DesktopHomeRecommendationSettingsKt$DesktopHomeRecommendationSettings$update$1.class",
+    "com/bilipai/desktop/settings/DesktopHomeRecommendationSettingsKt.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt$CommunityDynamicCard$1$1$20$1$1.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt$CommunityDynamicComments$1$1$1$1.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt$CommunityDynamicComments$3$1$2$1$1.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt$CommunityDynamicDetail$1$1.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt$CommunityRepostDialog$1$1$1.class",
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt.class",
+    "com/bilipai/desktop/ui/ComposableSingletons$CommunityDynamicScreensKt.class"
+  ],
+  "allowedFamilies": [
+    "com/bilipai/desktop/ui/CommunityDynamicScreensKt",
+    "com/bilipai/desktop/ui/ComposableSingletons$CommunityDynamicScreensKt",
+    "com/bilipai/desktop/settings/DesktopHomeRecommendationSettingsKt",
+    "com/bilipai/desktop/settings/ComposableSingletons$DesktopHomeRecommendationSettingsKt"
+  ],
+  "allOtherProductClassBytesUnchanged": true
+}

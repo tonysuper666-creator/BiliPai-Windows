@@ -1,0 +1,61 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "compiled-product-snapshot.json",
+      "bytes": 10555,
+      "sha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "crash_prompt-sources.log",
+      "bytes": 664,
+      "sha256Bytes": "7fe889ab50259a0f3fb995e1084f4fffb00a2bcab23e797221a5fdd017e3c00c"
+    },
+    {
+      "path": "current-source-identities.json",
+      "bytes": 8007,
+      "sha256Bytes": "17fde1cfb8a7b36a223aeab94657d018499831dc22d2d05dc46bcc7644d0e6fb"
+    },
+    {
+      "path": "dynamic_timeline-sources.log",
+      "bytes": 929,
+      "sha256Bytes": "5c22aea1407f56c2bf3bfa0b3cea7c632252001d14e5f76c8a79e3a4269e0e91"
+    },
+    {
+      "path": "inventory-after-order-normalization.json",
+      "bytes": 177186,
+      "sha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca"
+    },
+    {
+      "path": "inventory-before-order-normalization.json",
+      "bytes": 177186,
+      "sha256Bytes": "b6193e483d8f9d96c7967ddea48ead45dbbaaf4c2f5086f8fd0360bfbc05acb7"
+    },
+    {
+      "path": "inventory-order-normalization.json",
+      "bytes": 599,
+      "sha256Bytes": "3fa83ddc29bfb9fc769dfb4f6dca8895a4440a9038f05a9eb3cdce798f8b7b5b"
+    },
+    {
+      "path": "root-verification.json",
+      "bytes": 463,
+      "sha256Bytes": "c9434a2a23bb5c33a07c7dc3e7966118566c79b1fc397595d152e403781ed601"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 65185,
+      "sha256Bytes": "971274d099f51f875d1d9de2c352591aaa916f60530804013ea0f634ebc4d0c8"
+    },
+    {
+      "path": "source-audit.log",
+      "bytes": 761,
+      "sha256Bytes": "921adfa9d8999d84ca64652814125d37314d64d2880a024bbe54f7a6a96e308d"
+    },
+    {
+      "path": "TEST-com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest.xml",
+      "bytes": 2528,
+      "sha256Bytes": "e03f7dd62ae845c5a614827be7994753ad9d72799cc7003c6b9fcc74cf0d4502"
+    }
+  ],
+  "artifactCount": 11
+}

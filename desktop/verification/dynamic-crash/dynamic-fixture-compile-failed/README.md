@@ -1,0 +1,1 @@
+Historical fixture-only compiler failure: AppThemeMode was referenced in an incorrect package. Main compiled successfully. No UI or transport ran in this failed lane. Correct actual enum package is feature.settings; final lane uses the product class.

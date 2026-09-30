@@ -1,0 +1,55 @@
+PASS: original show policy false/false
+PASS: original show policy false/true
+PASS: original show policy true/false
+PASS: original show policy true/true
+PASS: same actual actor saves synthetic local crash
+PASS: actual pending read SHARE
+PASS: original handled state hides repeated prompt SHARE
+PASS: original action clear policy SHARE
+PASS: marker policy actual disk SHARE
+PASS: snapshot bytes remain unchanged SHARE
+PASS: only explicit SHARE requests same actor viewer SHARE
+PASS: prompt retirement keeps retained actor alive
+PASS: same actual actor saves synthetic local crash
+PASS: actual pending read DISMISS
+PASS: original handled state hides repeated prompt DISMISS
+PASS: original action clear policy DISMISS
+PASS: marker policy actual disk DISMISS
+PASS: snapshot bytes remain unchanged DISMISS
+PASS: only explicit SHARE requests same actor viewer DISMISS
+PASS: prompt retirement keeps retained actor alive
+PASS: same actual actor saves synthetic local crash
+PASS: actual pending read IGNORE
+PASS: original handled state hides repeated prompt IGNORE
+PASS: original action clear policy IGNORE
+PASS: marker policy actual disk IGNORE
+PASS: snapshot bytes remain unchanged IGNORE
+PASS: only explicit SHARE requests same actor viewer IGNORE
+PASS: ignored marker prompts on new session owner
+PASS: prompt retirement keeps retained actor alive
+PASS: same actual actor saves synthetic local crash
+PASS: real marker IO failure publishes fixed safe state
+PASS: failed clear preserves snapshot and marker obstacle
+PASS: explicit same owner clear retry succeeds
+PASS: same actual actor saves synthetic local crash
+PASS: actual actor queue gate enters share=false
+PASS: actual delayed actor read accepted share=false
+PASS: prompt owner retires before late actor result share=false
+PASS: retirement waits accepted pending operation share=false
+PASS: late read cannot reopen prompt/viewer share=false
+PASS: unfulfilled closed share/read retains marker and snapshot share=false
+PASS: prompt close never closes shared diagnostics share=false
+PASS: same actual actor saves synthetic local crash
+PASS: actual actor queue gate enters share=true
+PASS: actual delayed actor read accepted share=true
+PASS: prompt owner retires before late actor result share=true
+PASS: retirement waits accepted pending operation share=true
+PASS: late read cannot reopen prompt/viewer share=true
+PASS: unfulfilled closed share/read retains marker and snapshot share=true
+PASS: prompt close never closes shared diagnostics share=true
+PASS: zero network/listener/multicast/process attempts
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/cp-actual-2/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.crashproof.CrashPromptFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-crash-prompt-parity/actual-2/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.crashproof.CrashPromptFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

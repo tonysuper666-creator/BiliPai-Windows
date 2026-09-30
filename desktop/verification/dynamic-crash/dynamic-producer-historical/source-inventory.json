@@ -1,0 +1,114 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicFeedFetchPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "983870a2751830f8a7fb3681fff7a1c2d124c27893c152320763e16376816d9d"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicFetchRetryPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "6b13443f7929b6026bce396e585ff2991daf9802e2547e5602fedf740229ec61"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/FeedMergeUtils.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "0a86cfce58fc32cde7b2d746c34f3ed60beb9ddd69f098a94ec2ccf72109ac2f"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGrid.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "6ad0ba5fee29d5de36dbe3c1088814750d676627d93e7072f0b45e87ed602f9a"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/components/FeedPrependScrollPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "11778856f3a9c36c70de90959cc3090cf3598508cb492b4320d4c1a779d4cf94"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "727beb11ad857e3745383e8fb90a2df4712f701f141d1d49a1c13e919294cef0"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreenStatePolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "49dec34dcbd22dd89f1468e18b87e99e309ff646badc836174b81065d39bff0c"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicIncrementalRefreshPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "6fcfb3c62e21e450c31c9e706785d395ff4068d02196a0d883eb3b1ecfbfe249"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicLayoutPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "220eebe0235247bef47940cb6192652edeb19031ff89503c6bc72465d96f80f9"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-dynamic-parity"
+    ],
+    "sha256": "742b254c3555a6a7b7785c8f2c0ac6a1c260493671441151b70c07a60a566d0f"
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "snapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+  "productJarsFirst": true,
+  "preparedUniqueSourceCount": 4,
+  "fixtureSourceCount": 1,
+  "existingProductClassesOverridden": false,
+  "originalGeneratedSources": 2,
+  "sourcePins": [
+    {
+      "path": "generated\\sources\\com\\android\\purebilibili\\DesktopCrashLogPromptPolicy.kt",
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b"
+    },
+    {
+      "path": "generated\\sources\\com\\android\\purebilibili\\DesktopPendingCrashLogPrompt.kt",
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91"
+    },
+    {
+      "path": "prepared\\DesktopCrashPromptController.kt",
+      "sha256Bytes": "525d607caea356a08942668e5e3c338e875d007bf5fb78ece30d3056bc385912"
+    },
+    {
+      "path": "prepared\\DesktopCrashPromptHost.kt",
+      "sha256Bytes": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804"
+    },
+    {
+      "path": "CrashPromptFixture.kt",
+      "sha256Bytes": "c04bc86ec8b8bc7845499eeeb6e0a713e51b39f31fc631f4bd52e8b50449ddcb"
+    }
+  ],
+  "noSharedGradle": true,
+  "noHWND": true,
+  "noAccountsOrNetworking": true
+}

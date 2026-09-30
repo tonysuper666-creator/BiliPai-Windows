@@ -9,6 +9,7 @@ import kotlinx.coroutines.sync.withLock
 
 /** The same retained process owner is drained by Main, restore and Runtime disposal. */
 internal class DesktopDiagnosticLifecycle(val diagnostics: DesktopDiagnostics) {
+    val crashPrompt = DesktopCrashPromptController(diagnostics)
     private val gate = Any()
     private val shutdown = Mutex()
     private val observers = mutableListOf<Job>()
@@ -25,6 +26,7 @@ internal class DesktopDiagnosticLifecycle(val diagnostics: DesktopDiagnostics) {
             if (completed) return@withLock
             val jobs = synchronized(gate) { closing = true; observers.toList() }
             jobs.forEach { it.cancel() }
+            crashPrompt.shutdownForRestore()
             jobs.forEach { it.join() }
             diagnostics.shutdownForRestore()
             completed = true

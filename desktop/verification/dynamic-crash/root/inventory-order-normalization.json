@@ -1,0 +1,11 @@
+{
+  "metadataOnly": true,
+  "existingOrderRestored": true,
+  "newSourceEntriesAppended": 13,
+  "noOriginalContentOrFeatureRegistrationChanged": true,
+  "semanticCanonicalSha256Bytes": "6542f7577494c3b94b22fe85e5d77f4df4328d175f7dde24ad8721d2750ca299",
+  "beforeSha256Bytes": "b6193e483d8f9d96c7967ddea48ead45dbbaaf4c2f5086f8fd0360bfbc05acb7",
+  "afterSha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca",
+  "compiledSnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+  "productKotlinGeneratedJavaResourcesUnchanged": true
+}

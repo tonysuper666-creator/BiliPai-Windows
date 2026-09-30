@@ -1,0 +1,64 @@
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt
+@@ -14,29 +14,46 @@ import androidx.compose.ui.unit.dp
+ import coil3.compose.AsyncImage
+ import com.android.purebilibili.data.model.response.*
+ import com.bilipai.desktop.data.*
++import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
+ import kotlinx.coroutines.CancellationException
+ import kotlinx.coroutines.launch
+ import kotlinx.serialization.json.*
+ 
+ @Composable
+ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
++    val preferences=checkNotNull(LocalDesktopDynamicTimelinePreferences.current){"Root shared dynamic preferences are not mounted"}
+     val blocked by community.blockedUps.mids.collectAsState()
+     val epoch by community.accountEpoch.collectAsState()
++    val capturedEpoch=epoch
+     val transform = remember(blocked) { { rows: List<DynamicItem> -> desktopVisibleDynamicItems(rows, blocked) } }
+     var type by remember { mutableStateOf("all") }
+     var composing by remember { mutableStateOf(false) }
+     var revision by remember { mutableIntStateOf(0) }
+     var published by remember { mutableStateOf(false) }
++    val memory=LocalDesktopBrowseMemory.current
++    val timeline=remember(memory,mid,capturedEpoch,type,revision) {
++        val key=listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision)
++        val create={DesktopDynamicTimelineState(type,fetchPage={requestType,offset,baseline->
++            try {DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
++            catch(cancelled:CancellationException){throw cancelled}
++            catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
++        },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid})}
++        memory?.screen(key,create)?:create()
++    }
+     Column {
+         Row(Modifier.padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
++            // Original remaining tabs/visibility/order/UP selection are a separate unimplemented slice.
+             listOf("all" to "全部", "video" to "视频", "pgc" to "番剧").forEach { (value, label) ->
+                 FilterChip(selected = type == value, onClick = { type = value }, label = { Text(label) })
+             }
+             Button(onClick = { composing = true }) { DesktopSkinDynamicPublishIcon(composing); Text("发布动态") }
+         }
+         if (published) Text("动态已提交", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.primary)
+-        CommunityFeed(listOf(mid, epoch, type, revision), "", load = { offset -> community.dynamicFeed(type, offset).let { CommunityBatch(it.items, it.nextOffset) } },
+-            identity = { it.id_str }, onLogin = navigation.onLogin, transform = transform) { CommunityDynamicCard(it, community, navigation) }
++        val originalTitle=com.android.purebilibili.feature.dynamic.allDynamicTabSpecs.firstOrNull{it.id==type}?.title?:"内容"
++        DesktopDynamicTimelineFeed(timeline,preferences,navigation.onLogin,transform,
++            oldContentDividerLabel=if(type=="all")"以下是之前的动态"else"以下是之前的${originalTitle}") {
++            CommunityDynamicCard(it,community,navigation)
++        }
+     }
+     if (composing) CommunityDynamicComposer(community, navigation, onDismiss = { composing = false }, onPublished = { id ->
+         composing = false; revision++; published = true
+diff --git a/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt b/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt
+@@ -36,5 +36,8 @@ internal fun DesktopHomeRecommendationSettings(
+             homeRefreshCount=refreshCount,
+             onHomeRefreshCountChange={value->update{discovery.setRefreshCount(value)}},
+         )
++        LocalDesktopDynamicTimelinePreferences.current?.let {preferences->
++            DesktopDynamicTimelineSettings(preferences,onFailure)
++        }
+     }
+ }

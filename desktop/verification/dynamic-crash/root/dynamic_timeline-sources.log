@@ -1,0 +1,9 @@
+test_generation_is_deterministic_per_source_identity (test_dynamic_timeline_sources.DynamicTimelineSources.test_generation_is_deterministic_per_source_identity) ... ok
+test_original_direct_sources_are_full_bodies_and_have_exact_original_hash_headers (test_dynamic_timeline_sources.DynamicTimelineSources.test_original_direct_sources_are_full_bodies_and_have_exact_original_hash_headers) ... ok
+test_original_fetch_loop_has_only_documented_transport_cancellation_and_safe_log_bindings (test_dynamic_timeline_sources.DynamicTimelineSources.test_original_fetch_loop_has_only_documented_transport_cancellation_and_safe_log_bindings) ... ok
+test_page_and_incremental_decisions_remain_original_functions (test_dynamic_timeline_sources.DynamicTimelineSources.test_page_and_incremental_decisions_remain_original_functions) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.587s
+
+OK

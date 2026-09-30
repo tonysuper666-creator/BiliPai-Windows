@@ -1,0 +1,14 @@
+{
+  "snapshotJarsVerified": 3,
+  "orderedClasspathEntriesVerified": 234,
+  "externalOrderedEntries": 231,
+  "externalDistinctJars": 226,
+  "currentSourceAndGeneratedPinsVerified": 39,
+  "actualDynamicClassOriginsAndBytesVerified": 14,
+  "focusedMainJUnit": 13,
+  "focusedPythonSourceChecks": 7,
+  "sourceInventoryOrderOnlyNormalizedAfterActualProof": true,
+  "fullFeatureParityVerified": false,
+  "nativeSharingVerified": false,
+  "newDesktopDeployment": false
+}

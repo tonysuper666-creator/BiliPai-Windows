@@ -1,0 +1,29 @@
+PASS: same actual actor saves synthetic local crash
+PASS: original text/actions retained and no invented ignore control
+PASS: pointer action keeps snapshot bytes MIUIX/share
+PASS: pointer handled prevents prompt redisplay MIUIX/share
+PASS: share never automatically chooses or exports
+PASS: explicit local export reads same preserved crash
+PASS: viewer close leaves crash snapshot for settings export
+PASS: same actual actor saves synthetic local crash
+PASS: original text/actions retained and no invented ignore control
+PASS: pointer action keeps snapshot bytes MIUIX/dismiss
+PASS: pointer handled prevents prompt redisplay MIUIX/dismiss
+PASS: nonshare actions never request viewer/export
+PASS: same actual actor saves synthetic local crash
+PASS: original text/actions retained and no invented ignore control
+PASS: pointer action keeps snapshot bytes MIUIX/outside
+PASS: pointer handled prevents prompt redisplay MIUIX/outside
+PASS: nonshare actions never request viewer/export
+PASS: same actual actor saves synthetic local crash
+PASS: actual read failure UI hides raw path/Throwable
+PASS: read retry repairs without clearing snapshot or marker
+PASS: pointer action keeps snapshot bytes MIUIX/read-failure
+PASS: pointer handled prevents prompt redisplay MIUIX/read-failure
+PASS: nonshare actions never request viewer/export
+PASS: zero network/listener/multicast/process attempts
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/.local/cp-actual-2/home
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.crashproof.CrashPromptFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/diagnostics-crash-prompt-parity/actual-2/classes/)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.crashproof.CrashPromptFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

@@ -1,0 +1,27 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsSourceCommit": "de19778e828523d2ad73818733951f424d4d8f7b",
+  "workingTreeDirty": true,
+  "adoptedSourceCount": 446,
+  "adoptionModes": {
+    "direct": 302,
+    "api-extract": 1,
+    "policy-extract": 71,
+    "extracted": 47,
+    "platform-rewrite": 11,
+    "platform-adapter-reference": 12,
+    "reference-only": 2
+  },
+  "adoptedResourceCount": 210,
+  "resourceHashesVerified": true,
+  "apiInterfacesVerbatim": true,
+  "apiMethodCount": 303,
+  "responseFiles": {
+    "upstreamCount": 45,
+    "adoptedCount": 45,
+    "unadopted": []
+  },
+  "acceptanceMatrix": "desktop/PARITY.md",
+  "fullFunctionalParityVerified": false
+}

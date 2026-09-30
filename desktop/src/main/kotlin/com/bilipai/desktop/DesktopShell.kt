@@ -175,6 +175,11 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
             isClosing = { rootClosing.get() || latestIsClosing() },
             diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError)
     }
+    diagnosticLifecycle?.crashPrompt?.let { prompt ->
+        DesktopAppearanceTheme(startupTheme) {
+            DesktopCrashPromptHost(prompt) { chooseDesktopDiagnosticExportFile(hostWindow) }
+        }
+    }
 }
 
 @Composable
@@ -216,6 +221,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             beforeStoreFreeze = { diagnosticLifecycle?.shutdownForRestore() })
     }
     val globalPluginContext = pluginRuntime.context
+    val dynamicTimelinePreferences = remember(pluginStore) {
+        DesktopDynamicTimelinePreferences(globalPluginContext)
+    }
     val privacyBindings = remember(globalPluginContext, community.searchPreferences) {
         DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
     }
@@ -835,7 +843,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     DesktopAppearanceTheme(themeSettings, windowSmallestWidthDp = minOf(maxWidth.value, maxHeight.value).toInt()) {
     val scheme = MaterialTheme.colorScheme
     val strings = LocalDesktopStrings.current
-    CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin) {
+    CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences) {
         if (!appearanceReady) {
             Surface(Modifier.fillMaxSize()) {
                 Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {

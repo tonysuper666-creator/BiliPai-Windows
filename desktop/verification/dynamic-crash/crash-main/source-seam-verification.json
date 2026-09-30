@@ -1,0 +1,285 @@
+{
+  "passed": true,
+  "scope": "source-contract-only-not-native-Main",
+  "checks": [
+    "Main same global store precedes actual diagnostics and Repository construction",
+    "Main failed Result retains null consumer and fixed safe visible error",
+    "Main installs one identity-owned handler and restores previous identity",
+    "Main retained callback covers failure before Ready with same lifecycle and global store",
+    "Root startup uses actual DisposableEffect",
+    "Root failure callback retires guard then same lifecycle then global backing",
+    "Root error uses original AppSurface and diagnostics safe error",
+    "Ready Runtime receives same retained lifecycle hook",
+    "Root tracks exactly ordinary and audio native state observers on same lifecycle",
+    "backup stops playback/listen/casts before actor drain and privacy/runtime freeze",
+    "normal stops playback/listen/casts before actor drain and privacy/runtime freeze",
+    "Runtime single shutdown mutex hook precedes every own service/store freeze",
+    "Runtime onDispose schedules same actual shutdown API",
+    "Lifecycle rejects new observers and cancels jobs then retires prompt then joins jobs and drains actor",
+    "Enhanced consent remains same authoritative global settings namespace",
+    "Lifecycle constructs exactly one controller while Main and Root do not duplicate it",
+    "Root mounts original prompt from same lifecycle after storage boundary outside Ready gate",
+    "Host reads same actor viewer and generation retirement guards late prompt results"
+  ],
+  "sourceAndGeneratedIdentityCount": 51,
+  "verifiedIdentities": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "23859b15ad46705b14b7ca2b108d4e283c0a4b3b50893bb6b6fd1b3c5604e3a9",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "d2aa1427ea20a2be2b4eb3a96eae64aba3991c0de49b0ba4e5e24c2357a67fa6",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "e9bccc5f13cf270da77c609e4191841f36ec147335f4327292982178b498f0f6",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt",
+      "sha256Bytes": "87f9bedbed92df5f90600734e857c05f728ce50aee165fb7b3f173724ccc22c2",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt",
+      "sha256Bytes": "73aa1f82b8157979ccff22dbd91a53bdb65b8bb2aaab123f90f565839695b1d4",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt",
+      "sha256Bytes": "949c1b36729cc9e91726af61b918f45d7af6a02597a4541ed83499df8b494e05",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.kt",
+      "sha256Bytes": "29f9cf6cf11f5788447cef13308b6a810aba8d846edf345df135bd2340917124",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt",
+      "sha256Bytes": "a5b30ead819f9edd38646e69115168f26e4222fb63d6c228d5c24687f74aa641",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt",
+      "sha256Bytes": "69e56867b27af5c488749e6794876456c50d083c3fbbb85b32f785036bed7b1e",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "72d17a4a65edd569de5f1d620b1a6362cf9cd7aafa7d581dc5de3fbe81ee6205",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "3da8e066f7badc3c3fe093dd10d9e6a2201ca176d90b2806337643952fda44ac",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "70ab482dbc4d41a83f6b450774f320d3c98929e00dde1b54878e8cdd2f29605a",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticsTest.kt",
+      "sha256Bytes": "8cdc31af2e0592173a08ec15449c8aff1d195fdded07a8e7a32b158a235e4aa1",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "sha256Bytes": "b8a4a4ee08eceee4edf0af28c5d86087b03e7455e9d297dbce5dd40a0d3c518f",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/tools/tests/test_diagnostic_sources.py",
+      "sha256Bytes": "0738d106b26ad6caee41d6860877ab70be3659dd74c94708dcbadbc286ee18ab",
+      "identitySnapshotManifestSha256Bytes": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "b6193e483d8f9d96c7967ddea48ead45dbbaaf4c2f5086f8fd0360bfbc05acb7",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/core/database/entity/BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+      "sha256Bytes": "c39269a35a197de003c19144e4179bb9ef20a76471b9d5c2c7feadf1eb6ab04a",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/data/repository/DesktopUpstreamBlockedListPacing.kt",
+      "sha256Bytes": "0cb511796e1af44196a9cf46329aca80fa8cd6a2f18cc6525618ab905340eefd",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListContent.kt",
+      "sha256Bytes": "90ce9ac48d1b776395796de9db1cf43fed4b311b78b13a7fc3b9b13a2caf7d2e",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListFilename.kt",
+      "sha256Bytes": "c459b1760f4033650356bc82e5f1c45c89d8fa1e55ffb1f38516142cc520cf02",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt",
+      "sha256Bytes": "2928c6738b243ccbcf0af4e74021ec0e781fb3742981a4a8892eb5861215f6da",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/feature/settings/SettingsDiagnosticFields.kt",
+      "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt",
+      "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.kt",
+      "sha256Bytes": "525d607caea356a08942668e5e3c338e875d007bf5fb78ece30d3056bc385912",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptHost.kt",
+      "sha256Bytes": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "4d8c287d5aa60f24551515cf103278a403c43af78471f963c6371b0a7a939fa4",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "4a27a553fb453d96389865aa09056768725d876b28962efb638782bf97f4ecc7",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "sha256Bytes": "61a81a53209804209491778757830ad52c7088742733a4b8d3383a520162c875",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-crash-prompt.py",
+      "sha256Bytes": "c478fd880736a6a12cfdf5ed4f55e1b596e88f370da2369619e26c39a8612a94",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "34bad171b3885cea13125322b5a114c307256925cd4614317028ffc64aa4d65b",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/tools/tests/test_crash_prompt_sources.py",
+      "sha256Bytes": "038559d5c522583b612d832943c1acdf8056dc65cc816f31a6c17bf23fa4a4d6",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "sha256Bytes": "bf4773b52abed34e8b6312a01f07404c8e400d679073007c28d324631d10105f",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/core/store/DesktopDynamicSettings.kt",
+      "sha256Bytes": "03d20e6d88713b923752aec60ba31b0b00c777a8d2621ddb52c391fd96c456cd",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicIncrementalPolicy.kt",
+      "sha256Bytes": "5f2f3bad182b214d6390fbb7f77eed71357deff043f2b3bc21d6d797979213b3",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicOldContentDivider.kt",
+      "sha256Bytes": "9ce4e99357f02612f305eb7738a3918c6aacab9b7d5f772a7e0730cb46358575",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelineLayout.kt",
+      "sha256Bytes": "392cf956b4621046075ba0177fa88201119929f251e0b5da3eacdd54af84147b",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePage.kt",
+      "sha256Bytes": "f5826199b88d905a7708e1343a1cb5f6b4ae11ba0ff718f02fa01d66b011bdc9",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePolicy.kt",
+      "sha256Bytes": "efdd9d66a21131963c3fde7be603f982e087faaf7fece020a47f5c7d88882aa7",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/settings/DesktopDynamicTimelineSettingsFields.kt",
+      "sha256Bytes": "39574be70c9572973c4f0005291d94b73002a15ac46d64057286d6d5d09da5ce",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/crash-prompt/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "desktop/build/generated/crash-prompt/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91",
+      "identitySnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    }
+  ],
+  "snapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+  "supplementaryUnchangedIdentitySnapshot": "5065fe8052e80c0c73f6342a4afc03fd62814fb0a144b6de46feeb5ddce1d3ae",
+  "nativeMainWindowExecuted": false
+}

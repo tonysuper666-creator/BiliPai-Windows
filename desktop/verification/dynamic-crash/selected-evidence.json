@@ -1,0 +1,1336 @@
+{
+  "allFrozenBytesVerifiedByRoot": true,
+  "selectedRawArtifacts": 255,
+  "frozenCohorts": [
+    {
+      "name": "dynamic-producer-historical",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-home-dynamic-parity",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "9913c47af3659c7e1dc12ba9a93caaddfa8218061ad8b72d2b79ee84a5f44723",
+      "allRawArtifactsVerified": 530,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    },
+    {
+      "name": "crash-producer-historical",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-crash-prompt-parity",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "7ec64c983f5ac9464bcae5a39fa9f46745b9f0eb0f062ee9a8161e61a1a6f437",
+      "allRawArtifactsVerified": 114,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    },
+    {
+      "name": "crash-main",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\crash-prompt-main-product-proof",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "73b48e95da34a90483e9b67c4c5e98cfcd9c74d070e964bd51715948c12ea8c8",
+      "allRawArtifactsVerified": 251,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    },
+    {
+      "name": "dynamic-main",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-main-product-proof-final",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "15c95218ddab66eb0435dc4c89dd76dcdc746b1a06385f92efa21bf8d9a0d5ad",
+      "allRawArtifactsVerified": 70,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    },
+    {
+      "name": "dynamic-fixture-compile-failed",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-main-product-proof",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "26b3e62ba2f6c3f85ca256077389c1938cfa8da85236dcf6412ca0c2c089216b",
+      "allRawArtifactsVerified": 6,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    },
+    {
+      "name": "root",
+      "localDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-root-evidence",
+      "manifest": "artifact-manifest.json",
+      "sha256Bytes": "43361f64bcde872d7ff853ac373ce85a283d901e22e894454d340edbc4baec16",
+      "allRawArtifactsVerified": 11,
+      "externalTaskOwnedEnvironmentFilesVerified": 0
+    }
+  ],
+  "allFrozenArtifactCount": 982,
+  "externalTaskOwnedEnvironmentFilesVerified": 0,
+  "files": [
+    {
+      "path": "dynamic-producer-historical/audit.py",
+      "bytes": 13647,
+      "sha256Bytes": "2e0873cfec9e1ff8c0427e418a353594a82246773fda084a0ee7e99ec95daf16"
+    },
+    {
+      "path": "dynamic-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "bytes": 1566,
+      "sha256Bytes": "b9ca1f12fee689230e4f156371b973ccc8fe2263a2a51ecda5c86a2fbeebf25b"
+    },
+    {
+      "path": "dynamic-producer-historical/base/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 18299,
+      "sha256Bytes": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-1.log",
+      "bytes": 25541,
+      "sha256Bytes": "1fe6565851674b961b1aa65e8fafb4cac9b65867405dd0b7e400bcb004db2f1b"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-2.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-3.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-4.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-5.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-evidence.json",
+      "bytes": 5459,
+      "sha256Bytes": "d169b643c1505f7efa769324612df0c54bcaa6824980b64428939a3c0d7424c9"
+    },
+    {
+      "path": "dynamic-producer-historical/compile-fixture.py",
+      "bytes": 4180,
+      "sha256Bytes": "203a3aef9c1dca0b19c66fed97e48b8f9dad606f8fecc645d282301cadb3827e"
+    },
+    {
+      "path": "dynamic-producer-historical/consumer.patch",
+      "bytes": 4583,
+      "sha256Bytes": "3c36c76908316b6d68d84a06c541ab1c3696822d520977335256a2da511ac34c"
+    },
+    {
+      "path": "dynamic-producer-historical/dependency-identities.json",
+      "bytes": 85878,
+      "sha256Bytes": "49ecc1e1c106ac8a05872f15ed5f0be9bf1ea65ba20eb1e29ce6720ca4d7b0b2"
+    },
+    {
+      "path": "dynamic-producer-historical/field-audit.json",
+      "bytes": 38505,
+      "sha256Bytes": "9f1c2b35cd28ddb0c603e48fd8adf8457a022357ee76238b53c5bbcd2c3067bc"
+    },
+    {
+      "path": "dynamic-producer-historical/FIELD-AUDIT.md",
+      "bytes": 15834,
+      "sha256Bytes": "6929eb238465bef74df2c9e102105b80056c9b298cddd6daf7f3d5eb67ea9bfa"
+    },
+    {
+      "path": "dynamic-producer-historical/freeze.py",
+      "bytes": 4447,
+      "sha256Bytes": "4a891e003b31b1b925f96d4a47f2cc4330dab99025e94672e6d48aa8c3001c8e"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/core/ui/components/FeedPrependScrollPolicy.kt",
+      "bytes": 1578,
+      "sha256Bytes": "53dc2636d4c741bdfde1b3a7b53499fd72db7ca2490089ef19575e313571f030"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGrid.kt",
+      "bytes": 5118,
+      "sha256Bytes": "9674e12d589c6e27cc600865d1fd66e6b7bd5b8ee47d83c8865444e52180bbfd"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/core/util/FeedMergeUtils.kt",
+      "bytes": 1349,
+      "sha256Bytes": "4d1573c8a74317c8dcf3283c41cb315adeb37dbac9d1976d4c59724305164670"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "bytes": 13902,
+      "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/data/repository/DynamicFeedFetchPolicy.kt",
+      "bytes": 1622,
+      "sha256Bytes": "37187cef49362664faf8def1f30fd9e3642b0704de6fee8e5960209ea586c318"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/data/repository/DynamicFetchRetryPolicy.kt",
+      "bytes": 2063,
+      "sha256Bytes": "a5e9ac81d2898ddb66e98951abc83b58bc87e8a3f743910d6ba353c4bfbff506"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicIncrementalPolicy.kt",
+      "bytes": 3127,
+      "sha256Bytes": "5f2f3bad182b214d6390fbb7f77eed71357deff043f2b3bc21d6d797979213b3"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicOldContentDivider.kt",
+      "bytes": 2007,
+      "sha256Bytes": "9ce4e99357f02612f305eb7738a3918c6aacab9b7d5f772a7e0730cb46358575"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelineLayout.kt",
+      "bytes": 872,
+      "sha256Bytes": "392cf956b4621046075ba0177fa88201119929f251e0b5da3eacdd54af84147b"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePage.kt",
+      "bytes": 792,
+      "sha256Bytes": "f5826199b88d905a7708e1343a1cb5f6b4ae11ba0ff718f02fa01d66b011bdc9"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePolicy.kt",
+      "bytes": 4000,
+      "sha256Bytes": "efdd9d66a21131963c3fde7be603f982e087faaf7fece020a47f5c7d88882aa7"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+      "bytes": 4187,
+      "sha256Bytes": "a99ca8e197d26bd6e731c7ba11b8fb6fb26cec54fca1bde0fd99367248e2429c"
+    },
+    {
+      "path": "dynamic-producer-historical/generated/com/android/purebilibili/feature/settings/DesktopDynamicTimelineSettingsFields.kt",
+      "bytes": 2305,
+      "sha256Bytes": "39574be70c9572973c4f0005291d94b73002a15ac46d64057286d6d5d09da5ce"
+    },
+    {
+      "path": "dynamic-producer-historical/junit-2.log",
+      "bytes": 465,
+      "sha256Bytes": "54bcb6e1a06b38073ec75fd71212aaadb1c3dad480d5ce89a529dffbe11686c5"
+    },
+    {
+      "path": "dynamic-producer-historical/junit-3.log",
+      "bytes": 465,
+      "sha256Bytes": "dccdec939f7d46c172be9dd9211042ec516eec26f910624931b68bf33fb367fc"
+    },
+    {
+      "path": "dynamic-producer-historical/junit-4.log",
+      "bytes": 465,
+      "sha256Bytes": "ea8fde7b72f88fc000a365f1788bccb5e955d69b25b8db961de28cf1e2d7447e"
+    },
+    {
+      "path": "dynamic-producer-historical/junit-5.log",
+      "bytes": 465,
+      "sha256Bytes": "987d156c4dc634eaf77446460f34b67b6ed33530b897555d4f17c0dc96f19ce1"
+    },
+    {
+      "path": "dynamic-producer-historical/JunitFixture.kt",
+      "bytes": 1098,
+      "sha256Bytes": "b844a4803da6089f1689ed36f4e62ff3cc99b326f250a86a458d0c777bb18e77"
+    },
+    {
+      "path": "dynamic-producer-historical/patch-check.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dynamic-producer-historical/prepare.py",
+      "bytes": 5828,
+      "sha256Bytes": "77e514d4fa22d59353d24e396e62c95e8ff86eb09084711bbcfe8e0d24a46351"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "bytes": 3486,
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "bytes": 1717,
+      "sha256Bytes": "4d8c287d5aa60f24551515cf103278a403c43af78471f963c6371b0a7a939fa4"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "bytes": 19468,
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "bytes": 6429,
+      "sha256Bytes": "4a27a553fb453d96389865aa09056768725d876b28962efb638782bf97f4ecc7"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "bytes": 11237,
+      "sha256Bytes": "61a81a53209804209491778757830ad52c7088742733a4b8d3383a520162c875"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/tools/extract-upstream-dynamic-settings.py",
+      "bytes": 11930,
+      "sha256Bytes": "34bad171b3885cea13125322b5a114c307256925cd4614317028ffc64aa4d65b"
+    },
+    {
+      "path": "dynamic-producer-historical/prepared/desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "bytes": 3696,
+      "sha256Bytes": "bf4773b52abed34e8b6312a01f07404c8e400d679073007c28d324631d10105f"
+    },
+    {
+      "path": "dynamic-producer-historical/product-class-overlap.json",
+      "bytes": 1572,
+      "sha256Bytes": "84b003b2dfc30fdfa7fc7f1f4e030d665495071969b1c646470cac4892a5ce52"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/junit-result.json",
+      "bytes": 35,
+      "sha256Bytes": "f7bf1f52aa66a978ca953f40663f8bf0b5c58aae5f0155b735f590e49b50a7ba"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/material3-incremental-divider.png",
+      "bytes": 40077,
+      "sha256Bytes": "cee4e3738e75335a122990b9c3fa014704cd5c73f213d2d38379550179c53d73"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/material3-layout-popup.png",
+      "bytes": 30863,
+      "sha256Bytes": "a0076d8696b867b991bd4842b96b87edc1ed196049f991b2f04c175ec6ff3c7a"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/material3-list.png",
+      "bytes": 36978,
+      "sha256Bytes": "bdc5d6c7d825cb0d94c22d73217aae3c1c3abbfff9e9eb0f8f891f2b689b9344"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/material3-replace.png",
+      "bytes": 26657,
+      "sha256Bytes": "ced4c9d5d62a6ee97d93b03ca041a8c56fff50fcc2b8b8315476813b5f943f8e"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/material3-waterfall.png",
+      "bytes": 29282,
+      "sha256Bytes": "4cc7b4c1fe37088153f71dae26ea053144406a07229d72e9b8802d989839a134"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/miuix-incremental-divider.png",
+      "bytes": 42627,
+      "sha256Bytes": "08aaab821bbbb1c8db6aee6fa51eb162e8d132e957968d54e9e345c7546186ae"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/miuix-layout-popup.png",
+      "bytes": 30523,
+      "sha256Bytes": "4eda5ba9c328173fc4c3cffe4eaa6696654a579a790099e5b14c44c6553529a4"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/miuix-list.png",
+      "bytes": 39037,
+      "sha256Bytes": "3849a9f41f234ccc4c7071f0b56ece010b505cbb7354b9c2477da548a1f89903"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/miuix-replace.png",
+      "bytes": 27387,
+      "sha256Bytes": "936535a140d61c64187c8292d819ac8bcf25a1ef86ce015c9705c753619bfe3b"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/miuix-waterfall.png",
+      "bytes": 30129,
+      "sha256Bytes": "e78d3ae5a3d7ef87fcc304a9201efc4450f5f234425df4aa34a6d87f512fbdeb"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/transport-result.json",
+      "bytes": 1213,
+      "sha256Bytes": "8fbbc2c95abf4dee469950d3bc1972809cc9f881b38f2fd9f32e2d3bf4901c00"
+    },
+    {
+      "path": "dynamic-producer-historical/proof/ui-result.json",
+      "bytes": 711,
+      "sha256Bytes": "66be55842e735394ade572b9ebce89ed4bb2be8f92d7d32581860f7a1a75f89b"
+    },
+    {
+      "path": "dynamic-producer-historical/python-source-checks.log",
+      "bytes": 107,
+      "sha256Bytes": "954967df461bb5ab47e45e67c30e858aa9a58b4256416dcb1e9060d938b22734"
+    },
+    {
+      "path": "dynamic-producer-historical/ROOT-INTEGRATION.md",
+      "bytes": 10144,
+      "sha256Bytes": "2902462bff7800260743b8e7938874925311ea47cc5029fdb8ccd63eb917b15a"
+    },
+    {
+      "path": "dynamic-producer-historical/source-inventory.json",
+      "bytes": 3868,
+      "sha256Bytes": "9f48cf54c3ee8e5117aa0dc428308473083cdd40293177d86377d7e1d56206fb"
+    },
+    {
+      "path": "dynamic-producer-historical/source-registration-delta.json",
+      "bytes": 4177,
+      "sha256Bytes": "1dd3c3e58bbb02d5a5b5f2dd3dad833fa24a31ee99b18e2fe4df32c59059f53f"
+    },
+    {
+      "path": "dynamic-producer-historical/target-baselines.json",
+      "bytes": 583,
+      "sha256Bytes": "23fa384300f1a3b09ab0fab2879499ec20a67597e35ff7dbdc5bea0aa7ba1890"
+    },
+    {
+      "path": "dynamic-producer-historical/transport-4.log",
+      "bytes": 171,
+      "sha256Bytes": "0fd6d1572362eb702c37b96cc598608b57676490fa36f642556afb9e92e1628c"
+    },
+    {
+      "path": "dynamic-producer-historical/transport-5.log",
+      "bytes": 171,
+      "sha256Bytes": "0fd6d1572362eb702c37b96cc598608b57676490fa36f642556afb9e92e1628c"
+    },
+    {
+      "path": "dynamic-producer-historical/TransportFixture.kt",
+      "bytes": 5128,
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "dynamic-producer-historical/ui-3.log",
+      "bytes": 270,
+      "sha256Bytes": "5ba36a39964e30be63d5b7b87383ab9a710280c73b6673d9688ba73e83181f61"
+    },
+    {
+      "path": "dynamic-producer-historical/ui-4.log",
+      "bytes": 270,
+      "sha256Bytes": "5ba36a39964e30be63d5b7b87383ab9a710280c73b6673d9688ba73e83181f61"
+    },
+    {
+      "path": "dynamic-producer-historical/ui-5.log",
+      "bytes": 270,
+      "sha256Bytes": "5ba36a39964e30be63d5b7b87383ab9a710280c73b6673d9688ba73e83181f61"
+    },
+    {
+      "path": "dynamic-producer-historical/UiFixture.kt",
+      "bytes": 9053,
+      "sha256Bytes": "40e696dbec5677a3158761701e908b2959149903e49ee9386a33f1d15c588cb8"
+    },
+    {
+      "path": "dynamic-producer-historical/verify-frozen.py",
+      "bytes": 1188,
+      "sha256Bytes": "80844ab1b644327c0c012d6c72afa1fb3e50e01567cd28b5f5e06194f7148446"
+    },
+    {
+      "path": "dynamic-producer-historical/frozen-handoff.json",
+      "bytes": 221459,
+      "sha256Bytes": "9913c47af3659c7e1dc12ba9a93caaddfa8218061ad8b72d2b79ee84a5f44723"
+    },
+    {
+      "path": "crash-producer-historical/actual-1/compile.log",
+      "bytes": 631,
+      "sha256Bytes": "6e87c44bb1de7be2da905599e2fd14a6307f403df7926d4a50a3746a5e48eebd"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/compile-evidence.json",
+      "bytes": 1238,
+      "sha256Bytes": "f477137a3aa22e952f09a25c5fe6e6febad2de165d4be196e7f67aa0d326f8ba"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/compile.log",
+      "bytes": 145,
+      "sha256Bytes": "b2653e48ceb951e4a663809110716056f9c9e522f3245d140e56e3d1ccd0c4e9"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/dependency-identities.json",
+      "bytes": 86090,
+      "sha256Bytes": "c88937ee257f63e3c1632d9782dbf26cd6efd9f1f53bb52676a7ce92e4c95544"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/disk/result.json",
+      "bytes": 2669,
+      "sha256Bytes": "ea3aabed4b895968a9c258e1e20c2ccd0087804dbffd3d922fe13c96a44ac191"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/disk.log",
+      "bytes": 3266,
+      "sha256Bytes": "54323820ce7e44beaa5616af284ce818f74c268ff3d3b1ef2dcd74e9c8af2bba"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/material3-actual-viewer-export.png",
+      "bytes": 48604,
+      "sha256Bytes": "0f9102e68bbe315a8135e82e0ce2766c81cb7f0753ebbbd3b2b11be4cb937fe6"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/material3-dismiss-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/material3-outside-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/material3-safe-read-failure.png",
+      "bytes": 13702,
+      "sha256Bytes": "ec99a5ec7f31545cb350f6e7df9b17d50fa04e9a2f5faaafc2fb510a73ef1830"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/material3-share-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3/result.json",
+      "bytes": 1636,
+      "sha256Bytes": "438edd85ab16e7089a988bc6f3dbf39045f6fade2b3001e281e3bd5d26caabb1"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/material3.log",
+      "bytes": 2125,
+      "sha256Bytes": "ceaa632191a0dc4e81192f10967f6d25504fbb95338bb94b99ada7a8ab96ca7e"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/miuix-actual-viewer-export.png",
+      "bytes": 42402,
+      "sha256Bytes": "ffa58556f65e6f55cdbd3777a69ee4f13053728d615930b4de43966327d5d837"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/miuix-dismiss-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/miuix-outside-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/miuix-safe-read-failure.png",
+      "bytes": 13181,
+      "sha256Bytes": "b0935f7b6606fd45affbe3b25d8caca2d79badd375225076a4d196be8a694fb6"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/miuix-share-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix/result.json",
+      "bytes": 1601,
+      "sha256Bytes": "b1ee42efca3f5fa566fbdfb7361959a4ac56a93d3b4d3cb28c77b08e0f1b93cc"
+    },
+    {
+      "path": "crash-producer-historical/actual-2/miuix.log",
+      "bytes": 2093,
+      "sha256Bytes": "857d6f1f322b9f9f713b27f581797eea586970b6595ad92a199fa2cdf4148cbc"
+    },
+    {
+      "path": "crash-producer-historical/compile-run.py",
+      "bytes": 4253,
+      "sha256Bytes": "e42ef66d970fd295defe1b5d79b5e7e7e408626dabf32fa5474b5729f1874203"
+    },
+    {
+      "path": "crash-producer-historical/contract.json",
+      "bytes": 13810,
+      "sha256Bytes": "b2646b051d167083fc04b0e77efb3db19c2430e90380ba4b455e1cbb8fa6a2a4"
+    },
+    {
+      "path": "crash-producer-historical/CrashPromptFixture.kt",
+      "bytes": 13178,
+      "sha256Bytes": "c04bc86ec8b8bc7845499eeeb6e0a713e51b39f31fc631f4bd52e8b50449ddcb"
+    },
+    {
+      "path": "crash-producer-historical/extract-crash-prompt.py",
+      "bytes": 4269,
+      "sha256Bytes": "c478fd880736a6a12cfdf5ed4f55e1b596e88f370da2369619e26c39a8612a94"
+    },
+    {
+      "path": "crash-producer-historical/extractor-test.log",
+      "bytes": 106,
+      "sha256Bytes": "89debf07dd8ffaa6f7211ed47c540176fb40ce8fa1627b007e7e94b185286523"
+    },
+    {
+      "path": "crash-producer-historical/freeze-proof.py",
+      "bytes": 5352,
+      "sha256Bytes": "83a77dbaa1ba631ac0d81ae04299ab794aa36895f5e76f22bb8dfcc060be27b6"
+    },
+    {
+      "path": "crash-producer-historical/generated/reference-only/OriginalCrashLogPrompt.kt",
+      "bytes": 2512,
+      "sha256Bytes": "663cd5b6b322d6faad25d66c41a40e709926411f87ffa5b06c0e418b3cfa9a3e"
+    },
+    {
+      "path": "crash-producer-historical/generated/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "bytes": 613,
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b"
+    },
+    {
+      "path": "crash-producer-historical/generated/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "bytes": 1892,
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91"
+    },
+    {
+      "path": "crash-producer-historical/INTEGRATION.md",
+      "bytes": 6032,
+      "sha256Bytes": "3653f2fbe8ea1711bd74a32ec4388a405a882e8a327d918488a2bac90225c35d"
+    },
+    {
+      "path": "crash-producer-historical/prepared/DesktopCrashPromptController.kt",
+      "bytes": 3881,
+      "sha256Bytes": "525d607caea356a08942668e5e3c338e875d007bf5fb78ece30d3056bc385912"
+    },
+    {
+      "path": "crash-producer-historical/prepared/DesktopCrashPromptHost.kt",
+      "bytes": 1421,
+      "sha256Bytes": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804"
+    },
+    {
+      "path": "crash-producer-historical/test_extractor.py",
+      "bytes": 2708,
+      "sha256Bytes": "9a85ac31d210bd1a00801e60fbb7c0b51e6ef3194af254938bfc6d1603e0f0ce"
+    },
+    {
+      "path": "crash-producer-historical/frozen-handoff.json",
+      "bytes": 24414,
+      "sha256Bytes": "7ec64c983f5ac9464bcae5a39fa9f46745b9f0eb0f062ee9a8161e61a1a6f437"
+    },
+    {
+      "path": "crash-main/compile-run-product.py",
+      "bytes": 6858,
+      "sha256Bytes": "e6f119a87e75ca733fef8576ed2e69b988c22edb2177e103d811906c4bc3f1ee"
+    },
+    {
+      "path": "crash-main/CrashPromptFixture.kt",
+      "bytes": 13178,
+      "sha256Bytes": "c04bc86ec8b8bc7845499eeeb6e0a713e51b39f31fc631f4bd52e8b50449ddcb"
+    },
+    {
+      "path": "crash-main/current-product-1/compile-evidence.json",
+      "bytes": 10626,
+      "sha256Bytes": "d48b5b2ab441782a9f81217cfee00e684e28b78f0d9961680ac101df3121e871"
+    },
+    {
+      "path": "crash-main/current-product-1/compile.log",
+      "bytes": 1511,
+      "sha256Bytes": "eeadb17b319103144abb15577835cb11c1e77b9812311c020120a7f0af49c2a0"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-disk/result.json",
+      "bytes": 2678,
+      "sha256Bytes": "7f0f1c222d9aefe2d4dfed9712c387a37548871fdf24003320d14ac4dd0fca84"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-disk.log",
+      "bytes": 3285,
+      "sha256Bytes": "e1add413a0c991b54e3d1c47331dd973aac6d2df4d849b95c8f1e861b7d7251a"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/material3-actual-viewer-export.png",
+      "bytes": 48524,
+      "sha256Bytes": "e8bd6a483dc68154f096d5bdca2e4e2195a266e7dc4a347720d415a6498021ab"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/material3-dismiss-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/material3-outside-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/material3-safe-read-failure.png",
+      "bytes": 13702,
+      "sha256Bytes": "ec99a5ec7f31545cb350f6e7df9b17d50fa04e9a2f5faaafc2fb510a73ef1830"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/material3-share-prompt.png",
+      "bytes": 20433,
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3/result.json",
+      "bytes": 1647,
+      "sha256Bytes": "29a1f901bcde70c9e8fff5ae73e7d1f58ef25270c552a6be1725150eeeed3be3"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-material3.log",
+      "bytes": 2144,
+      "sha256Bytes": "41eb51a9a2645bea99c50142e96a5df9a375878fb2029357e257e6a08d87f65f"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/miuix-actual-viewer-export.png",
+      "bytes": 42389,
+      "sha256Bytes": "2fc30ee48eac3e16d3edff23e44126fbdedff8b935cfed92636ab4c04c09394f"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/miuix-dismiss-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/miuix-outside-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/miuix-safe-read-failure.png",
+      "bytes": 13181,
+      "sha256Bytes": "b0935f7b6606fd45affbe3b25d8caca2d79badd375225076a4d196be8a694fb6"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/miuix-share-prompt.png",
+      "bytes": 22175,
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix/result.json",
+      "bytes": 1611,
+      "sha256Bytes": "fc79be3164db178901af9e3f4f8bd08efa195f03c2546f9fb539ff6c1aaf33b6"
+    },
+    {
+      "path": "crash-main/current-product-1/crash-miuix.log",
+      "bytes": 2112,
+      "sha256Bytes": "3aa9e7499f85ee2b12b7b7fa59d01f31c4de32522b6fbc2c37813688d7d16b03"
+    },
+    {
+      "path": "crash-main/current-product-1/dependency-identities.json",
+      "bytes": 85884,
+      "sha256Bytes": "9c9201834baf8900168c6783b6e248e56b7e17cd0a1accca0bc59dd9ed35d53e"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-accepted-writer/result.json",
+      "bytes": 1160,
+      "sha256Bytes": "6f70c1377bfba1155c12b80fedb8b6956dca1433874a56067b80c9a2373ef68d"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-accepted-writer.log",
+      "bytes": 1519,
+      "sha256Bytes": "3ddb49be6326116789090054b9eb732a259b9458fbd965989cb7b47ff37d3319"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-close-bypass/result.json",
+      "bytes": 1157,
+      "sha256Bytes": "565be8af0d8bf015352aadae68a02b54990f48d3dfe36e49b6466570711e0899"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-close-bypass.log",
+      "bytes": 1519,
+      "sha256Bytes": "3ddb49be6326116789090054b9eb732a259b9458fbd965989cb7b47ff37d3319"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-hook-failure/result.json",
+      "bytes": 777,
+      "sha256Bytes": "b74950653f4534b613c3ec07982a3a577054ca86c866ff35c6d3248e25aae5b0"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-hook-failure.log",
+      "bytes": 1115,
+      "sha256Bytes": "23c429d6c02630dc80bc8638414e0c816b16c9df2a117381232561cadb9df71a"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-observers/result.json",
+      "bytes": 827,
+      "sha256Bytes": "1aec38bd712d818eba488bdb169cb7e3e737e4f581f00df69b4ee7d27e730941"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-observers.log",
+      "bytes": 1172,
+      "sha256Bytes": "5d2838b9628ce5f5f051b6b94aa6493afc2e7490e280a3a16033e99cb3935663"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-material3/material3-root-retry-error.png",
+      "bytes": 18745,
+      "sha256Bytes": "c713fc85466d1b4785a703b96dbb40dc3dcd05d8742b81b72708846e2aa619c9"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-material3/material3-root-startup-error.png",
+      "bytes": 18234,
+      "sha256Bytes": "de2e0efb3e0cbf33504e65f7cc3111c3c1f259c30df992887766a7ae4d97f92d"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-material3/material3-root-stopped.png",
+      "bytes": 13237,
+      "sha256Bytes": "52c79937928f246cfd999eb432ad2b33adaa1311a2f517b8d88d6c164f23d525"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-material3/result.json",
+      "bytes": 1157,
+      "sha256Bytes": "b2cf4403cc99d2982d09ab3c127f155f5d7ea1ac8a96a322cb619be635a02d8b"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-material3.log",
+      "bytes": 1505,
+      "sha256Bytes": "5a12e7960f32dd10c2bcda87225f2c2b56cad2bf10238b8c47494ee4fc6e3cf3"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-miuix/miuix-root-retry-error.png",
+      "bytes": 19351,
+      "sha256Bytes": "926e4ea233a18fee59cc03f477aca8c2367f426a1cfbd85e8ecc4ad1b3c0e53c"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-miuix/miuix-root-startup-error.png",
+      "bytes": 18674,
+      "sha256Bytes": "4cbce99f63e0e2592f963e515452ccf73fbf4988f84a1efc974af0cb3d1440c9"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-miuix/miuix-root-stopped.png",
+      "bytes": 13611,
+      "sha256Bytes": "4c962d3a8ad9b6e9bc875871babf49f7525a687da8279fd410556d7ac04f2e41"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-miuix/result.json",
+      "bytes": 1154,
+      "sha256Bytes": "666d1ca4c77f10a0e39701e46f1c4bfd9039c959f27147a0f4a94c03e96fcd67"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-root-startup-miuix.log",
+      "bytes": 1505,
+      "sha256Bytes": "5a12e7960f32dd10c2bcda87225f2c2b56cad2bf10238b8c47494ee4fc6e3cf3"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-startup/result.json",
+      "bytes": 1090,
+      "sha256Bytes": "5d18f6daace8c8b8dea94d690b46bc19fa09f3fbabb5e6c293574c334a116b1a"
+    },
+    {
+      "path": "crash-main/current-product-1/lifecycle-startup.log",
+      "bytes": 1452,
+      "sha256Bytes": "5556c80e5049141354dba8adc10c6f4db7577a16ec58bfd219c87475da416e6d"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-dismiss/dismiss-root-original-prompt.png",
+      "bytes": 29954,
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-dismiss/dismiss-root-stopped.png",
+      "bytes": 10383,
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-dismiss/result.json",
+      "bytes": 1137,
+      "sha256Bytes": "218d5fd59afdbf806cd8417a97006ff76d7054fd483491ccbee77d999a5c3613"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-dismiss.log",
+      "bytes": 1493,
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-outside/outside-root-original-prompt.png",
+      "bytes": 29954,
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-outside/outside-root-stopped.png",
+      "bytes": 10383,
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-outside/result.json",
+      "bytes": 1135,
+      "sha256Bytes": "989370b2354e9313d3bf85376ec5c6adaf70434adbf94d2860081cefea5173d5"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-outside.log",
+      "bytes": 1493,
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-pending-shutdown/pending-shutdown-root-stopped.png",
+      "bytes": 10383,
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-pending-shutdown/result.json",
+      "bytes": 1307,
+      "sha256Bytes": "9cbe5b243edece4a00e8d9127d0ca0a53a10464f30afd84324f48e0074a2932f"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-pending-shutdown.log",
+      "bytes": 1663,
+      "sha256Bytes": "a3c95e7b563456811b904a3d7c5e2c640548422adf51c3fd5179c8227575d188"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share/result.json",
+      "bytes": 1186,
+      "sha256Bytes": "0a0d7175c1fd5a865b271512468015ef9bf6b6321e1eca652506aedac133904e"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share/share-root-actual-local-viewer.png",
+      "bytes": 57613,
+      "sha256Bytes": "f61d9030d23e9ad697e55b3417cfeee3fd9e22cca3eb0fe01a9670632b76ce08"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share/share-root-original-prompt.png",
+      "bytes": 29954,
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share/share-root-stopped.png",
+      "bytes": 10383,
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share.log",
+      "bytes": 1549,
+      "sha256Bytes": "facbe7bbdeb04eedde4b5ed2032b87bf8894722663cabcb562dc5fbc0197f05e"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-dismiss/dismiss-root-original-prompt.png",
+      "bytes": 32179,
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-dismiss/dismiss-root-stopped.png",
+      "bytes": 10667,
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-dismiss/result.json",
+      "bytes": 1133,
+      "sha256Bytes": "c7be2ef126bc12357daced10cf6049c45aed4f7d51773025cf480ec798154fc2"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-dismiss.log",
+      "bytes": 1493,
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-outside/outside-root-original-prompt.png",
+      "bytes": 32179,
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-outside/outside-root-stopped.png",
+      "bytes": 10667,
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-outside/result.json",
+      "bytes": 1133,
+      "sha256Bytes": "fd719113fe5a09d39321af72e08f9cab62d44c19df4b1f37b9a4511f0e05cf6c"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-outside.log",
+      "bytes": 1493,
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-pending-shutdown/pending-shutdown-root-stopped.png",
+      "bytes": 10667,
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-pending-shutdown/result.json",
+      "bytes": 1303,
+      "sha256Bytes": "e3d23206b349208b7ea1df29c6faec34369c823305c5483cded9ccf89ba2ed1b"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-pending-shutdown.log",
+      "bytes": 1663,
+      "sha256Bytes": "a3c95e7b563456811b904a3d7c5e2c640548422adf51c3fd5179c8227575d188"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/result.json",
+      "bytes": 1182,
+      "sha256Bytes": "afbb2e942309d9af5b3406832f8acd5fa0a0e26c69dfca321734acc9c79ef184"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/share-root-actual-local-viewer.png",
+      "bytes": 49516,
+      "sha256Bytes": "0a0458f1939d3b345b87c20761d443fb92efdc5e1cf697948a64d577c02e4ce3"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/share-root-original-prompt.png",
+      "bytes": 32179,
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/share-root-stopped.png",
+      "bytes": 10667,
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share.log",
+      "bytes": 1549,
+      "sha256Bytes": "facbe7bbdeb04eedde4b5ed2032b87bf8894722663cabcb562dc5fbc0197f05e"
+    },
+    {
+      "path": "crash-main/DiagnosticProductLifecycleFixture.kt",
+      "bytes": 19272,
+      "sha256Bytes": "b51b6d9787815d37fab7afbcb656e86eadba3057b5546fa714d65b206c5af2bf"
+    },
+    {
+      "path": "crash-main/freeze-proof.py",
+      "bytes": 6612,
+      "sha256Bytes": "5afebe378af27889b86106cf26472023fdd99678238e937c83827fc4677f0bea"
+    },
+    {
+      "path": "crash-main/proof-summary.json",
+      "bytes": 39630,
+      "sha256Bytes": "65b07a93fac6c173d776938dc3f6dd050e1732fb9df236094347021371a31cd2"
+    },
+    {
+      "path": "crash-main/README.md",
+      "bytes": 4505,
+      "sha256Bytes": "1b706321007b9c0f55bb0542c22d32a1ec1ec92515d9740cfbf2462b8ed31e20"
+    },
+    {
+      "path": "crash-main/RootCrashPromptFixture.kt",
+      "bytes": 10469,
+      "sha256Bytes": "b2cd48bd127d5797a7866e5345e26d10e4410e7d8301c4289012cb0738a7cf93"
+    },
+    {
+      "path": "crash-main/source-seam-verification.json",
+      "bytes": 18529,
+      "sha256Bytes": "6efd87641882f20c25d92b3e55f93253d66dcd363d25a5ef161dbcd523c0daa8"
+    },
+    {
+      "path": "crash-main/verify-source-seams.py",
+      "bytes": 7587,
+      "sha256Bytes": "7165ccf76616507214f287b95cb5c58bc326460c581a8a93111bc7c8a0daaa15"
+    },
+    {
+      "path": "crash-main/frozen-handoff.json",
+      "bytes": 56416,
+      "sha256Bytes": "73b48e95da34a90483e9b67c4c5e98cfcd9c74d070e964bd51715948c12ea8c8"
+    },
+    {
+      "path": "dynamic-main/compile-run-proof.json",
+      "bytes": 1297,
+      "sha256Bytes": "266e1a63be7a5875dc5683d1e66f259b98d86ee9a448c17ec62d0c04185a964d"
+    },
+    {
+      "path": "dynamic-main/compile.log",
+      "bytes": 101,
+      "sha256Bytes": "fa47b006f6da52c889f3f50b9f99f4a193bfc51b621ae15fb52a21447ef5e50a"
+    },
+    {
+      "path": "dynamic-main/dependency-identities.json",
+      "bytes": 86090,
+      "sha256Bytes": "47ffcd1c994418315c28acfd516c4c317de703d8c6555204ba176e0299012f0e"
+    },
+    {
+      "path": "dynamic-main/DynamicFixtureHelpers.kt",
+      "bytes": 2482,
+      "sha256Bytes": "0d912d2ceab4ef7ea6290c46b9882beb089b3ff6526a6c1d86430302d628bd45"
+    },
+    {
+      "path": "dynamic-main/proof/actual-product-class-identities.json",
+      "bytes": 4575,
+      "sha256Bytes": "0299509ca33980c88ab1a0e9bcdc5ff20c5858c3c73b9d04a52e627dc3e2b164"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-incremental-divider.png",
+      "bytes": 40077,
+      "sha256Bytes": "cee4e3738e75335a122990b9c3fa014704cd5c73f213d2d38379550179c53d73"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-layout-popup.png",
+      "bytes": 30863,
+      "sha256Bytes": "a0076d8696b867b991bd4842b96b87edc1ed196049f991b2f04c175ec6ff3c7a"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-list.png",
+      "bytes": 36978,
+      "sha256Bytes": "bdc5d6c7d825cb0d94c22d73217aae3c1c3abbfff9e9eb0f8f891f2b689b9344"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-replace.png",
+      "bytes": 26657,
+      "sha256Bytes": "ced4c9d5d62a6ee97d93b03ca041a8c56fff50fcc2b8b8315476813b5f943f8e"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-waterfall.png",
+      "bytes": 29282,
+      "sha256Bytes": "4cc7b4c1fe37088153f71dae26ea053144406a07229d72e9b8802d989839a134"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-800-incremental-divider.png",
+      "bytes": 37609,
+      "sha256Bytes": "f783dc500dedd1d91983d37cf125058c351a9823aaf1552f3b7047c386fd35c3"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-800-layout-popup.png",
+      "bytes": 32770,
+      "sha256Bytes": "493eb7fed3d3cc20db75cab38291ae46cb0bbbd520a8ee0d4fcad569094a00e0"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-800-list.png",
+      "bytes": 34662,
+      "sha256Bytes": "5d36c9e535fda4d5736dc17fc575cd7d74cf5dc849ca374e3ccd337c101f1acd"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-800-replace.png",
+      "bytes": 24425,
+      "sha256Bytes": "c9a19c9b6459ceba2e0b0a805461d45338b29db63d1bb72b584798b47195b7c2"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-800-waterfall.png",
+      "bytes": 31146,
+      "sha256Bytes": "e49c443539608990b0f4bcdffea6613670a3ea48beba09d159f6607554658129"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-1200-incremental-divider.png",
+      "bytes": 39237,
+      "sha256Bytes": "666c6a83d85efdba133726f1b877ff94e20acd0f7176e2029f1bd2e16ebe8b20"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-1200-layout-popup.png",
+      "bytes": 30733,
+      "sha256Bytes": "762551da62f8e7c01e1c62336607204fb2049941024ac044acec948459a57dc9"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-1200-list.png",
+      "bytes": 36299,
+      "sha256Bytes": "a203ad26eb519b366c275f149f0a9c439aace3bd4da4d75317495998b89a737b"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-1200-replace.png",
+      "bytes": 26289,
+      "sha256Bytes": "316b584fac0914879478af333b92fd9d160ebdc9277873fc35e9e3b44e709b03"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-1200-waterfall.png",
+      "bytes": 29079,
+      "sha256Bytes": "190d49501a4e8ac0baea1014c8f7270f03019b6f49defc5400deac553e1d1376"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-incremental-divider.png",
+      "bytes": 36859,
+      "sha256Bytes": "b8bc9ab91b601db13fbcb08c41a3502782ad4daf0c2a8d916db3cca5e58cd2bc"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-layout-popup.png",
+      "bytes": 32515,
+      "sha256Bytes": "83c6803ea7ce5d9866e6cf3665355a719724ab98c761565d21b18b35ca9bd21a"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-list.png",
+      "bytes": 34037,
+      "sha256Bytes": "59b94b642bead4cc06f9e78fff11cfd802005ed7cf6e71347007fabd519e47fc"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-replace.png",
+      "bytes": 24169,
+      "sha256Bytes": "633a06719150bb94e38d4f8dec08ed9db00b9c913c6c195821e47b3f272895a2"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-waterfall.png",
+      "bytes": 30799,
+      "sha256Bytes": "a2200a3c79efefa0a8e1a2a07028939dbc64b88a794304f4d05556eb48e0d0e2"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-1200-incremental-divider.png",
+      "bytes": 42627,
+      "sha256Bytes": "08aaab821bbbb1c8db6aee6fa51eb162e8d132e957968d54e9e345c7546186ae"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-1200-layout-popup.png",
+      "bytes": 30523,
+      "sha256Bytes": "4eda5ba9c328173fc4c3cffe4eaa6696654a579a790099e5b14c44c6553529a4"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-1200-list.png",
+      "bytes": 39037,
+      "sha256Bytes": "3849a9f41f234ccc4c7071f0b56ece010b505cbb7354b9c2477da548a1f89903"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-1200-replace.png",
+      "bytes": 27387,
+      "sha256Bytes": "936535a140d61c64187c8292d819ac8bcf25a1ef86ce015c9705c753619bfe3b"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-1200-waterfall.png",
+      "bytes": 30129,
+      "sha256Bytes": "e78d3ae5a3d7ef87fcc304a9201efc4450f5f234425df4aa34a6d87f512fbdeb"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-incremental-divider.png",
+      "bytes": 40189,
+      "sha256Bytes": "f873ff620eaaea87aea789dbe64d7fe2fcc240f5572695f2604b9a46d0991000"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-layout-popup.png",
+      "bytes": 32702,
+      "sha256Bytes": "b461e057807269324b2da94988fecbd1d7970322b268f47db149bd6027805ba6"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-list.png",
+      "bytes": 36649,
+      "sha256Bytes": "afd78696e2d4cc9ea25cf24ef32b784c788cd8558dc8e8138b6d6cf1be996e8a"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-replace.png",
+      "bytes": 25312,
+      "sha256Bytes": "2220ba049132ad36e7a4c63a56f22a1a8d163d47a078c6535e7a4281bb200259"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-waterfall.png",
+      "bytes": 32725,
+      "sha256Bytes": "509b8ef82ed00570bee07c656a0fc6154e8e6c09c41c6e40a2ae97baec066c21"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-incremental-divider.png",
+      "bytes": 41188,
+      "sha256Bytes": "bf7c965cdbfce2f9b4550c33dee2a256abb2354dbda54251876dcfa3bd4a467b"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-layout-popup.png",
+      "bytes": 31098,
+      "sha256Bytes": "e0a477ea48ecc2be342f1611d4871e3be6e7e3efdb5acaea7beb2984ea8bd9fb"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-list.png",
+      "bytes": 37904,
+      "sha256Bytes": "efda891f0ba94492695cebeb152f1ffb06dcb9124c06413d0608132a014d7aaf"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-replace.png",
+      "bytes": 26734,
+      "sha256Bytes": "10d00d969f38ee60316a5c281918952d0486812fcf7671dd5480cabdd64bc9a1"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-waterfall.png",
+      "bytes": 29369,
+      "sha256Bytes": "b93c48f1acb2ec9816ecf60148d0830adcfc5007a1b436b5202d00e9fee9ec48"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-800-incremental-divider.png",
+      "bytes": 38870,
+      "sha256Bytes": "0c8da5817e500cf6b7b622e7430cb88e9224309772fff7b119d60ee76dc2b732"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-800-layout-popup.png",
+      "bytes": 33380,
+      "sha256Bytes": "7f47dccb95dee2750d470d94fa487ef60388443413856bc569f4e08476fa6085"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-800-list.png",
+      "bytes": 35682,
+      "sha256Bytes": "2f90f04d7234467d8be258c11b7f5162fd99a274e91da171387b23c9214bdc3a"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-800-replace.png",
+      "bytes": 24688,
+      "sha256Bytes": "65763a213178ba6b17ffbb11fbf70a94b69dcb119fc65d868d6278b090e24403"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-800-waterfall.png",
+      "bytes": 31793,
+      "sha256Bytes": "be7d8fa75db7958ab2a23548c809e713ae8dabf136c2761949295ba986531dc6"
+    },
+    {
+      "path": "dynamic-main/proof/transport-result.json",
+      "bytes": 1213,
+      "sha256Bytes": "8fbbc2c95abf4dee469950d3bc1972809cc9f881b38f2fd9f32e2d3bf4901c00"
+    },
+    {
+      "path": "dynamic-main/proof/ui-result.json",
+      "bytes": 3221,
+      "sha256Bytes": "da49a25a47fe36f56b71ebb5f794cfc1e73fb3b95992aaacfe0db82f6ebe74c0"
+    },
+    {
+      "path": "dynamic-main/transport.log",
+      "bytes": 273,
+      "sha256Bytes": "9b8fb91eda5b0facb470ab7927562e6f37baf5b8b6e6019d6b34388d09acf703"
+    },
+    {
+      "path": "dynamic-main/TransportFixture.kt",
+      "bytes": 5128,
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "dynamic-main/ui.log",
+      "bytes": 1125,
+      "sha256Bytes": "71ffff4b3bb9f11e0dc69a96c862ba6314e27b39778b2dc2663f4723b046dccf"
+    },
+    {
+      "path": "dynamic-main/UiFixture.kt",
+      "bytes": 9440,
+      "sha256Bytes": "41c49a90a91f07951ca381f37c9f14a51c20ae3c961db01b16ed55a9e8929f8c"
+    },
+    {
+      "path": "dynamic-main/artifact-manifest.json",
+      "bytes": 12678,
+      "sha256Bytes": "15c95218ddab66eb0435dc4c89dd76dcdc746b1a06385f92efa21bf8d9a0d5ad"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/compile.log",
+      "bytes": 1084,
+      "sha256Bytes": "71d04d775d3d84c7d7a779aea9ca0936ff285b97481f06f599255734c6e8702b"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/DynamicFixtureHelpers.kt",
+      "bytes": 2482,
+      "sha256Bytes": "0d912d2ceab4ef7ea6290c46b9882beb089b3ff6526a6c1d86430302d628bd45"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/README.md",
+      "bytes": 251,
+      "sha256Bytes": "2bc94747d7eb6f39a8999b1f298b6487be8183176d0876032abde3fca606e312"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/TransportFixture.kt",
+      "bytes": 5128,
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/UiFixture.kt",
+      "bytes": 9428,
+      "sha256Bytes": "ce0fe1947174f9e4db7c6957ba67dc56a391bbef38da8834d01c8398cef0fee8"
+    },
+    {
+      "path": "dynamic-fixture-compile-failed/artifact-manifest.json",
+      "bytes": 992,
+      "sha256Bytes": "26b3e62ba2f6c3f85ca256077389c1938cfa8da85236dcf6412ca0c2c089216b"
+    },
+    {
+      "path": "root/compiled-product-snapshot.json",
+      "bytes": 10555,
+      "sha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345"
+    },
+    {
+      "path": "root/crash_prompt-sources.log",
+      "bytes": 664,
+      "sha256Bytes": "7fe889ab50259a0f3fb995e1084f4fffb00a2bcab23e797221a5fdd017e3c00c"
+    },
+    {
+      "path": "root/current-source-identities.json",
+      "bytes": 8007,
+      "sha256Bytes": "17fde1cfb8a7b36a223aeab94657d018499831dc22d2d05dc46bcc7644d0e6fb"
+    },
+    {
+      "path": "root/dynamic_timeline-sources.log",
+      "bytes": 929,
+      "sha256Bytes": "5c22aea1407f56c2bf3bfa0b3cea7c632252001d14e5f76c8a79e3a4269e0e91"
+    },
+    {
+      "path": "root/inventory-after-order-normalization.json",
+      "bytes": 177186,
+      "sha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca"
+    },
+    {
+      "path": "root/inventory-before-order-normalization.json",
+      "bytes": 177186,
+      "sha256Bytes": "b6193e483d8f9d96c7967ddea48ead45dbbaaf4c2f5086f8fd0360bfbc05acb7"
+    },
+    {
+      "path": "root/inventory-order-normalization.json",
+      "bytes": 599,
+      "sha256Bytes": "3fa83ddc29bfb9fc769dfb4f6dca8895a4440a9038f05a9eb3cdce798f8b7b5b"
+    },
+    {
+      "path": "root/root-verification.json",
+      "bytes": 463,
+      "sha256Bytes": "c9434a2a23bb5c33a07c7dc3e7966118566c79b1fc397595d152e403781ed601"
+    },
+    {
+      "path": "root/source-audit.json",
+      "bytes": 65185,
+      "sha256Bytes": "971274d099f51f875d1d9de2c352591aaa916f60530804013ea0f634ebc4d0c8"
+    },
+    {
+      "path": "root/source-audit.log",
+      "bytes": 761,
+      "sha256Bytes": "921adfa9d8999d84ca64652814125d37314d64d2880a024bbe54f7a6a96e308d"
+    },
+    {
+      "path": "root/TEST-com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest.xml",
+      "bytes": 2528,
+      "sha256Bytes": "e03f7dd62ae845c5a614827be7994753ad9d72799cc7003c6b9fcc74cf0d4502"
+    },
+    {
+      "path": "root/artifact-manifest.json",
+      "bytes": 1954,
+      "sha256Bytes": "43361f64bcde872d7ff853ac373ce85a283d901e22e894454d340edbc4baec16"
+    }
+  ],
+  "classesJarsNativeDumpAndTaskOwnedAccountSettingsExcluded": true,
+  "fixtureOnlyCompileFailureRetained": true,
+  "noNewDesktopDeployment": true
+}

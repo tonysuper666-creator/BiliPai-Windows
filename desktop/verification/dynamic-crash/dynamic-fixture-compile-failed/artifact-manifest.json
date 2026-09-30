@@ -1,0 +1,36 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "compile.log",
+      "bytes": 1084,
+      "sha256Bytes": "71d04d775d3d84c7d7a779aea9ca0936ff285b97481f06f599255734c6e8702b"
+    },
+    {
+      "path": "compiler.args",
+      "bytes": 59471,
+      "sha256Bytes": "66535299a0f3b348eda92de213d55d2058719ba51430395d67c418f3bb79bc1c"
+    },
+    {
+      "path": "DynamicFixtureHelpers.kt",
+      "bytes": 2482,
+      "sha256Bytes": "0d912d2ceab4ef7ea6290c46b9882beb089b3ff6526a6c1d86430302d628bd45"
+    },
+    {
+      "path": "README.md",
+      "bytes": 251,
+      "sha256Bytes": "2bc94747d7eb6f39a8999b1f298b6487be8183176d0876032abde3fca606e312"
+    },
+    {
+      "path": "TransportFixture.kt",
+      "bytes": 5128,
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "UiFixture.kt",
+      "bytes": 9428,
+      "sha256Bytes": "ce0fe1947174f9e4db7c6957ba67dc56a391bbef38da8834d01c8398cef0fee8"
+    }
+  ],
+  "artifactCount": 6
+}

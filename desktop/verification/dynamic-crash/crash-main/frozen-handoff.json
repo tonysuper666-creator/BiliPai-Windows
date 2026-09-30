@@ -1,0 +1,1294 @@
+{
+  "frozen": true,
+  "currentProductProof": true,
+  "artifactCount": 251,
+  "artifacts": [
+    {
+      "path": "compile-run-product.py",
+      "sha256Bytes": "e6f119a87e75ca733fef8576ed2e69b988c22edb2177e103d811906c4bc3f1ee",
+      "sizeBytes": 6858
+    },
+    {
+      "path": "CrashPromptFixture.kt",
+      "sha256Bytes": "c04bc86ec8b8bc7845499eeeb6e0a713e51b39f31fc631f4bd52e8b50449ddcb",
+      "sizeBytes": 13178
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$4.class",
+      "sha256Bytes": "92fe1ddd22410289b4e1112e9eacaacf186a4a3f00e1da9aea5e6f8a222453fc",
+      "sizeBytes": 3548
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$operation$1.class",
+      "sha256Bytes": "14735152d77f884222b52d4c89bae6755fd5a64d1270461f32189535f9e929d4",
+      "sizeBytes": 3822
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2$shutdown$1.class",
+      "sha256Bytes": "59abc6984a63190a5c19c05f8c7af7725eca8a05f3a34b99947194193e3f30a1",
+      "sizeBytes": 3469
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$disk$2.class",
+      "sha256Bytes": "614b5bfadf732419f41d84673fcd6f44186568ef457b3064b4955bd4b4870621",
+      "sizeBytes": 28966
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$main$1.class",
+      "sha256Bytes": "d4b9687c8dd9427475d6bd72745129a84880a3ec9c9493afa20ba3593f6fad8f",
+      "sizeBytes": 10539
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$populate$1.class",
+      "sha256Bytes": "5bb2717cb1ab7a8ea9d920fdf5156301633b48c9612b873ea9c007a7ca737e5f",
+      "sizeBytes": 1725
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$ui$1.class",
+      "sha256Bytes": "f10995da038a83e968e611a8b78dfd17125d2aa733db413e8b26bbe7bad0302f",
+      "sizeBytes": 5255
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$ui$2$1$1$1.class",
+      "sha256Bytes": "46e87ce5460b9cd256dfd4ef177ab4a760b0b6028ba7acaca5c1a597e955b42b",
+      "sizeBytes": 3199
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$waitFor$1.class",
+      "sha256Bytes": "21ab458ffdb3ab3451b4238c5b0684ccda968b3924849cbb7472da93dfa549fa",
+      "sizeBytes": 1726
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt$waitFor$2.class",
+      "sha256Bytes": "1f60124f9f1e3c78cc2e63556627096b529f7d2d3c5e1fda6f2afd77bcf2782c",
+      "sizeBytes": 3626
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/CrashPromptFixtureKt.class",
+      "sha256Bytes": "31fc69c1400b9f4906fe10d458c95cf8b50a1c9f83ffe29e8e257c63941a1c30",
+      "sizeBytes": 39450
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Fence.class",
+      "sha256Bytes": "f43678d571e0965ce3908572c1e502b283acfda02ba99117bce8e7fb19d68b6e",
+      "sizeBytes": 2309
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$png$1.class",
+      "sha256Bytes": "52b98ab102205de5d022094e1fc3e5ca17f434fd92f45dfe18b0d3506da4e10b",
+      "sizeBytes": 1842
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$pointer$1.class",
+      "sha256Bytes": "52596bac2dcd7c573ade6e455ba522de9a45fccde168667b893e1f1dedd54d9e",
+      "sizeBytes": 1852
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$wait$1.class",
+      "sha256Bytes": "ff622c57a010e4f4b1385b382b5babd7059b3c94d8be60a5331f737adfd617a1",
+      "sizeBytes": 1939
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Scene$wait$2.class",
+      "sha256Bytes": "c20931a8a87b534eab3b283ee7a4607072cc43216d694fa61cd91aee6e83bf25",
+      "sizeBytes": 3706
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/crashproof/Scene.class",
+      "sha256Bytes": "ab31241d4e4fb3ac0c7982c5f8a12b2f0f5528b950240ddfb0f2c41bdb315d32",
+      "sizeBytes": 15804
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2$3.class",
+      "sha256Bytes": "14a707f3ead9aa97bd0ff6ae6a02a88ec090803b84d42ba56d52f0e96037e7c5",
+      "sizeBytes": 3502
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2$4.class",
+      "sha256Bytes": "2401c88f36e88fff047206018f2c814033e15cddb57b85d99ae3d4846d5923a0",
+      "sizeBytes": 3536
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2$6.class",
+      "sha256Bytes": "04f159b2111540a24d994b7a321e4a25d85b9fce38834c8a5b5979695f287c7b",
+      "sizeBytes": 3834
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2$7.class",
+      "sha256Bytes": "f50ad21c3ec8b99bcf8af5f1485adfa3c0b7c89a427d6a8b35c84e2d742a36cf",
+      "sizeBytes": 3743
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2$8.class",
+      "sha256Bytes": "611c20515f09ae5800a00a7364766e2a32b786dec3f92a7d81ba3d254366025c",
+      "sizeBytes": 3684
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$acceptedWriter$2.class",
+      "sha256Bytes": "f321506da51d559318da3894391fd9a64f09dd761d96e6633f92f54b5db211ee",
+      "sizeBytes": 24533
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$hookFailure$1.class",
+      "sha256Bytes": "40cb4db88f6f4d2426d632e199b6ce911bb04fbbf6b59da91b8611de6a51f7fa",
+      "sizeBytes": 2204
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$main$1.class",
+      "sha256Bytes": "f195f3c52f15376ff8387ed259f442050bf08c346cdb13f02ea990a3cdbaf913",
+      "sizeBytes": 13191
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$observers$1.class",
+      "sha256Bytes": "d52be116c745f73031400fa4d7289c13444d674b3f5145031ea465b49b020452",
+      "sizeBytes": 2318
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$rootStartupUi$1.class",
+      "sha256Bytes": "beec63a5d2eaa5699373ea0987e885fe1243e45e88e58b00b612bd9580001292",
+      "sizeBytes": 3992
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$1.class",
+      "sha256Bytes": "90230e64930da93973ec1b5aaf8ccb725346dffdd6578c58b11de6274a329add",
+      "sizeBytes": 1881
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$2$1.class",
+      "sha256Bytes": "77587cbd04352499db866a6e69ba39e7a45b4ad874405a4bde97b35305b968e8",
+      "sizeBytes": 3324
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$2.class",
+      "sha256Bytes": "c404050b472a03badfb7afe1e8729f08b5390caff2b678f41f5d20f020b70087",
+      "sizeBytes": 5033
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$runtime$runtime$1.class",
+      "sha256Bytes": "dce0774d18bab2f07d65b6cb9b87da04daae4759b6cd72fa82e8be589a76e3d7",
+      "sizeBytes": 4200
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$startup$1.class",
+      "sha256Bytes": "a71faac91ce3eab3ca7a16d396eb2b8b0635018a73e433d16c72ff564dad0792",
+      "sizeBytes": 2235
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$waitFor$1.class",
+      "sha256Bytes": "bdbe4666a1d31a07f250d438ad153c38bef1843f7fb4ee776b2b33b22b2684f0",
+      "sizeBytes": 1791
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt$waitFor$2.class",
+      "sha256Bytes": "a04c2fb14c16590ffda59dd8a8c9631437e847f09f5733a42b087adb1d7bf72c",
+      "sizeBytes": 3691
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/DiagnosticProductLifecycleFixtureKt.class",
+      "sha256Bytes": "6f00d55398e67ebb27a055fb9a6973cfa3c002399fdd29ec3e131933de997faf",
+      "sizeBytes": 52209
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/OfflineFence.class",
+      "sha256Bytes": "b8ea739922e55b645901e6f6b0b7254c99b30685966f8af1ba63c822ee532e69",
+      "sizeBytes": 3162
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$click$1.class",
+      "sha256Bytes": "c8724a7bb89d3183b93e4c3034863e617b3a71f683898dd8f5c044bf9b7783f9",
+      "sizeBytes": 1884
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$png$1.class",
+      "sha256Bytes": "93b739750c646a1b105c591eeff3ac5c04dd7066e352110ba899f4ab2282ca06",
+      "sizeBytes": 1849
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$wait$1.class",
+      "sha256Bytes": "f15243f33a6097e8f050ec547a5121e5f58a11ebf61c6bbc4931c3265bdc6a55",
+      "sizeBytes": 1946
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene$wait$2.class",
+      "sha256Bytes": "a8d496c228f3edbcf1fcaac48febdf956cb3471eaaf2f75a616ba96e98fc5f87",
+      "sizeBytes": 3713
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/RootScene.class",
+      "sha256Bytes": "acb1e6c06fa256be6a32317c19db3d9f905df31e55de2daa469c7281da540c61",
+      "sizeBytes": 15849
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TrackedState$collect$1.class",
+      "sha256Bytes": "10bebdd0f046148740cccb84e72b1df2d880122a11b7b17c91651e5918ae085d",
+      "sizeBytes": 1862
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TrackedState.class",
+      "sha256Bytes": "9c09305ce3a90a37950ad65db59e537b5013a3300786915745f4aea5aac8c311",
+      "sizeBytes": 5005
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$entered$2.class",
+      "sha256Bytes": "aef6a4d33919fdd4e3291d7c9bc93339df4607078a6bf32fcfe10bdbe199b2f9",
+      "sizeBytes": 3629
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$joined$1.class",
+      "sha256Bytes": "f3ca42ad9295b806ffa76991a4ebd3a3669ddc3ff0348c0e1d9c5ad46631c582",
+      "sizeBytes": 1783
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers$joined$2.class",
+      "sha256Bytes": "77cc420a1d9a8dd67cdd1c8312c9099f329d00b047834e85f4beda20c058934d",
+      "sizeBytes": 5547
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/proof/TwoObservers.class",
+      "sha256Bytes": "130895c4d6cf64eef98c120e35ec6d1b69804aeef746ed4dd83895375af1bb98",
+      "sizeBytes": 7962
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Fence.class",
+      "sha256Bytes": "eb98f9426b35ed28407bf73b606c06b64817d69802b2654a49dd157cd358dcda",
+      "sizeBytes": 2412
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/RootCrashPromptFixtureKt$main$1$6.class",
+      "sha256Bytes": "da75a3e03c847ce0caa9e254cc793d71f0076440ae89398523e6ad1ae13c9d21",
+      "sizeBytes": 3403
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/RootCrashPromptFixtureKt$main$1$task$1.class",
+      "sha256Bytes": "e8a3bd00a972509c412d0d85c6b30777c36e0d8779521fa94532e647a681c6d2",
+      "sizeBytes": 3738
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/RootCrashPromptFixtureKt$main$1.class",
+      "sha256Bytes": "0479f97ac5960f31ad0a8544d96948addfa911c36e598fd0f6d36435dcb63460",
+      "sizeBytes": 57982
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/RootCrashPromptFixtureKt.class",
+      "sha256Bytes": "bdf4fe113a3b1d43cf82b38c22f10bc91ba8e220b410b877caa02a1d4470a541",
+      "sizeBytes": 4743
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Scene$png$1.class",
+      "sha256Bytes": "9891b43e9160f1e19f3c7c8a2a25d84d10148d81176c11afa246665b57f4fdcd",
+      "sizeBytes": 1878
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Scene$pointer$1.class",
+      "sha256Bytes": "9c82ecb87a050c4df80fd80a36914d6c52c637196f183674cc14af91afa6ea53",
+      "sizeBytes": 1888
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Scene$wait$1.class",
+      "sha256Bytes": "5cb9fb3a70a4b5016b2fe01d165a6ad3887353b471869f6f923079d1e4ecfea4",
+      "sizeBytes": 1975
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Scene$wait$2.class",
+      "sha256Bytes": "c41cd6fb54e8b69324e3d7c5623faa54e7c77a64f50879cc3c8739f03592e146",
+      "sizeBytes": 3742
+    },
+    {
+      "path": "current-product-1/classes/com/bilipai/desktop/diagnostics/rootcrashproof/Scene.class",
+      "sha256Bytes": "32d221f701f3e79f0f3335db32a9736d99973d2f98d7e4ee9404fa8c556b4fb7",
+      "sizeBytes": 15887
+    },
+    {
+      "path": "current-product-1/classes/META-INF/com.bilipai.desktop_bilipai-windows.kotlin_module",
+      "sha256Bytes": "950fe635a0fbcad90bdf7676d1633dc041508f8e0381d27b5fb8675f8cf0b7cd",
+      "sizeBytes": 246
+    },
+    {
+      "path": "current-product-1/compile-evidence.json",
+      "sha256Bytes": "d48b5b2ab441782a9f81217cfee00e684e28b78f0d9961680ac101df3121e871",
+      "sizeBytes": 10626
+    },
+    {
+      "path": "current-product-1/compile.log",
+      "sha256Bytes": "eeadb17b319103144abb15577835cb11c1e77b9812311c020120a7f0af49c2a0",
+      "sizeBytes": 1511
+    },
+    {
+      "path": "current-product-1/compiler.args",
+      "sha256Bytes": "319c7b1d6a5fb2a6ceaba1117bc6533ec42afda05309dfcf7e5cabff0f59ef86",
+      "sizeBytes": 59535
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/clear-failure/logs/basic.log",
+      "sha256Bytes": "cfceabe413fc022855c8c0b1c739601f372405cea6cc68167e093462afae5941",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/clear-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "a168cb6087e1857ef37bcf9ef2723d8930dc63f2ece7504c9c1d546522b69398",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/DISMISS/logs/basic.log",
+      "sha256Bytes": "fbf8b0c957aaf480145aa7552f7936b4b1724c84d0e18e76e755a5c2444bb9c2",
+      "sizeBytes": 162
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/DISMISS/logs/last_crash_log.txt",
+      "sha256Bytes": "4cbc0c2a8f3334067b8ab26cf1029f8f6ed51bcd1ef882650c2554940bc8ee0f",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/IGNORE/logs/basic.log",
+      "sha256Bytes": "5df7a9897ec49efa3e62b71b45a6ca4305051b21abc23abcd8e8d47cb20ad373",
+      "sizeBytes": 162
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/IGNORE/logs/last_crash_log.txt",
+      "sha256Bytes": "eb779cc4ef00b6cd07703746886faad46966b1efb7339deea66581215fc73eda",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/IGNORE/logs/pending_crash.marker",
+      "sha256Bytes": "b0164013cbb74e90b0aad247b871b18e005abe9b157a702cb11386a74005d871",
+      "sizeBytes": 13
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-read/logs/basic.log",
+      "sha256Bytes": "67d93259b43cdfde7182d8fca0d23f0c39ec0aca06bc0e350a58f09cbe6a5b28",
+      "sizeBytes": 155
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-read/logs/last_crash_log.txt",
+      "sha256Bytes": "820d4f82cc0c599175a0d9a5a7cac97ea969839a0b223b505723a91aa04ab4ce",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-read/logs/pending_crash.marker",
+      "sha256Bytes": "064aa975671f009354a37d5871c6d10555ae7678f83d9c7b67cf054eb86c5d89",
+      "sizeBytes": 13
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-share/logs/basic.log",
+      "sha256Bytes": "c5a2c4d325dab979014ac6984fe8e53cc327ba4cc3ef3de847697d64ddafda54",
+      "sizeBytes": 155
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-share/logs/last_crash_log.txt",
+      "sha256Bytes": "cdef4e14fd2008d37a088ab90fe03d411a5b94db137e8eb78f57d6a5eec4ebff",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/late-share/logs/pending_crash.marker",
+      "sha256Bytes": "6c028accb1c3a335d159f6a1a1a4ed9c2ee7026511d11b5a482cd15ad46b691f",
+      "sizeBytes": 13
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/SHARE/logs/basic.log",
+      "sha256Bytes": "afde82be6cd9fcc3574d65cd819271cefe499db2a0ea3364a7e0027ad9885655",
+      "sizeBytes": 162
+    },
+    {
+      "path": "current-product-1/crash-disk/actual-task-storage/SHARE/logs/last_crash_log.txt",
+      "sha256Bytes": "64a8f3dda7e43dca2420571da10d10bc6745feaccc892f9e06f729686b6d7b3d",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-disk/result.json",
+      "sha256Bytes": "7f0f1c222d9aefe2d4dfed9712c387a37548871fdf24003320d14ac4dd0fca84",
+      "sizeBytes": 2678
+    },
+    {
+      "path": "current-product-1/crash-disk.args",
+      "sha256Bytes": "6c23a321de4f360f65efb549b78bffd780eabb3fb253ce1327ff725e23c8ee9f",
+      "sizeBytes": 57183
+    },
+    {
+      "path": "current-product-1/crash-disk.log",
+      "sha256Bytes": "e1add413a0c991b54e3d1c47331dd973aac6d2df4d849b95c8f1e861b7d7251a",
+      "sizeBytes": 3285
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/dismiss/logs/basic.log",
+      "sha256Bytes": "a1b05f35d34cb3ac226b81befd10d699bfd51b544fb3ac7e8b9f07e10f2fac52",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/dismiss/logs/last_crash_log.txt",
+      "sha256Bytes": "8b3d2f444b7628afe8bf3b53b85517b3ad58a13117c6b70d7566daf8b6077447",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/dismiss/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/outside/logs/basic.log",
+      "sha256Bytes": "a4df27f03cba7818e09bb9330bca9605ebd2d759dd90cdb43b54f32613d3eea3",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/outside/logs/last_crash_log.txt",
+      "sha256Bytes": "1581c83bb3b5da83d2dcae570c8753514f01dd1a8a9f3578219a70b8f4a190f8",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/outside/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/read-failure/logs/basic.log",
+      "sha256Bytes": "3a01162219b05f0d8bb2ac650909ea21ef0d8b2f27e6c2bc695c4fcba3723d77",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/read-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "6b511a0994d173ef0d9e662737ee0cf736106c995fded2e9a580872c25cc857b",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/read-failure/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/share/explicit-fixture-export.txt",
+      "sha256Bytes": "7355e78d0b3b871a7abe69903aa9f085db5cfef6b086e32f420b57dddd28d930",
+      "sizeBytes": 2010
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/share/logs/basic.log",
+      "sha256Bytes": "2cfb17a5e5898460dd48e497cb7a445338f84c8ad56bdcedac7c64083cd01738",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/share/logs/last_crash_log.txt",
+      "sha256Bytes": "fc823647872d55a6faeab0c50ee85472bc75e873a6752786f78015ecdecf0e89",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-material3/actual-task-storage/share/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/crash-material3/material3-actual-viewer-export.png",
+      "sha256Bytes": "e8bd6a483dc68154f096d5bdca2e4e2195a266e7dc4a347720d415a6498021ab",
+      "sizeBytes": 48524
+    },
+    {
+      "path": "current-product-1/crash-material3/material3-dismiss-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "current-product-1/crash-material3/material3-outside-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "current-product-1/crash-material3/material3-safe-read-failure.png",
+      "sha256Bytes": "ec99a5ec7f31545cb350f6e7df9b17d50fa04e9a2f5faaafc2fb510a73ef1830",
+      "sizeBytes": 13702
+    },
+    {
+      "path": "current-product-1/crash-material3/material3-share-prompt.png",
+      "sha256Bytes": "6a88eb4ec6394102852af315a485c61fb50db779a41dd93c39526058c67a4f71",
+      "sizeBytes": 20433
+    },
+    {
+      "path": "current-product-1/crash-material3/result.json",
+      "sha256Bytes": "29a1f901bcde70c9e8fff5ae73e7d1f58ef25270c552a6be1725150eeeed3be3",
+      "sizeBytes": 1647
+    },
+    {
+      "path": "current-product-1/crash-material3.args",
+      "sha256Bytes": "1392f5022ea9d51325d85f4d2bc1a3ccbf755d6aac21abce2eed481367e2d10c",
+      "sizeBytes": 57193
+    },
+    {
+      "path": "current-product-1/crash-material3.log",
+      "sha256Bytes": "41eb51a9a2645bea99c50142e96a5df9a375878fb2029357e257e6a08d87f65f",
+      "sizeBytes": 2144
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/dismiss/logs/basic.log",
+      "sha256Bytes": "baea7efe79251465eeb9684ae0a7367b1ac96fb6786b51f519b1393c9a6ee1b4",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/dismiss/logs/last_crash_log.txt",
+      "sha256Bytes": "c1ed3863f9cc741510929954b5909cd2418bd9673bbac2f33c2894b86d949a90",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/dismiss/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/outside/logs/basic.log",
+      "sha256Bytes": "b52c882837e6865679e96bd2437e9ec9808151a4267cd5eb287fbcb47244e005",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/outside/logs/last_crash_log.txt",
+      "sha256Bytes": "a45953bb14a414d741bdee8cd5d12f9d466bb142735b2b33ac47c2df8dc4dd8a",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/outside/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/read-failure/logs/basic.log",
+      "sha256Bytes": "858b6df9059be7ef58c23e255c9485e1441cabe5aec3c58da1df3f01fc499fd9",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/read-failure/logs/last_crash_log.txt",
+      "sha256Bytes": "5ba357eb206dcf58e2bbd7056645513efbfb26a2d8f200e436ca13dbc4cdff13",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/read-failure/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/share/explicit-fixture-export.txt",
+      "sha256Bytes": "9eb0450cdad507e98d2b87ab3b32730d4700713a3745133ae24b8e2d664001b8",
+      "sizeBytes": 2010
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/share/logs/basic.log",
+      "sha256Bytes": "c58e88a9567726c1fc4899f00fc6d70c0215c12378f89eac3dbd4a8b814ae5b5",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/share/logs/last_crash_log.txt",
+      "sha256Bytes": "1895e751a550a7418bd0b72e2718296ae229863258688d9aa6839fe648c242d7",
+      "sizeBytes": 1641
+    },
+    {
+      "path": "current-product-1/crash-miuix/actual-task-storage/share/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/crash-miuix/miuix-actual-viewer-export.png",
+      "sha256Bytes": "2fc30ee48eac3e16d3edff23e44126fbdedff8b935cfed92636ab4c04c09394f",
+      "sizeBytes": 42389
+    },
+    {
+      "path": "current-product-1/crash-miuix/miuix-dismiss-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "current-product-1/crash-miuix/miuix-outside-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "current-product-1/crash-miuix/miuix-safe-read-failure.png",
+      "sha256Bytes": "b0935f7b6606fd45affbe3b25d8caca2d79badd375225076a4d196be8a694fb6",
+      "sizeBytes": 13181
+    },
+    {
+      "path": "current-product-1/crash-miuix/miuix-share-prompt.png",
+      "sha256Bytes": "bf0450605b445756b2e3e3102cd3542e38c4c50acedeef020d855ec00345dae7",
+      "sizeBytes": 22175
+    },
+    {
+      "path": "current-product-1/crash-miuix/result.json",
+      "sha256Bytes": "fc79be3164db178901af9e3f4f8bd08efa195f03c2546f9fb539ff6c1aaf33b6",
+      "sizeBytes": 1611
+    },
+    {
+      "path": "current-product-1/crash-miuix.args",
+      "sha256Bytes": "49d42353e6dfc4caee46c651feef4ad67c426e944fb2594b681127b208f6f966",
+      "sizeBytes": 57185
+    },
+    {
+      "path": "current-product-1/crash-miuix.log",
+      "sha256Bytes": "3aa9e7499f85ee2b12b7b7fa59d01f31c4de32522b6fbc2c37813688d7d16b03",
+      "sizeBytes": 2112
+    },
+    {
+      "path": "current-product-1/dependency-identities.json",
+      "sha256Bytes": "9c9201834baf8900168c6783b6e248e56b7e17cd0a1accca0bc59dd9ed35d53e",
+      "sizeBytes": 85884
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "e9b345564820e680ccfab085283902548212e941c02427eae51bc25ea83192da",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer/actual-task-storage/logs/runtime.log",
+      "sha256Bytes": "c6b66bedcc55fb179cfb36c004ad9035e09cfbec98cf3c378b45e7b9c7167e15",
+      "sizeBytes": 260
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "2da46e48bb2e51f6d6404f7e8b4086192390c8365b2479d4f25ba456321489cb",
+      "sizeBytes": 258
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer/result.json",
+      "sha256Bytes": "6f70c1377bfba1155c12b80fedb8b6956dca1433874a56067b80c9a2373ef68d",
+      "sizeBytes": 1160
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer.args",
+      "sha256Bytes": "33f8a9164e023275aed15f88a657afdfd5be21a5e7c6773d05ffb1f79a5ead89",
+      "sizeBytes": 57219
+    },
+    {
+      "path": "current-product-1/lifecycle-accepted-writer.log",
+      "sha256Bytes": "3ddb49be6326116789090054b9eb732a259b9458fbd965989cb7b47ff37d3319",
+      "sizeBytes": 1519
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "5b011dd8c388ad10eccbfe47d8a9dce613a533c8ceaaa74cdcd8712978620167",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass/actual-task-storage/logs/runtime.log",
+      "sha256Bytes": "469c7f8894b7c706d1b780c67463653525226f444d7617cbbfef4d7f00174e04",
+      "sizeBytes": 260
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "2da46e48bb2e51f6d6404f7e8b4086192390c8365b2479d4f25ba456321489cb",
+      "sizeBytes": 258
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass/result.json",
+      "sha256Bytes": "565be8af0d8bf015352aadae68a02b54990f48d3dfe36e49b6466570711e0899",
+      "sizeBytes": 1157
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass.args",
+      "sha256Bytes": "77f310edd1dbf76926ba2a5157ef5c70eb6a8fde8a697be424876501d9fd07a0",
+      "sizeBytes": 57213
+    },
+    {
+      "path": "current-product-1/lifecycle-close-bypass.log",
+      "sha256Bytes": "3ddb49be6326116789090054b9eb732a259b9458fbd965989cb7b47ff37d3319",
+      "sizeBytes": 1519
+    },
+    {
+      "path": "current-product-1/lifecycle-hook-failure/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "db9ce1ac059f8c6013f06a63a6e6acd70181971432fa61bff091da3d120d40f4",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/lifecycle-hook-failure/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "502bac08b6f4409f0247db3fe1b58e4bebac54fcc2bbd70971cf31c2ab18d7ca",
+      "sizeBytes": 186
+    },
+    {
+      "path": "current-product-1/lifecycle-hook-failure/result.json",
+      "sha256Bytes": "b74950653f4534b613c3ec07982a3a577054ca86c866ff35c6d3248e25aae5b0",
+      "sizeBytes": 777
+    },
+    {
+      "path": "current-product-1/lifecycle-hook-failure.args",
+      "sha256Bytes": "42e123d371e14a0933e4dfd325eaee3bc5df54dbadc213757084745259c7de9c",
+      "sizeBytes": 57213
+    },
+    {
+      "path": "current-product-1/lifecycle-hook-failure.log",
+      "sha256Bytes": "23c429d6c02630dc80bc8638414e0c816b16c9df2a117381232561cadb9df71a",
+      "sizeBytes": 1115
+    },
+    {
+      "path": "current-product-1/lifecycle-observers/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "4742d526cf952cde100d5bdca1df17f784ff68e8156a608ab8630c2ae745be1b",
+      "sizeBytes": 99
+    },
+    {
+      "path": "current-product-1/lifecycle-observers/actual-task-storage/logs/runtime.log",
+      "sha256Bytes": "6b80a4dc1f51be0a9f20fc8bf103246bb26fac5b865c63e15c5a22d26dca0085",
+      "sizeBytes": 776
+    },
+    {
+      "path": "current-product-1/lifecycle-observers/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "94a99cec1988485a6e0ffe5f14159b839a2541c9b8562394c1dade98cdd9a711",
+      "sizeBytes": 195
+    },
+    {
+      "path": "current-product-1/lifecycle-observers/result.json",
+      "sha256Bytes": "1aec38bd712d818eba488bdb169cb7e3e737e4f581f00df69b4ee7d27e730941",
+      "sizeBytes": 827
+    },
+    {
+      "path": "current-product-1/lifecycle-observers.args",
+      "sha256Bytes": "a57fa1a5516f3e21a43c2e2aebce6f1b2f6bb536768ecc577c5660ab2ae7affa",
+      "sizeBytes": 57207
+    },
+    {
+      "path": "current-product-1/lifecycle-observers.log",
+      "sha256Bytes": "5d2838b9628ce5f5f051b6b94aa6493afc2e7490e280a3a16033e99cb3935663",
+      "sizeBytes": 1172
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/actual-task-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/actual-task-storage/global/plugin-settings.json",
+      "sha256Bytes": "1a5b00653edd876f920970b462580965efcc6ac4c23d1cb583579f0174b9f1c4",
+      "sizeBytes": 292
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/material3-root-retry-error.png",
+      "sha256Bytes": "c713fc85466d1b4785a703b96dbb40dc3dcd05d8742b81b72708846e2aa619c9",
+      "sizeBytes": 18745
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/material3-root-startup-error.png",
+      "sha256Bytes": "de2e0efb3e0cbf33504e65f7cc3111c3c1f259c30df992887766a7ae4d97f92d",
+      "sizeBytes": 18234
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/material3-root-stopped.png",
+      "sha256Bytes": "52c79937928f246cfd999eb432ad2b33adaa1311a2f517b8d88d6c164f23d525",
+      "sizeBytes": 13237
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3/result.json",
+      "sha256Bytes": "b2cf4403cc99d2982d09ab3c127f155f5d7ea1ac8a96a322cb619be635a02d8b",
+      "sizeBytes": 1157
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3.args",
+      "sha256Bytes": "30ba78babb4ef15429477347f7faed56d870fea95d8f470e6d413392af767a14",
+      "sizeBytes": 57233
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-material3.log",
+      "sha256Bytes": "5a12e7960f32dd10c2bcda87225f2c2b56cad2bf10238b8c47494ee4fc6e3cf3",
+      "sizeBytes": 1505
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/actual-task-storage/global/discovery/plugin-settings.json",
+      "sha256Bytes": "23039eab80d4414a0c00463d221bac11eeb4519448f6698c576cc9d5efb25a8f",
+      "sizeBytes": 25
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/actual-task-storage/global/plugin-settings.json",
+      "sha256Bytes": "2a16d72e0a96740c22ed030cf096793d6fa72e346a973f6653f1db3fcf6dbaa0",
+      "sizeBytes": 281
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/miuix-root-retry-error.png",
+      "sha256Bytes": "926e4ea233a18fee59cc03f477aca8c2367f426a1cfbd85e8ecc4ad1b3c0e53c",
+      "sizeBytes": 19351
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/miuix-root-startup-error.png",
+      "sha256Bytes": "4cbce99f63e0e2592f963e515452ccf73fbf4988f84a1efc974af0cb3d1440c9",
+      "sizeBytes": 18674
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/miuix-root-stopped.png",
+      "sha256Bytes": "4c962d3a8ad9b6e9bc875871babf49f7525a687da8279fd410556d7ac04f2e41",
+      "sizeBytes": 13611
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix/result.json",
+      "sha256Bytes": "666d1ca4c77f10a0e39701e46f1c4bfd9039c959f27147a0f4a94c03e96fcd67",
+      "sizeBytes": 1154
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix.args",
+      "sha256Bytes": "439961af1c490798949ac6b09705e0ff126aeebc121b91025f6230f423b97d53",
+      "sizeBytes": 57225
+    },
+    {
+      "path": "current-product-1/lifecycle-root-startup-miuix.log",
+      "sha256Bytes": "5a12e7960f32dd10c2bcda87225f2c2b56cad2bf10238b8c47494ee4fc6e3cf3",
+      "sizeBytes": 1505
+    },
+    {
+      "path": "current-product-1/lifecycle-startup/actual-task-storage/array/plugin-settings.json",
+      "sha256Bytes": "36b61705e5d98e4bbcca9dd2851b0250108c0ce0bbf4b8c4768f61a7c091180d",
+      "sizeBytes": 219
+    },
+    {
+      "path": "current-product-1/lifecycle-startup/actual-task-storage/global/logs/basic.log",
+      "sha256Bytes": "437545d96367789d3735131aadee0c58e006c5d93ee4e22ed13fa84b6db48a33",
+      "sizeBytes": 163
+    },
+    {
+      "path": "current-product-1/lifecycle-startup/actual-task-storage/global/plugin-settings.json",
+      "sha256Bytes": "77d82ae37b0ea96d7f951a5cf0d4a40a2c1dc296b9c56e25302aadc6132fb7f4",
+      "sizeBytes": 196
+    },
+    {
+      "path": "current-product-1/lifecycle-startup/actual-task-storage/object/plugin-settings.json",
+      "sha256Bytes": "4298cf4dacffb4a5fe770bff56daef89409dc19e6302cfca232f1ce372b9683f",
+      "sizeBytes": 240
+    },
+    {
+      "path": "current-product-1/lifecycle-startup/result.json",
+      "sha256Bytes": "5d18f6daace8c8b8dea94d690b46bc19fa09f3fbabb5e6c293574c334a116b1a",
+      "sizeBytes": 1090
+    },
+    {
+      "path": "current-product-1/lifecycle-startup.args",
+      "sha256Bytes": "7e453dbf071ec3aa8b7f3334fde3692ddfff174cb55c0e77a9b65924dbde1f18",
+      "sizeBytes": 57203
+    },
+    {
+      "path": "current-product-1/lifecycle-startup.log",
+      "sha256Bytes": "5556c80e5049141354dba8adc10c6f4db7577a16ec58bfd219c87475da416e6d",
+      "sizeBytes": 1452
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "c72a5217daeec4f3fecffb673dd9609ccd9fd9df6206548c546c64ce7fca0e64",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "34d8f0d537a072c754ad0a589a0f1f6c41617910a9ee73e7073a125791f4d76d",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/dismiss-root-original-prompt.png",
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155",
+      "sizeBytes": 29954
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/dismiss-root-stopped.png",
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f",
+      "sizeBytes": 10383
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss/result.json",
+      "sha256Bytes": "218d5fd59afdbf806cd8417a97006ff76d7054fd483491ccbee77d999a5c3613",
+      "sizeBytes": 1137
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss.args",
+      "sha256Bytes": "5f1c15c968c600de8c08cb3ff629db732201966343091a295850124ea34b33a1",
+      "sizeBytes": 57218
+    },
+    {
+      "path": "current-product-1/root-material3-dismiss.log",
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210",
+      "sizeBytes": 1493
+    },
+    {
+      "path": "current-product-1/root-material3-outside/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-material3-outside/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "0c8e35cb0934572d259c78a8578154520367a839b9488996e659aee444e1334c",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-material3-outside/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "22a2bc6391c7bf6767ca38553f95cb2fc02eb5f0551f9f2fedeec95f79740cd7",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-material3-outside/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/root-material3-outside/outside-root-original-prompt.png",
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155",
+      "sizeBytes": 29954
+    },
+    {
+      "path": "current-product-1/root-material3-outside/outside-root-stopped.png",
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f",
+      "sizeBytes": 10383
+    },
+    {
+      "path": "current-product-1/root-material3-outside/result.json",
+      "sha256Bytes": "989370b2354e9313d3bf85376ec5c6adaf70434adbf94d2860081cefea5173d5",
+      "sizeBytes": 1135
+    },
+    {
+      "path": "current-product-1/root-material3-outside.args",
+      "sha256Bytes": "3de4990376228d35446539207946f0477f73530efc4ce8f3e7d75a1bd9b154ca",
+      "sizeBytes": 57218
+    },
+    {
+      "path": "current-product-1/root-material3-outside.log",
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210",
+      "sizeBytes": 1493
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "ac29bbdf0a9bd6edd4f299e0ae2896ef5eced9dad925231318d1ee7456014151",
+      "sizeBytes": 183
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "49007915f3ffbd148cadc9d56a2ac673ec2ad466ab6b1191b2f40ba2b3ab5072",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/actual-task-storage/logs/pending_crash.marker",
+      "sha256Bytes": "2921ab67ca79e633228584a2dc5864ed46ae614ccf12e2ad92176511d86853b1",
+      "sizeBytes": 13
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "dc6fa6a8fa2d4298936a9fba29e4ec5e89a7d2d4bfba235b07d52fa6a01d5392",
+      "sizeBytes": 142
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/pending-shutdown-root-stopped.png",
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f",
+      "sizeBytes": 10383
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown/result.json",
+      "sha256Bytes": "9cbe5b243edece4a00e8d9127d0ca0a53a10464f30afd84324f48e0074a2932f",
+      "sizeBytes": 1307
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown.args",
+      "sha256Bytes": "16afdcda35176b1210d5801672bf06ac1117c0f134231795f1dbd6a232eefcc3",
+      "sizeBytes": 57236
+    },
+    {
+      "path": "current-product-1/root-material3-pending-shutdown.log",
+      "sha256Bytes": "a3c95e7b563456811b904a3d7c5e2c640548422adf51c3fd5179c8227575d188",
+      "sizeBytes": 1663
+    },
+    {
+      "path": "current-product-1/root-material3-share/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-material3-share/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "bbe622f44a167b826be751082737bc26824a6d17ce36679a26aca2928a0560a6",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-material3-share/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "a5ff15d02a8d1be4821a4251b54dbcf586de797bd0b26e13795cc712cf279e6e",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-material3-share/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "93184447485dbfc903b7107da94ae3d1de469014bfbc200e16734fc061de0618",
+      "sizeBytes": 69
+    },
+    {
+      "path": "current-product-1/root-material3-share/result.json",
+      "sha256Bytes": "0a0d7175c1fd5a865b271512468015ef9bf6b6321e1eca652506aedac133904e",
+      "sizeBytes": 1186
+    },
+    {
+      "path": "current-product-1/root-material3-share/share-root-actual-local-viewer.png",
+      "sha256Bytes": "f61d9030d23e9ad697e55b3417cfeee3fd9e22cca3eb0fe01a9670632b76ce08",
+      "sizeBytes": 57613
+    },
+    {
+      "path": "current-product-1/root-material3-share/share-root-original-prompt.png",
+      "sha256Bytes": "69e32b37ef5574b1a9e434dee2ed1bbf20e16afd87ab2973f40b5e6a619d9155",
+      "sizeBytes": 29954
+    },
+    {
+      "path": "current-product-1/root-material3-share/share-root-stopped.png",
+      "sha256Bytes": "4994006115a84e9d748fc31847569adcbca02206b386947371b3ebdaf3c24d2f",
+      "sizeBytes": 10383
+    },
+    {
+      "path": "current-product-1/root-material3-share.args",
+      "sha256Bytes": "402d0094894e1173e8bb62a191428e406cf979406dfffffd9994df5db590aded",
+      "sizeBytes": 57214
+    },
+    {
+      "path": "current-product-1/root-material3-share.log",
+      "sha256Bytes": "facbe7bbdeb04eedde4b5ed2032b87bf8894722663cabcb562dc5fbc0197f05e",
+      "sizeBytes": 1549
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "ab8b4e3417ef431e0db2cefa263ef5951fc60676eeed95d112501fc503c42267",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "1743f14848287c9c64e5fda584596e9b7e1ea02c4a5d2c6eb2dcead4af7105d3",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/dismiss-root-original-prompt.png",
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca",
+      "sizeBytes": 32179
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/dismiss-root-stopped.png",
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861",
+      "sizeBytes": 10667
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss/result.json",
+      "sha256Bytes": "c7be2ef126bc12357daced10cf6049c45aed4f7d51773025cf480ec798154fc2",
+      "sizeBytes": 1133
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss.args",
+      "sha256Bytes": "1653f954396b9175021cb4d55b9abc6305df4040b6c6344870b1cec827719376",
+      "sizeBytes": 57210
+    },
+    {
+      "path": "current-product-1/root-miuix-dismiss.log",
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210",
+      "sizeBytes": 1493
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "dba81085225780ced3c4a8976e40ff90c754177fdb4893e254f4dcd5467ef3f8",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "db217b21a8a71d1751e217939f8938e3f73b76b4a1a1d316929206f716e0bc28",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/outside-root-original-prompt.png",
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca",
+      "sizeBytes": 32179
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/outside-root-stopped.png",
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861",
+      "sizeBytes": 10667
+    },
+    {
+      "path": "current-product-1/root-miuix-outside/result.json",
+      "sha256Bytes": "fd719113fe5a09d39321af72e08f9cab62d44c19df4b1f37b9a4511f0e05cf6c",
+      "sizeBytes": 1133
+    },
+    {
+      "path": "current-product-1/root-miuix-outside.args",
+      "sha256Bytes": "ecffc77de905c878c091d0f890d06e13f418732f5f9c1b303436927049a3025d",
+      "sizeBytes": 57210
+    },
+    {
+      "path": "current-product-1/root-miuix-outside.log",
+      "sha256Bytes": "347b4a901f087837967e3f021fbac9ac86520651183ec4a01b38b27d36d61210",
+      "sizeBytes": 1493
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "0998ca32a554d2eeb615777069c0437cb8e77f6c80c60dc248db370a33fb45b4",
+      "sizeBytes": 183
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "7e64c5f7c19613ba186784a91fbd8a7825064c2ceb0790535bbb8076312ae60a",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/actual-task-storage/logs/pending_crash.marker",
+      "sha256Bytes": "881b6c3df0b4334839a0c870ca70319e147950d91f3075450672d51cdc1573ff",
+      "sizeBytes": 13
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "703c5376089f565a23b3f36ca6f4dc9d1845e71432f592dcdc30067800d60ef7",
+      "sizeBytes": 138
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/pending-shutdown-root-stopped.png",
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861",
+      "sizeBytes": 10667
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown/result.json",
+      "sha256Bytes": "e3d23206b349208b7ea1df29c6faec34369c823305c5483cded9ccf89ba2ed1b",
+      "sizeBytes": 1303
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown.args",
+      "sha256Bytes": "ab326cae1ce45a81c5c2795649372ab23011050957ffec4ef13fc7c96aba802c",
+      "sizeBytes": 57228
+    },
+    {
+      "path": "current-product-1/root-miuix-pending-shutdown.log",
+      "sha256Bytes": "a3c95e7b563456811b904a3d7c5e2c640548422adf51c3fd5179c8227575d188",
+      "sizeBytes": 1663
+    },
+    {
+      "path": "current-product-1/root-miuix-share/actual-task-storage/discovery/plugin-settings.json",
+      "sha256Bytes": "56a6f72b0de9488f8fa1600bfe6683ed1a745992955a26b92a090a9faca78eb7",
+      "sizeBytes": 33
+    },
+    {
+      "path": "current-product-1/root-miuix-share/actual-task-storage/logs/basic.log",
+      "sha256Bytes": "af7c32982e247f05fd6f0c2aaf772ad044f09951f532b2c410fa718878563913",
+      "sizeBytes": 102
+    },
+    {
+      "path": "current-product-1/root-miuix-share/actual-task-storage/logs/last_crash_log.txt",
+      "sha256Bytes": "8c9522941bf710b39445b11dd103faa7508bd357b91e75ec9ec1752475c02946",
+      "sizeBytes": 1473
+    },
+    {
+      "path": "current-product-1/root-miuix-share/actual-task-storage/plugin-settings.json",
+      "sha256Bytes": "a13a7a4e1d7e7d32203bd81722b81d3687e0bc0c284af03c77178276de6c0b5c",
+      "sizeBytes": 65
+    },
+    {
+      "path": "current-product-1/root-miuix-share/result.json",
+      "sha256Bytes": "afbb2e942309d9af5b3406832f8acd5fa0a0e26c69dfca321734acc9c79ef184",
+      "sizeBytes": 1182
+    },
+    {
+      "path": "current-product-1/root-miuix-share/share-root-actual-local-viewer.png",
+      "sha256Bytes": "0a0458f1939d3b345b87c20761d443fb92efdc5e1cf697948a64d577c02e4ce3",
+      "sizeBytes": 49516
+    },
+    {
+      "path": "current-product-1/root-miuix-share/share-root-original-prompt.png",
+      "sha256Bytes": "fcb40094bb53991b60f3086fb91ebe1eb1b77048a05aac2a9c15e26cf32264ca",
+      "sizeBytes": 32179
+    },
+    {
+      "path": "current-product-1/root-miuix-share/share-root-stopped.png",
+      "sha256Bytes": "e861cc48ec4fa43e6955d2f04fbf07f25fc1bed639211315a46352bc6d881861",
+      "sizeBytes": 10667
+    },
+    {
+      "path": "current-product-1/root-miuix-share.args",
+      "sha256Bytes": "04a921a14ca02a866b78aaad43a47efebacb30e6ebb7bed0684aa81267d1764b",
+      "sizeBytes": 57206
+    },
+    {
+      "path": "current-product-1/root-miuix-share.log",
+      "sha256Bytes": "facbe7bbdeb04eedde4b5ed2032b87bf8894722663cabcb562dc5fbc0197f05e",
+      "sizeBytes": 1549
+    },
+    {
+      "path": "DiagnosticProductLifecycleFixture.kt",
+      "sha256Bytes": "b51b6d9787815d37fab7afbcb656e86eadba3057b5546fa714d65b206c5af2bf",
+      "sizeBytes": 19272
+    },
+    {
+      "path": "freeze-proof.py",
+      "sha256Bytes": "5afebe378af27889b86106cf26472023fdd99678238e937c83827fc4677f0bea",
+      "sizeBytes": 6612
+    },
+    {
+      "path": "proof-summary.json",
+      "sha256Bytes": "65b07a93fac6c173d776938dc3f6dd050e1732fb9df236094347021371a31cd2",
+      "sizeBytes": 39630
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "1b706321007b9c0f55bb0542c22d32a1ec1ec92515d9740cfbf2462b8ed31e20",
+      "sizeBytes": 4505
+    },
+    {
+      "path": "RootCrashPromptFixture.kt",
+      "sha256Bytes": "b2cd48bd127d5797a7866e5345e26d10e4410e7d8301c4289012cb0738a7cf93",
+      "sizeBytes": 10469
+    },
+    {
+      "path": "source-seam-verification.json",
+      "sha256Bytes": "6efd87641882f20c25d92b3e55f93253d66dcd363d25a5ef161dbcd523c0daa8",
+      "sizeBytes": 18529
+    },
+    {
+      "path": "verify-source-seams.py",
+      "sha256Bytes": "7165ccf76616507214f287b95cb5c58bc326460c581a8a93111bc7c8a0daaa15",
+      "sizeBytes": 7587
+    }
+  ],
+  "snapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+  "productJarPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "e85a34e3e3c2e67fd69ae5a3a62179e82e68efe130902d3748c3e8e3bbc64e0f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-java.jar",
+      "sha256Bytes": "188a3eabdfd1514a4ca9c5e7c211436be5e9103fa6ff21e88e541d796ef6bf4e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "038c930ab0f5343396726327a4c9af7bb18f127de8dba1ffda42a260d98e671d"
+    }
+  ],
+  "proofSummarySha256Bytes": "65b07a93fac6c173d776938dc3f6dd050e1732fb9df236094347021371a31cd2",
+  "fixtureScenarioCount": 18,
+  "fixtureAssertionCount": 278,
+  "sourceContractCount": 18,
+  "sourceIdentityCount": 51,
+  "pngCount": 32,
+  "actualPointerPairs": 26,
+  "rawTaskStorageFileCount": 94,
+  "productionOverrideClasses": 0,
+  "compiledFixtureSources": 3,
+  "HWND": false,
+  "networkOrAccounts": false,
+  "OSChooserClicked": false,
+  "noSharedGradleOrMainMutations": true,
+  "AndroidExternalSharePending": true,
+  "priorPreparedCohortSha256Bytes": "7ec64c983f5ac9464bcae5a39fa9f46745b9f0eb0f062ee9a8161e61a1a6f437",
+  "priorLifecycleCohortSha256Bytes": "a458464369723db357bf1f09d505707aa4fa672b7054bddbdce0014017c0f6f5"
+}

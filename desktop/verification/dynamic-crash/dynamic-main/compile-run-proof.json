@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "snapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+  "productJarsFirst": true,
+  "compiledFixtureSources": 3,
+  "productionOverrides": 0,
+  "sourcePins": [
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "41c49a90a91f07951ca381f37c9f14a51c20ae3c961db01b16ed55a9e8929f8c"
+    },
+    {
+      "path": "TransportFixture.kt",
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "DynamicFixtureHelpers.kt",
+      "sha256Bytes": "0d912d2ceab4ef7ea6290c46b9882beb089b3ff6526a6c1d86430302d628bd45"
+    }
+  ],
+  "productClassesOverlapping": [],
+  "originalUiFlows": 8,
+  "actualPointerPairs": 48,
+  "pngs": 40,
+  "styles": [
+    "MATERIAL3",
+    "MIUIX"
+  ],
+  "darkAndLight": true,
+  "widths": [
+    800,
+    1200
+  ],
+  "height": 900,
+  "actualProductClassIdentities": 14,
+  "transportApplicationInterceptorOnly": true,
+  "taskOwnedEnvironment": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-dyn-main-byd5xl1_",
+  "noMainReadyAppOrHWND": true,
+  "noRealAccountOrHttp": true,
+  "driverResumedAfterUi": true,
+  "driverFailure": "Python gbk stdout print failed after actual UI process succeeded; original raw ui.log and 8 complete UI results retained; UI not rerun"
+}

@@ -1,0 +1,34 @@
+{
+  "reviewedByRoot": true,
+  "rawScreenshots": [
+    {
+      "path": "dynamic-main/proof/miuix-dark-800-list.png",
+      "result": "Original controls, real lane geometry and divider visible"
+    },
+    {
+      "path": "dynamic-main/proof/miuix-light-1200-waterfall.png",
+      "result": "Original controls, real lane geometry and divider visible"
+    },
+    {
+      "path": "dynamic-main/proof/material3-dark-1200-incremental-divider.png",
+      "result": "Original controls, real lane geometry and divider visible"
+    },
+    {
+      "path": "dynamic-main/proof/material3-light-800-layout-popup.png",
+      "result": "Original controls, real lane geometry and divider visible"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/share-root-original-prompt.png",
+      "result": "Original prompt or actual viewer fully visible; footer controls available"
+    },
+    {
+      "path": "crash-main/current-product-1/root-miuix-share/share-root-actual-local-viewer.png",
+      "result": "Original prompt or actual viewer fully visible; footer controls available"
+    },
+    {
+      "path": "crash-main/current-product-1/root-material3-share/share-root-original-prompt.png",
+      "result": "Original prompt or actual viewer fully visible; footer controls available"
+    }
+  ],
+  "originalFullCardOrNativeWindowClaim": false
+}

@@ -1,0 +1,114 @@
+{
+  "passed": true,
+  "activeClasses": "classes-attempt5",
+  "sources": [
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopDynamicSettings.kt",
+      "sha256Bytes": "03d20e6d88713b923752aec60ba31b0b00c777a8d2621ddb52c391fd96c456cd"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/util/FeedMergeUtils.kt",
+      "sha256Bytes": "4d1573c8a74317c8dcf3283c41cb315adeb37dbac9d1976d4c59724305164670"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/components/FeedPrependScrollPolicy.kt",
+      "sha256Bytes": "53dc2636d4c741bdfde1b3a7b53499fd72db7ca2490089ef19575e313571f030"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGrid.kt",
+      "sha256Bytes": "9674e12d589c6e27cc600865d1fd66e6b7bd5b8ee47d83c8865444e52180bbfd"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DynamicFeedFetchPolicy.kt",
+      "sha256Bytes": "37187cef49362664faf8def1f30fd9e3642b0704de6fee8e5960209ea586c318"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DynamicFetchRetryPolicy.kt",
+      "sha256Bytes": "a5e9ac81d2898ddb66e98951abc83b58bc87e8a3f743910d6ba353c4bfbff506"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicIncrementalPolicy.kt",
+      "sha256Bytes": "5f2f3bad182b214d6390fbb7f77eed71357deff043f2b3bc21d6d797979213b3"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicOldContentDivider.kt",
+      "sha256Bytes": "9ce4e99357f02612f305eb7738a3918c6aacab9b7d5f772a7e0730cb46358575"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelineLayout.kt",
+      "sha256Bytes": "392cf956b4621046075ba0177fa88201119929f251e0b5da3eacdd54af84147b"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePage.kt",
+      "sha256Bytes": "f5826199b88d905a7708e1343a1cb5f6b4ae11ba0ff718f02fa01d66b011bdc9"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePolicy.kt",
+      "sha256Bytes": "efdd9d66a21131963c3fde7be603f982e087faaf7fece020a47f5c7d88882aa7"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/dynamic/DynamicTabPolicy.kt",
+      "sha256Bytes": "a99ca8e197d26bd6e731c7ba11b8fb6fb26cec54fca1bde0fd99367248e2429c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/DesktopDynamicTimelineSettingsFields.kt",
+      "sha256Bytes": "39574be70c9572973c4f0005291d94b73002a15ac46d64057286d6d5d09da5ce"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "4d8c287d5aa60f24551515cf103278a403c43af78471f963c6371b0a7a939fa4"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "4a27a553fb453d96389865aa09056768725d876b28962efb638782bf97f4ecc7"
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "sha256Bytes": "61a81a53209804209491778757830ad52c7088742733a4b8d3383a520162c875"
+    },
+    {
+      "path": "JunitFixture.kt",
+      "sha256Bytes": "b844a4803da6089f1689ed36f4e62ff3cc99b326f250a86a458d0c777bb18e77"
+    },
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "40e696dbec5677a3158761701e908b2959149903e49ee9386a33f1d15c588cb8"
+    },
+    {
+      "path": "TransportFixture.kt",
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    }
+  ],
+  "currentProductJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-kotlin.jar",
+      "sha256Bytes": "faff5ddd9bf61b4ee50b500119f7734228925e891342f9cf3008a6e552b5cd7f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-java.jar",
+      "sha256Bytes": "a7206eb9cbbdcb16285c8ca49a4a6b5865378adfd449f8f733cce21b325a29f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\diagnostics-main-product-snapshot\\main-resources.jar",
+      "sha256Bytes": "843e19310a97a3d9426dc218f2019313d43466cff089e831cdbeebdb191fdca1"
+    }
+  ],
+  "productSnapshotManifestSha256Bytes": "5e8fc360372557bf004b55a1ded9fe4be1a3b6bae33090cb037d8fe600006fda",
+  "isolatedConsumerOverrides": 2,
+  "mainFilesChanged": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "HTTP": false
+}

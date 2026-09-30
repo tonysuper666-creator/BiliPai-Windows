@@ -1,0 +1,356 @@
+{
+  "frozen": true,
+  "artifacts": [
+    {
+      "path": "classes/com/bilipai/desktop/ui/DynamicFixtureHelpersKt.class",
+      "bytes": 11408,
+      "sha256Bytes": "68f014da178d260b456c33770b22c316f42c05e2e08858ec4a09de9ad9fd59de"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/DynamicScene$click$1.class",
+      "bytes": 1791,
+      "sha256Bytes": "e75cd27127d173db07acb5da2e476be0d16d5b0929673d2bed72ff2bbb0f8e5c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/DynamicScene$waitFor$1.class",
+      "bytes": 1834,
+      "sha256Bytes": "0c53bff6c88e60570e63bdbdd70dbc55188e36f863e49192ff5f29bcba530ecc"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/DynamicScene$waitFor$2.class",
+      "bytes": 3604,
+      "sha256Bytes": "a188513c5ebe695d8fcecf38d32083b994e68967cf1c41f758c2c14c1dfbf7da"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/DynamicScene.class",
+      "bytes": 16516,
+      "sha256Bytes": "7cece7e3137b412d8a2f4bcd013201864e451b00e8d593b28e01346116d9da86"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TransportFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "bytes": 6806,
+      "sha256Bytes": "222686f62e22b638a30a1bbe5e419d25055c9c0703fb19e80c99a88a6f633172"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TransportFixtureKt$main$1$state$1.class",
+      "bytes": 4112,
+      "sha256Bytes": "97f9bd7d2e240f89a18edfc2b39fb29df9ee045efb43a1a355f6b5c73533a291"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TransportFixtureKt$main$1.class",
+      "bytes": 21991,
+      "sha256Bytes": "84ec9366864a707c5feab96588185610578ebaf800bd120f0b3759da1f42e799"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/TransportFixtureKt.class",
+      "bytes": 1172,
+      "sha256Bytes": "d604839e21b5fe73af6883757f7486bbb0215ad562933f7559e16567e3d76541"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt$main$1$10$1.class",
+      "bytes": 3438,
+      "sha256Bytes": "237fb77db7762ccdee0466453b09ec7ceb9d93704e9d2108cf3e49577450a812"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt$main$1$4$1.class",
+      "bytes": 3816,
+      "sha256Bytes": "04f8fc5694fa1447e93776992d0ca35a0afbf79eb89a9f9815af60cab079c481"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt$main$1$5$1.class",
+      "bytes": 3434,
+      "sha256Bytes": "b68ad6c797cc8a234fd4679252c7d0e499d336305f294eb77a71c10f7632f8f1"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt$main$1$state$1.class",
+      "bytes": 4370,
+      "sha256Bytes": "dc26c09978bffd1118b6f2d0d7a58a670636dc2697a7d7ee416cd552e5717b0c"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt$main$1.class",
+      "bytes": 70392,
+      "sha256Bytes": "0a16c8211f468c9289092ff8d343cc420576deec66560790d7cfdd668430249b"
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/UiFixtureKt.class",
+      "bytes": 1246,
+      "sha256Bytes": "45e9a9b1e00031e16ea35f1d89ac99c5f0a3fb3dbb6acec2811b2df09f2457f9"
+    },
+    {
+      "path": "classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "bytes": 108,
+      "sha256Bytes": "a1a9f0b59721da5e25c3fd4c9c99e044869f91d2d381888ce7e59508135541d4"
+    },
+    {
+      "path": "compile-run-proof.json",
+      "bytes": 1297,
+      "sha256Bytes": "266e1a63be7a5875dc5683d1e66f259b98d86ee9a448c17ec62d0c04185a964d"
+    },
+    {
+      "path": "compile.log",
+      "bytes": 101,
+      "sha256Bytes": "fa47b006f6da52c889f3f50b9f99f4a193bfc51b621ae15fb52a21447ef5e50a"
+    },
+    {
+      "path": "compiler.args",
+      "bytes": 59495,
+      "sha256Bytes": "93022f3a815b66c9cfe5974ee8bd5300a13ecc8491351a6cbf92360a5677c571"
+    },
+    {
+      "path": "dependency-identities.json",
+      "bytes": 86090,
+      "sha256Bytes": "47ffcd1c994418315c28acfd516c4c317de703d8c6555204ba176e0299012f0e"
+    },
+    {
+      "path": "DynamicFixtureHelpers.kt",
+      "bytes": 2482,
+      "sha256Bytes": "0d912d2ceab4ef7ea6290c46b9882beb089b3ff6526a6c1d86430302d628bd45"
+    },
+    {
+      "path": "proof/actual-product-class-identities.json",
+      "bytes": 4575,
+      "sha256Bytes": "0299509ca33980c88ab1a0e9bcdc5ff20c5858c3c73b9d04a52e627dc3e2b164"
+    },
+    {
+      "path": "proof/material3-dark-1200-incremental-divider.png",
+      "bytes": 40077,
+      "sha256Bytes": "cee4e3738e75335a122990b9c3fa014704cd5c73f213d2d38379550179c53d73"
+    },
+    {
+      "path": "proof/material3-dark-1200-layout-popup.png",
+      "bytes": 30863,
+      "sha256Bytes": "a0076d8696b867b991bd4842b96b87edc1ed196049f991b2f04c175ec6ff3c7a"
+    },
+    {
+      "path": "proof/material3-dark-1200-list.png",
+      "bytes": 36978,
+      "sha256Bytes": "bdc5d6c7d825cb0d94c22d73217aae3c1c3abbfff9e9eb0f8f891f2b689b9344"
+    },
+    {
+      "path": "proof/material3-dark-1200-replace.png",
+      "bytes": 26657,
+      "sha256Bytes": "ced4c9d5d62a6ee97d93b03ca041a8c56fff50fcc2b8b8315476813b5f943f8e"
+    },
+    {
+      "path": "proof/material3-dark-1200-waterfall.png",
+      "bytes": 29282,
+      "sha256Bytes": "4cc7b4c1fe37088153f71dae26ea053144406a07229d72e9b8802d989839a134"
+    },
+    {
+      "path": "proof/material3-dark-800-incremental-divider.png",
+      "bytes": 37609,
+      "sha256Bytes": "f783dc500dedd1d91983d37cf125058c351a9823aaf1552f3b7047c386fd35c3"
+    },
+    {
+      "path": "proof/material3-dark-800-layout-popup.png",
+      "bytes": 32770,
+      "sha256Bytes": "493eb7fed3d3cc20db75cab38291ae46cb0bbbd520a8ee0d4fcad569094a00e0"
+    },
+    {
+      "path": "proof/material3-dark-800-list.png",
+      "bytes": 34662,
+      "sha256Bytes": "5d36c9e535fda4d5736dc17fc575cd7d74cf5dc849ca374e3ccd337c101f1acd"
+    },
+    {
+      "path": "proof/material3-dark-800-replace.png",
+      "bytes": 24425,
+      "sha256Bytes": "c9a19c9b6459ceba2e0b0a805461d45338b29db63d1bb72b584798b47195b7c2"
+    },
+    {
+      "path": "proof/material3-dark-800-waterfall.png",
+      "bytes": 31146,
+      "sha256Bytes": "e49c443539608990b0f4bcdffea6613670a3ea48beba09d159f6607554658129"
+    },
+    {
+      "path": "proof/material3-light-1200-incremental-divider.png",
+      "bytes": 39237,
+      "sha256Bytes": "666c6a83d85efdba133726f1b877ff94e20acd0f7176e2029f1bd2e16ebe8b20"
+    },
+    {
+      "path": "proof/material3-light-1200-layout-popup.png",
+      "bytes": 30733,
+      "sha256Bytes": "762551da62f8e7c01e1c62336607204fb2049941024ac044acec948459a57dc9"
+    },
+    {
+      "path": "proof/material3-light-1200-list.png",
+      "bytes": 36299,
+      "sha256Bytes": "a203ad26eb519b366c275f149f0a9c439aace3bd4da4d75317495998b89a737b"
+    },
+    {
+      "path": "proof/material3-light-1200-replace.png",
+      "bytes": 26289,
+      "sha256Bytes": "316b584fac0914879478af333b92fd9d160ebdc9277873fc35e9e3b44e709b03"
+    },
+    {
+      "path": "proof/material3-light-1200-waterfall.png",
+      "bytes": 29079,
+      "sha256Bytes": "190d49501a4e8ac0baea1014c8f7270f03019b6f49defc5400deac553e1d1376"
+    },
+    {
+      "path": "proof/material3-light-800-incremental-divider.png",
+      "bytes": 36859,
+      "sha256Bytes": "b8bc9ab91b601db13fbcb08c41a3502782ad4daf0c2a8d916db3cca5e58cd2bc"
+    },
+    {
+      "path": "proof/material3-light-800-layout-popup.png",
+      "bytes": 32515,
+      "sha256Bytes": "83c6803ea7ce5d9866e6cf3665355a719724ab98c761565d21b18b35ca9bd21a"
+    },
+    {
+      "path": "proof/material3-light-800-list.png",
+      "bytes": 34037,
+      "sha256Bytes": "59b94b642bead4cc06f9e78fff11cfd802005ed7cf6e71347007fabd519e47fc"
+    },
+    {
+      "path": "proof/material3-light-800-replace.png",
+      "bytes": 24169,
+      "sha256Bytes": "633a06719150bb94e38d4f8dec08ed9db00b9c913c6c195821e47b3f272895a2"
+    },
+    {
+      "path": "proof/material3-light-800-waterfall.png",
+      "bytes": 30799,
+      "sha256Bytes": "a2200a3c79efefa0a8e1a2a07028939dbc64b88a794304f4d05556eb48e0d0e2"
+    },
+    {
+      "path": "proof/miuix-dark-1200-incremental-divider.png",
+      "bytes": 42627,
+      "sha256Bytes": "08aaab821bbbb1c8db6aee6fa51eb162e8d132e957968d54e9e345c7546186ae"
+    },
+    {
+      "path": "proof/miuix-dark-1200-layout-popup.png",
+      "bytes": 30523,
+      "sha256Bytes": "4eda5ba9c328173fc4c3cffe4eaa6696654a579a790099e5b14c44c6553529a4"
+    },
+    {
+      "path": "proof/miuix-dark-1200-list.png",
+      "bytes": 39037,
+      "sha256Bytes": "3849a9f41f234ccc4c7071f0b56ece010b505cbb7354b9c2477da548a1f89903"
+    },
+    {
+      "path": "proof/miuix-dark-1200-replace.png",
+      "bytes": 27387,
+      "sha256Bytes": "936535a140d61c64187c8292d819ac8bcf25a1ef86ce015c9705c753619bfe3b"
+    },
+    {
+      "path": "proof/miuix-dark-1200-waterfall.png",
+      "bytes": 30129,
+      "sha256Bytes": "e78d3ae5a3d7ef87fcc304a9201efc4450f5f234425df4aa34a6d87f512fbdeb"
+    },
+    {
+      "path": "proof/miuix-dark-800-incremental-divider.png",
+      "bytes": 40189,
+      "sha256Bytes": "f873ff620eaaea87aea789dbe64d7fe2fcc240f5572695f2604b9a46d0991000"
+    },
+    {
+      "path": "proof/miuix-dark-800-layout-popup.png",
+      "bytes": 32702,
+      "sha256Bytes": "b461e057807269324b2da94988fecbd1d7970322b268f47db149bd6027805ba6"
+    },
+    {
+      "path": "proof/miuix-dark-800-list.png",
+      "bytes": 36649,
+      "sha256Bytes": "afd78696e2d4cc9ea25cf24ef32b784c788cd8558dc8e8138b6d6cf1be996e8a"
+    },
+    {
+      "path": "proof/miuix-dark-800-replace.png",
+      "bytes": 25312,
+      "sha256Bytes": "2220ba049132ad36e7a4c63a56f22a1a8d163d47a078c6535e7a4281bb200259"
+    },
+    {
+      "path": "proof/miuix-dark-800-waterfall.png",
+      "bytes": 32725,
+      "sha256Bytes": "509b8ef82ed00570bee07c656a0fc6154e8e6c09c41c6e40a2ae97baec066c21"
+    },
+    {
+      "path": "proof/miuix-light-1200-incremental-divider.png",
+      "bytes": 41188,
+      "sha256Bytes": "bf7c965cdbfce2f9b4550c33dee2a256abb2354dbda54251876dcfa3bd4a467b"
+    },
+    {
+      "path": "proof/miuix-light-1200-layout-popup.png",
+      "bytes": 31098,
+      "sha256Bytes": "e0a477ea48ecc2be342f1611d4871e3be6e7e3efdb5acaea7beb2984ea8bd9fb"
+    },
+    {
+      "path": "proof/miuix-light-1200-list.png",
+      "bytes": 37904,
+      "sha256Bytes": "efda891f0ba94492695cebeb152f1ffb06dcb9124c06413d0608132a014d7aaf"
+    },
+    {
+      "path": "proof/miuix-light-1200-replace.png",
+      "bytes": 26734,
+      "sha256Bytes": "10d00d969f38ee60316a5c281918952d0486812fcf7671dd5480cabdd64bc9a1"
+    },
+    {
+      "path": "proof/miuix-light-1200-waterfall.png",
+      "bytes": 29369,
+      "sha256Bytes": "b93c48f1acb2ec9816ecf60148d0830adcfc5007a1b436b5202d00e9fee9ec48"
+    },
+    {
+      "path": "proof/miuix-light-800-incremental-divider.png",
+      "bytes": 38870,
+      "sha256Bytes": "0c8da5817e500cf6b7b622e7430cb88e9224309772fff7b119d60ee76dc2b732"
+    },
+    {
+      "path": "proof/miuix-light-800-layout-popup.png",
+      "bytes": 33380,
+      "sha256Bytes": "7f47dccb95dee2750d470d94fa487ef60388443413856bc569f4e08476fa6085"
+    },
+    {
+      "path": "proof/miuix-light-800-list.png",
+      "bytes": 35682,
+      "sha256Bytes": "2f90f04d7234467d8be258c11b7f5162fd99a274e91da171387b23c9214bdc3a"
+    },
+    {
+      "path": "proof/miuix-light-800-replace.png",
+      "bytes": 24688,
+      "sha256Bytes": "65763a213178ba6b17ffbb11fbf70a94b69dcb119fc65d868d6278b090e24403"
+    },
+    {
+      "path": "proof/miuix-light-800-waterfall.png",
+      "bytes": 31793,
+      "sha256Bytes": "be7d8fa75db7958ab2a23548c809e713ae8dabf136c2761949295ba986531dc6"
+    },
+    {
+      "path": "proof/transport-result.json",
+      "bytes": 1213,
+      "sha256Bytes": "8fbbc2c95abf4dee469950d3bc1972809cc9f881b38f2fd9f32e2d3bf4901c00"
+    },
+    {
+      "path": "proof/ui-result.json",
+      "bytes": 3221,
+      "sha256Bytes": "da49a25a47fe36f56b71ebb5f794cfc1e73fb3b95992aaacfe0db82f6ebe74c0"
+    },
+    {
+      "path": "transport.args",
+      "bytes": 56916,
+      "sha256Bytes": "4fa9d854796a1e21299c616c9c08de1bc67816972989490ba4a98eeffaec8ffe"
+    },
+    {
+      "path": "transport.log",
+      "bytes": 273,
+      "sha256Bytes": "9b8fb91eda5b0facb470ab7927562e6f37baf5b8b6e6019d6b34388d09acf703"
+    },
+    {
+      "path": "TransportFixture.kt",
+      "bytes": 5128,
+      "sha256Bytes": "381f3f52d7719ff685adf9aad84cdf204bc00fc136050660bfc1d93ef9cf4a4d"
+    },
+    {
+      "path": "ui.args",
+      "bytes": 56887,
+      "sha256Bytes": "6b5f7856f7efb23b7027e5c86fa8690ad85056d94a6af826ee4eaf486b0f2476"
+    },
+    {
+      "path": "ui.log",
+      "bytes": 1125,
+      "sha256Bytes": "71ffff4b3bb9f11e0dc69a96c862ba6314e27b39778b2dc2663f4723b046dccf"
+    },
+    {
+      "path": "UiFixture.kt",
+      "bytes": 9440,
+      "sha256Bytes": "41c49a90a91f07951ca381f37c9f14a51c20ae3c961db01b16ed55a9e8929f8c"
+    }
+  ],
+  "artifactCount": 70
+}

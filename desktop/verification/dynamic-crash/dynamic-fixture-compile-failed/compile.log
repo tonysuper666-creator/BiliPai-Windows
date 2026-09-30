@@ -1,0 +1,7 @@
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=C:/Users/TONYS/AppData/Local/Temp/bp-dyn-main-stllf553/home
+desktop\.local\dynamic-main-product-proof\UiFixture.kt:49:131: error: unresolved reference 'AppThemeMode'.
+        val theme=DesktopThemePrefs(store);theme.setUiStyle(style);theme.setThemeMode(if(dark)com.android.purebilibili.core.theme.AppThemeMode.DARK else com.android.purebilibili.core.theme.AppThemeMode.LIGHT)
+                                                                                                                                  ^^^^^^^^^^^^
+desktop\.local\dynamic-main-product-proof\UiFixture.kt:49:190: error: unresolved reference 'AppThemeMode'.
+        val theme=DesktopThemePrefs(store);theme.setUiStyle(style);theme.setThemeMode(if(dark)com.android.purebilibili.core.theme.AppThemeMode.DARK else com.android.purebilibili.core.theme.AppThemeMode.LIGHT)
+                                                                                                                                                                                             ^^^^^^^^^^^^

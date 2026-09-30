@@ -1,0 +1,861 @@
+{
+  "originalNamedSectionsFound": false,
+  "actualOriginalSection": "SettingsSections.FeedApiSection plus AppearanceSettingsScreen card/layout fields",
+  "dynamic": [
+    {
+      "field": "incrementalTimelineRefreshEnabled",
+      "key": "incremental_timeline_refresh",
+      "default": false,
+      "status": "prepared actual consumer",
+      "semantics": "original multi-page baseline fetch + overlap/de-duplicate/sort/divider/tail pagination",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicFeedLayoutMode",
+      "key": "dynamic_feed_layout_mode",
+      "default": 0,
+      "status": "prepared actual consumer",
+      "semantics": "0 WATERFALL / 1 LIST; unknown value WATERFALL; original masonry layout and list prepend anchor",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicImagePreviewTextVisible",
+      "key": "dynamic_image_preview_text_visible",
+      "default": true,
+      "status": "missing",
+      "semantics": "image viewer text overlay + temporary eye toggle; current CommunityImageViewer has no matching text consumer",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicDetailImageLayout",
+      "key": "dynamic_detail_image_layout",
+      "default": 0,
+      "status": "missing",
+      "semantics": "EXPANDED 0 / THUMBNAIL 1; unknown EXPANDED; Android first-frame cache dynamic_detail_image_layout_cache/layout + memory, set cache before settings write",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicAllTabHorizontalUserListVisible",
+      "key": "dynamic_all_tab_horizontal_user_list_visible",
+      "default": false,
+      "status": "missing",
+      "semantics": "all-tab horizontal following-user rail; UP tab still supports user selection",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicTopBarCollapseOnScroll",
+      "key": "dynamic_top_bar_collapse_on_scroll",
+      "default": false,
+      "status": "missing",
+      "semantics": "tab bar scroll-collapse independently of the horizontal following rail",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicVisibleTabIds",
+      "key": "dynamic_tab_visible_tabs",
+      "default": "all,video,pgc,article,up",
+      "status": "missing",
+      "semantics": "CSV set; original UI preserves at least one valid tab; current Windows has fixed all/video/pgc",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicTabOrder",
+      "key": "dynamic_tab_order",
+      "default": "all,video,pgc,article,up",
+      "status": "missing",
+      "semantics": "CSV list; source UI orders by provided index then logical index for absent IDs",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicTopActionsCollapsed",
+      "key": "dynamic_top_actions_collapsed",
+      "default": false,
+      "status": "missing",
+      "semantics": "original publish/layout/fold dock persistent collapsed state; not part of FeedApiSection",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    },
+    {
+      "field": "dynamicLayoutDirection",
+      "key": "dynamic_page_layout_direction",
+      "default": 0,
+      "status": "missing",
+      "semantics": "LEFT 0 / RIGHT 1, unknown LEFT; original side-user/operation docking, not part of FeedApiSection",
+      "storage": "global settings DataStore; prepared Windows fields use original key in same Root PluginStore settings namespace"
+    }
+  ],
+  "recommendation": [
+    {
+      "field": "feedApiType",
+      "key": "feed_api_type",
+      "default": 0,
+      "status": "existing effective Windows consumer",
+      "semantics": "WEB 0 / MOBILE 1 / MERGED 2, unknown WEB; Android settings DataStore and sync feed_api/type mirror. Existing Windows consumer authority remains discovery/plugin-settings.json feed_api/type, not rewritten here."
+    },
+    {
+      "field": "homeRefreshCount",
+      "key": "home_refresh_count",
+      "default": 20,
+      "status": "existing effective Windows consumer",
+      "semantics": "normalize 10..30, original slider 19 intermediate steps; Android settings DataStore and feed_api/home_refresh_count mirror. Existing Windows authority remains discovery/feed_api namespace, not rewritten here."
+    }
+  ],
+  "allHomeSettingsMappingFields": [
+    {
+      "field": "displayMode",
+      "originalKeys": [
+        "display_mode"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_DISPLAY_MODE] ?: 0",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isBottomBarFloating",
+      "originalKeys": [
+        "bottom_bar_floating"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_BOTTOM_BAR_FLOATING] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "navigationIconCrossScaleEnabled",
+      "originalKeys": [
+        "navigation_icon_cross_scale_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_NAVIGATION_ICON_CROSS_SCALE_ENABLED] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "bottomBarLabelMode",
+      "originalKeys": [
+        "bottom_bar_label_mode"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_BOTTOM_BAR_LABEL_MODE] ?: BottomBarLabelMode.ICON_AND_TEXT",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "topTabLabelMode",
+      "originalKeys": [
+        "top_tab_label_mode"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_TOP_TAB_LABEL_MODE] ?: TopTabLabelMode.TEXT_ONLY",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "hideTopTabs",
+      "originalKeys": [
+        "hide_top_tabs"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HIDE_TOP_TABS] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeTopRightAction",
+      "originalKeys": [
+        "home_top_right_action"
+      ],
+      "actualSourceReadExpression": "HomeTopRightAction.fromValue(\n                preferences[KEY_HOME_TOP_RIGHT_ACTION] ?: HomeTopRightAction.SETTINGS.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeTopLayoutOrder",
+      "originalKeys": [
+        "home_top_layout_order"
+      ],
+      "actualSourceReadExpression": "HomeTopLayoutOrder.fromValue(\n                preferences[KEY_HOME_TOP_LAYOUT_ORDER] ?: HomeTopLayoutOrder.SEARCH_THEN_TABS.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isHeaderBlurEnabled",
+      "originalKeys": [
+        "home_header_blur_mode",
+        "header_blur_enabled"
+      ],
+      "actualSourceReadExpression": "headerBlurMode != HomeHeaderBlurMode.ALWAYS_OFF",
+      "derivedSourceBindings": {
+        "headerBlurMode": "resolveHomeHeaderBlurModePreference(\n            rawMode = preferences[KEY_HOME_HEADER_BLUR_MODE],\n            legacyEnabled = preferences[KEY_HEADER_BLUR_ENABLED]\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "headerBlurMode",
+      "originalKeys": [
+        "home_header_blur_mode",
+        "header_blur_enabled"
+      ],
+      "actualSourceReadExpression": "headerBlurMode",
+      "derivedSourceBindings": {
+        "headerBlurMode": "resolveHomeHeaderBlurModePreference(\n            rawMode = preferences[KEY_HOME_HEADER_BLUR_MODE],\n            legacyEnabled = preferences[KEY_HEADER_BLUR_ENABLED]\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isBottomBarBlurEnabled",
+      "originalKeys": [
+        "bottom_bar_blur_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_BOTTOM_BAR_BLUR_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isTopBarLiquidGlassEnabled",
+      "originalKeys": [
+        "top_bar_liquid_glass_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_TOP_BAR_LIQUID_GLASS_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isHomeSearchLiquidGlassEnabled",
+      "originalKeys": [
+        "home_search_liquid_glass_enabled",
+        "top_bar_liquid_glass_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_SEARCH_LIQUID_GLASS_ENABLED]\n                    ?: (preferences[KEY_TOP_BAR_LIQUID_GLASS_ENABLED] ?: false)",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isBottomBarLiquidGlassEnabled",
+      "originalKeys": [
+        "bottom_bar_liquid_glass_enabled",
+        "liquid_glass_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_BOTTOM_BAR_LIQUID_GLASS_ENABLED] ?: legacyLiquidGlassEnabled",
+      "derivedSourceBindings": {
+        "legacyLiquidGlassEnabled": "preferences[KEY_LIQUID_GLASS_ENABLED] ?: false"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isBottomBarSearchEnabled",
+      "originalKeys": [
+        "bottom_bar_search_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_BOTTOM_BAR_SEARCH_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "listScopedSearchEnabled",
+      "originalKeys": [
+        "list_scoped_search_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_LIST_SCOPED_SEARCH_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "bottomBarSearchAutoExpandMode",
+      "originalKeys": [
+        "bottom_bar_search_auto_expand_mode"
+      ],
+      "actualSourceReadExpression": "BottomBarSearchAutoExpandMode.fromValue(\n                preferences[KEY_BOTTOM_BAR_SEARCH_AUTO_EXPAND_MODE]\n                    ?: BottomBarSearchAutoExpandMode.EXPAND_AT_HOME_TOP.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "bottomBarSearchLayoutMode",
+      "originalKeys": [
+        "bottom_bar_search_layout_mode"
+      ],
+      "actualSourceReadExpression": "BottomBarSearchLayoutMode.fromValue(\n                preferences[KEY_BOTTOM_BAR_SEARCH_LAYOUT_MODE]\n                    ?: BottomBarSearchLayoutMode.FULL_DOCK.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "androidNativeLiquidGlassEnabled",
+      "originalKeys": [
+        "android_native_liquid_glass_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_ANDROID_NATIVE_LIQUID_GLASS_ENABLED]\n                    ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassStyle",
+      "originalKeys": [
+        "liquid_glass_style"
+      ],
+      "actualSourceReadExpression": "legacyLiquidGlassStyle",
+      "derivedSourceBindings": {
+        "legacyLiquidGlassStyle": "LiquidGlassStyle.fromValue(\n            preferences[KEY_LIQUID_GLASS_STYLE] ?: LiquidGlassStyle.SUKISU.value\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassMode",
+      "originalKeys": [
+        "liquid_glass_mode"
+      ],
+      "actualSourceReadExpression": "liquidGlassMode",
+      "derivedSourceBindings": {
+        "liquidGlassMode": "preferences[KEY_LIQUID_GLASS_MODE]\n            ?.let(LiquidGlassMode::fromValue)\n            ?: resolveLegacyLiquidGlassMode(legacyLiquidGlassStyle)"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassStrength",
+      "originalKeys": [
+        "liquid_glass_strength"
+      ],
+      "actualSourceReadExpression": "liquidGlassStrength",
+      "derivedSourceBindings": {
+        "liquidGlassStrength": "normalizeLiquidGlassStrength(\n            preferences[KEY_LIQUID_GLASS_STRENGTH]\n                ?: resolveDefaultLiquidGlassStrength(liquidGlassMode)\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassProgress",
+      "originalKeys": [
+        "liquid_glass_material_progress_v2",
+        "liquid_glass_mode",
+        "liquid_glass_strength",
+        "liquid_glass_style"
+      ],
+      "actualSourceReadExpression": "liquidGlassProgress",
+      "derivedSourceBindings": {
+        "liquidGlassProgress": "resolveStoredLiquidGlassProgress(\n            progress = preferences[KEY_LIQUID_GLASS_PROGRESS],\n            legacyModeValue = preferences[KEY_LIQUID_GLASS_MODE],\n            legacyStrength = preferences[KEY_LIQUID_GLASS_STRENGTH],\n            legacyStyleValue = preferences[KEY_LIQUID_GLASS_STYLE],\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassReadabilityMode",
+      "originalKeys": [],
+      "actualSourceReadExpression": "liquidGlassReadabilityMode",
+      "derivedSourceBindings": {
+        "liquidGlassReadabilityMode": "LiquidGlassReadabilityMode.fromValue(\n            preferences[liquidGlassReadabilityModePreferencesKey]\n                ?: LiquidGlassReadabilityMode.STABLE.value\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "liquidGlassAdvancedSettings",
+      "originalKeys": [
+        "liquid_glass_advanced_preset",
+        "liquid_glass_progressive_blur_radius",
+        "liquid_glass_progressive_blur_extent",
+        "liquid_glass_progressive_blur_curve",
+        "liquid_glass_content_readability",
+        "liquid_glass_chromatic_aberration",
+        "liquid_glass_content_distortion"
+      ],
+      "actualSourceReadExpression": "liquidGlassAdvancedSettings",
+      "derivedSourceBindings": {
+        "liquidGlassAdvancedSettings": "resolveLiquidGlassAdvancedSettings(\n            presetValue = preferences[KEY_LIQUID_GLASS_ADVANCED_PRESET],\n            progressiveBlurRadius = preferences[KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_RADIUS],\n            progressiveBlurExtent = preferences[KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_EXTENT],\n            progressiveBlurCurve = preferences[KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_CURVE],\n            contentReadability = preferences[KEY_LIQUID_GLASS_CONTENT_READABILITY],\n            chromaticAberration = preferences[KEY_LIQUID_GLASS_CHROMATIC_ABERRATION],\n            contentDistortion = preferences[KEY_LIQUID_GLASS_CONTENT_DISTORTION],\n        )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeHeaderCollapseMode",
+      "originalKeys": [
+        "home_header_collapse_mode",
+        "header_collapse_enabled"
+      ],
+      "actualSourceReadExpression": "headerCollapseMode",
+      "derivedSourceBindings": {
+        "headerCollapseMode": "preferences[KEY_HOME_HEADER_COLLAPSE_MODE]\n            ?.let(HomeHeaderCollapseMode::fromValue)\n            ?: HomeHeaderCollapseMode.fromLegacyBoolean(\n                preferences[KEY_HEADER_COLLAPSE_ENABLED] ?: true\n            )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeBarHideType",
+      "originalKeys": [
+        "home_bar_hide_type"
+      ],
+      "actualSourceReadExpression": "HomeBarHideType.fromValue(\n                preferences[KEY_HOME_BAR_HIDE_TYPE] ?: HomeBarHideType.SYNC.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "commonListHeaderCollapseMode",
+      "originalKeys": [
+        "common_list_header_collapse_mode"
+      ],
+      "actualSourceReadExpression": "CommonListHeaderCollapseMode.fromValue(\n                preferences[KEY_COMMON_LIST_HEADER_COLLAPSE_MODE]\n                    ?: CommonListHeaderCollapseMode.SHOW_ON_REVERSE_SCROLL.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "isHeaderCollapseEnabled",
+      "originalKeys": [
+        "home_header_collapse_mode",
+        "header_collapse_enabled"
+      ],
+      "actualSourceReadExpression": "headerCollapseMode.hasAnyCollapse",
+      "derivedSourceBindings": {
+        "headerCollapseMode": "preferences[KEY_HOME_HEADER_COLLAPSE_MODE]\n            ?.let(HomeHeaderCollapseMode::fromValue)\n            ?: HomeHeaderCollapseMode.fromLegacyBoolean(\n                preferences[KEY_HEADER_COLLAPSE_ENABLED] ?: true\n            )"
+      },
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showPgcTimeline",
+      "originalKeys": [
+        "show_pgc_timeline"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_SHOW_PGC_TIMELINE] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "gridColumnCount",
+      "originalKeys": [
+        "grid_column_count"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_GRID_COLUMN_COUNT] ?: 0",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "gridColumnCountCompact",
+      "originalKeys": [
+        "grid_column_count_compact"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_GRID_COLUMN_COUNT_COMPACT] ?: 0",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "pinchToChangeGridColumnsEnabled",
+      "originalKeys": [
+        "pinch_to_change_grid_columns_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_PINCH_TO_CHANGE_GRID_COLUMNS_ENABLED] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeFeedCardWidthPreset",
+      "originalKeys": [
+        "home_feed_card_width_preset"
+      ],
+      "actualSourceReadExpression": "HomeFeedCardWidthPreset.fromValue(\n                preferences[KEY_HOME_FEED_CARD_WIDTH_PRESET] ?: HomeFeedCardWidthPreset.AUTO.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeFeedCardStyle",
+      "originalKeys": [
+        "home_feed_card_style"
+      ],
+      "actualSourceReadExpression": "HomeFeedCardStyle.fromValue(\n                preferences[KEY_HOME_FEED_CARD_STYLE] ?: HomeFeedCardStyle.BILIPAI.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeHeroCarouselEnabled",
+      "originalKeys": [
+        "home_hero_carousel_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_HERO_CAROUSEL_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeHeroCarouselAutoplayEnabled",
+      "originalKeys": [
+        "home_hero_carousel_autoplay_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_HERO_CAROUSEL_AUTOPLAY_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeRefreshTipVisible",
+      "originalKeys": [
+        "home_refresh_tip_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_REFRESH_TIP_VISIBLE] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "cardAnimationEnabled",
+      "originalKeys": [
+        "card_animation_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_CARD_ANIMATION_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "cardTransitionEnabled",
+      "originalKeys": [
+        "card_transition_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_CARD_TRANSITION_ENABLED] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "videoSharedTransitionSpeed",
+      "originalKeys": [
+        "video_shared_transition_speed"
+      ],
+      "actualSourceReadExpression": "VideoSharedTransitionSpeed.fromValue(\n                preferences[KEY_VIDEO_SHARED_TRANSITION_SPEED]\n                    ?: VideoSharedTransitionSpeed.STANDARD.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "videoSharedTransitionCustomDurationMillis",
+      "originalKeys": [
+        "video_shared_transition_custom_duration_millis"
+      ],
+      "actualSourceReadExpression": "normalizeVideoSharedTransitionCustomDurationMillis(\n                    preferences[KEY_VIDEO_SHARED_TRANSITION_CUSTOM_DURATION_MILLIS]\n                        ?: VIDEO_SHARED_TRANSITION_CUSTOM_DEFAULT_MILLIS\n                )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "smartVisualGuardEnabled",
+      "originalKeys": [],
+      "actualSourceReadExpression": "false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "upstream retired/fixed off; not a missing active toggle",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "runtimeVisualGuardEnabled",
+      "originalKeys": [
+        "runtime_visual_guard_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_RUNTIME_VISUAL_GUARD_ENABLED] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "existing DesktopThemePrefs original-key binding to AppThemeConfig; whole-app jank downgrade is outside this slice and not newly validated",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "compactVideoStatsOnCover",
+      "originalKeys": [
+        "compact_video_stats_on_cover"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_COMPACT_VIDEO_STATS_ON_COVER] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "lowQualityHomeCoverInDataSaver",
+      "originalKeys": [
+        "low_quality_home_cover_in_data_saver"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_LOW_QUALITY_HOME_COVER_IN_DATA_SAVER] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showHomeCoverGlassBadges",
+      "originalKeys": [],
+      "actualSourceReadExpression": "false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "upstream retired/fixed off; not a missing active toggle",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showHomeInfoGlassBadges",
+      "originalKeys": [],
+      "actualSourceReadExpression": "false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "upstream retired/fixed off; not a missing active toggle",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeCardBadgeEffectMode",
+      "originalKeys": [],
+      "actualSourceReadExpression": "HomeCardBadgeEffectMode.OFF",
+      "derivedSourceBindings": {},
+      "consumerStatus": "upstream retired/fixed off; not a missing active toggle",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeCardInfoGlassMode",
+      "originalKeys": [],
+      "actualSourceReadExpression": "HomeCardInfoGlassMode.OFF",
+      "derivedSourceBindings": {},
+      "consumerStatus": "upstream retired/fixed off; not a missing active toggle",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeWallpaperEffectMode",
+      "originalKeys": [
+        "home_wallpaper_effect_mode"
+      ],
+      "actualSourceReadExpression": "HomeWallpaperEffectMode.fromValue(\n                preferences[KEY_HOME_WALLPAPER_EFFECT_MODE] ?: HomeWallpaperEffectMode.SOFT_BLUR.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeWallpaperEffectScope",
+      "originalKeys": [
+        "home_wallpaper_effect_scope"
+      ],
+      "actualSourceReadExpression": "HomeWallpaperEffectScope.fromValue(\n                preferences[KEY_HOME_WALLPAPER_EFFECT_SCOPE] ?: HomeWallpaperEffectScope.HOME_ONLY.value\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showHomeUpBadges",
+      "originalKeys": [
+        "home_up_badges_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_UP_BADGES_VISIBLE] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showHomeUpAvatars",
+      "originalKeys": [
+        "home_up_avatars_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_UP_AVATARS_VISIBLE] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showHomePublishTime",
+      "originalKeys": [
+        "home_publish_time_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_PUBLISH_TIME_VISIBLE] ?: true",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "showFullVideoCardContent",
+      "originalKeys": [
+        "full_video_card_content_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_FULL_VIDEO_CARD_CONTENT_VISIBLE] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "videoCardLongPressActionEnabled",
+      "originalKeys": [
+        "video_card_long_press_action_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_VIDEO_CARD_LONG_PRESS_ACTION_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeCardDynamicTintEnabled",
+      "originalKeys": [
+        "home_card_dynamic_tint_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_CARD_DYNAMIC_TINT_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeCardFrostedGlassEnabled",
+      "originalKeys": [
+        "home_card_frosted_glass_enabled",
+        "home_card_dynamic_tint_enabled"
+      ],
+      "actualSourceReadExpression": "resolveHomeCardFrostedGlassEnabled(\n                storedValue = preferences[KEY_HOME_CARD_FROSTED_GLASS_ENABLED],\n                legacyCombinedValue = preferences[KEY_HOME_CARD_DYNAMIC_TINT_ENABLED],\n            )",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "homeDurationStyle",
+      "originalKeys": [
+        "home_duration_style",
+        "home_video_duration_badges_visible"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_HOME_DURATION_STYLE]\n                ?.let(HomeDurationStyle::fromValue)\n                ?: if (preferences[KEY_HOME_VIDEO_DURATION_BADGES_VISIBLE] ?: true) {\n                    HomeDurationStyle.OUTSIDE_COVER\n                } else {\n                    HomeDurationStyle.HIDDEN\n                }",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "easterEggEnabled",
+      "originalKeys": [
+        "easter_egg_enabled"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_EASTER_EGG_ENABLED] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "not bound in current Windows Discovery/Home to this original HomeSettings field",
+      "preparedThisSlice": false
+    },
+    {
+      "field": "crashTrackingConsentShown",
+      "originalKeys": [
+        "crash_tracking_consent_shown"
+      ],
+      "actualSourceReadExpression": "preferences[KEY_CRASH_TRACKING_CONSENT_SHOWN] ?: false",
+      "derivedSourceBindings": {},
+      "consumerStatus": "current Root Diagnostics consent slice owns this consumer; not modified or counted again here",
+      "preparedThisSlice": false
+    }
+  ],
+  "additionalDynamicState": [
+    {
+      "field": "dynamic user pins/hidden users",
+      "storage": "dynamic_user_prefs",
+      "keys": [
+        "dynamic_pinned_users",
+        "dynamic_hidden_users"
+      ],
+      "status": "missing",
+      "default": "empty string sets"
+    },
+    {
+      "field": "dynamic local not-interested IDs",
+      "storage": "dynamic_cache",
+      "keys": [
+        "not_interested_dynamic_ids_v1"
+      ],
+      "status": "missing",
+      "default": "empty string set; original max500 normalization"
+    },
+    {
+      "field": "dynamic cached feed",
+      "storage": "dynamic_cache",
+      "keys": [
+        "dynamic_items_cache",
+        "dynamic_cache_time"
+      ],
+      "status": "missing",
+      "default": "no cache; original max100 items"
+    },
+    {
+      "field": "dynamic display-mode and selected-tab routing",
+      "storage": "dynamic_user_prefs",
+      "keys": [
+        "dynamic_display_mode",
+        "dynamic_selected_tab"
+      ],
+      "status": "missing",
+      "default": "display mode SIDEBAR enum name, invalid SIDEBAR; selected-tab missing null through original resolveDynamicSelectedTab"
+    }
+  ],
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/HomeSettingsStore.kt",
+      "sha256LF": "506cdd799a2bd40df0df34119b884a0e892a4111c70823717563975471ec8204"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "sha256LF": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+      "sha256LF": "c18aa754ff40d18d6f706c73d8be5ab9a26eda63b4b987be7ae609fe3d372836"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+      "sha256LF": "0216d770c562728dc9cac6549bbbbb205ac10f79bb594437665a610ae17198ff"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardStylePolicy.kt",
+      "sha256LF": "857d9615df833228e526506168c6e68ff387a224249d8f6687a949d19dd3d0e7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardDensityPolicy.kt",
+      "sha256LF": "078e67c2e210c78d58113460b545e7bd84c6c0dad23571bf2a5d688a4a96222b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "sha256LF": "9981e964c6b90b51b93bfc7808490043fe60b460a8cc6491027afbbe2d0d13f5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+      "sha256LF": "742b254c3555a6a7b7785c8f2c0ac6a1c260493671441151b70c07a60a566d0f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+      "sha256LF": "890574b7e97781458fcd6d393068d54c30864270ed914a33683d2815b3f0d63b"
+    }
+  ],
+  "currentConsumers": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256LF": "d07877d5ab726bcc8af4ee9cc9de2c505d8e0b11b70c8514bca897b131671365"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256LF": "95be2e43f7d458be9f3f9b1950ac8234be8adeeddd57a04a6d2c3d76dbfec446"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256LF": "3682befd886830df7187924e5c661324337c34b6df205d35adb096f89553c4f5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256LF": "ec88bdc2f982e38d0fefa4b2c766d736f6551336e67f27d5d9a16b4a8db436a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256LF": "f06fb3593cd954f553dcdf900b32438cbcf4976be056a8238dd17c5efd01700e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "sha256LF": "af020ed7fe202c9a06f3cf45ecf22a876750e70d1025db7bb4bb01cb07267a06"
+    }
+  ],
+  "scope": "Two complete user settings plus original dynamic fetch/page/layout consumers; not full Home/Dynamic settings parity"
+}

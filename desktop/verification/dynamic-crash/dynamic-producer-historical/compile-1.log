@@ -1,0 +1,231 @@
+desktop\.local\settings-home-dynamic-parity\generated\com\android\purebilibili\feature\settings\DesktopDynamicTimelineSettingsFields.kt:19:9: error: unresolved reference 'SettingSwitchItem'.
+        SettingSwitchItem(
+        ^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\CommunityDynamicScreens.kt:54:13: error: no parameter with name 'oldContentDividerLabel' found.
+            oldContentDividerLabel=if(type=="all")"������֮ǰ�Ķ�̬"else"������֮ǰ��${originalTitle}") {
+            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\CommunityDynamicScreens.kt:54:91: error: too many arguments for 'fun DesktopDynamicTimelineFeed(state: DesktopDynamicTimelineState, preferences: DesktopDynamicTimelinePreferences, onLogin: () -> Unit, transform: (List<DynamicItem>) -> List<DynamicItem>): Unit'.
+            oldContentDividerLabel=if(type=="all")"������֮ǰ�Ķ�̬"else"������֮ǰ��${originalTitle}") {
+                                                                                          ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\CommunityDynamicScreens.kt:55:13: error: @Composable invocations can only happen from the context of a @Composable function
+            CommunityDynamicCard(it,community,navigation)
+            ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\CommunityDynamicScreens.kt:55:34: error: unresolved reference 'it'.
+            CommunityDynamicCard(it,community,navigation)
+                                 ^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:68:52: error: syntax error: Expecting a '>'.
+    transform:(List<DynamicItem>)->List<DynamicItem>={it},
+                                                   ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:68:52: error: syntax error: Expecting ')'.
+    transform:(List<DynamicItem>)->List<DynamicItem>={it},
+                                                   ^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:68:55: error: unresolved reference 'it'.
+    transform:(List<DynamicItem>)->List<DynamicItem>={it},
+                                                      ^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:68:58: error: syntax error: Expecting a top level declaration.
+    transform:(List<DynamicItem>)->List<DynamicItem>={it},
+                                                         ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:5: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+    ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:27: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                          ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:28: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                           ^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:34: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                                 ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:35: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                                  ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:36: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                                   ^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:44: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                                           ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:69:45: error: syntax error: Expecting a top level declaration.
+    oldContentDividerLabel:String="������֮ǰ�Ķ�̬",
+                                            ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:5: error: syntax error: Expecting a top level declaration.
+    row:@Composable (DynamicItem)->Unit,
+    ^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:8: error: syntax error: Expecting a top level declaration.
+    row:@Composable (DynamicItem)->Unit,
+       ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:22: error: too many arguments for 'constructor(): Composable'.
+    row:@Composable (DynamicItem)->Unit,
+                     ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:34: error: syntax error: Expecting a top level declaration.
+    row:@Composable (DynamicItem)->Unit,
+                                 ^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:36: error: syntax error: Expecting a top level declaration.
+    row:@Composable (DynamicItem)->Unit,
+                                   ^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:70:40: error: syntax error: Expecting a top level declaration.
+    row:@Composable (DynamicItem)->Unit,
+                                       ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:71:1: error: syntax error: Expecting a top level declaration.
+) {
+^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:71:3: error: syntax error: Expecting a top level declaration.
+) {
+  ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:71:3: error: functions which invoke @Composable functions must be marked with the @Composable annotation
+) {
+  ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:71:3: error: function declaration must have a name.
+) {
+  ^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:72:15: error: @Composable invocations can only happen from the context of a @Composable function
+    val scope=rememberCoroutineScope()
+              ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:73:19: error: unresolved reference 'preferences'.
+    val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
+                  ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:73:42: error: @Composable invocations can only happen from the context of a @Composable function
+    val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
+                                         ^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:74:24: error: unresolved reference 'preferences'.
+    val incremental by preferences.incrementalRefresh.collectAsState(false)
+                       ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:74:55: error: @Composable invocations can only happen from the context of a @Composable function
+    val incremental by preferences.incrementalRefresh.collectAsState(false)
+                                                      ^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:19: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                  ^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:19: error: @Composable invocations can only happen from the context of a @Composable function
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                  ^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:28: error: unresolved reference 'state'.
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                           ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:45: error: unresolved reference 'transform'.
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                                            ^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:56: error: unresolved reference 'transform'.
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                                                       ^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:75:66: error: unresolved reference 'state'.
+    val displayed=remember(state.page.items,transform){transform(state.page.items)}
+                                                                 ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:76:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
+             ^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:76:14: error: @Composable invocations can only happen from the context of a @Composable function
+    val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
+             ^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:76:79: error: unresolved reference 'it'.
+    val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
+                                                                              ^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:77:83: error: unresolved reference 'state'.
+    val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
+                                                                                  ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:5: error: @Composable invocations can only happen from the context of a @Composable function
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+    ^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:20: error: unresolved reference 'state'.
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+                   ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:30: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+                             ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:31: error: unresolved reference 'state'.
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+                              ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:50: error: unresolved reference 'state'.
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+                                                 ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:78:68: error: unresolved reference 'state'.
+    LaunchedEffect(state){if(!state.initialized&&state.error==null)state.fetch(refresh=true,incrementalRefresh=incremental)}
+                                                                   ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:79:36: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+    fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
+                                   ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:79:37: error: unresolved reference 'state'.
+    fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
+                                    ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:79:61: error: unresolved reference 'state'.
+    fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
+                                                            ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:80:5: error: @Composable invocations can only happen from the context of a @Composable function
+    Column(Modifier.fillMaxSize()) {
+    ^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:82:31: error: function invocation 'size(...)' expected.
+            Text("${displayed.size} ��",style=MaterialTheme.typography.labelLarge)
+                              ^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:83:32: error: argument type mismatch: actual type is 'WideNavigationRailValue', but 'Boolean' was expected.
+            TextButton(enabled=!state.busy,onClick={fetch(true)}){Text("ˢ��")}
+                               ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:83:33: error: unresolved reference 'state'.
+            TextButton(enabled=!state.busy,onClick={fetch(true)}){Text("ˢ��")}
+                                ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:87:92: error: unresolved reference 'state'.
+            else StaggeredGridCells.Adaptive(resolveDynamicTimelineMinColumnWidth()),state=state.scroll,
+                                                                                           ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:94:39: error: cannot infer type for value parameter 'index'. Specify it explicitly.
+            displayed.forEachIndexed {index,item->
+                                      ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:94:45: error: cannot infer type for value parameter 'item'. Specify it explicitly.
+            displayed.forEachIndexed {index,item->
+                                            ^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:96:39: error: unresolved reference 'oldContentDividerLabel'.
+                    OldContentDivider(oldContentDividerLabel)}
+                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:97:39: error: unresolved reference 'row'.
+                item(key=keys[index]){row(item)}
+                                      ^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:13: error: unresolved reference 'state'.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+            ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                         ^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:26: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                         ^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:31: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                              ^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:107: error: unresolved reference 'onLogin'.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                                                                                                          ^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:122: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                                                                                                                         ^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:123: error: unresolved reference 'state'.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                                                                                                                          ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:99:142: error: unresolved reference 'state'.
+            state.error?.let {failure->item(span=StaggeredGridItemSpan.FullLine){CommunityFailure(failure,onLogin){fetch(!state.initialized||state.page.errorSource!=DynamicFeedErrorSource.APPEND)}}}
+                                                                                                                                             ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:100:16: error: unresolved reference 'state'.
+            if(state.busy)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
+               ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:101:16: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
+               ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:101:17: error: unresolved reference 'state'.
+            if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
+                ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:101:50: error: unresolved reference 'state'.
+            if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
+                                                 ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:102:25: error: unresolved reference 'state'.
+                Text(if(state.page.items.isEmpty())"��������"else"��ǰɸѡ��������һ������",color=MaterialTheme.colorScheme.onSurfaceVariant)}
+                        ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:103:16: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={fetch(false)}){Text("���ظ���")}}
+               ^^^^^^^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:103:17: error: unresolved reference 'state'.
+            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={fetch(false)}){Text("���ظ���")}}
+                ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:103:29: error: unresolved reference 'state'.
+            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={fetch(false)}){Text("���ظ���")}}
+                            ^^^^^
+desktop\.local\settings-home-dynamic-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicTimeline.kt:103:48: error: unresolved reference 'state'.
+            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={fetch(false)}){Text("���ظ���")}}
+                                               ^^^^^

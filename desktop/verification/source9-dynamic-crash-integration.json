@@ -1,0 +1,226 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "de19778e828523d2ad73818733951f424d4d8f7b",
+  "status": "originalDynamicTimelineSettingsAndPendingCrashPromptIntegrated",
+  "productFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "hashNormalization": "lf",
+      "sha256": "23859b15ad46705b14b7ca2b108d4e283c0a4b3b50893bb6b6fd1b3c5604e3a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "hashNormalization": "lf",
+      "sha256": "d2aa1427ea20a2be2b4eb3a96eae64aba3991c0de49b0ba4e5e24c2357a67fa6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.kt",
+      "hashNormalization": "lf",
+      "sha256": "525d607caea356a08942668e5e3c338e875d007bf5fb78ece30d3056bc385912"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptHost.kt",
+      "hashNormalization": "lf",
+      "sha256": "39323ac784e527942fb3ae54d9d0d31b814aa52ab5d9f04b4dadb53ab6344804"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.kt",
+      "hashNormalization": "lf",
+      "sha256": "29f9cf6cf11f5788447cef13308b6a810aba8d846edf345df135bd2340917124"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "hashNormalization": "lf",
+      "sha256": "9fbe0181f03f0224ac8eea7f33d23df6ecb2627f3b0ece9f28223cd050a99711"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "hashNormalization": "lf",
+      "sha256": "4d8c287d5aa60f24551515cf103278a403c43af78471f963c6371b0a7a939fa4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "hashNormalization": "lf",
+      "sha256": "e6a771658f863550d7c4e386dc0689e02ede9390c14818b94124a693c2e85cac"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "hashNormalization": "lf",
+      "sha256": "4a27a553fb453d96389865aa09056768725d876b28962efb638782bf97f4ecc7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "hashNormalization": "lf",
+      "sha256": "61a81a53209804209491778757830ad52c7088742733a4b8d3383a520162c875"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-crash-prompt.py",
+      "hashNormalization": "lf",
+      "sha256": "c478fd880736a6a12cfdf5ed4f55e1b596e88f370da2369619e26c39a8612a94"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "hashNormalization": "lf",
+      "sha256": "34bad171b3885cea13125322b5a114c307256925cd4614317028ffc64aa4d65b"
+    },
+    {
+      "path": "desktop/tools/tests/test_crash_prompt_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "038559d5c522583b612d832943c1acdf8056dc65cc816f31a6c17bf23fa4a4d6"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "hashNormalization": "lf",
+      "sha256": "bf4773b52abed34e8b6312a01f07404c8e400d679073007c28d324631d10105f"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "hashNormalization": "lf",
+      "sha256": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca"
+    }
+  ],
+  "originalSourceIdentities": 446,
+  "originalResourceIdentities": 210,
+  "originalApiDeclarationsVerbatim": 303,
+  "originalResponsesAdopted": 45,
+  "sourceAndTestCountsUsedAsProgress": false,
+  "dynamic": {
+    "globalStore": true,
+    "namespace": "settings",
+    "incrementalKey": "incremental_timeline_refresh",
+    "incrementalDefault": false,
+    "layoutKey": "dynamic_feed_layout_mode",
+    "layoutValues": {
+      "WATERFALL": 0,
+      "LIST": 1
+    },
+    "unknownLayoutFallback": "WATERFALL",
+    "originalFetchPaginationMergeAndPagePolicies": true,
+    "sameMidAndAccountEpochGuard": true,
+    "originalListPrependAnchorAndOldContentDivider": true,
+    "originalPaginationUpdatesPerPage": true,
+    "laterCancellationDoesNotRollbackOriginalCursor": true,
+    "layoutChangeDoesNotReloadTransport": true,
+    "currentWindowsCardRendererRetained": true,
+    "fixedTabsRemainPendingFullParity": true
+  },
+  "crashPrompt": {
+    "originalEnumExpressionPoliciesAndDialog": true,
+    "originalIgnoreHasNoInventedButton": true,
+    "sameRetainedActorAndLifecycleOwner": true,
+    "rootMountedOutsidePageAndAccountRoutes": true,
+    "rootStartupStorageErrorAlsoShowsPendingPrompt": true,
+    "shareAndDismissClearOnlyMarker": true,
+    "crashSnapshotRetained": true,
+    "shareOpensActualLocalViewer": true,
+    "nativeExternalShareImplemented": false,
+    "rootOsChooserClicked": false,
+    "controllerRetiresAndWaitsBeforeActorDrainAndStoreFreeze": true,
+    "latePendingReadCannotPublishOrClearAfterRetirement": true
+  },
+  "verification": {
+    "mainCompileAndFocusedJUnit": {
+      "task": "test",
+      "successful": true,
+      "elapsedSeconds": 20,
+      "focusedJUnitSuite": "DesktopDynamicTimelineSettingsTest",
+      "tests": 13,
+      "failures": 0,
+      "skipped": 0
+    },
+    "focusedPythonSourceChecks": 7,
+    "actualDynamicUi": {
+      "flows": 8,
+      "pointerPairs": 48,
+      "pngs": 40,
+      "styles": [
+        "MATERIAL3",
+        "MIUIX"
+      ],
+      "darkAndLight": true,
+      "widths": [
+        800,
+        1200
+      ],
+      "height": 900,
+      "productionOverrides": 0,
+      "classOriginsAndBytesVerified": 14,
+      "rootReadyShellOrHWND": false
+    },
+    "actualDynamicTransport": {
+      "actualProductRepositoryCommunityRepositoryAndOriginalRetrofitApi": true,
+      "applicationInterceptorOnly": true,
+      "socketsOrRealAccount": false,
+      "originalCursorBaselineAndRetainedTailVerified": true
+    },
+    "actualCrashAndLifecycle": {
+      "freshJvmScenarios": 18,
+      "fixtureAssertions": 278,
+      "breakdown": {
+        "originalCrashHostAndDisk": 98,
+        "previousLifecycleRuntime": 70,
+        "actualRootPendingPrompt": 110
+      },
+      "sourceContracts": 18,
+      "sourceIdentities": 51,
+      "pointerPairs": 26,
+      "pngs": 32,
+      "productionOverrides": 0,
+      "businessNetworkOrProcessAttempts": 0,
+      "fullReadyMainOrHWND": false
+    },
+    "immutableSnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+    "productJars": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-kotlin.jar",
+        "source": "desktop/build/classes/kotlin/main",
+        "entries": 6574,
+        "sha256Bytes": "e85a34e3e3c2e67fd69ae5a3a62179e82e68efe130902d3748c3e8e3bbc64e0f"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-java.jar",
+        "source": "desktop/build/classes/java/main",
+        "entries": 141,
+        "sha256Bytes": "188a3eabdfd1514a4ca9c5e7c211436be5e9103fa6ff21e88e541d796ef6bf4e"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-crash-main-product-snapshot\\main-resources.jar",
+        "source": "desktop/build/resources/main",
+        "entries": 56,
+        "sha256Bytes": "038c930ab0f5343396726327a4c9af7bb18f127de8dba1ffda42a260d98e671d"
+      }
+    ],
+    "orderedClasspathEntries": 234,
+    "externalOrderedEntries": 231,
+    "externalDistinctJars": 226,
+    "sourceInventoryOrderOnlyNormalization": {
+      "metadataOnly": true,
+      "existingOrderRestored": true,
+      "newSourceEntriesAppended": 13,
+      "noOriginalContentOrFeatureRegistrationChanged": true,
+      "semanticCanonicalSha256Bytes": "6542f7577494c3b94b22fe85e5d77f4df4328d175f7dde24ad8721d2750ca299",
+      "beforeSha256Bytes": "b6193e483d8f9d96c7967ddea48ead45dbbaaf4c2f5086f8fd0360bfbc05acb7",
+      "afterSha256Bytes": "f2cef07a7714cff86ca4a3a291a607ec2a28f8cf5b24c53145497a94186fd3ca",
+      "compiledSnapshotManifestSha256Bytes": "c01330bf9345f8f5d1be2fa70bce6d7c1c980179448ee22f2ad0f467292a6345",
+      "productKotlinGeneratedJavaResourcesUnchanged": true
+    },
+    "allFrozenRawArtifactsVerified": 982,
+    "selectedRawArtifacts": 255,
+    "evidence": "desktop/verification/dynamic-crash/selected-evidence.json"
+  },
+  "remaining": [
+    "Complete original DynamicCard rendering, vote/image save and all detail actions",
+    "Original dynamic visibility/order/user rail/five Sidebar or Drawer modes/top fold/image layout",
+    "Complete Home card/layout/motion/carousel/background and settings consumers",
+    "Native Windows external share and real save chooser acceptance",
+    "Firebase/analytics and other platform logging consumers",
+    "Full Main Ready window, account navigation, native player and packaged regression",
+    "Updater compatibility and release gate after full parity",
+    "Final Desktop EXE deployment"
+  ],
+  "fullFunctionalParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}
