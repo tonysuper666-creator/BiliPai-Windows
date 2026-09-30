@@ -3,9 +3,10 @@ from pathlib import Path
 import tempfile
 import unittest
 
-ROOT = Path(__file__).resolve().parents[3]
-SCRIPT = Path(__file__).with_name("extract-upstream-js.py")
-if not SCRIPT.exists(): SCRIPT = ROOT / "desktop/tools/extract-upstream-js.py"
+ROOT = next(path for path in Path(__file__).resolve().parents if (path / "app/src/main").is_dir())
+SCRIPT = next(path for path in (Path(__file__).with_name("extract-upstream-js.py"),
+    Path(__file__).resolve().parent.parent / "extract-upstream-js.py",
+    Path(__file__).resolve().parent.parent / "tools/extract-upstream-js.py") if path.is_file())
 spec = importlib.util.spec_from_file_location("js_extractor", SCRIPT)
 EXTRACTOR = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(EXTRACTOR)
@@ -25,9 +26,9 @@ class JsSourceParityTest(unittest.TestCase):
 
     def test_pure_schema_and_launch_store_stay_direct_and_are_not_duplicated(self):
         rows = EXTRACTOR.inventory(ROOT)
-        self.assertEqual(6, len(rows))
-        self.assertEqual(6, len({row["path"] for row in rows}))
-        self.assertEqual(5, len(self.files))
+        self.assertEqual(7, len(rows))
+        self.assertEqual(7, len({row["path"] for row in rows}))
+        self.assertEqual(6, len(self.files))
         for path in EXTRACTOR.DIRECT:
             self.assertNotIn(Path(path).name, {file.name for file in self.files})
 
@@ -93,6 +94,19 @@ class JsSourceParityTest(unittest.TestCase):
         self.assertIn(host.media_extractor(ROOT).function(original, "safeStorageName", host.parser_for(ROOT))
             .replace("private fun", "internal fun", 1), output)
         self.assertNotIn("JavascriptInterface", output)
+
+    def test_remote_download_and_validation_keep_upstream_bodies_with_only_platform_imports(self):
+        host = EXTRACTOR.helper(ROOT)
+        selector, parser = host.media_extractor(ROOT), host.parser_for(ROOT)
+        original = host.read(ROOT, EXTRACTOR.REMOTE_SOURCE)
+        output = self.file("DesktopJsRemoteImportPolicy")
+        self.assertIn(selector.function(original, "downloadJsRemotePlugin", parser), output)
+        validate = selector.function(original, "validateImportUrlOrError", parser)
+        self.assertIn(validate.replace("fun validateImportUrlOrError", "internal fun validateDesktopJsImportUrlOrError", 1), output)
+        self.assertIn("DesktopJsRemoteNetwork as NetworkModule", output)
+        self.assertIn("DesktopPluginUrl as Uri", output)
+        self.assertNotIn("android.net.Uri", output)
+        self.assertNotIn("core.network.NetworkModule", output)
 
 
 if __name__ == "__main__": unittest.main()

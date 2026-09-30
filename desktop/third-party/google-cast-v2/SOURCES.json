@@ -308,13 +308,13 @@
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
-      "sha256": "950e674686dd056c7844f42ed03cdfdc7c5f68c6e4a1d8d940293ef3c7db5641",
-      "bytes": 4132
+      "sha256": "4a7529e3d589f60c190464c9f353d1804fb140c884e770a87f6d9cc3191da70e",
+      "bytes": 4508
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
-      "sha256": "f7a1bd101c9766c4cb2a620e8fd480ce1ccce841db301b5bd68995bcdc350a01",
-      "bytes": 8175
+      "sha256": "4ddd2e0640e32c438668965715ac3d1fdf695a81dc40ce020e88f798cc64748e",
+      "bytes": 8339
     },
     {
       "path": "src/main/resources/cast-v2/cast-root.der",
@@ -585,6 +585,11 @@
       "path": "tools/extract-google-cast-platform.py",
       "sha256": "09b0213de5471cf97a0f7afcdf4dee9114cfdeaba227b6dada3e818009cfe0bf",
       "bytes": 2946
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256": "5766488fee3ed9e79c82a55c91fd82b7fe47c6f13c48d0e92c5a43178bc5dfa4",
+      "bytes": 4771
     }
   ],
   "dependencyNotices": [

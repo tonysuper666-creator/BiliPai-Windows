@@ -170,7 +170,7 @@ class DesktopCastTest {
                 val xml = it.body.string()
                 assertTrue(xml.contains("contentType=\"video\"")); assertTrue(xml.contains("contentType=\"audio\""))
                 assertTrue(xml.contains("indexRange=\"100-199\"")); assertTrue(xml.contains("Initialization range=\"0-99\""))
-                assertTrue(xml.contains("/proxy?url=")); assertFalse(xml.contains("Cookie"))
+                assertTrue(xml.contains("/proxy?target=")); assertFalse(xml.contains("/proxy?url=")); assertFalse(xml.contains("Cookie"))
             }
         }
     }

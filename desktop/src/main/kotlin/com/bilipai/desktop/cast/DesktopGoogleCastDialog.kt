@@ -17,7 +17,9 @@ fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogle
     val scope = rememberCoroutineScope()
     val routes by plugin.routes.collectAsState()
     val playback by plugin.playbackState.collectAsState()
-    val busy by plugin.isBusy.collectAsState()
+    val pluginBusy by plugin.isBusy.collectAsState()
+    var preparing by remember { mutableStateOf(false) }
+    val busy = pluginBusy || preparing
     val discovering by plugin.isDiscovering.collectAsState()
     val error by plugin.error.collectAsState()
     var seekSeconds by remember { mutableStateOf("") }
@@ -34,10 +36,13 @@ fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogle
             LazyColumn(Modifier.heightIn(max = 220.dp)) {
                 items(routes, key = { it.routeId }) { route ->
                     OutlinedButton(enabled = !busy, onClick = { scope.launch {
+                        val preparation = DesktopCastProxySessions.acquirePreparation()
+                        preparing = true
                         mediaError = null
                         try { val request = media(); if (request == null) mediaError = "当前媒体没有可投屏的播放地址" else plugin.cast(context, route, request) }
                         catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
                         catch (_: Exception) { mediaError = "获取投屏媒体失败，请重新选择播放源" }
+                        finally { preparing = false; preparation.close(); com.android.purebilibili.feature.cast.LocalProxyServer.stopAndClear() }
                     } }, modifier = Modifier.fillMaxWidth()) {
                         Column { Text(route.name); route.description?.let { Text(it, style = MaterialTheme.typography.bodySmall) } }
                     }

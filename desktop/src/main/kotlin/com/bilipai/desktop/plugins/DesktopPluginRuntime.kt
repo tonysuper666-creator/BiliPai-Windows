@@ -10,6 +10,8 @@ import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopDiscoveryRepository
 import com.bilipai.desktop.data.PlaybackSource
 import com.bilipai.desktop.cast.DesktopGoogleCastPlugin
+import com.bilipai.desktop.cast.DesktopCastProxySessions
+import com.android.purebilibili.feature.cast.LocalProxyServer
 import com.bilipai.desktop.plugins.js.*
 import java.nio.file.Path
 import com.android.purebilibili.feature.plugin.*
@@ -48,6 +50,9 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     val todayWatch = TodayWatchPlugin { DesktopPluginRepositoryBinding.recommendationContext() }
     val dlnaCast = DlnaCastPlugin()
     val googleCast = DesktopGoogleCastPlugin()
+    private val castProxyConsumer = DesktopCastProxySessions.registerConsumer {
+        googleCast.playbackState.value.isActive || googleCast.isBusy.value
+    }
     private val cdn = CdnRegionPlugin()
     private val adFilter = AdFilterPlugin()
     val jsPlugins = DesktopJsPluginRepository(context, DesktopJsPluginHost(
@@ -348,6 +353,8 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
                     catch (cancelled: CancellationException) { throw cancelled }
                     catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Plugin shutdown failed", error) }
                 }
+                castProxyConsumer.close()
+                LocalProxyServer.stopAndClear()
                 store.freezeWrites()
                 runCatching { DesktopPluginRepositoryBinding.recommendationContext().store.freezeWrites() }
                 stopped = true

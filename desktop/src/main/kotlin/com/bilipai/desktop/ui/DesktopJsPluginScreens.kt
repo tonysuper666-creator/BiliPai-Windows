@@ -29,10 +29,12 @@ fun DesktopJsPluginsDialog(repository: DesktopJsPluginRepository, onOpenPlugin: 
     var error by remember { mutableStateOf<String?>(null) }
     var preview by remember { mutableStateOf<DesktopJsPluginPreview?>(null) }
     var granted by remember { mutableStateOf(emptySet<PluginCapability>()) }
+    var remoteUrl by remember { mutableStateOf("") }
+    var operation by remember { mutableStateOf<Job?>(null) }
     fun action(block: suspend () -> Unit) {
         if (busy) return
         busy = true; error = null
-        scope.launch {
+        operation = scope.launch {
             try { block() }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { error = failure.message ?: "JS 插件操作失败" }
@@ -57,6 +59,13 @@ fun DesktopJsPluginsDialog(repository: DesktopJsPluginRepository, onOpenPlugin: 
                     }
                     path?.let { preview = repository.preview(it); granted = emptySet() }
                 } }, enabled = !busy) { Text("预览本地 JS 插件") }
+                OutlinedTextField(remoteUrl, { remoteUrl = it }, label = { Text("远程 JS 插件链接") },
+                    singleLine = true, enabled = !busy, modifier = Modifier.fillMaxWidth())
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(onClick = { action { preview = repository.previewRemote(remoteUrl); granted = emptySet() } },
+                        enabled = !busy && remoteUrl.isNotBlank()) { Text("下载并预览") }
+                    if (busy) TextButton(onClick = { operation?.cancel() }) { Text("取消操作") }
+                }
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     items(state.plugins, key = { it.installed.manifest.id }) { item ->
                         val installed = item.installed
@@ -85,7 +94,9 @@ fun DesktopJsPluginsDialog(repository: DesktopJsPluginRepository, onOpenPlugin: 
             confirmButton = { Button(onClick = { action { repository.install(candidate, granted); preview = null } }, enabled = !busy) { Text("批准所选权限并安装") } },
             dismissButton = { TextButton(onClick = { preview = null }, enabled = !busy) { Text("取消") } }, text = {
                 LazyColumn(Modifier.width(650.dp).heightIn(max = 650.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    item { Text(candidate.manifest.description); Text("${candidate.manifest.author} · ${candidate.manifest.version}"); Text(candidate.scriptSha256, style = MaterialTheme.typography.bodySmall) }
+                    item { Text(candidate.manifest.description); Text("${candidate.manifest.author} · ${candidate.manifest.version}");
+                        candidate.sourceUrl?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
+                        Text(candidate.scriptSha256, style = MaterialTheme.typography.bodySmall) }
                     error?.let { item { Text(it, color = MaterialTheme.colorScheme.error) } }
                     items(resolvePluginCapabilityUiModels(candidate.manifest.permissions), key = { it.capability.name }) { capability ->
                         Row {
@@ -152,8 +163,7 @@ fun DesktopJsPluginContentScreen(repository: DesktopJsPluginRepository, pluginId
             }
         } }
         module?.params?.let { parameters -> items(parameters, key = { it.name }) { param ->
-            OutlinedTextField(values[param.name] ?: param.defaultValue, { values[param.name] = it }, label = { Text(param.title) },
-                singleLine = true, enabled = !busy, modifier = Modifier.fillMaxWidth())
+            DesktopJsParameter(param, values[param.name] ?: param.defaultValue, { values[param.name] = it }, !busy)
         } }
         item {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -165,7 +175,14 @@ fun DesktopJsPluginContentScreen(repository: DesktopJsPluginRepository, pluginId
         itemsIndexed(flattenMediaItems(media), key = { index, item -> resolveBiliPaiJsMediaItemLazyKey(index, item) }) { _, item ->
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(item.title, style = MaterialTheme.typography.titleMedium); Text(item.description)
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        DesktopJsMediaImage(repository, pluginId, item, revision,
+                            installed?.enabled == true && record?.authorizationMatches == true &&
+                                PluginCapability.NETWORK in (installed?.grantedCapabilities ?: emptySet()))
+                        Column(Modifier.weight(1f)) {
+                            Text(item.title, style = MaterialTheme.typography.titleMedium); Text(item.description)
+                        }
+                    }
                     val streams = resolveBiliPaiJsMediaStreams(item)
                     if (streams.isNotEmpty()) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         streams.forEachIndexed { index, stream ->
@@ -179,4 +196,31 @@ fun DesktopJsPluginContentScreen(repository: DesktopJsPluginRepository, pluginId
             }
         }
     }
+}
+
+/** The upstream params JSON carries strings for every declared type; enum selection preserves that. */
+@Composable
+private fun DesktopJsParameter(param: BiliPaiJsParam, value: String, onValueChange: (String) -> Unit,
+    enabled: Boolean) {
+    if (param.type.equals("enum", true) && param.options.isNotEmpty()) {
+        var expanded by remember(param) { mutableStateOf(false) }
+        Column(Modifier.fillMaxWidth()) {
+            Text(param.title, style = MaterialTheme.typography.labelLarge)
+            Box {
+                OutlinedButton(onClick = { expanded = true }, enabled = enabled) {
+                    Text(param.options.firstOrNull { it.value == value }?.title ?: value.ifBlank { "请选择" })
+                }
+                DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
+                    param.options.forEach { option -> DropdownMenuItem(text = { Text(option.title) },
+                        onClick = { onValueChange(option.value); expanded = false }, enabled = enabled) }
+                }
+            }
+            if (param.options.none { it.value == value }) {
+                // Unknown previously saved values stay editable rather than silently becoming the first option.
+                OutlinedTextField(value, onValueChange, label = { Text("自定义值") }, singleLine = true,
+                    enabled = enabled, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    } else OutlinedTextField(value, onValueChange, label = { Text(param.title) }, singleLine = true,
+        enabled = enabled, modifier = Modifier.fillMaxWidth())
 }

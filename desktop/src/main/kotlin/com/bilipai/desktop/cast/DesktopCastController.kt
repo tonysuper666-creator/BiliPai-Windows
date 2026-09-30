@@ -56,11 +56,13 @@ class DesktopCastController(val context: DesktopPluginContext, val plugin: DlnaC
 
     /** Explicit lifecycle shutdown cancels local discovery, polling, and proxy transport. */
     suspend fun quiesce() = operation.withLock {
-        plugin.onDisable()
-        _error.value = null
+        val preparation = DesktopCastProxySessions.acquirePreparation()
+        try { plugin.onDisable(); _error.value = null }
+        finally { preparation.close(); LocalProxyServer.stopAndClear() }
     }
 
     private suspend fun execute(block: suspend () -> Unit): Result<Unit> = operation.withLock {
+        val preparation = DesktopCastProxySessions.acquirePreparation()
         _busy.value = true; _error.value = null
         try { block(); Result.success(Unit) }
         catch (cancelled: CancellationException) { throw cancelled }
@@ -72,6 +74,6 @@ class DesktopCastController(val context: DesktopPluginContext, val plugin: DlnaC
                 else -> "投屏操作失败（${failure.javaClass.simpleName}），请检查局域网连接"
             }
             Result.failure(failure)
-        } finally { _busy.value = false }
+        } finally { _busy.value = false; preparation.close(); LocalProxyServer.stopAndClear() }
     }
 }

@@ -131,10 +131,18 @@ def generate(repo: Path, output: Path) -> None:
 
     path = BASE + "feature/cast/LocalProxyServer.kt"
     body = read(path)
-    body = substitute(body, "import android.content.Context", "import com.bilipai.desktop.plugins.DesktopPluginContext as Context\nimport com.bilipai.desktop.cast.DesktopCastNetwork")
+    body = substitute(body, "import android.content.Context", "import com.bilipai.desktop.plugins.DesktopPluginContext as Context\nimport com.bilipai.desktop.cast.DesktopCastNetwork\nimport com.bilipai.desktop.cast.DesktopCastProxySessions\nimport com.bilipai.desktop.cast.DesktopCastProxyTarget")
     body = substitute(body, "import android.net.ConnectivityManager\n", "")
     body = substitute(body, "import com.android.purebilibili.core.util.Logger", "import com.bilipai.desktop.cast.DesktopCastLog as Logger")
     body = substitute(body, "class LocalProxyServer(port: Int = 8901) : NanoHTTPD(port)", "class LocalProxyServer(port: Int = 8901, hostname: String? = null) : NanoHTTPD(hostname, port)")
+    body = substitute(body, "        .followRedirects(true)", "        .addNetworkInterceptor(DesktopCastProxySessions.networkInterceptor())\n        .followRedirects(true)")
+    body = substitute(body, '        val targetUrl = params["url"]', '''        val registrationId = params["target"]
+        val registration = registrationId?.let(DesktopCastProxySessions::find)
+        if (registrationId != null && registration == null) {
+            return newFixedLengthResponse(Response.Status.BAD_REQUEST, MIME_PLAINTEXT, "Target is not part of the active cast session")
+        }
+        val targetUrl = registration?.url?.toString() ?: params["url"]''')
+    body = substitute(body, '            session.headers["range"]?.takeIf', '            if (registration != null) request.tag(DesktopCastProxyTarget::class.java, registration)\n            session.headers["range"]?.takeIf')
     # NanoHTTPD 2.3.1 still sends its InputStream for HEAD, and can gzip even an
     # empty HEAD stream. Keep the representation headers but never send bytes.
     body = substitute(body, "    override fun serve(session: IHTTPSession): NanoHTTPD.Response {", '''    override fun useGzipWhenAccepted(response: Response): Boolean =
@@ -166,12 +174,19 @@ def generate(repo: Path, output: Path) -> None:
                 newChunkedResponse(mapToNanoStatus(upstreamResponse.code), contentType, inputStream)
             }''')
     body = substitute(body, "val server = LocalProxyServer(PORT)", "val server = LocalProxyServer(DesktopCastNetwork.proxyPort, DesktopCastNetwork.proxyBindHost)")
+    body = substitute(body, "        fun stopAndClear() {\n            synchronized(bootstrapLock) {", "        fun stopAndClear() {\n            synchronized(bootstrapLock) {\n                if (!DesktopCastProxySessions.canClear()) return")
     body = substitute(body, "                manifestStore.clear()", "                manifestStore.clear()\n                DesktopCastNetwork.clearProxyTargets()")
     body = substitute(body, "                sharedServer?.stop()", "                sharedServer?.client?.dispatcher?.cancelAll()\n                sharedServer?.stop()")
-    body = substitute(body, "        Logger.d(\"LocalProxyServer\", \"📺 [Proxy] 正在代理请求: $targetUrl\")", "        if (!DesktopCastNetwork.isRegisteredProxyTarget(parsedTargetUrl.toString())) {\n            return newFixedLengthResponse(Response.Status.BAD_REQUEST, MIME_PLAINTEXT, \"Target is not part of the active cast session\")\n        }")
+    body = substitute(body, "        Logger.d(\"LocalProxyServer\", \"📺 [Proxy] 正在代理请求: $targetUrl\")", "        if (registration == null && !DesktopCastNetwork.isRegisteredProxyTarget(parsedTargetUrl.toString())) {\n            return newFixedLengthResponse(Response.Status.BAD_REQUEST, MIME_PLAINTEXT, \"Target is not part of the active cast session\")\n        }")
     body = substitute(body, '"Upstream Error: ${upstreamResponse.code} ${body.take(120)}"', '"Upstream Error: ${upstreamResponse.code}"')
     body = substitute(body, '"Error: ${e.message}"', '"Media relay failed"')
     body = substitute(body, "            val encodedUrl = URLEncoder.encode(targetUrl, \"UTF-8\")", "            DesktopCastNetwork.registerProxyTarget(targetUrl)\n            val encodedUrl = URLEncoder.encode(targetUrl, \"UTF-8\")")
+    body = substitute(body, "        fun getProxyUrl(context: Context, targetUrl: String): String {", "        fun getProxyUrl(context: Context, targetUrl: String, streamHeaders: Map<String, String>? = null): String {")
+    body = substitute(body, "            // 对目标 URL 进行编码，作为参数传递", '''            if (streamHeaders != null) {
+                val id = DesktopCastProxySessions.register(targetUrl, streamHeaders)
+                return "http://$ipAddress:$PORT/proxy?target=$id"
+            }
+            // 对目标 URL 进行编码，作为参数传递''')
     body = body.replace(":$PORT", ":${sharedServer?.listeningPort ?: PORT}")
     start = body.index("        private fun resolveLocalIpv4Address(context: Context): String {")
     end = body.index("        private fun mapToNanoStatus", start)

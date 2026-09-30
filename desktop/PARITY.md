@@ -25,8 +25,8 @@
 | 直播 | `feature/live`, `LiveApi` | 真实分区/搜索/关注/HLS与品质选择 | 原 WebSocket/Brotli 协议、鉴权、实时弹幕/SC期限/删除/发送已接并测试；线上连接生命周期 |
 | 下载与离线 | 原 `ResumableAssetDownloader`, Download/Offline policies | 原续传/分片/队列/任务/资产、离线弹幕与续播；实际 Kotlin FFmpeg 双轨/音频/单轨合并解码通过 | 整包真实 FFmpeg 的六种合并输出通过；批量选择、存储管理与真实下载验收 |
 | 内置插件与增强 | `feature/plugin` 实际注册的原十二个插件/策略 | 十一个实际 provider 已接，包含新增 Google Cast；原 SDK/配置/生命周期与成功 seek 回调、今日推荐原补充/缓存策略已整合并离线测试；Anime4K 原 FAST/QUALITY 实际 GPU hook、像素变化、暂停位置与清除还原通过 | Anime4K 完整插件注册与 FSR、完整界面及线上插件验收；CDN prefetch 暂未开放 |
-| JSON/包插件、皮肤 | `plugin-sdk`, `feature/plugin/js` | 原 JSON 规则执行与启停已接；原包/皮肤预览、校验、权限选择、安全存储、装扮激活及实际界面已接；Lottie/WebP 解码、独立静音原生皮肤视频与原界面槽位整合中；共享设置防止旧副本覆盖及恢复后旧实例写入已验证 | JS 运行环境/产品入口/全部线路与请求头已整合并定向测试；远程 JS 导入、原内容视觉与打包外部媒体验收、皮肤视频与文字/头像层级、完整桌面视觉；原 Kotlin 包仅预览/授权保存的边界保持一致 |
-| DLNA/Google Cast | 原 `feature/plugin/dlna`, `googlecast` | DLNA 原策略与实际界面、11 项协议 fixture 通过；Google Cast V2 使用固定原 Java API 与窄平台适配，官方根证书、真实 TLS/Protobuf/JmDNS 的 25 项隔离验证通过，等待完整 TXT 元数据后发布及更新发现结果 | 两类真实接收设备；Google Cast 严格 nonce 等兼容差异、音频设备限制及线上行为仍需实机验证 |
+| JSON/包插件、皮肤 | `plugin-sdk`, `feature/plugin/js` | 原 JSON 规则执行与启停已接；原包/皮肤预览、校验、权限选择、安全存储、装扮激活及实际界面已接；JS 运行环境、完整线路/请求头、原远程 URL 下载与不可变预览安装、原字符串参数和图片候选已整合；图片授权检查直接账号代际；共享设置及旧实例冻结已验证 | 打包外部媒体验收、原内容完整视觉与动画图片、皮肤视频与文字/头像层级、完整桌面视觉；原 Kotlin 包仅预览/授权保存的边界保持一致 |
+| DLNA/Google Cast | 原 `feature/plugin/dlna`, `googlecast` | 原 DLNA 与固定 Google Cast V2 Java/官方根证书已接；当前播放源、双轨 DASH 与单文件私有请求头代理、两类投屏共享代理生命周期已整合；14 项实际 HTTP/清理、11 项 DLNA 协议及 25 项 TLS/Protobuf/JmDNS 隔离回归通过 | 两类真实接收设备、完整窗口/账号切换与停止验收；Google Cast 严格 nonce 等兼容差异、音频设备限制及线上行为仍需实机验证；本地离线文件投屏未实现 |
 | 登录与多账号 | `feature/login`, `TokenManager` | Web/TV 扫码、密码/短信/真实浏览器验证、多账号与 DPAPI 已接并单测 | 实际账号登录/验证码与切换验收；账号缓存 owner 回归已通过 |
 | WebDAV与数据备份 | `feature/settings/webdav`, 原 Backup policies | 原九个 WebDAV HTTP 方法和调度策略复用；Windows 受限 ZIP/摘要/回滚、旧写入器停止、DPAPI、本地/跨进程锁与设置对话框已接；真实 loopback DAV、恢复和 DST 周期离线测试通过 | 实际 WebDAV 服务与打包的 Windows 调度验收；Android 备份格式迁移未实现；皮肤/外部包资产未纳入 |
 | 外观、本地化、大屏 | `design-system`, `settings-core`, `feature/settings` | 原两值主题迁移、系统/浅/深/AMOLED、色板/角色覆盖、字体/界面缩放/DPI、简繁英 XML 与外观入口已接入主程序；固定原 Miuix 5157 源码构建及 29 项主题/迁移/重启准备测试通过 | 全部组件切换、剩余原界面文案、玻璃/皮肤、导航/键盘可达性与实际整包窗口/语言重启验收；壁纸色采用原非 Android S 分支的预设色 |
@@ -44,3 +44,5 @@ Windows revision 8 已归档验证：256 份 Kotlin 来源和 12 个原资源摘
 访客网络检查在视频详情阶段返回 HTTP 412，未通过完整线上网络门槛；没有把它标记为发布通过，也没有测试用户账号写操作。桌面仍为用户确认普通视频能播放的 revision 5，未将开发中的新增功能当作桌面已交付。完整功能对齐仍未完成。
 
 Windows revision 9 的外观接入保存为另一个开发阶段记录 `verification/source9-appearance-integration.json`：283 份 Kotlin 来源和 15 个原资源继续审计；原 Miuix 固定提交的 169 个文件按原字节校验，143 个原 Kotlin 文件及原 SDF 生成器进入实际 Gradle JVM 构建。原主题、迁移/语言策略和资源已接入主界面，外观设置沿用原稳定键与同一备份存储，旧 Windows 深浅色仅在真实字段存在时迁移。八个实际运行依赖与六份来源许可按摘要核验。29 项定向测试通过；原 SDF 262144 字节与隔离验证一致。此记录不包含新整包、主窗口、语言重启或全部 Miuix 控件验收，许可目录仍未标完整，桌面仍为 revision 5。完整对齐按功能与底层行为审查仍粗估约六成，来源数和测试数不用于换算百分比。
+
+Windows revision 9 的远程 JS/图片和投屏整合记录为 `verification/source9-remote-cast-integration.json`：284 份 Kotlin 来源、15 个资源、303 个 Retrofit 方法及 45/45 响应文件继续审计一致。101 项普通 JUnit 和 4 个实际独立 VM 方法通过，无失败或跳过；后者保留原宿主 14、安装恢复 10、运行资源 4 个检查，并新增远程安装/图片/直接账号代际 6 个检查。远程 HTTP 9、真实图片解码/参数 5 个检查及 21 项 Python 测试通过。投屏代理保留原播放头和显式空值，双轨 DASH 均经过不含凭据的随机标识地址；源准备期间和任一接收端仍活动时不会清理共享代理，最终空闲和退出会撤销注册。根界面接入外部媒体/直播/PGC 投屏与账号切换清理。当前播放源读取已验证不能采用旧账号或外来所有者；新增两个实际 native 控制器断言只已编译，需新整包执行。本记录不证明真实接收设备、主窗口、账号切换或整包验收；许可目录仍未标完整，桌面仍为 revision 5，完整功能对齐仍在推进。

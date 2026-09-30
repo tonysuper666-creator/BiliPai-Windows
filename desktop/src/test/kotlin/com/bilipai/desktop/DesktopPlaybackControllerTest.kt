@@ -19,8 +19,33 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.test.assertNull
+import kotlin.test.assertNotNull
+import java.util.concurrent.atomic.AtomicLong
 
 class DesktopPlaybackControllerTest {
+    @Test fun `casting cannot read a previous account or a foreign native source before flow delivery`() {
+        val epoch = AtomicLong()
+        val original = FakeSource(::details, ::resolved)
+        val source = object : DesktopPlaybackDataSource by original {
+            override val sessionEpoch get() = epoch.get()
+        }
+        Fixture(source).use { f ->
+            onSwing { f.controller.open(card("BVA", 11)) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            val owned = f.player.currentSourceVersion
+            onSwing {
+                assertEquals("BVA-11", assertNotNull(f.controller.currentCastSource(owned)).title)
+                epoch.incrementAndGet()
+                assertNull(f.controller.currentCastSource(owned))
+                epoch.set(0)
+                val foreign = f.player.loadVersioned(PlaybackSource("file:///C:/foreign-cast-fixture.mp4", title = "Foreign"))
+                assertNull(f.controller.currentCastSource(owned))
+                assertNull(f.controller.currentCastSource(foreign))
+            }
+        }
+    }
+
     private fun card(id: String, cid: Long = 0) = VideoCard(id, id, "", "", 0, 100, preferredCid = cid)
     private fun details(id: String): VideoDetails {
         val start = if (id == "BVA") 10L else if (id == "BVB") 20L else 30L

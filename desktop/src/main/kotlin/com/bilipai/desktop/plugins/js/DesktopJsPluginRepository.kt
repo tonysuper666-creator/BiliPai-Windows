@@ -26,7 +26,8 @@ data class DesktopJsPluginState(val plugins: List<DesktopJsInstalledState> = emp
     val manifestSha256: String, val installedAtMillis: Long, val grantedCapabilities: Set<PluginCapability>)
 
 /** The original install store persists packages; only Windows paths and exact-script grants are added. */
-class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: DesktopJsPluginHost) {
+class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: DesktopJsPluginHost,
+    private val publicHttp: DesktopJsPublicHttp = DesktopJsPublicHttp()) {
     private val mutex = Mutex()
     private val store = BiliPaiJsPluginInstallStore.createDefault(context)
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
@@ -57,6 +58,34 @@ class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: Des
         checkOpen()
         val manifest = host.previewManifest(script)
         return DesktopJsPluginPreview(manifest, DesktopJsPluginHost.scriptSha256(script), sourceUrl, script)
+    }
+    suspend fun previewRemote(rawUrl: String): DesktopJsPluginPreview {
+        checkOpen()
+        val script = publicHttp.downloadScript(rawUrl)
+        checkOpen()
+        return previewScript(script, rawUrl.trim())
+    }
+    suspend fun mediaImage(pluginId: String, url: String): ByteArray = withContext(Dispatchers.IO) {
+        val (revision, epoch, snapshot) = mutex.withLock {
+            checkOpen(); validateInstalledTree(); validateId(pluginId)
+            val installed = store.listInstalledPlugins().singleOrNull { it.manifest.id == pluginId }
+                ?: error("JS 插件不存在")
+            validateRecord(installed)
+            require(installed.enabled && authorization(installed) != null &&
+                PluginCapability.NETWORK in installed.grantedCapabilities) { "JS 媒体图片需要当前插件的网络权限" }
+            val revision = host.executionRevision.value
+            host.requireCurrentContext(revision, accountEpoch)
+            Triple(revision, accountEpoch, installed)
+        }
+        val bytes = publicHttp.downloadImage(url)
+        mutex.withLock {
+            checkOpen()
+            host.requireCurrentContext(revision, epoch)
+            validateInstalledTree()
+            val current = store.listInstalledPlugins().singleOrNull { it.manifest.id == pluginId }
+            require(current == snapshot && authorization(snapshot) != null) { "JS 媒体图片所属插件批准记录已变化" }
+        }
+        bytes
     }
     suspend fun install(preview: DesktopJsPluginPreview, grants: Set<PluginCapability>): InstalledBiliPaiJsPlugin = withContext(Dispatchers.IO) {
         require(grants.all { it in preview.manifest.permissions }) { "JS 插件授权包含未声明的权限" }
@@ -118,6 +147,7 @@ class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: Des
     } }
     suspend fun shutdownForRestore(): Unit = withContext(NonCancellable + Dispatchers.IO) {
         mutex.withLock { stopped = true }
+        publicHttp.shutdownForRestore()
         host.shutdownForRestore()
     }
 

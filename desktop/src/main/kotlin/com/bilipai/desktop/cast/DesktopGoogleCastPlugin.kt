@@ -115,6 +115,7 @@ class DesktopGoogleCastPlugin : CastPluginApi {
     private fun refreshPlayback() { val old = _playback.value; _playback.value = provider.status().toPluginState(old.deviceLabel, old.title) }
     @OptIn(InternalCoroutinesApi::class)
     private suspend fun execute(block: () -> Unit): Result<Unit> = operation.withLock {
+        val preparation = DesktopCastProxySessions.acquirePreparation()
         _busy.value = true; _error.value = null
         try { withContext(Dispatchers.IO) {
             val job = currentCoroutineContext()[Job]
@@ -126,7 +127,7 @@ class DesktopGoogleCastPlugin : CastPluginApi {
         } }
         catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { _error.value = safeError(failure); Result.failure(failure) }
-        finally { _busy.value = false }
+        finally { _busy.value = false; preparation.close(); com.android.purebilibili.feature.cast.LocalProxyServer.stopAndClear() }
     }
     private fun MediaStatus.toPluginState(device: String, title: String): CastPluginPlaybackState = CastPluginPlaybackState(
         isActive = mediaSessionId > 0 && playerState != MediaStatus.PlayerState.IDLE,

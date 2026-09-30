@@ -41,6 +41,11 @@ internal object DesktopControllerNativeSmoke {
             SwingUtilities.invokeAndWait { controller.openQueue(listOf(VideoCard("BVfixtureA", "Fixture A", "", "", 0, 10),
                 VideoCard("BVfixtureB", "Fixture B", "", "", 0, 10))) }
             waitFor(player, "first native queue source") { !it.loading && it.videoCodec != null && it.sourceTitle == "BVfixtureA/11" }
+            SwingUtilities.invokeAndWait {
+                check(controller.currentCastSource(player.currentSourceVersion)?.title == "BVfixtureA/11") {
+                    "Casting could not obtain the actual controller-owned native source."
+                }
+            }
             SwingUtilities.invokeAndWait { controller.seekTo(9.7) }
             waitFor(player, "native EOF advances to second part") { !it.loading && it.videoCodec != null && it.sourceTitle == "BVfixtureA/12" }
             check(controller.state.value.currentPart == 1 && controller.state.value.queueIndex == 0)
@@ -55,6 +60,9 @@ internal object DesktopControllerNativeSmoke {
                 "Native seeking was incorrectly counted as watched wall time."
             }
             val foreign = player.loadVersioned(PlaybackSource(video.absolutePath, referer = "", title = "Foreign controller source", startPositionSeconds = 2.0, startPaused = true))
+            SwingUtilities.invokeAndWait {
+                check(controller.currentCastSource(foreign) == null) { "Casting adopted a foreign native source." }
+            }
             SwingUtilities.invokeAndWait { controller.pause(); controller.close() }
             waitFor(player, "foreign source survives controller pause and close") {
                 !it.loading && it.paused && it.videoCodec != null && abs(it.positionSeconds - 2.0) < 0.3

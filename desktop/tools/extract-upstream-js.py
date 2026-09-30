@@ -18,6 +18,8 @@ POLICIES = [BASE + name + ".kt" for name in
     ("core/plugin/js/BiliPaiJsRuntime", "feature/plugin/js/BiliPaiJsPluginContentScreen")]
 SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path in EXTRACTED},
     **{path: "policy-extract" for path in POLICIES}}
+REMOTE_SOURCE = BASE + "feature/settings/screen/PluginsScreen.kt"
+SOURCES[REMOTE_SOURCE] = "policy-extract"
 EXAMPLES = ["examples/plugins/tv-live.bilipai.js", "examples/plugins/huya-live.bilipai.js"]
 SCRIPT_METHODS = ("buildBiliPaiJsPreviewExpression", "buildBiliPaiJsModuleExpression", "buildBiliPaiJsExecutionScript")
 CONTENT_METHODS = ("buildParamsJson", "resolveBiliPaiJsInitialParamValues", "buildBiliPaiJsParamPreferenceKey",
@@ -92,6 +94,15 @@ def generate(repo: Path, output: Path) -> list[Path]:
         "import kotlinx.serialization.json.JsonPrimitive",
         "import kotlinx.serialization.json.buildJsonObject"] + methods)
     result.append(host.write(output, path, original, body, "DesktopBiliPaiJsContentPolicy.kt"))
+    original = host.read(repo, REMOTE_SOURCE)
+    download = selector.function(original, "downloadJsRemotePlugin", parser)
+    validate = selector.function(original, "validateImportUrlOrError", parser)
+    validate = validate.replace("fun validateImportUrlOrError", "internal fun validateDesktopJsImportUrlOrError", 1)
+    body = "\n\n".join(["package com.android.purebilibili.feature.settings.screen",
+        "import okhttp3.Request",
+        "import com.bilipai.desktop.plugins.js.DesktopJsRemoteNetwork as NetworkModule",
+        "import com.bilipai.desktop.plugins.DesktopPluginUrl as Uri", download, validate])
+    result.append(host.write(output, REMOTE_SOURCE, original, body, "DesktopJsRemoteImportPolicy.kt"))
     return result
 
 

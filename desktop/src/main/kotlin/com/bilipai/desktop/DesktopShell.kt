@@ -63,6 +63,8 @@ import com.bilipai.desktop.cast.DesktopCastController
 import com.bilipai.desktop.cast.DesktopCastMediaResolver
 import com.bilipai.desktop.cast.DesktopCastDialog
 import com.bilipai.desktop.cast.DesktopGoogleCastDialog
+import com.bilipai.desktop.cast.DesktopCastProxySessions
+import com.android.purebilibili.feature.cast.LocalProxyServer
 import com.bilipai.desktop.ui.*
 import com.bilipai.desktop.update.*
 import kotlinx.coroutines.*
@@ -133,8 +135,10 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val castBusy by cast.isBusy.collectAsState()
     val googleCasting by pluginRuntime.googleCast.playbackState.collectAsState()
     val googleCastBusy by pluginRuntime.googleCast.isBusy.collectAsState()
+    val castPreparations by DesktopCastProxySessions.pendingPreparations.collectAsState()
     val anyCasting = casting.isActive || googleCasting.isActive
-    val anyCastBusy = castBusy || googleCastBusy
+    val anyCastBusy = castBusy || googleCastBusy || castPreparations > 0
+    var castAccountEpoch by remember(repository) { mutableLongStateOf(repository.sessionEpoch) }
     val eyePlaybackActive = remember { MutableStateFlow(false) }
     var eyePaint by remember { mutableStateOf(DesktopEyePaint(0f, 0f)) }
     val downloads = remember(repository) { DesktopDownloadManager(repository) }
@@ -365,15 +369,42 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         submitted = text; navigate(DesktopSection.SEARCH)
     }
     suspend fun currentCastMedia(): com.android.purebilibili.core.plugin.CastPluginMediaRequest {
-        check(retainedMedia.current == null && !systemTargetAudio) { "请先打开需要投屏的视频" }
+        check(!systemTargetAudio) { "请先打开需要投屏的视频" }
+        val owner = retainedMedia.current
+        val nativeSource = player?.currentSourceSnapshot()
         val current = playback.state.value
-        val info = current.details ?: error("请先打开需要投屏的视频")
-        val token = player?.currentSourceVersion
         val epoch = repository.sessionEpoch
-        val source = repository.playback(info, current.currentPart, current.quality)
-        val media = castResolver.video(info, current.currentPart, source, ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong())
-        check(epoch == repository.sessionEpoch && token == player?.currentSourceVersion && playback.state.value.details?.bvid == info.bvid &&
-            playback.state.value.currentPart == current.currentPart && retainedMedia.current == null && !systemTargetAudio) {
+        val positionMs = ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong()
+        val media = when (owner) {
+            retainedMedia.external -> {
+                check(retainedMedia.external.authorizationCurrent) { "插件播放授权已经变化，请重新打开内容" }
+                val source = nativeSource?.source ?: error("请先打开需要投屏的媒体")
+                val type = retainedMedia.external.request?.streams?.getOrNull(retainedMedia.external.selectedIndex)?.contentType ?: "video/mp4"
+                castResolver.nativeSource(source, contentType = type, positionMs = positionMs)
+            }
+            retainedMedia.live -> {
+                val source = nativeSource?.source ?: error("请先打开需要投屏的直播")
+                val type = if (java.net.URI(source.videoUrl).path.orEmpty().endsWith(".m3u8", ignoreCase = true)) "application/vnd.apple.mpegurl" else "video/x-flv"
+                castResolver.nativeSource(source, creator = retainedMedia.live.room?.author.orEmpty(), contentType = type, positionMs = 0)
+            }
+            retainedMedia.bangumi -> {
+                val source = retainedMedia.bangumi.playback?.source ?: error("请先打开需要投屏的剧集")
+                castResolver.existingSource(source, nativeSource?.source ?: error("剧集播放源已经变化"),
+                    durationMs = (retainedMedia.bangumi.episode?.durationSeconds ?: 0) * 1000, positionMs = positionMs)
+            }
+            retainedMedia.offline -> error("本地离线文件暂不支持局域网投屏，请打开在线视频")
+            else -> {
+                val info = current.details ?: error("请先打开需要投屏的视频")
+                val source = if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)
+                    else playback.currentCastSource(nativeSource.sourceVersion) ?: error("当前视频播放源已经变化，请重新开始投屏")
+                castResolver.video(info, current.currentPart, source, positionMs, nativeSource = nativeSource?.source)
+            }
+        }
+        val latestSource = player?.currentSourceSnapshot()
+        check(epoch == repository.sessionEpoch && nativeSource?.sourceVersion == latestSource?.sourceVersion &&
+            nativeSource?.source == latestSource?.source && retainedMedia.current === owner && !systemTargetAudio &&
+            (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&
+            (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)) {
             "当前播放视频已切换，请重新开始投屏"
         }
         return media
@@ -428,6 +459,20 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     LaunchedEffect(backup) { backup.automaticBackupIfDue() }
     LaunchedEffect(playback, hostVisible, pipActive) { playback.setInBackground(!hostVisible && !pipActive) }
     LaunchedEffect(anyCasting) { if (anyCasting) { playback.pause(); player?.setPaused(true); listen?.pause() } }
+    LaunchedEffect(anyCasting, anyCastBusy) { if (!anyCasting && !anyCastBusy) LocalProxyServer.stopAndClear() }
+    LaunchedEffect(sessionEpoch) {
+        if (castAccountEpoch != sessionEpoch) {
+            withContext(NonCancellable) {
+                cast.quiesce()
+                pluginRuntime.googleCast.onDisable()
+                if (pluginRuntime.plugins.value.any { it.plugin === pluginRuntime.googleCast && it.enabled }) pluginRuntime.googleCast.onEnable()
+                LocalProxyServer.stopAndClear()
+                castAccountEpoch = sessionEpoch
+            }
+            if (dlnaDialog) cast.refreshDiscovery()
+            if (googleCastDialog) pluginRuntime.googleCast.startRouteDiscovery(pluginRuntime.context)
+        }
+    }
     LaunchedEffect(Unit) { runCatching { repository.refreshAccount() }; initialVideo?.let { playback.open(it) } }
     LaunchedEffect(playing.details?.bvid, playing.currentPart) {
         while (playing.details != null) { delay(5000); withContext(Dispatchers.IO) { playback.checkpoint() } }
@@ -601,6 +646,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         }
                     }
                     val retainedOwner = retainedMedia.current
+                    if (retainedOwner != null && retainedOwner !== retainedMedia.offline) TextButton(onClick = { castDialog = true }) { Text("投屏当前媒体") }
                     val retainedPage = when (retainedOwner) {
                         retainedMedia.live -> DesktopSection.LIVE
                         retainedMedia.bangumi -> DesktopSection.BANGUMI
@@ -636,10 +682,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             showVideo && playing.details != null -> DesktopVideoPage(playing, player, playerContent, favorite,
                                 onVideo = ::openVideo, onPart = playback::playPart, onQuality = playback::switchQuality,
                                 onFavorite = { library.toggleFavorite(playing.details!!.asCard()); favorite = library.isFavorite(playing.details!!.bvid) },
-                                onCast = { scope.launch {
-                                    try { pluginRuntime.setEnabled(pluginRuntime.dlnaCast.id, true); castDialog = true }
-                                    catch (failure: Exception) { error = failure.message ?: "无法启用 DLNA" }
-                                } },
+                                onCast = { castDialog = true },
                                 engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) { VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
                                     cid = playing.details!!.pages[playing.currentPart].cid)
@@ -731,7 +774,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (jsSubscriptionReader) SubscriptionReaderDialog(pluginRuntime, refreshOnOpen = true) { jsSubscriptionReader = false }
         if (castDialog) AlertDialog(onDismissRequest = { castDialog = false }, title = { Text("选择投屏方式") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                OutlinedButton(onClick = { castDialog = false; dlnaDialog = true }, modifier = Modifier.fillMaxWidth()) { Text("DLNA / 电视媒体播放") }
+                OutlinedButton(onClick = { scope.launch {
+                    try { pluginRuntime.setEnabled(pluginRuntime.dlnaCast.id, true); castDialog = false; dlnaDialog = true }
+                    catch (cancelled: CancellationException) { throw cancelled }
+                    catch (_: Exception) { error = "DLNA 启用失败，请在插件页面检查配置" }
+                } }, modifier = Modifier.fillMaxWidth()) { Text("DLNA / 电视媒体播放") }
                 OutlinedButton(onClick = { scope.launch {
                     try { pluginRuntime.setEnabled("google_cast", true); castDialog = false; googleCastDialog = true }
                     catch (cancelled: CancellationException) { throw cancelled }

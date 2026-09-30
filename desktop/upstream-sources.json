@@ -2391,6 +2391,14 @@
         "appearance-parity"
       ],
       "sha256": "6468adc8903659d043c30a444c5272f16219c5b47cfaa6e8c8c31bf94028c392"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PluginsScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "js-plugins"
+      ],
+      "sha256": "174f9296e9bda46f51ac7c884e44734da7892c0d837f4212aee05d8bb6a872e8"
     }
   ],
   "featureCoverage": {

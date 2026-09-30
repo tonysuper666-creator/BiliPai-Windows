@@ -526,6 +526,10 @@ class DesktopPlaybackController internal constructor(
         }
     }
 
+    internal fun currentCastSource(expectedSourceVersion: Long): ResolvedSource? = current?.takeIf {
+        owns(it) && it.sourceVersion == expectedSourceVersion && it.accountEpoch == playback.sessionEpoch
+    }?.source
+
     private fun recoverable(context: Current, failure: PlayerFailure): Boolean = owns(context) && !suspended &&
         player?.state?.value?.failure?.attemptId == failure.attemptId
     private fun owns(context: Current): Boolean = !closed.get() && context.requestGeneration == generation.get() &&

@@ -83,7 +83,7 @@ object DesktopCastNetwork {
         proxyPort = 0; proxyBindHost = "127.0.0.1"
     }
     internal fun clearFixture(context: DesktopPluginContext) = synchronized(lock) {
-        selected.remove(context); proxyPort = 8901; proxyBindHost = null; targets.clear()
+        selected.remove(context); proxyPort = 8901; proxyBindHost = null; clearProxyTargets()
     }
     fun proxyAddress(context: DesktopPluginContext): String = binding(context).address.hostAddress
     fun registerProxyTarget(target: String) {
@@ -92,7 +92,7 @@ object DesktopCastNetwork {
         targets += url.toString()
     }
     fun isRegisteredProxyTarget(target: String): Boolean = target in targets
-    fun clearProxyTargets() { targets.clear() }
+    fun clearProxyTargets() { targets.clear(); DesktopCastProxySessions.clear() }
 }
 
 fun hasRawLocalNetworkAccess(context: DesktopPluginContext): Boolean = runCatching { DesktopCastNetwork.binding(context) }.isSuccess

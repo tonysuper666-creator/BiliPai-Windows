@@ -266,6 +266,10 @@ class DesktopJsPluginHost(
         }
     }
 
+    internal fun requireCurrentContext(expectedRevision: Long, expectedAccountEpoch: Long): Unit = synchronized(gate) {
+        requireCurrent(ExecutionAuthority("media-image", expectedRevision, expectedAccountEpoch, emptySet(), null))
+    }
+
     private fun requireCurrent(authority: ExecutionAuthority) {
         if (stopped || authority.revision != revision || authority.accountEpoch != accountEpoch ||
             ownerEpoch?.invoke()?.let { it != authority.accountEpoch } == true)

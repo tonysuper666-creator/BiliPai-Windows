@@ -4,12 +4,55 @@ import importlib.util
 import tempfile
 import unittest
 import json
+import zipfile
+from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
 SCRIPT = HERE / "prepare-js-worker.py"
 if not SCRIPT.exists(): SCRIPT = HERE.parent / "prepare-js-worker.py"
 spec = importlib.util.spec_from_file_location("worker_resources", SCRIPT)
 worker = importlib.util.module_from_spec(spec); spec.loader.exec_module(worker)
+fetch_spec = importlib.util.spec_from_file_location("worker_jdk_fetch", SCRIPT.with_name("fetch-js-worker-jdk.py"))
+fetcher = importlib.util.module_from_spec(fetch_spec); fetch_spec.loader.exec_module(fetcher)
+
+class WorkerJdkFetchTest(unittest.TestCase):
+    def archive_fixture(self, root):
+        archive = root / "jdk.zip"
+        with zipfile.ZipFile(archive, "w") as source:
+            source.writestr("fixture-jdk/bin/java.exe", b"fixed java fixture")
+            source.writestr("fixture-jdk/release", b"fixed release fixture")
+        return archive, hashlib.sha256(archive.read_bytes()).hexdigest()
+
+    def test_gradle_empty_output_is_filled_only_after_every_archive_member_is_verified(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, digest = self.archive_fixture(root)
+            output = root / "fixed-jdk"; output.mkdir()
+            with patch.object(fetcher.worker, "JDK_SHA256", digest):
+                self.assertEqual(fetcher.fetch(archive, output, True), output)
+                fetcher.worker.verify_jdk(output, archive)
+            self.assertEqual((output / "bin/java.exe").read_bytes(), b"fixed java fixture")
+
+    def test_changed_populated_jdk_fails_without_deleting_or_replacing_it(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, digest = self.archive_fixture(root)
+            output = root / "fixed-jdk"; output.mkdir()
+            protected = output / "release"; protected.write_bytes(b"changed release")
+            with patch.object(fetcher.worker, "JDK_SHA256", digest), self.assertRaises(ValueError):
+                fetcher.fetch(archive, output, True)
+            self.assertEqual(protected.read_bytes(), b"changed release")
+
+    def test_concurrently_populated_placeholder_is_preserved(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, digest = self.archive_fixture(root)
+            output = root / "fixed-jdk"; output.mkdir()
+            protected = output / "foreign.txt"
+            verify = fetcher.worker.verify_jdk
+            def concurrent_writer(home, source):
+                verify(home, source)
+                protected.write_bytes(b"must remain")
+            with patch.object(fetcher.worker, "JDK_SHA256", digest), patch.object(fetcher.worker, "verify_jdk", concurrent_writer), self.assertRaises(OSError):
+                fetcher.fetch(archive, output, True)
+            self.assertEqual(protected.read_bytes(), b"must remain")
 
 class WorkerResourcesTest(unittest.TestCase):
     def cache_fixture(self, root):
