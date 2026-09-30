@@ -1,0 +1,52 @@
+{
+  "auditedCommittedWindowsSource": "5494f2d87ffa41725a89768e985ed2c0198546ba",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-components-delta.json",
+  "scope": "The same 35 manually weighted functional groups. Carry the previous appearance/Cast changes and reassess only Space and native music here. The remaining work includes implemented but unverified behavior as well as missing features.",
+  "changes": [
+    {
+      "group": "space",
+      "weight": 4,
+      "previousMainCredit": 2,
+      "currentMainCredit": 3,
+      "remainingCredit": 1,
+      "basis": "Original aggregate header/home, server defaults and two-level navigation, favorites/articles/supporters, signed contribution filters/sort/category/grid, audio/PGC/course entries and exact-ID playlist/resume are connected to Root. Actual product compile, request/pagination/retention fixtures and real Compose SID pointer dispatch passed.",
+      "remaining": "Native followers, profile signature/follow groups/special-follow/full menus, dynamic search and complete refresh/scroll/visual/window/account acceptance.",
+      "evidence": "desktop/verification/source9-space-music-integration.json"
+    },
+    {
+      "group": "native-music",
+      "weight": 1,
+      "previousMainCredit": 0,
+      "currentMainCredit": 0.5,
+      "remainingCredit": 0.5,
+      "basis": "AU SID route from Space uses the original MusicUiState/API/models/lyrics with the retained Windows audio session. Original metadata and account/native-owner isolation passed actual fixtures; reopening the owned song preserves progress. Exact-CID video-audio adapter is tested but does not yet have a Root entry.",
+      "remaining": "Video NativeMusic Root route, original detail/immersive visual surface, real AU network/codec/audio output and full window acceptance.",
+      "evidence": "desktop/verification/source9-space-music-integration.json"
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 89.25,
+    "isolatedReadyPoints": 1,
+    "unfinishedOrUnverifiedPoints": 47.75,
+    "weightedReviewedProgressPercent": 64.7,
+    "presentation": "约65%，人工粗估；仍保留55–70%的评估带。这不是精确验收百分比或统计置信区间。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "uncreditedPreparedWork": [
+    "Story and Topic",
+    "Advanced playback preferences",
+    "FSR provider integration",
+    "HiRes audio recovery",
+    "AICU and reports",
+    "Original native component popup acceptance and width fix"
+  ],
+  "nativeIntermittency": "The first Source9 overlay run captured a black surface; the fresh run passed unchanged thresholds after adding diagnostics. The cause remains unexplained. These offline Space/Music checks do not resolve it."
+}
