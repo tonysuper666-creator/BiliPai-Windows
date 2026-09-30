@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "status": "prepared-not-compiled-or-executed",
+  "productionOverrides": 0,
+  "mainEdits": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "files": [
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "2800f142006684cae7de6981d2866137a26fafc4423f1e78c9b7d6e569a03b33"
+    },
+    {
+      "path": "ColdDiskReader.kt",
+      "sha256Bytes": "02bdd49e8ba622c754480258d05be32528434df44418086b4c3b19456162ed5f"
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "f82c8dbed90c8a5cf67a17b715f976391bcd65d876ab33c310f5ec706f910f92"
+    },
+    {
+      "path": "fixture-source-identities.json",
+      "sha256Bytes": "69756cdbbdb91977ba69d2f46cdd8e671a8c2574ebb3acbcc223580e10ee3505"
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "53f22628b9b8ba9608f8b639cfc06d5e4877400c973a6b2e61859fdc4f0c510b"
+    }
+  ]
+}

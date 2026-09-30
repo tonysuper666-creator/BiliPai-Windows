@@ -1,0 +1,13 @@
+Home video-card Windows platform adaptations
+
+AndroidX Palette 1.0.0 / Core 1.13.1 selected source
+Copyright 2018 The Android Open Source Project (Palette)
+Copyright 2015 The Android Open Source Project (ColorUtils)
+Apache License, Version 2.0. Original source notices remain in each derived file.
+Source artifacts: official dl.google.com Android Maven, exact bytes in provenance.json.
+The Windows fork does not implement the full Android Palette or Core API.
+
+Haze 2.0.0-alpha03 JVM (haze, haze-utils, haze-blur, haze-blur-materials)
+Chris Banes, Apache License, Version 2.0; official Maven POMs and modules included.
+Original pinned upstream BiliPai also requests 2.0.0-alpha03.
+No Haze source code was modified in this slice.

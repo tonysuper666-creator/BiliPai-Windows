@@ -1,0 +1,26 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "home-full-card-settings"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "home-full-card-settings"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "home-full-card-settings"
+    ],
+    "sha256": "c18aa754ff40d18d6f706c73d8be5ab9a26eda63b4b987be7ae609fe3d372836"
+  }
+]

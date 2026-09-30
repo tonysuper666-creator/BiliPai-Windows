@@ -1,0 +1,10 @@
+{
+  "frozen": true,
+  "manifestSha256Bytes": "7bfa462020e06e4a7c05a04c658412f989099a85478bfae5279effbb16b10677",
+  "contractSha256Bytes": "5c22c08a68f928cfa5fa2fcf2a6c9b81ab425e93d0fae1e118e83cdd7160d31d",
+  "instructionsSha256Bytes": "3393c458c4716736e170897f4a4f74bc83ebe9c4e76ed6cfd375526fff41eb5a",
+  "targetCount": 30,
+  "originalSourceCount": 67,
+  "generatedCount": 67,
+  "artifacts": 151
+}

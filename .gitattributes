@@ -20,3 +20,6 @@ desktop/verification/home-tabs/** -text
 desktop/verification/dynamic-startup/** -text
 
 desktop/verification/dynamic-pagination/** -text
+desktop/verification/home-full-card/** -text
+desktop/src/main/resources/licenses/home-card-platform/** -text
+desktop/third-party/home-card-palette/upstream/** -text

@@ -1,0 +1,18 @@
+{
+    "settings": {
+        "grid_column_count": 2,
+        "full_video_card_content_visible": true,
+        "compact_video_stats_on_cover": true,
+        "home_duration_style": 1,
+        "home_video_duration_badges_visible": true,
+        "home_publish_time_visible": false,
+        "home_up_avatars_visible": true,
+        "home_up_badges_visible": true,
+        "home_card_frosted_glass_enabled": false,
+        "home_card_dynamic_tint_enabled": true
+    },
+    "blocked_ups": {
+        "records": "[]",
+        "legacy_discovery_migration_version": 1
+    }
+}

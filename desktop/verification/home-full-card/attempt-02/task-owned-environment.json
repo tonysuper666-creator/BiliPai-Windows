@@ -1,0 +1,5 @@
+{
+  "path": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-hfc-ui-lpk6boe_",
+  "shortNativeExtractionPath": true,
+  "reason": "Attempt01 extracted ICU at a 270-character path. Native Skia looked in its parent and aborted. Keep immutable product/CP/fixture sources; shorten only the isolated harness home."
+}

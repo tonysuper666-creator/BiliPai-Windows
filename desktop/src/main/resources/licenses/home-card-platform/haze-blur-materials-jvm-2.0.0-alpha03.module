@@ -1,0 +1,123 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../haze-blur-materials/2.0.0-alpha03/haze-blur-materials-2.0.0-alpha03.module",
+    "group": "dev.chrisbanes.haze",
+    "module": "haze-blur-materials",
+    "version": "2.0.0-alpha03",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze-blur",
+          "version": {
+            "requires": "2.0.0-alpha03"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-materials-jvm.jar",
+          "url": "haze-blur-materials-jvm-2.0.0-alpha03.jar",
+          "size": 14443,
+          "sha512": "65e2635c051a5f58769bbf9eded7eb782232d70916af1771137504f2d6bc922bad2291aae8feff9f81a07578eff923840d75e6019f86fc024fd23c0fd4a108e1",
+          "sha256": "e3a200418c558185582968e73cd70d409d64063268172ae6d3d95f8232e07f2b",
+          "sha1": "dedaca75036f0f8d89c6d9ecdec2a33002ff2bf5",
+          "md5": "4657b527c40610992ff9aaeb89919565"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze-blur",
+          "version": {
+            "requires": "2.0.0-alpha03"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.9.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-materials-jvm.jar",
+          "url": "haze-blur-materials-jvm-2.0.0-alpha03.jar",
+          "size": 14443,
+          "sha512": "65e2635c051a5f58769bbf9eded7eb782232d70916af1771137504f2d6bc922bad2291aae8feff9f81a07578eff923840d75e6019f86fc024fd23c0fd4a108e1",
+          "sha256": "e3a200418c558185582968e73cd70d409d64063268172ae6d3d95f8232e07f2b",
+          "sha1": "dedaca75036f0f8d89c6d9ecdec2a33002ff2bf5",
+          "md5": "4657b527c40610992ff9aaeb89919565"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "haze-materials-jvm-sources.jar",
+          "url": "haze-blur-materials-jvm-2.0.0-alpha03-sources.jar",
+          "size": 4949,
+          "sha512": "3bfeaa9acd74083ba3ea3b0562b3e10aa565adea2c622080a1fd03b1cdb7ba34ea9e3c8adc1cc3693620951605332a4484b9f2d7649a978faefd4e665455dc6e",
+          "sha256": "990858ad4de68861d548f742dc11dcc7e178ec5f989fa83607dee8a0b4ce46e4",
+          "sha1": "bced0c6a4b3df43c8aa1643f71d8cd1c36c697c2",
+          "md5": "027dfe943780ef1bb81185fd5b03faab"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "c801d7da8ffcd91a7834eee7bcc1d7d1e1394b25",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-dynamic-pagination-delta.json",
+  "scope": "Same 35 manually weighted groups; source/test counts and isolated work excluded from main progress.",
+  "changes": [
+    {
+      "group": "discovery",
+      "weight": 6,
+      "previousMainCredit": 5,
+      "currentMainCredit": 5.25,
+      "remainingCredit": 0.75,
+      "basis": "Full original raw-item card and actual original menu/navigation/metadata now replace the minimal Windows tile, with actual product four-style UI acceptance.",
+      "remaining": "Full wallpaper/transition/gesture/Story hosts, native packaged and real account/service acceptance."
+    },
+    {
+      "group": "settings",
+      "weight": 5,
+      "previousMainCredit": 4,
+      "currentMainCredit": 4.25,
+      "remainingCredit": 0.75,
+      "basis": "Original Home visual fields have actual shared-store mappers/setters, consumer propagation and four cold JVM reads; conditional migration uses the real shared Backing lock.",
+      "remaining": "Remaining original settings/platform/diagnostics sharing fields and complete packaged acceptance."
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 95.25,
+    "isolatedReadyPoints": 0.5,
+    "unfinishedOrUnverifiedPoints": 42.25,
+    "weightedReviewedProgressPercent": 69.0,
+    "presentation": "\u7ea669%\uff0c\u6309\u5b8c\u6574\u539f\u9879\u76ee\u529f\u80fd\u548c\u5e95\u5c42\u884c\u4e3a\u5bf9\u9f50\u7684\u4eba\u5de5\u7c97\u4f30\u3002",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-home-full-card-integration.json",
+  "newDesktopDeployment": false
+}

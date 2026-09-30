@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.settings.DesktopHomeFullCardTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-30T17:50:34.555Z" hostname="TONYSUPER666" time="0.609">
+  <properties/>
+  <testcase name="frozenGenerationRejectsBeforeRunningTransactionAndFreshGenerationCanWrite()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.146"/>
+  <testcase name="originatingEpochRejectsBeforeSocketAndDuringResponseWithoutPublishing()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.179"/>
+  <testcase name="utf8RouteBindingKeepsOriginalUriUnreservedCharactersAndEncodesSecretsAsQueryData()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.001"/>
+  <testcase name="onlineMetadataCacheRespectsTtlAndCancellationDoesNotPoisonRetry()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.006"/>
+  <testcase name="serverItemRetainsRealMetadataWhileNavigationKeepsExactIdentity()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.011"/>
+  <testcase name="diskFailurePublishesNothingAndAllowsSuccessfulRetry()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.007"/>
+  <testcase name="actualOriginalRetrofitPostUsesExactFieldsAndHttp503NeverResubmits()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.052"/>
+  <testcase name="originalPersistedDefaultsUseReadMapperInsteadOfCardConstructorDefaults()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.001"/>
+  <testcase name="crossFacadeDependentSetterReadsAfterPriorTransactionCommit()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.059"/>
+  <testcase name="durationLegacyMigrationAndExplicitChoiceSurviveFreshStore()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.01"/>
+  <testcase name="originalQuantizerPopulationAndUsefulSwatchSelectionUseRealSkiaPixels()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.117"/>
+  <testcase name="tintMigrationKeepsLegacyFrostSeparateFromNewTint()" classname="com.bilipai.desktop.settings.DesktopHomeFullCardTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

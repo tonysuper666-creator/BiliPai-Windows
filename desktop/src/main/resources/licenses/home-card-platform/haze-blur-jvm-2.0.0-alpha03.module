@@ -1,0 +1,158 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../haze-blur/2.0.0-alpha03/haze-blur-2.0.0-alpha03.module",
+    "group": "dev.chrisbanes.haze",
+    "module": "haze-blur",
+    "version": "2.0.0-alpha03",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze",
+          "version": {
+            "requires": "2.0.0-alpha03"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.11.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-blur-jvm.jar",
+          "url": "haze-blur-jvm-2.0.0-alpha03.jar",
+          "size": 111254,
+          "sha512": "8ab693de4292f1cf6d2d4e995219cb96b665170c7f5d690ee75f0f3ea5a4f850130410914ebe98ccc5a186a10030f895d0a6b81c319aa6d9369b62c4c2f8ccca",
+          "sha256": "1e2959edfff3c967e860275602c638f46a2eace4805c03a644c2a96ea8deb739",
+          "sha1": "a07a2ef1dc8bcc6aff5dab2d8337ac378df8c6be",
+          "md5": "0157f13d30f14dc90386119dc41fc0dd"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze",
+          "version": {
+            "requires": "2.0.0-alpha03"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.11.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        },
+        {
+          "group": "dev.drewhamilton.poko",
+          "module": "poko-annotations",
+          "version": {
+            "requires": "0.22.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.11.1"
+          }
+        },
+        {
+          "group": "androidx.collection",
+          "module": "collection",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "dev.chrisbanes.haze",
+          "module": "haze-utils",
+          "version": {
+            "requires": "2.0.0-alpha03"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-blur-jvm.jar",
+          "url": "haze-blur-jvm-2.0.0-alpha03.jar",
+          "size": 111254,
+          "sha512": "8ab693de4292f1cf6d2d4e995219cb96b665170c7f5d690ee75f0f3ea5a4f850130410914ebe98ccc5a186a10030f895d0a6b81c319aa6d9369b62c4c2f8ccca",
+          "sha256": "1e2959edfff3c967e860275602c638f46a2eace4805c03a644c2a96ea8deb739",
+          "sha1": "a07a2ef1dc8bcc6aff5dab2d8337ac378df8c6be",
+          "md5": "0157f13d30f14dc90386119dc41fc0dd"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "haze-blur-jvm-sources.jar",
+          "url": "haze-blur-jvm-2.0.0-alpha03-sources.jar",
+          "size": 29102,
+          "sha512": "6208672af3ab41788548633eeb3b246ec53c8ecfe2f83090fad87c641500a01e11b77a02e155eac792671632ac651e17cce4684c9b4d00e476be96a6e04a4398",
+          "sha256": "9a99c2fbe356bc7249894f42d57d2e3c2cfff4aef9951c37b7f569df89c69ab5",
+          "sha1": "ad0a8ed729f900bab81d4f4fbd6b374aebc4c400",
+          "md5": "a55528354852c74a5ebc6910939ecf1f"
+        }
+      ]
+    }
+  ]
+}

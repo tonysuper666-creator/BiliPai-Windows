@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.staggeredgrid.*
+import com.bilipai.desktop.settings.*
+import com.android.purebilibili.feature.home.components.cards.VideoCardOnlineCountStore
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -165,7 +167,7 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
         }
         if (mode != DiscoverySection.WEEKLY || periods != null) {
             val requestRegion = if (mode == DiscoverySection.RANKING) rankingRegion else if (mode == DiscoverySection.REGION) selectedRegion else 0
-            DiscoveryFeed(mode, requestRegion, period, accountMid, discovery, filters, runtime, onVideo, onUser, onLogin,
+            DiscoveryFeed(mode, requestRegion, period, accountMid, discovery, repository, filters, runtime, onVideo, onUser, onLogin,
                 feedbackSource = feedbackSource, onPreview = { preview = it })
         }
     }
@@ -176,7 +178,7 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
 }
 
 @Composable
-private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?, accountMid: Long?, discovery: DesktopDiscoveryRepository,
+private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?, accountMid: Long?, discovery: DesktopDiscoveryRepository, repository: DesktopRepository,
     filters: DesktopDiscoveryFilters, runtime: DesktopPluginRuntime?, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit,
     onLogin: () -> Unit, feedbackSource: StateFlow<TodayWatchFeedbackSnapshot>, onPreview: (VideoCard) -> Unit) {
     val scope = rememberCoroutineScope(); val memory = LocalCommunityFeedMemory.current ?: LocalDesktopBrowseMemory.current?.feeds; val namespace = LocalCommunityFeedNamespace.current
@@ -197,11 +199,19 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
     var showBlocked by remember(key) { mutableStateOf(false) }
     val token = remember(key) { Any() }; val activeToken by rememberUpdatedState(token)
     val originals = page.rows.flatMap { it.items }.distinctBy { it.bvid }.filter { it.bvid.isNotBlank() && it.title.isNotBlank() }
-    val cards = remember(originals, filters, section, feedback, blockedCreators, runtime, nativePlugins, jsonPlugins, pluginConfiguration) {
+    val epoch by repository.sessionEpochFlow.collectAsState()
+    val cardEpoch = epoch
+    val rootPreferences = checkNotNull(LocalDesktopHomeCardPreferences.current) { "Root shared Home preferences are not mounted" }
+    val visualPreferences = remember(rootPreferences.context) { DesktopHomeCardVisualPreferences(rootPreferences.context) }
+    val visualSettings by visualPreferences.settings.collectAsState(visualPreferences.initialSettings())
+    val metadata = remember(repository) { DesktopHomeCardMetadataRepository(repository) }
+    val onlineStore = remember(metadata, cardEpoch) { VideoCardOnlineCountStore({ bvid, cid -> metadata.onlineCount(bvid, cid, cardEpoch) }) }
+    var watchLaterBusy by remember(key, cardEpoch) { mutableStateOf(false) }
+    val visibleItems = remember(originals, filters, section, feedback, blockedCreators, runtime, nativePlugins, jsonPlugins, pluginConfiguration) {
         val feedbackFiltered = filterHomeVideosByNotInterestedFeedback(originals.filter { it.owner.mid !in blockedCreators },
             feedback.dislikedBvids, feedback.dislikedCreatorMids, feedback.dislikedKeywords)
         (runtime?.filterFeedItems(feedbackFiltered, discoveryFeedKind(section))
-            ?: filterDiscoveryItems(feedbackFiltered, filters, section)).map(::discoveryVideoCard)
+            ?: filterDiscoveryItems(feedbackFiltered, filters, section))
     }
     suspend fun fetch(requestPage: Int, replace: Boolean) {
         val requestToken = token; busy = true; error = null; page.failedCursor = null
@@ -222,6 +232,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
         if (section == DiscoverySection.RECOMMEND) return resolveRecommendFeedRequestIndex(false, true, (previous - 1).coerceAtLeast(0)) + 1
         return resolvePagedFeedPageToFetch(false, true, previous, section == DiscoverySection.POPULAR || section == DiscoverySection.REGION)
     }
+    CompositionLocalProvider(LocalDesktopVideoCardOnlineStore provides onlineStore) {
     DesktopHomeCardGrid(state = scroll, modifier = Modifier.fillMaxSize()) { cardLayout ->
         item(span = StaggeredGridItemSpan.FullLine) {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -230,12 +241,12 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
                     TextButton(enabled = !busy, onClick = { if (!busy) { busy = true; scope.launch { fetch(refreshPage(), true) } } }) { Text("换一批 / 刷新") }
                 }
                 page.rows.lastOrNull()?.description?.takeIf(String::isNotBlank)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-                Text("${cards.size} 个视频", style = MaterialTheme.typography.labelMedium)
+                Text("${visibleItems.size} 个视频", style = MaterialTheme.typography.labelMedium)
                 page.rows.lastOrNull()?.let { result ->
                     if (result.actualSources.isNotEmpty()) Text("本批来源：" + result.actualSources.joinToString(" + ") { if (it == DesktopRecommendationMode.WEB) "Web" else "App" }, style = MaterialTheme.typography.bodySmall)
                     if (result.sourceNotice.isNotBlank()) Text(result.sourceNotice, style = MaterialTheme.typography.bodySmall)
                 }
-                if (cards.size < originals.size) Text("按筛选和反馈规则隐藏 ${originals.size - cards.size} 个视频", style = MaterialTheme.typography.bodySmall)
+                if (visibleItems.size < originals.size) Text("按筛选和反馈规则隐藏 ${originals.size - visibleItems.size} 个视频", style = MaterialTheme.typography.bodySmall)
                 feedbackMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
                 if (feedbackBusy) DesktopLoadingIndicator(Modifier.fillMaxWidth())
 
@@ -253,9 +264,22 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
                 }
             }
         }
-        items(cards, key = { it.bvid }) { card ->
+        itemsIndexed(visibleItems, key = { _, item -> item.bvid }) { index, item ->
+            val card = discoveryVideoCard(item)
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                DiscoveryVideoTile(card, cardLayout) { onVideo(card) }
+                DesktopOriginalDiscoveryVideoCard(item, index, cardLayout, visualSettings, onVideo, onUser, onPreview,
+                    onNotInterested = { if (!feedbackBusy) feedbackVideo = item },
+                    onWatchLater = {
+                        if (!watchLaterBusy && repository.sessionEpoch == cardEpoch) {
+                            if (repository.account.value == null) onLogin()
+                            else { watchLaterBusy = true; scope.launch {
+                                try { metadata.addWatchLater(resolveWatchLaterAid(item), cardEpoch); if (repository.sessionEpoch == cardEpoch) feedbackMessage = "已加入稍后再看" }
+                                catch (cancelled: CancellationException) { throw cancelled }
+                                catch (failure: Exception) { if (repository.sessionEpoch == cardEpoch) feedbackMessage = failure.message ?: "稍后再看操作失败" }
+                                finally { watchLaterBusy = false }
+                            } }
+                        }
+                    })
                 FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                     TextButton(enabled = card.authorMid > 0, onClick = { onUser(card.authorMid) }, modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)) { Text("UP 主页") }
                     TextButton(onClick = { onPreview(card) }, modifier = Modifier.sizeIn(minWidth = 48.dp, minHeight = 48.dp)) { Text("预览与合集") }
@@ -267,10 +291,11 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
             if (!busy) { val retry = page.failedCursor ?: 1; val replace = page.failedReplace; busy = true; scope.launch { fetch(retry, replace) } }
         } }
         if (busy) item(span = StaggeredGridItemSpan.FullLine) { DesktopLoadingIndicator(Modifier.fillMaxWidth()) }
-        if (!busy && cards.isEmpty() && error == null) item(span = StaggeredGridItemSpan.FullLine) { Text("暂无视频") }
+        if (!busy && visibleItems.isEmpty() && error == null) item(span = StaggeredGridItemSpan.FullLine) { Text("暂无视频") }
         if (!busy && page.next != null) item(span = StaggeredGridItemSpan.FullLine) { Button(onClick = {
             if (!busy) { val next = page.next ?: return@Button; busy = true; scope.launch { fetch(next, false) } }
         }) { Text("加载更多") } }
+    }
     }
     feedbackVideo?.let { video -> DiscoveryFeedbackDialog(video, onDismiss = { feedbackVideo = null }) { reason ->
         feedbackVideo = null; feedbackBusy = true; scope.launch {

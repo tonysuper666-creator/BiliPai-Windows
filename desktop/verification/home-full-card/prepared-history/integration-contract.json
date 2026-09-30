@@ -1,0 +1,1057 @@
+{
+  "schema": 1,
+  "lane": "settings-home-full-card-parity",
+  "frozen": true,
+  "mainChanged": false,
+  "sharedGradle": false,
+  "HWND": false,
+  "productBaseline": {
+    "commit": "c801d7d",
+    "manifest": "desktop/.local/dynamic-pagination-main-product-snapshot-final/manifest.json",
+    "sha256Bytes": "3bfc84927aacc353adb0aadabf375242918fca0d98b41cb3dc115e248898eeb7",
+    "jars": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-pagination-main-product-snapshot-final\\main-kotlin.jar",
+        "source": "desktop/build/classes/kotlin/main",
+        "entries": 6775,
+        "sha256Bytes": "e3506f3a32aaff614380f43ebd0161dd6d72b3d6debbb092b1e78c51c7704eed"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-pagination-main-product-snapshot-final\\main-java.jar",
+        "source": "desktop/build/classes/java/main",
+        "entries": 141,
+        "sha256Bytes": "9ddf7ae33a9a8d99641a39c0af7d69a4538dcea7fff31c79fcab48a3561b0d05"
+      },
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-pagination-main-product-snapshot-final\\main-resources.jar",
+        "source": "desktop/build/resources/main",
+        "entries": 56,
+        "sha256Bytes": "ba96e3674659d18c3449a5c32f3017efdc3d0f597789ad21df6b9ba414f7417d"
+      }
+    ]
+  },
+  "targets": [
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/Color.java",
+      "prepared": "prepared/desktop/src/main/java/com/bilipai/desktop/palette/Color.java",
+      "sha256Bytes": "0ad5ba092c715aac3800645c9f9c2cac04716a167c51f43d046b5a25d64a6ce1",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/ColorCutQuantizer.java",
+      "prepared": "prepared/desktop/src/main/java/com/bilipai/desktop/palette/ColorCutQuantizer.java",
+      "sha256Bytes": "63d6832880fb4d91d90be1840c858bb6098947fb99aab8e15e18cc5349278e3c",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/ColorUtils.java",
+      "prepared": "prepared/desktop/src/main/java/com/bilipai/desktop/palette/ColorUtils.java",
+      "sha256Bytes": "c33ad711929d9f64bedb7c0533e264b09106a9be391c73dc508f671b6f8904de",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPalette.java",
+      "prepared": "prepared/desktop/src/main/java/com/bilipai/desktop/palette/DesktopPalette.java",
+      "sha256Bytes": "d1c8bd769372e4455a169dcba3c8df88d6cdbc88da4b73a608139a88fe61fb52",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/core/util/DesktopCardHaptic.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/android/purebilibili/core/util/DesktopCardHaptic.kt",
+      "sha256Bytes": "fece287fb45d54aa5ff36e6cba7adc5925672dab1af8d3bdad8b32d215fbc1ed",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopHomeCardPlatform.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopHomeCardPlatform.kt",
+      "sha256Bytes": "4fa321f066208dba17c9cf99073846f04c912103917b8356ea93ad9d43b3d46a",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopVideoCardPalette.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopVideoCardPalette.kt",
+      "sha256Bytes": "1d24c1816fba1dabb53c31049be7ec6826ec26c26d8a247d56dc59a8f0da9d72",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt",
+      "sha256Bytes": "6e84d23cdb26dfa6f30fd9e903bba8a6a36bc8917ba6163e2c094cb1b5cf726b",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9",
+      "baseSha256Bytes": "4c1649f7b97fb663f1872c946e0b0f30e827bf80e342797ffa72a644d3864ae4"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardVisualPreferences.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardVisualPreferences.kt",
+      "sha256Bytes": "3ac19b6646a6c43905b13f225ffedf1a74e772845dfdfdc90a12f4d116dfb0db",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardBindings.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardBindings.kt",
+      "sha256Bytes": "0183234e9dd17fa92fffb9acf0b372a6e3a67b0036421d74c2aae6a20e9068d8",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDiscoveryVideoCard.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDiscoveryVideoCard.kt",
+      "sha256Bytes": "b0a6d708c5fda145b02c2bcb7bac9dd7e9578d131944a25d899b9e2c5383cf96",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoRouteEncoding.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoRouteEncoding.kt",
+      "sha256Bytes": "10998418a8ddf6c1cf1d3d02723d896951b750ddbee6a6cc839ed15d51caf2ac",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "21c77135cb2ee223a33efb672535ef48e336ab8694daf57a20591c5a247c279a",
+      "baseSha256Bytes": "9523eee07949cd8786506456247c451bd5dd70a184453cb9d74e884deb8d050e"
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/APACHE-2.0.txt",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/APACHE-2.0.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.module",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "5a567afb6f8a99e25bedc1508e966ecf04f8d17c3c348a6738334703d75f440b",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.pom",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "e08068475ef098f0a24d6ec2505168ee022cfcb61c4d6ae36ed236a434529d5c",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.module",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "2246d881eae32b37129c6b44d754be4993afa10a98c072fac5453fb5df519baa",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.pom",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "85a20b2a6b649fedeb4daba06d37373ce0b620dcd48b486459d5118a84a9b855",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.module",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "7ccedff1334e1944ecc523039477d45422903f4cad611de831eda9f61ec7d59f",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.pom",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "546f2e1647e9c8305f6b96bf63d7928217501fc01a2cbf6b088d231c82bcc5e6",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.module",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "421be6dcdd24cbffd22bc3dde41445920306f9166244c800c81e5ba78542ef9e",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.pom",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "2f7ca4b4d067e32afef2bee1fa3b4b7a42937ab1e868e03ff80902b265480d34",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/NOTICE.txt",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/NOTICE.txt",
+      "sha256Bytes": "496119414defbe7d5bb45dc75aab826009dc66b1679dbc3462b5268f1b97357d",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/resources/licenses/home-card-platform/provenance.json",
+      "prepared": "prepared/desktop/src/main/resources/licenses/home-card-platform/provenance.json",
+      "sha256Bytes": "a334de59044d6dc2a7c627b0011c393f7db6364c4232a57a9240a05d6ab7b5d5",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeFullCardTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeFullCardTest.kt",
+      "sha256Bytes": "76787607f4e0f2ada6893430aa91b113b6f750c977df4c7a02212bb2aa119f40",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/core/graphics/ColorUtils.java",
+      "prepared": "prepared/desktop/third-party/home-card-palette/upstream/androidx/core/graphics/ColorUtils.java",
+      "sha256Bytes": "f483e662b0d9ef5ebb6300ad06d285ea8e88efb6c04337e6c03c687b80418f8e",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/ColorCutQuantizer.java",
+      "prepared": "prepared/desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/ColorCutQuantizer.java",
+      "sha256Bytes": "9a7d1953c293b4241c15e004f6f4325fb1311d462c98cb30ea6c3575d8b3803d",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/Palette.java",
+      "prepared": "prepared/desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/Palette.java",
+      "sha256Bytes": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77",
+      "baseSha256Bytes": null
+    },
+    {
+      "target": "desktop/tools/extract-upstream-home-full-card.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-home-full-card.py",
+      "sha256Bytes": "d292ba45378fa3d55b786f273e780d3135a633d879ab196c96d404653119e471",
+      "baseSha256Bytes": null
+    }
+  ],
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "dae76688644cef77f4c01c87d121b05f1a9ee7fffd4418c2b6fc4f56e976d064"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardHistoryProgressPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b56a67db6a04aabc40ffa670b94ce55a973de52157f638deaf2571e05ee45ec0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardDurationBadgeVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "a043c8e8b62657122df13765064e1caebd62d9227b15fee0518272483bcf927f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverStatsLayoutPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "147b2b4ca4694b71262f52f5419817c16102f7877e15153f4c074109705e4967"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverOverlayTextPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "35e7c0ae72ec43cdfda5177415bc631c215de4664c33f982aa9627914be9719b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverDurationText.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "7f073fde899fe47e102548048a0370b8e343e15badc5e7c3235a86eee1670c37"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "f4619ed5fe5023360a15e15d62cd0e7204516c7836d838356111f608c3eab7b6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoPremiumBadgePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b7ba269e1ac1f395b0b0ec1f71e370475e5fe7b941a45b2750a77b712305cb14"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardStats.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "3a3aa5512e1a4bbe4d5a7e4fd8ac522f116bfa4ce4f9d931206fe8c362345632"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "21578597b1a087ff4695ef8cfd852814b4bf891b1ebd4f4945172a052ea915d9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardFrame.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "89db4391653197234f591f36492b98d84e529db410026fa9eb6c8f67e4200de4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeVideoGlassBadgeStylePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "fdcf061feb7b50c5ba26f1bdb646b33918aab00e6299a5d06d8931298493f73a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "3e1201e5abd23916a836f16e9a2130f6d0b43c38f87ef5473240c55fb663e2d6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "29eb239e1e3bdf88e79196f8b5fdc6691e3ce00de9fa1ea4bbc8e9e692ef41fe"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/UserUpBadge.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "410bdc17e9b9f73973388639fc5f77bb82f9ed5fb10a92c26ea150c6aff4c743"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/VideoCardTitleVisibility.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "cffc8aaf970ff7e71272f4b88f4f2532e1c86fc59e06d09642c2aa639cc1e747"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/VideoCardLongPressVisibility.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b9bafb52715b3c02dc14da41b0229435f90a5764d363dc04d308496c0af4465a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/UpBadgeVisibility.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "329ee273892ecb514da10975d4a7a0b4d058b7004821a2fe61ed062c0032201b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "9a7ac953699e56f7b62fd5e80d480bb939c109a4b03a9b23e28627ea11832767"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/Animations.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "8c31a5832ba3d3867e614fa5b253cb946aa3566d8be4a4ff0c3ef0ab611eace0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/CardPositionManager.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4a814bc762fbcc5b16e5f9f771884c25b871ce4795bb37454476bb27951ccccd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "6dea5fc155bbf1908bb8a89bc5dbcf5880ce9ca63d4c4a340298bfe791e39a48"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardShellSharedBounds.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "00f3ffe596064d0d6cd30497ae5ee24328616341cf65541f105ad083c7918878"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "54755e4096482a7e534148788fe0fd0adfd87c07d3b6733682bb8cd5803fec7f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardNativeSnapshot.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "6173aba39627ccdb3e8bd81bf2626f086a8ba0d81f4a7740357f1e513c2030e6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/MiuixVideoCardTransitionState.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "61714a3b4f3d6e09ba1793541f1dc444cef34294f262237fb2aa7918a7316ca2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b99f204a6de2443eb75f150580e1522b96e46d7448da0ffda6b4b6a46711e9b7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "d40928caec1e7986e211af5858116c6b563ffc8825369dcfa2596337b570843a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b6cf5d21f74dbe9a7d44b7af4c2847ee1764c5d0526b6f4cb881d20dda659448"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardReturnTimeline.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "bc20fdfaafb2ebb63d9f6b406224c5a65300415a8b77685e3537d7d2863ce042"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/ScreenRoutes.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4c6b856f31557352a977478fa4cad88255b302c4f31718ce85da88bd40cc1e9a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/UrlDecodeCompat.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "f375442bdfd8dfb25ddd738e4a7079a1e33a0f6a24df4196a0f6b32ac07f324a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardShellReturnChrome.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "5430957264db10f040ae9f908ee4869a83e32a00334bd431de2a662ddf93f6ce"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "7fc3b2320d09144aac1821d560910ec0149fd1a71e7d8bc7580caab5d75c5bc4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCardEnterAnimationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4f093834043188a16f2e0e07290e3df1ca3b957be5213f5d481aa712263018ca"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "a8e4a5f9d5770b6b5406b482a48e8b45a6780e20c4438c4a2f3965c203c0654e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWatchLaterPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "a08e941d53362d20592d997b6f2569c5ed58e19bbbec26ac22f69d7c5039bdaa"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/FeedContentTokens.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "e8ae95d59afa96db4adc071f03bf149a05064228b5d2b0572e1edb141bf646cf"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/MotionTier.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "fc2e155419ec919d3ca5b93028acd0de8bfbff166506093ac778af8fb769d8e3"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/MotionTierPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "c3652309257dbf2e29f5cd22acdbc8cd152164767d2cef688780a322fa046d8b"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfile.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "7d728a795da17740e919f2df42da41164e454e4d649c18a2e434ac745666aa51"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppMotionTokens.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4152991b8bc04ca3e08faa4ede87a664143694edc6581f5e83924db3db64c1b4"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurBudgetPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "60a11cf67f136a2f3ee5a3079467366d8ce9d2872ec94decbd74331ebbaaace8"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "8cbefefe563834983daf639250644b6fe43ab6822d6c773f52a822097915dee4"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/RuntimeVisualGuardPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "d55600cea55c99b6082cf16e3528eff1f19bfe3de962556303496bf958e70a03"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurStyles.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "42c55b70954e33684831c82b4e037c1d3a9fb9a97b8bbf7e5581d602195ae972"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurIntensityVisualPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "f35caea85ec9fd5d771fb6fea35f98177f64e5d4d0fcbcea8b75a95aac1b9a62"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/RuntimeVisualGuardSignalPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "1c6f8664defcbeb29a385376b538438a824653db1be36e0c1625e738df7c711b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/HomeCoverReturnPrefetch.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "a43bb6ea5a05e202495e0b14a47377e0545c79b577017d71721c51d134399cf2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/CompositionLocals.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "2e97837619f6a88a86ca8c2aa99e59638e78fd630c8453af47a336d1619471c6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "91e323158f4fe1da4fe1e2004a5dd2f0abab48db534143d8e98632624d418d43"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "715c42cfa7030c5627faafe995b17f05957b89f3d04481834b683f1be66c2df8"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfileAdapter.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "61ff69095cccd96a2b1bd593218396af9c46e3038514d95fdcd4934a8872c2e1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ModifierExt.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "caa784820d58714dc5cec7415ee3f67b2a11ab1d31e63d062bc1701e4f1f4bfa"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "9cd231992465684cc911470b08bdba25db517a099eb957265358fec5ebcf67be"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/performance/RuntimeVisualGuardLocals.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "047a451f958d9a6e71b464c97c079bc58667d63b0d362395c2dde06ca3d2bce9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "c0a8397b15092d253fcd6e6f4f4274680c5e6405351be279817e946c60b217c5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4ceadd87ee043030a7f452124f25b3cb946b17338fa27c2b977e1ec30358c8b3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "4f4bd2ec7220c07639f7f7f42861f6c85f1f3a5e7c751aaeeaef6715fac30384"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/adaptive/AdaptiveInputModifiers.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "2bbddc7890c2342da3ea5ed207bfbe6d3088d4ebeb030ec8a8fa1d0dfd48bbc7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/UnifiedBlur.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "e3c34a3ab320413ce78af68563ec1edb69d56b6500cbcb76b85b3ee59f29d45e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardOnlineCountStore.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "8f7dedf419e04dac8fb4dd0f824ef5cf0e71e3d0fc059d98cd677c3ff8ad6184"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "c18aa754ff40d18d6f706c73d8be5ab9a26eda63b4b987be7ae609fe3d372836"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverColorStore.kt",
+      "mode": "policy-extract",
+      "features": [
+        "home-full-card"
+      ],
+      "sha256": "30734465aebe7c6b865078cb37c9be9d84df2acb49762bb989034ed69b4d9af9"
+    }
+  ],
+  "generatedFiles": [
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalHomeCardVisualSettings.kt",
+      "sha256Bytes": "1ca0f84be020c3831a010ab3bdbb10c4cdc1633a8767d232ffdfa84498f0b5a0"
+    },
+    {
+      "path": "com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "99c8f23e6cb673734b3489a8b72fb3034b207fa6705c8d0ad687db9ec60a8eca"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/AdaptiveInputModifiers.kt",
+      "sha256Bytes": "7cbd4f9946777d61dfa8664aaecd5b2996552b4b809f0b3e6a86a2e967ac90a8"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/DeviceUiProfile.kt",
+      "sha256Bytes": "2b4aba4ff638ab075152ba74bc21cd8c3dc725f95c1dc570b08cb4b1af7bf427"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/DeviceUiProfileAdapter.kt",
+      "sha256Bytes": "b29798b820f79a43f7e58566d4bfe07dea1fd7785aae36c7779ba7e856468fec"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/MotionTier.kt",
+      "sha256Bytes": "e87d431cee6f797951f064d5d098140573531a661386ac932b2097825fc18aca"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/MotionTierPolicy.kt",
+      "sha256Bytes": "5fbb86d64802efc2bb9f935b7f14072ce4c429ed4c19cac4168d9fe0ee639ce6"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/RuntimeVisualGuardPolicy.kt",
+      "sha256Bytes": "a7b942606084c9e5ad4bafc303a4383508257cbd91d8c3a6a2593d877afefff5"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/adaptive/RuntimeVisualGuardSignalPolicy.kt",
+      "sha256Bytes": "cc0f5bf26003d40bb22a85aad8b33ab5d1f7919a6ff8a73f4b39a7b040d4d6ae"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/blur/BlurBudgetPolicy.kt",
+      "sha256Bytes": "84524c96eadc983bf56ee4154b425b458f617268e1de46e1a715457629332ab1"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/blur/BlurIntensityVisualPolicy.kt",
+      "sha256Bytes": "35e99602383fdfdc0c6635315c2b91bebbf35de413ea66e082bf2d6b5b0372fc"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/blur/BlurStyles.kt",
+      "sha256Bytes": "f29fe14787163c3cbbf0679944c28a54e83d3d15a1482a2d45fc12d49ca5b771"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "sha256Bytes": "eca196503762fae48bd8c393ab1edaf19e345ff826a32ea7d6003f7827e7a38d"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/blur/UnifiedBlur.kt",
+      "sha256Bytes": "8e5687d383f05dbd9f25cee5afcc9214b7922ada890679449a1bc224d8bc5bbd"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/UpBadgeName.kt",
+      "sha256Bytes": "b697443ee4378a83b29e26a69467438227717d1f4a3fa52a7a6b53d638b65548"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt",
+      "sha256Bytes": "4a70a505ceca0ee3baf5a3f1ec35674df1118734515eab92bb57a5f87961ffed"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/UserUpBadge.kt",
+      "sha256Bytes": "34cf4de03ef44170de82e1e0524a316f4fb5f22fc0ca588d9f91a6eb78ca14ee"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/CompositionLocals.kt",
+      "sha256Bytes": "8719a0d7201fe1d85dedb28301bb0bee8e3dff6f3edb9aecc8aaaecc4f7f0d8c"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/FeedContentTokens.kt",
+      "sha256Bytes": "d0a88a1315588172ce07f6df01dbb77e221e177cc4770679bda02de30e7dd61e"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/MediaContrastPalette.kt",
+      "sha256Bytes": "f7ec7770ed235c8a72f1e06dda1eaebc0958d113777df7242daf2368f30942c8"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/motion/AppMotionTokens.kt",
+      "sha256Bytes": "8580f3e82fd1b42510193fabf9cdd205f3ebb99cbf63bb9d98805abf86d346fb"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/performance/RuntimeVisualGuardLocals.kt",
+      "sha256Bytes": "6ba65f763f5ba4b61b0a0de152bb871b80ab6e5516d10ec126dd47dfd2f24c24"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/SharedTransitionProvider.kt",
+      "sha256Bytes": "b64cb1bf70fe74fd518615998742db626f898449f2de78f457eec1b52205727a"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/BiliPaiSharedElementKey.kt",
+      "sha256Bytes": "e40f03c7b818d9ee2fca7178143822deabe206246dbc27512ce2f7defa13d299"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/MiuixVideoCardTransitionState.kt",
+      "sha256Bytes": "33d68e516d7336d6933f2ffd9ae6034b3a57e8de00a91fa4d13dd4b9020fae26"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardNativeSnapshot.kt",
+      "sha256Bytes": "626c3abac28005227580f30b40b772cfcb280e5ac638652ba7451a99461c2754"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardReturnTimeline.kt",
+      "sha256Bytes": "5c0ea648a354ad31cb83233760cc99fcdb62734ce88ca3be4adbc98198f6e5f7"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt",
+      "sha256Bytes": "06b3cabacb5878452d01057257b50e7c00e6fd3fed75e840ff0a87af246a450f"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardShellSharedBounds.kt",
+      "sha256Bytes": "0dd60f7cc60cda8fc77842cba141dc3d0eac33f4782235d0004220c891681178"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt",
+      "sha256Bytes": "56e8a75e4328b0a76c9179b16fa5c36fcac953a923c39dce6a0eac428525628c"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256Bytes": "e33f8361cbd8a3fc5f80351e899934d37277e8db9b7f211be78fd24783d3cb2a"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt",
+      "sha256Bytes": "7b3a33811342c918d9de69d62da00918d8cb790540b9f8a7a07ea2e01cf29176"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt",
+      "sha256Bytes": "1c694da8811868b286dc272ba0ebd43e9ef41a08184451c30fa14aec4aeebab2"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/UpBadgeVisibility.kt",
+      "sha256Bytes": "0b12e718b3b7787e7a127099e70d39479ca040a045eefbfd911c2f4396b4c570"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/VideoCardLongPressVisibility.kt",
+      "sha256Bytes": "c1fff9c2b8323f6316d2a79f1708d04980f944818b80eef35aa801231ef03105"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/VideoCardTitleVisibility.kt",
+      "sha256Bytes": "d29d78d74faa0f969547fd7cfd6a7683207fad664c84c921608f86089f1e4cc3"
+    },
+    {
+      "path": "com/android/purebilibili/core/util/Animations.kt",
+      "sha256Bytes": "217b34e05deb68875fb892983cf4d6d02c2b4ee78bc4e9102b41592eb554bdc6"
+    },
+    {
+      "path": "com/android/purebilibili/core/util/CardPositionManager.kt",
+      "sha256Bytes": "0a01947adc04107161c46fcb7eea20f7428f29fb320e368c29116b0cc879f462"
+    },
+    {
+      "path": "com/android/purebilibili/core/util/HomeCoverReturnPrefetch.kt",
+      "sha256Bytes": "a17f4992269c4210301142de213d0fa287520bc64a58d49306a00b000d8d60bc"
+    },
+    {
+      "path": "com/android/purebilibili/core/util/ModifierExt.kt",
+      "sha256Bytes": "caf851db2cc5d64494bdfe6750aadfd2a480338c68742430efe78c4fcef96e4a"
+    },
+    {
+      "path": "com/android/purebilibili/core/util/UrlDecodeCompat.kt",
+      "sha256Bytes": "ce90741d2123f57b499f0afff0c4a8182b5689e8f7ef5c9db0322b94c6f25daf"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "sha256Bytes": "cb0ce8004c7a6a27f60f9c41276096c3e098b62d173b12554479d8f22e707112"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/HomeVideoGlassBadgeStylePolicy.kt",
+      "sha256Bytes": "83ba736bcba6bd9d80436bd8721022ca652222c43ae5928af49e6ccf0f75c693"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardFrame.kt",
+      "sha256Bytes": "7cb42606fcc24c016e6940d1e1ed1637874b364eb446053823cb40257ce76a33"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt",
+      "sha256Bytes": "77d46d05b1b3fd70d1d3d3b66c1f0347f492f90bec43791d400c15f12efaf581"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardStats.kt",
+      "sha256Bytes": "1db5433a57db9d01eda73148a1710b5b23339e79fb2c093a6ccef13679bf53ad"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "sha256Bytes": "098892ae6d8a20aa7de7e4094785131f69346d270955e65751e0ddec53027b08"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt",
+      "sha256Bytes": "ab7c2d0501b80dc4db20a5b9a1673128e3080daa524cfc39e69d72eb138e7c94"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardCoverDurationText.kt",
+      "sha256Bytes": "c2ce94378044148bea4073edeb9b11ef30ddbc7ba7cbc27a9aab23d577097f72"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardCoverOverlayTextPolicy.kt",
+      "sha256Bytes": "a62239237db4c05b715fa9fc9d82a09c67a9372d2ded7c59bc1759414802fc22"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardCoverStatsLayoutPolicy.kt",
+      "sha256Bytes": "898935d70138fcd3e6e91625a8838f82693ede43f970923b092220d0a5408356"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardDurationBadgeVisualPolicy.kt",
+      "sha256Bytes": "ce8e8e60f45f8bb18d09a42be02b7b2fcb13d0fae4342417259f8b1b435efed2"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardHistoryProgressPolicy.kt",
+      "sha256Bytes": "ad6cfc2090c9dd7fbc1babe5ff26ea70f9774ad499b6cc1dad142582a7e66096"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardOnlineCountStore.kt",
+      "sha256Bytes": "cc43c8db12981280d48030dae3e9e2a1773cd123d45ba87b0632f4b6a23c3be1"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt",
+      "sha256Bytes": "9c1071b06e3a4a211f5ad5f6583335aeb2e6a450b5cd41643f68ae017190acc5"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoCardShellReturnChrome.kt",
+      "sha256Bytes": "89b987b46390c8c3ab73b780b78ae81158d6f5eea1371dcf83a8b6db50dde2ad"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/cards/VideoPremiumBadgePolicy.kt",
+      "sha256Bytes": "84acb41ab4f3d44b6e07a93258b971893b42c772471bb3c37a53d670f988817c"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/HomeCardEnterAnimationPolicy.kt",
+      "sha256Bytes": "28df0ed3df32cb1ace18a1fad966bd9c4f2e71229fadf2cb7dc5d7b29db872d4"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt",
+      "sha256Bytes": "a31bdc669fd003518d4b0c1b9758b139f1643a326061ab465efea9db75e8cfd2"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt",
+      "sha256Bytes": "0d85817cf3cdc7491189cd40e61602b950d3c92f9d72607542fae7e5db72254a"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "6aa92188d7565a3096e0390b2d5b7296304c2ce38715bbf11e2a39cb2b37f94b"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/HomeWatchLaterPolicy.kt",
+      "sha256Bytes": "b93857116afa25570449c6c32ea6c048d5ccbeed17224874c455f9f8b7031b6a"
+    },
+    {
+      "path": "com/android/purebilibili/feature/settings/DesktopOriginalHomeCardVisualFields.kt",
+      "sha256Bytes": "77a68840fbbe086b807a46761b50c7f8ba16b19f6c7754d135e67503850ac889"
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "sha256Bytes": "675801a32103f8e0abd6b8a58c3ae67aecc921a4c1c5a5bdb8b0153c50196d7e"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "097e74d4952ee99e68899744f62473dd51ff21f3c82d35f541d9bb7db9c7dcd7"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256Bytes": "1f242e3cb0f803458047a96f230b89a0fc1976ca946a513d4d01819164e278f5"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/ScreenRoutes.kt",
+      "sha256Bytes": "c97490afd26785716abe97a89071a5e6ee806b9a186a2268ca0b852f9166e6d7"
+    }
+  ],
+  "actualProof": {
+    "junitMethods": 12,
+    "uiFlows": 2,
+    "pointerPairs": 28,
+    "actualUiScreenshots": 8,
+    "coldJvmReaders": 2,
+    "proof": "proof/13",
+    "actualClassPins": 11,
+    "preparedStoreHunk": true,
+    "wholeMainOrRuntime": false,
+    "account": false,
+    "liveBili": false,
+    "loopbackHttp": true
+  },
+  "hooks": [
+    "append DesktopHomeCardVisualSettingsSection on existing Home wrapper using existing preferences.context",
+    "prepare original sources from extract-upstream-home-full-card.py; direct originals supplied only by shared Sync",
+    "add original Haze alpha03 JVM artifacts; normal Gradle resolves original transitive annotations",
+    "source Card progress reader is nullable; Root may bind existing current-account DesktopLibrary with matching CID; not mounted or verified in this proof"
+  ],
+  "boundaries": [
+    "Original card source and two actual light styles verified; no claim of whole Root or dark matrix acceptance",
+    "No Android wallpaper backdrop, shared navigation morph/return host, fold/pinch/data-saver integration",
+    "Following uses real raw isFollowed; no fabricated following list or unknown UP follower/video counts",
+    "Original SingleColumn source compiled but HomeCategory original default Elegant does not set singleColumn; no new fake mode",
+    "Cover stats/online data use raw original values/API; enabled live online metadata not tested with an account",
+    "Legacy glass badges/info glass remain original fixed OFF; frosted key only faithfully preserved during migration",
+    "Windows palette scaling binding is real nearest pixel-center Skia sampling, not Android cross-device pixel-equivalence proof"
+  ],
+  "historicalEvidence": [
+    "attempt10 UI fixture had wrong non-zero-padded duration assertion (original is 04:05)",
+    "attempt11 prepared tint ambient missing; failed log/PNGs retained; fixed by actual original LocalHomeCardDynamicTintEnabled and no-wallpaper fallback",
+    "attempt12 PASS before immutable Long cardEpoch capture tightening; final attempt13 reran same proof after tightening"
+  ]
+}

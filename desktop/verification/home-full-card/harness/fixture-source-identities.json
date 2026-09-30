@@ -1,0 +1,16 @@
+{
+  "frozenSourceHandoff": "settings-home-full-card-parity/frozen-manifest.json",
+  "frozenSourceManifestSha256Bytes": "7bfa462020e06e4a7c05a04c658412f989099a85478bfae5279effbb16b10677",
+  "files": [
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "2800f142006684cae7de6981d2866137a26fafc4423f1e78c9b7d6e569a03b33",
+      "kind": "fixture-only Kotlin"
+    },
+    {
+      "path": "ColdDiskReader.kt",
+      "sha256Bytes": "02bdd49e8ba622c754480258d05be32528434df44418086b4c3b19456162ed5f",
+      "kind": "fixture-only Kotlin"
+    }
+  ]
+}

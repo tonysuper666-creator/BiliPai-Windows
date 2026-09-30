@@ -61,5 +61,7 @@ fun DesktopHomeCardSettingsSection(preferences:DesktopHomeCardPreferences,onFail
             {value->write{preferences.setGridColumnCount(value)}},
             {value->write{preferences.setWidthPreset(value)}},
             {value->write{preferences.setStyle(value)}})
+        val visualPreferences=remember(preferences.context){DesktopHomeCardVisualPreferences(preferences.context)}
+        DesktopHomeCardVisualSettingsSection(visualPreferences,onFailure)
     }
 }

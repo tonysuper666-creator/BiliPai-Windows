@@ -1,0 +1,104 @@
+[
+  {
+    "class": "com.bilipai.desktop.palette.ColorCutQuantizer",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-java.jar",
+    "sha256Bytes": "f1f159872f95c94d57df8bbd47f95425563f63db04c7c18193b4ed1f07fd6d1c",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "c2c6ea96dd2e1338688783a19743092091a7f2a26d0f10efa625f40b65c377b9",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.appearance.DesktopWindowConfiguration",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "4d69863e4ba8a281902cfb0aedfd14150a77c7bbeefd64fb4766b5e6fb4ba67f",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.core.ui.components.AppSingleChoiceRowKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "711043b077a60f584c8b6d9083ef9652286674fedb207fa4850e6dad177c5463",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.core.ui.components.AppSegmentOption",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "36c4cd5b723089c5737ef2dddb8829286033e0901af43fbb62e9bd47b6554d8d",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.core.ui.components.FeedVerticalStaggeredGridKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "310ac4e95b057459b244ebf6069a02624c67ccba55660919f1b0464e0497dee1",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "3b742b6e452a1e4d9513ff13be637c441f1cf13b178a49557062e073174b5bcc",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopDiscoveryRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "ac8d3037e5c083ea8db7ce5aa3c77bcf9d9c5a02b7903f410934e64870729726",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.settings.DesktopHomeCardPreferences",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "50e317c22884a30e9e59fb4a98b997282e34d55e07365ff00ec1d56fa31504d6",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.CommunityFeedState",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "c096f7d5f3dbd575d56b6f921c63a917c05c1744dd5255fc4d939eae1cb20c97",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DiscoveryScreensKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "904fe062fa0f20edc96a0ed0e367873f4898f397b9ef9246ad98836b0793640e",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.feature.home.components.cards.VideoCardKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "c9c5a044f7cc3d073328f76b8abf81a4ad4eff155121f4ae7b183822b0001d20",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "2446133b693562dddc3c40d6b9e67d9b6d624279e1601ba3f295c710902ec75a",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DesktopOriginalDiscoveryVideoCardKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "aa9d01af403993cbd088e5de9c6a529444a15b28f456b5418b8a5f2fcd3ffc5f",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.settings.DesktopHomeCardVisualPreferences",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "044a80dbd9c63de00e11d385e6f6649d04825a5d521d68d581ca555988d54b42",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopHomeCardMetadataRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\home-full-card-main-product-snapshot-final\\main-kotlin.jar",
+    "sha256Bytes": "d0996b9e60ed00463386e15e721f5b50b6905fc14bdd91b8f2716165172ef491",
+    "preparedOverlay": false
+  }
+]

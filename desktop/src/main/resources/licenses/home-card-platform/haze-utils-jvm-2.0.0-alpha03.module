@@ -1,0 +1,116 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../haze-utils/2.0.0-alpha03/haze-utils-2.0.0-alpha03.module",
+    "group": "dev.chrisbanes.haze",
+    "module": "haze-utils",
+    "version": "2.0.0-alpha03",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.5.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.11.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-utils-jvm.jar",
+          "url": "haze-utils-jvm-2.0.0-alpha03.jar",
+          "size": 56179,
+          "sha512": "37ee141b85f3e1a46eb6763fd12d38d7f461dd14f21a14b10f9ba0b76ef23664e34dbd0d377643877235b621852f92fe6edca86973d3f22aca4404fb9f5b38c5",
+          "sha256": "4d080fc15ebbaec2aabdd9de9c9e12b82392498fe64889558542d8a41ab251e4",
+          "sha1": "e8e9823d0a9795533ba8787e4b451e2c104479d1",
+          "md5": "bf98bd41289668356c7d45c2ce702db4"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "1.11.1"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "haze-utils-jvm.jar",
+          "url": "haze-utils-jvm-2.0.0-alpha03.jar",
+          "size": 56179,
+          "sha512": "37ee141b85f3e1a46eb6763fd12d38d7f461dd14f21a14b10f9ba0b76ef23664e34dbd0d377643877235b621852f92fe6edca86973d3f22aca4404fb9f5b38c5",
+          "sha256": "4d080fc15ebbaec2aabdd9de9c9e12b82392498fe64889558542d8a41ab251e4",
+          "sha1": "e8e9823d0a9795533ba8787e4b451e2c104479d1",
+          "md5": "bf98bd41289668356c7d45c2ce702db4"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "haze-utils-jvm-sources.jar",
+          "url": "haze-utils-jvm-2.0.0-alpha03-sources.jar",
+          "size": 10878,
+          "sha512": "2809efc03fc9dbbd67e1d0371d970018b4ce7819abc207806a193735cbe3bf22583c7a0f4e18eead10e68a0bc99a25266b39eb503f506e34f8ba4d173518f0d4",
+          "sha256": "2dcfb2b66d9fa8f10e1887faabd627fe9fc2a694b89749a3c84f544f2eea02ae",
+          "sha1": "39ba4c60df36e07b3a6fa506c35ddaa40f160204",
+          "md5": "7cbb7c8c6ff897492c5183e60249b9b5"
+        }
+      ]
+    }
+  ]
+}

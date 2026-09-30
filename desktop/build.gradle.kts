@@ -455,6 +455,19 @@ val extractUpstreamHomeCards by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/home-cards"))
 }
 
+val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-full-card.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-media.py",
+        "tools/extract-appearance-platform.py", "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "home-full-card" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-full-card"))
+}
+
 val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamComponents,
         extractUpstreamAppearance, extractUpstreamSettingsCategories)
@@ -687,6 +700,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-settings"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/crash-prompt/sources"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-cards"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
@@ -700,6 +714,7 @@ tasks.named("compileKotlin") { dependsOn(extractUpstreamDiagnostics) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDynamicSettings) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamCrashPrompt) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeCards, extractUpstreamDynamicTabs) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamHomeFullCard) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }
 tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 
@@ -748,6 +763,10 @@ dependencies {
     implementation(project(":miuix5157"))
     implementation("com.materialkolor:material-kolor:4.1.1")
     implementation("com.materialkolor:material-color-utilities:5.0.1")
+    implementation("dev.chrisbanes.haze:haze-jvm:2.0.0-alpha03")
+    implementation("dev.chrisbanes.haze:haze-utils-jvm:2.0.0-alpha03")
+    implementation("dev.chrisbanes.haze:haze-blur-jvm:2.0.0-alpha03")
+    implementation("dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.0-alpha03")
     implementation("org.jetbrains.compose.material:material-icons-extended:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.10.2")

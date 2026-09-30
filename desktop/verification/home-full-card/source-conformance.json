@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "tests": 4,
+  "exitCode": 0,
+  "source": "desktop/tools/tests/test_home_full_card_sources.py",
+  "generatorSha256Lf": "d292ba45378fa3d55b786f273e780d3135a633d879ab196c96d404653119e471",
+  "claims": [
+    "all 67 identities in main inventory",
+    "shared Sync uniquely owns direct originals",
+    "standalone direct bodies verbatim and deterministic",
+    "original visual setter bodies preserved"
+  ]
+}

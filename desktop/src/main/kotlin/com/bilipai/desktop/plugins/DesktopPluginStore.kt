@@ -45,6 +45,14 @@ class DesktopPluginStore(val root: Path) {
         backing.document[name] as? JsonObject ?: JsonObject(emptyMap())
     }
 
+    /** Compute read-dependent changes under the same reentrant JVM backing monitor. */
+    internal fun updateFromSnapshot(name: String, block: (DesktopPreferenceSnapshot) -> Map<String, JsonElement?>) = synchronized(backing) {
+        check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
+        requireObjectNamespace(name)
+        val values = block(DesktopPreferenceSnapshot(preferences(name)))
+        update(name, values)
+    }
+
     /** Publish a new snapshot only after the atomic replacement succeeds. */
     internal fun update(name: String, values: Map<String, JsonElement?>, clear: Boolean = false) = synchronized(backing) {
         check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }

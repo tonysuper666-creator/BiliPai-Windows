@@ -1,0 +1,114 @@
+{
+  "upstreamLibraries": [
+    {
+      "coordinate": "androidx.palette:palette:1.0.0:sources",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/palette/palette/1.0.0/palette-1.0.0-sources.jar",
+      "file": "palette-1.0.0-sources.jar",
+      "sha256Bytes": "4e7eef704a4ff0613a03f3529a2194ace0c291c78fc4326feb66a27d9efa26e7"
+    },
+    {
+      "coordinate": "androidx.core:core:1.13.1:sources",
+      "url": "https://dl.google.com/dl/android/maven2/androidx/core/core/1.13.1/core-1.13.1-sources.jar",
+      "file": "core-1.13.1-sources.jar",
+      "sha256Bytes": "947cc4b95df57d5d2ed16149458f4d3757da63a019d2d55a740db625bb3efcd6"
+    }
+  ],
+  "originalSourceFiles": [
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/core/graphics/ColorUtils.java",
+      "sha256Bytes": "f483e662b0d9ef5ebb6300ad06d285ea8e88efb6c04337e6c03c687b80418f8e"
+    },
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/ColorCutQuantizer.java",
+      "sha256Bytes": "9a7d1953c293b4241c15e004f6f4325fb1311d462c98cb30ea6c3575d8b3803d"
+    },
+    {
+      "target": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/Palette.java",
+      "sha256Bytes": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77"
+    }
+  ],
+  "hazePublications": [
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-jvm/2.0.0-alpha03/haze-jvm-2.0.0-alpha03.jar",
+      "file": "haze-jvm-2.0.0-alpha03.jar",
+      "sha256Bytes": "d6383d1186d7a27932350a3637ce6446f2a7e283a562de08de0a6602e5f96f1e"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-jvm/2.0.0-alpha03/haze-jvm-2.0.0-alpha03.pom",
+      "file": "haze-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "546f2e1647e9c8305f6b96bf63d7928217501fc01a2cbf6b088d231c82bcc5e6"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-jvm/2.0.0-alpha03/haze-jvm-2.0.0-alpha03.module",
+      "file": "haze-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "7ccedff1334e1944ecc523039477d45422903f4cad611de831eda9f61ec7d59f"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-utils-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-utils-jvm/2.0.0-alpha03/haze-utils-jvm-2.0.0-alpha03.jar",
+      "file": "haze-utils-jvm-2.0.0-alpha03.jar",
+      "sha256Bytes": "4d080fc15ebbaec2aabdd9de9c9e12b82392498fe64889558542d8a41ab251e4"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-utils-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-utils-jvm/2.0.0-alpha03/haze-utils-jvm-2.0.0-alpha03.pom",
+      "file": "haze-utils-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "2f7ca4b4d067e32afef2bee1fa3b4b7a42937ab1e868e03ff80902b265480d34"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-utils-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-utils-jvm/2.0.0-alpha03/haze-utils-jvm-2.0.0-alpha03.module",
+      "file": "haze-utils-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "421be6dcdd24cbffd22bc3dde41445920306f9166244c800c81e5ba78542ef9e"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-jvm/2.0.0-alpha03/haze-blur-jvm-2.0.0-alpha03.jar",
+      "file": "haze-blur-jvm-2.0.0-alpha03.jar",
+      "sha256Bytes": "1e2959edfff3c967e860275602c638f46a2eace4805c03a644c2a96ea8deb739"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-jvm/2.0.0-alpha03/haze-blur-jvm-2.0.0-alpha03.pom",
+      "file": "haze-blur-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "e08068475ef098f0a24d6ec2505168ee022cfcb61c4d6ae36ed236a434529d5c"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-jvm/2.0.0-alpha03/haze-blur-jvm-2.0.0-alpha03.module",
+      "file": "haze-blur-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "5a567afb6f8a99e25bedc1508e966ecf04f8d17c3c348a6738334703d75f440b"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-materials-jvm/2.0.0-alpha03/haze-blur-materials-jvm-2.0.0-alpha03.jar",
+      "file": "haze-blur-materials-jvm-2.0.0-alpha03.jar",
+      "sha256Bytes": "e3a200418c558185582968e73cd70d409d64063268172ae6d3d95f8232e07f2b"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-materials-jvm/2.0.0-alpha03/haze-blur-materials-jvm-2.0.0-alpha03.pom",
+      "file": "haze-blur-materials-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "85a20b2a6b649fedeb4daba06d37373ce0b620dcd48b486459d5118a84a9b855"
+    },
+    {
+      "coordinate": "dev.chrisbanes.haze:haze-blur-materials-jvm:2.0.0-alpha03",
+      "url": "https://repo.maven.apache.org/maven2/dev/chrisbanes/haze/haze-blur-materials-jvm/2.0.0-alpha03/haze-blur-materials-jvm-2.0.0-alpha03.module",
+      "file": "haze-blur-materials-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "2246d881eae32b37129c6b44d754be4993afa10a98c072fac5453fb5df519baa"
+    }
+  ],
+  "paletteChanges": [
+    "package rename to com.bilipai.desktop.palette",
+    "Android ARGB bit/channel binding",
+    "Original ColorCutQuantizer whole algorithm; compile-time false timing branches removed",
+    "Original Swatch RGB/HSL/population and Filter; original ColorUtils RGBToHSL/colorToHSL/HSLToColor and constrain methods",
+    "Skia borrowed bitmap pixels + nearest pixel-center resize binding; original area/ceil dimensions and useful-largest-swatch policy",
+    "128-entry synchronized access-LRU; cancellation before publication and Main callback; no Android SDK or recycled hardware bitmap facades"
+  ],
+  "licenses": "Original Apache-2.0 notices retained; full license and official Haze POM/module included",
+  "capabilityBoundary": "No Android wallpaper/RenderEffect API emulation. Haze JVM binary dependency is the original alpha03 pin; no blur/wallpaper host or shared-navigation transition acceptance claimed."
+}

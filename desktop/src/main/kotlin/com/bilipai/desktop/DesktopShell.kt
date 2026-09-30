@@ -206,6 +206,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
+    val homeCardProgress = remember(library, sessionEpoch) { desktopHomeCardProgressReader(library) }
     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
     var appearanceReady by remember(appearance) { mutableStateOf(false) }
@@ -848,6 +849,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val strings = LocalDesktopStrings.current
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
+        LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
         if (!appearanceReady) {
             Surface(Modifier.fillMaxSize()) {
