@@ -125,7 +125,7 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
         }
         if (mode == DiscoverySection.WEEKLY) {
             if (periodsError != null) CommunityFailure(periodsError!!, onLogin) { periodsRevision++ }
-            if (periods == null && periodsError == null) LinearProgressIndicator(Modifier.fillMaxWidth())
+            if (periods == null && periodsError == null) DesktopLoadingIndicator(Modifier.fillMaxWidth())
             periods?.let { choices ->
                 var menu by remember { mutableStateOf(false) }
                 Box(Modifier.padding(horizontal = 18.dp)) {
@@ -209,7 +209,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
                 }
                 if (cards.size < originals.size) Text("按筛选和反馈规则隐藏 ${originals.size - cards.size} 个视频", style = MaterialTheme.typography.bodySmall)
                 feedbackMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
-                if (feedbackBusy) LinearProgressIndicator(Modifier.fillMaxWidth())
+                if (feedbackBusy) DesktopLoadingIndicator(Modifier.fillMaxWidth())
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     TextButton(enabled = !feedbackBusy, onClick = { showBlocked = true }) { Text("屏蔽名单 · ${blockedCreators.size}") }
                     TextButton(enabled = !feedbackBusy && feedback.dislikedBvids.isNotEmpty(), onClick = { feedbackBusy = true; scope.launch {
@@ -233,7 +233,7 @@ private fun DiscoveryFeed(section: DiscoverySection, regionId: Int, period: Int?
         if (error != null) item(span = { GridItemSpan(maxLineSpan) }) { CommunityFailure(error!!, onLogin) {
             if (!busy) { val retry = page.failedCursor ?: 1; val replace = page.failedReplace; busy = true; scope.launch { fetch(retry, replace) } }
         } }
-        if (busy) item(span = { GridItemSpan(maxLineSpan) }) { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+        if (busy) item(span = { GridItemSpan(maxLineSpan) }) { DesktopLoadingIndicator(Modifier.fillMaxWidth()) }
         if (!busy && cards.isEmpty() && error == null) item(span = { GridItemSpan(maxLineSpan) }) { Text("暂无视频") }
         if (!busy && page.next != null) item(span = { GridItemSpan(maxLineSpan) }) { Button(onClick = {
             if (!busy) { val next = page.next ?: return@Button; busy = true; scope.launch { fetch(next, false) } }
@@ -312,7 +312,7 @@ fun DiscoveryVideoPreviewDialog(card: VideoCard, repository: DesktopRepository, 
     AlertDialog(onDismissRequest = onDismiss, title = { Text(details?.title ?: card.title) }, text = {
         Column(Modifier.width(680.dp).heightIn(max = 650.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             val info = details
-            if (info == null && failure == null) LinearProgressIndicator(Modifier.fillMaxWidth())
+            if (info == null && failure == null) DesktopLoadingIndicator(Modifier.fillMaxWidth())
             failure?.let { Text(it.message ?: "详情加载失败", color = MaterialTheme.colorScheme.error); TextButton(onClick = { revision++ }) { Text("重试") } }
             if (info != null) {
                 val data = shots

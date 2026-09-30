@@ -7,6 +7,7 @@ internal data class PendingPlayerSeek(val id: Long, val sourceVersion: Long, val
 /** Native worker only. Polling never completes a seek; playback-restart or a matching terminal EOF may acknowledge it. */
 internal class PlayerSeekTracker {
     private var pending: PendingPlayerSeek? = null
+    val hasPendingSeek: Boolean get() = pending != null
     fun submit(id: Long, sourceVersion: Long, positionSeconds: Double, nowNanos: Long = System.nanoTime()) {
         pending = PendingPlayerSeek(id, sourceVersion, positionSeconds, nowNanos)
     }

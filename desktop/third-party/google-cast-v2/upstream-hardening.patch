@@ -1,0 +1,563 @@
+--- original/su/litvak/chromecast/api/v2/Channel.java
++++ src/su/litvak/chromecast/api/v2/Channel.java
+@@ -1,3 +1,6 @@
++/* Modified for BiliPai Windows: authenticated device transport, bounded IO,
++ * cancellation, payload redaction and desktop lifecycle (2026).
++ * Original Apache-2.0 copyright and license below remain applicable. */
+ /*
+  * Copyright 2014 Vitaly Litvak (vitavaque@gmail.com)
+  *
+@@ -67,13 +70,19 @@
+             StandardResponse.class.getAnnotation(JsonSubTypes.class).value();
+ 
+     private static void warn(String message, Exception ex) {
+-        LOG.warn("{}, caused by {}", message, ex.toString());
++        LOG.warn("{}, category {}", message, ex.getClass().getSimpleName());
+     }
+ 
+     /**
+      * Single socket instance for transfers
+      */
+-    private Socket socket;
++    private volatile Socket socket;
++    private final CastDeviceAuth deviceAuth;
++    private volatile boolean cancelled;
++    private volatile boolean audioOnly;
++    private volatile Thread deadlineThread, pingThread;
++    private final java.util.concurrent.ScheduledExecutorService deadlines = java.util.concurrent.Executors.newSingleThreadScheduledExecutor(r -> { Thread t = new Thread(r, "cast-deadline"); t.setDaemon(true); deadlineThread = t; return t; });
++    private final java.util.concurrent.ScheduledExecutorService pings = java.util.concurrent.Executors.newSingleThreadScheduledExecutor(r -> { Thread t = new Thread(r, "cast-ping"); t.setDaemon(true); pingThread = t; return t; });
+     /**
+      * Address of ChromeCast
+      */
+@@ -85,7 +94,7 @@
+     /**
+      * Timer for PING requests
+      */
+-    private Timer pingTimer;
++    private java.util.concurrent.ScheduledFuture<?> pingTimer;
+     /**
+      * Thread for processing incoming requests
+      */
+@@ -119,11 +128,12 @@
+     private class PingThread extends TimerTask {
+         @Override
+         public void run() {
++            java.util.concurrent.ScheduledFuture<?> deadline = deadlines.schedule(Channel.this::cancelPendingOperations, requestTimeout, java.util.concurrent.TimeUnit.MILLISECONDS);
+             try {
+                 write("urn:x-cast:com.google.cast.tp.heartbeat", StandardMessage.ping(), DEFAULT_RECEIVER_ID);
+             } catch (IOException ioex) {
+                 warn("Error while sending 'PING'", ioex);
+-            }
++            } finally { deadline.cancel(false); }
+         }
+     }
+ 
+@@ -140,7 +150,7 @@
+                 try {
+                     message = read();
+                     if (message.getPayloadType() == CastChannel.CastMessage.PayloadType.STRING) {
+-                        LOG.debug(" <-- {}",  message.getPayloadUtf8());
++                        // Payloads may contain signed media URLs; never log them.
+                         jsonMSG = message.getPayloadUtf8().replaceFirst("\"type\"", "\"responseType\"");
+                         if (jsonMSG == null || jsonMSG.isEmpty()) {
+                             LOG.warn(" <-- Received empty message. Ignore.");
+@@ -169,7 +179,7 @@
+                     } else {
+                         temp = " null payload in message ";
+                     }
+-                    LOG.warn(" <-- {}", temp);
++                    // Deliberately omit payload on failure too.
+                     try {
+                         close();
+                     } catch (IOException e) {
+@@ -243,12 +253,19 @@
+             }
+         }
+ 
+-        public T get() throws InterruptedException, TimeoutException {
++        public T get() throws InterruptedException, TimeoutException, IOException {
+             synchronized (this) {
++                if (cancelled) throw new IOException("Cast operation cancelled");
+                 if (result != null) {
+                     return result;
+                 }
+-                this.wait(requestTimeout);
++                long end = System.nanoTime() + java.util.concurrent.TimeUnit.MILLISECONDS.toNanos(requestTimeout);
++                while (result == null && !cancelled) {
++                    long remaining = end - System.nanoTime();
++                    if (remaining <= 0) break;
++                    java.util.concurrent.TimeUnit.NANOSECONDS.timedWait(this, remaining);
++                }
++                if (cancelled) throw new IOException("Cast operation cancelled or timed out");
+                 if (result == null) {
+                     throw new TimeoutException();
+                 }
+@@ -262,6 +279,11 @@
+     }
+ 
+     Channel(String host, int port, EventListenerHolder eventListener) {
++        this(host, port, eventListener, null);
++    }
++
++    Channel(String host, int port, EventListenerHolder eventListener, CastDeviceAuth deviceAuth) {
++        this.deviceAuth = deviceAuth;
+         this.address = new InetSocketAddress(host, port);
+         this.name = "sender-" + new RandomString(10).nextString();
+         this.eventListener = eventListener;
+@@ -287,59 +309,44 @@
+      */
+     private void connect() throws IOException, GeneralSecurityException {
+         synchronized (closedSync) {
+-            if (socket == null || socket.isClosed()) {
+-                SSLContext sc = SSLContext.getInstance("SSL");
+-                sc.init(null, new TrustManager[] { new X509TrustAllManager() }, new SecureRandom());
+-                socket = sc.getSocketFactory().createSocket();
+-                socket.connect(address);
+-            }
+-            /**
+-             * Authenticate
+-             */
+-            CastChannel.DeviceAuthMessage authMessage = CastChannel.DeviceAuthMessage.newBuilder()
+-                    .setChallenge(CastChannel.AuthChallenge.newBuilder().build())
+-                    .build();
+-
+-            CastChannel.CastMessage msg = CastChannel.CastMessage.newBuilder()
+-                    .setDestinationId(DEFAULT_RECEIVER_ID)
++            if (cancelled) throw new IOException("Cast operation cancelled");
++            CastDeviceAuth auth = deviceAuth == null ? CastDeviceAuth.production() : deviceAuth;
++            SSLContext context = SSLContext.getInstance("TLS");
++            // Cast authenticates the temporary TLS certificate using DeviceAuth below.
++            context.init(null, new TrustManager[]{new X509TrustAllManager()}, new SecureRandom());
++            javax.net.ssl.SSLSocket current = (javax.net.ssl.SSLSocket)context.getSocketFactory().createSocket();
++            socket = current;
++            java.util.concurrent.ScheduledFuture<?> timeout = deadlines.schedule(() -> cancelPendingOperations(), requestTimeout, java.util.concurrent.TimeUnit.MILLISECONDS);
++            try {
++                if (cancelled) throw new IOException("Cast operation cancelled");
++                current.connect(address, (int)Math.min(requestTimeout, Integer.MAX_VALUE));
++                current.setSoTimeout((int)Math.min(requestTimeout, Integer.MAX_VALUE));
++                current.startHandshake();
++                byte[] nonce = auth.newNonce();
++                CastChannel.CastMessage challenge = CastChannel.CastMessage.newBuilder()
++                    .setDestinationId(DEFAULT_RECEIVER_ID).setSourceId(name)
+                     .setNamespace("urn:x-cast:com.google.cast.tp.deviceauth")
+-                    .setPayloadType(CastChannel.CastMessage.PayloadType.BINARY)
+                     .setProtocolVersion(CastChannel.CastMessage.ProtocolVersion.CASTV2_1_0)
+-                    .setSourceId(name)
+-                    .setPayloadBinary(authMessage.toByteString())
+-                    .build();
+-
+-            write(msg);
+-            CastChannel.CastMessage response = read();
+-            CastChannel.DeviceAuthMessage authResponse = CastChannel.DeviceAuthMessage.parseFrom(response.getPayloadBinary());
+-            if (authResponse.hasError()) {
+-                throw new ChromeCastException("Authentication failed: " + authResponse.getError().getErrorType().toString());
+-            }
+-
+-            /**
+-             * Send 'PING' message
+-             */
+-            PingThread pingThread = new PingThread();
+-            pingThread.run();
+-
+-            /**
+-             * Send 'CONNECT' message to start session
+-             */
+-            write("urn:x-cast:com.google.cast.tp.connection", StandardMessage.connect(), DEFAULT_RECEIVER_ID);
+-
+-            /**
+-             * Start ping/pong and reader thread
+-             */
+-            pingTimer = new Timer(name + " PING");
+-            pingTimer.schedule(pingThread, 1000, PING_PERIOD);
+-
+-            reader = new ReadThread();
+-            reader.start();
+-
+-            if (closed) {
++                    .setPayloadType(CastChannel.CastMessage.PayloadType.BINARY).setPayloadBinary(auth.challenge(nonce)).build();
++                write(challenge);
++                CastChannel.CastMessage response = read();
++                if (!response.getNamespace().equals(challenge.getNamespace()) || response.getPayloadType() != CastChannel.CastMessage.PayloadType.BINARY
++                    || !response.getSourceId().equals(DEFAULT_RECEIVER_ID) || !response.getDestinationId().equals(name))
++                    throw new GeneralSecurityException("Unexpected Cast authentication envelope");
++                byte[] peer = current.getSession().getPeerCertificates()[0].getEncoded();
++                audioOnly = auth.verify(response.getPayloadBinary().toByteArray(), peer, nonce);
++                if (cancelled) throw new IOException("Cast operation cancelled");
+                 closed = false;
++                write("urn:x-cast:com.google.cast.tp.connection", StandardMessage.connect(), DEFAULT_RECEIVER_ID);
++                PingThread ping = new PingThread();
++                pingTimer = pings.scheduleAtFixedRate(ping, 1000, PING_PERIOD, java.util.concurrent.TimeUnit.MILLISECONDS);
++                reader = new ReadThread(); reader.setDaemon(true); reader.setName("cast-reader"); reader.start();
+                 notifyListenerOfConnectionEvent(true);
+-            }
++            } catch (IOException | GeneralSecurityException | RuntimeException failure) {
++                cancelPendingOperations();
++                deadlines.shutdownNow();
++                throw failure;
++            } finally { timeout.cancel(false); }
+         }
+     }
+ 
+@@ -352,13 +359,7 @@
+         /**
+          * Try to reconnect
+          */
+-        if (isClosed()) {
+-            try {
+-                connect();
+-            } catch (GeneralSecurityException gse) {
+-                throw new ChromeCastException("Unexpected security exception", gse);
+-            }
+-        }
++        if (isClosed() || cancelled) throw new IOException("Cast channel closed");
+ 
+         Long requestId = requestCounter.getAndIncrement();
+         message.setRequestId(requestId);
+@@ -374,24 +375,29 @@
+         ResultProcessor<T> rp = new ResultProcessor<T>(responseClass);
+         requests.put(requestId, rp);
+ 
+-        write(namespace, message, destinationId);
++        java.util.concurrent.ScheduledFuture<?> deadline = deadlines.schedule(this::cancelPendingOperations, requestTimeout, java.util.concurrent.TimeUnit.MILLISECONDS);
+         try {
++            write(namespace, message, destinationId);
+             T response = rp.get();
+             if (response instanceof StandardResponse.Invalid) {
+                 StandardResponse.Invalid invalid = (StandardResponse.Invalid) response;
+-                throw new ChromeCastException("Invalid request: " + invalid.reason);
++                throw new ChromeCastException("Cast request rejected");
+             } else if (response instanceof StandardResponse.LoadFailed) {
+                 throw new ChromeCastException("Unable to load media");
+             } else if (response instanceof StandardResponse.LaunchError) {
+                 StandardResponse.LaunchError launchError = (StandardResponse.LaunchError) response;
+-                throw new ChromeCastException("Application launch error: " + launchError.reason);
+-            }
++                throw new ChromeCastException("Cast application launch rejected");
++            }
++            if (cancelled) throw new IOException("Cast operation cancelled");
+             return response;
+         } catch (InterruptedException e) {
+-            throw new ChromeCastException("Interrupted while waiting for response", e);
++            Thread.currentThread().interrupt();
++            cancelPendingOperations();
++            throw new ChromeCastException("Cast operation cancelled");
+         } catch (TimeoutException e) {
+             throw new ChromeCastException("Waiting for response timed out", e);
+         } finally {
++            deadline.cancel(false);
+             requests.remove(requestId);
+         }
+     }
+@@ -401,7 +407,7 @@
+     }
+ 
+     private void write(String namespace, String message, String destinationId) throws IOException {
+-        LOG.debug(" --> {}", message);
++        // Deliberately omit outbound media payload.
+         CastChannel.CastMessage msg = CastChannel.CastMessage.newBuilder()
+                 .setProtocolVersion(CastChannel.CastMessage.ProtocolVersion.CASTV2_1_0)
+                 .setSourceId(name)
+@@ -413,36 +419,17 @@
+         write(msg);
+     }
+ 
+-    private void write(CastChannel.CastMessage message) throws IOException {
+-        socket.getOutputStream().write(toArray(message.getSerializedSize()));
+-        message.writeTo(socket.getOutputStream());
++    private synchronized void write(CastChannel.CastMessage message) throws IOException {
++        Socket current = socket;
++        if (current == null || cancelled) throw new IOException("Cast operation cancelled");
++        BoundedCastFrame.write(current, message);
+     }
+ 
+     private CastChannel.CastMessage read() throws IOException {
+-        InputStream is = socket.getInputStream();
+-        byte[] buf = new byte[4];
+-
+-        int read = 0;
+-        while (read < buf.length) {
+-            int nextByte = is.read();
+-            if (nextByte == -1) {
+-                throw new ChromeCastException("Remote socket closed");
+-            }
+-            buf[read++] = (byte) nextByte;
+-        }
+-
+-        int size = fromArray(buf);
+-        buf = new byte[size];
+-        read = 0;
+-        while (read < size) {
+-            int nowRead = is.read(buf, read, buf.length - read);
+-            if (nowRead == -1) {
+-                throw new ChromeCastException("Remote socket closed");
+-            }
+-            read += nowRead;
+-        }
+-
+-        return CastChannel.CastMessage.parseFrom(buf);
++        Socket current = socket;
++        if (current == null || cancelled) throw new IOException("Cast operation cancelled");
++        return CastChannel.CastMessage.parseFrom(BoundedCastFrame.read(current,
++            closed ? (int)requestTimeout : 45000, (int)requestTimeout));
+     }
+ 
+     private void notifyListenerOfConnectionEvent(final boolean connected) {
+@@ -491,6 +478,7 @@
+     }
+ 
+     public MediaStatus load(String destinationId, String sessionId, Media media, boolean autoplay, double currentTime, Map<String, String> customData) throws IOException {
++        requireMediaType(media.contentType);
+         startSession(destinationId);
+         StandardResponse.MediaStatus status = sendStandard("urn:x-cast:com.google.cast.media", StandardRequest.load(sessionId, media, autoplay, currentTime, customData), destinationId);
+         return status == null || status.statuses.length == 0 ? null : status.statuses[0];
+@@ -532,23 +520,46 @@
+ 
+     @Override
+     public void close() throws IOException {
+-        synchronized (closedSync) {
+-            if (closed) {
+-                throw new ChromeCastException("Channel already closed.");
+-            } else {
+-                closed = true;
+-                notifyListenerOfConnectionEvent(false);
+-                if (pingTimer != null) {
+-                    pingTimer.cancel();
+-                }
+-                if (reader != null) {
+-                    reader.stop = true;
+-                }
+-                if (socket != null) {
+-                    socket.close();
+-                }
+-            }
+-        }
++        cancelPendingOperations();
++        if (pingTimer != null) pingTimer.cancel(true);
++        pings.shutdownNow(); deadlines.shutdownNow();
++        ReadThread running = reader;
++        if (running != null) {
++            running.stop = true;
++            if (running != Thread.currentThread()) {
++                try {
++                    running.join(1500);
++                    if (running.isAlive()) throw new IOException("Cast reader shutdown timed out");
++                } catch (InterruptedException interrupted) {
++                    Thread.currentThread().interrupt(); throw new IOException("Cast shutdown interrupted");
++                }
++            }
++        }
++        awaitShutdown(pings, pingThread);
++        awaitShutdown(deadlines, deadlineThread);
++        notifyListenerOfConnectionEvent(false);
++    }
++
++    private void awaitShutdown(java.util.concurrent.ExecutorService executor, Thread ownedThread) throws IOException {
++        if (Thread.currentThread() == ownedThread) return;
++        try {
++            if (!executor.awaitTermination(1500, java.util.concurrent.TimeUnit.MILLISECONDS))
++                throw new IOException("Cast helper shutdown timed out");
++        } catch (InterruptedException interrupted) {
++            Thread.currentThread().interrupt(); throw new IOException("Cast shutdown interrupted");
++        }
++    }
++
++    /** Closes the exact socket even while connect/handshake/send holds another monitor. */
++    void cancelPendingOperations() {
++        cancelled = true; closed = true;
++        Socket current = socket;
++        if (current != null) try { current.close(); } catch (IOException ignored) { }
++        for (ResultProcessor<?> processor : requests.values()) synchronized (processor) { processor.notifyAll(); }
++    }
++
++    void requireMediaType(String type) throws IOException {
++        if (audioOnly && (type == null || !type.startsWith("audio/"))) throw new IOException("Cast device permits audio only");
+     }
+ 
+     public boolean isClosed() {
+@@ -556,6 +567,7 @@
+     }
+ 
+     public void setRequestTimeout(long requestTimeout) {
++        if (requestTimeout <= 0 || requestTimeout > 120000) throw new IllegalArgumentException("Cast timeout bounds");
+         this.requestTimeout = requestTimeout;
+     }
+ }
+--- original/su/litvak/chromecast/api/v2/ChromeCast.java
++++ src/su/litvak/chromecast/api/v2/ChromeCast.java
+@@ -1,3 +1,6 @@
++/* Modified for BiliPai Windows: authenticated device transport, bounded IO,
++ * cancellation, payload redaction and desktop lifecycle (2026).
++ * Original Apache-2.0 copyright and license below remain applicable. */
+ /*
+  * Copyright 2014 Vitaly Litvak (vitavaque@gmail.com)
+  *
+@@ -39,7 +42,9 @@
+     private final int port;
+     private String appsURL;
+     private String application;
+-    private Channel channel;
++    private volatile Channel channel;
++    private CastDeviceAuth deviceAuth;
++    private long operationTimeout = 3000;
+     private boolean autoReconnect = true;
+ 
+     private String title;
+@@ -47,8 +52,12 @@
+     private String model;
+ 
+     ChromeCast(JmDNS mDNS, String name) {
+-        this.name = name;
+-        ServiceInfo serviceInfo = mDNS.getServiceInfo(SERVICE_TYPE, name);
++        this(mDNS.getServiceInfo(SERVICE_TYPE, name));
++    }
++
++    /** Windows discovery consumes the resolved event snapshot, never a second blocking lookup. */
++    ChromeCast(ServiceInfo serviceInfo) {
++        this.name = serviceInfo.getName();
+         this.address = serviceInfo.getInet4Addresses()[0].getHostAddress();
+         this.port = serviceInfo.getPort();
+         this.appsURL = serviceInfo.getURLs().length == 0 ? null : serviceInfo.getURLs()[0];
+@@ -61,6 +70,10 @@
+ 
+     public ChromeCast(String address) {
+         this(address, 8009);
++    }
++
++    ChromeCast(String address, int port, CastDeviceAuth deviceAuth) {
++        this(address, port); this.deviceAuth = deviceAuth;
+     }
+ 
+     public ChromeCast(String address, int port) {
+@@ -161,10 +174,15 @@
+ 
+     public final synchronized void connect() throws IOException, GeneralSecurityException {
+         if (channel == null || channel.isClosed()) {
+-            channel = new Channel(this.address, this.port, this.eventListenerHolder);
++            channel = new Channel(this.address, this.port, this.eventListenerHolder, deviceAuth);
++            channel.setRequestTimeout(operationTimeout);
+             channel.open();
+         }
+     }
++
++    public final void cancelPendingOperations() { Channel current = channel; if (current != null) current.cancelPendingOperations(); }
++
++    public final void requireMediaType(String contentType) throws IOException { channel().requireMediaType(contentType); }
+ 
+     public final synchronized void disconnect() throws IOException {
+         if (channel == null) {
+@@ -208,7 +226,9 @@
+      * @param requestTimeout value in milliseconds until request times out waiting for response
+      */
+     public void setRequestTimeout(long requestTimeout) {
+-        channel.setRequestTimeout(requestTimeout);
++        if (requestTimeout <= 0 || requestTimeout > 120000) throw new IllegalArgumentException("Cast timeout bounds");
++        operationTimeout = requestTimeout;
++        Channel current = channel; if (current != null) current.setRequestTimeout(requestTimeout);
+     }
+ 
+     /**
+@@ -456,6 +476,12 @@
+      * @return The new media status that resulted from loading the media.
+      * @throws IOException
+      */
++    public final MediaStatus load(final Media media, boolean autoplay, double currentTime) throws IOException {
++        Application running = getRunningApp();
++        if (running == null) throw new IOException("No Cast receiver application");
++        return channel().load(getTransportId(running), running.sessionId, media, autoplay, currentTime, null);
++    }
++
+     public final MediaStatus load(final Media media) throws IOException {
+         Status status = getStatus();
+         Application runningApp = status.getRunningApp();
+--- original/su/litvak/chromecast/api/v2/ChromeCasts.java
++++ src/su/litvak/chromecast/api/v2/ChromeCasts.java
+@@ -1,3 +1,6 @@
++/* Modified for BiliPai Windows: authenticated device transport, bounded IO,
++ * cancellation, payload redaction and desktop lifecycle (2026).
++ * Original Apache-2.0 copyright and license below remain applicable. */
+ /*
+  * Copyright 2014 Vitaly Litvak (vitavaque@gmail.com)
+  *
+@@ -32,9 +35,9 @@
+     private static final ChromeCasts INSTANCE = new ChromeCasts();
+     private final MyServiceListener listener = new MyServiceListener();
+ 
+-    private JmDNS mDNS;
++    private volatile JmDNS mDNS;
+ 
+-    private final List<ChromeCastsListener> listeners = new ArrayList<ChromeCastsListener>();
++    private final List<ChromeCastsListener> listeners = new java.util.concurrent.CopyOnWriteArrayList<ChromeCastsListener>();
+     private final List<ChromeCast> chromeCasts = Collections.synchronizedList(new ArrayList<ChromeCast>());
+ 
+     private ChromeCasts() {
+@@ -53,18 +56,17 @@
+     private class MyServiceListener implements ServiceListener {
+         @Override
+         public void serviceAdded(ServiceEvent se) {
+-            if (se.getInfo() != null) {
+-                ChromeCast device = new ChromeCast(mDNS, se.getInfo().getName());
+-                chromeCasts.add(device);
+-                for (ChromeCastsListener nextListener : listeners) {
+-                    nextListener.newChromeCastDiscovered(device);
+-                }
++            JmDNS current = mDNS;
++            if (current != null && se.getDNS() == current && ChromeCast.SERVICE_TYPE.equals(se.getType())) {
++                // PTR/SRV/address can arrive before TXT. The public JmDNS API waits at least one
++                // 200ms slice; bound that registration wait and keep subsequent resolution persistent.
++                current.requestServiceInfo(se.getType(), se.getName(), true, 200);
+             }
+         }
+ 
+         @Override
+         public void serviceRemoved(ServiceEvent se) {
+-            if (ChromeCast.SERVICE_TYPE.equals(se.getType())) {
++            if (se.getDNS() == mDNS && ChromeCast.SERVICE_TYPE.equals(se.getType())) {
+                 // We have a ChromeCast device unregistering
+                 List<ChromeCast> copy = get();
+                 ChromeCast deviceRemoved = null;
+@@ -86,7 +88,28 @@
+ 
+         @Override
+         public void serviceResolved(ServiceEvent se) {
+-            // intentionally blank
++            JmDNS current = mDNS;
++            if (current == null || se.getDNS() != current || !ChromeCast.SERVICE_TYPE.equals(se.getType()) || se.getInfo() == null) return;
++            javax.jmdns.ServiceInfo info = se.getInfo().clone();
++            // JmDNS hasData() also accepts EMPTY_TXT={0}; that is not the advertised metadata.
++            // No specific fn/md/id property is required: valid TXT without a friendly name remains a route.
++            if (!info.hasData() || info.getTextBytes().length <= 1 || info.getPort() <= 0 || info.getPort() > 65535 || info.getInet4Addresses().length == 0) return;
++            ChromeCast resolved = new ChromeCast(info);
++            boolean discovered = true;
++            synchronized (chromeCasts) {
++                if (mDNS != current) return;
++                for (int index = 0; index < chromeCasts.size(); index++) {
++                    if (chromeCasts.get(index).getName().equalsIgnoreCase(resolved.getName())) {
++                        chromeCasts.set(index, resolved);
++                        discovered = false;
++                        break;
++                    }
++                }
++                if (discovered) chromeCasts.add(resolved);
++            }
++            if (discovered) {
++                for (ChromeCastsListener nextListener : listeners) nextListener.newChromeCastDiscovered(resolved);
++            }
+         }
+     }
+ 
+@@ -104,9 +127,12 @@
+     }
+ 
+     private void doStopDiscovery() throws IOException {
+-        if (mDNS != null) {
+-            mDNS.close();
+-            mDNS = null;
++        JmDNS current = mDNS;
++        mDNS = null;
++        if (current != null) {
++            current.removeServiceListener(ChromeCast.SERVICE_TYPE, listener);
++            try { current.close(); }
++            finally { chromeCasts.clear(); }
+         }
+     }
+ 

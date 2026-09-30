@@ -42,6 +42,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private val nextSeekId = AtomicLong()
     private var softwareDecodingRequested = false
     private val externalSubtitles = mutableListOf<ExternalSubtitle>()
+    private var videoShaderConfiguration = PreparedVideoShaders(emptyList(), emptySet())
+    private var videoShaderVersion = 0L
+    private val mutableVideoShaders = MutableStateFlow(PlayerVideoShaderState())
+    val videoShaderState: StateFlow<PlayerVideoShaderState> = mutableVideoShaders.asStateFlow()
 
     private val canvas = object : Canvas() {
         override fun addNotify() {
@@ -95,8 +99,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val retainedSource = source.copy(progressiveSegments = java.util.Collections.unmodifiableList(source.progressiveSegments.toList()))
             requestedSource = retainedSource
             val revision = ++playbackRevision
+            mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
             mutableState.update {
                 it.copy(loading = true, paused = source.startPaused, positionSeconds = source.startPositionSeconds, durationSeconds = 0.0,
+                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null,
                     sourceTitle = source.title, videoWidth = 0, videoHeight = 0,
                     ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
@@ -109,7 +115,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
 
     fun setPaused(paused: Boolean) {
-        mutableState.update { it.copy(paused = paused) }
+        mutableState.update { it.copy(paused = paused, nativePaused = null) }
         send(Action.Property("pause", if (paused) "yes" else "no"))
     }
     fun togglePause() {
@@ -171,6 +177,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableState.update { it.copy(audioOnly = audioOnly) }
         send(Action.Property("vid", if (audioOnly) "no" else "auto"))
     }
+    /** mpv zoom/crop for the upstream profile skin's ZOOM fit mode. */
+    fun setVideoPanscan(panscan: Double) {
+        if (!panscan.isFinite() || closed.get()) return
+        val value = panscan.coerceIn(0.0, 1.0)
+        mutableState.update { it.copy(videoPanscan = value) }
+        send(Action.Property("panscan", value.toString()))
+    }
     fun setLoop(looping: Boolean) {
         mutableState.update { it.copy(looping = looping) }
         send(Action.Property("loop-file", if (looping) "inf" else "no"))
@@ -183,6 +196,19 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         setAudioOnly(normalized.audioOnly)
         setLoop(normalized.playbackMode == PlaybackMode.REPEAT_ONE)
     }
+    /** Applies genuine mpv GLSL hook assets; an empty list restores the native base renderer. */
+    fun setVideoShaders(files: List<Path>): Long {
+        val prepared = prepareVideoShaders(files)
+        return synchronized(lock) {
+            check(!closed.get()) { "Player is closed" }
+            videoShaderConfiguration = prepared
+            val version = ++videoShaderVersion
+            mutableVideoShaders.value = PlayerVideoShaderState(version, prepared.paths)
+            session?.commands?.offer(Action.VideoShaders(version, prepared))
+            version
+        }
+    }
+
     fun setSubtitlesVisible(visible: Boolean) {
         mutableState.update { it.copy(subtitlesVisible = visible) }
         send(Action.Property("sub-visibility", if (visible) "yes" else "no"))
@@ -249,6 +275,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             send(Action.Command(listOf("stop")))
             mutableState.update {
                 it.copy(loading = false, paused = false, positionSeconds = 0.0, durationSeconds = 0.0,
+                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null,
                     sourceTitle = "BiliPai", videoWidth = 0, videoHeight = 0,
                     ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
@@ -292,7 +319,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         // Shutdown must finish while the HWND is still alive. mpv does not
         // call the AWT event thread, so this wait cannot create an EDT cycle.
         previous?.thread?.join(5_000)
-        mutableState.update { it.copy(ready = false, loading = false) }
+        mutableVideoShaders.update { it.copy(active = false, appliedFiles = emptyList(), executedPasses = emptyList()) }
+        mutableState.update { it.copy(ready = false, loading = false, activeVideoPanscan = null, nativePaused = null) }
     }
 
     override fun close() {
@@ -305,6 +333,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private sealed interface Action {
         data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long) : Action
         data class Subtitles(val version: Long) : Action
+        data class VideoShaders(val version: Long, val configuration: PreparedVideoShaders) : Action
         data class Property(val name: String, val value: String) : Action
         data class Command(val args: List<String>) : Action
         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean) : Action
@@ -329,6 +358,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private val diagnostics = PlayerDiagnostics()
         private val seekTracker = PlayerSeekTracker()
         private val loadedSubtitlePaths = mutableSetOf<Path>()
+        private var activeShaderVersion = -1L
+        private var activeShaders = PreparedVideoShaders(emptyList(), emptySet())
+        private var lastShaderPoll = 0L
 
         private fun run() {
             var native: MpvNative? = null
@@ -358,6 +390,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     "demuxer-max-bytes" to "64MiB",
                     "volume" to state.value.volume.toString(),
                     "speed" to state.value.speed.toString(),
+                    "panscan" to state.value.videoPanscan.toString(),
                     "mute" to if (state.value.muted) "yes" else "no",
                     "vid" to if (state.value.audioOnly) "no" else "auto",
                     "loop-file" to if (state.value.looping) "inf" else "no",
@@ -368,6 +401,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 options.forEach { (name, value) -> checkResult(native, native.mpv_set_option_string(handle, name, value), name) }
                 checkResult(native, native.mpv_request_log_messages(handle, "warn"), "request-log-messages")
                 checkResult(native, native.mpv_initialize(handle), "initialize")
+                val shaders = synchronized(lock) { Action.VideoShaders(videoShaderVersion, videoShaderConfiguration) }
+                perform(native, handle, shaders)
                 val nativeVersion = property(native, handle, "mpv-version")
                 synchronized(lock) {
                     if (session === this && !closing.get()) mutableState.update { it.copy(ready = true, error = null, failure = null, nativeVersion = nativeVersion) }
@@ -426,6 +461,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         tracks = emptyList()
                         activeSourceVersion = action.version
                         activeRevision = action.revision
+                        lastShaderPoll = 0L
                         activeAttemptId = nextAttemptId.incrementAndGet()
                         seekTracker.reset()
                         diagnostics.reset(action.source)
@@ -451,6 +487,15 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         checkResult(native, native.mpv_command(handle, StringArray(arrayOf("seek", target.toString(), "absolute+exact"), "UTF-8")), "seek")
                         seekTracker.submit(action.id, action.sourceVersion, target)
                     }
+                    is Action.VideoShaders -> {
+                        if (!synchronized(lock) { session === this && !closing.get() && action.version == videoShaderVersion }) return
+                        checkResult(native, MpvVideoShaderProperties.set(native, handle, action.configuration.paths), "glsl-shaders")
+                        activeShaderVersion = action.version
+                        activeShaders = action.configuration
+                        lastShaderPoll = 0L
+                        refreshPausedVideoFrame(native, handle, action.version)
+                        refreshVideoShaders(native, handle)
+                    }
                     is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
                     is Action.Command -> {
                         if (action.args.first() == "stop") { activeEntry = null; expectedEntry = null; fileLoaded = false; seekTracker.reset() }
@@ -464,9 +509,33 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     action.completion.completeExceptionally(failure)
                     return
                 }
+                if (action is Action.VideoShaders) {
+                    synchronized(lock) {
+                        if (session === this && videoShaderVersion == action.version)
+                            mutableVideoShaders.update { it.copy(active = false, error = diagnostics.sanitize(failure.message ?: "Video shader configuration failed.")) }
+                    }
+                    return
+                }
                 if (action is Action.Load) publishFailure((failure as? MpvCallException)?.nativeCode,
                     failure.message ?: "Playback operation failed.")
                 else publishState { it.copy(operationError = diagnostics.sanitize(failure.message ?: "Playback control failed.")) }
+            }
+        }
+
+        private fun refreshPausedVideoFrame(native: MpvNative, handle: Pointer, shaderVersion: Long) {
+            // vo=gpu can retain its old paused render texture after a shader option changes.
+            // A same-position exact seek requests a new decoded render, including when clearing hooks.
+            // User seeks already cause that render and must keep their own target/completion identity.
+            if (!fileLoaded || seekTracker.hasPendingSeek || property(native, handle, "pause") != "yes" ||
+                property(native, handle, "seeking") == "yes") return
+            val position = property(native, handle, "time-pos")?.toDoubleOrNull()
+                ?.takeIf { it.isFinite() && it >= 0.0 } ?: return
+            synchronized(lock) {
+                if (session !== this || closing.get() || sourceVersion != activeSourceVersion ||
+                    playbackRevision != activeRevision || videoShaderVersion != shaderVersion) return
+                // This internal repaint allocates no user seek ID and invokes no SponsorBlock callback.
+                checkResult(native, native.mpv_command(handle, StringArray(arrayOf("seek", position.toString(), "absolute+exact"), "UTF-8")),
+                    "refresh paused video shaders")
             }
         }
 
@@ -529,7 +598,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         !synchronized(lock) { sourceVersion == activeSourceVersion && playbackRevision == activeRevision }) return
                     val message = event.getPointer(16) ?: return
                     if (message.getInt(24) > 30) return
-                    diagnostics.append(nativeText(message.getPointer(0), 96), nativeText(message.getPointer(16), 8_192))
+                    val prefix = nativeText(message.getPointer(0), 96)
+                    val text = nativeText(message.getPointer(16), 8_192)
+                    diagnostics.append(prefix, text)
+                    if (activeShaders.paths.isNotEmpty() && Regex("(?is)(?:shader|glsl|spirv).*(?:compil.*(?:error|failed)|(?:failed|error).*compil)|failed to (?:compile|link).*(?:shader|program)")
+                            .containsMatchIn("$prefix: $text")) synchronized(lock) {
+                        if (session === this && videoShaderVersion == activeShaderVersion && playbackRevision == activeRevision)
+                            mutableVideoShaders.update { it.copy(active = false, error = diagnostics.sanitize(text)) }
+                    }
                 }
                 6 -> { // MPV_EVENT_START_FILE
                     val entry = event.getPointer(16)?.getLong(0) ?: return
@@ -537,7 +613,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     activeEntry = entry
                     fileLoaded = false
                     loadedSubtitlePaths.clear()
-                    publishState { it.copy(loading = true, ended = false, error = null, failure = null) }
+                    publishState { it.copy(loading = true, ended = false, error = null, failure = null,
+                        firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null) }
                 }
                 8 -> { // MPV_EVENT_FILE_LOADED
                     if (activeEntry == null || (expectedEntry != null && activeEntry != expectedEntry)) return
@@ -547,6 +624,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 }
                 21 -> { // MPV_EVENT_PLAYBACK_RESTART: file startup alone has no submitted seek to acknowledge.
                     if (!fileLoaded) return
+                    val outputWidth = property(native, handle, "video-out-params/w")?.toIntOrNull() ?: 0
+                    val outputHeight = property(native, handle, "video-out-params/h")?.toIntOrNull() ?: 0
+                    if (!state.value.audioOnly && outputWidth > 0 && outputHeight > 0 && property(native, handle, "video-codec") != null)
+                        publishState { it.copy(firstVideoFrameReady = true) }
                     val position = property(native, handle, "time-pos")?.toDoubleOrNull() ?: return
                     val completed = seekTracker.acknowledge(activeSourceVersion, position) ?: return
                     publishState { it.copy(positionSeconds = position, seekCompletedId = completed.id, seekCompletedPositionSeconds = position) }
@@ -589,8 +670,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
 
         private fun refreshState(native: MpvNative, handle: Pointer) {
-            val paused = property(native, handle, "pause") == "yes"
+            val nativePaused = when (property(native, handle, "pause")) { "yes" -> true; "no" -> false; else -> null }
+            val paused = nativePaused ?: state.value.paused
             val buffering = property(native, handle, "paused-for-cache") == "yes"
+            val bufferedForward = if (fileLoaded) property(native, handle, "demuxer-cache-duration")?.toDoubleOrNull()
+                ?.takeIf { it.isFinite() && it >= 0.0 } else null
             val position = property(native, handle, "time-pos")?.toDoubleOrNull()
             val duration = property(native, handle, "duration")?.toDoubleOrNull()
             val videoCodec = property(native, handle, "video-codec")
@@ -598,11 +682,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val avSync = property(native, handle, "avsync")?.toDoubleOrNull()
             val volume = property(native, handle, "volume")?.toDoubleOrNull()
             val speed = property(native, handle, "speed")?.toDoubleOrNull()
+            val panscan = property(native, handle, "panscan")?.toDoubleOrNull()?.takeIf(Double::isFinite)
             val muted = property(native, handle, "mute") == "yes"
             val subtitlesVisible = property(native, handle, "sub-visibility") == "yes"
             val subtitleText = if (fileLoaded && subtitlesVisible) property(native, handle, "sub-text")?.takeIf(String::isNotBlank) else null
             val secondarySubtitleText = if (fileLoaded && subtitlesVisible) property(native, handle, "secondary-sub-text")?.takeIf(String::isNotBlank) else null
             val now = System.nanoTime()
+            if (now - lastShaderPoll > 1_000_000_000L) {
+                refreshVideoShaders(native, handle)
+                lastShaderPoll = now
+            }
             if (fileLoaded && now - lastTrackPoll > 1_000_000_000L) {
                 tracks = readTracks(native, handle)
                 lastTrackPoll = now
@@ -613,11 +702,15 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             publishState {
                 it.copy(
                     loading = if (fileLoaded) buffering else it.loading,
+                    pausedForCache = fileLoaded && buffering,
+                    bufferedForwardSeconds = bufferedForward,
                     paused = if (it.ended) true else if (fileLoaded) paused else it.paused,
+                    nativePaused = if (fileLoaded) nativePaused else null,
                     positionSeconds = if (fileLoaded) position ?: it.positionSeconds else it.positionSeconds,
                     durationSeconds = if (fileLoaded) duration ?: it.durationSeconds else it.durationSeconds,
                     volume = volume ?: it.volume,
                     speed = speed ?: it.speed,
+                    activeVideoPanscan = panscan,
                     videoCodec = if (fileLoaded) videoCodec else null,
                     hardwareDecoder = hardwareDecoder,
                     videoWidth = videoWidth,
@@ -630,6 +723,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     secondarySubtitleText = secondarySubtitleText,
                     tracks = if (fileLoaded) tracks else emptyList(),
                 )
+            }
+        }
+
+        private fun refreshVideoShaders(native: MpvNative, handle: Pointer) {
+            if (activeShaderVersion < 0) return
+            val files = MpvVideoShaderProperties.files(native, handle).orEmpty()
+            val passes = if (fileLoaded && activeShaders.paths.isNotEmpty()) MpvVideoShaderProperties.passes(native, handle).orEmpty() else emptyList()
+            synchronized(lock) {
+                if (session !== this || videoShaderVersion != activeShaderVersion || playbackRevision != activeRevision) return
+                mutableVideoShaders.update { previous ->
+                    previous.copy(appliedFiles = java.util.Collections.unmodifiableList(files.toList()),
+                        executedPasses = java.util.Collections.unmodifiableList(passes.toList()),
+                        active = previous.error == null && files == activeShaders.paths && activeShaders.executed(passes))
+                }
             }
         }
 

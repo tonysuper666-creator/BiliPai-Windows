@@ -20,22 +20,25 @@ import com.bilipai.desktop.danmaku.DanmakuDocument
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 @Composable
 fun DownloadBrowserScreen(
     manager: DesktopDownloadManager, player: MpvPlayer?, playerError: String?,
     onPlaybackActive: (Boolean) -> Unit, onToggleFullscreen: () -> Unit = {},
     playerContent: @Composable (MpvPlayer) -> Unit = { NativeMediaPlayer(it) },
-    sharedDanmaku: DanmakuOverlay? = null,
+    sharedDanmaku: DanmakuOverlay? = null, retained: DesktopRetainedMedia? = null,
 ) {
+    val pageScope = rememberCoroutineScope()
+    val memory = retained?.offline ?: remember(player) { DesktopOfflinePageMemory(pageScope, player) }
     val tasks by manager.tasks.collectAsState()
-    var current by remember { mutableStateOf<String?>(null) }
-    var error by remember { mutableStateOf<String?>(null) }
-    var deleting by remember { mutableStateOf<DownloadTask?>(null) }
-    var deleteFiles by remember { mutableStateOf(false) }
-    var loaded by remember { mutableStateOf(false) }
-    var sourceVersion by remember { mutableStateOf<Long?>(null) }
-    var danmakuEnabled by remember(sharedDanmaku) { mutableStateOf(sharedDanmaku?.currentSettings?.enabled ?: true) }
+    var current by memory::current
+    var error by memory::error
+    var deleting by memory::deleting
+    var deleteFiles by memory::deleteFiles
+    var loaded by memory::loaded
+    var sourceVersion by memory::sourceVersion
+    var danmakuEnabled by memory::danmakuEnabled
     val ownedOverlay = remember(player, current, sharedDanmaku) { if (sharedDanmaku == null && player != null && current != null) DanmakuOverlay(player) else null }
     val overlay = sharedDanmaku ?: ownedOverlay
     val emptyOverlayError = remember { kotlinx.coroutines.flow.MutableStateFlow<String?>(null) }
@@ -43,18 +46,23 @@ fun DownloadBrowserScreen(
     fun savePosition() { if (sourceVersion == null || sourceVersion != player?.currentSourceVersion) return; current?.let { id -> player?.state?.value?.let { state ->
         runCatching { manager.savePlaybackPosition(id, (state.positionSeconds * 1000).toLong(), (state.durationSeconds * 1000).toLong()) }
     } } }
-    PlaybackLifecycle(player, loaded, onPlaybackActive,
+    memory.checkpoint = ::savePosition
+    memory.onBeforeStop = { overlay?.setDocument(DanmakuDocument()) }
+    memory.release = { memory.assetsJob?.cancel(); memory.checkpointJob?.cancel() }
+    if (retained == null) PlaybackLifecycle(player, loaded, onPlaybackActive,
         { savePosition(); overlay?.setDocument(DanmakuDocument()) }, sourceVersion)
     val latestVersion by rememberUpdatedState(sourceVersion)
     DisposableEffect(overlay) { onDispose {
-        if (latestVersion != null && latestVersion == player?.currentSourceVersion) overlay?.setDocument(DanmakuDocument())
+        if (retained == null && latestVersion != null && latestVersion == player?.currentSourceVersion) overlay?.setDocument(DanmakuDocument())
         ownedOverlay?.close()
     } }
-    LaunchedEffect(current, overlay) {
-        val id = current ?: return@LaunchedEffect
+    suspend fun loadOfflineDanmaku() {
+        val id = current ?: return
+        val version = sourceVersion
         try {
             val files = manager.offlineDanmaku(id)
             val task = tasks.firstOrNull { it.id == id }
+            if (current != id || version == null || version != player?.currentSourceVersion) return
             overlay?.enabled = danmakuEnabled
             if (files != null && task != null && !task.item.isAudioOnly)
                 overlay?.loadOffline(files.standardSegments, files.specialSegments, task.item.duration.toDouble())
@@ -62,7 +70,8 @@ fun DownloadBrowserScreen(
         } catch (cancelled: CancellationException) { throw cancelled
         } catch (failure: Exception) { error = failure.message ?: "离线弹幕读取失败" }
     }
-    LaunchedEffect(current, loaded) { if (current != null && loaded) while (isActive) { delay(5000); savePosition() } }
+    if (retained == null) LaunchedEffect(current, overlay) { loadOfflineDanmaku() }
+    if (retained == null) LaunchedEffect(current, loaded) { if (current != null && loaded) while (isActive) { delay(5000); savePosition() } }
     fun stopOwned() {
         savePosition()
         if (sourceVersion != null && sourceVersion == player?.currentSourceVersion) {
@@ -72,17 +81,28 @@ fun DownloadBrowserScreen(
     }
     fun stop() { stopOwned(); current = null; error = null }
     fun play(task: DownloadTask) {
+        retained?.acquire(memory)
         stopOwned(); current = null
         try {
             val initialized = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
             val source = manager.offlinePlayback(task.id)
             sourceVersion = initialized.loadVersioned(source); current = task.id; loaded = true; error = null
+            val queue = manager.offlineEpisodeQueue(task.id)
+            val index = queue.indexOfFirst { it.id == task.id }
+            memory.previous = if (index > 0) ({ queue.getOrNull(index - 1)?.let(::play) }) else null
+            memory.next = if (index >= 0 && index + 1 < queue.size) ({ queue.getOrNull(index + 1)?.let(::play) }) else null
+            if (retained != null) {
+                memory.assetsJob?.cancel(); memory.assetsJob = memory.scope.launch { loadOfflineDanmaku() }
+                memory.checkpointJob?.cancel(); memory.checkpointJob = memory.scope.launch {
+                    while (isActive && memory.ownsNativeSource) { delay(5000); savePosition() }
+                }
+            }
         } catch (failure: Exception) { error = failure.message ?: "离线播放失败"; loaded = false }
     }
     LaunchedEffect(tasks, current) { if (current != null && tasks.none { it.id == current }) stop() }
     Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         val playing = tasks.firstOrNull { it.id == current }
-        if (playing != null && player != null) {
+        if (playing != null && player != null && loaded && memory.ownsNativeSource) {
             MediaPlaybackHeader(playing.title, ::stop, onToggleFullscreen)
             error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             Box(Modifier.fillMaxWidth().weight(1f)) { playerContent(player) }

@@ -34,6 +34,8 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
     var metadataLoading by remember { mutableStateOf(false) }
     var summaryLoading by remember { mutableStateOf(false) }
     var summaryTranscript by remember(details.bvid, cid) { mutableStateOf(false) }
+    var likeEffect by remember(details.aid, account?.mid) { mutableStateOf(false) }
+    var likeEffectVersion by remember(details.aid, account?.mid) { mutableIntStateOf(0) }
     val feedMemory = remember(details.aid, account?.mid) { CommunityFeedMemory() }
     fun refreshRelation() { if (account != null) scope.launch {
         try { relation = social.videoRelation(details.aid) }
@@ -54,13 +56,17 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
             FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 val liked = relation?.liked == true
                 CommunityAction(if (liked) "取消赞" else "点赞", onLogin, action = { social.setLike(details.aid, !liked) },
-                    onSuccess = { relation = (relation ?: VideoRelation(false, false, 0)).copy(liked = !liked) })
+                    onSuccess = {
+                        relation = (relation ?: VideoRelation(false, false, 0)).copy(liked = !liked)
+                        if (!liked) { likeEffectVersion++; likeEffect = true }
+                    })
                 TextButton(onClick = { if (account == null) onLogin() else coins = true }) { Text("投币${relation?.coins?.takeIf { it > 0 }?.let { " · 已投 $it" }.orEmpty()}") }
                 TextButton(onClick = { if (account == null) onLogin() else favorites = true }) { Text(if (relation?.favorited == true) "已收藏 · 管理" else "云端收藏") }
                 CommunityAction("加入稍后再看", onLogin, action = { social.setWatchLater(details.aid, true) })
                 CommunityAction("移出稍后再看", onLogin, action = { social.setWatchLater(details.aid, false) })
                 TextButton(onClick = { onNotes(details) }) { Text("视频笔记") }
             }
+            key(likeEffectVersion) { DesktopSkinLikeEffect(likeEffect, onFinished = { likeEffect = false }) }
             if (details.authorMid > 0) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 TextButton(onClick = { onUser(details.authorMid) }) { Text("${details.author} · 查看空间") }
                 if (account?.mid != details.authorMid) {

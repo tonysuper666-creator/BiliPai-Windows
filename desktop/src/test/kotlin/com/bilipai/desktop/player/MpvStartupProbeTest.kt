@@ -58,6 +58,9 @@ class MpvStartupProbeTest {
         override fun mpv_error_string(error: Int): String = "test native error"
         override fun mpv_set_property_string(handle: Pointer, name: String, value: String): Int = error("Unexpected playback call")
         override fun mpv_get_property_string(handle: Pointer, name: String): Pointer? = error("Unexpected playback call")
+        override fun mpv_set_property(handle: Pointer, name: String, format: Int, data: Pointer): Int = error("Unexpected shader call")
+        override fun mpv_get_property(handle: Pointer, name: String, format: Int, data: Pointer): Int = error("Unexpected shader call")
+        override fun mpv_free_node_contents(node: Pointer) = error("Unexpected shader call")
         override fun mpv_command(handle: Pointer, args: StringArray): Int = error("Unexpected playback call")
         override fun mpv_command_node(handle: Pointer, args: Pointer, result: Pointer?): Int = error("Unexpected playback call")
         override fun mpv_wait_event(handle: Pointer, timeout: Double): Pointer = error("Unexpected playback call")

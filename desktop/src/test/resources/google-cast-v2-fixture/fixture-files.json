@@ -1,0 +1,82 @@
+[
+  {
+    "name": "audio.der",
+    "sha256": "99170aa4a70d3f7fb82f2d30285f899f6c591f09c2e173b109936b439259aaf3"
+  },
+  {
+    "name": "bad-chain.der",
+    "sha256": "8c2901bb029b32acf129ad799bfa5cc0724715372fc2c27f206e4d35b7ed1ce9"
+  },
+  {
+    "name": "clock.txt",
+    "sha256": "58293389cd16f70b8d733f8a2441eb6f5cc24d346fba7cf29f47ab4859d0209c"
+  },
+  {
+    "name": "expired-intermediate.der",
+    "sha256": "b51e96fc0779987d4740a78fa54e07e47964808d5f3f5d9291aa4a4d14f0d3c6"
+  },
+  {
+    "name": "expired-leaf.der",
+    "sha256": "d6a560ff62e8e43997259625d662fb4192df32228be815c5c71300acc1900c0b"
+  },
+  {
+    "name": "expired-tls.der",
+    "sha256": "55dc19a95ba4f80f9b1f793aa3a20fa1a85f59e348495ab733599a30e6a8f570"
+  },
+  {
+    "name": "expired-tls.p12",
+    "sha256": "b5ec66d27f0ff5dfcc92b7aa0f06906ac2089757ce1173096e73ceca1fe4731f"
+  },
+  {
+    "name": "intermediate.der",
+    "sha256": "eb9baa5eff9d7073f9699963beb42cd3e3c928ca12d3762b87014b6636c3e99f"
+  },
+  {
+    "name": "leaf-key.pk8",
+    "sha256": "552fd1352209eeb0261bca094f066e62c398abd5435f92c0d354ee8842044eb9"
+  },
+  {
+    "name": "leaf.der",
+    "sha256": "923e5a2f7cebd8491cdf6895af6643e36f698f6d1c78c2bfaea6e47f73c68c76"
+  },
+  {
+    "name": "long-tls.der",
+    "sha256": "1ac8d7642079e907bd47834f0865e722b84b15671b5cb115bcfbdb3a757535bc"
+  },
+  {
+    "name": "long-tls.p12",
+    "sha256": "ab3fba32eafc81cde52faab3e654d75dba52f5b1abffb4df2bec1f60ed6fd8cb"
+  },
+  {
+    "name": "no-usage.der",
+    "sha256": "2ce10ffbe6ffebd994d980bea46ab2a4a4ff2809e8d7d71cc8825617b1023e61"
+  },
+  {
+    "name": "other-tls.der",
+    "sha256": "9094d006692e65947aa0739bcfbb7eee9f226acff59a7faf34880b0690269dde"
+  },
+  {
+    "name": "other-tls.p12",
+    "sha256": "04bcc121e384c9a3444d2407f3439050cdd05e1126265e76881d769eacdbe699"
+  },
+  {
+    "name": "root.der",
+    "sha256": "c2189c40c7604c22ae8ff1527fbe5a7719be968431795fa5645bf05f0f92ae22"
+  },
+  {
+    "name": "tls.der",
+    "sha256": "dfda14a7052c68586b7acb356b35a42f3e33fbba54b2c63d096edc6eb741e6e5"
+  },
+  {
+    "name": "tls.p12",
+    "sha256": "35f3adc5f11fe631309b1dd4bf3b53e6d5c8c41ffa84cab4c651487010f8e0cc"
+  },
+  {
+    "name": "weak-key.pk8",
+    "sha256": "359fdac18a8dff7bfba0f5716b0f69e49625f9c6d2591477a2917203ce37b512"
+  },
+  {
+    "name": "weak.der",
+    "sha256": "15fce60f5d29784c12790fef10370f08ea69d513a64da2b7d65cb40a471697ba"
+  }
+]

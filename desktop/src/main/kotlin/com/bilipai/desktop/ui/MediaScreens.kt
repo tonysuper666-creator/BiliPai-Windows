@@ -36,6 +36,8 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 
 @Composable
 fun LiveBrowserScreen(
@@ -43,69 +45,47 @@ fun LiveBrowserScreen(
     onPlaybackActive: (Boolean) -> Unit, onToggleFullscreen: () -> Unit = {},
     playerContent: @Composable (MpvPlayer) -> Unit = { NativeMediaPlayer(it) },
     initialRoomId: Long = 0, sharedDanmaku: DanmakuOverlay? = null,
+    retained: DesktopRetainedMedia? = null,
 ) {
     val media = remember(repository) { DesktopMediaRepository(repository) }
-    val scope = rememberCoroutineScope()
+    val pageScope = rememberCoroutineScope()
+    val memory = retained?.live ?: remember(player) { DesktopLivePageMemory(pageScope, player) }
+    val scope = memory.scope
     val account by repository.account.collectAsState()
     var sessionAccount by remember { mutableStateOf(account) }
-    var section by remember { mutableStateOf("热门") }
-    var query by remember { mutableStateOf("") }
-    var submitted by remember { mutableStateOf("") }
-    var areas by remember { mutableStateOf(emptyList<LiveArea>()) }
-    var parent by remember { mutableStateOf<LiveArea?>(null) }
-    var area by remember { mutableStateOf<LiveArea?>(null) }
-    var page by remember { mutableIntStateOf(1) }
-    var generation by remember { mutableIntStateOf(0) }
-    var cards by remember { mutableStateOf(emptyList<LiveCard>()) }
-    var hasMore by remember { mutableStateOf(false) }
-    var loading by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
-    var room by remember { mutableStateOf<LiveRoomDetails?>(null) }
-    var stream by remember { mutableStateOf<LivePlaybackInfo?>(null) }
-    var loaded by remember { mutableStateOf(false) }
-    var sourceVersion by remember { mutableStateOf<Long?>(null) }
-    var opening by remember { mutableStateOf(false) }
-    var playJob by remember { mutableStateOf<Job?>(null) }
-    var quality by remember { mutableIntStateOf(150) }
-    var onlyAudio by remember { mutableStateOf(false) }
+    var section by memory::section
+    var query by memory::query
+    var submitted by memory::submitted
+    var areas by memory::areas
+    var parent by memory::parent
+    var area by memory::area
+    var page by memory::page
+    var generation by memory::generation
+    var cards by memory::cards
+    var hasMore by memory::hasMore
+    var loading by memory::loading
+    var error by memory::error
+    var room by memory::room
+    var stream by memory::stream
+    var loaded by memory::loaded
+    var sourceVersion by memory::sourceVersion
+    var opening by memory::opening
+    var playJob by memory::playJob
+    var quality by memory::quality
+    var onlyAudio by memory::onlyAudio
     val ownedOverlay = remember(player, repository, sharedDanmaku) { if (sharedDanmaku == null) player?.let { DanmakuOverlay(it, repository.httpClient) } else null }
     val overlay = sharedDanmaku ?: ownedOverlay
-    var danmakuEnabled by remember(overlay) { mutableStateOf(overlay?.currentSettings?.enabled ?: true) }
-    PlaybackLifecycle(player, loaded, onPlaybackActive, sourceVersion = sourceVersion)
-    DisposableEffect(Unit) { onDispose { playJob?.cancel() } }
+    var danmakuEnabled by memory::danmakuEnabled
+    if (retained == null) PlaybackLifecycle(player, loaded, onPlaybackActive, sourceVersion = sourceVersion)
     DisposableEffect(ownedOverlay) { onDispose { ownedOverlay?.close() } }
 
-    fun stopOwned() { sourceVersion?.let { player?.stopIfSourceVersion(it) }; sourceVersion = null; loaded = false }
-    fun closeRoom() { playJob?.cancel(); stopOwned(); room = null; stream = null; opening = false; error = null }
-    fun playRoom(id: Long, selectedQuality: Int = quality) {
-        playJob?.cancel(); stopOwned(); opening = true; error = null
-        playJob = scope.launch {
-            try {
-                val initialized = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
-                val details = room?.takeIf { it.roomId == id } ?: media.liveRoom(id)
-                room = details
-                val info = media.livePlaybackInfo(details, selectedQuality, onlyAudio)
-                stream = info; quality = info.source.quality
-                sourceVersion = initialized.loadVersioned(info.source.toNativePlayback())
-                loaded = true
-            } catch (cancelled: CancellationException) { throw cancelled
-            } catch (failure: Exception) { error = failure.message ?: "直播播放失败"; loaded = false
-            } finally { opening = false }
-        }
-    }
-    LaunchedEffect(account) { if (sessionAccount != account) { sessionAccount = account; closeRoom(); cards = emptyList(); generation++ } }
-    val chat = remember(room?.roomId, loaded, account) { room?.takeIf { loaded }?.let { DesktopLiveSession(repository, media, it.roomId) } }
-    var liveToken by remember { mutableStateOf<Long?>(null) }
-    DisposableEffect(chat, overlay) {
-        val token = chat?.let { overlay?.enterLive() }
-        liveToken = token
-        chat?.start()
-        onDispose { chat?.close(); token?.let { overlay?.clearLive(it) } }
-    }
-    LaunchedEffect(chat, liveToken) {
-        if (chat == null) return@LaunchedEffect
-        val token = liveToken
-        chat.actions.collect { action -> when (action) {
+    fun stopOwned() { memory.stopPlayback() }
+    fun connectChat() {
+        val current = room ?: return
+        val session = DesktopLiveSession(repository, media, current.roomId)
+        memory.connectChat(session, overlay) actionHandler@ { action ->
+            val token = memory.liveToken
+        when (action) {
             is com.android.purebilibili.feature.live.LiveRealtimeAction.EmitChat -> token?.let { overlay?.emitLive(action.item, it) }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.EmitSuperChat -> token?.let { overlay?.emitLive(action.item, it) }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RemoveSuperChats -> token?.let { overlay?.removeLiveSuperChats(action.ids, it) }
@@ -115,7 +95,7 @@ fun LiveBrowserScreen(
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RoomBlocked -> { stopOwned(); error = action.message }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RoomUnavailable -> { stopOwned(); room = room?.copy(liveStatus = action.liveStatus); error = action.message }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RefreshPlayback -> {
-                val current = room ?: return@collect
+                val current = room ?: return@actionHandler
                 try {
                     val info = action.playUrlData?.let { DesktopMediaRepository.selectLive(it, current, quality) }
                         ?: media.livePlaybackInfo(current.copy(liveStatus = 1), quality, onlyAudio)
@@ -125,9 +105,35 @@ fun LiveBrowserScreen(
                 } catch (failure: Exception) { error = failure.message ?: "直播流刷新失败" }
             }
             else -> Unit
-        } }
+        }
+        }
     }
-    LaunchedEffect(initialRoomId) { if (initialRoomId > 0) playRoom(initialRoomId) }
+    fun closeRoom() { playJob?.cancel(); stopOwned(); room = null; stream = null; opening = false; error = null }
+    fun playRoom(id: Long, selectedQuality: Int = quality) {
+        retained?.acquire(memory)
+        playJob?.cancel(); stopOwned(); opening = true; error = null
+        memory.launchRequest {
+            try {
+                val initialized = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
+                val details = room?.takeIf { it.roomId == id } ?: media.liveRoom(id)
+                currentCoroutineContext().ensureActive()
+                room = details
+                val info = media.livePlaybackInfo(details, selectedQuality, onlyAudio)
+                currentCoroutineContext().ensureActive()
+                stream = info; quality = info.source.quality
+                sourceVersion = initialized.loadVersioned(info.source.toNativePlayback())
+                loaded = true
+                connectChat()
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) { if (memory.isCurrentRequest()) { error = failure.message ?: "直播播放失败"; loaded = false }
+            } finally { if (memory.isCurrentRequest()) opening = false }
+        }
+    }
+    LaunchedEffect(account) { if (sessionAccount != account) { sessionAccount = account; closeRoom(); cards = emptyList(); generation++ } }
+    val chat = memory.chat
+    LaunchedEffect(initialRoomId) { if (initialRoomId > 0 && (memory.initialRoomRequest != initialRoomId || room == null)) {
+        memory.initialRoomRequest = initialRoomId; playRoom(initialRoomId)
+    } }
     LaunchedEffect(section, submitted, parent?.id, area?.id, page, generation, room?.roomId, account) {
         if (room != null) return@LaunchedEffect
         loading = true; error = null
@@ -181,7 +187,7 @@ fun LiveBrowserScreen(
             Text("${current.author} · ${current.area} · ${current.online} 人观看", color = MaterialTheme.colorScheme.onSurfaceVariant)
             MediaMessage(opening, error, false, "")
             Row(Modifier.fillMaxWidth().weight(1f), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (player != null) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
+                if (player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
                 chat?.let { LiveChatPanel(it, account != null, Modifier.weight(1f).fillMaxHeight()) }
             }
             MediaSelector(stream?.qualities.orEmpty().map { it.label }, stream?.qualities?.firstOrNull { it.id == quality }?.label.orEmpty()) { label ->
@@ -206,43 +212,46 @@ fun BangumiBrowserScreen(
     initialSeasonId: Long = 0, sharedDanmaku: DanmakuOverlay? = null,
     initialIsCourse: Boolean = false, initialEpisodeId: Long = 0, initialProgressSeconds: Double = 0.0,
     initialSeasonType: Int = 1,
+    retained: DesktopRetainedMedia? = null,
 ) {
     val media = remember(repository) { DesktopMediaRepository(repository) }
-    val scope = rememberCoroutineScope()
+    val pageScope = rememberCoroutineScope()
+    val memory = retained?.bangumi ?: remember(player) { DesktopBangumiPageMemory(pageScope, player) }
+    val scope = memory.scope
     val account by repository.account.collectAsState()
     var sessionAccount by remember { mutableStateOf(account) }
-    var section by remember { mutableStateOf("索引") }
-    var courseUrl by remember { mutableStateOf("") }
-    var timetable by remember { mutableStateOf(emptyList<com.android.purebilibili.data.model.response.TimelineDay>()) }
-    var seasonType by remember(initialSeasonType) { mutableIntStateOf(initialSeasonType.takeIf { it in setOf(1, 2, 3, 4, 5, 7) } ?: 1) }
-    var query by remember { mutableStateOf("") }
-    var submitted by remember { mutableStateOf("") }
-    var page by remember { mutableIntStateOf(1) }
-    var generation by remember { mutableIntStateOf(0) }
-    var cards by remember { mutableStateOf(emptyList<BangumiCard>()) }
-    var hasMore by remember { mutableStateOf(false) }
-    var season by remember { mutableStateOf<BangumiSeason?>(null) }
-    var episode by remember { mutableStateOf<BangumiEpisode?>(null) }
-    var playback by remember { mutableStateOf<BangumiPlaybackInfo?>(null) }
-    var loading by remember { mutableStateOf(false) }
-    var opening by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<String?>(null) }
-    var notice by remember { mutableStateOf<String?>(null) }
-    var loaded by remember { mutableStateOf(false) }
-    var sourceVersion by remember { mutableStateOf<Long?>(null) }
-    var quality by remember { mutableIntStateOf(80) }
-    var playJob by remember { mutableStateOf<Job?>(null) }
-    DisposableEffect(Unit) { onDispose { playJob?.cancel() } }
+    var section by memory::section
+    var courseUrl by memory::courseUrl
+    var timetable by memory::timetable
+    var seasonType by memory::seasonType
+    var query by memory::query
+    var submitted by memory::submitted
+    var page by memory::page
+    var generation by memory::generation
+    var cards by memory::cards
+    var hasMore by memory::hasMore
+    var season by memory::season
+    var episode by memory::episode
+    var playback by memory::playback
+    var loading by memory::loading
+    var opening by memory::opening
+    var error by memory::error
+    var notice by memory::notice
+    var loaded by memory::loaded
+    var sourceVersion by memory::sourceVersion
+    var quality by memory::quality
+    var playJob by memory::playJob
     val ownedOverlay = remember(player, repository, sharedDanmaku) { if (sharedDanmaku == null) player?.let { DanmakuOverlay(it, repository.httpClient) } else null }
     val overlay = sharedDanmaku ?: ownedOverlay
-    PlaybackLifecycle(player, loaded, onPlaybackActive,
+    if (retained == null) PlaybackLifecycle(player, loaded, onPlaybackActive,
         onBeforeStop = { overlay?.setDocument(DanmakuDocument()) }, sourceVersion = sourceVersion)
+    memory.onBeforeStop = { overlay?.setDocument(DanmakuDocument()) }
     val emptyOverlayError = remember { kotlinx.coroutines.flow.MutableStateFlow<String?>(null) }
     val overlayError by (overlay?.loadError ?: emptyOverlayError).collectAsState()
-    var danmakuEnabled by remember(sharedDanmaku) { mutableStateOf(sharedDanmaku?.currentSettings?.enabled ?: true) }
+    var danmakuEnabled by memory::danmakuEnabled
     val latestVersion by rememberUpdatedState(sourceVersion)
     DisposableEffect(overlay) { onDispose {
-        if (latestVersion != null && latestVersion == player?.currentSourceVersion) overlay?.setDocument(DanmakuDocument())
+        if (retained == null && latestVersion != null && latestVersion == player?.currentSourceVersion) overlay?.setDocument(DanmakuDocument())
         ownedOverlay?.close()
     } }
     val types = remember { linkedMapOf("番剧" to 1, "国创" to 4, "电影" to 2, "纪录片" to 3, "电视剧" to 5, "综艺" to 7) }
@@ -257,40 +266,52 @@ fun BangumiBrowserScreen(
     fun playEpisode(selected: BangumiEpisode, selectedQuality: Int = quality, startSeconds: Double? = null) {
         val current = season ?: return
         val startPosition = startSeconds ?: if (episode?.id == selected.id) player?.state?.value?.positionSeconds ?: 0.0 else 0.0
+        retained?.acquire(memory)
         playJob?.cancel(); stopOwned(); opening = true; error = null; notice = null
-        playJob = scope.launch {
+        memory.launchRequest {
             try {
                 val initialized = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
                 val info = media.bangumiPlaybackInfo(current, selected, selectedQuality)
+                currentCoroutineContext().ensureActive()
                 episode = selected; playback = info; quality = info.source.quality
                 sourceVersion = initialized.loadVersioned(info.source.toNativePlayback().copy(startPositionSeconds = startPosition)); loaded = true
+                val index = current.episodes.indexOfFirst { it.id == selected.id }
+                memory.previous = if (index > 0) ({ current.episodes.getOrNull(index - 1)?.let { playEpisode(it) } }) else null
+                memory.next = if (index >= 0 && index + 1 < current.episodes.size)
+                    ({ current.episodes.getOrNull(index + 1)?.let { playEpisode(it) } }) else null
                 overlay?.setDocument(DanmakuDocument())
                 overlay?.enabled = danmakuEnabled
                 if (selected.cid > 0 && current.danmakuAllowed) launch { overlay?.load(selected.cid, selected.aid, selected.durationSeconds.toDouble()) }
             } catch (cancelled: CancellationException) { throw cancelled
-            } catch (failure: Exception) { error = failure.message ?: "番剧播放失败"; loaded = false
-            } finally { opening = false }
+            } catch (failure: Exception) { if (memory.isCurrentRequest()) { error = failure.message ?: "番剧播放失败"; loaded = false }
+            } finally { if (memory.isCurrentRequest()) opening = false }
         }
     }
     fun openSeasonId(id: Long, epId: Long = 0, isCourse: Boolean = false, startSeconds: Double = 0.0) {
-        playJob?.cancel(); error = null; loading = true; notice = null
-        playJob = scope.launch {
+        playJob?.cancel(); error = null; loading = true; opening = epId > 0; notice = null
+        memory.launchRequest {
             try {
                 val detail = media.bangumiSeason(id, epId, isCourse)
+                currentCoroutineContext().ensureActive()
                 season = detail
                 if (epId > 0) {
                     val selected = detail.episodes.firstOrNull { it.id == epId } ?: throw IllegalStateException("此媒体详情没有指定剧集")
-                    playEpisode(selected, startSeconds = startSeconds)
+                    loading = false; playEpisode(selected, startSeconds = startSeconds)
                 }
             }
             catch (cancelled: CancellationException) { throw cancelled }
-            catch (failure: Exception) { error = failure.message ?: "番剧详情加载失败" }
-            finally { loading = false }
+            catch (failure: Exception) { if (memory.isCurrentRequest()) error = failure.message ?: "番剧详情加载失败" }
+            finally { if (memory.isCurrentRequest()) { loading = false; opening = false } }
         }
     }
     LaunchedEffect(account) { if (sessionAccount != account) { sessionAccount = account; closeSeason(); cards = emptyList(); timetable = emptyList(); generation++ } }
-    LaunchedEffect(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds) {
-        if (initialSeasonId > 0 || initialEpisodeId > 0) openSeasonId(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds)
+    LaunchedEffect(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds, initialSeasonType) {
+        val request = listOf(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds, initialSeasonType)
+        if (memory.initialRequest != request) {
+            memory.initialRequest = request
+            seasonType = initialSeasonType.takeIf { it in setOf(1, 2, 3, 4, 5, 7) } ?: 1
+            if (initialSeasonId > 0 || initialEpisodeId > 0) openSeasonId(initialSeasonId, initialEpisodeId, initialIsCourse, initialProgressSeconds)
+        }
     }
     LaunchedEffect(seasonType, submitted, page, generation, season?.seasonId, section, account) {
         if (season != null) return@LaunchedEffect
@@ -366,7 +387,7 @@ fun BangumiBrowserScreen(
             notice?.let { Text(it, color = MaterialTheme.colorScheme.primary) }
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(18.dp)) {
                 Column(Modifier.weight(2f), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    if (episode != null && player != null) Box(Modifier.weight(1f).fillMaxWidth()) { playerContent(player) }
+                    if (episode != null && player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(1f).fillMaxWidth()) { playerContent(player) }
                     else {
                         AsyncImage(current.cover, current.title, Modifier.fillMaxWidth().heightIn(max = 230.dp), contentScale = ContentScale.Fit)
                         Text(current.description, maxLines = 8, overflow = TextOverflow.Ellipsis)

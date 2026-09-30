@@ -318,6 +318,8 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
         catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure } }
     Column(Modifier.fillMaxSize()) {
         profile?.let { user ->
+            Box(Modifier.fillMaxWidth()) {
+            DesktopSkinSpaceBackground(isOwner = account?.mid == user.mid, modifier = Modifier.matchParentSize())
             Row(Modifier.padding(20.dp), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 AsyncImage(model = imageUrl(user.avatar), contentDescription = user.name, modifier = Modifier.size(74.dp))
                 Column(Modifier.weight(1f)) {
@@ -328,6 +330,7 @@ internal fun CommunityUserSpace(requestedMid: Long, repository: DesktopRepositor
                 }
                 if (account?.mid != user.mid) CommunityAction(if (user.isFollowed) "取消关注" else "关注", navigation.onLogin,
                     action = { social.setFollowing(user.mid, !user.isFollowed) }, onSuccess = { profile = user.copy(isFollowed = !user.isFollowed) })
+            }
             }
         }
         error?.let { CommunityFailure(it, navigation.onLogin) }

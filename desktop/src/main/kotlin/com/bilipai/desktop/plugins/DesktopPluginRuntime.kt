@@ -9,6 +9,7 @@ import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopDiscoveryRepository
 import com.bilipai.desktop.data.PlaybackSource
+import com.bilipai.desktop.cast.DesktopGoogleCastPlugin
 import com.android.purebilibili.feature.plugin.*
 import com.android.purebilibili.feature.plugin.dlna.DlnaCastPlugin
 import com.android.purebilibili.feature.video.danmaku.DesktopPluginDanmakuPolicy
@@ -44,11 +45,13 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val sponsorBlock = SponsorBlockPlugin()
     val todayWatch = TodayWatchPlugin { DesktopPluginRepositoryBinding.recommendationContext() }
     val dlnaCast = DlnaCastPlugin()
+    val googleCast = DesktopGoogleCastPlugin()
     private val cdn = CdnRegionPlugin()
     private val adFilter = AdFilterPlugin()
     val subscriptions = DesktopSubscriptionRepository(context) {
         plugins.value.any { it.plugin.id == SubscriptionFeedPlugin.PLUGIN_ID && it.enabled }
     }
+    val packages = DesktopPackageRepository(context)
     val recommendations = DesktopTodayWatchRepository(this, repository, discovery)
     val plugins get() = PluginManager.pluginsFlow
     val jsonPlugins get() = JsonPluginManager.plugins
@@ -73,6 +76,14 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         PluginManager.register(todayWatch)
         PluginManager.register(DesktopPlaybackCdnPlugin(cdn))
         PluginManager.register(dlnaCast)
+        // Windows begins with optional local-network casting disabled; preserve an explicit saved choice.
+        initializeDesktopGoogleCastDefault(store)
+        PluginManager.register(googleCast)
+        scope.launch {
+            try { packages.load() }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { DesktopPluginLog.e("packages", "Package load failed", failure) }
+        }
         scope.launch {
             store.feedFilterEnabled.collect { enabled -> PluginManager.setEnabled("bilipai_feed_filter", enabled) }
         }
@@ -305,10 +316,15 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         scope.coroutineContext[Job]?.cancelAndJoin()
         subscriptions.shutdownForRestore()
         recommendations.shutdownForRestore()
+        packages.shutdownForRestore()
+        DesktopSkinVideoRegistry.shutdownForRestore()
         configurationMutex.withLock {
             playerMutex.withLock {
                 DesktopPluginScopeRegistry.shutdown()
+                // Also close a never-enabled provider; restore must not leave any constructor-owned transport behind.
+                googleCast.onDisable()
                 PluginManager.getEnabledPlugins(Plugin::class).forEach { plugin ->
+                    if (plugin === googleCast) return@forEach
                     try { plugin.onDisable() }
                     catch (cancelled: CancellationException) { throw cancelled }
                     catch (error: Exception) { DesktopPluginLog.e(plugin.id, "Plugin shutdown failed", error) }
@@ -324,6 +340,13 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         if (closing.compareAndSet(false, true)) {
             CoroutineScope(Dispatchers.Main).launch { shutdownForRestore() }
         }
+    }
+}
+
+internal fun initializeDesktopGoogleCastDefault(store: DesktopPluginStore) {
+    val key = booleanPreferencesKey("plugin_enabled_google_cast")
+    if (store.snapshot("plugin_prefs").value[key] == null) {
+        store.update("plugin_prefs", mapOf(key.name to kotlinx.serialization.json.JsonPrimitive(false)))
     }
 }
 

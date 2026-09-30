@@ -6,6 +6,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 class DesktopBrowseMemory {
     internal val feeds = CommunityFeedMemory()
     private val screens = linkedMapOf<Any?, Any>()
+    fun invalidateCloudHistory() = feeds.invalidate(PersonalSection.HISTORY)
 
     @Suppress("UNCHECKED_CAST")
     internal fun <T : Any> screen(key: Any?, create: () -> T): T = screens.getOrPut(key) {

@@ -3,8 +3,23 @@ package com.bilipai.desktop.player
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class PlayerSeekTrackerTest {
+    @Test fun `a pending user seek blocks an internal shader repaint until its real target completes`() {
+        val tracker = PlayerSeekTracker()
+        assertFalse(tracker.hasPendingSeek)
+        tracker.submit(11, 4, 40.0, 0)
+        assertTrue(tracker.hasPendingSeek)
+        assertNull(tracker.acknowledge(4, 2.0, 1))
+        assertTrue(tracker.hasPendingSeek)
+        assertEquals(11, tracker.acknowledge(4, 40.0, 2)?.id?.toInt())
+        assertFalse(tracker.hasPendingSeek)
+        tracker.submit(12, 4, 3.0, 3)
+        tracker.reset()
+        assertFalse(tracker.hasPendingSeek)
+    }
     @Test fun `only restart at the submitted target acknowledges the latest seek`() {
         val tracker = PlayerSeekTracker()
         tracker.submit(1, 4, 30.0, 0)

@@ -1,0 +1,39 @@
+Google Cast V2 Windows implementation
+
+The 32 Java files in su.litvak.chromecast.api.v2 are from the published
+de.sfuhrm:chromecast-java-api-v2:0.12.20 source artifact, SHA-256
+312fd605cd0ef4cfff54bbcd49cb48e9df2c01342d61192f757d376d6b178ad3.
+The source archive, original per-file hashes and Windows changes are retained here.
+Channel.java, ChromeCast.java and ChromeCasts.java contain marked Windows changes
+for device authentication, bounded IO, cancellation and payload redaction.
+The original Apache-2.0 copyright notices are retained in all original files.
+Do not also depend on the original binary artifact: that would duplicate classes.
+
+Open Screen commit 45c685cee0b522a7bb578ce5adcc696eeacf0f0c provides the actual
+device-auth proto, channel framing, certificate policy and two pinned Google roots.
+The official proto is compiled with protoc 4.33.2 (Java lite) into package
+openscreen.cast.proto. The JVM certificate verifier is a new Windows binding of
+this contract. Original Open Screen files and BSD-3-Clause license are retained.
+The Cast and Eureka DER resource bytes exactly match their original C++ headers.
+
+The runtime authenticates the supplied device chain against only those two roots,
+checks key use/strength/dates/path constraints and the nonce plus current TLS DER
+signature before CONNECT/LAUNCH/LOAD. It uses Open Screen's optional-CRL baseline;
+it does not fetch external AIA or install trust anchors in the operating system.
+Unlike the official legacy sender defaults, this port requires the response nonce.
+RSASSA-PKCS1-v1_5 with SHA-256/SHA-1 is implemented; RSASSA-PSS is rejected.
+These compatibility differences and real-device testing remain open parity work.
+
+Runtime dependencies are fixed separately: JmDNS 3.6.3, protobuf-javalite 4.33.2,
+Jackson annotations 2.20 / core and databind 2.20.0, SLF4J API 2.0.17.
+Their Maven URLs and artifact hashes are recorded in SOURCES.json. Available
+artifact license and notice texts accompany this file and are bundled under
+resources/licenses/google-cast-v2. The Java fork and Open Screen license texts
+are included there too.
+
+The tests open only task-owned loopback TLS sockets and advertise a unique mDNS
+fixture on the selected loopback interface. Synthetic private material exists
+only in src/test/resources/google-cast-v2-fixture and is excluded from main.
+The fixed test clock makes certificate boundary cases repeatable over time.
+Protocol fixtures are actual socket tests, not proof of physical receiver success.
+No physical Google Cast device has been tested by this implementation.

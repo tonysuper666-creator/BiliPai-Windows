@@ -1,0 +1,11 @@
+{
+  "sourceUrl": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar",
+  "version": "1.10.1",
+  "sourceArchiveSha256": "472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba",
+  "constants": {
+    "STATE_IDLE": 1,
+    "STATE_BUFFERING": 2,
+    "STATE_READY": 3,
+    "STATE_ENDED": 4
+  }
+}

@@ -78,6 +78,7 @@ class DanmakuOverlay(
     val currentSettings: DanmakuSettings get() = settings
     private var overlay: JWindow? = null
     private var owner: Window? = null
+    private var ownerWasActive = false
     private var scheduler = DanmakuScheduler(emptyList(), settings)
     private var advancedRenderer = AdvancedDanmakuRenderer(emptyList())
     private var lastPosition = Double.NaN
@@ -342,8 +343,8 @@ class DanmakuOverlay(
         val visible = ((enabled && mutableCount.value > 0) || eyeTint.visible) && surface.isShowing && surface.width > 0 && surface.height > 0 &&
             currentOwner != null && currentOwner.isVisible &&
             (currentOwner !is Frame || currentOwner.extendedState and Frame.ICONIFIED == 0) &&
-            playerState.ready && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
-        if (!visible) { overlay?.isVisible = false; return }
+            playerState.ready && playerState.firstVideoFrameReady && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
+        if (!visible) { overlay?.isVisible = false; ownerWasActive = false; return }
         if (currentOwner != owner) {
             overlay?.dispose()
             owner = currentOwner
@@ -367,13 +368,20 @@ class DanmakuOverlay(
         val location = surface.locationOnScreen
         if (window.x != location.x || window.y != location.y || window.width != surface.width || window.height != surface.height)
             window.setBounds(location.x, location.y, surface.width, surface.height)
-        if (!window.isVisible) {
-            window.isVisible = true
-            val hwnd = Native.getWindowPointer(window)
-            val style = user32.GetWindowLongW(hwnd, -20)
-            user32.SetWindowLongW(hwnd, -20, style or 0x00080000 or 0x00000020 or 0x08000000)
-            user32.SetWindowPos(hwnd, null, 0, 0, 0, 0, 0x0001 or 0x0002 or 0x0010)
+        val showing = !window.isVisible
+        if (window.isAlwaysOnTop != currentOwner.isAlwaysOnTop) window.isAlwaysOnTop = currentOwner.isAlwaysOnTop
+        if (showing) window.isVisible = true
+        val hwnd = Native.getWindowPointer(window)
+        val style = user32.GetWindowLongW(hwnd, -20)
+        if (showing) user32.SetWindowLongW(hwnd, -20, style or 0x00080000 or 0x00000020 or 0x08000000)
+        val nativeTopmost = style and 0x00000008 != 0
+        if (showing || (currentOwner.isActive && !ownerWasActive) || nativeTopmost != currentOwner.isAlwaysOnTop) {
+            // Restore only this owned popup after a host activation/reattachment. Do not keep
+            // raising a background application or cover newer dialogs/menus on every repaint.
+            val band = if (currentOwner.isAlwaysOnTop) Pointer.createConstant(-1L) else Pointer.createConstant(if (nativeTopmost) -2L else 0L)
+            user32.SetWindowPos(hwnd, band, 0, 0, 0, 0, 0x0001 or 0x0002 or 0x0010 or 0x0200)
         }
+        ownerWasActive = currentOwner.isActive
         val now = System.nanoTime()
         if (playerState.positionSeconds != lastPosition) {
             lastPosition = playerState.positionSeconds
@@ -384,6 +392,19 @@ class DanmakuOverlay(
             ((now - sampleTimeNanos) / 1_000_000_000.0).coerceIn(0.0, 0.3) * playerState.speed.coerceIn(0.1, 8.0)
         displayTime = anchoredPosition + offset
         panel.repaint()
+    }
+
+    /** Fixture diagnostics describe geometry and native state, never user comments or source credentials. */
+    internal fun nativeRenderSnapshot(): String {
+        check(SwingUtilities.isEventDispatchThread())
+        val surface = player.surface
+        val window = overlay
+        val native = window?.takeIf { it.isDisplayable }?.let { nativeWindow ->
+            runCatching { "nativeExtendedStyle=0x${user32.GetWindowLongW(Native.getWindowPointer(nativeWindow), -20).toString(16)}" }.getOrElse { "nativeExtendedStyle=unavailable" }
+        } ?: "nativeWindow=absent"
+        return "surface=${surface.bounds}, showing=${surface.isShowing}, owner=${owner?.javaClass?.simpleName}, ownerActive=${owner?.isActive}, ownerTopmost=${owner?.isAlwaysOnTop}, " +
+            "overlay=${window?.bounds}, showing=${window?.isShowing}, overlayTopmost=${window?.isAlwaysOnTop}, panel=${panel.bounds}, comments=${mutableCount.value}, " +
+            "mediaTime=$displayTime, firstFrame=${player.state.value.firstVideoFrameReady}, nativePaused=${player.state.value.nativePaused}, $native"
     }
 
     override fun close() {

@@ -28,8 +28,14 @@ internal class CommunityFeedMemory {
         if (pages.size >= 32) pages.remove(pages.keys.first())
         CommunityFeedState<T, C>()
     } as CommunityFeedState<T, C>
+    fun invalidate(namespace: Any?) {
+        pages.forEach { (key, value) ->
+            if ((key as? Pair<*, *>)?.first == namespace) (value as CommunityFeedState<*, *>).invalidate()
+        }
+    }
 }
-internal class CommunityFeedState<T, C> {
+internal class CommunityFeedState<T, C>(val scroll: LazyListState = LazyListState()) {
+    var reloadRevision by mutableLongStateOf(0L); private set
     var rows by mutableStateOf(emptyList<T>())
     var next by mutableStateOf<C?>(null)
     var initialized by mutableStateOf(false)
@@ -37,7 +43,31 @@ internal class CommunityFeedState<T, C> {
     var failedCursor by mutableStateOf<C?>(null)
     var failedReplace by mutableStateOf(false)
     var statusMessage by mutableStateOf<String?>(null)
-    val scroll = LazyListState()
+
+    /** Keep cached rows and their scroll owner until a replacement first page succeeds. */
+    fun invalidate() {
+        reloadRevision++
+        initialized = false
+        failure = null
+        failedCursor = null
+        failedReplace = false
+    }
+    fun acceptBatch(revision: Long, batch: CommunityBatch<T, C>, replace: Boolean, identity: (T) -> Any): Boolean {
+        if (revision != reloadRevision) return false
+        rows = (if (replace) batch.items else rows + batch.items).distinctBy(identity)
+        next = batch.next
+        failure = null
+        failedCursor = null
+        initialized = true
+        return true
+    }
+    fun acceptFailure(revision: Long, error: Throwable, cursor: C, replace: Boolean): Boolean {
+        if (revision != reloadRevision) return false
+        failure = error
+        failedCursor = cursor
+        failedReplace = replace
+        return true
+    }
 }
 internal val LocalCommunityFeedMemory = staticCompositionLocalOf<CommunityFeedMemory?> { null }
 internal val LocalCommunityFeedNamespace = staticCompositionLocalOf<Any?> { null }
@@ -56,24 +86,23 @@ internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> Comm
     var next by page::next
     var busy by remember(page) { mutableStateOf(false) }
     var failure by page::failure
-    val generation = remember(page, refresh) { Any() }
+    val generation = remember(page, refresh, page.reloadRevision) { Any() }
     val activeGeneration by rememberUpdatedState(generation)
     val currentLoad by rememberUpdatedState(load)
     val currentIdentity by rememberUpdatedState(identity)
     val displayed = remember(rows, transform) { transform(rows).distinctBy(identity) }
     suspend fun fetch(cursor: C, replace: Boolean) {
         val request = generation
+        val requestRevision = page.reloadRevision
         busy = true; failure = null; page.failedCursor = null
         try {
             val result = currentLoad(cursor)
             if (activeGeneration === request) {
-                rows = (if (replace) result.items else rows + result.items).distinctBy(currentIdentity)
-                next = result.next
-                page.initialized = true
+                page.acceptBatch(requestRevision, result, replace, currentIdentity)
             }
         } catch (error: Exception) {
             if (error is CancellationException) throw error
-            if (activeGeneration === request) { failure = error; page.failedCursor = cursor; page.failedReplace = replace }
+            if (activeGeneration === request) page.acceptFailure(requestRevision, error, cursor, replace)
         } finally { if (activeGeneration === request) busy = false }
     }
     LaunchedEffect(generation) { if ((!page.initialized && failure == null) || refresh > 0) fetch(first, true) }
@@ -95,9 +124,9 @@ internal fun <T, C> CommunityFeed(key: Any?, first: C, load: suspend (C) -> Comm
                 else refresh++
             }
         } }
-        if (busy) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
+        if (busy) item { DesktopLoadingIndicator(Modifier.fillMaxWidth()) }
         if (!busy && displayed.isEmpty() && failure == null) item { Text(if (rows.isEmpty()) "暂无内容" else "当前筛选隐藏了这一批内容", color = MaterialTheme.colorScheme.onSurfaceVariant) }
-        if (next != null && !busy) item {
+        if (next != null && !busy && page.initialized) item {
             Button(onClick = {
                 if (busy) return@Button
                 val cursor = next ?: return@Button

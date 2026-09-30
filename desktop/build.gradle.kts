@@ -170,6 +170,62 @@ val extractUpstreamCast by tasks.registering(Exec::class) {
         .map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/cast"))
 }
+val extractUpstreamPackages by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-packages.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/packages").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-packages.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
+    inputs.files(sources.filter { "packages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "packages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/packages"))
+}
+val extractPlaybackWatchdogs by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-playback-watchdogs.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/watchdogs").get().asFile.absolutePath)
+    inputs.files("tools/extract-playback-watchdogs.py", "third-party/media3-player-state-codes.json")
+    inputs.files(sources.filter { "watchdogs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/watchdogs"))
+}
+val verifyGoogleCastSources by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-google-cast-sources.py", "--desktop", projectDir.absolutePath)
+    inputs.file("tools/verify-google-cast-sources.py")
+    inputs.dir("third-party/google-cast-v2")
+    inputs.dir("src/main/java")
+    inputs.dir("src/main/resources/cast-v2")
+    inputs.dir("src/main/resources/licenses/google-cast-v2")
+    doLast {
+        val vetted = JsonSlurper().parse(file("third-party/google-cast-v2/SOURCES.json")) as Map<*, *>
+        val runtimeFiles = configurations.getByName("runtimeClasspath").files
+        val dependencies = vetted["dependencies"] as List<*>
+        require(dependencies.size == 6) { "The Google Cast dependency inventory changed." }
+        dependencies.forEach { item ->
+            val entry = item as Map<*, *>
+            val name = File(entry["path"].toString()).name
+            val artifact = runtimeFiles.filter { it.name == name }.singleOrNull()
+                ?: error("The vetted Google Cast runtime dependency was replaced or duplicated: $name")
+            val digest = MessageDigest.getInstance("SHA-256").digest(artifact.readBytes()).joinToString("") { "%02x".format(it) }
+            require(digest == entry["sha256"]) { "Google Cast runtime dependency checksum failed: $name" }
+        }
+        logger.lifecycle("Verified six fixed Google Cast runtime dependency digests.")
+    }
+}
+val extractGoogleCastPlatform by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, verifyGoogleCastSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-google-cast-platform.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/google-cast").get().asFile.absolutePath)
+    inputs.files("tools/extract-google-cast-platform.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "google-cast-v2" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/google-cast"))
+}
 
 kotlin.sourceSets.named("main") {
     kotlin.srcDir(generatedUpstream)
@@ -184,20 +240,31 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/playback"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/search"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/cast"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/packages"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/watchdogs"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/google-cast"))
 }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 
 val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     dependsOn(prepareUpstreamSources)
     from(File(repositoryRoot, "app/src/main/assets/anime4k")) { into("anime4k"); include(originalResources.filter {
         it["path"].toString().startsWith("app/src/main/assets/anime4k/") }.map { File(it["path"].toString()).name }) }
     from(File(repositoryRoot, "app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
+    from(File(repositoryRoot, "app/src/main/assets/rovniced-skin-catalog.json"))
     into(layout.buildDirectory.dir("generated/plugin-resources"))
     inputs.file(sourceManifest)
     inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
 }
 sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/plugin-resources")) }
-tasks.named("processResources") { dependsOn(prepareOriginalPluginResources) }
+tasks.named("processResources") { dependsOn(prepareOriginalPluginResources, verifyGoogleCastSources) }
+val prepareGoogleCastNotices by tasks.registering(Sync::class) {
+    dependsOn(verifyGoogleCastSources)
+    from("src/main/resources/licenses/google-cast-v2")
+    from("third-party/google-cast-v2/SOURCES.json")
+    into("resources/common/notices/google-cast-v2")
+}
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareGoogleCastNotices) }
 
 dependencies {
     implementation(compose.desktop.currentOs)
@@ -208,6 +275,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
     implementation("org.nanohttpd:nanohttpd:2.3.1")
+    implementation("org.jmdns:jmdns:3.6.3")
+    implementation("com.google.protobuf:protobuf-javalite:4.33.2")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.20")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.20.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.0")
+    implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")

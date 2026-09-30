@@ -2002,6 +2002,178 @@
         "heartbeat"
       ],
       "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/refresh/HistoryRefreshBus.kt",
+      "mode": "direct",
+      "features": [
+        "cloud-history-refresh"
+      ],
+      "sha256": "d18a6866aa051cf7f2681e6266a88273ff1d2dfefd958fccfe0966c3aacfb896"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/refresh/HistoryRefreshSuppression.kt",
+      "mode": "direct",
+      "features": [
+        "cloud-history-refresh"
+      ],
+      "sha256": "05189812a6ff2b7e1183d2489ce11ca283804b05e0bf93fcdbb5a1bbcf153fc7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/kotlinpkg/ExternalKotlinPluginPackageReader.kt",
+      "mode": "direct",
+      "sha256": "c8febc8ea1f7ec66b01943268e0f86602334fd3c5b9ae6cd688e088968d325d2",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinModels.kt",
+      "mode": "direct",
+      "sha256": "89c0f1436ef8b27c476057581d786217ca71130917ebe2777d2078fdc68ab599",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinPackageReader.kt",
+      "mode": "direct",
+      "sha256": "54e79698fb2fe3cd3ac8d2e6b67c82405ebae92fe087a61e29916d816c91a514",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinImportPackageResolver.kt",
+      "mode": "direct",
+      "sha256": "9ba06d98970eaa3399d58be0d30fb40c63f017cdf8a8dc7cd64cd6bc2dfb4d96",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/PluginCapabilityUiPolicy.kt",
+      "mode": "direct",
+      "sha256": "e5c59d05a6ebce0e67c0c256d3eccd4ea46539eae7f1c0b6ed54a8c9db687d8d",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/kotlinpkg/ExternalKotlinPluginInstallStore.kt",
+      "mode": "extracted",
+      "sha256": "1760b151ddbbbc651f725d82fc74cf86de20c72d5515fbddc06139cb04bef116",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinInstallStore.kt",
+      "mode": "extracted",
+      "sha256": "08860a8a51ece29cf62a37e03359e9e11c6e5928d3e2dfc6e57554755c4db164",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinSettingsStore.kt",
+      "mode": "extracted",
+      "sha256": "2615d424526696cedde68f2f77daf5456c68f7bebaec386de93d6b9c629efe00",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/SkinCatalog.kt",
+      "mode": "extracted",
+      "sha256": "e4c13d85b108e8485e972c908ddb5ce27f9018e72c0f2f37ac10e08edc5c2fb0",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinActivationPolicy.kt",
+      "mode": "policy-extract",
+      "sha256": "a742e79c5ccf13a61ebc8e3dec1f3ed3d8f9ac2c34851a08c1e61beb52e59989",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinComposition.kt",
+      "mode": "policy-extract",
+      "sha256": "68390c42dab5dbd777a254d50e426aaea4190fe63f6df13b4b70c29e233783fe",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+      "mode": "policy-extract",
+      "sha256": "e83a58a334e7baf2a917488e549bdd9e5bc5cde67e6133bcb600f37ff0f66dec",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "mode": "extracted",
+      "features": [
+        "playback",
+        "cdn",
+        "watchdogs"
+      ],
+      "sha256": "f6a6a54e2befcea408a0632c364c2957fcb7e6da505450fbb30650281b8af7c9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicy.kt",
+      "mode": "direct",
+      "sha256": "1a6849af09b5523bd341a2759320312c105f12bf55f33b445cec6958e11499c8",
+      "features": [
+        "packages",
+        "plugins",
+        "skins"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/googlecast/GoogleCastRoutePolicy.kt",
+      "mode": "platform-rewrite",
+      "features": [
+        "google-cast-v2"
+      ],
+      "sha256": "4a9681c34d5c607cd8ec00bac78ca3d6eb6a5088b330874a9bae7f1eef49ea31"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/googlecast/GoogleCastMediaLoader.kt",
+      "mode": "policy-extract",
+      "features": [
+        "google-cast-v2"
+      ],
+      "sha256": "52a2eb2c0de15b0d15ce454e29cce176f1e0296b6aaeb7bf16ef446648b9216f"
     }
   ],
   "featureCoverage": {
@@ -2028,7 +2200,7 @@
     "full-functional-parity": "not-yet-complete",
     "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler"
   },
-  "windowsRevision": 7,
+  "windowsRevision": 8,
   "hashNormalization": "lf",
   "resources": [
     {
@@ -2118,6 +2290,15 @@
         "plugins"
       ],
       "mode": "resource"
+    },
+    {
+      "path": "app/src/main/assets/rovniced-skin-catalog.json",
+      "mode": "asset",
+      "sha256": "38ab8b99ea8bd0c119550620feb6e828b39aeb6325222450fa0bf1022d9e3498",
+      "features": [
+        "packages",
+        "skins"
+      ]
     }
   ]
 }

@@ -29,7 +29,7 @@ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityReposito
             listOf("all" to "全部", "video" to "视频", "pgc" to "番剧").forEach { (value, label) ->
                 FilterChip(selected = type == value, onClick = { type = value }, label = { Text(label) })
             }
-            Button(onClick = { composing = true }) { Text("发布动态") }
+            Button(onClick = { composing = true }) { DesktopSkinDynamicPublishIcon(composing); Text("发布动态") }
         }
         if (published) Text("动态已提交", Modifier.padding(horizontal = 20.dp), color = MaterialTheme.colorScheme.primary)
         CommunityFeed(Triple(mid, type, revision), "", load = { offset -> community.dynamicFeed(type, offset).let { CommunityBatch(it.items, it.nextOffset) } },
@@ -62,7 +62,7 @@ internal fun CommunityDynamicDetail(id: String, community: DesktopCommunityRepos
         finally { loading = false }
     }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        if (loading) LinearProgressIndicator(Modifier.fillMaxWidth())
+        if (loading) DesktopLoadingIndicator(Modifier.fillMaxWidth())
         error?.let { CommunityFailure(it, navigation.onLogin) { revision++ } }
         data?.item?.let { CommunityDynamicCard(it, community, navigation, details = true) }
         data?.fallback?.takeIf { it.id > 0 }?.let { fallback ->

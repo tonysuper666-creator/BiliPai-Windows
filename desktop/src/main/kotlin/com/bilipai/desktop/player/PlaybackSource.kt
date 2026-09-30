@@ -95,6 +95,17 @@ data class PlayerState(
     val hardwareDecoder: String? = null,
     val seekCompletedId: Long = 0,
     val seekCompletedPositionSeconds: Double? = null,
+    /** Retained zoom intent, reapplied when the native surface is recreated. */
+    val videoPanscan: Double = 0.0,
+    /** Actual native readback is separate from retained intent. */
+    val activeVideoPanscan: Double? = null,
+    /** Playback-restart with an actual video output frame configured, rather than DLL initialization. */
+    val firstVideoFrameReady: Boolean = false,
+    val pausedForCache: Boolean = false,
+    /** Unknown cache duration remains null and cannot trigger a zero-buffer recovery decision. */
+    val bufferedForwardSeconds: Double? = null,
+    /** Actual per-source pause readback, published together with the native playback position. */
+    val nativePaused: Boolean? = null,
 )
 
 data class PlayerTrack(

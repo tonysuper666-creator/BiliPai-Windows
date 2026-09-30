@@ -100,8 +100,11 @@ class DesktopPlaybackController internal constructor(
     private data class Current(val details: VideoDetails, val index: Int, val source: ResolvedSource,
         val candidates: List<PlaybackCdnCandidate>, val cdnIndex: Int, val sourceVersion: Long,
         val requestGeneration: Long, val pluginGeneration: Long? = null, val readyObserved: Boolean = false,
-        val handledFailure: Long? = null, val recommendationConsumed: Boolean = false, val accountEpoch: Long = 0L)
+        val handledFailure: Long? = null, val recommendationConsumed: Boolean = false, val accountEpoch: Long = 0L,
+        val cdnFallback: PlaybackCdnFallbackState = PlaybackCdnFallbackState.Inactive, val watchdogLoadId: Long = 0L)
     private var current: Current? = null
+    private val nextWatchdogLoadId = AtomicLong()
+    private val watchdog = DesktopPlaybackWatchdog(controllerScope, ::watchdogSnapshot, ::switchForWatchdog)
     private var pluginMuteUntilMs: Long? = null
     private var pluginMuteFromMs: Long? = null
     private data class PendingSponsorSkip(val seekId: Long, val sourceVersion: Long, val requestGeneration: Long,
@@ -118,6 +121,7 @@ class DesktopPlaybackController internal constructor(
                         finishHeartbeat(context)
                         context.pluginGeneration?.let { plugins?.onVideoEnd(it) }
                         pluginLoad?.cancel(); recovery?.cancel(); current = null; ownedSourceVersion = null
+                        watchdog.reset()
                         pluginMuteUntilMs = null; pluginMuteFromMs = null; pendingSponsorSkip = null
                         mutableState.update { it.copy(recovering = false, recoveryMessage = null, manualSkip = null, playerPluginGeneration = null) }
                     }
@@ -136,6 +140,7 @@ class DesktopPlaybackController internal constructor(
                     } else { heartbeat.observe(native, inBackground, suspended = true); return@collect }
                 }
                 heartbeat.observe(native, inBackground)
+                watchdogSnapshot()?.let(watchdog::observe)
                 heartbeatReporter.submit(heartbeat.initialReport())
                 val failure = native.failure
                 if (failure != null && failure.sourceVersion == context.sourceVersion && context.handledFailure != failure.attemptId) {
@@ -236,12 +241,14 @@ class DesktopPlaybackController internal constructor(
         if (!valid(expected, baseline, accountEpoch)) return@coroutineScope
         val native = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
         native.applyPreferences(preferences().let { it.copy(speed = it.preferredSpeed) })
-        val (resolved, candidates) = prepareResolved(source)
+        val (resolved, candidates, fallback) = prepareResolved(source)
         val version = native.loadVersioned(resolved.toNative(position, paused))
         ownedSourceVersion = version; suspended = false; handledEnd = false; budget = DesktopPlaybackRecoveryBudget()
-        current = Current(info, index, resolved, candidates, 0, version, expected, accountEpoch = accountEpoch)
+        current = Current(info, index, resolved, candidates, 0, version, expected, accountEpoch = accountEpoch,
+            cdnFallback = fallback, watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
         heartbeat.begin(DesktopHeartbeatIdentity(info.bvid, info.pages[index].cid, info.aid, accountEpoch), position)
         mutableState.update { it.copy(opening = false, effectiveQuality = resolved.quality, availableQualities = resolved.availableQualities) }
+        watchdogSnapshot()?.let(watchdog::loaded)
         beginPlugins(current!!)
     }
 
@@ -268,7 +275,7 @@ class DesktopPlaybackController internal constructor(
         mutableState.update { it.copy(opening = true, error = null, recovering = false, recoveryMessage = null) }
         request = controllerScope.launch {
             try {
-                val (source, candidates) = prepareResolved(playback.playback(context.details, context.index, quality, context.source.videoCodecFamily, forceRefresh))
+                val (source, candidates, fallback) = prepareResolved(playback.playback(context.details, context.index, quality, context.source.videoCodecFamily, forceRefresh))
                 val active = current ?: return@launch
                 if (!owns(active) || expected != generation.get()) return@launch
                 val latest = player?.state?.value ?: native
@@ -276,8 +283,10 @@ class DesktopPlaybackController internal constructor(
                         latest.positionSeconds, latest.paused) == true) {
                     budget = DesktopPlaybackRecoveryBudget()
                     suspended = false
-                    current = active.copy(source = source, candidates = candidates, cdnIndex = 0, readyObserved = false, handledFailure = null)
+                    current = active.copy(source = source, candidates = candidates, cdnIndex = 0, readyObserved = false, handledFailure = null,
+                        cdnFallback = fallback, watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
                     mutableState.update { it.copy(opening = false, effectiveQuality = source.quality, availableQualities = source.availableQualities) }
+                    watchdogSnapshot()?.let(watchdog::loaded)
                 }
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { failRequest(expected, failure, "切换画质失败") }
@@ -324,6 +333,7 @@ class DesktopPlaybackController internal constructor(
         val context = current?.takeIf(::owns) ?: return
         if (handledEnd || player?.state?.value?.ended != true || state.value.opening || suspended) return
         handledEnd = true
+        watchdog.cancel()
         mutableState.update { it.copy(manualSkip = null, playerPluginGeneration = null) }
         if (pluginMuteUntilMs != null) {
             player?.setMuted(preferences().muted); pluginMuteUntilMs = null; pluginMuteFromMs = null
@@ -364,6 +374,7 @@ class DesktopPlaybackController internal constructor(
     }
 
     private fun recover(context: Current, failure: PlayerFailure, native: PlayerState) {
+        watchdog.cancel()
         recovery?.cancel(); recordHealth(context, CdnHealthEvent.PLAYER_ERROR)
         val action = budget.action(failure, context.cdnIndex + 1 < context.candidates.size)
         if (action == PlayerErrorRecoveryAction.GIVE_UP) {
@@ -383,16 +394,18 @@ class DesktopPlaybackController internal constructor(
                 var source = context.source
                 var candidates = context.candidates
                 var cdn = context.cdnIndex
+                var fallbackState = context.cdnFallback
                 var software = false
                 when(action) {
                     PlayerErrorRecoveryAction.SWITCH_CDN -> {
                         cdn++; val selected = candidates[cdn]
                         source = source.copy(videoUrl = selected.videoUrl, audioUrl = selected.audioUrl)
+                        fallbackState = fallbackState.advanceFallback(selected.videoUrl, selected.audioUrl)
                     }
                     PlayerErrorRecoveryAction.RETRY_NETWORK -> {
                         source = playback.playback(context.details, context.index, context.source.quality.takeIf { it > 0 } ?: state.value.quality,
                             codecOverride = context.source.videoCodecFamily, forceRefresh = true)
-                        prepareResolved(source).let { source = it.first; candidates = it.second }; cdn = 0
+                        prepareResolved(source).let { source = it.first; candidates = it.second; fallbackState = it.third }; cdn = 0
                     }
                     PlayerErrorRecoveryAction.RETRY_DECODER_FALLBACK -> {
                         val failed = resolvePlaybackVideoCodec(source.videoUrl, source.cachedDashData?.video.orEmpty()) ?: normalizeCodecFamilyKey(source.videoCodecFamily)
@@ -403,7 +416,7 @@ class DesktopPlaybackController internal constructor(
                             val fresh = playback.playback(context.details, context.index, source.quality.takeIf { it > 0 } ?: state.value.quality,
                                 codecOverride = fallback, forceRefresh = true)
                             if (normalizeCodecFamilyKey(fresh.videoCodecFamily) == fallback) {
-                                prepareResolved(fresh).let { source = it.first; candidates = it.second }; cdn = 0
+                                prepareResolved(fresh).let { source = it.first; candidates = it.second; fallbackState = it.third }; cdn = 0
                             } else software = true
                         } else software = true
                     }
@@ -413,8 +426,12 @@ class DesktopPlaybackController internal constructor(
                 val latest = player?.state?.value ?: native
                 val accepted = player?.recoverSource(context.sourceVersion, source.toNative(latest.positionSeconds, latest.paused),
                     latest.positionSeconds, latest.paused, forceSoftwareDecoding = software, expectedFailureAttemptId = failure.attemptId) == true
-                if (accepted) current = (current ?: context).copy(source = source, candidates = candidates, cdnIndex = cdn,
-                    readyObserved = false, handledFailure = null)
+                if (accepted) {
+                    current = (current ?: context).copy(source = source, candidates = candidates, cdnIndex = cdn,
+                        readyObserved = false, handledFailure = null, cdnFallback = fallbackState,
+                        watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
+                    watchdogSnapshot()?.let(watchdog::loaded)
+                }
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (error: Exception) {
                 if (owns(context) && context.requestGeneration == generation.get()) mutableState.update {
@@ -424,7 +441,7 @@ class DesktopPlaybackController internal constructor(
         }
     }
 
-    private fun prepareResolved(source: ResolvedSource): Pair<ResolvedSource, List<PlaybackCdnCandidate>> {
+    private fun prepareResolved(source: ResolvedSource): Triple<ResolvedSource, List<PlaybackCdnCandidate>, PlaybackCdnFallbackState> {
         val rewritten = plugins?.rewritePlaybackSource(source) ?: source
         val ranked = authorizedPlaybackCandidates(rewritten, health)
         // The original enabled CDN plugin already applies the user's preference and persistent health ranking.
@@ -432,7 +449,50 @@ class DesktopPlaybackController internal constructor(
             if (it.videoUrl == rewritten.videoUrl && it.audioUrl == rewritten.audioUrl) 0 else 1
         } else ranked
         val selected = candidates.firstOrNull()
-        return rewritten.copy(videoUrl = selected?.videoUrl ?: rewritten.videoUrl, audioUrl = selected?.audioUrl ?: rewritten.audioUrl) to candidates
+        val resolved = rewritten.copy(videoUrl = selected?.videoUrl ?: rewritten.videoUrl, audioUrl = selected?.audioUrl ?: rewritten.audioUrl)
+        val fallback = if (source.progressiveSegments.isNotEmpty()) PlaybackCdnFallbackState.Inactive else buildPlaybackCdnFallbackState(
+            resolved.videoUrl, resolved.audioUrl, source.videoUrl, source.audioUrl, regionLabel = null,
+            audioFallbackUrl = source.audioAlternatives.firstOrNull(), fallbackCandidates = authorizedPlaybackCandidates(source))
+        return Triple(resolved, candidates, fallback)
+    }
+
+    private fun watchdogSnapshot(): DesktopWatchdogSnapshot? {
+        val context = current?.takeIf(::owns) ?: return null
+        val native = player?.state?.value ?: return null
+        return DesktopWatchdogSnapshot(DesktopWatchdogIdentity(context.sourceVersion, context.requestGeneration, context.watchdogLoadId),
+            native, context.cdnIndex, context.candidates.size, context.cdnFallback, context.source.audioUrl != null,
+            enabled = !suspended && !state.value.opening)
+    }
+
+    private fun switchForWatchdog(snapshot: DesktopWatchdogSnapshot, action: DesktopWatchdogAction) {
+        val context = current?.takeIf(::owns) ?: return
+        if (snapshot.identity != DesktopWatchdogIdentity(context.sourceVersion, context.requestGeneration, context.watchdogLoadId)) return
+        val nativePlayer = player ?: return
+        val native = nativePlayer.state.value
+        if (suspended || native.paused || native.ended || native.failure != null || native.error != null) return
+        val target = when (action) {
+            is DesktopWatchdogAction.FirstFrameFallback -> PlaybackCdnCandidate(action.nextState.selectedVideoUrl,
+                action.nextState.selectedAudioUrl, PlaybackCdnCandidateSource.ORIGINAL)
+            is DesktopWatchdogAction.StallSwitch -> context.candidates.getOrNull(action.index) ?: return
+        }
+        recordHealth(context, when (action) {
+            is DesktopWatchdogAction.FirstFrameFallback -> if (action.audioMissing) CdnHealthEvent.AUDIO_TRACK_MISSING else CdnHealthEvent.FIRST_FRAME_TIMEOUT
+            is DesktopWatchdogAction.StallSwitch -> CdnHealthEvent.BUFFERING
+        })
+        val source = context.source.copy(videoUrl = target.videoUrl, audioUrl = target.audioUrl)
+        if (nativePlayer.recoverSource(context.sourceVersion, source.toNative(native.positionSeconds, native.paused),
+                native.positionSeconds, native.paused)) {
+            val candidates = (context.candidates + target).distinctBy { it.videoUrl to it.audioUrl }
+            val index = candidates.indexOfFirst { it.videoUrl == target.videoUrl && it.audioUrl == target.audioUrl }
+            val fallback = when (action) {
+                is DesktopWatchdogAction.FirstFrameFallback -> action.nextState
+                is DesktopWatchdogAction.StallSwitch -> context.cdnFallback.advanceFallback(target.videoUrl, target.audioUrl)
+            }
+            current = context.copy(source = source, candidates = candidates, cdnIndex = index, cdnFallback = fallback,
+                readyObserved = false, handledFailure = null, watchdogLoadId = nextWatchdogLoadId.incrementAndGet())
+            mutableState.update { it.copy(recovering = true, error = null, recoveryMessage = "正在切换备用线路") }
+            watchdogSnapshot()?.let(watchdog::loaded)
+        }
     }
 
     private fun pendingSkip(context: Current, token: Long, seekId: Long, segmentId: String, startMs: Long,
@@ -531,6 +591,7 @@ class DesktopPlaybackController internal constructor(
         return final
     }
     private fun invalidate(stopNative: Boolean, flushReport: Boolean = true): DesktopHeartbeatReport? {
+        watchdog.reset()
         val finalReport = current?.let { finishHeartbeat(it, submit = flushReport) }
         generation.incrementAndGet(); request?.cancel(); recovery?.cancel(); pluginLoad?.cancel()
         current?.pluginGeneration?.let { plugins?.onVideoEnd(it) }
@@ -548,6 +609,7 @@ class DesktopPlaybackController internal constructor(
     }
     fun pause() {
         if (closed.get()) return
+        watchdog.cancel()
         checkpoint(); request?.cancel(); recovery?.cancel(); pluginLoad?.cancel()
         val expected = generation.incrementAndGet()
         val context = current

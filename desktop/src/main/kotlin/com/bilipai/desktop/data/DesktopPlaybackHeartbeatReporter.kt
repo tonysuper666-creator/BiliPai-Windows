@@ -2,6 +2,7 @@ package com.bilipai.desktop.data
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.data.repository.buildPlaybackHeartbeatFields
+import com.android.purebilibili.core.refresh.HistoryRefreshBus
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +17,8 @@ internal class DesktopPlaybackHeartbeatReporter(private val repository: DesktopR
         aid: Long, epid: Long, sid: Long, videoType: Int, subType: Int?, expectedSessionEpoch: Long): Boolean = withContext(Dispatchers.IO) {
         reportDesktopPlaybackHeartbeat(privacy::isPrivacyModeEnabledSync, expectedSessionEpoch,
             { repository.sessionEpoch }, { repository.account.value?.mid }, repository::requireCsrf,
-            bvid, cid, playedTimeSec, realPlayedTimeSec, startTsSec, aid, epid, sid, videoType, subType) { fields ->
+            bvid, cid, playedTimeSec, realPlayedTimeSec, startTsSec, aid, epid, sid, videoType, subType,
+            onReported = HistoryRefreshBus::notifyChanged) { fields ->
             // This guard runs immediately before BridgeInterceptor/transport, after the normal
             // repository policy interceptor. An old source cannot acquire a new account's cookie.
             val client = repository.httpClient.newBuilder().retryOnConnectionFailure(false).addInterceptor { chain ->
@@ -35,7 +37,7 @@ internal class DesktopPlaybackHeartbeatReporter(private val repository: DesktopR
 internal suspend fun reportDesktopPlaybackHeartbeat(privacyEnabled: () -> Boolean, expectedEpoch: Long,
     epoch: () -> Long, mid: () -> Long?, csrf: () -> String, bvid: String, cid: Long, playedTimeSec: Long,
     realPlayedTimeSec: Long, startTsSec: Long, aid: Long = 0, epid: Long = 0, sid: Long = 0,
-    videoType: Int = 3, subType: Int? = null, send: suspend (Map<String, String>) -> Int): Boolean {
+    videoType: Int = 3, subType: Int? = null, onReported: () -> Unit = {}, send: suspend (Map<String, String>) -> Int): Boolean {
     return try {
         if (epoch() != expectedEpoch) return false
         if (privacyEnabled()) return true // Original privacy policy: successful no-op.
@@ -46,7 +48,7 @@ internal suspend fun reportDesktopPlaybackHeartbeat(privacyEnabled: () -> Boolea
         if (epoch() != expectedEpoch || mid() != accountMid) return false
         if (privacyEnabled()) return true
         val code = send(fields)
-        code == 0 && epoch() == expectedEpoch
+        if (code == 0 && epoch() == expectedEpoch) { onReported(); true } else false
     } catch (cancelled: CancellationException) { throw cancelled }
     catch (_: Exception) { false }
 }

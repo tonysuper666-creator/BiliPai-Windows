@@ -18,7 +18,7 @@ import javax.swing.SwingUtilities
 import kotlin.math.abs
 import kotlin.math.sin
 
-/** An opt-in native integration smoke test; no network, account, or ffmpeg needed. */
+/** An opt-in native integration smoke test; no internet, account, or ffmpeg needed. */
 object PlayerSelfTest {
     /** Returns true only after separate-track playback, controls, errors and EOF pass. */
     fun run(outputDirectory: File, useNullAudioOutput: Boolean = false): Boolean {
@@ -38,6 +38,7 @@ object PlayerSelfTest {
         var passed = false
         try {
             check(!GraphicsEnvironment.isHeadless()) { "Native screen rendering requires an interactive desktop." }
+            player.setVideoPanscan(1.0) // Must survive mounting, rather than relying on a setter against an existing session.
             SwingUtilities.invokeAndWait {
                 frame = JFrame("BiliPai · Windows native playback smoke test")
                 requireNotNull(frame).apply {
@@ -52,11 +53,11 @@ object PlayerSelfTest {
                     requestFocus()
                 }
             }
-            waitFor(player, "native initialization") { it.ready }
+            waitFor(player, "native initialization with retained profile-skin zoom") { it.ready && it.activeVideoPanscan == 1.0 }
             player.setVolume(20.0)
             player.load(PlaybackSource(video.absolutePath, audio.absolutePath, referer = "", title = "Separate video + audio test"))
             waitFor(player, "separate audio/video playback") {
-                !it.loading && it.positionSeconds > 0.5 && !it.videoCodec.isNullOrBlank() && !it.audioCodec.isNullOrBlank()
+                !it.loading && it.firstVideoFrameReady && it.positionSeconds > 0.5 && !it.videoCodec.isNullOrBlank() && !it.audioCodec.isNullOrBlank()
             }
             checks["videoCodec"] = player.state.value.videoCodec.orEmpty()
             checks["audioCodec"] = player.state.value.audioCodec.orEmpty()
@@ -64,10 +65,11 @@ object PlayerSelfTest {
             checks["audioOutputMode"] = if (useNullAudioOutput) "CI timed null output" else "Windows audio device"
             waitFor(player, "audio/video clock synchronization") { it.avSyncSeconds != null && abs(it.avSyncSeconds) < 0.2 }
             checks["avSyncSeconds"] = player.state.value.avSyncSeconds.toString()
-            waitForRenderedVideo(player, requireNotNull(frame), File(outputDirectory, "native-player-smoke.png"))
+            checks["nativeWindowFocusedAtPixelCapture"] = waitForRenderedVideo(player, requireNotNull(frame),
+                File(outputDirectory, "native-player-smoke.png")).toString()
             checks["nativeVideoRendering"] = "passed"
             player.setPaused(true)
-            waitFor(player, "pause") { it.paused }
+            waitFor(player, "actual native pause and synchronized position readback") { it.paused && it.nativePaused == true }
             val pausedPosition = player.state.value.positionSeconds
             Thread.sleep(500)
             check(abs(player.state.value.positionSeconds - pausedPosition) < 0.15) { "Playback advanced while paused." }
@@ -154,9 +156,12 @@ object PlayerSelfTest {
                 it.ready && !it.loading && it.paused && abs(it.positionSeconds - reattachPosition) < 0.3 &&
                     it.videoCodec != null && it.audioCodec != null &&
                     it.subtitleText?.contains("BiliPai subtitle smoke") == true &&
-                    it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true
+                    it.secondarySubtitleText?.contains("Secondary subtitle smoke") == true && it.activeVideoPanscan == 1.0
             }
             checks["surfaceReattachmentAndSubtitleRetention"] = "passed"
+            checks["retainedVideoPanscanAfterMountAndReattachment"] = "passed"
+            player.setVideoPanscan(0.0)
+            waitFor(player, "restore normal native video fit") { it.activeVideoPanscan == 0.0 }
             val recoveryVersion = player.currentSourceVersion
             check(player.recoverSource(recoveryVersion, positionSeconds = reattachPosition, paused = true, forceSoftwareDecoding = true)) {
                 "Same-source decoder fallback was rejected."
@@ -248,6 +253,17 @@ object PlayerSelfTest {
                 player.state.value.failure == null && !player.state.value.ended)
             checks["rapidReplacementAndSameOwnerRecoveryIsolation"] = "passed"
 
+            DesktopControllerNativeSmoke.run(player, video, outputDirectory)
+            checks["nativeControllerPartsQueueAndHeartbeat"] = "passed"
+            DesktopControllerNativeSmoke.runCdnRecovery(player, video, outputDirectory)
+            checks["nativeHttpFailureAuthorizedCdnRecoveryAndRedaction"] = "passed"
+            DesktopOverlayNativeSmoke.run(player, outputDirectory)
+            checks["nativeOverlayPluginStyleAndEyeTint"] = "passed"
+            DesktopShaderNativeSmoke.run(player, outputDirectory)
+            checks["nativeAnime4KPresetsExecutedAndChangedPixels"] = "passed"
+            DesktopRetainedMediaNativeSmoke.run(player, requireNotNull(frame), video)
+            checks["nativeRetainedMediaHostJobsAndOwnership"] = "passed"
+
             player.load(PlaybackSource(File(outputDirectory, "intentionally-missing-media.avi").absolutePath, referer = ""))
             waitFor(player, "invalid media error", allowError = true) { it.error != null }
             check(player.state.value.failure?.kind == PlayerFailureKind.FILE_IO && !player.state.value.failure?.diagnostics.isNullOrEmpty()) {
@@ -292,18 +308,21 @@ object PlayerSelfTest {
         return passed
     }
 
-    private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File) {
+    private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File): Boolean {
         val robot = Robot()
         val deadline = System.nanoTime() + 5_000_000_000L
-        var failure = "The native test window did not become visible and focused on the desktop."
+        var failure = "The native test window did not become visible on the desktop."
         while (System.nanoTime() < deadline) {
             var bounds: Pair<Rectangle, Rectangle>? = null
+            var focused = false
             SwingUtilities.invokeAndWait {
                 // Foreground apps can cover a decoded native surface. Keep this
-                // opt-in test above them, then wait for focus and actual pixels.
+                // opt-in test above them and verify actual desktop pixels. Windows
+                // can deny focus to a background process even while its window is visible.
                 window.toFront()
                 window.requestFocus()
-                if (window.isShowing && window.isFocused && player.surface.isShowing &&
+                focused = window.isFocused
+                if (window.isShowing && player.surface.isShowing &&
                     player.surface.width > 0 && player.surface.height > 0) {
                     val position = window.locationOnScreen
                     val surface = player.surface.locationOnScreen
@@ -315,7 +334,7 @@ object PlayerSelfTest {
                 ImageIO.write(robot.createScreenCapture(windowBounds), "png", screenshot)
                 try {
                     checkRenderedVideo(robot.createScreenCapture(surfaceBounds))
-                    return
+                    return focused
                 } catch (notRendered: IllegalStateException) {
                     failure = notRendered.message ?: "The native video surface was not rendered."
                 }

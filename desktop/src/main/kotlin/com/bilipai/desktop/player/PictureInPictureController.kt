@@ -45,6 +45,7 @@ class PictureInPictureController(
     private val onRestore: () -> Unit,
     private val onPrevious: (() -> Unit)? = null,
     private val onNext: (() -> Unit)? = null,
+    private val onSeekTo: ((Double) -> Unit)? = null,
 ) : AutoCloseable {
     private val mutableActive = MutableStateFlow(false)
     val active: StateFlow<Boolean> = mutableActive.asStateFlow()
@@ -125,10 +126,10 @@ class PictureInPictureController(
         val footer = JPanel(BorderLayout()).apply { background = Color(28, 28, 32) }
         val controls = JPanel(FlowLayout(FlowLayout.CENTER, 1, 1)).apply { background = Color(28, 28, 32) }
         if (onPrevious != null) controls.add(button("上集", "上一集", onPrevious).also { previousButton = it; it.isEnabled = previousEnabled })
-        controls.add(button("−5", "后退五秒") { player.seekBy(-5.0) })
+        controls.add(button("−5", "后退五秒") { seekBy(-5.0) })
         val play = button("暂停", "播放/暂停") { player.togglePause() }
         controls.add(play)
-        controls.add(button("+5", "前进五秒") { player.seekBy(5.0) })
+        controls.add(button("+5", "前进五秒") { seekBy(5.0) })
         if (onNext != null) controls.add(button("下集", "下一集", onNext).also { nextButton = it; it.isEnabled = nextEnabled })
         val mute = button("静音", "静音/取消静音") { player.toggleMuted() }
         controls.add(mute)
@@ -150,7 +151,7 @@ class PictureInPictureController(
         val seek = object : MouseAdapter() {
             private fun seek(event: MouseEvent) {
                 val durationMs = (player.state.value.durationSeconds * 1_000).toLong()
-                if (durationMs > 0) player.seekTo(resolveMiniPlayerSeekTargetPosition(0, event.x.toFloat(), progress.width.toFloat(), durationMs) / 1_000.0)
+                if (durationMs > 0) seekTo(resolveMiniPlayerSeekTargetPosition(0, event.x.toFloat(), progress.width.toFloat(), durationMs) / 1_000.0)
             }
             override fun mousePressed(e: MouseEvent) = seek(e)
             override fun mouseDragged(e: MouseEvent) = seek(e)
@@ -197,8 +198,8 @@ class PictureInPictureController(
         window.addWindowListener(object : WindowAdapter() { override fun windowClosing(e: WindowEvent) { restore() } })
         window.addComponentListener(object : ComponentAdapter() { override fun componentMoved(e: ComponentEvent) { clampToScreen(window) } })
         bind(window.rootPane, KeyEvent.VK_SPACE) { player.togglePause() }
-        bind(window.rootPane, KeyEvent.VK_LEFT) { player.seekBy(-5.0) }
-        bind(window.rootPane, KeyEvent.VK_RIGHT) { player.seekBy(5.0) }
+        bind(window.rootPane, KeyEvent.VK_LEFT) { seekBy(-5.0) }
+        bind(window.rootPane, KeyEvent.VK_RIGHT) { seekBy(5.0) }
         bind(window.rootPane, KeyEvent.VK_M) { player.toggleMuted() }
         bind(window.rootPane, KeyEvent.VK_ESCAPE) { restore() }
         val state = player.state.value
@@ -229,6 +230,12 @@ class PictureInPictureController(
             timer?.delay = resolveMiniPlayerPollingIntervalMs(!current.paused).toInt()
         }.apply { start() }
     }
+
+    /** A business host can retain original user-seek hooks while media-only hosts keep native controls. */
+    private fun seekTo(seconds: Double) {
+        if (seconds.isFinite()) (onSeekTo ?: player::seekTo)(seconds.coerceAtLeast(0.0))
+    }
+    private fun seekBy(seconds: Double) { seekTo(player.state.value.positionSeconds + seconds) }
 
     private fun sizeVideo(window: JFrame, width: Float, chromeHeight: Int) {
         val aspect = videoAspect.coerceIn(0.45f, 2.39f)

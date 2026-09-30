@@ -5718,11 +5718,61 @@
       "sourceUrl": "https://static.crates.io/crates/winapi-x86_64-pc-windows-gnu/winapi-x86_64-pc-windows-gnu-0.4.0.crate",
       "sha256": "79212a91f610f8a77aa6ed4cc77212c2531eeb35630388bf07323cc328fcca42",
       "sourcePath": "src/lib.rs"
+    },
+    {
+      "path": "licenses/rav1e-crate-difflib-0.4.0-upstream-LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/DimaKudosh/difflib/f035fb8e656f27119e23eca9d5b996df14f3885e/LICENSE",
+      "sha256": "6725d1437fc6c77301f2ff0e7d52914cf4f9509213e1078dc77d9356dbe6eac5",
+      "matchedSourceArchiveUrl": "https://codeload.github.com/DimaKudosh/difflib/zip/f035fb8e656f27119e23eca9d5b996df14f3885e",
+      "matchedSourceArchiveSha256": "86d4bfb6b0f54256d843fb1d0ce247ce3ee443548e557429f3cd5ecaedc2cc33",
+      "matchedPublishedRustSources": [
+        {
+          "path": "examples/example.rs",
+          "sha256": "2807d9c94f5c9ae53c2948a64de7a36ec27e6973adc35a850ea18cc37a66cfb2"
+        },
+        {
+          "path": "src/differ.rs",
+          "sha256": "115671b901c439affb816d8a7d4275bf31ebba045d6118596dfac776b78699d3"
+        },
+        {
+          "path": "src/lib.rs",
+          "sha256": "1d196166d4ee0d7eb6cfe127920c2a314a965098c7f08bef44be163528368bde"
+        },
+        {
+          "path": "src/sequencematcher.rs",
+          "sha256": "b671c4ee066cc548c98784bb6fd6788c10ef8d75e7eb176694659ad7ad976f12"
+        },
+        {
+          "path": "src/utils.rs",
+          "sha256": "9ef8aa4219e856745dec81849453ae3ff7edba6a16f470d1a4ba65eb498b1044"
+        },
+        {
+          "path": "tests/tests.rs",
+          "sha256": "ecd1b3fb91c24a42e506500d84e6028a4f6027266f2ddc2e208825173649a53f"
+        }
+      ]
+    },
+    {
+      "path": "licenses/rav1e-crate-simd_helpers-0.1.0-upstream-LICENSE",
+      "sourceUrl": "https://raw.githubusercontent.com/lu-zero/simd_helpers/82040194cd05affb060bf94d6f19f82a771d07fb/LICENSE",
+      "sha256": "d69f24ad84ec2ade64c0b68bdb31b41170e997b158370342056918329cc9af1e",
+      "matchedSourceArchiveUrl": "https://codeload.github.com/lu-zero/simd_helpers/zip/82040194cd05affb060bf94d6f19f82a771d07fb",
+      "matchedSourceArchiveSha256": "93fc50fadbde22bbf7b10ae3d0f626153cfc0ca423c07f36a7ab79ff663d8996",
+      "matchedPublishedRustSources": [
+        {
+          "path": "src/lib.rs",
+          "sha256": "7776fe38ba2018bdd2e744e42b0affa34966797ededdf381144bb92bb41e194c"
+        },
+        {
+          "path": "tests/cold_for.rs",
+          "sha256": "930a9b0c072b7036d57ef9df3f5c24716e24b75d7a2aebf9d89ff8c69d68fadb"
+        }
+      ]
     }
   ],
   "dependencyLicenseInventory": {
     "complete": false,
-    "scope": "Direct recipes, exact known nested licenses, embedded Rust runtime and Cargo.lock notices are inventoried. difflib and simd_helpers published packages declare MIT but omit a notice; source-distribution reconciliation and those missing notices remain before public release.",
+    "scope": "Direct recipes, known transitive notices, exact embedded Rust runtime and all registry Cargo.lock notices are collected. Missing published MIT notices were matched to immutable upstream trees with byte-identical Rust files. Complete corresponding source-distribution reconciliation remains before public release.",
     "recipes": [
       {
         "recipe": "scripts.d/10-mingw-std-threads.sh",
@@ -8310,9 +8360,13 @@
           "version": "0.4.0",
           "sourceArchiveUrl": "https://static.crates.io/crates/difflib/difflib-0.4.0.crate",
           "sourceArchiveSha256": "6184e33543162437515c2e2b48714794e37845ec9851711914eec9d308f6ebe8",
-          "licensePaths": [],
-          "status": "requires-review",
-          "licenseDeclarationFromPackage": "MIT"
+          "licensePaths": [
+            "licenses/rav1e-crate-difflib-0.4.0-upstream-LICENSE"
+          ],
+          "status": "collected",
+          "licenseDeclarationFromPackage": "MIT",
+          "noticeSourceCommit": "f035fb8e656f27119e23eca9d5b996df14f3885e",
+          "noticeResolution": "Published crate omits the notice. All published Rust files exactly match this immutable upstream tree containing the original raw MIT notice."
         },
         {
           "name": "displaydoc",
@@ -9708,11 +9762,15 @@
           "version": "0.1.0",
           "sourceArchiveUrl": "https://static.crates.io/crates/simd_helpers/simd_helpers-0.1.0.crate",
           "sourceArchiveSha256": "95890f873bec569a0362c235787f3aca6e1e887302ba4840839bcc6459c42da6",
-          "licensePaths": [],
-          "status": "requires-review",
+          "licensePaths": [
+            "licenses/rav1e-crate-simd_helpers-0.1.0-upstream-LICENSE"
+          ],
+          "status": "collected",
           "sourceRepository": "lu-zero/simd_helpers",
           "sourceCommitFromCargoVcsInfo": "ca1a2f84aa386d758e98f8a609d990263932fb85",
-          "licenseDeclarationFromPackage": "MIT"
+          "licenseDeclarationFromPackage": "MIT",
+          "noticeSourceCommit": "82040194cd05affb060bf94d6f19f82a771d07fb",
+          "noticeResolution": "Published crate omits the notice. All published Rust files exactly match this immutable upstream tree containing the original raw MIT notice."
         },
         {
           "name": "smallvec",

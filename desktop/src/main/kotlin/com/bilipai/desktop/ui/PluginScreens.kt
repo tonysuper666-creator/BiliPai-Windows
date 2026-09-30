@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bilipai.desktop.cast.DesktopGoogleCastDialog
 import com.android.purebilibili.core.plugin.json.JsonRulePlugin
 import com.android.purebilibili.feature.plugin.*
 import com.bilipai.desktop.data.DesktopDiscoveryFilters
@@ -35,6 +36,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
     var busy by remember { mutableStateOf<String?>(null) }
     var error by remember { mutableStateOf<String?>(null) }
     var selected by remember { mutableStateOf<String?>(null) }
+    var packagesOpen by remember { mutableStateOf(false) }
     var url by remember { mutableStateOf("") }
     var preview by remember { mutableStateOf<JsonRulePlugin?>(null) }
     var previewUrl by remember { mutableStateOf("") }
@@ -50,7 +52,11 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         }
     }
     LazyColumn(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        item { Text("插件", style = MaterialTheme.typography.headlineSmall) }
+        item { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text("插件", style = MaterialTheme.typography.headlineSmall)
+            OutlinedButton(onClick = { selected = null; packagesOpen = true }, enabled = busy == null) { Text("插件包与装扮") }
+        } }
+
         error?.let { message -> item { Text(message, color = MaterialTheme.colorScheme.error) } }
         if (busy != null) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
         items(plugins, key = { it.plugin.id }) { info ->
@@ -62,7 +68,10 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
                         Text("${info.plugin.version} · ${info.plugin.author}", style = MaterialTheme.typography.labelSmall)
                     }
                     if (info.plugin.id != runtime.dlnaCast.id) {
-                        TextButton(onClick = { selected = info.plugin.id }, enabled = busy == null) { Text("设置") }
+                        TextButton(onClick = { selected = info.plugin.id },
+                            enabled = busy == null && (info.plugin.id != runtime.googleCast.id || info.enabled)) {
+                            Text(if (info.plugin.id == runtime.googleCast.id) "设备与遥控" else "设置")
+                        }
                     }
                     Switch(checked = info.enabled, onCheckedChange = { value -> action(info.plugin.id) { runtime.setEnabled(info.plugin.id, value) } }, enabled = busy == null && !info.plugin.unavailable)
                 }
@@ -116,6 +125,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         "danmaku_enhance" -> DanmakuPluginSettings(runtime, { selected = null })
         "eye_protection" -> EyePluginSettings(runtime, { selected = null })
         SPONSOR_BLOCK_PLUGIN_ID -> SponsorPluginSettings(runtime, { selected = null })
+        runtime.googleCast.id -> DesktopGoogleCastDialog(runtime.context, runtime.googleCast, media = { null }, onDismiss = { selected = null })
         else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, { selected = null }, onVideo, onPlayQueue) }
     }
     jsonEditor?.let { content ->
@@ -123,6 +133,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
             action("json-text") { runtime.importJsonText(text).getOrThrow(); jsonEditor = null }
         }
     }
+    if (packagesOpen) PluginPackagesDialog(runtime.packages, onDismiss = { packagesOpen = false })
 }
 
 @Composable

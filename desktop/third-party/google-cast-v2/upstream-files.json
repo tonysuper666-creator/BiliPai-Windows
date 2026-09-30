@@ -1,0 +1,130 @@
+[
+  {
+    "path": "su/litvak/chromecast/api/v2/AppEvent.java",
+    "sha256": "cad322f4b4bc5ca021423603a3e8948a66ab36d8aa6a3b3ab5a685d9464c82e2"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Application.java",
+    "sha256": "3a8405a9aadd6f2ec70bc3d0f090eb88bbc154d1fb63147b25a9d67fb78c72a7"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/CastChannel.java",
+    "sha256": "500dee4c82baa81f548183c4c585187c8dd628ab58d5f3ad409bb31cd8871db6"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Channel.java",
+    "sha256": "089197da7105d1615daab31f3b551f299af52f0b2a0956751d2785da0b411bb6"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCast.java",
+    "sha256": "2861343dfde9bbcbac55345e4fc1a5185aab513dfde386ef299b2f6d11144c14"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastConnectionEvent.java",
+    "sha256": "d167c1804a8b9d8e011d1d42bce2b7a291609e19185c1979ad5c9730443ef1d0"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastConnectionEventListener.java",
+    "sha256": "5d6757d4fd4d170c39b07624c5481c790021bdbb8b541cb823d5d8e6dc087405"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastException.java",
+    "sha256": "232563e1f1bacb48dbc4fc2e47b33f0a0f3116ff8f2d17bbc8e31eb6cf808417"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCasts.java",
+    "sha256": "e6ef71fe4243ecfbcf35a53a6954a611a54d8e1b989276130411121df8cf7d91"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastsListener.java",
+    "sha256": "d1a6eadf67313349162f3b86fc774cdb1af6902d1b81c8af091f4acb32299949"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastSpontaneousEvent.java",
+    "sha256": "28d6b48545cc44c95ea9fa0b5f92625dca24e48d2cf91de9954f9d0f58a68d9e"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/ChromeCastSpontaneousEventListener.java",
+    "sha256": "66d40b6afbbc29d399022476915cdedeb93407aba68ecf716e6fca8e5f0ea224"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Device.java",
+    "sha256": "d736947f26f2cc3c1155402c5877393d1def2d78a47cf8c5fc52686e148d5a18"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/EventListenerHolder.java",
+    "sha256": "60aad2f4ab7352c7e368376aa54fca00ded53d35f6671a911563ae639919a94a"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Item.java",
+    "sha256": "c7cf4bf0a39d3249043d76a3e9d685857fcafafa228e5a69c5dc8235e8c9bf0a"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/JacksonHelper.java",
+    "sha256": "42777d76a8b5c6797bf60dd14149e8e90173f6abf39b750d9336ff9553a281b3"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Media.java",
+    "sha256": "3d91fc7d303ca8e4a65230be349e55655961671f7e3ce2e9d3b651c05225229c"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/MediaStatus.java",
+    "sha256": "5edae88485978497ffb9ced8e11900979db49f5539964173989729ddf24a1ed3"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Message.java",
+    "sha256": "ab53990859b0f2cedd2958959b6bea66416b1fcb6ff270ea6670b327cc668052"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/MultizoneStatus.java",
+    "sha256": "d25b07c817a1749ba3c2c4d98d439465aa61accd4d51bc8d60a2b0849fe4d489"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Namespace.java",
+    "sha256": "386999ba444350ee2f5e86eb5c28e6ad31f1ba125c54b8034f45df967a6898a9"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/RandomString.java",
+    "sha256": "a2038726d7ee46b94a456fa5b7cf9c0e4d08786f3b11a9ee3c128e56b2e0dc8b"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Request.java",
+    "sha256": "f2e7853fb969f8e9ce929b3c53cb3e913ccacdd2aaaf47d715192f24962d25e9"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Response.java",
+    "sha256": "2e28433219472c7b8199cdc13647d8342ee3d1b5a5026c583f3b9a36a635ce68"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/StandardMessage.java",
+    "sha256": "6639bf0df1d73ab53512b7f80addf45b8717c1b8c483721bbeb2c352550e5a8b"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/StandardRequest.java",
+    "sha256": "5ca253216a9ccc1a07b29505a4e8513cfda6c41d674dcc6163273c3366ebb142"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/StandardResponse.java",
+    "sha256": "286ed4e70db2eb0b4adbb70b0756e50cbe13b18dd5521a5eab9dda79b919ff08"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Status.java",
+    "sha256": "d9784fd98c1fabe939269c76cfeaf8b641e9e87aae1a5408b41381eeca977a32"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Track.java",
+    "sha256": "32c28ef70fefa2aff06fb2842a13ff9c8e44037f35d19355b5cc457907325b2d"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Util.java",
+    "sha256": "c745d8f445710bf0f713ad1ac60696b3d3172056fec7d72e7a70360991062cb2"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/Volume.java",
+    "sha256": "51cf776f6373f43aa82d44b8d4d2e17b284dc50887ee29a4d48386a3065c6cd0"
+  },
+  {
+    "path": "su/litvak/chromecast/api/v2/X509TrustAllManager.java",
+    "sha256": "466cd04f23b26ab0d4267d6b3c8f57ede8164c4e97dfb14e19c8f3ecb2bb40dd"
+  }
+]

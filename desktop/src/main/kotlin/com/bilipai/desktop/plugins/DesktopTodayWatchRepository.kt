@@ -26,16 +26,23 @@ class DesktopTodayWatchRepository(private val runtime: DesktopPluginRuntime,
     private val repository: DesktopRepository?, private val discovery: DesktopDiscoveryRepository?) {
     private val generation = AtomicLong()
     private val mutation = Mutex()
+    private val rebuilding = Mutex()
     private val consumed = mutableSetOf<String>()
     private var accountEpoch: Long? = null
     private var historyCache = emptyList<VideoItem>()
     private var historyLoadedAt = 0L
+    private var historyExhausted = false
     private var expandedCache: TodayWatchExpandedCandidateCache? = null
+    private var baseCandidates = emptyList<VideoItem>()
+    private val refill = DesktopTodayWatchRefillCoordinator(DesktopPluginScopeRegistry.create("today-watch-refill", Dispatchers.IO),
+        { repository?.sessionEpoch }, { rebuild(forceHistory = false, reuseCandidates = true) })
     @Volatile private var stopped = false
     private val _state = MutableStateFlow(DesktopTodayWatchState())
     val state: StateFlow<DesktopTodayWatchState> = _state.asStateFlow()
 
-    suspend fun reload(forceHistory: Boolean = false): Unit = withContext(Dispatchers.IO) {
+    suspend fun reload(forceHistory: Boolean = false): Unit = rebuild(forceHistory, reuseCandidates = false)
+
+    private suspend fun rebuild(forceHistory: Boolean, reuseCandidates: Boolean): Unit = withContext(Dispatchers.IO) { rebuilding.withLock {
         check(!stopped) { "推荐服务已停止" }
         val repository = repository ?: error("推荐服务尚未初始化")
         val discovery = discovery ?: error("推荐服务尚未初始化")
@@ -56,8 +63,11 @@ class DesktopTodayWatchRepository(private val runtime: DesktopPluginRuntime,
             fun filter(videos: List<VideoItem>) = runtime.filterFeedItems(filterHomeVideosByNotInterestedFeedback(videos.filter {
                 it.bvid.isNotBlank() && it.title.isNotBlank() && it.owner.mid !in blocked
             }, feedback.dislikedBvids, feedback.dislikedCreatorMids, feedback.dislikedKeywords), FeedKind.HOME_RECOMMEND).distinctBy { it.bvid }
-            val local = filter(discovery.page(DiscoverySection.RECOMMEND).items)
+            val rawCandidates = if (reuseCandidates) mutation.withLock { baseCandidates }
+                else discovery.page(DiscoverySection.RECOMMEND).items
+            val local = filter(rawCandidates)
             if (!current()) return@withContext
+            mutation.withLock { if (current()) baseCandidates = rawCandidates }
             val notices = mutableListOf<String>()
             val history = try { loadHistory(repository, config.historySampleLimit, forceHistory, epoch) }
                 catch (cancelled: CancellationException) { throw cancelled }
@@ -92,12 +102,12 @@ class DesktopTodayWatchRepository(private val runtime: DesktopPluginRuntime,
         } catch (cancelled: CancellationException) { throw cancelled }
           catch (error: Exception) { if (current()) _state.value = _state.value.copy(error = error.message ?: "推荐生成失败") }
         finally { if (current()) _state.value = _state.value.copy(loading = false) }
-    }
+    } }
 
     private suspend fun loadHistory(repository: DesktopRepository, limit: Int, force: Boolean, epoch: Long): List<VideoItem> {
         val size = limit.coerceIn(20, 120)
         val now = System.currentTimeMillis()
-        if (!force && now - historyLoadedAt in 0..600_000 && historyCache.size >= size) return historyCache.take(size)
+        if (!force && now - historyLoadedAt in 0..600_000 && (historyCache.size >= size || historyExhausted)) return historyCache.take(size)
         repository.ensureSession()
         val list = mutableListOf<VideoItem>()
         var cursor: CloudHistoryCursor? = null
@@ -113,27 +123,39 @@ class DesktopTodayWatchRepository(private val runtime: DesktopPluginRuntime,
             if (next == null || next.max <= 0 || page.list.isNullOrEmpty()) {
                 check(epoch == repository.sessionEpoch) { "账号已变化" }
                 return list.filter { it.bvid.isNotBlank() }.distinctBy { it.bvid }.also {
-                    historyCache = it; historyLoadedAt = now
+                    historyCache = it; historyLoadedAt = now; historyExhausted = true
                 }.take(size)
             }
             cursor = CloudHistoryCursor(next.max, next.view_at, next.business)
         }
         check(epoch == repository.sessionEpoch) { "账号已变化" }
         return list.filter { it.bvid.isNotBlank() }.distinctBy { it.bvid }.also {
-            historyCache = it; historyLoadedAt = now
+            historyCache = it; historyLoadedAt = now; historyExhausted = false
         }.take(size)
     }
 
     suspend fun consume(bvid: String): Boolean = mutation.withLock {
+        if (stopped || repository?.sessionEpoch != accountEpoch) return@withLock false
         val plan = _state.value.plan ?: return@withLock false
         val update = consumeVideoFromTodayWatchPlan(plan, bvid, runtime.todayWatch.configState.value.queuePreviewLimit)
-        if (update.consumedApplied) { consumed += bvid; _state.value = _state.value.copy(plan = update.updatedPlan) }
+        if (update.consumedApplied) {
+            consumed += bvid; _state.value = _state.value.copy(plan = update.updatedPlan)
+            if (update.shouldRefill && runtime.plugins.value.any { it.plugin.id == TodayWatchPlugin.PLUGIN_ID && it.enabled }) {
+                accountEpoch?.let { refill.request(it) }
+            }
+        }
         update.shouldRefill
     }
-    private fun clearForAccount(epoch: Long) {
+    private suspend fun clearForAccount(epoch: Long) {
         accountEpoch = epoch; consumed.clear(); historyCache = emptyList(); historyLoadedAt = 0L; expandedCache = null
+        historyExhausted = false
+        baseCandidates = emptyList(); refill.clear()
         _state.value = DesktopTodayWatchState()
     }
     internal suspend fun accountChanged(epoch: Long) = mutation.withLock { if (accountEpoch != epoch) { generation.incrementAndGet(); clearForAccount(epoch) } }
-    internal suspend fun shutdownForRestore() { stopped = true; generation.incrementAndGet(); mutation.withLock { _state.value = _state.value.copy(loading = false) } }
+    internal suspend fun shutdownForRestore() {
+        stopped = true; generation.incrementAndGet(); refill.shutdownForRestore()
+        rebuilding.withLock { }
+        mutation.withLock { _state.value = _state.value.copy(loading = false) }
+    }
 }

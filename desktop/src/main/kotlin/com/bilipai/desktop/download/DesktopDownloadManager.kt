@@ -200,11 +200,13 @@ class DesktopDownloadManager internal constructor(
             if (segmentFiles.isNotEmpty()) muxer.muxSegments(segmentFiles, output, task.item.isAudioOnly)
             else muxer.mux(video.takeUnless { task.item.isAudioOnly }, audio.takeIf { current.item.audioUrl.isNotBlank() || task.item.isAudioOnly }, output)
             currentCoroutineContext().ensureActive()
-            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
-                filePath = output.toString(), fileSize = Files.size(output), errorMessage = null)) }
+            val outputSize = Files.size(output)
             Files.deleteIfExists(video)
             Files.deleteIfExists(audio)
             segmentFiles.forEach { Files.deleteIfExists(it) }
+            // COMPLETED is observable immediately; finish owned temporary track cleanup first.
+            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
+                filePath = output.toString(), fileSize = outputSize, errorMessage = null)) }
         } catch (cancelled: CancellationException) {
             update(id, true) { task -> if (task.status == DownloadStatus.PAUSED) task else task.copy(item = task.item.copy(status = DownloadStatus.PAUSED)) }
         } catch (error: Exception) {

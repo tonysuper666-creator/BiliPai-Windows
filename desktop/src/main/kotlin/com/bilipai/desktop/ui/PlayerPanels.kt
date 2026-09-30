@@ -63,11 +63,13 @@ fun PlayerPanel(
             if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
             else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
         }
-        Slider(value = (seeking ?: state.positionSeconds.toFloat()).let { if (it.isFinite()) it.coerceIn(0f, duration) else 0f },
+        DesktopSkinPlayerProgress(value = (seeking ?: state.positionSeconds.toFloat()).let { if (it.isFinite()) it.coerceIn(0f, duration) else 0f },
             onValueChange = { seeking = it }, onValueChangeFinished = {
                 seeking?.let { seekTo(it.toDouble()) }; seeking = null
-            }, valueRange = 0f..duration, enabled = state.durationSeconds > 0 && state.error == null,
-            modifier = Modifier.fillMaxWidth())
+            }, duration = duration, enabled = state.durationSeconds > 0 && state.error == null,
+            bufferedFraction = state.bufferedForwardSeconds?.takeIf { it.isFinite() && it >= 0 }?.let {
+                ((state.positionSeconds + it) / duration).toFloat().coerceIn(0f, 1f)
+            }, dragging = seeking != null, onError = ::message)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             FilledTonalButton(onClick = { player.togglePause() }, enabled = state.ready && (state.durationSeconds > 0 || state.ended)) {
                 Text(if (state.paused || state.ended) "播放" else "暂停")
@@ -143,7 +145,7 @@ fun PlayerPanel(
         }
         when {
             state.error != null -> Text(state.error!!, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall)
-            state.loading -> LinearProgressIndicator(Modifier.fillMaxWidth())
+            state.loading -> DesktopLoadingIndicator(Modifier.fillMaxWidth())
             state.audioOnly -> Text("仅播放音频", color = MaterialTheme.colorScheme.onSurfaceVariant, style = MaterialTheme.typography.bodySmall)
         }
         status?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }

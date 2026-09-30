@@ -1,0 +1,169 @@
+{
+  "kind": "development-milestone",
+  "windowsVersion": "0.2.406.8",
+  "verifiedAtUtc": "2026-09-30T04:44:48.621134+00:00",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "sourceCount": 256,
+  "originalResourceCount": 12,
+  "apiMethodsVerbatim": 303,
+  "responseFilesAdopted": 45,
+  "offlineKotlin": {
+    "suites": 58,
+    "tests": 412,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 411,
+    "skippedReason": "DesktopUpdaterSafetyTest symbolic root fixture: this Windows host cannot create symbolic links"
+  },
+  "pythonTestsPassed": 85,
+  "nativePlayer": {
+    "passed": true,
+    "videoCodec": "Motion JPEG",
+    "audioCodec": "PCM signed 16-bit little-endian",
+    "nativeVersion": "mpv v0.41.0-1023-g69e63f425",
+    "audioOutputMode": "Windows audio device",
+    "avSyncSeconds": "1.3E-5",
+    "nativeWindowFocusedAtPixelCapture": "true",
+    "nativeVideoRendering": "passed",
+    "pause": "passed",
+    "nativeFrameScreenshot": "passed",
+    "windowsMediaSessionNativeReadback": "passed",
+    "screenshotErrorIsolation": "passed",
+    "muteAndAudioOnly": "passed",
+    "seek": "passed",
+    "seekCompletionEvent": "passed",
+    "surfaceReattachmentAndSubtitleRetention": "passed",
+    "retainedVideoPanscanAfterMountAndReattachment": "passed",
+    "softwareRecoveryOwnershipPositionAndSubtitleRetention": "passed",
+    "nativeFloatingWindowAndRestore": "passed",
+    "externalSubtitlesAndTrackSelection": "passed",
+    "bilingualSubtitles": "passed",
+    "volume": "37.0",
+    "speed": "1.5",
+    "singleFileLoop": "passed",
+    "endOfFile": "passed",
+    "replayAfterEndOfFile": "passed",
+    "progressiveSegmentsDurationSeekAndTransition": "passed",
+    "rapidReplacementAndSameOwnerRecoveryIsolation": "passed",
+    "nativeControllerPartsQueueAndHeartbeat": "passed",
+    "nativeHttpFailureAuthorizedCdnRecoveryAndRedaction": "passed",
+    "nativeOverlayPluginStyleAndEyeTint": "passed",
+    "nativeAnime4KPresetsExecutedAndChangedPixels": "passed",
+    "nativeRetainedMediaHostJobsAndOwnership": "passed",
+    "invalidMedia": "passed",
+    "errorRecoveryAndAudioIsolation": "passed",
+    "sourceResumePositionAndPause": "passed",
+    "sourceOwnershipAndSameSourceReplay": "passed",
+    "nativeClosed": "true"
+  },
+  "nativeEvidence": {
+    "report": "build/reports/native-smoke-63f9dae8d88b41e295865f20b0ec9120/native-player-smoke.json",
+    "reportSha256": "8cfbefc113fcdcf82fce135e6a26323a74a291b2f7c88a76c4b6eb6de35cbb33",
+    "images": [
+      {
+        "name": "native-anime4k-before.png",
+        "sha256": "5375fc8b33465974de6871349e91a3986424f123606b3d533d9277c6c7ef86e8"
+      },
+      {
+        "name": "native-anime4k-cleared.png",
+        "sha256": "144d6a07d123901395ebfd9352dae49f82eacd92886a6e6c6569e8ec728185f3"
+      },
+      {
+        "name": "native-anime4k-fast.png",
+        "sha256": "2c6e65f19e380efa4a4843fbd65a2c404a015356a34ca011195bdff5b0114a0c"
+      },
+      {
+        "name": "native-anime4k-quality.png",
+        "sha256": "125e4968e5ed80bb295c3a9da5978e7eb3251c35e06fbcf1b2c9486c04466bd7"
+      },
+      {
+        "name": "native-danmaku-overlay.png",
+        "sha256": "855422eacb658150792ef224e0e1c7fd9d8c34ae064cbfa23e62664c8c771d7d"
+      },
+      {
+        "name": "native-danmaku-plugin-style.png",
+        "sha256": "f7cfe6c8285c6116876f800dad11d1f12b2f38e683633efbba7249b5712566d5"
+      },
+      {
+        "name": "native-eye-protection.png",
+        "sha256": "3b7475cec454cf0544c272134874979eeb11667c84b9f1a293bf63cc765319df"
+      },
+      {
+        "name": "native-overlay-before.png",
+        "sha256": "13246a36d25ad00f7469ac6323b5047c8b8e43ddedf03a36057d3d19053792ff"
+      },
+      {
+        "name": "native-player-smoke.png",
+        "sha256": "1f0737540d0fac64da9ca0f44630f66f8c0007c3f8003b527d17d24556aee145"
+      },
+      {
+        "name": "native-video-screenshot.png",
+        "sha256": "025a6a831acd5c52e7b7b52d83f7e5a52f81446b194f8a99b1e32ff18247cdaf"
+      }
+    ]
+  },
+  "packagedMainJarSha256": "ccd3a6821e1ca8c3db30e9cc364a2773fe46bc242b94eb29ed86d079dc74e2d1",
+  "portableZipSha256": "2cdf92ffc88091d37edcf9869d983a93bd088c8333ddf4f6e6cb7dbd5c1fdc7a",
+  "packagedFfmpegMux": {
+    "evidenceMilestone": "milestone-0.2.406.6.json",
+    "samePackagedFfmpegAndFfprobeHashesVerified": true,
+    "ffmpegSha256": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+    "ffprobeSha256": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+    "sixOutputsDecodedAt": "2026-09-30T01:28:34.035546Z",
+    "rerunInThisMilestone": false
+  },
+  "googleCast": {
+    "fixtureTestsPassed": 25,
+    "originalJavaFiles": 32,
+    "narrowlyModifiedOriginalFiles": 3,
+    "pinnedOfficialRoots": 2,
+    "sourceRecordsAudited": 92,
+    "packagedDependencies": [
+      {
+        "name": "jmdns-3.6.3-b22928eba13879441b654ffaf780121c.jar",
+        "sha256": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+      },
+      {
+        "name": "protobuf-javalite-4.33.2-8f6a2105e856f35aa93a82b2ebd9e.jar",
+        "sha256": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+      },
+      {
+        "name": "jackson-annotations-2.20-b91def3c2752817f2713e4b8d6640.jar",
+        "sha256": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+      },
+      {
+        "name": "jackson-core-2.20.0-3536b524a7106dae1b4feb71e6f5ff74.jar",
+        "sha256": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+      },
+      {
+        "name": "jackson-databind-2.20.0-7e33b9e657f74ff95fe2c881e2f8f76.jar",
+        "sha256": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+      },
+      {
+        "name": "slf4j-api-2.0.17-b648d114a23683498ac3f746f959d2f.jar",
+        "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+      }
+    ],
+    "packagedNotices": 16,
+    "physicalDeviceTested": false,
+    "compatibilityDifferences": "third-party/google-cast-v2/NOTICES.txt"
+  },
+  "dlna": {
+    "offlineFixtureTestsPassed": 11,
+    "realReceiverTested": false
+  },
+  "webdav": {
+    "loopbackHttpAndRestoreTested": true,
+    "realRemoteServiceTested": false,
+    "realScheduledTaskTested": false
+  },
+  "fullReleaseGatePassed": false,
+  "fullFunctionalParityVerified": false,
+  "deployedToDesktop": false,
+  "accountWriteOperationsTested": false,
+  "publicReleasePublished": false,
+  "desktopInstalledVersion": "0.2.406.5",
+  "remainingAcceptance": "See desktop/PARITY.md; source counts are provenance, not functional completion percentages"
+}
