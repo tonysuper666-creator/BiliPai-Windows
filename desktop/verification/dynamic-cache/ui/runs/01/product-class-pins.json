@@ -1,0 +1,110 @@
+[
+  {
+    "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "c2c6ea96dd2e1338688783a19743092091a7f2a26d0f10efa625f40b65c377b9",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopDynamicCache",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "711856469ce5bea20100633a235f495a1cbbc4e50a2ac0c19d6a8ea55c8e60e0",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopDynamicCacheSession",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "10a19850a24a2c8e25d600761582d10a8afef5fb16a7bace5d3efa473a47de07",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopSessionStore",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "337d4441a8bfb0ac7ac6d03b9d615da79200a3b971d02ad1058bb2fce6158661",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.data.DesktopCommunityRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "c40e180e38a70e33eaa2e5c21a83a48384fc6d2b8d3da1c8092d359fdbc9a650",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DesktopDynamicCacheBindingsKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "82d162ffc4a6d7943797e6d0926563129360be3451219864713506c0f46b9260",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.CommunityDynamicScreensKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "4b6b7749aa6473b058030891ffffd0cb8a9a2386a4f23b2b54086e82b09360d8",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.CommunityUiSupportKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "303ce79a46512d5bd4da14b7742cff94d3bb0db97e04f18ef16792951650ba37",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "547e31a6104bafd419dc675f447661a46f9a7e00220275329ce05764cca67094",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DesktopDynamicTabsHostKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "ba9a5ad95f7d8db16b62e52d20bdb68ef1e9e386b1e1f5fd3623ba27b6283e2f",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "3a7939304313e422b8b19db94bfc48fce3cf7cf5313569481aed284b2c632268",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicCacheKeys",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "d6eb32758ebca33f71d2944d842f0f031925f4cb6029e60f12edf257ef45fb36",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicUserStatePolicyKt",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "f150e810962c69580db760801bc46055f0812ea85b96239c3ff594851c0c83e4",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.data.repository.DesktopOriginalDynamicTimelineRepository",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "180871bc977fce8f21dd6673ce9a4884bfc00c77d54e068a91a3dc46464afacd",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.core.network.DynamicApi",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "3dddbce6054a114318669002eaa86a6ed4fe120f0eede4e4e06e8de67168d132",
+    "preparedOverlay": false
+  },
+  {
+    "class": "com.android.purebilibili.core.network.BilibiliApi",
+    "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+    "sha256Bytes": "a8927535e01c89dc47ddf80e873c8ed81865215af2e6a3f0fbcd1a4bc86e38c2",
+    "preparedOverlay": false
+  }
+]

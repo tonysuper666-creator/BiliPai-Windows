@@ -1,0 +1,62 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+
+> Task :extractUpstreamDynamicSettings
+Generated 8
+
+> Task :extractUpstreamDynamicTabs FAILED
+Traceback (most recent call last):
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\extract-upstream-dynamic-tabs.py", line 196, in <module>
+    if a.output:print('Generated',len(generate(a.repo.resolve(),a.output.resolve(),standalone=a.standalone)))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\extract-upstream-dynamic-tabs.py", line 107, in generate
+    '''+functions(s,selected),'DesktopOriginalDynamicUserStatePolicy.kt')
+        ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\extract-upstream-dynamic-tabs.py", line 30, in functions
+    def functions(source,names):return '\n\n'.join(media.function(source,n,parser) for n in names)
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\extract-upstream-dynamic-tabs.py", line 30, in <genexpr>
+    def functions(source,names):return '\n\n'.join(media.function(source,n,parser) for n in names)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\tools\extract-upstream-media.py", line 66, in function
+    raise ValueError(f"Original {name} no longer has a supported body")
+ValueError: Original normalizeDynamicNotInterestedIds no longer has a supported body
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':extractUpstreamDynamicTabs' (registered in build file 'build.gradle.kts').
+> Process 'command 'C:/Users/TONYS/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+23 actionable tasks: 3 executed, 20 up-to-date

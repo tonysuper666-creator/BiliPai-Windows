@@ -1,0 +1,6 @@
+{
+  "path": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-dc-ui-0fmy8w9r",
+  "shortNativeExtractionPath": true,
+  "actualEnvironmentOnly": true,
+  "reason": "Keep isolated native ICU extraction below legacy Windows native path limit."
+}

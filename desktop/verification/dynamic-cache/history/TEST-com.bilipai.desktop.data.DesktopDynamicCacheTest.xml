@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopDynamicCacheTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-09-30T18:59:17.264Z" hostname="TONYSUPER666" time="0.411">
+  <properties/>
+  <testcase name="guestLocalActionAndOwnerSwitchNeverBorrowPreviousAccountState()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.19"/>
+  <testcase name="coldRestartRestoresOneHundredRawItemsWithoutTimestampExpiry()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.092"/>
+  <testcase name="acceptedEmptyLatestSaveDrainsBeforeStoreFreezeAndCannotBeRevived()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.067"/>
+  <testcase name="actualWindowsReplacementFailureKeepsDurableAndPublishedStateThenWriterRecovers()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.013"/>
+  <testcase name="originalFiveHundredIdOrderAndParallelAcknowledgementsArePreserved()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.015"/>
+  <testcase name="cancellingCardWaitDoesNotCancelItsAcceptedRootTransaction()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.009"/>
+  <testcase name="queuedOldOwnerCannotPublishAfterSameMidCredentialRotation()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.007"/>
+  <testcase name="malformedPayloadIsSoftAbsenceAndMalformedNamespaceDoesNotBlockOpening()" classname="com.bilipai.desktop.data.DesktopDynamicCacheTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -27,7 +27,8 @@ def generate(repo,output,standalone=False):
  a=module(repo,'tabs_decl','desktop/tools/extract-appearance-platform.py');home=module(repo,'tabs_ui','desktop/tools/extract-upstream-settings-home.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
  def emit(path,body,name):files.append(host.write(output,path,read(repo,path),body,name))
- def functions(source,names):return '\n\n'.join(media.function(source,n,parser) for n in names)
+ def functions(source,names):return '\n\n'.join(a.declarations(parser,source,[n]).rstrip()
+  if n=='normalizeDynamicNotInterestedIds' else media.function(source,n,parser) for n in names)
  path=BASE+'core/store/SettingsManager.kt';s=read(repo,path)
  names=['KEY_DYNAMIC_TAB_VISIBLE_TABS','KEY_DYNAMIC_TAB_ORDER','KEY_DYNAMIC_ALL_TAB_HORIZONTAL_USER_LIST_VISIBLE','DEFAULT_DYNAMIC_TAB_VISIBLE','DEFAULT_DYNAMIC_TAB_ORDER']
  lines=[]
@@ -99,7 +100,7 @@ private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
  selected=['resolveDynamicUpPanelUsers','isDynamicUpPanelAllShortcut','isDynamicUpPanelShortcut','isDynamicUpPanelItemSelected',
  'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed','resolveDynamicSelectedUserForTab','resolveDynamicTabAfterUserSelection',
  'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',
- 'extractUsersFromDynamicItems','resolveMergedFollowedUsers','isDynamicItemRealUser','shouldLoadMoreDynamicFeed']
+ 'extractUsersFromDynamicItems','resolveMergedFollowedUsers','isDynamicItemRealUser','shouldLoadMoreDynamicFeed','normalizeDynamicNotInterestedIds']
  emit(path,'''package com.android.purebilibili.feature.dynamic
 import com.android.purebilibili.data.model.response.*
 import kotlin.math.max

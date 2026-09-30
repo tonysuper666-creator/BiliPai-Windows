@@ -1,0 +1,749 @@
+{
+  "frozen": true,
+  "purpose": "Actual Main dynamic cache Community UI proof",
+  "rootProductSnapshotManifestSha256Bytes": "06c33b8f83d6d5fab70e4eb7490c3845e5d7b9b493379d99755d2bd8de9eff8b",
+  "orderedRuntimeCpSha256Bytes": "4fdfa2cb5e9ff4168b4c070c0ede9c75be24978744c35b75943df76f4f351ed8",
+  "finalAttempt": "03",
+  "passed": true,
+  "productionOverrides": 0,
+  "fixtureOnlyKotlinSources": 2,
+  "actualProductClassPins": 18,
+  "cells": 4,
+  "pointerPairs": 28,
+  "screenshots": 28,
+  "independentColdJvms": 8,
+  "actualCommunityReady": true,
+  "originalDynamicMenuInstalled": false,
+  "realAccountSocketNativeWindowOrPackage": false,
+  "mainSourceMutations": false,
+  "sharedGradle": false,
+  "excludes": [
+    "compiled fixture jars/classes",
+    "synthetic task account or preference disk with DPAPI credentials",
+    "native libraries",
+    "real private user data"
+  ],
+  "rawArtifactCount": 144,
+  "files": [
+    {
+      "path": "ColdCacheFixture.kt",
+      "sha256Bytes": "8de54adc14cea0a392262ec71824f56f212da0cedd60d47125746fa0132f084c",
+      "bytes": 2634
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "9334bbed6197c60af2fddaf09b403e252b43806726698faae885226ac0528bb3",
+      "bytes": 3853
+    },
+    {
+      "path": "UiFixture.kt",
+      "sha256Bytes": "83332d004cf8f3f956f91aa034b16f5edeac657082f413fd3d5bf9c86c805376",
+      "bytes": 19226
+    },
+    {
+      "path": "fixture-source-identities.json",
+      "sha256Bytes": "185ba1f74d0ba8ff026bdee988890bb3d3c0d6ebef3e6f7e89973e5127dfbfff",
+      "bytes": 289
+    },
+    {
+      "path": "runner.py",
+      "sha256Bytes": "c095689ffaedee12c8e6f91556ffc9cb84bf0508a589da3f3796f48973b8af47",
+      "bytes": 11543
+    },
+    {
+      "path": "runs/01/compile-evidence.json",
+      "sha256Bytes": "b0920dfb0f7b90dcb69fc722f2a2a0f51ed329dd04c4e19dccec7a6a24cd6e7e",
+      "bytes": 38770
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "0873e3226d966df61c9058a1e32ff80b393fbde7754d9105b648adbca0847f8c",
+      "bytes": 22875
+    },
+    {
+      "path": "runs/01/fixture-class-identities.json",
+      "sha256Bytes": "edcee8a27d11f40ceb292c23864e39032689d0259cca127203991e276af97d8b",
+      "bytes": 3007
+    },
+    {
+      "path": "runs/01/frozen-fixture-sources/ColdCacheFixture.kt",
+      "sha256Bytes": "8de54adc14cea0a392262ec71824f56f212da0cedd60d47125746fa0132f084c",
+      "bytes": 2634
+    },
+    {
+      "path": "runs/01/frozen-fixture-sources/UiFixture.kt",
+      "sha256Bytes": "246b637a336325e9442e3b7afe7eb15916c7dcccb3c536792cb26f081326027c",
+      "bytes": 18580
+    },
+    {
+      "path": "runs/01/frozen-fixture-sources/fixture-source-identities.json",
+      "sha256Bytes": "7c21abac42a1201501579489af35372d9e77055973017c523c59496364fb605b",
+      "bytes": 289
+    },
+    {
+      "path": "runs/01/frozen-fixture-sources/runner.py",
+      "sha256Bytes": "1bfcb080abff9bbf013a668b6d54e499ba46e17fa49cccaaeeaeb023f278a3e0",
+      "bytes": 11316
+    },
+    {
+      "path": "runs/01/product-class-pins.json",
+      "sha256Bytes": "aa75bc6b5edcdfe6e0d3115ab5e2efcf807543555a46cba494442117669c74c7",
+      "bytes": 6893
+    },
+    {
+      "path": "runs/02/compile-evidence.json",
+      "sha256Bytes": "e5d996bd029ca71ebb831b43fcfde0ae5fbb8a339ca221f9859a2acfdf8c6bba",
+      "bytes": 38800
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "2d692c8b40a9d7c4c1bacadd69a82e7ce9619e3c543846f4d80e33c9152f6a8f",
+      "bytes": 22899
+    },
+    {
+      "path": "runs/02/fixture-class-identities.json",
+      "sha256Bytes": "723790990f6691f72489d6ab02160a33ff28aa8f4a57be33b8f81c0d7c0f2d94",
+      "bytes": 3007
+    },
+    {
+      "path": "runs/02/fixture-failure-review.json",
+      "sha256Bytes": "ae016aa384465ac6c4a3d20bed4113845fa68d0e6b3912033bcef600a4b2ef3c",
+      "bytes": 603
+    },
+    {
+      "path": "runs/02/frozen-fixture-sources/ColdCacheFixture.kt",
+      "sha256Bytes": "8de54adc14cea0a392262ec71824f56f212da0cedd60d47125746fa0132f084c",
+      "bytes": 2634
+    },
+    {
+      "path": "runs/02/frozen-fixture-sources/UiFixture.kt",
+      "sha256Bytes": "4f5f6ba672e7e522cd81e387ab108bc0a0ffdb569839fc6c582198f501c790a9",
+      "bytes": 19010
+    },
+    {
+      "path": "runs/02/frozen-fixture-sources/fixture-source-identities.json",
+      "sha256Bytes": "38852154867b7671d92ee601991c629069b228a9a08de05ebb7e55915ed70554",
+      "bytes": 289
+    },
+    {
+      "path": "runs/02/frozen-fixture-sources/runner.py",
+      "sha256Bytes": "c095689ffaedee12c8e6f91556ffc9cb84bf0508a589da3f3796f48973b8af47",
+      "bytes": 11543
+    },
+    {
+      "path": "runs/02/product-class-pins.json",
+      "sha256Bytes": "fe4f80d35c3f1f019e00cf55ec29da24039e0af43f31b2e5e07947531a7e6be9",
+      "bytes": 7001
+    },
+    {
+      "path": "runs/02/proof/actual-loaded-class-identities.json",
+      "sha256Bytes": "5758db69bef7560a8cc9e1a9f131e45aac4475d8e7233f432b38dd10b2ee1b6c",
+      "bytes": 6459
+    },
+    {
+      "path": "runs/02/proof/material3-light/01-cold-seed-before-primary-response.png",
+      "sha256Bytes": "899b4fc9c6aa04bd3e03d6066da9a5258930c60ea5170665bdbf3a70083cf854",
+      "bytes": 20671
+    },
+    {
+      "path": "runs/02/proof/material3-light/01-cold-semantics.txt",
+      "sha256Bytes": "e030843db508882384098582b638361904e75dff60a7ef46a86e2fa6c7ae818e",
+      "bytes": 32287
+    },
+    {
+      "path": "runs/02/proof/material3-light/02-first-refresh-replaced-placeholder.png",
+      "sha256Bytes": "14bf89ef01e01570be5beacfe68ef402c20071d3749a37303f9cb01f3e127531",
+      "bytes": 20311
+    },
+    {
+      "path": "runs/02/proof/material3-light/03-failure-retains-and-offers-explicit-retry.png",
+      "sha256Bytes": "f52764b12460e0801b9bb979114af0793971882f22ad8c84468a513df3219d58",
+      "bytes": 23029
+    },
+    {
+      "path": "runs/02/proof/material3-light/03-failure-semantics.txt",
+      "sha256Bytes": "13d4019292248742cc74935b4117ad843441ba70cf0245cb98fbbbde3504c52e",
+      "bytes": 34273
+    },
+    {
+      "path": "runs/02/proof/material3-light/04-all-display-filter-raw-retained.png",
+      "sha256Bytes": "5d034e13f6186e522b7e7ba364c00dd38664003b1adbdeafd7faa97d04bcb507",
+      "bytes": 30233
+    },
+    {
+      "path": "runs/02/proof/material3-light/05-selected-up-display-filter.png",
+      "sha256Bytes": "96ca6c56b10ec7cdcc3523c24255ee4cb2ca8e71b96c738e29ced2f7c0897c19",
+      "bytes": 29424
+    },
+    {
+      "path": "runs/02/proof/material3-light/05-selected-up-semantics.txt",
+      "sha256Bytes": "5b55b0e246e4f702c2d3f0565634da738b94900d27473ae0ed4bed567befeb70",
+      "bytes": 42144
+    },
+    {
+      "path": "runs/02/proof/material3-light/06-same-mid-new-owner-rejects-cold-private-seed.png",
+      "sha256Bytes": "f752ea29ad1cb10dd82f0c7b572df60226c97737bf187ec5acfaf33c98088155",
+      "bytes": 15498
+    },
+    {
+      "path": "runs/02/proof/material3-light/FAILED-current-frame.png",
+      "sha256Bytes": "f752ea29ad1cb10dd82f0c7b572df60226c97737bf187ec5acfaf33c98088155",
+      "bytes": 15498
+    },
+    {
+      "path": "runs/02/proof/material3-light/FAILED-semantics.txt",
+      "sha256Bytes": "fadb98c9130e1f4e122440c53f5387b24d8b56ee80dd1a3f7275b71a1b03f16e",
+      "bytes": 14865
+    },
+    {
+      "path": "runs/02/proof/material3-light/FAILED.txt",
+      "sha256Bytes": "4d7dae476fad939ceaaffbbf8a691405f5fd6ede3799076fef7094841fdba71a",
+      "bytes": 1279
+    },
+    {
+      "path": "runs/02/proof/material3-light/raw-after-not-interested.json",
+      "sha256Bytes": "896147ae59ee8ec68fb8ac0f05a34345a6f22c14649279c9bf3c367da499f6c5",
+      "bytes": 79
+    },
+    {
+      "path": "runs/02/proof/runner-failure.json",
+      "sha256Bytes": "5f82eb9603489c0274a09ec00d4a8ee7f91ae67be3907bcf18c40f3d518dd703",
+      "bytes": 1629
+    },
+    {
+      "path": "runs/02/proof/ui.json",
+      "sha256Bytes": "dbddcba7cd15f6def69cd6a49c4fd993b181055a5582eb47660a917a5e763d0c",
+      "bytes": 1535
+    },
+    {
+      "path": "runs/02/seed-material3-dark.args",
+      "sha256Bytes": "b5735494e0e80bdd4430c767afb23c255fa3cada815c4c813bf49f23045e9c76",
+      "bytes": 22536
+    },
+    {
+      "path": "runs/02/seed-material3-dark.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/02/seed-material3-light.args",
+      "sha256Bytes": "657a67d0376be04c48c0545bc1ae288bdaf76da23a7f99a95815513bb14a976a",
+      "bytes": 22537
+    },
+    {
+      "path": "runs/02/seed-material3-light.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/02/seed-miuix-dark.args",
+      "sha256Bytes": "3285d954b6dbaa5827b583ae2535aa63839fed27d402513ab4fd8bfff0368d5a",
+      "bytes": 22532
+    },
+    {
+      "path": "runs/02/seed-miuix-dark.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/02/seed-miuix-light.args",
+      "sha256Bytes": "8eef5a3796e3f6333ba31c3f1469026ac87e9d185960010e6a6131325ecf21e0",
+      "bytes": 22533
+    },
+    {
+      "path": "runs/02/seed-miuix-light.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/02/task-owned-environment.json",
+      "sha256Bytes": "9ad63d8c4622ceccbd9acb48af0942b97fb2934d0130019faaec6de01b779086",
+      "bytes": 235
+    },
+    {
+      "path": "runs/02/ui.args",
+      "sha256Bytes": "d1e4dcf2b9b161963fbb4994dd36d46bbdc33dbcb777901cade362b865b26103",
+      "bytes": 22670
+    },
+    {
+      "path": "runs/02/ui.log",
+      "sha256Bytes": "90460e994de69c8ebd35446fb31ce4d8cfb0641328be245a1e73820f1bd79a82",
+      "bytes": 1291
+    },
+    {
+      "path": "runs/03/cold-guest-material3-dark.args",
+      "sha256Bytes": "70285b0159be105b3cf9640135f124dd8df3528ef6399229812ad122abc50026",
+      "bytes": 22542
+    },
+    {
+      "path": "runs/03/cold-guest-material3-dark.log",
+      "sha256Bytes": "418a644ddc479fefa7f1653d2007120e06906bc1c195d3be4b5f0f6ff996257d",
+      "bytes": 99
+    },
+    {
+      "path": "runs/03/cold-guest-material3-light.args",
+      "sha256Bytes": "3865007eba2eeab70c175a3007d655105fc3eecba412d8d57a8841defd7d4a58",
+      "bytes": 22543
+    },
+    {
+      "path": "runs/03/cold-guest-material3-light.log",
+      "sha256Bytes": "418a644ddc479fefa7f1653d2007120e06906bc1c195d3be4b5f0f6ff996257d",
+      "bytes": 99
+    },
+    {
+      "path": "runs/03/cold-guest-miuix-dark.args",
+      "sha256Bytes": "d750752942214e5cae6675312d05d91ab27ba358fbde1177b2bc3a3d34fa1225",
+      "bytes": 22538
+    },
+    {
+      "path": "runs/03/cold-guest-miuix-dark.log",
+      "sha256Bytes": "418a644ddc479fefa7f1653d2007120e06906bc1c195d3be4b5f0f6ff996257d",
+      "bytes": 99
+    },
+    {
+      "path": "runs/03/cold-guest-miuix-light.args",
+      "sha256Bytes": "e9aa176c042abc976be695216c01031c9e5110a2c9ef700e0674098834b2f600",
+      "bytes": 22539
+    },
+    {
+      "path": "runs/03/cold-guest-miuix-light.log",
+      "sha256Bytes": "418a644ddc479fefa7f1653d2007120e06906bc1c195d3be4b5f0f6ff996257d",
+      "bytes": 99
+    },
+    {
+      "path": "runs/03/cold-roots/material3-dark/independent-cold-guest-read.json",
+      "sha256Bytes": "4bf71e89b6fc8bf207c7efd2d91235566c8d2849f9778cfaf4562c6e4eaffbf8",
+      "bytes": 161
+    },
+    {
+      "path": "runs/03/cold-roots/material3-light/independent-cold-guest-read.json",
+      "sha256Bytes": "4bf71e89b6fc8bf207c7efd2d91235566c8d2849f9778cfaf4562c6e4eaffbf8",
+      "bytes": 161
+    },
+    {
+      "path": "runs/03/cold-roots/miuix-dark/independent-cold-guest-read.json",
+      "sha256Bytes": "4bf71e89b6fc8bf207c7efd2d91235566c8d2849f9778cfaf4562c6e4eaffbf8",
+      "bytes": 161
+    },
+    {
+      "path": "runs/03/cold-roots/miuix-light/independent-cold-guest-read.json",
+      "sha256Bytes": "4bf71e89b6fc8bf207c7efd2d91235566c8d2849f9778cfaf4562c6e4eaffbf8",
+      "bytes": 161
+    },
+    {
+      "path": "runs/03/compile-evidence.json",
+      "sha256Bytes": "6e22565902185b629a6f479004a128c2c5b80f30bb8eed5bf4c4e49c190e545e",
+      "bytes": 38800
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "3bc8afdb4784e5d2be09508211711382483754b1f7d8844c7e25c73cc1d35456",
+      "bytes": 22899
+    },
+    {
+      "path": "runs/03/fixture-class-identities.json",
+      "sha256Bytes": "7dca760d9ae94a1d6e814a62b6486b1d5f95cef8757f01c8083387ff79e8e738",
+      "bytes": 3007
+    },
+    {
+      "path": "runs/03/frozen-fixture-sources/ColdCacheFixture.kt",
+      "sha256Bytes": "8de54adc14cea0a392262ec71824f56f212da0cedd60d47125746fa0132f084c",
+      "bytes": 2634
+    },
+    {
+      "path": "runs/03/frozen-fixture-sources/UiFixture.kt",
+      "sha256Bytes": "83332d004cf8f3f956f91aa034b16f5edeac657082f413fd3d5bf9c86c805376",
+      "bytes": 19226
+    },
+    {
+      "path": "runs/03/frozen-fixture-sources/fixture-source-identities.json",
+      "sha256Bytes": "185ba1f74d0ba8ff026bdee988890bb3d3c0d6ebef3e6f7e89973e5127dfbfff",
+      "bytes": 289
+    },
+    {
+      "path": "runs/03/frozen-fixture-sources/runner.py",
+      "sha256Bytes": "c095689ffaedee12c8e6f91556ffc9cb84bf0508a589da3f3796f48973b8af47",
+      "bytes": 11543
+    },
+    {
+      "path": "runs/03/product-class-pins.json",
+      "sha256Bytes": "fe4f80d35c3f1f019e00cf55ec29da24039e0af43f31b2e5e07947531a7e6be9",
+      "bytes": 7001
+    },
+    {
+      "path": "runs/03/proof/accepted-evidence.json",
+      "sha256Bytes": "00d69cd2ee532578ce394ce7604e785aaa9c0de9a37bf98a2cfb5d90750fd685",
+      "bytes": 37276
+    },
+    {
+      "path": "runs/03/proof/actual-loaded-class-identities.json",
+      "sha256Bytes": "5758db69bef7560a8cc9e1a9f131e45aac4475d8e7233f432b38dd10b2ee1b6c",
+      "bytes": 6459
+    },
+    {
+      "path": "runs/03/proof/material3-dark/01-cold-seed-before-primary-response.png",
+      "sha256Bytes": "a9ef986249d51ad7c10aa2d2a39814e6e3e34942758c7f0c8d7c3daf18c808dc",
+      "bytes": 26556
+    },
+    {
+      "path": "runs/03/proof/material3-dark/01-cold-semantics.txt",
+      "sha256Bytes": "eb080c5d3a1df191cee0ef1bd387360b38fb4d969d77de99c9ec3f3252a1f199",
+      "bytes": 32267
+    },
+    {
+      "path": "runs/03/proof/material3-dark/02-first-refresh-replaced-placeholder.png",
+      "sha256Bytes": "67134f052877c052ccb90d97f2ccf8a2a3384590bcb83adb04c93759060eab2d",
+      "bytes": 25997
+    },
+    {
+      "path": "runs/03/proof/material3-dark/03-failure-retains-and-offers-explicit-retry.png",
+      "sha256Bytes": "e46f22d22b5fa2660289d961c7e6a1e27c2374aaa86c07ed443d6f04e3a7d519",
+      "bytes": 27868
+    },
+    {
+      "path": "runs/03/proof/material3-dark/03-failure-semantics.txt",
+      "sha256Bytes": "59a34c8153e992947a5ae30ba0338e933240751a0a8b98e11922d3a2c9e113d1",
+      "bytes": 34260
+    },
+    {
+      "path": "runs/03/proof/material3-dark/04-all-display-filter-raw-retained.png",
+      "sha256Bytes": "bee3b227e07cb025c5189dc4472db6370cdb12f1005ac244d52a39e0ed5706cd",
+      "bytes": 30744
+    },
+    {
+      "path": "runs/03/proof/material3-dark/05-selected-up-display-filter.png",
+      "sha256Bytes": "f3b8fac467262b0b323c23899f2017418be532f19ec5f0cd00715fccc17cbb27",
+      "bytes": 34456
+    },
+    {
+      "path": "runs/03/proof/material3-dark/05-selected-up-semantics.txt",
+      "sha256Bytes": "3a56a6cc60b0135399a65666c2ca4b40f0d1d63748c27621fadfede6dbb173be",
+      "bytes": 42139
+    },
+    {
+      "path": "runs/03/proof/material3-dark/06-same-mid-new-owner-rejects-cold-private-seed.png",
+      "sha256Bytes": "b3d6f8a4b0e9e2203883da105000704612513f3bbf959edb5adc9dde1412685b",
+      "bytes": 14214
+    },
+    {
+      "path": "runs/03/proof/material3-dark/07-guest-local-action-zero-http.png",
+      "sha256Bytes": "0ae06b50aabe432e8a72dba5fa555f145453a2fc4d7851d3c18e70a274fa3b42",
+      "bytes": 16250
+    },
+    {
+      "path": "runs/03/proof/material3-dark/07-guest-semantics.txt",
+      "sha256Bytes": "72afa538ed9f2a87f4b6240dca5fa35bf730a3415dc812e5b5cf471be673c529",
+      "bytes": 3590
+    },
+    {
+      "path": "runs/03/proof/material3-dark/pointers.json",
+      "sha256Bytes": "a993036da4728ae84b310451f6fb3de645a72f4c0d9c42ea324def1de970b0ee",
+      "bytes": 308
+    },
+    {
+      "path": "runs/03/proof/material3-dark/raw-after-not-interested.json",
+      "sha256Bytes": "896147ae59ee8ec68fb8ac0f05a34345a6f22c14649279c9bf3c367da499f6c5",
+      "bytes": 79
+    },
+    {
+      "path": "runs/03/proof/material3-dark/request-trace.json",
+      "sha256Bytes": "4f5a4caac3233eb5b27008b2a1d7579237ba1fd2e188211965afe8475225cbba",
+      "bytes": 2440
+    },
+    {
+      "path": "runs/03/proof/material3-light/01-cold-seed-before-primary-response.png",
+      "sha256Bytes": "899b4fc9c6aa04bd3e03d6066da9a5258930c60ea5170665bdbf3a70083cf854",
+      "bytes": 20671
+    },
+    {
+      "path": "runs/03/proof/material3-light/01-cold-semantics.txt",
+      "sha256Bytes": "28dc89401304adc52233dc00c41ace4f8c2988642bd3be391a4da3396acf7f89",
+      "bytes": 32287
+    },
+    {
+      "path": "runs/03/proof/material3-light/02-first-refresh-replaced-placeholder.png",
+      "sha256Bytes": "14bf89ef01e01570be5beacfe68ef402c20071d3749a37303f9cb01f3e127531",
+      "bytes": 20311
+    },
+    {
+      "path": "runs/03/proof/material3-light/03-failure-retains-and-offers-explicit-retry.png",
+      "sha256Bytes": "f52764b12460e0801b9bb979114af0793971882f22ad8c84468a513df3219d58",
+      "bytes": 23029
+    },
+    {
+      "path": "runs/03/proof/material3-light/03-failure-semantics.txt",
+      "sha256Bytes": "b975233654e83b8f1c93293bc15245b60315ff610500f8afd2a141740fd1329d",
+      "bytes": 34270
+    },
+    {
+      "path": "runs/03/proof/material3-light/04-all-display-filter-raw-retained.png",
+      "sha256Bytes": "5d034e13f6186e522b7e7ba364c00dd38664003b1adbdeafd7faa97d04bcb507",
+      "bytes": 30233
+    },
+    {
+      "path": "runs/03/proof/material3-light/05-selected-up-display-filter.png",
+      "sha256Bytes": "96ca6c56b10ec7cdcc3523c24255ee4cb2ca8e71b96c738e29ced2f7c0897c19",
+      "bytes": 29424
+    },
+    {
+      "path": "runs/03/proof/material3-light/05-selected-up-semantics.txt",
+      "sha256Bytes": "f410255f3b38fbd435eacd0d1038b6a1537b9ceabab61bd36035a8229ae02cc7",
+      "bytes": 42144
+    },
+    {
+      "path": "runs/03/proof/material3-light/06-same-mid-new-owner-rejects-cold-private-seed.png",
+      "sha256Bytes": "41cdce380fed7afa22a9f1dcca111da366d23ddc78069fb15e22e820cc402014",
+      "bytes": 14100
+    },
+    {
+      "path": "runs/03/proof/material3-light/07-guest-local-action-zero-http.png",
+      "sha256Bytes": "166d7d3f2a3b7d5e1bd4371e4f1b7416142bf7acb8507a6656aa3590491cf785",
+      "bytes": 16175
+    },
+    {
+      "path": "runs/03/proof/material3-light/07-guest-semantics.txt",
+      "sha256Bytes": "fb52b12e7d1791f44a279cf2ab4bda64888a4e00a1c353f3123748aff520e258",
+      "bytes": 3591
+    },
+    {
+      "path": "runs/03/proof/material3-light/pointers.json",
+      "sha256Bytes": "f414c05367505d97cba2a9f6fcf8af38f036819202d01fb52d63c85156b8ba28",
+      "bytes": 308
+    },
+    {
+      "path": "runs/03/proof/material3-light/raw-after-not-interested.json",
+      "sha256Bytes": "896147ae59ee8ec68fb8ac0f05a34345a6f22c14649279c9bf3c367da499f6c5",
+      "bytes": 79
+    },
+    {
+      "path": "runs/03/proof/material3-light/request-trace.json",
+      "sha256Bytes": "1f71b636e208fbd3c5a89ce7110f431aef2f78fc25c7dd984b3b6071b1e9584d",
+      "bytes": 2440
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/01-cold-seed-before-primary-response.png",
+      "sha256Bytes": "f9e6e28e7f987b4b4f06af793d16215078d780539248d83d9789462d7ee8b078",
+      "bytes": 28890
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/01-cold-semantics.txt",
+      "sha256Bytes": "37c1e51f6a86e01868c45a7c5981153b56d4237b4c90e6071ad47c674ec8f25d",
+      "bytes": 32797
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/02-first-refresh-replaced-placeholder.png",
+      "sha256Bytes": "826cbde3af10bf61f84b728cc5203ed3b3c094176b38e936af6f189d369c32d3",
+      "bytes": 28288
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/03-failure-retains-and-offers-explicit-retry.png",
+      "sha256Bytes": "aada5b01ebe772671e3379cd17fb1fcf8d889546c948b5a361808f71c9a0cd81",
+      "bytes": 30198
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/03-failure-semantics.txt",
+      "sha256Bytes": "bff81f205c6f0f213b1c88f7b2dd69a90e6124e5e0d283f0ac9ad4b9ce5d5a56",
+      "bytes": 34789
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/04-all-display-filter-raw-retained.png",
+      "sha256Bytes": "50d5468391ee4976953a4b5373e1ac3d293dc8e890c250b74ba6f32e597053d3",
+      "bytes": 32287
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/05-selected-up-display-filter.png",
+      "sha256Bytes": "4216daffdba2bc580f660df6f99fd993bf6f3979c1ffc1ad2865437b712ce259",
+      "bytes": 35450
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/05-selected-up-semantics.txt",
+      "sha256Bytes": "c309f7ff7cdcb1848d6e4c75df460f2095e5af337731e3263088879fe6ec657f",
+      "bytes": 41771
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/06-same-mid-new-owner-rejects-cold-private-seed.png",
+      "sha256Bytes": "cd84d09b6e3f218062f3460c27132f86431d47beda2c1c8a88b77003acd56569",
+      "bytes": 15305
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/07-guest-local-action-zero-http.png",
+      "sha256Bytes": "6d9efb048ad4d5f9e9a53b74428624e3050bb7327c4cf74707b2eda9c3a97d7a",
+      "bytes": 10685
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/07-guest-semantics.txt",
+      "sha256Bytes": "265c973a004d4988a0b7f98e4d250381205d4206ee1b5eb941b2b0dd71e7590f",
+      "bytes": 3414
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/pointers.json",
+      "sha256Bytes": "8cdd23755e2ad90a12883afa4b48ded1e2659d9ddc34cf307612a00289539072",
+      "bytes": 310
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/raw-after-not-interested.json",
+      "sha256Bytes": "896147ae59ee8ec68fb8ac0f05a34345a6f22c14649279c9bf3c367da499f6c5",
+      "bytes": 79
+    },
+    {
+      "path": "runs/03/proof/miuix-dark/request-trace.json",
+      "sha256Bytes": "4f5a4caac3233eb5b27008b2a1d7579237ba1fd2e188211965afe8475225cbba",
+      "bytes": 2440
+    },
+    {
+      "path": "runs/03/proof/miuix-light/01-cold-seed-before-primary-response.png",
+      "sha256Bytes": "0dc9bf927d8c3c8295f5c8799b7458f542c6613c5b2a510d4c09cc63c440550b",
+      "bytes": 22616
+    },
+    {
+      "path": "runs/03/proof/miuix-light/01-cold-semantics.txt",
+      "sha256Bytes": "5bc44ed283b5f08dfe819f69caee6e64d68b54ccfc0b3747732f369b3337e537",
+      "bytes": 32801
+    },
+    {
+      "path": "runs/03/proof/miuix-light/02-first-refresh-replaced-placeholder.png",
+      "sha256Bytes": "596ad8bc375ca4f9b8be1c9c3cfc537fbdb866e92eda35e9c09ef0b205932cca",
+      "bytes": 22203
+    },
+    {
+      "path": "runs/03/proof/miuix-light/03-failure-retains-and-offers-explicit-retry.png",
+      "sha256Bytes": "e995209b33aa460ae6a36bfb6546d94398ed8feebd196cb55e059acf9b2a653a",
+      "bytes": 24414
+    },
+    {
+      "path": "runs/03/proof/miuix-light/03-failure-semantics.txt",
+      "sha256Bytes": "afe35d8de11a2a175d24c6b263edd0609e1e24a7b77c53192c237d4fc3710da8",
+      "bytes": 34794
+    },
+    {
+      "path": "runs/03/proof/miuix-light/04-all-display-filter-raw-retained.png",
+      "sha256Bytes": "6950716c133d0a679510bf27d86935aca192431dce2df1c17dd036e5f878e14e",
+      "bytes": 32051
+    },
+    {
+      "path": "runs/03/proof/miuix-light/05-selected-up-display-filter.png",
+      "sha256Bytes": "96d790f11147aee90623bf55df0cf58e48af37dba403ae1b4df572b1d0f268df",
+      "bytes": 30764
+    },
+    {
+      "path": "runs/03/proof/miuix-light/05-selected-up-semantics.txt",
+      "sha256Bytes": "be5a8c663aabbd2c98d302df3421e7f1104d98cfbc64148444a9025c013ddae6",
+      "bytes": 41771
+    },
+    {
+      "path": "runs/03/proof/miuix-light/06-same-mid-new-owner-rejects-cold-private-seed.png",
+      "sha256Bytes": "6405ddc87a8c3f2fecdfdd10cf0f6d417ca9d1071bdc50863feeb53f288677ce",
+      "bytes": 15491
+    },
+    {
+      "path": "runs/03/proof/miuix-light/07-guest-local-action-zero-http.png",
+      "sha256Bytes": "7bd618ef1f3515ab385a2b6afd89237670d464011a8645103b9be5cb7b064305",
+      "bytes": 13295
+    },
+    {
+      "path": "runs/03/proof/miuix-light/07-guest-semantics.txt",
+      "sha256Bytes": "d3afb169c8ff76830833e2b8b364be65d4281a7d3384f42c928f6f4ba67379d3",
+      "bytes": 3419
+    },
+    {
+      "path": "runs/03/proof/miuix-light/pointers.json",
+      "sha256Bytes": "abd29defe08662974acf26a56a5f779777fa7779b39a08883001fdbdbe8750d6",
+      "bytes": 310
+    },
+    {
+      "path": "runs/03/proof/miuix-light/raw-after-not-interested.json",
+      "sha256Bytes": "896147ae59ee8ec68fb8ac0f05a34345a6f22c14649279c9bf3c367da499f6c5",
+      "bytes": 79
+    },
+    {
+      "path": "runs/03/proof/miuix-light/request-trace.json",
+      "sha256Bytes": "4f5a4caac3233eb5b27008b2a1d7579237ba1fd2e188211965afe8475225cbba",
+      "bytes": 2440
+    },
+    {
+      "path": "runs/03/proof/query-conformance.json",
+      "sha256Bytes": "df9f56fd560709f8fa00ffa823bf7fffb0559c73db87994bfaef8151469626ee",
+      "bytes": 1855
+    },
+    {
+      "path": "runs/03/proof/ui.json",
+      "sha256Bytes": "90969d4cf6866873f4fe937ee2097541107d52023ad7d7945c66bf4842e5b3da",
+      "bytes": 3961
+    },
+    {
+      "path": "runs/03/proof/visual-review.json",
+      "sha256Bytes": "2a164cb1beb85d0f5f10ed4207dfe81a857ce8fb6f5db454b4e1de7743bd17f3",
+      "bytes": 524
+    },
+    {
+      "path": "runs/03/seed-material3-dark.args",
+      "sha256Bytes": "012528195a45739b8250314a5161332e9ec912c6c254a46d668636652cc392c2",
+      "bytes": 22536
+    },
+    {
+      "path": "runs/03/seed-material3-dark.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/03/seed-material3-light.args",
+      "sha256Bytes": "a11246d75593929aa8649eebac43abb7427bef1f27dcad7e7129ac180cfcc494",
+      "bytes": 22537
+    },
+    {
+      "path": "runs/03/seed-material3-light.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/03/seed-miuix-dark.args",
+      "sha256Bytes": "9b6a43639187e88415f2dcb57baf91cd2f3248655d0282f37ce40baf8170d4aa",
+      "bytes": 22532
+    },
+    {
+      "path": "runs/03/seed-miuix-dark.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/03/seed-miuix-light.args",
+      "sha256Bytes": "61f94cf571a6646d0aab63d2d365795e79e7bd731d69065e3ae4b46b184fdad9",
+      "bytes": 22533
+    },
+    {
+      "path": "runs/03/seed-miuix-light.log",
+      "sha256Bytes": "1041f5e708891c7fd9629c0f004432afa3a48cf29e435a1e9948a5f8d1b34d49",
+      "bytes": 78
+    },
+    {
+      "path": "runs/03/task-owned-environment.json",
+      "sha256Bytes": "aa3a53e6f61f998190671e508ff0f593205779dd2abb752cf1b71e2cbd3a6f76",
+      "bytes": 235
+    },
+    {
+      "path": "runs/03/ui.args",
+      "sha256Bytes": "b583436b2b97893424925656d0689ef460b4e4852f15bc0841c6633cc5ce5e8b",
+      "bytes": 22670
+    },
+    {
+      "path": "runs/03/ui.log",
+      "sha256Bytes": "c6d7be2d63f65a0b0c8c852be73f9519aa7baa8637872a79f9d90209065c5636",
+      "bytes": 80
+    }
+  ]
+}

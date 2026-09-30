@@ -87,8 +87,12 @@ internal fun DesktopDynamicTimelineSettingsFields(
  body=body.replace('com.android.purebilibili.core.store.SettingsManager.DynamicFeedLayoutMode','com.android.purebilibili.core.store.DesktopDynamicSettings.DynamicFeedLayoutMode')
  emit(path,body,'DesktopDynamicTimelineSettingsFields.kt')
  path=BASE+'feature/dynamic/DynamicViewModel.kt';source=read(repo,path)
+ cacheKeys=[]
+ for key in ['PREFS_DYNAMIC_CACHE','KEY_DYNAMIC_CACHE','KEY_DYNAMIC_CACHE_TIME','KEY_NOT_INTERESTED_DYNAMIC_IDS','MAX_CACHE_ITEMS','MAX_NOT_INTERESTED_DYNAMIC_IDS']:
+  matches=[line.strip().replace('private const val','const val',1) for line in source.splitlines() if line.strip().startswith('private const val '+key+' =')]
+  assert len(matches)==1,key;cacheKeys+=matches
  emit(path,'package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.data.model.response.DynamicItem\nimport kotlinx.collections.immutable.*\n\n'+
-  media.data_class(source,'DynamicTimelinePageState',parser),'DesktopOriginalDynamicTimelinePage.kt')
+  media.data_class(source,'DynamicTimelinePageState',parser)+'\n\ninternal object DesktopOriginalDynamicCacheKeys {\n'+textwrap.indent('\n'.join(cacheKeys),'    ')+'\n}\n','DesktopOriginalDynamicTimelinePage.kt')
  path=BASE+'feature/dynamic/DynamicScreenStatePolicy.kt';source=read(repo,path)
  selected=['resolveDynamicTimelinePageForLoadStart','resolveDynamicTimelinePageAfterSuccess','resolveDynamicTimelinePageAfterFailure','sortDynamicTimelineItemsByPublishTime']
  body='package com.android.purebilibili.feature.dynamic\nimport com.android.purebilibili.core.util.*\nimport com.android.purebilibili.data.model.response.DynamicItem\nimport kotlinx.collections.immutable.toImmutableList\n\n'+decl(source,'class','DynamicFeedErrorSource')+'\n\n'+'\n\n'.join(media.function(source,n,parser) for n in selected)

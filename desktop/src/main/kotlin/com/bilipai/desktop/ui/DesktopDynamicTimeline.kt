@@ -17,17 +17,22 @@ import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.collections.immutable.toImmutableList
 
 /** Native page envelope; original source owns every timeline merge, baseline and pagination decision. */
 internal class DesktopDynamicTimelineState(
     private val type:String,
     fetchPage:suspend (type:String,offset:String,updateBaseline:String)->DynamicFeedResponse,
     private val stillOwned:()->Boolean={true},
+    initialCachedItems:List<DynamicItem> = emptyList(),
+    private val onAllTimelineChanged:(List<DynamicItem>)->Unit = {},
 ) {
     private val original=DesktopOriginalDynamicTimelineRepository(fetchPage,stillOwned)
     private val requests=Mutex()
     val scroll=LazyStaggeredGridState()
-    var page by mutableStateOf(DynamicTimelinePageState());private set
+    var page by mutableStateOf(if(type=="all"&&initialCachedItems.isNotEmpty())
+        DynamicTimelinePageState(items=initialCachedItems.toImmutableList(),isCachePlaceholder=true)
+        else DynamicTimelinePageState());private set
     var initialized by mutableStateOf(false);private set
     var busy by mutableStateOf(false);private set
     var error by mutableStateOf<Throwable?>(null);private set
@@ -61,6 +66,7 @@ internal class DesktopDynamicTimelineState(
             }
             page=successPage
             initialized=true
+            if(type=="all")onAllTimelineChanged(page.items)
             return true
         }catch(cancelled:CancellationException){
             if(stillOwned())page=snapshot

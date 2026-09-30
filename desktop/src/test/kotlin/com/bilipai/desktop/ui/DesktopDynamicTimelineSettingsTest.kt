@@ -21,6 +21,22 @@ private fun response(items:List<DynamicItem>,offset:String="",baseline:String=""
     DynamicFeedResponse(data=DynamicFeedData(items,offset,more,baseline,updates))
 
 class DesktopDynamicTimelineSettingsTest {
+    @Test fun actualColdSeedSurvivesFailureThenFirstIncrementalRefreshReplacesIt():Unit=runBlocking {
+        val cached=fixtureDynamic("cached",1);var calls=0;val accepted=mutableListOf<List<String>>()
+        val state=DesktopDynamicTimelineState("all",{_,_,_->if(calls++==0)DynamicFeedResponse(code=-352,message="fixture failure")
+            else response(listOf(fixtureDynamic("fresh",2)),"fresh-tail","fresh",true)},
+            initialCachedItems=listOf(cached),onAllTimelineChanged={accepted+=it.map{item->item.id_str}})
+        assertEquals(listOf("cached"),state.page.items.map{it.id_str});assertTrue(state.page.isCachePlaceholder)
+        assertFalse(state.initialized);assertFalse(state.initialize(true));assertTrue(state.page.isCachePlaceholder)
+        assertEquals(listOf("cached"),state.page.items.map{it.id_str});assertTrue(accepted.isEmpty())
+        assertFalse(state.initialize(true));assertEquals(1,calls)
+        assertTrue(state.fetch(true,true));assertEquals(listOf("fresh"),state.page.items.map{it.id_str})
+        assertFalse(state.page.isCachePlaceholder);assertNull(state.page.incrementalRefreshBoundaryKey)
+        assertEquals(listOf(listOf("fresh")),accepted)
+        val video=DesktopDynamicTimelineState("video",{_,_,_->response(emptyList())},
+            initialCachedItems=listOf(cached),onAllTimelineChanged={error("video overwrote all cache")})
+        assertTrue(video.page.items.isEmpty());assertFalse(video.page.isCachePlaceholder);assertTrue(video.initialize(true))
+    }
     @Test fun loadMoreRejectsBusyAndExhaustedRequestsBeforeCallingOriginalTransport():Unit=runBlocking {
         val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();val offsets=mutableListOf<String>()
         val state=DesktopDynamicTimelineState("all",{_,offset,_->offsets+=offset

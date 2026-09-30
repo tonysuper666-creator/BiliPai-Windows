@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "derivedFromActualFixtureTransportTrace": true,
+  "checks": [
+    {
+      "cell": "material3-light",
+      "passed": true,
+      "requestCount": 10,
+      "feedBaselines": [
+        "",
+        "3",
+        "3",
+        ""
+      ],
+      "feedOffsets": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "requestTypes": [
+        "all",
+        "all",
+        "all",
+        "all"
+      ],
+      "selectedUpMid": "77",
+      "selectedUpOffset": "",
+      "source": "request-trace.json"
+    },
+    {
+      "cell": "material3-dark",
+      "passed": true,
+      "requestCount": 10,
+      "feedBaselines": [
+        "",
+        "3",
+        "3",
+        ""
+      ],
+      "feedOffsets": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "requestTypes": [
+        "all",
+        "all",
+        "all",
+        "all"
+      ],
+      "selectedUpMid": "77",
+      "selectedUpOffset": "",
+      "source": "request-trace.json"
+    },
+    {
+      "cell": "miuix-light",
+      "passed": true,
+      "requestCount": 10,
+      "feedBaselines": [
+        "",
+        "3",
+        "3",
+        ""
+      ],
+      "feedOffsets": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "requestTypes": [
+        "all",
+        "all",
+        "all",
+        "all"
+      ],
+      "selectedUpMid": "77",
+      "selectedUpOffset": "",
+      "source": "request-trace.json"
+    },
+    {
+      "cell": "miuix-dark",
+      "passed": true,
+      "requestCount": 10,
+      "feedBaselines": [
+        "",
+        "3",
+        "3",
+        ""
+      ],
+      "feedOffsets": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "requestTypes": [
+        "all",
+        "all",
+        "all",
+        "all"
+      ],
+      "selectedUpMid": "77",
+      "selectedUpOffset": "",
+      "source": "request-trace.json"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "passed": false,
+  "exitCode": 1,
+  "snapshotSha256Bytes": "06c33b8f83d6d5fab70e4eb7490c3845e5d7b9b493379d99755d2bd8de9eff8b",
+  "productionOverrides": 0,
+  "fixtureJarSha256Bytes": "f385ca660544abf55da2b9ae68e62ed04336e22cd08b8757cdf9f629336fce92",
+  "partialMatrix": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-product-ui-proof\\runs\\02\\proof\\ui.json",
+  "coldSeeds": [
+    {
+      "cell": "material3-light",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-product-ui-proof\\runs\\02\\cold-roots\\material3-light"
+    },
+    {
+      "cell": "material3-dark",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-product-ui-proof\\runs\\02\\cold-roots\\material3-dark"
+    },
+    {
+      "cell": "miuix-light",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-product-ui-proof\\runs\\02\\cold-roots\\miuix-light"
+    },
+    {
+      "cell": "miuix-dark",
+      "separateJvm": true,
+      "passed": true,
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-product-ui-proof\\runs\\02\\cold-roots\\miuix-dark"
+    }
+  ]
+}

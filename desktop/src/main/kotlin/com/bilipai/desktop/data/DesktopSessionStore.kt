@@ -14,7 +14,7 @@ import java.nio.file.StandardCopyOption
 import com.android.purebilibili.core.store.StoredAccountSession
 
 /** Server cookies retain their scope; explicitly authorized account credentials cover Bilibili hosts. */
-internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar {
+internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar, DesktopDynamicCacheSessionGuard {
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
     private var saved = if (persistent) readSaved() else SavedSession()
@@ -42,6 +42,24 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     internal fun loginIdentityBuvid(): String = synchronized(lock) { saved.loginBuvid }
     internal fun saveLoginIdentityBuvid(buvid: String) = synchronized(lock) { val next = saved.copy(loginBuvid = buvid); persist(next); saved = next }
 
+    override fun dynamicCacheOwner(): DesktopDynamicCacheOwner? = synchronized(lock) { dynamicCacheOwnerLocked() }
+    override fun withCurrentDynamicCacheOwner(owner: DesktopDynamicCacheOwner, block: () -> Unit): Boolean = synchronized(lock) {
+        if (dynamicCacheOwnerLocked() != owner) return@synchronized false
+        block()
+        true
+    }
+    private fun dynamicCacheOwnerLocked(): DesktopDynamicCacheOwner? {
+        // NotInterested is a local action in the original app, including guest detail pages.
+        // This owner separates local cache generations; it does not authorize network requests.
+        val mid = saved.account?.mid?.takeIf { it > 0L } ?: 0L
+        val credential = if (mid > 0L) saved.cookies["SESSDATA"].orEmpty() else ""
+        // A one-way, domain-separated tag survives cold starts without persisting another credential.
+        // The process epoch separately rejects jobs from a retired login, including the same MID.
+        val digest = java.security.MessageDigest.getInstance("SHA-256").digest(
+            ("BiliPai Windows dynamic cache v1\n$mid\n$credential").toByteArray(Charsets.UTF_8))
+        return DesktopDynamicCacheOwner(mid, generation, java.util.Base64.getUrlEncoder().withoutPadding().encodeToString(digest))
+    }
+
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
         if (url.scheme != "https" || !isBilibiliHost(url.host)) return
         synchronized(lock) {
@@ -59,8 +77,10 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
             }
             removeExpired(now)
             val next = saved.copy(cookies = accountCookies, serverCookies = serverCookies.values.map { ServerCookie.fromCookie(it) })
+            val credentialChanged = saved.cookies["SESSDATA"] != next.cookies["SESSDATA"]
             persist(next)
             saved = next
+            if (credentialChanged) generation++
         }
     }
 

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "reviewedImages": [
+    "material3-light/01-cold-seed-before-primary-response.png",
+    "miuix-dark/05-selected-up-display-filter.png"
+  ],
+  "method": "view_image pixel inspection",
+  "observed": [
+    "Material3 light displays two real cached card descriptions while original primary loading indicator is active.",
+    "Miuix dark selected-UP has actual original native rail/filter controls; raw4,3 display and hidden2 is absent."
+  ],
+  "wholeMatrixVisualInspection": false,
+  "nativeHWND": false
+}

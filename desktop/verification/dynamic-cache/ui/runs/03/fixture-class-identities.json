@@ -1,0 +1,70 @@
+[
+  {
+    "entry": "META-INF/MANIFEST.MF",
+    "sha256Bytes": "6ba395be90cbf12e78dd842ebe48d4d2b0c39f692ea7abdf1991eb1bfea13343"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/ColdCacheFixtureKt.class",
+    "sha256Bytes": "d75c9a050569a42cabd10568e66fba9d9edc89fd24b68194f06f5b81796f782a"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/ColdCacheFixtureKt$main$1.class",
+    "sha256Bytes": "2fac5cb2ad7ef5a0c133a49b7fc37e9d4887f26654f523b6b46f9f141e83a3e7"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui.class",
+    "sha256Bytes": "06d39dbecce290ce8cb8b739115e27f78866b2a68025818f159ebe64af2a9525"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui$special$$inlined$CoroutineExceptionHandler$1.class",
+    "sha256Bytes": "dd68e14428d9817505a328cd7312bd47b7bad8861be3b96395990be5daec5cb1"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui$frame$1.class",
+    "sha256Bytes": "dd7944f11b4a1bd9edf25048fddf552ba4a6be7a13074884662cec39ddbe4a2b"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui$await$2.class",
+    "sha256Bytes": "9071e1077c0f570a3d2842e58ad7306fa0ebe4b216dcffdf46c3eabd183fc086"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui$await$1.class",
+    "sha256Bytes": "563f5638a1a0021fb9ecd816afb2ec67b2ed2500fd14d25f98ad4041ea095c96"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/Ui$click$1.class",
+    "sha256Bytes": "e3a733100a251c868d7d1aaa969c3a47610bf6c6466ea11e02b5b14ba48a8b34"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/ComposableSingletons$UiFixtureKt.class",
+    "sha256Bytes": "d93f4224d7ef228b432c8e06fa0fa44c5ddb1e2be4ab13f0bfe7d9e3ed8698ae"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt.class",
+    "sha256Bytes": "cb6d2976108480a78a24e8a0a6d8cf73c8d39962b30610c17e739217b5eabbab"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt$case$$inlined$-addInterceptor$1.class",
+    "sha256Bytes": "0ef65e3d8b7b91de6189e0be5fed2e9c22c3d5b704e7cebae2f1fd25f2a2b02c"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt$case$1.class",
+    "sha256Bytes": "4dea5c47685af6dbc8850ec9088fd700a1b452c3f77f9549b0601cb002d9e9b4"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt$main$1.class",
+    "sha256Bytes": "807cf99c265ce6a48e063b3bd605a1ba7a80c88c1f74a3be47eaab6e2085a7d8"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt$case$2$1$1$1$1$1$1$1.class",
+    "sha256Bytes": "b606f5fbb27c1d7905062696f892a81f4144c1155ffd99ee9001d0e3b9c963ae"
+  },
+  {
+    "entry": "com/bilipai/desktop/ui/productcacheproof/UiFixtureKt$case$2$1$1$1$1$4$1$1$1$1.class",
+    "sha256Bytes": "e50b69db457720589f67beebed1d66a1fcbdf954f0ad03b2151112683b15f8d5"
+  },
+  {
+    "entry": "META-INF/dynamic_cache_product_ui_proof.kotlin_module",
+    "sha256Bytes": "8616f2b2aa99067bbfced92a3b54a6f222f32d62d385ef37bf0f1e72ba4f33b7"
+  }
+]

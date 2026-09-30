@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopSessionStoreTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-09-30T18:59:17.676Z" hostname="TONYSUPER666" time="0.101">
+  <properties/>
+  <testcase name="credential replacement invalidates owners even when account metadata does not change()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.01"/>
+  <testcase name="explicit imported and QR account credentials cover Bilibili without widening server cookies()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.024"/>
+  <testcase name="damaged session file starts as guest()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.002"/>
+  <testcase name="expired server cookie cannot resurrect persisted session()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.007"/>
+  <testcase name="cookie jar limits credentials to secure Bilibili requests()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.004"/>
+  <testcase name="SPI visitor fallback does not widen or replace an actual homepage cookie()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.005"/>
+  <testcase name="legacy flattened visitors are dropped while authorized account credentials survive()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.002"/>
+  <testcase name="scoped server cookies and retired requests cannot change authorized cache owner()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.001"/>
+  <testcase name="host-only response cookies keep their original host across account save and restart()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.011"/>
+  <testcase name="future path response cookie is saved and expiry and flags survive restart()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.005"/>
+  <testcase name="session survives restart and logout removes persistent credentials()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.018"/>
+  <testcase name="server visitor identifiers persist without replacing homepage values()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.002"/>
+  <testcase name="first guest homepage request contains no manufactured visitor cookie()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.001"/>
+  <testcase name="same name cookies with distinct host or path are not overwritten()" classname="com.bilipai.desktop.data.DesktopSessionStoreTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

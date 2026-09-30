@@ -22,10 +22,20 @@ import kotlinx.serialization.json.*
 
 @Composable
 internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
+    val cache=checkNotNull(LocalDesktopDynamicCache.current){"Root dynamic cache is not mounted"}
+    val epoch by community.accountEpoch.collectAsState()
+    DesktopDynamicCacheContent(cache,mid,epoch,navigation.onLogin) { session ->
+        CommunityDynamicFeedReady(mid,community,navigation,epoch,session)
+    }
+}
+
+@Composable
+private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation,
+    capturedEpoch:Long, cache:DesktopDynamicCacheSession) {
     val preferences=checkNotNull(LocalDesktopDynamicTimelinePreferences.current){"Root shared dynamic preferences are not mounted"}
     val blocked by community.blockedUps.mids.collectAsState()
-    val epoch by community.accountEpoch.collectAsState()
-    val capturedEpoch=epoch
+    val notInterested by cache.notInterestedIds.collectAsState()
+    val cacheFailure by cache.writeFailure.collectAsState()
     val scope=rememberCoroutineScope()
     val tabsPreferences=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
     val users=remember(mid,capturedEpoch,tabsPreferences) {
@@ -36,7 +46,8 @@ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityReposito
             stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},selfFace=community.account.value?.avatar.orEmpty())
     }
     DisposableEffect(users){onDispose{users.close()}}
-    val transform=remember(blocked){{rows:List<DynamicItem>->desktopVisibleDynamicItems(rows,blocked)}}
+    val transform=remember(blocked,notInterested){{rows:List<DynamicItem>->desktopVisibleDynamicItems(rows,blocked)
+        .filterNot{it.id_str in notInterested}}}
     var composing by remember {mutableStateOf(false)}
     var revision by remember {mutableIntStateOf(0)}
     var published by remember {mutableStateOf(false)}
@@ -47,10 +58,13 @@ internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityReposito
             try{DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
             catch(cancelled:CancellationException){throw cancelled}
             catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
-        },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid})}
+        },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},
+            initialCachedItems=if(type=="all")cache.cachedAllItems.value else emptyList(),
+            onAllTimelineChanged=cache::saveTimeline)}
         memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type,revision),create)?:create()
     }
     Column {
+        cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items)}}
         if(published)com.android.purebilibili.core.ui.components.AppText("动态已提交",Modifier.padding(horizontal=20.dp))
         DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
             trailing={Button(onClick={composing=true}){DesktopSkinDynamicPublishIcon(composing);Text("发布动态")}}) {

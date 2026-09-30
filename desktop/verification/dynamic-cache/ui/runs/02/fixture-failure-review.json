@@ -1,0 +1,7 @@
+{
+  "snapshotSha256Bytes": "06c33b8f83d6d5fab70e4eb7490c3845e5d7b9b493379d99755d2bd8de9eff8b",
+  "productBug": false,
+  "reason": "The fixture clicked the selected-UP content-filter label All, not the original top All tab. The selected-UP original merge already displayed local raw Retry-4, so that label alone was not a valid navigation assertion. Attempt03 clicks the highest original All label and waits for the shared selected-tab preference to be zero. Product bytes unchanged.",
+  "failureEvidence": "proof/material3-light/FAILED.txt",
+  "frozenOriginalFixtureSources": "frozen-fixture-sources"
+}

@@ -158,9 +158,33 @@ class DesktopSessionStoreTest {
         val store = DesktopSessionStore(Files.createTempDirectory("bilipai-expiry-test").resolve("session.json"))
         val url = "https://passport.bilibili.com/".toHttpUrl()
         store.saveAccount(mapOf("SESSDATA" to "test-session"), AccountSummary(42, "测试用户", ""))
+        val owner = checkNotNull(store.dynamicCacheOwner())
         store.saveFromResponse(url, listOf(Cookie.Builder().name("SESSDATA").value("").domain("bilibili.com").path("/").expiresAt(1).build()))
         assertFalse("SESSDATA" in store.currentCookies())
         assertFalse(store.loadForRequest(url).any { it.name == "SESSDATA" })
+        assertEquals(owner.epoch + 1, store.generationState.value)
+        assertFalse(store.withCurrentDynamicCacheOwner(owner) { error("retired cache writer ran") })
+        val current = checkNotNull(store.dynamicCacheOwner())
+        assertEquals(owner.mid, current.mid)
+        assertFalse(current.namespaceTag == owner.namespaceTag)
+    }
+
+    @Test fun `scoped server cookies and retired requests cannot change authorized cache owner`() {
+        val store = DesktopSessionStore(Files.createTempDirectory("cache-cookie-epoch-").resolve("session.json"), persistent = false)
+        val url = "https://passport.bilibili.com/".toHttpUrl()
+        store.saveAccount(mapOf("SESSDATA" to "synthetic-authorized"), AccountSummary(42, "fixture", ""))
+        val original = checkNotNull(store.dynamicCacheOwner())
+        store.saveFromResponse(url, listOf(
+            Cookie.Builder().name("SESSDATA").value("synthetic-server").domain("bilibili.com").path("/").build(),
+            Cookie.Builder().name("buvid3").value("synthetic-visitor").domain("bilibili.com").path("/").build()))
+        assertEquals(original, store.dynamicCacheOwner())
+        store.requestGeneration.set(original.epoch - 1)
+        try {
+            store.saveFromResponse(url, listOf(Cookie.Builder().name("SESSDATA").value("")
+                .domain("bilibili.com").path("/").expiresAt(1).build()))
+        } finally { store.requestGeneration.remove() }
+        assertEquals(original, store.dynamicCacheOwner())
+        assertEquals(original.epoch, store.generationState.value)
     }
 
     @Test

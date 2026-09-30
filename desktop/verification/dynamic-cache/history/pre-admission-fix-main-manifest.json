@@ -1,0 +1,683 @@
+{
+  "frozen": true,
+  "phase": "original-dynamic-cache-main-integration",
+  "windowsBaseCommit": "19850573aa21d8490c82fd4646b25e65339db767",
+  "previousSnapshotManifestSha256Bytes": "31e1e49199e4e489d1ed59da3b21f47cda535dafcd77876dda0a341a93fb71db",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 7099,
+      "sha256Bytes": "d0a36db4bb9ac68b9b19a5b20ac0f3ec9fa3a4eed927e715ba5661897a346621"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 67,
+      "sha256Bytes": "77810d2e653941af348c2af2e54f7cfd7238530fc7548347f963716f1d1a5909"
+    }
+  ],
+  "actualProductClassPins": [
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCache",
+      "sha256Bytes": "711856469ce5bea20100633a235f495a1cbbc4e50a2ac0c19d6a8ea55c8e60e0"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopDynamicCacheSession",
+      "sha256Bytes": "10a19850a24a2c8e25d600761582d10a8afef5fb16a7bace5d3efa473a47de07"
+    },
+    {
+      "className": "com.bilipai.desktop.data.DesktopSessionStore",
+      "sha256Bytes": "2acab352838fef4a25b0b20242385af72eac9c4a2c90b9b80461ae2b16ce9e9c"
+    },
+    {
+      "className": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicCacheBindingsKt",
+      "sha256Bytes": "82d162ffc4a6d7943797e6d0926563129360be3451219864713506c0f46b9260"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.CommunityDynamicScreensKt",
+      "sha256Bytes": "4b6b7749aa6473b058030891ffffd0cb8a9a2386a4f23b2b54086e82b09360d8"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicTimelineState",
+      "sha256Bytes": "547e31a6104bafd419dc675f447661a46f9a7e00220275329ce05764cca67094"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicTabsHostKt",
+      "sha256Bytes": "ba9a5ad95f7d8db16b62e52d20bdb68ef1e9e386b1e1f5fd3623ba27b6283e2f"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopDynamicUsersState",
+      "sha256Bytes": "3a7939304313e422b8b19db94bfc48fce3cf7cf5313569481aed284b2c632268"
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicCacheKeys",
+      "sha256Bytes": "d6eb32758ebca33f71d2944d842f0f031925f4cb6029e60f12edf257ef45fb36"
+    },
+    {
+      "className": "com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicUserStatePolicyKt",
+      "sha256Bytes": "f150e810962c69580db760801bc46055f0812ea85b96239c3ff594851c0c83e4"
+    },
+    {
+      "className": "com.bilipai.desktop.DesktopShellKt",
+      "sha256Bytes": "c8e1ec39b4731fa6e297e2f0ff4efacc442720f3510d3cf858233b0d941b7d2e"
+    }
+  ],
+  "sourceFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "358fa3c6f9c0be7cb31bb65a494c55db26debc795643572c4e8e42de5b1d56ad",
+      "sha256Lf": "358fa3c6f9c0be7cb31bb65a494c55db26debc795643572c4e8e42de5b1d56ad"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/Color.java",
+      "sha256Bytes": "0ad5ba092c715aac3800645c9f9c2cac04716a167c51f43d046b5a25d64a6ce1",
+      "sha256Lf": "0ad5ba092c715aac3800645c9f9c2cac04716a167c51f43d046b5a25d64a6ce1"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/ColorCutQuantizer.java",
+      "sha256Bytes": "63d6832880fb4d91d90be1840c858bb6098947fb99aab8e15e18cc5349278e3c",
+      "sha256Lf": "63d6832880fb4d91d90be1840c858bb6098947fb99aab8e15e18cc5349278e3c"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/ColorUtils.java",
+      "sha256Bytes": "c33ad711929d9f64bedb7c0533e264b09106a9be391c73dc508f671b6f8904de",
+      "sha256Lf": "c33ad711929d9f64bedb7c0533e264b09106a9be391c73dc508f671b6f8904de"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPalette.java",
+      "sha256Bytes": "d1c8bd769372e4455a169dcba3c8df88d6cdbc88da4b73a608139a88fe61fb52",
+      "sha256Lf": "d1c8bd769372e4455a169dcba3c8df88d6cdbc88da4b73a608139a88fe61fb52"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/core/util/DesktopCardHaptic.kt",
+      "sha256Bytes": "fece287fb45d54aa5ff36e6cba7adc5925672dab1af8d3bdad8b32d215fbc1ed",
+      "sha256Lf": "fece287fb45d54aa5ff36e6cba7adc5925672dab1af8d3bdad8b32d215fbc1ed"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopHomeCardPlatform.kt",
+      "sha256Bytes": "4fa321f066208dba17c9cf99073846f04c912103917b8356ea93ad9d43b3d46a",
+      "sha256Lf": "4fa321f066208dba17c9cf99073846f04c912103917b8356ea93ad9d43b3d46a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopVideoCardPalette.kt",
+      "sha256Bytes": "1d24c1816fba1dabb53c31049be7ec6826ec26c26d8a247d56dc59a8f0da9d72",
+      "sha256Lf": "1d24c1816fba1dabb53c31049be7ec6826ec26c26d8a247d56dc59a8f0da9d72"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "51ebbccad4a4ac797abf95823d9597b5074a5496cae23e63dbf512f7a362cc75",
+      "sha256Lf": "51ebbccad4a4ac797abf95823d9597b5074a5496cae23e63dbf512f7a362cc75"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740",
+      "sha256Lf": "f1d19cd9b2abba0eb2197e220f8b0895276d8a675f77f3ec88101ca08e540740"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCache.kt",
+      "sha256Bytes": "2114d254824033acaa36ca96ecba304a1775d8253dfa92970786562d7978a80c",
+      "sha256Lf": "2114d254824033acaa36ca96ecba304a1775d8253dfa92970786562d7978a80c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCacheSessionGuard.kt",
+      "sha256Bytes": "980113fabe6ddf7d9170d25d4d8aceec702f0890a51befe194cac4389a012db9",
+      "sha256Lf": "980113fabe6ddf7d9170d25d4d8aceec702f0890a51befe194cac4389a012db9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt",
+      "sha256Bytes": "6e84d23cdb26dfa6f30fd9e903bba8a6a36bc8917ba6163e2c094cb1b5cf726b",
+      "sha256Lf": "6e84d23cdb26dfa6f30fd9e903bba8a6a36bc8917ba6163e2c094cb1b5cf726b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "06452c52ad5fd5ff280f7b1f05f023877995f6180722495c074a442af99e0677",
+      "sha256Lf": "eff41733c4f55d51c752e81f82d68c28cbcfa3180754a7cb509eb18c27e0aaeb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "326c506c1cbb721b6e7e6a0aa40faec6505d78c2af15a9527940e1b2e59b04fc",
+      "sha256Lf": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "dc71e802b410b1ed1affdd1e98b15c743a079db96c945fa66eafb4c9260ba8f9",
+      "sha256Lf": "770128c34fde1e7b00a8650e2f8dac79bb906aed131fa162e3893fde7515b9ba"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "sha256Bytes": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad",
+      "sha256Lf": "e9918f34e658bc2165891ab4bc267ce84331095ba1c247b66abf9f1c12973cad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e",
+      "sha256Lf": "565489c05b0e1e6044325dbefd5f04e3bb42534a63b559cb546746bc3e84db5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "sha256Bytes": "08673eafaad465508bc2d5e685169a170bc9c2fcf659ee353a12e865c92d32dd",
+      "sha256Lf": "08673eafaad465508bc2d5e685169a170bc9c2fcf659ee353a12e865c92d32dd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardVisualPreferences.kt",
+      "sha256Bytes": "3ac19b6646a6c43905b13f225ffedf1a74e772845dfdfdc90a12f4d116dfb0db",
+      "sha256Lf": "3ac19b6646a6c43905b13f225ffedf1a74e772845dfdfdc90a12f4d116dfb0db"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "b6c7923185f74f267c53c42d77024d719fff0ab183d06dabfd141b6492dbe515",
+      "sha256Lf": "b6c7923185f74f267c53c42d77024d719fff0ab183d06dabfd141b6492dbe515"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "33083d21524f291d1d1b818d46727e1b2c16074b3e0afa900e2f7846d22dd20e",
+      "sha256Lf": "33083d21524f291d1d1b818d46727e1b2c16074b3e0afa900e2f7846d22dd20e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCacheBindings.kt",
+      "sha256Bytes": "2478a02e1e19d993f8e49215d87d725c7731ec27a5f989645a1e224589f23b64",
+      "sha256Lf": "2478a02e1e19d993f8e49215d87d725c7731ec27a5f989645a1e224589f23b64"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "da5649cedb9fa4f472c85a27085ef13964d47d4866e5cecab345ac02dfba86cb",
+      "sha256Lf": "da5649cedb9fa4f472c85a27085ef13964d47d4866e5cecab345ac02dfba86cb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "1a674e3da38302f26240df3b0f6d029dededdfe4d9581caada2d9c4126de0d8c",
+      "sha256Lf": "1a674e3da38302f26240df3b0f6d029dededdfe4d9581caada2d9c4126de0d8c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "sha256Bytes": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0",
+      "sha256Lf": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "48c48ca4b15b83358f6e2d41d1f91423daa608ee4542e3950e90f938a3729b4c",
+      "sha256Lf": "48c48ca4b15b83358f6e2d41d1f91423daa608ee4542e3950e90f938a3729b4c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardBindings.kt",
+      "sha256Bytes": "e30ed6a91cff412adc276402315a47c93be6c4baaffe07b66ee22d19334f69d4",
+      "sha256Lf": "e30ed6a91cff412adc276402315a47c93be6c4baaffe07b66ee22d19334f69d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "sha256Bytes": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32",
+      "sha256Lf": "aa8806a63b4af8b31b25bf8d6bcce53846abffed1776d948507c05f3adc2dd32"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDiscoveryVideoCard.kt",
+      "sha256Bytes": "b0a6d708c5fda145b02c2bcb7bac9dd7e9578d131944a25d899b9e2c5383cf96",
+      "sha256Lf": "b0a6d708c5fda145b02c2bcb7bac9dd7e9578d131944a25d899b9e2c5383cf96"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoRouteEncoding.kt",
+      "sha256Bytes": "10998418a8ddf6c1cf1d3d02723d896951b750ddbee6a6cc839ed15d51caf2ac",
+      "sha256Lf": "10998418a8ddf6c1cf1d3d02723d896951b750ddbee6a6cc839ed15d51caf2ac"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "21c77135cb2ee223a33efb672535ef48e336ab8694daf57a20591c5a247c279a",
+      "sha256Lf": "21c77135cb2ee223a33efb672535ef48e336ab8694daf57a20591c5a247c279a"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/APACHE-2.0.txt",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "sha256Lf": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/NOTICE.txt",
+      "sha256Bytes": "496119414defbe7d5bb45dc75aab826009dc66b1679dbc3462b5268f1b97357d",
+      "sha256Lf": "496119414defbe7d5bb45dc75aab826009dc66b1679dbc3462b5268f1b97357d"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "5a567afb6f8a99e25bedc1508e966ecf04f8d17c3c348a6738334703d75f440b",
+      "sha256Lf": "5a567afb6f8a99e25bedc1508e966ecf04f8d17c3c348a6738334703d75f440b"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "e08068475ef098f0a24d6ec2505168ee022cfcb61c4d6ae36ed236a434529d5c",
+      "sha256Lf": "e08068475ef098f0a24d6ec2505168ee022cfcb61c4d6ae36ed236a434529d5c"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "2246d881eae32b37129c6b44d754be4993afa10a98c072fac5453fb5df519baa",
+      "sha256Lf": "2246d881eae32b37129c6b44d754be4993afa10a98c072fac5453fb5df519baa"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-blur-materials-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "85a20b2a6b649fedeb4daba06d37373ce0b620dcd48b486459d5118a84a9b855",
+      "sha256Lf": "85a20b2a6b649fedeb4daba06d37373ce0b620dcd48b486459d5118a84a9b855"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "7ccedff1334e1944ecc523039477d45422903f4cad611de831eda9f61ec7d59f",
+      "sha256Lf": "7ccedff1334e1944ecc523039477d45422903f4cad611de831eda9f61ec7d59f"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "546f2e1647e9c8305f6b96bf63d7928217501fc01a2cbf6b088d231c82bcc5e6",
+      "sha256Lf": "546f2e1647e9c8305f6b96bf63d7928217501fc01a2cbf6b088d231c82bcc5e6"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.module",
+      "sha256Bytes": "421be6dcdd24cbffd22bc3dde41445920306f9166244c800c81e5ba78542ef9e",
+      "sha256Lf": "421be6dcdd24cbffd22bc3dde41445920306f9166244c800c81e5ba78542ef9e"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/haze-utils-jvm-2.0.0-alpha03.pom",
+      "sha256Bytes": "2f7ca4b4d067e32afef2bee1fa3b4b7a42937ab1e868e03ff80902b265480d34",
+      "sha256Lf": "2f7ca4b4d067e32afef2bee1fa3b4b7a42937ab1e868e03ff80902b265480d34"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/provenance.json",
+      "sha256Bytes": "a334de59044d6dc2a7c627b0011c393f7db6364c4232a57a9240a05d6ab7b5d5",
+      "sha256Lf": "a334de59044d6dc2a7c627b0011c393f7db6364c4232a57a9240a05d6ab7b5d5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCacheTest.kt",
+      "sha256Bytes": "720228c6937ed00f978adf3e25e9ea449eea166c4410f5fe51238922fb03cd4b",
+      "sha256Lf": "720228c6937ed00f978adf3e25e9ea449eea166c4410f5fe51238922fb03cd4b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSessionStoreTest.kt",
+      "sha256Bytes": "8c1f53d3b2ef5bd0b8ed70bb33de5a3f142f844f59d0e359b2b1c30a22a69edf",
+      "sha256Lf": "8c1f53d3b2ef5bd0b8ed70bb33de5a3f142f844f59d0e359b2b1c30a22a69edf"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "sha256Bytes": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542",
+      "sha256Lf": "43f46c833cca7d9682c23ce0bd1389999023fe71f335a4422d0e251337d24542"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeFullCardTest.kt",
+      "sha256Bytes": "76787607f4e0f2ada6893430aa91b113b6f750c977df4c7a02212bb2aa119f40",
+      "sha256Lf": "76787607f4e0f2ada6893430aa91b113b6f750c977df4c7a02212bb2aa119f40"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicStartupTest.kt",
+      "sha256Bytes": "5258afb4b02ab5275c98a1184043017f695f244e616227fbeecee3806a9371f3",
+      "sha256Lf": "5258afb4b02ab5275c98a1184043017f695f244e616227fbeecee3806a9371f3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "sha256Bytes": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187",
+      "sha256Lf": "6151f22dff4c5c44cf98c8561f320838d6b3827729e74381613967d78a949187"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "sha256Bytes": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de",
+      "sha256Lf": "053e0284135c8cf62f0f075d8446f5d4bdc79808c6e3af665eab48ccfbaec1de"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeCardProgressTest.kt",
+      "sha256Bytes": "7a1a2dec53bc29c105649c4ff732030381311e0fc22b8126cb9b16b822b85b9a",
+      "sha256Lf": "7a1a2dec53bc29c105649c4ff732030381311e0fc22b8126cb9b16b822b85b9a"
+    },
+    {
+      "path": "desktop/third-party/home-card-palette/upstream/androidx/core/graphics/ColorUtils.java",
+      "sha256Bytes": "f483e662b0d9ef5ebb6300ad06d285ea8e88efb6c04337e6c03c687b80418f8e",
+      "sha256Lf": "f483e662b0d9ef5ebb6300ad06d285ea8e88efb6c04337e6c03c687b80418f8e"
+    },
+    {
+      "path": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/ColorCutQuantizer.java",
+      "sha256Bytes": "9a7d1953c293b4241c15e004f6f4325fb1311d462c98cb30ea6c3575d8b3803d",
+      "sha256Lf": "9a7d1953c293b4241c15e004f6f4325fb1311d462c98cb30ea6c3575d8b3803d"
+    },
+    {
+      "path": "desktop/third-party/home-card-palette/upstream/androidx/palette/graphics/Palette.java",
+      "sha256Bytes": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77",
+      "sha256Lf": "d080c301d25f589b957b19a1f11b777dc37045bd3a6e07a4913709a31fcb2b77"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "fb1b924acc0a316abf2e0ddb3b1fa2859263de1fa778b5a41f699c02f5aa6eaa",
+      "sha256Lf": "fb1b924acc0a316abf2e0ddb3b1fa2859263de1fa778b5a41f699c02f5aa6eaa"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "ec6e7ec0c706f9fd237316cd0a0e7838d59e18b41c4bd388708b9fc57387aa06",
+      "sha256Lf": "ec6e7ec0c706f9fd237316cd0a0e7838d59e18b41c4bd388708b9fc57387aa06"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-cards.py",
+      "sha256Bytes": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c",
+      "sha256Lf": "c0c235d30d8848998efc79ac686d16bafc5269a46c290f763d5391880f3c3c8c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-full-card.py",
+      "sha256Bytes": "d292ba45378fa3d55b786f273e780d3135a633d879ab196c96d404653119e471",
+      "sha256Lf": "d292ba45378fa3d55b786f273e780d3135a633d879ab196c96d404653119e471"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "sha256Bytes": "72f25cc35cef4513c2002c57ad877ec1524c5ecadf74f7e636c875584cc12d15",
+      "sha256Lf": "72f25cc35cef4513c2002c57ad877ec1524c5ecadf74f7e636c875584cc12d15"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "sha256Bytes": "8ab7c9d6a31d589420fdb5c6428789bc11087d1c1049debde60845f0b4b309d3",
+      "sha256Lf": "8ab7c9d6a31d589420fdb5c6428789bc11087d1c1049debde60845f0b4b309d3"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_card_sources.py",
+      "sha256Bytes": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce",
+      "sha256Lf": "4b00c9022efbeffae6092a79e7be42aeec7f2f207a50a1467c9c2377d86f59ce"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_full_card_sources.py",
+      "sha256Bytes": "62f9eb8ee09e7362c82c87fe70a40db7945cc476e180c17851fb808f39acc45f",
+      "sha256Lf": "62f9eb8ee09e7362c82c87fe70a40db7945cc476e180c17851fb808f39acc45f"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "1b39ea61749c7ca9a8e583d8044cc102e6aef33b4f2a2c36d6aee4adfb5ae2c3",
+      "sha256Lf": "e88d24d5ae937fd55003d2a19a9fbca278fb2d3deef22eae7efeeb882c9d9b37"
+    }
+  ],
+  "generatedProductFiles": [
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/core/ui/components/DesktopUpstreamUserLevelBadge.kt",
+      "sha256Bytes": "c39269a35a197de003c19144e4179bb9ef20a76471b9d5c2c7feadf1eb6ab04a"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/data/repository/DesktopUpstreamBlockedListPacing.kt",
+      "sha256Bytes": "0cb511796e1af44196a9cf46329aca80fa8cd6a2f18cc6525618ab905340eefd"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListContent.kt",
+      "sha256Bytes": "90ce9ac48d1b776395796de9db1cf43fed4b311b78b13a7fc3b9b13a2caf7d2e"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListFilename.kt",
+      "sha256Bytes": "c459b1760f4033650356bc82e5f1c45c89d8fa1e55ffb1f38516142cc520cf02"
+    },
+    {
+      "path": "desktop/build/generated/blocked-list-ui/com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt",
+      "sha256Bytes": "2928c6738b243ccbcf0af4e74021ec0e781fb3742981a4a8892eb5861215f6da"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/core/database/entity/BlockedUp.kt",
+      "sha256Bytes": "437a35c75dc7e063bc0f73c5d9cc44d2b908f86588e0a8e3c32f3fd65e94a3f2"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpImportSharePolicy.kt",
+      "sha256Bytes": "c76324f8dd7afbfe0e650567bd370ddab7e4652c35c71c758ce8fafd85f15b0a"
+    },
+    {
+      "path": "desktop/build/generated/blocked-up/com/android/purebilibili/data/repository/DesktopBlockedUpRemoteImportPolicy.kt",
+      "sha256Bytes": "2e04c844c76d45bbb54d97af745e21e09fe90ef433bcde2e98f5e9357dffeb90"
+    },
+    {
+      "path": "desktop/build/generated/crash-prompt/sources/com/android/purebilibili/DesktopCrashLogPromptPolicy.kt",
+      "sha256Bytes": "34840fb910cdf6d842cb422b4af9146eafb0192692851794e6e1d4f25265b31b"
+    },
+    {
+      "path": "desktop/build/generated/crash-prompt/sources/com/android/purebilibili/DesktopPendingCrashLogPrompt.kt",
+      "sha256Bytes": "839bf14ee4a19dce2fd3d65970623e1abb1c903f959e4a075a98dce312bfbb91"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticCollector.kt",
+      "sha256Bytes": "7907541e3b30e1a1b081e9e5551d5adfd9a73dadfb102a78050fed26bdfbd41f"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopDiagnosticPolicy.kt",
+      "sha256Bytes": "26f653f4a3895a86ff51cfdfe4ed8d91871090a8ded9dbc69e68fb3238943161"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/core/util/DesktopLocalCrashPolicy.kt",
+      "sha256Bytes": "55021d2e1e54d52f4fc575ea4fe74dfee4dd87665dac582ee26f495043b1db6d"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/android/purebilibili/feature/settings/SettingsDiagnosticFields.kt",
+      "sha256Bytes": "9e7096dceda890e14e3a13dec3360c9e59b050398f03a0d3cc779a164b6e52f4"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettings.kt",
+      "sha256Bytes": "ce0e83ec0b992ddc3f3d9829623c51374642c2212093271b1a8904b462038e96"
+    },
+    {
+      "path": "desktop/build/generated/diagnostics/sources/com/bilipai/desktop/settings/DesktopDiagnosticSettingsVectors.kt",
+      "sha256Bytes": "bf15740002759b83339a6672dd7f7ab7b518129be5f6d6d52ebdc27f54805039"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/core/store/DesktopDynamicSettings.kt",
+      "sha256Bytes": "03d20e6d88713b923752aec60ba31b0b00c777a8d2621ddb52c391fd96c456cd"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/data/repository/DesktopOriginalDynamicTimelineRepository.kt",
+      "sha256Bytes": "daa2164d5f61671308de99db603a57e9c5823529d0120adff4e05eea8b80ea94"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicIncrementalPolicy.kt",
+      "sha256Bytes": "c6d576ed6eb3d5158d9bec11e30fbc2d38a0824fd7aae22a08666a64a95ef9fb"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicOldContentDivider.kt",
+      "sha256Bytes": "9ce4e99357f02612f305eb7738a3918c6aacab9b7d5f772a7e0730cb46358575"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelineLayout.kt",
+      "sha256Bytes": "392cf956b4621046075ba0177fa88201119929f251e0b5da3eacdd54af84147b"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePage.kt",
+      "sha256Bytes": "f5d5b5c6cafaa7c091119f7b3ae6b02be5e7f4be3935c3d2e1d9310fb589aa02"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicTimelinePolicy.kt",
+      "sha256Bytes": "efdd9d66a21131963c3fde7be603f982e087faaf7fece020a47f5c7d88882aa7"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-settings/com/android/purebilibili/feature/settings/DesktopDynamicTimelineSettingsFields.kt",
+      "sha256Bytes": "39574be70c9572973c4f0005291d94b73002a15ac46d64057286d6d5d09da5ce"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/core/store/DesktopDynamicTabsSettings.kt",
+      "sha256Bytes": "c3261465531435426ee466a32431214cd61e7bffe03688390224f6128a3737f6"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/core/ui/DesktopOriginalDynamicImmersiveChrome.kt",
+      "sha256Bytes": "ac9a2b4884ca7663b1f9feea6e76feecb8550768f81cf0207dd6eabf4c7a1f7c"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/core/ui/components/DesktopOriginalDynamicNativeTabs.kt",
+      "sha256Bytes": "c6bbc8711341daafeeca6d41c7d39cd2cdb4b9d0d49b03987173ada8bad8f135"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/core/ui/renderer/material3/AppMaterial3TonalPillTabRow.kt",
+      "sha256Bytes": "cff0280579b45893284abc3946846d7f9f215d5f98ca7ce5771b0d609b50c46d"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicFollowedLiveUsers.kt",
+      "sha256Bytes": "b089a16cb30dac4b430763ea558f4085d2fc8b7d81139178c2f8fb6efd3eb392"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/data/repository/DesktopOriginalDynamicUserRepository.kt",
+      "sha256Bytes": "dd4f6ee0bd47530bd3b7f97dc552f8f7bcd5e9405134cdc0f5321ba4128b62a2"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserControls.kt",
+      "sha256Bytes": "d8813674e45627a1bf9259930abdcf57e99704ed48e33edbdc16e49c8f78e1f3"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserItemFilter.kt",
+      "sha256Bytes": "ffe28c2f1bdedfa084eaadbf4027e09b6698b1779ecf2681a941f862c353388a"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserLayout.kt",
+      "sha256Bytes": "e5bc3c7d6b23e76ce9e635184cd37c84d2fcfd015d3f500c7d69307b0de80e2c"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserRequestPolicy.kt",
+      "sha256Bytes": "375109353f37141fd8931dfc92dd3a8ab9e13685c4ea0efad2cb45079aaa0287"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUserStatePolicy.kt",
+      "sha256Bytes": "d34ce7f8ccf9d37de470439399c711812a9763bcbf32100d59e220bc5ad229be"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/DesktopOriginalDynamicUsers.kt",
+      "sha256Bytes": "a33ac590425d2801ca8fc132ec01748dabd0a31254eb393c9cdb7daa1e5b89eb"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicNativeSegmentedControl.kt",
+      "sha256Bytes": "835f70e7e148dacbc14df09a13642e058d451f072987d3d846d8406b6ffb7e6c"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/dynamic/components/DynamicUserLiveBadge.kt",
+      "sha256Bytes": "fd0a8486247e1ab5690ceddffd87a0f1ccaaf8102cdd3988d00ceacf99b66794"
+    },
+    {
+      "path": "desktop/build/generated/dynamic-tabs/com/android/purebilibili/feature/settings/DesktopOriginalDynamicTabsFields.kt",
+      "sha256Bytes": "3dacb1030f387d7b805b0e58c6a5544b574dc93af6a294485e77422069031af6"
+    },
+    {
+      "path": "desktop/build/generated/home-cards/com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings.kt",
+      "sha256Bytes": "9175248a7344de1b85ef2d482e19de167bdb4e0dc5d3975610b923fb78f407c5"
+    },
+    {
+      "path": "desktop/build/generated/home-cards/com/android/purebilibili/core/util/DesktopOriginalHomeCardWidthClass.kt",
+      "sha256Bytes": "24c1c5a2ac03eb6248efdefb6e380be8659f286dd4ba1f4944f999aefb635380"
+    },
+    {
+      "path": "desktop/build/generated/home-cards/com/android/purebilibili/feature/home/DesktopOriginalHomeCardGridPolicy.kt",
+      "sha256Bytes": "e09c137a1f1259cb510b68cbdb2cd607f32f02c93bb5b0d275c1c37fad2b7781"
+    },
+    {
+      "path": "desktop/build/generated/home-cards/com/android/purebilibili/feature/settings/DesktopOriginalHomeCardFields.kt",
+      "sha256Bytes": "033816b1ca445e70fb8c1828a7c7aecd1b29949c7ae10ca5f0794df2b88de6d2"
+    },
+    {
+      "path": "desktop/build/generated/home-cards/com/android/purebilibili/feature/settings/DesktopOriginalHomeCardWidthOptions.kt",
+      "sha256Bytes": "f2dc6641152f80088b4522051f238ecdd69929574913b4ac5384e4e5447bb85f"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/store/DesktopOriginalHomeCardVisualSettings.kt",
+      "sha256Bytes": "1ca0f84be020c3831a010ab3bdbb10c4cdc1633a8767d232ffdfa84498f0b5a0"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "99c8f23e6cb673734b3489a8b72fb3034b207fa6705c8d0ad687db9ec60a8eca"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/CompositionLocals.kt",
+      "sha256Bytes": "8719a0d7201fe1d85dedb28301bb0bee8e3dff6f3edb9aecc8aaaecc4f7f0d8c"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/adaptive/AdaptiveInputModifiers.kt",
+      "sha256Bytes": "7cbd4f9946777d61dfa8664aaecd5b2996552b4b809f0b3e6a86a2e967ac90a8"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/adaptive/DeviceUiProfileAdapter.kt",
+      "sha256Bytes": "b29798b820f79a43f7e58566d4bfe07dea1fd7785aae36c7779ba7e856468fec"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "sha256Bytes": "eca196503762fae48bd8c393ab1edaf19e345ff826a32ea7d6003f7827e7a38d"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/blur/UnifiedBlur.kt",
+      "sha256Bytes": "8e5687d383f05dbd9f25cee5afcc9214b7922ada890679449a1bc224d8bc5bbd"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/performance/RuntimeVisualGuardLocals.kt",
+      "sha256Bytes": "6ba65f763f5ba4b61b0a0de152bb871b80ab6e5516d10ec126dd47dfd2f24c24"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256Bytes": "e33f8361cbd8a3fc5f80351e899934d37277e8db9b7f211be78fd24783d3cb2a"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/util/HomeCoverReturnPrefetch.kt",
+      "sha256Bytes": "a17f4992269c4210301142de213d0fa287520bc64a58d49306a00b000d8d60bc"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/core/util/ModifierExt.kt",
+      "sha256Bytes": "caf851db2cc5d64494bdfe6750aadfd2a480338c68742430efe78c4fcef96e4a"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "6aa92188d7565a3096e0390b2d5b7296304c2ce38715bbf11e2a39cb2b37f94b"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt",
+      "sha256Bytes": "cb0ce8004c7a6a27f60f9c41276096c3e098b62d173b12554479d8f22e707112"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/home/components/cards/VideoCard.kt",
+      "sha256Bytes": "098892ae6d8a20aa7de7e4094785131f69346d270955e65751e0ddec53027b08"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/home/components/cards/VideoCardOnlineCountStore.kt",
+      "sha256Bytes": "cc43c8db12981280d48030dae3e9e2a1773cd123d45ba87b0632f4b6a23c3be1"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/settings/DesktopOriginalHomeCardVisualFields.kt",
+      "sha256Bytes": "77a68840fbbe086b807a46761b50c7f8ba16b19f6c7754d135e67503850ac889"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+      "sha256Bytes": "675801a32103f8e0abd6b8a58c3ae67aecc921a4c1c5a5bdb8b0153c50196d7e"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256Bytes": "097e74d4952ee99e68899744f62473dd51ff21f3c82d35f541d9bb7db9c7dcd7"
+    },
+    {
+      "path": "desktop/build/generated/home-full-card/generated/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256Bytes": "1f242e3cb0f803458047a96f230b89a0fc1976ca946a513d4d01819164e278f5"
+    }
+  ],
+  "testReports": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopDynamicCacheTest.xml",
+      "tests": 8,
+      "sha256Bytes": "c320ddefdc9365bbfd6bd0ee425440b30a757c37e712af35e4fcad116ffc4bcf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\TEST-com.bilipai.desktop.data.DesktopSessionStoreTest.xml",
+      "tests": 14,
+      "sha256Bytes": "566515698e3ab7802c9dc77eba52cc4c1687bc21b0955c0e2524dc5e852812a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\TEST-com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest.xml",
+      "tests": 15,
+      "sha256Bytes": "c722a0c25c211105c003ced5c59d6fdf4dff120f84d8707fba763b2b0b92bde5"
+    }
+  ],
+  "mainCompile": {
+    "passed": true,
+    "tests": 37,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "actualRuntimeClasspath": {
+    "gradleExportSha256Bytes": "d1d76b523465cccedab2914fc6dcd9443eb9dc3087493a80851d8f5984bc9b88",
+    "orderedIdentities": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\dynamic-cache-main-product-snapshot\\ordered-runtime-cp.json",
+    "orderedIdentitiesSha256Bytes": "87d3ed2e344233eeb4c087a6b2fef7ab3d1ee538707692a5ff368b46858673b7",
+    "entries": 89,
+    "externalEntries": 86,
+    "originalOutputOrderPreserved": true,
+    "reuseReason": "Actual Gradle SourceSet export reused only after unchanged build.gradle.kts and external hashes checked; only three output directories replaced by fresh product jars"
+  },
+  "nativeWindowOrPackageTested": false,
+  "realAccountRequests": false,
+  "fullFeatureParityVerified": false
+}

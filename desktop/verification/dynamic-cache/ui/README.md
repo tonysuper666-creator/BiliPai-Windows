@@ -1,0 +1,19 @@
+# Actual Main dynamic cache UI proof
+
+This lane writes only this task-owned `.local` directory. It does not edit production sources or invoke shared Gradle. The runner accepts the Root's immutable Kotlin, Java, resources JARs and ordered Gradle runtime classpath, hashes every byte, and compiles exactly two Kotlin fixture sources. It rejects fixture class overlap with every product or dependency JAR. Eighteen actual Main classes are checked at runtime by code source and class bytes.
+
+The UI uses `ImageComposeScene` with the actual `CommunityDynamicFeed`, its private Ready implementation, cache binding, timeline, native tabs and selected-UP rail. Current Main dynamic card content is used as-is; this is not a claim that the incoming original full dynamic card is installed.
+
+Each of Material 3 and Miuix is exercised in light and dark. A separate JVM creates a synthetic account's two raw cache items through the actual writer. The UI process cold-loads that session and shared preference disk. The task interceptor holds the initial real Repository request while screenshots show the cold cache. It then supplies a valid response, an explicit non-retryable API `-400` refresh failure, and a successful response reached by clicking the actual retry button. The `-400` fixture isolates explicit retry from the original transient-error retry policy.
+
+One clearly labelled fixture button calls the actual `markNotInterested` seam. It proves that the real actor's flow filters both the actual All feed and selected-UP feed while raw timeline/cache items remain intact. It does not claim that the original dynamic card's menu is installed. Same-MID credential rotation blocks the new request to show that the prior private seed is refused. Finally the actual guest cache binding and login gate are mounted; a local mark succeeds with no new HTTP request. A separate JVM cold-reads the guest local ID and confirms there is no private raw cache.
+
+Only task-created synthetic accounts are used. The fixture derives a client with `repository.httpClient.newBuilder()`, retains that application's same SessionStore CookieJar and existing interceptors, adds a fail-closed application interceptor, and binds only its task-created Repository's private `client`, `visitorInitialized`, and `visitorGeneration` fields before constructing the Community repository. It never calls `chain.proceed` and therefore opens no socket. Request traces contain only method, host, path and original API query values, with no Cookie or credentials.
+
+Native `user.home` is a short task-owned temporary directory to keep Skiko's ICU extraction within the native Windows path limit. Screenshot evidence is headless Compose, not a native HWND, real account/network, packaged EXE or whole-application acceptance.
+
+Every attempt has its own output directory and retains its compiler/log/evidence and copied original fixture source bytes. Attempt 01 compiled against Root's preliminary snapshot; it was not executed because Root found and fixed an admission race before final verification. Final acceptance must name the replacement snapshot explicitly.
+
+## Accepted result
+
+Attempt 03 passes against Root final snapshot manifest `06c33b8f83d6d5fab70e4eb7490c3845e5d7b9b493379d99755d2bd8de9eff8b` and ordered CP `4fdfa2cb5e9ff4168b4c070c0ede9c75be24978744c35b75943df76f4f351ed8`. Four theme cells, 28 real pointer pairs, 28 screenshots, four independent cold seed writer JVMs and four independent cold guest reader JVMs pass. Actual request traces prove baselines empty / 3 / 3 / empty, selected-UP MID 77 and no socket. Attempt 02 failed because the fixture selected the lower selected-UP All content filter instead of the top All tab; its original sources, images, semantics, log and correction review remain immutable. Main product bytes were unchanged between attempts 02 and 03.

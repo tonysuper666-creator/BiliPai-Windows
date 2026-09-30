@@ -217,9 +217,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { appearanceError = failure.message ?: failure.javaClass.simpleName }
     }
-    val pluginRuntime = remember(pluginStore, diagnosticLifecycle) {
+    val dynamicCache = remember(pluginStore, repository) { DesktopDynamicCache(repository.dynamicCacheSessionGuard, pluginStore) }
+    DisposableEffect(dynamicCache) { onDispose { dynamicCache.stopAccepting() } }
+    val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache) {
         DesktopPluginRuntime(pluginStore, repository, community, discovery,
-            beforeStoreFreeze = { diagnosticLifecycle?.shutdownForRestore() })
+            beforeStoreFreeze = { dynamicCache.shutdownForRestore(); diagnosticLifecycle?.shutdownForRestore() })
     }
     val globalPluginContext = pluginRuntime.context
     val dynamicTimelinePreferences = remember(pluginStore) {
@@ -848,6 +850,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val scheme = MaterialTheme.colorScheme
     val strings = LocalDesktopStrings.current
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        LocalDesktopDynamicCache provides dynamicCache,
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
         LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
