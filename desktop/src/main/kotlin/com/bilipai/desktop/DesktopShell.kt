@@ -72,6 +72,10 @@ import com.bilipai.desktop.player.WindowsMediaCommand
 import com.bilipai.desktop.player.WindowsMediaSnapshot
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import com.bilipai.desktop.plugins.DesktopPluginStore
+import com.bilipai.desktop.settings.*
+import com.android.purebilibili.core.store.SearchHintSettingsStore
+import com.android.purebilibili.feature.settings.SettingsSearchTarget
+import com.android.purebilibili.feature.settings.SettingsRootCategory
 import com.bilipai.desktop.plugins.DesktopEyePaint
 import com.bilipai.desktop.backup.DesktopBackupCoordinator
 import com.bilipai.desktop.backup.DesktopBackupStore
@@ -95,7 +99,7 @@ private enum class DesktopSection(val label: String, val symbol: String) {
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
     ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
     JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐"), MUSIC("音乐详情", "♫"),
-    STORY("竖屏播放", "▯"), TOPIC("话题", "#")
+    STORY("竖屏播放", "▯"), TOPIC("话题", "#"), SETTINGS("设置", "⚙")
 }
 
 private fun DesktopSection.localizedLabel(strings: DesktopStrings): String = when (this) {
@@ -149,6 +153,29 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         catch (failure: Exception) { appearanceError = failure.message ?: failure.javaClass.simpleName }
     }
     val pluginRuntime = remember(pluginStore) { DesktopPluginRuntime(pluginStore, repository, community, discovery) }
+    val globalPluginContext = pluginRuntime.context
+    val privacyBindings = remember(globalPluginContext, community.searchPreferences) {
+        DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
+    }
+    val defaultSearchHintEnabled by remember(globalPluginContext) {
+        SearchHintSettingsStore.isEnabled(globalPluginContext)
+    }.collectAsState(initial = true)
+    val settingsNavigator = remember { DesktopSettingsNavigator() }
+    val settingsNavigation by settingsNavigator.state.collectAsState()
+    val settingsSearchRepository = remember(globalPluginContext, community.searchPreferences) {
+        DesktopSettingsSearchRepository(globalPluginContext, community.searchPreferences::isPrivacyModeEnabledSync)
+    }
+    // Controllers belong to navigation entries, so detail/back and nested search preserve queries.
+    val settingsSearchControllers = remember(settingsSearchRepository) { mutableMapOf<Long, DesktopSettingsSearchController>() }
+    val settingsSearchController = remember(settingsSearchRepository, settingsNavigation.searchEntryToken) {
+        settingsSearchControllers.getOrPut(settingsNavigation.searchEntryToken ?: 0L) {
+            DesktopSettingsSearchController(settingsSearchRepository)
+        }
+    }
+    LaunchedEffect(settingsNavigation.stack) {
+        val retainedTokens = settingsNavigation.stack.filterIsInstance<DesktopSettingsPage.Search>().map { it.entryToken }.toSet() + 0L
+        settingsSearchControllers.keys.retainAll(retainedTokens)
+    }
     val jsExecutionRevision by pluginRuntime.jsPlugins.host.executionRevision.collectAsState()
     val packages by pluginRuntime.packages.state.collectAsState()
     val cast = remember(pluginRuntime) { DesktopCastController(pluginRuntime.context, pluginRuntime.dlnaCast) }
@@ -201,6 +228,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var subtitleDialog by remember { mutableStateOf(false) }
     var subtitleDialogTarget by remember { mutableStateOf<DesktopSubtitleDialogTarget?>(null) }
     var section by remember { mutableStateOf(DesktopSection.HOME) }
+    var jsSettingsOrigin by remember { mutableStateOf(false) }
     var showVideo by remember { mutableStateOf(initialVideo != null) }
     var lastMediaSection by remember { mutableStateOf<DesktopSection?>(null) }
     var mediaPrevious by remember { mutableStateOf<(() -> Unit)?>(null) }
@@ -255,7 +283,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     }
     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
-            withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.close() }
+            withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
             cast.quiesce()
             community.searchPreferences.freezeWritesForRestore()
             pluginRuntime.shutdownForRestore()
@@ -265,7 +293,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     SideEffect {
         registerShutdown?.invoke {
             withContext(NonCancellable) {
-                withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.close() }
+                withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
                 cast.quiesce()
                 community.searchPreferences.freezeWritesForRestore()
                 pluginRuntime.shutdownForRestore()
@@ -283,13 +311,12 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var cards by remember { mutableStateOf(emptyList<VideoCard>()) }
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    var combinedBackupSettings by remember { mutableStateOf(false) }
     LaunchedEffect(preferenceWriteFailed) {
         if (preferenceWriteFailed) error = "播放设置保存失败，请检查本地存储空间和写入权限"
     }
     val clipboardFailure by WindowsTextClipboard.lastFailure.collectAsState()
     var loginDialog by remember { mutableStateOf(false) }
-    var playerSettings by remember { mutableStateOf(false) }
-    var backupSettings by remember { mutableStateOf(false) }
     var jsPluginId by remember { mutableStateOf("") }
     var jsSubscriptionReader by remember { mutableStateOf(false) }
     var castDialog by remember { mutableStateOf(false) }
@@ -382,6 +409,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (target != DesktopSection.STORY) storyHost.retire()
         if (target == DesktopSection.DYNAMIC) dynamicId = null
         commit()
+        if ((section == DesktopSection.SETTINGS || jsSettingsOrigin) &&
+            target !in listOf(DesktopSection.SETTINGS, DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA)) {
+            settingsNavigator.leave()
+            jsSettingsOrigin = false
+        }
         showVideo = false; playerFocused = false; section = target; page = 1; error = null
         if (target == DesktopSection.HISTORY) cards = library.history()
         if (target == DesktopSection.FAVORITES) cards = library.favorites()
@@ -458,7 +490,10 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     }
     fun openArticle(id: Long) { navigate(DesktopSection.ARTICLE) { articleId = id } }
     fun openNotes(info: VideoDetails) { navigate(DesktopSection.NOTES) { noteVideo = info } }
-    fun openJsPlugin(id: String) { navigate(DesktopSection.JS_CONTENT) { jsPluginId = id } }
+    fun openJsPlugin(id: String) { navigate(DesktopSection.JS_CONTENT) {
+        if (section != DesktopSection.JS_CONTENT) jsSettingsOrigin = section == DesktopSection.SETTINGS
+        jsPluginId = id
+    } }
     fun openJsMedia(launchId: String, revision: Long) {
         val host = pluginRuntime.jsPlugins.host
         if (activatingUpdate) { host.releaseExternalLaunch(launchId); return }
@@ -760,7 +795,9 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                     Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
                             DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE, DesktopSection.MUSIC, DesktopSection.TOPIC) }.forEach { item ->
-                            Surface(Modifier.fillMaxWidth().height(48.dp).clickable { if (item == DesktopSection.STORY) openStory() else navigate(item) }, shape = RoundedCornerShape(24.dp),
+                            Surface(Modifier.fillMaxWidth().height(48.dp).clickable { if (item == DesktopSection.STORY) openStory() else navigate(item) {
+                                if (item == DesktopSection.SETTINGS) settingsNavigator.openRoot()
+                            } }, shape = RoundedCornerShape(24.dp),
                                 color = if (section == item && !showVideo) scheme.primaryContainer else Color.Transparent) {
                                 Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                                     Text(item.symbol, style = MaterialTheme.typography.titleLarge); Text(item.localizedLabel(strings))
@@ -768,9 +805,9 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                             }
                         }
                     }
-                    TextButton(onClick = { playerSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["playback_settings_title"]) }
-                    TextButton(onClick = { backupSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("WebDAV 与备份") }
-                    TextButton(onClick = { navigate(DesktopSection.APPEARANCE) }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["appearance_settings_title"]) }
+                    TextButton(onClick = { navigate(DesktopSection.SETTINGS) { settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK, null) } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["playback_settings_title"]) }
+                    TextButton(onClick = { combinedBackupSettings = true }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text("WebDAV 与备份") }
+                    TextButton(onClick = { navigate(DesktopSection.SETTINGS) { settingsNavigator.openCategory(SettingsRootCategory.APPEARANCE_THEME) } }, modifier = Modifier.fillMaxWidth().height(48.dp)) { Text(strings["appearance_settings_title"]) }
                     Box(Modifier.fillMaxWidth().height(64.dp)) {
                         DesktopUiSkinDecoration(UiSkinSurface.PROFILE,
                             { it.homeProfileVideoBackground ?: it.homeProfileSquaredBackground ?: it.homeProfileBackground },
@@ -930,10 +967,28 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                 }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true })
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
+                            section == DesktopSection.SETTINGS -> DesktopSettingsTree(settingsNavigator, settingsSearchController,
+                                historyWritesScope = scope, discovery = discovery, privacy = privacyBindings,
+                                onFailure = { error = it.message ?: "设置保存失败" },
+                                appearanceContent = { DesktopAppearanceSettings(appearance,
+                                    onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } }) },
+                                pluginsContent = { PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin) },
+                                playbackContent = { dismiss -> PlaybackSettingsDialog(preferences, ::changePreferences, dismiss) },
+                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
+                                    initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
+                                systemContent = {
+                                    TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
+                                    Text("原版诊断、日志、许可和支持页面仍在移植中。", Modifier.padding(12.dp))
+                                })
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
-                            section == DesktopSection.JS_CONTENT -> DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
-                                onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
+                            section == DesktopSection.JS_CONTENT -> Column(Modifier.fillMaxSize()) {
+                                TextButton(onClick = { navigate(if (jsSettingsOrigin) DesktopSection.SETTINGS else DesktopSection.PLUGINS) }) { Text("返回插件") }
+                                Box(Modifier.weight(1f).fillMaxWidth()) {
+                                    DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
+                                        onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
+                                }
+                            }
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
                                 onBack = { navigate(DesktopSection.JS_CONTENT) })
                             section in listOf(DesktopSection.HOME, DesktopSection.POPULAR, DesktopSection.REGION, DesktopSection.RANKING, DesktopSection.PRECIOUS, DesktopSection.WEEKLY) ->
@@ -1012,7 +1067,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     else -> CommunitySection.NOTES
                                 }, repository, social, community, submitted, userId, articleId, noteVideo,
                                     ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime,
-                                    initialDynamicId = dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword)
+                                    initialDynamicId = dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
+                                    defaultSearchHintEnabled = defaultSearchHintEnabled)
                             else -> Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                                     Text(section.localizedLabel(strings), Modifier.weight(1f), style = MaterialTheme.typography.titleLarge)
@@ -1038,9 +1094,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (eyePaint.warmAlpha > 0f) Box(Modifier.fillMaxSize().background(Color(eyePaint.warmArgb).copy(alpha = eyePaint.warmAlpha)))
         }
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
-        if (playerSettings) PlaybackSettingsDialog(preferences, ::changePreferences, { playerSettings = false })
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }
-        if (backupSettings) BackupSettingsDialog(backup, { backupSettings = false }, onExit)
+        if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit)
         if (jsSubscriptionReader) SubscriptionReaderDialog(pluginRuntime, refreshOnOpen = true) { jsSubscriptionReader = false }
         if (castDialog) AlertDialog(onDismissRequest = { castDialog = false }, title = { Text("选择投屏方式") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {

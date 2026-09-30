@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioStoreTest.kt",
+    "sha256": "bbe2b7685991119ddca2ddb7170df9f5488c6501ea76c555446b3db417898e8f",
+    "unchangedCopiedSource": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+    "sha256": "7c7234bbe6e98716bc0bd426aeddc3b743d5bf043ad4e66e8508d8bc0ddbec6a",
+    "unchangedCopiedSource": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicIntegrationTest.kt",
+    "sha256": "da8a6cb3414aa5a9a4096ffeceecdd188765f103c2d60878d1ba978ec8096745",
+    "unchangedCopiedSource": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+    "sha256": "74cd1ea08638360e01b980211ba7f51a8513b6f11fcd2dcd86fab54a3bc24d1a",
+    "unchangedCopiedSource": true
+  }
+]

@@ -1,0 +1,190 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Bytes": "8c025ac0f13ca50cf462c89082f45e751ed611a0af4f334dd9e841042805934e",
+      "bytes": 14035
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ComposableSingletons$PlayerSettingsKt.class",
+      "sha256Bytes": "081d487ab0691111f826745bd027586cd53c039e2ed7a96c15b5dada839fbc26",
+      "bytes": 14718
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$await$1$1$1.class",
+      "sha256Bytes": "af41e192cbda03a130b99436d82f8de244dbc87fbcef31ad049daae4d9adbb1d",
+      "bytes": 3504
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$await$1$1.class",
+      "sha256Bytes": "fca162d13c081a9108c7450c45ebd4065b71259533c2a7fa2c09b09fcd6098dd",
+      "bytes": 4127
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$await$1.class",
+      "sha256Bytes": "1b6a93a557c662e46303d0ce1a981f02542cb2b6c4fba307f5ad31492e018e72",
+      "bytes": 4000
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$11.class",
+      "sha256Bytes": "8de3ef531d3dc27d811a7408c73da859af7a86469ab4a0c60bffb37cf912b298",
+      "bytes": 3784
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$4$1.class",
+      "sha256Bytes": "56f697d30eb35cd151681c6fd16dc75834631e275fbf348eb8f9db73348114b9",
+      "bytes": 3785
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$4.class",
+      "sha256Bytes": "868ee5324479cc341660b308e489ab518683eea09442a3aa97db457e9b709b16",
+      "bytes": 3992
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$8.class",
+      "sha256Bytes": "e225530ac21d1180a1a9e8d760e6d0ce87191d85a51957e332968d2b142eaa4e",
+      "bytes": 3780
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$source$1$playbackConfigured$1.class",
+      "sha256Bytes": "33f6a0df1143f03fae4bf86f4247bf1946560bf68825c770f4e8677a4e764a39",
+      "bytes": 2924
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$source$1.class",
+      "sha256Bytes": "21291a9da033c3333c1c2e3a609ef97e2f11da6bb334e39c1daec3ad5725f87f",
+      "bytes": 7389
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest$delayed actual controller audio selection survives draft save in a fresh disk reader$writer$1.class",
+      "sha256Bytes": "7419a3da65dfb8dab935476715ab51bcb576273ad7d5a1a82f941cb5ec2ffe04",
+      "bytes": 1956
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.class",
+      "sha256Bytes": "c058459c43ac670c57bb724f5c969372fc0c7122161ed98c35ffc1d0874c3037",
+      "bytes": 19536
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlayerSettingsKt$WhenMappings.class",
+      "sha256Bytes": "1f82846ef8de8153904df30dd48fc97f7a2cba3b2f4f450b89312f3f5d8d10a1",
+      "bytes": 971
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/PlayerSettingsKt.class",
+      "sha256Bytes": "e5a34ee356d93a89932472a13f4555f8fcb401a852c2ade3b7edf74f125f77fe",
+      "bytes": 102561
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/RunDraftMemoryFixtureKt.class",
+      "sha256Bytes": "a93df1c23b04bbb0af6ba2e11d8d4b12b6fcb18dfeec1ba4baf4874c443e74cd",
+      "bytes": 2908
+    },
+    {
+      "path": "classes/META-INF/playback_settings_draft_memory.kotlin_module",
+      "sha256Bytes": "6da7afc06f2537245ccf4be2bb963a31063fda662184b29fea52ddd980926828",
+      "bytes": 93
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "13c995700af2a419f3baaeaf7cf6d366725be1ee7f7fe10bf877e8724a1e674e",
+      "bytes": 88306
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "ed3b612e5166dc6c4834da441868e3f30514cc8e519296c9706bf7aacef48b3d",
+      "bytes": 3536
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "da14ddc1ebe296bc8305f600dc64c6ed5de9274127751e9351d7938fd9a24d9f",
+      "bytes": 57822
+    },
+    {
+      "path": "contract.json",
+      "sha256Bytes": "b8b87884eb1d05869a0bc7823ad9bcafd0d5150154255dde429ea3bf408bd061",
+      "bytes": 1266
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "9f2fa038360e9a71f9079736eb2a71e18634abb2c8b961603329ae9cff6181b3",
+      "bytes": 85869
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "993159d39965ec33ce3ec9dd0067c9558faeb7f3e058addb5cfa2a0e9f20b84b",
+      "bytes": 3297
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "47eae193f54b8732f548382c99b36239c9a9e85bdc64bbe467d4899b7ccba38b",
+      "bytes": 3267
+    },
+    {
+      "path": "origin-evidence.json",
+      "sha256Bytes": "2bc264ffefff7692bb99b8781918dfe5c04cd4237e81970e37db1381cc589fe8",
+      "bytes": 1123
+    },
+    {
+      "path": "owned-files.json",
+      "sha256Bytes": "aa5aed07d9e8869bd4ec9785b9c7edaf320c361bccb13b726e425ecbb4a022f4",
+      "bytes": 500
+    },
+    {
+      "path": "patches/PlayerSettings.kt.patch",
+      "sha256Bytes": "4ecb2c6b86f941041e30191a7432edc3aefbc1efcb1ec18c821c2aed21bc3bc7",
+      "bytes": 1621
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "0d4782f6c93c89d9b1c9d039484076d595a7252ae8b3ecbfc821e039de0bc4c0",
+      "bytes": 2241
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Bytes": "c1181da358b195beafabb60e3c25727814d55e2f88f43167f8ecfae2e0fc88ea",
+      "bytes": 14276
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "sha256Bytes": "9da47ae2ddd0f1c28a8053273bd34b6f790ef4f92a50cd4065a423982750f7ae",
+      "bytes": 6974
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "84cb838a14869797b9846485d533530cf2b0beea9da1d066215ee2062afd6f48",
+      "bytes": 323
+    },
+    {
+      "path": "RunDraftMemoryFixture.kt",
+      "sha256Bytes": "f78c077ff8ceb7029f30f1c36ad520f3eee5b0bbff396bd71e3c863b0ec9c7f1",
+      "bytes": 1095
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "60fcca219f7850445c55ceba4017fc90bc6c5cb305b2d557bf80fbe21cfda2ea",
+      "bytes": 56607
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "be51321f5f6c6ab53c576abf96dcade879c5dcf20620dc9634bb351792d49bf1",
+      "bytes": 127
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    {
+      "path": "verify.py",
+      "sha256Bytes": "2d5072c63dcf763d7549170d73a1153f7515e68cf8a7f519898f104b9bc192d4",
+      "bytes": 440
+    }
+  ]
+}

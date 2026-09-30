@@ -1,0 +1,242 @@
+[
+  {
+    "path": "anime4k/Anime4K_AutoDownscalePre_x2.glsl",
+    "sha256": "9141668ced0b26512253e6396e805820716f35b57c92950d9da489f8b96a7ba4",
+    "absolutePathLength": 157
+  },
+  {
+    "path": "anime4k/Anime4K_AutoDownscalePre_x4.glsl",
+    "sha256": "dadb7b713cfa1d810c55b5deff616072f3390e546fed1e6a54f80ea555f7b95d",
+    "absolutePathLength": 157
+  },
+  {
+    "path": "anime4k/Anime4K_Clamp_Highlights.glsl",
+    "sha256": "996ab8de71a58eb9d08fd98bfcedecfec1a25a1e229a8eaf7f4eca62c749592c",
+    "absolutePathLength": 154
+  },
+  {
+    "path": "anime4k/Anime4K_Restore_CNN_M.glsl",
+    "sha256": "dd515c307d97d8e5c809f263dd94174cc5667b8c1299082cdff14e6ddfc8d4bc",
+    "absolutePathLength": 151
+  },
+  {
+    "path": "anime4k/Anime4K_Restore_CNN_S.glsl",
+    "sha256": "fca48f8322be4c7c5b14393a6eb6d733bbefffea0ca29694cb6c4b0335dad5ce",
+    "absolutePathLength": 151
+  },
+  {
+    "path": "anime4k/Anime4K_Restore_CNN_VL.glsl",
+    "sha256": "da18324507c31947943a4401ddcaea669a027705c5d8f4675aeca8a671c2eea7",
+    "absolutePathLength": 152
+  },
+  {
+    "path": "anime4k/Anime4K_Upscale_CNN_x2_M.glsl",
+    "sha256": "249dc3be467f556ed3361deea79f42bac1ae57456c22588c2cc3c2ee8808909c",
+    "absolutePathLength": 154
+  },
+  {
+    "path": "anime4k/Anime4K_Upscale_CNN_x2_S.glsl",
+    "sha256": "90b65a4f36950852a34e5f12beb179fafed59fa8d911887e0f5f184337998edf",
+    "absolutePathLength": 154
+  },
+  {
+    "path": "anime4k/Anime4K_Upscale_CNN_x2_VL.glsl",
+    "sha256": "ff9028a58aac9ad470ecbe379c1accf72443b348fa59eac7af1f091e333c733e",
+    "absolutePathLength": 155
+  },
+  {
+    "path": "anime4k/LICENSE",
+    "sha256": "308dab0978e0ea573a10e50c37c45b9486e033de3366d31ea96354156be192b9",
+    "absolutePathLength": 132
+  },
+  {
+    "path": "app-icon.ico",
+    "sha256": "bf76b5e9a66bb71e66b9af7f865dbe497cf709b802c0597e06c764070705e939",
+    "absolutePathLength": 129
+  },
+  {
+    "path": "app-icon.png",
+    "sha256": "160971752e66bc5ee083d33d68797f6cdc1ba50bc45b371920857cc1c6cc4adc",
+    "absolutePathLength": 129
+  },
+  {
+    "path": "bilipai-strings/en/strings.xml",
+    "sha256": "45e580aa97eec876f07983941482513eb165d8494efa57003095abf417cb4873",
+    "absolutePathLength": 147
+  },
+  {
+    "path": "bilipai-strings/zh-CN/strings.xml",
+    "sha256": "79723837df597d34392d6da66ff904f614089c97f3debe9ce99dead534b42422",
+    "absolutePathLength": 150
+  },
+  {
+    "path": "bilipai-strings/zh-TW/strings.xml",
+    "sha256": "f5e86ba0c118545f1a7249da62ad4b51c896a993570322314939064982f993f8",
+    "absolutePathLength": 150
+  },
+  {
+    "path": "cast-v2/cast-root.der",
+    "sha256": "809af14700b3fe2611ad597eb1584d6354313b64ccdb3390f097fa3e5826d6ca",
+    "absolutePathLength": 138
+  },
+  {
+    "path": "cast-v2/eureka-root.der",
+    "sha256": "caf6d1e37b532203e01a76bf07187bb731ccd38801565ab2211a2c0ab7f3bc46",
+    "absolutePathLength": 140
+  },
+  {
+    "path": "licenses/appearance/colormath-3.6.1-LICENSE.txt",
+    "sha256": "ab1cd8a3d0e92e1f69e95e8ca839127c52d4bd32fa2824d683d0dc66cc8fe21f",
+    "absolutePathLength": 164
+  },
+  {
+    "path": "licenses/appearance/material-color-utilities-5.0.1-1-LICENSE.txt",
+    "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
+    "absolutePathLength": 181
+  },
+  {
+    "path": "licenses/appearance/material-color-utilities-5.0.1-LICENSE.txt",
+    "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
+    "absolutePathLength": 179
+  },
+  {
+    "path": "licenses/appearance/materialkolor-4.1.1-1-LICENSE.txt",
+    "sha256": "8ded460ad5bd3ab9082eaa2f7502cc9bb621eaff87cecc55d823f21758707cea",
+    "absolutePathLength": 170
+  },
+  {
+    "path": "licenses/appearance/materialkolor-4.1.1-LICENSE.txt",
+    "sha256": "8c6e9406804f46a424c033510a28d02c64a0d94862a27c71af231a91cc1504d3",
+    "absolutePathLength": 168
+  },
+  {
+    "path": "licenses/appearance/miuix-5157-APACHE-2.0.txt",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 162
+  },
+  {
+    "path": "licenses/google-cast-v2/chromecast-java-api-v2-Apache-2.0.txt",
+    "sha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+    "absolutePathLength": 178
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-annotations-2.20-META-INF_LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 182
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-annotations-2.20-META-INF_NOTICE",
+    "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+    "absolutePathLength": 181
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 194
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-NOTICE",
+    "sha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+    "absolutePathLength": 193
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-core-2.20.0-META-INF_LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 177
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-core-2.20.0-META-INF_NOTICE",
+    "sha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+    "absolutePathLength": 176
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-core-2.20.0-META-INF_thirdparty-LICENSE",
+    "sha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+    "absolutePathLength": 188
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_LICENSE",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 181
+  },
+  {
+    "path": "licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_NOTICE",
+    "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+    "absolutePathLength": 180
+  },
+  {
+    "path": "licenses/google-cast-v2/jmdns-3.6.3-LICENSE.txt",
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "absolutePathLength": 164
+  },
+  {
+    "path": "licenses/google-cast-v2/NOTICES.txt",
+    "sha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+    "absolutePathLength": 152
+  },
+  {
+    "path": "licenses/google-cast-v2/OpenScreen-BSD-3-Clause.txt",
+    "sha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+    "absolutePathLength": 168
+  },
+  {
+    "path": "licenses/google-cast-v2/protobuf-v33.2-LICENSE.txt",
+    "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+    "absolutePathLength": 167
+  },
+  {
+    "path": "licenses/google-cast-v2/slf4j-api-2.0.17-META-INF_LICENSE.txt",
+    "sha256": "4e7f90c86ab51278228bce153122f1d8df30149d13ce9ef524c8444a84c32dcc",
+    "absolutePathLength": 178
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/GPL-2.0.txt",
+    "sha256": "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6",
+    "absolutePathLength": 152
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/NOTICE.txt",
+    "sha256": "b0541bc3dfe0517c8e49a1aff053d8f65debb88d56fb5cadc5a205dedb189d0c",
+    "absolutePathLength": 151
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/pinyin4j-2.5.0-sources.jar",
+    "sha256": "b249cc93415b0c349fc4d0cdef2697ebd36df29246a5b87d68a9327e0153fdf6",
+    "absolutePathLength": 167
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/pinyin4j-2.5.0.pom",
+    "sha256": "7860cfad3bac667d51e53c28d3b6ee058893cd626a8ecb6e49c0d6b6f4b5c5f6",
+    "absolutePathLength": 159
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/PinyinHelper-source-header.txt",
+    "sha256": "e7a48477e3cd92e4ec6ecdd8285c9a7379c00f123c1f9fe9a313753828952bad",
+    "absolutePathLength": 171
+  },
+  {
+    "path": "licenses/pinyin4j-2.5.0/provenance.json",
+    "sha256": "ca14fa4e091afcf1c8458925ec94013539c5b7dfb5aae5e5c30e1a5575b3dfef",
+    "absolutePathLength": 156
+  },
+  {
+    "path": "plugin/cdn_region_catalog.json",
+    "sha256": "11355f99c936d891fa5b88b6435c1ee6f5048902752ad9ddc0050c028e902eef",
+    "absolutePathLength": 147
+  },
+  {
+    "path": "rovniced-skin-catalog.json",
+    "sha256": "0086f17d81b530b9367fddf83d3067906b3df49e4830156002279851bcdf2fb8",
+    "absolutePathLength": 143
+  },
+  {
+    "path": "upstream-version.txt",
+    "sha256": "7dcf76ba3ea540634be0a000a2ecf2a954fbdf047eaaf6de4b643baef158e3b0",
+    "absolutePathLength": 137
+  },
+  {
+    "path": "windows-update.json",
+    "sha256": "6080b4cd9d1bbcba644caf0c91b34bfdeeee93c59212ccc816e1091d7f4bb8bd",
+    "absolutePathLength": 136
+  }
+]

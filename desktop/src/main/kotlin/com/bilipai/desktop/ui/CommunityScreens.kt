@@ -24,7 +24,7 @@ fun CommunityContentScreen(section: CommunitySection, repository: DesktopReposit
     community: DesktopCommunityRepository, query: String = "", userId: Long = 0, articleId: Long = 0,
     noteVideo: VideoDetails? = null, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onArticle: (Long) -> Unit,
     onLogin: () -> Unit, onLive: (Long) -> Unit = {}, onBangumi: (Long) -> Unit = {}, runtime: DesktopPluginRuntime? = null,
-    initialDynamicId: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}) {
+    initialDynamicId: String? = null, onTopic: (Long) -> Unit = {}, onTopicKeyword: (String) -> Unit = {}, defaultSearchHintEnabled: Boolean = true) {
     val account by repository.account.collectAsState()
     val inherited = LocalDesktopBrowseMemory.current
     val fallback = remember(account?.mid) { DesktopBrowseMemory() }
@@ -46,7 +46,7 @@ fun CommunityContentScreen(section: CommunitySection, repository: DesktopReposit
         else key(section, userId, articleId) {
             when (section) {
                 CommunitySection.DYNAMIC -> CommunityLoginGate(repository, onLogin) { mid -> CommunityDynamicFeed(mid, community, navigation) }
-                CommunitySection.SEARCH -> CommunitySearch(query, community, navigation, runtime)
+                CommunitySection.SEARCH -> CommunitySearch(query, community, navigation, runtime, defaultSearchHintEnabled)
                 CommunitySection.USER -> CommunityUserSpace(userId, repository, social, community, navigation)
                 CommunitySection.MESSAGES -> CommunityLoginGate(repository, onLogin) { mid -> CommunityMessages(mid, community, navigation) }
                 CommunitySection.ARTICLE -> CommunityArticle(articleId, community, navigation)

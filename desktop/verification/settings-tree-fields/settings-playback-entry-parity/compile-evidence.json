@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "compiledSourceCount": 3,
+  "compiledSources": [
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsDetailEntries.kt",
+      "sha256Bytes": "adca48c0d878ac6faf36c309ad3c12c4912fee67644d597a43b6aa3fbe13c39d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsPlaybackCategoryEntries.kt",
+      "sha256Bytes": "2ae7efe7bbcb3014a70b319640510c277978bfeff786dd1ec224e0bd53a2656c"
+    },
+    {
+      "path": "PlaybackEntryFixture.kt",
+      "sha256Bytes": "9805149648773c3b8f6ea81b9c8e3706ebb1f5bb088dbfabe4349938778a3f83"
+    }
+  ],
+  "sharedHelperClassesSha256": "7cf4489d089e9e466c9a9e4fa00f3c9073377c2d9e640e904d78b54b90160275",
+  "privacyFrozenHandoffSha256": "90daa8a8d60c5ac7067e79c4d71b18e4318045b9787ade363bd8923d29aaf7b2",
+  "productSnapshotSha256": "89d1715f142d23d96cd42b91f1116f4337f37dfe65734ec908a4aab5ce45a54c",
+  "originalSourceInventory": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-playback-entry-parity"
+      ],
+      "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+    }
+  ],
+  "mainModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrNetworkRequests": false
+}

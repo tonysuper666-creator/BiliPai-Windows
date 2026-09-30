@@ -1,0 +1,131 @@
+{
+  "frozenCohorts": [
+    {
+      "cohort": "settings-home-section-parity",
+      "verifiedFrozenArtifacts": 89,
+      "manifestSha256Bytes": "d28bc4bd9f9c2104f1512ed8431cddd23eb9e931e5b4cbcf1c8320cb27f404bb"
+    },
+    {
+      "cohort": "settings-privacy-section-parity",
+      "verifiedFrozenArtifacts": 43,
+      "manifestSha256Bytes": "90daa8a8d60c5ac7067e79c4d71b18e4318045b9787ade363bd8923d29aaf7b2"
+    },
+    {
+      "cohort": "settings-playback-entry-parity",
+      "verifiedFrozenArtifacts": 19,
+      "manifestSha256Bytes": "c4a9e1b05e87980d870d5598d4ad86767e102700a2c973449d84fd4eee84b641"
+    },
+    {
+      "cohort": "listen-writer-barrier",
+      "verifiedFrozenArtifacts": 34,
+      "manifestSha256Bytes": "ec145fa9ffed4f08fcabb8a60264a9f888932d28ed490d6c52ce9aaf42c14952"
+    },
+    {
+      "cohort": "settings-storage-entry-parity",
+      "verifiedFrozenArtifacts": 43,
+      "manifestSha256Bytes": "f85a88e27221ca460b947f464414322191182542b27e578bdc26c662409c63ec"
+    },
+    {
+      "cohort": "settings-tree-integration-proof",
+      "verifiedFrozenArtifacts": 31,
+      "manifestSha256Bytes": "7918bef626d16d1ef842c92445737ab2fbaf72e0f4af471a44a81afa6c0fdc5a"
+    },
+    {
+      "cohort": "playback-settings-draft-memory",
+      "verifiedFrozenArtifacts": 37,
+      "manifestSha256Bytes": "4dabc2ce7b8e4e13a6b1e7bb2b27c8d7fb54d6ad01dc6af1322b8c8aa83e9b9f"
+    }
+  ],
+  "mainFocusedJUnit": {
+    "suites": [
+      {
+        "suite": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.audio.ListenAudioStoreTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.audio.ListenWriterBarrierTest",
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.data.DesktopSearchTest",
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.settings.DesktopSettingsNavigatorTest",
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "suite": "com.bilipai.desktop.settings.DesktopSettingsSearchTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "total": 43,
+    "passed": true
+  },
+  "pythonProductChecks": {
+    "privacy": 5,
+    "entries": 5,
+    "storageEntries": 5,
+    "settingsSearch": 11,
+    "total": 26,
+    "passed": true
+  },
+  "pointerCohorts": {
+    "privacy": 22,
+    "playbackEntries": 8,
+    "storageEntries": 4,
+    "actualProductTree": 50,
+    "treeEditorInputs": 4
+  },
+  "nativeDialogsVerified": false,
+  "realAccountRequests": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
+  "limitations": [
+    "Detail ports in Tree proof are explicit fixtures, not real dialogs.",
+    "Tree proof uses immutable initial Shell snapshot; combined sidebar backup restoration has a later successful compile and code review.",
+    "Full original settings/category/platform consumers and packaged native acceptance remain incomplete.",
+    "The delayed quality regression uses actual source actors and disk, without attaching a native player or proving audio decoding."
+  ],
+  "draftMemoryFocusedJUnit": {
+    "suites": [
+      {
+        "suite": "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest",
+        "tests": 2,
+        "passed": true
+      }
+    ],
+    "total": 2,
+    "passed": true
+  },
+  "distinctJUnitMethodsAcrossMainCohorts": 45
+}

@@ -1,0 +1,220 @@
+{
+  "frozen": true,
+  "baseSHA": "c5f8a21d17a33183b03209ce0de3e450c70cfd8c",
+  "ownedFiles": "owned-files.json",
+  "sourceInventory": "inventory.json",
+  "resourceInventory": "resource-inventory.json",
+  "originalSourceCount": 4,
+  "newSourceIdentities": [
+    "SearchHintSettingsStore.kt",
+    "SearchScreen.kt"
+  ],
+  "additionalResourceCount": 1,
+  "generatedSourceCount": 5,
+  "sharedDependencyAdded": false,
+  "mainModifiedByThisLane": false,
+  "evidence": {
+    "tempDiskAndPolicyCases": 7,
+    "actualPointerCount": 22,
+    "styles": [
+      "MATERIAL3",
+      "MIUIX"
+    ],
+    "actualRenameFailureAndPointerRetry": true,
+    "pythonExtractionTests": 5,
+    "consumerFilesCompiled": 2,
+    "nativeWindow": false,
+    "accountOrNetworkRequest": false
+  },
+  "mainBaselines": [
+    {
+      "path": "desktop/tools/extract-upstream-settings-categories.py",
+      "sha256Lf": "505d30ee759b5db265f38621887e85b2532d083336a6ee2c2c2f851d3185a8fe",
+      "patch": "01-category-divider-visibility.patch"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Lf": "fd0f0f1a5152e177aa2325ccc3607e4b3b25187069455a1f5ae01ef7670f43ff",
+      "patch": "02-original-search-hint-and-recommendation-semantics.patch"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "sha256Lf": "98b9be4bf157747ec6d00232269d1bbad1bbe73a7c4c94be37ce74ba4de12392",
+      "patch": "03-community-hint-state-hoisting.patch"
+    }
+  ],
+  "files": [
+    {
+      "path": "audited-boundaries.json",
+      "sha256Bytes": "3e77fd1e97ad92012515a73b368df728c7286023ee54529f3600c6da8b465b78"
+    },
+    {
+      "path": "compile-consumer-patch.py",
+      "sha256Bytes": "7edc7bed54ea21b7f4eb1be3535e358a4686d47cf033039cc1573cb1ce2c0b0f"
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "688caaa6dd08996f45934034709020d2fe9dd1fb1368f63c226dc2ed47f1d3ad"
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "f5322404309a9c3bae7d839faa1c2e7f6db3a656ac6d9cde924ca27b9bae77b6"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "ee806fad258e5f695b5b1407e0419c767045f952663286fbbb9ff1c3e1df7c39"
+    },
+    {
+      "path": "consumer-compile-evidence.json",
+      "sha256Bytes": "2877bc6cded5539d2d62d7a021c87f2bbf9971a644c4829764d640a07ebb91f7"
+    },
+    {
+      "path": "consumer-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "07eb527974843836fb1391c022e7634846db86ca77317a68df9c43ec9e1f4fe3"
+    },
+    {
+      "path": "extract-upstream-settings-privacy.py",
+      "sha256Bytes": "1ca17d337bdb3c485da43bc6806e167c0f6fdd8461fb779b63698dcdc918e83d"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "bf67b3bf3b8ecc03aa4bbfb5e4dcc53f07297b8f92829493d1f404b265ea4bcf"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/DesktopPrivacyAuthenticationSettings.kt",
+      "sha256Bytes": "6b7cb64513bd5477a0aaf3c5d72009701a821f203874712bddcb9aecb0220b0d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/SearchHintSettingsStore.kt",
+      "sha256Bytes": "1263ec6cf3de3c22f1750b47027ddfc7db3610815d52c1f668126a9af992dcbe"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/search/PrivacySearchHintPolicy.kt",
+      "sha256Bytes": "6184ccaa36abee0e2c5d61325cbfd769558790a6ac51a5a914fc5c603e5bfe6c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsPrivacySection.kt",
+      "sha256Bytes": "4ac611fd5aedfde0919278e922a23010674ec787b33e050d6bf015a644a83d60"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/settings/DesktopPrivacySettingsVectors.kt",
+      "sha256Bytes": "d3a427589171c6340e0a30d2c0f8b0fc8cdb9fef9c624cb901d6d448b24719e7"
+    },
+    {
+      "path": "integration-drafts/01-category-divider-visibility.patch",
+      "sha256Bytes": "f54be8cc0004df0523defad9188b032595fb9a46abbc380b34377975b36e80de"
+    },
+    {
+      "path": "integration-drafts/02-original-search-hint-and-recommendation-semantics.patch",
+      "sha256Bytes": "abe9691c192b6526e4213668f167b19bf66982ab639b1ec5d268d9a144bcc3fe"
+    },
+    {
+      "path": "integration-drafts/03-community-hint-state-hoisting.patch",
+      "sha256Bytes": "546bc12b3030ac6e676322f802d272b2b56270b107692b7b9bb72864c5047d54"
+    },
+    {
+      "path": "integration-drafts/baselines.json",
+      "sha256Bytes": "e5f8fe4b5f2e7759dabe99d0d5258779d1f65dcc097b9e179e97ba603200d114"
+    },
+    {
+      "path": "integration-drafts/CommunityScreens.kt",
+      "sha256Bytes": "ee03a6a3d9636b99b0c8172290e648b1be0cb40b5678a57ae01a9c16a4a135b3"
+    },
+    {
+      "path": "integration-drafts/CommunitySearchScreens.kt",
+      "sha256Bytes": "3aadac68c951f82e24c571b228b33bce52b503922faa2926ee683ba423dcea6f"
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "ea7142764cea99242f8199faad786b6fbbcca73457624d60fab7015082511715"
+    },
+    {
+      "path": "inventory.json",
+      "sha256Bytes": "ebf1e677bfd5d4b3ba64dad6a59615306e8649cb0f9c92f19d6f9a728b1c2b9e"
+    },
+    {
+      "path": "owned-files.json",
+      "sha256Bytes": "4071f01251d80323fa401a02db858db215a0c19037cabad656e0daeb249bbd97"
+    },
+    {
+      "path": "prepare-integration.py",
+      "sha256Bytes": "666c4d72def4ac217c6218307f40e08412f62c95cb4290b433315b541bc3cb2d"
+    },
+    {
+      "path": "proof/disk-authoritative-search.json",
+      "sha256Bytes": "0f53d4d0b97b26325003066bed6f8c95b334868a6a7abdaf2d6edf4df5ae7df8"
+    },
+    {
+      "path": "proof/disk-shared-settings.json",
+      "sha256Bytes": "d6163571cf8262154583f38094ee458dfdd4683bb6b815d3306a3981439465fb"
+    },
+    {
+      "path": "proof/material3-authoritative-search.json",
+      "sha256Bytes": "4c1fbfe52494169cae23521d4dcb9e8a0c9c68c04c88a1491031ba805b6b36ca"
+    },
+    {
+      "path": "proof/material3-privacy.png",
+      "sha256Bytes": "03584ce6af3fe71a8c87d4c66f9c1375c974fe6dc50b243fed52c1125632533b"
+    },
+    {
+      "path": "proof/material3-save-failure.png",
+      "sha256Bytes": "95f5d1b0349d06e789ed40eb28bbd48b1966257b50a84ef4ec23cd0c4927ee36"
+    },
+    {
+      "path": "proof/material3-shared-settings.json",
+      "sha256Bytes": "cc2762d103a62ba5cdbb5f4e47095434e0e56f08d15fe715211a829621a362ff"
+    },
+    {
+      "path": "proof/miuix-authoritative-search.json",
+      "sha256Bytes": "4c1fbfe52494169cae23521d4dcb9e8a0c9c68c04c88a1491031ba805b6b36ca"
+    },
+    {
+      "path": "proof/miuix-privacy.png",
+      "sha256Bytes": "859392ae042272d766f79d03b7e05cd4808524b807ce1b8c0510dd69b5b62dba"
+    },
+    {
+      "path": "proof/miuix-save-failure.png",
+      "sha256Bytes": "d517a04c9386fd7cede280a80b2a30e383101012dfcbbef8399e8d7ebef73658"
+    },
+    {
+      "path": "proof/miuix-shared-settings.json",
+      "sha256Bytes": "cc2762d103a62ba5cdbb5f4e47095434e0e56f08d15fe715211a829621a362ff"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "ea95e2e3543df85dec7b480e0d43312cc4d1cb4a97aaec16c593c27dccf7b728"
+    },
+    {
+      "path": "python-evidence.json",
+      "sha256Bytes": "b40725d4bdf6229ff30bca2b4c2e560e86afb91f60484b91fc842d1f41b8a7b9"
+    },
+    {
+      "path": "python-tests.log",
+      "sha256Bytes": "0fdc5a091488397736cf41a7f9de12296ea0e98ea063ee7e5ce74dd1d4faa4ff"
+    },
+    {
+      "path": "ready/DesktopPrivacySection.kt",
+      "sha256Bytes": "0f098a54d2f624ed19bb6ded4981c1ba9878af2de3a516dff08e200cb59a712e"
+    },
+    {
+      "path": "ready/DesktopPrivacySettings.kt",
+      "sha256Bytes": "8260fffef1ad414c23f5210f35408fe9a5a3b884e5fa324d05d0ef06d4736adf"
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "5ce65b10aa24f39fb687b3fb041f516c8b3dd5803be94c23f0849f716e123ebe"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "0c96d6ec3c8eb843dfe5e80c0a7fb3125a2242788ab28bada657766da3622403"
+    },
+    {
+      "path": "test_extraction.py",
+      "sha256Bytes": "7350856d328e785e96944226d0fa23d7bfbf7e2692f0fc9c48acbe02dabea6d9"
+    }
+  ]
+}

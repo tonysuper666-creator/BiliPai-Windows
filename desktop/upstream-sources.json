@@ -1692,7 +1692,8 @@
       "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010",
       "features": [
         "discovery",
-        "appearance-parity"
+        "appearance-parity",
+        "settings-privacy-section-parity"
       ],
       "mode": "policy-extract"
     },
@@ -3307,7 +3308,8 @@
       "features": [
         "playback",
         "audio",
-        "playback-settings-parity"
+        "playback-settings-parity",
+        "settings-home-section-parity"
       ]
     },
     {
@@ -3498,7 +3500,11 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-category-ui-parity"
+        "settings-category-ui-parity",
+        "settings-home-section-parity",
+        "settings-privacy-section-parity",
+        "settings-playback-entry-parity",
+        "settings-storage-backup-entries"
       ],
       "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
     },
@@ -3518,6 +3524,30 @@
       ],
       "sha256": "fa087c65a13bc0de384dbf751a5f403263d2149739ce1767ecd3eb6404ccb7cb",
       "declarationSha256": "f7e103373fda9e5f283fff08a798a86ee578e0c217747249e1b38236bcb4fd73"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSelectionComponents.kt",
+      "mode": "direct",
+      "features": [
+        "settings-home-section-parity"
+      ],
+      "sha256": "a7b15b949d665fa072a995bcbcbcc4aa4f1fbf0620e760e0bf84fa73783ada64"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SearchHintSettingsStore.kt",
+      "mode": "platform-rewrite",
+      "features": [
+        "settings-privacy-section-parity"
+      ],
+      "sha256": "da55c7243a61dc25294d5a55e9a230ba097fb9e2e929e85bb6d47440739fd9c5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "settings-privacy-section-parity"
+      ],
+      "sha256": "b2e9b7ebcdd8f717f15f028da7ade58897d07f647ef64f9b4376a9de90db07c5"
     }
   ],
   "featureCoverage": {
@@ -4953,6 +4983,13 @@
         "settings-category-symbols"
       ],
       "sha256": "d3f53b271fdb2150775b4252bf46139c3ab5ca872802372a1089e6e1dd6f2a35"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_shield_24.xml",
+      "features": [
+        "settings-privacy-symbols"
+      ],
+      "sha256": "2cc7a7bd203321ff547581554c64efacaa1208a818232393c291cbf6ccbbb5ff"
     }
   ]
 }

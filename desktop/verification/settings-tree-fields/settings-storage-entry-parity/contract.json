@@ -1,0 +1,46 @@
+{
+  "status": "frozen",
+  "integrated": false,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrNetworkRequests": false,
+  "ownedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "kind": "modify",
+      "baseSha256": "cf9f5646539428f4d731111b18d91bb51bb6ccaab8d013e60bb5ac54d91971ae",
+      "sha256": "f147aa6534defbcc85b5b4481589f9ae9722c2f0c054527c616ae1463426ea0e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt",
+      "kind": "new",
+      "sha256": "ce199bc114fe4921577f305cf6e171f2325c3ca0c0954df284b60295e72889f3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-storage-entries.py",
+      "kind": "new",
+      "sha256": "61fff17f8956edc6a9d156e017b702dcf4f6b2b56bcc044f1a14056d06da37bf"
+    }
+  ],
+  "sourceInventory": "source-inventory.json",
+  "generatedSourceCount": 1,
+  "newSourceIdentities": 0,
+  "newResources": 0,
+  "newDependencies": [],
+  "sharedHelpersOwner": "settings-playback-entry-parity",
+  "sharedHelpersFrozenSha256": "c4a9e1b05e87980d870d5598d4ad86767e102700a2c973449d84fd4eee84b641",
+  "fullActualBackupDialogCompiled": true,
+  "actualBackupDialogOpened": false,
+  "actualPointerCount": 4,
+  "styles": [
+    "MATERIAL3",
+    "MIUIX"
+  ],
+  "pythonExtractionTestsPassed": 5,
+  "originalStorageFullControlsImplemented": false,
+  "androidSettingsShareJsonProfilesImplemented": false,
+  "rootEntry": "SettingsStorageBackupCategoryEntrySection(onSettingsShareClick, onWebDavBackupClick)",
+  "rootDialog": "BackupSettingsDialog(..., initialSection=LOCAL_SETTINGS|WEBDAV); existing sidebar default ALL retained",
+  "ownedSetSha256": "fd09ac277b772fad861ac1e48ea30ae5d444e582b3698bc13f6ff24f43252b4b"
+}

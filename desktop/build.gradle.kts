@@ -313,6 +313,58 @@ val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/settings-categories"))
 }
 
+val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-home.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-home").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-home.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-home-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-home"))
+}
+
+val extractUpstreamSettingsPrivacy by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-privacy.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-privacy").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-privacy.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", "tools/extract-upstream-settings-search.py")
+    inputs.files(sources.filter { "settings-privacy-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "settings-privacy-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-privacy"))
+}
+
+val extractUpstreamSettingsEntries by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-entries.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-entries").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-entries.py", "tools/extract-upstream-settings-search.py",
+        "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-playback-entry-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-entries"))
+}
+
+val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsEntries)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-storage-entries.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/settings-storage-entries").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-settings-storage-entries.py", "tools/extract-upstream-plugins.py",
+        "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "settings-storage-backup-entries" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/settings-storage-entries"))
+}
+
 val extractNativeMusicRoot by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -505,12 +557,16 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/preferences"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-search"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/settings-categories"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-home"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-privacy"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-entries"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/settings-storage-entries"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/native-music-root"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamAppearance, verifyAppearanceDependencies) }
-tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractNativeMusicRoot, verifySettingsSearchDependencies) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamSettingsSearch, extractUpstreamSettingsCategories, extractUpstreamSettingsHome, extractUpstreamSettingsPrivacy, extractUpstreamSettingsEntries, extractUpstreamSettingsStorageEntries, extractNativeMusicRoot, verifySettingsSearchDependencies) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamComponents, extractUpstreamPreferences) }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamSpace, extractUpstreamSpaceContributions, extractUpstreamSpaceOverview) }
 sourceSets.named("main") { resources.srcDir(generatedAppearanceResources) }

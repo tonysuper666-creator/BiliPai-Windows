@@ -1,0 +1,13 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+    "kind": "modify",
+    "baseSha256": "8c025ac0f13ca50cf462c89082f45e751ed611a0af4f334dd9e841042805934e",
+    "sha256": "c1181da358b195beafabb60e3c25727814d55e2f88f43167f8ecfae2e0fc88ea"
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+    "kind": "new",
+    "sha256": "9da47ae2ddd0f1c28a8053273bd34b6f790ef4f92a50cd4065a423982750f7ae"
+  }
+]

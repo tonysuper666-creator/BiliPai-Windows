@@ -1,0 +1,102 @@
+{
+  "frozen": true,
+  "baseSHA": "c5f8a21d17a33183b03209ce0de3e450c70cfd8c",
+  "ownedFiles": "owned-files.json",
+  "sourceInventory": "inventory.json",
+  "generatedSourceCount": 2,
+  "originalSourceCount": 1,
+  "newSourceIdentities": 0,
+  "newResourceIdentities": 0,
+  "newDependencies": 0,
+  "evidence": {
+    "pythonExtractionTests": 5,
+    "actualPointerCount": 8,
+    "styles": [
+      "MATERIAL3",
+      "MIUIX"
+    ],
+    "focusBeforeCallback": true,
+    "mainModified": false,
+    "sharedGradleInvoked": false,
+    "nativeWindowCreated": false,
+    "accountOrNetworkRequests": false
+  },
+  "files": [
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "a4227bfadd275b1753f2dfac6e9b729b0b96849e18abd5c8a60fa0d29e13c3da"
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "ea37c44c639ed6e86046b5205ae9ea97189539ea0b6232d046bca473fe073c2e"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "81e85c5ed99295fd3fb9687ad75a7b97d1700afec0c9c4eb5bde11e0e458f0ef"
+    },
+    {
+      "path": "contract.json",
+      "sha256Bytes": "6d19f682013ae00dd25fe7a0d50931776f81554f79653c4abee8493859a9aff7"
+    },
+    {
+      "path": "extract-upstream-settings-entries.py",
+      "sha256Bytes": "6f207d8c9fb008059db1223d4e8a3bbaf8a664b964c2edf6bc78c1cd063fde03"
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "8e0366a5241c2479532d8c90bc3d42301f6c5e78f7d547ee127a780dd2448d54"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsDetailEntries.kt",
+      "sha256Bytes": "adca48c0d878ac6faf36c309ad3c12c4912fee67644d597a43b6aa3fbe13c39d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsPlaybackCategoryEntries.kt",
+      "sha256Bytes": "2ae7efe7bbcb3014a70b319640510c277978bfeff786dd1ec224e0bd53a2656c"
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "2ac7f6d09c6e2956459f15a4281768afa53634a4d170916b4076a46de02fd2fb"
+    },
+    {
+      "path": "inventory.json",
+      "sha256Bytes": "39f28469e74c0242367e043f7233f45a6a00fbbf64cb08907f9bb9b11cf0e960"
+    },
+    {
+      "path": "owned-files.json",
+      "sha256Bytes": "84a871a987d6c351fa4582831d8cc38afa24b18b45a7911b1a2db8596b35d5e0"
+    },
+    {
+      "path": "proof/material3-playback-entries.png",
+      "sha256Bytes": "22538bacc81b017180568db41f48531cf8c7ed4fb6107dfbb32d2fbc4a22ea66"
+    },
+    {
+      "path": "proof/miuix-playback-entries.png",
+      "sha256Bytes": "4521b0a2b19398a5eee71466c7414687733e9e4d5d24bd9c09ad2fee471c3762"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "c1a4b954cc7afd94d4eda75a44a1c5d28246c09d849e3fc7f1a8c936a29dd207"
+    },
+    {
+      "path": "python-evidence.json",
+      "sha256Bytes": "41b51c9b607963e2a9fdcff5451a55de87076dab767d05c3b3016f6dbd2c88cc"
+    },
+    {
+      "path": "python-tests.log",
+      "sha256Bytes": "6ed4994ee0ec1a8d94f4424e3ca381f6ca1d7b8d315dd5daffb280d6646080af"
+    },
+    {
+      "path": "resource-inventory.json",
+      "sha256Bytes": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "389397a9272d68f1a686426a110ccb56d987d60800e1ab1f40950bd215418000"
+    },
+    {
+      "path": "test_extraction.py",
+      "sha256Bytes": "f59677d0095e9998e9c9cb7c3745cf623f01964b10d969a2721177cd0980f17a"
+    }
+  ]
+}

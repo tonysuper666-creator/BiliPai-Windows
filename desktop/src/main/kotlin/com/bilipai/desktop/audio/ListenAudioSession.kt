@@ -424,13 +424,19 @@ internal class ListenAudioSession(
         closed = true
         val current = mutableState.value
         try {
-            store.save(ListenAudioSaved(current.queue, current.currentIndex, current.recent, current.favorites,
+            store.closeAndSave(ListenAudioSaved(current.queue, current.currentIndex, current.recent, current.favorites,
                 checkpointPosition()))
         } catch (failure: Exception) { mutableState.update { it.copy(error = "听视频状态保存失败：${failure.message}") } }
         finally {
             scope.cancel()
             stopOwnedSource()
         }
+    }
+
+    /** Root calls this from outside the audio scope before replacing managed files. */
+    internal suspend fun shutdownForRestore(): Unit = withContext(NonCancellable) {
+        close()
+        scope.coroutineContext[Job]?.join()
     }
 
     private fun stopOwnedSource() {
@@ -458,11 +464,27 @@ internal data class ListenAudioSaved(val queue: List<PlaylistItem> = emptyList()
 
 internal class ListenAudioStore(private val file: Path = Path.of(System.getenv("LOCALAPPDATA") ?: System.getProperty("java.io.tmpdir"), "BiliPaiWindows", "listen-state.json")) {
     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
+    private var writesClosed = false
     @Synchronized fun read(): ListenAudioSaved = runCatching {
         require(Files.isRegularFile(file) && Files.size(file) <= 8 * 1024 * 1024)
         json.decodeFromString<ListenAudioSaved>(Files.readString(file)).normalized()
     }.getOrDefault(ListenAudioSaved())
     @Synchronized fun save(snapshot: ListenAudioSaved) {
+        check(!writesClosed) { "听视频会话已关闭，不能写入旧状态实例" }
+        writeAtomic(snapshot)
+    }
+
+    /** Drain an accepted write, retire this facade, then persist its final snapshot under one monitor.
+     * A cancelled IO task already waiting for the monitor must recheck retirement after acquiring it.
+     * Ordinary close intentionally leaves independently constructed stores for the same file usable.
+     */
+    @Synchronized fun closeAndSave(snapshot: ListenAudioSaved) {
+        if (writesClosed) return
+        writesClosed = true
+        writeAtomic(snapshot)
+    }
+
+    private fun writeAtomic(snapshot: ListenAudioSaved) {
         val target = file.toAbsolutePath().normalize()
         Files.createDirectories(target.parent)
         val temporary = Files.createTempFile(target.parent, "listen-state-", ".tmp")

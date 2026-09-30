@@ -1,0 +1,20 @@
+[
+  {
+    "path": "main-kotlin-snapshot.jar",
+    "sha256": "b2d4abade9bb89e6a2380fa40d5411c7580619d31e9f30d507b3f265272277cb",
+    "entries": 6276,
+    "extendedWin32Paths": true
+  },
+  {
+    "path": "main-java-snapshot.jar",
+    "sha256": "a49ba7e27d63edc1084b2b583a8cff57fb1745c87939a6da2186049f47e44aac",
+    "entries": 141,
+    "extendedWin32Paths": true
+  },
+  {
+    "path": "main-resources-snapshot.jar",
+    "sha256": "dae6f08690026c80a194bb36f930eb871ba594c44cb0eb614f7dced7472410e4",
+    "entries": 48,
+    "extendedWin32Paths": true
+  }
+]

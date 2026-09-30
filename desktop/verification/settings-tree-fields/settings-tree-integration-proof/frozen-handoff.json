@@ -1,0 +1,152 @@
+{
+  "frozen": true,
+  "passed": true,
+  "kind": "Actual current product SettingsTree integration QA; no product patch",
+  "baseHead": "c5f8a21d17a33183b03209ce0de3e450c70cfd8c",
+  "productSnapshotManifestSha256": "c5259db35b27efb97b2743e3b7abf958d5c9cf1941b8b09ec6ff201b501c8d5d",
+  "actualPointerCount": 50,
+  "actualSemanticInputs": 4,
+  "styles": [
+    "MATERIAL3",
+    "MIUIX"
+  ],
+  "originalSourceInventory": [],
+  "resourceInventory": [],
+  "dependenciesAdded": [],
+  "gradleTasksAdded": [],
+  "compiledFixtureSourceCount": 1,
+  "productSourcesModified": false,
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "accountOrNetworkRequests": false,
+  "detailPortsExplicitlyFixtureOnly": true,
+  "realDiskHistoryAfterSearchDisposalVerified": true,
+  "authoritativeReader": "Actual DesktopCommunityRepository.searchPreferences",
+  "updaterActionExecutionCount": 0,
+  "files": [
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "ffe63080f45f83dfb7256b83129326bd556c185f37ecd80f3f7a3d895ed0c692"
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "c83898991e862ef664441e510d9363684e912a65766dec907a043d7089b2d566"
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "d9851a1629eabd95a212fd1ab46fb76d77435e7d79b843dfff7b3b44abeaf7d4"
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "a661add5c9e231912bdd2e965d75211f9f2be515bdf876897e4a588515b4d161"
+    },
+    {
+      "path": "CONTRACT.md",
+      "sha256Bytes": "2609ba466c9944b37c9d4c21d960bcadc78605225582f213d9173138e6d20d7f"
+    },
+    {
+      "path": "dependency-identities.json",
+      "sha256Bytes": "67d2e7cec525bb581fd235ad89d5c16e2bfd6e645fe75cc6efee55796c775e1b"
+    },
+    {
+      "path": "product-snapshot-manifest.json",
+      "sha256Bytes": "c5259db35b27efb97b2743e3b7abf958d5c9cf1941b8b09ec6ff201b501c8d5d"
+    },
+    {
+      "path": "proof/material3-authoritative-search.json",
+      "sha256Bytes": "8fec1d0f8cbf5f40e12be50423cddfaa68063b48bd2c238186e9ac96cf4dbfb6"
+    },
+    {
+      "path": "proof/material3-detail-fixture.png",
+      "sha256Bytes": "5dcf14b8c57c1ec9616346d19aa228de8422bff05281726faf1daf5e659e41d3"
+    },
+    {
+      "path": "proof/material3-history-after-search-disposal.json",
+      "sha256Bytes": "a1d7e89cf7760fa01c64c8f113b8f6d5bf46cb1c13b87e0eeb8514bb1b03a649"
+    },
+    {
+      "path": "proof/material3-privacy-authoritative.png",
+      "sha256Bytes": "35735afe1375862395fa6f0f25f75cd08e94facb7ebb385068a5bd742203eae3"
+    },
+    {
+      "path": "proof/material3-root.png",
+      "sha256Bytes": "59c5a909bf6689a003340f0a1935fd63053c4b9c93dcc685fe937c3b85b910af"
+    },
+    {
+      "path": "proof/material3-search-decoder.png",
+      "sha256Bytes": "e34918378bd865720a54e5e11e506493f3ff1e1ecb3bb8c7c5f49c539dd48330"
+    },
+    {
+      "path": "proof/material3-search-retained.png",
+      "sha256Bytes": "4ee458df4a27b07b04f94d024c4e933c070f7efcc53bec9fe6cd6949f08f5ede"
+    },
+    {
+      "path": "proof/material3-shared-settings.json",
+      "sha256Bytes": "09418b5f8e9cffe7c2a21f3966ca694df348615e97c146b5b1a1a82705ae7471"
+    },
+    {
+      "path": "proof/miuix-authoritative-search.json",
+      "sha256Bytes": "4e8bba5a76260618db813f7f29fdd0e3200a2a9f99d147b0d17297af30bc962d"
+    },
+    {
+      "path": "proof/miuix-detail-fixture.png",
+      "sha256Bytes": "5fa5751b8faaeb5fe731574b8df80b044bed2578496ef576bbcd1798bdaef01f"
+    },
+    {
+      "path": "proof/miuix-history-after-search-disposal.json",
+      "sha256Bytes": "12de7c77307035d96c0b40bc19e3572f6bea18544e6eaa883239f86cdde352cf"
+    },
+    {
+      "path": "proof/miuix-privacy-authoritative.png",
+      "sha256Bytes": "df969b6538b64e19f633fbf8b708d651009563b2ba9ca717f54c6ffaa31014a5"
+    },
+    {
+      "path": "proof/miuix-root.png",
+      "sha256Bytes": "8f19e6887af338027366909f622ee1c5a394d4e1692d240b8f7a479935378f94"
+    },
+    {
+      "path": "proof/miuix-search-decoder.png",
+      "sha256Bytes": "ebcb826ba2fa6aac253edab1a03e3a72845ad0c0972ad29d2e65a49ee9f91c7f"
+    },
+    {
+      "path": "proof/miuix-search-retained.png",
+      "sha256Bytes": "e21a8f0e0b4e736cca2aae1249e11eb9242e2523cdcce7fad1a671da009b3dd6"
+    },
+    {
+      "path": "proof/miuix-shared-settings.json",
+      "sha256Bytes": "741d6a94ef0cc345cb3d1a5003e4e21ca36517a93975d547e2e8b9772f3420dd"
+    },
+    {
+      "path": "proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/discovery/plugin-settings.json",
+      "sha256Bytes": "5b5db240905bd122f108a33decea8ad16c81fdd44c278e1d96c04094a7e0dca0"
+    },
+    {
+      "path": "proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/plugin-settings.json",
+      "sha256Bytes": "7a77244b912d67b20cbf2ec80fb75fd59f9131afdc37c7f14122d84082ffd9f5"
+    },
+    {
+      "path": "proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/search/plugin-settings.json",
+      "sha256Bytes": "9f3e974ed893fa605c9e12bdabe83a8861d70d3072af1edb05d231a9f6ee2e0b"
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "927bee8d4867bf614b96d4de5aed072809295479430f5f78bc25c8c248a52dce"
+    },
+    {
+      "path": "root-dependencies.json",
+      "sha256Bytes": "67d2e7cec525bb581fd235ad89d5c16e2bfd6e645fe75cc6efee55796c775e1b"
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "c48bfb4701b3514ce6af22ae6ed695cc8080bba39901fd6fb0284e85f8d0f2ef"
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "9bf703a5ef9331d84d637f5b40f3a9a4ac7a36fe065f02c61c2ec271ac89f307"
+    },
+    {
+      "path": "SettingsTreeFixture.kt",
+      "sha256Bytes": "ef41e87df0dc853c804dc4bd7acdf4b82910f1d9491997a5c48440066e9cbd9d"
+    }
+  ]
+}

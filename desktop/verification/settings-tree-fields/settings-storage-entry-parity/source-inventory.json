@@ -1,0 +1,10 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-storage-backup-entries"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  }
+]

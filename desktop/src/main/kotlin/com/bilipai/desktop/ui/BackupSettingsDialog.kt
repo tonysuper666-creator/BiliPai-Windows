@@ -19,8 +19,11 @@ import java.time.format.DateTimeFormatter
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
+enum class DesktopBackupSettingsSection { ALL, LOCAL_SETTINGS, WEBDAV }
+
 @Composable
-fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit, onExit: () -> Unit = onDismiss) {
+fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit, onExit: () -> Unit = onDismiss,
+    initialSection: DesktopBackupSettingsSection = DesktopBackupSettingsSection.ALL) {
     val state by backup.state.collectAsState()
     val scope = rememberCoroutineScope()
     var url by remember { mutableStateOf(state.snapshot.config.baseUrl) }
@@ -45,9 +48,14 @@ fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit
         Surface(shape = MaterialTheme.shapes.large) {
             Column(Modifier.width(740.dp).heightIn(max = 800.dp).padding(24.dp).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text("WebDAV 与设置备份", style = MaterialTheme.typography.headlineSmall)
+                Text(when (initialSection) {
+                    DesktopBackupSettingsSection.ALL -> "WebDAV 与设置备份"
+                    DesktopBackupSettingsSection.LOCAL_SETTINGS -> "Windows 设置备份"
+                    DesktopBackupSettingsSection.WEBDAV -> "WebDAV 云备份"
+                }, style = MaterialTheme.typography.headlineSmall)
                 Text("备份 Windows 本地设置、历史、听视频队列和插件。账号凭证、WebDAV 密码与下载的视频不写入备份。恢复成功后客户端将退出，再次打开即可生效。",
                     style = MaterialTheme.typography.bodyMedium)
+                if (initialSection != DesktopBackupSettingsSection.LOCAL_SETTINGS) {
                 OutlinedTextField(url, { url = it }, label = { Text("服务器地址") }, singleLine = true, enabled = !state.busy, modifier = Modifier.fillMaxWidth())
                 Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     OutlinedTextField(username, { username = it }, label = { Text("用户名") }, singleLine = true, enabled = !state.busy, modifier = Modifier.weight(1f))
@@ -66,14 +74,15 @@ fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit
                     OutlinedButton(onClick = { scope.launch { backup.listBackups() } }, enabled = !state.busy && state.snapshot.config.baseUrl.isNotBlank()) { Text("远端列表") }
                     OutlinedButton(onClick = { localRestore = null; restoreConfirmation = true }, enabled = !state.busy && state.backups.isNotEmpty()) { Text("恢复最新备份") }
                 }
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                }
+                if (initialSection != DesktopBackupSettingsSection.WEBDAV) FlowRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     TextButton(onClick = { choose(true)?.let { scope.launch { backup.exportLocal(it) } } }, enabled = !state.busy) { Text("导出本地备份") }
                     TextButton(onClick = { choose(false)?.let { localRestore = it; restoreConfirmation = true } }, enabled = !state.busy) { Text("从文件恢复") }
                 }
                 if (state.busy) LinearProgressIndicator(Modifier.fillMaxWidth())
                 state.message?.let { Text(it, color = if (state.error) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary) }
-                if (state.snapshot.lastSuccessfulBackupMs > 0) Text("上次备份：" + formatBackupTime(state.snapshot.lastSuccessfulBackupMs))
-                state.backups.forEach { entry -> Text("${entry.fileName}  ·  ${entry.sizeBytes / 1024} KB  ·  ${formatBackupTime(entry.lastModifiedEpochMs)}") }
+                if (initialSection != DesktopBackupSettingsSection.LOCAL_SETTINGS && state.snapshot.lastSuccessfulBackupMs > 0) Text("上次备份：" + formatBackupTime(state.snapshot.lastSuccessfulBackupMs))
+                if (initialSection != DesktopBackupSettingsSection.LOCAL_SETTINGS) state.backups.forEach { entry -> Text("${entry.fileName}  ·  ${entry.sizeBytes / 1024} KB  ·  ${formatBackupTime(entry.lastModifiedEpochMs)}") }
                 TextButton(onClick = if (state.restartRequired) onExit else onDismiss, enabled = !state.busy) { Text(if (state.restartRequired) "退出客户端" else "关闭") }
             }
         }

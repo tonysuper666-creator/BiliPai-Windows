@@ -1,0 +1,34 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-privacy-section-parity"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SearchHintSettingsStore.kt",
+    "mode": "platform-rewrite",
+    "features": [
+      "settings-privacy-section-parity"
+    ],
+    "sha256": "da55c7243a61dc25294d5a55e9a230ba097fb9e2e929e85bb6d47440739fd9c5"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-privacy-section-parity"
+    ],
+    "sha256": "b43c112cfda44780b29d3a5419f6ce452bf7c0e4859cb0145636eae3f3ec2010"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-privacy-section-parity"
+    ],
+    "sha256": "b2e9b7ebcdd8f717f15f028da7ade58897d07f647ef64f9b4376a9de90db07c5"
+  }
+]

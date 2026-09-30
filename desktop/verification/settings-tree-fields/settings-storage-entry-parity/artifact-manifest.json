@@ -1,0 +1,220 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "sha256Bytes": "cf9f5646539428f4d731111b18d91bb51bb6ccaab8d013e60bb5ac54d91971ae",
+      "bytes": 7182
+    },
+    {
+      "path": "classes/com/android/purebilibili/feature/settings/SettingsStorageBackupCategoryEntriesKt.class",
+      "sha256Bytes": "6edd81e3aaa9487d790cd91d2899c5011d786a3ed1fa8772cb9d8d024f725816",
+      "bytes": 12949
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsStorageEntriesKt$WhenMappings.class",
+      "sha256Bytes": "c4271e5ef9d5484aa60645bbbed077ae16753be05d1117a9e3a18b5e65e0dd27",
+      "bytes": 949
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/DesktopSettingsStorageEntriesKt.class",
+      "sha256Bytes": "b552b58370e42b9a91e5b9db56e12fd2d1ca5b907bbcbfedc00b8978a35046bb",
+      "bytes": 7075
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/StorageEntryFixtureKt$main$1$scheduler$1.class",
+      "sha256Bytes": "ae717f7d15188cd6377de843f3bc257fe8a477b043ed1ccfc98bef83023650a6",
+      "bytes": 1342
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/StorageEntryFixtureKt$main$1$settle$1.class",
+      "sha256Bytes": "5a6c62f690c6325903998ab53b57f402245b08bceb5f4c21a1b5f574d3a87761",
+      "bytes": 1717
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/StorageEntryFixtureKt$main$1.class",
+      "sha256Bytes": "88fd513be0bd19b94d2d0960cc7393383c4ddfea6970cb130ac6de3deedef8f1",
+      "bytes": 45920
+    },
+    {
+      "path": "classes/com/bilipai/desktop/settings/StorageEntryFixtureKt.class",
+      "sha256Bytes": "a226092a873170e8e38ef12f0b6d76d7d1bb98675d7aa5a585f47d884f1ec522",
+      "bytes": 1182
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$2$1$1$5$1$1$1.class",
+      "sha256Bytes": "6800626f404f0329730d9d043527a00a333d91c38702b7cb6dab92d58eb56930",
+      "bytes": 5082
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$2$1$1$5$2$1$1.class",
+      "sha256Bytes": "91f1216ae394a7ffeb278432228cc63c7b0856b0754d2775c7af022b4ee12a0a",
+      "bytes": 5087
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$2$1$1$5$3$1$1.class",
+      "sha256Bytes": "36216e3eab83bc65d39bce073bca10e762e4b022effa62f8c0c599805debe28e",
+      "bytes": 3687
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$2$1$1$5$4$1$1.class",
+      "sha256Bytes": "24249d26d3b5a48e03ce64edc82257cefa6ad9c67442c81c68cdadcc7a2488af",
+      "bytes": 3689
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$2$1$1$6$1$1$1$1.class",
+      "sha256Bytes": "f1564c52309e7375d13e38c1f84d7407fad0290a969f8c9587c2aac72d75e3e1",
+      "bytes": 3827
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$BackupSettingsDialog$4$1$1$1.class",
+      "sha256Bytes": "77ce18ea181ccc4b50c9618dd0fb8b47d725e40c87f54f4b63a720b23f67ba7a",
+      "bytes": 3962
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt$WhenMappings.class",
+      "sha256Bytes": "e10fafecf88cc18c4c8293f8eb623eacfffddce1b6f8301c6659ddc363177d3d",
+      "bytes": 913
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/BackupSettingsDialogKt.class",
+      "sha256Bytes": "5403bcef61f4a9b905b41f700253022ddb46a8c1dddf0865335879e68fe01ed4",
+      "bytes": 69069
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/ComposableSingletons$BackupSettingsDialogKt.class",
+      "sha256Bytes": "f09f103da330382c20e63d61b5e29565edeb88a164041076a40f0108386115ad",
+      "bytes": 12929
+    },
+    {
+      "path": "classes/com/bilipai/desktop/ui/DesktopBackupSettingsSection.class",
+      "sha256Bytes": "b899021f2d7ff3a6ebea4322b9a57aab0d9eee8777842c0e740d5c9c3edad310",
+      "bytes": 1992
+    },
+    {
+      "path": "classes/META-INF/settings_storage_entries.kotlin_module",
+      "sha256Bytes": "de9da67169562eda41930ce423328e4ebeaa2c786da9b7d3a201abd2a48a98bb",
+      "bytes": 247
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "a7d86cf218108d2fabc794da0929b7e657a0a4e9cec20372ecd3e3a1f4929e71",
+      "bytes": 920
+    },
+    {
+      "path": "compile-run.py",
+      "sha256Bytes": "fe54f121868962cdbc41b7e874f71efa54e7bc21b2cfd535950000a5dc5f6f69",
+      "bytes": 3724
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compiler.args",
+      "sha256Bytes": "f44f76bbeaec83a7af6501ea8d36099f1152baca26fd0d4925d67478bcf7b8fe",
+      "bytes": 58508
+    },
+    {
+      "path": "contract.json",
+      "sha256Bytes": "fe16036f26ce1ab5d5040acc6368216458e37f884852e7a19c7d587d8eb8c088",
+      "bytes": 1819
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "bd2dc70dc2061fefefda8a9671ae74c5630efc47681ad2acd3e1c7895704865b",
+      "bytes": 4294
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/settings/SettingsStorageBackupCategoryEntries.kt",
+      "sha256Bytes": "b5e3988c8fae65b5d3282c6e78bae6a936906017bd006e0a5be50390a5a6d096",
+      "bytes": 2324
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256Bytes": "ea3be07761fc90a20836ca311655010857a8a82a6f376ea40068b48150c6a34b",
+      "bytes": 5598
+    },
+    {
+      "path": "origin-evidence.json",
+      "sha256Bytes": "0177d22d46a46ee55d5832c054323d47cb20d56ac0b096a6f0546deee4000ab5",
+      "bytes": 1935
+    },
+    {
+      "path": "owned-files.json",
+      "sha256Bytes": "cb74c66208f3833a0c202835612dc3496ae1eab39e1ba3d155afc1b8a8df22f4",
+      "bytes": 698
+    },
+    {
+      "path": "patches/BackupSettingsDialog.kt.patch",
+      "sha256Bytes": "def7538b71d061e0405af2cfff1f5f86b94cd98fecac46dd3eaabd488a2fa57d",
+      "bytes": 4530
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "5600d4ebc76c42b3fc607e47071dfe18fd00d86e3e3385aa0a1567b72b77b7eb",
+      "bytes": 3703
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt",
+      "sha256Bytes": "ce199bc114fe4921577f305cf6e171f2325c3ca0c0954df284b60295e72889f3",
+      "bytes": 1150
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "sha256Bytes": "f147aa6534defbcc85b5b4481589f9ae9722c2f0c054527c616ae1463426ea0e",
+      "bytes": 7900
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-settings-storage-entries.py",
+      "sha256Bytes": "61fff17f8956edc6a9d156e017b702dcf4f6b2b56bcc044f1a14056d06da37bf",
+      "bytes": 4668
+    },
+    {
+      "path": "proof/material3-storage-entries.png",
+      "sha256Bytes": "c98f24b68e5777a705cadd298338d65bcc5aacf6f7ba945fd66abe7051820690",
+      "bytes": 11642
+    },
+    {
+      "path": "proof/miuix-storage-entries.png",
+      "sha256Bytes": "63684d7fda5b3e9fd9fa3831ab6d3cf780cc82fc22f35bf3c190bc91382f3ca5",
+      "bytes": 14205
+    },
+    {
+      "path": "proof/result.json",
+      "sha256Bytes": "627f99f5a66f29169968f98ec11d9dd974e17681dd785a4d6a0103001303cd86",
+      "bytes": 890
+    },
+    {
+      "path": "python-evidence.json",
+      "sha256Bytes": "0f469a7acfe19b98f87c7c8db61fc8cefae9b23d4b87648ee0013331f4d1105b",
+      "bytes": 108
+    },
+    {
+      "path": "runtime.args",
+      "sha256Bytes": "5a6a376319d9550fd7d39c6f2d0864eece6a9cb86715b480e8df3b44b1c6a9ad",
+      "bytes": 57074
+    },
+    {
+      "path": "runtime.log",
+      "sha256Bytes": "18c9eb564f42dc63f48cda7f94d234ba7a27449ea99b0e58d63d8b23d45efe02",
+      "bytes": 139
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "c61633056132b5e2dd83ff67e6d854d632696893bb708c4e1da0bbc41194ef03",
+      "bytes": 296
+    },
+    {
+      "path": "StorageEntryFixture.kt",
+      "sha256Bytes": "fc1abe1da3bd5094135315fce13fca68132eb570fa20c26dee5144f570fcc0d1",
+      "bytes": 7168
+    },
+    {
+      "path": "test_extraction.py",
+      "sha256Bytes": "713c0c94d933c411ab5b6bd3f299a3e772aa054dea7c65aeba30afe467468cdc",
+      "bytes": 3309
+    }
+  ]
+}

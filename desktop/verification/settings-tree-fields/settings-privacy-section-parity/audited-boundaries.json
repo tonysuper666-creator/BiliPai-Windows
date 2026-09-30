@@ -1,0 +1,44 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+    "sha256Lf": "9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/privacy/PrivacyAuthenticationPolicy.kt",
+    "sha256Lf": "3eb255a82254baf2e4cbd222ee4360df46d44a94a03cfc831a4ae67a24ef4703",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PermissionSettingsScreen.kt",
+    "sha256Lf": "8e0d5488adfdeeeddb0739939eaf3c6a5fd079b2bf10ba998948311f974bc1ab",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/MessageNotificationSettingsScreen.kt",
+    "sha256Lf": "0e668997260428875208cf590bc297c098f2f2861ae1f8a0fbd78346b1699627",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BlockedListScreen.kt",
+    "sha256Lf": "5c4f172ac7b12135a927a849c5e1f31c9ce0cc42b0eed219ba2da0b726e89a65",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/CommentFraudHistoryScreen.kt",
+    "sha256Lf": "09bbf5b5d7708db2922348a0c72843c882ac4f01d8953760ad8b20b98717cedf",
+    "mode": "reference-only",
+    "emitted": false,
+    "implementationClaimed": false
+  }
+]

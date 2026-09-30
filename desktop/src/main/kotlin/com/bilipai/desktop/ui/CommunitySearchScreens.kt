@@ -53,7 +53,7 @@ private class CommunitySearchState(initialQuery: String) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRepository, navigation: CommunityNavigation,
-    runtime: DesktopPluginRuntime? = null) {
+    runtime: DesktopPluginRuntime? = null, defaultSearchHintEnabled: Boolean = true) {
     val account by community.account.collectAsState()
     val memory = LocalDesktopBrowseMemory.current
     val stateKey = listOf("search-screen", account?.mid, initialQuery)
@@ -63,6 +63,8 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     val history by remember(preferences, account?.mid) { preferences.history(account?.mid) }.collectAsState()
     val privacy by preferences.privacyMode.collectAsState()
     val suggestionsEnabled by preferences.suggestionsEnabled.collectAsState()
+    val displayedSearchHint = state.defaultTerm.takeIf { defaultSearchHintEnabled }.orEmpty()
+    val resolvedSubmitKeyword = resolveSearchSubmitKeyword(draft, displayedSearchHint)
     val search = community.search
     val scope = rememberCoroutineScope()
     var suggestions by remember(state) { mutableStateOf(emptyList<SearchSuggestTag>()) }
@@ -103,14 +105,14 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
             catch (error: Exception) { if (error is CancellationException) throw error; state.trendingError = error }
         }
     }
-    LaunchedEffect(search, state, history, privacy, state.discoverRevision) {
+    LaunchedEffect(search, state, history, privacy, suggestionsEnabled, state.discoverRevision) {
         state.discoverError = null
-        try { state.discover = search.discover(history.map { it.keyword }, personalized = !privacy) }
+        try { state.discover = search.discover(history.map { it.keyword }, personalized = suggestionsEnabled && !privacy) }
         catch (error: Exception) { if (error is CancellationException) throw error; state.discoverError = error }
     }
-    LaunchedEffect(draft, submitted, suggestionsEnabled) {
+    LaunchedEffect(draft, submitted) {
         suggestions = emptyList(); suggestionsError = null
-        if (suggestionsEnabled && draft.isNotBlank() && draft.trim() != submitted) {
+        if (draft.isNotBlank() && draft.trim() != submitted) {
             delay(300)
             try { suggestions = community.searchSuggestions(draft).filter { it.term.isNotBlank() || it.value.isNotBlank() || it.name.isNotBlank() } }
             catch (error: Exception) { if (error is CancellationException) throw error; suggestionsError = error }
@@ -118,9 +120,9 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     }
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(draft, { draft = it }, singleLine = true, placeholder = { Text(state.defaultTerm.ifBlank { "搜索视频、UP 主或专栏" }) },
-                modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(draft.ifBlank { state.defaultTerm }) }))
-            Button(onClick = { submit(draft.ifBlank { state.defaultTerm }) }) { Text("搜索") }
+            OutlinedTextField(draft, { draft = it }, singleLine = true, placeholder = { Text(displayedSearchHint.ifBlank { resolveSearchDefaultPlaceholder() }) },
+                modifier = Modifier.weight(1f), keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search), keyboardActions = KeyboardActions(onSearch = { submit(resolvedSubmitKeyword) }))
+            Button(enabled = resolvedSubmitKeyword.isNotBlank(), onClick = { submit(resolvedSubmitKeyword) }) { Text("搜索") }
             if (submitted.isNotBlank()) TextButton(onClick = { draft = ""; submitted = ""; suggestions = emptyList() }) { Text("搜索首页") }
         }
         Row(Modifier.padding(horizontal = 20.dp).horizontalScroll(rememberScrollState()), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -128,7 +130,7 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
                 try { preferences.setPrivacyMode(enabled) } catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
                 finally { settingsBusy = false }
             } } }, enabled = !settingsBusy)
-            Text("搜索建议"); Switch(suggestionsEnabled, { enabled -> if (!settingsBusy) { settingsBusy = true; scope.launch {
+            Text("搜索推荐词"); Switch(suggestionsEnabled, { enabled -> if (!settingsBusy) { settingsBusy = true; scope.launch {
                 try { preferences.setSuggestionsEnabled(enabled) } catch (error: Exception) { if (error is CancellationException) throw error; state.historyError = error }
                 finally { settingsBusy = false }
             } } }, enabled = !settingsBusy)

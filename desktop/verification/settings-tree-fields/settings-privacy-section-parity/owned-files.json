@@ -1,0 +1,22 @@
+[
+  {
+    "source": "extract-upstream-settings-privacy.py",
+    "target": "desktop/tools/extract-upstream-settings-privacy.py",
+    "sha256Bytes": "1ca17d337bdb3c485da43bc6806e167c0f6fdd8461fb779b63698dcdc918e83d"
+  },
+  {
+    "source": "test_extraction.py",
+    "target": "desktop/tools/tests/test_extract_upstream_settings_privacy.py",
+    "sha256Bytes": "7350856d328e785e96944226d0fa23d7bfbf7e2692f0fc9c48acbe02dabea6d9"
+  },
+  {
+    "source": "ready/DesktopPrivacySettings.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySettings.kt",
+    "sha256Bytes": "8260fffef1ad414c23f5210f35408fe9a5a3b884e5fa324d05d0ef06d4736adf"
+  },
+  {
+    "source": "ready/DesktopPrivacySection.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySection.kt",
+    "sha256Bytes": "0f098a54d2f624ed19bb6ded4981c1ba9878af2de3a516dff08e200cb59a712e"
+  }
+]

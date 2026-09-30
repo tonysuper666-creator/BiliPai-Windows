@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.settings.DesktopSettingsNavigatorTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:10:36.324Z" hostname="TONYSUPER666" time="0.081">
+  <properties/>
+  <testcase name="leavingTheSettingsSubtreeRetiresSearchAndPendingFocus()" classname="com.bilipai.desktop.settings.DesktopSettingsNavigatorTest" time="0.004"/>
+  <testcase name="originalCategoriesDirectlyOpenOnlyTheirOriginalDestinations()" classname="com.bilipai.desktop.settings.DesktopSettingsNavigatorTest" time="0.003"/>
+  <testcase name="categoryActionsDoNotProjectToAnUnrelatedDetail()" classname="com.bilipai.desktop.settings.DesktopSettingsNavigatorTest" time="0.069"/>
+  <testcase name="detailBackKeepsSearchEntryWhileANewSearchGetsANewToken()" classname="com.bilipai.desktop.settings.DesktopSettingsNavigatorTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,37 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "sha256Bytes": "1ea3cf345c5fcaa39edab8775cd1772c3ff80ddd0d773557954240465dec39bc",
+    "evidence": "STORAGE_BACKUP group; DataStorageSection first two rows, original count7/paletteOffset2"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsDestinationCopy.kt",
+    "sha256Bytes": "f2fa82988cc62b7ccbd7858e444423874e594be282a65237a8b534079f33d505",
+    "evidence": "original SETTINGS_SHARE / WEBDAV_BACKUP titles and summaries"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSearchNavigationPolicy.kt",
+    "sha256Bytes": "e3f51126ec3a53bd000b7e31bc33656a462fa7b987f9457c6e94302a981cce64",
+    "evidence": "separate original SettingsShare and WebDavBackup destinations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsShareScreen.kt",
+    "sha256Bytes": "62eac5336ad68f0718e0b29ce68e05d932431f4fe6de38bf4dec159bbdf82644",
+    "evidence": "JSON/profiles/templates/import preview/system share are outside Windows ZIP slice"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupScreen.kt",
+    "sha256Bytes": "c52b8f4babb29989685acc544df5a0f00d55fed6e322e00ee9c01d685c96f680",
+    "evidence": "actual original remote backup actions"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+    "sha256Bytes": "902e15d3d8223b5a81388bbe1c3c844eef31b0b73c2784f1b1805076bb2aaab8",
+    "evidence": "existing actual shared coordinator actions; no new provider"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "sha256Bytes": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+    "evidence": "Windows ZIP archive format and exclusions"
+  }
+]

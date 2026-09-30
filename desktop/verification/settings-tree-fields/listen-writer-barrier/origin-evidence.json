@@ -1,0 +1,22 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt",
+    "sha256": "e01f4e304f037a0045c1d421fa7bcf06c3fe9aa3edafefb216add66d2469b7dc",
+    "evidence": "record recent 164–178, save last session 181–195: no privacy guard"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+    "sha256": "b69956d28f747216e317e564fe22cfa2cced8c23f6a657c5c3ddea78ddf8adca",
+    "evidence": "original recent/session persistence has no privacy guard"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "sha256": "a01d3ebecee8c486090726cdaa631177d4b47bd3d96da6723069079e1cf0658d",
+    "evidence": "beforeRestore / registered shutdown call existing listen.close; Disposable/account close remains independent"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+    "sha256": "657a01d346bc607a71497f484edcb2335b1246b8dff8d9f5a7d4a74e167e0eb9",
+    "evidence": "beforeReplace executes before atomic validated file replacement"
+  }
+]

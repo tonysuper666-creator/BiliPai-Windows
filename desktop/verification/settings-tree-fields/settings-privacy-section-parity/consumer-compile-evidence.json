@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "compiledFiles": [
+    {
+      "path": "CommunitySearchScreens.kt",
+      "sha256Lf": "3aadac68c951f82e24c571b228b33bce52b503922faa2926ee683ba423dcea6f"
+    },
+    {
+      "path": "CommunityScreens.kt",
+      "sha256Lf": "ee03a6a3d9636b99b0c8172290e648b1be0cb40b5678a57ae01a9c16a4a135b3"
+    }
+  ],
+  "networkBackedScreenComposed": false,
+  "nativeWindowCreated": false,
+  "sharedGradleInvoked": false
+}

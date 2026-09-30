@@ -1,0 +1,21 @@
+{
+  "package": "com.android.purebilibili.feature.settings",
+  "sharedDeclarations": [
+    "SettingsDetailEntry",
+    "SettingsDetailGroup",
+    "SettingsDetailEntrySection"
+  ],
+  "playbackEntry": "SettingsPlaybackCategoryEntrySection(onPlaybackClick: () -> Unit)",
+  "canonicalCategory": "PLAYBACK_QUALITY",
+  "actualRootConsumer": "com.bilipai.desktop.ui.PlaybackSettingsDialog",
+  "rootConsumerSourceSha256Lf": "27850d281d03241095fee39a7ddbdaf8dcf423bcb7f63ea4ba34182d92de0981",
+  "callbacksReceiveFocusFirst": true,
+  "focuses": [
+    "PLAYBACK/playback_decoder",
+    "PLAYBACK/playback_interaction"
+  ],
+  "newSourceIdentities": 0,
+  "newResourceIdentities": 0,
+  "newDependencies": 0,
+  "nativeDialogRuntimeClaimed": false
+}

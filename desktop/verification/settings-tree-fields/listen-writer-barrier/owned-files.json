@@ -1,0 +1,13 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+    "kind": "modify",
+    "baseSha256": "b8b2a7a7bef75d7947cf10cd2c69c2e2ed7a79243525a902a369b60abe13947e",
+    "sha256": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2"
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+    "kind": "new",
+    "sha256": "38f78d69746db4d0f7a4cc0d89ed369f902d5aa190e3e5a8cd2c5c8c0c68fb86"
+  }
+]

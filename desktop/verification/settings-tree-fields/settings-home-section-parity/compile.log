@@ -1,0 +1,12 @@
+desktop\.local\settings-home-section-parity\HomeStoreFixture.kt:61:5: warning: expression is unused.
+    Unit
+    ^^^^
+desktop\.local\settings-home-section-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:78:30: warning: 'enum entry APPEARANCE_INTERACTION: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.APPEARANCE_INTERACTION -> SettingsRootCategory.APPEARANCE_THEME
+                             ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-section-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:79:30: warning: 'enum entry CONTENT_PLAYBACK: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.CONTENT_PLAYBACK -> SettingsRootCategory.PLAYBACK_QUALITY
+                             ^^^^^^^^^^^^^^^^
+desktop\.local\settings-home-section-parity\fixture-search-helpers\com\android\purebilibili\feature\settings\SettingsRootCategoryPolicy.kt:80:30: warning: 'enum entry PRIVACY_STORAGE: SettingsRootCategory' is deprecated. �����ڻָ��ɰ汾��������õ���״̬.
+        SettingsRootCategory.PRIVACY_STORAGE -> SettingsRootCategory.PRIVACY_PERMISSION
+                             ^^^^^^^^^^^^^^^

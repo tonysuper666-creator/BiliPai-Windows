@@ -1,0 +1,175 @@
+{
+  "status": "frozen",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256": "b8b2a7a7bef75d7947cf10cd2c69c2e2ed7a79243525a902a369b60abe13947e",
+      "bytes": 26520
+    },
+    {
+      "path": "BaselineListenWriterRace.kt",
+      "sha256": "c05c3d927eebe6f7a78af875d2f21ae2ac34d758d0c252450ee7f6a88d51cee8",
+      "bytes": 4029
+    },
+    {
+      "path": "contract.json",
+      "sha256": "26269032d96824e4c4c718bb4955e49dbdebd69d26f146b58a1309d5c4bc9ce1",
+      "bytes": 1327
+    },
+    {
+      "path": "evidence/baseline-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/baseline-process-completion.json",
+      "sha256": "b6601abdaf97efda1b4443cc7d2ad0e51cb33a7d816459e57080f9a9f3d95896",
+      "bytes": 104
+    },
+    {
+      "path": "evidence/baseline-race.json",
+      "sha256": "3a729fde567d9fa776b05b3050afc319887583be37962e7827fddfdefe8e6714",
+      "bytes": 298
+    },
+    {
+      "path": "evidence/baseline-runtime.log",
+      "sha256": "f0e8f79f3041d5e358e29462fe7c39b9e0283f418ee856a0a2e146f2517b86e1",
+      "bytes": 103
+    },
+    {
+      "path": "evidence/patched-compile.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/patched-process-completion.json",
+      "sha256": "b6601abdaf97efda1b4443cc7d2ad0e51cb33a7d816459e57080f9a9f3d95896",
+      "bytes": 104
+    },
+    {
+      "path": "evidence/patched-report.json",
+      "sha256": "e6886ef0eef87fd2384a1ae09351b6e2a8043a2fd2cd7a6f63df47069f531b5d",
+      "bytes": 2800
+    },
+    {
+      "path": "evidence/patched-runtime.log",
+      "sha256": "e81ee4bdd1751c91d9a0cceca3ed1080fe40bfa6166325151c2a894a74890e8f",
+      "bytes": 3325
+    },
+    {
+      "path": "freeze.py",
+      "sha256": "446800b03fbe75be2e3fbfeb6fe1ce36bafe0010b17c973002c0edc8125985ca",
+      "bytes": 3922
+    },
+    {
+      "path": "INTEGRATION.md",
+      "sha256": "15280150a0ef99ffb35b26582e90da646e8badc8beb5edd8b329cacea867cd05",
+      "bytes": 7356
+    },
+    {
+      "path": "java-snapshot-entries.json",
+      "sha256": "434e2eb28e8efaa8386f5b7608983853aa12afa5180ca06a64a06cd9fafdf88e",
+      "bytes": 28297
+    },
+    {
+      "path": "kotlin-snapshot-entries.json",
+      "sha256": "f5f641218a1e8f1349433c9a9ac7fa3654b2804df8378e5671ea09d062e45db2",
+      "bytes": 1356370
+    },
+    {
+      "path": "main-java-snapshot.jar",
+      "sha256": "a49ba7e27d63edc1084b2b583a8cff57fb1745c87939a6da2186049f47e44aac",
+      "bytes": 189789
+    },
+    {
+      "path": "main-kotlin-snapshot.jar",
+      "sha256": "b2d4abade9bb89e6a2380fa40d5411c7580619d31e9f30d507b3f265272277cb",
+      "bytes": 17248326
+    },
+    {
+      "path": "main-resources-snapshot.jar",
+      "sha256": "dae6f08690026c80a194bb36f930eb871ba594c44cb0eb614f7dced7472410e4",
+      "bytes": 871283
+    },
+    {
+      "path": "origin-evidence.json",
+      "sha256": "20c31a823c8c8a31478e80e38a3c1aa38de1febc295aca1e93d3033bbf801eea",
+      "bytes": 1119
+    },
+    {
+      "path": "owned-files.json",
+      "sha256": "f3f7297886de455597940477db209dc4ac08d608adf9cf2bd8f58f6e017d02ab",
+      "bytes": 502
+    },
+    {
+      "path": "patches/ListenAudioSession.kt.patch",
+      "sha256": "dbfc2684e163918329651d925e3029627408e297cdc163f963842a123e36b817",
+      "bytes": 2566
+    },
+    {
+      "path": "prepare.py",
+      "sha256": "c5d01214a760131a39adcf0cdf555e5d5c20115bef7e8abf20e419c4c93b581a",
+      "bytes": 3283
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2",
+      "bytes": 26988
+    },
+    {
+      "path": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "sha256": "38f78d69746db4d0f7a4cc0d89ed369f902d5aa190e3e5a8cd2c5c8c0c68fb86",
+      "bytes": 13698
+    },
+    {
+      "path": "preserved-regression-tests.json",
+      "sha256": "dbe70df9c3abad436b2f8a6a5c6de27d7b1750911a07f1f20b814af3d463916c",
+      "bytes": 909
+    },
+    {
+      "path": "regression-support/DesktopMusicRootIntegrationTest.kt",
+      "sha256": "74cd1ea08638360e01b980211ba7f51a8513b6f11fcd2dcd86fab54a3bc24d1a",
+      "bytes": 16156
+    },
+    {
+      "path": "regression-support/DesktopNativeMusicIntegrationTest.kt",
+      "sha256": "da8a6cb3414aa5a9a4096ffeceecdd188765f103c2d60878d1ba978ec8096745",
+      "bytes": 18295
+    },
+    {
+      "path": "regression-support/ListenAudioLifecycleTest.kt",
+      "sha256": "7c7234bbe6e98716bc0bd426aeddc3b743d5bf043ad4e66e8508d8bc0ddbec6a",
+      "bytes": 6989
+    },
+    {
+      "path": "regression-support/ListenAudioStoreTest.kt",
+      "sha256": "bbe2b7685991119ddca2ddb7170df9f5488c6501ea76c555446b3db417898e8f",
+      "bytes": 6003
+    },
+    {
+      "path": "resources-snapshot-entries.json",
+      "sha256": "bb99435879cca6d0048d6499c42d23af4d2a21cf6d6eff223ed9252fcff071bc",
+      "bytes": 8907
+    },
+    {
+      "path": "RunListenWriterBarrier.kt",
+      "sha256": "67fcc110114d0a5e594a0beae423be565d885e983485ad1101562ac2867f2059",
+      "bytes": 2350
+    },
+    {
+      "path": "snapshot-identity.json",
+      "sha256": "a26adf4d2912b72fb9af8fb85331b4a48d4c18f9f55b870ba2a0bff85bc99bb3",
+      "bytes": 570
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
+      "bytes": 4
+    },
+    {
+      "path": "verify-isolated.py",
+      "sha256": "d4fb29ec295fb524c07b21fb3e2719acd9b104b6183569955dc51455edb38910",
+      "bytes": 5199
+    }
+  ]
+}

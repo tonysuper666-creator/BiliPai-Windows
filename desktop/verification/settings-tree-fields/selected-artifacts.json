@@ -1,0 +1,560 @@
+{
+  "artifacts": [
+    {
+      "path": "settings-home-section-parity/verified-artifacts.json",
+      "sha256Bytes": "d28bc4bd9f9c2104f1512ed8431cddd23eb9e931e5b4cbcf1c8320cb27f404bb"
+    },
+    {
+      "path": "settings-home-section-parity/compile-evidence.json",
+      "sha256Bytes": "364c2cab564368198a2d72dd31b4a7e00e020410ac4780e284fe4860334c04d3"
+    },
+    {
+      "path": "settings-home-section-parity/compile.log",
+      "sha256Bytes": "3d0d919973254a737aea39fd6ca43e7384978ffe72f04070134944a3bc54ec20"
+    },
+    {
+      "path": "settings-home-section-parity/dependency-identities.json",
+      "sha256Bytes": "4ac736d1f2d5c9ab0c667b2b91bc2826f6f236d659bbb4fc0d5bb5f7cd8f466e"
+    },
+    {
+      "path": "settings-home-section-parity/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "b9ca1f12fee689230e4f156371b973ccc8fe2263a2a51ecda5c86a2fbeebf25b"
+    },
+    {
+      "path": "settings-home-section-parity/HomeStoreFixture.kt",
+      "sha256Bytes": "99763cee9798f328a494e62b250762e113f6f7c69b940bb67b0e1011f15725a0"
+    },
+    {
+      "path": "settings-home-section-parity/proof/result.json",
+      "sha256Bytes": "06c3d6da5a167d27f8f6fc806e52635bf6081c8e6b56d6f5954ae1d92c5fbc76"
+    },
+    {
+      "path": "settings-home-section-parity/ROOT-INTEGRATION.md",
+      "sha256Bytes": "e1cc68c20c03e0dce92e40f090732acd1575c9c01ef77940ecafdbe55c7939a9"
+    },
+    {
+      "path": "settings-home-section-parity/runtime.log",
+      "sha256Bytes": "f64ce2a48cd8e14c3e591895422a953a84b53be36e45affbaf3655e997da7f2b"
+    },
+    {
+      "path": "settings-home-section-parity/source-inventory.json",
+      "sha256Bytes": "c1aa2fe2345c13fc4b82d770125ba3b4280c62ea0e4b408789de839d1144d3c8"
+    },
+    {
+      "path": "settings-home-section-parity/source-selection-result.json",
+      "sha256Bytes": "046b67db053a074ecae4fbce2f1af8a4ee1952520501a020d68de49ad481e9d6"
+    },
+    {
+      "path": "settings-privacy-section-parity/frozen-handoff.json",
+      "sha256Bytes": "90daa8a8d60c5ac7067e79c4d71b18e4318045b9787ade363bd8923d29aaf7b2"
+    },
+    {
+      "path": "settings-privacy-section-parity/audited-boundaries.json",
+      "sha256Bytes": "3e77fd1e97ad92012515a73b368df728c7286023ee54529f3600c6da8b465b78"
+    },
+    {
+      "path": "settings-privacy-section-parity/compile-evidence.json",
+      "sha256Bytes": "688caaa6dd08996f45934034709020d2fe9dd1fb1368f63c226dc2ed47f1d3ad"
+    },
+    {
+      "path": "settings-privacy-section-parity/compile.log",
+      "sha256Bytes": "ee806fad258e5f695b5b1407e0419c767045f952663286fbbb9ff1c3e1df7c39"
+    },
+    {
+      "path": "settings-privacy-section-parity/consumer-compile-evidence.json",
+      "sha256Bytes": "2877bc6cded5539d2d62d7a021c87f2bbf9971a644c4829764d640a07ebb91f7"
+    },
+    {
+      "path": "settings-privacy-section-parity/consumer-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "settings-privacy-section-parity/dependency-identities.json",
+      "sha256Bytes": "07eb527974843836fb1391c022e7634846db86ca77317a68df9c43ec9e1f4fe3"
+    },
+    {
+      "path": "settings-privacy-section-parity/INTEGRATION.md",
+      "sha256Bytes": "ea7142764cea99242f8199faad786b6fbbcca73457624d60fab7015082511715"
+    },
+    {
+      "path": "settings-privacy-section-parity/inventory.json",
+      "sha256Bytes": "ebf1e677bfd5d4b3ba64dad6a59615306e8649cb0f9c92f19d6f9a728b1c2b9e"
+    },
+    {
+      "path": "settings-privacy-section-parity/owned-files.json",
+      "sha256Bytes": "4071f01251d80323fa401a02db858db215a0c19037cabad656e0daeb249bbd97"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/disk-authoritative-search.json",
+      "sha256Bytes": "0f53d4d0b97b26325003066bed6f8c95b334868a6a7abdaf2d6edf4df5ae7df8"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/disk-shared-settings.json",
+      "sha256Bytes": "d6163571cf8262154583f38094ee458dfdd4683bb6b815d3306a3981439465fb"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/material3-authoritative-search.json",
+      "sha256Bytes": "4c1fbfe52494169cae23521d4dcb9e8a0c9c68c04c88a1491031ba805b6b36ca"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/material3-privacy.png",
+      "sha256Bytes": "03584ce6af3fe71a8c87d4c66f9c1375c974fe6dc50b243fed52c1125632533b"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/material3-save-failure.png",
+      "sha256Bytes": "95f5d1b0349d06e789ed40eb28bbd48b1966257b50a84ef4ec23cd0c4927ee36"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/material3-shared-settings.json",
+      "sha256Bytes": "cc2762d103a62ba5cdbb5f4e47095434e0e56f08d15fe715211a829621a362ff"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/miuix-authoritative-search.json",
+      "sha256Bytes": "4c1fbfe52494169cae23521d4dcb9e8a0c9c68c04c88a1491031ba805b6b36ca"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/miuix-privacy.png",
+      "sha256Bytes": "859392ae042272d766f79d03b7e05cd4808524b807ce1b8c0510dd69b5b62dba"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/miuix-save-failure.png",
+      "sha256Bytes": "d517a04c9386fd7cede280a80b2a30e383101012dfcbbef8399e8d7ebef73658"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/miuix-shared-settings.json",
+      "sha256Bytes": "cc2762d103a62ba5cdbb5f4e47095434e0e56f08d15fe715211a829621a362ff"
+    },
+    {
+      "path": "settings-privacy-section-parity/proof/result.json",
+      "sha256Bytes": "ea95e2e3543df85dec7b480e0d43312cc4d1cb4a97aaec16c593c27dccf7b728"
+    },
+    {
+      "path": "settings-privacy-section-parity/python-evidence.json",
+      "sha256Bytes": "b40725d4bdf6229ff30bca2b4c2e560e86afb91f60484b91fc842d1f41b8a7b9"
+    },
+    {
+      "path": "settings-privacy-section-parity/python-tests.log",
+      "sha256Bytes": "0fdc5a091488397736cf41a7f9de12296ea0e98ea063ee7e5ce74dd1d4faa4ff"
+    },
+    {
+      "path": "settings-privacy-section-parity/resource-inventory.json",
+      "sha256Bytes": "5ce65b10aa24f39fb687b3fb041f516c8b3dd5803be94c23f0849f716e123ebe"
+    },
+    {
+      "path": "settings-privacy-section-parity/runtime.log",
+      "sha256Bytes": "0c96d6ec3c8eb843dfe5e80c0a7fb3125a2242788ab28bada657766da3622403"
+    },
+    {
+      "path": "settings-playback-entry-parity/frozen-handoff.json",
+      "sha256Bytes": "c4a9e1b05e87980d870d5598d4ad86767e102700a2c973449d84fd4eee84b641"
+    },
+    {
+      "path": "settings-playback-entry-parity/compile-evidence.json",
+      "sha256Bytes": "a4227bfadd275b1753f2dfac6e9b729b0b96849e18abd5c8a60fa0d29e13c3da"
+    },
+    {
+      "path": "settings-playback-entry-parity/compile.log",
+      "sha256Bytes": "81e85c5ed99295fd3fb9687ad75a7b97d1700afec0c9c4eb5bde11e0e458f0ef"
+    },
+    {
+      "path": "settings-playback-entry-parity/contract.json",
+      "sha256Bytes": "6d19f682013ae00dd25fe7a0d50931776f81554f79653c4abee8493859a9aff7"
+    },
+    {
+      "path": "settings-playback-entry-parity/INTEGRATION.md",
+      "sha256Bytes": "2ac7f6d09c6e2956459f15a4281768afa53634a4d170916b4076a46de02fd2fb"
+    },
+    {
+      "path": "settings-playback-entry-parity/inventory.json",
+      "sha256Bytes": "39f28469e74c0242367e043f7233f45a6a00fbbf64cb08907f9bb9b11cf0e960"
+    },
+    {
+      "path": "settings-playback-entry-parity/owned-files.json",
+      "sha256Bytes": "84a871a987d6c351fa4582831d8cc38afa24b18b45a7911b1a2db8596b35d5e0"
+    },
+    {
+      "path": "settings-playback-entry-parity/proof/material3-playback-entries.png",
+      "sha256Bytes": "22538bacc81b017180568db41f48531cf8c7ed4fb6107dfbb32d2fbc4a22ea66"
+    },
+    {
+      "path": "settings-playback-entry-parity/proof/miuix-playback-entries.png",
+      "sha256Bytes": "4521b0a2b19398a5eee71466c7414687733e9e4d5d24bd9c09ad2fee471c3762"
+    },
+    {
+      "path": "settings-playback-entry-parity/proof/result.json",
+      "sha256Bytes": "c1a4b954cc7afd94d4eda75a44a1c5d28246c09d849e3fc7f1a8c936a29dd207"
+    },
+    {
+      "path": "settings-playback-entry-parity/python-evidence.json",
+      "sha256Bytes": "41b51c9b607963e2a9fdcff5451a55de87076dab767d05c3b3016f6dbd2c88cc"
+    },
+    {
+      "path": "settings-playback-entry-parity/python-tests.log",
+      "sha256Bytes": "6ed4994ee0ec1a8d94f4424e3ca381f6ca1d7b8d315dd5daffb280d6646080af"
+    },
+    {
+      "path": "settings-playback-entry-parity/resource-inventory.json",
+      "sha256Bytes": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "settings-playback-entry-parity/runtime.log",
+      "sha256Bytes": "389397a9272d68f1a686426a110ccb56d987d60800e1ab1f40950bd215418000"
+    },
+    {
+      "path": "listen-writer-barrier/artifact-manifest.json",
+      "sha256Bytes": "ec145fa9ffed4f08fcabb8a60264a9f888932d28ed490d6c52ce9aaf42c14952"
+    },
+    {
+      "path": "listen-writer-barrier/BaselineListenWriterRace.kt",
+      "sha256Bytes": "c05c3d927eebe6f7a78af875d2f21ae2ac34d758d0c252450ee7f6a88d51cee8"
+    },
+    {
+      "path": "listen-writer-barrier/contract.json",
+      "sha256Bytes": "26269032d96824e4c4c718bb4955e49dbdebd69d26f146b58a1309d5c4bc9ce1"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/baseline-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/baseline-process-completion.json",
+      "sha256Bytes": "b6601abdaf97efda1b4443cc7d2ad0e51cb33a7d816459e57080f9a9f3d95896"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/baseline-race.json",
+      "sha256Bytes": "3a729fde567d9fa776b05b3050afc319887583be37962e7827fddfdefe8e6714"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/baseline-runtime.log",
+      "sha256Bytes": "f0e8f79f3041d5e358e29462fe7c39b9e0283f418ee856a0a2e146f2517b86e1"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/patched-compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/patched-process-completion.json",
+      "sha256Bytes": "b6601abdaf97efda1b4443cc7d2ad0e51cb33a7d816459e57080f9a9f3d95896"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/patched-report.json",
+      "sha256Bytes": "e6886ef0eef87fd2384a1ae09351b6e2a8043a2fd2cd7a6f63df47069f531b5d"
+    },
+    {
+      "path": "listen-writer-barrier/evidence/patched-runtime.log",
+      "sha256Bytes": "e81ee4bdd1751c91d9a0cceca3ed1080fe40bfa6166325151c2a894a74890e8f"
+    },
+    {
+      "path": "listen-writer-barrier/INTEGRATION.md",
+      "sha256Bytes": "15280150a0ef99ffb35b26582e90da646e8badc8beb5edd8b329cacea867cd05"
+    },
+    {
+      "path": "listen-writer-barrier/java-snapshot-entries.json",
+      "sha256Bytes": "434e2eb28e8efaa8386f5b7608983853aa12afa5180ca06a64a06cd9fafdf88e"
+    },
+    {
+      "path": "listen-writer-barrier/kotlin-snapshot-entries.json",
+      "sha256Bytes": "f5f641218a1e8f1349433c9a9ac7fa3654b2804df8378e5671ea09d062e45db2"
+    },
+    {
+      "path": "listen-writer-barrier/origin-evidence.json",
+      "sha256Bytes": "20c31a823c8c8a31478e80e38a3c1aa38de1febc295aca1e93d3033bbf801eea"
+    },
+    {
+      "path": "listen-writer-barrier/owned-files.json",
+      "sha256Bytes": "f3f7297886de455597940477db209dc4ac08d608adf9cf2bd8f58f6e017d02ab"
+    },
+    {
+      "path": "listen-writer-barrier/preserved-regression-tests.json",
+      "sha256Bytes": "dbe70df9c3abad436b2f8a6a5c6de27d7b1750911a07f1f20b814af3d463916c"
+    },
+    {
+      "path": "listen-writer-barrier/resources-snapshot-entries.json",
+      "sha256Bytes": "bb99435879cca6d0048d6499c42d23af4d2a21cf6d6eff223ed9252fcff071bc"
+    },
+    {
+      "path": "listen-writer-barrier/RunListenWriterBarrier.kt",
+      "sha256Bytes": "67fcc110114d0a5e594a0beae423be565d885e983485ad1101562ac2867f2059"
+    },
+    {
+      "path": "listen-writer-barrier/snapshot-identity.json",
+      "sha256Bytes": "a26adf4d2912b72fb9af8fb85331b4a48d4c18f9f55b870ba2a0bff85bc99bb3"
+    },
+    {
+      "path": "listen-writer-barrier/source-inventory.json",
+      "sha256Bytes": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "settings-storage-entry-parity/artifact-manifest.json",
+      "sha256Bytes": "f85a88e27221ca460b947f464414322191182542b27e578bdc26c662409c63ec"
+    },
+    {
+      "path": "settings-storage-entry-parity/compile-evidence.json",
+      "sha256Bytes": "a7d86cf218108d2fabc794da0929b7e657a0a4e9cec20372ecd3e3a1f4929e71"
+    },
+    {
+      "path": "settings-storage-entry-parity/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "settings-storage-entry-parity/contract.json",
+      "sha256Bytes": "fe16036f26ce1ab5d5040acc6368216458e37f884852e7a19c7d587d8eb8c088"
+    },
+    {
+      "path": "settings-storage-entry-parity/INTEGRATION.md",
+      "sha256Bytes": "ea3be07761fc90a20836ca311655010857a8a82a6f376ea40068b48150c6a34b"
+    },
+    {
+      "path": "settings-storage-entry-parity/origin-evidence.json",
+      "sha256Bytes": "0177d22d46a46ee55d5832c054323d47cb20d56ac0b096a6f0546deee4000ab5"
+    },
+    {
+      "path": "settings-storage-entry-parity/owned-files.json",
+      "sha256Bytes": "cb74c66208f3833a0c202835612dc3496ae1eab39e1ba3d155afc1b8a8df22f4"
+    },
+    {
+      "path": "settings-storage-entry-parity/proof/material3-storage-entries.png",
+      "sha256Bytes": "c98f24b68e5777a705cadd298338d65bcc5aacf6f7ba945fd66abe7051820690"
+    },
+    {
+      "path": "settings-storage-entry-parity/proof/miuix-storage-entries.png",
+      "sha256Bytes": "63684d7fda5b3e9fd9fa3831ab6d3cf780cc82fc22f35bf3c190bc91382f3ca5"
+    },
+    {
+      "path": "settings-storage-entry-parity/proof/result.json",
+      "sha256Bytes": "627f99f5a66f29169968f98ec11d9dd974e17681dd785a4d6a0103001303cd86"
+    },
+    {
+      "path": "settings-storage-entry-parity/python-evidence.json",
+      "sha256Bytes": "0f469a7acfe19b98f87c7c8db61fc8cefae9b23d4b87648ee0013331f4d1105b"
+    },
+    {
+      "path": "settings-storage-entry-parity/runtime.log",
+      "sha256Bytes": "18c9eb564f42dc63f48cda7f94d234ba7a27449ea99b0e58d63d8b23d45efe02"
+    },
+    {
+      "path": "settings-storage-entry-parity/source-inventory.json",
+      "sha256Bytes": "c61633056132b5e2dd83ff67e6d854d632696893bb708c4e1da0bbc41194ef03"
+    },
+    {
+      "path": "settings-storage-entry-parity/StorageEntryFixture.kt",
+      "sha256Bytes": "fc1abe1da3bd5094135315fce13fca68132eb570fa20c26dee5144f570fcc0d1"
+    },
+    {
+      "path": "settings-tree-integration-proof/frozen-handoff.json",
+      "sha256Bytes": "7918bef626d16d1ef842c92445737ab2fbaf72e0f4af471a44a81afa6c0fdc5a"
+    },
+    {
+      "path": "settings-tree-integration-proof/compile-evidence.json",
+      "sha256Bytes": "ffe63080f45f83dfb7256b83129326bd556c185f37ecd80f3f7a3d895ed0c692"
+    },
+    {
+      "path": "settings-tree-integration-proof/compile.log",
+      "sha256Bytes": "d9851a1629eabd95a212fd1ab46fb76d77435e7d79b843dfff7b3b44abeaf7d4"
+    },
+    {
+      "path": "settings-tree-integration-proof/CONTRACT.md",
+      "sha256Bytes": "2609ba466c9944b37c9d4c21d960bcadc78605225582f213d9173138e6d20d7f"
+    },
+    {
+      "path": "settings-tree-integration-proof/dependency-identities.json",
+      "sha256Bytes": "67d2e7cec525bb581fd235ad89d5c16e2bfd6e645fe75cc6efee55796c775e1b"
+    },
+    {
+      "path": "settings-tree-integration-proof/product-snapshot-manifest.json",
+      "sha256Bytes": "c5259db35b27efb97b2743e3b7abf958d5c9cf1941b8b09ec6ff201b501c8d5d"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-authoritative-search.json",
+      "sha256Bytes": "8fec1d0f8cbf5f40e12be50423cddfaa68063b48bd2c238186e9ac96cf4dbfb6"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-detail-fixture.png",
+      "sha256Bytes": "5dcf14b8c57c1ec9616346d19aa228de8422bff05281726faf1daf5e659e41d3"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-history-after-search-disposal.json",
+      "sha256Bytes": "a1d7e89cf7760fa01c64c8f113b8f6d5bf46cb1c13b87e0eeb8514bb1b03a649"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-privacy-authoritative.png",
+      "sha256Bytes": "35735afe1375862395fa6f0f25f75cd08e94facb7ebb385068a5bd742203eae3"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-root.png",
+      "sha256Bytes": "59c5a909bf6689a003340f0a1935fd63053c4b9c93dcc685fe937c3b85b910af"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-search-decoder.png",
+      "sha256Bytes": "e34918378bd865720a54e5e11e506493f3ff1e1ecb3bb8c7c5f49c539dd48330"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-search-retained.png",
+      "sha256Bytes": "4ee458df4a27b07b04f94d024c4e933c070f7efcc53bec9fe6cd6949f08f5ede"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/material3-shared-settings.json",
+      "sha256Bytes": "09418b5f8e9cffe7c2a21f3966ca694df348615e97c146b5b1a1a82705ae7471"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-authoritative-search.json",
+      "sha256Bytes": "4e8bba5a76260618db813f7f29fdd0e3200a2a9f99d147b0d17297af30bc962d"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-detail-fixture.png",
+      "sha256Bytes": "5fa5751b8faaeb5fe731574b8df80b044bed2578496ef576bbcd1798bdaef01f"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-history-after-search-disposal.json",
+      "sha256Bytes": "12de7c77307035d96c0b40bc19e3572f6bea18544e6eaa883239f86cdde352cf"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-privacy-authoritative.png",
+      "sha256Bytes": "df969b6538b64e19f633fbf8b708d651009563b2ba9ca717f54c6ffaa31014a5"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-root.png",
+      "sha256Bytes": "8f19e6887af338027366909f622ee1c5a394d4e1692d240b8f7a479935378f94"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-search-decoder.png",
+      "sha256Bytes": "ebcb826ba2fa6aac253edab1a03e3a72845ad0c0972ad29d2e65a49ee9f91c7f"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-search-retained.png",
+      "sha256Bytes": "e21a8f0e0b4e736cca2aae1249e11eb9242e2523cdcce7fad1a671da009b3dd6"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/miuix-shared-settings.json",
+      "sha256Bytes": "741d6a94ef0cc345cb3d1a5003e4e21ca36517a93975d547e2e8b9772f3420dd"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/discovery/plugin-settings.json",
+      "sha256Bytes": "5b5db240905bd122f108a33decea8ad16c81fdd44c278e1d96c04094a7e0dca0"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/plugin-settings.json",
+      "sha256Bytes": "7a77244b912d67b20cbf2ec80fb75fd59f9131afdc37c7f14122d84082ffd9f5"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/owned-appdata-run-7ul8v92y/BiliPaiWindows/search/plugin-settings.json",
+      "sha256Bytes": "9f3e974ed893fa605c9e12bdabe83a8861d70d3072af1edb05d231a9f6ee2e0b"
+    },
+    {
+      "path": "settings-tree-integration-proof/proof/result.json",
+      "sha256Bytes": "927bee8d4867bf614b96d4de5aed072809295479430f5f78bc25c8c248a52dce"
+    },
+    {
+      "path": "settings-tree-integration-proof/root-dependencies.json",
+      "sha256Bytes": "67d2e7cec525bb581fd235ad89d5c16e2bfd6e645fe75cc6efee55796c775e1b"
+    },
+    {
+      "path": "settings-tree-integration-proof/runtime.log",
+      "sha256Bytes": "9bf703a5ef9331d84d637f5b40f3a9a4ac7a36fe065f02c61c2ec271ac89f307"
+    },
+    {
+      "path": "settings-tree-integration-proof/SettingsTreeFixture.kt",
+      "sha256Bytes": "ef41e87df0dc853c804dc4bd7acdf4b82910f1d9491997a5c48440066e9cbd9d"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml",
+      "sha256Bytes": "791ca8d07f9a31487e99a05618ea777d0ad9a04ac3005631a47bbb3003c3558e"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.audio.ListenAudioStoreTest.xml",
+      "sha256Bytes": "658b361cea6c262966e7a8c8fcf361ec207cba0b6436a61a92133781eba2ec3e"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.audio.ListenWriterBarrierTest.xml",
+      "sha256Bytes": "ea7e13ba61e3be5806137e0b650da68af83ac5f7955606ccef976dc18f78df94"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest.xml",
+      "sha256Bytes": "50c91e32277cda2cdc481619e7a3c7803a14df4398769104d05d56af06a0141d"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.data.DesktopSearchTest.xml",
+      "sha256Bytes": "fc8f4261f1a6078c59040bc34b12c7b8ff32096f1e0babe9127ab516481eeb83"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.settings.DesktopSettingsNavigatorTest.xml",
+      "sha256Bytes": "1804b0491ad6f8e7715d43edfda3b10874e788cf70f575312d3afb0ee95b227f"
+    },
+    {
+      "path": "main-focused-tests/TEST-com.bilipai.desktop.settings.DesktopSettingsSearchTest.xml",
+      "sha256Bytes": "105da1a8da18b864bfa3e212d433377e729cd509119820f5d11ef31e4ae99aa6"
+    },
+    {
+      "path": "settings-tree-main-gradle.log",
+      "sha256Bytes": "dea95a6f0de3a8d15d0e85629b6b89265b5d38b37f2df8b337e4b12c2134ba83"
+    },
+    {
+      "path": "settings-tree-combined-backup-compile.log",
+      "sha256Bytes": "4863c28709a840862cf4e7e32dea2ee7a46e0d4d880163d41ada144a29384c55"
+    },
+    {
+      "path": "tree-proof-product-snapshot-manifest.json",
+      "sha256Bytes": "c5259db35b27efb97b2743e3b7abf958d5c9cf1941b8b09ec6ff201b501c8d5d"
+    },
+    {
+      "path": "cohort-summary.json",
+      "sha256Bytes": "7582528993ff890094a3eaaeb1eb2b8ce1634e3d5153cef0b588035ad75e7afd"
+    },
+    {
+      "path": "playback-settings-draft-memory/artifact-manifest.json",
+      "sha256Bytes": "4dabc2ce7b8e4e13a6b1e7bb2b27c8d7fb54d6ad01dc6af1322b8c8aa83e9b9f"
+    },
+    {
+      "path": "playback-settings-draft-memory/compile-evidence.json",
+      "sha256Bytes": "13c995700af2a419f3baaeaf7cf6d366725be1ee7f7fe10bf877e8724a1e674e"
+    },
+    {
+      "path": "playback-settings-draft-memory/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "playback-settings-draft-memory/contract.json",
+      "sha256Bytes": "b8b87884eb1d05869a0bc7823ad9bcafd0d5150154255dde429ea3bf408bd061"
+    },
+    {
+      "path": "playback-settings-draft-memory/dependency-identities.json",
+      "sha256Bytes": "9f2fa038360e9a71f9079736eb2a71e18634abb2c8b961603329ae9cff6181b3"
+    },
+    {
+      "path": "playback-settings-draft-memory/INTEGRATION.md",
+      "sha256Bytes": "47eae193f54b8732f548382c99b36239c9a9e85bdc64bbe467d4899b7ccba38b"
+    },
+    {
+      "path": "playback-settings-draft-memory/origin-evidence.json",
+      "sha256Bytes": "2bc264ffefff7692bb99b8781918dfe5c04cd4237e81970e37db1381cc589fe8"
+    },
+    {
+      "path": "playback-settings-draft-memory/owned-files.json",
+      "sha256Bytes": "aa5aed07d9e8869bd4ec9785b9c7edaf320c361bccb13b726e425ecbb4a022f4"
+    },
+    {
+      "path": "playback-settings-draft-memory/proof/result.json",
+      "sha256Bytes": "84cb838a14869797b9846485d533530cf2b0beea9da1d066215ee2062afd6f48"
+    },
+    {
+      "path": "playback-settings-draft-memory/RunDraftMemoryFixture.kt",
+      "sha256Bytes": "f78c077ff8ceb7029f30f1c36ad520f3eee5b0bbff396bd71e3c863b0ec9c7f1"
+    },
+    {
+      "path": "playback-settings-draft-memory/runtime.log",
+      "sha256Bytes": "be51321f5f6c6ab53c576abf96dcade879c5dcf20620dc9634bb351792d49bf1"
+    },
+    {
+      "path": "playback-settings-draft-memory/source-inventory.json",
+      "sha256Bytes": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "draft-memory-main-focused-tests/TEST-com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest.xml",
+      "sha256Bytes": "15e39580ff81db08065bf519024485f89bab9dc3ced1e9d73fa134e80df5fb06"
+    },
+    {
+      "path": "settings-tree-draft-memory-main-test.log",
+      "sha256Bytes": "370c4bf11ad67740fb15cafb91fb87369a2bc974ca8780fd8858fee99deb09b6"
+    }
+  ]
+}

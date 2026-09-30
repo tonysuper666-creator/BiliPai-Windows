@@ -1,0 +1,33 @@
+{
+  "status": "frozen",
+  "integrated": false,
+  "mainEdited": false,
+  "sharedGradleInvoked": false,
+  "hwndCreated": false,
+  "realAccountRequests": false,
+  "ownedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "kind": "modify",
+      "baseSha256": "b8b2a7a7bef75d7947cf10cd2c69c2e2ed7a79243525a902a369b60abe13947e",
+      "sha256": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "kind": "new",
+      "sha256": "38f78d69746db4d0f7a4cc0d89ed369f902d5aa190e3e5a8cd2c5c8c0c68fb86"
+    }
+  ],
+  "sourceInventory": "source-inventory.json",
+  "newDependencies": [],
+  "baselineRaceReproduced": true,
+  "newJUnitMethodsPassed": 10,
+  "unchangedRegressionJUnitMethodsPassed": 10,
+  "originalNativeMusicNestedCasesPassed": 18,
+  "originalRootMusicNestedCasesPassed": 18,
+  "rootHook": "internal suspend member ListenAudioSession.shutdownForRestore(): Unit; Main outside own scope before restore/exit",
+  "ordinaryCloseGlobalSamePathFreeze": false,
+  "actualAuDecodeVerified": false,
+  "audioDeviceVerified": false,
+  "ownedSetSha256": "22f08f644f773a978e8f8521d531d6b9e786d0888290844a3187cb2ca7392627"
+}

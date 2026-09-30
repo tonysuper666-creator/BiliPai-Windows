@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+    "sha256Bytes": "4497f947967f1181b4c5e3fb1558758e501b3c9113f2b6a7f1b48016812f6181",
+    "evidence": "actual delayed selectAudioQuality reload callback onRememberAudioQuality"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
+    "sha256Bytes": "2ff25af6a9700f1476726629eb67b30a45cec3f3f69ddf99fe6c03547568c06c",
+    "evidence": "original existing player schema, normalized and actual atomic disk store"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlayerPreferencesWriter.kt",
+    "sha256Bytes": "1586641ce7466ac423f8b19b964aeffc0e3950fe71c94d5e0ff365a7dd033a9b",
+    "evidence": "actual serial submission and flush used by executable regression"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/audio/AudioStreamSelectionPolicy.kt",
+    "sha256Bytes": "743725fa8b72fc758e740dd8124474b48b17d61efe75b4ee8c00daf11030da4d",
+    "evidence": "original requested-audio and normalization policies retained"
+  }
+]

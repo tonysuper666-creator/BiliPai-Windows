@@ -28,6 +28,9 @@ def selected_body(repo):
     parser = media.parser_for(repo)
     original = read(repo, SELECTED[0])
     source = '\n\n'.join('@Composable\n'+media.function(original, name, parser) for name in SECTIONS)
+    # Shared Privacy/Home sections reuse the original divider body. Visibility only.
+    source = host.substitute(source, 'private fun SettingsAdaptiveDivider()',
+        'internal fun SettingsAdaptiveDivider()')
     # Existing SettingsSearch extractor owns these exact original XML paths.
     source = host.substitute(source, 'painterResource(id = it)',
         'rememberVectorPainter(DesktopSettingsVectors.vector(it))', count=2)

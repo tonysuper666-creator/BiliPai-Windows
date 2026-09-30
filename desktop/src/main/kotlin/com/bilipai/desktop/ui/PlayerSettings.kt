@@ -30,8 +30,16 @@ fun playbackModeLabel(mode: PlaybackMode): String = when (mode) {
 
 fun playbackSpeedLabel(speed: Double): String = String.format(Locale.ROOT, "%.2f", speed).trimEnd('0').trimEnd('.')
 
+/** Audio selection can finish while this dialog's editable draft remains open. */
+internal fun resolvePlaybackSettingsDraftSave(draft: PlayerPreferences, latest: PlayerPreferences): PlayerPreferences =
+    draft.copy(
+        lastSelectedAudioQuality = latest.lastSelectedAudioQuality,
+        speed = if (draft.rememberLastSpeed) draft.speed else draft.defaultSpeed,
+    ).normalized()
+
 @Composable
 fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: (PlayerPreferences) -> Unit, onDismiss: () -> Unit) {
+    val latestPreferences by rememberUpdatedState(preferences)
     var draft by remember { mutableStateOf(preferences) }
     var newSpeed by remember { mutableStateOf("") }
     var speedError by remember { mutableStateOf<String?>(null) }
@@ -109,7 +117,7 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
             TextButton(onClick = { draft = PlayerPreferences(danmaku = draft.danmaku) }) { Text("恢复播放默认设置") }
         }
     }, confirmButton = { Button(onClick = {
-        onPreferencesChange(draft.copy(speed = if (draft.rememberLastSpeed) draft.speed else draft.defaultSpeed).normalized()); onDismiss()
+        onPreferencesChange(resolvePlaybackSettingsDraftSave(draft, latestPreferences)); onDismiss()
     }) { Text("保存") } }, dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } })
 }
 

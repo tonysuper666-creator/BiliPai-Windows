@@ -1,0 +1,262 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "c5f8a21d17a33183b03209ce0de3e450c70cfd8c",
+  "status": "partialOriginalSettingsIntegratedAndVerified",
+  "productFiles": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Lf": "c410cc1f289227c03914cf791224f57a619f967a90fefe783ed8ef3d84f97700"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Lf": "5bb6b104bf23df0dc1a5116e8a72421df4310cfd5f783b6a2acbb5faf30185df"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Lf": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Lf": "b9ca1f12fee689230e4f156371b973ccc8fe2263a2a51ecda5c86a2fbeebf25b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySection.kt",
+      "sha256Lf": "0f098a54d2f624ed19bb6ded4981c1ba9878af2de3a516dff08e200cb59a712e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySettings.kt",
+      "sha256Lf": "8260fffef1ad414c23f5210f35408fe9a5a3b884e5fa324d05d0ef06d4736adf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt",
+      "sha256Lf": "ce199bc114fe4921577f305cf6e171f2325c3ca0c0954df284b60295e72889f3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Lf": "bcd3431b801401966d3c35b47f7a484aaf27cc6d7ef0a950438b86d2c7aac1fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "sha256Lf": "f147aa6534defbcc85b5b4481589f9ae9722c2f0c054527c616ae1463426ea0e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "sha256Lf": "ee03a6a3d9636b99b0c8172290e648b1be0cb40b5678a57ae01a9c16a4a135b3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Lf": "3aadac68c951f82e24c571b228b33bce52b503922faa2926ee683ba423dcea6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Lf": "c1181da358b195beafabb60e3c25727814d55e2f88f43167f8ecfae2e0fc88ea"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "sha256Lf": "38f78d69746db4d0f7a4cc0d89ed369f902d5aa190e3e5a8cd2c5c8c0c68fb86"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "sha256Lf": "9da47ae2ddd0f1c28a8053273bd34b6f790ef4f92a50cd4065a423982750f7ae"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-categories.py",
+      "sha256Lf": "c0e17b38b9eecb0d116cba62d0b2a878a8e4b43f7fa4a087a16a4cd5ad0b0837"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-entries.py",
+      "sha256Lf": "6f207d8c9fb008059db1223d4e8a3bbaf8a664b964c2edf6bc78c1cd063fde03"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-home.py",
+      "sha256Lf": "be0f14882549df553fb88dbb72d917883074144cc49b371f2975177d737f2837"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-privacy.py",
+      "sha256Lf": "1ca17d337bdb3c485da43bc6806e167c0f6fdd8461fb779b63698dcdc918e83d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-storage-entries.py",
+      "sha256Lf": "61fff17f8956edc6a9d156e017b702dcf4f6b2b56bcc044f1a14056d06da37bf"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_entries.py",
+      "sha256Lf": "f59677d0095e9998e9c9cb7c3745cf623f01964b10d969a2721177cd0980f17a"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_privacy.py",
+      "sha256Lf": "7350856d328e785e96944226d0fa23d7bfbf7e2692f0fc9c48acbe02dabea6d9"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_storage_entries.py",
+      "sha256Lf": "49c51235015af2dec1a8658c11aabff385e2ebc31e855d2bea0f8580385f13ef"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Lf": "4c508b47e5aba81740c5f55f710954806d226a056c5c6d7a637a6dff0c020486"
+    }
+  ],
+  "sourceAudit": "source9-settings-tree-fields-source-audit.json",
+  "sourceIdentityCount": 423,
+  "resourceIdentityCount": 199,
+  "apiDeclarationsVerbatim": 303,
+  "responseFilesAdopted": 45,
+  "mainVerification": {
+    "initialFocusedJUnitMethods": 43,
+    "draftMemoryFocusedJUnitMethods": 2,
+    "distinctJUnitMethods": 45,
+    "pythonProductChecks": 26,
+    "mainCompilePassed": true,
+    "combinedBackupShortcutCompilePassed": true
+  },
+  "isolatedEvidence": {
+    "frozenCohorts": [
+      {
+        "cohort": "settings-home-section-parity",
+        "verifiedFrozenArtifacts": 89,
+        "manifestSha256Bytes": "d28bc4bd9f9c2104f1512ed8431cddd23eb9e931e5b4cbcf1c8320cb27f404bb"
+      },
+      {
+        "cohort": "settings-privacy-section-parity",
+        "verifiedFrozenArtifacts": 43,
+        "manifestSha256Bytes": "90daa8a8d60c5ac7067e79c4d71b18e4318045b9787ade363bd8923d29aaf7b2"
+      },
+      {
+        "cohort": "settings-playback-entry-parity",
+        "verifiedFrozenArtifacts": 19,
+        "manifestSha256Bytes": "c4a9e1b05e87980d870d5598d4ad86767e102700a2c973449d84fd4eee84b641"
+      },
+      {
+        "cohort": "listen-writer-barrier",
+        "verifiedFrozenArtifacts": 34,
+        "manifestSha256Bytes": "ec145fa9ffed4f08fcabb8a60264a9f888932d28ed490d6c52ce9aaf42c14952"
+      },
+      {
+        "cohort": "settings-storage-entry-parity",
+        "verifiedFrozenArtifacts": 43,
+        "manifestSha256Bytes": "f85a88e27221ca460b947f464414322191182542b27e578bdc26c662409c63ec"
+      },
+      {
+        "cohort": "settings-tree-integration-proof",
+        "verifiedFrozenArtifacts": 31,
+        "manifestSha256Bytes": "7918bef626d16d1ef842c92445737ab2fbaf72e0f4af471a44a81afa6c0fdc5a"
+      },
+      {
+        "cohort": "playback-settings-draft-memory",
+        "verifiedFrozenArtifacts": 37,
+        "manifestSha256Bytes": "4dabc2ce7b8e4e13a6b1e7bb2b27c8d7fb54d6ad01dc6af1322b8c8aa83e9b9f"
+      }
+    ],
+    "mainFocusedJUnit": {
+      "suites": [
+        {
+          "suite": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.audio.ListenAudioStoreTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.audio.ListenWriterBarrierTest",
+          "tests": 10,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.data.DesktopSearchRestoreLifecycleTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.data.DesktopSearchTest",
+          "tests": 12,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.settings.DesktopSettingsNavigatorTest",
+          "tests": 4,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "suite": "com.bilipai.desktop.settings.DesktopSettingsSearchTest",
+          "tests": 5,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "total": 43,
+      "passed": true
+    },
+    "pythonProductChecks": {
+      "privacy": 5,
+      "entries": 5,
+      "storageEntries": 5,
+      "settingsSearch": 11,
+      "total": 26,
+      "passed": true
+    },
+    "pointerCohorts": {
+      "privacy": 22,
+      "playbackEntries": 8,
+      "storageEntries": 4,
+      "actualProductTree": 50,
+      "treeEditorInputs": 4
+    },
+    "nativeDialogsVerified": false,
+    "realAccountRequests": false,
+    "newDesktopDeployment": false,
+    "deployedDesktopVersion": "0.2.406.5",
+    "limitations": [
+      "Detail ports in Tree proof are explicit fixtures, not real dialogs.",
+      "Tree proof uses immutable initial Shell snapshot; combined sidebar backup restoration has a later successful compile and code review.",
+      "Full original settings/category/platform consumers and packaged native acceptance remain incomplete.",
+      "The delayed quality regression uses actual source actors and disk, without attaching a native player or proving audio decoding."
+    ],
+    "draftMemoryFocusedJUnit": {
+      "suites": [
+        {
+          "suite": "com.bilipai.desktop.ui.PlaybackSettingsDraftMemoryTest",
+          "tests": 2,
+          "passed": true
+        }
+      ],
+      "total": 2,
+      "passed": true
+    },
+    "distinctJUnitMethodsAcrossMainCohorts": 45
+  },
+  "sourceOrTestCountsUsedAsProgress": false,
+  "actualChanges": [
+    "Original categories and search/history/focus routes mounted in the Windows Shell.",
+    "Search controllers retained per navigation entry; history jobs use the Root scope and authoritative privacy reader.",
+    "Original Home two fields and independent Hint/recommendation/privacy controls use the same actual stores and consumers.",
+    "Original playback and backup entries use real dialogs, with source focus identities and section-specific backup content.",
+    "Combined sidebar backup preserves both ZIP and WebDAV controls.",
+    "Listen final write rejects retired-facade IO and Root awaits scope completion before restore/exit.",
+    "Playback settings saves preserve a later asynchronously remembered audio quality."
+  ],
+  "preparedNotIntegrated": [
+    "NetworkProxy original store/policy/API/login selector/media bypass isolated cohort; startup/consumer integration still pending."
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
+  "storageEntryProducerTestAdapter": "Only tool location and output footer are adapted; five exact test method ASTs match the frozen passing cohort."
+}

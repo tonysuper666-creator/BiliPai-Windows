@@ -1,0 +1,26 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-section-parity"
+    ],
+    "sha256": "c8178e7a048512348678555b529180f7a969a658eca4019d484aff8603581a1b"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsSelectionComponents.kt",
+    "mode": "direct",
+    "features": [
+      "settings-home-section-parity"
+    ],
+    "sha256": "a7b15b949d665fa072a995bcbcbcc4aa4f1fbf0620e760e0bf84fa73783ada64"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt",
+    "mode": "policy-extract",
+    "features": [
+      "settings-home-section-parity"
+    ],
+    "sha256": "d44af5c39cfc095dcb369461781d098d4e69aa2d466afb0b2b63eb5083c1a77a"
+  }
+]

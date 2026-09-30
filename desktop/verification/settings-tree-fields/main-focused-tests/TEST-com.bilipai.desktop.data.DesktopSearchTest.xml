@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.data.DesktopSearchTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:10:36.182Z" hostname="TONYSUPER666" time="0.14">
+  <properties/>
+  <testcase name="originalOptionsIncludeEveryVideoOrderDurationAndPartition()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.003"/>
+  <testcase name="incognitoSkipsHistoryWritesAndKeepsExistingHistoryAccessible()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.011"/>
+  <testcase name="videoDefaultsOmitUnsetZoneAndPublishBoundsButRetainOriginalIdentity()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.0"/>
+  <testcase name="typedFiltersKeepOriginalUpLiveAndCategoryWireValuesSeparate()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.003"/>
+  <testcase name="searchPreferencesIsolateGuestAndAccountsAndPersistSourceDefaults()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.015"/>
+  <testcase name="sourceDiscoverMergeDeduplicatesCaseAndBoundsConsecutiveFollowedCreators()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.001"/>
+  <testcase name="originalTypeBuilderAndRetrofitEncodeSearchTermsOnce()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.039"/>
+  <testcase name="historyRoundTripsUnicodeAndControlCharactersAndClearIsLocal()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.006"/>
+  <testcase name="publishRangeResetAndCustomReversalUseOriginalPolicy()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.001"/>
+  <testcase name="historyReplacesKeywordTimestampAndDisplaysLatestTwentyWithoutTrimmingStorage()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.049"/>
+  <testcase name="mergedDurationsKeepFirstOriginalRecordAndContinueAfterShortNonemptyPage()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.008"/>
+  <testcase name="durationSelectionSupportsAllAndMultipleOriginalRequests()" classname="com.bilipai.desktop.data.DesktopSearchTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

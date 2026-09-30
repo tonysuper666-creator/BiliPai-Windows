@@ -1,0 +1,12 @@
+[
+  {
+    "source": "extract-upstream-settings-entries.py",
+    "target": "desktop/tools/extract-upstream-settings-entries.py",
+    "sha256Bytes": "6f207d8c9fb008059db1223d4e8a3bbaf8a664b964c2edf6bc78c1cd063fde03"
+  },
+  {
+    "source": "test_extraction.py",
+    "target": "desktop/tools/tests/test_extract_upstream_settings_entries.py",
+    "sha256Bytes": "f59677d0095e9998e9c9cb7c3745cf623f01964b10d969a2721177cd0980f17a"
+  }
+]

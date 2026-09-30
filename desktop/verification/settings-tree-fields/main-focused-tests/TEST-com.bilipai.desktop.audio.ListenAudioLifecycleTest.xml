@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.audio.ListenAudioLifecycleTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:10:35.366Z" hostname="TONYSUPER666" time="0.484">
+  <properties/>
+  <testcase name="active old account closure retains its own resume without releasing a newer source()" classname="com.bilipai.desktop.audio.ListenAudioLifecycleTest" time="0.433"/>
+  <testcase name="clearing an old queue cannot stop a foreign source and clears obsolete resume()" classname="com.bilipai.desktop.audio.ListenAudioLifecycleTest" time="0.017"/>
+  <testcase name="cold queue resumes the selected part and active session destruction releases its actual source()" classname="com.bilipai.desktop.audio.ListenAudioLifecycleTest" time="0.011"/>
+  <testcase name="pause cancels delayed preparation so completion cannot restart listening()" classname="com.bilipai.desktop.audio.ListenAudioLifecycleTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

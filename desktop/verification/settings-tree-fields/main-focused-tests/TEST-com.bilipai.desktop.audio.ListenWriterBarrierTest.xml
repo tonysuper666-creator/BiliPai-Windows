@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.audio.ListenWriterBarrierTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-30T11:10:35.902Z" hostname="TONYSUPER666" time="0.19">
+  <properties/>
+  <testcase name="actualSessionCloseRejectsCancelledScopeWriterAfterRestore()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.09"/>
+  <testcase name="failedFinalAtomicWriteStillRetiresOldFacade()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.009"/>
+  <testcase name="originalAudioRecentAndResumeRemainUnconditionalUnderPrivacyMode()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.035"/>
+  <testcase name="restoreShutdownWaitsForActualScopeCompletionAndPreservesForeignSource()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.011"/>
+  <testcase name="normalSessionCloseKeepsLastStateDespitePendingDebounce()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.01"/>
+  <testcase name="cancelledQueuedIoCannotOverwriteActualRestoredArchive()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.016"/>
+  <testcase name="accountStoreBarrierDoesNotCloseOtherAccountFile()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.004"/>
+  <testcase name="acceptedWriterDrainsBeforeFinalSnapshotAndCloseReturns()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.007"/>
+  <testcase name="ordinaryCloseDoesNotGloballyRetireNewRememberedStoreForSamePath()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.003"/>
+  <testcase name="repeatedCloseKeepsFinalQueueCidResumeRecentAndFavorites()" classname="com.bilipai.desktop.audio.ListenWriterBarrierTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

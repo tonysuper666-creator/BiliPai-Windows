@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "fullActualBackupDialogCompiled": true,
+  "playbackFrozenSha256": "c4a9e1b05e87980d870d5598d4ad86767e102700a2c973449d84fd4eee84b641",
+  "privacyFrozenSha256": "90daa8a8d60c5ac7067e79c4d71b18e4318045b9787ade363bd8923d29aaf7b2",
+  "currentProductJarSha256": "b2d4abade9bb89e6a2380fa40d5411c7580619d31e9f30d507b3f265272277cb",
+  "sharedGradleInvoked": false,
+  "nativeWindowCreated": false,
+  "sharedHelperIdentities": {
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-playback-entry-parity\\classes": "6745a6c23bf32b55f06b2d919241a22134bf5643529f84eaf34ee0c741fbd5be",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-privacy-section-parity\\classes": "f953de2ba3cddd4eb757c9a075c7552d4b7c400bf64e7b146f3c5b0cf189915b"
+  }
+}
