@@ -1,0 +1,62 @@
+{
+  "auditedCommittedWindowsSource": "8eb7cd2b670293e13ae132434080e2b5c9302b64",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseline": "desktop/verification/parity-progress-2026-09-30.json",
+  "previousDelta": "desktop/verification/parity-progress-space-music-delta.json",
+  "scope": "The same 35 manually weighted functional groups, with the prior appearance/Cast and Space/Music credits carried forward. Remaining points include both unimplemented and implemented but unverified behavior.",
+  "changes": [
+    {
+      "group": "story",
+      "weight": 2,
+      "previousMainCredit": 0,
+      "currentMainCredit": 1,
+      "remainingCredit": 1,
+      "basis": "Original feed/mapping/shuffle/append and settled-page policies have an actual Root queue/native-surface route, source ownership, initial failure/error/retry and next-page behavior. Product compile and meaningful controller plus actual Compose pointer fixtures pass.",
+      "remaining": "Actual native Swing Canvas wheel/drag/key handling, full original playback controls/visual/lifecycle, packaged portrait surface and real service/account acceptance."
+    },
+    {
+      "group": "topic",
+      "weight": 1,
+      "previousMainCredit": 0,
+      "currentMainCredit": 0.75,
+      "remainingCredit": 0.25,
+      "basis": "Original detail transport/state/sort/pagination/participation and original annotated rich Topic ID/keyword payload dispatch reach Root. Nested topic back and dynamic return are retained, with real Compose pointer dispatch and original API fixture checks.",
+      "remaining": "Complete original discovery/detail visual and interaction parity, retained page state, and account/service/window acceptance."
+    },
+    {
+      "group": "settings",
+      "weight": 5,
+      "previousMainCredit": 1.5,
+      "currentMainCredit": 2.25,
+      "remainingCredit": 2.75,
+      "basis": "Original hardware/codec/audio/subtitle defaults and selection policies are wired through persisted settings, repository/cache, controller and controls. Accepted explicit audio selection is remembered through a serial writer. Exact main player independent native checks prove actual hardware and two subtitle slots on this device.",
+      "remaining": "Full original settings search/classification/visual/privacy/permission/proxy/diagnostic semantics; automatic-subtitle epoch/HTTP cancellation/authorization retry/single-track fallback; physical HiRes output and packaged Shell acceptance."
+    }
+  ],
+  "assessment": {
+    "groups": 35,
+    "scopeWeight": 138,
+    "creditedMainPoints": 91.75,
+    "isolatedReadyPoints": 1,
+    "unfinishedOrUnverifiedPoints": 45.25,
+    "weightedReviewedProgressPercent": 66.5,
+    "presentation": "约67%，即约三分之二；人工粗估，继续保留55–70%的评估带。这不是精确验收百分比或统计置信区间。",
+    "sourceOrTestCountsUsedAsProgress": false,
+    "fullFeatureParityVerified": false,
+    "fullReleaseGatePassed": false,
+    "deployedDesktopVersion": "0.2.406.5"
+  },
+  "evidence": "desktop/verification/source9-story-playback-integration.json",
+  "nativeScope": "Twelve exact main native-player gates, independent compile, own HWND and fixture metadata/documents; null audio output. No new packaged EXE or physical HiRes device/AO failure claim.",
+  "uncreditedPreparedWork": [
+    "FSR provider integration",
+    "AICU and reports",
+    "Space actions and original dynamic search",
+    "Original dynamic vote/create-vote/create-reserve",
+    "Original native component popup width fix",
+    "Settings search, subtitle account/cancellation/retry and native Story inputs under preparation"
+  ],
+  "spaceSourceCorrection": "Original fans route is a dedicated WebView URL; a native fans API was not present in upstream. Windows equivalent embedded web hosting remains pending; no fabricated fans API is required or credited.",
+  "nativeIntermittency": "The prior Source9 initial overlay black surface remains unexplained. These checks do not prove that cause resolved."
+}
