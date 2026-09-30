@@ -1,0 +1,3 @@
+desktop\.local\dynamic-resource-navigation\FolderUiFixture.kt:31:36: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+    }.build();SingletonImageLoader.setUnsafe(loader)
+                                   ^^^^^^^^^

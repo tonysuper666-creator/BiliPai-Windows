@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "snapshotSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "orderedRuntimeCpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "actualProductClasspathEntries": 89,
+  "fixtureSourceSha256Bytes": "437f3b17dd3aa4569f340ded942f7f864eae605d1db9adee21f0400c5e587c9c",
+  "zeroProductOverrides": true,
+  "results": [
+    {
+      "path": "ui-runs/01/material3-dark-640.png",
+      "sha256Bytes": "382d24a5a7034594f617c3376100fc056d8937a5315f4cd57ea2d13a396dc479"
+    },
+    {
+      "path": "ui-runs/01/material3-dark-960.png",
+      "sha256Bytes": "0312a9ed6205182b7d1e667e6bce78ac87e7062cf3c602eb7f547e1022e409e2"
+    },
+    {
+      "path": "ui-runs/01/material3-light-640.png",
+      "sha256Bytes": "d59c3cf0a23d4cd1c782c0ab777d7f42f8a6fc1c77859c523e1d22d9c3e27c73"
+    },
+    {
+      "path": "ui-runs/01/material3-light-960.png",
+      "sha256Bytes": "d659795f82bdf4bc1b50a8684a0587a53ffff8be5b8e05178984618d02083fd8"
+    },
+    {
+      "path": "ui-runs/01/miuix-dark-640.png",
+      "sha256Bytes": "0b41d813752235d917361bb317d8e423a934e4b5f27c8be47e51ee2323e1907d"
+    },
+    {
+      "path": "ui-runs/01/miuix-dark-960.png",
+      "sha256Bytes": "55746174f8ae761916d59c9dedc2ac202db0e52f1696c02ce50cbe72ae1da245"
+    },
+    {
+      "path": "ui-runs/01/miuix-light-640.png",
+      "sha256Bytes": "6121fe8f3b42ce454d3a1440f944f4cb8b1303e7c635fa130d76b2aa30cdb8e6"
+    },
+    {
+      "path": "ui-runs/01/miuix-light-960.png",
+      "sha256Bytes": "1f21c26fa6c6573f075a10325be36ebc89cdf5b980b587a18701e90de1614ef3"
+    },
+    {
+      "path": "ui-runs/01/ui-result.json",
+      "sha256Bytes": "41e2c2c31e5c050b355ff3616c982cb5af985f9aec3b134f3fbf762bca4848e3"
+    }
+  ],
+  "realNetwork": false,
+  "nativeWindow": false,
+  "MainShellExecuted": false,
+  "packaged": false,
+  "fullFeatureParity": false
+}

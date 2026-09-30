@@ -1,0 +1,128 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDynamicEditor UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 363, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\0e521488-c001-45f7-b884-c452690c629b", "approvedSourceManifestSha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a", "sourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f", "stagedDllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\0e521488-c001-45f7-b884-c452690c629b\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "ed4c3dbf999f6411c2513f70ef2b04f7983291094d618e02536e14795d5b9757", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5157 pinned source PASS: 169 files; 143 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :assembleTestResources
+> Task :processTestResources
+
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:662:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:811:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:812:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:813:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:815:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:816:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:912:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:992:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1014:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt:366:139 No value passed for parameter 'space'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt:366:139 No value passed for parameter 'onResource'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:240:149 No value passed for parameter 'space'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:240:149 No value passed for parameter 'onResource'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:241:143 No value passed for parameter 'space'.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:241:143 No value passed for parameter 'onResource'.
+
+> Task :compileKotlin FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+61 actionable tasks: 10 executed, 51 up-to-date
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 24s

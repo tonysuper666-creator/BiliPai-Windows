@@ -1,0 +1,225 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDynamicEditor UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 363, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\ba56f28e-7e12-4b40-ba29-e5b3f54d4769", "approvedSourceManifestSha256Bytes": "88a8d70d549c1c253775f4f2d02152c7429aad0d4391762f5aa40b52d082c71a", "sourceSha256Bytes": "dc810bdb5b6c43c7842768270795d998d76f0b0a221e84fed97a245c220c2a9a", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f", "stagedDllSha256Bytes": "8ad04e3d32892376c2987c7ebf3e96a7f58cae14e2e8f6698f600712a9abe16f", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\generated\\native-diagnostic-share\\builds\\ba56f28e-7e12-4b40-ba29-e5b3f54d4769\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "49eedf86753b348d7c31b4eddb5c6e104b4666e70d45ae350be001629561d76b", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5157 pinned source PASS: 169 files; 143 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :assembleTestResources UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-editor/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicPublishComposer.kt:174:88 Redundant call of conversion method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:524:69 Unnecessary safe call on a non-null receiver of type 'DecorateInfo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:616:59 Unnecessary safe call on a non-null receiver of type 'DynamicAuthorModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:714:67 Unnecessary safe call on a non-null receiver of type 'DynamicAuthorModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:715:68 Unnecessary safe call on a non-null receiver of type 'DynamicAuthorModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:716:68 Unnecessary safe call on a non-null receiver of type 'DynamicAuthorModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:759:71 Unnecessary safe call on a non-null receiver of type 'DynamicAuthorModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:961:77 Unnecessary safe call on a non-null receiver of type '(String) -> Unit'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1090:32 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1096:32 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1458:36 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1464:36 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1560:36 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1566:36 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1627:32 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalDynamicCard.kt:1633:32 Unnecessary safe call on a non-null receiver of type 'DynamicContentModule'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/dynamic-full-card/com/android/purebilibili/feature/dynamic/components/DesktopOriginalImagePreviewRenderer.kt:528:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Rect'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt:147:21 Unnecessary safe call on a non-null receiver of type 'SpaceAggregateCard'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/space/com/android/purebilibili/core/util/BilibiliUrlParser.kt:390:27 'constructor(p0: String!): URL' is deprecated. Deprecated in Java.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/data/model/response/DynamicModels.kt:1176:6 This declaration needs opt-in. Its usage should be marked with '@kotlinx.serialization.ExperimentalSerializationApi' or '@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)'
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt:297:9 'when' is exhaustive so 'else' is redundant here.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterPolicy.kt:148:9 'when' is exhaustive so 'else' is redundant here.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt:76:30 'enum entry APPEARANCE_INTERACTION: SettingsRootCategory' is deprecated. 仅用于恢复旧版本保存的设置导航状态.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt:77:30 'enum entry CONTENT_PLAYBACK: SettingsRootCategory' is deprecated. 仅用于恢复旧版本保存的设置导航状态.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/generated/upstream/app/src/main/java/com/android/purebilibili/feature/settings/SettingsRootCategoryPolicy.kt:78:30 'enum entry PRIVACY_STORAGE: SettingsRootCategory' is deprecated. 仅用于恢复旧版本保存的设置导航状态.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:391:44 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:404:36 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:405:27 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:463:19 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:468:39 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:784:54 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt:806:37 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:662:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:811:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:812:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:813:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:815:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:816:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:912:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:992:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1014:49 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/Main.kt:151:20 'fun painterResource(resourcePath: String): Painter' is deprecated. Migrate to the Compose resources library. See https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-images-resources.html If you need to load resources specificly from Java classpath, you should still use the new resource library and use a snippet from https://github.com/JetBrains/compose-multiplatform-core/pull/1457.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt:70:116 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt:29:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt:44:44 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryReporter.kt:31:42 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt:160:110 This class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCaptchaBridge.kt:23:40 Unnecessary safe call on a non-null receiver of type 'GeetestData'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt:118:130 This class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt:28:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt:172:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt:19:50 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt:14:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt:251:103 Unnecessary safe call on a non-null receiver of type 'GeetestData'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt:414:148 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackHeartbeatReporter.kt:30:38 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:478:32 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:479:42 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt:19:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt:26:100 Unnecessary non-null assertion (!!) on a non-null receiver of type 'SearchDefaultData'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceContributionsRepository.kt:27:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceRepository.kt:27:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopStoryTopicRepository.kt:30:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt:379:32 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/download/DownloadDanmakuTransport.kt:38:34 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt:70:35 Unnecessary safe call on a non-null receiver of type 'AudioSelectionDecision'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopRetainedMediaNativeSmoke.kt:57:99 Unnecessary safe call on a non-null receiver of type 'Job'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt:84:48 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt:92:50 Elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt:38:34 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt:104:48 The corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt:109:44 Elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicLivePhoto.kt:77:5 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt:142:67 Unnecessary safe call on a non-null receiver of type 'DesktopJsInstalledState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt:158:53 Unnecessary safe call on a non-null receiver of type 'DesktopJsInstalledState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt:170:103 Unnecessary safe call on a non-null receiver of type 'DesktopJsInstalledState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt:180:65 Unnecessary safe call on a non-null receiver of type 'DesktopJsInstalledState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt:181:71 Unnecessary safe call on a non-null receiver of type 'InstalledBiliPaiJsPlugin'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt:500:78 Unnecessary safe call on a non-null receiver of type 'PlaylistItem'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt:503:93 Unnecessary safe call on a non-null receiver of type 'PlaylistItem'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt:520:33 Unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt:75:32 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt:83:32 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginPackageScreens.kt:57:17 'fun TabRow(selectedTabIndex: Int, modifier: Modifier = ..., containerColor: Color = ..., contentColor: Color = ..., indicator: ComposableFunction1<List<TabPosition>, Unit> = ..., divider: ComposableFunction0<Unit> = ..., tabs: ComposableFunction0<Unit>): Unit' is deprecated. Replaced with PrimaryTabRow and SecondaryTabRow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt:113:34 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinAssets.kt:91:104 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinAssets.kt:98:37 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinVideo.kt:92:5 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt:368:17 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt:424:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/main/kotlin/com/bilipai/desktop/update/UpdateModels.kt:38:36 Non-public primary constructor is exposed via the generated 'copy()' method of the 'data' class.
+
+The generated 'copy()' will change its visibility in future releases.
+
+To suppress the warning do one of the following:
+- Annotate the data class with the '@ConsistentCopyVisibility' annotation.
+- Use the '-Xconsistent-data-class-copy-visibility' compiler flag.
+- Annotate the data class with the '@ExposedCopyVisibility' annotation 
+  (Discouraged, but can be used to keep binary compatibility).
+
+To learn more, see the documentation of the '@ConsistentCopyVisibility' and '@ExposedCopyVisibility' annotations.
+
+This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KT-11914.
+
+> Task :compileJava
+注: C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\src\main\java\su\litvak\chromecast\api\v2\Util.java使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+
+> Task :classes
+> Task :jar
+
+> Task :compileTestKotlin
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicResourceNavigationTest.kt:13:9 Type inference failed. The value of the type parameter 'T' must be mentioned in input types (argument types, receiver type, or expected type). Try to specify it explicitly.
+
+> Task :compileTestKotlin FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileTestKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2m 15s
+64 actionable tasks: 10 executed, 54 up-to-date

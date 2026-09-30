@@ -1,0 +1,8 @@
+{
+  "manifest": "desktop/verification/dynamic-resource-navigation/artifact-manifest.json",
+  "manifestSha256Bytes": "df5e25a77026202fceb52c622a1ad11363afd941ba054e70720e2a7523d8bd5b",
+  "MainIntegrated": true,
+  "fullFeatureParityVerified": false,
+  "DesktopDeployment": false,
+  "weightedReviewedProgressPercent": 69.7
+}

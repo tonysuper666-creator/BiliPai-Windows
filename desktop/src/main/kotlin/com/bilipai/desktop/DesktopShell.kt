@@ -41,6 +41,8 @@ import com.android.purebilibili.feature.audio.player.MusicPlaybackSource
 import com.android.purebilibili.feature.space.SpaceWatchProgress
 import com.android.purebilibili.feature.space.SpaceExternalPlaylist
 import com.android.purebilibili.feature.bangumi.policy.parseCourseNavigation
+import com.android.purebilibili.navigation.navigateOriginalDynamicCollection
+import com.android.purebilibili.navigation.navigateOriginalDynamicCourse
 import com.android.purebilibili.core.plugin.skin.LocalUiSkinState
 import com.android.purebilibili.core.plugin.skin.UiSkinSurface
 import com.bilipai.desktop.danmaku.DanmakuOverlay
@@ -444,6 +446,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var collectionMid by remember { mutableLongStateOf(0) }
     var collectionId by remember { mutableLongStateOf(0) }
     var collectionType by remember { mutableStateOf("season") }
+    var collectionTitle by remember { mutableStateOf("") }
     var noteVideo by remember { mutableStateOf<VideoDetails?>(null) }
     var favorite by remember(playing.details?.bvid) { mutableStateOf(playing.details?.let { library.isFavorite(it.bvid) } ?: false) }
     val updater = remember { DesktopUpdater() }
@@ -620,7 +623,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     fun openBangumi(id: Long) { showSeason(id) }
     fun openCollection(mid: Long, id: Long, type: String) {
-        navigate(DesktopSection.COLLECTION) { collectionMid = mid; collectionId = id; collectionType = type }
+        navigate(DesktopSection.COLLECTION) { collectionMid = mid; collectionId = id; collectionType = type; collectionTitle = "" }
+    }
+    fun openDynamicWeb(url: String, title: String) {
+        runCatching { java.net.URI(imageUrl(url)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+            runCatching { java.awt.Desktop.getDesktop().browse(uri) }.onFailure { error = it.message ?: "无法打开$title" }
+        }
     }
     fun openResource(resource: PersonalResource) {
         when (resource) {
@@ -871,7 +879,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
             onVideoClick = { openVideo(VideoCard(it, "", "", "", 0, 0)) }, onUserClick = ::openUser,
             onBangumiClick = { sid, eid -> showSeason(sid, eid) }, onMusicClick = ::openMusic,
-            onLiveClick = { room, _, _ -> openLive(room) }),
+            onLiveClick = { room, _, _ -> openLive(room) },
+            onCollectionClick = { id, mid, title, url ->
+                navigateOriginalDynamicCollection(id, mid, title, url, onFavorite = { type, mediaId, ownerMid, folderTitle ->
+                    navigate(DesktopSection.COLLECTION) {
+                        collectionMid = ownerMid; collectionId = mediaId; collectionType = type; collectionTitle = folderTitle
+                    }
+                }, onWeb = ::openDynamicWeb)
+            },
+            onCourseClick = { url, title ->
+                navigateOriginalDynamicCourse(url, title, onPlayer = { sid, eid, course -> showSeason(sid, eid, course) }, onWeb = ::openDynamicWeb)
+            }),
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
         LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
@@ -1082,7 +1100,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopSection.LIKED -> PersonalSection.LIKED
                                     else -> PersonalSection.FOLLOWINGS
                                 }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
-                            section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true })
+                            section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true },
+                                space = space, onResource = ::openResource, initialTitle = collectionTitle)
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
                             section == DesktopSection.SETTINGS -> DesktopSettingsTree(settingsNavigator, settingsSearchController,
                                 historyWritesScope = scope, discovery = discovery, privacy = privacyBindings,

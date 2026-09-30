@@ -64,6 +64,49 @@ HEADER={
  'RecoverableVisualEffects.kt':'import androidx.compose.runtime.*\nimport dev.chrisbanes.haze.HazeState\nimport java.util.Collections\nimport java.util.WeakHashMap\n',
 }
 ADAPTED=[APP+'feature/home/components/cards/VideoCard.kt',APP+'feature/home/components/cards/HomeStyleSingleColumnVideoCard.kt',APP+'core/ui/adaptive/AdaptiveInputModifiers.kt',APP+'core/ui/blur/UnifiedBlur.kt',APP+'feature/home/components/cards/VideoCardOnlineCountStore.kt']
+def original_dynamic_navigation_body(source, name, token_parser):
+ # Select the original DynamicScreen callback, not another screen's similarly
+ # named callback. Kotlin tokens keep comments/literals out of brace matching.
+ begin=source.index('BiliPaiNavEntryContentRole.DYNAMIC -> DynamicScreen(')
+ end=source.index('BiliPaiNavEntryContentRole.SEARCH ->',begin)
+ region=source[begin:end]
+ matches=list(re.finditer(r'\b'+re.escape(name)+r'\s*=\s*\{',region))
+ assert len(matches)==1,name
+ opening=matches[0].end()-1
+ tokens=token_parser.kotlin_tokens(region[opening:]);depth=0;arrow=None;closing=None
+ for index,(value,start,finish) in enumerate(tokens):
+  if value=='{':depth+=1
+  elif value=='}':
+   depth-=1
+   if depth==0:closing=start;break
+  elif value=='-' and depth==1 and arrow is None and tokens[index+1][0]=='>':arrow=tokens[index+1][2]
+ assert arrow is not None and closing is not None,name
+ return textwrap.dedent(region[opening+arrow:opening+closing]).strip()
+
+def desktop_dynamic_navigation(source, token_parser):
+ changes=[];functions=[]
+ for callback,signature,key,replacement in [
+  ('onCollectionClick','internal fun navigateOriginalDynamicCollection(mediaId:Long, ownerMid:Long, title:String, url:String,\n onFavorite:(String,Long,Long,String)->Unit, onWeb:(String,String)->Unit)',
+   'SeasonSeriesDetail','onFavorite("favorite", mediaId, ownerMid, title)'),
+  ('onCourseClick','internal fun navigateOriginalDynamicCourse(url:String, title:String,\n onPlayer:(Long,Long,Boolean)->Unit, onWeb:(String,String)->Unit)',
+   'BangumiPlayer','onPlayer(courseNav.seasonId, courseNav.epId, true)'),
+ ]:
+  original=original_dynamic_navigation_body(source,callback,token_parser);body=original
+  pattern=r'pushNavigation3Key\(\s*BiliPaiNavKey\.'+key+r'\(\s*[^()]*?\)\s*\)'
+  matches=list(re.finditer(pattern,body));assert len(matches)==1,callback
+  before=matches[0].group()
+  reviewed=('pushNavigation3Key(BiliPaiNavKey.SeasonSeriesDetail(type="favorite", id=mediaId, mid=ownerMid, title=title,))'
+   if key=='SeasonSeriesDetail' else 'pushNavigation3Key(BiliPaiNavKey.BangumiPlayer(seasonId=courseNav.seasonId, epId=courseNav.epId, isCourse=true))')
+  assert [t[0]for t in token_parser.kotlin_tokens(before)]==[t[0]for t in token_parser.kotlin_tokens(reviewed)],callback
+  body=body.replace(before,replacement)
+  changes.append(dict(callback=callback,before=before,after=replacement))
+  before='pushNavigation3Key(BiliPaiNavKey.Web(url = url, title = title))'
+  assert body.count(before)==1,callback
+  body=body.replace(before,'onWeb(url, title)')
+  changes.append(dict(callback=callback,before=before,after='onWeb(url, title)'))
+  functions.append(signature+' {\n'+textwrap.indent(body,'    ')+'\n}')
+ return '\n\n'.join(functions),changes
+
 def generate(repo, output, standalone=False):
  global HERE,REPO,parser,appearance,media
  HERE=output;REPO=repo
@@ -104,6 +147,8 @@ def generate(repo, output, standalone=False):
    before='Uri.encode(coverUrl)';after='encodeDesktopVideoRouteCover(coverUrl)'
    assert body.count(before)==1
    body=body.replace(before,after);changes.append(dict(before=before,after=after))
+   callbacks,callback_changes=desktop_dynamic_navigation(source,parser)
+   body+='\n\n'+callbacks+'\n';changes.extend(callback_changes)
   if path.endswith('/VideoCardOnlineCountStore.kt'):
    before='import com.android.purebilibili.core.network.NetworkModule';after='import com.bilipai.desktop.ui.LocalDesktopVideoCardOnlineStore\nimport kotlinx.coroutines.CancellationException'
    body=body.replace(before,after);changes.append(dict(before=before,after=after))

@@ -1,0 +1,237 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "5ee3660a61e14be0f4d59e9ff484a5dced650314",
+  "MainIntegrated": true,
+  "sourceIdentityAdded": false,
+  "existingAppNavigationProducerExtended": true,
+  "sourceIdentity": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+  "platformDispatchChanges": [
+    {
+      "before": "Uri.encode(coverUrl)",
+      "after": "encodeDesktopVideoRouteCover(coverUrl)"
+    },
+    {
+      "callback": "onCollectionClick",
+      "before": "pushNavigation3Key(\n        BiliPaiNavKey.SeasonSeriesDetail(\n            type = \"favorite\",\n            id = mediaId,\n            mid = ownerMid,\n            title = title,\n        )\n    )",
+      "after": "onFavorite(\"favorite\", mediaId, ownerMid, title)"
+    },
+    {
+      "callback": "onCollectionClick",
+      "before": "pushNavigation3Key(BiliPaiNavKey.Web(url = url, title = title))",
+      "after": "onWeb(url, title)"
+    },
+    {
+      "callback": "onCourseClick",
+      "before": "pushNavigation3Key(\n        BiliPaiNavKey.BangumiPlayer(\n            seasonId = courseNav.seasonId,\n            epId = courseNav.epId,\n            isCourse = true\n        )\n    )",
+      "after": "onPlayer(courseNav.seasonId, courseNav.epId, true)"
+    },
+    {
+      "callback": "onCourseClick",
+      "before": "pushNavigation3Key(BiliPaiNavKey.Web(url = url, title = title))",
+      "after": "onWeb(url, title)"
+    }
+  ],
+  "actualMainSnapshotSha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+  "actualMainOrderedRuntimeCpSha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+  "actualProductClasspathEntries": 89,
+  "focusedMainTests": 8,
+  "sourceConformanceTests": 5,
+  "uiCells": 8,
+  "pointerPairs": 48,
+  "zeroProductClassOverrides": true,
+  "RootShellCompiled": true,
+  "RootShellExecuted": false,
+  "publicFolderRequestFixture": true,
+  "realAccountOrNetwork": false,
+  "nativeWindowOrChooser": false,
+  "packageOrDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5",
+  "weightedReviewedProgressPercent": 69.7,
+  "fullFeatureParityVerified": false,
+  "acceptedScope": [
+    "Original DynamicScreen favorite-folder/course routing conditions and values",
+    "Root favorite route carries original title/owner/id/type; Root course route carries season/episode/isCourse",
+    "Favorite folder uses existing public original getFavoriteList transport and original FavoriteData mapping, retaining raw collection resources",
+    "Course parser supports season-only, episode-only and bilibili scheme; same original nonblank fallback",
+    "Existing account epoch checks reject public folder setup/response under changed owner"
+  ],
+  "remaining": [
+    "Original full SeasonSeriesDetail screen/actions/visuals are not accepted by this routing slice",
+    "Original embedded Web destination still uses explicit Windows external browser boundary",
+    "Course native playback was not rerun by this route-only proof",
+    "MainShell/native window, real service/account, package and Desktop regression remain"
+  ],
+  "history": [
+    "First generator preparation failed because the shared token parser emits separate - and > tokens; corrected before Main generation",
+    "Main tests01 compiler rejected missing new required arguments on unchanged collection callers; optional boundaries now preserve existing nonfavorite callers and fail explicitly for unmounted favorite routes",
+    "Main tests02 test compilation rejected heterogeneous expected list type; test annotation fixed without changing Main; tests03 accepted"
+  ],
+  "rawEvidence": {
+    "files": [
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/source-tests-01.log",
+        "sha256Bytes": "0bdf2fb1cbb10804baea3eedd6394543b6c0d19b621aa969d3f6013f89e84c1a",
+        "bytes": 1045
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/main-tests-01.log",
+        "sha256Bytes": "56fe638f5d94e9b477aabba8c7de69f28bbb790a276137fdaa4b612505a73f89",
+        "bytes": 10365
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/main-tests-02.log",
+        "sha256Bytes": "43e9a3592356e46b78809beabd9cd2512cd3e52ebc5b23518d9699db03acaf31",
+        "bytes": 34788
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/main-tests-03.log",
+        "sha256Bytes": "2a0f6ddc9ed0d780af6ffdb8591386d7f6c975d9e9f4eabe624b652a91e2d04b",
+        "bytes": 10820
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/main-snapshot-01.log",
+        "sha256Bytes": "9a74e1348879873c34cbceda4cf1d4a6b859977c6944c6c7a5eff37b9aad08a4",
+        "bytes": 1695
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/FolderUiFixture.kt",
+        "sha256Bytes": "437f3b17dd3aa4569f340ded942f7f864eae605d1db9adee21f0400c5e587c9c",
+        "bytes": 7428
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/compile-run-ui.py",
+        "sha256Bytes": "967859ab1e3f0f1c379a514807567e12bdf6bc62746177a1a8c8d291557d6bc9",
+        "bytes": 4508
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/prepare-snapshot.py",
+        "sha256Bytes": "0c9035e7235f6d2605562ef3dcee3d00667337570cf346c783547bf51b921447",
+        "bytes": 2304
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-compiler-01.args",
+        "sha256Bytes": "a87998950624ae5c1da75ae125788ae98852a387826cad83275a0e9e8e35be82",
+        "bytes": 23023
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-compile-01.log",
+        "sha256Bytes": "3db0ce287d83e1ab299ab147cc98bedb7543b3eb2e45d300883fbc72c6c90634",
+        "bytes": 328
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-runtime-01.args",
+        "sha256Bytes": "2e6175c8239eb353c9a29bccb45c3b60859097d02c2d1bc7c62d92b7a9a50a1e",
+        "bytes": 22701
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-runtime-01.log",
+        "sha256Bytes": "28c3d2e8c1d661fc1491470032fa2526d392f66a29fcd3e73e162ca405259f6e",
+        "bytes": 114
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-runner-01.log",
+        "sha256Bytes": "9af18ad3593ea15c85ffba2f400f7ac4b6bb3f73b3b17ffa9f7289429cfd4b27",
+        "bytes": 450
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-dependency-identities.json",
+        "sha256Bytes": "e6a86593c036168d5bb1d6439dfe659043414b20e73c016763e0d8a94725b014",
+        "bytes": 33734
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-class-overlap-01.json",
+        "sha256Bytes": "7c9585cdd1f6271eef22b317f1778c3c3e56fe04b91527334222b7153c8884a2",
+        "bytes": 102
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/ui-evidence-01.json",
+        "sha256Bytes": "bfbf9614a059f1771ca211bd12a8117f74b6cec84734d74c020a2c1a40425587",
+        "bytes": 1881
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/material3-dark-640.png",
+        "sha256Bytes": "382d24a5a7034594f617c3376100fc056d8937a5315f4cd57ea2d13a396dc479",
+        "bytes": 21614
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/material3-dark-960.png",
+        "sha256Bytes": "0312a9ed6205182b7d1e667e6bce78ac87e7062cf3c602eb7f547e1022e409e2",
+        "bytes": 23171
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/material3-light-640.png",
+        "sha256Bytes": "d59c3cf0a23d4cd1c782c0ab777d7f42f8a6fc1c77859c523e1d22d9c3e27c73",
+        "bytes": 21166
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/material3-light-960.png",
+        "sha256Bytes": "d659795f82bdf4bc1b50a8684a0587a53ffff8be5b8e05178984618d02083fd8",
+        "bytes": 22692
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/miuix-dark-640.png",
+        "sha256Bytes": "0b41d813752235d917361bb317d8e423a934e4b5f27c8be47e51ee2323e1907d",
+        "bytes": 22345
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/miuix-dark-960.png",
+        "sha256Bytes": "55746174f8ae761916d59c9dedc2ac202db0e52f1696c02ce50cbe72ae1da245",
+        "bytes": 23873
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/miuix-light-640.png",
+        "sha256Bytes": "6121fe8f3b42ce454d3a1440f944f4cb8b1303e7c635fa130d76b2aa30cdb8e6",
+        "bytes": 21473
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/miuix-light-960.png",
+        "sha256Bytes": "1f21c26fa6c6573f075a10325be36ebc89cdf5b980b587a18701e90de1614ef3",
+        "bytes": 23108
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/ui/ui-result.json",
+        "sha256Bytes": "41e2c2c31e5c050b355ff3616c982cb5af985f9aec3b134f3fbf762bca4848e3",
+        "bytes": 1068
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/actual-main/manifest.json",
+        "sha256Bytes": "4780b40c15bd0de96f01fe5f60086bd2e67684764d075d8af8f437a27b0887c5",
+        "bytes": 271532
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/actual-main/ordered-runtime-cp.json",
+        "sha256Bytes": "c2f31a97c207af9d501d669897deebfee51f4edf9a12b1280df59b542ec4b6ab",
+        "bytes": 33376
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/actual-main/TEST-com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest.xml",
+        "sha256Bytes": "92889fcf0450e61298a4ac7955285d1d985e3d1915fdeeb533706403454efce5",
+        "bytes": 1139
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/actual-main/TEST-com.bilipai.desktop.data.DesktopSpaceRepositoryTest.xml",
+        "sha256Bytes": "b5a86e9f68eb753808fd649ef4465c5a0180fe4b3f1e1ec028b27175af6fbbb2",
+        "bytes": 835
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/selected-original/AppNavigation.kt",
+        "sha256Bytes": "ebc4d40e2c4e09b903264706fbb6405eb62caff10f1c57e00b86918e19a7bb50",
+        "bytes": 3384
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/selected-original/source-inventory.json",
+        "sha256Bytes": "48140741a5867fad5da41597f31de4bbaaeb3709b245155263597e4738729b51",
+        "bytes": 36415
+      },
+      {
+        "path": "desktop/verification/dynamic-resource-navigation/proof/snapshot-dynamic-resource-navigation-main-01.py",
+        "sha256Bytes": "e8662bf3944b2d178ff14f54104410f9535c2d96950eb38ee6533d35e6395715",
+        "bytes": 5885
+      }
+    ],
+    "containsBinaryClassesJarsDllsExeOrPrivateStores": false
+  },
+  "snapshotSourcePinsVerified": 378,
+  "snapshotGeneratedPinsVerified": 701
+}

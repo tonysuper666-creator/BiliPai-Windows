@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-09-30T23:16:34.483Z" hostname="TONYSUPER666" time="0.007">
+  <properties/>
+  <testcase name="blankLinksDoNotOpenAnotherDestination()" classname="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" time="0.002"/>
+  <testcase name="coursesUseOriginalSeasonEpisodeAndSchemeParsing()" classname="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" time="0.001"/>
+  <testcase name="otherCollectionUrlsAndInvalidMediaIdsKeepOriginalWebFallback()" classname="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" time="0.001"/>
+  <testcase name="unparsedCourseKeepsOriginalTitleAndWebFallback()" classname="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" time="0.001"/>
+  <testcase name="favoriteFolderKeepsOriginalTypeIdOwnerAndTitle()" classname="com.bilipai.desktop.ui.DesktopDynamicResourceNavigationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -35,4 +35,21 @@ class HomeFullCardSourcesTest(unittest.TestCase):
      'setHomePublishTimeVisible','setFullVideoCardContentVisible','setVideoCardLongPressActionEnabled',
      'setHomeCardDynamicTintEnabled','setHomeDurationStyle','setShowOnlineCount']:
     self.assertEqual(g.media.function(original,name,g.parser),g.media.function(actual,name,g.parser),name)
+ def test_dynamic_resource_routes_only_adapt_the_platform_dispatch(self):
+  with tempfile.TemporaryDirectory(prefix='bp-dynamic-route-source-')as temporary:
+   out=Path(temporary);g.generate(REPO,out)
+   original=(REPO/'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt').read_text(encoding='utf-8')
+   actual=next(out.rglob('AppNavigation.kt')).read_text(encoding='utf-8')
+   callbacks,changes=g.desktop_dynamic_navigation(original,g.parser)
+   self.assertIn(callbacks,actual)
+   for callback,name in [('onCollectionClick','navigateOriginalDynamicCollection'),('onCourseClick','navigateOriginalDynamicCourse')]:
+    adapted=g.media.function(actual,name,g.parser)
+    body=adapted[adapted.index('{')+1:adapted.rindex('}')]
+    for change in reversed([c for c in changes if c['callback']==callback]):
+     self.assertEqual(1,body.count(change['after']))
+     body=body.replace(change['after'],change['before'])
+    expected=g.original_dynamic_navigation_body(original,callback,g.parser)
+    self.assertEqual([t[0]for t in g.parser.kotlin_tokens(expected)],[t[0]for t in g.parser.kotlin_tokens(body)])
+   changed=original.replace('type = "favorite",','type = "favorite_season",')
+   with self.assertRaises(AssertionError):g.desktop_dynamic_navigation(changed,g.parser)
 if __name__=='__main__':unittest.main()

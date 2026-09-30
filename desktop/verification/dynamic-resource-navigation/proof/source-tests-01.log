@@ -1,0 +1,10 @@
+test_dynamic_resource_routes_only_adapt_the_platform_dispatch (test_home_full_card_sources.HomeFullCardSourcesTest.test_dynamic_resource_routes_only_adapt_the_platform_dispatch) ... ok
+test_every_original_identity_is_in_main_inventory_with_its_original_features (test_home_full_card_sources.HomeFullCardSourcesTest.test_every_original_identity_is_in_main_inventory_with_its_original_features) ... ok
+test_original_visual_setters_keep_their_source_bodies (test_home_full_card_sources.HomeFullCardSourcesTest.test_original_visual_setters_keep_their_source_bodies) ... ok
+test_shared_sync_owns_all_direct_originals_once (test_home_full_card_sources.HomeFullCardSourcesTest.test_shared_sync_owns_all_direct_originals_once) ... ok
+test_standalone_direct_bodies_are_verbatim_and_generation_is_deterministic (test_home_full_card_sources.HomeFullCardSourcesTest.test_standalone_direct_bodies_are_verbatim_and_generation_is_deterministic) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.372s
+
+OK
