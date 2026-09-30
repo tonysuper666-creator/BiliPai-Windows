@@ -1,3 +1,4 @@
 # Pinned native dependency licenses are checked by SHA-256 as original bytes.
 desktop/third-party/ffmpeg/licenses/** -text
 desktop/third-party/libmpv/licenses/** -text
+desktop/third-party/graaljs/licenses/** -text

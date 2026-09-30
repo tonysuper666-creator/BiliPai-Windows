@@ -53,6 +53,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     val account: StateFlow<AccountSummary?> = sessions.account
     val savedAccounts: StateFlow<List<DesktopStoredAccountInfo>> = sessions.accounts
     internal val sessionEpoch: Long get() = sessions.generation
+    internal val sessionEpochFlow: StateFlow<Long> = sessions.generationState
     private val authMutex = Mutex()
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val client = OkHttpClient.Builder()

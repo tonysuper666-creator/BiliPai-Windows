@@ -1,6 +1,7 @@
 package com.bilipai.desktop
 
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ import com.bilipai.desktop.player.MpvStartupProbe
 import com.bilipai.desktop.update.DesktopUpdater
 import com.bilipai.desktop.update.UpdateStorage
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.awt.Dimension
@@ -70,7 +72,15 @@ fun main(args: Array<String>) {
         val repository = remember { DesktopRepository() }
         val playerResult = remember { runCatching { MpvPlayer() } }
         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
-        fun closeApp() { playerResult.getOrNull()?.close(); exitApplication() }
+        val applicationScope = rememberCoroutineScope()
+        val shutdown = remember { java.util.concurrent.atomic.AtomicReference<suspend () -> Unit>({}) }
+        val closing = remember { java.util.concurrent.atomic.AtomicBoolean() }
+        fun closeApp() {
+            if (closing.compareAndSet(false, true)) applicationScope.launch {
+                try { shutdown.get().invoke(); playerResult.getOrNull()?.close(); exitApplication() }
+                catch (failure: Exception) { closing.set(false); System.err.println("Application shutdown did not finish (${failure.javaClass.simpleName}).") }
+            }
+        }
         Window(
             onCloseRequest = { closeApp() },
             title = "BiliPai Windows",
@@ -111,7 +121,7 @@ fun main(args: Array<String>) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = {
                     windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
-                }, hostWindow = window)
+                }, hostWindow = window, registerShutdown = shutdown::set)
         }
     }
 }

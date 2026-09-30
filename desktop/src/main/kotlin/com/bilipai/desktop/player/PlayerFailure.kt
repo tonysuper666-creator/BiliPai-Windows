@@ -19,7 +19,8 @@ data class PlayerFailure(
 internal class PlayerDiagnostics(private val capacity: Int = 32, private val maximumCharacters: Int = 16_384) {
     private val lines = ArrayDeque<String>()
     private var characters = 0
-    private var cookieValues: List<String> = emptyList()
+    private var headerSecrets: List<String> = emptyList()
+    private var streamHeaderPattern: Regex? = null
     private var networkEvidence = false
     private var decoderEvidence = false
     private var fileEvidence = false
@@ -28,9 +29,20 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
     fun reset(source: PlaybackSource?) {
         lines.clear(); characters = 0
         networkEvidence = false; decoderEvidence = false; fileEvidence = false; httpStatus = null
-        cookieValues = source?.cookieHeader.orEmpty().split(';').mapNotNull { item ->
-            item.substringAfter('=', "").trim().takeIf(String::isNotEmpty)
+        val explicit = source?.streamHeaders.orEmpty()
+        headerSecrets = buildList {
+            addAll(explicit.values.filter(String::isNotBlank))
+            val cookies = listOf(source?.cookieHeader.orEmpty(), explicit.playbackHeader("Cookie").orEmpty())
+            cookies.forEach { cookie -> cookie.split(';').forEach { item ->
+                item.substringAfter('=', "").trim().takeIf(String::isNotEmpty)?.let(::add)
+            } }
+            listOf("Authorization", "Proxy-Authorization").forEach { name ->
+                explicit.playbackHeader(name)?.substringAfter(' ', "")?.trim()?.takeIf(String::isNotEmpty)?.let(::add)
+            }
         }.distinct().sortedByDescending(String::length)
+        streamHeaderPattern = explicit.keys.takeIf { it.isNotEmpty() }?.let { keys ->
+            Regex("(?im)(?<![A-Za-z0-9!#\u0024%&'*+.^_`|~-])(" + keys.joinToString("|") { Regex.escape(it) } + ")\\s*[:=].*\u0024")
+        }
     }
 
     fun append(prefix: String, message: String) {
@@ -52,10 +64,12 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
         var result = value.take(8_192).replace(Regex("[\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f]"), " ")
         // mpv/FFmpeg error messages can contain a complete signed URL or echoed header.
         result = HEADER.replace(result) { "${it.groupValues[1]}: <redacted>" }
-        cookieValues.forEach { secret -> result = result.replace(secret, "<redacted>") }
+        streamHeaderPattern?.let { pattern -> result = pattern.replace(result) { "${it.groupValues[1]}: <redacted>" } }
+        headerSecrets.forEach { secret -> result = result.replace(secret, "<redacted>") }
         result = URL.replace(result) { match ->
-            val host = runCatching { URI(match.value).host }.getOrNull()?.takeIf { it.length <= 253 }
-            if (host == null) "<media URL>" else "https://$host/<redacted>"
+            val uri = runCatching { URI(match.value) }.getOrNull()
+            val host = uri?.host?.takeIf { it.length <= 253 }
+            if (host == null) "<media URL>" else "${uri.scheme.lowercase()}://$host/<redacted>"
         }
         result = SECRET_ASSIGNMENT.replace(result) { "${it.groupValues[1]}=<redacted>" }
         result = QUERY_ASSIGNMENT.replace(result) { "${it.groupValues[1]}<redacted>" }
@@ -78,7 +92,7 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
 
     companion object {
         private val HEADER = Regex("(?im)\\b(cookie|set-cookie|authorization|proxy-authorization|http-header-fields)\\s*[:=].*$")
-        private val URL = Regex("(?i)https?://[^\\s\\\"'<>]+")
+        private val URL = Regex("(?i)[a-z][a-z0-9+.-]*://[^\\s\\\"'<>]+")
         private val SECRET_ASSIGNMENT = Regex("(?i)\\b(SESSDATA|bili_jct|DedeUserID(?:__ckMd5)?|access_token|refresh_token|token|signature|sign|session(?:id)?)\\s*=\\s*[^\\s;&\\\"']+")
         private val QUERY_ASSIGNMENT = Regex("([?&][A-Za-z0-9_.~-]+=)[^\\s;&\\\"']+")
         private val HTTP_STATUS = Regex("(?:http(?: error| status| response(?: code)?)?|server returned|http/[0-9.]+)\\s*[:=]?\\s*([45][0-9]{2})\\b")

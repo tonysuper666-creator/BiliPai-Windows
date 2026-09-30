@@ -2174,6 +2174,54 @@
         "google-cast-v2"
       ],
       "sha256": "52a2eb2c0de15b0d15ce454e29cce176f1e0296b6aaeb7bf16ef446648b9216f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginModels.kt",
+      "sha256": "0fa4057e6eb1d5e8ea8c20e6edeb6b84be5c8042457dd46788d08e0ec4ff810a",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/js/ExternalMediaLaunchStore.kt",
+      "sha256": "453c418a0c003bef3d53186bd4d7999e14557321cbbdac64540bcadf3eecfda1",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginInstallStore.kt",
+      "sha256": "29dcad3b167f6f9c364bcd44869af526f2c047489c290f3c61a8aec7a119d159",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "sha256": "36477d508db469e5556dd12a6712fb64675e60343ecec05cc18d607978571f36",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/js/BiliPaiJsRuntime.kt",
+      "sha256": "8e302b18906796e5e1a9c17b5e6acbe7bc293f5ace3b4d0cffb93588bc8e92a7",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentScreen.kt",
+      "sha256": "ceb79c1886b47e47f5463628b1414d144a0ac7623c6f56cb217c54bbed6f3109",
+      "features": [
+        "js-plugins"
+      ],
+      "mode": "policy-extract"
     }
   ],
   "featureCoverage": {
@@ -2200,7 +2248,7 @@
     "full-functional-parity": "not-yet-complete",
     "backup": "native-webdav-and-archive-loopback-tested-awaiting-packaged-scheduler"
   },
-  "windowsRevision": 8,
+  "windowsRevision": 9,
   "hashNormalization": "lf",
   "resources": [
     {

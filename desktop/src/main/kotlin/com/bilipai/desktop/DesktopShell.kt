@@ -69,13 +69,16 @@ private enum class DesktopSection(val label: String, val symbol: String) {
     CLOUD_HISTORY("云端历史", "◷"), CLOUD_FAVORITES("云端收藏", "♥"), WATCH_LATER("稍后再看", "▣"),
     FOLLOWINGS("我的关注", "♧"), LIKED("赞过的视频", "♥"), LISTEN("听视频", "♫"), DOWNLOADS("下载与离线", "↓"), MESSAGES("消息", "✉"),
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
-    ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣")
+    ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
+    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷")
 }
 
 @Composable
 fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: String?, initialVideo: String?,
-    onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null) {
+    onExit: () -> Unit, onToggleFullscreen: () -> Unit, hostWindow: java.awt.Window? = null,
+    registerShutdown: ((suspend () -> Unit) -> Unit)? = null) {
     val account by repository.account.collectAsState()
+    val sessionEpoch by repository.sessionEpochFlow.collectAsState()
     val settingsLibrary = remember { DesktopLibrary() }
     val library = remember(account?.mid) { if (account == null) settingsLibrary else DesktopLibrary(DesktopLibrary.directoryForAccount(account?.mid)) }
     val preferenceStore = remember { PlayerPreferencesStore() }
@@ -88,6 +91,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     val browseMemory = remember(account?.mid) { DesktopBrowseMemory() }
     val pluginStore = remember { DesktopPluginStore(DesktopLibrary.directoryForAccount(null)) }
     val pluginRuntime = remember(pluginStore) { DesktopPluginRuntime(pluginStore, repository, community, discovery) }
+    val jsExecutionRevision by pluginRuntime.jsPlugins.host.executionRevision.collectAsState()
     val packages by pluginRuntime.packages.state.collectAsState()
     val cast = remember(pluginRuntime) { DesktopCastController(pluginRuntime.context, pluginRuntime.dlnaCast) }
     val castResolver = remember(repository, pluginRuntime) { DesktopCastMediaResolver(repository, pluginRuntime.context) }
@@ -148,6 +152,15 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
             pluginRuntime.shutdownForRestore()
         }, afterRestore = { withContext(Dispatchers.Main) { onExit() } })
     }
+    SideEffect {
+        registerShutdown?.invoke {
+            withContext(NonCancellable) {
+                withContext(Dispatchers.Main) { pip?.close(); retainedMedia.close(); playback.close(); listen?.close() }
+                cast.quiesce()
+                pluginRuntime.shutdownForRestore()
+            }
+        }
+    }
     var mediaActive by remember { mutableStateOf(false) }
     var query by remember { mutableStateOf("") }
     var submitted by remember { mutableStateOf("") }
@@ -161,6 +174,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     var loginDialog by remember { mutableStateOf(false) }
     var playerSettings by remember { mutableStateOf(false) }
     var backupSettings by remember { mutableStateOf(false) }
+    var jsPluginId by remember { mutableStateOf("") }
+    var jsSubscriptionReader by remember { mutableStateOf(false) }
     var castDialog by remember { mutableStateOf(false) }
     var dlnaDialog by remember { mutableStateOf(false) }
     var googleCastDialog by remember { mutableStateOf(false) }
@@ -248,6 +263,23 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
     fun openUser(id: Long) { userId = id; navigate(DesktopSection.USER) }
     fun openArticle(id: Long) { articleId = id; navigate(DesktopSection.ARTICLE) }
     fun openNotes(info: VideoDetails) { noteVideo = info; navigate(DesktopSection.NOTES) }
+    fun openJsPlugin(id: String) { jsPluginId = id; navigate(DesktopSection.JS_CONTENT) }
+    fun openJsMedia(launchId: String, revision: Long) {
+        val host = pluginRuntime.jsPlugins.host
+        if (activatingUpdate) { host.releaseExternalLaunch(launchId); return }
+        val epoch = repository.sessionEpoch
+        try {
+            check(host.executionRevision.value == revision) { "插件播放授权已经变化，请重新打开内容" }
+            retainedMedia.acquire(retainedMedia.external)
+            retainedMedia.external.open(launchId, authorizationCurrent = {
+                host.executionRevision.value == revision && repository.sessionEpoch == epoch
+            }, releaseRequest = host::releaseExternalLaunch)
+            showVideo = false; section = DesktopSection.EXTERNAL_MEDIA; lastMediaSection = section
+        } catch (failure: Exception) {
+            host.releaseExternalLaunch(launchId)
+            error = failure.message ?: "外部媒体无法播放"
+        }
+    }
     fun openLive(id: Long) { roomId = id; navigate(DesktopSection.LIVE) }
     fun showSeason(id: Long, epId: Long = 0, course: Boolean = false, progress: Double = 0.0) {
         seasonId = id; episodeId = epId; isCourse = course; seasonProgress = progress
@@ -339,10 +371,14 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
             retainedMedia.live -> lastMediaSection = DesktopSection.LIVE
             retainedMedia.bangumi -> lastMediaSection = DesktopSection.BANGUMI
             retainedMedia.offline -> lastMediaSection = DesktopSection.DOWNLOADS
+            retainedMedia.external -> lastMediaSection = DesktopSection.EXTERNAL_MEDIA
             else -> Unit
         }
     }
     DesktopHistoryRefreshEffects(browseMemory, showVideo && playing.details != null)
+    LaunchedEffect(retainedMedia, jsExecutionRevision, sessionEpoch) {
+        if (!retainedMedia.external.authorizationCurrent) retainedMedia.external.stopPlayback()
+    }
     LaunchedEffect(player, danmaku) { player?.applyPreferences(preferences); danmaku?.applySettings(preferences.danmaku) }
     LaunchedEffect(pluginRuntime, danmaku) {
         pluginRuntime.danmakuRevision.collect { danmaku?.setPluginDanmakuProcessor(pluginRuntime::processDanmaku) }
@@ -459,7 +495,8 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                 Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text("BiliPai", Modifier.padding(12.dp), style = MaterialTheme.typography.headlineSmall, color = scheme.primary, fontWeight = FontWeight.Bold)
                     Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION) }.forEach { item ->
+                        DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
+                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA) }.forEach { item ->
                             Surface(Modifier.fillMaxWidth().height(48.dp).clickable { navigate(item) }, shape = RoundedCornerShape(24.dp),
                                 color = if (section == item && !showVideo) scheme.primaryContainer else Color.Transparent) {
                                 Row(Modifier.padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -524,6 +561,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                         retainedMedia.live -> DesktopSection.LIVE
                         retainedMedia.bangumi -> DesktopSection.BANGUMI
                         retainedMedia.offline -> DesktopSection.DOWNLOADS
+                        retainedMedia.external -> DesktopSection.EXTERNAL_MEDIA
                         else -> null
                     }
                     if (retainedOwner != null && retainedPage != null && section != retainedPage && player != null && !showVideo) {
@@ -586,7 +624,11 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
                                     else -> PersonalSection.FOLLOWINGS
                                 }, repository, social, community, ::openVideo, ::openUser, { loginDialog = true }, ::openResource, ::openCollection)
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true })
-                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue)
+                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
+                            section == DesktopSection.JS_CONTENT -> DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
+                                onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
+                            section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
+                                onBack = { navigate(DesktopSection.JS_CONTENT) })
                             section in listOf(DesktopSection.HOME, DesktopSection.POPULAR, DesktopSection.REGION, DesktopSection.RANKING, DesktopSection.PRECIOUS, DesktopSection.WEEKLY) ->
                                 DiscoveryContentScreen(when (section) {
                                     DesktopSection.HOME -> DiscoverySection.RECOMMEND
@@ -640,6 +682,7 @@ fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playerError: S
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (playerSettings) PlaybackSettingsDialog(preferences, ::changePreferences, { playerSettings = false })
         if (backupSettings) BackupSettingsDialog(backup, { backupSettings = false }, onExit)
+        if (jsSubscriptionReader) SubscriptionReaderDialog(pluginRuntime, refreshOnOpen = true) { jsSubscriptionReader = false }
         if (castDialog) AlertDialog(onDismissRequest = { castDialog = false }, title = { Text("选择投屏方式") }, text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 OutlinedButton(onClick = { castDialog = false; dlnaDialog = true }, modifier = Modifier.fillMaxWidth()) { Text("DLNA / 电视媒体播放") }

@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "scope": "Source9 JS/native-header product integration, before package and appearance acceptance",
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "baseWindowsSourceCommit": "c166a5aed1ca4c3a35ade6eef20a1ae041875337",
+  "sourceAudit": {
+    "adoptedSourceCount": 262,
+    "adoptionModes": {
+      "direct": 182,
+      "api-extract": 1,
+      "policy-extract": 28,
+      "extracted": 43,
+      "platform-rewrite": 8
+    },
+    "adoptedResourceCount": 12,
+    "resourceHashesVerified": true,
+    "apiInterfacesVerbatim": true,
+    "apiMethodCount": 303,
+    "responseFiles": {
+      "upstreamCount": 45,
+      "adoptedCount": 45,
+      "unadopted": []
+    }
+  },
+  "verification": {
+    "targetedJUnitTests": 50,
+    "targetedJUnitFailures": 0,
+    "suites": [
+      {
+        "task": "test",
+        "suite": "com.android.purebilibili.core.plugin.js.BiliPaiJsNativeExampleTest",
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.android.purebilibili.core.plugin.js.BiliPaiJsPluginInstallStoreTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.android.purebilibili.core.plugin.js.BiliPaiJsPluginPolicyTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.android.purebilibili.core.plugin.js.BiliPaiJsRuntimeScriptPolicyTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.android.purebilibili.feature.plugin.js.BiliPaiJsPluginContentPolicyTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.bilipai.desktop.data.DesktopSessionStoreTest",
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.bilipai.desktop.player.PlaybackStreamHeadersTest",
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.bilipai.desktop.plugins.DesktopJsSubscriptionTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.bilipai.desktop.plugins.DesktopPluginServicesTest",
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "test",
+        "suite": "com.bilipai.desktop.ui.DesktopExternalMediaTest",
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      {
+        "task": "jsWorkerSmoke",
+        "suite": "com.bilipai.desktop.plugins.js.DesktopJsPluginIntegrationTest",
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    ],
+    "actualGuestChecks": {
+      "host": 14,
+      "installRepository": 10,
+      "pinnedResources": 4
+    },
+    "pythonFocusedTests": 17,
+    "gradleLog": "build/reports/source9-js-product-tests.log",
+    "jsWorkerCatalogSha256": "fcad2583c2862e66870f100a314db53534bbc782f4bca8b144ae7eaf3c0fe628",
+    "workerClasspathFiles": 13,
+    "otherWorkerResources": 137,
+    "jsRuntimeLicenseCatalogComplete": false,
+    "nativeHeaderIsolatedFixtureCases": 6,
+    "packagedNativeVerification": false
+  },
+  "implemented": [
+    "original JS models, runtime wrappers, install store, feed catalog and private storage",
+    "independent Graal worker with fixed minimal JDK and verified resource inventory",
+    "preview, exact-script grants, enable/disable/remove and content route",
+    "retained external media, all original lines and immutable headers",
+    "JS-only RSS and revocation guards",
+    "credential epoch changes and application shutdown joins"
+  ],
+  "remaining": [
+    "remote JS import and full original content visuals",
+    "source-aligned appearance/languages integration",
+    "full packaged native/external playback and real window acceptance",
+    "remaining feature matrix and user account/device acceptance"
+  ],
+  "desktopInstalledVersion": "0.2.406.5",
+  "deployedToDesktop": false,
+  "publicReleasePublished": false,
+  "userAccountWritesPerformed": false,
+  "fullFunctionalParityVerified": false
+}

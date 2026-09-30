@@ -1,0 +1,2 @@
+# Preserve exact upstream license bytes checked by the catalog.
+licenses/** -text

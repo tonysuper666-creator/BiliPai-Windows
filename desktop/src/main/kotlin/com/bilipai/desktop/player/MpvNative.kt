@@ -133,9 +133,17 @@ internal fun escapeMpvListItem(value: String, separator: Char): String = buildSt
 
 internal fun PlaybackSource.mpvFileOptions(): Map<String, String> = buildMap {
     audioUrl?.takeIf { it.isNotBlank() }?.let { put("audio-files", escapeMpvListItem(it, ';')) }
-    put("referrer", referer)
-    put("user-agent", userAgent)
-    if (cookieHeader.isNotBlank()) put("http-header-fields", escapeMpvListItem("Cookie: $cookieHeader", ','))
+    val explicit = copyPlaybackStreamHeaders(streamHeaders)
+    // FFmpeg otherwise sends both a builtin Referer and the explicit header. Preserve
+    // the original field (including an explicitly empty value) through one transport path.
+    put("referrer", if (explicit.playbackHeader("Referer") != null) "" else referer)
+    put("user-agent", if (explicit.playbackHeader("User-Agent") != null) "" else userAgent)
+    val fields = buildList {
+        if (explicit.playbackHeader("Cookie") == null && cookieHeader.isNotBlank()) add("Cookie: $cookieHeader")
+        explicit.forEach { (name, value) -> add("$name: $value") }
+    }
+    // The empty value is deliberate: a new empty stream must never inherit old native header fields.
+    put("http-header-fields", fields.joinToString(",") { escapeMpvListItem(it, ',') })
     put("force-media-title", title)
     put("start", startPositionSeconds.toString())
     put("pause", if (startPaused) "yes" else "no")

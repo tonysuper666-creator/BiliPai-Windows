@@ -1,0 +1,261 @@
+{
+  "complete": false,
+  "scope": "fixed Maven Community engine; upstream license resources collected; final artifact-specific reconciliation pending",
+  "components": [
+    {
+      "groupId": "org.graalvm.polyglot",
+      "artifactId": "polyglot",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.jar",
+      "artifactSha256": "fa012edab914c7ff5b0a1b50e41c9da710762b0b2d6a3cafb9a11647619349d0",
+      "publisherSha1": "c24908636b4b3cd27c0004a0a1b538cb01cec484",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.sdk",
+      "artifactId": "collections",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.jar",
+      "artifactSha256": "232dce19281954b247eeac5a87b4a77da3f7c2928d848a8ab3c9e49c73f29845",
+      "publisherSha1": "b0a260328c1ff1f69e1b11bd3b8584433fdd6cc8",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.sdk",
+      "artifactId": "nativeimage",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.jar",
+      "artifactSha256": "7e351d630528cdcb6d0ecde6e3e97cfcee7f0a77896a79509efa51db3e770a95",
+      "publisherSha1": "34d50fcb4ce206414fe3c90d2bdd7d497289b798",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.sdk",
+      "artifactId": "word",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/sdk/word/24.2.2/word-24.2.2.jar",
+      "artifactSha256": "a1f53ca4755cc74226fe4b4eb1d8f924604950473a7d454a475781c0536ea303",
+      "publisherSha1": "765ddc4d3f9a4e1ff7194000c466d7896648dbfc",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.js",
+      "artifactId": "js-language",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.jar",
+      "artifactSha256": "243bbffd40bef623143ccaa82cdb70ced78d79e6dcb7a17b3f585cc24a8e8183",
+      "publisherSha1": "4604c72bd5623a36c5af888e5557a88c8a0aa9b7",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        },
+        {
+          "name": "MIT License",
+          "url": "http://opensource.org/licenses/MIT"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.regex",
+      "artifactId": "regex",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/regex/regex/24.2.2/regex-24.2.2.jar",
+      "artifactSha256": "9392216f5c7be87b81d118cb98f01954f9b0976f55c1142da18d8b09a0c329a4",
+      "publisherSha1": "72112bcac077bf352bacb60ab752035c207c76fe",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.truffle",
+      "artifactId": "truffle-api",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.jar",
+      "artifactSha256": "62e03f22f85aaf04adef5c836dc98bb724a176fad7d467c8732dfef5e1604ba4",
+      "publisherSha1": "871f6780f70f2e74d3f20de5300ed25b27e659b2",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.shadowed",
+      "artifactId": "icu4j",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.jar",
+      "artifactSha256": "4e6af44b0a46abc57fc8e8db921fe894eddb855c3927d4aba01f02a3678b3b02",
+      "publisherSha1": "f0472ff9a671a273fcaca9f45b3d55cba093f58b",
+      "declaredPomLicenses": [
+        {
+          "name": "Unicode/ICU License",
+          "url": "https://raw.githubusercontent.com/unicode-org/icu/main/LICENSE"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.shadowed",
+      "artifactId": "xz",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.jar",
+      "artifactSha256": "84f7b56d64c8a96d3af8fa6010f79fd5b5a2ec3ba58eb122a98d114373a53ddc",
+      "publisherSha1": "f4a2757a0216b7ec5f62e360ab16e2bd10bafc56",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.truffle",
+      "artifactId": "truffle-runtime",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.jar",
+      "artifactSha256": "f57548fa379d480e36a092c98ae07385d442ccaf116964dba5afbcc864f9b745",
+      "publisherSha1": "5e79f23d888e4a663e03acbf7ed92edb86d21d44",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.sdk",
+      "artifactId": "jniutils",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.jar",
+      "artifactSha256": "37640de084e8d0693f0872ff95162bb379992926848b2860708ecfafe7e7a3de",
+      "publisherSha1": "fdf7d3a7f158718a0b74fe6699923ffcaae4d9cc",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    },
+    {
+      "groupId": "org.graalvm.truffle",
+      "artifactId": "truffle-compiler",
+      "version": "24.2.2",
+      "artifactFile": "maven/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.jar",
+      "artifactSha256": "2aabf0261be6c7d167b273ba3d5d1d9f5a7f318eaba2bb346aecd2e50c12f891",
+      "publisherSha1": "25485ae20adf3549b0dffd640ff58783197c2983",
+      "declaredPomLicenses": [
+        {
+          "name": "Universal Permissive License, Version 1.0",
+          "url": "http://opensource.org/licenses/UPL"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graal/5b5add29fa0830a5e33330d3bb7261ed2b78d69d/sdk/LICENSE.md",
+      "repository": "oracle/graal",
+      "commit": "5b5add29fa0830a5e33330d3bb7261ed2b78d69d",
+      "path": "sdk/LICENSE.md",
+      "file": "licenses/graal-sdk-LICENSE.md",
+      "bytes": 1930,
+      "sha256": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graal/5b5add29fa0830a5e33330d3bb7261ed2b78d69d/regex/LICENSE.md",
+      "repository": "oracle/graal",
+      "commit": "5b5add29fa0830a5e33330d3bb7261ed2b78d69d",
+      "path": "regex/LICENSE.md",
+      "file": "licenses/graal-regex-LICENSE.md",
+      "bytes": 1930,
+      "sha256": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graal/5b5add29fa0830a5e33330d3bb7261ed2b78d69d/truffle/LICENSE.md",
+      "repository": "oracle/graal",
+      "commit": "5b5add29fa0830a5e33330d3bb7261ed2b78d69d",
+      "path": "truffle/LICENSE.md",
+      "file": "licenses/graal-truffle-LICENSE.md",
+      "bytes": 1930,
+      "sha256": "fe1573425a3a5c84318a0fac0a4b35289a342f33233f8a5f27215525384a580d"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graal/5b5add29fa0830a5e33330d3bb7261ed2b78d69d/compiler/LICENSE.md",
+      "repository": "oracle/graal",
+      "commit": "5b5add29fa0830a5e33330d3bb7261ed2b78d69d",
+      "path": "compiler/LICENSE.md",
+      "file": "licenses/graal-compiler-LICENSE.md",
+      "bytes": 21035,
+      "sha256": "11a8fe0c63dcff8bd8674b89a5895dfbcf5f7e5453cf0a33566c4b3fb64e404c"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graal/5b5add29fa0830a5e33330d3bb7261ed2b78d69d/vm/THIRD_PARTY_LICENSE_CE.txt",
+      "repository": "oracle/graal",
+      "commit": "5b5add29fa0830a5e33330d3bb7261ed2b78d69d",
+      "path": "vm/THIRD_PARTY_LICENSE_CE.txt",
+      "file": "licenses/graal-vm-THIRD_PARTY_LICENSE_CE.txt",
+      "bytes": 551379,
+      "sha256": "b8093223559562fb0057af270e8de393fff61bfab9412b5c9ba270e17c672105"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graaljs/910ef5080496717bf5dbd27983faf54bca8dcde8/LICENSE",
+      "repository": "oracle/graaljs",
+      "commit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+      "path": "LICENSE",
+      "file": "licenses/graaljs-LICENSE",
+      "bytes": 1978,
+      "sha256": "2c0950e91e3b7cf3671ca3c5d68b21ce72960b81f9ba09659f61cc2ebed67ecd"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graaljs/910ef5080496717bf5dbd27983faf54bca8dcde8/3rd_party_licenses.txt",
+      "repository": "oracle/graaljs",
+      "commit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+      "path": "3rd_party_licenses.txt",
+      "file": "licenses/graaljs-3rd_party_licenses.txt",
+      "bytes": 165127,
+      "sha256": "772dcbfc6ca657d87c06c21a33af79d3edacf41c697e9051b5a298a82cc31aaa"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graaljs/910ef5080496717bf5dbd27983faf54bca8dcde8/graal-js/LICENSE_GRAALJS",
+      "repository": "oracle/graaljs",
+      "commit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+      "path": "graal-js/LICENSE_GRAALJS",
+      "file": "licenses/graaljs-graal-js-LICENSE_GRAALJS",
+      "bytes": 3595,
+      "sha256": "1ae263ef11131dfde83daccd63c94d9ea11fc854196370385867adafb0ac3778"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graaljs/910ef5080496717bf5dbd27983faf54bca8dcde8/graal-js/THIRD_PARTY_LICENSE_GRAALJS.txt",
+      "repository": "oracle/graaljs",
+      "commit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+      "path": "graal-js/THIRD_PARTY_LICENSE_GRAALJS.txt",
+      "file": "licenses/graaljs-graal-js-THIRD_PARTY_LICENSE_GRAALJS.txt",
+      "bytes": 7993,
+      "sha256": "606c1dd73cc09df7884c5862a4ceebb59a92dae286e1e7b667c50b1a067db6ad"
+    }
+  ]
+}

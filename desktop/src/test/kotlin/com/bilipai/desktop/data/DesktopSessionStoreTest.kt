@@ -10,6 +10,21 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DesktopSessionStoreTest {
+    @Test fun `credential replacement invalidates owners even when account metadata does not change`() {
+        val store = DesktopSessionStore(Files.createTempDirectory("session-owner-epoch-").resolve("session.json"))
+        val account = AccountSummary(42, "fixture", "")
+        store.saveAccount(mapOf("SESSDATA" to "fixture-first"), account)
+        val first = store.generationState.value
+        store.saveAccount(mapOf("SESSDATA" to "fixture-second"), account)
+        assertEquals(account, store.account.value)
+        assertEquals(first + 1, store.generationState.value)
+        assertEquals(store.generation, store.generationState.value)
+        store.saveAccount(mapOf("SESSDATA" to "fixture-second"), account)
+        assertEquals(first + 1, store.generationState.value)
+        store.logout()
+        assertEquals(first + 2, store.generationState.value)
+    }
+
     @Test
     fun `first guest homepage request contains no manufactured visitor cookie`() {
         val path = Files.createTempDirectory("bilipai-first-guest-test").resolve("session.json")

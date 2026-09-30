@@ -76,7 +76,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     /** Internal casting transport only. Credentials remain in memory and must never be placed in a LAN URL or diagnostics. */
     internal fun currentSourceSnapshot(): OwnedPlaybackSourceSnapshot? = synchronized(lock) {
         if (closed.get()) null else requestedSource?.let { source ->
-            OwnedPlaybackSourceSnapshot(sourceVersion, source.copy(progressiveSegments = java.util.Collections.unmodifiableList(source.progressiveSegments.toList())))
+            OwnedPlaybackSourceSnapshot(sourceVersion, source.immutableSnapshot())
         }
     }
 
@@ -94,9 +94,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private fun load(source: PlaybackSource, preserveSubtitles: Boolean) {
         synchronized(lock) {
             check(!closed.get()) { "Player is closed" }
+            // Validate and freeze caller-owned maps before transferring media ownership.
+            val retainedSource = source.immutableSnapshot()
             if (!preserveSubtitles) { sourceVersion++; softwareDecodingRequested = false }
             if (!preserveSubtitles) externalSubtitles.clear()
-            val retainedSource = source.copy(progressiveSegments = java.util.Collections.unmodifiableList(source.progressiveSegments.toList()))
             requestedSource = retainedSource
             val revision = ++playbackRevision
             mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
@@ -139,8 +140,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         if (closed.get() || sourceVersion != expectedSourceVersion || requestedSource == null) return@synchronized false
         if (expectedFailureAttemptId != null && state.value.failure?.attemptId != expectedFailureAttemptId) return@synchronized false
         if (!positionSeconds.isFinite()) return@synchronized false
+        val retained = (replacement ?: requireNotNull(requestedSource)).immutableSnapshot()
         if (forceSoftwareDecoding) softwareDecodingRequested = true
-        val retained = replacement ?: requireNotNull(requestedSource)
         load(retained.copy(startPositionSeconds = positionSeconds.coerceAtLeast(0.0), startPaused = paused), preserveSubtitles = true)
         true
     }

@@ -263,6 +263,10 @@ object PlayerSelfTest {
             checks["nativeAnime4KPresetsExecutedAndChangedPixels"] = "passed"
             DesktopRetainedMediaNativeSmoke.run(player, requireNotNull(frame), video)
             checks["nativeRetainedMediaHostJobsAndOwnership"] = "passed"
+            val streamHeaderCases = DesktopStreamHeaderNativeSmoke.run(player, video)
+            check(streamHeaderCases.size == 6) { "The native stream-header fixture did not complete all stages." }
+            checks["nativeArbitraryHttpStreamHeadersOwnershipResetAndRedaction"] = "passed"
+            checks["nativeHttpStreamHeaderStageCount"] = streamHeaderCases.size.toString()
 
             player.load(PlaybackSource(File(outputDirectory, "intentionally-missing-media.avi").absolutePath, referer = ""))
             waitFor(player, "invalid media error", allowError = true) { it.error != null }

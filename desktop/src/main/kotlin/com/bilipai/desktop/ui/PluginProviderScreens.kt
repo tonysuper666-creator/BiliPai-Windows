@@ -41,7 +41,7 @@ internal fun DesktopAdditionalPluginSettings(id: String, runtime: DesktopPluginR
         HOME_FEED_ANONYMIZER_PLUGIN_ID -> HomeAnonymizerSettings(onDismiss)
         ADFILTER_PLUGIN_ID -> DesktopAdFilterSettings(runtime, onDismiss)
         CDN_REGION_PLUGIN_ID -> DesktopCdnSettings(runtime, onDismiss)
-        SubscriptionFeedPlugin.PLUGIN_ID -> SubscriptionReaderDialog(runtime, onDismiss)
+        SubscriptionFeedPlugin.PLUGIN_ID -> SubscriptionReaderDialog(runtime, onDismiss = onDismiss)
         TodayWatchPlugin.PLUGIN_ID -> DesktopTodayWatchSettings(runtime, onDismiss, onVideo, onPlayQueue)
     }
 }
@@ -205,8 +205,9 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
 }
 
-@Composable fun SubscriptionReaderDialog(runtime: DesktopPluginRuntime, onDismiss: () -> Unit) {
+@Composable fun SubscriptionReaderDialog(runtime: DesktopPluginRuntime, refreshOnOpen: Boolean = false, onDismiss: () -> Unit) {
     val repository = runtime.subscriptions
+    val jsRevision by runtime.jsPlugins.host.executionRevision.collectAsState()
     val state by repository.state.collectAsState()
     val scope = rememberCoroutineScope()
     var busy by remember { mutableStateOf(false) }; var error by remember { mutableStateOf<String?>(null) }
@@ -216,7 +217,7 @@ private fun splitEditorList(text: String) = text.split('\n', ',', '，').map(Str
     fun action(block: suspend () -> Unit) { if (busy) return; busy = true; error = null; scope.launch {
         try { block() } catch (e: Exception) { if (e is CancellationException) throw e; error = e.message ?: "订阅操作失败" } finally { busy = false }
     } }
-    LaunchedEffect(repository) { repository.loadCached() }
+    LaunchedEffect(repository, refreshOnOpen, jsRevision) { repository.loadCached(); if (refreshOnOpen) action { repository.refresh() } }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("订阅与阅读") }, text = {
         LazyColumn(Modifier.width(950.dp).heightIn(max = 680.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
             item {

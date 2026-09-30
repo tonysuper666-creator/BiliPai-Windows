@@ -16,8 +16,11 @@ data class PlaybackSource(
     val startPositionSeconds: Double = 0.0,
     val startPaused: Boolean = false,
     val progressiveSegments: List<PlaybackSegment> = emptyList(),
+    /** Explicit stream request properties, separate from the app account Cookie jar. */
+    val streamHeaders: Map<String, String> = emptyMap(),
 ) {
     init {
+        copyPlaybackStreamHeaders(streamHeaders)
         require(videoUrl.isNotBlank()) { "Video address is empty" }
         require(progressiveSegments.size <= 1_000) { "Too many progressive video segments" }
         require(progressiveSegments.isEmpty() || audioUrl == null) { "Progressive segments already contain their audio track" }
@@ -30,6 +33,8 @@ data class PlaybackSource(
             "Invalid playback source"
         }
     }
+
+    override fun toString(): String = "PlaybackSource(separateAudio=${audioUrl != null}, progressiveSegments=${progressiveSegments.size}, startPositionSeconds=$startPositionSeconds, startPaused=$startPaused)"
 
     /** mpv EDL exposes all progressive segments as one continuous duration/seek clock. */
     internal val nativeLoadUrl: String

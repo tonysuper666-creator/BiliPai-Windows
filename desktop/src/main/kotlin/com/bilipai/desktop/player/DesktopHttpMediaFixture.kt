@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
 /** Loopback-only test media; no account, internet, production proxy or JDK httpserver module participates. */
-internal class DesktopHttpMediaFixture(video: File) : AutoCloseable {
+internal class DesktopHttpMediaFixture(video: File, private val observeRequest: ((String, Map<String, List<String>>) -> Unit)? = null) : AutoCloseable {
     private val bytes = video.readBytes()
     private val server = ServerSocket(0, 8, InetAddress.getByName("127.0.0.1"))
     private val closed = AtomicBoolean()
@@ -38,7 +38,10 @@ internal class DesktopHttpMediaFixture(video: File) : AutoCloseable {
         }
         require(count < header.size)
         val lines = String(header, 0, count, Charsets.ISO_8859_1).split("\r\n")
-        val path = lines.first().split(' ').getOrNull(1).orEmpty().substringBefore('?')
+        val requestTarget = lines.first().split(' ').getOrNull(1).orEmpty()
+        val path = requestTarget.substringBefore('?')
+        observeRequest?.invoke(requestTarget, lines.drop(1).filter { ':' in it }.groupBy(
+            { it.substringBefore(':').trim().lowercase(java.util.Locale.ROOT) }, { it.substringAfter(':').trim() }))
         if (lines.any { it.startsWith("Cookie:", true) && it.contains("SESSDATA=fixture-cookie") }) suppliedFixtureCookie.set(true)
         val output = socket.getOutputStream()
         if (path == "/denied") {

@@ -1,0 +1,184 @@
+[
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.pom",
+    "sha256": "b2c8b867becbf3b6f213c7c78e2b40e09776d1db13e40eae651cfe3864fc246e",
+    "publisherSha1": "1a33d3aa6ad460c1d8aebb7ced5961f04ddcab9e",
+    "file": "maven/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.pom",
+    "bytes": 1572
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.jar",
+    "sha256": "fa012edab914c7ff5b0a1b50e41c9da710762b0b2d6a3cafb9a11647619349d0",
+    "publisherSha1": "c24908636b4b3cd27c0004a0a1b538cb01cec484",
+    "file": "maven/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.jar",
+    "bytes": 509041
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.pom",
+    "sha256": "5293185d63371a3434a5d65f11c6dbdce42c6d47a7cba68be6a2f059e081d4cb",
+    "publisherSha1": "03e53c5bf59bbc67f064263fe26ac17d1e9a9691",
+    "file": "maven/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.pom",
+    "bytes": 1208
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.jar",
+    "sha256": "232dce19281954b247eeac5a87b4a77da3f7c2928d848a8ab3c9e49c73f29845",
+    "publisherSha1": "b0a260328c1ff1f69e1b11bd3b8584433fdd6cc8",
+    "file": "maven/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.jar",
+    "bytes": 121981
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.pom",
+    "sha256": "8f218e90be0416a37d49cf1b03c78304ac64fc62569923de1b9817859b1ede2f",
+    "publisherSha1": "e3511e8ef55572d4a05f1b50b4ccd430702da587",
+    "file": "maven/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.pom",
+    "bytes": 1401
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.jar",
+    "sha256": "7e351d630528cdcb6d0ecde6e3e97cfcee7f0a77896a79509efa51db3e770a95",
+    "publisherSha1": "34d50fcb4ce206414fe3c90d2bdd7d497289b798",
+    "file": "maven/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.jar",
+    "bytes": 229765
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/word/24.2.2/word-24.2.2.pom",
+    "sha256": "60afc03fa2a72d27fe8d9b75b53ef75367cf1729087fa500b44c6da94b45d185",
+    "publisherSha1": "5a730b285d59cdad6f5417223153d01a00329de1",
+    "file": "maven/org/graalvm/sdk/word/24.2.2/word-24.2.2.pom",
+    "bytes": 1207
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/word/24.2.2/word-24.2.2.jar",
+    "sha256": "a1f53ca4755cc74226fe4b4eb1d8f924604950473a7d454a475781c0536ea303",
+    "publisherSha1": "765ddc4d3f9a4e1ff7194000c466d7896648dbfc",
+    "file": "maven/org/graalvm/sdk/word/24.2.2/word-24.2.2.jar",
+    "bytes": 22537
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/polyglot/js-community/24.2.2/js-community-24.2.2.pom",
+    "sha256": "7b78b9f30632919d1b2ee3801fc1fc2f7ad07c724f151e3b752eefddadb2f302",
+    "publisherSha1": "d2128d405435206fe24520fd6e1fe384819977a6",
+    "file": "maven/org/graalvm/polyglot/js-community/24.2.2/js-community-24.2.2.pom",
+    "bytes": 1700
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/js/js-community/24.2.2/js-community-24.2.2.pom",
+    "sha256": "42795612953e24d7e9a78783cc0d403c7610fb391b80de4858e8f34d97c06c58",
+    "publisherSha1": "f30ba393d9a64382fda48616af973773c906d2ec",
+    "file": "maven/org/graalvm/js/js-community/24.2.2/js-community-24.2.2.pom",
+    "bytes": 1866
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.pom",
+    "sha256": "f1b33c1debc06127294e5c4a425e056ad149c814a81164a3e7350adc22e56fe8",
+    "publisherSha1": "b058db2bd4f26fa917e72ae803f11ccd62b8c26e",
+    "file": "maven/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.pom",
+    "bytes": 2253
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.jar",
+    "sha256": "243bbffd40bef623143ccaa82cdb70ced78d79e6dcb7a17b3f585cc24a8e8183",
+    "publisherSha1": "4604c72bd5623a36c5af888e5557a88c8a0aa9b7",
+    "file": "maven/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.jar",
+    "bytes": 26005950
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/regex/regex/24.2.2/regex-24.2.2.pom",
+    "sha256": "93b9ead98076676f540fd4df0ec4fbdf0d0dcb9278c97ffb11b34e7bef77bc5a",
+    "publisherSha1": "8ad21d0059be97d49a971f6397d97c40664cd125",
+    "file": "maven/org/graalvm/regex/regex/24.2.2/regex-24.2.2.pom",
+    "bytes": 1521
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/regex/regex/24.2.2/regex-24.2.2.jar",
+    "sha256": "9392216f5c7be87b81d118cb98f01954f9b0976f55c1142da18d8b09a0c329a4",
+    "publisherSha1": "72112bcac077bf352bacb60ab752035c207c76fe",
+    "file": "maven/org/graalvm/regex/regex/24.2.2/regex-24.2.2.jar",
+    "bytes": 3660977
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.pom",
+    "sha256": "0a52bf395e77328dbf315fb2fb4d0bb162bb629a703d77e2e803b9c6e4e1e0ff",
+    "publisherSha1": "cad7f6394b18b3da38b68dad40e31a5d2247e16d",
+    "file": "maven/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.pom",
+    "bytes": 1808
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.jar",
+    "sha256": "62e03f22f85aaf04adef5c836dc98bb724a176fad7d467c8732dfef5e1604ba4",
+    "publisherSha1": "871f6780f70f2e74d3f20de5300ed25b27e659b2",
+    "file": "maven/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.jar",
+    "bytes": 13683917
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.pom",
+    "sha256": "ae21341ffe2cbbdd1c48b220bd5820764cc28851c2dfadeecb74573e8d1ac391",
+    "publisherSha1": "ab7c4cba5db34d43861a242f8906353c1c4f4af7",
+    "file": "maven/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.pom",
+    "bytes": 1548
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.jar",
+    "sha256": "4e6af44b0a46abc57fc8e8db921fe894eddb855c3927d4aba01f02a3678b3b02",
+    "publisherSha1": "f0472ff9a671a273fcaca9f45b3d55cba093f58b",
+    "file": "maven/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.jar",
+    "bytes": 18028032
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.pom",
+    "sha256": "ffdf71ab8e0f79de648f6babf4ae6b901f913304ae5997ec60b6af787a4175cb",
+    "publisherSha1": "03a3ed6c576315974b2ebbc0d88cb3f09deca46d",
+    "file": "maven/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.pom",
+    "bytes": 1205
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.jar",
+    "sha256": "84f7b56d64c8a96d3af8fa6010f79fd5b5a2ec3ba58eb122a98d114373a53ddc",
+    "publisherSha1": "f4a2757a0216b7ec5f62e360ab16e2bd10bafc56",
+    "file": "maven/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.jar",
+    "bytes": 328273
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.pom",
+    "sha256": "5689bd4e4d297d4700accdc57221f85c31d9d7511ec642f1248f3b19a8226c0f",
+    "publisherSha1": "527e4634e2fd5d64674bce6577c4a97de31c285e",
+    "file": "maven/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.pom",
+    "bytes": 1985
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.jar",
+    "sha256": "f57548fa379d480e36a092c98ae07385d442ccaf116964dba5afbcc864f9b745",
+    "publisherSha1": "5e79f23d888e4a663e03acbf7ed92edb86d21d44",
+    "file": "maven/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.jar",
+    "bytes": 844849
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.pom",
+    "sha256": "1c7c7c92e5b9ac12de2b2acc5472b047d45ce20315c12d1a28972366ba9ae4c5",
+    "publisherSha1": "6a43d0857b2c3490b073f8c3a636af8c7e8c1c37",
+    "file": "maven/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.pom",
+    "bytes": 1541
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.jar",
+    "sha256": "37640de084e8d0693f0872ff95162bb379992926848b2860708ecfafe7e7a3de",
+    "publisherSha1": "fdf7d3a7f158718a0b74fe6699923ffcaae4d9cc",
+    "file": "maven/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.jar",
+    "bytes": 275648
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.pom",
+    "sha256": "f1355ad3ee384f171b30455f4f8d4dc0bdc026b4c443b1a6f9889d0133306aa8",
+    "publisherSha1": "cabee83b45c6856c97ba5ab0a505ec446dfb8258",
+    "file": "maven/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.pom",
+    "bytes": 1223
+  },
+  {
+    "url": "https://repo.maven.apache.org/maven2/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.jar",
+    "sha256": "2aabf0261be6c7d167b273ba3d5d1d9f5a7f318eaba2bb346aecd2e50c12f891",
+    "publisherSha1": "25485ae20adf3549b0dffd640ff58783197c2983",
+    "file": "maven/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.jar",
+    "bytes": 63130
+  }
+]

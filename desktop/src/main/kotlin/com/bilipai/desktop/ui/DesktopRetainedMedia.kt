@@ -116,12 +116,14 @@ class DesktopRetainedMedia(parent: CoroutineScope, val player: MpvPlayer?, priva
     val live = DesktopLivePageMemory(parent, player)
     val bangumi = DesktopBangumiPageMemory(parent, player)
     val offline = DesktopOfflinePageMemory(parent, player)
-    val pages: List<DesktopMediaPageMemory> = listOf(live, bangumi, offline)
+    val external = DesktopExternalPageMemory(parent, player)
+    val pages: List<DesktopMediaPageMemory> = listOf(live, bangumi, offline, external)
     val current get() = pages.firstOrNull { it.ownsNativeSource }
     val title get() = when (current) {
         live -> live.room?.title
         bangumi -> bangumi.episode?.let { "${bangumi.season?.title.orEmpty()} ${it.title} ${it.subtitle}" }
         offline -> player?.state?.value?.sourceTitle
+        external -> external.request?.title
         else -> null
     }.orEmpty()
 
@@ -151,6 +153,7 @@ fun DesktopRetainedMediaEffects(memory: DesktopRetainedMedia, onActive: (Boolean
                 // Upstream BangumiPlayerViewModel always advances sequentially and stops at the last episode.
                 memory.bangumi.next?.invoke() ?: run { memory.bangumi.notice = "已是最后一集" }
             }
+            if (memory.current === memory.external && state.ended) memory.external.releaseCompletedLaunch()
             latestActive(memory.pages.any { it.opening } || memory.current != null && state.error == null && !state.ended &&
                 (state.loading || state.videoCodec != null || state.audioCodec != null))
         }

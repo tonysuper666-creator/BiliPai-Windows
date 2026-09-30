@@ -227,6 +227,66 @@ val extractGoogleCastPlatform by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/google-cast"))
 }
 
+val extractUpstreamJs by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-js.py",
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/js").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-js.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
+        "tools/extract-upstream-api.py", "tools/sync-upstream.py")
+    inputs.files(sources.filter { "js-plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/js"))
+}
+
+// The guest VM has a closed classpath and its own minimal runtime, separate from app dependencies.
+val jsWorkerCache = providers.gradleProperty("jsWorkerCache").orElse(file(".gradle/js-worker-cache").absolutePath).get()
+val jsWorkerJdkArchive = providers.gradleProperty("jsWorkerJdkArchive").orElse(File(jsWorkerCache, "fixed-jdk.zip").absolutePath).get()
+val jsWorkerJavaHome = providers.gradleProperty("jsWorkerJavaHome").orElse(File(jsWorkerCache, "fixed-jdk").absolutePath).get()
+val jsWorkerInputs = listOf(file("tools/prepare-js-worker.py"), file("tools/fetch-js-worker-jdk.py"),
+    file("third-party/graaljs/artifacts.lock.json"), file("third-party/graaljs/catalog.json"),
+    file("third-party/graaljs/runtime.lock.json")) +
+    fileTree("js-worker/src/main/java").files.sortedBy { it.path } +
+    fileTree("third-party/graaljs/licenses").files.sortedBy { it.path }
+val jsWorkerInputDigest = MessageDigest.getInstance("SHA-256").also { digest ->
+    jsWorkerInputs.forEach { input ->
+        digest.update(input.relativeTo(projectDir).invariantSeparatorsPath.toByteArray(Charsets.UTF_8))
+        digest.update(0.toByte()); digest.update(input.readBytes()); digest.update(0.toByte())
+    }
+}.digest().joinToString("") { "%02x".format(it) }
+// Keep the closed Maven graph within Windows path limits; verified provenance checks the full inputs.
+val jsWorkerOutputParent = layout.buildDirectory.dir("jw/${jsWorkerInputDigest.take(16)}")
+val jsWorkerOutput = jsWorkerOutputParent.map { it.dir("r") }
+val jsWorkerGenerated = layout.buildDirectory.dir("generated/js-worker")
+val fetchJsWorkerJdk by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/fetch-js-worker-jdk.py",
+        "--archive", jsWorkerJdkArchive, "--output", jsWorkerJavaHome)
+    inputs.files("tools/fetch-js-worker-jdk.py", "tools/prepare-js-worker.py")
+    inputs.property("fixedJdkArchiveSha256", "f9d6e191ab098c0d416e7d588a24420a8621cd2f4720dab2459b8b7b2d2d8b4e")
+    outputs.file(jsWorkerJdkArchive); outputs.dir(jsWorkerJavaHome)
+}
+val prepareJsWorker by tasks.registering(Exec::class) {
+    dependsOn(fetchJsWorkerJdk)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/prepare-js-worker.py",
+        "--repo", repositoryRoot.absolutePath, "--output", jsWorkerOutput.get().asFile.absolutePath,
+        "--java-home", jsWorkerJavaHome, "--jdk-archive", jsWorkerJdkArchive, "--cache", jsWorkerCache,
+        "--lock", file("third-party/graaljs/artifacts.lock.json").absolutePath,
+        "--notice-root", file("third-party/graaljs/licenses").absolutePath,
+        "--notice-catalog", file("third-party/graaljs/catalog.json").absolutePath,
+        "--generated-kotlin", jsWorkerGenerated.get().asFile.resolve("com/bilipai/desktop/plugins/js/DesktopJsWorkerAssetHash.kt").absolutePath,
+        "--reuse-verified")
+    inputs.files(jsWorkerInputs); inputs.file(jsWorkerJdkArchive); inputs.dir(jsWorkerJavaHome)
+    // Gradle creates declared output directories before Exec; the tool owns the previously absent child.
+    outputs.dir(jsWorkerOutputParent); outputs.dir(jsWorkerGenerated)
+}
+val prepareJsWorkerResources by tasks.registering(Sync::class) {
+    dependsOn(prepareJsWorker)
+    from(jsWorkerOutput)
+    into("resources/common/js-engine")
+}
+
 kotlin.sourceSets.named("main") {
     kotlin.srcDir(generatedUpstream)
     kotlin.srcDir(layout.buildDirectory.dir("generated/api"))
@@ -243,8 +303,11 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/packages"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/watchdogs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/google-cast"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/js"))
+    kotlin.srcDir(jsWorkerGenerated)
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }
+tasks.named("compileKotlin") { dependsOn(extractUpstreamJs, prepareJsWorker) }
 
 val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     dependsOn(prepareUpstreamSources)
@@ -265,6 +328,11 @@ val prepareGoogleCastNotices by tasks.registering(Sync::class) {
     into("resources/common/notices/google-cast-v2")
 }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareGoogleCastNotices) }
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareJsWorkerResources) }
+tasks.withType<JavaExec>().configureEach {
+    dependsOn(prepareJsWorker)
+    systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+}
 
 dependencies {
     implementation(compose.desktop.currentOs)
@@ -294,7 +362,24 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.test { useJUnitPlatform { excludeTags("packaged-updater", "native-mux") } }
+tasks.test {
+    useJUnitPlatform { excludeTags("packaged-updater", "native-mux", "js-worker") }
+    systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+}
+tasks.register<Test>("jsWorkerSmoke") {
+    group = "verification"
+    description = "Execute original JS scripts through the verified, separately linked Windows worker."
+    dependsOn("testClasses", prepareJsWorker)
+    testClassesDirs = sourceSets["test"].output.classesDirs
+    classpath = sourceSets["test"].runtimeClasspath
+    useJUnitPlatform { includeTags("js-worker") }
+    systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
+    systemProperty("bilipai.js.repo", repositoryRoot.absolutePath)
+    systemProperty("junit.jupiter.execution.parallel.enabled", "false")
+    maxParallelForks = 1
+    outputs.upToDateWhen { false }
+    testLogging { events("passed", "failed", "skipped") }
+}
 tasks.register<Test>("nativeMuxSmoke") {
     group = "verification"
     description = "Verify the packaged Windows FFmpeg CLI through the real download muxer."

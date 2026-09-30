@@ -24,7 +24,7 @@ import java.awt.datatransfer.StringSelection
 
 @Composable
 fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> Unit)? = null,
-    onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)? = null) {
+    onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)? = null, onOpenJsPlugin: (String) -> Unit = {}) {
     val plugins by runtime.plugins.collectAsState()
     val jsonPlugins by runtime.jsonPlugins.collectAsState()
     val stats by runtime.jsonFilterStats.collectAsState()
@@ -37,6 +37,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
     var error by remember { mutableStateOf<String?>(null) }
     var selected by remember { mutableStateOf<String?>(null) }
     var packagesOpen by remember { mutableStateOf(false) }
+    var jsOpen by remember { mutableStateOf(false) }
     var url by remember { mutableStateOf("") }
     var preview by remember { mutableStateOf<JsonRulePlugin?>(null) }
     var previewUrl by remember { mutableStateOf("") }
@@ -54,7 +55,10 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
     LazyColumn(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("插件", style = MaterialTheme.typography.headlineSmall)
-            OutlinedButton(onClick = { selected = null; packagesOpen = true }, enabled = busy == null) { Text("插件包与装扮") }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedButton(onClick = { selected = null; jsOpen = true }, enabled = busy == null) { Text("JS 插件") }
+                OutlinedButton(onClick = { selected = null; packagesOpen = true }, enabled = busy == null) { Text("插件包与装扮") }
+            }
         } }
 
         error?.let { message -> item { Text(message, color = MaterialTheme.colorScheme.error) } }
@@ -134,6 +138,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         }
     }
     if (packagesOpen) PluginPackagesDialog(runtime.packages, onDismiss = { packagesOpen = false })
+    if (jsOpen) DesktopJsPluginsDialog(runtime.jsPlugins, onOpenJsPlugin, onDismiss = { jsOpen = false })
 }
 
 @Composable

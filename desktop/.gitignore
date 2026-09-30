@@ -2,6 +2,7 @@
 /.gradle/
 /native/
 /resources/common/native/
+/resources/common/js-engine/
 /.local/
 *.log
 __pycache__/

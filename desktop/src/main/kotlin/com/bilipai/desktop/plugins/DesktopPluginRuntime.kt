@@ -10,6 +10,8 @@ import com.bilipai.desktop.data.DesktopCommunityRepository
 import com.bilipai.desktop.data.DesktopDiscoveryRepository
 import com.bilipai.desktop.data.PlaybackSource
 import com.bilipai.desktop.cast.DesktopGoogleCastPlugin
+import com.bilipai.desktop.plugins.js.*
+import java.nio.file.Path
 import com.android.purebilibili.feature.plugin.*
 import com.android.purebilibili.feature.plugin.dlna.DlnaCastPlugin
 import com.android.purebilibili.feature.video.danmaku.DesktopPluginDanmakuPolicy
@@ -48,7 +50,12 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     val googleCast = DesktopGoogleCastPlugin()
     private val cdn = CdnRegionPlugin()
     private val adFilter = AdFilterPlugin()
-    val subscriptions = DesktopSubscriptionRepository(context) {
+    val jsPlugins = DesktopJsPluginRepository(context, DesktopJsPluginHost(
+        DesktopJsWorkerResources(desktopJsWorkerResources()).createProcess(context.filesDir.toPath()),
+        context.filesDir.toPath(), ownerEpoch = repository?.let { { it.sessionEpoch } }))
+    val subscriptions = DesktopSubscriptionRepository(context,
+        extraSources = { jsPlugins.feedSourceSnapshot().let { DesktopSubscriptionExtraSources(it.revision, it.sources) } },
+        extraSourceRevision = { jsPlugins.host.executionRevision.value }) {
         plugins.value.any { it.plugin.id == SubscriptionFeedPlugin.PLUGIN_ID && it.enabled }
     }
     val packages = DesktopPackageRepository(context)
@@ -83,6 +90,17 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             try { packages.load() }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { DesktopPluginLog.e("packages", "Package load failed", failure) }
+        }
+        scope.launch {
+            try {
+                if (repository == null) jsPlugins.load()
+                else repository.sessionEpochFlow.collect { epoch ->
+                    try { jsPlugins.accountChanged(epoch); jsPlugins.load() }
+                    catch (cancelled: CancellationException) { throw cancelled }
+                    catch (failure: Exception) { DesktopPluginLog.e("js-plugins", "JS plugin account load failed", failure) }
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { DesktopPluginLog.e("js-plugins", "JS plugin load failed", failure) }
         }
         scope.launch {
             store.feedFilterEnabled.collect { enabled -> PluginManager.setEnabled("bilipai_feed_filter", enabled) }
@@ -314,6 +332,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         closing.set(true)
         playerGeneration.incrementAndGet()
         scope.coroutineContext[Job]?.cancelAndJoin()
+        jsPlugins.shutdownForRestore()
         subscriptions.shutdownForRestore()
         recommendations.shutdownForRestore()
         packages.shutdownForRestore()
@@ -341,6 +360,15 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
             CoroutineScope(Dispatchers.Main).launch { shutdownForRestore() }
         }
     }
+}
+
+private fun desktopJsWorkerResources(): Path {
+    System.getProperty("compose.application.resources.dir")?.takeIf { it.isNotBlank() }?.let {
+        return Path.of(it).resolve("js-engine")
+    }
+    return Path.of(requireNotNull(System.getProperty("bilipai.js.workerResources")) {
+        "The verified JS plugin runtime is missing from this application."
+    })
 }
 
 internal fun initializeDesktopGoogleCastDefault(store: DesktopPluginStore) {

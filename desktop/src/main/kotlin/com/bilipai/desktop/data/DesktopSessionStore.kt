@@ -18,7 +18,10 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
     private var saved = if (persistent) readSaved() else SavedSession()
-    @Volatile var generation: Long = 0; private set
+    private val mutableGeneration = MutableStateFlow(0L)
+    val generationState = mutableGeneration.asStateFlow()
+    @Volatile var generation: Long = 0
+        private set(value) { field = value; mutableGeneration.value = value }
     internal val requestGeneration = ThreadLocal<Long>()
     private val serverCookies = saved.serverCookies.mapNotNull { it.toCookie() }
         .filter { it.expiresAt > System.currentTimeMillis() }

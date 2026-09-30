@@ -15,8 +15,12 @@ data class DesktopSubscriptionState(val sources: List<SavedSubscriptionFeed> = e
     val reading: FeedReadingSnapshot = FeedReadingSnapshot(), val errors: List<String> = emptyList(),
     val loading: Boolean = false)
 
+data class DesktopSubscriptionExtraSources(val revision: Long = 0, val sources: List<FeedSource> = emptyList())
+
 /** Windows orchestration around the original feed parser, conditional HTTP and reading store. */
 class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
+    private val extraSources: suspend () -> DesktopSubscriptionExtraSources = { DesktopSubscriptionExtraSources() },
+    private val extraSourceRevision: () -> Long = { 0 },
     private val enabled: () -> Boolean) {
     private val mutation = Mutex()
     private val generation = AtomicLong()
@@ -25,24 +29,34 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     val state: StateFlow<DesktopSubscriptionState> = _state.asStateFlow()
 
     suspend fun loadCached() = withContext(Dispatchers.IO) {
+        check(!stopped) { "订阅服务已停止" }
+        val token = generation.incrementAndGet()
         val sources = SubscriptionFeedStore.list(context)
+        val builtinEnabled = enabled()
+        val extra = extraSources()
         val reading = FeedReadingStore.load(context)
-        val enabledIds = sources.filter { it.enabled }.map { "builtin:${it.id}" }.toSet()
-        _state.value = DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)))
+        val enabledIds = ((if (builtinEnabled) sources.filter { it.enabled }.map { "builtin:${it.id}" } else emptyList()) +
+            extra.sources.filter { isHttpFeedUrl(it.url) }.map { it.id }).toSet()
+        if (!stopped && token == generation.get() && builtinEnabled == enabled() && extra.revision == extraSourceRevision())
+            _state.value = DesktopSubscriptionState(sources, reading.copy(items = mergeCachedFeedItems(reading.items, emptyList(), enabledIds)))
     }
 
     suspend fun refresh(): Unit = withContext(Dispatchers.IO) {
         check(!stopped) { "订阅服务已停止" }
         val token = generation.incrementAndGet()
         val feeds = SubscriptionFeedStore.list(context)
-        val sources = if (enabled()) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }
+        val builtinEnabled = enabled()
+        val extra = extraSources()
+        val builtinSources = if (builtinEnabled) feeds.filter { it.enabled && isHttpFeedUrl(it.url) }
             .map { FeedSource("builtin:${it.id}", it.title, it.url) } else emptyList()
+        val sources = (builtinSources + extra.sources.filter { isHttpFeedUrl(it.url) }).distinctBy { it.url }
         val ids = sources.map { it.id }.toSet()
         val cache = FeedReadingStore.load(context)
-        fun current() = !stopped && token == generation.get() && enabled()
+        fun current() = !stopped && token == generation.get() && enabled() == builtinEnabled &&
+            extra.revision == extraSourceRevision()
         if (sources.isEmpty()) {
-            if (token == generation.get()) _state.value = DesktopSubscriptionState(feeds,
-                cache.copy(items = emptyList()), if (enabled()) emptyList() else listOf("请先启用订阅插件"))
+            if (current()) _state.value = DesktopSubscriptionState(feeds,
+                cache.copy(items = emptyList()), if (builtinEnabled) emptyList() else listOf("请启用订阅插件或已授权的 JS 订阅模块"))
             return@withContext
         }
         _state.value = DesktopSubscriptionState(feeds, cache.copy(items = mergeCachedFeedItems(cache.items, emptyList(), ids)), loading = true)
