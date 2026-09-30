@@ -99,7 +99,7 @@ private const val DYNAMIC_FOLLOWINGS_PAGE_SIZE = 50
  selected=['resolveDynamicUpPanelUsers','isDynamicUpPanelAllShortcut','isDynamicUpPanelShortcut','isDynamicUpPanelItemSelected',
  'resolveDynamicSelectedUserIdAfterClick','shouldUseSelectedUserDynamicFeed','resolveDynamicSelectedUserForTab','resolveDynamicTabAfterUserSelection',
  'resolveDynamicSelectedTab','resolveDynamicFeedRequestType','shouldShowDynamicHorizontalUserList','resolveHorizontalUserListVerticalPaddingDp',
- 'extractUsersFromDynamicItems','resolveMergedFollowedUsers','isDynamicItemRealUser']
+ 'extractUsersFromDynamicItems','resolveMergedFollowedUsers','isDynamicItemRealUser','shouldLoadMoreDynamicFeed']
  emit(path,'''package com.android.purebilibili.feature.dynamic
 import com.android.purebilibili.data.model.response.*
 import kotlin.math.max

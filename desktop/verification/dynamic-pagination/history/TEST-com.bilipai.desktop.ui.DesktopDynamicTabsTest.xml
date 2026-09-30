@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicTabsTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-30T16:57:40.575Z" hostname="TONYSUPER666" time="1.628">
+  <properties/>
+  <testcase name="sameMIDNewEpochRejectsLateFollowingAndUPResults()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.315"/>
+  <testcase name="frozenOrBrokenDiskDoesNotPublishNewTabOrUserPreferences()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.016"/>
+  <testcase name="originalUserFiltersLocalDedupAndOwnedCloseRemainEffective()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.166"/>
+  <testcase name="hiddenUPOpensProfileAndNeverIssuesUPRequest()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.168"/>
+  <testcase name="defaultsKeysAndSharedBackingRestoreOriginalSelection()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.023"/>
+  <testcase name="originalUserPaginationAdvancesEmptyPageAndPreservesExactParams()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.165"/>
+  <testcase name="latePriorUIDResultCannotReplaceNewSelectionAndLocalRowsAreProvisional()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.266"/>
+  <testcase name="reorderKeepsLogicalIdentityAndSelectedUPWithoutAnotherRequest()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.326"/>
+  <testcase name="hideSelectedTabUsesOriginalFallbackAndRequestTypeNotVisibleIndex()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.011"/>
+  <testcase name="allFollowingPagesWhitelistLiveAndUnreadPinHideHaveActualConsumers()" classname="com.bilipai.desktop.ui.DesktopDynamicTabsTest" time="0.159"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

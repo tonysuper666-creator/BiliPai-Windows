@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "actualProductClassPins": 7,
+  "productionOverrides": 0,
+  "actualUiFlows": 6,
+  "screenshots": 12,
+  "checks": [
+    {
+      "case": "material3-light-waterfall",
+      "passed": true,
+      "semanticScrollActions": 2,
+      "originalOffsets": [
+        "",
+        "tail-1",
+        "tail-2"
+      ],
+      "noDuplicateWhileBusy": true,
+      "stopsWhenExhausted": true
+    },
+    {
+      "case": "material3-dark-list",
+      "passed": true,
+      "semanticScrollActions": 2,
+      "originalOffsets": [
+        "",
+        "tail-1",
+        "tail-2"
+      ],
+      "noDuplicateWhileBusy": true,
+      "stopsWhenExhausted": true
+    },
+    {
+      "case": "miuix-light-waterfall",
+      "passed": true,
+      "semanticScrollActions": 2,
+      "originalOffsets": [
+        "",
+        "tail-1",
+        "tail-2"
+      ],
+      "noDuplicateWhileBusy": true,
+      "stopsWhenExhausted": true
+    },
+    {
+      "case": "miuix-dark-list",
+      "passed": true,
+      "semanticScrollActions": 2,
+      "originalOffsets": [
+        "",
+        "tail-1",
+        "tail-2"
+      ],
+      "noDuplicateWhileBusy": true,
+      "stopsWhenExhausted": true
+    },
+    {
+      "case": "material3-selected-up-empty-article-filter",
+      "passed": true,
+      "pointerPairs": 1,
+      "emptyConcreteFilterStopsAutomaticScan": true,
+      "manualFallbackUsesOriginalMIDAndOffset": true
+    },
+    {
+      "case": "miuix-selected-up-empty-article-filter",
+      "passed": true,
+      "pointerPairs": 1,
+      "emptyConcreteFilterStopsAutomaticScan": true,
+      "manualFallbackUsesOriginalMIDAndOffset": true
+    }
+  ],
+  "rowContentIsTextFixture": true,
+  "nativeWindowOrPackageTested": false,
+  "realAccountOrSocket": false,
+  "snapshotManifestSha256Bytes": "3bfc84927aacc353adb0aadabf375242918fca0d98b41cb3dc115e248898eeb7",
+  "productJarsFirst": true,
+  "compiledOnlyFixtureSources": 1,
+  "fixtureClassCount": 13,
+  "externalClasspathEntries": 231,
+  "taskOwnedEnvironment": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-dynamic-startup-4x4158ou",
+  "fixtureClassNames": [
+    "com/bilipai/desktop/ui/ComposableSingletons$DynamicPaginationUiProbeKt.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$10$1$1$4$1.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$state$1.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$timeline$1$1.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$users$1.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$users$2.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$users$3.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1$users$4.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt$main$1.class",
+    "com/bilipai/desktop/ui/DynamicPaginationUiProbeKt.class",
+    "com/bilipai/desktop/ui/PaginationScene$await$1.class",
+    "com/bilipai/desktop/ui/PaginationScene$await$2.class",
+    "com/bilipai/desktop/ui/PaginationScene.class"
+  ]
+}

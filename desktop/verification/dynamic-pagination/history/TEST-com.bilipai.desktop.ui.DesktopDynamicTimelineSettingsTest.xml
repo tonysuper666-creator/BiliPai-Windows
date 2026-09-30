@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-09-30T16:57:42.205Z" hostname="TONYSUPER666" time="0.093">
+  <properties/>
+  <testcase name="loadMoreRejectsBusyAndExhaustedRequestsBeforeCallingOriginalTransport()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.047"/>
+  <testcase name="ordinaryAppendRetainsExistingDuplicatePayloadAndStopsEmptyAdvancingPages()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.002"/>
+  <testcase name="disabledIncrementalRefreshRequestsNoBaselineAndReplacesOldRows()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.001"/>
+  <testcase name="sameMidChangedEpochRejectsLateResponseBeforeOriginalPaginationPublishes()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.002"/>
+  <testcase name="originalDefaultsAndSameGlobalNamespaceAreUsed()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.011"/>
+  <testcase name="invalidSettingsNamespaceCannotMasqueradeAsDefaultPreferences()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.006"/>
+  <testcase name="missingOverlapReplacesAndSynchronizesFreshPagination()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.002"/>
+  <testcase name="originalCachePlaceholderAndStableSortRemainAuthoritative()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.002"/>
+  <testcase name="incrementalBaselineFetchesAllNewPagesAndPreservesOldTailPagination()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.003"/>
+  <testcase name="realAtomicWriteFailureDoesNotPublishOrOverwritePreviousSettings()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.003"/>
+  <testcase name="cancelledTaskRestoresItsOwnedPageAndReleasesLoadingMutex()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.003"/>
+  <testcase name="foldedCardsStayInOriginalTimelineAndBlockedFilterStillHidesOnlyAuthor()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.001"/>
+  <testcase name="frozenGenerationRejectsBothSettingsWithoutRevivingBacking()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.005"/>
+  <testcase name="appendFailureKeepsRowsAndRetriesTheSameTail()" classname="com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

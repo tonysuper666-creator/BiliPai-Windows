@@ -18,3 +18,5 @@ desktop/verification/dynamic-crash/** -text
 desktop/verification/home-tabs/** -text
 
 desktop/verification/dynamic-startup/** -text
+
+desktop/verification/dynamic-pagination/** -text

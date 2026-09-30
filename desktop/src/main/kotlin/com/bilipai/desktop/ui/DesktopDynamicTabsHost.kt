@@ -84,6 +84,18 @@ import kotlinx.coroutines.sync.withLock
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val rows=transform(state.visibleItems())
     val grid=remember(state.selectedUid){LazyStaggeredGridState()}
+    val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
+        isSelectedUserFeed=true,filter=state.filter,visibleItemCount=rows.size)
+    val shouldLoadMore by remember(grid,state.userLoading,state.hasUserMore,allowAutomaticLoadMore) {
+        derivedStateOf {
+            val layoutInfo=grid.layoutInfo
+            shouldLoadMoreDynamicFeed(
+                furthestVisibleItemIndex=layoutInfo.visibleItemsInfo.maxOfOrNull{it.index},
+                totalItemsCount=layoutInfo.totalItemsCount,allowAutomaticLoadMore=allowAutomaticLoadMore,
+                isLoading=state.userLoading,hasMore=state.hasUserMore)
+        }
+    }
+    LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter){if(shouldLoadMore)state.loadMoreUser()}
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.filter,{state.filter=it},{state.selectedUid?.let(onOpenUser)})

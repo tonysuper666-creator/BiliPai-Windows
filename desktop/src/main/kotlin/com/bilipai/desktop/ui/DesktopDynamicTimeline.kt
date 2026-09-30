@@ -38,6 +38,10 @@ internal class DesktopDynamicTimelineState(
     suspend fun fetch(refresh:Boolean,incrementalRefresh:Boolean):Boolean=requests.withLock {
         fetchLocked(refresh,incrementalRefresh)
     }
+    suspend fun loadMore(incrementalRefresh:Boolean):Boolean {
+        if(!page.hasMore||page.isLoading||busy)return false
+        return fetch(refresh=false,incrementalRefresh=incrementalRefresh)
+    }
     private suspend fun fetchLocked(refresh:Boolean,incrementalRefresh:Boolean):Boolean {
         if(!stillOwned())return false
         val snapshot=page
@@ -84,6 +88,20 @@ internal fun DesktopDynamicTimelineFeed(
     val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
     val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
     LaunchedEffect(state){state.initialize(incrementalRefresh=incremental)}
+    val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
+        isSelectedUserFeed=false,filter=DynamicUserContentFilter.ALL,visibleItemCount=displayed.size)
+    val shouldLoadMore by remember(state.scroll,state.busy,state.page.hasMore,allowAutomaticLoadMore) {
+        derivedStateOf {
+            val layoutInfo=state.scroll.layoutInfo
+            shouldLoadMoreDynamicFeed(
+                furthestVisibleItemIndex=layoutInfo.visibleItemsInfo.maxOfOrNull{it.index},
+                totalItemsCount=layoutInfo.totalItemsCount,allowAutomaticLoadMore=allowAutomaticLoadMore,
+                isLoading=state.busy||state.page.isLoading,hasMore=state.page.hasMore)
+        }
+    }
+    // Original ViewModel starts a separate owned request. Loading-state recomposition
+    // must not cancel that request by retiring this threshold-observation effect.
+    LaunchedEffect(shouldLoadMore,state){if(shouldLoadMore)scope.launch{state.loadMore(incremental)}}
     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
     Column(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxWidth().padding(horizontal=20.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.SpaceBetween) {
@@ -108,7 +126,7 @@ internal fun DesktopDynamicTimelineFeed(
             if(state.busy)item(span=StaggeredGridItemSpan.FullLine){DesktopLoadingIndicator(Modifier.fillMaxWidth())}
             if(!state.busy&&displayed.isEmpty()&&state.error==null)item(span=StaggeredGridItemSpan.FullLine){
                 Text(if(state.page.items.isEmpty())"暂无内容"else"当前筛选隐藏了这一批内容",color=MaterialTheme.colorScheme.onSurfaceVariant)}
-            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={fetch(false)}){Text("加载更多")}}
+            if(!state.busy&&state.initialized&&state.page.hasMore)item(span=StaggeredGridItemSpan.FullLine){Button(onClick={scope.launch{state.loadMore(incremental)}}){Text("加载更多")}}
         }
     }
     }

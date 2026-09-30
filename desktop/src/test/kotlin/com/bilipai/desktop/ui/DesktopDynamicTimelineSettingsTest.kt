@@ -21,6 +21,17 @@ private fun response(items:List<DynamicItem>,offset:String="",baseline:String=""
     DynamicFeedResponse(data=DynamicFeedData(items,offset,more,baseline,updates))
 
 class DesktopDynamicTimelineSettingsTest {
+    @Test fun loadMoreRejectsBusyAndExhaustedRequestsBeforeCallingOriginalTransport():Unit=runBlocking {
+        val entered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>();val offsets=mutableListOf<String>()
+        val state=DesktopDynamicTimelineState("all",{_,offset,_->offsets+=offset
+            if(offset.isEmpty())response(listOf(fixtureDynamic("first",2)),"tail","first",true)
+            else {entered.complete(Unit);release.await();response(listOf(fixtureDynamic("last",1)),more=false)}})
+        assertTrue(state.initialize(false))
+        val append=async{state.loadMore(false)};entered.await()
+        assertFalse(state.loadMore(false));assertEquals(listOf("","tail"),offsets)
+        release.complete(Unit);assertTrue(append.await());assertFalse(state.loadMore(false))
+        assertEquals(listOf("first","last"),state.page.items.map{it.id_str});assertEquals(listOf("","tail"),offsets)
+    }
     @Test fun originalDefaultsAndSameGlobalNamespaceAreUsed():Unit=runBlocking {
         val root=Files.createTempDirectory("dynamic-defaults-");val store=DesktopPluginStore(root)
         val prefs=DesktopDynamicTimelinePreferences(DesktopPluginContext(store))

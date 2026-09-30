@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "tests": 12,
+  "failures": 0,
+  "suites": {
+    "DynamicTabsSourcesTest": 7,
+    "DynamicTimelineSources": 5
+  },
+  "source": "Recorded successful Python unittest functions.exec result; source generator did not change afterward",
+  "automaticPaginationPolicyBodyIsOriginal": true,
+  "sourceIdentityInventoryChanged": false
+}

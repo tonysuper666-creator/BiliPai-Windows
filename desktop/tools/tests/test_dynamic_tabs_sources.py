@@ -32,6 +32,10 @@ class DynamicTabsSourcesTest(unittest.TestCase):
   self.assertEqual(self.media.data_class(original,'DynamicStartupLoadPlan',self.parser),self.media.data_class(actual,'DynamicStartupLoadPlan',self.parser))
   for name in ['resolveDynamicStartupLoadPlan','resolveDynamicFollowingsPageLimit','hasLoadedAllDynamicFollowings']:
    self.assertEqual(self.media.function(original,name,self.parser),self.media.function(actual,name,self.parser))
+ def test_automatic_pagination_uses_the_original_furthest_lane_policy(self):
+  original=g.read(REPO,g.BASE+'feature/dynamic/DynamicScreenStatePolicy.kt')
+  actual=self.generated('DesktopOriginalDynamicUserStatePolicy.kt')
+  self.assertEqual(self.media.function(original,'shouldLoadMoreDynamicFeed',self.parser),self.media.function(actual,'shouldLoadMoreDynamicFeed',self.parser))
  def test_settings_getters_setters_and_original_controls_are_preserved(self):
   original=g.read(REPO,g.BASE+'core/store/SettingsManager.kt');actual=self.generated('DesktopDynamicTabsSettings.kt')
   for name in ['getDynamicTabVisibleTabs','setDynamicTabVisibleTabs','getDynamicTabOrder','setDynamicTabOrder','getDynamicAllTabHorizontalUserListVisible','setDynamicAllTabHorizontalUserListVisible']:

@@ -1,0 +1,200 @@
+{
+  "upstreamTag": "v0.2.3-alpha.9",
+  "upstreamCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "windowsBaseCommit": "0eec745c5137b99990bb810ec7e51aa6d1bad8f4",
+  "previousSlice": "desktop/verification/source9-dynamic-startup-integration.json",
+  "frozenSnapshotManifestSha256Bytes": "3bfc84927aacc353adb0aadabf375242918fca0d98b41cb3dc115e248898eeb7",
+  "sourcePins": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Lf": "da5649cedb9fa4f472c85a27085ef13964d47d4866e5cecab345ac02dfba86cb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Lf": "bc68b7a329679c7c741aa2f8cedc7f287707e425c11e682757b758be85bcf1eb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "sha256Lf": "437518bfd339dbe94933a216ddbd7f9a6e700e53036ade5978d84d29339b474a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Lf": "2df0d42a8388cc33b480e6837e10bfddf06acff8981916a45dee3595b4578efd"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "sha256Lf": "72f25cc35cef4513c2002c57ad877ec1524c5ecadf74f7e636c875584cc12d15"
+    }
+  ],
+  "selectedRawEvidence": [
+    {
+      "path": "desktop/verification/dynamic-pagination/frozen-main-manifest.json",
+      "sha256Bytes": "3bfc84927aacc353adb0aadabf375242918fca0d98b41cb3dc115e248898eeb7"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/TEST-com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest.xml",
+      "sha256Bytes": "8647412c223c9449f1ce30c6b3b716866a4b5a8af2b815f8fcdc581823461c7c"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/frozen-runtime-proof.json",
+      "sha256Bytes": "40ee93917a6f1e0860c7e13c90b8924461faadc2970bb9fbd5657a058bd73d54"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/runtime-result.json",
+      "sha256Bytes": "1b316db0d5c9c204a9aaa9668d440e1d4b27bc17a714661feb1bf865b05198ca"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/DynamicPaginationUiProbe.kt",
+      "sha256Bytes": "574939f27333362c832b5cd098f3136c6a5394b0f728d741bb664a9fd5b3a223"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/fixture-compile.log",
+      "sha256Bytes": "c37f7b72ecbdd42edcf3018ca1f5b66416331e8f21ca8585008bfda1d4a3a245"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/fixture-run.log",
+      "sha256Bytes": "2e8d9447b59031aecdc9f9bd62929ea4485e18a2de940a426ca5eea6abba56e8"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/history/pre-fix-main-manifest.json",
+      "sha256Bytes": "115fccfdeb4b8827a41fe9dff7dfc8f85129135533191740c3abecbb901f93b5"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/history/pre-fix-runtime-failure.log",
+      "sha256Bytes": "731a4b622325abb2c3d8d222bac01ebb910f35a04db5f8dd211fdd5705d2962f"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/history/pre-fix-initial.png",
+      "sha256Bytes": "0b79ddc5732b56e8cf2b047094769b7eade43e35de54638676feb6116783db34"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/history/TEST-com.bilipai.desktop.ui.DesktopDynamicTabsTest.xml",
+      "sha256Bytes": "8fe464af226859b49c4c10e4f516538efa2118961037717a44a9788caffb0430"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/history/TEST-com.bilipai.desktop.ui.DesktopDynamicTimelineSettingsTest.xml",
+      "sha256Bytes": "e45d13daf9e6482e04a89e0ce79a3f085c3f5f0a1dac426bd35c05a70f2b9e79"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-dark-list-exhausted.png",
+      "sha256Bytes": "7d7e048c8e68d5cab9a8750ee0d4da06745c7dfb4271e4f649b0de509eaf401c"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-dark-list-initial.png",
+      "sha256Bytes": "f7bf2442db1462ee39e5526d986857b3bd86948d39c2349e8efab0d4d27c3b1e"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-light-waterfall-exhausted.png",
+      "sha256Bytes": "ea8ef242747a02f93b0029bd3ae93f84a6868ff4cacd0f9aa3de0712620a3b88"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-light-waterfall-initial.png",
+      "sha256Bytes": "0b79ddc5732b56e8cf2b047094769b7eade43e35de54638676feb6116783db34"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-selected-up-empty-article-filter-manual-only.png",
+      "sha256Bytes": "c59d1d7e6a4b8f645330657117ccc3ad9b3e428c11a60f6d3e6014e936e6c593"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/material3-selected-up-empty-article-filter-manual-result.png",
+      "sha256Bytes": "e023940a521aed613502bbe23c662c2fdd54515c39742c527599307b7492e78d"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-dark-list-exhausted.png",
+      "sha256Bytes": "fb9b74867c15d20d5d496c5593bc8a3fad0876b32612b2f5eae86c7005a9b005"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-dark-list-initial.png",
+      "sha256Bytes": "871e49bbec540f56226ada07360d50a40f165edebea39562d1007df88761b462"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-light-waterfall-exhausted.png",
+      "sha256Bytes": "067d8defdd61c190d409b1e1d3e86f0fc0cf6c8a1a3ef40c1ebe3b043daa5ebc"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-light-waterfall-initial.png",
+      "sha256Bytes": "17daffe725c9a1d2ecf76201866c30ca1099ab14de377804079066912a75f6ad"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-selected-up-empty-article-filter-manual-only.png",
+      "sha256Bytes": "7b011876fd3ab7cd9ccd423f2cddb2d7ad4aa2f68e66fc766bbc3bb8d0c14a99"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/ui/miuix-selected-up-empty-article-filter-manual-result.png",
+      "sha256Bytes": "0beffe56181b9d27c7a8cddbd8bc1844f78612797a16c8f47b11c7d0314763fc"
+    },
+    {
+      "path": "desktop/verification/dynamic-pagination/generated/DesktopOriginalDynamicUserStatePolicy.kt",
+      "sha256Bytes": "3e3dcc6cfc1ef4a91fa4cbb2ce9bff76330c6f02ac7a4f66d03795ed3638624e"
+    }
+  ],
+  "originalSourceIdentities": 461,
+  "originalResourceIdentities": 210,
+  "sourceOrTestCountsUsedAsProgress": false,
+  "behavior": [
+    "Exact original three-adapter-item prefetch policy uses maximum visible index across all waterfall lanes",
+    "Actual timeline and selected-UP hosts initiate original cursor pagination near the end",
+    "Original loading/hasMore guards prevent concurrent or exhausted loadMore requests",
+    "Original empty concrete UP filter prevents automatic scanning while the manual footer remains active",
+    "Threshold observation launches a separate page-owned request so loading-state recomposition does not cancel it"
+  ],
+  "verification": {
+    "finalProductJUnit": {
+      "passed": true,
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "precedingFocusedJUnit": {
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "sourceContracts": {
+      "passed": true,
+      "tests": 12,
+      "failures": 0,
+      "suites": {
+        "DynamicTabsSourcesTest": 7,
+        "DynamicTimelineSources": 5
+      },
+      "source": "Recorded successful Python unittest functions.exec result; source generator did not change afterward",
+      "automaticPaginationPolicyBodyIsOriginal": true,
+      "sourceIdentityInventoryChanged": false
+    },
+    "frozenProductUi": {
+      "passed": true,
+      "actualClassPins": 7,
+      "productionOverrides": 0,
+      "compiledFixtureSources": 1,
+      "fixtureClasses": 13,
+      "externalClasspathEntries": 231,
+      "flows": 6,
+      "semanticScrollActions": 8,
+      "pointerPairs": 2,
+      "screenshots": 12,
+      "rowsAreTextFixture": true,
+      "nativeWindowOrPackageTested": false,
+      "realAccountOrSocket": false
+    }
+  },
+  "correctedFailure": {
+    "preFixSnapshotSha256Bytes": "115fccfdeb4b8827a41fe9dff7dfc8f85129135533191740c3abecbb901f93b5",
+    "symptom": "Initial actual UI probe failed: threshold LaunchedEffect directly awaited fetch; busy-state change cancelled that same effect and request",
+    "fix": "Observe threshold in LaunchedEffect, launch fetch in remembered page coroutine scope, matching original separate ViewModel request ownership",
+    "originalAssertionsNotRelaxed": true,
+    "unchangedUiFixtureSha256Bytes": "574939f27333362c832b5cd098f3136c6a5394b0f728d741bb664a9fd5b3a223"
+  },
+  "limitations": [
+    "Persistent timeline cache/not-interested restoration and follow-event invalidation remain incomplete",
+    "Original refresh, swipe/reselect and sidebar/drawer host behaviors still need alignment",
+    "Text rows test actual paging hosts, not completed original full cards or media rendering",
+    "Native HWND, deployed EXE and real account acceptance were not exercised"
+  ],
+  "fullFeatureParityVerified": false,
+  "fullReleaseGatePassed": false,
+  "newDesktopDeployment": false,
+  "deployedDesktopVersion": "0.2.406.5"
+}
