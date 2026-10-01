@@ -1,0 +1,96 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,21 +1,21 @@
+     fun sendComment(
+         inputMessage: String? = null,
+-        imageUris: List<Uri> = emptyList(),
++        imageUris: List<String> = emptyList(),
+         syncToDynamic: Boolean = false,
+         targetAid: Long? = null
+     ) {
+         if (inputMessage != null) {
+             _commentInput.value = inputMessage
+         }
+-        val current = _uiState.value as? VideoPlaybackUiState.Success
++        val current = info()
+         val sendAid = resolveCommentSendTargetAid(
+             requestedAid = targetAid,
+-            currentAid = current?.info?.aid
++            currentAid = current?.aid
+         ) ?: return
+         val message = _commentInput.value.trim()
+         
+         if (message.isEmpty() && imageUris.isEmpty()) {
+-            viewModelScope.launch { toast("请输入评论内容") }
++            launchOwned { toast("请输入评论内容") }
+             return
+         }
+ 
+@@ -29,8 +29,10 @@
+             replyRoot = replyTo?.root
+         )
+ 
+-        viewModelScope.launch {
+-            _isSendingComment.value = true
++        if (!requests.isOwned() || _isSendingComment.value) return
++        val submission = ++submissionSequence
++        _isSendingComment.value = true
++        val submissionJob = launchOwned {
+             
+             val (root, parent) = resolveCommentReplyTargets(
+                 replyRpid = replyTo?.rpid,
+@@ -38,19 +40,15 @@
+             )
+             val picturesResult = uploadCommentPictures(imageUris)
+             val pictures = picturesResult.getOrElse { uploadError ->
+-                Logger.e(
+-                    "PlayerVM",
+-                    "Comment image upload failed: aid=$sendAid, imageCount=${imageUris.size}, message=${uploadError.message}",
+-                    uploadError
+-                )
++                
+                 toast(uploadError.message ?: "图片上传失败")
+                 _isSendingComment.value = false
+-                return@launch
++                return@launchOwned
+             }
+             
+-            com.android.purebilibili.data.repository.CommentRepository
+-                .addComment(
+-                    aid = sendAid,
++            requests.addCommentForSubject(
++                    type = 1,
++                    oid = sendAid,
+                     message = outgoingMessage,
+                     root = root,
+                     parent = parent,
+@@ -58,6 +56,7 @@
+                     syncToDynamic = syncToDynamic
+                 )
+                 .onSuccess { reply ->
++                    ensureOwned()
+                     toast(if (replyTo != null) "回复成功" else "评论成功")
+                     _commentInput.value = ""
+                     val sentDraftKey = commentComposerDraftKey(replyTo?.rpid)
+@@ -72,14 +71,16 @@
+                     _commentSentEvent.trySend(reply)
+                 }
+                 .onFailure { error ->
+-                    Logger.e(
+-                        "PlayerVM",
+-                        "Comment send failed: aid=$sendAid, root=$root, parent=$parent, pictureCount=${pictures.size}, message=${error.message}",
+-                        error
+-                    )
++                    ensureOwned()
++                    
+                     toast(error.message ?: "发送失败")
+                 }
+             
+             _isSendingComment.value = false
+         }
++        submissionJob.invokeOnCompletion { failure ->
++            if (failure is CancellationException && requests.isOwned() && submissionSequence == submission) {
++                _isSendingComment.value = false
++            }
++        }
+     }

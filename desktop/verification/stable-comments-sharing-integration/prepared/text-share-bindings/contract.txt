@@ -1,0 +1,31 @@
+Prepared Windows typed native-text-share consumer seam; no Main install/runtime claim.
+
+Baseline actual immutable Snapshot15 manifest c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87, ordered92CP bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335. Existing product actor DesktopNativeTextShare, native DLL/C++, Operations, transport, cache, model and Store stay unchanged. No new native session authority is created.
+
+Install one new manual source DesktopTextShareBindings.kt; apply ONLY exact declared hunks in patch-plan.json for DesktopOriginalDynamicCardHost.kt, DesktopDynamicCommentPlatform.kt, CommunityDynamicScreens.kt and DesktopSpaceImagePreviews.kt. All current sibling base raw/LF bytes, immutable base copies and candidate LF bytes are pinned. Copying a whole candidate caller over later Root work is not the recipe. The generated original renderer producers do not change; their original platform.shareText calls now delegate through the existing platform schema.
+
+review-only/DesktopBgmDetailRoot.kt is NOT installed. Its equivalent injection hunks are for reference: video_save_alignment uniquely owns the new DesktopOriginalCommentRootBindings common consumption layer for BGM and VideoCommentTab. The same callback/scopes will be supplied there; do not overwrite that refactor with the old BGM caller.
+
+Unique interface:
+internal fun interface DesktopTextShareBindings {
+ suspend fun share(title: String, text: String, stillOwned: () -> Boolean): Boolean
+}
+LocalDesktopTextShareBindings is nullable, default null means explicit standalone unmounted platform boundary. Root provider is required for integrated sharing. requestDesktopTextShare uses the existing caller page CoroutineScope; it preserves current coroutine Job cancellation and forwards the exact live caller ownership predicate, including its captured account epoch. It checks scope/owner before dispatch, calls ensureActive before/after the Root callback, rethrows CancellationException and gives unavailable/exception feedback only while the same owner remains live. A canceled or retired page cannot callback old UI.
+
+Root exact minimal injection recipe, beside the existing remembered nativeTextShare:
+val rootTextShareBindings = remember(nativeTextShare) {
+    DesktopTextShareBindings { title, text, owned ->
+        nativeTextShare.share(title, text) { owned() && !isClosing() }
+    }
+}
+Add only LocalDesktopTextShareBindings provides rootTextShareBindings to the existing shared page CompositionLocalProvider containing ImagePreviewOverlayHost and all community/space/BGM consumers. It uses the SAME nativeTextShare actor and SAME hostWindow already owned by Root. Do not create a Root share scope per click, use GlobalScope, or decouple callbacks from the caller scope: the global callback executes inside the caller's existing async page scope, while actor serialization/native token ownership remain centralized at Root. Existing Root error flow/nativeTextShare shutdown is retained.
+
+New common BGM/video caller recipe:
+val textShare = LocalDesktopTextShareBindings.current
+Pass textShare=textShare, shareScope=existingOwnedPageScope to DesktopDynamicCommentPlatform and DesktopSpaceAvatarPlatform; add textShare to their remember keys. Constructor optional trailing parameters preserve source compatibility but integrated consumers must supply them. The source ABI changes must be compiled together with all current consumers; do not treat old compiled caller constructor descriptors as compatible with the new platform class overlay.
+
+DynamicCard uses its already existing per-alive child scope; CommunityDynamicDetail uses its already existing pageScope. SpaceImagePreviews gains only a per-alive child share scope, canceled after alive=false on disposal; its same MID/epoch/Space owner and existing Assets/Session/Operations remain authoritative. Card/space original single-argument shareText keeps its original interface and uses generic BiliPai 分享 title; comment/BGM original two-argument title is forwarded unchanged. Text and title are immutable Strings; no delayed reread of current reply/profile/music occurs. No route algorithm, image share, send-to-message protocol, store, HTTP or account implementation changes.
+
+Existing actor boundary: DesktopNativeTextShare.share checks ownership before allocation and around Show, and cancellation cleans the allocated token through its existing NonCancellable retirement. After successful Show, the existing watcher currently checks closing/token/native terminal state without rechecking page owner. This consumer slice therefore does not promise an already shown pane retires immediately on page navigation or same-MID replacement. Root has been told the narrow same-actor watcher option (check !stillOwned under the existing operations mutex then closeActive); no second per-page native actor/global-retire call was introduced. Native pane behavior is Root's separate native-runtime concern.
+
+Evidence: compile-01 Kotlin5source compilation PASS, only declared existing platform/caller class families shadowed; first class audit checker omitted two generated ComposableSingletons classes of those same sources, now corrected by separate class-overlap-review.json without changing compiled bytes or rerunning. Native actor/Operations/store/model/cache families have zero overrides. Fixture proof-01 PASS 5 focused cases/15 assertions/3 codeSource identities: current immutable payload dispatch, queued same-account epoch replacement rejection, awaiting Job cancellation, late false-result old-page callback rejection, live failure feedback and closed-scope immediate rejection. Callback is a controlled typed delegate; the actual native actor class is byte-pinned but not invoked. No account read, HTTP, HWND, DLL/native API call, share pane, receiver or GUI operation. No original mounted-button E2E or external sharing acceptance claim.

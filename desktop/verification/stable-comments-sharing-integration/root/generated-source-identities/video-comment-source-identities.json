@@ -1,0 +1,154 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "7a5fc40b8d47e23460e2b1f1e1ae71d0e92bc487",
+      "currentGitBlob": "7a5fc40b8d47e23460e2b1f1e1ae71d0e92bc487",
+      "sha256LfUtf8": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a",
+      "currentGitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a",
+      "sha256LfUtf8": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "30a5a9c922226fa2cca56d5fc05dd4277e076031",
+      "currentGitBlob": "30a5a9c922226fa2cca56d5fc05dd4277e076031",
+      "sha256LfUtf8": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "2db3e38b7dc673e9928b99871b27c710ebd3a891",
+      "currentGitBlob": "2db3e38b7dc673e9928b99871b27c710ebd3a891",
+      "sha256LfUtf8": "f9d57118d4a716f912a277e64b92f4e9d55a24947ca7eca032ae1978813a2a94",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "db266d68ac78e967c866ea6ed0bafd3a93643955",
+      "currentGitBlob": "db266d68ac78e967c866ea6ed0bafd3a93643955",
+      "sha256LfUtf8": "afb7b4f99a982e7cd29dce6442ad71d59ba9ac97a2e941f2bc7b982c1b60d606",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "6bee22ff931a4fe6ada17de45d4c0010db2556f6",
+      "currentGitBlob": "6bee22ff931a4fe6ada17de45d4c0010db2556f6",
+      "sha256LfUtf8": "6d083e05389f81252b6635a26834e985acbef211523e7b8097da1588f0d91757",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "0acb9165274c8eefeafecabe0908df620c3219bb",
+      "currentGitBlob": "0acb9165274c8eefeafecabe0908df620c3219bb",
+      "sha256LfUtf8": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c5c6e83ae9f929cd891fa576653a6930d709ce1e",
+      "currentGitBlob": "c5c6e83ae9f929cd891fa576653a6930d709ce1e",
+      "sha256LfUtf8": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "currentGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "sha256LfUtf8": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "48e80c7c47f64e6b1014ed7d5650b210ba36ab2c",
+      "currentGitBlob": "48e80c7c47f64e6b1014ed7d5650b210ba36ab2c",
+      "sha256LfUtf8": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "selections": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "path": "feature/video/screen/DesktopOriginalVideoCommentTab.kt",
+      "strategy": "Entire original VideoCommentTab, including exact pagination/vote/raw rich replies/timestamps/top/fraud/delete/dissolve/identities/header. Only existing desktop dissolve platform name maps.",
+      "generatedLfSha256": "12490b9bbfc6e949fa1155dbcb960041e33a4dc59197c6efbf1c5df0ae3eaf5d"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "path": "feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "strategy": "Full original LF-identical pure policy file.",
+      "generatedLfSha256": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "path": "core/ui/blur/FloatingChromeBackdrop.kt",
+      "strategy": "Full original nullable backdrop CompositionLocal; source search uses its original null fallback without cropping UI branches.",
+      "generatedLfSha256": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "path": "feature/video/ui/components/CommentSearchSheet.kt",
+      "strategy": "Full original local loaded-raw-reply search/filter/highlight/sort/search result UI and helpers. Existing clipboard/feedback and Coil context platform seams only; upstream glassActive=false is retained verbatim.",
+      "generatedLfSha256": "10f10ed7b2bd197604ed641ec203235313c160ec995deee111c03dbad6af394e"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+      "path": "feature/video/viewmodel/VideoComposerDraftState.kt",
+      "strategy": "Full original draft schema/key; Android Uri only maps to selected opaque file URI Strings. Ephemeral same-video state, no persistence or second player.",
+      "generatedLfSha256": "69066a5ea92070d2d48e42b52facf16fe8c6898c5fd6dbdab2edd595ff96acec"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "path": "feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt",
+      "strategy": "Original comment-only field/method blocks: full drafts, root/reply capture, lazy emotes, 250ms mention latest-query policy, stream9 send, original receipt channel and selected original reply/aid helpers. Existing required metadata/requests replace Android player lifecycle/context/singletons; matching cancellation releases busy only.",
+      "generatedLfSha256": "a84c22ba7f970b9effe77dea916af1f275ce64c4db64fe901fb8e63acc33925a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "path": "feature/video/screen/DesktopOriginalVideoCommentInputOverlay.kt",
+      "strategy": "Entire original comment snapshot/actions/input-content and original comment-only owner call block; existing full CommentInputDialog reused, required original composer/current actual position replace Android VideoPlaybackVM only.",
+      "generatedLfSha256": "9208243c230fd36d63094018007287b88fe2409edcbc5f9e1713dad80c31f442"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "path": "feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "strategy": "Full original receipt-to-genericVM-fraud event chain and result/light-message/delete UI, with required same-owner platform/composer types. Original type1 protocol and policy reused unchanged.",
+      "generatedLfSha256": "46a7b5dc49ee234c541fbe5914ff486f85c1bd9b277888610f464fd9c49aca99"
+    }
+  ]
+}

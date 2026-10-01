@@ -1,0 +1,151 @@
+{
+  "status": "FROZEN_PREPARED",
+  "artifactCount": 27,
+  "actualSnapshot15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "runtimeCases": 3,
+  "assertions": 17,
+  "candidateJarSha256Bytes": "d7b0b365133b4d938120457d58b7eda0d1ce23219071f26cef8a115c2cb8e52d",
+  "artifacts": [
+    {
+      "path": "ActorWatcherFixture.kt",
+      "bytes": 5427,
+      "sha256Bytes": "82579db61a1f702a2d73688fa66aaefac28e23258281e55f70e4ddd026bb92e1"
+    },
+    {
+      "path": "base-inputs/DesktopNativeTextShare.kt",
+      "bytes": 5085,
+      "sha256Bytes": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "bytes": 1898,
+      "sha256Bytes": "a1d8c85f013aabcc4ad148fc13f2cee08e545862c2dc441860b4d3abbec6bc3f"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "bytes": 23441,
+      "sha256Bytes": "d6ee223253fba9a75376d73fbcf31ddfada7260c1727b6ab392ec2e746e63ca5"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/DesktopNativeTextShare.kt",
+      "bytes": 5185,
+      "sha256Bytes": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127"
+    },
+    {
+      "path": "compile-01/owned-native-text-share.jar",
+      "bytes": 24223,
+      "sha256Bytes": "d7b0b365133b4d938120457d58b7eda0d1ce23219071f26cef8a115c2cb8e52d"
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 1802,
+      "sha256Bytes": "d8a85a022ef41344e5dd157842fa3e2d21bf3543a553ad3cfca7efd462778482"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 2949,
+      "sha256Bytes": "5b9e4a5765fa2a25cf28e9ec19562197e7b0e378cfed5790783f011917400f86"
+    },
+    {
+      "path": "install-contract.json",
+      "bytes": 1091,
+      "sha256Bytes": "61574861b002d220cfe1bc9a649c9031c1c6245c413baf7150ee6177d217e24b"
+    },
+    {
+      "path": "patch-plan.json",
+      "bytes": 933,
+      "sha256Bytes": "282966f31ad078b4c4e25ce8508991e732092a13630eda290d5140bfea5730e3"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 1798,
+      "sha256Bytes": "7be2d9f31e250d92ff74e9ca3de95f17c5f8beab555203a7ca4f21d63ab3012a"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "bytes": 5185,
+      "sha256Bytes": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127"
+    },
+    {
+      "path": "proof-01/accepted-result.json",
+      "bytes": 822,
+      "sha256Bytes": "6ee868cd8b48e4e458dff1a84af1c1256fee4fb57429c3113b0a5b43140d627f"
+    },
+    {
+      "path": "proof-01/actor-watcher-fixture.jar",
+      "bytes": 14870,
+      "sha256Bytes": "33f4a890233e911c5b5c20a7091bdfd5fc91d57889895bac99df11f57679f82a"
+    },
+    {
+      "path": "proof-01/ActorWatcherFixture.kt",
+      "bytes": 5427,
+      "sha256Bytes": "82579db61a1f702a2d73688fa66aaefac28e23258281e55f70e4ddd026bb92e1"
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "bytes": 23788,
+      "sha256Bytes": "0cbdb0b5b80006e7ab086a7b6e8f0e19701c8f9072ad0af2f766185c09433fbd"
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/runtime-command.json",
+      "bytes": 25071,
+      "sha256Bytes": "f8ff5a666fc853a26c8fc3cef1ba8527dc6c9059a916527f386dfc69bab5399e"
+    },
+    {
+      "path": "proof-01/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "bytes": 1274,
+      "sha256Bytes": "80593fc47cd5e335a4854a5bb78be18b647b738f98206424434d6991e82798a2"
+    },
+    {
+      "path": "proof-01/scratch/result.json",
+      "bytes": 1704,
+      "sha256Bytes": "dd844dc9fe294f5ecf8be81653d9267800bc50848d250a8b9552fe7522727af1"
+    },
+    {
+      "path": "run-fixture.py",
+      "bytes": 2311,
+      "sha256Bytes": "0024113618e3d3cd8c5b2393b90a8c2dc588c266dcb326a1e08ffc9e3ca93b81"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 1036,
+      "sha256Bytes": "4278692c64cfa469ae43c1e01227ad362ecaa138bbd5a3093ddb54d88c502560"
+    }
+  ],
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "notNativePaneOrSynchronousDataRequestedAdmissionProof": true
+}

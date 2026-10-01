@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceSha256LF": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127",
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "jarSha256Bytes": "d7b0b365133b4d938120457d58b7eda0d1ce23219071f26cef8a115c2cb8e52d",
+  "declaredActorClassOverlaps": [
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$Api.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$close$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$closeActive$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$shown$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$shutdown$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare.class"
+  ],
+  "allCandidateClasses": [
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$Api.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$close$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$closeActive$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$shown$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$shutdown$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare.class"
+  ],
+  "undeclaredOverlap": []
+}

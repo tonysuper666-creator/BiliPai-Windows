@@ -430,6 +430,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,
             window = { hostWindow })
     }
+    val rootTextShareBindings = remember(nativeTextShare) {
+        DesktopTextShareBindings { title, text, owned ->
+            nativeTextShare.share(title, text) { owned() && !isClosing() }
+        }
+    }
     val downloadNotification = remember(downloads, hostWindow) {
         java.util.concurrent.atomic.AtomicReference<DesktopDownloadNotifications?>()
     }
@@ -1048,6 +1053,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopDynamicCardSession provides dynamicCardSession,
         LocalDesktopDetailForeground provides (hostDisplayable && hostVisible),
         LocalDesktopDynamicSaveParent provides hostWindow,
+        LocalDesktopTextShareBindings provides rootTextShareBindings,
         LocalDesktopImageSaveLocations provides imageSaveLocations,
         LocalDesktopDynamicEditorActions provides dynamicEditor.actions,
         LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
@@ -1269,7 +1275,35 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopVideoMetadataHost(playing.details!!, repository, social, ::openUser, ::openVideoHonorLink, { error = it })
                                     VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
-                                    cid = playing.details!!.pages[playing.currentPart].cid)
+                                    cid = playing.details!!.pages[playing.currentPart].cid,
+                                    commentContent = {
+                                        val rawCommentInfo = playing.details!!.raw
+                                        val commentCid = playing.details!!.pages[playing.currentPart].cid
+                                        val commentEpoch = sessionEpoch
+                                        val commentVideoId = playing.details!!.bvid
+                                        val commentSourceVersion = player?.currentSourceVersion ?: 0L
+                                        if (rawCommentInfo != null) DesktopVideoCommentRootHost(
+                                            info = rawCommentInfo.copy(cid = commentCid), videoTags = emptyList(),
+                                            repository = repository, community = community, fraud = commentFraud,
+                                            isVideoPlaying = !native.paused,
+                                            stillOwned = {
+                                                repository.sessionEpoch == commentEpoch && !isClosing() && !activatingUpdate && showVideo &&
+                                                    playback.state.value.details?.bvid == commentVideoId
+                                            }, currentVideoPositionMsProvider = {
+                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&
+                                                    playback.state.value.details?.bvid == commentVideoId &&
+                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid)
+                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L
+                                            }, onTimestampClick = { timestampMs ->
+                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&
+                                                    playback.state.value.details?.bvid == commentVideoId &&
+                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid &&
+                                                    playback.currentCastSource(commentSourceVersion) != null)
+                                                    playback.seek(commentCid, timestampMs.coerceAtLeast(0L) / 1000.0)
+                                            }, onUserClick = ::openUser, onLinkClick = ::openVideoHonorLink,
+                                            onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp))
+                                        else Text("暂时无法取得原始评论信息")
+                                    })
                                     val musicTarget = DesktopMusicVideoTarget(playing.details!!.bvid,
                                         playing.details!!.pages[playing.currentPart].cid, player?.currentSourceVersion ?: 0L, repository.sessionEpoch)
                                     DesktopVideoMusicEntries(playing.details!!, musicTarget, repository, community,

@@ -1,0 +1,29 @@
+{
+    "status": "PASS",
+    "caseCount": 5,
+    "assertions": 15,
+    "typedCallbackDispatches": 2,
+    "actualCodeSources": [
+        {
+            "class": "com.bilipai.desktop.ui.DesktopTextShareBindings",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\compile-01\\prepared-text-share-bindings.jar",
+            "sha256ClassBytes": "8c7d0e62246a8860710ea5fe54d81d1d40684a4b9818d21e21bc6903b23059df"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopTextShareBindingsKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\compile-01\\prepared-text-share-bindings.jar",
+            "sha256ClassBytes": "a7cb4523cf14eaf102095495a13ccb75c68d5d34d29853d7e80631ec9b8a6bcb"
+        },
+        {
+            "class": "com.bilipai.desktop.diagnostics.DesktopNativeTextShare",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-15\\main-kotlin.jar",
+            "sha256ClassBytes": "fcd366904b497905da775dec752afa2f7a7e3587721d7aa436095cad5d39f656"
+        }
+    ],
+    "nativeActorInvoked": false,
+    "nativePaneOpened": false,
+    "noAccountReads": true,
+    "noHTTP": true,
+    "noHWND": true,
+    "notOriginalButtonMountedE2E": true
+}

@@ -1,0 +1,18 @@
+{
+  "preparedOnly": true,
+  "applyHunkOnly": true,
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+  "hunk": {
+    "before": "                        if (active != token) true else {\n                            val state = IntByReference()",
+    "after": "                        if (active != token) true else if (!stillOwned()) {\n                            closeActive(); true\n                        } else {\n                            val state = IntByReference()"
+  },
+  "sameExistingRootActor": true,
+  "noCppOrNativeApiOrOpsStoreChanges": true,
+  "ownerGuardBeforeStateOnSameActiveToken": true,
+  "oldTokenCannotRetireReplacement": true,
+  "normalPollingCadenceMs": 500,
+  "additionalDelayPossible": "mutex or native transport",
+  "notSynchronousOwnerToNativeDataRequestedAdmissionProof": true,
+  "fixture": "Actual compiled watcher coroutine and existing closeActive with task-only private native API spy; no DLL, HWND, ShareShow, receiver or C++ DataRequested",
+  "historicalTypedBindings42Unchanged": true
+}

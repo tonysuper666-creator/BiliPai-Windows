@@ -1,0 +1,158 @@
+{
+  "status": "PASS",
+  "checkCount": 37,
+  "checks": [
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt     val saveParent=LocalDesktopD",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt     val platform=remember(operat",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt         override fun shareText(t",
+      "pass_": true
+    },
+    {
+      "name": "exact only declared delta desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "pass_": true
+    },
+    {
+      "name": "exact compiler bytes desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt import kotlinx.coroutines.Cancel",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt     private val pickImages: (Int",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt         if (isOwned()) showFeedb",
+      "pass_": true
+    },
+    {
+      "name": "exact only declared delta desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "pass_": true
+    },
+    {
+      "name": "exact compiler bytes desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt     val clipboard=LocalDesktopTe",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt         },pickImages=commentPick",
+      "pass_": true
+    },
+    {
+      "name": "exact only declared delta desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "pass_": true
+    },
+    {
+      "name": "exact compiler bytes desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt import com.bilipai.desktop.setti",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt     val clipboard = LocalDesktop",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt     val platform = remember(aliv",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt             clipboard, feedback ",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt         onDispose { alive.set(fa",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt     private val openExternalLink",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt     override fun shareText(text:",
+      "pass_": true
+    },
+    {
+      "name": "exact only declared delta desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "pass_": true
+    },
+    {
+      "name": "exact compiler bytes desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt     val clipboard = LocalDesktop",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt         val gallery = remember(o",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt                 ::owned, clipboa",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt         val platform = remember(",
+      "pass_": true
+    },
+    {
+      "name": "unique hunk desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt                 }, pickImages = ",
+      "pass_": true
+    },
+    {
+      "name": "exact only declared delta desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "pass_": true
+    },
+    {
+      "name": "BGM hunk is review only",
+      "pass_": true
+    },
+    {
+      "name": "exact helper compiler bytes",
+      "pass_": true
+    },
+    {
+      "name": "only declared platform/caller families overlap",
+      "pass_": true
+    },
+    {
+      "name": "no native actor/Operations/store/model/cache override",
+      "pass_": true
+    },
+    {
+      "name": "focused dispatcher proof passed",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.ui.DesktopTextShareBindings",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.ui.DesktopTextShareBindingsKt",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.diagnostics.DesktopNativeTextShare",
+      "pass_": true
+    }
+  ],
+  "sourceInventorySha256Bytes": "62d4034892f118088e7b6fafd6a63a782462393d2943acbc257ebb22e7fdae78",
+  "patchPlanSha256Bytes": "e65d58d22677983fb40705efb2eeb5d0591bc93330f742ce5385b4021c737b06",
+  "classOverlapReviewSha256Bytes": "fceaa9b952ee63af814fab94492ab536c2ad256d3c69020f42068222bd07d9ae",
+  "acceptedProofSha256Bytes": "0e0aaeee3ce4fbbe628b937b00413760bc291c2264a4e7d365d12b21b7c7b281"
+}

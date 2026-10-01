@@ -1,0 +1,9 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,5 +1,5 @@
+     fun showCommentInputDialog() {
+-        android.util.Log.d("VideoPlaybackViewModel", "📝 showCommentInputDialog called")
++
+         ensureComposerDraftVideo()
+         _showCommentDialog.value = true
+         // 懒加载表情包

@@ -1,0 +1,11 @@
+--- original-v0.2.3/feature/video/screen/VideoContentSection.kt
++++ prepared/feature/video/screen/DesktopOriginalVideoCommentTab.kt
+@@ -132,7 +132,7 @@
+                     contentType = { resolveReplyItemContentType(it) }
+                 ) { reply ->
+                     // [新增] 使用 DissolvableVideoCard 包裹
+-                    com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
++                    com.bilipai.desktop.ui.DesktopReplyDissolvableContainer(
+                         isDissolving = reply.rpid in dissolvingIds,
+                         onDissolveComplete = { onDeleteComment(reply.rpid) },
+                         cardId = "comment_${reply.rpid}",

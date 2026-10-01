@@ -1,0 +1,8 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+  "baseLfSha256": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77",
+  "old": "onSubReplyClick = { if (owned()) { searchVisible = false; viewModel.openSubReplyFromRoute(it.root,it.rpid) } },",
+  "new": "onSubReplyClick = { rootReply -> if (owned()) { searchVisible = false; viewModel.openSubReply(rootReply) } },",
+  "fixedLfSha256": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1",
+  "source": "Original CommentSearchSheet onClick calls onSubReplyClick(entry.rootReply), full Generic VM accepts that root ReplyItem. No child root/id reinterpretation."
+}

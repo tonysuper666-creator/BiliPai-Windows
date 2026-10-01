@@ -1,0 +1,135 @@
+{
+  "installedFiles": 9,
+  "sourceIdentityCount": 697,
+  "resourceCount": 210,
+  "frozenCommentManifestSha256": "55e8b1bf787aa1066f8465f284b7f7c6cf97b4ba3221c5370a0bb2f955dc793a",
+  "searchRootFixManifestSha256": "1e4ff84b411c9744ad1c8bd6adbf2288786c359d484290c43003d4d837f59643",
+  "installed": [
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
+      "newSource": true,
+      "installedSha256Bytes": "7ee2a46466b16e8280c982248ff61c4e3b1855c4cfe8d22e70b2615b9418ee75"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "newSource": true,
+      "installedSha256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "newSource": true,
+      "installedSha256Bytes": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "baseSha256LF": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+      "installedSha256LF": "420d128379653d05f9b0376006cf55cf1d286a8e6097ff5fda324e3622a2f61d",
+      "changes": [
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+          "baseLfSha256": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+          "old": "    val session = checkNotNull(LocalDesktopDynamicCardSession.current)\n    val epoch by repository.sessionEpochFlow.collectAsState()\n    val capturedEpoch = epoch\n    if (!session.matches(repository, capturedEpoch)) return\n    val preferences = checkNotNull(LocalDesktopDynamicTimelinePreferences.current)\n    val locations = checkNotNull(LocalDesktopImageSaveLocations.current)\n    val saveParent = LocalDesktopDynamicSaveParent.current\n    val clipboard = LocalDesktopTextClipboard.current\n    val uriHandler = LocalUriHandler.current\n    key(request.musicId, request.aid, request.cid, session, capturedEpoch) {\n        val alive = remember { AtomicBoolean(true) }\n        val exportLock = remember { Any() }\n        val guard = repository.dynamicCacheSessionGuard\n        val owner = remember { checkNotNull(guard.dynamicCacheOwner()) }\n        val parent = rememberCoroutineScope()\n        val scope = remember { CoroutineScope(parent.coroutineContext + SupervisorJob(parent.coroutineContext[Job])) }\n        fun owned() = alive.get() && locations.isActive() && owner.epoch == capturedEpoch &&\n            repository.sessionEpoch == capturedEpoch && session.isOwned()\n        val operations = remember { DesktopDynamicCardOperations(repository, capturedEpoch, ::owned, session.emotes) }\n        val images = remember { DesktopDynamicEditorSelectedImages(::owned, operations::withOwnedEditorImageAdmission) }\n        val snackbar = remember { SnackbarHostState() }\n        fun feedback(message: String) { if (owned()) scope.launch { snackbar.showSnackbar(message) } }\n        val pickers = remember(images, saveParent) {\n            DesktopDynamicEditorWindowsPickers(images, ::owned, { saveParent }, ::feedback)\n        }\n        val assets = remember(operations, locations, saveParent) {\n            DesktopDynamicImageAssets(repository.httpClient, ::owned, guard, owner,\n                selectTarget = { name, mime -> selectDynamicSaveTarget(name, mime, saveParent) },\n                selectDirectory = { selectDynamicSaveDirectory(saveParent) }, imageSaveLocations = locations)\n        }\n        // Reuse the already installed gallery platform, never a second renderer/client/store.\n        val gallery = remember(operations, assets, clipboard, uriHandler) {\n            DesktopSpaceAvatarPlatform(preferences.context, session.emotes, operations, assets,\n                ::owned, clipboard, ::feedback, uriHandler::openUri)\n        }\n        val platform = remember(operations, clipboard, images, locations) {\n            DesktopDynamicCommentPlatform(preferences.context, session.emotes, repository, community, operations,\n                capturedEpoch, ::owned, clipboard, ::feedback, saveImage = { spec ->\n                    val context = currentCoroutineContext()\n                    val commitOwned: ((() -> Unit) -> Boolean) = { commit ->\n                        guard.withCurrentDynamicCacheOwner(owner) {\n                            synchronized(exportLock) {\n                                if (!owned()) throw CancellationException(\"BGM reply export owner retired\")\n                                if (!locations.withCommit(commit)) throw CancellationException(\"Reply export settings retired\")\n                            }\n                        }\n                    }\n                    locations.save(\"BiliPai_comment_${System.currentTimeMillis()}.png\",\n                        checkpoint = { context.ensureActive(); if (!owned()) throw CancellationException(\"BGM reply export owner retired\") },\n                        withOwnedCommit = commitOwned) { target ->\n                        writeDesktopReplyCommentImage(spec, target.path, ::owned,\n                            replaceExisting = target.replaceExisting, withOwnedCommit = commitOwned)\n                    }\n                }, pickImages = pickers::pickImages)\n        }\n        val requests = remember(operations, fraud) {\n            DesktopVideoCommentOperationsBinding(operations, repository, images::read, fraud.records,\n                operations::checkCommentStatus, fraud::recordPublished)\n        }\n        val detailRequests = remember(operations) { operations.bgmDetailRequests() }\n        val vm = remember(operations) { BgmDetailViewModel(scope, detailRequests) }\n        val comments = remember(operations) { VideoCommentViewModel(scope, requests) }\n        var route by remember { mutableStateOf<DesktopBgmCommentRoute?>(null) }\n        DisposableEffect(alive, assets, images, scope) {\n            onDispose {\n                synchronized(exportLock) { alive.set(false) }\n                assets.close(); images.close(); scope.cancel()\n            }\n        }\n        if (owned()) CompositionLocalProvider(LocalDesktopCommentBindings provides platform,\n            LocalDesktopDynamicCardBindings provides gallery,\n            LocalDesktopBgmLottieLoader provides operations::loadBgmEmptyAnimation) {\n            Box(Modifier.fillMaxSize()) {\n                DesktopCommentDialogNavigationHost {\n                    val active = route\n                    if (active == null) BgmDetailScreen(request.musicId, request.aid, request.cid, request.showVideos,\n                        onBack = onBack, onVideosClick = onVideosClick, onVideoClick = onVideoClick,\n                        onUserClick = onUserClick, onCommentClick = { oid, root, target, type ->\n                            if (owned()) route = DesktopBgmCommentRoute(oid, root, target, type)\n                        }, onLinkClick = onLinkClick, onLogin = onLogin, viewModel = vm,\n                        commentViewModel = comments, requests = detailRequests,\n                        nowPlayingBarOverlayVisible = nowPlayingBarOverlayVisible, onMediaSearch = onMediaSearch)\n                    else key(active) {\n                        val detailScope = remember { CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job])) }\n                        val detail = remember { CommentDetailViewModel(detailScope, requests) }\n                        DisposableEffect(detailScope) { onDispose { detailScope.cancel() } }\n                        CommentDetailScreen(active.oid, active.root, active.target, active.type,\n                            onBack = { route = null }, onOpenLink = onLinkClick, onUserClick = onUserClick,\n                            viewModel = detail, requests = requests)\n                    }\n                }\n                SnackbarHost(snackbar)\n            }\n        }\n    }\n",
+          "new": "    DesktopOriginalCommentRootBindings(repository, community, fraud,\n        Triple(request.musicId, request.aid, request.cid), { true }, Modifier.fillMaxSize()) { owner ->\n        val operations = owner.operations\n        val requests = owner.requests\n        val scope = owner.scope\n        fun owned() = owner.isOwned()\n        val detailRequests = remember(operations) { operations.bgmDetailRequests() }\n        val vm = remember(operations) { BgmDetailViewModel(scope, detailRequests) }\n        val comments = remember(operations) { VideoCommentViewModel(scope, requests) }\n        var route by remember { mutableStateOf<DesktopBgmCommentRoute?>(null) }\n        val active = route\n        if (active == null) BgmDetailScreen(request.musicId, request.aid, request.cid, request.showVideos,\n            onBack = onBack, onVideosClick = onVideosClick, onVideoClick = onVideoClick,\n            onUserClick = onUserClick, onCommentClick = { oid, root, target, type ->\n                if (owned()) route = DesktopBgmCommentRoute(oid, root, target, type)\n            }, onLinkClick = onLinkClick, onLogin = onLogin, viewModel = vm,\n            commentViewModel = comments, requests = detailRequests,\n            nowPlayingBarOverlayVisible = nowPlayingBarOverlayVisible, onMediaSearch = onMediaSearch)\n        else key(active) {\n            val detailScope = remember { CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job])) }\n            val detail = remember { CommentDetailViewModel(detailScope, requests) }\n            DisposableEffect(detailScope) { onDispose { detailScope.cancel() } }\n            CommentDetailScreen(active.oid, active.root, active.target, active.type,\n                onBack = { route = null }, onOpenLink = onLinkClick, onUserClick = onUserClick,\n                viewModel = detail, requests = requests)\n        }\n    }\n",
+          "reason": "Move exact same existing image/epoch/requests scope owner to common required adapter; full BGM UI/VM call branch retained. Same optional typed native text-share local bound to that scope."
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": false
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "baseSha256LF": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a",
+      "installedSha256LF": "3a6c8fa8ede763ccb7d8de2b605b3f7a9e741266760816e04cb6d12e8ad109f5",
+      "changes": [
+        {
+          "old": "    # VideoInlineSubReplyDetailContent needs the full unrelated video VM. Dynamic\n    # uses the complete original SubReplyDetailContent+helpers, not that wrapper.\n    begin = original.index('@Composable\\ninternal fun VideoInlineSubReplyDetailContent')\n    end = original.index('@Composable\\ninternal fun SubReplyDetailContent', begin)\n    body = original[:begin] + original[end:]\n    body = body.replace('import com.android.purebilibili.feature.video.viewmodel.CommentUiState\\n', '')",
+          "new": "    # The actual sole full generic VideoCommentVM is now installed. Preserve\n    # its full original video inline wrapper in this sole existing producer.\n    body = original"
+        },
+        {
+          "old": "             'getSubReplyLoadedCountEnabled', 'setSubReplyLoadedCountEnabled']",
+          "new": "             'getSubReplyLoadedCountEnabled', 'setSubReplyLoadedCountEnabled',\n             'KEY_COMMENT_DEFAULT_SORT_MODE', 'getCommentDefaultSortMode',\n             'getCommentDefaultSortModeSync', 'KEY_COMMENT_FRAUD_DETECTION_ENABLED',\n             'getCommentFraudDetectionEnabled', 'KEY_COMMENT_MEMBER_DECORATIONS_ENABLED',\n             'getCommentMemberDecorationsEnabled']"
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+      "baseSha256LF": "b4a52e1ffc681d41115b133357f2858b0491a0d3f7ddcba9721fa6ace0b6dc6a",
+      "installedSha256LF": "21bc774e7a20b55b92abe9a1b07e8c3a790762e876b79da02d4141d924e310fb",
+      "changes": [
+        {
+          "old": "    onSeek: (cid: Long, seconds: Double) -> Unit, modifier: Modifier = Modifier,",
+          "new": "    onSeek: (cid: Long, seconds: Double) -> Unit, commentContent: @Composable () -> Unit, modifier: Modifier = Modifier,"
+        },
+        {
+          "old": "            VideoCommentPanel(details.aid, repository, social, community, onUser, onLogin)",
+          "new": "            commentContent()"
+        },
+        {
+          "old": "@Composable\nprivate fun VideoCommentPanel(aid: Long, repository: DesktopRepository, social: DesktopSocialRepository, community: DesktopCommunityRepository,\n    onUser: (Long) -> Unit, onLogin: () -> Unit) {\n    val scope = rememberCoroutineScope()\n    var sort by remember(aid) { mutableIntStateOf(1) }\n    var root by remember(aid) { mutableStateOf<Comment?>(null) }\n    var replyTo by remember(aid) { mutableStateOf<Comment?>(null) }\n    var message by remember(aid) { mutableStateOf(\"\") }\n    var inputEnabled by remember(aid) { mutableStateOf(true) }\n    var revision by remember(aid) { mutableIntStateOf(0) }\n    var posting by remember(aid) { mutableStateOf(false) }\n    var error by remember(aid) { mutableStateOf<Throwable?>(null) }\n    Text(\"评论\", style = MaterialTheme.typography.titleLarge)\n    if (root == null) DesktopVideoCommentVoteSlot(repository, aid, mode = if (sort == 1) 3 else 2,\n        refreshKey = revision, onFeedback = { error = IllegalStateException(it) }, modifier = Modifier.fillMaxWidth())\n    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n        if (root != null) TextButton(onClick = { root = null; replyTo = null }) { Text(\"‹ 全部评论\") }\n        else listOf(1 to \"最热\", 0 to \"最新\").forEach { (value, label) -> FilterChip(selected = sort == value, onClick = { sort = value }, label = { Text(label) }) }\n    }\n    root?.let { Text(\"${it.author}：${it.text}\", style = MaterialTheme.typography.bodyMedium) }\n    Box(Modifier.fillMaxWidth().height(440.dp)) {\n        CommunityFeed<Comment, Int>(listOf(aid, root?.id, sort, revision), 1, load = { page ->\n            val thread = root\n            val result = if (thread == null) social.commentPage(aid, page, sort) else social.commentReplies(aid, thread.id, page)\n            inputEnabled = result.inputEnabled\n            CommunityBatch(result.items, if (result.hasMore) page + 1 else null)\n        }, identity = { it.id }, onLogin = onLogin) { comment ->\n            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {\n                Text(comment.author, fontWeight = FontWeight.SemiBold, modifier = Modifier.clickable(enabled = comment.memberId > 0) { onUser(comment.memberId) })\n                Text(comment.text)\n                CommunityCommentActions(CommunityCommentTarget(aid, 1), comment, community, onLogin, onChanged = { revision++ })\n                Row {\n                    Text(\"${comment.likeCount} 赞\", style = MaterialTheme.typography.labelMedium)\n                    TextButton(onClick = { replyTo = comment }) { Text(\"回复\") }\n                    if (root == null && comment.replyCount > 0) TextButton(onClick = { root = comment; replyTo = null }) { Text(\"展开 ${comment.replyCount} 条回复\") }\n                }\n                comment.previewReplies.forEach { preview ->\n                    Text(\"${preview.author}：${preview.text}\", style = MaterialTheme.typography.bodySmall,\n                        modifier = Modifier.clickable { root = comment; replyTo = preview })\n                }\n                HorizontalDivider()\n            }\n        }\n    }\n    replyTo?.let { Row { Text(\"回复 @${it.author}\"); TextButton(onClick = { replyTo = null }) { Text(\"取消\") } } }\n    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {\n        OutlinedTextField(message, { message = it }, enabled = inputEnabled, label = { Text(if (inputEnabled) \"发表评论\" else \"评论已关闭\") }, modifier = Modifier.weight(1f))\n        Button(enabled = !posting && inputEnabled && message.isNotBlank(), onClick = {\n            if (posting) return@Button\n            posting = true; error = null\n            scope.launch {\n                try { social.publishComment(aid, message, rootId = root?.id ?: replyTo?.id, parentId = replyTo?.id)\n                    message = \"\"; replyTo = null; revision++ }\n                catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }\n                finally { posting = false }\n            }\n        }) { Text(if (posting) \"发送中…\" else \"发布\") }\n    }\n    error?.let { CommunityFailure(it, onLogin) }\n}\n\n",
+          "new": ""
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseSha256LF": "c3d1952bcef160816898e06d2021fb182288d1a4f5f62959fb7ac879c1285ffa",
+      "installedSha256LF": "b3e457041c00a72bef5b76b54f037ed27eb0b3fa35733908bae6ec721204976e",
+      "changes": [
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+          "baseLfSha256": "a1fc2517052d9ee82795d33d32111abffdf079a017404681fb061fe384e013eb",
+          "old": "                                    cid = playing.details!!.pages[playing.currentPart].cid)",
+          "new": "                                    cid = playing.details!!.pages[playing.currentPart].cid,\n                                    commentContent = {\n                                        val rawCommentInfo = playing.details!!.raw\n                                        val commentCid = playing.details!!.pages[playing.currentPart].cid\n                                        val commentEpoch = sessionEpoch\n                                        val commentVideoId = playing.details!!.bvid\n                                        val commentSourceVersion = player?.currentSourceVersion ?: 0L\n                                        if (rawCommentInfo != null) DesktopVideoCommentRootHost(\n                                            info = rawCommentInfo.copy(cid = commentCid), videoTags = emptyList(),\n                                            repository = repository, community = community, fraud = commentFraud,\n                                            isVideoPlaying = !native.paused,\n                                            stillOwned = {\n                                                repository.sessionEpoch == commentEpoch && !isClosing() && !activatingUpdate && showVideo &&\n                                                    playback.state.value.details?.bvid == commentVideoId\n                                            }, currentVideoPositionMsProvider = {\n                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&\n                                                    playback.state.value.details?.bvid == commentVideoId &&\n                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid)\n                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L\n                                            }, onTimestampClick = { timestampMs ->\n                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&\n                                                    playback.state.value.details?.bvid == commentVideoId &&\n                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid &&\n                                                    playback.currentCastSource(commentSourceVersion) != null)\n                                                    playback.seek(commentCid, timestampMs.coerceAtLeast(0L) / 1000.0)\n                                            }, onUserClick = ::openUser, onLinkClick = ::openVideoHonorLink,\n                                            onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp))\n                                        else Text(\"暂时无法取得原始评论信息\")\n                                    })",
+          "compiled": false,
+          "rootOwnsFinalPlaybackViewportSourceOwner": true,
+          "notes": [
+            "same aid/account epoch owns comments across part switches; timestamp/current position callbacks require current source version/CID",
+            "original ReplyComponents callback is milliseconds; existing playback.seek expects seconds",
+            "videoTags parameter is unused in complete original VideoCommentTab; no second tag-fetch introduced",
+            "finite height equals previous actual comment region; Root may choose real playback page viewport",
+            "full Android CommentSheet portrait/fullscreen shell and fraud history UI are separate, not claimed by this recipe"
+          ]
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "baseSha256LF": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77",
+      "installedSha256LF": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1",
+      "changes": [
+        {
+          "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+          "baseLfSha256": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77",
+          "old": "onSubReplyClick = { if (owned()) { searchVisible = false; viewModel.openSubReplyFromRoute(it.root,it.rpid) } },",
+          "new": "onSubReplyClick = { rootReply -> if (owned()) { searchVisible = false; viewModel.openSubReply(rootReply) } },",
+          "fixedLfSha256": "68ddcfb726a3388b00c93249906b55417d4f5406785b85af9240912825315af1",
+          "source": "Original CommentSearchSheet onClick calls onSubReplyClick(entry.rootReply), full Generic VM accepts that root ReplyItem. No child root/id reinterpretation."
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": false
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "baseSha256LF": "e224ac3f601dde4f575b010847d1fddc47b92e8fecd98305f30c619efa526042",
+      "installedSha256LF": "677732c1644150b175e71a1367b8404fe7a659189e0dc4acd6dd4f749dcbf7a7",
+      "changes": [
+        {
+          "old": "val extractCommentFraudProtocol by tasks.registering(Exec::class) {",
+          "new": "val extractVideoCommentUi by tasks.registering(Exec::class) {\n    dependsOn(prepareUpstreamSources)\n    workingDir(projectDir)\n    commandLine(System.getenv(\"PYTHON_EXECUTABLE\") ?: \"python\", \"tools/extract-upstream-video-comment-ui.py\",\n        \"--repo\", repositoryRoot.absolutePath,\n        \"--output\", layout.buildDirectory.dir(\"generated/video-comment-ui\").get().asFile.absolutePath)\n    inputs.files(\"tools/extract-upstream-video-comment-ui.py\", \"tools/extract-upstream-dynamic-reply-protocol.py\",\n        \"tools/extract-upstream-dynamic-reply.py\", \"tools/sync-upstream.py\")\n    inputs.file(sourceManifest)\n    inputs.files(sources.filter { \"stable-video-original-comments\" in ((it[\"features\"] as? List<*>) ?: emptyList<Any>()) }\n        .map { File(repositoryRoot, it[\"path\"].toString()) })\n    outputs.dir(layout.buildDirectory.dir(\"generated/video-comment-ui\"))\n}\ntasks.named(\"compileKotlin\") { dependsOn(extractVideoCommentUi) }\n\nval extractCommentFraudProtocol by tasks.registering(Exec::class) {"
+        },
+        {
+          "old": "    kotlin.srcDir(layout.buildDirectory.dir(\"generated/bgm-detail/com\"))",
+          "new": "    kotlin.srcDir(layout.buildDirectory.dir(\"generated/bgm-detail/com\"))\n    kotlin.srcDir(layout.buildDirectory.dir(\"generated/video-comment-ui/com\"))"
+        }
+      ],
+      "shellNativeSharingDeltaPreserved": false
+    }
+  ],
+  "originalFullCommentTabThreadSearchComposer": true,
+  "legacySimplifiedRestPanelRemoved": true,
+  "sameRootNativeTextShare": true,
+  "originalAndroidFullscreenCommentSheetNotClaimed": true,
+  "fullRootRuntimeAccepted": false
+}

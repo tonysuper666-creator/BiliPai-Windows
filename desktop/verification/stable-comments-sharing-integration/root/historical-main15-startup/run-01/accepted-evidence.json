@@ -1,0 +1,22 @@
+{
+  "exitCode": 0,
+  "sourceSha256Bytes": "daf34fe58d3e28cd61ace07368d853cc781ad3010c5e1571bd3e43c2cdbc6db2",
+  "snapshotManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "classesOverrides": 0,
+  "profileIsFresh": true,
+  "source": "actual full Main entry point",
+  "accountActions": 0,
+  "externalGuestHttpMayOccur": true,
+  "productRootPageInteractionAccepted": false,
+  "observation": {
+    "windowShown": true,
+    "rootWidth": 1360,
+    "rootHeight": 900,
+    "actualMainCodeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar",
+    "rootPageInteractionAccepted": false,
+    "accountActions": 0,
+    "mode": "live isolated guest startup",
+    "closedByOriginalWindowHandler": true
+  },
+  "passed": true
+}

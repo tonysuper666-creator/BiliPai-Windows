@@ -1,0 +1,78 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentityCount": 697,
+  "resourceCount": 210,
+  "allSourceAndResourceDigestsVerified": true,
+  "wholeClassesPassed": true,
+  "classesLog": "root/classes-16.log",
+  "sourceIntegrated": [
+    "Full original video comment tab/thread/search/drafts/composer/receipt/fraud chain",
+    "Common original comment Root bindings used by BGM and video",
+    "Original search-root callback target corrected",
+    "Same Root native text share actor wired to dynamic/comment/space/BGM callers",
+    "Same-actor shown-session page-owner retirement"
+  ],
+  "scopedValidation": {
+    "originalCommentCases": 12,
+    "originalCommentAssertions": 27,
+    "typedShareCases": 5,
+    "typedShareAssertions": 15,
+    "watcherCases": 3,
+    "watcherAssertions": 17,
+    "actualNativeActorOwnWindow": true,
+    "actualNativeShowRequest": true,
+    "actualNativeState": 1,
+    "dataRequestedProvidedObserved": false,
+    "registered": 1,
+    "unregistered": 1,
+    "liveDispatchers": 0
+  },
+  "historicalMain15GuestStartupAccepted": true,
+  "historicalMain15Run01RejectedByReview": true,
+  "historicalMain15Run02Rejected": true,
+  "liveGuestBackendPassed": false,
+  "liveGuestBackendFailure": "HTTP 412 at video details, after popular and search stages",
+  "actualRootCommentButtonAccepted": false,
+  "accountActionsAccepted": false,
+  "actualRootShareButtonAccepted": false,
+  "fullStableRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "publicNativeReleaseAccepted": false,
+  "pending": [
+    "Original Favorites full page and folder drawer Root integration",
+    "Full original Home dock/search/nav/music slots",
+    "Original danmaku pool/menu and real native pointer entry",
+    "Remaining original video/player/space/settings/transitions",
+    "Post-tag source patch review",
+    "Complete Root/PiP/DPI/account runtime and desktop EXE packaging/deployment"
+  ],
+  "excludedTaskBinaries": [
+    {
+      "cohort": "text-share-bindings",
+      "path": "compile-01/prepared-text-share-bindings.jar",
+      "sha256Bytes": "bb16819fd4d717b3801a6800a554c0fe4429b90bba865e0d3ab379e877e1498e",
+      "bytes": 257221
+    },
+    {
+      "cohort": "text-share-bindings",
+      "path": "proof-01/text-share-fixture.jar",
+      "sha256Bytes": "5709a2846b1cd3870100ac60695a5e447deee8c94a5bede87e913b0003c85eca",
+      "bytes": 20801
+    },
+    {
+      "cohort": "text-share-watcher",
+      "path": "compile-01/owned-native-text-share.jar",
+      "bytes": 24223,
+      "sha256Bytes": "d7b0b365133b4d938120457d58b7eda0d1ce23219071f26cef8a115c2cb8e52d"
+    },
+    {
+      "cohort": "text-share-watcher",
+      "path": "proof-01/actor-watcher-fixture.jar",
+      "bytes": 14870,
+      "sha256Bytes": "33f4a890233e911c5b5c20a7091bdfd5fc91d57889895bac99df11f57679f82a"
+    }
+  ],
+  "noScreenshotsCopied": true,
+  "noUserProfilesCopied": true
+}

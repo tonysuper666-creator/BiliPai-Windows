@@ -654,6 +654,21 @@ val extractBgmDetail by tasks.registering(Exec::class) {
 }
 tasks.named("compileKotlin") { dependsOn(extractBgmDetail) }
 
+val extractVideoCommentUi by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-comment-ui.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/video-comment-ui").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-video-comment-ui.py", "tools/extract-upstream-dynamic-reply-protocol.py",
+        "tools/extract-upstream-dynamic-reply.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-video-original-comments" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/video-comment-ui"))
+}
+tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
+
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1056,6 +1071,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/video-metadata"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/shared-liquid-tabs/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/bgm-detail/com"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/video-comment-ui/com"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/comment-fraud-protocol/generated"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }

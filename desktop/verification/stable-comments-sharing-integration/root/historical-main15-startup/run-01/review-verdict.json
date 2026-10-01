@@ -1,0 +1,9 @@
+{
+  "startupAccepted": false,
+  "windowObservationOnlyPassed": true,
+  "compositionErrorObserved": true,
+  "cause": "Fixture omitted the build's verified JS worker resource property; DesktopPluginRuntime failed before Root page mounting.",
+  "visualAcceptance": false,
+  "screenshotRetained": false,
+  "requiredCorrection": "Supply the actual verified build JS worker resources, reject composition/crash markers, observe only the owned process window."
+}

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "candidateJarSha256Bytes": "d7b0b365133b4d938120457d58b7eda0d1ce23219071f26cef8a115c2cb8e52d",
+  "fixtureSourceSha256Bytes": "82579db61a1f702a2d73688fa66aaefac28e23258281e55f70e4ddd026bb92e1",
+  "fixtureJarSha256Bytes": "33f4a890233e911c5b5c20a7091bdfd5fc91d57889895bac99df11f57679f82a",
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "noAccountReads": true,
+  "noNativeCppExecution": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "caseCount": 3,
+  "assertions": 17,
+  "actualCodeSources": 2,
+  "resultSha256Bytes": "dd844dc9fe294f5ecf8be81653d9267800bc50848d250a8b9552fe7522727af1"
+}

@@ -1,0 +1,22 @@
+--- original-v0.2.3/feature/video/ui/components/CommentSearchSheet.kt
++++ prepared/feature/video/ui/components/CommentSearchSheet.kt
+@@ -9,7 +9,7 @@
+     modifier: Modifier = Modifier,
+ ) {
+     val context = LocalContext.current
+-    val clipboardManager = LocalClipboardManager.current
++    val platform = LocalDesktopCommentBindings.current
+     var searchQuery by remember { mutableStateOf("") }
+     var onlyUp by remember { mutableStateOf(false) }
+     var sortMode by remember { mutableStateOf(CommentSearchSortMode.HOT) }
+@@ -244,8 +244,8 @@
+                                     }
+                                 },
+                                 onCopy = {
+-                                    clipboardManager.setText(AnnotatedString(entry.reply.content.message))
+-                                    Toast.makeText(context, "评论已复制", Toast.LENGTH_SHORT).show()
++                                    platform.copyText(entry.reply.content.message, "评论")
++                                    platform.showFeedback("评论已复制")
+                                 }
+                             )
+                         }

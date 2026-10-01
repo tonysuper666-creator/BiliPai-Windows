@@ -6,7 +6,12 @@
   "releaseUrl": "https://github.com/jay3-yy/BiliPai/releases/tag/v0.2.3",
   "prerelease": false,
   "publishedAt": "2026-09-30T20:38:28Z",
-  "upstreamVersionCode": 414,
+  "upstreamVersionCode": 415,
+  "releaseNotesVersionCode": 414,
+  "officialApkVersionCode": 418,
+  "officialApkSha256": "99f261463619552775a32730224f49f6675d043cfc0d38527ea510f5e4254a1c",
+  "officialApkExactBuildCommitVerified": false,
+  "versionMetadataEvidence": "verification/stable-comments-sharing-integration/root/stable-release-version-audit.json",
   "candidateBranch": "desktop/v023-parity",
   "acceptedSourceTag": "v0.2.3-alpha.9",
   "acceptedSourceCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
@@ -177,11 +182,15 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 690,
+    "candidateSourceIdentityCount": 697,
     "candidateResourceCount": 210,
-    "actualClassesEvidence": "verification/stable-native-pages-integration/root/classes-15.log",
+    "all907CurrentSourceAndResourcePinsVerified": true,
+    "actualClassesEvidence": "verification/stable-comments-sharing-integration/root/classes-16.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-native-pages-integration/root/classes-15.log"
+    "latestCandidateClassesLog": "verification/stable-comments-sharing-integration/root/classes-16.log",
+    "liveGuestBackendPassed": false,
+    "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
+    "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -195,6 +204,7 @@
   "sourceIntegrationEvidence": [
     "verification/stable-source-integration/integration-report.json",
     "verification/stable-player-download-integration/integration-report.json",
-    "verification/stable-native-pages-integration/integration-report.json"
+    "verification/stable-native-pages-integration/integration-report.json",
+    "verification/stable-comments-sharing-integration/integration-report.json"
   ]
 }

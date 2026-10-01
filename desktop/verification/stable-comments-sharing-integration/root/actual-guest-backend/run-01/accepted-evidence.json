@@ -1,0 +1,20 @@
+{
+  "exitCode": 1,
+  "passed": false,
+  "snapshotManifestSha256Bytes": "d5a8a3d5bfea1f5ad1911448d974344e5567e1069d205865a1417f29d2ab7c18",
+  "orderedCpSha256Bytes": "5a67a5cab59c2f1e3b9cd7fa04995bd03dfb61480bfc2c9b1654348d14f025eb",
+  "actualProductEntries": 92,
+  "productClassOverrides": 0,
+  "source": "Actual product MainKt --backend-smoke entry",
+  "freshProfile": true,
+  "externalGuestHTTP": true,
+  "userAccountRead": false,
+  "accountMutation": false,
+  "nativePlaybackAccepted": false,
+  "rootCommentInteractionAccepted": false,
+  "stages": [
+    "BACKEND_SMOKE_STAGE popular",
+    "BACKEND_SMOKE_STAGE search",
+    "BACKEND_SMOKE_STAGE details"
+  ]
+}

@@ -1,0 +1,9 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,5 +1,5 @@
+     private fun ensureComposerDraftVideo() {
+-        val videoId = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.bvid.orEmpty()
++        val videoId = info()?.bvid.orEmpty()
+         if (_composerDrafts.value.videoId != videoId) {
+             _composerDrafts.value = VideoComposerDraftState(videoId = videoId)
+         }

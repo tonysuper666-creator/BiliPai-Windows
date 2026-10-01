@@ -1,0 +1,386 @@
+{
+  "passed": true,
+  "scope": "Original full video comment Tab/search/composer/input/fraud and common BGM owned Root adapter, no actual source writes",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\tools\\extract-upstream-video-comment-ui.py",
+      "sha256Bytes": "7ee2a46466b16e8280c982248ff61c4e3b1855c4cfe8d22e70b2615b9418ee75",
+      "newFile": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86",
+      "newFile": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77",
+      "newFile": true
+    }
+  ],
+  "exactHunkFiles": [
+    {
+      "path": "bgm-common-refactor-hunk.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\bgm-common-refactor-hunk.json",
+      "sha256Bytes": "bd4b442c1e19a62b96851bc4f68e2849469681b814e73e947058eaf14f809d06"
+    },
+    {
+      "path": "reply-producer-hunks.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\reply-producer-hunks.json",
+      "sha256Bytes": "49e841dbf850bac285c4e689313451a3cd45f8c28e73cef209e39080b378ae99"
+    },
+    {
+      "path": "video-engagement-hunks.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\video-engagement-hunks.json",
+      "sha256Bytes": "2e1b9b75df6bfdb36b39e0b33ba18e6f58fdff999b3d8e077ce404a3a388b1cd"
+    },
+    {
+      "path": "shell-minimal-hunk.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\shell-minimal-hunk.json",
+      "sha256Bytes": "e916f16e84967a42eb88d599608500319b8ad4a49215b92697beee2c6e5957db"
+    }
+  ],
+  "registryRecipe": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\registry-recipe.json",
+  "registryRecipeSha256": "87487dc7987ed8fdf4525ac86688a6644fae8ac2b9cb2e51dfd5e737bcf690c0",
+  "sourceAuditSha256": "a7ad08d72a40700d710a840642eb4ce1cc28940242caa246e8891a1ac7b209a1",
+  "compileEvidenceSha256": "47ca3874528532fe5d9959d903a18cb62bb24cf9b6f8c5b0428ce487780f0dc5",
+  "acceptedEvidenceSha256": "359f911457dbd183f462de78efd2ccf627e3e08748ddafec6e7b571e0331f013",
+  "candidateJarSha256": "57c3c11120ec059594ff5428016ab3408f2969d0bd7a4751db914b10002b35e6",
+  "narrowAttempt": "06",
+  "sourceAudit": {
+    "sources": 11,
+    "methods": 29,
+    "tokenIdentical": 19,
+    "adapted": 10,
+    "checks": 14
+  },
+  "cases": 12,
+  "assertions": 26,
+  "childTypedShareFrozenManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\frozen-handoff.json",
+  "childTypedShareFrozenSha256": "a8b32dffc0a8fae9cbd46e827c173207829a6be16d8b1d584edd90760341eaec",
+  "declaredChildSourceOverridesOnly": true,
+  "actualSnapshot": "stable-product-snapshot-15",
+  "frozenFiles": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\tools\\extract-upstream-dynamic-reply-protocol.py",
+      "sha256Bytes": "5e93fedc0d90696130d738d044d0b2fd7481ee73a8770766b340a73adefbcd04"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\tools\\extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "3a6c8fa8ede763ccb7d8de2b605b3f7a9e741266760816e04cb6d12e8ad109f5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\tools\\extract-upstream-video-comment-ui.py",
+      "sha256Bytes": "7ee2a46466b16e8280c982248ff61c4e3b1855c4cfe8d22e70b2615b9418ee75"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "420d128379653d05f9b0376006cf55cf1d286a8e6097ff5fda324e3622a2f61d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "5d1581b212283562c8ec9719ca02c16082f0d768e0bfda93b3559aac289d3e77"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\VideoEngagementPanel.kt",
+      "sha256Bytes": "21bc774e7a20b55b92abe9a1b07e8c3a790762e876b79da02d4141d924e310fb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\video-comment-source-identities.json",
+      "sha256Bytes": "7e0c47608c0a521a01c25ba11d55b64aca3cd6344ace71c9ba8d5ca7b13dd9af"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\FloatingChromeBackdrop.kt",
+      "sha256Bytes": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\DesktopOriginalVideoCommentInputOverlay.kt",
+      "sha256Bytes": "9208243c230fd36d63094018007287b88fe2409edcbc5f9e1713dad80c31f442"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\DesktopOriginalVideoCommentTab.kt",
+      "sha256Bytes": "12490b9bbfc6e949fa1155dbcb960041e33a4dc59197c6efbf1c5df0ae3eaf5d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\VideoCommentPerformancePolicy.kt",
+      "sha256Bytes": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailCommentFraudOverlayAdapter.kt",
+      "sha256Bytes": "46a7b5dc49ee234c541fbe5914ff486f85c1bd9b277888610f464fd9c49aca99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalVideoCommentComposer.kt",
+      "sha256Bytes": "a84c22ba7f970b9effe77dea916af1f275ce64c4db64fe901fb8e63acc33925a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoComposerDraftState.kt",
+      "sha256Bytes": "69066a5ea92070d2d48e42b52facf16fe8c6898c5fd6dbdab2edd595ff96acec"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentSearchSheet.kt",
+      "sha256Bytes": "10f10ed7b2bd197604ed641ec203235313c160ec995deee111c03dbad6af394e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt.txt",
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\FloatingChromeBackdrop.kt.txt",
+      "sha256Bytes": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\CommentRepository.kt.txt",
+      "sha256Bytes": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoCommentPerformancePolicy.kt.txt",
+      "sha256Bytes": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoContentSection.kt.txt",
+      "sha256Bytes": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailCommentFraudOverlayAdapter.kt.txt",
+      "sha256Bytes": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailInputOverlayAdapter.kt.txt",
+      "sha256Bytes": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoComposerDraftState.kt.txt",
+      "sha256Bytes": "6d083e05389f81252b6635a26834e985acbef211523e7b8097da1588f0d91757"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt.txt",
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\CommentSearchSheet.kt.txt",
+      "sha256Bytes": "f9d57118d4a716f912a277e64b92f4e9d55a24947ca7eca032ae1978813a2a94"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\generated\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\SubReplyDetailComponents.kt.txt",
+      "sha256Bytes": "afb7b4f99a982e7cd29dce6442ad71d59ba9ac97a2e941f2bc7b982c1b60d606"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoCommentPerformancePolicy-resolveVideoDetailBeyondViewportPageCount.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoCommentPerformancePolicy-shouldLoadMoreVideoComments.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoCommentPerformancePolicy-shouldUseLightweightCommentRendering.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoContentSection-VideoCommentTab.diff",
+      "sha256Bytes": "0d462384caf3a16757bb24d7ba3d05900a536d4fccb06e22ccd12255c1b71786"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoDetailCommentFraudOverlayAdapter-VideoDetailCommentFraudOverlayAdapter.diff",
+      "sha256Bytes": "ef65fb8dc00f89b6006cbb68562fa1431804330f734689fa9c5fe294fb09d2b9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_screen_VideoDetailInputOverlayAdapter-VideoDetailCommentInputOverlayContent.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_ui_components_CommentSearchSheet-CommentSearchResultRow.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_ui_components_CommentSearchSheet-CommentSearchSegmentedDock.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_ui_components_CommentSearchSheet-CommentSearchSheet.diff",
+      "sha256Bytes": "4891ffb4bd9807eea8d29ceb03805bc4303b465428dfcc2b4ef1cef54f8e1a0e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_ui_components_CommentSearchSheet-highlightQuery.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoComposerDraftState-commentComposerDraftKey.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-clearCommentMentionSearch.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-clearReplyingTo.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-ensureComposerDraftVideo.diff",
+      "sha256Bytes": "8ea8f6a9ae099a5639b4f30cf3d1aa6f55ba754394746dda3911817f8db35ea1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-hideCommentInputDialog.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-loadEmotes.diff",
+      "sha256Bytes": "0ce5d216e526b018088376308bc7a00ac7d41a2279afa972f32d2958aa073712"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-openRootCommentComposer.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentReplyMessage.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentReplyTargets.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentSendTargetAid.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-resolvePlayerTransientEventChannelCapacity.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-searchCommentMentionUsers.diff",
+      "sha256Bytes": "355ce987d69092b2d146ae4529cf5005d5839b22188f7eb97e0e510e22f9934a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-sendComment.diff",
+      "sha256Bytes": "ac18bfdb2a6f40fcf51f8ee86b434b6cca823a5e76f64fa9887536d16a9d27d1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-setCommentInput.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-setReplyingTo.diff",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-showCommentInputDialog.diff",
+      "sha256Bytes": "1b62cc83ce9f1e0a5afef35bd520f1b9240477410a37d9d890333c9871ccc50b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-updateCommentDraft.diff",
+      "sha256Bytes": "b262450baf4dfc297559095e6a65c6b9b624133e2c4c73d064b6e6415c13dc0a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\method-diffs\\feature_video_viewmodel_VideoPlaybackViewModel-uploadCommentPictures.diff",
+      "sha256Bytes": "316f99a2191c803152495b5ff1cf9ad8550571a61a488ee1692e835140a547a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalReplySettings.kt",
+      "sha256Bytes": "deb723ef7a91c8cc97e8966d76e6ac234772bce052ea93440b4f21d69d365ff9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalReplySkeletonSettingsStore.kt",
+      "sha256Bytes": "a04fbc6a5094b14cb0173d3fd33e2182058cbf75589a57dd515a267997711cd6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\core\\ui\\common\\DesktopOriginalReplyClipboard.kt",
+      "sha256Bytes": "2a767ac4af4a5f097470ab0f6c9e475cb35fecc0d96a37a2951f75a449808438"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplyLoadingSkeletons.kt",
+      "sha256Bytes": "159cfcdbba32b227ec9dd63317d327c067544787395c3ca26f0f59a5ffed9958"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplySkeletonBreathing.kt",
+      "sha256Bytes": "3bee8f978b2ea062f60fad9a568a30d7d6f9108b90a7f3dbc4ba29f7ddb228c9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\aicu\\DesktopOriginalReplyAicuNavigation.kt",
+      "sha256Bytes": "64ab4e1518681db26626551fcdd4bf0a25c2f6b472afef140756b673a040f26c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\dynamic\\components\\DesktopOriginalDynamicInlineReplyUi.kt",
+      "sha256Bytes": "28c2e3e17ecd969f44e2bea88fb4a4a201e5fbddc677b567146ff096da99e024"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\home\\components\\DesktopOriginalReplyCapsuleShape.kt",
+      "sha256Bytes": "f482a95bd997d766859dcf5650192420c5d4319f66b052e350e00b3dd55a5673"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyCommentImageSpec.kt",
+      "sha256Bytes": "66ee63530154e4951451f4abbf4de67a93ddc8fab45c3625e053555c0f8d45fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyComponents.kt",
+      "sha256Bytes": "761b336ff007821d34489d5b9b7db96bc3e27f767998ca0cc01c9d9f025c16da"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyImageRenderer.kt",
+      "sha256Bytes": "0866b1077fc93ff5325576f2b96140ca9d54507dab1e14cefb282ea978e32280"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalReplyReportReasonDialog.kt",
+      "sha256Bytes": "15ea696907c032994162e84b4a25df1c572f4d86bc5307f1faed180e36b7ff63"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalSubReplyDetailComponents.kt",
+      "sha256Bytes": "272c4cbc018133ae547abcd984bf98f20d048fdb929bbecfdbd048a51b963471"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicCommentPanel.kt",
+      "sha256Bytes": "d2c74e638a3de585923994fa9351bc7b3c6f76a8c2268e566392278e83cd03b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicThreadContent.kt",
+      "sha256Bytes": "2622aca6fcda5c7520e094a707debca4c4c4fd3be5a7348dc6f7357a4b8d9c65"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\sole-reply-generated\\com\\bilipai\\desktop\\ui\\DesktopOriginalReplyFailedCaptureDissolve.kt",
+      "sha256Bytes": "4864474c76c50b581c304a4c789d2b8be1edbfce0bcc09112af780504fa70c5f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\source-audit.json",
+      "sha256Bytes": "a7ad08d72a40700d710a840642eb4ce1cc28940242caa246e8891a1ac7b209a1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\registry-recipe.json",
+      "sha256Bytes": "87487dc7987ed8fdf4525ac86688a6644fae8ac2b9cb2e51dfd5e737bcf690c0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\contract.txt",
+      "sha256Bytes": "8a56845a50f0e150b20d300dd7f914587495d925680f94add553398f3d5263c4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\bgm-common-refactor-hunk.json",
+      "sha256Bytes": "bd4b442c1e19a62b96851bc4f68e2849469681b814e73e947058eaf14f809d06"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\reply-producer-hunks.json",
+      "sha256Bytes": "49e841dbf850bac285c4e689313451a3cd45f8c28e73cef209e39080b378ae99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\video-engagement-hunks.json",
+      "sha256Bytes": "2e1b9b75df6bfdb36b39e0b33ba18e6f58fdff999b3d8e077ce404a3a388b1cd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\video-comment-parity\\shell-minimal-hunk.json",
+      "sha256Bytes": "e916f16e84967a42eb88d599608500319b8ad4a49215b92697beee2c6e5957db"
+    }
+  ],
+  "MainWritten": false,
+  "sharedGradle": false,
+  "ShellCompiledByThisLane": false,
+  "fullAndroidCommentSheetHostNotClaimed": true,
+  "fraudHistoryUINotClaimed": true
+}

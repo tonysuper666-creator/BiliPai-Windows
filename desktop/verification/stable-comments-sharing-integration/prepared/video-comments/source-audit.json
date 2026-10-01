@@ -1,0 +1,330 @@
+{
+  "passed": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "pinnedOriginalSources": 11,
+  "matchedOriginalMethodSelections": 29,
+  "tokenIdentical": 19,
+  "platformOwnerAdapted": 10,
+  "methods": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "method": "VideoCommentTab",
+      "preparedMethod": "VideoCommentTab",
+      "originalLfSha256": "e5768e553a13d5c90cfa3db5f9d8f78e7a01300dca45899fdcd6dd19cacd6c50",
+      "preparedLfSha256": "2c97d9415ccc7194b36338e390484591e96046fba4e8e9b14692abb672b2620a",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_screen_VideoContentSection-VideoCommentTab.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "method": "resolveVideoDetailBeyondViewportPageCount",
+      "preparedMethod": "resolveVideoDetailBeyondViewportPageCount",
+      "originalLfSha256": "3f48d446762ba5b31eeb2f802fa4e716dd071f0b9c5fdd92d65a90e7e4007045",
+      "preparedLfSha256": "3f48d446762ba5b31eeb2f802fa4e716dd071f0b9c5fdd92d65a90e7e4007045",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_screen_VideoCommentPerformancePolicy-resolveVideoDetailBeyondViewportPageCount.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "method": "shouldLoadMoreVideoComments",
+      "preparedMethod": "shouldLoadMoreVideoComments",
+      "originalLfSha256": "59c34b03223ccd68f86772755e24c0cbf317a5bf72872f68fea094a5d9721d02",
+      "preparedLfSha256": "59c34b03223ccd68f86772755e24c0cbf317a5bf72872f68fea094a5d9721d02",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_screen_VideoCommentPerformancePolicy-shouldLoadMoreVideoComments.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "method": "shouldUseLightweightCommentRendering",
+      "preparedMethod": "shouldUseLightweightCommentRendering",
+      "originalLfSha256": "46812c2b9527315e670152db8fbf088678c9d71ab7984351bca1552d65239a85",
+      "preparedLfSha256": "46812c2b9527315e670152db8fbf088678c9d71ab7984351bca1552d65239a85",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_screen_VideoCommentPerformancePolicy-shouldUseLightweightCommentRendering.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "method": "CommentSearchSheet",
+      "preparedMethod": "CommentSearchSheet",
+      "originalLfSha256": "9fbb9be77d58a779409db20bbb32023d9dedf61aff670810d632ebbc8ecf7baf",
+      "preparedLfSha256": "4f805d355a57db85170ba630ce66d1e06d563f4201a80b7ef4e23aa5bed3c19b",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_ui_components_CommentSearchSheet-CommentSearchSheet.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "method": "CommentSearchSegmentedDock",
+      "preparedMethod": "CommentSearchSegmentedDock",
+      "originalLfSha256": "31d6b970b830919f516830c3a6438e9f1500f1a65398c85642759c56392c019b",
+      "preparedLfSha256": "31d6b970b830919f516830c3a6438e9f1500f1a65398c85642759c56392c019b",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_ui_components_CommentSearchSheet-CommentSearchSegmentedDock.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "method": "CommentSearchResultRow",
+      "preparedMethod": "CommentSearchResultRow",
+      "originalLfSha256": "2002c049b79307cbde1196ba370c81c5a7cea8b75fceaf4bbd305dc9392ecf99",
+      "preparedLfSha256": "2002c049b79307cbde1196ba370c81c5a7cea8b75fceaf4bbd305dc9392ecf99",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_ui_components_CommentSearchSheet-CommentSearchResultRow.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "method": "highlightQuery",
+      "preparedMethod": "highlightQuery",
+      "originalLfSha256": "cdf0fbad5518413a1c2a08afd636d181f13a7fa7e6c44c2224cb440f14572442",
+      "preparedLfSha256": "cdf0fbad5518413a1c2a08afd636d181f13a7fa7e6c44c2224cb440f14572442",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_ui_components_CommentSearchSheet-highlightQuery.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+      "method": "commentComposerDraftKey",
+      "preparedMethod": "commentComposerDraftKey",
+      "originalLfSha256": "a1430172f7de075ff0e223eebf1736ab99b0586a02bb93cd04c2671b23876d6f",
+      "preparedLfSha256": "a1430172f7de075ff0e223eebf1736ab99b0586a02bb93cd04c2671b23876d6f",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoComposerDraftState-commentComposerDraftKey.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "method": "VideoDetailCommentInputOverlayContent",
+      "preparedMethod": "VideoDetailCommentInputOverlayContent",
+      "originalLfSha256": "a08702b3ef4b37cb93c1978e90a904bebcdc84721bca9b1244aa57ad3b28d435",
+      "preparedLfSha256": "a08702b3ef4b37cb93c1978e90a904bebcdc84721bca9b1244aa57ad3b28d435",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_screen_VideoDetailInputOverlayAdapter-VideoDetailCommentInputOverlayContent.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "method": "VideoDetailCommentFraudOverlayAdapter",
+      "preparedMethod": "VideoDetailCommentFraudOverlayAdapter",
+      "originalLfSha256": "16b5efba83fcc655ee147156e7c8bf6aa8e460dd08a6ba11f3e349e2f440933e",
+      "preparedLfSha256": "ce53f25231a4a4325622014e02636a2ada779b16bba68a0590712052cad92c4f",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_screen_VideoDetailCommentFraudOverlayAdapter-VideoDetailCommentFraudOverlayAdapter.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "ensureComposerDraftVideo",
+      "preparedMethod": "ensureComposerDraftVideo",
+      "originalLfSha256": "1101bc4d4dc313c2b7687ad9e5331af6ce8c7e9517207d4d6e781fbc21bd68c7",
+      "preparedLfSha256": "24a95b08d2a7477b5f1e15174e0ab2a4269e24d749eec33a405f42a2e2c5095f",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-ensureComposerDraftVideo.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "loadEmotes",
+      "preparedMethod": "loadEmotes",
+      "originalLfSha256": "6e3a3eacecf7150d0c9d485a72faf7c07c66a94db9d8dd4f3bac2877563d0ac6",
+      "preparedLfSha256": "76d934bed331dde355c41109cc438482255251257e4e6e921eefaa3385af1483",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-loadEmotes.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "showCommentInputDialog",
+      "preparedMethod": "showCommentInputDialog",
+      "originalLfSha256": "d5151c7b9d89a0de1c8212f203a98b59555f686fcbaf388b56ba78e3c232b0f4",
+      "preparedLfSha256": "e6f0951039591bd0b146a542a566011c925f05bd52baadb29ff0ecc874b62fd2",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-showCommentInputDialog.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "openRootCommentComposer",
+      "preparedMethod": "openRootCommentComposer",
+      "originalLfSha256": "535891ea914cfdbbcb5025df409e4d9494022271119a5d61f3db8e179d1edd71",
+      "preparedLfSha256": "535891ea914cfdbbcb5025df409e4d9494022271119a5d61f3db8e179d1edd71",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-openRootCommentComposer.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "hideCommentInputDialog",
+      "preparedMethod": "hideCommentInputDialog",
+      "originalLfSha256": "bd9d653913f184d991f466e9a06ce3a80799796dd51b974c14004cead3be1722",
+      "preparedLfSha256": "bd9d653913f184d991f466e9a06ce3a80799796dd51b974c14004cead3be1722",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-hideCommentInputDialog.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "updateCommentDraft",
+      "preparedMethod": "updateCommentDraft",
+      "originalLfSha256": "7b58f7f58f5bdf81336c56d2d0e269287b907577ec2feb35b570854e38c1d3d7",
+      "preparedLfSha256": "f27267e454063e01dc7810d3820dc05eac03fce531affdbc9f9b71160d080391",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-updateCommentDraft.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "setCommentInput",
+      "preparedMethod": "setCommentInput",
+      "originalLfSha256": "49d88b3dec3413ddcc8cbb06fd06e19cf5926412557defc257e0ff3f5d9352ec",
+      "preparedLfSha256": "49d88b3dec3413ddcc8cbb06fd06e19cf5926412557defc257e0ff3f5d9352ec",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-setCommentInput.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "setReplyingTo",
+      "preparedMethod": "setReplyingTo",
+      "originalLfSha256": "8f7605e7450e31622a8218368646df9fbbbbe1ccd45b662ca0437e2b93a0afdf",
+      "preparedLfSha256": "8f7605e7450e31622a8218368646df9fbbbbe1ccd45b662ca0437e2b93a0afdf",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-setReplyingTo.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "clearReplyingTo",
+      "preparedMethod": "clearReplyingTo",
+      "originalLfSha256": "f5bd62a9d2586eab9256464b784fbb757d62a9a64478c4bba19638f45c9d594a",
+      "preparedLfSha256": "f5bd62a9d2586eab9256464b784fbb757d62a9a64478c4bba19638f45c9d594a",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-clearReplyingTo.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "searchCommentMentionUsers",
+      "preparedMethod": "searchCommentMentionUsers",
+      "originalLfSha256": "00f3a77947abdd3eb64340a84a033e9a65f0cf152be93b7c6f0c244c23700834",
+      "preparedLfSha256": "593fc7a8547dbb17e1211581faaf925cb9294dec9347cc9d515dfa0739d8b918",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-searchCommentMentionUsers.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "clearCommentMentionSearch",
+      "preparedMethod": "clearCommentMentionSearch",
+      "originalLfSha256": "542ea6624cd10abc1832485e474d09053dbbdc6470929b6a03cb9883fb4d1fd2",
+      "preparedLfSha256": "542ea6624cd10abc1832485e474d09053dbbdc6470929b6a03cb9883fb4d1fd2",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-clearCommentMentionSearch.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "sendComment",
+      "preparedMethod": "sendComment",
+      "originalLfSha256": "3babd24c91737062100f36982f6e3336cf9dc2a0b7a1ecbae98cd9b7df7f0895",
+      "preparedLfSha256": "4a9634c72e095fe8b215a4aeb14919b01e19c2fdf266a615533c234502bdf98b",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-sendComment.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "uploadCommentPictures",
+      "preparedMethod": "uploadCommentPictures",
+      "originalLfSha256": "e7f07d2e7688eeca609bcb7bcf0b31b4ff7bf581a68e4284777216fd3ac0b8d1",
+      "preparedLfSha256": "d5cacfdc319dd2acb7953d67ea69bd73214516e26bb266bc7b8c621f58165046",
+      "tokensIdentical": false,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-uploadCommentPictures.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "resolveCommentReplyTargets",
+      "preparedMethod": "resolveCommentReplyTargets",
+      "originalLfSha256": "ea9f266a0f049c48aa0106e967d36ea94d9a9ef6e3eb318b8219be05f51dff8b",
+      "preparedLfSha256": "ea9f266a0f049c48aa0106e967d36ea94d9a9ef6e3eb318b8219be05f51dff8b",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentReplyTargets.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "resolveCommentReplyMessage",
+      "preparedMethod": "resolveCommentReplyMessage",
+      "originalLfSha256": "809bba2fe66558a623b761bfa9a040d964783417b0cc5e1eb664e33299e32cfa",
+      "preparedLfSha256": "809bba2fe66558a623b761bfa9a040d964783417b0cc5e1eb664e33299e32cfa",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentReplyMessage.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "resolveCommentSendTargetAid",
+      "preparedMethod": "resolveCommentSendTargetAid",
+      "originalLfSha256": "0175dd1ded6ad251160cf2ae00df6a68ac39911ff1f0cb3d045829fac856ba1e",
+      "preparedLfSha256": "0175dd1ded6ad251160cf2ae00df6a68ac39911ff1f0cb3d045829fac856ba1e",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-resolveCommentSendTargetAid.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "method": "resolvePlayerTransientEventChannelCapacity",
+      "preparedMethod": "resolvePlayerTransientEventChannelCapacity",
+      "originalLfSha256": "42a45d13927a6672548099d0d2a2d37d17839d8202782de142e04bee99a6f0ad",
+      "preparedLfSha256": "42a45d13927a6672548099d0d2a2d37d17839d8202782de142e04bee99a6f0ad",
+      "tokensIdentical": true,
+      "diff": "method-diffs/feature_video_viewmodel_VideoPlaybackViewModel-resolvePlayerTransientEventChannelCapacity.diff"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "method": "VideoInlineSubReplyDetailContent",
+      "tokensIdentical": true,
+      "originalLfSha256": "4cf641903fabfe97e277ec016508308b9e7ee9dbe583d56b0fab7093c504f34b",
+      "preparedLfSha256": "4cf641903fabfe97e277ec016508308b9e7ee9dbe583d56b0fab7093c504f34b"
+    }
+  ],
+  "checks": [
+    {
+      "label": "Complete original comment Tab body retained, only sole existing platform dissolve-name seam",
+      "passed": true
+    },
+    {
+      "label": "Whole original local search retained with only clipboard/feedback/Coil context substitutions",
+      "passed": true
+    },
+    {
+      "label": "Original search glassActive=false is original literal, never a port crop",
+      "passed": true
+    },
+    {
+      "label": "No new HTTP, account Store, Retrofit, player or fake reply models in new sources",
+      "passed": true
+    },
+    {
+      "label": "Original immutable outgoing aid/reply before dispatch and immediate Windows busy admission",
+      "passed": true
+    },
+    {
+      "label": "Same actual streaming Requests::uploadCommentPicture only, take9 and CE propagation",
+      "passed": true
+    },
+    {
+      "label": "Actual Store epoch/page/common image authority and cancellation owner retained",
+      "passed": true
+    },
+    {
+      "label": "Common same owned scope consumes sole typed share binding twice",
+      "passed": true
+    },
+    {
+      "label": "Generic VM and full detail VM reused from actual snapshot, no producer emits second definitions",
+      "passed": true
+    },
+    {
+      "label": "Existing vote data feeds original renderer without duplicate separate fetch",
+      "passed": true
+    },
+    {
+      "label": "Host connects entire original receipt/fraud/input chain and no double-send generic VM",
+      "passed": true
+    },
+    {
+      "label": "Post-suspend emotes verify owner before state publication",
+      "passed": true
+    },
+    {
+      "label": "Exact originals pure full files preserved",
+      "passed": true
+    },
+    {
+      "label": "No old simplified Comment Panel left in prepared actual file",
+      "passed": true
+    }
+  ],
+  "completeAndroidVideoCommentSheetHost": false,
+  "CommentFraudHistoryUI": false,
+  "originalCommentDetailSendReplyPicturesUnused": true
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "soleOperationsProducer": true,
+  "memberSha256Lf": {
+    "comment": "1960244a197d877a25c770b1d421da6ce8b49f616007180c2f372cb0f57af1e4",
+    "detail": "e2da2c955187156916a80467e63cacabc19949179fe5d61a48b0cfcaaa5865a3",
+    "grade": "d7a0dd9c6d4350dc29e0e8533b65dcc8acb1464ffbdf4f95f66d083b3cecc51b",
+    "bgm": "deaa976529a6114aae1f0685f81b8e916a9fbe9b2a7ab0a4a0b8455b71eb9dc3",
+    "fraud": "5bca1de5b8d6b02f82d9c40394793b2fc8df183153d2781b632850160c0e4533"
+  },
+  "operationsSha256Lf": "9eac0fd81c0bbcb04fc0ec03d7a3b35f84f5e52a5686467bdba884011a99a029",
+  "authPublishVerificationPreserved": true
+}

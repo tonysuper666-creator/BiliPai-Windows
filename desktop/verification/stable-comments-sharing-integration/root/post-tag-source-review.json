@@ -1,0 +1,27 @@
+{
+  "publishedTagCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "publishedSourceVersionCode": 415,
+  "releaseNotesVersionCode": 414,
+  "officialApkVersionCode": 418,
+  "officialApkExactBuildCommitVerified": false,
+  "observedMainCommit": "f2973e9a0649a4d32618d65e8870165a048e0a02",
+  "observedMainVersionCode": 418,
+  "observedMainMatchesApkVersionCodeOnly": true,
+  "apkBuildCommitInferenceNotAccepted": true,
+  "publishedTagUnchanged": true,
+  "checkoutTargetChanged": false,
+  "postTagChangedProductionFiles": [
+    "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsRepository.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerContent.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+    "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt"
+  ],
+  "reviewPending": [
+    "lyrics cleanup",
+    "listen-player chrome",
+    "home locator/undo pills",
+    "comment block/report icon changes"
+  ]
+}

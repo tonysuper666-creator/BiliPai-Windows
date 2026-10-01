@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-native-text-share-bindings-parity\compile-01\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\ui\CommunityDynamicScreens.kt:116:137: warning: expression is unused.
+    val history:suspend(Long)->Unit=remember(alive){{articleId->community.reportDynamicArticleView(articleId,capturedEpoch,capturedMid);Unit}}
+                                                                                                                                        ^^^^

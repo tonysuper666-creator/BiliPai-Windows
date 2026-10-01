@@ -1,0 +1,13 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "apkSha256Bytes": "99f261463619552775a32730224f49f6675d043cfc0d38527ea510f5e4254a1c",
+  "apkVersionName": "0.2.3",
+  "apkVersionCode": 418,
+  "sourceBuildVersionName": "0.2.3",
+  "sourceBuildVersionCode": 415,
+  "sourceBuildFileSha256LF": "44a86d765faaf08b2af1cc75cf4561a6364d7cee4a557888113478a5cc73aeef",
+  "sameVersionName": true,
+  "sameVersionCode": false,
+  "apkExecuted": false
+}

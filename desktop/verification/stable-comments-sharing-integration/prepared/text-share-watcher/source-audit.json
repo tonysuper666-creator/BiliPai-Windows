@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "soleHunkExact": true,
+  "compiledInputByteEqual": true,
+  "baseSha256LF": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+  "candidateSha256LF": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127",
+  "declaredActorClassOverlaps": [
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$Api.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$close$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$closeActive$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$share$2$shown$1.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare$shutdown$2.class",
+    "com/bilipai/desktop/diagnostics/DesktopNativeTextShare.class"
+  ],
+  "undeclaredOverlap": []
+}

@@ -1,0 +1,27 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -5,13 +5,13 @@
+         _commentMentionSearchState.update {
+             it.copy(query = query, isLoading = true, errorMessage = null)
+         }
+-        commentMentionSearchJob = viewModelScope.launch {
++        commentMentionSearchJob = launchOwned {
+             if (query.isNotBlank()) {
+                 delay(250L)
+             }
+-            com.android.purebilibili.data.repository.CommentRepository
+-                .searchMentionUsers(query)
++            searchMentionUsers(query)
+                 .onSuccess { users ->
++                    ensureOwned()
+                     _commentMentionSearchState.update {
+                         if (it.query == query) {
+                             it.copy(users = users, isLoading = false, errorMessage = null)
+@@ -21,6 +21,7 @@
+                     }
+                 }
+                 .onFailure { error ->
++                    ensureOwned()
+                     _commentMentionSearchState.update {
+                         if (it.query == query) {
+                             it.copy(

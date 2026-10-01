@@ -1,0 +1,15 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+  "baseSha256Bytes": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+  "baseSha256LF": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+  "candidateSha256LF": "113bacf17cf995f15de87ecd233f68b9f9b16ff88dae0f11354098a52de8d127",
+  "hunk": {
+    "before": "                        if (active != token) true else {\n                            val state = IntByReference()",
+    "after": "                        if (active != token) true else if (!stillOwned()) {\n                            closeActive(); true\n                        } else {\n                            val state = IntByReference()"
+  },
+  "applyHunkOnly": true,
+  "actorAuthorityUnchanged": true,
+  "cppNativeApiUnchanged": true,
+  "maximumNormalDetectionCadenceMs": 500,
+  "noSynchronousNativeDataRequestedPredicate": true
+}

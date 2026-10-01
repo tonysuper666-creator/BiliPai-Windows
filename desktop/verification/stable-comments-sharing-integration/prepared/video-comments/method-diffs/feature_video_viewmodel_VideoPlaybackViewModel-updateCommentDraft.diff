@@ -1,0 +1,10 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,6 +1,6 @@
+     fun updateCommentDraft(
+         text: String,
+-        imageUris: List<Uri>,
++        imageUris: List<String>,
+         syncToDynamic: Boolean
+     ) {
+         ensureComposerDraftVideo()

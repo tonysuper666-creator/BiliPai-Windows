@@ -1,0 +1,11 @@
+BACKEND_SMOKE_STAGE popular
+BACKEND_SMOKE_STAGE search
+BACKEND_SMOKE_STAGE details
+Exception in thread "main" com.bilipai.desktop.data.BiliApiException: Bilibili 暂时限制了此请求 (HTTP 412)。请在浏览器打开 B 站完成正常验证，或登录后重试；也可稍后再试。
+	at com.bilipai.desktop.data.DesktopRepository$special$$inlined$-addInterceptor$1.intercept(OkHttpClient.kt:1412)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:226)
+	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:574)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

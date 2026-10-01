@@ -1,0 +1,241 @@
+{
+  "frozen": true,
+  "artifactCount": 42,
+  "artifacts": [
+    {
+      "path": "audit-freeze.py",
+      "sha256Bytes": "77070b8db6bd63f960ffb0a293652a9bd5b6c551263aa0c29c87f485cf9b2b62",
+      "bytes": 5027
+    },
+    {
+      "path": "base-inputs/CommunityDynamicScreens.kt",
+      "sha256Bytes": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f",
+      "bytes": 20357
+    },
+    {
+      "path": "base-inputs/DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+      "bytes": 8051
+    },
+    {
+      "path": "base-inputs/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f",
+      "bytes": 3733
+    },
+    {
+      "path": "base-inputs/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "bb1cab398a914bf7b2a9703c1c64c94298e372edebfb69a246ab23b371ee62f1",
+      "bytes": 15785
+    },
+    {
+      "path": "base-inputs/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7",
+      "bytes": 8187
+    },
+    {
+      "path": "compile-01/class-overlap-review.json",
+      "sha256Bytes": "fceaa9b952ee63af814fab94492ab536c2ad256d3c69020f42068222bd07d9ae",
+      "bytes": 8577
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "d4f4d1fa9dd867817130c709a7806084f0a5e7a2428c09b1f4d3df6a928c54a5",
+      "bytes": 24514
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "a329e2d4879dfbf248b8cadfd2a568ec9b8233ea3919053f8a5c21ce8523eb16",
+      "bytes": 492
+    },
+    {
+      "path": "compile-01/prepared-text-share-bindings.jar",
+      "sha256Bytes": "bb16819fd4d717b3801a6800a554c0fe4429b90bba865e0d3ab379e877e1498e",
+      "bytes": 257221
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "bytes": 20464
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "856214a6719711f85b5cd5352194e58e93241dba8b52fd597f73ebb3d0133192",
+      "bytes": 3886
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20",
+      "bytes": 15837
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "060bddd5fc739571a2f1db2c838880dcba9b14566335632ee466f009c65f1f16",
+      "bytes": 8818
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTextShareBindings.kt",
+      "sha256Bytes": "74b2133e63e1033672d2a39ecd073d56872d8b5af4b5e9ae399af905f575da2f",
+      "bytes": 2003
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "5760751426a185c2eb3a1579b3373f7c781c9252f0a1ca4a877b894dc233057e",
+      "bytes": 3979
+    },
+    {
+      "path": "contract.txt",
+      "sha256Bytes": "113f61388a5c64209da2e0970405a74c2073dd77b174eaf683cdd92b47605ce6",
+      "bytes": 5920
+    },
+    {
+      "path": "patch-plan.json",
+      "sha256Bytes": "e65d58d22677983fb40705efb2eeb5d0591bc93330f742ce5385b4021c737b06",
+      "bytes": 10417
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "405e073c1f7d936cd748b60db55597a36dda4542a520361dea9cd638cf4c7ec2",
+      "bytes": 6998
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "bytes": 20464
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "856214a6719711f85b5cd5352194e58e93241dba8b52fd597f73ebb3d0133192",
+      "bytes": 3886
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20",
+      "bytes": 15837
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "060bddd5fc739571a2f1db2c838880dcba9b14566335632ee466f009c65f1f16",
+      "bytes": 8818
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTextShareBindings.kt",
+      "sha256Bytes": "74b2133e63e1033672d2a39ecd073d56872d8b5af4b5e9ae399af905f575da2f",
+      "bytes": 2003
+    },
+    {
+      "path": "proof-01/accepted-result.json",
+      "sha256Bytes": "0e0aaeee3ce4fbbe628b937b00413760bc291c2264a4e7d365d12b21b7c7b281",
+      "bytes": 848
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "43e2a6ed9c7559438a2defe82ac9ceb3746ca60e6455b35c69460aee33317c51",
+      "bytes": 23812
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-01/runtime-command.json",
+      "sha256Bytes": "cf8815aaf2a815d3538218c6158add41edfe38f61ec2fa1674f345e7fbdac2e6",
+      "bytes": 25246
+    },
+    {
+      "path": "proof-01/runtime-pins-after.json",
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sha256Bytes": "210ab9f75b891da724c19d01202bd53d1adb82d05d4ac61d9b4b8c2798590c7a",
+      "bytes": 1269
+    },
+    {
+      "path": "proof-01/scratch/result.json",
+      "sha256Bytes": "60cfd93d357fa635c7c03ed33760c4d6ea8bd2fa065a09c773e340bbc88455aa",
+      "bytes": 1520
+    },
+    {
+      "path": "proof-01/text-share-fixture.jar",
+      "sha256Bytes": "5709a2846b1cd3870100ac60695a5e447deee8c94a5bede87e913b0003c85eca",
+      "bytes": 20801
+    },
+    {
+      "path": "proof-01/TextShareFixture.kt",
+      "sha256Bytes": "d634497297e2ed1e6bcbe793a6ce13ee95cd5adc4da11335d172f273747c77fe",
+      "bytes": 5863
+    },
+    {
+      "path": "reference-existing-native-actor.kt.txt",
+      "sha256Bytes": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+      "bytes": 5085
+    },
+    {
+      "path": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "fa87ec58d6f49ab22ee9bbe63a4e9fcf114500407d0bdff63b01123dd2b72752",
+      "bytes": 8217
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "72ac459cadb55bc734357b8c535cbcf625f81ff06654eb1b5dc20c1933fc405d",
+      "bytes": 2331
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "fa5ae1adc9f23d9a5564f6e45dbfa3195dc196133ea89378884d9358db2b8eaa",
+      "bytes": 6026
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "62d4034892f118088e7b6fafd6a63a782462393d2943acbc257ebb22e7fdae78",
+      "bytes": 10954
+    },
+    {
+      "path": "TextShareFixture.kt",
+      "sha256Bytes": "d634497297e2ed1e6bcbe793a6ce13ee95cd5adc4da11335d172f273747c77fe",
+      "bytes": 5863
+    }
+  ],
+  "installPayload": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTextShareBindings.kt"
+  ],
+  "applyAsMinimalHunks": true,
+  "noWholeShellOverwrite": true,
+  "bgmVideoCommonCallersOwnedByVideoAgent": true,
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "proof": {
+    "cases": 5,
+    "assertions": 15,
+    "codeSources": 3,
+    "nativeActorInvoked": false,
+    "nativePaneOpened": false,
+    "noAccountReads": true,
+    "noHTTP": true,
+    "noHWND": true,
+    "noMainEdits": true,
+    "noSharedGradle": true
+  },
+  "existingActorBoundary": "Existing successful Show watcher has no page-owner recheck. This slice preserves admission/awaiting cancellation and makes no post-Show immediate-retirement claim. Root informed."
+}

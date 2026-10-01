@@ -1,0 +1,26 @@
+--- original-v0.2.3/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt
++++ prepared/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt
+@@ -1,7 +1,7 @@
+ @Composable
+ internal fun VideoDetailCommentFraudOverlayAdapter(
+-    context: Context,
+-    playbackViewModel: VideoPlaybackViewModel,
++    platform: DesktopCommentPlatform,
++    playbackViewModel: DesktopOriginalVideoCommentComposer,
+     commentViewModel: VideoCommentViewModel,
+     aid: Long?,
+     fraudDetectionEnabled: Boolean,
+@@ -18,11 +18,11 @@
+     }
+ 
+     var fraudDialogStatus by remember { mutableStateOf<CommentFraudStatus?>(null) }
+-    LaunchedEffect(commentViewModel, context.applicationContext) {
++    LaunchedEffect(commentViewModel, platform) {
+         commentViewModel.fraudEvent.collect { status ->
+             val lightMessage = resolveCommentFraudLightMessage(status)
+             if (lightMessage != null) {
+-                Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()
++                platform.showFeedback(lightMessage)
+             } else if (shouldShowCommentFraudResultDialog(status)) {
+                 fraudDialogStatus = status
+             }

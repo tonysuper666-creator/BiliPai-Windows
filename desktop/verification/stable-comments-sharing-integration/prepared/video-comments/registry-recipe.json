@@ -1,0 +1,95 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "appendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "f9d57118d4a716f912a277e64b92f4e9d55a24947ca7eca032ae1978813a2a94"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "6d083e05389f81252b6635a26834e985acbef211523e7b8097da1588f0d91757"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-original-comments"
+      ],
+      "sha256": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0"
+    }
+  ],
+  "existingFeatureMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "preserveMode": "extracted",
+      "appendFeatures": [
+        "stable-video-original-comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "sha256": "afb7b4f99a982e7cd29dce6442ad71d59ba9ac97a2e941f2bc7b982c1b60d606",
+      "preserveMode": "reference-only",
+      "appendFeatures": [
+        "stable-video-original-comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-video-original-comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-video-original-comments"
+      ]
+    }
+  ]
+}

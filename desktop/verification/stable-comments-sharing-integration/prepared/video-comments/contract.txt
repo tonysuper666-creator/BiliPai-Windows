@@ -1,0 +1,54 @@
+Original v0.2.3 video comments required Root installation recipe
+
+1. Install only the 3 payloads in frozen-handoff.json. The original full video
+   comment producer reads fixed manifest sha + actual stable Git blobs. Register
+   its source inventory recipe, preserving existing row modes/features and same
+   fixed SHA. Add one generation task/output source directory limited to /com;
+   raw originals are .txt under original-retained and never compile as Android.
+   It generates 8 original Kotlin files, including two entire original pure files.
+   No new dependency or HTTP/Store/player is required.
+2. Apply 4 exact hunk files. bgm-common-refactor only moves the existing owned
+   BGM images/requests/emotes/clipboard/export/dialog scope into the common adapter;
+   full original BgmDetailScreen/CommentDetailScreen call branch remains.
+   reply-producer has 2 hunks: restore the complete original inline video thread
+   wrapper in its existing sole producer, and select 7 original sort/fraud/member
+   decoration key/getter declarations from SettingsManager. Same global Root store.
+   engagement file has 3 hunks: required composable slot, replace old call, remove
+   simplified old REST/mapped model panel plus duplicate vote fetch. Existing
+   coin/favorite/uploader/AI functionality remains.
+   shell-minimal-hunk is review-only until Root applies and compiles it against
+   the current whole product. Root owns actual playback source/viewport/visibility.
+3. Root must install child typed share 42 source/interface/platform tails before
+   whole compilation. Child BGM hunk install=false: this common adapter is the
+   only BGM caller refactor; reads LocalDesktopTextShareBindings and injects its
+   same scope and epoch/page isOwned into both gallery and comment platform.
+4. DesktopVideoCommentRootHost consumes actual ViewInfo (cid copied to current
+   part only), sole Repository/Community/Root CommentFraud, actual native playing
+   flag, required page/account owner, actual current-position-ms and seek-ms
+   callback, avatar/link/login actions and finite viewport Modifier. Comments
+   keep their same aid/account epoch owner across part switches; timestamp/position
+   callbacks are refreshed and Root guards each using actual current CID/source.
+   Original ReplyComponents emits milliseconds, existing playback.seek uses
+   seconds. Required Shell hunk divides 1000.0. Original Tab videoTags argument
+   is unused; no new tag cache/fetch or alternate comment model is introduced.
+5. Reuse installed actual full Generic VideoCommentVM/CommentDetailScreen/VM,
+   Requests/sole Ops/stream9/Selected/records/original reply/vote/image renderer.
+   Composer is the exact source-selected comment-only VideoPlaybackVM blocks,
+   rather than a second native player: all drafts/root/parent/aid/250ms mentions/
+   lazy-emotes/send/sync/success receipt semantics are retained. Windows immediate
+   busy admission and matching cancellation gate are platform lifetime safeguards.
+   The original receipt feeds full Generic VM onExternal once, including original
+   fraud/history records; calling generic send additionally would double-count.
+6. Source audit and narrow compile/terminal transport proof are attached. Exact
+   frozen snapshot15/92 ordered CP; child typed sharing is 3 explicit frozen
+   source overrides, not a helper JAR. Actual Store/Repository/Ops/Generic VM
+   classes stay from actual snapshot15. No shared Gradle, HWND, chooser, DNS or
+   external HTTP used. Root whole compilation/runtime still required.
+
+Explicit remaining scope: full Android portrait/fullscreen CommentSheetHost
+shell gestures are separate from this full desktop inline Tab/thread route;
+CommentFraudHistoryScreen UI is not generated. Original CommentDetail.sendReply
+accepts but ignores pictures; original generic main send supports 9 streamed
+images. Original fraud checks remain type1 even on BGM47. Original search is
+local loaded raw comments/reply previews; its glassActive=false is upstream.
+Record persistence and original policies are shared, not reimplemented here.

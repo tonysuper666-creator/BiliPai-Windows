@@ -1,0 +1,153 @@
+{
+  "payloadCount": 5,
+  "existingNativeActor": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopNativeTextShare.kt",
+    "sha256Bytes": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+    "sha256LF": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+    "emitted": false
+  },
+  "newPlatformSource": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTextShareBindings.kt",
+    "sha256LF": "74b2133e63e1033672d2a39ecd073d56872d8b5af4b5e9ae399af905f575da2f"
+  },
+  "manualDeltas": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "install": true,
+      "baseCurrentCandidateSha256Bytes": "613abc49abd005a6f9f4dedee003bb9d037ab15314ce2cdf3142d8632d7148ef",
+      "baseSha256LF": "bb1cab398a914bf7b2a9703c1c64c94298e372edebfb69a246ab23b371ee62f1",
+      "candidateSha256LF": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20",
+      "baseCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\base-inputs\\DesktopOriginalDynamicCardHost.kt",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicCardHost.kt",
+      "hunks": [
+        {
+          "before": "    val saveParent=LocalDesktopDynamicSaveParent.current",
+          "after": "    val textShare=LocalDesktopTextShareBindings.current\n    val saveParent=LocalDesktopDynamicSaveParent.current"
+        },
+        {
+          "before": "    val platform=remember(operations,assets,preferences.context){object:DesktopDynamicCardPlatform{",
+          "after": "    val platform=remember(operations,assets,preferences.context,textShare){object:DesktopDynamicCardPlatform{"
+        },
+        {
+          "before": "        override fun shareText(text:String){guarded{show(\"Windows 系统分享面板尚未接入；可使用复制或分享至消息\")}}",
+          "after": "        override fun shareText(text:String){requestDesktopTextShare(textShare,scope,\"BiliPai 分享\",text,::owned,::show)}"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "install": true,
+      "baseCurrentCandidateSha256Bytes": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f",
+      "baseSha256LF": "b20d4abbbed3b126a10dd5d455b57056758096d2022141e5b55392f58e0fee6f",
+      "candidateSha256LF": "856214a6719711f85b5cd5352194e58e93241dba8b52fd597f73ebb3d0133192",
+      "baseCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\base-inputs\\DesktopDynamicCommentPlatform.kt",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicCommentPlatform.kt",
+      "hunks": [
+        {
+          "before": "import kotlinx.coroutines.CancellationException",
+          "after": "import kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.CancellationException"
+        },
+        {
+          "before": "    private val pickImages: (Int, (List<String>) -> Unit) -> Unit,",
+          "after": "    private val pickImages: (Int, (List<String>) -> Unit) -> Unit,\n    private val textShare: DesktopTextShareBindings? = null,\n    private val shareScope: CoroutineScope? = null,"
+        },
+        {
+          "before": "        if (isOwned()) showFeedback(\"Windows 系统文字分享尚未接入，可使用复制\")",
+          "after": "        requestDesktopTextShare(textShare, shareScope, title, text, ::isOwned, ::showFeedback)"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "install": true,
+      "baseCurrentCandidateSha256Bytes": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f",
+      "baseSha256LF": "37caa1356b3ffa001e8b6257ec31b1eb383a062e52be3d1f299148ecd89bc16f",
+      "candidateSha256LF": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "baseCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\base-inputs\\CommunityDynamicScreens.kt",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\CommunityDynamicScreens.kt",
+      "hunks": [
+        {
+          "before": "    val clipboard=LocalDesktopTextClipboard.current\n    val platform=remember(alive,clipboard,imageSaveLocations){",
+          "after": "    val clipboard=LocalDesktopTextClipboard.current\n    val textShare=LocalDesktopTextShareBindings.current\n    val platform=remember(alive,clipboard,imageSaveLocations,textShare){"
+        },
+        {
+          "before": "        },pickImages=commentPickers::pickImages)}",
+          "after": "        },pickImages=commentPickers::pickImages,textShare=textShare,shareScope=pageScope)}"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "install": true,
+      "baseCurrentCandidateSha256Bytes": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7",
+      "baseSha256LF": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7",
+      "candidateSha256LF": "060bddd5fc739571a2f1db2c838880dcba9b14566335632ee466f009c65f1f16",
+      "baseCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\base-inputs\\DesktopSpaceImagePreviews.kt",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceImagePreviews.kt",
+      "hunks": [
+        {
+          "before": "import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences",
+          "after": "import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences\nimport kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.Job\nimport kotlinx.coroutines.SupervisorJob\nimport kotlinx.coroutines.cancel"
+        },
+        {
+          "before": "    val clipboard = LocalDesktopTextClipboard.current",
+          "after": "    val shareParentScope = rememberCoroutineScope()\n    val shareScope = remember(alive) { CoroutineScope(shareParentScope.coroutineContext + SupervisorJob(shareParentScope.coroutineContext[Job])) }\n    val textShare = LocalDesktopTextShareBindings.current\n    val clipboard = LocalDesktopTextClipboard.current"
+        },
+        {
+          "before": "    val platform = remember(alive, clipboard, uriHandler) {",
+          "after": "    val platform = remember(alive, clipboard, uriHandler, textShare) {"
+        },
+        {
+          "before": "            clipboard, feedback = { latestFeedback(it) }, openExternalLink = uriHandler::openUri)",
+          "after": "            clipboard, feedback = { latestFeedback(it) }, openExternalLink = uriHandler::openUri,\n            textShare = textShare, shareScope = shareScope)"
+        },
+        {
+          "before": "        onDispose { alive.set(false); assets.close() }",
+          "after": "        onDispose { alive.set(false); shareScope.cancel(); assets.close() }"
+        },
+        {
+          "before": "    private val openExternalLink: (String) -> Unit,",
+          "after": "    private val openExternalLink: (String) -> Unit,\n    private val textShare: DesktopTextShareBindings? = null,\n    private val shareScope: CoroutineScope? = null,"
+        },
+        {
+          "before": "    override fun shareText(text: String) { showFeedback(\"Windows 系统文字分享尚未接入，可使用复制\") }",
+          "after": "    override fun shareText(text: String) { requestDesktopTextShare(textShare, shareScope, \"BiliPai 分享\", text, ::isOwned, ::showFeedback) }"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "install": false,
+      "baseCurrentCandidateSha256Bytes": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+      "baseSha256LF": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+      "candidateSha256LF": "fa87ec58d6f49ab22ee9bbe63a4e9fcf114500407d0bdff63b01123dd2b72752",
+      "baseCopy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\base-inputs\\DesktopBgmDetailRoot.kt",
+      "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-text-share-bindings-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopBgmDetailRoot.kt",
+      "hunks": [
+        {
+          "before": "    val clipboard = LocalDesktopTextClipboard.current",
+          "after": "    val textShare = LocalDesktopTextShareBindings.current\n    val clipboard = LocalDesktopTextClipboard.current"
+        },
+        {
+          "before": "        val gallery = remember(operations, assets, clipboard, uriHandler) {",
+          "after": "        val gallery = remember(operations, assets, clipboard, uriHandler, textShare) {"
+        },
+        {
+          "before": "                ::owned, clipboard, ::feedback, uriHandler::openUri)",
+          "after": "                ::owned, clipboard, ::feedback, uriHandler::openUri, textShare = textShare, shareScope = scope)"
+        },
+        {
+          "before": "        val platform = remember(operations, clipboard, images, locations) {",
+          "after": "        val platform = remember(operations, clipboard, images, locations, textShare) {"
+        },
+        {
+          "before": "                }, pickImages = pickers::pickImages)",
+          "after": "                }, pickImages = pickers::pickImages, textShare = textShare, shareScope = scope)"
+        }
+      ]
+    }
+  ],
+  "bgmCallersOwnedByVideoCommonAdapter": true,
+  "noOriginalRendererGenerated": true,
+  "noNewActorOrStore": true
+}

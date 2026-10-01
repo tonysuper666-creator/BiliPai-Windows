@@ -1,0 +1,14 @@
+{
+  "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+  "baseLfSha256": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a",
+  "hunks": [
+    {
+      "old": "    # VideoInlineSubReplyDetailContent needs the full unrelated video VM. Dynamic\n    # uses the complete original SubReplyDetailContent+helpers, not that wrapper.\n    begin = original.index('@Composable\\ninternal fun VideoInlineSubReplyDetailContent')\n    end = original.index('@Composable\\ninternal fun SubReplyDetailContent', begin)\n    body = original[:begin] + original[end:]\n    body = body.replace('import com.android.purebilibili.feature.video.viewmodel.CommentUiState\\n', '')",
+      "new": "    # The actual sole full generic VideoCommentVM is now installed. Preserve\n    # its full original video inline wrapper in this sole existing producer.\n    body = original"
+    },
+    {
+      "old": "             'getSubReplyLoadedCountEnabled', 'setSubReplyLoadedCountEnabled']",
+      "new": "             'getSubReplyLoadedCountEnabled', 'setSubReplyLoadedCountEnabled',\n             'KEY_COMMENT_DEFAULT_SORT_MODE', 'getCommentDefaultSortMode',\n             'getCommentDefaultSortModeSync', 'KEY_COMMENT_FRAUD_DETECTION_ENABLED',\n             'getCommentFraudDetectionEnabled', 'KEY_COMMENT_MEMBER_DECORATIONS_ENABLED',\n             'getCommentMemberDecorationsEnabled']"
+    }
+  ]
+}

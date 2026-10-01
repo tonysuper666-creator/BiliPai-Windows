@@ -1,0 +1,22 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,12 +1,14 @@
+     private fun loadEmotes() {
+         if (isEmotesLoaded) return
+-        viewModelScope.launch {
+-            com.android.purebilibili.data.repository.CommentRepository.getEmotePackages()
+-                .onSuccess { 
++        launchOwned {
++            loadEmotePackages()
++                .onSuccess {
++                    ensureOwned() 
+                     _emotePackages.value = it 
+                     isEmotesLoaded = true
+-                    android.util.Log.d("VideoPlaybackViewModel", "📦 Emotes loaded: ${it.size} packages")
++
+                 }
+-                .onFailure { Logger.e("VideoPlaybackViewModel", "Failed to load emotes", it) }
++                .onFailure {
++                    ensureOwned()  }
+         }
+     }

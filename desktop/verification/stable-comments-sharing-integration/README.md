@@ -1,0 +1,13 @@
+# Stable original comments and native text share integration
+
+Target: v0.2.3 / 3d5d19a2f994daccd0e2f8b5f522b6d82f43d589. The 211 raw evidence artifacts are bound by artifact-manifest.json, SHA-256 dd04b4c6ee6fbb0394532ca000989fe58b1fca0fd0a272dce16cfa32ee6162f4. This README is outside that immutable manifest. Product sources register 697 identities and 210 resources; all digests and the whole-product classes16 compilation passed.
+
+The full original video comment tab, thread, search, drafts, composer, mentions, emotes, send receipt and fraud path share the original VM/Repository/Operations and the same Root bindings as BGM. The follow-up search callback consumes the original rootReply. Its isolated original-chain proof has 12 cases / 27 assertions; fixture sources and transport boundaries remain explicit.
+
+Dynamic, comment, space and BGM text sharing use the existing Root actor and caller scope. The actual immutable Main16 product snapshot, with zero product overrides, invoked WinRT Prepare/Show from its own JVM HWND and retired the shown request when its page owner expired: one registration, one unregistration and zero live dispatchers. State 1 was observed; DataRequested/provided, a visibly displayed system pane, actual Root button operation, a receiver and message delivery were not accepted. No target was chosen or message sent; no screenshot or user profile is copied here.
+
+The actual Main16 guest backend run failed at video details with HTTP 412 after popular/search passed. It used a fresh profile and no user credentials or account writes; neither online playback nor the release gate passed. Historical Main15 startup run01 was rejected by the separate review verdict despite the raw fixture's window-only success flag; run02 failed. Run03 passed after the actual JS resource preparation, proving guest window startup/close only. These records cannot establish Main16 Root interactions.
+
+Release metadata is deliberately separate: release notes 414, tag-source versionCode 415, binary APK versionCode 418. The observed six post-tag commits end at main f2973e9a0649a4d32618d65e8870165a048e0a02 (418). Matching versionCode does not establish the APK's exact build commit; target sources remain the published tag. Subsequent patches are recorded for review.
+
+Original Favorites, remaining Home/music/danmaku/player/settings/space consumers, full Root/PiP/DPI/account runtime, public native release verification and a new desktop EXE deployment remain pending. Task JARs/classes/DLLs stay local. A first evidence-copy attempt stopped on a duplicate contract filename before creating a manifest; that incomplete copy remains in the ignored audit lane, and the final manifest includes each path once.

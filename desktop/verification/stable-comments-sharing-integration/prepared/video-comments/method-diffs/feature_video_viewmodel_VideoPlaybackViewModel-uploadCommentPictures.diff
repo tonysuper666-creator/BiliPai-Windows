@@ -1,0 +1,27 @@
+--- original-v0.2.3/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ prepared/feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt
+@@ -1,24 +1 @@
+-    private suspend fun uploadCommentPictures(imageUris: List<Uri>): Result<List<ReplyPicture>> {
+-        if (imageUris.isEmpty()) return Result.success(emptyList())
+-        val context = appContext ?: return Result.failure(Exception("应用上下文不可用"))
+-        val selectedUris = imageUris.take(9)
+-        return withContext(Dispatchers.IO) {
+-            runCatching {
+-                selectedUris.mapIndexed { index, uri ->
+-                    val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
+-                    val fileName = queryDisplayName(context, uri)
+-                        ?: "comment_${System.currentTimeMillis()}_${index + 1}.jpg"
+-
+-                    // 流式上传:空/15MB 校验在 CommentRepository 内完成,不再整文件读入内存。
+-                    val uploadResult = com.android.purebilibili.data.repository.CommentRepository
+-                        .uploadCommentImage(
+-                            fileName = fileName,
+-                            mimeType = mimeType,
+-                            resolver = context.contentResolver,
+-                            uri = uri
+-                        )
+-                    uploadResult.getOrElse { throw it }
+-                }
+-            }
+-        }
+-    }+    private suspend fun uploadCommentPictures(imageUris: List<String>): Result<List<ReplyPicture>> =

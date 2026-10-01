@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "candidateJarSha256Bytes": "bb16819fd4d717b3801a6800a554c0fe4429b90bba865e0d3ab379e877e1498e",
+  "fixtureSourceSha256Bytes": "d634497297e2ed1e6bcbe793a6ce13ee95cd5adc4da11335d172f273747c77fe",
+  "fixtureJarSha256Bytes": "5709a2846b1cd3870100ac60695a5e447deee8c94a5bede87e913b0003c85eca",
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "nativeActorInvoked": false,
+  "noAccountReads": true,
+  "noExternalShare": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "caseCount": 5,
+  "assertions": 15,
+  "actualCodeSources": 3,
+  "resultSha256Bytes": "60cfd93d357fa635c7c03ed33760c4d6ea8bd2fa065a09c773e340bbc88455aa"
+}
