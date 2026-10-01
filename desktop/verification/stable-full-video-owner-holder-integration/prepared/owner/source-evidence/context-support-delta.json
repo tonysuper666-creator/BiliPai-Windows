@@ -1,0 +1,12 @@
+{
+  "preparedOnly": true,
+  "legacyFamilyOverride": true,
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+  "baseSha256LF": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01",
+  "desiredSha256LF": "2015e89458d5260276b442b142115de302709f7d62ba04ba8142418c9819c7e1",
+  "changes": [
+    "Only getStringSet + putStringSet; same mirror namespace/Store and existing commit admission",
+    "No new key/cache/settings authority"
+  ],
+  "notInstalled": true
+}

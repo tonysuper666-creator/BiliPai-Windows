@@ -1,0 +1,45 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt",
+  "originalSHA256LF": "6500e13a311b41e86e35b60d1fb3144cdb658b5ce09bd2d6f20ef467b325312d",
+  "originalLines": 59,
+  "output": "com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt",
+  "outputSHA256LF": "a275b5effce310e9458f6c9609bdc614e53cb612e2b3ff92630384817f042dc7",
+  "completeOriginalFile": true,
+  "originalForwardReverseExact": true,
+  "edits": [
+    {
+      "before": "import androidx.lifecycle.ViewModel\n",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoComposerEnvironment\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\nimport kotlinx.coroutines.flow.mapNotNull\n",
+      "label": "Android lifecycle factory replaced by required same retained entry owner"
+    },
+    {
+      "before": "class VideoComposerViewModel : ViewModel() {",
+      "after": "internal class VideoComposerViewModel(\n    private val environment: DesktopOriginalVideoComposerEnvironment,\n) : AutoCloseable {\n    private fun <T> MutableStateFlow(initial: T): MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)\n",
+      "label": "Original domain state writes use the same Store-to-entry admission; no second transport/store"
+    },
+    {
+      "before": "val events = _events.receiveAsFlow()",
+      "after": "val events = _events.receiveAsFlow().mapNotNull { event ->\n        event.takeIf { environment.isCurrent() }\n    }",
+      "label": "Retired entry events cannot reach a replacement UI"
+    },
+    {
+      "before": "    internal suspend fun notifyCommentSent() {\n        _events.send",
+      "after": "    internal suspend fun notifyCommentSent() {\n        currentCoroutineContext().ensureActive()\n        environment.assertCurrent()\n        _events.send",
+      "label": "Capture actual caller cancellation and entry lifetime before original Comment event send"
+    },
+    {
+      "before": "    internal suspend fun notifyDanmakuSent() {\n        _events.send",
+      "after": "    internal suspend fun notifyDanmakuSent() {\n        currentCoroutineContext().ensureActive()\n        environment.assertCurrent()\n        _events.send",
+      "label": "Capture actual caller cancellation and entry lifetime before original Danmaku event send"
+    },
+    {
+      "before": "    override fun onCleared() {\n        mentionSearchJob?.cancel()\n        super.onCleared()\n    }",
+      "after": "    override fun close() {\n        mentionSearchJob?.cancel()\n        _events.close()\n    }",
+      "label": "Root closes only this original domain event/search lifetime; no global/native teardown"
+    }
+  ],
+  "publicationBoundary": "Channel remains the original buffered event channel. Collector rejects retired owner; no claim that a completed pre-retirement in-flight event can be unsent.",
+  "noProductRuntimeAcceptance": true
+}

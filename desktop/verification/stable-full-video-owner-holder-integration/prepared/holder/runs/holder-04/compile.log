@@ -1,0 +1,3 @@
+desktop\.local\stable-video-holder-ui-parity\runs\holder-04\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:43:42: error: unresolved reference 'isPlayerAxisOrientationRequest'.
+    return if (usesInWindowFullscreen && isPlayerAxisOrientationRequest(requestedOrientation)) {
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

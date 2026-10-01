@@ -1,0 +1,1795 @@
+{
+  "preparedOnly": true,
+  "notInstallable": true,
+  "upstreamSha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+  "classOriginalLines": 7696,
+  "outputSha256Bytes": "15d36e1863173138ebac392705afbaebebc8299d5602c7be9ece66bb02e85123",
+  "inverseClassByteEqual": true,
+  "inverseClassSha256LF": "25ac437720dc5bbf821bd9eb76769eadd4f0eb9e2a319bd61975a5f52bfed162",
+  "modifications": [
+    {
+      "label": "Actual retained entry scope/owned flow, complete original class",
+      "before": "class VideoPlaybackViewModel(application: Application) : AndroidViewModel(application) {",
+      "after": "internal class VideoPlaybackViewModel(private val environment: com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackOwnerEnvironment) : AutoCloseable {\n    private val viewModelScope get() = environment.scope\n    private val VideoRepository get() = environment.repository\n    private val VideoNoteRepository get() = environment.notes\n    private fun <T> MutableStateFlow(initial:T):MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)\n",
+      "count": 1,
+      "afterPositions": [
+        0
+      ],
+      "beforeStateSha256LF": "25ac437720dc5bbf821bd9eb76769eadd4f0eb9e2a319bd61975a5f52bfed162",
+      "afterStateSha256LF": "63350849540d34a3b540045f5687647a6b97bdf05a7422a486bfea492e2f35c4"
+    },
+    {
+      "label": "Existing original UseCase with actual same operation facade",
+      "before": "private val playbackUseCase = VideoPlaybackUseCase()",
+      "after": "private val playbackUseCase = VideoPlaybackUseCase(environment.useCase)",
+      "count": 1,
+      "afterPositions": [
+        517
+      ],
+      "beforeStateSha256LF": "63350849540d34a3b540045f5687647a6b97bdf05a7422a486bfea492e2f35c4",
+      "afterStateSha256LF": "5ea0fb9a591835596d19113b37e4a6ee0e25620620d2710890277fbcf92dc025"
+    },
+    {
+      "label": "One existing original engagement/action instance",
+      "before": "private val interactionUseCase = VideoInteractionUseCase()",
+      "after": "private val interactionUseCase = environment.interactionUseCase",
+      "count": 1,
+      "afterPositions": [
+        805
+      ],
+      "beforeStateSha256LF": "5ea0fb9a591835596d19113b37e4a6ee0e25620620d2710890277fbcf92dc025",
+      "afterStateSha256LF": "88bc82cd0b63cd37cdc8971edc9797f3d155c8b5102a982f81e794af182c2d35"
+    },
+    {
+      "label": "Capture inside actual original Job, preserve dispatchers/start/children",
+      "before": "viewModelScope.launch",
+      "after": "environment.invocations.launch",
+      "count": 95,
+      "afterPositions": [
+        5534,
+        8802,
+        16104,
+        19175,
+        24784,
+        28776,
+        31925,
+        35018,
+        36153,
+        36904,
+        38811,
+        39047,
+        39268,
+        49151,
+        51764,
+        59433,
+        62205,
+        68125,
+        68660,
+        69817,
+        82850,
+        106968,
+        114813,
+        120718,
+        127891,
+        128567,
+        129663,
+        130228,
+        132139,
+        133157,
+        134499,
+        136666,
+        138349,
+        140797,
+        142321,
+        142734,
+        144457,
+        144589,
+        144817,
+        145187,
+        148948,
+        150196,
+        150292,
+        150894,
+        151011,
+        151284,
+        153061,
+        153157,
+        154922,
+        156921,
+        157469,
+        162432,
+        162828,
+        163313,
+        165861,
+        166505,
+        167997,
+        168612,
+        172440,
+        174586,
+        176572,
+        178138,
+        178774,
+        179756,
+        181104,
+        183610,
+        198605,
+        215056,
+        216444,
+        217597,
+        226158,
+        234555,
+        236986,
+        238985,
+        240558,
+        242308,
+        248382,
+        249697,
+        251750,
+        258334,
+        266134,
+        284464,
+        287245,
+        296804,
+        299359,
+        305893,
+        309450,
+        319764,
+        322631,
+        325887,
+        327031,
+        327174,
+        327323,
+        330736,
+        333588
+      ],
+      "beforeStateSha256LF": "88bc82cd0b63cd37cdc8971edc9797f3d155c8b5102a982f81e794af182c2d35",
+      "afterStateSha256LF": "e8a08a3a40a10f314dda3c11f8dca88c4486357aec949b61c46d57e87a9e351f"
+    },
+    {
+      "label": "Actual same global player settings",
+      "before": "application.applicationContext",
+      "after": "environment.settings",
+      "count": 1,
+      "afterPositions": [
+        1009
+      ],
+      "beforeStateSha256LF": "e8a08a3a40a10f314dda3c11f8dca88c4486357aec949b61c46d57e87a9e351f",
+      "afterStateSha256LF": "8c9ddb29d204c5266ed840f6ae825e3ad0b6b5a33a2d82f9d3bdc06cbce57fc8"
+    },
+    {
+      "label": "Required actual settings port instead of Android Context",
+      "before": "android.content.Context",
+      "after": "com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext",
+      "count": 5,
+      "afterPositions": [
+        21184,
+        37943,
+        161024,
+        176465,
+        177019
+      ],
+      "beforeStateSha256LF": "8c9ddb29d204c5266ed840f6ae825e3ad0b6b5a33a2d82f9d3bdc06cbce57fc8",
+      "afterStateSha256LF": "986dffd7b58dd256ae939b00b3ab54922b4922353495844235dd3ea8a3141c77"
+    },
+    {
+      "label": "Actual same settings instance identity",
+      "before": "val applicationContext = context.applicationContext",
+      "after": "val applicationContext = context",
+      "count": 1,
+      "afterPositions": [
+        38014
+      ],
+      "beforeStateSha256LF": "986dffd7b58dd256ae939b00b3ab54922b4922353495844235dd3ea8a3141c77",
+      "afterStateSha256LF": "2cb75661b732e3fb0274fa5af28027864dbb8527d82a701ff2d517a5becf929e"
+    },
+    {
+      "label": "Actual sole global PluginContext",
+      "before": "playbackUseCase.initWithContext(context)",
+      "after": "playbackUseCase.initWithContext(context.pluginContext)",
+      "count": 1,
+      "afterPositions": [
+        38173
+      ],
+      "beforeStateSha256LF": "2cb75661b732e3fb0274fa5af28027864dbb8527d82a701ff2d517a5becf929e",
+      "afterStateSha256LF": "d2462f7d0fb3f9418deb87d726867c65e8dc6c54e026a9b583c0f159c14dfbaf"
+    },
+    {
+      "label": "Required context, no global Android fallback",
+      "before": "com.android.purebilibili.core.network.NetworkModule.appContext",
+      "after": "environment.settings",
+      "count": 1,
+      "afterPositions": [
+        40276
+      ],
+      "beforeStateSha256LF": "d2462f7d0fb3f9418deb87d726867c65e8dc6c54e026a9b583c0f159c14dfbaf",
+      "afterStateSha256LF": "cb4dda43261b4d1b7a824594e264bb2a3fa1d4dee8914a092f9f4e14f396ac22"
+    },
+    {
+      "label": "Current captured primary API",
+      "before": "com.android.purebilibili.core.network.NetworkModule.api",
+      "after": "environment.repository.primaryApi",
+      "count": 5,
+      "afterPositions": [
+        6397,
+        172405,
+        174917,
+        178913,
+        182213
+      ],
+      "beforeStateSha256LF": "cb4dda43261b4d1b7a824594e264bb2a3fa1d4dee8914a092f9f4e14f396ac22",
+      "afterStateSha256LF": "2313a8bb13f8d39dd81016991856f67d1893e3d9b83d62eeb94b3babae11714b"
+    },
+    {
+      "label": "Existing captured transport facade, no second client",
+      "before": "com.android.purebilibili.core.network.NetworkModule.playbackOkHttpClient",
+      "after": "environment.repository.playbackCalls",
+      "count": 1,
+      "afterPositions": [
+        322775
+      ],
+      "beforeStateSha256LF": "2313a8bb13f8d39dd81016991856f67d1893e3d9b83d62eeb94b3babae11714b",
+      "afterStateSha256LF": "d57120975dcd791017dc8797406a87b5031b39cb0fa1f241a7dd7acfc559c825"
+    },
+    {
+      "label": "Same actual Mini owner",
+      "before": "MiniPlayerManager.getInstance(applicationContext)",
+      "after": "environment.mini",
+      "count": 1,
+      "afterPositions": [
+        38239
+      ],
+      "beforeStateSha256LF": "d57120975dcd791017dc8797406a87b5031b39cb0fa1f241a7dd7acfc559c825",
+      "afterStateSha256LF": "b3ca613242268c873e07c2d1d06ece118990dd266fcd487be8cd849be5196553"
+    },
+    {
+      "label": "Same actual Mini owner",
+      "before": "MiniPlayerManager.getInstance(context)",
+      "after": "environment.mini",
+      "count": 2,
+      "afterPositions": [
+        96922,
+        334391
+      ],
+      "beforeStateSha256LF": "b3ca613242268c873e07c2d1d06ece118990dd266fcd487be8cd849be5196553",
+      "afterStateSha256LF": "fd9d28710e118878656cede363a8040f4557d15fa7a656d682ece527071363b5"
+    },
+    {
+      "label": "Same actual Mini owner",
+      "before": "MiniPlayerManager.getInstance(it)",
+      "after": "environment.mini",
+      "count": 1,
+      "afterPositions": [
+        73246
+      ],
+      "beforeStateSha256LF": "fd9d28710e118878656cede363a8040f4557d15fa7a656d682ece527071363b5",
+      "afterStateSha256LF": "841dee1e9eb662cbd9c69b4f4b0606494832ed8a45cd42cee38b39b9ded264ed"
+    },
+    {
+      "label": "Actual owner instead of Android Application",
+      "before": "MiniPlayerManager.getInstance(getApplication<Application>())",
+      "after": "environment.mini",
+      "count": 1,
+      "afterPositions": [
+        179259
+      ],
+      "beforeStateSha256LF": "841dee1e9eb662cbd9c69b4f4b0606494832ed8a45cd42cee38b39b9ded264ed",
+      "afterStateSha256LF": "db33f3a5ecd354b06f861e85a49e94609c4961153074c32dcf34cfc7cf64afde"
+    },
+    {
+      "label": "Same existing queue authority",
+      "before": "PlaylistManager.",
+      "after": "environment.playlist.",
+      "count": 32,
+      "afterPositions": [
+        44680,
+        44867,
+        44949,
+        51176,
+        51402,
+        51669,
+        52263,
+        52827,
+        53156,
+        53511,
+        53839,
+        54220,
+        54510,
+        54776,
+        64226,
+        64310,
+        64546,
+        65784,
+        65868,
+        67102,
+        67388,
+        67632,
+        68654,
+        115608,
+        115745,
+        116125,
+        117332,
+        117762,
+        118093,
+        118268,
+        119635,
+        119919
+      ],
+      "beforeStateSha256LF": "db33f3a5ecd354b06f861e85a49e94609c4961153074c32dcf34cfc7cf64afde",
+      "afterStateSha256LF": "4d74de4bc30a8bf149b79efaf671172bddfd71f1747714f14eef310207cc3470"
+    },
+    {
+      "label": "Sole original same-global getter functions",
+      "before": "com.android.purebilibili.core.store.SettingsManager.",
+      "after": "com.android.purebilibili.core.store.",
+      "count": 31,
+      "afterPositions": [
+        38893,
+        39078,
+        39283,
+        77901,
+        78812,
+        85554,
+        86146,
+        87514,
+        88190,
+        88269,
+        88447,
+        88526,
+        88619,
+        100905,
+        125665,
+        137453,
+        162373,
+        162752,
+        163391,
+        164042,
+        225673,
+        229334,
+        239182,
+        242140,
+        266319,
+        266915,
+        275260,
+        275616,
+        275828,
+        277822,
+        278345
+      ],
+      "beforeStateSha256LF": "4d74de4bc30a8bf149b79efaf671172bddfd71f1747714f14eef310207cc3470",
+      "afterStateSha256LF": "e8cd9743ff0fa1e7d0377d160a7bd36c0236284969ada061ac98bcb974ce77e7"
+    },
+    {
+      "label": "Sole canonical same-global CDN getter",
+      "before": "SettingsManager\n        .getPlaybackCdnPreference",
+      "after": "com.android.purebilibili.core.store.getPlaybackCdnPreference",
+      "count": 1,
+      "afterPositions": [
+        959
+      ],
+      "beforeStateSha256LF": "e8cd9743ff0fa1e7d0377d160a7bd36c0236284969ada061ac98bcb974ce77e7",
+      "afterStateSha256LF": "34a1712c0bedb12b3b040bb112d11e3562d58095e9a42ca6c32436bdb7811083"
+    },
+    {
+      "label": "Sole same-global getter functions",
+      "before": "SettingsManager.",
+      "after": "com.android.purebilibili.core.store.",
+      "count": 1,
+      "afterPositions": [
+        23511
+      ],
+      "beforeStateSha256LF": "34a1712c0bedb12b3b040bb112d11e3562d58095e9a42ca6c32436bdb7811083",
+      "afterStateSha256LF": "d5b912b7c1aa11c2c69e87c02f75b210353fb8f048bfb2753f85fbe22ea204e4"
+    },
+    {
+      "label": "Admitted Boolean, no session credential projection",
+      "before": "com.android.purebilibili.core.store.TokenManager.sessDataCache.isNullOrEmpty()",
+      "after": "!environment.account.hasSession",
+      "count": 1,
+      "afterPositions": [
+        5714
+      ],
+      "beforeStateSha256LF": "d5b912b7c1aa11c2c69e87c02f75b210353fb8f048bfb2753f85fbe22ea204e4",
+      "afterStateSha256LF": "7a04b1aefe40b3d51e3e2097ae732294f0994078e27c023ad0f100e0d410baaf"
+    },
+    {
+      "label": "Admitted token presence, no credential projection",
+      "before": "com.android.purebilibili.core.store.TokenManager.accessTokenCache.isNullOrEmpty()",
+      "after": "!environment.account.hasAccessToken",
+      "count": 1,
+      "afterPositions": [
+        97227
+      ],
+      "beforeStateSha256LF": "7a04b1aefe40b3d51e3e2097ae732294f0994078e27c023ad0f100e0d410baaf",
+      "afterStateSha256LF": "c9e5c229b22fb76eef90949814d67645553384b0e3ce78a4fb548a3769c85870"
+    },
+    {
+      "label": "Same admitted primary MID",
+      "before": "com.android.purebilibili.core.store.TokenManager.midCache",
+      "after": "environment.account.mid",
+      "count": 1,
+      "afterPositions": [
+        173613
+      ],
+      "beforeStateSha256LF": "c9e5c229b22fb76eef90949814d67645553384b0e3ce78a4fb548a3769c85870",
+      "afterStateSha256LF": "8341ee0312cfe7aea9d261d483edac6f13e5d4162e18942d04d37ecada6a880e"
+    },
+    {
+      "label": "Same Store primary VIP commit",
+      "before": "com.android.purebilibili.core.store.TokenManager.isVipCache = true",
+      "after": "environment.account.updatePrimaryVip(true)",
+      "count": 1,
+      "afterPositions": [
+        170177
+      ],
+      "beforeStateSha256LF": "8341ee0312cfe7aea9d261d483edac6f13e5d4162e18942d04d37ecada6a880e",
+      "afterStateSha256LF": "7cbd912cdd3306100cd75548df1744e0036d73ad6ec278f605b9dca34662c507"
+    },
+    {
+      "label": "Actual global Window background state",
+      "before": "BackgroundManager.isInBackground",
+      "after": "environment.background.value",
+      "count": 9,
+      "afterPositions": [
+        46361,
+        181583,
+        182665,
+        217810,
+        220513,
+        223262,
+        310612,
+        311804,
+        330301
+      ],
+      "beforeStateSha256LF": "7cbd912cdd3306100cd75548df1744e0036d73ad6ec278f605b9dca34662c507",
+      "afterStateSha256LF": "aa5a38e59629b0a48e3cbf20364dbcda2a33663e8cc8dcc56ecf9646dcfba5d6"
+    },
+    {
+      "label": "Actual decoder capability port",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isHevcSupported()",
+      "after": "environment.useCase.capabilities.isHevcSupported()",
+      "count": 6,
+      "afterPositions": [
+        9740,
+        110327,
+        125882,
+        258440,
+        267448,
+        278337
+      ],
+      "beforeStateSha256LF": "aa5a38e59629b0a48e3cbf20364dbcda2a33663e8cc8dcc56ecf9646dcfba5d6",
+      "afterStateSha256LF": "b9f7f0053e7a9e14c79abb86a6fe8089d4f9f01841e4ed465187c5fe9c79553a"
+    },
+    {
+      "label": "Actual decoder capability port",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isAv1Supported()",
+      "after": "environment.useCase.capabilities.isAv1Supported()",
+      "count": 7,
+      "afterPositions": [
+        9880,
+        87048,
+        110381,
+        125988,
+        258544,
+        267547,
+        278407
+      ],
+      "beforeStateSha256LF": "b9f7f0053e7a9e14c79abb86a6fe8089d4f9f01841e4ed465187c5fe9c79553a",
+      "afterStateSha256LF": "213ff425f463e3ddcf3540df5e65ae53d02b0d8fd342278a49d14e92ff93ff80"
+    },
+    {
+      "label": "Actual Windows WWAN query",
+      "before": "NetworkUtils.isMobileData(it)",
+      "after": "environment.network.isMobileData()",
+      "count": 1,
+      "afterPositions": [
+        88023
+      ],
+      "beforeStateSha256LF": "213ff425f463e3ddcf3540df5e65ae53d02b0d8fd342278a49d14e92ff93ff80",
+      "afterStateSha256LF": "1b8c577cb0153fc49ce6b4c7d8db482af6eca1eb5400bac838952dc7960c5982"
+    },
+    {
+      "label": "Actual Windows WiFi query",
+      "before": "NetworkUtils.isWifi(it)",
+      "after": "environment.network.isWifi()",
+      "count": 1,
+      "afterPositions": [
+        119850
+      ],
+      "beforeStateSha256LF": "1b8c577cb0153fc49ce6b4c7d8db482af6eca1eb5400bac838952dc7960c5982",
+      "afterStateSha256LF": "236ee543f3abd02ee0fa4a56c6aec451ac1e10d888430982bdcfc5fd1639acb9"
+    },
+    {
+      "label": "Required same consent/capability analytics effect",
+      "before": "AnalyticsHelper.",
+      "after": "environment.analytics.",
+      "count": 2,
+      "afterPositions": [
+        101345,
+        338148
+      ],
+      "beforeStateSha256LF": "236ee543f3abd02ee0fa4a56c6aec451ac1e10d888430982bdcfc5fd1639acb9",
+      "afterStateSha256LF": "4a1391f6b1aab923ba442d32dac86526a4853adca90ad007e30533787e2e9fd2"
+    },
+    {
+      "label": "Required actual local diagnostic effect",
+      "before": "CrashReporter.",
+      "after": "environment.crash.",
+      "count": 1,
+      "afterPositions": [
+        102238
+      ],
+      "beforeStateSha256LF": "4a1391f6b1aab923ba442d32dac86526a4853adca90ad007e30533787e2e9fd2",
+      "afterStateSha256LF": "7d071c9de0fcdf999261e461fb711cf6d038adf3439836993fbe3eb89ded61f9"
+    },
+    {
+      "label": "Existing actual preferred-volume setter",
+      "before": "com.android.purebilibili.core.player.PlayerVolumeController.applyPreferredVolume(player)",
+      "after": "environment.useCase.applyPreferredVolume(player)",
+      "count": 3,
+      "afterPositions": [
+        41169,
+        78526,
+        80078
+      ],
+      "beforeStateSha256LF": "7d071c9de0fcdf999261e461fb711cf6d038adf3439836993fbe3eb89ded61f9",
+      "afterStateSha256LF": "9695f6923cc70423fcd67e758d43dc5540454616e0408dc7b2d894d8a46f7556"
+    },
+    {
+      "label": "Same Runtime Sponsor provider, no new plugin instance",
+      "before": "private val sponsorPlaybackPlugin = com.android.purebilibili.feature.plugin.SponsorBlockPlugin()",
+      "after": "private val sponsorPlaybackPlugin get() = environment.plugins.sponsorBlock",
+      "count": 1,
+      "afterPositions": [
+        14683
+      ],
+      "beforeStateSha256LF": "9695f6923cc70423fcd67e758d43dc5540454616e0408dc7b2d894d8a46f7556",
+      "afterStateSha256LF": "a32532d3ef0a93fe07de7a7db1025dfb181c10f100800f85f5b6c7d059e16883"
+    },
+    {
+      "label": "Same Runtime provider/generation views",
+      "before": "PluginManager.getEnabledPlayerPlugins()",
+      "after": "environment.plugins.enabledPlayerPlugins()",
+      "count": 1,
+      "afterPositions": [
+        15113
+      ],
+      "beforeStateSha256LF": "a32532d3ef0a93fe07de7a7db1025dfb181c10f100800f85f5b6c7d059e16883",
+      "afterStateSha256LF": "e2c7e6456a549741caca3f8969bbd188bfd538d018d0d13e27265a58970f6ab6"
+    },
+    {
+      "label": "Required same request-scoped original actions",
+      "before": "com.android.purebilibili.data.repository.ActionRepository.",
+      "after": "environment.actions.",
+      "count": 9,
+      "afterPositions": [
+        35019,
+        36919,
+        36994,
+        168144,
+        168276,
+        168368,
+        168456,
+        168541,
+        168626
+      ],
+      "beforeStateSha256LF": "e2c7e6456a549741caca3f8969bbd188bfd538d018d0d13e27265a58970f6ab6",
+      "afterStateSha256LF": "007a08205d1347f95b3f37177ec7b1535d4e1896f7c283221268963ba0ebfc91"
+    },
+    {
+      "label": "Same actual transient task view and manager",
+      "before": "com.android.purebilibili.feature.download.DownloadManager.",
+      "after": "environment.download.",
+      "count": 6,
+      "afterPositions": [
+        16036,
+        175707,
+        176893,
+        247832,
+        248768,
+        249658
+      ],
+      "beforeStateSha256LF": "007a08205d1347f95b3f37177ec7b1535d4e1896f7c283221268963ba0ebfc91",
+      "afterStateSha256LF": "f2ebd009ea4054c4eb986bb6d678fb20e782d79e69b9f721161eb4d94b8689ce"
+    },
+    {
+      "label": "Actual native sourceVersion event, no fake MediaItem",
+      "before": "override fun onMediaItemTransition(\n            mediaItem: androidx.media3.common.MediaItem?,\n            reason: Int\n        )",
+      "after": "override fun onSourceTransition(sourceVersion: Long)",
+      "count": 1,
+      "afterPositions": [
+        46619
+      ],
+      "beforeStateSha256LF": "f2ebd009ea4054c4eb986bb6d678fb20e782d79e69b9f721161eb4d94b8689ce",
+      "afterStateSha256LF": "4c1b86aa20dc91719317e1b34707a0121fb1aed4a811390e66b0e4bf5b7f6002"
+    },
+    {
+      "label": "Actual Root-owned lifecycle drain",
+      "before": "override fun onCleared() {\n        super.onCleared()",
+      "after": "override fun close() {",
+      "count": 1,
+      "afterPositions": [
+        332343
+      ],
+      "beforeStateSha256LF": "4c1b86aa20dc91719317e1b34707a0121fb1aed4a811390e66b0e4bf5b7f6002",
+      "afterStateSha256LF": "68e10e6231dc7aa19f4f27d68b83c011684f0c2a5a73b84fb1a71f8db9b501b6"
+    },
+    {
+      "label": "Android-only annotation removed",
+      "before": "@SuppressLint(\"UnsafeOptInUsageError\")\n        ",
+      "after": "",
+      "count": 1,
+      "afterPositions": [
+        47032
+      ],
+      "beforeStateSha256LF": "68e10e6231dc7aa19f4f27d68b83c011684f0c2a5a73b84fb1a71f8db9b501b6",
+      "afterStateSha256LF": "9cdf05898e40bc5a73ecee12b5caad5bf2b25b23b6f10d2825ef458b172475e6"
+    },
+    {
+      "label": "Actual native track readback",
+      "before": "tracks: Tracks",
+      "after": "tracks: List<com.bilipai.desktop.player.PlayerTrack>",
+      "count": 1,
+      "afterPositions": [
+        46824
+      ],
+      "beforeStateSha256LF": "9cdf05898e40bc5a73ecee12b5caad5bf2b25b23b6f10d2825ef458b172475e6",
+      "afterStateSha256LF": "6422bc1e292fe0c449ab51b1820beb9d1dc0c260e6287801cfcf97e0935afd77"
+    },
+    {
+      "label": "Actual typed native failure",
+      "before": "error: PlaybackException",
+      "after": "error: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackError",
+      "count": 1,
+      "afterPositions": [
+        47097
+      ],
+      "beforeStateSha256LF": "6422bc1e292fe0c449ab51b1820beb9d1dc0c260e6287801cfcf97e0935afd77",
+      "afterStateSha256LF": "59873712e938a60c0a511b8dcaff21c8a8482a152639b7de94572a704f675e28"
+    },
+    {
+      "label": "Actual safe native error family",
+      "before": "${error.errorCodeName}",
+      "after": "${error.failure?.kind}",
+      "count": 1,
+      "afterPositions": [
+        47257
+      ],
+      "beforeStateSha256LF": "59873712e938a60c0a511b8dcaff21c8a8482a152639b7de94572a704f675e28",
+      "afterStateSha256LF": "91442a776cd9789f512cd23aedb4134f220459277db1d430f5bfb2a20a23d9e5"
+    },
+    {
+      "label": "Only proven AO -14 role maps audio failure",
+      "before": "val exoPlaybackError = error as? ExoPlaybackException",
+      "after": "val premiumFailureCode = error.failure?.let { com.bilipai.desktop.player.desktopPremiumAudioFailureCode(it) }",
+      "count": 1,
+      "afterPositions": [
+        47394
+      ],
+      "beforeStateSha256LF": "91442a776cd9789f512cd23aedb4134f220459277db1d430f5bfb2a20a23d9e5",
+      "afterStateSha256LF": "df4b1e5ddb06e6b4f05b3c1861e58b5ae9defe3cb767d227910dfa7df8216e22"
+    },
+    {
+      "label": "Generic/video decoder cannot masquerade as audio",
+      "before": "current != null &&\n                isPremiumAudioPlaybackFailure(",
+      "after": "current != null && premiumFailureCode != null &&\n                isPremiumAudioPlaybackFailure(",
+      "count": 1,
+      "afterPositions": [
+        47537
+      ],
+      "beforeStateSha256LF": "df4b1e5ddb06e6b4f05b3c1861e58b5ae9defe3cb767d227910dfa7df8216e22",
+      "afterStateSha256LF": "bcd7ee5f32f37b4ab9ab8b9186e89a2af6228431883f6531f12cfa767b71e670"
+    },
+    {
+      "label": "Proven actual audio mapping",
+      "before": "errorCode = error.errorCode",
+      "after": "errorCode = premiumFailureCode",
+      "count": 1,
+      "afterPositions": [
+        47653
+      ],
+      "beforeStateSha256LF": "bcd7ee5f32f37b4ab9ab8b9186e89a2af6228431883f6531f12cfa767b71e670",
+      "afterStateSha256LF": "ef16c595595a38f8dcdcbbd9975a30710eab95f061c3a88a9fe565eba455959e"
+    },
+    {
+      "label": "Explicit output initialization role",
+      "before": "rendererName = exoPlaybackError?.rendererName",
+      "after": "rendererName = \"mpv/audio-output\"",
+      "count": 1,
+      "afterPositions": [
+        47778
+      ],
+      "beforeStateSha256LF": "ef16c595595a38f8dcdcbbd9975a30710eab95f061c3a88a9fe565eba455959e",
+      "afterStateSha256LF": "df520a8672f3653839d0e1db9830c26901a898f83ae1eaadb644898c00a2113f"
+    },
+    {
+      "label": "No fabricated MIME",
+      "before": "rendererSampleMimeType = exoPlaybackError?.rendererFormat?.sampleMimeType",
+      "after": "rendererSampleMimeType = null",
+      "count": 1,
+      "afterPositions": [
+        47833
+      ],
+      "beforeStateSha256LF": "df520a8672f3653839d0e1db9830c26901a898f83ae1eaadb644898c00a2113f",
+      "afterStateSha256LF": "041baa0fed8a92d2d22763a82cfb13ce4c286cc91d3e164fa206b7310de74f20"
+    },
+    {
+      "label": "Actual source-owned local image selection paths",
+      "before": "List<Uri>",
+      "after": "List<String>",
+      "count": 3,
+      "afterPositions": [
+        143033,
+        155764,
+        159166
+      ],
+      "beforeStateSha256LF": "041baa0fed8a92d2d22763a82cfb13ce4c286cc91d3e164fa206b7310de74f20",
+      "afterStateSha256LF": "434a38fe15d32c05ddb172ef7acb7f1d4685a480f24113646eb59e5f0ec88862"
+    },
+    {
+      "label": "Use SAME current captured repository for every fully qualified original call",
+      "before": "com.android.purebilibili.data.repository.VideoRepository",
+      "after": "VideoRepository",
+      "count": 10,
+      "afterPositions": [
+        83180,
+        83953,
+        120359,
+        120885,
+        121350,
+        121543,
+        122214,
+        168401,
+        168506,
+        169103
+      ],
+      "beforeStateSha256LF": "434a38fe15d32c05ddb172ef7acb7f1d4685a480f24113646eb59e5f0ec88862",
+      "afterStateSha256LF": "2e0dab822549e5a24f590125fcdfaea43e511008fa586d7ca9c20a3e50f634fe"
+    },
+    {
+      "label": "One actual safe logging binding",
+      "before": "com.android.purebilibili.core.util.Logger",
+      "after": "Logger",
+      "count": 8,
+      "afterPositions": [
+        5770,
+        5987,
+        6411,
+        6854,
+        7082,
+        7301,
+        38970,
+        88278
+      ],
+      "beforeStateSha256LF": "2e0dab822549e5a24f590125fcdfaea43e511008fa586d7ca9c20a3e50f634fe",
+      "afterStateSha256LF": "7f80b8218c9538ec64e1f48a13e02be7c389824de73be0a8d57c7e4f2ac7cec7"
+    },
+    {
+      "label": "Actual monotonic elapsed clock",
+      "before": "android.os.SystemClock.elapsedRealtime()",
+      "after": "(System.nanoTime() / 1_000_000L)",
+      "count": 4,
+      "afterPositions": [
+        286776,
+        287966,
+        308174,
+        308938
+      ],
+      "beforeStateSha256LF": "7f80b8218c9538ec64e1f48a13e02be7c389824de73be0a8d57c7e4f2ac7cec7",
+      "afterStateSha256LF": "01673976efbbfd7513378971c4e73bd854f6823af9433d422fa4ffd7383ad632"
+    },
+    {
+      "label": "Existing original same-global player preference getter authority",
+      "before": "com.android.purebilibili.core.store.player.PlayerSettingsStore",
+      "after": "com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings",
+      "count": 4,
+      "afterPositions": [
+        84435,
+        84630,
+        265594,
+        265797
+      ],
+      "beforeStateSha256LF": "01673976efbbfd7513378971c4e73bd854f6823af9433d422fa4ffd7383ad632",
+      "afterStateSha256LF": "15d198ae37d45f474bae918c777b50d2e667db75ba57032ee44424e6da584606"
+    },
+    {
+      "label": "One Runtime provider view",
+      "before": "PluginManager",
+      "after": "environment.plugins",
+      "count": 5,
+      "afterPositions": [
+        14712,
+        313950,
+        319590,
+        324229,
+        324819
+      ],
+      "beforeStateSha256LF": "15d198ae37d45f474bae918c777b50d2e667db75ba57032ee44424e6da584606",
+      "afterStateSha256LF": "7af6c600540861bdcb3d4115bacb9644d7e35eff9e29f2ced9641ac305fef27f"
+    },
+    {
+      "label": "Same existing enabled provider list",
+      "before": ".getEnabledPlugins(",
+      "after": ".enabledPlugins(",
+      "count": 4,
+      "afterPositions": [
+        313982,
+        319606,
+        324242,
+        324829
+      ],
+      "beforeStateSha256LF": "7af6c600540861bdcb3d4115bacb9644d7e35eff9e29f2ced9641ac305fef27f",
+      "afterStateSha256LF": "e1a29bc3e6d485b67260ff52df455168c156af37037c41ed9272d55fa880b05e"
+    },
+    {
+      "label": "Required actual WiFi query",
+      "before": "NetworkUtils.isWifi(context)",
+      "after": "environment.network.isWifi()",
+      "count": 2,
+      "afterPositions": [
+        119696,
+        320303
+      ],
+      "beforeStateSha256LF": "e1a29bc3e6d485b67260ff52df455168c156af37037c41ed9272d55fa880b05e",
+      "afterStateSha256LF": "2c4bd0a58d4feda0770a5ef862d805ee73fd71814323e04cd454b15d92b15588"
+    },
+    {
+      "label": "Qualified selected original settings owner",
+      "before": "com.android.purebilibili.core.store.SettingsManager",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings",
+      "count": 7,
+      "afterPositions": [
+        42718,
+        42912,
+        43600,
+        83335,
+        121019,
+        179710,
+        281838
+      ],
+      "beforeStateSha256LF": "2c4bd0a58d4feda0770a5ef862d805ee73fd71814323e04cd454b15d92b15588",
+      "afterStateSha256LF": "38c166cc267c963d0d4933b7311676a7380e113c7c678a20d86e5deb1df4e651"
+    },
+    {
+      "label": "Actual HDR capability",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isHdrSupported(it)",
+      "after": "environment.useCase.capabilities.isHdrSupported()",
+      "count": 2,
+      "afterPositions": [
+        86026,
+        251851
+      ],
+      "beforeStateSha256LF": "38c166cc267c963d0d4933b7311676a7380e113c7c678a20d86e5deb1df4e651",
+      "afterStateSha256LF": "455b04f86de0c8955816074cd77c8adfd8675ea6b8f38c21068688de8b470f58"
+    },
+    {
+      "label": "Actual HDR capability",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isHdrSupported()",
+      "after": "environment.useCase.capabilities.isHdrSupported()",
+      "count": 2,
+      "afterPositions": [
+        86097,
+        251901
+      ],
+      "beforeStateSha256LF": "455b04f86de0c8955816074cd77c8adfd8675ea6b8f38c21068688de8b470f58",
+      "afterStateSha256LF": "acd5c1f4a1adcfe4913bde525546841744d4a210c3c51d46e007467c6a3cb3e4"
+    },
+    {
+      "label": "Actual DolbyVision capability",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported(it)",
+      "after": "environment.useCase.capabilities.isDolbyVisionSupported()",
+      "count": 2,
+      "afterPositions": [
+        86230,
+        252003
+      ],
+      "beforeStateSha256LF": "acd5c1f4a1adcfe4913bde525546841744d4a210c3c51d46e007467c6a3cb3e4",
+      "afterStateSha256LF": "3c80c2b47d89b5b4ba2c7e8b61da7a1cbdae2d51cb7e9587d5ba8f8d84187a3e"
+    },
+    {
+      "label": "Actual DolbyVision capability",
+      "before": "com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported()",
+      "after": "environment.useCase.capabilities.isDolbyVisionSupported()",
+      "count": 2,
+      "afterPositions": [
+        86309,
+        252061
+      ],
+      "beforeStateSha256LF": "3c80c2b47d89b5b4ba2c7e8b61da7a1cbdae2d51cb7e9587d5ba8f8d84187a3e",
+      "afterStateSha256LF": "592128bea05acba2599c4a735d3a8745a2e5a73ab5b6197632bfde7f032c712c"
+    },
+    {
+      "label": "Canonical complete original getPlaybackCdnPreference",
+      "before": "com.android.purebilibili.core.store.getPlaybackCdnPreference",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getPlaybackCdnPreference",
+      "count": 1,
+      "afterPositions": [
+        959
+      ],
+      "beforeStateSha256LF": "592128bea05acba2599c4a735d3a8745a2e5a73ab5b6197632bfde7f032c712c",
+      "afterStateSha256LF": "a58cb18cd78721fcf3cad840f404c57ee94a8884604f57528f7fa8f96847ac19"
+    },
+    {
+      "label": "Canonical complete original getVideoCodec",
+      "before": "com.android.purebilibili.core.store.getVideoCodec",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoCodec",
+      "count": 4,
+      "afterPositions": [
+        38511,
+        85056,
+        264817,
+        276358
+      ],
+      "beforeStateSha256LF": "a58cb18cd78721fcf3cad840f404c57ee94a8884604f57528f7fa8f96847ac19",
+      "afterStateSha256LF": "f6e09cb65ef4beac7069084174ddf932cb31367798d58eeccc4e07e3f033cb72"
+    },
+    {
+      "label": "Canonical complete original setVideoCodec",
+      "before": "com.android.purebilibili.core.store.setVideoCodec",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.setVideoCodec",
+      "count": 1,
+      "afterPositions": [
+        161549
+      ],
+      "beforeStateSha256LF": "f6e09cb65ef4beac7069084174ddf932cb31367798d58eeccc4e07e3f033cb72",
+      "afterStateSha256LF": "ff94a962b5e840f4bdd75f23d6f290615f0bc8fc3b230ab138f7c551d46ada52"
+    },
+    {
+      "label": "Canonical complete original getVideoSecondCodec",
+      "before": "com.android.purebilibili.core.store.getVideoSecondCodec",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoSecondCodec",
+      "count": 5,
+      "afterPositions": [
+        38730,
+        85716,
+        124926,
+        265583,
+        277085
+      ],
+      "beforeStateSha256LF": "ff94a962b5e840f4bdd75f23d6f290615f0bc8fc3b230ab138f7c551d46ada52",
+      "afterStateSha256LF": "63f7d635b86cf3fab297c881f1d39f9ca47999ae55bc6e109e190b8a1f0c5118"
+    },
+    {
+      "label": "Canonical complete original setVideoSecondCodec",
+      "before": "com.android.purebilibili.core.store.setVideoSecondCodec",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.setVideoSecondCodec",
+      "count": 1,
+      "afterPositions": [
+        162064
+      ],
+      "beforeStateSha256LF": "63f7d635b86cf3fab297c881f1d39f9ca47999ae55bc6e109e190b8a1f0c5118",
+      "afterStateSha256LF": "2e12591450fec71e2ad0b060ccb037fb12d87896570c9755de6b01ed0767c8e6"
+    },
+    {
+      "label": "Canonical complete original getAudioQuality",
+      "before": "com.android.purebilibili.core.store.getAudioQuality",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getAudioQuality",
+      "count": 1,
+      "afterPositions": [
+        38969
+      ],
+      "beforeStateSha256LF": "2e12591450fec71e2ad0b060ccb037fb12d87896570c9755de6b01ed0767c8e6",
+      "afterStateSha256LF": "2d1bc85f5ac99238e43c9fd08cb946098e031b570fdb6b390416cd6c66366ada"
+    },
+    {
+      "label": "Canonical complete original getDataSaverModeSync",
+      "before": "com.android.purebilibili.core.store.getDataSaverModeSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getDataSaverModeSync",
+      "count": 1,
+      "afterPositions": [
+        87764
+      ],
+      "beforeStateSha256LF": "2d1bc85f5ac99238e43c9fd08cb946098e031b570fdb6b390416cd6c66366ada",
+      "afterStateSha256LF": "2d0cee6dd94f9723491752ed71b1a35e3dc2f1cdc83caf4fabc999359e817df1"
+    },
+    {
+      "label": "Canonical complete original getVideoNoteEnabledSync",
+      "before": "com.android.purebilibili.core.store.getVideoNoteEnabledSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getVideoNoteEnabledSync",
+      "count": 3,
+      "afterPositions": [
+        100432,
+        224636,
+        228331
+      ],
+      "beforeStateSha256LF": "2d0cee6dd94f9723491752ed71b1a35e3dc2f1cdc83caf4fabc999359e817df1",
+      "afterStateSha256LF": "e076093c894be12293ce7807794316aea0e43a2ef6c4fa30e7531d05dddde139"
+    },
+    {
+      "label": "Canonical complete original getTripleJumpEnabled",
+      "before": "com.android.purebilibili.core.store.getTripleJumpEnabled",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getTripleJumpEnabled",
+      "count": 1,
+      "afterPositions": [
+        241171
+      ],
+      "beforeStateSha256LF": "e076093c894be12293ce7807794316aea0e43a2ef6c4fa30e7531d05dddde139",
+      "afterStateSha256LF": "aa924edea66d4e94d412d4764deb13d4cc71fa3a4777631dd3496dc8f28db4a8"
+    },
+    {
+      "label": "Canonical complete original getResumePlaybackPromptEnabledSync",
+      "before": "com.android.purebilibili.core.store.getResumePlaybackPromptEnabledSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.getResumePlaybackPromptEnabledSync",
+      "count": 1,
+      "afterPositions": [
+        274204
+      ],
+      "beforeStateSha256LF": "aa924edea66d4e94d412d4764deb13d4cc71fa3a4777631dd3496dc8f28db4a8",
+      "afterStateSha256LF": "9254bd4702ff12739eb7a5721e61a10c0853ddeb90743245e525da8ebe77104e"
+    },
+    {
+      "label": "Canonical complete original hasResumePlaybackPromptShown",
+      "before": "com.android.purebilibili.core.store.hasResumePlaybackPromptShown",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.hasResumePlaybackPromptShown",
+      "count": 1,
+      "afterPositions": [
+        274594
+      ],
+      "beforeStateSha256LF": "9254bd4702ff12739eb7a5721e61a10c0853ddeb90743245e525da8ebe77104e",
+      "afterStateSha256LF": "22b3d69545d45306e3605d5b90b509022f2acebd01d1c5f13d7bc9eb0f1cdabf"
+    },
+    {
+      "label": "Canonical complete original markResumePlaybackPromptShown",
+      "before": "com.android.purebilibili.core.store.markResumePlaybackPromptShown",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.markResumePlaybackPromptShown",
+      "count": 1,
+      "afterPositions": [
+        274840
+      ],
+      "beforeStateSha256LF": "22b3d69545d45306e3605d5b90b509022f2acebd01d1c5f13d7bc9eb0f1cdabf",
+      "afterStateSha256LF": "6da9feef1ba33353612f45b7a29ed258208cbc8cb54d76922f8e31bc5314df1c"
+    },
+    {
+      "label": "Canonical complete original isEasterEggEnabledSync",
+      "before": "com.android.purebilibili.core.store.isEasterEggEnabledSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.isEasterEggEnabledSync",
+      "count": 2,
+      "afterPositions": [
+        136824,
+        238247
+      ],
+      "beforeStateSha256LF": "6da9feef1ba33353612f45b7a29ed258208cbc8cb54d76922f8e31bc5314df1c",
+      "afterStateSha256LF": "354c6cd531ae592c2afb1802c7ea9e68d81f7007edf7bde9e330bc5dc39489b4"
+    },
+    {
+      "label": "Reuse existing sole Section getter",
+      "before": "com.android.purebilibili.core.store.getClickToPlaySync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlaySync",
+      "count": 3,
+      "afterPositions": [
+        77585,
+        78493,
+        87157
+      ],
+      "beforeStateSha256LF": "354c6cd531ae592c2afb1802c7ea9e68d81f7007edf7bde9e330bc5dc39489b4",
+      "afterStateSha256LF": "0077044af41eb7e1c8020bc8e35eb61377977badb5c1ad4c1f470c672cf1ad3b"
+    },
+    {
+      "label": "Same sole completion Flow/setter cache for multiline original caller",
+      "before": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                    .getPlaybackCompletionBehaviorSync",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n                    .getPlaybackCompletionBehaviorSync",
+      "count": 1,
+      "afterPositions": [
+        43736
+      ],
+      "beforeStateSha256LF": "0077044af41eb7e1c8020bc8e35eb61377977badb5c1ad4c1f470c672cf1ad3b",
+      "afterStateSha256LF": "082eda1a7340642cdbbe2acda77b99e1b17078ee3907ab33db81bdc2cac31f4b"
+    },
+    {
+      "label": "Reuse child sole complete original setter",
+      "before": "com.android.purebilibili.core.store.setAudioQuality",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalPortraitSettings.setAudioQuality",
+      "count": 2,
+      "afterPositions": [
+        162986,
+        163669
+      ],
+      "beforeStateSha256LF": "082eda1a7340642cdbbe2acda77b99e1b17078ee3907ab33db81bdc2cac31f4b",
+      "afterStateSha256LF": "4aefc42fdf64457def9dac3aa85c7078aaa4b26a5f4f1c188226d337aa52c025"
+    },
+    {
+      "label": "Original enum in selected original settings owner",
+      "before": "com.android.purebilibili.core.store.DataSaverMode",
+      "after": "com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings.DataSaverMode",
+      "count": 4,
+      "afterPositions": [
+        87990,
+        88202,
+        88315,
+        88442
+      ],
+      "beforeStateSha256LF": "4aefc42fdf64457def9dac3aa85c7078aaa4b26a5f4f1c188226d337aa52c025",
+      "afterStateSha256LF": "9b2bc9a9f0bd6449dac6eefa54b342b7928621cb8895b96c9da7d49695f06515"
+    },
+    {
+      "label": "Same global plugin Context",
+      "before": "TodayWatchFeedbackStore.getSnapshot(context)",
+      "after": "TodayWatchFeedbackStore.getSnapshot(context.pluginContext)",
+      "count": 1,
+      "afterPositions": [
+        137912
+      ],
+      "beforeStateSha256LF": "9b2bc9a9f0bd6449dac6eefa54b342b7928621cb8895b96c9da7d49695f06515",
+      "afterStateSha256LF": "95f0f41a5dc3114f05736e191dc76d95120cb1290cc1f2fb8f2bb7a929b15708"
+    },
+    {
+      "label": "Same global plugin Context",
+      "before": "TodayWatchFeedbackStore.saveSnapshot(context, snapshot)",
+      "after": "TodayWatchFeedbackStore.saveSnapshot(context.pluginContext, snapshot)",
+      "count": 1,
+      "afterPositions": [
+        138384
+      ],
+      "beforeStateSha256LF": "95f0f41a5dc3114f05736e191dc76d95120cb1290cc1f2fb8f2bb7a929b15708",
+      "afterStateSha256LF": "b4b1e0090de0b663513f60e633af0993cb2a8277ba3e27d65904d319f54f111f"
+    },
+    {
+      "label": "Same original Insight store authority",
+      "before": "SponsorBlockInsightStore.appendRecord(context, record)",
+      "after": "SponsorBlockInsightStore.appendRecord(context.pluginContext, record)",
+      "count": 1,
+      "afterPositions": [
+        298510
+      ],
+      "beforeStateSha256LF": "b4b1e0090de0b663513f60e633af0993cb2a8277ba3e27d65904d319f54f111f",
+      "afterStateSha256LF": "0431d01d1dc0a321c2fc07d5bc9b826d84377a0d9db987e1c083c93a2b857f1b"
+    },
+    {
+      "label": "Current captured original action view",
+      "before": "com.android.purebilibili.data.repository.ActionRepository",
+      "after": "environment.actions",
+      "count": 1,
+      "afterPositions": [
+        35943
+      ],
+      "beforeStateSha256LF": "0431d01d1dc0a321c2fc07d5bc9b826d84377a0d9db987e1c083c93a2b857f1b",
+      "afterStateSha256LF": "780352c926b0cfab0ae462944a8aac2b40a0956a106ef46061de538d288a9187"
+    },
+    {
+      "label": "Existing original same owned reply operations",
+      "before": "com.android.purebilibili.data.repository.CommentRepository",
+      "after": "environment.comments",
+      "count": 4,
+      "afterPositions": [
+        140311,
+        154481,
+        157659,
+        159849
+      ],
+      "beforeStateSha256LF": "780352c926b0cfab0ae462944a8aac2b40a0956a106ef46061de538d288a9187",
+      "afterStateSha256LF": "c733dd933d5f0fa61f3e5af71406148ae46a94fcd485807c62fae55f3ef3a51e"
+    },
+    {
+      "label": "Existing sole raw document/server state and protocol operations",
+      "before": "com.android.purebilibili.data.repository.DanmakuRepository",
+      "after": "environment.danmaku",
+      "count": 8,
+      "afterPositions": [
+        142029,
+        144076,
+        144685,
+        144982,
+        148271,
+        149576,
+        150529,
+        152363
+      ],
+      "beforeStateSha256LF": "c733dd933d5f0fa61f3e5af71406148ae46a94fcd485807c62fae55f3ef3a51e",
+      "afterStateSha256LF": "8e6d57b71036e2c3ea592ba3c8e6b9216247db5275aba0b19085737391c94a38"
+    },
+    {
+      "label": "Use actual Section track readback",
+      "before": "private fun hasSelectedAudioTrack(player: Player?)",
+      "after": "private fun hasSelectedAudioTrack(player: ExoPlayer?)",
+      "count": 1,
+      "afterPositions": [
+        324488
+      ],
+      "beforeStateSha256LF": "8e6d57b71036e2c3ea592ba3c8e6b9216247db5275aba0b19085737391c94a38",
+      "afterStateSha256LF": "14e99dcb0509c2dcc7ac7b4565e2d885f38057477baa9527ea85993def6c06eb"
+    },
+    {
+      "label": "Actual selected native audio track",
+      "before": "player?.currentTracks?.groups.orEmpty().any { group ->\n            group.type == C.TRACK_TYPE_AUDIO && group.isSelected\n        }",
+      "after": "player?.currentTracks.orEmpty().any { track -> track.type == \"audio\" && track.selected }",
+      "count": 1,
+      "afterPositions": [
+        324568
+      ],
+      "beforeStateSha256LF": "14e99dcb0509c2dcc7ac7b4565e2d885f38057477baa9527ea85993def6c06eb",
+      "afterStateSha256LF": "e04a55e8bf1f8c20b2dfce867a1d23d10005421ae1ee9a10a19f0c1ef01a9cda"
+    },
+    {
+      "label": "Same global TodayWatch profile store Context",
+      "before": "context = context,\n            mid = mid,",
+      "after": "context = context.pluginContext,\n            mid = mid,",
+      "count": 1,
+      "afterPositions": [
+        331785
+      ],
+      "beforeStateSha256LF": "e04a55e8bf1f8c20b2dfce867a1d23d10005421ae1ee9a10a19f0c1ef01a9cda",
+      "afterStateSha256LF": "f1cf80bac402b5bd5f4b897cd281ac2582f5d683c45800ea3cd44c40c2bc86d4"
+    },
+    {
+      "label": "Same captured sole gRPC Ops",
+      "before": "ViewGrpcRepository.getBgmList",
+      "after": "environment.repository.getBgmList",
+      "count": 1,
+      "afterPositions": [
+        186177
+      ],
+      "beforeStateSha256LF": "f1cf80bac402b5bd5f4b897cd281ac2582f5d683c45800ea3cd44c40c2bc86d4",
+      "afterStateSha256LF": "2743e2897d29e826518abaced15fa05ba6a8acb02ac6293054503ab855495040"
+    },
+    {
+      "label": "Capture Relation API inside its actual launched request, never before invocation admission",
+      "before": "val currentApi = environment.repository.primaryApi\n        environment.invocations.launch {\n            try {",
+      "after": "environment.invocations.launch {\n            val currentApi = environment.repository.primaryApi\n            try {",
+      "count": 1,
+      "afterPositions": [
+        171102
+      ],
+      "beforeStateSha256LF": "2743e2897d29e826518abaced15fa05ba6a8acb02ac6293054503ab855495040",
+      "afterStateSha256LF": "85b2f6296253179a8336861b8a6c0e62720209a52efc4ddfc58d5a193544db4b"
+    },
+    {
+      "label": "Observe actual64 inherited native mute on the original position/poll observer; no second poller",
+      "before": "            while (true) {\n                val plugins = getSessionPlayerPlugins()",
+      "after": "            while (true) {\n                // Same actual native lease; this also runs when all plugins are disabled.\n                environment.plugins.observeInheritedPluginMute()\n                val plugins = getSessionPlayerPlugins()",
+      "count": 1,
+      "afterPositions": [
+        285860
+      ],
+      "beforeStateSha256LF": "85b2f6296253179a8336861b8a6c0e62720209a52efc4ddfc58d5a193544db4b",
+      "afterStateSha256LF": "ae7da94d1570ec726302f73e13f24fe2d5aff09fdaaeba9bcfb406bc14001963"
+    },
+    {
+      "label": "Same Runtime generation/serialization for disabled Sponsor cleanup",
+      "before": "sponsorPlaybackPlugin.onVideoEnd()",
+      "after": "environment.plugins.onSponsorDisabled()",
+      "count": 1,
+      "afterPositions": [
+        286687
+      ],
+      "beforeStateSha256LF": "ae7da94d1570ec726302f73e13f24fe2d5aff09fdaaeba9bcfb406bc14001963",
+      "afterStateSha256LF": "cdf5d7a8d116ffc2264984a5e2c935217c9e3b50aa5ddded154295c55d15fcd8"
+    },
+    {
+      "label": "Same Runtime original provider; inherited matching generation must not reload/reset skipped IDs",
+      "before": "sponsorPlugin.onVideoLoad(bvid, cid)",
+      "after": "environment.plugins.ensureSponsorLoaded(bvid, cid)",
+      "count": 1,
+      "afterPositions": [
+        287786
+      ],
+      "beforeStateSha256LF": "cdf5d7a8d116ffc2264984a5e2c935217c9e3b50aa5ddded154295c55d15fcd8",
+      "afterStateSha256LF": "bbdfd5c99901ea4ffffdd15ca507da7b3f18f2bfaac7e99c748de8b4aa369f29"
+    },
+    {
+      "label": "Dispatch through same Runtime playerMutex and captured generation",
+      "before": "plugin.onPositionUpdate(currentPos)",
+      "after": "environment.plugins.onPositionUpdate(plugin, currentPos)",
+      "count": 1,
+      "afterPositions": [
+        290931
+      ],
+      "beforeStateSha256LF": "bbdfd5c99901ea4ffffdd15ca507da7b3f18f2bfaac7e99c748de8b4aa369f29",
+      "afterStateSha256LF": "814b4d730fd7334a2612521e7515d744a234732cf2515a9b30f30f0e5fd0f288"
+    },
+    {
+      "label": "Same Runtime generation and actual native user-seek admission",
+      "before": "plugin.onUserSeek(positionMs)",
+      "after": "environment.plugins.onUserSeek(plugin, positionMs)",
+      "count": 1,
+      "afterPositions": [
+        298804
+      ],
+      "beforeStateSha256LF": "814b4d730fd7334a2612521e7515d744a234732cf2515a9b30f30f0e5fd0f288",
+      "afterStateSha256LF": "a8fed1095c15c8454b87da6781da4532ae273f12bf73cb2d85b022c24f6120a9"
+    },
+    {
+      "label": "Same Runtime generation, each real provider is serialized and retirement guarded",
+      "before": "plugin.onVideoEnd()",
+      "after": "environment.plugins.onVideoEnd(plugin)",
+      "count": 1,
+      "afterPositions": [
+        333566
+      ],
+      "beforeStateSha256LF": "a8fed1095c15c8454b87da6781da4532ae273f12bf73cb2d85b022c24f6120a9",
+      "afterStateSha256LF": "99f34ffba87ec7682ddefe78010030142902a405990a8ed5ac8c2561130e39c3"
+    },
+    {
+      "label": "Same Runtime guard for original skipped-ID mutation",
+      "before": "plugin.markAsSkipped(",
+      "after": "environment.plugins.markSponsorSkipped(plugin,",
+      "count": 2,
+      "afterPositions": [
+        295031,
+        296339
+      ],
+      "beforeStateSha256LF": "99f34ffba87ec7682ddefe78010030142902a405990a8ed5ac8c2561130e39c3",
+      "afterStateSha256LF": "5e50379fc2bca3938a29bc6a2e342b515d935d91b1e2c0748305225c9e08126c"
+    },
+    {
+      "label": "Actual original community vote through same generation/consent guarded effect",
+      "before": "plugin.voteOnCommunitySegment(segmentId, voteType)",
+      "after": "environment.plugins.voteSponsorSegment(plugin, segmentId, voteType)",
+      "count": 1,
+      "afterPositions": [
+        295652
+      ],
+      "beforeStateSha256LF": "5e50379fc2bca3938a29bc6a2e342b515d935d91b1e2c0748305225c9e08126c",
+      "afterStateSha256LF": "13f2ec0f3328a7e718e659426acfc17c4530d4d01795b93b7203cd1ac783a2b0"
+    },
+    {
+      "label": "Actual original community submit through same generation and captured segment owner",
+      "before": "request.plugin.submitCommunitySegment(",
+      "after": "environment.plugins.submitSponsorSegment(\n                plugin = request.plugin,",
+      "count": 1,
+      "afterPositions": [
+        304818
+      ],
+      "beforeStateSha256LF": "13f2ec0f3328a7e718e659426acfc17c4530d4d01795b93b7203cd1ac783a2b0",
+      "afterStateSha256LF": "d102d47f0a8826fb2065d7bb523b782fa074a8d87c5a256e35ab6d6040b5cb67"
+    },
+    {
+      "label": "Rewrite only authorized candidates of the current immutable raw request",
+      "before": "cdnPlugin?.rewritePlaybackCandidates(rawVideoUrls, rawAudioUrls)",
+      "after": "cdnPlugin?.let { environment.plugins.rewritePlaybackCandidates(it, rawVideoUrls, rawAudioUrls) }",
+      "count": 1,
+      "afterPositions": [
+        315061
+      ],
+      "beforeStateSha256LF": "d102d47f0a8826fb2065d7bb523b782fa074a8d87c5a256e35ab6d6040b5cb67",
+      "afterStateSha256LF": "39b5586268ff9e4c1333b02a9ae69258318edacf3cb0703065f37ab14fc9de70"
+    },
+    {
+      "label": "Same original CDN diagnostic algorithm, guarded provider identity",
+      "before": "cdnPlugin?.buildPlaybackCdnDiagnostics(\n                videoUrls = allVideoUrls,\n                sources = preferredCandidates.map { it.source }\n            ).orEmpty()",
+      "after": "cdnPlugin?.let { environment.plugins.buildPlaybackCdnDiagnostics(\n                plugin = it,\n                videoUrls = allVideoUrls,\n                sources = preferredCandidates.map { it.source }\n            ) }.orEmpty()",
+      "count": 1,
+      "afterPositions": [
+        316382
+      ],
+      "beforeStateSha256LF": "39b5586268ff9e4c1333b02a9ae69258318edacf3cb0703065f37ab14fc9de70",
+      "afterStateSha256LF": "3f7dc8fb50fede68ebe53614e8cb7407194642896d91177d67f2e780ab4707bb"
+    },
+    {
+      "label": "Same accepted source health diagnostic effect",
+      "before": "plugin.buildPlaybackCdnDiagnostics(",
+      "after": "environment.plugins.buildPlaybackCdnDiagnostics(plugin = plugin,",
+      "count": 1,
+      "afterPositions": [
+        325432
+      ],
+      "beforeStateSha256LF": "3f7dc8fb50fede68ebe53614e8cb7407194642896d91177d67f2e780ab4707bb",
+      "afterStateSha256LF": "e0f7334718e966ba195497c2df477f18417db0cadc110ebbfd27b9cd529b3214"
+    },
+    {
+      "label": "Same accepted source probe, no HTTP inside Store/entry monitors",
+      "before": "plugin.probePlaybackCdnCandidates(",
+      "after": "environment.plugins.probePlaybackCdnCandidates(plugin = plugin,",
+      "count": 1,
+      "afterPositions": [
+        326372
+      ],
+      "beforeStateSha256LF": "e0f7334718e966ba195497c2df477f18417db0cadc110ebbfd27b9cd529b3214",
+      "afterStateSha256LF": "24b880b08958a35baca6b1ea6247413fb5190e0062f69e00081606b175ad58c3"
+    },
+    {
+      "label": "Actual current source health only, through same provider state",
+      "before": "plugin.recordPlaybackCdnEvent(current.playUrl, event)",
+      "after": "environment.plugins.recordPlaybackCdnEvent(plugin, current.playUrl, event)",
+      "count": 1,
+      "afterPositions": [
+        325352
+      ],
+      "beforeStateSha256LF": "24b880b08958a35baca6b1ea6247413fb5190e0062f69e00081606b175ad58c3",
+      "afterStateSha256LF": "e60e604509cadef5f0e20d2d126229ae07621910b33a1161c67209be53ee4371"
+    },
+    {
+      "label": "Same actual plugin configuration reader, required real range consumer remains explicit",
+      "before": "plugin.isAdaptivePrefetchEnabled()",
+      "after": "environment.plugins.isAdaptivePrefetchEnabled(plugin)",
+      "count": 1,
+      "afterPositions": [
+        320759
+      ],
+      "beforeStateSha256LF": "e60e604509cadef5f0e20d2d126229ae07621910b33a1161c67209be53ee4371",
+      "afterStateSha256LF": "eaa1714a98cabb9b4ef79f126ee98b98769d4764f49d0cda19390fba857cde5a"
+    },
+    {
+      "label": "Same Runtime history/view consent after actual native seek receipt; no second writer/upload",
+      "before": "            runCatching {\n                SponsorBlockInsightStore.appendRecord(context.pluginContext, record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }\n            getSessionPlayerPlugins()\n                .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()\n                .forEach { plugin ->\n                    plugin.uploadViewedSegmentIfEnabled(capturedSegmentId)\n                }",
+      "after": "            runCatching {\n                environment.plugins.recordSponsorSkip(record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }",
+      "count": 1,
+      "afterPositions": [
+        298237
+      ],
+      "beforeStateSha256LF": "eaa1714a98cabb9b4ef79f126ee98b98769d4764f49d0cda19390fba857cde5a",
+      "afterStateSha256LF": "3decae6eaca707ee20bf742a390009a9b8de0a09fd1c966ea280e9510afd6969"
+    },
+    {
+      "label": "Bind original Sponsor actions to the actual66 canonical synchronous native seek ticket",
+      "before": "    //  [新增] 播放完成监听器\n    private val playbackEndListener = object : Player.Listener {",
+      "after": "    // Windows admission: capture only the synchronous ticket emitted by THIS seek.\n    // No latest-ticket state or position/time matching is used. An unrelated/reentrant\n    // second submission fails closed. Restore the lexical slot on every exit.\n    private class SponsorSeekCapture {\n        var submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission? = null\n        var ambiguous = false\n        fun accept(value: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission) {\n            if (submission == null) submission = value\n            else if (submission != value) ambiguous = true\n        }\n    }\n    private val sponsorSeekCapture = ThreadLocal<SponsorSeekCapture?>()\n    private fun captureSponsorSeek(block: () -> Unit): com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission? {\n        val previous = sponsorSeekCapture.get()\n        val capture = SponsorSeekCapture()\n        sponsorSeekCapture.set(capture)\n        return try {\n            block()\n            capture.submission.takeUnless { capture.ambiguous }\n        } finally {\n            if (previous == null) sponsorSeekCapture.remove() else sponsorSeekCapture.set(previous)\n        }\n    }\n\n    //  [新增] 播放完成监听器\n    private val playbackEndListener = object : Player.Listener {\n        override fun onSeekQueued(submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission) {\n            sponsorSeekCapture.get()?.accept(submission)\n        }",
+      "count": 1,
+      "afterPositions": [
+        41081
+      ],
+      "beforeStateSha256LF": "3decae6eaca707ee20bf742a390009a9b8de0a09fd1c966ea280e9510afd6969",
+      "afterStateSha256LF": "8f2e0439b4c606a09c72450d7fdcbae342188ef3169abb9b50d29ef729a98d5f"
+    },
+    {
+      "label": "Auto skip records require exactly the ticket of the original resolved seek",
+      "before": "                                playbackUseCase.seekTo(\n                                    position = resolvedTargetPositionMs,\n                                    resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                                        playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                                    )\n                                )\n                                recordSponsorBlockSkip(\n                                    snapshot = snapshot,",
+      "after": "                                val submission = captureSponsorSeek {\n                                    playbackUseCase.seekTo(\n                                        position = resolvedTargetPositionMs,\n                                        resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                                            playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                                        )\n                                    )\n                                }\n                                recordSponsorBlockSkip(\n                                    submission = submission,\n                                    snapshot = snapshot,",
+      "count": 1,
+      "afterPositions": [
+        292989
+      ],
+      "beforeStateSha256LF": "8f2e0439b4c606a09c72450d7fdcbae342188ef3169abb9b50d29ef729a98d5f",
+      "afterStateSha256LF": "22f3b2f7578ed61fd219ce1aa39f0793ee2091e52465579439fd57a63563d923"
+    },
+    {
+      "label": "Preserve original manual metadata and mark ordering, defer only native-success history/view publication with exact ticket",
+      "before": "    fun skipCurrentSponsorSegment() {\n        val targetPosition = _sponsorSkipUiState.value.skipToMs.takeIf { it > 0L } ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId\n        val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n        var segmentCategory: String? = null\n        getSessionPlayerPlugins().forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin && segmentId != null) {\n                val segment = environment.plugins.markSponsorSkipped(plugin,segmentId)\n                segmentCategory = segment?.category\n                recordSponsorBlockSkip(\n                    snapshot = snapshot,\n                    segmentId = segment?.UUID ?: segmentId,\n                    segmentCategoryName = segment?.categoryName,\n                    startMs = segment?.startTimeMs,\n                    endMs = segment?.endTimeMs ?: targetPosition,\n                    trigger = SponsorBlockSkipTrigger.MANUAL\n                )\n            }\n        }\n        val resolvedTargetPosition = resolveSponsorBlockSkipTargetPositionMs(\n            requestedPositionMs = targetPosition,\n            durationMs = playbackUseCase.getDuration(),\n            category = segmentCategory,\n        )\n        playbackUseCase.seekTo(\n            position = resolvedTargetPosition,\n            resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n            )\n        )\n        clearSponsorSkipUi()\n    }\n\n    private fun recordSponsorBlockSkip(\n        snapshot: SponsorBlockVideoSnapshot?,\n        segmentId: String?,\n        segmentCategoryName: String?,\n        startMs: Long?,\n        endMs: Long,\n        trigger: SponsorBlockSkipTrigger\n    ) {\n        val context = appContext ?: return\n        val capturedSnapshot = snapshot ?: return\n        val capturedSegmentId = segmentId ?: return\n        val record = buildSponsorBlockSkipRecord(\n            snapshot = capturedSnapshot,\n            segmentId = capturedSegmentId,\n            segmentCategoryName = segmentCategoryName.orEmpty().ifBlank { \"可跳过片段\" },\n            startMs = startMs ?: 0L,\n            endMs = endMs,\n            trigger = trigger,\n            timestampMs = System.currentTimeMillis()\n        )\n        environment.invocations.launch(Dispatchers.IO) {\n            runCatching {\n                environment.plugins.recordSponsorSkip(record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }\n        }\n    }\n\n",
+      "after": "    fun skipCurrentSponsorSegment() {\n        val targetPosition = _sponsorSkipUiState.value.skipToMs.takeIf { it > 0L } ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId\n        val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n        var segmentCategory: String? = null\n        // Preserve original mark/metadata/timestamp order. Only the Windows history\n        // publication waits for the actual queued seek belonging to this action.\n        val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()\n        getSessionPlayerPlugins().forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin && segmentId != null) {\n                val segment = environment.plugins.markSponsorSkipped(plugin,segmentId)\n                segmentCategory = segment?.category\n                prepareSponsorBlockSkip(\n                    snapshot = snapshot,\n                    segmentId = segment?.UUID ?: segmentId,\n                    segmentCategoryName = segment?.categoryName,\n                    startMs = segment?.startTimeMs,\n                    endMs = segment?.endTimeMs ?: targetPosition,\n                    trigger = SponsorBlockSkipTrigger.MANUAL\n                )?.let { pendingRecords.add(it) }\n            }\n        }\n        val resolvedTargetPosition = resolveSponsorBlockSkipTargetPositionMs(\n            requestedPositionMs = targetPosition,\n            durationMs = playbackUseCase.getDuration(),\n            category = segmentCategory,\n        )\n        val submission = captureSponsorSeek {\n            playbackUseCase.seekTo(\n                position = resolvedTargetPosition,\n                resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                    playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                )\n            )\n        }\n        if (submission != null) pendingRecords.forEach { publishSponsorBlockSkip(submission, it) }\n        clearSponsorSkipUi()\n    }\n\n    private fun recordSponsorBlockSkip(\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission?,\n        snapshot: SponsorBlockVideoSnapshot?,\n        segmentId: String?,\n        segmentCategoryName: String?,\n        startMs: Long?,\n        endMs: Long,\n        trigger: SponsorBlockSkipTrigger\n    ) {\n        val ticket = submission ?: return\n        val record = prepareSponsorBlockSkip(snapshot, segmentId, segmentCategoryName, startMs, endMs, trigger) ?: return\n        publishSponsorBlockSkip(ticket, record)\n    }\n\n    private fun prepareSponsorBlockSkip(\n        snapshot: SponsorBlockVideoSnapshot?,\n        segmentId: String?,\n        segmentCategoryName: String?,\n        startMs: Long?,\n        endMs: Long,\n        trigger: SponsorBlockSkipTrigger\n    ): SponsorBlockSkipRecord? {\n        val context = appContext ?: return null\n        val capturedSnapshot = snapshot ?: return null\n        val capturedSegmentId = segmentId ?: return null\n        return buildSponsorBlockSkipRecord(\n            snapshot = capturedSnapshot,\n            segmentId = capturedSegmentId,\n            segmentCategoryName = segmentCategoryName.orEmpty().ifBlank { \"可跳过片段\" },\n            startMs = startMs ?: 0L,\n            endMs = endMs,\n            trigger = trigger,\n            timestampMs = System.currentTimeMillis()\n        )\n    }\n\n    private fun publishSponsorBlockSkip(\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission,\n        record: SponsorBlockSkipRecord\n    ) {\n        environment.invocations.launch(Dispatchers.IO) {\n            runCatching {\n                environment.plugins.recordSponsorSkip(submission, record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }\n        }\n    }\n\n",
+      "count": 1,
+      "afterPositions": [
+        297413
+      ],
+      "beforeStateSha256LF": "22f3b2f7578ed61fd219ce1aa39f0793ee2091e52465579439fd57a63563d923",
+      "afterStateSha256LF": "ea506c6e7e0a12facb799ebee4da83e382d56fe627e127cd6f4ffe9cc366b541"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: startPluginCheck",
+      "before": "    private fun startPluginCheck() {\n        pluginCheckJob?.cancel()\n        lastPluginDispatchPositionMs = null\n        pluginCheckJob = environment.invocations.launch {\n            while (true) {\n                // Same actual native lease; this also runs when all plugins are disabled.\n                environment.plugins.observeInheritedPluginMute()\n                val plugins = getSessionPlayerPlugins()\n                refreshSponsorContributionAvailability(plugins)\n                val currentVideo = _uiState.value as? VideoPlaybackUiState.Success\n                val sponsorPlugin = plugins\n                    .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()\n                    .firstOrNull()\n                if (sponsorPlugin == null) {\n                    sponsorBlockLoadedVideo = null\n                    sponsorBlockRetryVideo = null\n                    sponsorBlockLoadFailures = 0\n                    sponsorBlockRetryAtMs = 0L\n                    environment.plugins.onSponsorDisabled()\n                    _sponsorProgressMarkers.value = emptyList()\n                    clearSponsorSkipUi()\n                    sponsorVideoLabels.value = emptyMap()\n                    currentVideo?.let { updateSponsorVideoLabel(it.info.bvid, it.info.cid, emptyList()) }\n                } else if (currentVideo != null) {\n                    val bvid = currentVideo.info.bvid\n                    val cid = currentVideo.info.cid\n                    val videoKey = bvid to cid\n                    if (sponsorBlockRetryVideo != videoKey) {\n                        sponsorBlockRetryVideo = videoKey\n                        sponsorBlockLoadFailures = 0\n                        sponsorBlockRetryAtMs = 0L\n                        _sponsorProgressMarkers.value = emptyList()\n                        clearSponsorSkipUi()\n                    }\n                    if (sponsorBlockLoadedVideo != videoKey &&\n                        (System.nanoTime() / 1_000_000L) >= sponsorBlockRetryAtMs\n                    ) {\n                        try {\n                            environment.plugins.ensureSponsorLoaded(bvid, cid)\n                            sponsorBlockLoadedVideo = videoKey\n                            sponsorBlockLoadFailures = 0\n                            sponsorBlockRetryAtMs = 0L\n                            val stillCurrent = _uiState.value as? VideoPlaybackUiState.Success\n                            if (stillCurrent?.info?.bvid == bvid && stillCurrent.info.cid == cid) {\n                                _sponsorProgressMarkers.value = sponsorPlugin.getProgressMarkers()\n                                updateSponsorVideoLabel(bvid, cid, sponsorPlugin.getSegments())\n                            }\n                        } catch (e: CancellationException) {\n                            throw e\n                        } catch (e: Exception) {\n                            sponsorBlockLoadFailures += 1\n                            val retryDelayMs = (2_000L shl (sponsorBlockLoadFailures - 1).coerceAtMost(4))\n                                .coerceAtMost(30_000L)\n                            sponsorBlockRetryAtMs = (System.nanoTime() / 1_000_000L) + retryDelayMs\n                            Logger.e(\"PlayerVM\", \"SponsorBlock $bvid/$cid load failed; retry in ${retryDelayMs}ms\", e)\n                        }\n                    }\n                }\n                if (plugins.none { it is com.android.purebilibili.feature.plugin.SponsorBlockPlugin } &&\n                    _sponsorProgressMarkers.value.isNotEmpty()\n                ) {\n                    _sponsorProgressMarkers.value = emptyList()\n                    clearSponsorSkipUi()\n                }\n                val intervalMs = resolvePluginPollingIntervalMs(\n                    hasPlugins = plugins.isNotEmpty(),\n                    isPlaying = exoPlayer?.isPlaying == true\n                )\n                delay(intervalMs)\n                if (plugins.isEmpty()) continue\n\n                val currentPos = playbackUseCase.getCurrentPosition()\n                val restoreAt = sponsorMuteRestoreAtMs\n                if (restoreAt != null && currentPos >= restoreAt) {\n                    sponsorMutedOriginalVolume?.let { exoPlayer?.volume = it }\n                    sponsorMutedOriginalVolume = null\n                    sponsorMuteRestoreAtMs = null\n                }\n                if (!shouldDispatchPluginPositionUpdate(\n                        lastDispatchedPositionMs = lastPluginDispatchPositionMs,\n                        currentPositionMs = currentPos\n                    )\n                ) {\n                    continue\n                }\n                lastPluginDispatchPositionMs = currentPos\n                \n                for (plugin in plugins) {\n                    if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                        val activeVideo = _uiState.value as? VideoPlaybackUiState.Success\n                        val activeKey = activeVideo?.let { it.info.bvid to it.info.cid }\n                        if (activeKey == null || sponsorBlockLoadedVideo != activeKey) continue\n                    }\n                    try {\n                        when (val action = environment.plugins.onPositionUpdate(plugin, currentPos)) {\n                            is SkipAction.SkipTo -> {\n                                val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n                                val playerDurationMs = playbackUseCase.getDuration()\n                                val resolvedTargetPositionMs = resolveSponsorBlockSkipTargetPositionMs(\n                                    requestedPositionMs = action.positionMs,\n                                    durationMs = playerDurationMs,\n                                    category = action.category,\n                                )\n                                clearSponsorSkipUi()\n                                val submission = captureSponsorSeek {\n                                    playbackUseCase.seekTo(\n                                        position = resolvedTargetPositionMs,\n                                        resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                                            playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                                        )\n                                    )\n                                }\n                                recordSponsorBlockSkip(\n                                    submission = submission,\n                                    snapshot = snapshot,\n                                    segmentId = action.segmentId,\n                                    segmentCategoryName = action.categoryName,\n                                    startMs = action.startMs,\n                                    endMs = resolvedTargetPositionMs,\n                                    trigger = SponsorBlockSkipTrigger.AUTO\n                                )\n                                if (action.showToast) toast(action.reason)\n                                Logger.d(\n                                    \"PlayerVM\",\n                                    \"Plugin ${plugin.name} skip: requested=${action.positionMs}ms, \" +\n                                        \"resolved=${resolvedTargetPositionMs}ms, duration=${playerDurationMs}ms, \" +\n                                        \"category=${action.category}, state=${exoPlayer?.playbackState}, \" +\n                                        \"playWhenReady=${exoPlayer?.playWhenReady}\"\n                                )\n                            }\n                            is SkipAction.ShowButton -> {\n                                val nextUiState = reduceSponsorSkipUiState(\n                                    previous = _sponsorSkipUiState.value,\n                                    action = action\n                                )\n                                _sponsorSkipUiState.value = nextUiState\n                                _showSkipButton.value = nextUiState.visible\n                                _currentSkipReason.value = action.label\n                                if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                                    _currentSponsorSegment.value = plugin.getActiveSegment()\n                                }\n                            }\n                            is SkipAction.Mute -> {\n                                if (sponsorMutedOriginalVolume == null) {\n                                    sponsorMutedOriginalVolume = exoPlayer?.volume\n                                    exoPlayer?.volume = 0f\n                                    if (action.showToast) toast(action.reason)\n                                }\n                                sponsorMuteRestoreAtMs = action.untilMs\n                            }\n                            SkipAction.None -> {\n                                clearSponsorSkipUi()\n                            }\n                            else -> {}\n                        }\n                    } catch (e: Exception) {\n                        Logger.e(\"PlayerVM\", \"Plugin ${plugin.name} onPositionUpdate failed\", e)\n                    }\n                }\n            }\n        }\n    }",
+      "after": "    private fun startPluginCheck() {\n        pluginCheckJob?.cancel()\n        lastPluginDispatchPositionMs = null\n        pluginCheckJob = environment.invocations.launch {\n            while (true) {\n                // Same actual native lease; this also runs when all plugins are disabled.\n                environment.plugins.observeInheritedPluginMute()\n                val expected = environment.plugins.capturePlaybackDispatch()\n                if (expected == null) {\n                    delay(resolvePluginPollingIntervalMs(hasPlugins = false, isPlaying = false))\n                    continue\n                }\n                val plugins = getSessionPlayerPlugins().toList()\n                refreshSponsorContributionAvailability(plugins)\n                val currentVideo = _uiState.value as? VideoPlaybackUiState.Success\n                val sponsorPlugin = plugins\n                    .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()\n                    .firstOrNull()\n                if (sponsorPlugin == null) {\n                    sponsorBlockLoadedVideo = null\n                    sponsorBlockRetryVideo = null\n                    sponsorBlockLoadFailures = 0\n                    sponsorBlockRetryAtMs = 0L\n                    environment.plugins.onSponsorDisabled(expected)\n                    if (!environment.plugins.isPlaybackDispatchCurrent(expected)) continue\n                    _sponsorProgressMarkers.value = emptyList()\n                    clearSponsorSkipUi()\n                    sponsorVideoLabels.value = emptyMap()\n                    currentVideo?.let { updateSponsorVideoLabel(it.info.bvid, it.info.cid, emptyList()) }\n                } else if (currentVideo != null) {\n                    val bvid = currentVideo.info.bvid\n                    val cid = currentVideo.info.cid\n                    val videoKey = bvid to cid\n                    if (sponsorBlockRetryVideo != videoKey) {\n                        sponsorBlockRetryVideo = videoKey\n                        sponsorBlockLoadFailures = 0\n                        sponsorBlockRetryAtMs = 0L\n                        _sponsorProgressMarkers.value = emptyList()\n                        clearSponsorSkipUi()\n                    }\n                    if (sponsorBlockLoadedVideo != videoKey &&\n                        (System.nanoTime() / 1_000_000L) >= sponsorBlockRetryAtMs\n                    ) {\n                        try {\n                            environment.plugins.ensureSponsorLoaded(expected, bvid, cid)\n                            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) continue\n                            sponsorBlockLoadedVideo = videoKey\n                            sponsorBlockLoadFailures = 0\n                            sponsorBlockRetryAtMs = 0L\n                            val stillCurrent = _uiState.value as? VideoPlaybackUiState.Success\n                            if (stillCurrent?.info?.bvid == bvid && stillCurrent.info.cid == cid) {\n                                _sponsorProgressMarkers.value = sponsorPlugin.getProgressMarkers()\n                                updateSponsorVideoLabel(bvid, cid, sponsorPlugin.getSegments())\n                            }\n                        } catch (e: CancellationException) {\n                            throw e\n                        } catch (e: Exception) {\n                            sponsorBlockLoadFailures += 1\n                            val retryDelayMs = (2_000L shl (sponsorBlockLoadFailures - 1).coerceAtMost(4))\n                                .coerceAtMost(30_000L)\n                            sponsorBlockRetryAtMs = (System.nanoTime() / 1_000_000L) + retryDelayMs\n                            Logger.e(\"PlayerVM\", \"SponsorBlock $bvid/$cid load failed; retry in ${retryDelayMs}ms\", e)\n                        }\n                    }\n                }\n                if (plugins.none { it is com.android.purebilibili.feature.plugin.SponsorBlockPlugin } &&\n                    _sponsorProgressMarkers.value.isNotEmpty()\n                ) {\n                    _sponsorProgressMarkers.value = emptyList()\n                    clearSponsorSkipUi()\n                }\n                val intervalMs = resolvePluginPollingIntervalMs(\n                    hasPlugins = plugins.isNotEmpty(),\n                    isPlaying = exoPlayer?.isPlaying == true\n                )\n                delay(intervalMs)\n                if (!environment.plugins.isPlaybackDispatchCurrent(expected)) continue\n                if (plugins.isEmpty()) continue\n\n                val currentPos = playbackUseCase.getCurrentPosition()\n                val restoreAt = sponsorMuteRestoreAtMs\n                if (restoreAt != null && currentPos >= restoreAt) {\n                    sponsorMutedOriginalVolume?.let { exoPlayer?.volume = it }\n                    sponsorMutedOriginalVolume = null\n                    sponsorMuteRestoreAtMs = null\n                }\n                if (!shouldDispatchPluginPositionUpdate(\n                        lastDispatchedPositionMs = lastPluginDispatchPositionMs,\n                        currentPositionMs = currentPos\n                    )\n                ) {\n                    continue\n                }\n                lastPluginDispatchPositionMs = currentPos\n                \n                for (plugin in plugins) {\n                    if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                        val activeVideo = _uiState.value as? VideoPlaybackUiState.Success\n                        val activeKey = activeVideo?.let { it.info.bvid to it.info.cid }\n                        if (activeKey == null || sponsorBlockLoadedVideo != activeKey) continue\n                    }\n                    try {\n                        val action = environment.plugins.onPositionUpdate(expected, plugin, currentPos)\n                        if (!environment.plugins.isPlaybackDispatchCurrent(expected)) continue\n                        when (action) {\n                            is SkipAction.SkipTo -> {\n                                val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n                                val playerDurationMs = playbackUseCase.getDuration()\n                                val resolvedTargetPositionMs = resolveSponsorBlockSkipTargetPositionMs(\n                                    requestedPositionMs = action.positionMs,\n                                    durationMs = playerDurationMs,\n                                    category = action.category,\n                                )\n                                clearSponsorSkipUi()\n                                val submission = captureSponsorSeek {\n                                    environment.plugins.admitPlaybackDispatch(expected) {\n                                        playbackUseCase.seekTo(\n                                        position = resolvedTargetPositionMs,\n                                        resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                                            playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                                        )\n                                        )\n                                    }\n                                }\n                                recordSponsorBlockSkip(\n                                    expected = expected,\n                                    submission = submission,\n                                    snapshot = snapshot,\n                                    segmentId = action.segmentId,\n                                    segmentCategoryName = action.categoryName,\n                                    startMs = action.startMs,\n                                    endMs = resolvedTargetPositionMs,\n                                    trigger = SponsorBlockSkipTrigger.AUTO\n                                )\n                                if (action.showToast) toast(action.reason)\n                                Logger.d(\n                                    \"PlayerVM\",\n                                    \"Plugin ${plugin.name} skip: requested=${action.positionMs}ms, \" +\n                                        \"resolved=${resolvedTargetPositionMs}ms, duration=${playerDurationMs}ms, \" +\n                                        \"category=${action.category}, state=${exoPlayer?.playbackState}, \" +\n                                        \"playWhenReady=${exoPlayer?.playWhenReady}\"\n                                )\n                            }\n                            is SkipAction.ShowButton -> {\n                                val nextUiState = reduceSponsorSkipUiState(\n                                    previous = _sponsorSkipUiState.value,\n                                    action = action\n                                )\n                                _sponsorSkipUiState.value = nextUiState\n                                _showSkipButton.value = nextUiState.visible\n                                _currentSkipReason.value = action.label\n                                if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                                    _currentSponsorSegment.value = plugin.getActiveSegment()\n                                }\n                            }\n                            is SkipAction.Mute -> {\n                                if (sponsorMutedOriginalVolume == null) {\n                                    sponsorMutedOriginalVolume = exoPlayer?.volume\n                                    exoPlayer?.volume = 0f\n                                    if (action.showToast) toast(action.reason)\n                                }\n                                sponsorMuteRestoreAtMs = action.untilMs\n                            }\n                            SkipAction.None -> {\n                                clearSponsorSkipUi()\n                            }\n                            else -> {}\n                        }\n                    } catch (e: Exception) {\n                        Logger.e(\"PlayerVM\", \"Plugin ${plugin.name} onPositionUpdate failed\", e)\n                    }\n                }\n            }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        287054
+      ],
+      "beforeStateSha256LF": "ea506c6e7e0a12facb799ebee4da83e382d56fe627e127cd6f4ffe9cc366b541",
+      "afterStateSha256LF": "d8beea0226c0d641a77e0dce16919b12ff04a142c05661b59f0a47f9b5bb0631"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: dismissSponsorSkipButton",
+      "before": "    fun dismissSponsorSkipButton() {\n        getSessionPlayerPlugins().forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                environment.plugins.markSponsorSkipped(plugin,_sponsorSkipUiState.value.segmentId ?: return@forEach)\n            }\n        }\n        clearSponsorSkipUi()\n    }",
+      "after": "    fun dismissSponsorSkipButton() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId\n        val capturedPlugins = getSessionPlayerPlugins().toList()\n        environment.invocations.launch {\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n        capturedPlugins.forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                environment.plugins.markSponsorSkipped(expected,plugin,segmentId ?: return@forEach)\n                if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n            }\n        }\n        if (environment.plugins.isPlaybackDispatchCurrent(expected)) clearSponsorSkipUi()\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        297285
+      ],
+      "beforeStateSha256LF": "d8beea0226c0d641a77e0dce16919b12ff04a142c05661b59f0a47f9b5bb0631",
+      "afterStateSha256LF": "f85ce5416eba2fd83256ee67162619d60b18830207c102f8fffdb4ec80ec39f9"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: skipCurrentSponsorSegment",
+      "before": "    fun skipCurrentSponsorSegment() {\n        val targetPosition = _sponsorSkipUiState.value.skipToMs.takeIf { it > 0L } ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId\n        val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n        var segmentCategory: String? = null\n        // Preserve original mark/metadata/timestamp order. Only the Windows history\n        // publication waits for the actual queued seek belonging to this action.\n        val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()\n        getSessionPlayerPlugins().forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin && segmentId != null) {\n                val segment = environment.plugins.markSponsorSkipped(plugin,segmentId)\n                segmentCategory = segment?.category\n                prepareSponsorBlockSkip(\n                    snapshot = snapshot,\n                    segmentId = segment?.UUID ?: segmentId,\n                    segmentCategoryName = segment?.categoryName,\n                    startMs = segment?.startTimeMs,\n                    endMs = segment?.endTimeMs ?: targetPosition,\n                    trigger = SponsorBlockSkipTrigger.MANUAL\n                )?.let { pendingRecords.add(it) }\n            }\n        }\n        val resolvedTargetPosition = resolveSponsorBlockSkipTargetPositionMs(\n            requestedPositionMs = targetPosition,\n            durationMs = playbackUseCase.getDuration(),\n            category = segmentCategory,\n        )\n        val submission = captureSponsorSeek {\n            playbackUseCase.seekTo(\n                position = resolvedTargetPosition,\n                resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                    playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                )\n            )\n        }\n        if (submission != null) pendingRecords.forEach { publishSponsorBlockSkip(submission, it) }\n        clearSponsorSkipUi()\n    }",
+      "after": "    fun skipCurrentSponsorSegment() {\n        val targetPosition = _sponsorSkipUiState.value.skipToMs.takeIf { it > 0L } ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId\n        val snapshot = buildSponsorBlockVideoSnapshot(_uiState.value)\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val capturedPlugins = getSessionPlayerPlugins().toList()\n        environment.invocations.launch {\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n        var segmentCategory: String? = null\n        // Preserve original mark/metadata/timestamp order. Only the Windows history\n        // publication waits for the actual queued seek belonging to this action.\n        val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()\n        capturedPlugins.forEach { plugin ->\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin && segmentId != null) {\n                val segment = environment.plugins.markSponsorSkipped(expected,plugin,segmentId)\n                if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n                segmentCategory = segment?.category\n                prepareSponsorBlockSkip(\n                    snapshot = snapshot,\n                    segmentId = segment?.UUID ?: segmentId,\n                    segmentCategoryName = segment?.categoryName,\n                    startMs = segment?.startTimeMs,\n                    endMs = segment?.endTimeMs ?: targetPosition,\n                    trigger = SponsorBlockSkipTrigger.MANUAL\n                )?.let { pendingRecords.add(it) }\n            }\n        }\n        val resolvedTargetPosition = resolveSponsorBlockSkipTargetPositionMs(\n            requestedPositionMs = targetPosition,\n            durationMs = playbackUseCase.getDuration(),\n            category = segmentCategory,\n        )\n        val submission = captureSponsorSeek {\n            environment.plugins.admitPlaybackDispatch(expected) {\n                playbackUseCase.seekTo(\n                position = resolvedTargetPosition,\n                resumePlayback = shouldResumePlaybackAfterSponsorBlockSkip(\n                    playWhenReadyBeforeSkip = exoPlayer?.playWhenReady == true\n                )\n                )\n            }\n        }\n        if (submission != null) pendingRecords.forEach { publishSponsorBlockSkip(expected, submission, it) }\n        if (environment.plugins.isPlaybackDispatchCurrent(expected)) clearSponsorSkipUi()\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        298776
+      ],
+      "beforeStateSha256LF": "f85ce5416eba2fd83256ee67162619d60b18830207c102f8fffdb4ec80ec39f9",
+      "afterStateSha256LF": "7be891c43c9e541b0a35166fd8be5cbcfd00dfc617210e210e6d6eb60bdecd7a"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: recordSponsorBlockSkip",
+      "before": "    private fun recordSponsorBlockSkip(\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission?,\n        snapshot: SponsorBlockVideoSnapshot?,\n        segmentId: String?,\n        segmentCategoryName: String?,\n        startMs: Long?,\n        endMs: Long,\n        trigger: SponsorBlockSkipTrigger\n    ) {\n        val ticket = submission ?: return\n        val record = prepareSponsorBlockSkip(snapshot, segmentId, segmentCategoryName, startMs, endMs, trigger) ?: return\n        publishSponsorBlockSkip(ticket, record)\n    }",
+      "after": "    private fun recordSponsorBlockSkip(\n        expected: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication,\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission?,\n        snapshot: SponsorBlockVideoSnapshot?,\n        segmentId: String?,\n        segmentCategoryName: String?,\n        startMs: Long?,\n        endMs: Long,\n        trigger: SponsorBlockSkipTrigger\n    ) {\n        val ticket = submission ?: return\n        val record = prepareSponsorBlockSkip(snapshot, segmentId, segmentCategoryName, startMs, endMs, trigger) ?: return\n        publishSponsorBlockSkip(expected, ticket, record)\n    }",
+      "count": 1,
+      "afterPositions": [
+        301311
+      ],
+      "beforeStateSha256LF": "7be891c43c9e541b0a35166fd8be5cbcfd00dfc617210e210e6d6eb60bdecd7a",
+      "afterStateSha256LF": "5d32f9e90d6170b6c7eda484f63d7b224bb0077d10a76104d619cb2d0f43f186"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: publishSponsorBlockSkip",
+      "before": "    private fun publishSponsorBlockSkip(\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission,\n        record: SponsorBlockSkipRecord\n    ) {\n        environment.invocations.launch(Dispatchers.IO) {\n            runCatching {\n                environment.plugins.recordSponsorSkip(submission, record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }\n        }\n    }",
+      "after": "    private fun publishSponsorBlockSkip(\n        expected: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication,\n        submission: com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission,\n        record: SponsorBlockSkipRecord\n    ) {\n        environment.invocations.launch(Dispatchers.IO) {\n            runCatching {\n                environment.plugins.recordSponsorSkip(expected, submission, record)\n            }.onFailure { error ->\n                Logger.w(\"PlayerVM\", \"记录空降助手跳过历史失败: ${error.message}\")\n            }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        302759
+      ],
+      "beforeStateSha256LF": "5d32f9e90d6170b6c7eda484f63d7b224bb0077d10a76104d619cb2d0f43f186",
+      "afterStateSha256LF": "3e3a313a58d4e85c9f4b557a64e860e90e3b171a21e32d08708fa818ed442301"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: notifyPluginsOfExplicitSeek",
+      "before": "    fun notifyPluginsOfExplicitSeek(positionMs: Long) {\n        getSessionPlayerPlugins().forEach { plugin ->\n            environment.plugins.onUserSeek(plugin, positionMs)\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                _currentSponsorSegment.value = plugin.getActiveSegment()\n            }\n        }\n        val currentSegment = _currentSponsorSegment.value\n        if (currentSegment != null) {\n            val action = SkipAction.ShowButton(\n                skipToMs = currentSegment.endTimeMs,\n                label = \"跳过${currentSegment.categoryName}\",\n                segmentId = currentSegment.UUID\n            )\n            val nextUiState = reduceSponsorSkipUiState(_sponsorSkipUiState.value, action)\n            _sponsorSkipUiState.value = nextUiState\n            _showSkipButton.value = nextUiState.visible\n            _currentSkipReason.value = action.label\n        } else {\n            clearSponsorSkipUi()\n        }\n    }",
+      "after": "    fun notifyPluginsOfExplicitSeek(positionMs: Long) {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val capturedPlugins = getSessionPlayerPlugins().toList()\n        environment.invocations.launch {\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n        capturedPlugins.forEach { plugin ->\n            environment.plugins.onUserSeek(expected, plugin, positionMs)\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n            if (plugin is com.android.purebilibili.feature.plugin.SponsorBlockPlugin) {\n                _currentSponsorSegment.value = plugin.getActiveSegment()\n            }\n        }\n        val currentSegment = _currentSponsorSegment.value\n        if (currentSegment != null) {\n            val action = SkipAction.ShowButton(\n                skipToMs = currentSegment.endTimeMs,\n                label = \"跳过${currentSegment.categoryName}\",\n                segmentId = currentSegment.UUID\n            )\n            val nextUiState = reduceSponsorSkipUiState(_sponsorSkipUiState.value, action)\n            _sponsorSkipUiState.value = nextUiState\n            _showSkipButton.value = nextUiState.visible\n            _currentSkipReason.value = action.label\n        } else {\n            clearSponsorSkipUi()\n        }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        303313
+      ],
+      "beforeStateSha256LF": "3e3a313a58d4e85c9f4b557a64e860e90e3b171a21e32d08708fa818ed442301",
+      "afterStateSha256LF": "8fd1e85d6979d8a390554afc21d71cd375b63fc01c09a22497708d3fa4f76862"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: voteCurrentSponsorSegment",
+      "before": "    fun voteCurrentSponsorSegment(voteType: Int) {\n        val segmentId = _sponsorSkipUiState.value.segmentId ?: return\n        val plugin = getSessionPlayerPlugins()\n            .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()\n            .firstOrNull() ?: return\n        environment.invocations.launch(Dispatchers.IO) {\n            environment.plugins.voteSponsorSegment(plugin, segmentId, voteType)\n                .onSuccess { toast(\"已提交社区投票\") }\n                .onFailure { error -> toast(error.message ?: \"社区投票失败\") }\n        }\n    }",
+      "after": "    fun voteCurrentSponsorSegment(voteType: Int) {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val segmentId = _sponsorSkipUiState.value.segmentId ?: return\n        val plugin = getSessionPlayerPlugins()\n            .filterIsInstance<com.android.purebilibili.feature.plugin.SponsorBlockPlugin>()\n            .firstOrNull() ?: return\n        environment.invocations.launch(Dispatchers.IO) {\n            environment.plugins.voteSponsorSegment(expected, plugin, segmentId, voteType)\n                .onSuccess { if (environment.plugins.isPlaybackDispatchCurrent(expected)) toast(\"已提交社区投票\") }\n                .onFailure { error -> if (environment.plugins.isPlaybackDispatchCurrent(expected)) toast(error.message ?: \"社区投票失败\") }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        298204
+      ],
+      "beforeStateSha256LF": "8fd1e85d6979d8a390554afc21d71cd375b63fc01c09a22497708d3fa4f76862",
+      "afterStateSha256LF": "498585c1c347e917e753e578b738ee59f7f5f40323389f85d51ecb81cd1c69ce"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: submitSponsorContribution",
+      "before": "    fun submitSponsorContribution() {\n        val current = _sponsorContributionUiState.value\n        val request = sponsorContributionRequest ?: return\n        if (current.phase != SponsorContributionPhase.REVIEW) return\n        _sponsorContributionUiState.value = current.copy(\n            phase = SponsorContributionPhase.SUBMITTING,\n            message = null,\n        )\n        environment.invocations.launch(Dispatchers.IO) {\n            environment.plugins.submitSponsorSegment(\n                plugin = request.plugin,\n                bvid = request.bvid,\n                cid = request.cid,\n                videoDurationSeconds = request.durationSeconds,\n                startMs = request.startMs,\n                endMs = request.endMs,\n                category = current.category,\n                actionType = current.actionType,\n            ).onSuccess {\n                _sponsorContributionUiState.value = _sponsorContributionUiState.value.copy(\n                    phase = SponsorContributionPhase.SUCCESS,\n                    message = \"社区片段已提交\",\n                )\n            }.onFailure { error ->\n                _sponsorContributionUiState.value = _sponsorContributionUiState.value.copy(\n                    phase = SponsorContributionPhase.REVIEW,\n                    message = error.message ?: \"提交失败，请检查服务器后重试\",\n                )\n            }\n        }\n    }",
+      "after": "    fun submitSponsorContribution() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val current = _sponsorContributionUiState.value\n        val request = sponsorContributionRequest ?: return\n        if (current.phase != SponsorContributionPhase.REVIEW) return\n        _sponsorContributionUiState.value = current.copy(\n            phase = SponsorContributionPhase.SUBMITTING,\n            message = null,\n        )\n        environment.invocations.launch(Dispatchers.IO) {\n            environment.plugins.submitSponsorSegment(\n                expected = expected,\n                plugin = request.plugin,\n                bvid = request.bvid,\n                cid = request.cid,\n                videoDurationSeconds = request.durationSeconds,\n                startMs = request.startMs,\n                endMs = request.endMs,\n                category = current.category,\n                actionType = current.actionType,\n            ).onSuccess {\n                if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@onSuccess\n                _sponsorContributionUiState.value = _sponsorContributionUiState.value.copy(\n                    phase = SponsorContributionPhase.SUCCESS,\n                    message = \"社区片段已提交\",\n                )\n            }.onFailure { error ->\n                if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@onFailure\n                _sponsorContributionUiState.value = _sponsorContributionUiState.value.copy(\n                    phase = SponsorContributionPhase.REVIEW,\n                    message = error.message ?: \"提交失败，请检查服务器后重试\",\n                )\n            }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        309520
+      ],
+      "beforeStateSha256LF": "498585c1c347e917e753e578b738ee59f7f5f40323389f85d51ecb81cd1c69ce",
+      "afterStateSha256LF": "c1aa52bdf74a307d14297d47258943c1bd82e3bd28533d4a154d7211bf675da5"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: scheduleCdnDashPrefetch",
+      "before": "    private fun scheduleCdnDashPrefetch() {\n        playbackCdnPrefetchJob?.cancel()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val player = exoPlayer ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        if (!environment.plugins.isAdaptivePrefetchEnabled(plugin)) return\n        val bufferedDurationMs = (player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)\n        val track = current.cachedDashVideos.firstOrNull { video ->\n            video.id == current.currentQuality &&\n                (video.baseUrl == current.playUrl || video.backupUrl.orEmpty().contains(current.playUrl))\n        } ?: return\n        val indexRange = parseCdnByteRange(track.segmentBase?.indexRange) ?: return\n        val context = appContext ?: return\n        // 蜂窝网络下不做后台整段预取：跳看的视频每跳一次就会预取一批新分段，\n        // 是「流量机制太激进」反馈的主要来源。正常播放的随播缓存不受影响。\n        if (!environment.network.isWifi()) return\n        val candidates = current.allVideoUrls.ifEmpty { listOf(current.playUrl) }\n            .filter { it.isNotBlank() }\n        if (candidates.isEmpty()) return\n        playbackCdnPrefetchJob = environment.invocations.launch {\n            CdnDashSegmentPrefetcher(\n                context = context,\n                client = environment.repository.playbackCalls\n            ).prefetch(\n                CdnDashPrefetchRequest(\n                    candidates = candidates,\n                    indexRange = indexRange,\n                    trackCacheKey = buildCdnTrackCacheKey(\"video\", candidates.first()),\n                    bufferedDurationMs = bufferedDurationMs,\n                    frontierPositionMs = player.bufferedPosition\n                )\n            )\n        }\n    }",
+      "after": "    private fun scheduleCdnDashPrefetch() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        playbackCdnPrefetchJob?.cancel()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val player = exoPlayer ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        if (!environment.plugins.isAdaptivePrefetchEnabled(expected, plugin)) return\n        val bufferedDurationMs = (player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)\n        val track = current.cachedDashVideos.firstOrNull { video ->\n            video.id == current.currentQuality &&\n                (video.baseUrl == current.playUrl || video.backupUrl.orEmpty().contains(current.playUrl))\n        } ?: return\n        val indexRange = parseCdnByteRange(track.segmentBase?.indexRange) ?: return\n        val context = appContext ?: return\n        // 蜂窝网络下不做后台整段预取：跳看的视频每跳一次就会预取一批新分段，\n        // 是「流量机制太激进」反馈的主要来源。正常播放的随播缓存不受影响。\n        if (!environment.network.isWifi()) return\n        val candidates = current.allVideoUrls.ifEmpty { listOf(current.playUrl) }\n            .filter { it.isNotBlank() }\n        if (candidates.isEmpty()) return\n        playbackCdnPrefetchJob = environment.invocations.launch {\n            CdnDashSegmentPrefetcher(\n                context = context,\n                client = environment.repository.playbackCalls\n            ).prefetch(\n                CdnDashPrefetchRequest(\n                    candidates = candidates,\n                    indexRange = indexRange,\n                    trackCacheKey = buildCdnTrackCacheKey(\"video\", candidates.first()),\n                    bufferedDurationMs = bufferedDurationMs,\n                    frontierPositionMs = player.bufferedPosition\n                )\n            )\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        325886
+      ],
+      "beforeStateSha256LF": "c1aa52bdf74a307d14297d47258943c1bd82e3bd28533d4a154d7211bf675da5",
+      "afterStateSha256LF": "251d927f98b77631f0f0969a447659983f16e8d28439b0bbe8d05d7b3d78eac8"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: recordCurrentCdnHealthEvent",
+      "before": "    private fun recordCurrentCdnHealthEvent(event: CdnHealthEvent) {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        environment.plugins.recordPlaybackCdnEvent(plugin, current.playUrl, event)\n        val diagnostics = environment.plugins.buildPlaybackCdnDiagnostics(plugin = plugin,\n            videoUrls = current.allVideoUrls,\n            sources = current.cdnCandidateSources\n        )\n        if (diagnostics.isNotEmpty()) {\n            _uiState.value = current.copy(cdnLineDiagnostics = diagnostics)\n        }\n    }",
+      "after": "    private fun recordCurrentCdnHealthEvent(event: CdnHealthEvent) {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        environment.plugins.recordPlaybackCdnEvent(expected, plugin, current.playUrl, event)\n        val diagnostics = environment.plugins.buildPlaybackCdnDiagnostics(expected = expected, plugin = plugin,\n            videoUrls = current.allVideoUrls,\n            sources = current.cdnCandidateSources\n        )\n        if (diagnostics.isNotEmpty() && environment.plugins.isPlaybackDispatchCurrent(expected)) {\n            _uiState.value = current.copy(cdnLineDiagnostics = diagnostics)\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        330649
+      ],
+      "beforeStateSha256LF": "251d927f98b77631f0f0969a447659983f16e8d28439b0bbe8d05d7b3d78eac8",
+      "afterStateSha256LF": "b46283889a5aee9be443b699b0920a0e4118f7c73538187355c574c8bc4c77cb"
+    },
+    {
+      "label": "Same accepted publication captured before suspend: probeCurrentCdnCandidates",
+      "before": "    fun probeCurrentCdnCandidates() {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: run {\n            environment.invocations.launch { toast(\"CDN 优选插件未启用\") }\n            return\n        }\n        if (current.allVideoUrls.isEmpty()) {\n            environment.invocations.launch { toast(\"没有可检测的线路\") }\n            return\n        }\n        _uiState.value = current.copy(isCdnProbing = true)\n        environment.invocations.launch {\n            val diagnostics = withContext(Dispatchers.IO) {\n                environment.plugins.probePlaybackCdnCandidates(plugin = plugin,\n                    videoUrls = current.allVideoUrls,\n                    sources = current.cdnCandidateSources\n                )\n            }\n            _uiState.update { state ->\n                if (state is VideoPlaybackUiState.Success) {\n                    state.copy(\n                        cdnLineDiagnostics = diagnostics,\n                        isCdnProbing = false\n                    )\n                } else {\n                    state\n                }\n            }\n            toast(\"线路检测完成\")\n        }\n    }",
+      "after": "    fun probeCurrentCdnCandidates() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: run {\n            environment.invocations.launch { toast(\"CDN 优选插件未启用\") }\n            return\n        }\n        if (current.allVideoUrls.isEmpty()) {\n            environment.invocations.launch { toast(\"没有可检测的线路\") }\n            return\n        }\n        _uiState.value = current.copy(isCdnProbing = true)\n        environment.invocations.launch {\n            val diagnostics = withContext(Dispatchers.IO) {\n                environment.plugins.probePlaybackCdnCandidates(expected = expected, plugin = plugin,\n                    videoUrls = current.allVideoUrls,\n                    sources = current.cdnCandidateSources\n                )\n            }\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n            _uiState.update { state ->\n                if (state is VideoPlaybackUiState.Success && state.info.bvid == current.info.bvid && state.info.cid == current.info.cid && state.playUrl == current.playUrl) {\n                    state.copy(\n                        cdnLineDiagnostics = diagnostics,\n                        isCdnProbing = false\n                    )\n                } else {\n                    state\n                }\n            }\n            toast(\"线路检测完成\")\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        331486
+      ],
+      "beforeStateSha256LF": "b46283889a5aee9be443b699b0920a0e4118f7c73538187355c574c8bc4c77cb",
+      "afterStateSha256LF": "21087cdd727f8ea93794c1c03749e0d919b1e18cd1d69b1b038cc2c2817c144b"
+    },
+    {
+      "label": "Typed local AO failure outside Premium fallback never poisons video CDN health",
+      "before": "            recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYER_ERROR)\n            fallbackFromCdnRewrite(reason = \"player_error\")",
+      "after": "            // A proven local audio-output initialization failure cannot diagnose\n            // a remote video CDN or spend its generic source-recovery budget.\n            if (premiumFailureCode != null) return\n            recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYER_ERROR)\n            fallbackFromCdnRewrite(reason = \"player_error\")",
+      "count": 1,
+      "afterPositions": [
+        49432
+      ],
+      "beforeStateSha256LF": "21087cdd727f8ea93794c1c03749e0d919b1e18cd1d69b1b038cc2c2817c144b",
+      "afterStateSha256LF": "0afb1ce5c042d6ca6cb0ee7619f18335dc9d7461d961a7ba763796a634406cbb"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: resolvePlaybackCdnCandidateSelection",
+      "before": "    private fun resolvePlaybackCdnCandidateSelection(\n        videoUrl: String,\n        audioUrl: String?,\n        quality: Int,\n        cachedDashVideos: List<DashVideo>,\n        cachedDashAudios: List<DashAudio>,\n        adaptiveDashSource: AdaptiveDashPlaybackSource?\n    ): PlaybackCdnCandidateSelection {\n        val rawVideoUrls = buildPlaybackVideoUrlCandidates(\n            videoUrl = videoUrl,\n            quality = quality,\n            cachedDashVideos = cachedDashVideos\n        )\n\n        val rawAudioUrls = buildPlaybackAudioUrlCandidates(\n            audioUrl = audioUrl,\n            cachedDashAudios = cachedDashAudios\n        )\n        val originalCandidates = com.android.purebilibili.feature.plugin.buildPlaybackCdnCandidates(\n            videoUrls = rawVideoUrls,\n            audioUrls = rawAudioUrls\n        )\n\n        val cdnPlugin = environment.plugins\n            .enabledPlugins(PlaybackCdnPlugin::class)\n            .firstOrNull()\n        val cdnRewrite = cdnPlugin?.let { environment.plugins.rewritePlaybackCandidates(it, rawVideoUrls, rawAudioUrls) }\n\n        val preferredCandidates = applyPlaybackCdnPreference(\n            candidates = cdnRewrite?.candidates ?: originalCandidates,\n            preference = playbackCdnPreference.value,\n        )\n        val allVideoUrls = preferredCandidates.map { it.videoUrl }\n        val allAudioUrls = preferredCandidates.map { it.audioUrl.orEmpty() }\n        val selectedVideoUrl = allVideoUrls.firstOrNull() ?: videoUrl\n        val selectedAudioUrl = allAudioUrls.firstOrNull()?.takeIf { it.isNotBlank() } ?: audioUrl\n        val selectedAdaptiveDashSource =\n            if (selectedVideoUrl == videoUrl && selectedAudioUrl == audioUrl) {\n                adaptiveDashSource\n            } else {\n                null\n            }\n\n        return PlaybackCdnCandidateSelection(\n            playUrl = selectedVideoUrl,\n            audioUrl = selectedAudioUrl,\n            adaptiveDashSource = selectedAdaptiveDashSource,\n            allVideoUrls = allVideoUrls,\n            allAudioUrls = allAudioUrls,\n            cdnCacheKeysByUrl = buildPlaybackCdnCacheKeys(preferredCandidates),\n            candidateSources = preferredCandidates.map { it.source },\n            regionLabel = cdnRewrite?.regionLabel,\n            lineDiagnostics = cdnPlugin?.let { environment.plugins.buildPlaybackCdnDiagnostics(\n                plugin = it,\n                videoUrls = allVideoUrls,\n                sources = preferredCandidates.map { it.source }\n            ) }.orEmpty().ifEmpty {\n                buildCdnLineDiagnostics(\n                    urls = allVideoUrls,\n                    healthByHost = emptyMap(),\n                    sources = preferredCandidates.map { it.source }\n                )\n            },\n            fallbackState = buildPlaybackCdnFallbackState(\n                selectedVideoUrl = selectedVideoUrl,\n                selectedAudioUrl = selectedAudioUrl,\n                originalVideoUrl = videoUrl,\n                originalAudioUrl = audioUrl,\n                regionLabel = cdnRewrite?.regionLabel,\n                audioFallbackUrl = rawAudioUrls.drop(1).firstOrNull(),\n                fallbackCandidates = originalCandidates,\n                usesCustomRule = cdnRewrite?.sources?.firstOrNull() ==\n                    com.android.purebilibili.feature.plugin.PlaybackCdnCandidateSource.CUSTOM\n            )\n        )\n    }",
+      "after": "    private suspend fun resolvePlaybackCdnCandidateSelection(\n        videoUrl: String,\n        audioUrl: String?,\n        quality: Int,\n        cachedDashVideos: List<DashVideo>,\n        cachedDashAudios: List<DashAudio>,\n        adaptiveDashSource: AdaptiveDashPlaybackSource?\n    ): PlaybackCdnCandidateSelection {\n        val rawVideoUrls = buildPlaybackVideoUrlCandidates(\n            videoUrl = videoUrl,\n            quality = quality,\n            cachedDashVideos = cachedDashVideos\n        )\n\n        val rawAudioUrls = buildPlaybackAudioUrlCandidates(\n            audioUrl = audioUrl,\n            cachedDashAudios = cachedDashAudios\n        )\n        val originalCandidates = com.android.purebilibili.feature.plugin.buildPlaybackCdnCandidates(\n            videoUrls = rawVideoUrls,\n            audioUrls = rawAudioUrls\n        )\n\n        val cdnPlugin = environment.plugins\n            .enabledPlugins(PlaybackCdnPlugin::class)\n            .firstOrNull()\n        val cdnRewrite = cdnPlugin?.let { environment.plugins.rewritePlaybackCandidates(it, rawVideoUrls, rawAudioUrls) }\n\n        val preferredCandidates = applyPlaybackCdnPreference(\n            candidates = cdnRewrite?.candidates ?: originalCandidates,\n            preference = playbackCdnPreference.value,\n        )\n        val allVideoUrls = preferredCandidates.map { it.videoUrl }\n        val allAudioUrls = preferredCandidates.map { it.audioUrl.orEmpty() }\n        val selectedVideoUrl = allVideoUrls.firstOrNull() ?: videoUrl\n        val selectedAudioUrl = allAudioUrls.firstOrNull()?.takeIf { it.isNotBlank() } ?: audioUrl\n        val selectedAdaptiveDashSource =\n            if (selectedVideoUrl == videoUrl && selectedAudioUrl == audioUrl) {\n                adaptiveDashSource\n            } else {\n                null\n            }\n\n        return PlaybackCdnCandidateSelection(\n            playUrl = selectedVideoUrl,\n            audioUrl = selectedAudioUrl,\n            adaptiveDashSource = selectedAdaptiveDashSource,\n            allVideoUrls = allVideoUrls,\n            allAudioUrls = allAudioUrls,\n            cdnCacheKeysByUrl = buildPlaybackCdnCacheKeys(preferredCandidates),\n            candidateSources = preferredCandidates.map { it.source },\n            regionLabel = cdnRewrite?.regionLabel,\n            lineDiagnostics = cdnPlugin?.let { environment.plugins.buildPlaybackCdnDiagnostics(\n                plugin = it,\n                videoUrls = allVideoUrls,\n                sources = preferredCandidates.map { it.source }\n            ) }.orEmpty().ifEmpty {\n                buildCdnLineDiagnostics(\n                    urls = allVideoUrls,\n                    healthByHost = emptyMap(),\n                    sources = preferredCandidates.map { it.source }\n                )\n            },\n            fallbackState = buildPlaybackCdnFallbackState(\n                selectedVideoUrl = selectedVideoUrl,\n                selectedAudioUrl = selectedAudioUrl,\n                originalVideoUrl = videoUrl,\n                originalAudioUrl = audioUrl,\n                regionLabel = cdnRewrite?.regionLabel,\n                audioFallbackUrl = rawAudioUrls.drop(1).firstOrNull(),\n                fallbackCandidates = originalCandidates,\n                usesCustomRule = cdnRewrite?.sources?.firstOrNull() ==\n                    com.android.purebilibili.feature.plugin.PlaybackCdnCandidateSource.CUSTOM\n            )\n        )\n    }",
+      "count": 1,
+      "afterPositions": [
+        319744
+      ],
+      "beforeStateSha256LF": "0afb1ce5c042d6ca6cb0ee7619f18335dc9d7461d961a7ba763796a634406cbb",
+      "afterStateSha256LF": "d65c3c2fcb5ed1fcb3b75448fcb68069dce550d7748dd6f77a26b06e1e72a307"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: applyHdrUpgrade",
+      "before": "    private fun applyHdrUpgrade(playbackKey: String, hdrData: PlayUrlData) {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val currentPos = exoPlayer?.currentPosition?.coerceAtLeast(0L) ?: 0L\n        val wasPlaying = exoPlayer?.isPlaying ?: false\n\n        val dash = hdrData.dash\n        if (dash == null || dash.video.isEmpty()) {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=NO_DASH_VIDEO_DATA\"\n            )\n            return\n        }\n\n        val videoCodecPreference = _videoCodecPreference.value\n        val videoSecondCodecPreference = _videoSecondCodecPreference.value\n        val isHevcSupported = environment.useCase.capabilities.isHevcSupported()\n        val isAv1Supported = environment.useCase.capabilities.isAv1Supported()\n        val audioQualityPreference = current.requestedAudioQuality\n        val hdrPlaybackQualityMode = PlaybackQualityMode.LOCKED(125)\n\n        val selection = playbackUseCase.resolvePlaybackSelection(\n            playUrlData = hdrData,\n            targetQuality = 125,\n            audioQualityPreference = audioQualityPreference,\n            playbackSpeed = exoPlayer?.playbackParameters?.speed ?: 1.0f,\n            videoCodecPreference = videoCodecPreference,\n            videoSecondCodecPreference = videoSecondCodecPreference,\n            playbackQualityMode = hdrPlaybackQualityMode,\n            isHevcSupported = isHevcSupported,\n            isAv1Supported = isAv1Supported\n        ) ?: run {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=RESOLVE_SELECTION_NULL\"\n            )\n            return\n        }\n\n        if (!isExactRequestedQualitySelected(125, selection.actualQuality)) {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=ACTUAL_QUALITY_MISMATCH actual=${selection.actualQuality}\"\n            )\n            return\n        }\n\n        val cdnSelection = resolvePlaybackCdnCandidateSelection(\n            videoUrl = selection.videoUrl,\n            audioUrl = selection.audioUrl,\n            quality = selection.actualQuality,\n            cachedDashVideos = selection.cachedDashVideos,\n            cachedDashAudios = selection.cachedDashAudios,\n            adaptiveDashSource = selection.adaptiveDashSource\n        )\n\n        val playWhenReady = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n\n        applyQualityChangeResult(\n            payload = QualityChangePayload(\n                playUrl = selection.videoUrl,\n                audioUrl = selection.audioUrl,\n                actualQuality = selection.actualQuality,\n                adaptiveDashSource = selection.adaptiveDashSource,\n                cachedDashVideos = selection.cachedDashVideos,\n                cachedDashAudios = selection.cachedDashAudios,\n                cachedDash = selection.cachedDash,\n                requestedAudioQuality = selection.requestedAudioQuality,\n                selectedAudioQuality = selection.selectedAudioQuality,\n                availableAudioQualities = selection.availableAudioQualities,\n                audioFallbackReason = selection.audioFallbackReason,\n                qualityIds = selection.qualityIds,\n                qualityLabels = selection.qualityLabels,\n                switchableQualityIds = selection.switchableQualityIds,\n                wasFallback = false,\n                currentPos = currentPos,\n                playWhenReady = playWhenReady,\n                playbackQualityMode = hdrPlaybackQualityMode\n            ),\n            reason = QualityChangeReason.INITIAL_AUTO_UPGRADE,\n            cdnSelection = cdnSelection\n        )\n\n        Logger.d(\n            \"PlayerVM\",\n            \"PLAY_DIAG premium_upgrade_applied playbackKey=$playbackKey \" +\n                \"quality=125 position=$currentPos wasPlaying=$wasPlaying\"\n        )\n    }",
+      "after": "    private suspend fun applyHdrUpgrade(playbackKey: String, hdrData: PlayUrlData) {\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val currentPos = exoPlayer?.currentPosition?.coerceAtLeast(0L) ?: 0L\n        val wasPlaying = exoPlayer?.isPlaying ?: false\n\n        val dash = hdrData.dash\n        if (dash == null || dash.video.isEmpty()) {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=NO_DASH_VIDEO_DATA\"\n            )\n            return\n        }\n\n        val videoCodecPreference = _videoCodecPreference.value\n        val videoSecondCodecPreference = _videoSecondCodecPreference.value\n        val isHevcSupported = environment.useCase.capabilities.isHevcSupported()\n        val isAv1Supported = environment.useCase.capabilities.isAv1Supported()\n        val audioQualityPreference = current.requestedAudioQuality\n        val hdrPlaybackQualityMode = PlaybackQualityMode.LOCKED(125)\n\n        val selection = playbackUseCase.resolvePlaybackSelection(\n            playUrlData = hdrData,\n            targetQuality = 125,\n            audioQualityPreference = audioQualityPreference,\n            playbackSpeed = exoPlayer?.playbackParameters?.speed ?: 1.0f,\n            videoCodecPreference = videoCodecPreference,\n            videoSecondCodecPreference = videoSecondCodecPreference,\n            playbackQualityMode = hdrPlaybackQualityMode,\n            isHevcSupported = isHevcSupported,\n            isAv1Supported = isAv1Supported\n        ) ?: run {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=RESOLVE_SELECTION_NULL\"\n            )\n            return\n        }\n\n        if (!isExactRequestedQualitySelected(125, selection.actualQuality)) {\n            Logger.d(\n                \"PlayerVM\",\n                \"PLAY_DIAG premium_upgrade_failed playbackKey=$playbackKey \" +\n                    \"reason=ACTUAL_QUALITY_MISMATCH actual=${selection.actualQuality}\"\n            )\n            return\n        }\n\n        val cdnSelection = resolvePlaybackCdnCandidateSelection(\n            videoUrl = selection.videoUrl,\n            audioUrl = selection.audioUrl,\n            quality = selection.actualQuality,\n            cachedDashVideos = selection.cachedDashVideos,\n            cachedDashAudios = selection.cachedDashAudios,\n            adaptiveDashSource = selection.adaptiveDashSource\n        )\n\n        val playWhenReady = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n\n        applyQualityChangeResult(\n            payload = QualityChangePayload(\n                playUrl = selection.videoUrl,\n                audioUrl = selection.audioUrl,\n                actualQuality = selection.actualQuality,\n                adaptiveDashSource = selection.adaptiveDashSource,\n                cachedDashVideos = selection.cachedDashVideos,\n                cachedDashAudios = selection.cachedDashAudios,\n                cachedDash = selection.cachedDash,\n                requestedAudioQuality = selection.requestedAudioQuality,\n                selectedAudioQuality = selection.selectedAudioQuality,\n                availableAudioQualities = selection.availableAudioQualities,\n                audioFallbackReason = selection.audioFallbackReason,\n                qualityIds = selection.qualityIds,\n                qualityLabels = selection.qualityLabels,\n                switchableQualityIds = selection.switchableQualityIds,\n                wasFallback = false,\n                currentPos = currentPos,\n                playWhenReady = playWhenReady,\n                playbackQualityMode = hdrPlaybackQualityMode\n            ),\n            reason = QualityChangeReason.INITIAL_AUTO_UPGRADE,\n            cdnSelection = cdnSelection\n        )\n\n        Logger.d(\n            \"PlayerVM\",\n            \"PLAY_DIAG premium_upgrade_applied playbackKey=$playbackKey \" +\n                \"quality=125 position=$currentPos wasPlaying=$wasPlaying\"\n        )\n    }",
+      "count": 1,
+      "afterPositions": [
+        111003
+      ],
+      "beforeStateSha256LF": "d65c3c2fcb5ed1fcb3b75448fcb68069dce550d7748dd6f77a26b06e1e72a307",
+      "afterStateSha256LF": "bb9ba07380f33c02e784f857991868e1b5b36e2cf8e82e78d3445a74f4bae61c"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: recordCurrentCdnHealthEvent",
+      "before": "    private fun recordCurrentCdnHealthEvent(event: CdnHealthEvent) {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        environment.plugins.recordPlaybackCdnEvent(expected, plugin, current.playUrl, event)\n        val diagnostics = environment.plugins.buildPlaybackCdnDiagnostics(expected = expected, plugin = plugin,\n            videoUrls = current.allVideoUrls,\n            sources = current.cdnCandidateSources\n        )\n        if (diagnostics.isNotEmpty() && environment.plugins.isPlaybackDispatchCurrent(expected)) {\n            _uiState.value = current.copy(cdnLineDiagnostics = diagnostics)\n        }\n    }",
+      "after": "    private suspend fun recordCurrentCdnHealthEvent(\n        event: CdnHealthEvent,\n        expected: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication\n    ) {\n        if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        environment.plugins.recordPlaybackCdnEvent(expected, plugin, current.playUrl, event)\n        val diagnostics = environment.plugins.buildPlaybackCdnDiagnostics(expected = expected, plugin = plugin,\n            videoUrls = current.allVideoUrls,\n            sources = current.cdnCandidateSources\n        )\n        if (diagnostics.isNotEmpty() && environment.plugins.isPlaybackDispatchCurrent(expected)) {\n            _uiState.update { latest ->\n                if (latest is VideoPlaybackUiState.Success && latest.info.bvid == current.info.bvid &&\n                    latest.info.cid == current.info.cid && latest.playUrl == current.playUrl)\n                    latest.copy(cdnLineDiagnostics = diagnostics) else latest\n            }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        330877
+      ],
+      "beforeStateSha256LF": "bb9ba07380f33c02e784f857991868e1b5b36e2cf8e82e78d3445a74f4bae61c",
+      "afterStateSha256LF": "2d902958ff9da399530c5412b6bcfe4e56bdca4698e7f24da6b195d1a5955679"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: markPlaybackCdnReadyIfMediaReady",
+      "before": "    private fun markPlaybackCdnReadyIfMediaReady() {\n        val state = playbackCdnFallbackState\n        if (state.usesCdnRewrite && state.selectedAudioUrl != null && !hasSelectedAudioTrack(exoPlayer)) {\n            recordCurrentCdnHealthEvent(CdnHealthEvent.AUDIO_TRACK_MISSING)\n            Logger.d(\n                \"PlayerVM\",\n                \"CDN fallback remains armed: region=${state.regionLabel ?: \"unknown\"}, \" +\n                    \"audio=${hostForPlaybackLog(state.selectedAudioUrl)}, fallbackAudio=${hostForPlaybackLog(state.fallbackAudioUrl)}\"\n            )\n            return\n        }\n        playbackCdnFallbackJob?.cancel()\n        playbackCdnFallbackJob = null\n    }",
+      "after": "    private suspend fun markPlaybackCdnReadyIfMediaReady(\n        expected: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication\n    ) {\n        if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return\n        val state = playbackCdnFallbackState\n        if (state.usesCdnRewrite && state.selectedAudioUrl != null && !hasSelectedAudioTrack(exoPlayer)) {\n            recordCurrentCdnHealthEvent(CdnHealthEvent.AUDIO_TRACK_MISSING, expected)\n            Logger.d(\n                \"PlayerVM\",\n                \"CDN fallback remains armed: region=${state.regionLabel ?: \"unknown\"}, \" +\n                    \"audio=${hostForPlaybackLog(state.selectedAudioUrl)}, fallbackAudio=${hostForPlaybackLog(state.fallbackAudioUrl)}\"\n            )\n            return\n        }\n        playbackCdnFallbackJob?.cancel()\n        playbackCdnFallbackJob = null\n    }",
+      "count": 1,
+      "afterPositions": [
+        325428
+      ],
+      "beforeStateSha256LF": "2d902958ff9da399530c5412b6bcfe4e56bdca4698e7f24da6b195d1a5955679",
+      "afterStateSha256LF": "450eb6e40568395f7aa29258b0dfa4373f614b8e626791141808327b1d234358"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: fallbackFromCdnRewrite",
+      "before": "    private fun fallbackFromCdnRewrite(reason: String) {\n        val state = playbackCdnFallbackState\n        if (!shouldFallbackFromCdnRewrite(state, playbackReady = false)) return\n        val event = if (reason == \"first_frame_timeout\") {\n            CdnHealthEvent.FIRST_FRAME_TIMEOUT\n        } else {\n            CdnHealthEvent.PLAYER_ERROR\n        }\n        recordCurrentCdnHealthEvent(event)\n        val fallbackVideoUrl = state.fallbackVideoUrl ?: return\n        val currentPos = exoPlayer?.currentPosition?.coerceAtLeast(0L) ?: 0L\n        val playWhenReadyAfterFallback = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n        val nextState = state.advanceFallback(\n            currentFallbackVideoUrl = fallbackVideoUrl,\n            currentFallbackAudioUrl = state.fallbackAudioUrl\n        )\n        playbackCdnFallbackState = nextState\n        playbackCdnFallbackJob?.cancel()\n        playbackCdnFallbackJob = null\n\n        Logger.w(\n            \"PlayerVM\",\n            \"CDN fallback: reason=$reason, region=${state.regionLabel ?: \"unknown\"}, \" +\n                \"selected=${hostForPlaybackLog(state.selectedVideoUrl)}, fallback=${hostForPlaybackLog(fallbackVideoUrl)}, \" +\n                \"audio=${hostForPlaybackLog(state.selectedAudioUrl)}, fallbackAudio=${hostForPlaybackLog(state.fallbackAudioUrl)}, \" +\n                \"quality=${_audioQualityPreference.value}\"\n        )\n        playResolvedPlayback(\n            videoUrl = fallbackVideoUrl,\n            audioUrl = state.fallbackAudioUrl,\n            adaptiveDashSource = null,\n            startPositionMs = currentPos,\n            playWhenReady = playWhenReadyAfterFallback,\n            cdnFallbackState = nextState,\n            cdnCacheKeysByUrl = com.android.purebilibili.feature.plugin\n                .buildPlaybackCdnCacheKeys(state.fallbackCandidates)\n        )\n        _uiState.update { current ->\n            if (current is VideoPlaybackUiState.Success) {\n                val fallbackIndex = current.allVideoUrls.indexOf(fallbackVideoUrl)\n                    .takeIf { it >= 0 }\n                    ?: current.currentCdnIndex\n                current.copy(\n                    playUrl = fallbackVideoUrl,\n                    audioUrl = state.fallbackAudioUrl,\n                    adaptiveDashSource = null,\n                    currentCdnIndex = fallbackIndex\n                )\n            } else {\n                current\n            }\n        }\n        if (state.usesCustomRule) {\n            environment.invocations.launch { toast(\"自定义线路不可用，已切换至原始线路\") }\n        }\n    }",
+      "after": "    private suspend fun fallbackFromCdnRewrite(\n        reason: String,\n        expectedSource: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication? = null\n    ) {\n        val expected = expectedSource ?: environment.plugins.capturePlaybackDispatch() ?: return\n        if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return\n        val state = playbackCdnFallbackState\n        if (!shouldFallbackFromCdnRewrite(state, playbackReady = false)) return\n        val event = if (reason == \"first_frame_timeout\") {\n            CdnHealthEvent.FIRST_FRAME_TIMEOUT\n        } else {\n            CdnHealthEvent.PLAYER_ERROR\n        }\n        recordCurrentCdnHealthEvent(event, expected)\n        if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return\n        val fallbackVideoUrl = state.fallbackVideoUrl ?: return\n        val currentPos = exoPlayer?.currentPosition?.coerceAtLeast(0L) ?: 0L\n        val playWhenReadyAfterFallback = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n        val nextState = state.advanceFallback(\n            currentFallbackVideoUrl = fallbackVideoUrl,\n            currentFallbackAudioUrl = state.fallbackAudioUrl\n        )\n        playbackCdnFallbackState = nextState\n        playbackCdnFallbackJob?.cancel()\n        playbackCdnFallbackJob = null\n\n        Logger.w(\n            \"PlayerVM\",\n            \"CDN fallback: reason=$reason, region=${state.regionLabel ?: \"unknown\"}, \" +\n                \"selected=${hostForPlaybackLog(state.selectedVideoUrl)}, fallback=${hostForPlaybackLog(fallbackVideoUrl)}, \" +\n                \"audio=${hostForPlaybackLog(state.selectedAudioUrl)}, fallbackAudio=${hostForPlaybackLog(state.fallbackAudioUrl)}, \" +\n                \"quality=${_audioQualityPreference.value}\"\n        )\n        playResolvedPlayback(\n            videoUrl = fallbackVideoUrl,\n            audioUrl = state.fallbackAudioUrl,\n            adaptiveDashSource = null,\n            startPositionMs = currentPos,\n            playWhenReady = playWhenReadyAfterFallback,\n            cdnFallbackState = nextState,\n            cdnCacheKeysByUrl = com.android.purebilibili.feature.plugin\n                .buildPlaybackCdnCacheKeys(state.fallbackCandidates)\n        )\n        _uiState.update { current ->\n            if (current is VideoPlaybackUiState.Success) {\n                val fallbackIndex = current.allVideoUrls.indexOf(fallbackVideoUrl)\n                    .takeIf { it >= 0 }\n                    ?: current.currentCdnIndex\n                current.copy(\n                    playUrl = fallbackVideoUrl,\n                    audioUrl = state.fallbackAudioUrl,\n                    adaptiveDashSource = null,\n                    currentCdnIndex = fallbackIndex\n                )\n            } else {\n                current\n            }\n        }\n        if (state.usesCustomRule) {\n            environment.invocations.launch { toast(\"自定义线路不可用，已切换至原始线路\") }\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        328164
+      ],
+      "beforeStateSha256LF": "450eb6e40568395f7aa29258b0dfa4373f614b8e626791141808327b1d234358",
+      "afterStateSha256LF": "19d6c331d97cb26aa8e0f6b2496b22887f528a7d44a2941c8e75b04410d6d9d1"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: scheduleCdnDashPrefetch",
+      "before": "    private fun scheduleCdnDashPrefetch() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        playbackCdnPrefetchJob?.cancel()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val player = exoPlayer ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        if (!environment.plugins.isAdaptivePrefetchEnabled(expected, plugin)) return\n        val bufferedDurationMs = (player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)\n        val track = current.cachedDashVideos.firstOrNull { video ->\n            video.id == current.currentQuality &&\n                (video.baseUrl == current.playUrl || video.backupUrl.orEmpty().contains(current.playUrl))\n        } ?: return\n        val indexRange = parseCdnByteRange(track.segmentBase?.indexRange) ?: return\n        val context = appContext ?: return\n        // 蜂窝网络下不做后台整段预取：跳看的视频每跳一次就会预取一批新分段，\n        // 是「流量机制太激进」反馈的主要来源。正常播放的随播缓存不受影响。\n        if (!environment.network.isWifi()) return\n        val candidates = current.allVideoUrls.ifEmpty { listOf(current.playUrl) }\n            .filter { it.isNotBlank() }\n        if (candidates.isEmpty()) return\n        playbackCdnPrefetchJob = environment.invocations.launch {\n            CdnDashSegmentPrefetcher(\n                context = context,\n                client = environment.repository.playbackCalls\n            ).prefetch(\n                CdnDashPrefetchRequest(\n                    candidates = candidates,\n                    indexRange = indexRange,\n                    trackCacheKey = buildCdnTrackCacheKey(\"video\", candidates.first()),\n                    bufferedDurationMs = bufferedDurationMs,\n                    frontierPositionMs = player.bufferedPosition\n                )\n            )\n        }\n    }",
+      "after": "    private fun scheduleCdnDashPrefetch() {\n        val expected = environment.plugins.capturePlaybackDispatch() ?: return\n        playbackCdnPrefetchJob?.cancel()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        val player = exoPlayer ?: return\n        val plugin = environment.plugins.enabledPlugins(PlaybackCdnPlugin::class).firstOrNull() ?: return\n        val bufferedDurationMs = (player.bufferedPosition - player.currentPosition).coerceAtLeast(0L)\n        val track = current.cachedDashVideos.firstOrNull { video ->\n            video.id == current.currentQuality &&\n                (video.baseUrl == current.playUrl || video.backupUrl.orEmpty().contains(current.playUrl))\n        } ?: return\n        val indexRange = parseCdnByteRange(track.segmentBase?.indexRange) ?: return\n        val context = appContext ?: return\n        // 蜂窝网络下不做后台整段预取：跳看的视频每跳一次就会预取一批新分段，\n        // 是「流量机制太激进」反馈的主要来源。正常播放的随播缓存不受影响。\n        if (!environment.network.isWifi()) return\n        val candidates = current.allVideoUrls.ifEmpty { listOf(current.playUrl) }\n            .filter { it.isNotBlank() }\n        if (candidates.isEmpty()) return\n        playbackCdnPrefetchJob = environment.invocations.launch {\n            if (!environment.plugins.isAdaptivePrefetchEnabled(expected, plugin)) return@launch\n            if (!environment.plugins.isPlaybackDispatchCurrent(expected)) return@launch\n            CdnDashSegmentPrefetcher(\n                context = context,\n                client = environment.repository.playbackCalls\n            ).prefetch(\n                CdnDashPrefetchRequest(\n                    candidates = candidates,\n                    indexRange = indexRange,\n                    trackCacheKey = buildCdnTrackCacheKey(\"video\", candidates.first()),\n                    bufferedDurationMs = bufferedDurationMs,\n                    frontierPositionMs = player.bufferedPosition\n                )\n            )\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        326295
+      ],
+      "beforeStateSha256LF": "19d6c331d97cb26aa8e0f6b2496b22887f528a7d44a2941c8e75b04410d6d9d1",
+      "afterStateSha256LF": "b76913e25a272ece4d682d0251ed47a08d6b541aed99c954b619c1113b3dd1d4"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: onPlaybackStateChanged",
+      "before": "        override fun onPlaybackStateChanged(playbackState: Int) {\n            if (playbackState == Player.STATE_READY) {\n                cancelPlaybackStallRecovery()\n                markPlaybackCdnReadyIfMediaReady()\n                recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYBACK_READY)\n                scheduleCdnDashPrefetch()\n            } else if (playbackState == Player.STATE_BUFFERING) {\n                playbackCdnPrefetchJob?.cancel()\n                playbackCdnPrefetchJob = null\n                recordCurrentCdnHealthEvent(CdnHealthEvent.BUFFERING)\n                schedulePlaybackStallRecovery()\n            } else if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {\n                playbackCdnPrefetchJob?.cancel()\n                playbackCdnPrefetchJob = null\n                cancelPlaybackStallRecovery()\n            }\n            if (playbackState == Player.STATE_ENDED) {\n                if (shouldSuppressPlaybackCompletionForCommentInteraction(isCommentInteractionActive)) {\n                    _showPlaybackEndedDialog.value = false\n                    Logger.d(\"PlayerVM\", \"评论交互进行中，保持当前视频结束态\")\n                    return\n                }\n\n                // �️ [修复] 仅当用户主动开始播放后才触发自动连播\n                // 防止从历史记录加载已看完视频时立即跳转\n                if (!hasUserStartedPlayback) {\n                    Logger.d(\"PlayerVM\", \"🛡️ STATE_ENDED but user hasn't started playback, skip auto-play\")\n                    return\n                }\n                \n                // �🔧 [修复] 检查自动播放设置 - 使用 SettingsManager 同步读取\n                val context = appContext ?: return\n                val autoPlayEnabled = com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                    .getAutoPlaySync(context)\n                val externalPlaylistAutoContinueEnabled =\n                    com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                        .getExternalPlaylistAutoContinueSync(context)\n\n                if (isPortraitPlaybackSessionActive) {\n                    Logger.d(\"PlayerVM\", \"📱 STATE_ENDED in portrait session, handled by portrait pager\")\n                    return\n                }\n\n                if (_isInAudioMode.value) {\n                    val didContinue = handleAudioModePlaybackEnded(ignoreSavedProgress = true)\n                    if (!didContinue) {\n                        _showPlaybackEndedDialog.value = false\n                    }\n                    return\n                }\n\n                val behavior = com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n                    .getPlaybackCompletionBehaviorSync(context)\n                // 与 UI/Flow 同源策略对齐后，再写回 ExoPlayer，避免残留 REPEAT_MODE_ONE。\n                exoPlayer?.repeatMode = resolvePlaybackCompletionRepeatMode(behavior)\n                val (hasNextPage, hasNextSeasonEpisode, _) = resolveCurrentNextAvailability()\n                val action = playbackCoordinator.resolvePlaybackEnded(\n                    behavior = behavior,\n                    autoPlayEnabled = autoPlayEnabled,\n                    isExternalPlaylist = environment.playlist.isExternalPlaylist.value,\n                    externalPlaylistAutoContinueEnabled = externalPlaylistAutoContinueEnabled,\n                    externalPlaylistSource = environment.playlist.externalPlaylistSource.value,\n                    playMode = environment.playlist.playMode.value,\n                    hasNextPageOrSeasonTarget = hasNextPage || hasNextSeasonEpisode\n                )\n                val outcome = playbackCoordinator.executePlaybackEndAction(\n                    action = action,\n                    repeatCurrent = {\n                        exoPlayer?.seekTo(0)\n                        exoPlayer?.playWhenReady = true\n                        exoPlayer?.play()\n                    },\n                    playNextInOrder = { ignoreSavedProgress ->\n                        playNextInOrder(ignoreSavedProgress = ignoreSavedProgress)\n                    },\n                    playNextFromPlaylistLoop = { ignoreSavedProgress ->\n                        playNextFromPlaylist(\n                            loopAtEnd = true,\n                            ignoreSavedProgress = ignoreSavedProgress\n                        )\n                    },\n                    autoContinue = { ignoreSavedProgress ->\n                        playNextPageOrRecommended(ignoreSavedProgress = ignoreSavedProgress)\n                    }\n                )\n                if (outcome.shouldHidePlaybackEndedDialog) {\n                    // 自动播放关闭或后续无法连播：保持结束态，不弹窗打断\n                    _showPlaybackEndedDialog.value = false\n                }\n            }\n        }",
+      "after": "        override fun onPlaybackStateChanged(playbackState: Int) {\n            if (playbackState == Player.STATE_READY) {\n                cancelPlaybackStallRecovery()\n                val expected = environment.plugins.capturePlaybackDispatch()\n                if (expected != null) environment.invocations.launch {\n                    markPlaybackCdnReadyIfMediaReady(expected)\n                    recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYBACK_READY, expected)\n                    if (environment.plugins.isPlaybackDispatchCurrent(expected)) scheduleCdnDashPrefetch()\n                }\n            } else if (playbackState == Player.STATE_BUFFERING) {\n                playbackCdnPrefetchJob?.cancel()\n                playbackCdnPrefetchJob = null\n                val expected = environment.plugins.capturePlaybackDispatch()\n                if (expected != null) environment.invocations.launch {\n                    recordCurrentCdnHealthEvent(CdnHealthEvent.BUFFERING, expected)\n                }\n                schedulePlaybackStallRecovery()\n            } else if (playbackState == Player.STATE_IDLE || playbackState == Player.STATE_ENDED) {\n                playbackCdnPrefetchJob?.cancel()\n                playbackCdnPrefetchJob = null\n                cancelPlaybackStallRecovery()\n            }\n            if (playbackState == Player.STATE_ENDED) {\n                if (shouldSuppressPlaybackCompletionForCommentInteraction(isCommentInteractionActive)) {\n                    _showPlaybackEndedDialog.value = false\n                    Logger.d(\"PlayerVM\", \"评论交互进行中，保持当前视频结束态\")\n                    return\n                }\n\n                // �️ [修复] 仅当用户主动开始播放后才触发自动连播\n                // 防止从历史记录加载已看完视频时立即跳转\n                if (!hasUserStartedPlayback) {\n                    Logger.d(\"PlayerVM\", \"🛡️ STATE_ENDED but user hasn't started playback, skip auto-play\")\n                    return\n                }\n                \n                // �🔧 [修复] 检查自动播放设置 - 使用 SettingsManager 同步读取\n                val context = appContext ?: return\n                val autoPlayEnabled = com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                    .getAutoPlaySync(context)\n                val externalPlaylistAutoContinueEnabled =\n                    com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                        .getExternalPlaylistAutoContinueSync(context)\n\n                if (isPortraitPlaybackSessionActive) {\n                    Logger.d(\"PlayerVM\", \"📱 STATE_ENDED in portrait session, handled by portrait pager\")\n                    return\n                }\n\n                if (_isInAudioMode.value) {\n                    val didContinue = handleAudioModePlaybackEnded(ignoreSavedProgress = true)\n                    if (!didContinue) {\n                        _showPlaybackEndedDialog.value = false\n                    }\n                    return\n                }\n\n                val behavior = com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings\n                    .getPlaybackCompletionBehaviorSync(context)\n                // 与 UI/Flow 同源策略对齐后，再写回 ExoPlayer，避免残留 REPEAT_MODE_ONE。\n                exoPlayer?.repeatMode = resolvePlaybackCompletionRepeatMode(behavior)\n                val (hasNextPage, hasNextSeasonEpisode, _) = resolveCurrentNextAvailability()\n                val action = playbackCoordinator.resolvePlaybackEnded(\n                    behavior = behavior,\n                    autoPlayEnabled = autoPlayEnabled,\n                    isExternalPlaylist = environment.playlist.isExternalPlaylist.value,\n                    externalPlaylistAutoContinueEnabled = externalPlaylistAutoContinueEnabled,\n                    externalPlaylistSource = environment.playlist.externalPlaylistSource.value,\n                    playMode = environment.playlist.playMode.value,\n                    hasNextPageOrSeasonTarget = hasNextPage || hasNextSeasonEpisode\n                )\n                val outcome = playbackCoordinator.executePlaybackEndAction(\n                    action = action,\n                    repeatCurrent = {\n                        exoPlayer?.seekTo(0)\n                        exoPlayer?.playWhenReady = true\n                        exoPlayer?.play()\n                    },\n                    playNextInOrder = { ignoreSavedProgress ->\n                        playNextInOrder(ignoreSavedProgress = ignoreSavedProgress)\n                    },\n                    playNextFromPlaylistLoop = { ignoreSavedProgress ->\n                        playNextFromPlaylist(\n                            loopAtEnd = true,\n                            ignoreSavedProgress = ignoreSavedProgress\n                        )\n                    },\n                    autoContinue = { ignoreSavedProgress ->\n                        playNextPageOrRecommended(ignoreSavedProgress = ignoreSavedProgress)\n                    }\n                )\n                if (outcome.shouldHidePlaybackEndedDialog) {\n                    // 自动播放关闭或后续无法连播：保持结束态，不弹窗打断\n                    _showPlaybackEndedDialog.value = false\n                }\n            }\n        }",
+      "count": 1,
+      "afterPositions": [
+        42533
+      ],
+      "beforeStateSha256LF": "b76913e25a272ece4d682d0251ed47a08d6b541aed99c954b619c1113b3dd1d4",
+      "afterStateSha256LF": "5ad3329b849e56f7d9a44e9c2e61b55a2f28f039cd43979690fa37ae7c632c2b"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: onTracksChanged",
+      "before": "        override fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {\n            markPlaybackCdnReadyIfMediaReady()\n        }",
+      "after": "        override fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {\n            val expected = environment.plugins.capturePlaybackDispatch() ?: return\n            environment.invocations.launch { markPlaybackCdnReadyIfMediaReady(expected) }\n        }",
+      "count": 1,
+      "afterPositions": [
+        48505
+      ],
+      "beforeStateSha256LF": "5ad3329b849e56f7d9a44e9c2e61b55a2f28f039cd43979690fa37ae7c632c2b",
+      "afterStateSha256LF": "157d92038e6c5eb027dca15a34ddd5d17c698ee7ec275a09f063d78879868377"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: onPlayerError",
+      "before": "        override fun onPlayerError(error: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackError) {\n            cancelPlaybackStallRecovery()\n            Logger.w(\"PlayerVM\", \"Playback error: ${error.failure?.kind}, message=${error.message}\")\n            val current = _uiState.value as? VideoPlaybackUiState.Success\n            val premiumFailureCode = error.failure?.let { com.bilipai.desktop.player.desktopPremiumAudioFailureCode(it) }\n            if (\n                current != null && premiumFailureCode != null &&\n                isPremiumAudioPlaybackFailure(\n                    errorCode = premiumFailureCode,\n                    selectedAudioQuality = current.selectedAudioQuality,\n                    rendererName = \"mpv/audio-output\",\n                    rendererSampleMimeType = null\n                )\n            ) {\n                Logger.w(\n                    \"PlayerVM\",\n                    \"Hi-Res audio decoder failed; switching current playback to AAC\"\n                )\n                fallbackFromPremiumAudioPlaybackError()\n                return\n            }\n            // A proven local audio-output initialization failure cannot diagnose\n            // a remote video CDN or spend its generic source-recovery budget.\n            if (premiumFailureCode != null) return\n            recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYER_ERROR)\n            fallbackFromCdnRewrite(reason = \"player_error\")\n        }",
+      "after": "        override fun onPlayerError(error: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackError) {\n            cancelPlaybackStallRecovery()\n            Logger.w(\"PlayerVM\", \"Playback error: ${error.failure?.kind}, message=${error.message}\")\n            val current = _uiState.value as? VideoPlaybackUiState.Success\n            val premiumFailureCode = error.failure?.let { com.bilipai.desktop.player.desktopPremiumAudioFailureCode(it) }\n            if (\n                current != null && premiumFailureCode != null &&\n                isPremiumAudioPlaybackFailure(\n                    errorCode = premiumFailureCode,\n                    selectedAudioQuality = current.selectedAudioQuality,\n                    rendererName = \"mpv/audio-output\",\n                    rendererSampleMimeType = null\n                )\n            ) {\n                Logger.w(\n                    \"PlayerVM\",\n                    \"Hi-Res audio decoder failed; switching current playback to AAC\"\n                )\n                fallbackFromPremiumAudioPlaybackError()\n                return\n            }\n            // A proven local audio-output initialization failure cannot diagnose\n            // a remote video CDN or spend its generic source-recovery budget.\n            if (premiumFailureCode != null) return\n            val expected = environment.plugins.capturePlaybackDispatch() ?: return\n            environment.invocations.launch {\n                recordCurrentCdnHealthEvent(CdnHealthEvent.PLAYER_ERROR, expected)\n                if (environment.plugins.isPlaybackDispatchCurrent(expected))\n                    fallbackFromCdnRewrite(reason = \"player_error\", expectedSource = expected)\n            }\n        }",
+      "count": 1,
+      "afterPositions": [
+        48906
+      ],
+      "beforeStateSha256LF": "157d92038e6c5eb027dca15a34ddd5d17c698ee7ec275a09f063d78879868377",
+      "afterStateSha256LF": "d1c2785ff97b0cd416c09fdcf93702bd69476ae6fc7b9843897922f825e9f97d"
+    },
+    {
+      "label": "Await same Runtime CDN mutex outside native callback admission: switchCdn",
+      "before": "    fun switchCdn() {\n        cancelPlaybackStallRecovery()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n\n        if (playbackCdnFallbackState.usesCdnRewrite) {\n            fallbackFromCdnRewrite(reason = \"player_error\")\n            return\n        }\n        \n        if (current.cdnCount <= 1) {\n            environment.invocations.launch { toast(\"没有其他可用线路\") }\n            return\n        }\n        \n        // 计算下一个 CDN 索引（循环）\n        val nextIndex = (current.currentCdnIndex + 1) % current.cdnCount\n        val nextVideoUrl = current.allVideoUrls.getOrNull(nextIndex) ?: return\n        val nextAudioUrl = current.allAudioUrls.getOrNull(nextIndex)\n        \n        val currentPos = exoPlayer?.currentPosition ?: 0L\n        val playWhenReadyAfterSwitch = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n        \n        environment.invocations.launch {\n            Logger.d(\"PlayerVM\", \"📡 切换线路: ${current.currentCdnIndex + 1} → ${nextIndex + 1}\")\n            \n            // 使用新的 URL 播放\n            playResolvedPlayback(\n                videoUrl = nextVideoUrl,\n                audioUrl = nextAudioUrl,\n                adaptiveDashSource = null,\n                startPositionMs = currentPos,\n                playWhenReady = playWhenReadyAfterSwitch\n            )\n            \n            // 更新状态\n            _uiState.value = current.copy(\n                playUrl = nextVideoUrl,\n                audioUrl = nextAudioUrl,\n                adaptiveDashSource = null,\n                currentCdnIndex = nextIndex\n            )\n            \n            toast(\"已切换到线路${nextIndex + 1}\")\n        }\n    }",
+      "after": "    fun switchCdn() {\n        cancelPlaybackStallRecovery()\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n\n        if (playbackCdnFallbackState.usesCdnRewrite) {\n            val expected = environment.plugins.capturePlaybackDispatch() ?: return\n            environment.invocations.launch {\n                fallbackFromCdnRewrite(reason = \"player_error\", expectedSource = expected)\n            }\n            return\n        }\n        \n        if (current.cdnCount <= 1) {\n            environment.invocations.launch { toast(\"没有其他可用线路\") }\n            return\n        }\n        \n        // 计算下一个 CDN 索引（循环）\n        val nextIndex = (current.currentCdnIndex + 1) % current.cdnCount\n        val nextVideoUrl = current.allVideoUrls.getOrNull(nextIndex) ?: return\n        val nextAudioUrl = current.allAudioUrls.getOrNull(nextIndex)\n        \n        val currentPos = exoPlayer?.currentPosition ?: 0L\n        val playWhenReadyAfterSwitch = exoPlayer?.let { player ->\n            resolvePlaybackIntentForSourceReplacement(\n                playWhenReady = player.playWhenReady,\n                isPlaying = player.isPlaying\n            )\n        } ?: true\n        \n        environment.invocations.launch {\n            Logger.d(\"PlayerVM\", \"📡 切换线路: ${current.currentCdnIndex + 1} → ${nextIndex + 1}\")\n            \n            // 使用新的 URL 播放\n            playResolvedPlayback(\n                videoUrl = nextVideoUrl,\n                audioUrl = nextAudioUrl,\n                adaptiveDashSource = null,\n                startPositionMs = currentPos,\n                playWhenReady = playWhenReadyAfterSwitch\n            )\n            \n            // 更新状态\n            _uiState.value = current.copy(\n                playUrl = nextVideoUrl,\n                audioUrl = nextAudioUrl,\n                adaptiveDashSource = null,\n                currentCdnIndex = nextIndex\n            )\n            \n            toast(\"已切换到线路${nextIndex + 1}\")\n        }\n    }",
+      "count": 1,
+      "afterPositions": [
+        129388
+      ],
+      "beforeStateSha256LF": "d1c2785ff97b0cd416c09fdcf93702bd69476ae6fc7b9843897922f825e9f97d",
+      "afterStateSha256LF": "fbabc2b6b77e5d72f7a42ebeea59c381e3182973c304f6fbd72edcdeb3ce44a6"
+    },
+    {
+      "label": "Only original immutable new-request context may use non-accepted CDN diagnostics",
+      "before": "lineDiagnostics = cdnPlugin?.let { environment.plugins.buildPlaybackCdnDiagnostics(\n                plugin = it,",
+      "after": "lineDiagnostics = cdnPlugin?.let { environment.plugins.buildPlaybackCdnDiagnostics(\n                expected = null,\n                plugin = it,",
+      "count": 1,
+      "afterPositions": [
+        323048
+      ],
+      "beforeStateSha256LF": "fbabc2b6b77e5d72f7a42ebeea59c381e3182973c304f6fbd72edcdeb3ce44a6",
+      "afterStateSha256LF": "00adeaa52c6d20c67da2e8b730d382ec9bd207b8dccd5dc9c1fd706c64444f11"
+    },
+    {
+      "label": "Actual same preferred-volume setter",
+      "before": "com.android.purebilibili.core.player.PlayerVolumeController.applyPreferredVolume(p)",
+      "after": "environment.useCase.applyPreferredVolume(p)",
+      "count": 1,
+      "afterPositions": [
+        95517
+      ],
+      "beforeStateSha256LF": "00adeaa52c6d20c67da2e8b730d382ec9bd207b8dccd5dc9c1fd706c64444f11",
+      "afterStateSha256LF": "67ad3efd17268e78c2b5315b7762820119b60aa22271cec067027f414f37757e"
+    },
+    {
+      "label": "Required actual Windows network view",
+      "before": "com.android.purebilibili.core.util.NetworkUtils",
+      "after": "environment.network",
+      "count": 1,
+      "afterPositions": [
+        123668
+      ],
+      "beforeStateSha256LF": "67ad3efd17268e78c2b5315b7762820119b60aa22271cec067027f414f37757e",
+      "afterStateSha256LF": "3545fc19f09b18c3ccfecfd89a3ee625975a08d5a49ba1158ed3b47e6a822b78"
+    },
+    {
+      "label": "Same original mirror/network quality algorithm",
+      "before": "NetworkUtils.getDefaultQualityId",
+      "after": "environment.network.getDefaultQualityId",
+      "count": 1,
+      "afterPositions": [
+        85831
+      ],
+      "beforeStateSha256LF": "3545fc19f09b18c3ccfecfd89a3ee625975a08d5a49ba1158ed3b47e6a822b78",
+      "afterStateSha256LF": "581a61df5629f7ce437b6c4acdd58d4c65039c4ba2252c19635b0128cba98f37"
+    },
+    {
+      "label": "Sole existing raw cache view",
+      "before": "com.android.purebilibili.core.cache.PlayUrlCache",
+      "after": "environment.cache",
+      "count": 1,
+      "afterPositions": [
+        123204
+      ],
+      "beforeStateSha256LF": "581a61df5629f7ce437b6c4acdd58d4c65039c4ba2252c19635b0128cba98f37",
+      "afterStateSha256LF": "b14a52abbefe633fe1c5201645fcbbda766cf204b14a6e22beba98af181e2488"
+    },
+    {
+      "label": "Sole raw cache invalidation",
+      "before": "PlayUrlCache.",
+      "after": "environment.cache.",
+      "count": 2,
+      "afterPositions": [
+        126204,
+        128553
+      ],
+      "beforeStateSha256LF": "b14a52abbefe633fe1c5201645fcbbda766cf204b14a6e22beba98af181e2488",
+      "afterStateSha256LF": "945d7bb9b7cf613a2166a7a95c5d763637f12db278fa58c751611535cd342cd4"
+    },
+    {
+      "label": "Required real playback range-cache consumer, no fake prefetch",
+      "before": "CdnDashSegmentPrefetcher(\n                context = context,",
+      "after": "CdnDashSegmentPrefetcher(\n                cache = environment.cdnRangeCache,",
+      "count": 1,
+      "afterPositions": [
+        328678
+      ],
+      "beforeStateSha256LF": "945d7bb9b7cf613a2166a7a95c5d763637f12db278fa58c751611535cd342cd4",
+      "afterStateSha256LF": "5378fc697308d6b65d2246782f22b3c2dbba811d70a39790bbd8bb4ea6418e0b"
+    },
+    {
+      "label": "Android resolver boundary delegated to already-existing original streaming picture provider",
+      "before": "                    val mimeType = context.contentResolver.getType(uri) ?: \"image/jpeg\"\n                    val fileName = queryDisplayName(context, uri)\n                        ?: \"comment_${System.currentTimeMillis()}_${index + 1}.jpg\"\n\n                    // 流式上传:空/15MB 校验在 CommentRepository 内完成,不再整文件读入内存。\n                    val uploadResult = environment.comments\n                        .uploadCommentImage(\n                            fileName = fileName,\n                            mimeType = mimeType,\n                            resolver = context.contentResolver,\n                            uri = uri\n                        )",
+      "after": "                    // SAME original streaming provider performs filename/MIME, empty/15MiB checks;\n                    // no file byte copy, HTTP client or second reply authority is created here.\n                    val uploadResult = environment.comments.uploadCommentPicture(uri, index)",
+      "count": 1,
+      "afterPositions": [
+        161695
+      ],
+      "beforeStateSha256LF": "5378fc697308d6b65d2246782f22b3c2dbba811d70a39790bbd8bb4ea6418e0b",
+      "afterStateSha256LF": "c2653a2851a0f92a3a4912d3f44dee524487265aef467a5875063852aaf346a4"
+    },
+    {
+      "label": "Android Cursor filename helper belongs to existing streaming provider",
+      "before": "    private fun queryDisplayName(context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext, uri: Uri): String? {\n        return runCatching {\n            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)\n                ?.use { cursor ->\n                    val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)\n                    if (index >= 0 && cursor.moveToFirst()) cursor.getString(index) else null\n                }\n        }.getOrNull()\n    }\n    \n",
+      "after": "",
+      "count": 1,
+      "afterPositions": [
+        162090
+      ],
+      "beforeStateSha256LF": "c2653a2851a0f92a3a4912d3f44dee524487265aef467a5875063852aaf346a4",
+      "afterStateSha256LF": "1470531ece030ad50d6fb3377409875c4c738cf07697aca6221eb6a9280a1317"
+    }
+  ],
+  "scope": "Declaration compile receipts are separate per run; no full owner/product runtime acceptance.",
+  "remaining": [
+    "Same captured metadata/Notes/subtitle forwarding",
+    "Streaming image boundary and download task admission/projection",
+    "Per-provider same Runtime generation dispatch and inherited native-mute lease",
+    "Actual playback range-cache consumer capability",
+    "Full VM owner factory/mount and original Holder platform assembly"
+  ]
+}

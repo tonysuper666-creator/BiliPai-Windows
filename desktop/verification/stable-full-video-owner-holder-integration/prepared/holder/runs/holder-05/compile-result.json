@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "sources": 58,
+  "classes": 441,
+  "exitCode": 0,
+  "actual65RuntimeEntries": 101,
+  "productAcceptance": false,
+  "prospectiveClassOverlap": [
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences$Editor.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerPreferenceValues.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$edit$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore.class"
+  ],
+  "candidateJarSha256Bytes": "5d685f776192b040a2323143d2375823e6346ffe50c92fd71463f82a5c5a0d33"
+}

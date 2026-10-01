@@ -1,0 +1,529 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+      "originalSHA256LF": "7fefec7a8302cdc4e2a9957b4082c6a00300948327686043e983c6aca6c2d20f",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+      "outputSHA256LF": "34fcf4f5b4e55f1fa1088771ec1cbd346ab92f26370068bff291c4d2ef40c9c7",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 1,
+          "positions": [
+            55
+          ]
+        },
+        {
+          "label": "Actual existing Engagement context over same global Store",
+          "before": "engagementViewModel.initWithContext(context)",
+          "after": "engagementViewModel.initWithContext(context.pluginContext)",
+          "count": 1,
+          "positions": [
+            1541
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "originalSHA256LF": "598c0bb5f0246e0972e26e47c2bc36c32babcf24d4d5f1475343a7d8153dca63",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "outputSHA256LF": "e4f50b5f1c6c113f3d63707507411f21bdbffb2447f58159944b6e7cbb540dd9",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 1,
+          "positions": [
+            55
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager",
+          "count": 1,
+          "positions": [
+            432
+          ]
+        },
+        {
+          "label": "Same document owner from retained Root",
+          "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform",
+          "count": 1,
+          "positions": [
+            515
+          ]
+        },
+        {
+          "label": "No independent document/parser/session authority",
+          "before": "val danmakuManager = rememberDanmakuManager(playbackIdentity)",
+          "after": "val danmakuManager = LocalDesktopOriginalVideoHolderPlatform.current.danmaku",
+          "count": 1,
+          "positions": [
+            1086
+          ]
+        },
+        {
+          "label": "Actual Windows context identity",
+          "before": "context.applicationContext",
+          "after": "context",
+          "count": 1,
+          "positions": [
+            2024
+          ]
+        },
+        {
+          "label": "Required actual Root analytics binding",
+          "before": "com.android.purebilibili.core.util.AnalyticsHelper.logScreenView(\"VideoDetailScreen\")",
+          "after": "platform.logScreenView(\"VideoDetailScreen\")",
+          "count": 1,
+          "positions": [
+            2086
+          ]
+        },
+        {
+          "label": "Capture required platform in composition before callback",
+          "before": ") {\n    LaunchedEffect(viewModel, state)",
+          "after": ") {\n    val platform = LocalDesktopOriginalVideoHolderPlatform.current\n    LaunchedEffect(viewModel, state)",
+          "count": 1,
+          "positions": [
+            1413
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+      "originalSHA256LF": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+      "outputSHA256LF": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+      "originalSHA256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+      "outputSHA256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+      "originalSHA256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+      "outputSHA256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+      "originalSHA256LF": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+      "outputSHA256LF": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+      "originalSHA256LF": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+      "outputSHA256LF": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+      "originalSHA256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+      "outputSHA256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt",
+      "originalSHA256LF": "11ab5c4904b147c39a857942b5388e9fd1fa1497900fe6cf3994e3ff4065aca9",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt",
+      "outputSHA256LF": "d225d1876b0e14130897388521c9702394abdbcce423ec07bdf36dfa96ccd315",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.compose.ui.platform.LocalConfiguration",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+          "count": 1,
+          "positions": [
+            2061
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "originalSHA256LF": "b0110085eb3a7c9c5c65867ea8366869a4d240b31e4909466beb6ff400fb9ada",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "outputSHA256LF": "5b6f22fb38945ddbb9129e1e6d107e7cce6a9b89aa38a3d81640c76a7b0e3112",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+          "count": 1,
+          "positions": [
+            707
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt",
+      "originalSHA256LF": "9d4bfa882d6e0540fb2a37f20a5e9b2867792f2cb0179e5dca80d72e15fe90bb",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt",
+      "outputSHA256LF": "4fedf32278f58d416f325eb20c39c73cdc1a15241ed0150f7bf64f523268e9b6",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 1,
+          "positions": [
+            55
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+          "count": 1,
+          "positions": [
+            2552
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+      "originalSHA256LF": "02c777a25f8e3a76fe790dadc97cc475f4f66875d4642ef014c1bd92ed3b87b3",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+      "outputSHA256LF": "d6928bdee68d9f2e5a6fd28a99ab81463cdf32803d93192e1bfa74dd14da1a9e",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.media3.common.Player",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+          "count": 1,
+          "positions": [
+            98
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "originalSHA256LF": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "outputSHA256LF": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "originalSHA256LF": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "outputSHA256LF": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "originalSHA256LF": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "outputSHA256LF": "bbd53d229b119e4a3fa10a1f3f098bab34aced8c8816325684a7f6d6f84b21a6",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 1,
+          "positions": [
+            55
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.danmaku.DanmakuManager",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPortraitDanmakuPort as DanmakuManager",
+          "count": 1,
+          "positions": [
+            535
+          ]
+        },
+        {
+          "label": "Reuse existing exact player getter",
+          "before": "SettingsManager\n        .getPlayerDiagnosticLoggingEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings\n        .getPlayerDiagnosticLoggingEnabled",
+          "count": 1,
+          "positions": [
+            1232
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+      "originalSHA256LF": "2b834aec6f27c59a0d39fd2bd7342fab8d549841cbbfac31ce937b8973bde0d3",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+      "outputSHA256LF": "87bcb441d66d3c1569fc98f4381d069da2aeac2931657141d2806f30b0f13cf3",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+          "count": 1,
+          "positions": [
+            918
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.media3.exoplayer.ExoPlayer",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer",
+          "count": 1,
+          "positions": [
+            1245
+          ]
+        },
+        {
+          "label": "Android Media3 compiler annotation only",
+          "before": "@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n",
+          "after": "",
+          "count": 1,
+          "positions": [
+            0
+          ]
+        },
+        {
+          "label": "Existing actual local logging adapter",
+          "before": "com.android.purebilibili.core.util.Logger.",
+          "after": "android.util.Log.",
+          "count": 1,
+          "positions": [
+            3940
+          ]
+        },
+        {
+          "label": "Required owned original Story request seam",
+          "before": "import com.android.purebilibili.data.repository.StoryRepository",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform",
+          "count": 1,
+          "positions": [
+            1336
+          ]
+        },
+        {
+          "label": "Capture same page platform before asynchronous callbacks",
+          "before": "    val context = LocalContext.current",
+          "after": "    val context = LocalContext.current\n    val platform = LocalDesktopOriginalVideoHolderPlatform.current",
+          "count": 1,
+          "positions": [
+            2810
+          ]
+        },
+        {
+          "label": "Same owned raw request; original recommendations algorithm intact",
+          "before": "StoryRepository.getStoryFeed(",
+          "after": "platform.getStoryFeed(",
+          "count": 1,
+          "positions": [
+            6664
+          ]
+        },
+        {
+          "label": "Required read/action view of the SAME original Playback VM",
+          "before": "viewModel = playbackViewModel,",
+          "after": "viewModel = platform.portraitPlaybackOwner,",
+          "count": 1,
+          "positions": [
+            7629
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "originalSHA256LF": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "outputSHA256LF": "541a679fce655f749b8cdf3f9e73550bbc65901edd942d0b5765911321a8933d",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 2,
+          "positions": [
+            370,
+            401
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+          "count": 1,
+          "positions": [
+            3450
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.compose.ui.platform.LocalConfiguration",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+          "count": 1,
+          "positions": [
+            3395
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.media3.common.Player",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+          "count": 1,
+          "positions": [
+            4892
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+          "count": 1,
+          "positions": [
+            7891
+          ]
+        },
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import com.android.purebilibili.feature.video.player.MiniPlayerManager",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoHolderMini as MiniPlayerManager",
+          "count": 1,
+          "positions": [
+            11844
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "originalSHA256LF": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "outputSHA256LF": "124d5a661b8abf96e4dc04622fcf1750eaef7452a5c9a5384eb44d31a2091171",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "count": 1,
+          "positions": [
+            55
+          ]
+        },
+        {
+          "label": "Same owned Windows picker/file-URI String contract",
+          "before": "import android.net.Uri\n",
+          "after": "",
+          "count": 1,
+          "positions": [
+            174
+          ]
+        },
+        {
+          "label": "Same original nine-image callback collection, Windows file URI identity",
+          "before": "List<Uri>",
+          "after": "List<String>",
+          "count": 2,
+          "positions": [
+            2840,
+            2892
+          ]
+        },
+        {
+          "label": "Original private snapshot identifier only, avoid actual common-comment JVM class collision",
+          "before": "CommentInputSnapshot",
+          "after": "DesktopOriginalHolderCommentInputSnapshot",
+          "count": 3,
+          "positions": [
+            2317,
+            7381,
+            9439
+          ]
+        },
+        {
+          "label": "Original private action identifier only, avoid actual common-comment JVM class collision",
+          "before": "CommentInputActions",
+          "after": "DesktopOriginalHolderCommentInputActions",
+          "count": 3,
+          "positions": [
+            2739,
+            8051,
+            9537
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt",
+      "originalSHA256LF": "f476d677842002e49b18204d4d08fab69ddce8b4fa51ed32d5bf89ed58fc9409",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt",
+      "outputSHA256LF": "38f3da74dd6501760e9a2e2595e00704b596a42b04f526e2bb566de9125d30fd",
+      "wholeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Existing same-player/global-store platform type alias",
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+          "count": 1,
+          "positions": [
+            526
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "Prepared full body closure; platform followups and compilation pending",
+  "productRuntimeAccepted": false
+}

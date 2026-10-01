@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1862:22: error: unresolved reference 'getPlaybackCompletionBehaviorSync'.
+                    .getPlaybackCompletionBehaviorSync(context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

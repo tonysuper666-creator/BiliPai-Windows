@@ -1,0 +1,2567 @@
+{
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "Read-only same-package dependency inventory, not all selected production outputs.",
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeCoverLayoutPolicy.kt",
+      "sha256LF": "e9eff6ee140a4b8cbdbe0188f2b2fecb35242db7cd5fb2a029f9d1695bcbed61",
+      "bytesLF": 4294,
+      "physicalLines": 101,
+      "gitBlob": "f8cf4db7c06d2d8f7cb4bb0924058db380d8e109",
+      "declarations": [
+        {
+          "line": 6,
+          "text": "internal const val AUDIO_MODE_COVER_WIDTH_FRACTION = 0.92f"
+        },
+        {
+          "line": 7,
+          "text": "internal const val AUDIO_MODE_COVER_MIN_VERTICAL_CLEARANCE_DP = 8"
+        },
+        {
+          "line": 8,
+          "text": "internal const val AUDIO_MODE_COVER_CORNER_RADIUS_DP = 26"
+        },
+        {
+          "line": 9,
+          "text": "internal const val AUDIO_MODE_COVER_SHADOW_ELEVATION_DP = 28"
+        },
+        {
+          "line": 10,
+          "text": "internal const val AUDIO_MODE_BACKGROUND_SCRIM_ALPHA_PERCENT = 46"
+        },
+        {
+          "line": 11,
+          "text": "internal const val AUDIO_MODE_COVER_ASPECT_WIDTH = 16"
+        },
+        {
+          "line": 12,
+          "text": "internal const val AUDIO_MODE_COVER_ASPECT_HEIGHT = 10"
+        },
+        {
+          "line": 13,
+          "text": "internal const val AUDIO_MODE_COVER_FLOW_MAX_ROTATION_DEGREES = 18"
+        },
+        {
+          "line": 14,
+          "text": "internal const val AUDIO_MODE_COVER_FLOW_MAX_TRANSLATION_DP = 34"
+        },
+        {
+          "line": 15,
+          "text": "internal const val AUDIO_MODE_COVER_FLOW_MAX_SCALE_LOSS_PERCENT = 10"
+        },
+        {
+          "line": 16,
+          "text": "internal const val AUDIO_MODE_COVER_FLOW_MAX_ALPHA_LOSS_PERCENT = 28"
+        },
+        {
+          "line": 18,
+          "text": "internal data class AudioModeCoverArtworkStyle("
+        },
+        {
+          "line": 30,
+          "text": "internal fun resolveAudioModeCoverArtworkStyle(): AudioModeCoverArtworkStyle {"
+        },
+        {
+          "line": 44,
+          "text": "internal fun resolveAudioModeCenteredCoverSizeDp("
+        },
+        {
+          "line": 55,
+          "text": "internal data class AudioModeArtworkSizeDp("
+        },
+        {
+          "line": 60,
+          "text": "internal data class AudioModeVerticalPageTransform("
+        },
+        {
+          "line": 68,
+          "text": "internal fun resolveAudioModeArtworkSizeDp("
+        },
+        {
+          "line": 87,
+          "text": "internal fun resolveAudioModeVerticalPageTransform("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt",
+      "sha256LF": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
+      "bytesLF": 27157,
+      "physicalLines": 662,
+      "gitBlob": "86588a2c4f6404a0464b8d3ef856bfce43734d14",
+      "declarations": [
+        {
+          "line": 62,
+          "text": "private data class AudioPlaybackSnapshot("
+        },
+        {
+          "line": 70,
+          "text": "internal fun resolveAudioModeTrackTitle("
+        },
+        {
+          "line": 82,
+          "text": "internal fun resolveAudioModeShareTitle("
+        },
+        {
+          "line": 89,
+          "text": "internal data class AudioModeLyricMetadata("
+        },
+        {
+          "line": 94,
+          "text": "internal fun resolveAudioModeLyricMetadata("
+        },
+        {
+          "line": 110,
+          "text": "internal fun AudioModeMusicPlayer("
+        },
+        {
+          "line": 626,
+          "text": "private fun rememberAudioPlaybackSnapshot(player: Player?): AudioPlaybackSnapshot {"
+        },
+        {
+          "line": 648,
+          "text": "private fun Player?.readAudioPlaybackSnapshot(): AudioPlaybackSnapshot {"
+        },
+        {
+          "line": 660,
+          "text": "internal object AudioStartupAutoPlayGuard {"
+        }
+      ],
+      "androidImports": [
+        "import androidx.lifecycle.viewmodel.compose.viewModel",
+        "import androidx.media3.common.Player",
+        "import androidx.media3.exoplayer.ExoPlayer"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeRenderPolicy.kt",
+      "sha256LF": "47fa416b0e751f51191695929920beaf08b048d8d67d6192c752306049df8c75",
+      "bytesLF": 668,
+      "physicalLines": 25,
+      "gitBlob": "bec7a90ff76b17041d743e03e640e6ef4898c3f4",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal data class AudioModeRenderPolicy("
+        },
+        {
+          "line": 9,
+          "text": "internal fun resolveAudioModeRenderPolicy("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt",
+      "sha256LF": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+      "bytesLF": 18239,
+      "physicalLines": 439,
+      "gitBlob": "88daf54da269640a18a1ab07bb030f0bff5fa462",
+      "declarations": [
+        {
+          "line": 61,
+          "text": "internal fun resolveAudioPlayModeLabel(mode: PlayMode): String = when (mode) {"
+        },
+        {
+          "line": 68,
+          "text": "internal fun shouldUseAudioModeLiquidPlayModeControl("
+        },
+        {
+          "line": 73,
+          "text": "internal enum class AudioModePlayPauseAction {"
+        },
+        {
+          "line": 80,
+          "text": "internal fun resolveAudioModePlayPauseAction("
+        },
+        {
+          "line": 94,
+          "text": "internal fun shouldCreateAudioModeStandalonePlayer("
+        },
+        {
+          "line": 99,
+          "text": "internal fun resolveAudioModePageSwitchAutoPlay(): Boolean = true"
+        },
+        {
+          "line": 101,
+          "text": "internal fun resolveAudioModeCollectionSwitchAutoPlay(): Boolean = true"
+        },
+        {
+          "line": 103,
+          "text": "internal fun resolveAudioModeOrientationActionLabel(isLandscape: Boolean): String ="
+        },
+        {
+          "line": 106,
+          "text": "internal fun resolveAudioModeRequestedOrientation(isLandscape: Boolean): Int ="
+        },
+        {
+          "line": 113,
+          "text": "internal fun shouldShowAudioModePipButton(sdkInt: Int): Boolean = sdkInt >= Build.VERSION_CODES.O"
+        },
+        {
+          "line": 115,
+          "text": "internal fun parseAudioModeSleepTimerInput(raw: String): Int? {"
+        },
+        {
+          "line": 128,
+          "text": "internal fun formatAudioModeSleepTimerButtonLabel(minutes: Int?): String {"
+        },
+        {
+          "line": 137,
+          "text": "internal fun formatAudioModeSleepTimerInput(minutes: Int?): String {"
+        },
+        {
+          "line": 146,
+          "text": "private tailrec fun Context.findHostActivity(): Activity? = when (this) {"
+        },
+        {
+          "line": 152,
+          "text": "internal fun Player.handleAudioModePlayPause() {"
+        },
+        {
+          "line": 173,
+          "text": "private fun enterAudioModePip(activity: Activity?) {"
+        },
+        {
+          "line": 184,
+          "text": "fun AudioModeScreen("
+        },
+        {
+          "line": 312,
+          "text": "private fun AudioModeInitialState("
+        },
+        {
+          "line": 354,
+          "text": "internal fun AudioModeSleepTimerDialog("
+        }
+      ],
+      "androidImports": [
+        "import android.app.Activity",
+        "import android.app.PictureInPictureParams",
+        "import android.content.Context",
+        "import android.content.ContextWrapper",
+        "import android.content.pm.ActivityInfo",
+        "import android.content.res.Configuration",
+        "import android.os.Build",
+        "import android.util.Rational",
+        "import androidx.media3.common.Player"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+      "sha256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "bytesLF": 4179,
+      "physicalLines": 96,
+      "gitBlob": "06becde6417955f253906a82e378a1525db473d1",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal enum class ContinuousPlayerTransitionPhase {"
+        },
+        {
+          "line": 10,
+          "text": "internal enum class ContinuousPlayerOrientationRequest {"
+        },
+        {
+          "line": 16,
+          "text": "internal sealed interface ContinuousPlayerTransitionEvent {"
+        },
+        {
+          "line": 22,
+          "text": "internal data class ContinuousPlayerTransitionDecision("
+        },
+        {
+          "line": 28,
+          "text": "internal fun shouldKeepContinuousPlayerEnterPhaseWhilePortrait("
+        },
+        {
+          "line": 35,
+          "text": "internal fun reduceContinuousPlayerTransition("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt",
+      "sha256LF": "6a98d56e8d368f5d2b5230eb59bf8768b981b3a9590db1132f5571fe2e18dd1b",
+      "bytesLF": 26521,
+      "physicalLines": 571,
+      "gitBlob": "c0dc05059b16df90f67175c8e220d0eb0e284feb",
+      "declarations": [
+        {
+          "line": 60,
+          "text": "internal fun LargeScreenVideoLayout("
+        },
+        {
+          "line": 412,
+          "text": "private fun LargeScreenPlayerHost("
+        }
+      ],
+      "androidImports": [
+        "import android.content.res.Configuration"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+      "sha256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "bytesLF": 7168,
+      "physicalLines": 177,
+      "gitBlob": "35b07fb73e44e6df84628f61dd2b1b85788e9677",
+      "declarations": [
+        {
+          "line": 9,
+          "text": "internal const val LARGE_SCREEN_VIDEO_LANDSCAPE_RATIO = 1.2f"
+        },
+        {
+          "line": 10,
+          "text": "internal const val LARGE_SCREEN_VIDEO_ASPECT_16_9 = 16f / 9f"
+        },
+        {
+          "line": 11,
+          "text": "internal const val LARGE_SCREEN_VIDEO_MIN_SIDE_PANE_DP = 280f"
+        },
+        {
+          "line": 12,
+          "text": "internal const val LARGE_SCREEN_VIDEO_MAX_SIDE_PANE_DP = 425f"
+        },
+        {
+          "line": 13,
+          "text": "internal const val LARGE_SCREEN_VIDEO_SIDE_PANE_BREAKPOINT_DP = 560f"
+        },
+        {
+          "line": 14,
+          "text": "internal const val LARGE_SCREEN_VIDEO_SQUARE_MIN_HEIGHT_FRACTION = 0.39f"
+        },
+        {
+          "line": 15,
+          "text": "internal const val LARGE_SCREEN_VIDEO_SQUARE_PLAYER_HEIGHT_FRACTION = 0.4f"
+        },
+        {
+          "line": 16,
+          "text": "internal const val FOLDABLE_COVER_COMPACT_PLAYER_HEIGHT_FRACTION = 0.5f"
+        },
+        {
+          "line": 17,
+          "text": "internal const val FOLDABLE_COVER_COLLAPSED_PLAYER_HEIGHT_FRACTION = 0.25f"
+        },
+        {
+          "line": 18,
+          "text": "internal const val FOLDABLE_COVER_COMPACT_HEIGHT_MAX_DP = 480f"
+        },
+        {
+          "line": 20,
+          "text": "internal enum class LargeScreenVideoLayoutMode {"
+        },
+        {
+          "line": 28,
+          "text": "internal data class LargeScreenVideoMetrics("
+        },
+        {
+          "line": 44,
+          "text": "internal fun resolvePhoneInlineVideoViewportHeightDp("
+        },
+        {
+          "line": 58,
+          "text": "internal fun shouldUseLargeScreenVideoLayout("
+        },
+        {
+          "line": 72,
+          "text": "internal fun shouldUseDedicatedCollectionColumn("
+        },
+        {
+          "line": 80,
+          "text": "internal fun resolveLargeScreenLandscapePlayerWidthDp("
+        },
+        {
+          "line": 95,
+          "text": "internal fun resolveLargeScreenVideoMetrics("
+        },
+        {
+          "line": 165,
+          "text": "internal fun resolveShowRelatedInIntro(mode: LargeScreenVideoLayoutMode): Boolean {"
+        },
+        {
+          "line": 169,
+          "text": "internal fun resolveIncludeRelatedTabInSecondary(mode: LargeScreenVideoLayoutMode): Boolean {"
+        },
+        {
+          "line": 173,
+          "text": "internal fun resolveRelatedTabFirstInSecondary("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+      "sha256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "bytesLF": 870,
+      "physicalLines": 24,
+      "gitBlob": "f8917ddfd7b0cc57d317612e3f58ba42ce5c2b2c",
+      "declarations": [
+        {
+          "line": 7,
+          "text": "internal fun shouldAutoPauseOnPlayerCollapse("
+        },
+        {
+          "line": 17,
+          "text": "internal fun shouldAutoResumeOnPlayerExpand("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "sha256LF": "2daaffbd12cbfd62f560bbfa4c008629aa7b8aff846453cd2762de7c242711de",
+      "bytesLF": 10133,
+      "physicalLines": 287,
+      "gitBlob": "8f86b499d3b2c52b930b6f41df1650c80188f64e",
+      "declarations": [
+        {
+          "line": 8,
+          "text": "internal data class PortraitInlinePlayerLayoutSpec("
+        },
+        {
+          "line": 13,
+          "text": "internal data class StandalonePortraitPagerMotionSpec("
+        },
+        {
+          "line": 22,
+          "text": "internal enum class PortraitFullscreenButtonAction {"
+        },
+        {
+          "line": 26,
+          "text": "internal fun shouldUseOfficialInlinePortraitDetailExperience("
+        },
+        {
+          "line": 37,
+          "text": "internal fun shouldUseSharedPlayerForPortraitFullscreen(): Boolean {"
+        },
+        {
+          "line": 41,
+          "text": "internal fun shouldShowStandalonePortraitPager("
+        },
+        {
+          "line": 52,
+          "text": "internal fun shouldActivatePortraitFullscreenState("
+        },
+        {
+          "line": 58,
+          "text": "internal fun resolveStandalonePortraitPagerMotionSpec(): StandalonePortraitPagerMotionSpec {"
+        },
+        {
+          "line": 69,
+          "text": "internal fun shouldEnableInlinePortraitScrollTransform("
+        },
+        {
+          "line": 91,
+          "text": "internal fun shouldAnimateStandalonePortraitPager("
+        },
+        {
+          "line": 106,
+          "text": "internal fun shouldSuppressPhoneDetailBodyForDirectPortraitEntry("
+        },
+        {
+          "line": 117,
+          "text": "internal fun shouldSuppressPhoneDetailBodyUnderStandalonePortraitPager("
+        },
+        {
+          "line": 127,
+          "text": "internal fun resolvePortraitFullscreenButtonAction("
+        },
+        {
+          "line": 133,
+          "text": "internal fun shouldUseCompactInlinePortraitPlayerForCommentTab("
+        },
+        {
+          "line": 157,
+          "text": "internal fun shouldUseCompactInlinePortraitPlayerForIntroScroll("
+        },
+        {
+          "line": 180,
+          "text": "internal fun isVideoDetailIntroScrollPastCollapseThreshold("
+        },
+        {
+          "line": 188,
+          "text": "internal fun resolveInlinePortraitPlayerCollapseProgress("
+        },
+        {
+          "line": 199,
+          "text": "internal fun resolveInlinePortraitPlayerCommentCollapseDurationMillis("
+        },
+        {
+          "line": 210,
+          "text": "internal fun resolvePiliPlusCollapsedPlayerViewportHeightDp("
+        },
+        {
+          "line": 227,
+          "text": "internal fun resolvePortraitInlinePlayerLayoutSpec("
+        },
+        {
+          "line": 282,
+          "text": "internal fun resolveLandscapeDetailPlayerContentHeightPx("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt",
+      "sha256LF": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+      "bytesLF": 76547,
+      "physicalLines": 1604,
+      "gitBlob": "78a8d1894daa4296df52009830fe6e02466dd83f",
+      "declarations": [
+        {
+          "line": 158,
+          "text": "internal fun TabletCinemaLayout("
+        },
+        {
+          "line": 443,
+          "text": "private fun CinemaStagePlayer("
+        },
+        {
+          "line": 624,
+          "text": "private fun CinemaMetaPanel("
+        },
+        {
+          "line": 898,
+          "text": "private fun CinemaMetaActions("
+        },
+        {
+          "line": 939,
+          "text": "private fun CinemaMetaUpInfo("
+        },
+        {
+          "line": 968,
+          "text": "private fun CinemaVideoIntroSection("
+        },
+        {
+          "line": 1057,
+          "text": "private fun CinemaSideCurtain("
+        },
+        {
+          "line": 1239,
+          "text": "private fun CinemaCommentsPane("
+        },
+        {
+          "line": 1510,
+          "text": "private fun CinemaRelatedPane("
+        }
+      ],
+      "androidImports": [
+        "import android.content.res.Configuration"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt",
+      "sha256LF": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+      "bytesLF": 1903,
+      "physicalLines": 51,
+      "gitBlob": "c8a0b76ee6e62ab1a6bd0f4741649430d9e5fe47",
+      "declarations": [
+        {
+          "line": 16,
+          "text": "internal data class TabletDanmakuChromeState("
+        },
+        {
+          "line": 22,
+          "text": "internal fun rememberTabletDanmakuChromeState(bvid: String): TabletDanmakuChromeState {"
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt",
+      "sha256LF": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+      "bytesLF": 3966,
+      "physicalLines": 86,
+      "gitBlob": "a1ea77c9cda33ddb5bd83c8463e8ce426d0d8a48",
+      "declarations": [
+        {
+          "line": 27,
+          "text": "internal fun TabletOwnerUploadsPane("
+        }
+      ],
+      "androidImports": [
+        "import androidx.lifecycle.viewmodel.compose.viewModel"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt",
+      "sha256LF": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "bytesLF": 1219,
+      "physicalLines": 39,
+      "gitBlob": "93ef25f973ea749e0c196c3e44017f3e0d1fdd66",
+      "declarations": [
+        {
+          "line": 5,
+          "text": "internal data class TabletVideoInfoEntranceSpec("
+        },
+        {
+          "line": 12,
+          "text": "internal fun resolveTabletVideoInfoEntranceSpec("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt",
+      "sha256LF": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+      "bytesLF": 84791,
+      "physicalLines": 1739,
+      "gitBlob": "08a9741165c7249af17d7cf986dfbe47d47b5f0f",
+      "declarations": [
+        {
+          "line": 119,
+          "text": "internal enum class TabletSecondaryTab(val label: String) {"
+        },
+        {
+          "line": 129,
+          "text": "internal fun TabletSecondaryDanmakuActions("
+        },
+        {
+          "line": 168,
+          "text": "internal fun TabletSecondaryLiquidTabRow("
+        },
+        {
+          "line": 223,
+          "text": "internal fun TabletVideoLayout("
+        },
+        {
+          "line": 601,
+          "text": "internal fun TabletVideoInfoPane("
+        },
+        {
+          "line": 731,
+          "text": "internal fun TabletSecondaryContent("
+        },
+        {
+          "line": 1326,
+          "text": "private fun TabletCollectionPane("
+        },
+        {
+          "line": 1388,
+          "text": "private fun ScrollableVideoInfoSection("
+        },
+        {
+          "line": 1707,
+          "text": "private fun TabletVideoInfoStaggeredItem("
+        }
+      ],
+      "androidImports": [
+        "import android.content.res.Configuration"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt",
+      "sha256LF": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "bytesLF": 9373,
+      "physicalLines": 298,
+      "gitBlob": "6227d6ebee10196bbe3cf3ba2cf74b63fde5593b",
+      "declarations": [
+        {
+          "line": 8,
+          "text": "data class TabletVideoLayoutPolicy("
+        },
+        {
+          "line": 15,
+          "text": "data class TabletCinemaLayoutPolicy("
+        },
+        {
+          "line": 23,
+          "text": "internal enum class CinemaMetaPanelBlock {"
+        },
+        {
+          "line": 30,
+          "text": "internal enum class TabletSideCurtainState {"
+        },
+        {
+          "line": 36,
+          "text": "internal enum class TabletSecondaryPaneMode {"
+        },
+        {
+          "line": 42,
+          "text": "internal fun shouldHideTabletSecondaryPane("
+        },
+        {
+          "line": 50,
+          "text": "internal fun nextTabletSecondaryPaneMode("
+        },
+        {
+          "line": 60,
+          "text": "internal fun resolveTabletPrimaryRatio("
+        },
+        {
+          "line": 71,
+          "text": "internal fun resolveTabletPrimaryRatio("
+        },
+        {
+          "line": 85,
+          "text": "fun resolveTabletVideoLayoutPolicy("
+        },
+        {
+          "line": 106,
+          "text": "internal fun resolveTabletSecondaryDefaultTabIndex("
+        },
+        {
+          "line": 114,
+          "text": "internal fun resolveTabletCommentTabIndex(tabs: List<TabletSecondaryTab>): Int ="
+        },
+        {
+          "line": 117,
+          "text": "internal fun resolveTabletCinemaDefaultTab(tab: TabletSecondaryDefaultTab): Int ="
+        },
+        {
+          "line": 121,
+          "text": "internal fun shouldShowTabletSecondaryDanmakuActions(): Boolean = true"
+        },
+        {
+          "line": 123,
+          "text": "internal fun shouldShowTabletCinemaDanmakuActions("
+        },
+        {
+          "line": 127,
+          "text": "internal fun resolveCinemaPlayerViewportWidthDp("
+        },
+        {
+          "line": 135,
+          "text": "fun resolveTabletCinemaLayoutPolicy("
+        },
+        {
+          "line": 203,
+          "text": "internal fun resolveCurtainWidthDp("
+        },
+        {
+          "line": 215,
+          "text": "internal fun resolveInitialCurtainState(widthDp: Int): TabletSideCurtainState {"
+        },
+        {
+          "line": 221,
+          "text": "internal fun resolveCurtainStateAfterAutoBehavior("
+        },
+        {
+          "line": 237,
+          "text": "internal fun resolveCinemaSideCurtainSelectedTab("
+        },
+        {
+          "line": 249,
+          "text": "internal fun resolveCinemaMetaPanelContainerColor("
+        },
+        {
+          "line": 260,
+          "text": "internal fun resolveCinemaIntroCardContainerColor("
+        },
+        {
+          "line": 271,
+          "text": "internal fun resolveCinemaMetaPanelBlocks("
+        },
+        {
+          "line": 287,
+          "text": "private fun interpolateByWidth("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicy.kt",
+      "sha256LF": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3",
+      "bytesLF": 1065,
+      "physicalLines": 32,
+      "gitBlob": "30a5a9c922226fa2cca56d5fc05dd4277e076031",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal fun resolveVideoDetailBeyondViewportPageCount("
+        },
+        {
+          "line": 12,
+          "text": "internal fun shouldLoadMoreVideoComments("
+        },
+        {
+          "line": 24,
+          "text": "internal fun shouldUseLightweightCommentRendering("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "sha256LF": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+      "bytesLF": 94994,
+      "physicalLines": 2209,
+      "gitBlob": "7a5fc40b8d47e23460e2b1f1e1ae71d0e92bc487",
+      "declarations": [
+        {
+          "line": 130,
+          "text": "internal fun shouldShowDanmakuSendInput(isPlayerCollapsed: Boolean): Boolean = !isPlayerCollapsed"
+        },
+        {
+          "line": 133,
+          "text": "internal fun shouldShowVideoContentTabBarDanmakuActions("
+        },
+        {
+          "line": 137,
+          "text": "internal data class VideoContentTabBarLayoutSpec("
+        },
+        {
+          "line": 151,
+          "text": "internal fun hasVideoContentTabBarIndicatorScaleClearance("
+        },
+        {
+          "line": 163,
+          "text": "internal data class VideoContentTabBarLiquidChromeSpec("
+        },
+        {
+          "line": 174,
+          "text": "internal fun resolveVideoContentTabBarDockItemWidthDp(labelFontSizeSp: Int): Int {"
+        },
+        {
+          "line": 179,
+          "text": "internal fun shouldReuseVideoContentTabBarLiquidGlassDock("
+        },
+        {
+          "line": 184,
+          "text": "internal fun resolveVideoContentTabBarStartPaddingDp("
+        },
+        {
+          "line": 189,
+          "text": "internal fun resolveVideoContentTabBarLiquidChromeSpec("
+        },
+        {
+          "line": 214,
+          "text": "internal fun resolveVideoContentTabBarLayoutSpec(widthDp: Int): VideoContentTabBarLayoutSpec {"
+        },
+        {
+          "line": 246,
+          "text": "internal data class VideoContentTabBarDanmakuActionLayoutPolicy("
+        },
+        {
+          "line": 256,
+          "text": "internal fun resolveVideoContentTabBarDanmakuActionLayoutPolicy(widthDp: Int): VideoContentTabBarDanmakuActionLayoutPolicy {"
+        },
+        {
+          "line": 268,
+          "text": "internal data class VideoContentTabSwitchAnimationSpec("
+        },
+        {
+          "line": 272,
+          "text": "internal fun resolveVideoContentTabSwitchAnimationSpec("
+        },
+        {
+          "line": 282,
+          "text": "internal fun resolveVideoContentEffectiveSelectedTabIndex("
+        },
+        {
+          "line": 298,
+          "text": "internal fun shouldEnableVideoContentHorizontalPagerSwipe("
+        },
+        {
+          "line": 307,
+          "text": "internal fun isVideoContentCommentListAtTop("
+        },
+        {
+          "line": 312,
+          "text": "internal fun shouldEnableVideoContentTabBarCollapse("
+        },
+        {
+          "line": 325,
+          "text": "internal fun resolveVideoContentTabBarCollapseProgress("
+        },
+        {
+          "line": 340,
+          "text": "internal data class VideoContentTabBarCollapseScrollUpdate("
+        },
+        {
+          "line": 350,
+          "text": "internal fun reduceVideoContentTabBarCollapseOnPreScroll("
+        },
+        {
+          "line": 381,
+          "text": "internal fun reduceVideoContentTabBarCollapseOnPostScroll("
+        },
+        {
+          "line": 399,
+          "text": "internal fun resolveVideoContentTabBarCollapsePxWhenListLeavesTop("
+        },
+        {
+          "line": 415,
+          "text": "internal class VideoContentData("
+        },
+        {
+          "line": 430,
+          "text": "internal class VideoContentEngagementState("
+        },
+        {
+          "line": 442,
+          "text": "internal class VideoContentCommentState("
+        },
+        {
+          "line": 455,
+          "text": "internal class VideoContentNoteState("
+        },
+        {
+          "line": 461,
+          "text": "internal class VideoContentPresentationState("
+        },
+        {
+          "line": 478,
+          "text": "internal class VideoContentPrimaryActions("
+        },
+        {
+          "line": 498,
+          "text": "internal class VideoContentCommentActions("
+        },
+        {
+          "line": 515,
+          "text": "internal class VideoContentNoteActions("
+        },
+        {
+          "line": 529,
+          "text": "internal class VideoContentUiActions("
+        },
+        {
+          "line": 536,
+          "text": "internal fun VideoContentSection("
+        },
+        {
+          "line": 1287,
+          "text": "private fun VideoIntroTab("
+        },
+        {
+          "line": 1451,
+          "text": "internal fun VideoCommentTab("
+        },
+        {
+          "line": 1658,
+          "text": "internal fun LandscapeCommentPanel("
+        },
+        {
+          "line": 1835,
+          "text": "private fun VideoHeaderContent("
+        },
+        {
+          "line": 1998,
+          "text": "private fun VideoContentTabBar("
+        },
+        {
+          "line": 2135,
+          "text": "private fun VideoRecommendationHeader() {"
+        },
+        {
+          "line": 2158,
+          "text": "internal fun resolveFirstRelatedItemIndex(hasPages: Boolean): Int {"
+        },
+        {
+          "line": 2167,
+          "text": "fun VideoTagsRow("
+        },
+        {
+          "line": 2191,
+          "text": "fun VideoTagChip("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+      "sha256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "bytesLF": 628,
+      "physicalLines": 17,
+      "gitBlob": "a7342fafa5938c56b8741b27120e55b7fce8b929",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal enum class VideoDetailLocalBackTarget {"
+        },
+        {
+          "line": 9,
+          "text": "internal fun resolveVideoDetailLocalBackTarget("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "sha256LF": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a",
+      "bytesLF": 2664,
+      "physicalLines": 68,
+      "gitBlob": "c5c6e83ae9f929cd891fa576653a6930d709ce1e",
+      "declarations": [
+        {
+          "line": 19,
+          "text": "internal fun VideoDetailCommentFraudOverlayAdapter("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context",
+        "import android.widget.Toast"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+      "sha256LF": "02c777a25f8e3a76fe790dadc97cc475f4f66875d4642ef014c1bd92ed3b87b3",
+      "bytesLF": 2365,
+      "physicalLines": 56,
+      "gitBlob": "86e92542f0ef034a4089a57ebdcdbc73dfe6c2e5",
+      "declarations": [
+        {
+          "line": 15,
+          "text": "internal fun VideoDetailCommonOverlayAdapter("
+        }
+      ],
+      "androidImports": [
+        "import androidx.media3.common.Player"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+      "sha256LF": "7fefec7a8302cdc4e2a9957b4082c6a00300948327686043e983c6aca6c2d20f",
+      "bytesLF": 3244,
+      "physicalLines": 70,
+      "gitBlob": "dcdcac5ac1f7371058595ed7534bfad2f8e077e1",
+      "declarations": [
+        {
+          "line": 19,
+          "text": "internal fun VideoDetailDomainEffects("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt",
+      "sha256LF": "f476d677842002e49b18204d4d08fab69ddce8b4fa51ed32d5bf89ed58fc9409",
+      "bytesLF": 14024,
+      "physicalLines": 291,
+      "gitBlob": "63ffc96ff68ccd111d30c096d5113f9fcd0f0366",
+      "declarations": [
+        {
+          "line": 28,
+          "text": "internal fun VideoDetailDownloadOverlayAdapter("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+      "sha256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "bytesLF": 2126,
+      "physicalLines": 55,
+      "gitBlob": "c7b9b49a9bcfeedc59463790a40f73d00cdcef83",
+      "declarations": [
+        {
+          "line": 4,
+          "text": "internal const val VIDEO_DETAIL_ENTRY_TRANSITION_FINISH_TIMEOUT_BUFFER_MS = 80"
+        },
+        {
+          "line": 6,
+          "text": "internal const val VIDEO_DETAIL_ENTRY_PLAYBACK_PRELOAD_RATIO = 0.32f"
+        },
+        {
+          "line": 8,
+          "text": "internal fun shouldDeferVideoDetailLoadUntilEntryTransitionFinished("
+        },
+        {
+          "line": 21,
+          "text": "internal fun isVideoDetailEntryTransitionFinished("
+        },
+        {
+          "line": 34,
+          "text": "internal fun shouldMarkVideoDetailEntryTransitionFinished("
+        },
+        {
+          "line": 43,
+          "text": "internal fun resolveVideoDetailEntryTransitionFallbackTimeoutMillis("
+        },
+        {
+          "line": 50,
+          "text": "internal fun resolveVideoDetailEntryPlaybackPreloadDelayMillis("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+      "sha256LF": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "bytesLF": 4802,
+      "physicalLines": 123,
+      "gitBlob": "6ab357183ad39d164a48a70d9a7cc5d5c763a076",
+      "declarations": [
+        {
+          "line": 20,
+          "text": "internal fun rememberVideoDetailEntryTransitionFinished("
+        },
+        {
+          "line": 94,
+          "text": "internal fun rememberVideoDetailEntryPlaybackReady("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "sha256LF": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "bytesLF": 1280,
+      "physicalLines": 31,
+      "gitBlob": "5d1e8655679797f9e95b4d2ae903efdfb992b6fd",
+      "declarations": [
+        {
+          "line": 10,
+          "text": "internal fun VideoDetailFavoriteFolderOverlayAdapter("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "sha256LF": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "bytesLF": 6420,
+      "physicalLines": 148,
+      "gitBlob": "cff91bc8955a39bf9f81d949e4afe255729050f9",
+      "declarations": [
+        {
+          "line": 35,
+          "text": "internal fun BoxScope.VideoDetailFeedbackOverlayAdapter("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+      "sha256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "bytesLF": 1653,
+      "physicalLines": 59,
+      "gitBlob": "9fe2b5aeae1054b9c9879e793bcb60d22b2332ba",
+      "declarations": [
+        {
+          "line": 14,
+          "text": "internal class InlinePortraitPlayerCollapseState("
+        },
+        {
+          "line": 56,
+          "text": "internal fun rememberInlinePortraitPlayerCollapseState(videoBvid: String) ="
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "sha256LF": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "bytesLF": 10375,
+      "physicalLines": 243,
+      "gitBlob": "0acb9165274c8eefeafecabe0908df620c3219bb",
+      "declarations": [
+        {
+          "line": 33,
+          "text": "internal data class VideoDetailInputOverlayLayoutInfo("
+        },
+        {
+          "line": 39,
+          "text": "private data class DanmakuInputSnapshot("
+        },
+        {
+          "line": 50,
+          "text": "private data class DanmakuInputActions("
+        },
+        {
+          "line": 58,
+          "text": "private data class CommentInputSnapshot("
+        },
+        {
+          "line": 72,
+          "text": "private data class CommentInputActions("
+        },
+        {
+          "line": 81,
+          "text": "internal fun VideoDetailInputOverlayAdapter("
+        },
+        {
+          "line": 197,
+          "text": "private fun VideoDetailDanmakuInputOverlayContent("
+        },
+        {
+          "line": 219,
+          "text": "private fun VideoDetailCommentInputOverlayContent("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context",
+        "import android.content.res.Configuration",
+        "import android.net.Uri"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "sha256LF": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "bytesLF": 43891,
+      "physicalLines": 938,
+      "gitBlob": "3ff605bc9027b9533dfd76a01babc5d079e6761c",
+      "declarations": [
+        {
+          "line": 245,
+          "text": "internal fun VideoDetailFollowGroupDialog("
+        },
+        {
+          "line": 351,
+          "text": "internal fun VideoDetailPlaybackEndedDialog("
+        },
+        {
+          "line": 429,
+          "text": "internal fun VideoDetailQualitySwitchFailureDialog("
+        },
+        {
+          "line": 554,
+          "text": "internal fun VideoDetailDanmakuContextMenu("
+        },
+        {
+          "line": 633,
+          "text": "internal fun ExternalPlaylistQueueSheet("
+        },
+        {
+          "line": 744,
+          "text": "internal fun ExternalPlaylistQueueSheetContent("
+        },
+        {
+          "line": 884,
+          "text": "internal fun DetachedVideoCommentThreadHost("
+        }
+      ],
+      "androidImports": [
+        "import android.annotation.SuppressLint",
+        "import android.app.Activity",
+        "import android.content.Intent",
+        "import android.content.Context",
+        "import android.content.ContextWrapper",
+        "import android.content.pm.ActivityInfo",
+        "import android.content.res.Configuration",
+        "import android.database.ContentObserver",
+        "import android.os.Build",
+        "import android.os.Handler",
+        "import android.os.Looper",
+        "import android.os.SystemClock",
+        "import android.provider.Settings",
+        "import android.view.OrientationEventListener",
+        "import android.view.Window",
+        "import android.view.WindowManager",
+        "import android.widget.Toast",
+        "import androidx.core.view.WindowCompat",
+        "import androidx.core.view.WindowInsetsControllerCompat",
+        "import androidx.core.view.WindowInsetsCompat",
+        "import androidx.media3.common.Player",
+        "import androidx.lifecycle.viewmodel.compose.viewModel"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+      "sha256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "bytesLF": 2707,
+      "physicalLines": 74,
+      "gitBlob": "918369b02890c828718cf4a7de867fa8945a55cb",
+      "declarations": [
+        {
+          "line": 8,
+          "text": "internal data class VideoDetailParentUiSnapshot("
+        },
+        {
+          "line": 16,
+          "text": "internal fun captureVideoDetailParentUiSnapshot("
+        },
+        {
+          "line": 28,
+          "text": "internal suspend fun restoreVideoDetailParentUiSnapshot("
+        },
+        {
+          "line": 51,
+          "text": "private suspend fun restoreVideoDetailListPosition("
+        },
+        {
+          "line": 68,
+          "text": "internal fun canReleaseRelatedVideoNavigation("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt",
+      "sha256LF": "9d4bfa882d6e0540fb2a37f20a5e9b2867792f2cb0179e5dca80d72e15fe90bb",
+      "bytesLF": 32128,
+      "physicalLines": 579,
+      "gitBlob": "c48092dbe40cabaa23f5eab089bff5a86a4fbf81",
+      "declarations": [
+        {
+          "line": 72,
+          "text": "internal fun VideoDetailPhoneSuccessContentLayer("
+        },
+        {
+          "line": 481,
+          "text": "private fun ExternalPlaylistQueueCollapsedBar("
+        },
+        {
+          "line": 547,
+          "text": "private fun ExternalPlaylistQueueCollapsedBarContent("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context",
+        "import android.graphics.RenderEffect as AndroidRenderEffect",
+        "import android.graphics.Shader",
+        "import android.os.Build"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt",
+      "sha256LF": "604229623998f62ea9dd448be15f8e161dce544c6acee288e6a8a2ecf1bf522f",
+      "bytesLF": 5160,
+      "physicalLines": 126,
+      "gitBlob": "76f4106eb98d83882a27f8c5094fe96b5bec1018",
+      "declarations": [
+        {
+          "line": 28,
+          "text": "internal fun VideoDetailPipParamsEffect("
+        },
+        {
+          "line": 74,
+          "text": "internal fun VideoDetailKeepScreenOnEffect("
+        },
+        {
+          "line": 111,
+          "text": "internal fun VideoDetailSystemBarsEffect("
+        }
+      ],
+      "androidImports": [
+        "import android.app.Activity",
+        "import android.content.Context",
+        "import android.graphics.Rect",
+        "import android.os.Build",
+        "import android.view.View",
+        "import android.view.Window",
+        "import android.view.WindowManager",
+        "import androidx.core.view.WindowInsetsControllerCompat",
+        "import androidx.media3.common.Player"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "sha256LF": "5ca410207169a557e926c0772b4caac49f9f956774404ba549505935f321b5d5",
+      "bytesLF": 42159,
+      "physicalLines": 1084,
+      "gitBlob": "b234ce316c6d5fe155e61b18614fa87dc9d8a620",
+      "declarations": [
+        {
+          "line": 30,
+          "text": "internal fun shouldUseVideoDetailSharedElementMorph("
+        },
+        {
+          "line": 35,
+          "text": "internal data class VideoDetailSystemBarsSnapshot("
+        },
+        {
+          "line": 43,
+          "text": "internal fun resolveVideoDetailSystemBarsSnapshot("
+        },
+        {
+          "line": 62,
+          "text": "internal fun shouldShowSystemBarsOnVideoDetailExit(): Boolean {"
+        },
+        {
+          "line": 66,
+          "text": "internal data class VideoDetailSystemBarsVisibilityPolicy("
+        },
+        {
+          "line": 71,
+          "text": "internal enum class VideoDetailHiddenSystemBars {"
+        },
+        {
+          "line": 77,
+          "text": "internal data class VideoDetailSystemBarsApplySpec("
+        },
+        {
+          "line": 87,
+          "text": "internal fun resolveVideoDetailSystemBarsVisibilityPolicy("
+        },
+        {
+          "line": 129,
+          "text": "internal fun resolveVideoDetailSystemBarsApplySpec("
+        },
+        {
+          "line": 176,
+          "text": "internal fun resolveVideoDetailStableStatusBarHeightDp("
+        },
+        {
+          "line": 205,
+          "text": "internal fun resolveVideoDetailPortraitPlayerTopInsetDp("
+        },
+        {
+          "line": 224,
+          "text": "internal fun shouldApplyStatusBarPaddingToVideoPlayerChrome("
+        },
+        {
+          "line": 228,
+          "text": "internal fun shouldRestoreSystemBarsDuringVideoDetailExitTransition("
+        },
+        {
+          "line": 241,
+          "text": "internal fun shouldReactivateVideoDetailSystemBarsAfterCancelledExit("
+        },
+        {
+          "line": 252,
+          "text": "internal fun shouldReapplyVideoDetailSystemBarsAfterBecomingTop("
+        },
+        {
+          "line": 261,
+          "text": "internal fun applyVideoDetailSystemBarsSpec("
+        },
+        {
+          "line": 286,
+          "text": "internal fun Context.findActivity(): Activity? {"
+        },
+        {
+          "line": 295,
+          "text": "internal fun isWindowBoundsSmallerThanMaximum("
+        },
+        {
+          "line": 309,
+          "text": "internal fun shouldInferFloatingWindowFromBounds("
+        },
+        {
+          "line": 319,
+          "text": "internal fun isActivityInMultiWindowOrFloatingMode("
+        },
+        {
+          "line": 348,
+          "text": "internal fun toggleVideoDetailFullscreen("
+        },
+        {
+          "line": 440,
+          "text": "internal fun resolveNextPlayerHeightOffset("
+        },
+        {
+          "line": 456,
+          "text": "internal fun resolveIsPlayerCollapsed("
+        },
+        {
+          "line": 466,
+          "text": "internal fun resolveIsPlaybackPausedForCollapse("
+        },
+        {
+          "line": 475,
+          "text": "internal fun shouldUseTabletVideoLayout("
+        },
+        {
+          "line": 482,
+          "text": "internal fun shouldUseOrientationDrivenFullscreen("
+        },
+        {
+          "line": 488,
+          "text": "internal fun shouldRotateToPortraitOnSplitBack("
+        },
+        {
+          "line": 496,
+          "text": "internal fun shouldShowDetachedVideoCommentThreadHost("
+        },
+        {
+          "line": 502,
+          "text": "internal fun resolveVideoDetailCommentThreadHostMainSheetVisible("
+        },
+        {
+          "line": 511,
+          "text": "internal fun shouldForceInitializeDetachedCommentThreadHostForRoute("
+        },
+        {
+          "line": 519,
+          "text": "internal fun shouldApplyPhoneAutoRotatePolicy("
+        },
+        {
+          "line": 525,
+          "text": "internal fun resolveVideoDetailFullscreenMode("
+        },
+        {
+          "line": 539,
+          "text": "internal fun shouldApplyStartFullscreenOrientationRequest("
+        },
+        {
+          "line": 552,
+          "text": "internal fun resolvePhoneFullscreenEnterOrientation("
+        },
+        {
+          "line": 568,
+          "text": "internal fun shouldKeepManualFullscreenRequest("
+        },
+        {
+          "line": 579,
+          "text": "internal fun ManualFullscreenRequestLifecycleEffect("
+        },
+        {
+          "line": 613,
+          "text": "internal fun resolvePhoneVideoRequestedOrientation("
+        },
+        {
+          "line": 731,
+          "text": "private fun resolveStableOrientationWhenAutoRotateDisabled("
+        },
+        {
+          "line": 749,
+          "text": "internal fun resolvePhoneAutoRotateRequestedOrientation("
+        },
+        {
+          "line": 810,
+          "text": "internal const val PHONE_AUTO_ROTATE_LANDSCAPE_SETTLE_MS = 500L"
+        },
+        {
+          "line": 812,
+          "text": "internal fun resolvePhoneAutoRotateTargetToApply("
+        },
+        {
+          "line": 840,
+          "text": "internal fun resolveCurrentExactLandscapeOrientation("
+        },
+        {
+          "line": 850,
+          "text": "private fun preserveCurrentExactLandscapeSideWhileFullscreen("
+        },
+        {
+          "line": 868,
+          "text": "private fun resolveExactLandscapeOrientation("
+        },
+        {
+          "line": 890,
+          "text": "internal fun isLandscapeRequestedOrientation(requestedOrientation: Int): Boolean {"
+        },
+        {
+          "line": 900,
+          "text": "internal fun isVideoDrivenLandscapeOrientationLock(requestedOrientation: Int): Boolean {"
+        },
+        {
+          "line": 911,
+          "text": "internal fun resolveVideoDetailEntryOrientationSnapshot("
+        },
+        {
+          "line": 923,
+          "text": "internal fun shouldEnterPortraitFullscreenOnFullscreenToggle("
+        },
+        {
+          "line": 930,
+          "text": "internal fun resolvePortraitRotateTargetOrientation("
+        },
+        {
+          "line": 941,
+          "text": "internal fun resolveEffectivePhoneAutoRotateEnabled("
+        },
+        {
+          "line": 954,
+          "text": "internal fun shouldAllowPhoneSensorPortraitTransition("
+        },
+        {
+          "line": 959,
+          "text": "internal fun shouldReleaseManualFullscreenRequestAfterSensorTarget("
+        },
+        {
+          "line": 966,
+          "text": "internal fun shouldObservePhoneAutoRotate("
+        },
+        {
+          "line": 994,
+          "text": "internal fun shouldReleasePhoneManualPortraitHold("
+        },
+        {
+          "line": 1005,
+          "text": "private fun isPhoneOrientationUprightPortraitStable("
+        },
+        {
+          "line": 1014,
+          "text": "private fun isPhoneOrientationPortraitStable("
+        },
+        {
+          "line": 1023,
+          "text": "private fun withinWrappedRange("
+        },
+        {
+          "line": 1035,
+          "text": "internal fun resolveVideoDetailExitRequestedOrientation("
+        },
+        {
+          "line": 1047,
+          "text": "internal fun shouldEnablePortraitExperience(): Boolean {"
+        },
+        {
+          "line": 1055,
+          "text": "internal fun resolveVideoDetailCommentBarProgress("
+        },
+        {
+          "line": 1060,
+          "text": "internal fun shouldShowVideoDetailBottomInteractionBar("
+        },
+        {
+          "line": 1079,
+          "text": "internal fun shouldShowVideoDetailActionButtons(): Boolean {"
+        }
+      ],
+      "androidImports": [
+        "import android.app.Activity",
+        "import android.content.Context",
+        "import android.content.ContextWrapper",
+        "import android.content.pm.ActivityInfo",
+        "import android.content.res.Configuration",
+        "import android.os.Build",
+        "import android.view.OrientationEventListener",
+        "import android.view.Window",
+        "import androidx.core.view.WindowInsetsCompat",
+        "import androidx.core.view.WindowInsetsControllerCompat",
+        "import androidx.media3.common.Player"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "sha256LF": "598c0bb5f0246e0972e26e47c2bc36c32babcf24d4d5f1475343a7d8153dca63",
+      "bytesLF": 2130,
+      "physicalLines": 58,
+      "gitBlob": "54dad08f7950e16ebd3946303da8cc86708424c5",
+      "declarations": [
+        {
+          "line": 18,
+          "text": "internal class VideoDetailPlaybackEventState("
+        },
+        {
+          "line": 26,
+          "text": "internal fun rememberVideoDetailPlaybackEventState(playbackIdentity: String): VideoDetailPlaybackEventState {"
+        },
+        {
+          "line": 32,
+          "text": "internal fun VideoDetailPlaybackEventEffects("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "sha256LF": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da",
+      "bytesLF": 3593,
+      "physicalLines": 76,
+      "gitBlob": "a9ce5bd4fdeeb246050c0eeb3e0c137aa8f609c1",
+      "declarations": [
+        {
+          "line": 17,
+          "text": "internal fun VideoDetailPlayerSettingsOverlayAdapter("
+        }
+      ],
+      "androidImports": [
+        "import android.content.Context"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "sha256LF": "b0110085eb3a7c9c5c65867ea8366869a4d240b31e4909466beb6ff400fb9ada",
+      "bytesLF": 19030,
+      "physicalLines": 367,
+      "gitBlob": "5f17995a910aa100068d400dc551e0c8a2655a79",
+      "declarations": [
+        {
+          "line": 25,
+          "text": "internal data class ContinuousPlayerHostLayout("
+        },
+        {
+          "line": 35,
+          "text": "private const val VIEWPORT_WIDTH_OVERRIDE_QUANTIZE_STEP_DP = 16"
+        },
+        {
+          "line": 37,
+          "text": "internal data class ContinuousPlayerFullscreenExtras("
+        },
+        {
+          "line": 84,
+          "text": "internal fun Modifier.continuousPlayerViewportHeight("
+        },
+        {
+          "line": 137,
+          "text": "internal fun resolveContinuousPlayerInlineHeightPx("
+        },
+        {
+          "line": 156,
+          "text": "internal fun PortraitInlineVideoPlayerHost("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+      "sha256LF": "2b834aec6f27c59a0d39fd2bd7342fab8d549841cbbfac31ce937b8973bde0d3",
+      "bytesLF": 8590,
+      "physicalLines": 191,
+      "gitBlob": "d90f7f02bee4e4f7bcdea9bb276bd95e307cc663",
+      "declarations": [
+        {
+          "line": 40,
+          "text": "internal fun VideoDetailPortraitOverlayAdapter("
+        },
+        {
+          "line": 184,
+          "text": "internal fun shouldShowPortraitEntryCoverPlaceholder("
+        }
+      ],
+      "androidImports": [
+        "import androidx.media3.exoplayer.ExoPlayer"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+      "sha256LF": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250",
+      "bytesLF": 4382,
+      "physicalLines": 138,
+      "gitBlob": "d9703a45939261dd34a933ee0439197f15862581",
+      "declarations": [
+        {
+          "line": 11,
+          "text": "internal enum class VideoDetailReturnPhase {"
+        },
+        {
+          "line": 18,
+          "text": "internal class VideoDetailPresentationState private constructor("
+        },
+        {
+          "line": 121,
+          "text": "internal fun rememberVideoDetailPresentationState("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
+      "sha256LF": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1",
+      "bytesLF": 4378,
+      "physicalLines": 107,
+      "gitBlob": "799c8a8cd2710b2b85d44ba3da591b59361ea963",
+      "declarations": [
+        {
+          "line": 11,
+          "text": "internal data class VideoDetailPlaybackActions("
+        },
+        {
+          "line": 67,
+          "text": "internal data class VideoDetailEngagementActions("
+        },
+        {
+          "line": 79,
+          "text": "internal data class VideoDetailCommentActions("
+        },
+        {
+          "line": 100,
+          "text": "internal data class VideoDetailNavigationActions("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+      "sha256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "bytesLF": 12190,
+      "physicalLines": 325,
+      "gitBlob": "6b181cb84814c8807463c41fc7ea895a5f99b1b0",
+      "declarations": [
+        {
+          "line": 16,
+          "text": "internal const val VIDEO_DETAIL_RETURN_HANDOFF_SETTLE_START ="
+        },
+        {
+          "line": 19,
+          "text": "internal enum class VideoDetailReturnSessionPhase {"
+        },
+        {
+          "line": 27,
+          "text": "internal enum class VideoDetailReturnPlayerMode {"
+        },
+        {
+          "line": 35,
+          "text": "internal enum class VideoDetailReturnSecondaryContentMode {"
+        },
+        {
+          "line": 46,
+          "text": "internal enum class VideoDetailReturnDanmakuMode {"
+        },
+        {
+          "line": 51,
+          "text": "internal enum class VideoDetailReturnOverlayControlsMode {"
+        },
+        {
+          "line": 56,
+          "text": "internal enum class VideoDetailReturnDepthBlurMode {"
+        },
+        {
+          "line": 63,
+          "text": "internal enum class VideoDetailReturnHomeHeavyWorkMode {"
+        },
+        {
+          "line": 68,
+          "text": "internal data class VideoDetailReturnVisualBudget("
+        },
+        {
+          "line": 88,
+          "text": "internal fun resolveVideoDetailReturnSessionPhase("
+        },
+        {
+          "line": 116,
+          "text": "internal fun resolveVideoDetailReturnPlayerMode("
+        },
+        {
+          "line": 130,
+          "text": "internal fun shouldAllowPlaybackStopIntentForReturnBudget("
+        },
+        {
+          "line": 147,
+          "text": "internal fun resolveVideoDetailReturnVisualBudget("
+        },
+        {
+          "line": 224,
+          "text": "internal fun resolveVideoDetailReturnSecondaryContentMode("
+        },
+        {
+          "line": 249,
+          "text": "internal fun resolveVideoDetailReturnSecondaryContentAlphaPreview("
+        },
+        {
+          "line": 255,
+          "text": "internal fun shouldPauseHideDanmakuForReturnBudget("
+        },
+        {
+          "line": 260,
+          "text": "internal fun shouldSuppressOverlayControlsForReturnBudget("
+        },
+        {
+          "line": 265,
+          "text": "internal fun shouldDetachSecondaryContentForReturnBudget("
+        },
+        {
+          "line": 273,
+          "text": "internal fun resolveVideoDetailReturnDepthBlurQuantumPx("
+        },
+        {
+          "line": 289,
+          "text": "internal fun resolveVideoDetailReturnSettleProgressFromMorphDepth("
+        },
+        {
+          "line": 296,
+          "text": "internal fun shouldExpectLiveSurfaceOwnershipForReturnBudget("
+        },
+        {
+          "line": 300,
+          "text": "internal fun mapReturnPlayerModeToCoverOwnershipHint("
+        },
+        {
+          "line": 314,
+          "text": "internal val VIDEO_DETAIL_RETURN_SECONDARY_YIELD_END: Float ="
+        },
+        {
+          "line": 322,
+          "text": "internal fun shouldDeferPlaybackStopForSharedLiveReturn("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+      "sha256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "bytesLF": 12619,
+      "physicalLines": 301,
+      "gitBlob": "ed81c6fe13cb155ace2a1e5e681f20737283b7f1",
+      "declarations": [
+        {
+          "line": 16,
+          "text": "internal data class VideoDetailReturnSourceCardLayout("
+        },
+        {
+          "line": 53,
+          "text": "private fun emptyReturnSourceLayout("
+        },
+        {
+          "line": 71,
+          "text": "internal fun resolveVideoDetailReturnSourceCardLayout("
+        },
+        {
+          "line": 168,
+          "text": "internal fun resolveVideoDetailReturnCoverHeightInEntryPx("
+        },
+        {
+          "line": 180,
+          "text": "internal fun resolveVideoDetailReturnCoverWidthInEntryPx("
+        },
+        {
+          "line": 184,
+          "text": "internal fun resolveVideoDetailReturnCoverOffsetXInEntryPx("
+        },
+        {
+          "line": 188,
+          "text": "internal fun resolveVideoDetailReturnCoverOffsetYInEntryPx("
+        },
+        {
+          "line": 192,
+          "text": "internal data class VideoDetailReturnMediaLayoutFrame("
+        },
+        {
+          "line": 199,
+          "text": "internal fun resolveVideoDetailReturnMediaLayoutFrame("
+        },
+        {
+          "line": 256,
+          "text": "internal fun Modifier.videoDetailReturnMediaLayout("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt",
+      "sha256LF": "11ab5c4904b147c39a857942b5388e9fd1fa1497900fe6cf3994e3ff4065aca9",
+      "bytesLF": 40244,
+      "physicalLines": 995,
+      "gitBlob": "9ae25ea76358d1c0cbdb01e12591eef3b5d38518",
+      "declarations": [
+        {
+          "line": 94,
+          "text": "internal data class VideoDetailReturnSourceCardChromeModel("
+        },
+        {
+          "line": 106,
+          "text": "internal fun resolveVideoDetailReturnSourceCardChromeModel("
+        },
+        {
+          "line": 137,
+          "text": "internal data class VideoDetailReturnInfoSurfaceSpec("
+        },
+        {
+          "line": 144,
+          "text": "internal fun resolveVideoDetailReturnInfoSurfaceSpec("
+        },
+        {
+          "line": 174,
+          "text": "internal fun resolveVideoDetailFlyingSourceChromeAlpha("
+        },
+        {
+          "line": 212,
+          "text": "internal fun BoxScope.VideoDetailReturnSourceCardChrome("
+        },
+        {
+          "line": 509,
+          "text": "private fun VideoCardSourceCoverPresentation.hasVisibleChrome(): Boolean ="
+        },
+        {
+          "line": 522,
+          "text": "internal fun VideoDetailReturnCoverChrome("
+        },
+        {
+          "line": 609,
+          "text": "internal fun resolveVideoDetailReturnCoverChromeDensityScale(sourceScale: Float): Float ="
+        },
+        {
+          "line": 613,
+          "text": "private fun BoxScope.LandingCoverChrome("
+        },
+        {
+          "line": 769,
+          "text": "private fun LandingCoverStat("
+        },
+        {
+          "line": 821,
+          "text": "private fun BoxScope.LandingInfoContent("
+        },
+        {
+          "line": 860,
+          "text": "private fun LandingInfoTexts("
+        },
+        {
+          "line": 920,
+          "text": "private fun LandingSideBySideMetadata(model: VideoDetailReturnSourceCardChromeModel) {"
+        },
+        {
+          "line": 950,
+          "text": "private fun LandingPublishMetadata("
+        },
+        {
+          "line": 965,
+          "text": "private fun LandingOwnerMetadata("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreen.kt",
+      "sha256LF": "476bd8c90e4905921195e344653e13ddac20e11bce4e6a581d327d7245323ebb",
+      "bytesLF": 5170,
+      "physicalLines": 108,
+      "gitBlob": "9488f5045fb0ca124e8e24f20823cdce30895ea5",
+      "declarations": [
+        {
+          "line": 20,
+          "text": "fun VideoDetailScreen("
+        }
+      ],
+      "androidImports": [
+        "import androidx.lifecycle.viewmodel.compose.viewModel"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+      "sha256LF": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "bytesLF": 925,
+      "physicalLines": 28,
+      "gitBlob": "88ff7dd3d0380d40db22f4e753bbff6180f7a46b",
+      "declarations": [
+        {
+          "line": 9,
+          "text": "internal fun VideoDetailScreenContent("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "sha256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+      "bytesLF": 301728,
+      "physicalLines": 5464,
+      "gitBlob": "4f1f71d90c2942591e4a33348af7cdc9b2944f6a",
+      "declarations": [
+        {
+          "line": 278,
+          "text": "private val commentBackToTopRestoreFlow ="
+        },
+        {
+          "line": 281,
+          "text": "private const val CONTINUOUS_PLAYER_MORPH_DURATION_MILLIS = 280"
+        },
+        {
+          "line": 283,
+          "text": "private const val VIDEO_DETAIL_COLLAPSE_SIGNAL_IDLE_TIMEOUT_MS = 120L"
+        },
+        {
+          "line": 286,
+          "text": "private fun CollapsedPlayerNavigationBar("
+        },
+        {
+          "line": 434,
+          "text": "internal fun VideoDetailScreenStateHolder("
+        }
+      ],
+      "androidImports": [
+        "import android.annotation.SuppressLint",
+        "import android.app.Activity",
+        "import android.content.Intent",
+        "import android.content.Context",
+        "import android.content.ContextWrapper",
+        "import android.content.pm.ActivityInfo",
+        "import android.content.res.Configuration",
+        "import android.database.ContentObserver",
+        "import android.os.Build",
+        "import android.os.Handler",
+        "import android.os.Looper",
+        "import android.os.SystemClock",
+        "import android.provider.Settings",
+        "import android.view.OrientationEventListener",
+        "import android.view.Window",
+        "import android.view.WindowManager",
+        "import android.widget.Toast",
+        "import androidx.core.view.WindowCompat",
+        "import androidx.core.view.ViewCompat",
+        "import androidx.core.view.WindowInsetsControllerCompat",
+        "import androidx.core.view.WindowInsetsCompat",
+        "import androidx.media3.common.Player",
+        "import androidx.lifecycle.viewmodel.compose.viewModel"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "sha256LF": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "bytesLF": 14326,
+      "physicalLines": 400,
+      "gitBlob": "d02bdaf383a06e647d6013e9ba87b7ef86aa7104",
+      "declarations": [
+        {
+          "line": 7,
+          "text": "internal fun hasMeaningfulVideoPlayerBoundsChange("
+        },
+        {
+          "line": 22,
+          "text": "internal fun shouldHandleVideoDetailDisposeAsNavigationExit("
+        },
+        {
+          "line": 36,
+          "text": "internal fun resolveIsNavigatingToVideoDuringDispose("
+        },
+        {
+          "line": 43,
+          "text": "internal fun shouldMarkReturningStateOnVideoDetailDispose("
+        },
+        {
+          "line": 49,
+          "text": "internal fun shouldClearStaleReturningStateOnVideoDetailEnter("
+        },
+        {
+          "line": 56,
+          "text": "internal fun shouldShowExternalPlaylistQueueBarByPolicy("
+        },
+        {
+          "line": 73,
+          "text": "internal fun shouldShowExternalPlaylistQueueBarOnContentTab("
+        },
+        {
+          "line": 80,
+          "text": "internal fun resolveExternalPlaylistQueueTitle("
+        },
+        {
+          "line": 92,
+          "text": "internal fun normalizePlaylistCoverUrlForUi(rawUrl: String?): String {"
+        },
+        {
+          "line": 102,
+          "text": "internal fun resolveExternalPlaylistQueueListMaxHeightDp(screenHeightDp: Int): Int {"
+        },
+        {
+          "line": 107,
+          "text": "internal fun resolveExternalPlaylistQueueBottomSpacerDp(navigationBarBottomDp: Int): Int {"
+        },
+        {
+          "line": 111,
+          "text": "internal enum class ExternalPlaylistQueueSheetPresentation {"
+        },
+        {
+          "line": 116,
+          "text": "internal fun resolveExternalPlaylistQueueSheetPresentation("
+        },
+        {
+          "line": 126,
+          "text": "internal fun shouldOpenCommentUrlInApp(url: String): Boolean {"
+        },
+        {
+          "line": 134,
+          "text": "internal sealed interface CommentUrlNavigationTarget {"
+        },
+        {
+          "line": 140,
+          "text": "internal fun resolveCommentUrlNavigationTarget(rawUrl: String): CommentUrlNavigationTarget? {"
+        },
+        {
+          "line": 164,
+          "text": "internal fun resolveDanmakuDialogTopReservePx("
+        },
+        {
+          "line": 177,
+          "text": "internal fun shouldApplyPipParamsUpdate("
+        },
+        {
+          "line": 190,
+          "text": "internal fun shouldDismissCommentThreadDetailForPip("
+        },
+        {
+          "line": 198,
+          "text": "internal fun shouldAutoEnterAudioModeFromRoute("
+        },
+        {
+          "line": 217,
+          "text": "internal fun shouldAutoEnterPortraitFullscreenFromRoute("
+        },
+        {
+          "line": 261,
+          "text": "internal fun shouldStartInPortraitFullscreenFromRouteHint("
+        },
+        {
+          "line": 271,
+          "text": "internal fun shouldSyncMainPlayerToInternalBvid("
+        },
+        {
+          "line": 296,
+          "text": "internal fun shouldSkipInternalBvidSyncForPlayerInitiatedAdvance("
+        },
+        {
+          "line": 304,
+          "text": "internal fun resolveVideoDetailPlaybackTargetCid("
+        },
+        {
+          "line": 316,
+          "text": "internal fun resolveAutoPlayOverrideForInternalBvidSync("
+        },
+        {
+          "line": 322,
+          "text": "internal fun shouldSwitchCollectionVideoInsideCurrentDetailPage("
+        },
+        {
+          "line": 342,
+          "text": "internal fun resolveUgcSeasonEpisodeCoverUrl("
+        },
+        {
+          "line": 363,
+          "text": "internal data class VideoPlayerSectionTarget("
+        },
+        {
+          "line": 373,
+          "text": "internal fun resolveVideoPlayerSectionTarget("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+      "sha256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "bytesLF": 343,
+      "physicalLines": 14,
+      "gitBlob": "70bf1467587c3da30469c6b699a18d4565d984c4",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal enum class VideoDetailTopBarAction {"
+        },
+        {
+          "line": 8,
+          "text": "internal fun resolveVideoDetailTopBarAction(isHomeButton: Boolean): VideoDetailTopBarAction {"
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+      "sha256LF": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "bytesLF": 16495,
+      "physicalLines": 361,
+      "gitBlob": "1c6cdcba5d8cdb750dab036530f6502fd7fc2c17",
+      "declarations": [
+        {
+          "line": 46,
+          "text": "internal data class VideoDetailTransitionState("
+        },
+        {
+          "line": 62,
+          "text": "internal fun rememberVideoDetailTransitionState("
+        },
+        {
+          "line": 201,
+          "text": "private fun ReportVideoDetailMorphProgressToClock("
+        },
+        {
+          "line": 227,
+          "text": "internal fun rememberVideoDetailRouteSheetFrameProvider("
+        },
+        {
+          "line": 320,
+          "text": "internal fun VideoDetailRouteSheetHost("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+      "sha256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "bytesLF": 30504,
+      "physicalLines": 733,
+      "gitBlob": "5dd56355151f9d215595dc19cc95c257b6598e6d",
+      "declarations": [
+        {
+          "line": 22,
+          "text": "private const val COVER_TAKEOVER_PRE_BACK_DELAY_MILLIS = 0L"
+        },
+        {
+          "line": 23,
+          "text": "internal const val VIDEO_CONTENT_COMMENT_TAB_INDEX = 1"
+        },
+        {
+          "line": 30,
+          "text": "internal fun isVideoDetailEntryActiveMiuixTransitionSource("
+        },
+        {
+          "line": 46,
+          "text": "internal fun shouldConsumeMiuixTransitionVisualAssets("
+        },
+        {
+          "line": 63,
+          "text": "internal fun shouldDrawFlyingReconstructedSourceChrome("
+        },
+        {
+          "line": 75,
+          "text": "internal fun shouldDrawNativeCoverOverlay("
+        },
+        {
+          "line": 81,
+          "text": "internal fun shouldPunchThroughFlyingMediaToNativeListCard("
+        },
+        {
+          "line": 91,
+          "text": "internal fun resolveForceCoverOnlyForReturn("
+        },
+        {
+          "line": 106,
+          "text": "internal fun shouldUseReturningVideoDetailVisualState("
+        },
+        {
+          "line": 121,
+          "text": "internal fun shouldConsumeMiuixReturnSessionForVideoDetailEntry("
+        },
+        {
+          "line": 144,
+          "text": "internal fun shouldTreatVideoDetailCardReturnAsCommitted("
+        },
+        {
+          "line": 155,
+          "text": "internal fun shouldUseLiveReturnMorph("
+        },
+        {
+          "line": 177,
+          "text": "internal fun shouldTreatVideoDetailContentReadyForLiveReturnMorph("
+        },
+        {
+          "line": 185,
+          "text": "internal fun resolveVideoDetailReturnPlaybackIntent("
+        },
+        {
+          "line": 201,
+          "text": "internal fun shouldHandVisualOwnershipToResidentCover("
+        },
+        {
+          "line": 214,
+          "text": "internal fun resolveVideoDetailReturnCoverOwnership("
+        },
+        {
+          "line": 236,
+          "text": "internal fun isLiveReturnMorphFromOwnership("
+        },
+        {
+          "line": 240,
+          "text": "internal fun shouldHandResidentCoverFromOwnership("
+        },
+        {
+          "line": 254,
+          "text": "internal fun resolveVideoDetailReturnSessionLockedOwnership("
+        },
+        {
+          "line": 266,
+          "text": "internal data class VideoDetailReturnMediaFrame("
+        },
+        {
+          "line": 276,
+          "text": "internal fun resolveVideoDetailReturnMediaFrame("
+        },
+        {
+          "line": 306,
+          "text": "internal fun resolveVideoDetailReturnCoverAlpha("
+        },
+        {
+          "line": 330,
+          "text": "internal fun resolveVideoDetailReturnVisualProgress("
+        },
+        {
+          "line": 340,
+          "text": "internal fun resolveVideoDetailReturnPlayerAlpha("
+        },
+        {
+          "line": 362,
+          "text": "internal data class VideoDetailResidentCoverSource("
+        },
+        {
+          "line": 369,
+          "text": "internal fun resolveVideoDetailResidentCoverSource("
+        },
+        {
+          "line": 418,
+          "text": "internal fun resolveVideoDetailReturnContentAlpha("
+        },
+        {
+          "line": 445,
+          "text": "internal fun shouldTreatVideoDetailCardExitAsReturning("
+        },
+        {
+          "line": 464,
+          "text": "internal fun shouldTreatVideoDetailExitTransitionInProgress("
+        },
+        {
+          "line": 482,
+          "text": "internal fun shouldKeepPlaybackSessionActiveForSharedReturnMorph("
+        },
+        {
+          "line": 501,
+          "text": "internal fun shouldExpandPlayerViewportForSharedReturn("
+        },
+        {
+          "line": 524,
+          "text": "internal fun resolvePlayerCollapseProgressForLayout("
+        },
+        {
+          "line": 532,
+          "text": "internal fun resolveVideoDetailCollapseShadowAlpha(collapseProgress: Float): Float ="
+        },
+        {
+          "line": 536,
+          "text": "internal fun resolveCollapsedPlayerMediaScrimAlpha(collapseProgress: Float): Float ="
+        },
+        {
+          "line": 540,
+          "text": "internal fun resolveCollapsedPlayerToolbarAlpha(collapseProgress: Float): Float ="
+        },
+        {
+          "line": 543,
+          "text": "internal fun shouldForceBackPreviewPlayerCover("
+        },
+        {
+          "line": 554,
+          "text": "internal fun shouldSuppressVideoDetailEnterFadeAfterBackPreview("
+        },
+        {
+          "line": 561,
+          "text": "internal fun shouldUseVideoDetailRootTransitionProgress("
+        },
+        {
+          "line": 571,
+          "text": "internal fun shouldShowVideoDetailContent("
+        },
+        {
+          "line": 581,
+          "text": "internal fun resolveCoverTakeoverDelayBeforeBackNavigationMillis(): Long {"
+        },
+        {
+          "line": 586,
+          "text": "internal data class VideoDetailRouteSheetMotion("
+        },
+        {
+          "line": 601,
+          "text": "internal enum class VideoDetailRouteSheetSettleDirection {"
+        },
+        {
+          "line": 607,
+          "text": "internal data class VideoDetailRouteSheetFrame("
+        },
+        {
+          "line": 615,
+          "text": "internal data class VideoDetailSecondaryContentTiming("
+        },
+        {
+          "line": 622,
+          "text": "internal fun resolveVideoDetailSecondaryContentTiming("
+        },
+        {
+          "line": 641,
+          "text": "internal data class VideoDetailMotionSpec("
+        },
+        {
+          "line": 647,
+          "text": "private const val VIDEO_DETAIL_ENTRY_PHASE_MIN_DURATION_MILLIS = 120"
+        },
+        {
+          "line": 648,
+          "text": "private const val VIDEO_DETAIL_CONTENT_PHASE_MIN_DURATION_MILLIS = 180"
+        },
+        {
+          "line": 649,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_MAIN_DURATION_MILLIS = 320"
+        },
+        {
+          "line": 650,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_SETTLE_DURATION_MILLIS = 96"
+        },
+        {
+          "line": 651,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_DURATION_MILLIS ="
+        },
+        {
+          "line": 653,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_INITIAL_SCALE = 0.965f"
+        },
+        {
+          "line": 654,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_INITIAL_TRANSLATION_Y_DP = 56f"
+        },
+        {
+          "line": 655,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_INITIAL_CORNER_DP = 28f"
+        },
+        {
+          "line": 656,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_INITIAL_SCRIM_ALPHA = 0.18f"
+        },
+        {
+          "line": 657,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_SETTLE_SCALE_DELTA = 0.0015f"
+        },
+        {
+          "line": 658,
+          "text": "private const val HOME_VIDEO_ROUTE_SHEET_SETTLE_TRANSLATION_DP = 1.5f"
+        },
+        {
+          "line": 660,
+          "text": "internal fun resolveVideoDetailMotionSpec("
+        },
+        {
+          "line": 673,
+          "text": "internal fun resolveVideoDetailRouteSheetMotion("
+        },
+        {
+          "line": 695,
+          "text": "internal fun resolveVideoDetailRouteSheetFrame("
+        },
+        {
+          "line": 731,
+          "text": "private fun lerpVideoDetailFloat(start: Float, stop: Float, fraction: Float): Float {"
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "bytesLF": 1414,
+      "physicalLines": 39,
+      "gitBlob": "53bb4791cf213ae140037b778a63dcf9636e4ac9",
+      "declarations": [
+        {
+          "line": 3,
+          "text": "internal enum class VideoFavoriteEntryPoint {"
+        },
+        {
+          "line": 11,
+          "text": "internal enum class VideoFavoriteAction {"
+        },
+        {
+          "line": 23,
+          "text": "internal fun resolveVideoFavoriteAction("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+      "sha256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "bytesLF": 399,
+      "physicalLines": 13,
+      "gitBlob": "d38d0cf9e02cd935f36b4896a8af9ea51f143b7b",
+      "declarations": [
+        {
+          "line": 5,
+          "text": "internal fun resolveInitialPageIndex("
+        }
+      ],
+      "androidImports": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "sha256LF": "9f4fe9aa4a4d7b37db454692a8cf5b55c778136301ce8c1874c9fd89c1c2f59a",
+      "bytesLF": 1565,
+      "physicalLines": 50,
+      "gitBlob": "7d44b3fb400e4d0809c7258eac97c61b6f8f2898",
+      "declarations": [
+        {
+          "line": 7,
+          "text": "internal const val VIDEO_NAV_TARGET_CID_KEY = \"video_nav_target_cid\""
+        },
+        {
+          "line": 8,
+          "text": "internal const val VIDEO_NAV_COVER_URL_KEY = \"video_nav_cover_url\""
+        },
+        {
+          "line": 10,
+          "text": "internal fun buildVideoNavigationOptions("
+        },
+        {
+          "line": 30,
+          "text": "internal fun resolveNavigationTargetCid("
+        }
+      ],
+      "androidImports": [
+        "import android.os.Bundle"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "preparedOnly": true,
+  "soleExistingObject": "DesktopOriginalVideoControlSettings",
+  "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+  "originalReader": "    fun getPlaybackCompletionBehaviorSync(context: Context): PlaybackCompletionBehavior {\n        val prefs = context.getSharedPreferences(\"auto_play_cache\", Context.MODE_PRIVATE)\n        val sharedPreferencesValue = if (prefs.contains(CACHE_KEY_PLAYBACK_COMPLETION_BEHAVIOR)) {\n            prefs.getInt(\n                CACHE_KEY_PLAYBACK_COMPLETION_BEHAVIOR,\n                PlaybackCompletionBehavior.CONTINUE_CURRENT_LOGIC.value\n            )\n        } else {\n            null\n        }\n        return resolvePlaybackCompletionBehaviorSyncSource(\n            memoryCacheValue = playbackCompletionBehaviorMemoryCache,\n            sharedPreferencesValue = sharedPreferencesValue,\n        )\n    }",
+  "originalReaderSha256LF": "3ead818bbc14822100b56fb28b23f9fb26992d9875a92b48e8b1ed371fdf10a1",
+  "baseGeneratedSha256LF": "75e2c210e2e72975b561d68c90332869ac41a79c4f156efe65d307b7f91f258f",
+  "desiredGeneratedSha256LF": "e1b38fad1a010e658a2a8a4dee71700ed07fd903edb0abf994bfdbe68cc28b26",
+  "baseProducerSha256LF": "7dc9952389ebc0fa4139d6cfda0a733d6df58e8869ac11df0f0e316ba2e5b6b7",
+  "desiredProducerSha256LF": "aa33a61c40c51c5a5fef72741393e585ce763f3b2775e29dae4cfc3c1f8e4ba5",
+  "secondMemoryCache": false,
+  "installRecipe": "Single exact names-list addition in existing sole full-controls producer; generated legacy file is compile-only, never an install payload."
+}

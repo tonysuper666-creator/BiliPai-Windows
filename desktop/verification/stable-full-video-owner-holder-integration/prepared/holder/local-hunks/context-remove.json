@@ -1,0 +1,23 @@
+{
+  "basePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\whole-compile-10\\source-inputs\\prepared\\legacy\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSettingsContext.kt",
+  "baseSHA256LF": "2015e89458d5260276b442b142115de302709f7d62ba04ba8142418c9819c7e1",
+  "candidateSHA256LF": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9",
+  "hunks": [
+    {
+      "before": "    val changes = linkedMapOf<String, JsonElement>()",
+      "after": "    val changes = linkedMapOf<String, JsonElement?>()"
+    },
+    {
+      "before": "    operator fun <T> get(key: DesktopPreferenceKey<T>): T? = changes[key.name]?.let(key.decode) ?: snapshot[key]",
+      "after": "    operator fun <T> get(key: DesktopPreferenceKey<T>): T? =\n        if (changes.containsKey(key.name)) changes[key.name]?.let(key.decode) else snapshot[key]"
+    },
+    {
+      "before": "}\n\ninternal class DesktopOriginalPlayerSettingsDataStore",
+      "after": "    fun remove(key: DesktopPreferenceKey<*>) { changes[key.name] = null }\n}\n\ninternal class DesktopOriginalPlayerSettingsDataStore"
+    }
+  ],
+  "originalAuthorityUnchanged": true,
+  "installWholeSource": false,
+  "compileOnlyReferenceSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-holder-ui-parity\\compile-reference\\context\\DesktopOriginalPlayerSettingsContext.kt",
+  "rootRecipe": "Apply only these 3 members/types to existing DesktopOriginalPlayerPreferenceValues; null is original MutablePreferences deletion. Preserve parent stringSet and all existing context constructors."
+}

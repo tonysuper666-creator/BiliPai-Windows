@@ -1,0 +1,736 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "feature": "original-video-detail-holder-full",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/core/store/DesktopOriginalVideoHolderSendSettings.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalVideoHolderSettings.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/HazeEffectCompat.kt",
+      "sha256": "e74e2dd7c6f8cd58d227424f3a69e0f05d833eb1ab4ef75992617ea7d5b33598",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/ui/blur/HazeEffectCompat.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoStatRow.kt",
+      "sha256": "c34d5a684a64fb7915e57951e321ee8f22566b62c89055503e0b662597204a9e",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/ui/components/VideoStatRow.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "sha256": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/core/ui/transition/DesktopOriginalVideoCardMorphProgressReporter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AppAdaptiveStrategySnapshot.kt",
+      "sha256": "30fbcce3374d18b7fea7af8efbfbc4e32be9051db8e8ff6f27c04c8d4a1ffd3a",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/util/AppAdaptiveStrategySnapshot.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/PlayerOrientationPolicy.kt",
+      "sha256": "e9dd38f23314c31356c49e3bcdb7854a9bdd8e392db3abef1078ce9819fc9883",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/util/PlayerOrientationPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/PlayerPresentationPolicy.kt",
+      "sha256": "a24c909660f1ee8a2e10566f0c64cce420cf8987de2581f903e763eb58a00025",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/core/util/PlayerPresentationPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialog.kt",
+      "sha256": "badfa8bf01e6060e84475a378d57d44874297e88cbfdd51c1f5d6f39ccbfcfd2",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/download/BatchDownloadDialog.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt",
+      "sha256": "a695113996dcd6e610777233c1a4ee578cbc637f31e5201c782ecc6d9ef48b58",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt",
+      "sha256": "7970bd3d2c9da857f5a9b16095839e3b350831a9ec4f64e3f8597feb58e63f04",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt",
+      "sha256": "673c99e46c5b281b091169939628e5025bba339bab4cb3298b107200feebf3b1",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+      "sha256": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt",
+      "sha256": "6a98d56e8d368f5d2b5230eb59bf8768b981b3a9590db1132f5571fe2e18dd1b",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+      "sha256": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+      "sha256": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "sha256": "2daaffbd12cbfd62f560bbfa4c008629aa7b8aff846453cd2762de7c242711de",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+      "sha256": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "sha256": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalHolderCommentFraudOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+      "sha256": "02c777a25f8e3a76fe790dadc97cc475f4f66875d4642ef014c1bd92ed3b87b3",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+      "sha256": "7fefec7a8302cdc4e2a9957b4082c6a00300948327686043e983c6aca6c2d20f",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt",
+      "sha256": "f476d677842002e49b18204d4d08fab69ddce8b4fa51ed32d5bf89ed58fc9409",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+      "sha256": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+      "sha256": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "sha256": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "sha256": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+      "sha256": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "sha256": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "sha256": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "selected",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+      "sha256": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt",
+      "sha256": "9d4bfa882d6e0540fb2a37f20a5e9b2867792f2cb0179e5dca80d72e15fe90bb",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt",
+      "sha256": "604229623998f62ea9dd448be15f8e161dce544c6acee288e6a8a2ecf1bf522f",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "sha256": "5ca410207169a557e926c0772b4caac49f9f956774404ba549505935f321b5d5",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "sha256": "598c0bb5f0246e0972e26e47c2bc36c32babcf24d4d5f1475343a7d8153dca63",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "sha256": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "sha256": "b0110085eb3a7c9c5c65867ea8366869a4d240b31e4909466beb6ff400fb9ada",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+      "sha256": "2b834aec6f27c59a0d39fd2bd7342fab8d549841cbbfac31ce937b8973bde0d3",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+      "sha256": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+      "sha256": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt",
+      "sha256": "11ab5c4904b147c39a857942b5388e9fd1fa1497900fe6cf3994e3ff4065aca9",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+      "sha256": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "sha256": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "sha256": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+      "sha256": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+      "sha256": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+      "sha256": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+      "sha256": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "sha256": "9f4fe9aa4a4d7b37db454692a8cf5b55c778136301ce8c1874c9fd89c1c2f59a",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
+      "sha256": "8a3e0cc7d1c7a4d32a3abf1698bd3e4ded06749279e97733c24ed553bcacc95b",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/state/DesktopOriginalMiniEntryPolicy.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+      "sha256": "0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": true,
+      "existingMode": "policy-extract",
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/DesktopOriginalLikeBurstAnimation.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt",
+      "sha256": "57184d1f26be6aba262ce96a5ac69650ba660f66fb79a6e3252b0c9aeea0fa6e",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt",
+      "sha256": "1facc0ae0778f037b84b36438883016bc369e71b2dbea28160841580b054089d",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "direct",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt",
+      "sha256": "6500e13a311b41e86e35b60d1fb3144cdb658b5ce09bd2d6f20ef467b325312d",
+      "features": [
+        "original-video-detail-holder-full"
+      ],
+      "mode": "selected",
+      "existingIdentity": false,
+      "existingMode": null,
+      "outputs": [
+        "com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt"
+      ],
+      "mergeRule": "union features; preserve existing source hash and mode except explicit reviewed canonical DIRECT promotion; never replace full registry"
+    }
+  ],
+  "installationRequiresActualSourceIdentityMatch": true
+}

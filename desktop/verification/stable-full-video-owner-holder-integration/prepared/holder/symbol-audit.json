@@ -1,0 +1,57 @@
+{
+  "passed": true,
+  "candidateJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-holder-ui-parity\\runs\\holder-05\\candidate.jar",
+    "sha256Bytes": "5d685f776192b040a2323143d2375823e6346ffe50c92fd71463f82a5c5a0d33"
+  },
+  "actual65": {
+    "manifestSHA256": "5d402b296762cce3cc35a228e9fef501683ccc2745680430d8f7c0e2073020f8",
+    "orderedRuntimeSHA256": "024adaeff9d44585e5019f1f654c05db52b06f895d560dd120df02603dc6da8b",
+    "mainKotlinSHA256": "93951ded1da132099e8c3778de9bf6a4a5d1ea63c6d60c83381a683c9ec9f886",
+    "runtimeEntries": 101
+  },
+  "explicitProspectiveVM": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\whole-compile-10-with-kotlin-module-02\\candidate.jar",
+    "sha256Bytes": "e310cb71a3ccd2ae2fdc81f69fa8da8dbf0b06c4e28e11209bdf65765b1c7f67"
+  },
+  "classes": 441,
+  "candidatePublicTopLevelJvmMethods": 320,
+  "candidatePublicTopLevelJvmFields": 19,
+  "actualPublicTopLevelJvmMethods": 5936,
+  "prospectivePublicTopLevelJvmMethods": 82,
+  "productionClassFqnOverlapExcludedCompileOnlyContext": 0,
+  "declaredCompileOnlyContextClassOverlaps": [
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences$Editor.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerPreferenceValues.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$edit$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore.class"
+  ],
+  "prospectiveVMClassOverlaps": [
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences$Editor.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerPreferenceValues.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$edit$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore.class"
+  ],
+  "topLevelCollisions": [],
+  "internalTopLevelCollisions": [],
+  "invalidJvmMethodNames": [],
+  "staticClassfileOnly": true,
+  "runtimeLoadedAllClasses": false,
+  "productAcceptance": false
+}

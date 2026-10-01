@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1753:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^

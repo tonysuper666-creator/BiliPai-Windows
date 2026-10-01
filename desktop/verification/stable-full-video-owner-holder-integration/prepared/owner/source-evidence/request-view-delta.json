@@ -1,0 +1,10 @@
+{
+  "preparedOnly": true,
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+  "baseSha256LF": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+  "desiredSha256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+  "exactAnchor": "    private suspend fun activeInvocation(): DesktopOriginalVideoPlaybackInvocation {\n",
+  "insertBefore": "    /** Read-only view of THIS continuation's captured repository. Extended\n     * original metadata/action ports use it; there is no mutable latest binding. */\n    internal fun requireRequestRepository(): DesktopOriginalVideoLoadRepository =\n        activeThreadInvocation()?.repository\n            ?: error(\"Original playback network invocation is required\")\n\n",
+  "platformViewOnly": true,
+  "noLatestBinding": true
+}

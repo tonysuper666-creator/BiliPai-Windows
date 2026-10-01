@@ -1,0 +1,16 @@
+desktop\.local\stable-video-holder-ui-parity\runs\holder-03\source-inputs\compile-reference\context\DesktopOriginalPlayerSettingsContext.kt:72:68: error: null cannot be a value of a non-null type 'JsonElement'.
+    fun remove(key: DesktopPreferenceKey<*>) { changes[key.name] = null }
+                                                                   ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-03\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerPresentationPolicy.kt:107:10: error: unresolved reference 'resolveEffectivePlayerRequestedOrientation'.
+): Int = resolveEffectivePlayerRequestedOrientation(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlatformPolicy.kt:457:9: error: conflicting declarations:
+local val holderPlatform: DesktopOriginalVideoHolderPlatform
+local val holderPlatform: DesktopOriginalVideoHolderPlatform
+    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+        ^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-03\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlatformPolicy.kt:458:9: error: conflicting declarations:
+local val holderPlatform: DesktopOriginalVideoHolderPlatform
+local val holderPlatform: DesktopOriginalVideoHolderPlatform
+    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current
+        ^^^^^^^^^^^^^^

@@ -1,0 +1,21 @@
+{
+  "preparedOnly": true,
+  "actual61Manifest": "6b5777dbe6855ddb9529f612580c11aa24dfcd23c771828e51369d610e4a9445",
+  "actual61Cp": "746bdf5e200774e0b1765b31fa0bd35918080cdddf04606318482147f774c057",
+  "runtimeEntries": 101,
+  "inputSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\notes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoNoteProtocol.kt",
+      "sha256Bytes": "7dec47b049608e2040651dc72f6bfcff523cbf764bc87428d351ba23a6b10a72"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNoteEnvironment.kt",
+      "sha256Bytes": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f"
+    }
+  ],
+  "compileExit": 0,
+  "classes": 23,
+  "productOverlap": [],
+  "noHttp": true,
+  "noAccountMutation": true
+}

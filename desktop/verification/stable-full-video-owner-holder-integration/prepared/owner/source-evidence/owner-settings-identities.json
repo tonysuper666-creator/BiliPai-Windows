@@ -1,0 +1,32 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+  "originalSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+  "selectedOriginalFunctions": [
+    "getPlaybackCdnPreference",
+    "getVideoCodec",
+    "setVideoCodec",
+    "getVideoCodecSync",
+    "getVideoSecondCodec",
+    "setVideoSecondCodec",
+    "getVideoSecondCodecSync",
+    "getAudioQuality",
+    "getDataSaverModeSync",
+    "getVideoNoteEnabledSync",
+    "getTripleJumpEnabled",
+    "getResumePlaybackPromptEnabledSync",
+    "hasResumePlaybackPromptShown",
+    "markResumePlaybackPromptShown",
+    "isEasterEggEnabledSync",
+    "getAutoPlaySync",
+    "getExternalPlaylistAutoContinueSync",
+    "getAutoHighestQualitySync",
+    "getShowOnlineCountSync"
+  ],
+  "excludedSoleExisting": [
+    "DesktopOriginalPlayerSectionSettings.getClickToPlaySync",
+    "DesktopOriginalPortraitSettings.setAudioQuality"
+  ],
+  "outputSha256Bytes": "2c4f29ea06019618e887216317c3ef5b075e2dab2ba215e92dda9af35bdc35d0",
+  "requiredMirrorStringSetSupport": true,
+  "preparedOnly": true
+}

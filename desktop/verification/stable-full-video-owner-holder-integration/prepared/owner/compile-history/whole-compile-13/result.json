@@ -1,0 +1,216 @@
+{
+  "preparedOnly": true,
+  "actualProductSnapshot": "stable-product-snapshot-66",
+  "actualManifest": "e549c7badf5b11208e8b9fb3c2d5480759e9202eb157ae165feb0a8354cbcba3",
+  "actualCp": "43b1e432d592dd74088079e60731eda25d26f6c636df3570644a377b200ba9db",
+  "runtimeEntries": 101,
+  "compileExit": 0,
+  "classes": 387,
+  "overlap": [
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getBottomProgressBehavior$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getBottomProgressBehavior$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getBottomProgressBehavior$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getBottomProgressBehavior$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getCardAnimationEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getCardAnimationEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getCardAnimationEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getCardAnimationEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getDoubleTapSeekEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getDoubleTapSeekEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getDoubleTapSeekEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getDoubleTapSeekEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getHideVideoPageStatusBar$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getHideVideoPageStatusBar$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getHideVideoPageStatusBar$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getHideVideoPageStatusBar$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getHideVideoPageStatusBar$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getLongPressSpeedLockEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getLongPressSpeedLockEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getLongPressSpeedLockEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getLongPressSpeedLockEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlaybackCompletionBehavior$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlaybackCompletionBehavior$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlaybackCompletionBehavior$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlaybackCompletionBehavior$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlaybackCompletionBehavior$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerControlVisibilitySettings$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerControlVisibilitySettings$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerControlVisibilitySettings$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerControlVisibilitySettings$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerProgressPlacement$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerProgressPlacement$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerProgressPlacement$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getPlayerProgressPlacement$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getProgressPeakDanmakuEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getProgressPeakDanmakuEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getProgressPeakDanmakuEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getProgressPeakDanmakuEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekBackwardSeconds$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekBackwardSeconds$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekBackwardSeconds$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekBackwardSeconds$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekForwardSeconds$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekForwardSeconds$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekForwardSeconds$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getSeekForwardSeconds$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenActionItems$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenActionItems$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenActionItems$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenActionItems$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenBatteryLevel$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenBatteryLevel$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenBatteryLevel$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenBatteryLevel$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenLockButton$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenLockButton$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenLockButton$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenLockButton$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenScreenshotButton$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenScreenshotButton$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenScreenshotButton$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenScreenshotButton$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenTime$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenTime$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenTime$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowFullscreenTime$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowOnlineCount$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowOnlineCount$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowOnlineCount$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getShowOnlineCount$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerHorizontalSpeedEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerHorizontalSpeedEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerHorizontalSpeedEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerHorizontalSpeedEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerVerticalSpeedEnabled$$inlined$map$1$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerVerticalSpeedEnabled$$inlined$map$1$2$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerVerticalSpeedEnabled$$inlined$map$1$2.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$getTwoFingerVerticalSpeedEnabled$$inlined$map$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setDoubleTapSeekEnabled$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setLongPressSpeedLockEnabled$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setLongPressSpeedLockHintShown$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setPlaybackCompletionBehavior$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setProgressPeakDanmakuEnabled$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setSeekBackwardSeconds$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setSeekForwardSeconds$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setTwoFingerHorizontalSpeedEnabled$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings$setTwoFingerVerticalSpeedEnabled$1.class",
+    "com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences$Editor.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerMirrorPreferences.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerPreferenceValues.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContextKt.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$edit$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore$special$$inlined$map$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsDataStore.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$InvocationElement.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$invocationKey$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$launch$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$media$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getInitialPlayUrlData$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getPlayUrlData$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getPlaybackNavInfo$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getRelatedVideos$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getVideoDetails$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1$getVideoInfoOnly$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$repository$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$withInvocation$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts$withInvocation$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocationPorts.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackStatus.class"
+  ],
+  "overlapExplanation": "Only explicit existing family hunks: Context StringSet pair, ControlSettings Sync reader shares existing cache, Invocation readonly current-request accessor. No parallel authorities installed.",
+  "resumedPostCompileAudit": false,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\whole\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+      "sha256Bytes": "15d36e1863173138ebac392705afbaebebc8299d5602c7be9ece66bb02e85123"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "sha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\notes\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoNoteProtocol.kt",
+      "sha256Bytes": "7dec47b049608e2040651dc72f6bfcff523cbf764bc87428d351ba23a6b10a72"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNoteEnvironment.kt",
+      "sha256Bytes": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\direct\\com\\android\\purebilibili\\feature\\video\\playback\\resolver\\NextPlaybackResolver.kt",
+      "sha256Bytes": "c18a3cd418bae28fb437490ac2c466e32aa6174ad911ea929f2ae9c5c2b3e18c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoOwnerSettings.kt",
+      "sha256Bytes": "2c4f29ea06019618e887216317c3ef5b075e2dab2ba215e92dda9af35bdc35d0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\core\\util\\DesktopOriginalVideoDefaultQuality.kt",
+      "sha256Bytes": "d3841115454bc3b0a7b9bd662069936884245b79f0bb3cd05dc2b9311e453d8c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\download\\BatchDownloadCandidatePolicy.kt",
+      "sha256Bytes": "395a35eef63f61a08555d6363a30ef63e38fbed379312e8d67554c0a5dd295a2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\download\\BatchDownloadQueuePolicy.kt",
+      "sha256Bytes": "c4a067d42d6c1eb9ab459c5434ff1756c228900886b1b376004f72a77a169d12"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\plugin\\CdnDashSegmentPrefetcher.kt",
+      "sha256Bytes": "5fba0c6a74be3130bc31ee9f48d4009047c74a0cbe23c0eb51577a7f67d9e85d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\interaction\\InteractiveVideoChoicePolicy.kt",
+      "sha256Bytes": "35e53dfe6540738b78cf7218beed58a6de49c6f43d20327d085ffb1a590999b1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\interaction\\InteractiveVideoVariablePolicy.kt",
+      "sha256Bytes": "9e23649a872f77bfd7bdc6115e32562cca732e7a1bab0efcc182c92b67e12cd3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\note\\AiSummaryNoteDraftPolicy.kt",
+      "sha256Bytes": "d4e9fdbce347886b501ddf688743e84fa697410fb14959ee579928c1c64e711b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\playback\\policy\\PlaybackPostLoadPlan.kt",
+      "sha256Bytes": "645241d7f2f3a324308e5cd95c5f231bf8d6d63863858af7faa36c26a0f022ea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\playback\\policy\\PluginPollingPolicy.kt",
+      "sha256Bytes": "9209487b3800b855380cb3b2f16a97604c9159031d1b12f5f950f592a248c8ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\viewmodel\\AiSummaryRetryPolicy.kt",
+      "sha256Bytes": "66d3812c028ef46def5c7d23f19ad057e54a83cc84682daad359df12d2ca6a24"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\feature\\video\\viewmodel\\PlayerToastPolicy.kt",
+      "sha256Bytes": "496e6ba380edef3b31b0e74a587cf15948b7877de7a7a902d7dd49b331549dd0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\legacy\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "2015e89458d5260276b442b142115de302709f7d62ba04ba8142418c9819c7e1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\legacy\\com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoControlSettings.kt",
+      "sha256Bytes": "e1b38fad1a010e658a2a8a4dee71700ed07fd903edb0abf994bfdbe68cc28b26"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\legacy\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerRepositoryView.kt",
+      "sha256Bytes": "44c1c494de96f599ccbf67e7bd5c81b43a8b06a8f916facde8fec54e26036e99"
+    }
+  ],
+  "fullVmNotAccepted": true
+}

@@ -1,0 +1,12 @@
+{
+  "preparedOnly": true,
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+  "originalSha256LF": "7bc193930ff8ebcae7b8e5e47412a043df6bf54502724c809b9ce0ac8f4e159d",
+  "outputSha256Bytes": "5fba0c6a74be3130bc31ee9f48d4009047c74a0cbe23c0eb51577a7f67d9e85d",
+  "retained": [
+    "Original segment-count/index/frontier/SIDX/range/rank/winner algorithm",
+    "Same captured Call.Factory"
+  ],
+  "requiredNotYetImplemented": "Existing playback segment cache range writer/read consumer; MPV demux cache does not accept Media3 CacheWriter ranges",
+  "noFakeSuccess": true
+}

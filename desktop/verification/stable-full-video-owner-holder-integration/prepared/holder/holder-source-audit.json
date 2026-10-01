@@ -1,0 +1,616 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+  "originalSHA256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+  "originalLines": 5464,
+  "output": "com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+  "outputSHA256LF": "9d283a30d6ec0eb316cad8e6b827b566a2e0cac7955efee0ae6dc5d8e3d1026b",
+  "outputLines": 5323,
+  "completeOriginalBody": true,
+  "exactIndexedInverse": true,
+  "edits": [
+    {
+      "at": 25638,
+      "before": " = viewModel()",
+      "after": "",
+      "label": "Five domain owners are explicit original objects, never constructed by another lifecycle factory"
+    },
+    {
+      "at": 25579,
+      "before": " = viewModel()",
+      "after": "",
+      "label": "Five domain owners are explicit original objects, never constructed by another lifecycle factory"
+    },
+    {
+      "at": 25514,
+      "before": " = viewModel()",
+      "after": "",
+      "label": "Five domain owners are explicit original objects, never constructed by another lifecycle factory"
+    },
+    {
+      "at": 25453,
+      "before": " = viewModel()",
+      "after": "",
+      "label": "Five domain owners are explicit original objects, never constructed by another lifecycle factory"
+    },
+    {
+      "at": 25388,
+      "before": " = viewModel()",
+      "after": "",
+      "label": "Five domain owners are explicit original objects, never constructed by another lifecycle factory"
+    },
+    {
+      "at": 24887,
+      "before": "    onVideoClick: (String, android.os.Bundle?) -> Unit,",
+      "after": "    onVideoClick: (String, Long, String?) -> Unit,",
+      "label": "Actual immutable CID/cover navigation port; Root retains the full route key"
+    },
+    {
+      "at": 25931,
+      "before": "    val context = LocalContext.current\n    val view = LocalView.current",
+      "after": "    val platform = LocalDesktopOriginalVideoHolderPlatform.current\n    val context = platform.settingsContext\n    val section = platform.section\n    val scope = rememberCoroutineScope()\n    val PlaylistManager = platform.playlist",
+      "label": "Required same retained Root window/settings/native/playlist views"
+    },
+    {
+      "at": 44978,
+      "before": "    val sharedDanmakuManager = rememberDanmakuManager(currentBvid)",
+      "after": "    val sharedDanmakuManager = platform.danmaku",
+      "label": "Same source document; no another parser/session/cache"
+    },
+    {
+      "at": 46391,
+      "before": "{ targetBvid: String, options: android.os.Bundle? ->",
+      "after": "{ targetBvid: String, explicitCid: Long, targetCover: String? ->",
+      "label": "Original three-field navigation adapter"
+    },
+    {
+      "at": 46523,
+      "before": "            val explicitCid = options?.getLong(VIDEO_NAV_TARGET_CID_KEY) ?: 0L\n",
+      "after": "",
+      "label": "CID already captured by the typed caller"
+    },
+    {
+      "at": 48102,
+      "before": "                    val navOptions = android.os.Bundle(options ?: android.os.Bundle.EMPTY).apply {\n                        if (resolvedCid > 0L) {\n                            putLong(VIDEO_NAV_TARGET_CID_KEY, resolvedCid)\n                        }\n                    }",
+      "after": "                    val navOptions = buildDesktopOriginalVideoNavigationOptions(\n                        cid = resolvedCid, coverUrl = targetCover,\n                    )",
+      "label": "Reuse sole existing original CID/cover omission and normalization policy"
+    },
+    {
+      "at": 48752,
+      "before": "onVideoClick(targetBvid, navOptions)",
+      "after": "onVideoClick(targetBvid, navOptions?.first ?: 0L, navOptions?.second)",
+      "label": "Same Root navigation callback, no Bundle mirror"
+    },
+    {
+      "at": 57692,
+      "before": "    val homeSettings by com.android.purebilibili.core.store.SettingsManager\n        .getHomeSettings(context)\n        .collectAsStateWithLifecycle(\n            initialValue = com.android.purebilibili.core.store.HomeSettings(),\n            lifecycle = lifecycleOwner.lifecycle\n        )\n",
+      "after": "    val homeSettings by platform.homeSettings.homeSettings.collectAsStateWithLifecycle()\n",
+      "label": "Actual ready same-global original projection; no constructor-default first frame"
+    },
+    {
+      "at": 60188,
+      "before": "    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE",
+      "after": "    val isLandscape = platform.window.presentation.isLandscape",
+      "label": "Actual Window presentation orientation"
+    },
+    {
+      "at": 61894,
+      "before": "    val activity = remember { context.findActivity() }\n    val isActivityInMultiWindowMode = activity?.let {\n        isActivityInMultiWindowOrFloatingMode(\n            activity = it,\n            displayContext = displayContext,\n        )\n    } ?: displayContext.isInMultiWindowMode\n",
+      "after": "    val activity: DesktopOriginalVideoHolderPresentation? = platform.window.presentation\n    val isActivityInMultiWindowMode = platform.window.presentation.isInMultiWindowMode\n",
+      "label": "Actual retained Window capability instead of inferred Android Activity"
+    },
+    {
+      "at": 72527,
+      "before": "context.findActivity()?.let { activity ->",
+      "after": "activity?.let { activity ->",
+      "label": "Existing same Root Window owner, no Android Context wrapper"
+    },
+    {
+      "at": 72597,
+      "before": "isActivityInMultiWindowOrFloatingMode(\n                    activity = activity,\n                    displayContext = displayContext,\n                )",
+      "after": "activity.isInMultiWindowMode",
+      "label": "Actual fullscreen presentation capability readback"
+    },
+    {
+      "at": 287607,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 128622,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 122548,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 116028,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 115463,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 93346,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 73192,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 65482,
+      "before": ".applyPlayerRequestedOrientation(",
+      "after": ".requestOrientation(",
+      "label": "Preserved original decision feeds required Window owner"
+    },
+    {
+      "at": 121689,
+      "before": "activity?.requestedOrientation",
+      "after": "activity?.currentRequestedOrientation",
+      "label": "Actual requested presentation readback"
+    },
+    {
+      "at": 73861,
+      "before": "activity?.requestedOrientation",
+      "after": "activity?.currentRequestedOrientation",
+      "label": "Actual requested presentation readback"
+    },
+    {
+      "at": 70040,
+      "before": "var videoPlayerBounds by remember { mutableStateOf<android.graphics.Rect?>(null) }",
+      "after": "var videoPlayerBounds by remember { mutableStateOf<androidx.compose.ui.unit.IntRect?>(null) }",
+      "label": "Actual immutable Compose pixel bounds"
+    },
+    {
+      "at": 73640,
+      "before": "    val window = remember { activity?.window }\n    var entryRequestedOrientation by rememberSaveable {\n        mutableIntStateOf(\n            resolveVideoDetailEntryOrientationSnapshot(\n                currentRequestedOrientation = activity?.currentRequestedOrientation\n            )\n        )\n    }\n    val insetsController = remember {\n        if (window != null && activity != null) {\n            WindowCompat.getInsetsController(window, window.decorView)\n        } else null\n    }\n    val originalSystemBarsSnapshot = remember(window, insetsController) {\n        resolveVideoDetailSystemBarsSnapshot(\n            statusBarColor = window?.statusBarColor,\n            navigationBarColor = window?.navigationBarColor,\n            lightStatusBars = insetsController?.isAppearanceLightStatusBars,\n            lightNavigationBars = insetsController?.isAppearanceLightNavigationBars,\n            systemBarsBehavior = insetsController?.systemBarsBehavior,\n            fallbackColor = android.graphics.Color.TRANSPARENT,\n            fallbackLightBars = true,\n            fallbackSystemBarsBehavior = androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT\n        )\n    }\n\n",
+      "after": "    val window = platform.window\n    var entryRequestedOrientation by rememberSaveable {\n        mutableIntStateOf(resolveVideoDetailEntryOrientationSnapshot(\n            currentRequestedOrientation = activity?.currentRequestedOrientation,\n        ))\n    }\n    val originalWindowChromeLease = remember(window) { window.captureEntryWindowChrome() }\n\n",
+      "label": "Android system bar snapshot is a real same-Window restoration lease, explicit Windows client boundary"
+    },
+    {
+      "at": 74016,
+      "before": "    val restoreStatusBar = remember {\n        {\n            if (window != null && insetsController != null) {\n                if (shouldShowSystemBarsOnVideoDetailExit()) {\n                    insetsController.show(WindowInsetsCompat.Type.systemBars())\n                }\n                insetsController.systemBarsBehavior = originalSystemBarsSnapshot.systemBarsBehavior\n                insetsController.isAppearanceLightStatusBars = originalSystemBarsSnapshot.lightStatusBars\n                insetsController.isAppearanceLightNavigationBars = originalSystemBarsSnapshot.lightNavigationBars\n                setWindowStatusBarColor(window, originalSystemBarsSnapshot.statusBarColor)\n                setWindowNavigationBarColor(window, originalSystemBarsSnapshot.navigationBarColor)\n            }\n        }\n    }\n\n",
+      "after": "    val restoreStatusBar = remember(window, originalWindowChromeLease) {\n        { originalWindowChromeLease.close() }\n    }\n\n",
+      "label": "Root restores only this entry unchanged chrome registration"
+    },
+    {
+      "at": 74394,
+      "before": "    val topBarActionHandler = remember { android.os.Handler(android.os.Looper.getMainLooper()) }",
+      "after": "    val topBarActionHandler = remember(scope, platform) { DesktopOriginalVideoEntryScheduler(scope, platform::isCurrent) }",
+      "label": "Same composition request cancellation replaces Handler delayed callback"
+    },
+    {
+      "at": 87066,
+      "before": "    val rotationResolver = context.applicationContext.contentResolver\n    var systemAutoRotateEnabled by remember(rotationResolver) {\n        mutableStateOf(\n            Settings.System.getInt(rotationResolver, Settings.System.ACCELEROMETER_ROTATION, 0) != 0\n        )\n    }\n    DisposableEffect(rotationResolver) {\n        val observer = object : ContentObserver(Handler(Looper.getMainLooper())) {\n            override fun onChange(selfChange: Boolean) {\n                systemAutoRotateEnabled = Settings.System.getInt(\n                    rotationResolver, Settings.System.ACCELEROMETER_ROTATION, 0\n                ) != 0\n            }\n        }\n        rotationResolver.registerContentObserver(\n            Settings.System.getUriFor(Settings.System.ACCELEROMETER_ROTATION), false, observer\n        )\n        observer.onChange(false)\n        onDispose { rotationResolver.unregisterContentObserver(observer) }\n    }\n",
+      "after": "    val rotationSensor = platform.window.presentation.rotationSensor\n    val systemAutoRotateEnabled by (rotationSensor?.automaticRotationEnabled\n        ?: remember { kotlinx.coroutines.flow.MutableStateFlow(false) }).collectAsStateWithLifecycle()\n    // Null sensor is explicit unsupported physical-rotation capability; it does\n    // not pretend that Windows monitor/window aspect is Android accelerometer data.\n",
+      "label": "Required optional physical sensor capability with original automatic-rotation policy"
+    },
+    {
+      "at": 87875,
+      "before": "        if (window != null) {\n            AppWindowSystemUiController.ensureEdgeToEdge(window)\n        }",
+      "after": "        val edgeToEdgeLease = window.acquireEdgeToEdge()",
+      "label": "Actual same Window client lease"
+    },
+    {
+      "at": 88219,
+      "before": "            val layoutParams = window?.attributes\n            layoutParams?.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE\n            window?.attributes = layoutParams\n            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n",
+      "after": "            window.releaseEntryBrightness()\n            window.releaseEntryKeepAwake()\n            edgeToEdgeLease.close()\n",
+      "label": "Restore only same entry/native viewport resources"
+    },
+    {
+      "at": 89485,
+      "before": "            val deferredActivity = activity\n            val deferredContext = context\n            val deferredShouldHandleAsNavExit = shouldHandleAsNavigationExit\n            android.os.Handler(android.os.Looper.getMainLooper()).post {\n                // 🔧 重置 PiP 参数\n                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {\n                    deferredActivity?.let { act ->\n                        try {\n                            val pipParams = android.app.PictureInPictureParams.Builder()\n                                .setAutoEnterEnabled(false)\n                                .build()\n                            act.setPictureInPictureParams(pipParams)\n                        } catch (_: Exception) {}\n                    }\n                }\n\n                // 🔕 通知清理 + Service 停止\n                if (deferredShouldHandleAsNavExit) {\n                    val notificationManager = deferredContext.getSystemService(android.content.Context.NOTIFICATION_SERVICE)\n                        as android.app.NotificationManager\n                    notificationManager.cancel(1001)\n                    notificationManager.cancel(PlaybackService.NOTIFICATION_ID)\n                    try {\n                        deferredContext.startService(\n                            android.content.Intent(deferredContext, PlaybackService::class.java).apply {\n                                action = PlaybackService.ACTION_STOP_FOREGROUND\n                            }\n                        )\n                    } catch (_: Exception) {}\n                }\n\n                // 恢复进入详情页前的方向请求，避免平板误横屏后退不回去。\n                deferredActivity?.requestOrientation(\n                    resolveVideoDetailExitRequestedOrientation(\n                        originalRequestedOrientation = entryRequestedOrientation\n                    )\n                )\n            }\n",
+      "after": "            window.deferEntryExit(\n                navigationExit = shouldHandleAsNavigationExit,\n                originalRequestedOrientation = resolveVideoDetailExitRequestedOrientation(\n                    originalRequestedOrientation = entryRequestedOrientation,\n                ),\n            )\n",
+      "label": "Required deferred same-entry PiP/notification/window cleanup; cannot stop transferred/replacement native subject"
+    },
+    {
+      "at": 90407,
+      "before": "        context = context,\n        activity = activity,\n        playerBounds = videoPlayerBounds,",
+      "after": "        window = window,\n        playerBounds = videoPlayerBounds,",
+      "label": "Original PiP throttle/bounds effect targets same Window port"
+    },
+    {
+      "at": 92851,
+      "before": "    val playerState = rememberVideoPlayerState(\n        context = context,\n        viewModel = viewModel,",
+      "after": "    val playerState = platform.BindPlayerState(",
+      "label": "Bind same native owner projection, preserve original route/readiness/resume inputs"
+    },
+    {
+      "at": 104232,
+      "before": "    val subtitleAudioManager = remember {\n        context.getSystemService(android.content.Context.AUDIO_SERVICE) as android.media.AudioManager\n    }\n    val subtitleAutoModeMuted = remember(playerState.player, subtitleAudioManager, currentBvid) {\n        val systemMuted = runCatching {\n            subtitleAudioManager.getStreamVolume(android.media.AudioManager.STREAM_MUSIC) <= 0\n        }.getOrDefault(false)\n        systemMuted || playerState.player.volume <= 0f\n    }\n",
+      "after": "    val subtitleAutoModeMuted = remember(playerState.player, platform, currentBvid) {\n        platform.streamVolumeIsMuted() || playerState.player.volume <= 0f\n    }\n",
+      "label": "Read true existing MPV/root volume, no Android AudioManager"
+    },
+    {
+      "at": 122508,
+      "before": "        val orientationListener = object : OrientationEventListener(context) {\n            override fun onOrientationChanged(orientation: Int) {\n                if (manualPortraitHoldActive) {\n                    if (shouldReleasePhoneManualPortraitHold(orientation)) {\n                        manualPortraitHoldActive = false\n                    }\n                    return\n                }\n                if (!sensorAutoRotateEnabled && !isFullscreenMode) return\n                val isCurrentlyLandscape =\n                    hostActivity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE\n                val targetOrientation = resolvePhoneAutoRotateRequestedOrientation(\n                    orientationDegrees = orientation,\n                    isCurrentlyLandscape = isCurrentlyLandscape,\n                    useExactLandscapeSide = orientationPolicyDevice,\n                    // A manual fullscreen press can happen while the device is still upright.\n                    // Wait for one physical landscape observation before allowing the sensor\n                    // to treat portrait as an explicit rotate-back gesture.\n                    allowPortraitTransitions = shouldAllowPhoneSensorPortraitTransition(\n                        autoRotateEnabled = sensorAutoRotateEnabled,\n                        manualFullscreenRequested = userRequestedFullscreen,\n                    ),\n                )\n                val nowMs = SystemClock.elapsedRealtime()\n                val targetToApply = resolvePhoneAutoRotateTargetToApply(\n                    candidateOrientation = targetOrientation,\n                    lastLandscapeAppliedAtMs = lastPhoneAutoRotateLandscapeAppliedAtMs,\n                    nowMs = nowMs,\n                    lastPortraitAppliedAtMs = lastPhoneAutoRotatePortraitAppliedAtMs,\n                ) ?: return\n                hostActivity.requestOrientation(\n                    requestedOrientation = targetToApply,\n                    displayContext = displayContext,\n                )\n                if (targetToApply == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {\n                    userRequestedFullscreen = false\n                    lastPhoneAutoRotatePortraitAppliedAtMs = nowMs\n                    lastPhoneAutoRotateLandscapeAppliedAtMs = null\n                } else if (isLandscapeRequestedOrientation(targetToApply)) {\n                    if (shouldReleaseManualFullscreenRequestAfterSensorTarget(\n                            manualFullscreenRequested = userRequestedFullscreen,\n                            sensorTargetOrientation = targetToApply,\n                        )\n                    ) {\n                        userRequestedFullscreen = false\n                    }\n                    lastPhoneAutoRotateLandscapeAppliedAtMs = nowMs\n                    lastPhoneAutoRotatePortraitAppliedAtMs = null\n                }\n            }\n        }\n\n        if (orientationListener.canDetectOrientation()) {\n            orientationListener.enable()\n        }\n\n        onDispose {\n            orientationListener.disable()\n            // Fullscreen/configuration changes can immediately register a new listener.\n            // Keep the settle guard across that handoff; the effect above clears it\n            // when orientation observation actually stops.\n        }",
+      "after": "        val orientationLease = rotationSensor?.observeDegrees { orientation ->\n                if (manualPortraitHoldActive) {\n                    if (shouldReleasePhoneManualPortraitHold(orientation)) {\n                        manualPortraitHoldActive = false\n                    }\n                    return@observeDegrees\n                }\n                if (!sensorAutoRotateEnabled && !isFullscreenMode) return@observeDegrees\n                val isCurrentlyLandscape =\n                    hostActivity.isLandscape\n                val targetOrientation = resolvePhoneAutoRotateRequestedOrientation(\n                    orientationDegrees = orientation,\n                    isCurrentlyLandscape = isCurrentlyLandscape,\n                    useExactLandscapeSide = orientationPolicyDevice,\n                    // A manual fullscreen press can happen while the device is still upright.\n                    // Wait for one physical landscape observation before allowing the sensor\n                    // to treat portrait as an explicit rotate-back gesture.\n                    allowPortraitTransitions = shouldAllowPhoneSensorPortraitTransition(\n                        autoRotateEnabled = sensorAutoRotateEnabled,\n                        manualFullscreenRequested = userRequestedFullscreen,\n                    ),\n                )\n                val nowMs = SystemClock.elapsedRealtime()\n                val targetToApply = resolvePhoneAutoRotateTargetToApply(\n                    candidateOrientation = targetOrientation,\n                    lastLandscapeAppliedAtMs = lastPhoneAutoRotateLandscapeAppliedAtMs,\n                    nowMs = nowMs,\n                    lastPortraitAppliedAtMs = lastPhoneAutoRotatePortraitAppliedAtMs,\n                ) ?: return@observeDegrees\n                hostActivity.requestOrientation(\n                    requestedOrientation = targetToApply,\n                    displayContext = displayContext,\n                )\n                if (targetToApply == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {\n                    userRequestedFullscreen = false\n                    lastPhoneAutoRotatePortraitAppliedAtMs = nowMs\n                    lastPhoneAutoRotateLandscapeAppliedAtMs = null\n                } else if (isLandscapeRequestedOrientation(targetToApply)) {\n                    if (shouldReleaseManualFullscreenRequestAfterSensorTarget(\n                            manualFullscreenRequested = userRequestedFullscreen,\n                            sensorTargetOrientation = targetToApply,\n                        )\n                    ) {\n                        userRequestedFullscreen = false\n                    }\n                    lastPhoneAutoRotateLandscapeAppliedAtMs = nowMs\n                    lastPhoneAutoRotatePortraitAppliedAtMs = null\n                }\n        }\n        onDispose {\n            orientationLease?.close()\n            // Original settle guard survives a same-entry sensor lease handoff.\n        }",
+      "label": "Exact original sensor target/settle/portrait-hold math over an explicit owned sensor lease"
+    },
+    {
+      "at": 123870,
+      "before": "SystemClock.elapsedRealtime()",
+      "after": "platform.elapsedRealtimeMillis()",
+      "label": "Actual monotonic Root clock"
+    },
+    {
+      "at": 117948,
+      "before": "SystemClock.elapsedRealtime()",
+      "after": "platform.elapsedRealtimeMillis()",
+      "label": "Actual monotonic Root clock"
+    },
+    {
+      "at": 237727,
+      "before": "android.graphics.Rect(",
+      "after": "androidx.compose.ui.unit.IntRect(",
+      "label": "Actual immutable Compose pixel bounds"
+    },
+    {
+      "at": 148304,
+      "before": "        view = view,\n        window = window,\n        insetsController = insetsController,",
+      "after": "        window = window,",
+      "label": "Original pure system-bars spec passed to required actual Window consumer"
+    },
+    {
+      "at": 148187,
+      "before": "WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE",
+      "after": "2",
+      "label": "Original system-bars policy constant; Windows consumer has explicit capability boundary"
+    },
+    {
+      "at": 139035,
+      "before": "com.android.purebilibili.core.util.AnalyticsHelper.logPictureInPicture(",
+      "after": "platform.logPictureInPicture(",
+      "label": "Required actual Root analytics"
+    },
+    {
+      "at": 191815,
+      "before": "com.android.purebilibili.feature.video.player.PlaylistManager.togglePlayMode()",
+      "after": "PlaylistManager.togglePlayMode()",
+      "label": "Same playlist view, no singleton authority"
+    },
+    {
+      "at": 187168,
+      "before": "com.android.purebilibili.feature.video.player.PlaylistManager.togglePlayMode()",
+      "after": "PlaylistManager.togglePlayMode()",
+      "label": "Same playlist view, no singleton authority"
+    },
+    {
+      "at": 174028,
+      "before": "com.android.purebilibili.feature.video.player.PlaylistManager.togglePlayMode()",
+      "after": "PlaylistManager.togglePlayMode()",
+      "label": "Same playlist view, no singleton authority"
+    },
+    {
+      "at": 143122,
+      "before": "android.util.Log.",
+      "after": "android.util.Log.",
+      "label": "Existing local logger"
+    },
+    {
+      "at": 189105,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 142930,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 142688,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 139904,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 138663,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 118863,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 109225,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 108908,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 93900,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 65821,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 51452,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 46805,
+      "before": "com.android.purebilibili.core.util.Logger.",
+      "after": "android.util.Log.",
+      "label": "Existing local logging adapter"
+    },
+    {
+      "at": 998,
+      "before": "import android.content.pm.ActivityInfo",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoOrientationRequest as ActivityInfo",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 1083,
+      "before": "import android.content.res.Configuration",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoWindowOrientation as Configuration",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 4218,
+      "before": "import androidx.compose.ui.platform.LocalConfiguration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 5745,
+      "before": "import androidx.media3.common.Player",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 8885,
+      "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 14438,
+      "before": "import com.android.purebilibili.feature.video.player.MiniPlayerManager",
+      "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoHolderMini as MiniPlayerManager",
+      "label": "Existing actual platform aliases"
+    },
+    {
+      "at": 832,
+      "before": "import android.annotation.SuppressLint\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 832,
+      "before": "import android.app.Activity\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 832,
+      "before": "import android.content.Intent\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 832,
+      "before": "import android.content.Context\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 832,
+      "before": "import android.content.ContextWrapper\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.database.ContentObserver\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.os.Build\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.os.Handler\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.os.Looper\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.os.SystemClock\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.provider.Settings\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.view.OrientationEventListener\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.view.Window\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.view.WindowManager\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 1002,
+      "before": "import android.widget.Toast\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 3821,
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 3821,
+      "before": "import androidx.compose.ui.platform.LocalView\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 4711,
+      "before": "import androidx.core.view.WindowCompat\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 4711,
+      "before": "import androidx.core.view.ViewCompat\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 4711,
+      "before": "import androidx.core.view.WindowInsetsControllerCompat\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 4996,
+      "before": "import androidx.core.view.WindowInsetsCompat\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 5185,
+      "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 5507,
+      "before": "import com.android.purebilibili.core.ui.AppWindowSystemUiController\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 5507,
+      "before": "import com.android.purebilibili.core.ui.setWindowNavigationBarColor\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 5507,
+      "before": "import com.android.purebilibili.core.ui.setWindowStatusBarColor\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 7805,
+      "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 7890,
+      "before": "import com.android.purebilibili.feature.video.state.rememberVideoPlayerState\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 13363,
+      "before": "import com.android.purebilibili.feature.video.player.PlaybackService\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 13429,
+      "before": "import com.android.purebilibili.feature.video.player.PlaylistManager\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 14224,
+      "before": "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n",
+      "after": "",
+      "label": "Consumed Android-only import"
+    },
+    {
+      "at": 22201,
+      "before": "@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n",
+      "after": "",
+      "label": "Android compiler annotation"
+    },
+    {
+      "at": 22325,
+      "before": "@SuppressLint(\"UnusedMaterial3ScaffoldPaddingParameter\")\n",
+      "after": "",
+      "label": "Android compiler annotation"
+    },
+    {
+      "at": 3078,
+      "before": "import androidx.compose.runtime.*\n",
+      "after": "import androidx.compose.runtime.*\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform\nimport com.bilipai.desktop.ui.DesktopOriginalVideoHolderPresentation\nimport com.bilipai.desktop.ui.DesktopOriginalVideoEntryScheduler\n",
+      "label": "Required owned platform imports"
+    }
+  ],
+  "status": "Prepared, remaining required adapters and compiler followups pending",
+  "productRuntimeAccepted": false
+}

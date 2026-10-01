@@ -1,0 +1,32 @@
+[
+  {
+    "source": "prepared/desktop/tools/extract-upstream-video-full-owner.py",
+    "target": "desktop/tools/extract-upstream-video-full-owner.py",
+    "sha256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+    "kind": "new sole producer"
+  },
+  {
+    "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+    "sha256LF": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+    "kind": "new required same-owner manual port"
+  },
+  {
+    "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRepositoryView.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRepositoryView.kt",
+    "sha256LF": "44c1c494de96f599ccbf67e7bd5c81b43a8b06a8f916facde8fec54e26036e99",
+    "kind": "new required same-owner manual port"
+  },
+  {
+    "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNoteEnvironment.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNoteEnvironment.kt",
+    "sha256LF": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f",
+    "kind": "new required same-owner manual port"
+  },
+  {
+    "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataEnvironment.kt",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataEnvironment.kt",
+    "sha256LF": "beae856210dd930efe2a53c5eadb71f2f9ab1a968dfaf9cd4b856e4aab90cd00",
+    "kind": "new required same-owner manual port"
+  }
+]

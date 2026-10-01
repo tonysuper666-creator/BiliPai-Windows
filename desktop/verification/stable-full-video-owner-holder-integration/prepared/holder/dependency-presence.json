@@ -1,0 +1,4516 @@
+{
+  "scope": "Source function-name presence inventory only; final parameter-descriptor audit required after compilation.",
+  "actualSnapshotManifestSHA256": "6b5777dbe6855ddb9529f612580c11aa24dfcd23c771828e51369d610e4a9445",
+  "actualKotlinSHA256": "e9ff07bcf204d3901adda15dd5aa5ad47830e83eaa5298b08ed3e123b92a7298",
+  "rows": [
+    {
+      "file": "AudioModeCoverLayoutPolicy.kt",
+      "sha256LF": "e9eff6ee140a4b8cbdbe0188f2b2fecb35242db7cd5fb2a029f9d1695bcbed61",
+      "lines": 101,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_WIDTH_FRACTION",
+          "line": 6,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_MIN_VERTICAL_CLEARANCE_DP",
+          "line": 7,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_CORNER_RADIUS_DP",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_SHADOW_ELEVATION_DP",
+          "line": 9,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_BACKGROUND_SCRIM_ALPHA_PERCENT",
+          "line": 10,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_ASPECT_WIDTH",
+          "line": 11,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_ASPECT_HEIGHT",
+          "line": 12,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_FLOW_MAX_ROTATION_DEGREES",
+          "line": 13,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_FLOW_MAX_TRANSLATION_DP",
+          "line": 14,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_FLOW_MAX_SCALE_LOSS_PERCENT",
+          "line": 15,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "AUDIO_MODE_COVER_FLOW_MAX_ALPHA_LOSS_PERCENT",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "AudioModeCoverArtworkStyle",
+          "line": 18,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeCoverArtworkStyle",
+          "line": 30,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeCenteredCoverSizeDp",
+          "line": 44,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "AudioModeArtworkSizeDp",
+          "line": 55,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "AudioModeVerticalPageTransform",
+          "line": 60,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeArtworkSizeDp",
+          "line": 68,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeVerticalPageTransform",
+          "line": 87,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "AudioModeMusicPlayer.kt",
+      "sha256LF": "4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea",
+      "lines": 662,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "AudioPlaybackSnapshot",
+          "line": 62,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeTrackTitle",
+          "line": 70,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeShareTitle",
+          "line": 82,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "AudioModeLyricMetadata",
+          "line": 89,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeLyricMetadata",
+          "line": 94,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "AudioModeMusicPlayer",
+          "line": 110,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberAudioPlaybackSnapshot",
+          "line": 626,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "readAudioPlaybackSnapshot",
+          "line": 648,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "object",
+          "name": "AudioStartupAutoPlayGuard",
+          "line": 660,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "AudioModeRenderPolicy.kt",
+      "sha256LF": "47fa416b0e751f51191695929920beaf08b048d8d67d6192c752306049df8c75",
+      "lines": 25,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "AudioModeRenderPolicy",
+          "line": 3,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeRenderPolicy",
+          "line": 9,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "AudioModeScreen.kt",
+      "sha256LF": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+      "lines": 439,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "resolveAudioPlayModeLabel",
+          "line": 61,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseAudioModeLiquidPlayModeControl",
+          "line": 68,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "AudioModePlayPauseAction",
+          "line": 73,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModePlayPauseAction",
+          "line": 80,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldCreateAudioModeStandalonePlayer",
+          "line": 94,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModePageSwitchAutoPlay",
+          "line": 99,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeCollectionSwitchAutoPlay",
+          "line": 101,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeOrientationActionLabel",
+          "line": 103,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAudioModeRequestedOrientation",
+          "line": 106,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowAudioModePipButton",
+          "line": 113,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "parseAudioModeSleepTimerInput",
+          "line": 115,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "formatAudioModeSleepTimerButtonLabel",
+          "line": 128,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "formatAudioModeSleepTimerInput",
+          "line": 137,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "findHostActivity",
+          "line": 146,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "handleAudioModePlayPause",
+          "line": 152,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "enterAudioModePip",
+          "line": 173,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "AudioModeScreen",
+          "line": 184,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "AudioModeInitialState",
+          "line": 312,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "AudioModeSleepTimerDialog",
+          "line": 354,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "ContinuousPlayerTransitionPolicy.kt",
+      "sha256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "lines": 96,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "ContinuousPlayerTransitionPhase",
+          "line": 3,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "ContinuousPlayerOrientationRequest",
+          "line": 10,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "interface",
+          "name": "ContinuousPlayerTransitionEvent",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "ContinuousPlayerTransitionDecision",
+          "line": 22,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldKeepContinuousPlayerEnterPhaseWhilePortrait",
+          "line": 28,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "reduceContinuousPlayerTransition",
+          "line": 35,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "LargeScreenVideoLayout.kt",
+      "sha256LF": "6a98d56e8d368f5d2b5230eb59bf8768b981b3a9590db1132f5571fe2e18dd1b",
+      "lines": 571,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "LargeScreenVideoLayout",
+          "line": 60,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LargeScreenPlayerHost",
+          "line": 412,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "LargeScreenVideoLayoutPolicy.kt",
+      "sha256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "lines": 177,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_LANDSCAPE_RATIO",
+          "line": 9,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_ASPECT_16_9",
+          "line": 10,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_MIN_SIDE_PANE_DP",
+          "line": 11,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_MAX_SIDE_PANE_DP",
+          "line": 12,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_SIDE_PANE_BREAKPOINT_DP",
+          "line": 13,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_SQUARE_MIN_HEIGHT_FRACTION",
+          "line": 14,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "LARGE_SCREEN_VIDEO_SQUARE_PLAYER_HEIGHT_FRACTION",
+          "line": 15,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "FOLDABLE_COVER_COMPACT_PLAYER_HEIGHT_FRACTION",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "FOLDABLE_COVER_COLLAPSED_PLAYER_HEIGHT_FRACTION",
+          "line": 17,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "FOLDABLE_COVER_COMPACT_HEIGHT_MAX_DP",
+          "line": 18,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "LargeScreenVideoLayoutMode",
+          "line": 20,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "LargeScreenVideoMetrics",
+          "line": 28,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePhoneInlineVideoViewportHeightDp",
+          "line": 44,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseLargeScreenVideoLayout",
+          "line": 58,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseDedicatedCollectionColumn",
+          "line": 72,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveLargeScreenLandscapePlayerWidthDp",
+          "line": 80,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveLargeScreenVideoMetrics",
+          "line": 95,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveShowRelatedInIntro",
+          "line": 165,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveIncludeRelatedTabInSecondary",
+          "line": 169,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveRelatedTabFirstInSecondary",
+          "line": 173,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "PlayerCollapseAutoPausePolicy.kt",
+      "sha256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "lines": 24,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "shouldAutoPauseOnPlayerCollapse",
+          "line": 7,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAutoResumeOnPlayerExpand",
+          "line": 17,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "PortraitDetailPresentationPolicy.kt",
+      "sha256LF": "2daaffbd12cbfd62f560bbfa4c008629aa7b8aff846453cd2762de7c242711de",
+      "lines": 287,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "PortraitInlinePlayerLayoutSpec",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "StandalonePortraitPagerMotionSpec",
+          "line": 13,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "PortraitFullscreenButtonAction",
+          "line": 22,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseOfficialInlinePortraitDetailExperience",
+          "line": 26,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseSharedPlayerForPortraitFullscreen",
+          "line": 37,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowStandalonePortraitPager",
+          "line": 41,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldActivatePortraitFullscreenState",
+          "line": 52,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveStandalonePortraitPagerMotionSpec",
+          "line": 58,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldEnableInlinePortraitScrollTransform",
+          "line": 69,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAnimateStandalonePortraitPager",
+          "line": 91,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSuppressPhoneDetailBodyForDirectPortraitEntry",
+          "line": 106,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSuppressPhoneDetailBodyUnderStandalonePortraitPager",
+          "line": 117,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePortraitFullscreenButtonAction",
+          "line": 127,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseCompactInlinePortraitPlayerForCommentTab",
+          "line": 133,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseCompactInlinePortraitPlayerForIntroScroll",
+          "line": 157,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isVideoDetailIntroScrollPastCollapseThreshold",
+          "line": 180,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "isVideoDetailIntroScrollPastCollapseThreshold",
+              "descriptor": "(III)Z",
+              "parameters": "(III)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentCollapseThresholdKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "isVideoDetailIntroScrollPastCollapseThreshold",
+                "(III)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveInlinePortraitPlayerCollapseProgress",
+          "line": 188,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveInlinePortraitPlayerCommentCollapseDurationMillis",
+          "line": 199,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePiliPlusCollapsedPlayerViewportHeightDp",
+          "line": 210,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePortraitInlinePlayerLayoutSpec",
+          "line": 227,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveLandscapeDetailPlayerContentHeightPx",
+          "line": 282,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletCinemaLayout.kt",
+      "sha256LF": "a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169",
+      "lines": 1604,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "TabletCinemaLayout",
+          "line": 158,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletCinemaLayout",
+              "descriptor": "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FLcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;ZZZZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZZLkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZILcom/android/purebilibili/feature/video/viewmodel/SponsorContributionUiState;ZLandroidx/compose/runtime/Composer;IIIIIII)V",
+              "parameters": "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FLcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;ZZZZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZZLkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZILcom/android/purebilibili/feature/video/viewmodel/SponsorContributionUiState;ZLandroidx/compose/runtime/Composer;IIIIIII)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletCinemaLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletCinemaLayout",
+                "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FLcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;ZZZZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZZLkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZILcom/android/purebilibili/feature/video/viewmodel/SponsorContributionUiState;ZLandroidx/compose/runtime/Composer;IIIIIII)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaStagePlayer",
+          "line": 443,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaMetaPanel",
+          "line": 624,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaMetaActions",
+          "line": 898,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaMetaUpInfo",
+          "line": 939,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaVideoIntroSection",
+          "line": 968,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaSideCurtain",
+          "line": 1057,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaCommentsPane",
+          "line": 1239,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CinemaRelatedPane",
+          "line": 1510,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletDanmakuChromeState.kt",
+      "sha256LF": "b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4",
+      "lines": 51,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "TabletDanmakuChromeState",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.class"
+        },
+        {
+          "kind": "fun",
+          "name": "rememberTabletDanmakuChromeState",
+          "line": 22,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "rememberTabletDanmakuChromeState",
+              "descriptor": "(Ljava/lang/String;Landroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/feature/video/screen/TabletDanmakuChromeState;",
+              "parameters": "(Ljava/lang/String;Landroidx/compose/runtime/Composer;I)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletDanmakuChromeStateKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "rememberTabletDanmakuChromeState",
+                "(Ljava/lang/String;Landroidx/compose/runtime/Composer;I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletOwnerUploadsPane.kt",
+      "sha256LF": "a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f",
+      "lines": 86,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "TabletOwnerUploadsPane",
+          "line": 27,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletOwnerUploadsPane",
+              "descriptor": "(JLkotlin/jvm/functions/Function3;Lcom/bilipai/desktop/ui/DesktopOriginalOwnerUploadsPort;Landroidx/compose/runtime/Composer;II)V",
+              "parameters": "(JLkotlin/jvm/functions/Function3;Lcom/bilipai/desktop/ui/DesktopOriginalOwnerUploadsPort;Landroidx/compose/runtime/Composer;II)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPaneKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletOwnerUploadsPane",
+                "(JLkotlin/jvm/functions/Function3;Lcom/bilipai/desktop/ui/DesktopOriginalOwnerUploadsPort;Landroidx/compose/runtime/Composer;II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletVideoInfoEntrancePolicy.kt",
+      "sha256LF": "1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40",
+      "lines": 39,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "TabletVideoInfoEntranceSpec",
+          "line": 5,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletVideoInfoEntranceSpec.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletVideoInfoEntranceSpec",
+          "line": 12,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletVideoInfoEntranceSpec",
+              "descriptor": "(Lcom/android/purebilibili/core/ui/adaptive/MotionTier;Z)Lcom/android/purebilibili/feature/video/screen/TabletVideoInfoEntranceSpec;",
+              "parameters": "(Lcom/android/purebilibili/core/ui/adaptive/MotionTier;Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletVideoInfoEntranceSpec",
+                "(Lcom/android/purebilibili/core/ui/adaptive/MotionTier;Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletVideoLayout.kt",
+      "sha256LF": "49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe",
+      "lines": 1739,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "TabletSecondaryTab",
+          "line": 119,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletSecondaryTab.class"
+        },
+        {
+          "kind": "fun",
+          "name": "TabletSecondaryDanmakuActions",
+          "line": 129,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletSecondaryDanmakuActions",
+              "descriptor": "(ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V",
+              "parameters": "(ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletSecondaryDanmakuActions",
+                "(ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletSecondaryLiquidTabRow",
+          "line": 168,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletSecondaryLiquidTabRow",
+              "descriptor": "(Ljava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V",
+              "parameters": "(Ljava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletSecondaryLiquidTabRow",
+                "(Ljava/util/List;ILkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletVideoLayout",
+          "line": 223,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletVideoLayout",
+              "descriptor": "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZIZZZZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;IIIIIII)V",
+              "parameters": "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZIZZZZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;IIIIIII)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletVideoLayout",
+                "(Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;FZLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopHomeCardWindowBounds;ZLjava/lang/Integer;Ljava/util/List;Lcom/android/purebilibili/feature/video/progress/PbpProgressData;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/player/PlayMode;Lkotlin/jvm/functions/Function0;ZIZZZZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;IIIIIII)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletVideoInfoPane",
+          "line": 601,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletVideoInfoPane",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;FLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZZZLandroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;III)V",
+              "parameters": "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;FLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZZZLandroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;III)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletVideoInfoPane",
+                "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;FLcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZZZLandroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;III)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletSecondaryContent",
+          "line": 731,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "TabletSecondaryContent",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;ZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryTab;Lkotlin/jvm/functions/Function2;ZZZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;IIII)V",
+              "parameters": "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;ZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryTab;Lkotlin/jvm/functions/Function2;ZZZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;IIII)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "TabletSecondaryContent",
+                "(Lcom/android/purebilibili/feature/video/viewmodel/VideoPlaybackUiState$Success;Lcom/android/purebilibili/feature/video/viewmodel/CommentUiState;Lcom/android/purebilibili/feature/video/viewmodel/SubReplyUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions;Lcom/android/purebilibili/feature/video/viewmodel/VideoEngagementUiState;Lcom/android/purebilibili/feature/video/screen/VideoDetailEngagementActions;Lcom/android/purebilibili/feature/video/screen/VideoDetailCommentActions;Lcom/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState;Lkotlin/jvm/functions/Function1;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function3;ZZLkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lcom/android/purebilibili/feature/video/screen/TabletSecondaryTab;Lkotlin/jvm/functions/Function2;ZZZZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;IIII)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletCollectionPane",
+          "line": 1326,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ScrollableVideoInfoSection",
+          "line": 1388,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "TabletVideoInfoStaggeredItem",
+          "line": 1707,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "TabletVideoLayoutPolicy.kt",
+      "sha256LF": "31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f",
+      "lines": 298,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "TabletVideoLayoutPolicy",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.class"
+        },
+        {
+          "kind": "class",
+          "name": "TabletCinemaLayoutPolicy",
+          "line": 15,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletCinemaLayoutPolicy.class"
+        },
+        {
+          "kind": "class",
+          "name": "CinemaMetaPanelBlock",
+          "line": 23,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/CinemaMetaPanelBlock.class"
+        },
+        {
+          "kind": "class",
+          "name": "TabletSideCurtainState",
+          "line": 30,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletSideCurtainState.class"
+        },
+        {
+          "kind": "class",
+          "name": "TabletSecondaryPaneMode",
+          "line": 36,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode.class"
+        },
+        {
+          "kind": "fun",
+          "name": "shouldHideTabletSecondaryPane",
+          "line": 42,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldHideTabletSecondaryPane",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;ZZ)Z",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;ZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldHideTabletSecondaryPane",
+                "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;ZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "nextTabletSecondaryPaneMode",
+          "line": 50,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "nextTabletSecondaryPaneMode",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "nextTabletSecondaryPaneMode",
+                "(Lcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletPrimaryRatio",
+          "line": 60,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletPrimaryRatio",
+              "descriptor": "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)F",
+              "parameters": "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletPrimaryRatio",
+                "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)"
+              ]
+            },
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletPrimaryRatio",
+              "descriptor": "(FZ)F",
+              "parameters": "(FZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletPrimaryRatio",
+                "(FZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletPrimaryRatio",
+          "line": 71,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletPrimaryRatio",
+              "descriptor": "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)F",
+              "parameters": "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletPrimaryRatio",
+                "(FLcom/android/purebilibili/feature/video/screen/TabletSecondaryPaneMode;)"
+              ]
+            },
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletPrimaryRatio",
+              "descriptor": "(FZ)F",
+              "parameters": "(FZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletPrimaryRatio",
+                "(FZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletVideoLayoutPolicy",
+          "line": 85,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletVideoLayoutPolicy",
+              "descriptor": "(ILcom/android/purebilibili/core/util/AppFoldPosture;)Lcom/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy;",
+              "parameters": "(ILcom/android/purebilibili/core/util/AppFoldPosture;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletVideoLayoutPolicy",
+                "(ILcom/android/purebilibili/core/util/AppFoldPosture;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletSecondaryDefaultTabIndex",
+          "line": 106,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletSecondaryDefaultTabIndex",
+              "descriptor": "(Ljava/util/List;Z)I",
+              "parameters": "(Ljava/util/List;Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletSecondaryDefaultTabIndex",
+                "(Ljava/util/List;Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletCommentTabIndex",
+          "line": 114,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletCommentTabIndex",
+              "descriptor": "(Ljava/util/List;)I",
+              "parameters": "(Ljava/util/List;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletCommentTabIndex",
+                "(Ljava/util/List;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletCinemaDefaultTab",
+          "line": 117,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletCinemaDefaultTab",
+              "descriptor": "(Lcom/android/purebilibili/core/store/TabletSecondaryDefaultTab;)I",
+              "parameters": "(Lcom/android/purebilibili/core/store/TabletSecondaryDefaultTab;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletCinemaDefaultTab",
+                "(Lcom/android/purebilibili/core/store/TabletSecondaryDefaultTab;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowTabletSecondaryDanmakuActions",
+          "line": 121,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldShowTabletSecondaryDanmakuActions",
+              "descriptor": "()Z",
+              "parameters": "()",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldShowTabletSecondaryDanmakuActions",
+                "()"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowTabletCinemaDanmakuActions",
+          "line": 123,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldShowTabletCinemaDanmakuActions",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;)Z",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldShowTabletCinemaDanmakuActions",
+                "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCinemaPlayerViewportWidthDp",
+          "line": 127,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCinemaPlayerViewportWidthDp",
+              "descriptor": "(II)I",
+              "parameters": "(II)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCinemaPlayerViewportWidthDp",
+                "(II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveTabletCinemaLayoutPolicy",
+          "line": 135,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveTabletCinemaLayoutPolicy",
+              "descriptor": "(ILcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;Lcom/android/purebilibili/core/util/AppFoldPosture;)Lcom/android/purebilibili/feature/video/screen/TabletCinemaLayoutPolicy;",
+              "parameters": "(ILcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;Lcom/android/purebilibili/core/util/AppFoldPosture;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveTabletCinemaLayoutPolicy",
+                "(ILcom/android/purebilibili/core/store/TabletCommentPanelWidthPreset;Lcom/android/purebilibili/core/util/AppFoldPosture;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCurtainWidthDp",
+          "line": 203,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCurtainWidthDp",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Lcom/android/purebilibili/feature/video/screen/TabletCinemaLayoutPolicy;)I",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Lcom/android/purebilibili/feature/video/screen/TabletCinemaLayoutPolicy;)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCurtainWidthDp",
+                "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Lcom/android/purebilibili/feature/video/screen/TabletCinemaLayoutPolicy;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveInitialCurtainState",
+          "line": 215,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveInitialCurtainState",
+              "descriptor": "(I)Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveInitialCurtainState",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCurtainStateAfterAutoBehavior",
+          "line": 221,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCurtainStateAfterAutoBehavior",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Z)Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCurtainStateAfterAutoBehavior",
+                "(Lcom/android/purebilibili/feature/video/screen/TabletSideCurtainState;Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCinemaSideCurtainSelectedTab",
+          "line": 237,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCinemaSideCurtainSelectedTab",
+              "descriptor": "(IIZZ)I",
+              "parameters": "(IIZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCinemaSideCurtainSelectedTab",
+                "(IIZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCinemaMetaPanelContainerColor",
+          "line": 249,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCinemaIntroCardContainerColor",
+          "line": 260,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCinemaMetaPanelBlocks",
+          "line": 271,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCinemaMetaPanelBlocks",
+              "descriptor": "(ZZ)Ljava/util/List;",
+              "parameters": "(ZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCinemaMetaPanelBlocks",
+                "(ZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "interpolateByWidth",
+          "line": 287,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoCommentPerformancePolicy.kt",
+      "sha256LF": "c012f6c1a1d3feafb9dc5d79a82cae7315e97bdce9a7685ace2bd8adc7aa05c3",
+      "lines": 32,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailBeyondViewportPageCount",
+          "line": 3,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoDetailBeyondViewportPageCount",
+              "descriptor": "(I)I",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoDetailBeyondViewportPageCount",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldLoadMoreVideoComments",
+          "line": 12,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldLoadMoreVideoComments",
+              "descriptor": "(IIZZI)Z",
+              "parameters": "(IIZZI)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldLoadMoreVideoComments",
+                "(IIZZI)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseLightweightCommentRendering",
+          "line": 24,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldUseLightweightCommentRendering",
+              "descriptor": "(IZZ)Z",
+              "parameters": "(IZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoCommentPerformancePolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldUseLightweightCommentRendering",
+                "(IZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoContentSection.kt",
+      "sha256LF": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+      "lines": 2209,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "shouldShowDanmakuSendInput",
+          "line": 130,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldShowDanmakuSendInput",
+              "descriptor": "(Z)Z",
+              "parameters": "(Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldShowDanmakuSendInput",
+                "(Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowVideoContentTabBarDanmakuActions",
+          "line": 133,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldShowVideoContentTabBarDanmakuActions",
+              "descriptor": "(I)Z",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldShowVideoContentTabBarDanmakuActions",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentTabBarLayoutSpec",
+          "line": 137,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentTabBarLayoutSpec.class"
+        },
+        {
+          "kind": "fun",
+          "name": "hasVideoContentTabBarIndicatorScaleClearance",
+          "line": 151,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "hasVideoContentTabBarIndicatorScaleClearance",
+              "descriptor": "(II)Z",
+              "parameters": "(II)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "hasVideoContentTabBarIndicatorScaleClearance",
+                "(II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentTabBarLiquidChromeSpec",
+          "line": 163,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentTabBarLiquidChromeSpec.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarDockItemWidthDp",
+          "line": 174,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarDockItemWidthDp",
+              "descriptor": "(I)I",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarDockItemWidthDp",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldReuseVideoContentTabBarLiquidGlassDock",
+          "line": 179,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldReuseVideoContentTabBarLiquidGlassDock",
+              "descriptor": "(ZZ)Z",
+              "parameters": "(ZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldReuseVideoContentTabBarLiquidGlassDock",
+                "(ZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarStartPaddingDp",
+          "line": 184,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarStartPaddingDp",
+              "descriptor": "(ZI)I",
+              "parameters": "(ZI)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarStartPaddingDp",
+                "(ZI)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarLiquidChromeSpec",
+          "line": 189,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarLiquidChromeSpec",
+              "descriptor": "(ZZLcom/android/purebilibili/feature/video/screen/VideoContentTabBarLayoutSpec;)Lcom/android/purebilibili/feature/video/screen/VideoContentTabBarLiquidChromeSpec;",
+              "parameters": "(ZZLcom/android/purebilibili/feature/video/screen/VideoContentTabBarLayoutSpec;)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarLiquidChromeSpec",
+                "(ZZLcom/android/purebilibili/feature/video/screen/VideoContentTabBarLayoutSpec;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarLayoutSpec",
+          "line": 214,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarLayoutSpec",
+              "descriptor": "(I)Lcom/android/purebilibili/feature/video/screen/VideoContentTabBarLayoutSpec;",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarLayoutSpec",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentTabBarDanmakuActionLayoutPolicy",
+          "line": 246,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentTabBarDanmakuActionLayoutPolicy.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarDanmakuActionLayoutPolicy",
+          "line": 256,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarDanmakuActionLayoutPolicy",
+              "descriptor": "(I)Lcom/android/purebilibili/feature/video/screen/VideoContentTabBarDanmakuActionLayoutPolicy;",
+              "parameters": "(I)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarDanmakuActionLayoutPolicy",
+                "(I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentTabSwitchAnimationSpec",
+          "line": 268,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentTabSwitchAnimationSpec.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabSwitchAnimationSpec",
+          "line": 272,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabSwitchAnimationSpec",
+              "descriptor": "(Lcom/android/purebilibili/core/ui/AppTopTabPresentation;)Lcom/android/purebilibili/feature/video/screen/VideoContentTabSwitchAnimationSpec;",
+              "parameters": "(Lcom/android/purebilibili/core/ui/AppTopTabPresentation;)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabSwitchAnimationSpec",
+                "(Lcom/android/purebilibili/core/ui/AppTopTabPresentation;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentEffectiveSelectedTabIndex",
+          "line": 282,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentEffectiveSelectedTabIndex",
+              "descriptor": "(IIZI)I",
+              "parameters": "(IIZI)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentEffectiveSelectedTabIndex",
+                "(IIZI)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldEnableVideoContentHorizontalPagerSwipe",
+          "line": 298,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldEnableVideoContentHorizontalPagerSwipe",
+              "descriptor": "(IIZ)Z",
+              "parameters": "(IIZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldEnableVideoContentHorizontalPagerSwipe",
+                "(IIZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isVideoContentCommentListAtTop",
+          "line": 307,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "isVideoContentCommentListAtTop",
+              "descriptor": "(II)Z",
+              "parameters": "(II)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "isVideoContentCommentListAtTop",
+                "(II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldEnableVideoContentTabBarCollapse",
+          "line": 312,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldEnableVideoContentTabBarCollapse",
+              "descriptor": "(ZIZI)Z",
+              "parameters": "(ZIZI)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldEnableVideoContentTabBarCollapse",
+                "(ZIZI)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarCollapseProgress",
+          "line": 325,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarCollapseProgress",
+              "descriptor": "(FFIZZI)F",
+              "parameters": "(FFIZZI)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarCollapseProgress",
+                "(FFIZZI)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentTabBarCollapseScrollUpdate",
+          "line": 340,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentTabBarCollapseScrollUpdate.class"
+        },
+        {
+          "kind": "fun",
+          "name": "reduceVideoContentTabBarCollapseOnPreScroll",
+          "line": 350,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "reduceVideoContentTabBarCollapseOnPreScroll",
+              "descriptor": "(FFFZZ)Lcom/android/purebilibili/feature/video/screen/VideoContentTabBarCollapseScrollUpdate;",
+              "parameters": "(FFFZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "reduceVideoContentTabBarCollapseOnPreScroll",
+                "(FFFZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "reduceVideoContentTabBarCollapseOnPostScroll",
+          "line": 381,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "reduceVideoContentTabBarCollapseOnPostScroll",
+              "descriptor": "(FFFZZ)Lcom/android/purebilibili/feature/video/screen/VideoContentTabBarCollapseScrollUpdate;",
+              "parameters": "(FFFZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "reduceVideoContentTabBarCollapseOnPostScroll",
+                "(FFFZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoContentTabBarCollapsePxWhenListLeavesTop",
+          "line": 399,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoContentTabBarCollapsePxWhenListLeavesTop",
+              "descriptor": "(FFZZ)F",
+              "parameters": "(FFZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoContentTabBarCollapsePxWhenListLeavesTop",
+                "(FFZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentData",
+          "line": 415,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentData.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentEngagementState",
+          "line": 430,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentEngagementState.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentCommentState",
+          "line": 442,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentCommentState.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentNoteState",
+          "line": 455,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentNoteState.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentPresentationState",
+          "line": 461,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentPresentationState.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentPrimaryActions",
+          "line": 478,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentPrimaryActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentCommentActions",
+          "line": 498,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentCommentActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentNoteActions",
+          "line": 515,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentNoteActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoContentUiActions",
+          "line": 529,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoContentUiActions.class"
+        },
+        {
+          "kind": "fun",
+          "name": "VideoContentSection",
+          "line": 536,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "VideoContentSection",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/VideoContentData;Lcom/android/purebilibili/feature/video/screen/VideoContentEngagementState;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentState;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteState;Lcom/android/purebilibili/feature/video/screen/VideoContentPresentationState;Lcom/android/purebilibili/feature/video/screen/VideoContentPrimaryActions;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentActions;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteActions;Lcom/android/purebilibili/feature/video/screen/VideoContentUiActions;Landroidx/compose/runtime/Composer;I)V",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/VideoContentData;Lcom/android/purebilibili/feature/video/screen/VideoContentEngagementState;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentState;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteState;Lcom/android/purebilibili/feature/video/screen/VideoContentPresentationState;Lcom/android/purebilibili/feature/video/screen/VideoContentPrimaryActions;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentActions;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteActions;Lcom/android/purebilibili/feature/video/screen/VideoContentUiActions;Landroidx/compose/runtime/Composer;I)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "VideoContentSection",
+                "(Lcom/android/purebilibili/feature/video/screen/VideoContentData;Lcom/android/purebilibili/feature/video/screen/VideoContentEngagementState;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentState;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteState;Lcom/android/purebilibili/feature/video/screen/VideoContentPresentationState;Lcom/android/purebilibili/feature/video/screen/VideoContentPrimaryActions;Lcom/android/purebilibili/feature/video/screen/VideoContentCommentActions;Lcom/android/purebilibili/feature/video/screen/VideoContentNoteActions;Lcom/android/purebilibili/feature/video/screen/VideoContentUiActions;Landroidx/compose/runtime/Composer;I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoIntroTab",
+          "line": 1287,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoCommentTab",
+          "line": 1451,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandscapeCommentPanel",
+          "line": 1658,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoHeaderContent",
+          "line": 1835,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoContentTabBar",
+          "line": 1998,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoRecommendationHeader",
+          "line": 2135,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveFirstRelatedItemIndex",
+          "line": 2158,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveFirstRelatedItemIndex",
+              "descriptor": "(Z)I",
+              "parameters": "(Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveFirstRelatedItemIndex",
+                "(Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoTagsRow",
+          "line": 2167,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "VideoTagsRow",
+              "descriptor": "(Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V",
+              "parameters": "(Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "VideoTagsRow",
+                "(Ljava/util/List;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoTagChip",
+          "line": 2191,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "VideoTagChip",
+              "descriptor": "(Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V",
+              "parameters": "(Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSectionKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "VideoTagChip",
+                "(Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailBackPolicy.kt",
+      "sha256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "lines": 17,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailLocalBackTarget",
+          "line": 3,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailLocalBackTarget",
+          "line": 9,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailCommentFraudOverlayAdapter.kt",
+      "sha256LF": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a",
+      "lines": 68,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailCommentFraudOverlayAdapter",
+          "line": 19,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "VideoDetailCommentFraudOverlayAdapter",
+              "descriptor": "(Lcom/bilipai/desktop/ui/DesktopCommentPlatform;Lcom/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCommentComposer;Lcom/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel;Ljava/lang/Long;ZLandroidx/compose/runtime/Composer;I)V",
+              "parameters": "(Lcom/bilipai/desktop/ui/DesktopCommentPlatform;Lcom/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCommentComposer;Lcom/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel;Ljava/lang/Long;ZLandroidx/compose/runtime/Composer;I)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapterKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "VideoDetailCommentFraudOverlayAdapter",
+                "(Lcom/bilipai/desktop/ui/DesktopCommentPlatform;Lcom/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoCommentComposer;Lcom/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel;Ljava/lang/Long;ZLandroidx/compose/runtime/Composer;I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailCommonOverlayAdapter.kt",
+      "sha256LF": "02c777a25f8e3a76fe790dadc97cc475f4f66875d4642ef014c1bd92ed3b87b3",
+      "lines": 56,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailCommonOverlayAdapter",
+          "line": 15,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailDomainEffects.kt",
+      "sha256LF": "7fefec7a8302cdc4e2a9957b4082c6a00300948327686043e983c6aca6c2d20f",
+      "lines": 70,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailDomainEffects",
+          "line": 19,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailDownloadOverlayAdapter.kt",
+      "sha256LF": "f476d677842002e49b18204d4d08fab69ddce8b4fa51ed32d5bf89ed58fc9409",
+      "lines": 291,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailDownloadOverlayAdapter",
+          "line": 28,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailEntryLoadPolicy.kt",
+      "sha256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "lines": 55,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_ENTRY_TRANSITION_FINISH_TIMEOUT_BUFFER_MS",
+          "line": 4,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_ENTRY_PLAYBACK_PRELOAD_RATIO",
+          "line": 6,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDeferVideoDetailLoadUntilEntryTransitionFinished",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isVideoDetailEntryTransitionFinished",
+          "line": 21,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldMarkVideoDetailEntryTransitionFinished",
+          "line": 34,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailEntryTransitionFallbackTimeoutMillis",
+          "line": 43,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailEntryPlaybackPreloadDelayMillis",
+          "line": 50,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailEntryTransitionObserver.kt",
+      "sha256LF": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "lines": 123,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailEntryTransitionFinished",
+          "line": 20,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailEntryPlaybackReady",
+          "line": 94,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "sha256LF": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "lines": 31,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailFavoriteFolderOverlayAdapter",
+          "line": 10,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailFeedbackOverlayAdapter.kt",
+      "sha256LF": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "lines": 148,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailFeedbackOverlayAdapter",
+          "line": 35,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailInlineCollapseState.kt",
+      "sha256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "lines": 59,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "InlinePortraitPlayerCollapseState",
+          "line": 14,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberInlinePortraitPlayerCollapseState",
+          "line": 56,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailInputOverlayAdapter.kt",
+      "sha256LF": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "lines": 243,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailInputOverlayLayoutInfo",
+          "line": 33,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "DanmakuInputSnapshot",
+          "line": 39,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "DanmakuInputActions",
+          "line": 50,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "CommentInputSnapshot",
+          "line": 58,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/CommentInputSnapshot.class"
+        },
+        {
+          "kind": "class",
+          "name": "CommentInputActions",
+          "line": 72,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/CommentInputActions.class"
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailInputOverlayAdapter",
+          "line": 81,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailDanmakuInputOverlayContent",
+          "line": 197,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailCommentInputOverlayContent",
+          "line": 219,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailOverlayHost.kt",
+      "sha256LF": "f7532155c6e8429f27dd251193001e17ac0a824934ea669ad016f7d187985c46",
+      "lines": 938,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailFollowGroupDialog",
+          "line": 245,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailPlaybackEndedDialog",
+          "line": 351,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailQualitySwitchFailureDialog",
+          "line": 429,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailDanmakuContextMenu",
+          "line": 554,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ExternalPlaylistQueueSheet",
+          "line": 633,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ExternalPlaylistQueueSheetContent",
+          "line": 744,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "DetachedVideoCommentThreadHost",
+          "line": 884,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailParentUiSnapshot.kt",
+      "sha256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "lines": 74,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailParentUiSnapshot",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "captureVideoDetailParentUiSnapshot",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "restoreVideoDetailParentUiSnapshot",
+          "line": 28,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "restoreVideoDetailListPosition",
+          "line": 51,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "canReleaseRelatedVideoNavigation",
+          "line": 68,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPhoneContent.kt",
+      "sha256LF": "9d4bfa882d6e0540fb2a37f20a5e9b2867792f2cb0179e5dca80d72e15fe90bb",
+      "lines": 579,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailPhoneSuccessContentLayer",
+          "line": 72,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ExternalPlaylistQueueCollapsedBar",
+          "line": 481,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ExternalPlaylistQueueCollapsedBarContent",
+          "line": 547,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPlatformEffectsHost.kt",
+      "sha256LF": "604229623998f62ea9dd448be15f8e161dce544c6acee288e6a8a2ecf1bf522f",
+      "lines": 126,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailPipParamsEffect",
+          "line": 28,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailKeepScreenOnEffect",
+          "line": 74,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailSystemBarsEffect",
+          "line": 111,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPlatformPolicy.kt",
+      "sha256LF": "5ca410207169a557e926c0772b4caac49f9f956774404ba549505935f321b5d5",
+      "lines": 1084,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "shouldUseVideoDetailSharedElementMorph",
+          "line": 30,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailSystemBarsSnapshot",
+          "line": 35,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailSystemBarsSnapshot",
+          "line": 43,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowSystemBarsOnVideoDetailExit",
+          "line": 62,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailSystemBarsVisibilityPolicy",
+          "line": 66,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailSystemBarsVisibilityPolicy.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailHiddenSystemBars",
+          "line": 71,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailSystemBarsApplySpec",
+          "line": 77,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailSystemBarsVisibilityPolicy",
+          "line": 87,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoDetailSystemBarsVisibilityPolicy",
+              "descriptor": "(ZZZZZZ)Lcom/android/purebilibili/feature/video/screen/VideoDetailSystemBarsVisibilityPolicy;",
+              "parameters": "(ZZZZZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoDetailSystemBarsVisibilityPolicy",
+                "(ZZZZZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailSystemBarsApplySpec",
+          "line": 129,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailStableStatusBarHeightDp",
+          "line": 176,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailPortraitPlayerTopInsetDp",
+          "line": 205,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldApplyStatusBarPaddingToVideoPlayerChrome",
+          "line": 224,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "shouldApplyStatusBarPaddingToVideoPlayerChrome",
+              "descriptor": "(Z)Z",
+              "parameters": "(Z)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "shouldApplyStatusBarPaddingToVideoPlayerChrome",
+                "(Z)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldRestoreSystemBarsDuringVideoDetailExitTransition",
+          "line": 228,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldReactivateVideoDetailSystemBarsAfterCancelledExit",
+          "line": 241,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldReapplyVideoDetailSystemBarsAfterBecomingTop",
+          "line": 252,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "applyVideoDetailSystemBarsSpec",
+          "line": 261,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "findActivity",
+          "line": 286,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isWindowBoundsSmallerThanMaximum",
+          "line": 295,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldInferFloatingWindowFromBounds",
+          "line": 309,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isActivityInMultiWindowOrFloatingMode",
+          "line": 319,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "toggleVideoDetailFullscreen",
+          "line": 348,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveNextPlayerHeightOffset",
+          "line": 440,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveIsPlayerCollapsed",
+          "line": 456,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveIsPlaybackPausedForCollapse",
+          "line": 466,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseTabletVideoLayout",
+          "line": 475,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseOrientationDrivenFullscreen",
+          "line": 482,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldRotateToPortraitOnSplitBack",
+          "line": 488,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowDetachedVideoCommentThreadHost",
+          "line": 496,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailCommentThreadHostMainSheetVisible",
+          "line": 502,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldForceInitializeDetachedCommentThreadHostForRoute",
+          "line": 511,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldApplyPhoneAutoRotatePolicy",
+          "line": 519,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailFullscreenMode",
+          "line": 525,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldApplyStartFullscreenOrientationRequest",
+          "line": 539,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePhoneFullscreenEnterOrientation",
+          "line": 552,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldKeepManualFullscreenRequest",
+          "line": 568,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ManualFullscreenRequestLifecycleEffect",
+          "line": 579,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePhoneVideoRequestedOrientation",
+          "line": 613,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveStableOrientationWhenAutoRotateDisabled",
+          "line": 731,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePhoneAutoRotateRequestedOrientation",
+          "line": 749,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "PHONE_AUTO_ROTATE_LANDSCAPE_SETTLE_MS",
+          "line": 810,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePhoneAutoRotateTargetToApply",
+          "line": 812,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCurrentExactLandscapeOrientation",
+          "line": 840,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "preserveCurrentExactLandscapeSideWhileFullscreen",
+          "line": 850,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveExactLandscapeOrientation",
+          "line": 868,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isLandscapeRequestedOrientation",
+          "line": 890,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isVideoDrivenLandscapeOrientationLock",
+          "line": 900,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailEntryOrientationSnapshot",
+          "line": 911,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldEnterPortraitFullscreenOnFullscreenToggle",
+          "line": 923,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePortraitRotateTargetOrientation",
+          "line": 930,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveEffectivePhoneAutoRotateEnabled",
+          "line": 941,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAllowPhoneSensorPortraitTransition",
+          "line": 954,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldReleaseManualFullscreenRequestAfterSensorTarget",
+          "line": 959,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldObservePhoneAutoRotate",
+          "line": 966,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldReleasePhoneManualPortraitHold",
+          "line": 994,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isPhoneOrientationUprightPortraitStable",
+          "line": 1005,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isPhoneOrientationPortraitStable",
+          "line": 1014,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "withinWrappedRange",
+          "line": 1023,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailExitRequestedOrientation",
+          "line": 1035,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldEnablePortraitExperience",
+          "line": 1047,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailCommentBarProgress",
+          "line": 1055,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowVideoDetailBottomInteractionBar",
+          "line": 1060,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowVideoDetailActionButtons",
+          "line": 1079,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPlaybackSessionEffects.kt",
+      "sha256LF": "598c0bb5f0246e0972e26e47c2bc36c32babcf24d4d5f1475343a7d8153dca63",
+      "lines": 58,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailPlaybackEventState",
+          "line": 18,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailPlaybackEventState",
+          "line": 26,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailPlaybackEventEffects",
+          "line": 32,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "sha256LF": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da",
+      "lines": 76,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailPlayerSettingsOverlayAdapter",
+          "line": 17,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPlayerTransitionHost.kt",
+      "sha256LF": "b0110085eb3a7c9c5c65867ea8366869a4d240b31e4909466beb6ff400fb9ada",
+      "lines": 367,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "ContinuousPlayerHostLayout",
+          "line": 25,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIEWPORT_WIDTH_OVERRIDE_QUANTIZE_STEP_DP",
+          "line": 35,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "ContinuousPlayerFullscreenExtras",
+          "line": 37,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "continuousPlayerViewportHeight",
+          "line": 84,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveContinuousPlayerInlineHeightPx",
+          "line": 137,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "PortraitInlineVideoPlayerHost",
+          "line": 156,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPortraitOverlayAdapter.kt",
+      "sha256LF": "2b834aec6f27c59a0d39fd2bd7342fab8d549841cbbfac31ce937b8973bde0d3",
+      "lines": 191,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailPortraitOverlayAdapter",
+          "line": 40,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowPortraitEntryCoverPlaceholder",
+          "line": 184,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailPresentationState.kt",
+      "sha256LF": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250",
+      "lines": 138,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnPhase",
+          "line": 11,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailReturnPhase.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailPresentationState",
+          "line": 18,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.class"
+        },
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailPresentationState",
+          "line": 121,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "rememberVideoDetailPresentationState",
+              "descriptor": "(Ljava/lang/String;JZZLandroidx/compose/runtime/Composer;I)Lcom/android/purebilibili/feature/video/screen/VideoDetailPresentationState;",
+              "parameters": "(Ljava/lang/String;JZZLandroidx/compose/runtime/Composer;I)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoDetailPresentationStateKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "rememberVideoDetailPresentationState",
+                "(Ljava/lang/String;JZZLandroidx/compose/runtime/Composer;I)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailRenderContracts.kt",
+      "sha256LF": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1",
+      "lines": 107,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailPlaybackActions",
+          "line": 11,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailEngagementActions",
+          "line": 67,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailEngagementActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailCommentActions",
+          "line": 79,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailCommentActions.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailNavigationActions",
+          "line": 100,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoDetailNavigationActions.class"
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailReturnLoadBudgetPolicy.kt",
+      "sha256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "lines": 325,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_RETURN_HANDOFF_SETTLE_START",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnSessionPhase",
+          "line": 19,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnPlayerMode",
+          "line": 27,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnSecondaryContentMode",
+          "line": 35,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnDanmakuMode",
+          "line": 46,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnOverlayControlsMode",
+          "line": 51,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnDepthBlurMode",
+          "line": 56,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnHomeHeavyWorkMode",
+          "line": 63,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnVisualBudget",
+          "line": 68,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSessionPhase",
+          "line": 88,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnPlayerMode",
+          "line": 116,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAllowPlaybackStopIntentForReturnBudget",
+          "line": 130,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnVisualBudget",
+          "line": 147,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSecondaryContentMode",
+          "line": 224,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSecondaryContentAlphaPreview",
+          "line": 249,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldPauseHideDanmakuForReturnBudget",
+          "line": 255,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSuppressOverlayControlsForReturnBudget",
+          "line": 260,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDetachSecondaryContentForReturnBudget",
+          "line": 265,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnDepthBlurQuantumPx",
+          "line": 273,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSettleProgressFromMorphDepth",
+          "line": 289,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldExpectLiveSurfaceOwnershipForReturnBudget",
+          "line": 296,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "mapReturnPlayerModeToCoverOwnershipHint",
+          "line": 300,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_RETURN_SECONDARY_YIELD_END",
+          "line": 314,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDeferPlaybackStopForSharedLiveReturn",
+          "line": 322,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailReturnMediaLayout.kt",
+      "sha256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "lines": 301,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnSourceCardLayout",
+          "line": 16,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "emptyReturnSourceLayout",
+          "line": 53,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSourceCardLayout",
+          "line": 71,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverHeightInEntryPx",
+          "line": 168,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverWidthInEntryPx",
+          "line": 180,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverOffsetXInEntryPx",
+          "line": 184,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverOffsetYInEntryPx",
+          "line": 188,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnMediaLayoutFrame",
+          "line": 192,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnMediaLayoutFrame",
+          "line": 199,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "videoDetailReturnMediaLayout",
+          "line": 256,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailReturnSourceCardChrome.kt",
+      "sha256LF": "11ab5c4904b147c39a857942b5388e9fd1fa1497900fe6cf3994e3ff4065aca9",
+      "lines": 995,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnSourceCardChromeModel",
+          "line": 94,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSourceCardChromeModel",
+          "line": 106,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnInfoSurfaceSpec",
+          "line": 137,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnInfoSurfaceSpec",
+          "line": 144,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailFlyingSourceChromeAlpha",
+          "line": 174,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailReturnSourceCardChrome",
+          "line": 212,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "hasVisibleChrome",
+          "line": 509,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailReturnCoverChrome",
+          "line": 522,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverChromeDensityScale",
+          "line": 609,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingCoverChrome",
+          "line": 613,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingCoverStat",
+          "line": 769,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingInfoContent",
+          "line": 821,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingInfoTexts",
+          "line": 860,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingSideBySideMetadata",
+          "line": 920,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingPublishMetadata",
+          "line": 950,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "LandingOwnerMetadata",
+          "line": 965,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailScreen.kt",
+      "sha256LF": "476bd8c90e4905921195e344653e13ddac20e11bce4e6a581d327d7245323ebb",
+      "lines": 108,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailScreen",
+          "line": 20,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailScreenContent.kt",
+      "sha256LF": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "lines": 28,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "VideoDetailScreenContent",
+          "line": 9,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailScreenStateHolder.kt",
+      "sha256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+      "lines": 5464,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "commentBackToTopRestoreFlow",
+          "line": 278,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "CONTINUOUS_PLAYER_MORPH_DURATION_MILLIS",
+          "line": 281,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_COLLAPSE_SIGNAL_IDLE_TIMEOUT_MS",
+          "line": 283,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "CollapsedPlayerNavigationBar",
+          "line": 286,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailScreenStateHolder",
+          "line": 434,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailSessionPolicy.kt",
+      "sha256LF": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "lines": 400,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "hasMeaningfulVideoPlayerBoundsChange",
+          "line": 7,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldHandleVideoDetailDisposeAsNavigationExit",
+          "line": 22,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveIsNavigatingToVideoDuringDispose",
+          "line": 36,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldMarkReturningStateOnVideoDetailDispose",
+          "line": 43,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldClearStaleReturningStateOnVideoDetailEnter",
+          "line": 49,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowExternalPlaylistQueueBarByPolicy",
+          "line": 56,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowExternalPlaylistQueueBarOnContentTab",
+          "line": 73,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveExternalPlaylistQueueTitle",
+          "line": 80,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "normalizePlaylistCoverUrlForUi",
+          "line": 92,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveExternalPlaylistQueueListMaxHeightDp",
+          "line": 102,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveExternalPlaylistQueueBottomSpacerDp",
+          "line": 107,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "ExternalPlaylistQueueSheetPresentation",
+          "line": 111,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveExternalPlaylistQueueSheetPresentation",
+          "line": 116,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldOpenCommentUrlInApp",
+          "line": 126,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "interface",
+          "name": "CommentUrlNavigationTarget",
+          "line": 134,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCommentUrlNavigationTarget",
+          "line": 140,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveCommentUrlNavigationTarget",
+              "descriptor": "(Ljava/lang/String;)Lcom/android/purebilibili/feature/video/screen/CommentUrlNavigationTarget;",
+              "parameters": "(Ljava/lang/String;)",
+              "owner": "com/android/purebilibili/feature/video/screen/DesktopOriginalCommentUrlNavigationKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveCommentUrlNavigationTarget",
+                "(Ljava/lang/String;)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveDanmakuDialogTopReservePx",
+          "line": 164,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldApplyPipParamsUpdate",
+          "line": 177,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDismissCommentThreadDetailForPip",
+          "line": 190,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAutoEnterAudioModeFromRoute",
+          "line": 198,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldAutoEnterPortraitFullscreenFromRoute",
+          "line": 217,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldStartInPortraitFullscreenFromRouteHint",
+          "line": 261,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSyncMainPlayerToInternalBvid",
+          "line": 271,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSkipInternalBvidSyncForPlayerInitiatedAdvance",
+          "line": 296,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailPlaybackTargetCid",
+          "line": 304,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveAutoPlayOverrideForInternalBvidSync",
+          "line": 316,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSwitchCollectionVideoInsideCurrentDetailPage",
+          "line": 322,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveUgcSeasonEpisodeCoverUrl",
+          "line": 342,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoPlayerSectionTarget",
+          "line": 363,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoPlayerSectionTarget",
+          "line": 373,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailTopBarActionPolicy.kt",
+      "sha256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "lines": 14,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailTopBarAction",
+          "line": 3,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailTopBarAction",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailTransitionHost.kt",
+      "sha256LF": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "lines": 361,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoDetailTransitionState",
+          "line": 46,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailTransitionState",
+          "line": 62,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "ReportVideoDetailMorphProgressToClock",
+          "line": 201,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "rememberVideoDetailRouteSheetFrameProvider",
+          "line": 227,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "VideoDetailRouteSheetHost",
+          "line": 320,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoDetailTransitionPolicy.kt",
+      "sha256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "lines": 733,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "COVER_TAKEOVER_PRE_BACK_DELAY_MILLIS",
+          "line": 22,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_CONTENT_COMMENT_TAB_INDEX",
+          "line": 23,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isVideoDetailEntryActiveMiuixTransitionSource",
+          "line": 30,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldConsumeMiuixTransitionVisualAssets",
+          "line": 46,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDrawFlyingReconstructedSourceChrome",
+          "line": 63,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldDrawNativeCoverOverlay",
+          "line": 75,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldPunchThroughFlyingMediaToNativeListCard",
+          "line": 81,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveForceCoverOnlyForReturn",
+          "line": 91,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseReturningVideoDetailVisualState",
+          "line": 106,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldConsumeMiuixReturnSessionForVideoDetailEntry",
+          "line": 121,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldTreatVideoDetailCardReturnAsCommitted",
+          "line": 144,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseLiveReturnMorph",
+          "line": 155,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldTreatVideoDetailContentReadyForLiveReturnMorph",
+          "line": 177,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnPlaybackIntent",
+          "line": 185,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldHandVisualOwnershipToResidentCover",
+          "line": 201,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverOwnership",
+          "line": 214,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "isLiveReturnMorphFromOwnership",
+          "line": 236,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldHandResidentCoverFromOwnership",
+          "line": 240,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnSessionLockedOwnership",
+          "line": 254,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailReturnMediaFrame",
+          "line": 266,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnMediaFrame",
+          "line": 276,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnCoverAlpha",
+          "line": 306,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnVisualProgress",
+          "line": 330,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnPlayerAlpha",
+          "line": 340,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailResidentCoverSource",
+          "line": 362,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailResidentCoverSource",
+          "line": 369,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailReturnContentAlpha",
+          "line": 418,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldTreatVideoDetailCardExitAsReturning",
+          "line": 445,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldTreatVideoDetailExitTransitionInProgress",
+          "line": 464,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldKeepPlaybackSessionActiveForSharedReturnMorph",
+          "line": 482,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldExpandPlayerViewportForSharedReturn",
+          "line": 501,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolvePlayerCollapseProgressForLayout",
+          "line": 524,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailCollapseShadowAlpha",
+          "line": 532,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCollapsedPlayerMediaScrimAlpha",
+          "line": 536,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCollapsedPlayerToolbarAlpha",
+          "line": 540,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldForceBackPreviewPlayerCover",
+          "line": 543,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldSuppressVideoDetailEnterFadeAfterBackPreview",
+          "line": 554,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldUseVideoDetailRootTransitionProgress",
+          "line": 561,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "shouldShowVideoDetailContent",
+          "line": 571,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveCoverTakeoverDelayBeforeBackNavigationMillis",
+          "line": 581,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailRouteSheetMotion",
+          "line": 586,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailRouteSheetSettleDirection",
+          "line": 601,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailRouteSheetFrame",
+          "line": 607,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailSecondaryContentTiming",
+          "line": 615,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailSecondaryContentTiming",
+          "line": 622,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "class",
+          "name": "VideoDetailMotionSpec",
+          "line": 641,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_ENTRY_PHASE_MIN_DURATION_MILLIS",
+          "line": 647,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_DETAIL_CONTENT_PHASE_MIN_DURATION_MILLIS",
+          "line": 648,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_MAIN_DURATION_MILLIS",
+          "line": 649,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_SETTLE_DURATION_MILLIS",
+          "line": 650,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_DURATION_MILLIS",
+          "line": 651,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_INITIAL_SCALE",
+          "line": 653,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_INITIAL_TRANSLATION_Y_DP",
+          "line": 654,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_INITIAL_CORNER_DP",
+          "line": 655,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_INITIAL_SCRIM_ALPHA",
+          "line": 656,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_SETTLE_SCALE_DELTA",
+          "line": 657,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "HOME_VIDEO_ROUTE_SHEET_SETTLE_TRANSLATION_DP",
+          "line": 658,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailMotionSpec",
+          "line": 660,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailRouteSheetMotion",
+          "line": 673,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoDetailRouteSheetFrame",
+          "line": 695,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "lerpVideoDetailFloat",
+          "line": 731,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoFavoriteActionPolicy.kt",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "lines": 39,
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "VideoFavoriteEntryPoint",
+          "line": 3,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoFavoriteEntryPoint.class"
+        },
+        {
+          "kind": "class",
+          "name": "VideoFavoriteAction",
+          "line": 11,
+          "actualFunctionOwners": [],
+          "actualClassEntry": "com/android/purebilibili/feature/video/screen/VideoFavoriteAction.class"
+        },
+        {
+          "kind": "fun",
+          "name": "resolveVideoFavoriteAction",
+          "line": 23,
+          "actualFunctionOwners": [
+            {
+              "package": "com.android.purebilibili.feature.video.screen",
+              "name": "resolveVideoFavoriteAction",
+              "descriptor": "(Lcom/android/purebilibili/feature/video/screen/VideoFavoriteEntryPoint;ZZ)Lcom/android/purebilibili/feature/video/screen/VideoFavoriteAction;",
+              "parameters": "(Lcom/android/purebilibili/feature/video/screen/VideoFavoriteEntryPoint;ZZ)",
+              "owner": "com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicyKt.class",
+              "key": [
+                "com.android.purebilibili.feature.video.screen",
+                "resolveVideoFavoriteAction",
+                "(Lcom/android/purebilibili/feature/video/screen/VideoFavoriteEntryPoint;ZZ)"
+              ]
+            }
+          ],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoInitialPagePolicy.kt",
+      "sha256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "lines": 13,
+      "declarations": [
+        {
+          "kind": "fun",
+          "name": "resolveInitialPageIndex",
+          "line": 5,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    },
+    {
+      "file": "VideoNavigationCidPolicy.kt",
+      "sha256LF": "9f4fe9aa4a4d7b37db454692a8cf5b55c778136301ce8c1874c9fd89c1c2f59a",
+      "lines": 50,
+      "declarations": [
+        {
+          "kind": "val",
+          "name": "VIDEO_NAV_TARGET_CID_KEY",
+          "line": 7,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "val",
+          "name": "VIDEO_NAV_COVER_URL_KEY",
+          "line": 8,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "buildVideoNavigationOptions",
+          "line": 10,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        },
+        {
+          "kind": "fun",
+          "name": "resolveNavigationTargetCid",
+          "line": 30,
+          "actualFunctionOwners": [],
+          "actualClassEntry": null
+        }
+      ]
+    }
+  ]
+}

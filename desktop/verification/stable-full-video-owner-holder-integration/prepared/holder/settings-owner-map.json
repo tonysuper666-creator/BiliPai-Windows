@@ -1,0 +1,139 @@
+{
+  "getAutoPortraitFullscreen": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getAutoRotateEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getCardAnimationEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings"
+  ],
+  "getClickToPlay": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings",
+    "com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings"
+  ],
+  "getClickToPlaySync": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings",
+    "com.bilipai.desktop.ui.DesktopOriginalNavigationHostSettings"
+  ],
+  "getCommentDefaultSortMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalReplySettings"
+  ],
+  "getCommentDefaultSortModeSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalReplySettings"
+  ],
+  "getCommentFraudDetectionEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalReplySettings"
+  ],
+  "getCommentMemberDecorationsEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalReplySettings"
+  ],
+  "getDanmakuBlockRulesRaw": [],
+  "getDanmakuEnabled": [],
+  "getDanmakuSendColor": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "getDanmakuSendFontSize": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "getDanmakuSendMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "getFullscreenMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getHideVideoPageStatusBar": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings"
+  ],
+  "getHideVideoPageStatusBarSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings"
+  ],
+  "getHomeUpBadgesVisible": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getHorizontalAdaptationEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getLiveSurfaceCardTransitionEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getLongPressSpeedHintAlpha": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getLongPressSpeedHintAlphaSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getLongPressSpeedHintScale": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getLongPressSpeedHintScaleSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getMiniPlayerModeSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getPauseOnPlayerCollapseEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getPortraitOnlyVerticalRecommendations": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getPortraitPlayerCollapseMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getProgressPeakDanmakuEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings"
+  ],
+  "getQualitySwitchFailureDialogEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getQualitySwitchFailureDialogOnceEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getQualitySwitchFailureDialogShown": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "getStopPlaybackOnExitSync": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getSubtitleAutoPreference": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getTabletCommentPanelWidthPreset": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getTabletSecondaryDefaultTab": [
+    "com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings"
+  ],
+  "getVideoAiSummaryEntryEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings"
+  ],
+  "getVideoNoteDefaultCollapsed": [
+    "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings"
+  ],
+  "getVideoNoteEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings"
+  ],
+  "markQualitySwitchFailureDialogShown": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ],
+  "setCommentDefaultSortMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings",
+    "com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings"
+  ],
+  "setDanmakuBlockRulesRaw": [],
+  "setDanmakuEnabled": [],
+  "setDanmakuSendColor": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "setDanmakuSendFontSize": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "setDanmakuSendMode": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings"
+  ],
+  "setPlayerDiagnosticLoggingEnabled": [],
+  "setQualitySwitchFailureDialogOnceEnabled": [
+    "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings"
+  ]
+}

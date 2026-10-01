@@ -1,0 +1,21 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt
+@@ -96,6 +96,8 @@
+     fun getFloat(key: String, default: Float) = (values()[key] as? JsonPrimitive)?.floatOrNull ?: default
+     fun getInt(key: String, default: Int) = (values()[key] as? JsonPrimitive)?.intOrNull ?: default
+     fun getString(key: String, default: String?) = (values()[key] as? JsonPrimitive)?.takeIf { it.isString }?.content ?: default
++    fun getStringSet(key: String, default: Set<String>?): Set<String>? =
++        (values()[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.takeIf { value -> value.isString }?.content }?.toSet() ?: default
+     fun edit() = Editor(context, name)
+     class Editor(private val context: DesktopOriginalPlayerSettingsContext, private val name: String) {
+         private val changes = linkedMapOf<String, JsonElement?>()
+@@ -103,6 +105,9 @@
+         fun putFloat(key: String, value: Float) = apply { changes[key] = JsonPrimitive(value) }
+         fun putInt(key: String, value: Int) = apply { changes[key] = JsonPrimitive(value) }
+         fun putString(key: String, value: String?) = apply { changes[key] = value?.let(::JsonPrimitive) }
++        fun putStringSet(key: String, value: Set<String>?) = apply {
++            changes[key] = value?.let { JsonArray(it.map(::JsonPrimitive)) }
++        }
+         fun apply() { context.commit { context.pluginContext.store.update(name, changes) } }
+         fun commit(): Boolean { apply(); return true }
+     }

@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+  "originalSHA256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+  "selectedMembers": [
+    "KEY_DANMAKU_SEND_COLOR",
+    "KEY_DANMAKU_SEND_FONT_SIZE",
+    "KEY_DANMAKU_SEND_MODE",
+    "getDanmakuSendColor",
+    "getDanmakuSendFontSize",
+    "getDanmakuSendMode",
+    "setDanmakuSendColor",
+    "setDanmakuSendFontSize",
+    "setDanmakuSendMode"
+  ],
+  "originalSelectedBodySHA256LF": "250f0058aa00df747f94e395bb198d013e20cf7965fbbad22b0ed1cc9e2ddebc",
+  "outputSHA256LF": "9ddb696188751f48f5ff6b97e7e1cce92ba4e73965613a0e8113b98c5e4b6566",
+  "completeSelectedOriginalBodies": true,
+  "platformAliasesOnly": true,
+  "secondStore": false
+}

@@ -1,0 +1,197 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt",
+      "originalSHA256LF": "604229623998f62ea9dd448be15f8e161dce544c6acee288e6a8a2ecf1bf522f",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt",
+      "outputSHA256LF": "729c49b9cd34419cb1f1843daf855358899c8e296ca745775f15472a15cc9fe8",
+      "completeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import android.app.Activity\n",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoHolderWindowPort as Window\nimport com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform\n",
+          "count": 1,
+          "label": "Required actual Root Window port"
+        },
+        {
+          "before": "import android.graphics.Rect",
+          "after": "import androidx.compose.ui.unit.IntRect as Rect",
+          "count": 1,
+          "label": "Actual immutable pixel bounds"
+        },
+        {
+          "before": "import androidx.media3.common.Player",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player\nimport com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl",
+          "count": 1,
+          "label": "Sole native state/listener authority"
+        },
+        {
+          "before": "    context: Context,\n    activity: Activity?,",
+          "after": "    window: Window,",
+          "count": 1,
+          "label": "Actual same retained Window"
+        },
+        {
+          "before": "    player: Player?,",
+          "after": "    player: DesktopOriginalMpvSectionControl?,",
+          "count": 1,
+          "label": "Same actual PiP source control"
+        },
+        {
+          "before": "    val latestPlayer by rememberUpdatedState(player)",
+          "after": "    val latestPlayer by rememberUpdatedState(player)\n    val platform = LocalDesktopOriginalVideoHolderPlatform.current",
+          "count": 1,
+          "label": "Capture owned monotonic clock"
+        },
+        {
+          "before": "LaunchedEffect(activity, playerBounds, pipModeEnabled)",
+          "after": "LaunchedEffect(window, playerBounds, pipModeEnabled)",
+          "count": 1,
+          "label": "Same original effect dependency over actual Window"
+        },
+        {
+          "before": "if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || activity == null)",
+          "after": "if (!window.supportsPictureInPicture)",
+          "count": 1,
+          "label": "Explicit Windows capability, no forged SDK version"
+        },
+        {
+          "before": "android.os.SystemClock.elapsedRealtime()",
+          "after": "platform.elapsedRealtimeMillis()",
+          "count": 1,
+          "label": "Actual monotonic clock"
+        },
+        {
+          "before": "playerBounds?.let(::Rect)",
+          "after": "playerBounds",
+          "count": 1,
+          "label": "Immutable same-original bounds value"
+        },
+        {
+          "before": "        val params = android.app.PictureInPictureParams.Builder()\n            .setAspectRatio(resolveSafeAndroidPipRational(videoWidth, videoHeight))\n            .setActions(buildPipPlaybackRemoteActions(context, latestPlayer))\n            .apply {\n                playerBounds?.let(::setSourceRectHint)\n                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {\n                    setAutoEnterEnabled(pipModeEnabled)\n                    setSeamlessResizeEnabled(pipModeEnabled)\n                }\n            }\n            .build()\n        activity.setPictureInPictureParams(params)\n",
+          "after": "        window.updatePictureInPicture(\n            player = latestPlayer, sourceBounds = playerBounds,\n            autoEnterEnabled = pipModeEnabled, seamlessResizeEnabled = pipModeEnabled,\n        )\n",
+          "count": 1,
+          "label": "Original throttle and bounds selection retained; actual same-source PiP native consumer"
+        },
+        {
+          "before": "        if (shouldKeepAwake) window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        else window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        onDispose {\n            if (shouldKeepAwake) window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)\n        }\n",
+          "after": "        val lease = window?.acquireKeepAwake(shouldKeepAwake)\n        onDispose { lease?.close() }\n",
+          "count": 1,
+          "label": "Same owned wake lease, preserves existing player readback/listener algorithm"
+        },
+        {
+          "before": "    view: View,\n",
+          "after": "",
+          "count": 1,
+          "label": "No Android view authority"
+        },
+        {
+          "before": "    insetsController: WindowInsetsControllerCompat?,\n",
+          "after": "",
+          "count": 1,
+          "label": "No fake Android insets controller"
+        },
+        {
+          "before": "if (view.isInEditMode || !isScreenActive || window == null || insetsController == null)",
+          "after": "if (!isScreenActive || window == null)",
+          "count": 1,
+          "label": "Actual active Window admission"
+        },
+        {
+          "before": "applyVideoDetailSystemBarsSpec(window, insetsController, effectiveSpec)",
+          "after": "window.applySystemBars(effectiveSpec)",
+          "count": 1,
+          "label": "Required original spec -> actual Window client capability mapping"
+        },
+        {
+          "before": "import android.content.Context\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import android.os.Build\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import android.view.View\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import android.view.Window\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import android.view.WindowManager\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import androidx.core.view.WindowInsetsControllerCompat\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import com.android.purebilibili.core.util.resolveSafeAndroidPipRational\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.player.buildPipPlaybackRemoteActions\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        }
+      ],
+      "overload": null
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt",
+      "originalSHA256LF": "bafab245ee2d061ac5badc9c526d4ba2726c1fac6365a7c26285041a8479f66a",
+      "output": "com/android/purebilibili/feature/video/screen/DesktopOriginalHolderCommentFraudOverlayAdapter.kt",
+      "outputSHA256LF": "995b9ff853d1678d2618a1b6b8459f70821c02da8b0e35a5ee3fb272129cc5cb",
+      "completeOriginalFile": true,
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopCommentPlatform",
+          "count": 1,
+          "label": "Same existing owned comment feedback consumer"
+        },
+        {
+          "before": "    context: Context,",
+          "after": "    platform: DesktopCommentPlatform,",
+          "count": 1,
+          "label": "Original full PlaybackVM overload over same comment platform"
+        },
+        {
+          "before": "Toast.makeText(context, lightMessage, Toast.LENGTH_SHORT).show()",
+          "after": "platform.showFeedback(lightMessage)",
+          "count": 1,
+          "label": "Same actual Root feedback callback"
+        },
+        {
+          "before": "import android.widget.Toast\n",
+          "after": "",
+          "count": 1,
+          "label": "Consumed Android implementation import"
+        }
+      ],
+      "overload": "Full original PlaybackVM overload; existing generic composer overload remains sole and unchanged"
+    }
+  ],
+  "productRuntimeAccepted": false
+}

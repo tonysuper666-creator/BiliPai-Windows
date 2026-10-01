@@ -1,0 +1,133 @@
+{
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+  "originalSha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+  "methods": [
+    "refreshVipStatusForPreferredQualityIfNeeded",
+    "getAiSummary",
+    "buildAiSummaryParams",
+    "logAiSummaryPreflight",
+    "logAiSummaryResponse",
+    "getVideoshot",
+    "getPlayerInfo",
+    "getPbpProgressData",
+    "getInteractEdgeInfo"
+  ],
+  "modifications": [
+    {
+      "before": "TokenManager.isVipCache = isVip",
+      "after": "environment.updatePrimaryVip(isVip)",
+      "count": 1,
+      "label": "SAME primary Store admission; dedicated playback projection is never written"
+    },
+    {
+      "before": "!TokenManager.sessDataCache.isNullOrEmpty()",
+      "after": "environment.hasPrimarySession()",
+      "count": 1,
+      "label": "Admitted presence only; no primary credentials exposed to diagnostics"
+    },
+    {
+      "before": "!TokenManager.csrfCache.isNullOrEmpty()",
+      "after": "environment.hasPrimaryCsrf()",
+      "count": 1,
+      "label": "Admitted presence only"
+    },
+    {
+      "before": "!TokenManager.buvid3Cache.isNullOrEmpty()",
+      "after": "environment.hasPrimaryBuvid()",
+      "count": 1,
+      "label": "Admitted presence only"
+    },
+    {
+      "before": "!TokenManager.accessTokenCache.isNullOrEmpty()",
+      "after": "environment.hasPrimaryAccessToken()",
+      "count": 1,
+      "label": "Admitted presence only"
+    },
+    {
+      "before": "buvidInitialized=$buvidInitialized",
+      "after": "buvidInitialized=${environment.isBuvidInitialized()}",
+      "count": 1,
+      "label": "Actual same bootstrap authority; no fabricated initialized flag"
+    },
+    {
+      "before": "com.android.purebilibili.core.util.Logger",
+      "after": "Logger",
+      "count": 8,
+      "label": "Existing sole safe diagnostic logger"
+    },
+    {
+      "before": "android.util.Log.w",
+      "after": "Logger.w",
+      "count": 1,
+      "label": "Existing sole safe diagnostic logger"
+    },
+    {
+      "before": "wbiKeysCache = null",
+      "after": "environment.load.state.wbiKeys = null",
+      "count": 1,
+      "label": "SAME installed protocol state, no metadata cache"
+    },
+    {
+      "before": "wbiKeysTimestamp = 0L",
+      "after": "environment.load.state.wbiKeysTimestamp = 0L",
+      "count": 1,
+      "label": "SAME installed protocol state"
+    },
+    {
+      "before": "withContext(Dispatchers.IO) {",
+      "after": "withContext(Dispatchers.IO) {\n        currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 5,
+      "label": "Actual continuation/request admission"
+    },
+    {
+      "before": "} catch (e: Exception) {",
+      "after": "} catch (e: Exception) {\n            if (e is CancellationException) throw e\n            currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 5,
+      "label": "Retirement/cancellation never downgraded to UI failure"
+    },
+    {
+      "before": "val response = api.getVideoshot(bvid = bvid, cid = cid)",
+      "after": "val response = api.getVideoshot(bvid = bvid, cid = cid)\n            currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 1,
+      "label": "Reject late getVideoshot response"
+    },
+    {
+      "before": "val response = api.getPlayerInfo(signedParams)",
+      "after": "val response = api.getPlayerInfo(signedParams)\n            currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 1,
+      "label": "Reject late getPlayerInfo response"
+    },
+    {
+      "before": "val response = api.getAiConclusion(signedParams)",
+      "after": "val response = api.getAiConclusion(signedParams)\n            currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 1,
+      "label": "Reject late getAiConclusion response"
+    },
+    {
+      "before": "val response = api.getInteractEdgeInfo(bvid = bvid, graphVersion = graphVersion, edgeId = edgeId)",
+      "after": "val response = api.getInteractEdgeInfo(bvid = bvid, graphVersion = graphVersion, edgeId = edgeId)\n            currentCoroutineContext().ensureActive(); environment.assertOwned()",
+      "count": 1,
+      "label": "Reject late getInteractEdgeInfo response"
+    },
+    {
+      "before": "Result.success(parsePbpProgressData(body.string()))",
+      "after": "parsePbpProgressData(body.string()).let { parsed ->\n                currentCoroutineContext().ensureActive(); environment.assertOwned()\n                Result.success(parsed)\n            }",
+      "count": 1,
+      "label": "Body decode belongs to the same admitted PBP call"
+    }
+  ],
+  "output": "prepared\\metadata\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoOwnerMetadataProtocol.kt",
+  "outputSha256Bytes": "b19944b4a8d7ebb96d15abb100a6489d0d9a7ed8bde230d81142f28c4182f41a",
+  "soleCoreHunk": {
+    "path": "desktop/tools/extract-upstream-video-state-core.py",
+    "baseSha256LF": "8c38d325e260e589c8ef3d7419dc6fd3b1060fd27b6246ffaf86db361cd5087a",
+    "desiredSha256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+    "exactAnchor": "s+='\\n'+pager.protocol_members(REPO)\n",
+    "insertAfter": "s=s.replace('private suspend fun getWbiKeys()', 'internal suspend fun getWbiKeys()', 1)\n",
+    "generatedBaseSha256LF": "c5edbd38280451f3b8ae2e5ad91f4b6cef11ecbfbc4f96724dd0cb3787304b99",
+    "generatedDesiredSha256LF": "eab897146b94f95c1a5e04bdc12a9a112d428d1c405979d51d1756d8a076fe5c"
+  },
+  "scope": "Prepared metadata functions; actual Root factory/runtime not accepted"
+}

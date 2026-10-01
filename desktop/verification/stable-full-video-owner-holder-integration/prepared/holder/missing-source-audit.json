@@ -1,0 +1,880 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoStatRow.kt",
+      "originalSHA256LF": "c34d5a684a64fb7915e57951e321ee8f22566b62c89055503e0b662597204a9e",
+      "output": "com/android/purebilibili/core/ui/components/VideoStatRow.kt",
+      "outputSHA256LF": "c34d5a684a64fb7915e57951e321ee8f22566b62c89055503e0b662597204a9e",
+      "retainedDeclarations": [
+        "VideoStatRow",
+        "VideoStatItem"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt",
+      "originalSHA256LF": "57184d1f26be6aba262ce96a5ac69650ba660f66fb79a6e3252b0c9aeea0fa6e",
+      "output": "com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt",
+      "outputSHA256LF": "57184d1f26be6aba262ce96a5ac69650ba660f66fb79a6e3252b0c9aeea0fa6e",
+      "retainedDeclarations": [
+        "InteractiveChoiceOverlay",
+        "CoordinateModeHeader"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+      "originalSHA256LF": "0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372",
+      "output": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalLikeBurstAnimation.kt",
+      "outputSHA256LF": "b43aec3c48c9663fa9adb37b8cbc3027346f9cb0c3f61a16ce25b5a236c6e9d7",
+      "retainedDeclarations": [
+        "LikeBurstAnimation"
+      ],
+      "excludedDeclarations": [
+        "TripleSuccessAnimation",
+        "TripleActionIcon",
+        "CoinSuccessAnimation",
+        "phaseProgress",
+        "iconActivationProgress",
+        "lerp"
+      ],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import androidx.compose.foundation.layout.BoxScope\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.foundation.layout.Spacer\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.foundation.layout.offset\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.material.icons.outlined.StarBorder\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.ui.components.AppText\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.ui.graphics.Color\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.ui.text.font.FontWeight\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.ui.unit.IntOffset\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.ui.unit.sp\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.ui.AppIcons\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveTripleActionMotionSpec\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlin.math.roundToInt\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset",
+          "count": 1,
+          "label": "Same existing installed original skin decoder and lifecycle"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt",
+      "originalSHA256LF": "1facc0ae0778f037b84b36438883016bc369e71b2dbea28160841580b054089d",
+      "output": "com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt",
+      "outputSHA256LF": "1facc0ae0778f037b84b36438883016bc369e71b2dbea28160841580b054089d",
+      "retainedDeclarations": [
+        "VideoActionFeedbackHost"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialog.kt",
+      "originalSHA256LF": "badfa8bf01e6060e84475a378d57d44874297e88cbfdd51c1f5d6f39ccbfcfd2",
+      "output": "com/android/purebilibili/feature/download/BatchDownloadDialog.kt",
+      "outputSHA256LF": "badfa8bf01e6060e84475a378d57d44874297e88cbfdd51c1f5d6f39ccbfcfd2",
+      "retainedDeclarations": [
+        "BatchDownloadDialog"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt",
+      "originalSHA256LF": "a695113996dcd6e610777233c1a4ee578cbc637f31e5201c782ecc6d9ef48b58",
+      "output": "com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt",
+      "outputSHA256LF": "a695113996dcd6e610777233c1a4ee578cbc637f31e5201c782ecc6d9ef48b58",
+      "retainedDeclarations": [
+        "BATCH_DOWNLOAD_DIALOG_MAX_HEIGHT_RATIO",
+        "BATCH_DOWNLOAD_DIALOG_VERTICAL_CHROME_DP",
+        "BATCH_DOWNLOAD_DIALOG_QUALITY_ROW_HEIGHT_DP",
+        "BATCH_DOWNLOAD_DIALOG_MIN_CANDIDATE_LIST_MAX_HEIGHT_DP",
+        "BATCH_DOWNLOAD_DIALOG_DEFAULT_CANDIDATE_LIST_MAX_HEIGHT_DP",
+        "resolveBatchDownloadDialogMaxHeight",
+        "resolveBatchDownloadCandidateListMaxHeight"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt",
+      "originalSHA256LF": "7970bd3d2c9da857f5a9b16095839e3b350831a9ec4f64e3f8597feb58e63f04",
+      "output": "com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt",
+      "outputSHA256LF": "7970bd3d2c9da857f5a9b16095839e3b350831a9ec4f64e3f8597feb58e63f04",
+      "retainedDeclarations": [
+        "selectAllBatchDownloadCandidates",
+        "invertBatchDownloadCandidateSelection",
+        "selectOnlyUndownloadedBatchCandidates",
+        "canConfirmBatchDownload"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt",
+      "originalSHA256LF": "6a98d56e8d368f5d2b5230eb59bf8768b981b3a9590db1132f5571fe2e18dd1b",
+      "output": "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt",
+      "outputSHA256LF": "54ece17d18f546dc1e78ae6a25bafe3cc85478bbc08630ae729d512aff6866df",
+      "retainedDeclarations": [
+        "LargeScreenVideoLayout",
+        "LargeScreenPlayerHost"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import android.content.res.Configuration",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoWindowOrientation as Configuration",
+          "count": 1,
+          "label": "Original orientation inputs"
+        },
+        {
+          "before": "import com.bilipai.desktop.ui.DesktopOriginalVideoWindowOrientation as Configuration",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration",
+          "count": 1,
+          "label": "Actual client bounds"
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext",
+          "count": 1,
+          "label": "Same global settings context"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.state.VideoPlayerState",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState",
+          "count": 1,
+          "label": "Same native state projection"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/blur/HazeEffectCompat.kt",
+      "originalSHA256LF": "e74e2dd7c6f8cd58d227424f3a69e0f05d833eb1ab4ef75992617ea7d5b33598",
+      "output": "com/android/purebilibili/core/ui/blur/HazeEffectCompat.kt",
+      "outputSHA256LF": "e74e2dd7c6f8cd58d227424f3a69e0f05d833eb1ab4ef75992617ea7d5b33598",
+      "retainedDeclarations": [
+        "hazeEffectCompat"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "originalSHA256LF": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "output": "com/android/purebilibili/core/ui/transition/DesktopOriginalVideoCardMorphProgressReporter.kt",
+      "outputSHA256LF": "09ecab94366cf43722a9dd4a3879ea88902d1d3997185e0b54550aa17bffcfe6",
+      "retainedDeclarations": [
+        "VideoCardMorphProgressReporter",
+        "LocalVideoCardMorphProgressReporter"
+      ],
+      "excludedDeclarations": [
+        "VideoCardTransitionClock",
+        "VideoCardTransitionSettleState",
+        "report",
+        "LocalVideoCardTransitionClock",
+        "VideoCardTransitionTimelineSpec",
+        "resolveVideoCardTimelineSpec",
+        "shouldPreferSharedMorphProgress",
+        "resolveVideoCardGestureStartDepth",
+        "resolveVideoCardClockDepthProgress",
+        "resolveReturningDepthWithFloor",
+        "resolveVideoCardPredictiveGestureDepthProgress",
+        "resolveVideoCardReturnClearStartDepth",
+        "morphFractionToReturnSettle",
+        "resolveMorphAlignedFallbackDurationMs",
+        "rememberVideoCardTransitionClock"
+      ],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import androidx.compose.animation.core.Animatable\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.animation.core.Easing\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.animation.core.tween\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.animation.core.spring\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.runtime.Composable\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.runtime.Stable\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.runtime.mutableFloatStateOf\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.runtime.mutableStateOf\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlin.math.roundToInt\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt",
+      "originalSHA256LF": "673c99e46c5b281b091169939628e5025bba339bab4cb3298b107200feebf3b1",
+      "output": "com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt",
+      "outputSHA256LF": "673c99e46c5b281b091169939628e5025bba339bab4cb3298b107200feebf3b1",
+      "retainedDeclarations": [
+        "VideoDetailScrollUpdate",
+        "reduceVideoDetailPreScroll",
+        "reduceVideoDetailPostScroll",
+        "shouldSkipGesturePlayerCollapseForLayout",
+        "shouldTrackVideoDetailCollapseMotion",
+        "resolveVideoDetailCollapseProgress",
+        "reduceVideoDetailScrollOffset"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/AppAdaptiveStrategySnapshot.kt",
+      "originalSHA256LF": "30fbcce3374d18b7fea7af8efbfbc4e32be9051db8e8ff6f27c04c8d4a1ffd3a",
+      "output": "com/android/purebilibili/core/util/AppAdaptiveStrategySnapshot.kt",
+      "outputSHA256LF": "30fbcce3374d18b7fea7af8efbfbc4e32be9051db8e8ff6f27c04c8d4a1ffd3a",
+      "retainedDeclarations": [
+        "AppAdaptiveStrategySnapshot",
+        "toAdaptiveStrategySnapshot",
+        "formatAppAdaptiveStrategySnapshot"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/PlayerOrientationPolicy.kt",
+      "originalSHA256LF": "e9dd38f23314c31356c49e3bcdb7854a9bdd8e392db3abef1078ce9819fc9883",
+      "output": "com/android/purebilibili/core/util/PlayerOrientationPolicy.kt",
+      "outputSHA256LF": "0235adb02488c447415c6b5ec2aa3414cbe58daf3f712007dc58efa7bbec6822",
+      "retainedDeclarations": [
+        "PlayerWindowOrientationPolicy",
+        "toPlayerWindowOrientationPolicy",
+        "resolvePlayerWindowOrientationPolicy",
+        "isPlayerAxisOrientationRequest",
+        "resolveEffectivePlayerRequestedOrientation"
+      ],
+      "excludedDeclarations": [
+        "isFoldableCoverWindow",
+        "shouldRequestPhysicalPlayerOrientation",
+        "resolvePlayerWindowOrientationPolicy",
+        "resolvePlayerWindowOrientationPolicy",
+        "applyPlayerRequestedOrientation"
+      ],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import android.app.Activity\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.os.Build\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.content.pm.ActivityInfo",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoOrientationRequest as ActivityInfo",
+          "count": 1,
+          "label": "Original numeric policy inputs to actual Window"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/PlayerPresentationPolicy.kt",
+      "originalSHA256LF": "a24c909660f1ee8a2e10566f0c64cce420cf8987de2581f903e763eb58a00025",
+      "output": "com/android/purebilibili/core/util/PlayerPresentationPolicy.kt",
+      "outputSHA256LF": "a2dd0e123209cb368dd9685c3f9bb6f6742ff2b580390a72765e84761bf67a23",
+      "retainedDeclarations": [
+        "PlayerPresentationPolicy",
+        "shouldUsePhonePlayerOrientation",
+        "resolvePlayerPresentationPolicy",
+        "resolveUserFullscreenIntentAfterDisplayRoleChange",
+        "shouldReleaseOrientationLockOnDisplayRoleChange",
+        "resolvePlayerBackConsumption",
+        "resolvePlayerAxisOrientationRequest",
+        "isPlayerAxisOrientationRequestValue"
+      ],
+      "excludedDeclarations": [],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import android.content.pm.ActivityInfo",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoOrientationRequest as ActivityInfo",
+          "count": 1,
+          "label": "Original numeric policy inputs to actual Window"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/state/VideoPlayerState.kt",
+      "originalSHA256LF": "8a3e0cc7d1c7a4d32a3abf1698bd3e4ded06749279e97733c24ed553bcacc95b",
+      "output": "com/android/purebilibili/feature/video/state/DesktopOriginalMiniEntryPolicy.kt",
+      "outputSHA256LF": "34feb4ea6777cefd0652b035594136a30e77e6f6f342a7393a8e31eb6f5d18df",
+      "retainedDeclarations": [
+        "shouldReuseMiniPlayerAtEntry"
+      ],
+      "excludedDeclarations": [
+        "NOTIFICATION_ID",
+        "CHANNEL_ID",
+        "THEME_COLOR",
+        "PlayerBufferPolicy",
+        "resolvePlayerBufferPolicy",
+        "shouldLimitEarlyPlaybackBuffer",
+        "shouldLimitEarlyPlaybackBufferForPeriod",
+        "FirstQuarterAwareLoadControl",
+        "shouldSuspendLocalPlaybackWhenSessionInactive",
+        "shouldTreatPlayerAsOwnedByMiniPlayer",
+        "shouldHaltForeignPlaybackOnVideoEntry",
+        "shouldRestoreCachedUiState",
+        "resolveApiDimensionIsVertical",
+        "formatPlaybackDebugBitrate",
+        "formatPlaybackDebugFrameRate",
+        "resolvePlaybackCodecLabel",
+        "applyPlaybackResolutionDebugInfo",
+        "applyVideoFormatDebugInfo",
+        "applyAudioFormatDebugInfo",
+        "resolvePlaybackStateDebugLabel",
+        "applyPlaybackStateDebugInfo",
+        "applyRenderedFirstFrameDebugInfo",
+        "applyMediaTransitionFirstFrameReset",
+        "shouldResetFirstFrameForMediaItemTransition",
+        "applyPlaybackLoadErrorDebugInfo",
+        "applyDroppedVideoFramesDebugInfo",
+        "applyBandwidthEstimateDebugInfo",
+        "applyVideoEventDebugInfo",
+        "applyAudioEventDebugInfo",
+        "VideoPlayerState",
+        "rememberVideoPlayerState"
+      ],
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "before": "import com.android.purebilibili.feature.video.player.MiniPlayerManager\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.VideoActivity\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.app.NotificationChannel\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.app.NotificationManager\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.app.PendingIntent\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.content.Context\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.content.Intent\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.graphics.Bitmap\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.net.Uri\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.os.Build\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import android.view.WindowManager\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.activity.ComponentActivity\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.compose.runtime.mutableLongStateOf\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.core.app.NotificationCompat\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.common.Format\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.common.AudioAttributes\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.common.C\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.common.MediaMetadata\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.common.Player\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.datasource.DataSource\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.datasource.okhttp.OkHttpDataSource\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.analytics.AnalyticsListener\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.ExoPlaybackException\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.ExoPlayer\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.LoadControl\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.analytics.PlayerId\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.source.DefaultMediaSourceFactory\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.source.TrackGroupArray\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.media3.exoplayer.trackselection.ExoTrackSelection\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import coil3.imageLoader\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import coil3.request.ImageRequest\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import coil3.request.SuccessResult\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import coil3.size.Scale\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import coil3.transform.RoundedCornersTransformation\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.R\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.network.NetworkModule\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.player.HiResCompatibleRenderersFactory\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.player.PlaybackMediaCache\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.player.PlayerVolumeController\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.util.FormatUtils\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.util.Logger\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.util.NetworkUtils\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.PlaybackCompletionBehavior\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.policy.resolvePlaybackWakeMode\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.audio.isPremiumAudioPlaybackFailure\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.session.resolvePlaybackPauseDecision\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.session.resolvePlaybackResumeDecision\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.session.PendingPlaybackUserAction\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.playback.session.PlaybackUserActionTracker\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.player.resolveHandleAudioFocusByPolicy\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.ui.overlay.PlaybackDebugInfo\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.viewmodel.resolvePlaybackCompletionRepeatMode\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.CoroutineScope\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.Dispatchers\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.flow.first\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.flow.MutableStateFlow\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.flow.StateFlow\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.flow.asStateFlow\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.flow.collectLatest\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.Job\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.delay\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlinx.coroutines.launch\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlin.math.abs\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import kotlin.math.roundToInt\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle\n",
+          "after": "",
+          "count": 1,
+          "label": "Unused imports from omitted existing declarations"
+        },
+        {
+          "before": "@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)",
+          "after": "",
+          "count": 1,
+          "label": "Android Media3 annotation only; selected original pure policy has no player implementation"
+        }
+      ]
+    }
+  ],
+  "productRuntimeAccepted": false
+}

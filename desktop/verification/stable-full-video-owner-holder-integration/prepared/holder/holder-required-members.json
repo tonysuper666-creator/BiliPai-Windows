@@ -1,0 +1,254 @@
+{
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "holder": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+    "sha256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+    "bytesLF": 301728,
+    "physicalLines": 5464,
+    "gitBlob": "4f1f71d90c2942591e4a33348af7cdc9b2944f6a",
+    "declarations": [
+      {
+        "line": 278,
+        "text": "private val commentBackToTopRestoreFlow ="
+      },
+      {
+        "line": 281,
+        "text": "private const val CONTINUOUS_PLAYER_MORPH_DURATION_MILLIS = 280"
+      },
+      {
+        "line": 283,
+        "text": "private const val VIDEO_DETAIL_COLLAPSE_SIGNAL_IDLE_TIMEOUT_MS = 120L"
+      },
+      {
+        "line": 286,
+        "text": "private fun CollapsedPlayerNavigationBar("
+      },
+      {
+        "line": 434,
+        "text": "internal fun VideoDetailScreenStateHolder("
+      }
+    ],
+    "androidImports": [
+      "import android.annotation.SuppressLint",
+      "import android.app.Activity",
+      "import android.content.Intent",
+      "import android.content.Context",
+      "import android.content.ContextWrapper",
+      "import android.content.pm.ActivityInfo",
+      "import android.content.res.Configuration",
+      "import android.database.ContentObserver",
+      "import android.os.Build",
+      "import android.os.Handler",
+      "import android.os.Looper",
+      "import android.os.SystemClock",
+      "import android.provider.Settings",
+      "import android.view.OrientationEventListener",
+      "import android.view.Window",
+      "import android.view.WindowManager",
+      "import android.widget.Toast",
+      "import androidx.core.view.WindowCompat",
+      "import androidx.core.view.ViewCompat",
+      "import androidx.core.view.WindowInsetsControllerCompat",
+      "import androidx.core.view.WindowInsetsCompat",
+      "import androidx.media3.common.Player",
+      "import androidx.lifecycle.viewmodel.compose.viewModel"
+    ]
+  },
+  "members": {
+    "viewModel": [
+      "applyPlaybackSpeedFromUi",
+      "audioQualityPreference",
+      "cancelSponsorContribution",
+      "changeAudioLanguage",
+      "changeQuality",
+      "closeVideoNoteEditor",
+      "composerDrafts",
+      "createFavoriteFolder",
+      "createVideoNoteDraftFromAiSummary",
+      "currentSponsorSegment",
+      "deleteVideoNote",
+      "dismissFavoriteFolderDialog",
+      "dismissSponsorSkipButton",
+      "downloadAudio",
+      "downloadProgress",
+      "favoriteFolderDialogVisible",
+      "favoriteFolderSaveEvent",
+      "hideDanmakuSendDialog",
+      "insertCurrentPlaybackTimestampIntoNote",
+      "interactiveChoicePanel",
+      "isSendingDanmaku",
+      "likeDanmaku",
+      "likedDanmakuIds",
+      "loadVideo",
+      "markSponsorContributionBoundary",
+      "markVideoNotInterested",
+      "markWholeVideoAsSponsor",
+      "notifyPluginsOfExplicitSeek",
+      "openDownloadDialog",
+      "openRootCommentComposer",
+      "openVideoNoteEditor",
+      "pbpProgressData",
+      "peekInPageInitiatedPlaybackIdentityBvid",
+      "probeCurrentCdnCandidates",
+      "recallDanmaku",
+      "reloadVideo",
+      "reportDanmaku",
+      "retry",
+      "retryAiSummary",
+      "retryVideoNote",
+      "saveCover",
+      "saveFavoriteFolderSelection",
+      "saveVideoNote",
+      "seekTo",
+      "selectSubtitleTrack",
+      "sendDanmaku",
+      "setAudioMode",
+      "setAudioQuality",
+      "setCommentInteractionActive",
+      "setPageIdentityCommitListener",
+      "setPortraitPlaybackSessionActive",
+      "setReplyingTo",
+      "setSleepTimer",
+      "setSponsorContributionActionType",
+      "setSponsorContributionCategory",
+      "setVideoCodec",
+      "setVideoSecondCodec",
+      "showCommentDialog",
+      "showCommentInputDialog",
+      "showDanmakuDialog",
+      "showDanmakuSendDialog",
+      "showFavoriteFolderDialog",
+      "showSkipButton",
+      "skipCurrentSponsorSegment",
+      "sleepTimerMinutes",
+      "sponsorContributionUiState",
+      "sponsorProgressMarkers",
+      "subjectSnapshot",
+      "submitSponsorContribution",
+      "switchCdn",
+      "switchCdnTo",
+      "switchPage",
+      "toggleFavoriteFolderSelection",
+      "uiState",
+      "updateDanmakuDraft",
+      "updateVideoNoteEditorDocument",
+      "videoCodecPreference",
+      "videoSecondCodecPreference",
+      "viewPoints",
+      "voteCurrentSponsorSegment"
+    ],
+    "engagementViewModel": [
+      "doTripleAction",
+      "openCoinDialog",
+      "toggleDislike",
+      "toggleFavorite",
+      "toggleFollow",
+      "toggleLike",
+      "toggleWatchLater",
+      "uiState"
+    ],
+    "composerViewModel": [],
+    "supplementViewModel": [],
+    "commentViewModel": [
+      "checkCommentFraud",
+      "closeSubReply",
+      "closeSubReplyConversation",
+      "commentState",
+      "deleteComment",
+      "deleteSubComment",
+      "hateComment",
+      "init",
+      "likeComment",
+      "loadComments",
+      "loadMoreSubReplies",
+      "openSubReply",
+      "openSubReplyConversation",
+      "openSubReplyFromRoute",
+      "reportComment",
+      "setSortMode",
+      "setSubReplySortMode",
+      "startDissolve",
+      "startSubDissolve",
+      "subReplyState",
+      "toggleTopComment"
+    ],
+    "miniPlayerManager": [
+      "cacheUiState",
+      "currentBvid",
+      "currentCid",
+      "isActive",
+      "isMiniMode",
+      "isNavigatingToVideo",
+      "markLeavingByNavigation",
+      "player",
+      "setVideoInfo"
+    ],
+    "playerState": [
+      "debugInfo",
+      "isVerticalVideo",
+      "player",
+      "setApiDimension",
+      "setPortraitFullscreen",
+      "updateMediaMetadata"
+    ],
+    "sharedDanmakuManager": [
+      "clearForVideoChange"
+    ],
+    "PlaylistManager": [
+      "playAt",
+      "togglePlayMode",
+      "uiState"
+    ]
+  },
+  "uniqueFullVm": "Parent owns original FQN com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel; explicit parameter, no viewModel() construction.",
+  "uniqueDomainOwners": [
+    "existing original VideoEngagementViewModel",
+    "complete original VideoComposerViewModel owned by this Holder closure",
+    "existing original VideoSupplementViewModel",
+    "existing original VideoCommentViewModel"
+  ],
+  "nativeState": "Required same-entry bind of actual DesktopOriginalMpvVideoPlayerState over the same DesktopOriginalVideoNativeOwner/MpvPlayer; original load/readiness/resume parameters retained.",
+  "platformBlocks": [
+    {
+      "start": 1465,
+      "end": 1580,
+      "topic": "Window/system bar snapshot+same-owner restore; actual Windows client boundary"
+    },
+    {
+      "start": 1832,
+      "end": 1852,
+      "topic": "System accelerometer rotation setting observer; Windows sensor capability explicit"
+    },
+    {
+      "start": 1859,
+      "end": 1939,
+      "topic": "Disposition: viewport brightness/keepawake restore, PiP/service/orientation cleanup; delayed work captures original owner"
+    },
+    {
+      "start": 2013,
+      "end": 2022,
+      "topic": "Required same-native PlayerState instead of constructing ExoPlayer"
+    },
+    {
+      "start": 2276,
+      "end": 2290,
+      "topic": "Subtitle auto-muted policy uses actual existing root volume state"
+    },
+    {
+      "start": 2658,
+      "end": 2754,
+      "topic": "Orientation sensor callback optional capability+lease, original target/settle math unchanged"
+    },
+    {
+      "start": 3032,
+      "end": 3074,
+      "topic": "PiP transfer consumes same native source and page/epoch token"
+    },
+    {
+      "start": 3160,
+      "end": 3201,
+      "topic": "Fullscreen intent+position preservation delegates actual Window placement owner"
+    }
+  ],
+  "status": "Source audit prepared; no compile/runtime acceptance yet."
+}

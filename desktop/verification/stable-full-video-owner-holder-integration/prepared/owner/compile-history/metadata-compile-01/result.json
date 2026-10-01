@@ -1,0 +1,59 @@
+{
+  "preparedOnly": true,
+  "snapshot": "stable-product-snapshot-66",
+  "manifest": "e549c7badf5b11208e8b9fb3c2d5480759e9202eb157ae165feb0a8354cbcba3",
+  "cp": "43b1e432d592dd74088079e60731eda25d26f6c636df3570644a377b200ba9db",
+  "runtimeEntries": 101,
+  "compileExit": 0,
+  "classes": 42,
+  "existingOverlap": [
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$PlayUrlFetchResult.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$WhenMappings.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchAsGuestFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchDashWithFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchGuestPlaybackWithFallback$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlRecursive$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithAccessToken$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$fetchPlayUrlWithWbiInternal$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getExactPremiumPlayUrl$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getInitialPlayUrlData$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlData$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlayUrlDataForPlaybackTransition$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPlaybackNavInfo$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPortraitPlaybackDetails$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPortraitPlaybackDetails$2$1$infoDeferred$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPortraitPlaybackDetails$2$1$playUrlDeferred$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPortraitPlaybackDetails$2$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getPortraitPlaybackDetails$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getRelatedVideos$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoDetails$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getVideoInfoOnly$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$getWbiKeys$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$preloadPortraitPlayUrl$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol$preloadPortraitPlayUrl$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.class"
+  ],
+  "overlapScope": "Only installed SAME raw protocol visibility getWbiKeys private->internal; no second cache or WBI algorithm",
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\metadata\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoOwnerMetadataProtocol.kt",
+      "sha256Bytes": "b19944b4a8d7ebb96d15abb100a6489d0d9a7ed8bde230d81142f28c4182f41a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoMetadataEnvironment.kt",
+      "sha256Bytes": "beae856210dd930efe2a53c5eadb71f2f9ab1a968dfaf9cd4b856e4aab90cd00"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\legacy\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "eab897146b94f95c1a5e04bdc12a9a112d428d1c405979d51d1756d8a076fe5c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\prerequisites\\com\\android\\purebilibili\\core\\util\\DesktopOriginalVideoDefaultQuality.kt",
+      "sha256Bytes": "d3841115454bc3b0a7b9bd662069936884245b79f0bb3cd05dc2b9311e453d8c"
+    }
+  ],
+  "runtimeAccepted": false
+}

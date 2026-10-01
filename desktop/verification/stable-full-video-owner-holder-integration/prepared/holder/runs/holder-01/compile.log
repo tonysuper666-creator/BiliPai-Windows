@@ -1,0 +1,957 @@
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalHolderCommentFraudOverlayAdapter.kt:37:38: error: function invocation 'context(...)' expected.
+    LaunchedEffect(commentViewModel, context.applicationContext) {
+                                     ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalHolderCommentFraudOverlayAdapter.kt:37:46: error: unresolved reference 'applicationContext'.
+    LaunchedEffect(commentViewModel, context.applicationContext) {
+                                             ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailCommonOverlayAdapter.kt:8:61: error: unresolved reference 'InteractiveChoiceOverlay'.
+import com.android.purebilibili.feature.video.ui.components.InteractiveChoiceOverlay
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailCommonOverlayAdapter.kt:30:5: error: unresolved reference 'InteractiveChoiceOverlay'.
+    InteractiveChoiceOverlay(
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailCommonOverlayAdapter.kt:32:28: error: cannot infer type for value parameter 'edgeId'. Specify it explicitly.
+        onSelectChoice = { edgeId, targetCid ->
+                           ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailCommonOverlayAdapter.kt:32:36: error: cannot infer type for value parameter 'targetCid'. Specify it explicitly.
+        onSelectChoice = { edgeId, targetCid ->
+                                   ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:35:23: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val downloadTasks by com.android.purebilibili.feature.download.DownloadManager.tasks.collectAsStateWithLifecycle()
+                      ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:35:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val downloadTasks by com.android.purebilibili.feature.download.DownloadManager.tasks.collectAsStateWithLifecycle()
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:35:68: error: unresolved reference 'DownloadManager'.
+    val downloadTasks by com.android.purebilibili.feature.download.DownloadManager.tasks.collectAsStateWithLifecycle()
+                                                                   ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:35:90: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val downloadTasks by com.android.purebilibili.feature.download.DownloadManager.tasks.collectAsStateWithLifecycle()
+                                                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:42:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val batchDownloadCandidates = remember(successForDownload.info) {
+                                      ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:43:55: error: unresolved reference 'resolveBatchDownloadCandidates'.
+            com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:97:45: error: function invocation 'size(...)' expected.
+                if (batchDownloadCandidates.size > 1) {
+                                            ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:97:50: error: 'operator' modifier is required on 'fun <T> Comparable<T>.compareTo(other: T): Int'.
+                if (batchDownloadCandidates.size > 1) {
+                                                 ^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:153:89: error: unresolved reference 'DownloadManager'.
+                                val started = com.android.purebilibili.feature.download.DownloadManager.addTask(task)
+                                                                                        ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:196:93: error: unresolved reference 'DownloadManager'.
+                                    val success = com.android.purebilibili.feature.download.DownloadManager.saveImageToGallery(
+                                                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:258:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val batchDownloadCandidates = remember(successForDownload.info) {
+                                      ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:259:55: error: unresolved reference 'resolveBatchDownloadCandidates'.
+            com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:263:38: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val downloadedCandidateIds = remember(downloadTasks) {
+                                     ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:264:27: error: unresolved reference 'values'.
+            downloadTasks.values
+                          ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:265:28: error: unresolved reference 'it'.
+                .filter { !it.isFailed && !it.isAudioOnly }
+                           ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:265:44: error: unresolved reference 'it'.
+                .filter { !it.isFailed && !it.isAudioOnly }
+                                           ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:266:27: error: unresolved reference 'it'.
+                .map { "${it.bvid}#${it.cid}" }
+                          ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:266:38: error: unresolved reference 'it'.
+                .map { "${it.bvid}#${it.cid}" }
+                                     ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:274:51: error: unresolved reference 'BatchDownloadDialog'.
+        com.android.purebilibili.feature.download.BatchDownloadDialog(
+                                                  ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:280:27: error: cannot infer type for value parameter 'quality'. Specify it explicitly.
+            onConfirm = { quality, options, selectedCandidates ->
+                          ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:280:36: error: cannot infer type for value parameter 'options'. Specify it explicitly.
+            onConfirm = { quality, options, selectedCandidates ->
+                                   ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:280:45: error: cannot infer type for value parameter 'selectedCandidates'. Specify it explicitly.
+            onConfirm = { quality, options, selectedCandidates ->
+                                            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:18:61: error: unresolved reference 'LikeBurstAnimation'.
+import com.android.purebilibili.feature.video.ui.components.LikeBurstAnimation
+                                                            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:20:61: error: unresolved reference 'VideoActionFeedbackHost'.
+import com.android.purebilibili.feature.video.ui.components.VideoActionFeedbackHost
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:67:13: error: unresolved reference 'LikeBurstAnimation'.
+            LikeBurstAnimation(
+            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:104:56: error: unresolved reference 'LocalContext'.
+    val feedbackContext = androidx.compose.ui.platform.LocalContext.current
+                                                       ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:105:27: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val feedbackHintScale by com.android.purebilibili.core.store.SettingsManager
+                          ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:105:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val feedbackHintScale by com.android.purebilibili.core.store.SettingsManager
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:105:66: error: unresolved reference 'SettingsManager'.
+    val feedbackHintScale by com.android.purebilibili.core.store.SettingsManager
+                                                                 ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:107:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:108:64: error: unresolved reference 'SettingsManager'.
+            initialValue = com.android.purebilibili.core.store.SettingsManager
+                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:111:27: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val feedbackHintAlpha by com.android.purebilibili.core.store.SettingsManager
+                          ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:111:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val feedbackHintAlpha by com.android.purebilibili.core.store.SettingsManager
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:111:66: error: unresolved reference 'SettingsManager'.
+    val feedbackHintAlpha by com.android.purebilibili.core.store.SettingsManager
+                                                                 ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:113:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:114:64: error: unresolved reference 'SettingsManager'.
+            initialValue = com.android.purebilibili.core.store.SettingsManager
+                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:117:5: error: unresolved reference 'VideoActionFeedbackHost'.
+    VideoActionFeedbackHost(
+    ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:4:16: error: unresolved reference 'content'.
+import android.content.res.Configuration
+               ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:9:43: error: unresolved reference 'statusBarsIgnoringVisibility'.
+import androidx.compose.foundation.layout.statusBarsIgnoringVisibility
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:19:44: error: unresolved reference 'SettingsManager'.
+import com.android.purebilibili.core.store.SettingsManager
+                                           ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:82:20: error: unresolved reference 'Configuration'.
+    configuration: Configuration,
+                   ^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:97:39: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendColor by SettingsManager.getDanmakuSendColor(context)
+                                      ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:99:38: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendMode by SettingsManager.getDanmakuSendMode(context)
+                                     ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:101:42: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendFontSize by SettingsManager.getDanmakuSendFontSize(context)
+                                         ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:105:42: error: unresolved reference 'screenWidthDp'.
+        val playerHeight = configuration.screenWidthDp.dp * 9f / 16f
+                                         ^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:108:64: error: unresolved reference 'statusBarsIgnoringVisibility'.
+            statusBarIgnoringVisibilityHeightDp = WindowInsets.statusBarsIgnoringVisibility
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:117:41: error: none of the following candidates is applicable:
+
+fun Dp.toPx(): Float:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun Dp.toPx(): Float
+
+fun TextUnit.toPx(): Float:
+  Unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun TextUnit.toPx(): Float
+        (playerHeight + playerTopInset).toPx().toInt()
+                                        ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:153:21: error: unresolved reference 'SettingsManager'.
+                    SettingsManager.setDanmakuSendColor(context, color)
+                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:154:21: error: unresolved reference 'SettingsManager'.
+                    SettingsManager.setDanmakuSendMode(context, mode)
+                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:155:21: error: unresolved reference 'SettingsManager'.
+                    SettingsManager.setDanmakuSendFontSize(context, fontSize)
+                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:191:26: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+    val screenHeightPx = with(LocalDensity.current) { configuration.screenHeightDp.dp.roundToPx() }
+                         ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailInputOverlayAdapter.kt:191:69: error: unresolved reference 'screenHeightDp'.
+    val screenHeightPx = with(LocalDensity.current) { configuration.screenHeightDp.dp.roundToPx() }
+                                                                    ^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:6:16: error: unresolved reference 'annotation'.
+import android.annotation.SuppressLint
+               ^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:7:16: error: unresolved reference 'app'.
+import android.app.Activity
+               ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:8:16: error: unresolved reference 'content'.
+import android.content.Intent
+               ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:11:16: error: unresolved reference 'content'.
+import android.content.pm.ActivityInfo
+               ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:12:16: error: unresolved reference 'content'.
+import android.content.res.Configuration
+               ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:13:16: error: unresolved reference 'database'.
+import android.database.ContentObserver
+               ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:14:16: error: unresolved reference 'os'.
+import android.os.Build
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:15:16: error: unresolved reference 'os'.
+import android.os.Handler
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:16:16: error: unresolved reference 'os'.
+import android.os.Looper
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:17:16: error: unresolved reference 'os'.
+import android.os.SystemClock
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:18:16: error: unresolved reference 'provider'.
+import android.provider.Settings
+               ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:19:16: error: unresolved reference 'view'.
+import android.view.OrientationEventListener
+               ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:20:16: error: unresolved reference 'view'.
+import android.view.Window
+               ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:21:16: error: unresolved reference 'view'.
+import android.view.WindowManager
+               ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:22:16: error: unresolved reference 'widget'.
+import android.widget.Toast
+               ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:73:37: error: unresolved reference 'LocalView'.
+import androidx.compose.ui.platform.LocalView
+                                    ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:92:17: error: unresolved reference 'core'.
+import androidx.core.view.WindowCompat
+                ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:93:17: error: unresolved reference 'core'.
+import androidx.core.view.WindowInsetsControllerCompat
+                ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:98:17: error: unresolved reference 'core'.
+import androidx.core.view.WindowInsetsCompat
+                ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:145:53: error: unresolved reference 'rememberVideoPlayerState'.
+import com.android.purebilibili.feature.video.state.rememberVideoPlayerState
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:146:53: error: unresolved reference 'shouldReuseMiniPlayerAtEntry'.
+import com.android.purebilibili.feature.video.state.shouldReuseMiniPlayerAtEntry
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:155:61: error: unresolved reference 'LikeBurstAnimation'.
+import com.android.purebilibili.feature.video.ui.components.LikeBurstAnimation
+                                                            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:158:61: error: unresolved reference 'VideoActionFeedbackHost'.
+import com.android.purebilibili.feature.video.ui.components.VideoActionFeedbackHost
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:165:54: error: unresolved reference 'reduceVideoDetailPostScroll'.
+import com.android.purebilibili.feature.video.policy.reduceVideoDetailPostScroll
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:166:54: error: unresolved reference 'reduceVideoDetailPreScroll'.
+import com.android.purebilibili.feature.video.policy.reduceVideoDetailPreScroll
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:167:54: error: unresolved reference 'resolveVideoDetailCollapseProgress'.
+import com.android.purebilibili.feature.video.policy.resolveVideoDetailCollapseProgress
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:176:41: error: unresolved reference 'LocalPredictiveBackGestureEnabled'.
+import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:198:54: error: unresolved reference 'PlaybackService'.
+import com.android.purebilibili.feature.video.player.PlaybackService
+                                                     ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:200:54: error: unresolved reference 'PlaylistManager'.
+import com.android.purebilibili.feature.video.player.PlaylistManager
+                                                     ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:203:54: error: unresolved reference 'buildPipPlaybackRemoteActions'.
+import com.android.purebilibili.feature.video.player.buildPipPlaybackRemoteActions
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:209:55: error: unresolved reference 'rememberDanmakuManager'.
+import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+                                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:210:46: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:223:46: error: unresolved reference 'hazeEffectCompat'.
+import com.android.purebilibili.core.ui.blur.hazeEffectCompat
+                                             ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:230:61: error: unresolved reference 'InteractiveChoiceOverlay'.
+import com.android.purebilibili.feature.video.ui.components.InteractiveChoiceOverlay
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:469:61: error: unresolved reference 'SettingsManager'.
+                        com.android.purebilibili.core.store.SettingsManager
+                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:485:73: error: unresolved reference 'SettingsManager'.
+                                    com.android.purebilibili.core.store.SettingsManager
+                                                                        ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:510:77: error: unresolved reference 'SettingsManager'.
+                                        com.android.purebilibili.core.store.SettingsManager
+                                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:526:77: error: unresolved reference 'SettingsManager'.
+                                        com.android.purebilibili.core.store.SettingsManager
+                                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:537:64: error: unresolved reference 'LogCollector'.
+                            com.android.purebilibili.core.util.LogCollector.exportAndShare(context)
+                                                               ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:589:53: error: unresolved reference 'SettingsManager'.
+                com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(
+                                                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:614:57: error: unresolved reference 'SettingsManager'.
+                    com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(
+                                                        ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:662:33: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+            val useHazeEffect = shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:662:74: error: unresolved reference 'Build'.
+            val useHazeEffect = shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+                                                                         ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:683:42: error: unresolved reference 'hazeEffectCompat'.
+                                Modifier.hazeEffectCompat(
+                                         ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:4:16: error: unresolved reference 'graphics'.
+import android.graphics.RenderEffect as AndroidRenderEffect
+               ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:5:16: error: unresolved reference 'graphics'.
+import android.graphics.Shader
+               ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:6:16: error: unresolved reference 'os'.
+import android.os.Build
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:43:46: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:50:55: error: unresolved reference 'rememberDanmakuManager'.
+import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+                                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:66:46: error: unresolved reference 'hazeEffectCompat'.
+import com.android.purebilibili.core.ui.blur.hazeEffectCompat
+                                             ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:114:46: error: unresolved reference 'os'.
+    navigateToRelatedVideo: (String, android.os.Bundle?) -> Unit,
+                                             ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:124:26: error: unresolved reference 'rememberDanmakuManager'.
+    val danmakuManager = rememberDanmakuManager(success.info.bvid)
+                         ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:215:41: error: unresolved reference 'Build'.
+                                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                                        ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:215:66: error: unresolved reference 'Build'.
+                                        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                                                                 ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:221:45: error: unresolved reference 'AndroidRenderEffect'.
+                                            AndroidRenderEffect.createBlurEffect(
+                                            ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:224:49: error: unresolved reference 'Shader'.
+                                                Shader.TileMode.CLAMP,
+                                                ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:302:59: error: argument type mismatch: actual type is '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit', but '(String, Long, String?) -> Unit' was expected.
+                                    onRelatedVideoClick = navigateToRelatedVideo,
+                                                          ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:324:81: error: unresolved reference 'SettingsManager'.
+                                            com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(
+                                                                                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:340:81: error: unresolved reference 'SettingsManager'.
+                                            com.android.purebilibili.core.store.SettingsManager.setCommentDefaultSortMode(context, mode.apiMode)
+                                                                                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:512:25: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+    val useHazeEffect = shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:512:66: error: unresolved reference 'Build'.
+    val useHazeEffect = shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)
+                                                                 ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:521:30: error: unresolved reference 'hazeEffectCompat'.
+                    Modifier.hazeEffectCompat(
+                             ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:11:44: error: unresolved reference 'SettingsManager'.
+import com.android.purebilibili.core.store.SettingsManager
+                                           ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:29:46: error: unresolved reference 'SettingsManager'.
+    val qualitySwitchFailureDialogEnabled by SettingsManager
+                                             ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:32:50: error: unresolved reference 'SettingsManager'.
+    val qualitySwitchFailureDialogOnceEnabled by SettingsManager
+                                                 ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:35:44: error: unresolved reference 'SettingsManager'.
+    val qualitySwitchFailureDialogShown by SettingsManager
+                                           ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:57:39: error: unresolved reference 'SettingsManager'.
+    val activeDanmakuBlockRulesRaw by SettingsManager
+                                      ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:71:24: error: unresolved reference 'setOnDanmakuClickListener'.
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:71:52: error: cannot infer type for value parameter 'text'. Specify it explicitly.
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
+                                                   ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:71:58: error: cannot infer type for value parameter 'dmid'. Specify it explicitly.
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
+                                                         ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:71:64: error: cannot infer type for value parameter 'userHash'. Specify it explicitly.
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
+                                                               ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerSettingsOverlayAdapter.kt:71:74: error: cannot infer type for value parameter 'isSelf'. Specify it explicitly.
+        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->
+                                                                         ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:65:47: error: unresolved reference 'os'.
+    val onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
+                                              ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:347:39: error: argument type mismatch: actual type is '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit', but '(String, Long, String?) -> Unit' was expected.
+                onRelatedVideoClick = fullscreenExtras?.onRelatedVideoClick ?: { _, _ -> },
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:347:85: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                onRelatedVideoClick = fullscreenExtras?.onRelatedVideoClick ?: { _, _ -> },
+                                                                                    ^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPortraitOverlayAdapter.kt:126:84: error: unresolved reference 'SettingsManager'.
+    val portraitOnlyVerticalRecommendations by com.android.purebilibili.core.store.SettingsManager
+                                                                                   ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailReturnSourceCardChrome.kt:65:52: error: unresolved reference 'VideoStatRow'.
+import com.android.purebilibili.core.ui.components.VideoStatRow
+                                                   ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailReturnSourceCardChrome.kt:899:9: error: unresolved reference 'VideoStatRow'.
+        VideoStatRow(
+        ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:15:43: error: unresolved reference 'toAdaptiveStrategySnapshot'.
+import com.android.purebilibili.core.util.toAdaptiveStrategySnapshot
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:143:53: error: unresolved reference 'shouldReuseMiniPlayerAtEntry'.
+import com.android.purebilibili.feature.video.state.shouldReuseMiniPlayerAtEntry
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:150:41: error: unresolved reference 'screenshot'.
+import com.android.purebilibili.feature.screenshot.AppScreenshotGestureBlockState
+                                        ^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:158:61: error: unresolved reference 'LikeBurstAnimation'.
+import com.android.purebilibili.feature.video.ui.components.LikeBurstAnimation
+                                                            ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:161:61: error: unresolved reference 'VideoActionFeedbackHost'.
+import com.android.purebilibili.feature.video.ui.components.VideoActionFeedbackHost
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:168:54: error: unresolved reference 'reduceVideoDetailPostScroll'.
+import com.android.purebilibili.feature.video.policy.reduceVideoDetailPostScroll
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:169:54: error: unresolved reference 'reduceVideoDetailPreScroll'.
+import com.android.purebilibili.feature.video.policy.reduceVideoDetailPreScroll
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:170:54: error: unresolved reference 'resolveVideoDetailCollapseProgress'.
+import com.android.purebilibili.feature.video.policy.resolveVideoDetailCollapseProgress
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:171:54: error: unresolved reference 'shouldSkipGesturePlayerCollapseForLayout'.
+import com.android.purebilibili.feature.video.policy.shouldSkipGesturePlayerCollapseForLayout
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:172:54: error: unresolved reference 'shouldTrackVideoDetailCollapseMotion'.
+import com.android.purebilibili.feature.video.policy.shouldTrackVideoDetailCollapseMotion
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:176:8: error: unresolved reference 'io'.
+import io.github.alexzhirkevich.cupertino.icons.CupertinoIcons
+       ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:177:8: error: unresolved reference 'io'.
+import io.github.alexzhirkevich.cupertino.icons.outlined.*
+       ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:185:41: error: unresolved reference 'LocalPredictiveBackGestureEnabled'.
+import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:222:46: error: unresolved reference 'shouldAllowRuntimeShaderBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:227:43: error: unresolved reference 'resolvePlayerWindowOrientationPolicy'.
+import com.android.purebilibili.core.util.resolvePlayerWindowOrientationPolicy
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:236:61: error: unresolved reference 'InteractiveChoiceOverlay'.
+import com.android.purebilibili.feature.video.ui.components.InteractiveChoiceOverlay
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:467:75: error: unresolved reference 'SettingsManager'.
+    val directPortraitEntryEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                          ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:470:68: error: unresolved reference 'SettingsManager'.
+    val homeUpBadgesVisible by com.android.purebilibili.core.store.SettingsManager
+                                                                   ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:474:81: error: unresolved reference 'SettingsManager'.
+    val liveSurfaceCardTransitionEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:536:31: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val autoPlayOnOpenEnabled by com.android.purebilibili.core.store.SettingsManager
+                              ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:536:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val autoPlayOnOpenEnabled by com.android.purebilibili.core.store.SettingsManager
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:536:70: error: unresolved reference 'SettingsManager'.
+    val autoPlayOnOpenEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                     ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:538:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:539:64: error: unresolved reference 'SettingsManager'.
+            initialValue = com.android.purebilibili.core.store.SettingsManager.getClickToPlaySync(context)
+                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:569:79: error: unresolved reference 'FavoriteInteractionSettingsStore'.
+    val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:779:13: error: unresolved reference 'shouldReuseMiniPlayerAtEntry'.
+            shouldReuseMiniPlayerAtEntry(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:908:25: error: no parameter with name 'cid' found.
+                        cid = resolvedCid, coverUrl = targetCover,
+                        ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:998:56: error: null cannot be a value of a non-null type 'Long'.
+                navigateToRelatedVideo(target.videoId, null)
+                                                       ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:998:56: error: no value passed for parameter 'p3'.
+                navigateToRelatedVideo(target.videoId, null)
+                                                       ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1131:32: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val commentDefaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1131:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val commentDefaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1131:71: error: unresolved reference 'SettingsManager'.
+    val commentDefaultSortMode by com.android.purebilibili.core.store.SettingsManager
+                                                                      ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1133:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1134:64: error: unresolved reference 'SettingsManager'.
+            initialValue = com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync(context),
+                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1137:77: error: unresolved reference 'SettingsManager'.
+    val commentFraudDetectionEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1143:80: error: unresolved reference 'SettingsManager'.
+    val commentMemberDecorationsEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1150:78: error: unresolved reference 'SettingsManager'.
+    val tabletCommentPanelWidthPreset by com.android.purebilibili.core.store.SettingsManager
+                                                                             ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1156:75: error: unresolved reference 'SettingsManager'.
+    val videoAiSummaryEntryEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                          ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1159:65: error: unresolved reference 'SettingsManager'.
+    val videoNoteEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1162:74: error: unresolved reference 'SettingsManager'.
+    val videoNoteDefaultCollapsed by com.android.purebilibili.core.store.SettingsManager
+                                                                         ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1168:5: error: none of the following candidates is applicable:
+
+fun VideoDetailCommentFraudOverlayAdapter(platform: DesktopCommentPlatform, playbackViewModel: VideoPlaybackViewModel, commentViewModel: VideoCommentViewModel, aid: Long?, fraudDetectionEnabled: Boolean): Unit
+fun VideoDetailCommentFraudOverlayAdapter(platform: DesktopCommentPlatform, playbackViewModel: DesktopOriginalVideoCommentComposer, commentViewModel: VideoCommentViewModel, aid: Long?, fraudDetectionEnabled: Boolean): Unit:
+  Argument type mismatch: actual type is 'VideoPlaybackViewModel', but 'DesktopOriginalVideoCommentComposer' was expected.
+    VideoDetailCommentFraudOverlayAdapter(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1168:5: error: no value passed for parameter 'platform'.
+    VideoDetailCommentFraudOverlayAdapter(
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1169:9: error: no parameter with name 'context' found.
+        context = context,
+        ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1176:72: error: unresolved reference 'SettingsManager'.
+    val danmakuEnabledForDetail by com.android.purebilibili.core.store.SettingsManager
+                                                                       ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1195:36: error: unresolved reference 'AppScreenshotGestureBlockState'.
+    val isFullscreenPlayerLocked = AppScreenshotGestureBlockState.fullscreenPlayerLocked
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1204:76: error: unresolved reference 'SettingsManager'.
+    val horizontalAdaptationEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                           ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1210:37: error: property delegate must have a 'getValue(Nothing?, KProperty0<??? (Unknown type for type parameter T)>)' method. None of the following functions is applicable:
+fun <T> State<T>.getValue(thisObj: Any?, property: KProperty<*>): T
+    val immersiveVideoPageStatusBar by com.android.purebilibili.core.store.SettingsManager
+                                    ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1210:40: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val immersiveVideoPageStatusBar by com.android.purebilibili.core.store.SettingsManager
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1210:76: error: unresolved reference 'SettingsManager'.
+    val immersiveVideoPageStatusBar by com.android.purebilibili.core.store.SettingsManager
+                                                                           ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1212:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .collectAsStateWithLifecycle(
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1213:64: error: unresolved reference 'SettingsManager'.
+            initialValue = com.android.purebilibili.core.store.SettingsManager
+                                                               ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1245:41: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val playerWindowOrientationPolicy = remember(displayContext) {
+                                        ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1246:44: error: unresolved reference 'resolvePlayerWindowOrientationPolicy'.
+        com.android.purebilibili.core.util.resolvePlayerWindowOrientationPolicy(displayContext)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1248:64: error: unresolved reference 'usesInWindowFullscreen'.
+    val usesInWindowFullscreen = playerWindowOrientationPolicy.usesInWindowFullscreen
+                                                               ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1253:63: error: unresolved reference 'SettingsManager'.
+    val fullscreenMode by com.android.purebilibili.core.store.SettingsManager
+                                                              ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1263:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val playerPresentation = remember(
+                             ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1270:44: error: unresolved reference 'resolvePlayerPresentationPolicy'.
+        com.android.purebilibili.core.util.resolvePlayerPresentationPolicy(
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1278:54: error: unresolved reference 'isOrientationDriven'.
+    val orientationPolicyDevice = playerPresentation.isOrientationDriven
+                                                     ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1279:60: error: unresolved reference 'isOrientationDriven'.
+    val isOrientationDrivenFullscreen = playerPresentation.isOrientationDriven
+                                                           ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1292:48: error: unresolved reference 'shouldReleaseOrientationLockOnDisplayRoleChange'.
+            com.android.purebilibili.core.util.shouldReleaseOrientationLockOnDisplayRoleChange(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1308:48: error: unresolved reference 'formatAppAdaptiveStrategySnapshot'.
+            com.android.purebilibili.core.util.formatAppAdaptiveStrategySnapshot(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1309:39: error: unresolved reference 'toAdaptiveStrategySnapshot'.
+                appWindowAdaptiveInfo.toAdaptiveStrategySnapshot(
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1310:65: error: unresolved reference 'usesInWindowFullscreen'.
+                    playerPresentation = if (playerPresentation.usesInWindowFullscreen) {
+                                                                ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1311:62: error: unresolved reference 'userFullscreenIntent'.
+                        "in-window(user=${playerPresentation.userFullscreenIntent}," +
+                                                             ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1314:64: error: unresolved reference 'orientationGeneratedFullscreen'.
+                        isFullscreenMode && playerPresentation.orientationGeneratedFullscreen
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1381:75: error: unresolved reference 'SettingsManager'.
+    val progressPeakDanmakuEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                          ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1446:13: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+        if (!isOrientationDrivenFullscreen) {
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1756:66: error: unresolved reference 'SettingsManager'.
+    val autoRotateEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                 ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1767:69: error: unresolved reference 'SettingsManager'.
+    val cardAnimationEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1828:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val pipModeEnabled = remember {
+                         ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1829:45: error: unresolved reference 'SettingsManager'.
+        com.android.purebilibili.core.store.SettingsManager.getMiniPlayerModeSync(context)
+                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2152:71: error: unresolved reference 'SettingsManager'.
+    val subtitleAutoPreference by com.android.purebilibili.core.store.SettingsManager
+                                                                      ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2554:13: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            !isOrientationDrivenFullscreen
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2775:48: error: unresolved reference 'player'.
+                 com.android.purebilibili.core.player.PlayerVolumeController
+                                               ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2894:74: error: unresolved reference 'SettingsManager'.
+            val stopPlaybackOnExit = com.android.purebilibili.core.store.SettingsManager
+                                                                         ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3023:32: error: unresolved reference 'findActivity'.
+        val activity = context.findActivity()
+                               ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3188:75: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendColor by com.android.purebilibili.core.store.SettingsManager
+                                                                          ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3191:74: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendMode by com.android.purebilibili.core.store.SettingsManager
+                                                                         ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3194:78: error: unresolved reference 'SettingsManager'.
+    val rememberedDanmakuSendFontSize by com.android.purebilibili.core.store.SettingsManager
+                                                                             ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3272:61: error: unresolved reference 'SettingsManager'.
+                        com.android.purebilibili.core.store.SettingsManager
+                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3274:61: error: unresolved reference 'SettingsManager'.
+                        com.android.purebilibili.core.store.SettingsManager
+                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3276:61: error: unresolved reference 'SettingsManager'.
+                        com.android.purebilibili.core.store.SettingsManager
+                                                            ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3298:39: error: argument type mismatch: actual type is '(String, Long, String?) -> Unit', but '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit' was expected.
+                onRelatedVideoClick = navigateToRelatedVideo,
+                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3496:69: error: unresolved reference 'SettingsManager'.
+                                com.android.purebilibili.core.store.SettingsManager.setDanmakuSendColor(context, color)
+                                                                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3497:69: error: unresolved reference 'SettingsManager'.
+                                com.android.purebilibili.core.store.SettingsManager.setDanmakuSendMode(context, mode)
+                                                                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3498:69: error: unresolved reference 'SettingsManager'.
+                                com.android.purebilibili.core.store.SettingsManager.setDanmakuSendFontSize(context, fontSize)
+                                                                    ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3752:29: error: unresolved reference 'LargeScreenVideoLayout'.
+                            LargeScreenVideoLayout(
+                            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3803:71: error: unresolved reference 'it'.
+                            onCodecChange = { viewModel.setVideoCodec(it) },
+                                                                      ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3805:83: error: unresolved reference 'it'.
+                            onSecondCodecChange = { viewModel.setVideoSecondCodec(it) },
+                                                                                  ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3807:80: error: unresolved reference 'it'.
+                            onAudioQualityChange = { viewModel.setAudioQuality(it) },
+                                                                               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3832:80: error: unresolved reference 'statusBarsIgnoringVisibility'.
+                            statusBarIgnoringVisibilityHeightDp = WindowInsets.statusBarsIgnoringVisibility
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3857:95: error: unresolved reference 'SettingsManager'.
+                        val portraitPlayerCollapseMode by com.android.purebilibili.core.store.SettingsManager
+                                                                                              ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3975:47: error: unresolved reference 'shouldTrackVideoDetailCollapseMotion'.
+                            val offsetMoved = shouldTrackVideoDetailCollapseMotion(
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4008:57: error: unresolved reference 'shouldSkipGesturePlayerCollapseForLayout'.
+                        val skipGesturePlayerCollapse = shouldSkipGesturePlayerCollapseForLayout(
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4027:97: error: unresolved reference 'SettingsManager'.
+                        val pauseOnPlayerCollapseEnabled by com.android.purebilibili.core.store.SettingsManager
+                                                                                                ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4074:56: error: unresolved reference 'reduceVideoDetailPreScroll'.
+                                    val scrollUpdate = reduceVideoDetailPreScroll(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4088:56: error: unresolved reference 'reduceVideoDetailPostScroll'.
+                                    val scrollUpdate = reduceVideoDetailPostScroll(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4117:48: error: unresolved reference 'resolveVideoDetailCollapseProgress'.
+                        val collapseProgress = resolveVideoDetailCollapseProgress(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4249:55: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                        val collapsedSystemBarInset = remember(view, configuration.densityDpi) {
+                                                      ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4249:64: error: unresolved reference 'view'.
+                        val collapsedSystemBarInset = remember(view, configuration.densityDpi) {
+                                                               ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4249:84: error: unresolved reference 'densityDpi'.
+                        val collapsedSystemBarInset = remember(view, configuration.densityDpi) {
+                                                                                   ^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4250:47: error: unresolved reference 'ViewCompat'.
+                            val rootInsetPx = ViewCompat.getRootWindowInsets(view)
+                                              ^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4250:78: error: unresolved reference 'view'.
+                            val rootInsetPx = ViewCompat.getRootWindowInsets(view)
+                                                                             ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4252:37: error: unresolved reference 'WindowInsetsCompat'.
+                                    WindowInsetsCompat.Type.statusBars() or
+                                    ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4253:41: error: unresolved reference 'WindowInsetsCompat'.
+                                        WindowInsetsCompat.Type.displayCutout()
+                                        ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4257:63: error: unresolved reference 'resources'.
+                            val statusBarResourceId = context.resources.getIdentifier(
+                                                              ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4263:41: error: unresolved reference 'resources'.
+                                context.resources.getDimensionPixelSize(statusBarResourceId)
+                                        ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4267:29: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                            with(insetDensity) { maxOf(rootInsetPx, resourceInsetPx).toDp() }
+                            ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4267:50: error: none of the following candidates is applicable:
+
+fun <T : Comparable<T>> maxOf(a: T, b: T): T:
+  Argument type mismatch: actual type is 'Any', but 'Comparable<uninferred T (of fun <T : Comparable<T>> maxOf)>' was expected.
+
+fun maxOf(a: Byte, b: Byte): Byte:
+  Argument type mismatch: actual type is 'Any', but 'Byte' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Byte' was expected.
+
+fun maxOf(a: Short, b: Short): Short:
+  Argument type mismatch: actual type is 'Any', but 'Short' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Short' was expected.
+
+fun maxOf(a: Int, b: Int): Int:
+  Argument type mismatch: actual type is 'Any', but 'Int' was expected.
+
+fun maxOf(a: Long, b: Long): Long:
+  Argument type mismatch: actual type is 'Any', but 'Long' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Long' was expected.
+
+fun maxOf(a: Float, b: Float): Float:
+  Argument type mismatch: actual type is 'Any', but 'Float' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Float' was expected.
+
+fun maxOf(a: Double, b: Double): Double:
+  Argument type mismatch: actual type is 'Any', but 'Double' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Double' was expected.
+
+fun <T : Comparable<T>> maxOf(a: T, vararg other: T): T:
+  Argument type mismatch: actual type is 'Any', but 'Comparable<uninferred T (of fun <T : Comparable<T>> maxOf)>' was expected.
+
+fun maxOf(a: Byte, vararg other: Byte): Byte:
+  Argument type mismatch: actual type is 'Any', but 'Byte' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Byte' was expected.
+
+fun maxOf(a: Short, vararg other: Short): Short:
+  Argument type mismatch: actual type is 'Any', but 'Short' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Short' was expected.
+
+fun maxOf(a: Int, vararg other: Int): Int:
+  Argument type mismatch: actual type is 'Any', but 'Int' was expected.
+
+fun maxOf(a: Long, vararg other: Long): Long:
+  Argument type mismatch: actual type is 'Any', but 'Long' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Long' was expected.
+
+fun maxOf(a: Float, vararg other: Float): Float:
+  Argument type mismatch: actual type is 'Any', but 'Float' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Float' was expected.
+
+fun maxOf(a: Double, vararg other: Double): Double:
+  Argument type mismatch: actual type is 'Any', but 'Double' was expected.
+  Argument type mismatch: actual type is 'Int', but 'Double' was expected.
+
+fun maxOf(a: UInt, b: UInt): UInt:
+  Argument type mismatch: actual type is 'Any', but 'UInt' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UInt' was expected.
+
+fun maxOf(a: ULong, b: ULong): ULong:
+  Argument type mismatch: actual type is 'Any', but 'ULong' was expected.
+  Argument type mismatch: actual type is 'Int', but 'ULong' was expected.
+
+fun maxOf(a: UByte, b: UByte): UByte:
+  Argument type mismatch: actual type is 'Any', but 'UByte' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UByte' was expected.
+
+fun maxOf(a: UShort, b: UShort): UShort:
+  Argument type mismatch: actual type is 'Any', but 'UShort' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UShort' was expected.
+
+fun maxOf(a: UInt, vararg other: UInt): UInt:
+  Argument type mismatch: actual type is 'Any', but 'UInt' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UInt' was expected.
+
+fun maxOf(a: ULong, vararg other: ULong): ULong:
+  Argument type mismatch: actual type is 'Any', but 'ULong' was expected.
+  Argument type mismatch: actual type is 'Int', but 'ULong' was expected.
+
+fun maxOf(a: UByte, vararg other: UByte): UByte:
+  Argument type mismatch: actual type is 'Any', but 'UByte' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UByte' was expected.
+
+fun maxOf(a: UShort, vararg other: UShort): UShort:
+  Argument type mismatch: actual type is 'Any', but 'UShort' was expected.
+  Argument type mismatch: actual type is 'Int', but 'UShort' was expected.
+                            with(insetDensity) { maxOf(rootInsetPx, resourceInsetPx).toDp() }
+                                                 ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4355:56: error: none of the following candidates is applicable:
+
+constructor(context: PlatformContext): ImageRequest.Builder:
+  Argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'PlatformContext' was expected.
+
+constructor(request: ImageRequest, context: PlatformContext = ...): ImageRequest.Builder:
+  Argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'ImageRequest' was expected.
+                            coil3.request.ImageRequest.Builder(context)
+                                                       ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4356:34: error: unresolved reference 'data'.
+                                .data(source.url)
+                                 ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4357:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                                .apply {
+                                 ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4357:40: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                                .apply {
+                                       ^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4359:46: error: argument type mismatch: actual type is 'Int', but 'Dp' was expected.
+                                        size(source.decodeWidthPx, source.decodeHeightPx)
+                                             ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4359:68: error: argument type mismatch: actual type is 'Int', but 'Dp' was expected.
+                                        size(source.decodeWidthPx, source.decodeHeightPx)
+                                                                   ^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4362:34: error: unresolved reference 'placeholderMemoryCacheKey'.
+                                .placeholderMemoryCacheKey(source.cacheKey)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4364:34: error: unresolved reference 'memoryCacheKey'.
+                                .memoryCacheKey(source.cacheKey)
+                                 ^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4856:66: error: argument type mismatch: actual type is '(String, Long, String?) -> Unit', but '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit' was expected.
+                                        navigateToRelatedVideo = navigateToRelatedVideo,
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4954:77: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                                                val vipPlaybackCandidates = remember(errorState.error) {
+                                                                            ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4955:116: error: unresolved reference 'NetworkModule'.
+                                                    val currentPlaybackMid = com.android.purebilibili.core.network.NetworkModule
+                                                                                                                   ^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4957:89: error: unresolved reference 'AccountSessionStore'.
+                                                    com.android.purebilibili.core.store.AccountSessionStore
+                                                                                        ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4959:67: error: cannot infer type for value parameter 'account'. Specify it explicitly.
+                                                        .filter { account ->
+                                                                  ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4960:69: error: unresolved reference 'isVip'.
+                                                            account.isVip &&
+                                                                    ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4961:73: error: unresolved reference 'sessData'.
+                                                                account.sessData.isNotBlank() &&
+                                                                        ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4962:73: error: unresolved reference 'mid'.
+                                                                account.mid != currentPlaybackMid
+                                                                        ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4970:97: error: unresolved reference 'AccountSessionStore'.
+                                                            com.android.purebilibili.core.store.AccountSessionStore
+                                                                                                ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4971:110: error: unresolved reference 'mid'.
+                                                                .setPlaybackAccountMid(context, vipCandidate.mid)
+                                                                                                             ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4972:69: error: unresolved reference 'widget'.
+                                                            android.widget.Toast.makeText(
+                                                                    ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4974:85: error: unresolved reference 'name'.
+                                                                "已使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放",
+                                                                                    ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4974:90: error: cannot infer type for type parameter 'C'. Specify it explicitly.
+                                                                "已使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放",
+                                                                                         ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4974:90: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                                                                "已使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放",
+                                                                                         ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4974:120: error: unresolved reference 'mid'.
+                                                                "已使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放",
+                                                                                                                       ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4975:73: error: unresolved reference 'widget'.
+                                                                android.widget.Toast.LENGTH_SHORT
+                                                                        ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4983:84: error: unresolved reference 'name'.
+                                                        AppText("使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放")
+                                                                                   ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4983:89: error: cannot infer type for type parameter 'C'. Specify it explicitly.
+                                                        AppText("使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放")
+                                                                                        ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4983:89: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                                                        AppText("使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放")
+                                                                                        ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4983:119: error: unresolved reference 'mid'.
+                                                        AppText("使用「${vipCandidate.name.ifBlank { "UID ${vipCandidate.mid}" }}」的大会员播放")
+                                                                                                                      ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5179:44: error: unresolved reference 'findActivity'.
+                val hostActivity = context.findActivity()
+                                           ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5187:21: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+                    !isActivityInMultiWindowOrFloatingMode(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5187:22: error: unresolved reference 'isActivityInMultiWindowOrFloatingMode'.
+                    !isActivityInMultiWindowOrFloatingMode(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5194:34: error: unresolved reference 'requestOrientation'.
+                    hostActivity.requestOrientation(
+                                 ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5267:55: error: null cannot be a value of a non-null type 'Long'.
+                navigateToRelatedVideo(targetVideoId, null)
+                                                      ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5267:55: error: no value passed for parameter 'p3'.
+                navigateToRelatedVideo(targetVideoId, null)
+                                                      ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailTransitionHost.kt:37:52: error: unresolved reference 'LocalVideoCardMorphProgressReporter'.
+import com.android.purebilibili.core.ui.transition.LocalVideoCardMorphProgressReporter
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailTransitionHost.kt:207:25: error: unresolved reference 'LocalVideoCardMorphProgressReporter'.
+    val morphReporter = LocalVideoCardMorphProgressReporter.current
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailTransitionHost.kt:214:23: error: unresolved reference 'report'.
+        morphReporter.report(
+                      ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-01\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailTransitionHost.kt:221:27: error: unresolved reference 'report'.
+            morphReporter.report(morphFraction = progress.value, active = false)
+                          ^^^^^^

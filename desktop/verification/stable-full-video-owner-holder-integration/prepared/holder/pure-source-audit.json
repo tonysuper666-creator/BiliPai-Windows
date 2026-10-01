@@ -1,0 +1,545 @@
+{
+  "passed": true,
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+      "originalSHA256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "output": "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+      "outputSHA256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "retainedDeclarations": [
+        "LARGE_SCREEN_VIDEO_LANDSCAPE_RATIO",
+        "LARGE_SCREEN_VIDEO_ASPECT_16_9",
+        "LARGE_SCREEN_VIDEO_MIN_SIDE_PANE_DP",
+        "LARGE_SCREEN_VIDEO_MAX_SIDE_PANE_DP",
+        "LARGE_SCREEN_VIDEO_SIDE_PANE_BREAKPOINT_DP",
+        "LARGE_SCREEN_VIDEO_SQUARE_MIN_HEIGHT_FRACTION",
+        "LARGE_SCREEN_VIDEO_SQUARE_PLAYER_HEIGHT_FRACTION",
+        "FOLDABLE_COVER_COMPACT_PLAYER_HEIGHT_FRACTION",
+        "FOLDABLE_COVER_COLLAPSED_PLAYER_HEIGHT_FRACTION",
+        "FOLDABLE_COVER_COMPACT_HEIGHT_MAX_DP",
+        "LargeScreenVideoLayoutMode",
+        "LargeScreenVideoMetrics",
+        "resolvePhoneInlineVideoViewportHeightDp",
+        "shouldUseLargeScreenVideoLayout",
+        "shouldUseDedicatedCollectionColumn",
+        "resolveLargeScreenLandscapePlayerWidthDp",
+        "resolveLargeScreenVideoMetrics",
+        "resolveShowRelatedInIntro",
+        "resolveIncludeRelatedTabInSecondary",
+        "resolveRelatedTabFirstInSecondary"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+      "originalSHA256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "output": "com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+      "outputSHA256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "retainedDeclarations": [
+        "ContinuousPlayerTransitionPhase",
+        "ContinuousPlayerOrientationRequest",
+        "ContinuousPlayerTransitionEvent",
+        "ContinuousPlayerTransitionDecision",
+        "shouldKeepContinuousPlayerEnterPhaseWhilePortrait",
+        "reduceContinuousPlayerTransition"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+      "originalSHA256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "output": "com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+      "outputSHA256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "retainedDeclarations": [
+        "shouldAutoPauseOnPlayerCollapse",
+        "shouldAutoResumeOnPlayerExpand"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "originalSHA256LF": "2daaffbd12cbfd62f560bbfa4c008629aa7b8aff846453cd2762de7c242711de",
+      "output": "com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "outputSHA256LF": "d919802a8dbe65c0d7958e3066301e8b3f2856dc8e47810011f16abf1149302d",
+      "retainedDeclarations": [
+        "PortraitInlinePlayerLayoutSpec",
+        "StandalonePortraitPagerMotionSpec",
+        "PortraitFullscreenButtonAction",
+        "shouldUseOfficialInlinePortraitDetailExperience",
+        "shouldUseSharedPlayerForPortraitFullscreen",
+        "shouldShowStandalonePortraitPager",
+        "shouldActivatePortraitFullscreenState",
+        "resolveStandalonePortraitPagerMotionSpec",
+        "shouldEnableInlinePortraitScrollTransform",
+        "shouldAnimateStandalonePortraitPager",
+        "shouldSuppressPhoneDetailBodyForDirectPortraitEntry",
+        "shouldSuppressPhoneDetailBodyUnderStandalonePortraitPager",
+        "resolvePortraitFullscreenButtonAction",
+        "shouldUseCompactInlinePortraitPlayerForCommentTab",
+        "shouldUseCompactInlinePortraitPlayerForIntroScroll",
+        "resolveInlinePortraitPlayerCollapseProgress",
+        "resolveInlinePortraitPlayerCommentCollapseDurationMillis",
+        "resolvePiliPlusCollapsedPlayerViewportHeightDp",
+        "resolvePortraitInlinePlayerLayoutSpec",
+        "resolveLandscapeDetailPlayerContentHeightPx"
+      ],
+      "excludedExistingOrPlatformDeclarations": [
+        "isVideoDetailIntroScrollPastCollapseThreshold"
+      ],
+      "completeFile": false,
+      "originalSelectedBeforeAdaptationSHA256LF": "d919802a8dbe65c0d7958e3066301e8b3f2856dc8e47810011f16abf1149302d",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+      "originalSHA256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+      "outputSHA256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "retainedDeclarations": [
+        "VideoDetailLocalBackTarget",
+        "resolveVideoDetailLocalBackTarget"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+      "originalSHA256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+      "outputSHA256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "retainedDeclarations": [
+        "VIDEO_DETAIL_ENTRY_TRANSITION_FINISH_TIMEOUT_BUFFER_MS",
+        "VIDEO_DETAIL_ENTRY_PLAYBACK_PRELOAD_RATIO",
+        "shouldDeferVideoDetailLoadUntilEntryTransitionFinished",
+        "isVideoDetailEntryTransitionFinished",
+        "shouldMarkVideoDetailEntryTransitionFinished",
+        "resolveVideoDetailEntryTransitionFallbackTimeoutMillis",
+        "resolveVideoDetailEntryPlaybackPreloadDelayMillis"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+      "originalSHA256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+      "outputSHA256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "retainedDeclarations": [
+        "VIDEO_DETAIL_RETURN_HANDOFF_SETTLE_START",
+        "VideoDetailReturnSessionPhase",
+        "VideoDetailReturnPlayerMode",
+        "VideoDetailReturnSecondaryContentMode",
+        "VideoDetailReturnDanmakuMode",
+        "VideoDetailReturnOverlayControlsMode",
+        "VideoDetailReturnDepthBlurMode",
+        "VideoDetailReturnHomeHeavyWorkMode",
+        "VideoDetailReturnVisualBudget",
+        "resolveVideoDetailReturnSessionPhase",
+        "resolveVideoDetailReturnPlayerMode",
+        "shouldAllowPlaybackStopIntentForReturnBudget",
+        "resolveVideoDetailReturnVisualBudget",
+        "resolveVideoDetailReturnSecondaryContentMode",
+        "resolveVideoDetailReturnSecondaryContentAlphaPreview",
+        "shouldPauseHideDanmakuForReturnBudget",
+        "shouldSuppressOverlayControlsForReturnBudget",
+        "shouldDetachSecondaryContentForReturnBudget",
+        "resolveVideoDetailReturnDepthBlurQuantumPx",
+        "resolveVideoDetailReturnSettleProgressFromMorphDepth",
+        "shouldExpectLiveSurfaceOwnershipForReturnBudget",
+        "mapReturnPlayerModeToCoverOwnershipHint",
+        "VIDEO_DETAIL_RETURN_SECONDARY_YIELD_END",
+        "shouldDeferPlaybackStopForSharedLiveReturn"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+      "originalSHA256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+      "outputSHA256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "retainedDeclarations": [
+        "VideoDetailTopBarAction",
+        "resolveVideoDetailTopBarAction"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+      "originalSHA256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "output": "com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+      "outputSHA256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "retainedDeclarations": [
+        "resolveInitialPageIndex"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+      "originalSHA256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+      "outputSHA256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "retainedDeclarations": [
+        "COVER_TAKEOVER_PRE_BACK_DELAY_MILLIS",
+        "VIDEO_CONTENT_COMMENT_TAB_INDEX",
+        "isVideoDetailEntryActiveMiuixTransitionSource",
+        "shouldConsumeMiuixTransitionVisualAssets",
+        "shouldDrawFlyingReconstructedSourceChrome",
+        "shouldDrawNativeCoverOverlay",
+        "shouldPunchThroughFlyingMediaToNativeListCard",
+        "resolveForceCoverOnlyForReturn",
+        "shouldUseReturningVideoDetailVisualState",
+        "shouldConsumeMiuixReturnSessionForVideoDetailEntry",
+        "shouldTreatVideoDetailCardReturnAsCommitted",
+        "shouldUseLiveReturnMorph",
+        "shouldTreatVideoDetailContentReadyForLiveReturnMorph",
+        "resolveVideoDetailReturnPlaybackIntent",
+        "shouldHandVisualOwnershipToResidentCover",
+        "resolveVideoDetailReturnCoverOwnership",
+        "isLiveReturnMorphFromOwnership",
+        "shouldHandResidentCoverFromOwnership",
+        "resolveVideoDetailReturnSessionLockedOwnership",
+        "VideoDetailReturnMediaFrame",
+        "resolveVideoDetailReturnMediaFrame",
+        "resolveVideoDetailReturnCoverAlpha",
+        "resolveVideoDetailReturnVisualProgress",
+        "resolveVideoDetailReturnPlayerAlpha",
+        "VideoDetailResidentCoverSource",
+        "resolveVideoDetailResidentCoverSource",
+        "resolveVideoDetailReturnContentAlpha",
+        "shouldTreatVideoDetailCardExitAsReturning",
+        "shouldTreatVideoDetailExitTransitionInProgress",
+        "shouldKeepPlaybackSessionActiveForSharedReturnMorph",
+        "shouldExpandPlayerViewportForSharedReturn",
+        "resolvePlayerCollapseProgressForLayout",
+        "resolveVideoDetailCollapseShadowAlpha",
+        "resolveCollapsedPlayerMediaScrimAlpha",
+        "resolveCollapsedPlayerToolbarAlpha",
+        "shouldForceBackPreviewPlayerCover",
+        "shouldSuppressVideoDetailEnterFadeAfterBackPreview",
+        "shouldUseVideoDetailRootTransitionProgress",
+        "shouldShowVideoDetailContent",
+        "resolveCoverTakeoverDelayBeforeBackNavigationMillis",
+        "VideoDetailRouteSheetMotion",
+        "VideoDetailRouteSheetSettleDirection",
+        "VideoDetailRouteSheetFrame",
+        "VideoDetailSecondaryContentTiming",
+        "resolveVideoDetailSecondaryContentTiming",
+        "VideoDetailMotionSpec",
+        "VIDEO_DETAIL_ENTRY_PHASE_MIN_DURATION_MILLIS",
+        "VIDEO_DETAIL_CONTENT_PHASE_MIN_DURATION_MILLIS",
+        "HOME_VIDEO_ROUTE_SHEET_MAIN_DURATION_MILLIS",
+        "HOME_VIDEO_ROUTE_SHEET_SETTLE_DURATION_MILLIS",
+        "HOME_VIDEO_ROUTE_SHEET_DURATION_MILLIS",
+        "HOME_VIDEO_ROUTE_SHEET_INITIAL_SCALE",
+        "HOME_VIDEO_ROUTE_SHEET_INITIAL_TRANSLATION_Y_DP",
+        "HOME_VIDEO_ROUTE_SHEET_INITIAL_CORNER_DP",
+        "HOME_VIDEO_ROUTE_SHEET_INITIAL_SCRIM_ALPHA",
+        "HOME_VIDEO_ROUTE_SHEET_SETTLE_SCALE_DELTA",
+        "HOME_VIDEO_ROUTE_SHEET_SETTLE_TRANSLATION_DP",
+        "resolveVideoDetailMotionSpec",
+        "resolveVideoDetailRouteSheetMotion",
+        "resolveVideoDetailRouteSheetFrame",
+        "lerpVideoDetailFloat"
+      ],
+      "excludedExistingOrPlatformDeclarations": [],
+      "completeFile": true,
+      "originalSelectedBeforeAdaptationSHA256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "orderedTransformReplayExact": true,
+      "edits": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "originalSHA256LF": "fd76acf9f2b7c4a4a1d98c144c5b700986bdf0789a29b197ad082c163f18503e",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "outputSHA256LF": "3eda952d449333ab1478323667dd01c09820bc8d58e5f045e7b4ddfb13286660",
+      "retainedDeclarations": [
+        "hasMeaningfulVideoPlayerBoundsChange",
+        "shouldHandleVideoDetailDisposeAsNavigationExit",
+        "resolveIsNavigatingToVideoDuringDispose",
+        "shouldMarkReturningStateOnVideoDetailDispose",
+        "shouldClearStaleReturningStateOnVideoDetailEnter",
+        "shouldShowExternalPlaylistQueueBarByPolicy",
+        "shouldShowExternalPlaylistQueueBarOnContentTab",
+        "resolveExternalPlaylistQueueTitle",
+        "normalizePlaylistCoverUrlForUi",
+        "resolveExternalPlaylistQueueListMaxHeightDp",
+        "resolveExternalPlaylistQueueBottomSpacerDp",
+        "ExternalPlaylistQueueSheetPresentation",
+        "resolveExternalPlaylistQueueSheetPresentation",
+        "shouldOpenCommentUrlInApp",
+        "resolveDanmakuDialogTopReservePx",
+        "shouldApplyPipParamsUpdate",
+        "shouldDismissCommentThreadDetailForPip",
+        "shouldAutoEnterAudioModeFromRoute",
+        "shouldAutoEnterPortraitFullscreenFromRoute",
+        "shouldStartInPortraitFullscreenFromRouteHint",
+        "shouldSyncMainPlayerToInternalBvid",
+        "shouldSkipInternalBvidSyncForPlayerInitiatedAdvance",
+        "resolveVideoDetailPlaybackTargetCid",
+        "resolveAutoPlayOverrideForInternalBvidSync",
+        "shouldSwitchCollectionVideoInsideCurrentDetailPage",
+        "resolveUgcSeasonEpisodeCoverUrl",
+        "VideoPlayerSectionTarget",
+        "resolveVideoPlayerSectionTarget"
+      ],
+      "excludedExistingOrPlatformDeclarations": [
+        "CommentUrlNavigationTarget",
+        "resolveCommentUrlNavigationTarget"
+      ],
+      "completeFile": false,
+      "originalSelectedBeforeAdaptationSHA256LF": "f925f33cc0eac4f8006ceab3ea5b9ed704ec1867936ba67548cd6a2be692c2b3",
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Immutable actual Compose pixel bounds; original comparison math unchanged",
+          "before": "android.graphics.Rect",
+          "after": "androidx.compose.ui.unit.IntRect",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "originalSHA256LF": "9f4fe9aa4a4d7b37db454692a8cf5b55c778136301ce8c1874c9fd89c1c2f59a",
+      "output": "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "outputSHA256LF": "cc77ae5a921237aec3bce7fe5cfec664beb9ef0441e2d9f3fc99305f9979c488",
+      "retainedDeclarations": [
+        "VIDEO_NAV_TARGET_CID_KEY",
+        "VIDEO_NAV_COVER_URL_KEY",
+        "resolveNavigationTargetCid"
+      ],
+      "excludedExistingOrPlatformDeclarations": [
+        "buildVideoNavigationOptions"
+      ],
+      "completeFile": false,
+      "originalSelectedBeforeAdaptationSHA256LF": "cc1d2d78b3c312e830335f5175429de801a507ed69a078c64addb1b981193ea1",
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Original Bundle producer omitted; existing three-parameter native navigation helper is sole",
+          "before": "import android.os.Bundle\n",
+          "after": "",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "originalSHA256LF": "5ca410207169a557e926c0772b4caac49f9f956774404ba549505935f321b5d5",
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "outputSHA256LF": "54c0b7ee143cb6628ac3064bd98816fa8729725341a06a17d8a811bdd292c5b5",
+      "retainedDeclarations": [
+        "shouldUseVideoDetailSharedElementMorph",
+        "VideoDetailSystemBarsSnapshot",
+        "resolveVideoDetailSystemBarsSnapshot",
+        "shouldShowSystemBarsOnVideoDetailExit",
+        "VideoDetailHiddenSystemBars",
+        "VideoDetailSystemBarsApplySpec",
+        "resolveVideoDetailSystemBarsApplySpec",
+        "resolveVideoDetailStableStatusBarHeightDp",
+        "resolveVideoDetailPortraitPlayerTopInsetDp",
+        "shouldRestoreSystemBarsDuringVideoDetailExitTransition",
+        "shouldReactivateVideoDetailSystemBarsAfterCancelledExit",
+        "shouldReapplyVideoDetailSystemBarsAfterBecomingTop",
+        "isWindowBoundsSmallerThanMaximum",
+        "shouldInferFloatingWindowFromBounds",
+        "toggleVideoDetailFullscreen",
+        "resolveNextPlayerHeightOffset",
+        "resolveIsPlayerCollapsed",
+        "resolveIsPlaybackPausedForCollapse",
+        "shouldUseTabletVideoLayout",
+        "shouldUseOrientationDrivenFullscreen",
+        "shouldRotateToPortraitOnSplitBack",
+        "shouldShowDetachedVideoCommentThreadHost",
+        "resolveVideoDetailCommentThreadHostMainSheetVisible",
+        "shouldForceInitializeDetachedCommentThreadHostForRoute",
+        "shouldApplyPhoneAutoRotatePolicy",
+        "resolveVideoDetailFullscreenMode",
+        "shouldApplyStartFullscreenOrientationRequest",
+        "resolvePhoneFullscreenEnterOrientation",
+        "shouldKeepManualFullscreenRequest",
+        "ManualFullscreenRequestLifecycleEffect",
+        "resolvePhoneVideoRequestedOrientation",
+        "resolveStableOrientationWhenAutoRotateDisabled",
+        "resolvePhoneAutoRotateRequestedOrientation",
+        "PHONE_AUTO_ROTATE_LANDSCAPE_SETTLE_MS",
+        "resolvePhoneAutoRotateTargetToApply",
+        "resolveCurrentExactLandscapeOrientation",
+        "preserveCurrentExactLandscapeSideWhileFullscreen",
+        "resolveExactLandscapeOrientation",
+        "isLandscapeRequestedOrientation",
+        "isVideoDrivenLandscapeOrientationLock",
+        "resolveVideoDetailEntryOrientationSnapshot",
+        "shouldEnterPortraitFullscreenOnFullscreenToggle",
+        "resolvePortraitRotateTargetOrientation",
+        "resolveEffectivePhoneAutoRotateEnabled",
+        "shouldAllowPhoneSensorPortraitTransition",
+        "shouldReleaseManualFullscreenRequestAfterSensorTarget",
+        "shouldObservePhoneAutoRotate",
+        "shouldReleasePhoneManualPortraitHold",
+        "isPhoneOrientationUprightPortraitStable",
+        "isPhoneOrientationPortraitStable",
+        "withinWrappedRange",
+        "resolveVideoDetailExitRequestedOrientation",
+        "shouldEnablePortraitExperience",
+        "resolveVideoDetailCommentBarProgress",
+        "shouldShowVideoDetailBottomInteractionBar",
+        "shouldShowVideoDetailActionButtons"
+      ],
+      "excludedExistingOrPlatformDeclarations": [
+        "VideoDetailSystemBarsVisibilityPolicy",
+        "applyVideoDetailSystemBarsSpec",
+        "findActivity",
+        "isActivityInMultiWindowOrFloatingMode",
+        "resolveVideoDetailSystemBarsVisibilityPolicy",
+        "shouldApplyStatusBarPaddingToVideoPlayerChrome"
+      ],
+      "completeFile": false,
+      "originalSelectedBeforeAdaptationSHA256LF": "a928c380f54a6a28b06155decfd504360702094ad97489111651e23f76e80df9",
+      "orderedTransformReplayExact": true,
+      "edits": [
+        {
+          "label": "Required real Root Window presentation owner",
+          "before": "import android.app.Activity",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoHolderPresentation as Activity",
+          "count": 1
+        },
+        {
+          "label": "Original numeric policy inputs only; no Android player/activity implementation",
+          "before": "import android.content.pm.ActivityInfo",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoOrientationRequest as ActivityInfo",
+          "count": 1
+        },
+        {
+          "label": "Original orientation policy constants",
+          "before": "import android.content.res.Configuration",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoWindowOrientation as Configuration",
+          "count": 1
+        },
+        {
+          "label": "Original physical-angle unknown constant, explicit optional sensor capability",
+          "before": "import android.view.OrientationEventListener",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalVideoPhysicalOrientation as OrientationEventListener",
+          "count": 1
+        },
+        {
+          "label": "Same actual native player state constants",
+          "before": "import androidx.media3.common.Player",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalMpvOverlayControl as Player",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import android.content.Context\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import android.content.ContextWrapper\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import android.os.Build\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import android.view.Window\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import androidx.core.view.WindowInsetsCompat\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import androidx.core.view.WindowInsetsControllerCompat\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import androidx.window.layout.WindowMetricsCalculator\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import com.android.purebilibili.core.util.applyPlayerRequestedOrientation\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import com.android.purebilibili.core.ui.setWindowNavigationBarColor\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Android implementation imports consumed by required Window port",
+          "before": "import com.android.purebilibili.core.ui.setWindowStatusBarColor\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "label": "Actual presentation reads real Root Window capability, not inferred phone bounds",
+          "before": "isActivityInMultiWindowOrFloatingMode(\n        activity = activity,\n        displayContext = displayContext,\n    )",
+          "after": "activity.isInMultiWindowMode",
+          "count": 1
+        },
+        {
+          "label": "Original requested orientation dispatched to required Root Window owner",
+          "before": "activity.applyPlayerRequestedOrientation(",
+          "after": "activity.requestOrientation(",
+          "count": 5
+        },
+        {
+          "label": "Actual retained Window requested-presentation readback",
+          "before": "activity.requestedOrientation",
+          "after": "activity.currentRequestedOrientation",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "productRuntimeAccepted": false
+}

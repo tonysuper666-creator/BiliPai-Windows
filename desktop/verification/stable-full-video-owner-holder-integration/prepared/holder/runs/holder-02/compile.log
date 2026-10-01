@@ -1,0 +1,218 @@
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\store\DesktopOriginalVideoHolderSettings.kt:51:20: error: unresolved reference 'DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ENABLED'.
+                ?: DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ENABLED
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\store\DesktopOriginalVideoHolderSettings.kt:58:20: error: unresolved reference 'DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ONCE_ENABLED'.
+                ?: DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ONCE_ENABLED
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\store\DesktopOriginalVideoHolderSettings.kt:66:29: error: unresolved reference 'remove'.
+                preferences.remove(KEY_QUALITY_SWITCH_FAILURE_DIALOG_SHOWN)
+                            ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:3:16: error: unresolved reference 'app'.
+import android.app.Activity
+               ^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:5:16: error: unresolved reference 'os'.
+import android.os.Build
+               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:68:9: error: unresolved reference 'Build'.
+        Build.VERSION.SDK_INT >= 36,
+        ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:82:9: error: unresolved reference 'isLandscapeNaturalDisplay'.
+        isLandscapeNaturalDisplay(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:119:37: error: unresolved reference 'isLandscapeNaturalDisplay'.
+        isLandscapeNaturalDisplay = isLandscapeNaturalDisplay(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:129:14: error: unresolved reference 'Activity'.
+internal fun Activity.resolvePlayerWindowOrientationPolicy(
+             ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:135:31: error: unresolved reference 'resolveAppDisplayContext'.
+    return (displayContext ?: resolveAppDisplayContext()).toPlayerWindowOrientationPolicy()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:140:46: error: unresolved reference 'SCREEN_ORIENTATION_LOCKED'.
+        requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_LOCKED &&
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:141:46: error: unresolved reference 'SCREEN_ORIENTATION_BEHIND'.
+        requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_BEHIND
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:160:14: error: unresolved reference 'Activity'.
+internal fun Activity.applyPlayerRequestedOrientation(
+             ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:164:37: error: unresolved reference 'resolveAppDisplayContext'.
+    val policy = (displayContext ?: resolveAppDisplayContext()).toPlayerWindowOrientationPolicy()
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:179:9: error: unresolved reference 'Activity'.
+    if (this.requestedOrientation == effectiveOrientation) return false
+        ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:179:14: error: unresolved reference 'requestedOrientation'.
+    if (this.requestedOrientation == effectiveOrientation) return false
+             ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:180:5: error: unresolved reference 'Activity'.
+    this.requestedOrientation = effectiveOrientation
+    ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerOrientationPolicy.kt:180:10: error: unresolved reference 'requestedOrientation'.
+    this.requestedOrientation = effectiveOrientation
+         ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerPresentationPolicy.kt:114:46: error: unresolved reference 'SCREEN_ORIENTATION_LOCKED'.
+        requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_LOCKED &&
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\core\util\PlayerPresentationPolicy.kt:115:46: error: unresolved reference 'SCREEN_ORIENTATION_BEHIND'.
+        requestedOrientation != ActivityInfo.SCREEN_ORIENTATION_BEHIND
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:72:35: error: unresolved reference 'resolveBatchDownloadDialogMaxHeight'.
+            val dialogMaxHeight = resolveBatchDownloadDialogMaxHeight(screenHeightDp).dp
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:73:42: error: unresolved reference 'resolveBatchDownloadCandidateListMaxHeight'.
+            val candidateListMaxHeight = resolveBatchDownloadCandidateListMaxHeight(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:115:53: error: unresolved reference 'selectAllBatchDownloadCandidates'.
+                                workingCandidates = selectAllBatchDownloadCandidates(workingCandidates)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:122:53: error: unresolved reference 'invertBatchDownloadCandidateSelection'.
+                                workingCandidates = invertBatchDownloadCandidateSelection(workingCandidates)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:129:53: error: unresolved reference 'selectOnlyUndownloadedBatchCandidates'.
+                                workingCandidates = selectOnlyUndownloadedBatchCandidates(
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\download\BatchDownloadDialog.kt:277:39: error: unresolved reference 'canConfirmBatchDownload'.
+                            enabled = canConfirmBatchDownload(workingCandidates)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:44:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val batchDownloadCandidates = remember(successForDownload.info) {
+                                      ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:45:55: error: unresolved reference 'resolveBatchDownloadCandidates'.
+            com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:99:45: error: function invocation 'size(...)' expected.
+                if (batchDownloadCandidates.size > 1) {
+                                            ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:99:50: error: 'operator' modifier is required on 'fun <T> Comparable<T>.compareTo(other: T): Int'.
+                if (batchDownloadCandidates.size > 1) {
+                                                 ^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:260:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val batchDownloadCandidates = remember(successForDownload.info) {
+                                      ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailDownloadOverlayAdapter.kt:261:55: error: unresolved reference 'resolveBatchDownloadCandidates'.
+            com.android.purebilibili.feature.download.resolveBatchDownloadCandidates(
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailFeedbackOverlayAdapter.kt:128:66: error: unresolved reference 'FormatUtils'.
+                    text = "检测到上次播放到 ${suggestion.targetLabel}（${FormatUtils.formatDuration(suggestion.positionMs)}），是否跳转继续播放？",
+                                                                 ^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:513:42: error: none of the following candidates is applicable:
+
+fun Modifier.hazeEffect(state: HazeState?, block: (HazeEffectScope.() -> Unit)? = ...): Modifier
+fun Modifier.hazeEffect(block: (HazeEffectScope.() -> Unit)? = ...): Modifier:
+  No parameter with name 'state' found.
+                                Modifier.hazeEffectCompat(
+                                         ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailOverlayHost.kt:515:37: error: no parameter with name 'style' found.
+                                    style = HazeMaterials.ultraThin()
+                                    ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:43:55: error: unresolved reference 'rememberDanmakuManager'.
+import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager
+                                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:107:46: error: unresolved reference 'os'.
+    navigateToRelatedVideo: (String, android.os.Bundle?) -> Unit,
+                                             ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:118:26: error: unresolved reference 'rememberDanmakuManager'.
+    val danmakuManager = rememberDanmakuManager(success.info.bvid)
+                         ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:292:59: error: argument type mismatch: actual type is '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit', but '(String, Long, String?) -> Unit' was expected.
+                                    onRelatedVideoClick = navigateToRelatedVideo,
+                                                          ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:328:148: error: argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'DesktopPluginContext' was expected.
+                                            com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode(context, mode.apiMode)
+                                                                                                                                                   ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:510:30: error: none of the following candidates is applicable:
+
+fun Modifier.hazeEffect(state: HazeState?, block: (HazeEffectScope.() -> Unit)? = ...): Modifier
+fun Modifier.hazeEffect(block: (HazeEffectScope.() -> Unit)? = ...): Modifier:
+  No parameter with name 'state' found.
+                    Modifier.hazeEffectCompat(
+                             ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPhoneContent.kt:512:25: error: no parameter with name 'style' found.
+                        style = HazeMaterials.ultraThin()
+                        ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:65:47: error: unresolved reference 'os'.
+    val onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,
+                                              ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:348:39: error: argument type mismatch: actual type is '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit', but '(String, Long, String?) -> Unit' was expected.
+                onRelatedVideoClick = fullscreenExtras?.onRelatedVideoClick ?: { _, _ -> },
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailPlayerTransitionHost.kt:348:85: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                onRelatedVideoClick = fullscreenExtras?.onRelatedVideoClick ?: { _, _ -> },
+                                                                                    ^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:114:8: error: unresolved reference 'io'.
+import io.github.alexzhirkevich.cupertino.icons.outlined.*
+       ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:476:79: error: unresolved reference 'FavoriteInteractionSettingsStore'.
+    val favoriteQuickSaveDefaultFolder by com.android.purebilibili.core.store.FavoriteInteractionSettingsStore
+                                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:905:56: error: null cannot be a value of a non-null type 'Long'.
+                navigateToRelatedVideo(target.videoId, null)
+                                                       ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:905:56: error: no value passed for parameter 'p3'.
+                navigateToRelatedVideo(target.videoId, null)
+                                                       ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1065:36: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val preferredCommentSortMode = remember(commentDefaultSortMode) {
+                                   ^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:1066:9: error: unresolved reference 'CommentSortMode'.
+        CommentSortMode.fromApiMode(commentDefaultSortMode)
+        ^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2664:48: error: unresolved reference 'player'.
+                 com.android.purebilibili.core.player.PlayerVolumeController
+                                               ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3180:39: error: argument type mismatch: actual type is '(String, Long, String?) -> Unit', but '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit' was expected.
+                onRelatedVideoClick = navigateToRelatedVideo,
+                                      ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3635:29: error: unresolved reference 'LargeScreenVideoLayout'.
+                            LargeScreenVideoLayout(
+                            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3686:71: error: unresolved reference 'it'.
+                            onCodecChange = { viewModel.setVideoCodec(it) },
+                                                                      ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3688:83: error: unresolved reference 'it'.
+                            onSecondCodecChange = { viewModel.setVideoSecondCodec(it) },
+                                                                                  ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3690:80: error: unresolved reference 'it'.
+                            onAudioQualityChange = { viewModel.setAudioQuality(it) },
+                                                                               ^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:3715:80: error: unresolved reference 'statusBarsIgnoringVisibility'.
+                            statusBarIgnoringVisibilityHeightDp = WindowInsets.statusBarsIgnoringVisibility
+                                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4219:99: error: @Composable invocations can only happen from the context of a @Composable function
+                            coil3.request.ImageRequest.Builder(coil3.compose.LocalPlatformContext.current)
+                                                                                                  ^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4720:66: error: argument type mismatch: actual type is '(String, Long, String?) -> Unit', but '(String, ??? (Unresolved qualified name: android.os.Bundle)?) -> Unit' was expected.
+                                        navigateToRelatedVideo = navigateToRelatedVideo,
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4829:98: error: unresolved reference 'ensureActive'.
+                                                    kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                                                                                                 ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:4839:114: error: unresolved reference 'ensureActive'.
+                                                                    kotlinx.coroutines.currentCoroutineContext().ensureActive()
+                                                                                                                 ^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5133:55: error: null cannot be a value of a non-null type 'Long'.
+                navigateToRelatedVideo(targetVideoId, null)
+                                                      ^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5133:55: error: no value passed for parameter 'p3'.
+                navigateToRelatedVideo(targetVideoId, null)
+                                                      ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\state\DesktopOriginalMiniEntryPolicy.kt:2:27: error: unresolved reference 'OptIn'.
+@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                          ^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\state\DesktopOriginalMiniEntryPolicy.kt:2:33: error: annotation argument must be a compile-time constant.
+@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\state\DesktopOriginalMiniEntryPolicy.kt:2:42: error: unresolved reference 'media3'.
+@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+                                         ^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\DesktopOriginalLikeBurstAnimation.kt:29:50: error: unresolved reference 'UiSkinAnimatedAsset'.
+import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset
+                                                 ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\DesktopOriginalLikeBurstAnimation.kt:51:9: error: unresolved reference 'UiSkinAnimatedAsset'.
+        UiSkinAnimatedAsset(
+        ^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-02\source-inputs\prepared\generated\com\android\purebilibili\feature\video\ui\components\DesktopOriginalLikeBurstAnimation.kt:75:19: error: type 'State<Float>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+    val iconScale by animateFloatAsState(
+                  ^^

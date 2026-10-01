@@ -1,0 +1,28 @@
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7534:44: error: unresolved reference 'SponsorBlockSkipRecord'.
+        val pendingRecords = mutableListOf<SponsorBlockSkipRecord>()
+                                           ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7546:20: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                )?.let { pendingRecords.add(it) }
+                   ^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7546:20: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                )?.let { pendingRecords.add(it) }
+                   ^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7546:20: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T, R> T.let(block: (T) -> R): R
+                )?.let { pendingRecords.add(it) }
+                   ^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7546:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                )?.let { pendingRecords.add(it) }
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7562:48: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        if (submission != null) pendingRecords.forEach { publishSponsorBlockSkip(submission, it) }
+                                               ^^^^^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7562:56: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        if (submission != null) pendingRecords.forEach { publishSponsorBlockSkip(submission, it) }
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7587:8: error: unresolved reference 'SponsorBlockSkipRecord'.
+    ): SponsorBlockSkipRecord? {
+       ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7604:17: error: unresolved reference 'SponsorBlockSkipRecord'.
+        record: SponsorBlockSkipRecord
+                ^^^^^^^^^^^^^^^^^^^^^^

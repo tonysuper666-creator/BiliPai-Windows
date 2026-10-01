@@ -1,0 +1,188 @@
+{
+  "selected": [
+    "PLAYBACK_CDN_FIRST_FRAME_FALLBACK_TIMEOUT_MS",
+    "PLAYBACK_STALL_RECOVERY_TIMEOUT_MS",
+    "SponsorContributionRequest",
+    "reduceSponsorSkipUiState",
+    "shouldResumePlaybackAfterSponsorBlockSkip",
+    "SPONSOR_SKIP_END_GUARD_MS",
+    "resolveSponsorBlockSkipTargetPositionMs",
+    "buildSponsorBlockVideoSnapshot",
+    "AudioModePlaylist",
+    "resolveUgcSeasonEpisodeIndex",
+    "buildAudioModeCollectionPlaylist",
+    "buildAudioModePagePlaylist",
+    "shouldApplyAudioModeCollectionPlaylist",
+    "buildPlaybackAudioUrlCandidates",
+    "buildPlaybackVideoUrlCandidates",
+    "hostForPlaybackLog",
+    "ExternalPlaylistSyncDecision",
+    "shouldBootstrapPlayerContext",
+    "shouldApplyVideoLoadResult",
+    "shouldHaltPlaybackForPendingMediaSwitch",
+    "resolveRequestedStartPositionMs",
+    "resolvePageSwitchStartPositionMs",
+    "resolveInitialPlaybackQualityMode",
+    "resolvePlaybackQualityModeForQualitySelection",
+    "resolveRelatedPlayUrlPreloadCount",
+    "resolvePlaybackIntentForSourceReplacement",
+    "InitialQualityUnavailableReason",
+    "resolveInitialQualityUnavailableReason",
+    "resolveInitialQualityWarningTarget",
+    "shouldShowInitialQualityUnavailableDialog",
+    "shouldBlockPremiumQualitySwitchDuringCooldown",
+    "formatQualitySwitchCooldownMessage",
+    "resolveQualitySwitchFailureMessage",
+    "buildQualitySwitchFailureDialogState",
+    "shouldApplyPlayerInfoResult",
+    "shouldApplySubtitleLoadResult",
+    "shouldApplySubtitleTrackBinding",
+    "resolveSubtitleTrackBindingMismatchReason",
+    "shouldTreatAsSamePlaybackRequest",
+    "shouldRestoreAttachedPlayerFromLoadedUi",
+    "shouldKeepLoadedVideoDetailUiWithoutSkeletonReload",
+    "resolveExternalPlaylistSyncDecision",
+    "clearSubtitleFields",
+    "clearTransientPlaybackPreviewData",
+    "shouldApplyVideoshotResult",
+    "QualityChangeReason",
+    "buildPremiumAutoUpgradePlaybackKey",
+    "hasExplicitQualitySelectionForPlayback",
+    "shouldReplacePlaybackSourceForQualityChange"
+  ],
+  "referenceExisting": [
+    {
+      "name": "PlaybackStallRecoveryDecision",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "resolvePlaybackStallRecoveryDecision",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "CommentMentionSearchUiState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "SponsorSkipUiState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "SponsorContributionPhase",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "SponsorContributionUiState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "PlaybackCdnFallbackState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "buildPlaybackCdnFallbackState",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "shouldFallbackFromCdnRewrite",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "shouldFallbackFromCdnRewrite",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "VideoPlaybackUiState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "resolveCommentReplyTargets",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "resolveCommentReplyMessage",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "resolvePlayerTransientEventChannelCapacity",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "FavoriteFolderMutation",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "FavoriteFolderSaveEvent",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "resolveFavoriteFolderMutation",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "resolveFavoriteFolderDialogTargetAid",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "resolveCommentSendTargetAid",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "shouldSyncFavoriteFolderUiState",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "QualitySwitchFailureDialogState",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "buildSubtitleTrackBindingKey",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "shouldRetrySubtitleLoadWithPlayerInfo",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "SubtitleTrackLoadDecision",
+      "kind": "class",
+      "private": false
+    },
+    {
+      "name": "isLikelyLowQualitySubtitleTrack",
+      "kind": "fun",
+      "private": false
+    },
+    {
+      "name": "resolveSubtitleTrackLoadDecision",
+      "kind": "fun",
+      "private": false
+    }
+  ],
+  "originalSourceSha": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+  "bodySha256LF": "8cff9573ce44184ba0bf0ab5b749c464706703a6c3d40e3fc2fc97ffb33b1e2c",
+  "preparedOnly": true
+}

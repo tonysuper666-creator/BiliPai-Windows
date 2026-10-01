@@ -1,0 +1,144 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "outputs": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "originalSha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "gitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a",
+      "output": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "outputSha256LF": "15d36e1863173138ebac392705afbaebebc8299d5602c7be9ece66bb02e85123",
+      "mode": "policy-extract"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoNoteRepository.kt",
+      "originalSha256LF": "df1c2c1638be237fc096c685993dc69c577310c3d8fad6dfc108ceb918863130",
+      "gitBlob": "6a85f2c4d2391e7623c7e0b59821093214c3ca4a",
+      "output": "com/android/purebilibili/data/repository/DesktopOriginalVideoNoteProtocol.kt",
+      "outputSha256LF": "7dec47b049608e2040651dc72f6bfcff523cbf764bc87428d351ba23a6b10a72",
+      "mode": "policy-extract"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "originalSha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "gitBlob": "6a7a29eaf4d0d1f49bad3cfd2a20bf67d9944357",
+      "output": "com/android/purebilibili/data/repository/DesktopOriginalVideoOwnerMetadataProtocol.kt",
+      "outputSha256LF": "b19944b4a8d7ebb96d15abb100a6489d0d9a7ed8bde230d81142f28c4182f41a",
+      "mode": "policy-extract"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/playback/resolver/NextPlaybackResolver.kt",
+      "originalSha256LF": "c18a3cd418bae28fb437490ac2c466e32aa6174ad911ea929f2ae9c5c2b3e18c",
+      "gitBlob": "8ad867bf9fb93ae3810de05a45570ce636775fb6",
+      "output": "com/android/purebilibili/feature/video/playback/resolver/NextPlaybackResolver.kt",
+      "outputSha256LF": "c18a3cd418bae28fb437490ac2c466e32aa6174ad911ea929f2ae9c5c2b3e18c",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicy.kt",
+      "originalSha256LF": "496e6ba380edef3b31b0e74a587cf15948b7877de7a7a902d7dd49b331549dd0",
+      "gitBlob": "00b6c4374b88429340dfcf55b185b853151ba232",
+      "output": "com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicy.kt",
+      "outputSha256LF": "496e6ba380edef3b31b0e74a587cf15948b7877de7a7a902d7dd49b331549dd0",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicy.kt",
+      "originalSha256LF": "66d3812c028ef46def5c7d23f19ad057e54a83cc84682daad359df12d2ca6a24",
+      "gitBlob": "c90ec61f57d22331f1769915442cade80434cb95",
+      "output": "com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicy.kt",
+      "outputSha256LF": "66d3812c028ef46def5c7d23f19ad057e54a83cc84682daad359df12d2ca6a24",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicy.kt",
+      "originalSha256LF": "d4e9fdbce347886b501ddf688743e84fa697410fb14959ee579928c1c64e711b",
+      "gitBlob": "1f7a8664711c8dd77ce7106612a7c4dd6af9a5bf",
+      "output": "com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicy.kt",
+      "outputSha256LF": "d4e9fdbce347886b501ddf688743e84fa697410fb14959ee579928c1c64e711b",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicy.kt",
+      "originalSha256LF": "35e53dfe6540738b78cf7218beed58a6de49c6f43d20327d085ffb1a590999b1",
+      "gitBlob": "afe3811710196c2791246eb5292ff44aa2b5ac43",
+      "output": "com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicy.kt",
+      "outputSha256LF": "35e53dfe6540738b78cf7218beed58a6de49c6f43d20327d085ffb1a590999b1",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt",
+      "originalSha256LF": "645241d7f2f3a324308e5cd95c5f231bf8d6d63863858af7faa36c26a0f022ea",
+      "gitBlob": "092d81cef3a6e3f0ee6963241c5465160784b75c",
+      "output": "com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt",
+      "outputSha256LF": "645241d7f2f3a324308e5cd95c5f231bf8d6d63863858af7faa36c26a0f022ea",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicy.kt",
+      "originalSha256LF": "9209487b3800b855380cb3b2f16a97604c9159031d1b12f5f950f592a248c8ef",
+      "gitBlob": "e49ee36a6e84186e209338b2473b86d3b8f58512",
+      "output": "com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicy.kt",
+      "outputSha256LF": "9209487b3800b855380cb3b2f16a97604c9159031d1b12f5f950f592a248c8ef",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadCandidatePolicy.kt",
+      "originalSha256LF": "395a35eef63f61a08555d6363a30ef63e38fbed379312e8d67554c0a5dd295a2",
+      "gitBlob": "fddf2da94a047836e41578424cdc3935b02d46b7",
+      "output": "com/android/purebilibili/feature/download/BatchDownloadCandidatePolicy.kt",
+      "outputSha256LF": "395a35eef63f61a08555d6363a30ef63e38fbed379312e8d67554c0a5dd295a2",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadQueuePolicy.kt",
+      "originalSha256LF": "c4a067d42d6c1eb9ab459c5434ff1756c228900886b1b376004f72a77a169d12",
+      "gitBlob": "597ad5d4bf6165a47fb80fe97039723e3b0ea07c",
+      "output": "com/android/purebilibili/feature/download/BatchDownloadQueuePolicy.kt",
+      "outputSha256LF": "c4a067d42d6c1eb9ab459c5434ff1756c228900886b1b376004f72a77a169d12",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicy.kt",
+      "originalSha256LF": "9e23649a872f77bfd7bdc6115e32562cca732e7a1bab0efcc182c92b67e12cd3",
+      "gitBlob": "22afa5393a8f279e0c8aa84f7e0157be9ae19eac",
+      "output": "com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicy.kt",
+      "outputSha256LF": "9e23649a872f77bfd7bdc6115e32562cca732e7a1bab0efcc182c92b67e12cd3",
+      "mode": "direct"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "originalSha256LF": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "gitBlob": "18646cf1840069cccdc0b40a45b6aef334a19d3e",
+      "output": "com/android/purebilibili/core/util/DesktopOriginalVideoDefaultQuality.kt",
+      "outputSha256LF": "d3841115454bc3b0a7b9bd662069936884245b79f0bb3cd05dc2b9311e453d8c",
+      "mode": "policy-extract"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "originalSha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "output": "com/android/purebilibili/core/store/DesktopOriginalVideoOwnerSettings.kt",
+      "outputSha256LF": "2c4f29ea06019618e887216317c3ef5b075e2dab2ba215e92dda9af35bdc35d0",
+      "mode": "policy-extract"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "originalSha256LF": "7bc193930ff8ebcae7b8e5e47412a043df6bf54502724c809b9ce0ac8f4e159d",
+      "gitBlob": "d3e806df701b095b99dbf71d292fa2130bfa2724",
+      "output": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "outputSha256LF": "5fba0c6a74be3130bc31ee9f48d4009047c74a0cbe23c0eb51577a7f67d9e85d",
+      "mode": "policy-extract"
+    }
+  ],
+  "sourceIdentities": 16,
+  "productionSelected": 6,
+  "directSync": 10,
+  "bodyPatchReplay": "Original exact line spans/hash + complete original class inverse137; no fake platform implementation",
+  "referenceExisting": [
+    "canonical Core/UI/state and actual66 NativeOwner/seek types",
+    "Fullscreen sole buildPlaybackAudioUrlCandidates",
+    "sole existing ControlSettings completion cache",
+    "sole same global Context and request Invocation",
+    "Holder337 prospective SOURCE_READY but not a compiled input to whole13"
+  ]
+}

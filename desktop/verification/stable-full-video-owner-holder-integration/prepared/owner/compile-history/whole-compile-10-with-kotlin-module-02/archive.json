@@ -1,0 +1,10 @@
+{
+  "scope": "Archive of unchanged actual66 compile10 outputs, actual Kotlin module retained. All 374 class byte entries exactly match prior compile10 Jar. No recompilation/product install.",
+  "classEntries": 374,
+  "moduleEntries": [
+    "META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module"
+  ],
+  "jarSha256": "e310cb71a3ccd2ae2fdc81f69fa8da8dbf0b06c4e28e11209bdf65765b1c7f67",
+  "originalJarSha256": "763239e4411f72589000ea65ccf16f05231364ea942602c49861ba621ab2bf6d",
+  "previousArchiveIncomplete": "whole-compile-10-with-kotlin-module contained only181 entries because its task script used ordinary Windows rglob; it is rejected and retained as failed history."
+}

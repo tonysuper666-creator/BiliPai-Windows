@@ -1,0 +1,9 @@
+{
+  "scope": "New archive of unchanged actual66 compile10 outputs, including actual Kotlin compiler module metadata. No recompilation/source edits/product install.",
+  "classEntries": 181,
+  "moduleEntries": [
+    "META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module"
+  ],
+  "jarSha256": "4f8ebe90d090cdc3adfe1b9aadd970b88f82a644caa27f8e70d0f331e7467d68",
+  "originalJarSha256": "763239e4411f72589000ea65ccf16f05231364ea942602c49861ba621ab2bf6d"
+}

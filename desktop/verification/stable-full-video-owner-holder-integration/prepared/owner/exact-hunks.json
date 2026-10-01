@@ -1,0 +1,33 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+    "baseSha256LF": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01",
+    "desiredSha256LF": "2015e89458d5260276b442b142115de302709f7d62ba04ba8142418c9819c7e1",
+    "patch": "hunks/context-string-set.patch",
+    "scope": "getStringSet/putStringSet only; merge child Holder remove/presence hunks in same sole Context, never overwrite"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+    "baseSha256LF": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+    "desiredSha256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+    "anchor": "    private suspend fun activeInvocation(): DesktopOriginalVideoPlaybackInvocation {\n",
+    "before": "    /** Read-only view of THIS continuation's captured repository. Extended\n     * original metadata/action ports use it; there is no mutable latest binding. */\n    internal fun requireRequestRepository(): DesktopOriginalVideoLoadRepository =\n        activeThreadInvocation()?.repository\n            ?: error(\"Original playback network invocation is required\")\n\n",
+    "scope": "readonly invocation view; no latest repository or completed request retained"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+    "baseSha256LF": "7dc9952389ebc0fa4139d6cfda0a733d6df58e8869ac11df0f0e316ba2e5b6b7",
+    "desiredSha256LF": "aa33a61c40c51c5a5fef72741393e585ce763f3b2775e29dae4cfc3c1f8e4ba5",
+    "anchor": "'getPlaybackCompletionBehavior','setPlaybackCompletionBehavior'",
+    "replacement": "'getPlaybackCompletionBehavior','getPlaybackCompletionBehaviorSync','setPlaybackCompletionBehavior'",
+    "scope": "reader selected into existing original memory-cache owner; preserve all other producer members"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-video-state-core.py",
+    "baseSha256LF": "8c38d325e260e589c8ef3d7419dc6fd3b1060fd27b6246ffaf86db361cd5087a",
+    "desiredSha256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+    "anchor": "s+='\\n'+pager.protocol_members(REPO)\n",
+    "after": "s=s.replace('private suspend fun getWbiKeys()', 'internal suspend fun getWbiKeys()', 1)\n",
+    "scope": "ONLY WBI visibility; same existing load protocol/cache, preserve Portrait2 members"
+  }
+]

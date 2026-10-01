@@ -1,0 +1,52 @@
+{
+  "sourceOnly": true,
+  "installJar": false,
+  "files": [
+    {
+      "path": "tools/extract-upstream-video-detail-holder.py",
+      "sha256Bytes": "504e1390d84e04e3e1678ff1e6aff44b26a5cb47503fb2e9511d31dd8ff02bbb",
+      "operation": "install sole source producer"
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopOriginalVideoComposerEnvironment.kt",
+      "sha256Bytes": "5da87756b834e6974f48bdcfdd0798dc05a06a77a5a38d006fc44970ddc80e74",
+      "operation": "install source"
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopOriginalVideoEntryScheduler.kt",
+      "sha256Bytes": "3714870d312d33611383bbfd621e474a9cbcd0a07c364a4a022313f5cecf6f4a",
+      "operation": "install source"
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopOriginalVideoHolderPlatform.kt",
+      "sha256Bytes": "83badfb1c8bcf0ae468574809f4d499208da5079f7b01625809404325aa1edbe",
+      "operation": "install source"
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopOriginalVideoOrientationInputs.kt",
+      "sha256Bytes": "9c6d78680a3b72fa373a4fa3df0ca49d49837172c12aa93de29c0e25bcff43bd",
+      "operation": "install source"
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "13c41b2c0de292097fd591c20bf24c006e6c8d9057c3a0dc2d4ff136ca43db28",
+      "operation": "source identity/feature merge only"
+    },
+    {
+      "path": "local-hunks/context-remove.json",
+      "sha256Bytes": "42e89069bc4a8bb96da291cba50a3388a6587b473a8a33542029e6f790708469",
+      "operation": "three exact hunks only; whole reference .kt files are not installers"
+    }
+  ],
+  "generatedSources": {
+    "production": 32,
+    "directSyncedOnce": 21,
+    "standalone": 53
+  },
+  "referenceOnlyDirectories": [
+    "standalone-generated",
+    "local-hunks/context-remove-base.kt",
+    "local-hunks/context-remove-candidate-reference.kt"
+  ],
+  "runtimeFactoriesRequired": "ROOT-INTEGRATION.md"
+}

@@ -1,0 +1,12 @@
+desktop\.local\stable-video-holder-ui-parity\runs\holder-05\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:224:50: warning: 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+                                    Icons.Filled.ArrowBack,
+                                                 ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-05\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:232:50: warning: 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+                                    Icons.Filled.ArrowBack,
+                                                 ^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-05\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:2916:42: warning: condition is always 'true'.
+        val shouldPreserveCurrentFrame = activity != null &&
+                                         ^^^^^^^^^^^^^^^^
+desktop\.local\stable-video-holder-ui-parity\runs\holder-05\source-inputs\prepared\generated\com\android\purebilibili\feature\video\screen\VideoDetailScreenStateHolder.kt:5054:21: warning: condition is always 'true'.
+                    hostActivity != null &&
+                    ^^^^^^^^^^^^^^^^^^^^

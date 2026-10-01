@@ -1,0 +1,1045 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoPlaybackOwnerEnvironment.kt:32:54: error: unresolved reference 'CreatorCardStats'.
+    suspend fun getCreatorCardStats(mid:Long):Result<CreatorCardStats>
+                                                     ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5:38: error: unresolved reference 'cache'.
+import com.android.purebilibili.core.cache.PlayUrlCache
+                                     ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:20:48: error: unresolved reference 'CdnDashPrefetchRequest'.
+import com.android.purebilibili.feature.plugin.CdnDashPrefetchRequest
+                                               ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:21:48: error: unresolved reference 'CdnDashSegmentPrefetcher'.
+import com.android.purebilibili.feature.plugin.CdnDashSegmentPrefetcher
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:42:52: error: unresolved reference 'buildVideoNoteDraftFromAiSummary'.
+import com.android.purebilibili.feature.video.note.buildVideoNoteDraftFromAiSummary
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:82:63: error: unresolved reference 'PlaybackPostLoadTask'.
+import com.android.purebilibili.feature.video.playback.policy.PlaybackPostLoadTask
+                                                              ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:86:63: error: unresolved reference 'buildPlaybackPostLoadPlan'.
+import com.android.purebilibili.feature.video.playback.policy.buildPlaybackPostLoadPlan
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:90:63: error: unresolved reference 'resolvePluginPollingIntervalMs'.
+import com.android.purebilibili.feature.video.playback.policy.resolvePluginPollingIntervalMs
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:95:63: error: unresolved reference 'shouldDispatchPluginPositionUpdate'.
+import com.android.purebilibili.feature.video.playback.policy.shouldDispatchPluginPositionUpdate
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:104:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.InteractiveChoicePanelUiState
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:105:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.InteractiveChoiceUiModel
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:106:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.normalizeInteractiveCountdownMs
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:107:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveAutoChoice
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:108:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveChoiceCid
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:109:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveChoiceEdgeId
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:110:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveCountdownUpdateIntervalMs
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:111:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveQuestionPollingIntervalMs
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:112:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.resolveInteractiveQuestionTriggerMs
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:113:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.applyInteractiveNativeAction
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:114:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.evaluateInteractiveChoiceCondition
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:115:47: error: unresolved reference 'interaction'.
+import com.android.purebilibili.feature.video.interaction.shouldTriggerInteractiveQuestion
+                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:849:77: error: unresolved reference 'getPlaybackCdnPreference'.
+    private val playbackCdnPreference = com.android.purebilibili.core.store.getPlaybackCdnPreference(environment.settings)
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:850:10: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .map { PlaybackCdnPreference.fromStorageValue(it) }
+         ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:850:10: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        .map { PlaybackCdnPreference.fromStorageValue(it) }
+         ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:850:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        .map { PlaybackCdnPreference.fromStorageValue(it) }
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:918:39: error: unresolved reference 'PlayerToastMessage'.
+    private val _toastEvent = Channel<PlayerToastMessage>()
+                                      ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:919:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val toastEvent = _toastEvent.receiveAsFlow()
+                                 ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:955:92: error: no value passed for parameter 'cause'.
+                     com.android.purebilibili.core.util.Logger.e("VideoPlaybackViewModel", "fetchUserCoins: No local token found")
+                                                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:976:67: error: unresolved reference 'w'.
+                        com.android.purebilibili.core.util.Logger.w("VideoPlaybackViewModel", "User not logged in according to getNavInfo")
+                                                                  ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:980:91: error: no value passed for parameter 'cause'.
+                    com.android.purebilibili.core.util.Logger.e("VideoPlaybackViewModel", "getNavInfo failed: code=${result.code}")
+                                                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:984:87: error: no value passed for parameter 'cause'.
+                com.android.purebilibili.core.util.Logger.e("VideoPlaybackViewModel", "fetchUserCoins Error: ${e.javaClass.simpleName} - ${e.message}")
+                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1177:43: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    private val _interactiveChoicePanel = MutableStateFlow(InteractiveChoicePanelUiState())
+                                          ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1177:60: error: unresolved reference 'InteractiveChoicePanelUiState'.
+    private val _interactiveChoicePanel = MutableStateFlow(InteractiveChoicePanelUiState())
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1178:58: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val interactiveChoicePanel = _interactiveChoicePanel.asStateFlow()
+                                                         ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1219:71: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1219:71: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1219:71: error: this declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1219:76: error: no parameter with name 'visible' found.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                           ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1219:93: error: no parameter with name 'remainingMs' found.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                                            ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1228:60: error: unresolved reference 'choices'.
+        val selectedChoice = _interactiveChoicePanel.value.choices
+                                                           ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1229:28: error: unresolved reference 'it'.
+            .firstOrNull { it.edgeId == edgeId && it.cid == cid }
+                           ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1229:51: error: unresolved reference 'it'.
+            .firstOrNull { it.edgeId == edgeId && it.cid == cid }
+                                                  ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1230:46: error: unresolved reference 'edgeId'.
+        val resolvedEdgeId = selectedChoice?.edgeId ?: edgeId
+                                             ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1235:71: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1235:71: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1235:71: error: this declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                      ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1235:76: error: no parameter with name 'visible' found.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                           ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1235:93: error: no parameter with name 'remainingMs' found.
+        _interactiveChoicePanel.value = _interactiveChoicePanel.value.copy(visible = false, remainingMs = null)
+                                                                                            ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1237:29: error: unresolved reference 'nativeAction'.
+            selectedChoice?.nativeAction
+                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1238:19: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.takeIf { it.isNotBlank() }
+                  ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1238:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.takeIf { it.isNotBlank() }
+                         ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1239:19: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.let { action ->
+                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1239:19: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                ?.let { action ->
+                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1239:25: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.let { action ->
+                        ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1240:21: error: unresolved reference 'applyInteractiveNativeAction'.
+                    applyInteractiveNativeAction(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1673:54: error: unresolved reference 'ActionRepository'.
+            com.android.purebilibili.data.repository.ActionRepository
+                                                     ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1678:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1678:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                           ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1682:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { e ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1743:49: error: unresolved reference 'getVideoCodec'.
+            com.android.purebilibili.core.store.getVideoCodec(context)
+                                                ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1744:58: error: unresolved reference 'it'.
+                .collect { _videoCodecPreference.value = it }
+                                                         ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1748:49: error: unresolved reference 'getVideoSecondCodec'.
+            com.android.purebilibili.core.store.getVideoSecondCodec(context)
+                                                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1749:64: error: unresolved reference 'it'.
+                .collect { _videoSecondCodecPreference.value = it }
+                                                               ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1753:49: error: unresolved reference 'getAudioQuality'.
+            com.android.purebilibili.core.store.getAudioQuality(context)
+                                                ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1755:139: error: unresolved reference 'it'.
+                    com.android.purebilibili.core.util.Logger.d("VideoPlaybackViewModel", "? Audio preference updated from Settings to: $it")
+                                                                                                                                          ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1756:53: error: unresolved reference 'it'.
+                    _audioQualityPreference.value = it 
+                                                    ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1844:75: error: unresolved reference 'SettingsManager'.
+                val autoPlayEnabled = com.android.purebilibili.core.store.SettingsManager
+                                                                          ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1847:57: error: unresolved reference 'SettingsManager'.
+                    com.android.purebilibili.core.store.SettingsManager
+                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1863:68: error: unresolved reference 'SettingsManager'.
+                val behavior = com.android.purebilibili.core.store.SettingsManager
+                                                                   ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1873:46: error: argument type mismatch: actual type is 'ExternalPlaylistSource?', but 'ExternalPlaylistSource' was expected.
+                    externalPlaylistSource = environment.playlist.externalPlaylistSource.value,
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2358:38: error: argument type mismatch: actual type is 'ExternalPlaylistSource?', but 'ExternalPlaylistSource' was expected.
+            externalPlaylistSource = environment.playlist.externalPlaylistSource.value
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2395:38: error: argument type mismatch: actual type is 'ExternalPlaylistSource?', but 'ExternalPlaylistSource' was expected.
+            externalPlaylistSource = environment.playlist.externalPlaylistSource.value
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2672:61: error: unresolved reference 'getClickToPlaySync'.
+                        com.android.purebilibili.core.store.getClickToPlaySync(it)
+                                                            ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2688:61: error: unresolved reference 'getClickToPlaySync'.
+                        com.android.purebilibili.core.store.getClickToPlaySync(it)
+                                                            ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2797:75: error: unresolved reference 'VideoRepository'.
+                val isLoggedIn = com.android.purebilibili.data.repository.VideoRepository.isPlaybackLoggedIn()
+                                                                          ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2801:41: error: unresolved reference 'NetworkUtils'.
+                    val storedQuality = NetworkUtils.getDefaultQualityId(context)
+                                        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2802:82: error: unresolved reference 'SettingsManager'.
+                    val autoHighestEnabled = com.android.purebilibili.core.store.SettingsManager
+                                                                                 ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2808:80: error: unresolved reference 'VideoRepository'.
+                        cachedIsVip = com.android.purebilibili.data.repository.VideoRepository.isPlaybackVip(),
+                                                                               ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2812:56: error: unresolved reference 'resolvePlaybackDefaultQualityId'.
+                    com.android.purebilibili.core.util.resolvePlaybackDefaultQualityId(
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2822:90: error: unresolved reference 'PlayerSettingsStore'.
+                        defaultAudioQuality = com.android.purebilibili.core.store.player.PlayerSettingsStore
+                                                                                         ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2824:93: error: unresolved reference 'PlayerSettingsStore'.
+                        rememberedAudioQuality = com.android.purebilibili.core.store.player.PlayerSettingsStore
+                                                                                            ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2829:57: error: unresolved reference 'getVideoCodecSync'.
+                    com.android.purebilibili.core.store.getVideoCodecSync(it)
+                                                        ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2838:57: error: unresolved reference 'getVideoSecondCodecSync'.
+                    com.android.purebilibili.core.store.getVideoSecondCodecSync(it)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2844:50: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                val isHdrSupported = appContext?.let {
+                                                 ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2845:56: error: unresolved reference 'MediaUtils'.
+                    com.android.purebilibili.core.util.MediaUtils.isHdrSupported(it)
+                                                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2846:57: error: unresolved reference 'MediaUtils'.
+                } ?: com.android.purebilibili.core.util.MediaUtils.isHdrSupported()
+                                                        ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2847:58: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                val isDolbyVisionSupported = appContext?.let {
+                                                         ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2848:56: error: unresolved reference 'MediaUtils'.
+                    com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported(it)
+                                                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2849:57: error: unresolved reference 'MediaUtils'.
+                } ?: com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported()
+                                                        ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2858:57: error: unresolved reference 'getClickToPlaySync'.
+                    com.android.purebilibili.core.store.getClickToPlaySync(it)
+                                                        ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2870:45: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            val dataSaverMode = appContext?.let { 
+                                            ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2871:53: error: unresolved reference 'getDataSaverModeSync'.
+                com.android.purebilibili.core.store.getDataSaverModeSync(it) 
+                                                    ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2872:54: error: unresolved reference 'DataSaverMode'.
+            } ?: com.android.purebilibili.core.store.DataSaverMode.MOBILE_ONLY
+                                                     ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2875:38: error: 'when' expression must be exhaustive. Add an 'else' branch.
+            val shouldLimitQuality = when (dataSaverMode) {
+                                     ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2876:53: error: unresolved reference 'DataSaverMode'.
+                com.android.purebilibili.core.store.DataSaverMode.OFF -> false
+                                                    ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2877:53: error: unresolved reference 'DataSaverMode'.
+                com.android.purebilibili.core.store.DataSaverMode.ALWAYS -> true  // �κ����綼����
+                                                    ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2878:53: error: unresolved reference 'DataSaverMode'.
+                com.android.purebilibili.core.store.DataSaverMode.MOBILE_ONLY -> isOnMobileNetwork  // ���ƶ�����
+                                                    ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2885:113: error: unresolved reference 'label'.
+                com.android.purebilibili.core.util.Logger.d("VideoPlaybackViewModel", "? ʡ����ģʽ(${dataSaverMode.label}): ���ƻ���Ϊ480P")
+                                                                                                                ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:2963:64: error: unresolved reference 'player'.
+                                 com.android.purebilibili.core.player.PlayerVolumeController.applyPreferredVolume(p)
+                                                               ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3089:65: error: unresolved reference 'getVideoNoteEnabledSync'.
+                            com.android.purebilibili.core.store.getVideoNoteEnabledSync(it)
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3570:14: error: unresolved reference 'NetworkUtils'.
+        if (!NetworkUtils.isWifi(context)) {
+             ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3580:81: error: unresolved reference 'VideoRepository'.
+                    val detailResult = com.android.purebilibili.data.repository.VideoRepository.getVideoDetails(video.bvid)
+                                                                                ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3581:41: error: operator call 'component1()' is ambiguous for destructuring of type '??? (Ambiguity: getOrNull, [kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/text/getOrNull])'. Applicable candidates:
+fun <T> Array<out T>.component1(): T
+fun ByteArray.component1(): Byte
+fun ShortArray.component1(): Short
+fun IntArray.component1(): Int
+fun LongArray.component1(): Long
+fun FloatArray.component1(): Float
+fun DoubleArray.component1(): Double
+fun BooleanArray.component1(): Boolean
+fun CharArray.component1(): Char
+fun <T> List<T>.component1(): T
+fun <K, V> Map.Entry<K, V>.component1(): K
+fun UIntArray.component1(): UInt
+fun ULongArray.component1(): ULong
+fun UByteArray.component1(): UByte
+fun UShortArray.component1(): UShort
+                    val (viewInfo, _) = detailResult.getOrNull() ?: continue
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3581:41: error: operator call 'component2()' is ambiguous for destructuring of type '??? (Ambiguity: getOrNull, [kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/collections/getOrNull, kotlin/text/getOrNull])'. Applicable candidates:
+fun <T> Array<out T>.component2(): T
+fun ByteArray.component2(): Byte
+fun ShortArray.component2(): Short
+fun IntArray.component2(): Int
+fun LongArray.component2(): Long
+fun FloatArray.component2(): Float
+fun DoubleArray.component2(): Double
+fun BooleanArray.component2(): Boolean
+fun CharArray.component2(): Char
+fun <T> List<T>.component2(): T
+fun <K, V> Map.Entry<K, V>.component2(): V
+fun UIntArray.component2(): UInt
+fun ULongArray.component2(): ULong
+fun UByteArray.component2(): UByte
+fun UShortArray.component2(): UShort
+                    val (viewInfo, _) = detailResult.getOrNull() ?: continue
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3584:55: error: unresolved reference 'cache'.
+                    if (com.android.purebilibili.core.cache.PlayUrlCache.get(video.bvid, viewInfo.cid) != null) {
+                                                      ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3584:99: error: unresolved reference 'cid'.
+                    if (com.android.purebilibili.core.cache.PlayUrlCache.get(video.bvid, viewInfo.cid) != null) {
+                                                                                                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3590:79: error: unresolved reference 'VideoRepository'.
+                    val isLoggedIn = com.android.purebilibili.data.repository.VideoRepository.isPlaybackLoggedIn()
+                                                                              ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3592:80: error: unresolved reference 'NetworkUtils'.
+                        val storedQuality = com.android.purebilibili.core.util.NetworkUtils
+                                                                               ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3594:86: error: unresolved reference 'SettingsManager'.
+                        val autoHighestEnabled = com.android.purebilibili.core.store.SettingsManager
+                                                                                     ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3596:85: error: unresolved reference 'VideoRepository'.
+                        val effectiveVip = com.android.purebilibili.data.repository.VideoRepository
+                                                                                    ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3599:88: error: unresolved reference 'VideoRepository'.
+                                cachedIsVip = com.android.purebilibili.data.repository.VideoRepository.isPlaybackVip(),
+                                                                                       ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3603:60: error: unresolved reference 'resolvePlaybackDefaultQualityId'.
+                        com.android.purebilibili.core.util.resolvePlaybackDefaultQualityId(
+                                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3612:62: error: unresolved reference 'VideoRepository'.
+                    com.android.purebilibili.data.repository.VideoRepository.getPlayUrlData(
+                                                             ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3614:34: error: unresolved reference 'cid'.
+                        viewInfo.cid, 
+                                 ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3647:9: error: unresolved reference 'PlayUrlCache'.
+        PlayUrlCache.invalidate(bvid, currentCid)
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3681:49: error: unresolved reference 'getVideoSecondCodecSync'.
+            com.android.purebilibili.core.store.getVideoSecondCodecSync(context)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3702:9: error: unresolved reference 'PlayUrlCache'.
+        PlayUrlCache.invalidate(bvid, current.info.cid)
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3981:60: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                    val message = if (liked && appContext?.let { ctx -> com.android.purebilibili.core.store.isEasterEggEnabledSync(ctx) } == true) {
+                                                           ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:3981:109: error: unresolved reference 'isEasterEggEnabledSync'.
+                    val message = if (liked && appContext?.let { ctx -> com.android.purebilibili.core.store.isEasterEggEnabledSync(ctx) } == true) {
+                                                                                                            ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4004:67: error: argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'DesktopPluginContext' was expected.
+            val oldSnapshot = TodayWatchFeedbackStore.getSnapshot(context)
+                                                                  ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4011:50: error: argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'DesktopPluginContext' was expected.
+            TodayWatchFeedbackStore.saveSnapshot(context, snapshot)
+                                                 ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4062:54: error: unresolved reference 'CommentRepository'.
+            com.android.purebilibili.data.repository.CommentRepository.getEmotePackages()
+                                                     ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4063:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { 
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4063:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { 
+                           ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4066:90: error: unresolved reference 'size'.
+                    android.util.Log.d("VideoPlaybackViewModel", "? Emotes loaded: ${it.size} packages")
+                                                                                         ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4068:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { Logger.e("VideoPlaybackViewModel", "Failed to load emotes", it) }
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4113:18: error: unresolved reference 'isDanmakuServerDisabled'.
+                .isDanmakuServerDisabled(currentCid)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4182:18: error: unresolved reference 'isDanmakuServerDisabled'.
+                .isDanmakuServerDisabled(currentCid)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4198:22: error: unresolved reference 'sendAttentionCommandDanmaku'.
+                    .sendAttentionCommandDanmaku(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4203:22: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                    .map { Unit }
+                     ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4203:22: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                    .map { Unit }
+                     ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4203:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                    .map { Unit }
+                         ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4206:22: error: unresolved reference 'sendDanmaku'.
+                    .sendDanmaku(
+                     ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4217:22: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                    .map { Unit }
+                     ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4217:22: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                    .map { Unit }
+                     ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4217:26: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                    .map { Unit }
+                         ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4220:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4220:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                           ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4234:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4297:18: error: unresolved reference 'getDanmakuThumbupState'.
+                .getDanmakuThumbupState(cid = currentCid, dmid = dmid)
+                 ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4298:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { thumbupState ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4298:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { thumbupState ->
+                             ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4299:64: error: unresolved reference 'liked'.
+                    _likedDanmakuIds.update { if (thumbupState.liked) it + dmid else it - dmid }
+                                                               ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4303:54: error: unresolved reference 'likes'.
+                            voteCount = thumbupState.likes,
+                                                     ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4304:53: error: unresolved reference 'liked'.
+                            hasLiked = thumbupState.liked,
+                                                    ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4310:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure {
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4333:18: error: unresolved reference 'recallDanmaku'.
+                .recallDanmaku(cid = currentCid, dmid = dmid)
+                 ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4334:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { message ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4334:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { message ->
+                             ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4337:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4366:18: error: unresolved reference 'likeDanmaku'.
+                .likeDanmaku(cid = currentCid, dmid = dmid, like = like)
+                 ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4367:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4367:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                           ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4388:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4412:18: error: unresolved reference 'reportDanmaku'.
+                .reportDanmaku(cid = currentCid, dmid = dmid, reason = reason, content = content)
+                 ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4413:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4413:28: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess {
+                           ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4416:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4461:54: error: unresolved reference 'CommentRepository'.
+            com.android.purebilibili.data.repository.CommentRepository
+                                                     ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4463:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { users ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4463:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { users ->
+                             ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4472:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4547:54: error: unresolved reference 'CommentRepository'.
+            com.android.purebilibili.data.repository.CommentRepository
+                                                     ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4556:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { reply ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4556:30: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onSuccess { reply ->
+                             ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4570:18: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                .onFailure { error ->
+                 ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4590:44: error: unresolved reference 'contentResolver'.
+                    val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
+                                           ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4595:81: error: unresolved reference 'CommentRepository'.
+                    val uploadResult = com.android.purebilibili.data.repository.CommentRepository
+                                                                                ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4599:48: error: unresolved reference 'contentResolver'.
+                            resolver = context.contentResolver,
+                                               ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4608:109: error: unresolved reference 'Uri'.
+    private fun queryDisplayName(context: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext, uri: Uri): String? {
+                                                                                                            ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4609:16: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        return runCatching {
+               ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4610:21: error: unresolved reference 'contentResolver'.
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                    ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4610:48: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                                               ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4610:56: error: unresolved reference 'OpenableColumns'.
+            context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)
+                                                       ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4611:19: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.use { cursor ->
+                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4611:19: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                ?.use { cursor ->
+                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4611:25: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                ?.use { cursor ->
+                        ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4612:40: error: unresolved reference 'getColumnIndex'.
+                    val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                       ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4612:55: error: unresolved reference 'OpenableColumns'.
+                    val index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                                                      ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4613:46: error: unresolved reference 'moveToFirst'.
+                    if (index >= 0 && cursor.moveToFirst()) cursor.getString(index) else null
+                                             ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4613:68: error: unresolved reference 'getString'.
+                    if (index >= 0 && cursor.moveToFirst()) cursor.getString(index) else null
+                                                                   ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4644:53: error: unresolved reference 'setVideoCodec'.
+                com.android.purebilibili.core.store.setVideoCodec(it, codec)
+                                                    ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4655:53: error: unresolved reference 'setVideoSecondCodec'.
+                com.android.purebilibili.core.store.setVideoSecondCodec(it, codec)
+                                                    ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4669:29: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                appContext?.let {
+                            ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4670:57: error: unresolved reference 'setAudioQuality'.
+                    com.android.purebilibili.core.store.setAudioQuality(it, audioQuality)
+                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4687:25: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            appContext?.let {
+                        ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4688:53: error: unresolved reference 'setAudioQuality'.
+                com.android.purebilibili.core.store.setAudioQuality(it, audioQuality)
+                                                    ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4710:28: error: unresolved reference 'PlayerToastPresentation'.
+            toast(message, PlayerToastPresentation.CenteredHighlight)
+                           ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4757:25: error: unresolved reference 'PlayerToastPresentation'.
+                        PlayerToastPresentation.CenteredHighlight
+                        ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4807:62: error: unresolved reference 'VideoRepository'.
+                if (com.android.purebilibili.data.repository.VideoRepository.isPlaybackVip()) {
+                                                             ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4810:62: error: unresolved reference 'VideoRepository'.
+                    com.android.purebilibili.data.repository.VideoRepository.getPlaybackNavInfo()
+                                                             ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4812:27: error: unresolved reference 'vip'.
+                        ?.vip
+                          ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:4825:73: error: unresolved reference 'VideoRepository'.
+            if (fetchedVip && !com.android.purebilibili.data.repository.VideoRepository.isUsingDedicatedPlaybackAccount()) {
+                                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5023:59: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            VideoRepository.getCreatorCardStats(ownerMid).onSuccess { stats ->
+                                                          ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5023:59: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> Result<T>.onSuccess(action: (T) -> Unit): Result<T>
+            VideoRepository.getCreatorCardStats(ownerMid).onSuccess { stats ->
+                                                          ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5023:71: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            VideoRepository.getCreatorCardStats(ownerMid).onSuccess { stats ->
+                                                                      ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5027:56: error: unresolved reference 'followerCount'.
+                            ownerFollowerCount = stats.followerCount,
+                                                       ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5028:53: error: unresolved reference 'videoCount'.
+                            ownerVideoCount = stats.videoCount
+                                                    ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5096:61: error: unresolved reference 'SettingsManager'.
+                        com.android.purebilibili.core.store.SettingsManager
+                                                            ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5230:25: error: unresolved reference 'ViewGrpcRepository'.
+                        ViewGrpcRepository.getBgmList(grpcAid, bvid, cid).onSuccess { bgmList ->
+                        ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5230:75: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                        ViewGrpcRepository.getBgmList(grpcAid, bvid, cid).onSuccess { bgmList ->
+                                                                          ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5230:87: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                        ViewGrpcRepository.getBgmList(grpcAid, bvid, cid).onSuccess { bgmList ->
+                                                                                      ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5231:78: error: unresolved reference 'size'.
+                            Logger.w("PlayerVM", "gRPC BGM result: ${bgmList.size} entries for aid=$grpcAid")
+                                                                             ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5239:27: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                        }.onFailure { e ->
+                          ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5692:41: error: unresolved reference 'InteractiveChoicePanelUiState'.
+        _interactiveChoicePanel.value = InteractiveChoicePanelUiState()
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5731:45: error: unresolved reference 'InteractiveChoicePanelUiState'.
+            _interactiveChoicePanel.value = InteractiveChoicePanelUiState()
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5738:53: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            ?.firstOrNull { (_, choices) -> choices.isNotEmpty() }
+                                                    ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5738:53: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> Collection<T>.isNotEmpty(): Boolean
+            ?.firstOrNull { (_, choices) -> choices.isNotEmpty() }
+                                                    ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5740:49: error: unresolved reference 'InteractiveChoicePanelUiState'.
+                _interactiveChoicePanel.value = InteractiveChoicePanelUiState()
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5749:33: error: unresolved reference 'resolveInteractiveQuestionTriggerMs'.
+        val absoluteTriggerMs = resolveInteractiveQuestionTriggerMs(edgeStartMs, triggerOffsetMs)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5758:26: error: unresolved reference 'normalizeInteractiveCountdownMs'.
+            durationMs = normalizeInteractiveCountdownMs(question.duration),
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5769:13: error: unresolved reference 'InteractiveChoiceUiModel'.
+    ): List<InteractiveChoiceUiModel> {
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5772:38: error: unresolved reference 'resolveInteractiveChoiceEdgeId'.
+                val resolvedEdgeId = resolveInteractiveChoiceEdgeId(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5778:21: error: unresolved reference 'evaluateInteractiveChoiceCondition'.
+                    evaluateInteractiveChoiceCondition(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5784:38: error: unresolved reference 'resolveInteractiveChoiceEdgeId'.
+                val resolvedEdgeId = resolveInteractiveChoiceEdgeId(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5788:35: error: unresolved reference 'resolveInteractiveChoiceCid'.
+                val resolvedCid = resolveInteractiveChoiceCid(
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5793:17: error: unresolved reference 'InteractiveChoiceUiModel'.
+                InteractiveChoiceUiModel(
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5833:23: error: unresolved reference 'InteractiveChoiceUiModel'.
+        choices: List<InteractiveChoiceUiModel>
+                      ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5837:41: error: unresolved reference 'InteractiveChoicePanelUiState'.
+        _interactiveChoicePanel.value = InteractiveChoicePanelUiState(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5855:21: error: unresolved reference 'shouldTriggerInteractiveQuestion'.
+                if (shouldTriggerInteractiveQuestion(currentPosition, triggerMs)) {
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5860:21: error: unresolved reference 'resolveInteractiveQuestionPollingIntervalMs'.
+                    resolveInteractiveQuestionPollingIntervalMs(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5877:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        _interactiveChoicePanel.update { panel ->
+                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5877:42: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        _interactiveChoicePanel.update { panel ->
+                                         ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5878:19: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+            panel.copy(visible = true, remainingMs = durationMs)
+                  ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5878:19: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            panel.copy(visible = true, remainingMs = durationMs)
+                  ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5878:19: error: this declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+            panel.copy(visible = true, remainingMs = durationMs)
+                  ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5878:24: error: no parameter with name 'visible' found.
+            panel.copy(visible = true, remainingMs = durationMs)
+                       ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5878:40: error: no parameter with name 'remainingMs' found.
+            panel.copy(visible = true, remainingMs = durationMs)
+                                       ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5888:41: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                _interactiveChoicePanel.update { panel ->
+                                        ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5888:50: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                _interactiveChoicePanel.update { panel ->
+                                                 ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5889:32: error: unresolved reference 'visible'.
+                    if (!panel.visible) panel else panel.copy(remainingMs = remaining)
+                               ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5889:58: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+                    if (!panel.visible) panel else panel.copy(remainingMs = remaining)
+                                                         ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5889:58: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+                    if (!panel.visible) panel else panel.copy(remainingMs = remaining)
+                                                         ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5889:58: error: this declaration needs opt-in. Its usage must be marked with '@kotlin.ExperimentalStdlibApi' or '@OptIn(kotlin.ExperimentalStdlibApi::class)'
+                    if (!panel.visible) panel else panel.copy(remainingMs = remaining)
+                                                         ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5889:63: error: no parameter with name 'remainingMs' found.
+                    if (!panel.visible) panel else panel.copy(remainingMs = remaining)
+                                                              ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5892:23: error: unresolved reference 'resolveInteractiveCountdownUpdateIntervalMs'.
+                delay(resolveInteractiveCountdownUpdateIntervalMs(remainingMs = remaining).coerceAtMost(remaining))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5896:24: error: unresolved reference 'visible'.
+            if (!panel.visible) return@launch
+                       ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5897:30: error: unresolved reference 'resolveInteractiveAutoChoice'.
+            val autoChoice = resolveInteractiveAutoChoice(panel.choices)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5897:65: error: unresolved reference 'choices'.
+            val autoChoice = resolveInteractiveAutoChoice(panel.choices)
+                                                                ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5899:52: error: unresolved reference 'edgeId'.
+                selectInteractiveChoice(autoChoice.edgeId, autoChoice.cid)
+                                                   ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5899:71: error: unresolved reference 'cid'.
+                selectInteractiveChoice(autoChoice.edgeId, autoChoice.cid)
+                                                                      ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5931:29: error: unresolved reference 'resolveAiSummaryRetryDelayMs'.
+                            resolveAiSummaryRetryDelayMs(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5965:29: error: unresolved reference 'shouldContinueAiSummaryAutoRetry'.
+                            shouldContinueAiSummaryAutoRetry(
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:5975:47: error: unresolved reference 'resolveAiSummaryRetryDelayMs'.
+                                nextDelayMs = resolveAiSummaryRetryDelayMs(
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6017:29: error: unresolved reference 'shouldRetryAiSummaryRequestFailure'.
+                        if (shouldRetryAiSummaryRequestFailure(diagnosis.status, requestRetryCount)) {
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6018:43: error: unresolved reference 'resolveAiSummaryRetryDelayMs'.
+                            nextDelayMs = resolveAiSummaryRetryDelayMs(
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6072:49: error: unresolved reference 'getVideoNoteEnabledSync'.
+            com.android.purebilibili.core.store.getVideoNoteEnabledSync(it)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6142:49: error: unresolved reference 'getVideoNoteEnabledSync'.
+            com.android.purebilibili.core.store.getVideoNoteEnabledSync(it)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6204:21: error: unresolved reference 'buildVideoNoteDraftFromAiSummary'.
+        val draft = buildVideoNoteDraftFromAiSummary(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6266:45: error: argument type mismatch: actual type is 'Long', but 'String?' was expected.
+                            privateNoteId = noteId,
+                                            ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6300:84: error: argument type mismatch: actual type is 'String', but 'Long' was expected.
+            VideoNoteRepository.deletePrivateNote(aid = current.info.aid, noteId = noteId)
+                                                                                   ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6350:51: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                    val message = if (appContext?.let { ctx -> com.android.purebilibili.core.store.isEasterEggEnabledSync(ctx) } == true) {
+                                                  ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6350:100: error: unresolved reference 'isEasterEggEnabledSync'.
+                    val message = if (appContext?.let { ctx -> com.android.purebilibili.core.store.isEasterEggEnabledSync(ctx) } == true) {
+                                                                                                   ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6416:81: error: unresolved reference 'getTripleJumpEnabled'.
+                        val isJumpEnabled = com.android.purebilibili.core.store.getTripleJumpEnabled(context).first()
+                                                                                ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6416:111: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                        val isJumpEnabled = com.android.purebilibili.core.store.getTripleJumpEnabled(context).first()
+                                                                                                              ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6483:67: error: unresolved reference 'resolveBatchDownloadCandidate'.
+        val candidate = com.android.purebilibili.feature.download.resolveBatchDownloadCandidate(
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6488:48: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val effectiveLabel = candidate?.label?.takeIf { it.isNotBlank() } ?: targetLabel
+                                               ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6488:55: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val effectiveLabel = candidate?.label?.takeIf { it.isNotBlank() } ?: targetLabel
+                                                      ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6527:58: error: inapplicable candidate(s): constructor(aid: Long = ..., bvid: String, cid: Long, title: String, episodeLabel: String? = ..., groupKey: String? = ..., groupTitle: String? = ..., episodeSortIndex: Int = ..., episodeCount: Int = ..., cover: String, ownerName: String, ownerFace: String, duration: Int, quality: Int, qualityDesc: String, videoUrl: String, audioUrl: String, status: DownloadStatus = ..., progress: Float = ..., videoProgress: Float = ..., audioProgress: Float = ..., filePath: String? = ..., fileSize: Long = ..., downloadedSize: Long = ..., createdAt: Long = ..., errorMessage: String? = ..., localCoverPath: String? = ..., customSaveDir: String? = ..., exportedFileUri: String? = ..., isAudioOnly: Boolean = ..., isVerticalVideo: Boolean = ..., lastPlaybackPositionMs: Long = ..., options: DownloadOptions = ..., assets: List<DownloadAssetState> = ..., localDanmakuSegmentPaths: List<String> = ..., localDanmakuMetadataPath: String? = ...): DownloadTask
+        return com.android.purebilibili.feature.download.DownloadTask(
+                                                         ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6532:43: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            episodeLabel = effectiveLabel.takeIf { it.isNotBlank() && it != resolvedTitle },
+                                          ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6532:43: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> T.takeIf(predicate: (T) -> Boolean): T?
+            episodeLabel = effectiveLabel.takeIf { it.isNotBlank() && it != resolvedTitle },
+                                          ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6532:50: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            episodeLabel = effectiveLabel.takeIf { it.isNotBlank() && it != resolvedTitle },
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6587:68: error: unresolved reference 'BatchDownloadCandidate'.
+        candidates: List<com.android.purebilibili.feature.download.BatchDownloadCandidate>
+                                                                   ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            candidates.filter { it.selected }.forEach { candidate ->
+                       ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:24: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+fun <T> Iterable<T>.filter(predicate: (T) -> Boolean): List<T>
+            candidates.filter { it.selected }.forEach { candidate ->
+                       ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:31: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            candidates.filter { it.selected }.forEach { candidate ->
+                              ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:36: error: unresolved reference 'selected'.
+            candidates.filter { it.selected }.forEach { candidate ->
+                                   ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:47: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            candidates.filter { it.selected }.forEach { candidate ->
+                                              ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6597:57: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            candidates.filter { it.selected }.forEach { candidate ->
+                                                        ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6599:31: error: unresolved reference 'bvid'.
+                    candidate.bvid,
+                              ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6600:31: error: unresolved reference 'cid'.
+                    candidate.cid
+                              ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6609:44: error: unresolved reference 'bvid'.
+                    targetBvid = candidate.bvid,
+                                           ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6610:43: error: unresolved reference 'cid'.
+                    targetCid = candidate.cid,
+                                          ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6611:45: error: unresolved reference 'title'.
+                    targetTitle = candidate.title,
+                                            ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6612:45: error: unresolved reference 'label'.
+                    targetLabel = candidate.label,
+                                            ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6613:45: error: unresolved reference 'cover'.
+                    targetCover = candidate.cover,
+                                            ^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6631:59: error: unresolved reference 'summarizeBatchDownloadQueueResult'.
+                com.android.purebilibili.feature.download.summarizeBatchDownloadQueueResult(
+                                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6632:63: error: unresolved reference 'BatchDownloadQueueResult'.
+                    com.android.purebilibili.feature.download.BatchDownloadQueueResult(
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6671:31: error: unresolved reference 'PlayerToastPresentation'.
+            toast("�����л���...", PlayerToastPresentation.CenteredHighlight)
+                              ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6675:30: error: unresolved reference 'PlayerToastPresentation'.
+            toast("���ǵ�ǰ������", PlayerToastPresentation.CenteredHighlight)
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6688:42: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        val isHdrSupported = appContext?.let {
+                                         ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6689:48: error: unresolved reference 'MediaUtils'.
+            com.android.purebilibili.core.util.MediaUtils.isHdrSupported(it)
+                                               ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6690:49: error: unresolved reference 'MediaUtils'.
+        } ?: com.android.purebilibili.core.util.MediaUtils.isHdrSupported()
+                                                ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6691:50: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        val isDolbyVisionSupported = appContext?.let {
+                                                 ^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6692:48: error: unresolved reference 'MediaUtils'.
+            com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported(it)
+                                               ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6693:49: error: unresolved reference 'MediaUtils'.
+        } ?: com.android.purebilibili.core.util.MediaUtils.isDolbyVisionSupported()
+                                                ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6951:61: error: unresolved reference 'getVideoCodecSync'.
+                        com.android.purebilibili.core.store.getVideoCodecSync(it) 
+                                                            ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6960:61: error: unresolved reference 'getVideoSecondCodecSync'.
+                        com.android.purebilibili.core.store.getVideoSecondCodecSync(it)
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6964:94: error: unresolved reference 'PlayerSettingsStore'.
+                            defaultAudioQuality = com.android.purebilibili.core.store.player.PlayerSettingsStore
+                                                                                             ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:6966:97: error: unresolved reference 'PlayerSettingsStore'.
+                            rememberedAudioQuality = com.android.purebilibili.core.store.player.PlayerSettingsStore
+                                                                                                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7113:49: error: unresolved reference 'getResumePlaybackPromptEnabledSync'.
+            com.android.purebilibili.core.store.getResumePlaybackPromptEnabledSync(it)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7122:57: error: unresolved reference 'hasResumePlaybackPromptShown'.
+                    com.android.purebilibili.core.store.hasResumePlaybackPromptShown(it, key)
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7127:57: error: unresolved reference 'markResumePlaybackPromptShown'.
+                    com.android.purebilibili.core.store.markResumePlaybackPromptShown(
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7174:53: error: unresolved reference 'getVideoCodecSync'.
+                com.android.purebilibili.core.store.getVideoCodecSync(it)
+                                                    ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7183:53: error: unresolved reference 'getVideoSecondCodecSync'.
+                com.android.purebilibili.core.store.getVideoSecondCodecSync(it)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7289:49: error: unresolved reference 'SettingsManager'.
+            com.android.purebilibili.core.store.SettingsManager
+                                                ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7301:9: error: unresolved reference 'buildPlaybackPostLoadPlan'.
+        buildPlaybackPostLoadPlan(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7305:24: error: cannot infer type for value parameter 'spec'. Specify it explicitly.
+            .groupBy { spec -> spec.delayMs }
+                       ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7305:37: error: unresolved reference 'delayMs'.
+            .groupBy { spec -> spec.delayMs }
+                                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7306:14: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+            .toSortedMap()
+             ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7306:14: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            .toSortedMap()
+             ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7307:14: error: cannot infer type for type parameter 'K'. Specify it explicitly.
+            .forEach { (delayMs, tasks) ->
+             ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7307:14: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            .forEach { (delayMs, tasks) ->
+             ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7314:37: error: cannot infer type for value parameter 'spec'. Specify it explicitly.
+                    tasks.forEach { spec ->
+                                    ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7315:36: error: unresolved reference 'task'.
+                        when (spec.task) {
+                                   ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7316:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.PLAYER_INFO -> loadPlayerInfo(
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7321:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.VIDEO_SHOT -> loadVideoshot(loadedBvid, loadedCid)
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7322:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.REFRESH_DEFERRED_SIGNALS -> refreshDeferredPlaybackSignals(
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7327:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.LOAD_FOLLOWING_MIDS -> loadFollowingMids()
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7328:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.OWNER_STATS -> loadOwnerStats(
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7332:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.VIDEO_TAGS -> loadVideoTags(loadedBvid)
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7333:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.AI_SUMMARY -> loadAiSummary(
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7338:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.ONLINE_COUNT -> startOnlineCountPolling(
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7342:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.HEARTBEAT -> startHeartbeat()
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7343:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.PLUGIN_ON_VIDEO_LOAD -> {
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7349:29: error: unresolved reference 'PlaybackPostLoadTask'.
+                            PlaybackPostLoadTask.START_PLUGIN_CHECK -> startPluginCheck()
+                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7392:33: error: unresolved reference 'os'.
+                        android.os.SystemClock.elapsedRealtime() >= sponsorBlockRetryAtMs
+                                ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7410:61: error: unresolved reference 'os'.
+                            sponsorBlockRetryAtMs = android.os.SystemClock.elapsedRealtime() + retryDelayMs
+                                                            ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7421:34: error: unresolved reference 'resolvePluginPollingIntervalMs'.
+                val intervalMs = resolvePluginPollingIntervalMs(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7435:22: error: unresolved reference 'shouldDispatchPluginPositionUpdate'.
+                if (!shouldDispatchPluginPositionUpdate(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7594:55: error: argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'DesktopPluginContext' was expected.
+                SponsorBlockInsightStore.appendRecord(context, record)
+                                                      ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7840:38: error: unresolved reference 'os'.
+        nowElapsedMs: Long = android.os.SystemClock.elapsedRealtime()
+                                     ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:7861:36: error: unresolved reference 'os'.
+        val nowElapsedMs = android.os.SystemClock.elapsedRealtime()
+                                   ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8122:14: error: unresolved reference 'NetworkUtils'.
+        if (!NetworkUtils.isWifi(context)) return
+             ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8127:13: error: unresolved reference 'CdnDashSegmentPrefetcher'.
+            CdnDashSegmentPrefetcher(
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8131:17: error: unresolved reference 'CdnDashPrefetchRequest'.
+                CdnDashPrefetchRequest(
+                ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8205:24: error: unresolved reference 'currentTracks'.
+        return player?.currentTracks?.groups.orEmpty().any { group ->
+                       ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8206:19: error: unresolved reference 'type'.
+            group.type == C.TRACK_TYPE_AUDIO && group.isSelected
+                  ^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8206:27: error: unresolved reference 'C'.
+            group.type == C.TRACK_TYPE_AUDIO && group.isSelected
+                          ^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8206:55: error: unresolved reference 'isSelected'.
+            group.type == C.TRACK_TYPE_AUDIO && group.isSelected
+                                                      ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8380:23: error: argument type mismatch: actual type is 'DesktopOriginalPlayerSettingsContext', but 'DesktopPluginContext' was expected.
+            context = context,
+                      ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8389:23: error: unresolved reference 'PlayerToastPresentation'.
+        presentation: PlayerToastPresentation = PlayerToastPresentation.Standard
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8389:49: error: unresolved reference 'PlayerToastPresentation'.
+        presentation: PlayerToastPresentation = PlayerToastPresentation.Standard
+                                                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8392:47: error: unresolved reference 'PlayerToastPresentation'.
+            val payload = if (presentation == PlayerToastPresentation.CenteredHighlight) {
+                                              ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8393:17: error: unresolved reference 'buildQualityToastMessage'.
+                buildQualityToastMessage(msg)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8395:17: error: unresolved reference 'buildPlayerToastMessage'.
+                buildPlayerToastMessage(msg)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-parity\prepared\whole\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:8512:21: error: unresolved reference 'PlayerToastPresentation'.
+                    PlayerToastPresentation.CenteredHighlight
+                    ^^^^^^^^^^^^^^^^^^^^^^^

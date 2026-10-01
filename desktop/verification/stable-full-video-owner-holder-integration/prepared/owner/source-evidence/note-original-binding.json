@@ -1,0 +1,26 @@
+{
+  "preparedOnly": true,
+  "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoNoteRepository.kt",
+  "originalSha256LF": "df1c2c1638be237fc096c685993dc69c577310c3d8fad6dfc108ceb918863130",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "completeOriginalSchemas": [
+    "VideoNoteSnapshot",
+    "VideoNoteSavePayload",
+    "VideoNoteRepositoryError"
+  ],
+  "methods": [
+    "getVideoNoteSnapshot",
+    "savePrivateNote",
+    "deletePrivateNote",
+    "getPublicNoteInfo",
+    "loadPrivateNote",
+    "hasSession",
+    "classifyApiError"
+  ],
+  "platformDelta": [
+    "object singleton replaced required per-captured-request API/session view over same Root Repository",
+    "No raw primary credentials except supplied admitted CSRF field",
+    "Cancellation is propagated; final response is rechecked before projection"
+  ],
+  "uncompiled": true
+}

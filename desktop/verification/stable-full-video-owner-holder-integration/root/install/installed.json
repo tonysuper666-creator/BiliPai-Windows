@@ -1,0 +1,404 @@
+{
+  "applied": true,
+  "payloadCount": 10,
+  "rawPacketArtifactsVerified": 700,
+  "frozenPackets": [
+    {
+      "lane": "owner",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\install-packet-13\\frozen-handoff.json",
+      "sha256Bytes": "51f079a6a39bbe00cf0c19cc40259b26b7696d7e4a5250aa740f3e62fdba5ff4",
+      "artifacts": 363
+    },
+    {
+      "lane": "holder",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-holder-ui-parity\\frozen-handoff.json",
+      "sha256Bytes": "e0764d9788d8993fb46b2ff86b6eeaa4e469da65d414610465835e9da75b46f9",
+      "artifacts": 337
+    }
+  ],
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+      "sha256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "sha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+      "sha256LF": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRepositoryView.kt",
+      "sha256Bytes": "44c1c494de96f599ccbf67e7bd5c81b43a8b06a8f916facde8fec54e26036e99",
+      "sha256LF": "44c1c494de96f599ccbf67e7bd5c81b43a8b06a8f916facde8fec54e26036e99"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNoteEnvironment.kt",
+      "sha256Bytes": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f",
+      "sha256LF": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataEnvironment.kt",
+      "sha256Bytes": "beae856210dd930efe2a53c5eadb71f2f9ab1a968dfaf9cd4b856e4aab90cd00",
+      "sha256LF": "beae856210dd930efe2a53c5eadb71f2f9ab1a968dfaf9cd4b856e4aab90cd00"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "sha256Bytes": "504e1390d84e04e3e1678ff1e6aff44b26a5cb47503fb2e9511d31dd8ff02bbb",
+      "sha256LF": "504e1390d84e04e3e1678ff1e6aff44b26a5cb47503fb2e9511d31dd8ff02bbb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoComposerEnvironment.kt",
+      "sha256Bytes": "5da87756b834e6974f48bdcfdd0798dc05a06a77a5a38d006fc44970ddc80e74",
+      "sha256LF": "5da87756b834e6974f48bdcfdd0798dc05a06a77a5a38d006fc44970ddc80e74"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryScheduler.kt",
+      "sha256Bytes": "3714870d312d33611383bbfd621e474a9cbcd0a07c364a4a022313f5cecf6f4a",
+      "sha256LF": "3714870d312d33611383bbfd621e474a9cbcd0a07c364a4a022313f5cecf6f4a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderPlatform.kt",
+      "sha256Bytes": "83badfb1c8bcf0ae468574809f4d499208da5079f7b01625809404325aa1edbe",
+      "sha256LF": "83badfb1c8bcf0ae468574809f4d499208da5079f7b01625809404325aa1edbe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOrientationInputs.kt",
+      "sha256Bytes": "9c6d78680a3b72fa373a4fa3df0ca49d49837172c12aa93de29c0e25bcff43bd",
+      "sha256LF": "9c6d78680a3b72fa373a4fa3df0ca49d49837172c12aa93de29c0e25bcff43bd"
+    }
+  ],
+  "existingFamilyExactHunks": 4,
+  "contextChildHunks": 3,
+  "wholeFamilyReplacement": false,
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "beforeSha256Bytes": "3c935fa31ffcea15c0ce34bb930615b743c41f280efcca73d08750f8f139ee01",
+      "afterSha256Bytes": "e749b7d0535d44f2ae66103caf6246ecc738b182b5d696a921079134531240c9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "beforeSha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+      "afterSha256Bytes": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+      "beforeSha256Bytes": "7dc9952389ebc0fa4139d6cfda0a733d6df58e8869ac11df0f0e316ba2e5b6b7",
+      "afterSha256Bytes": "aa33a61c40c51c5a5fef72741393e585ce763f3b2775e29dae4cfc3c1f8e4ba5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "beforeSha256Bytes": "8c38d325e260e589c8ef3d7419dc6fd3b1060fd27b6246ffaf86db361cd5087a",
+      "afterSha256Bytes": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "e6c8dab5ce4a90f59a460bae0cd7dd265aca052bdf91b319cfa9e18115f2984a",
+      "afterSha256Bytes": "3af7e671b1fb5ab5f0e9fca33ad80a1d9c7303a45b767f9b25cf208b63950925"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "a4fc7a076822331022b773e665628d2eb3043aa23ba05f5ebed44f0e49ac589b",
+      "afterSha256Bytes": "3f608b15cd75706f3481c7675fbc43ce0d8971ac7ec004c9c09c03c261246863"
+    }
+  ],
+  "generatedReferencesInstalled": false,
+  "sourceIdentityCount": 1169,
+  "newSourceIdentities": [
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoNoteRepository.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/resolver/NextPlaybackResolver.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlayerToastPolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryRetryPolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/note/AiSummaryNoteDraftPolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoChoicePolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PlaybackPostLoadPlan.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/policy/PluginPollingPolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadCandidatePolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadQueuePolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/interaction/InteractiveVideoVariablePolicy.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/HazeEffectCompat.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoStatRow.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AppAdaptiveStrategySnapshot.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/util/PlayerOrientationPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/util/PlayerPresentationPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialog.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadDialogLayoutPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/BatchDownloadSelectionPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/VideoDetailScrollCoordinator.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/InteractiveChoiceOverlay.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoActionFeedbackHost.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt"
+    }
+  ],
+  "mergedSourceIdentities": [
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt"
+    },
+    {
+      "lane": "owner",
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/state/VideoPlayerState.kt"
+    },
+    {
+      "lane": "holder",
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt"
+    }
+  ],
+  "laneCounts": {
+    "owner": {
+      "new": 13,
+      "existingFeatureUnions": 3
+    },
+    "holder": {
+      "new": 41,
+      "existingFeatureUnions": 11
+    }
+  },
+  "dependenciesAdded": 0,
+  "directSourcesCopiedOnlyByRegistrySync": true,
+  "wholeOrdinaryVideoMounted": false,
+  "uniqueFullOwnerConstructed": false,
+  "wholeCompilationPending": true,
+  "pluginHistoryCdnFinalWriteAdmissionPending": true,
+  "byteCacheNativeCarrierPending": true,
+  "rootFacadeSwitchPending": true,
+  "accountVipRecapturePending": true,
+  "exeAcceptancePending": true
+}

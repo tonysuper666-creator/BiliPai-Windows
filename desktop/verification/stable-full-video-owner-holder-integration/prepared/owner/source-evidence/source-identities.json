@@ -1,0 +1,14 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+    "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+    "lines": 9036,
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+    "sha256LF": "4fe3b94adbd3a4f9eea165e68b8efdee0f06d74c78bc3de9269b2fa067ba8db3",
+    "lines": 5464,
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+  }
+]

@@ -1,0 +1,2817 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "output": "com/android/purebilibili/feature/video/screen/ContinuousPlayerTransitionPolicy.kt",
+      "beforeSHA256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "afterSHA256LF": "2472d9ce6eca8af56097835086e72b383b561bbd514bf416deeed00a6d099cf2",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/DesktopOriginalHolderCommentFraudOverlayAdapter.kt",
+      "beforeSHA256LF": "995b9ff853d1678d2618a1b6b8459f70821c02da8b0e35a5ee3fb272129cc5cb",
+      "afterSHA256LF": "48133efe9e671e6ad6d1d497103332478425daa8ce618bdf96c4af32d701ac44",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1085,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 1684,
+          "before": "LaunchedEffect(commentViewModel, context.applicationContext)",
+          "after": "LaunchedEffect(commentViewModel, platform)",
+          "label": "Same owned common-comment platform lifetime"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayout.kt",
+      "beforeSHA256LF": "54ece17d18f546dc1e78ae6a25bafe3cc85478bbc08630ae729d512aff6866df",
+      "afterSHA256LF": "66c91faa89549ca1086f9549bb6c6286c1b90bb8a5d7406df0789ee6cd2d8a99",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 20254,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 5699,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 5985,
+          "before": "SettingsManager\n        .getTabletSecondaryDefaultTab",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalTabletAudioSettings.getTabletSecondaryDefaultTab",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4925,
+          "before": "onRelatedVideoClick: (String, android.os.Bundle?) -> Unit",
+          "after": "onRelatedVideoClick: (String, Long, String?) -> Unit",
+          "label": "Explicit CID/cover original navigation fields"
+        },
+        {
+          "at": 726,
+          "before": "import androidx.compose.foundation.layout.padding\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1171,
+          "before": "import androidx.compose.ui.Alignment\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1434,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/LargeScreenVideoLayoutPolicy.kt",
+      "beforeSHA256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "afterSHA256LF": "05e6db32c16c404c5a9f806a6d95f7a7324a31c19d8fa07afe7c1046aef800c8",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/PlayerCollapseAutoPausePolicy.kt",
+      "beforeSHA256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "afterSHA256LF": "f65a1e50d2c751590a872f9186e7851d13aa6badd749c7043dcd20cec721a013",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "beforeSHA256LF": "d919802a8dbe65c0d7958e3066301e8b3f2856dc8e47810011f16abf1149302d",
+      "afterSHA256LF": "d919802a8dbe65c0d7958e3066301e8b3f2856dc8e47810011f16abf1149302d",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailBackPolicy.kt",
+      "beforeSHA256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "afterSHA256LF": "a07f42cfc0bc033cd6d5ecd2fc44ba37399a254a1278bc2647645300556be04c",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailCommonOverlayAdapter.kt",
+      "beforeSHA256LF": "d6928bdee68d9f2e5a6fd28a99ab81463cdf32803d93192e1bfa74dd14da1a9e",
+      "afterSHA256LF": "af7e84bb8112a11e45561f652db7d37a8ac0328632c3d0ec33e957901d990ac0",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1328,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailDomainEffects.kt",
+      "beforeSHA256LF": "34fcf4f5b4e55f1fa1088771ec1cbd346ab92f26370068bff291c4d2ef40c9c7",
+      "afterSHA256LF": "75bdd29bc0ae8eb821bdcb7547d6b7a9fc8da93a232ae2774f1a205defc88e5e",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1502,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailDownloadOverlayAdapter.kt",
+      "beforeSHA256LF": "38f3da74dd6501760e9a2e2595e00704b596a42b04f526e2bb566de9125d30fd",
+      "afterSHA256LF": "d262c7499d9992ffd2aeb09624176e3729356e0e62c64b736a8373cb39d16d56",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1495,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 9393,
+          "before": "com.android.purebilibili.feature.download.DownloadManager",
+          "after": "holderPlatform.downloads",
+          "label": "One existing Root download manager/task StateFlow; no copied cache"
+        },
+        {
+          "at": 7367,
+          "before": "com.android.purebilibili.feature.download.DownloadManager",
+          "after": "holderPlatform.downloads",
+          "label": "One existing Root download manager/task StateFlow; no copied cache"
+        },
+        {
+          "at": 1803,
+          "before": "com.android.purebilibili.feature.download.DownloadManager",
+          "after": "holderPlatform.downloads",
+          "label": "One existing Root download manager/task StateFlow; no copied cache"
+        },
+        {
+          "at": 51,
+          "before": "package com.android.purebilibili.feature.video.screen\n",
+          "after": "package com.android.purebilibili.feature.video.screen\nimport kotlinx.coroutines.flow.map\n",
+          "label": "Flow projection of actual original settings"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailEntryLoadPolicy.kt",
+      "beforeSHA256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "afterSHA256LF": "2183baac9247a40dce5c19933871305bb6e6483678149f4f81bd035105203ee6",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailEntryTransitionObserver.kt",
+      "beforeSHA256LF": "ced005d8cb811fbd760f62af61543c362dbadcc6d8d18c6d806101d3fcfd7c27",
+      "afterSHA256LF": "6e19601bea6378c1082a04afca807477788d078c7ae5cacec2270b204c4f767c",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 3583,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 1090,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailFavoriteFolderOverlayAdapter.kt",
+      "beforeSHA256LF": "e982efdc05bc7dc52472b935c8fabf7f4b16a6e9bc2fc637f7df073f4be72715",
+      "afterSHA256LF": "1b8645343e8723d5e7ad109441eab3410862533aea1204c5d518533670f18532",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 491,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "beforeSHA256LF": "cf3ea6d88acf929dcdf90fd07fabf98341460f8f8f810c9279a20206c104f968",
+      "afterSHA256LF": "dcd75423cd47aeea58e59b44f2970850238e5e7261dd89bc00a3767c4e98e43e",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 2355,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 4966,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getLongPressSpeedHintAlpha",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getLongPressSpeedHintAlpha",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 5146,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                .getLongPressSpeedHintAlphaSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintAlphaSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4640,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getLongPressSpeedHintScale",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getLongPressSpeedHintScale",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4820,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                .getLongPressSpeedHintScaleSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLongPressSpeedHintScaleSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4561,
+          "before": "androidx.compose.ui.platform.LocalContext.current",
+          "after": "com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext.current",
+          "label": "Actual same global settings context"
+        },
+        {
+          "at": 322,
+          "before": "import androidx.compose.foundation.layout.padding\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailInlineCollapseState.kt",
+      "beforeSHA256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "afterSHA256LF": "261b75f96730f7ca12f7962cb89dc6c2d88481ea249507883d2337416147ebc1",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "beforeSHA256LF": "124d5a661b8abf96e4dc04622fcf1750eaef7452a5c9a5384eb44d31a2091171",
+      "afterSHA256LF": "511557aed0a8bb95c033bcf0a03f7c135fe72ca7fb6aa4c44752f7db9e0cd879",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 9672,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 8872,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 3515,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 3903,
+          "before": "SettingsManager.getDanmakuSendColor",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendColor",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4248,
+          "before": "SettingsManager.getDanmakuSendFontSize",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendFontSize",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4108,
+          "before": "SettingsManager.getDanmakuSendMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 6863,
+          "before": "SettingsManager.setDanmakuSendColor",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendColor",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 7064,
+          "before": "SettingsManager.setDanmakuSendFontSize",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendFontSize",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 6994,
+          "before": "SettingsManager.setDanmakuSendMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 4885,
+          "before": "WindowInsets.statusBarsIgnoringVisibility\n                .asPaddingValues().calculateTopPadding().value",
+          "after": "with(LocalDensity.current) { holderPlatform.section.statusBarInsetPixels.toDp().value }",
+          "label": "Actual Windows client inset supplied by same Root Window"
+        },
+        {
+          "at": 133,
+          "before": "import android.content.res.Configuration",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration",
+          "label": "Actual client viewport parameters, no fake Android resource Configuration"
+        },
+        {
+          "at": 438,
+          "before": "import androidx.compose.foundation.layout.statusBarsIgnoringVisibility\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 841,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailOverlayHost.kt",
+      "beforeSHA256LF": "541a679fce655f749b8cdf3f9e73550bbc65901edd942d0b5765911321a8933d",
+      "afterSHA256LF": "25b52747236e31baeb21c32343267e8233d4730ac490fe12fd8657edb4455c44",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 42079,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 36044,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 31618,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 28433,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 22961,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 19555,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 15146,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 24529,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .markQualitySwitchFailureDialogShown",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.markQualitySwitchFailureDialogShown",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 27448,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                                            .setQualitySwitchFailureDialogOnceEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.setQualitySwitchFailureDialogOnceEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 26533,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                                            .setQualitySwitchFailureDialogOnceEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.setQualitySwitchFailureDialogOnceEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 27854,
+          "before": "com.android.purebilibili.core.util.LogCollector.exportAndShare(context)",
+          "after": "holderPlatform.exportAndShareLogs()",
+          "label": "Required actual Root diagnostic export/share actor"
+        },
+        {
+          "at": 31045,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(\n                        context,\n                        updatedRules,\n                        activeDanmakuScope\n                    )",
+          "after": "holderPlatform.section.danmakuPreferences.setDanmakuBlockRulesRaw(updatedRules,\n                        activeDanmakuScope\n                    )",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 30036,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuBlockRulesRaw(\n                    context,\n                    updatedRules,\n                    activeDanmakuScope\n                )",
+          "after": "holderPlatform.section.danmakuPreferences.setDanmakuBlockRulesRaw(updatedRules,\n                    activeDanmakuScope\n                )",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 25270,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                                        .setPlayerDiagnosticLoggingEnabled(\n                                            context,\n                                            !playerDiagnosticLoggingEnabled\n                                        )",
+          "after": "holderPlatform.setPlayerDiagnosticLoggingEnabled(!playerDiagnosticLoggingEnabled\n                                        )",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 572,
+          "before": "import android.content.res.Configuration",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration",
+          "label": "Actual client viewport parameters, no fake Android resource Configuration"
+        },
+        {
+          "at": 32545,
+          "before": "shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)",
+          "after": "com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()",
+          "label": "Actual Compose blur capability"
+        },
+        {
+          "at": 273,
+          "before": "import android.annotation.SuppressLint\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 273,
+          "before": "import android.app.Activity\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 273,
+          "before": "import android.content.Intent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as ContextWrapper\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.content.pm.ActivityInfo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import com.bilipai.desktop.ui.DesktopHomeCardWindowBounds as Configuration\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.database.ContentObserver\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.os.Build\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.os.Handler\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.os.Looper\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.os.SystemClock\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.provider.Settings\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.view.OrientationEventListener\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.view.Window\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.view.WindowManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import android.widget.Toast\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.AnimatedVisibility\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.animateFloatAsState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.animateFloat\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.Animatable\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.Easing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.FastOutSlowInEasing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.core.tween\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.fadeIn\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.EnterExitState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.slideOutVertically\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.ui.geometry.Offset\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.ui.input.nestedscroll.NestedScrollConnection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.ui.input.nestedscroll.NestedScrollSource\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.runtime.mutableFloatStateOf\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.ui.platform.LocalDensity\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.fadeOut\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.compose.animation.scaleOut\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.navigationevent.NavigationEventInfo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.navigationevent.compose.NavigationBackHandler\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 351,
+          "before": "import androidx.navigationevent.compose.rememberNavigationEventState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 667,
+          "before": "import androidx.compose.foundation.lazy.LazyListState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 713,
+          "before": "import androidx.compose.foundation.pager.PagerState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 713,
+          "before": "import androidx.compose.foundation.pager.rememberPagerState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1071,
+          "before": "import androidx.compose.runtime.saveable.listSaver\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1071,
+          "before": "import androidx.compose.runtime.saveable.rememberSaveable\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1144,
+          "before": "import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1186,
+          "before": "import androidx.compose.ui.graphics.TransformOrigin\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1186,
+          "before": "import androidx.compose.ui.graphics.graphicsLayer\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1234,
+          "before": "import androidx.compose.ui.graphics.luminance\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1234,
+          "before": "import androidx.compose.ui.graphics.toArgb\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1315,
+          "before": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1315,
+          "before": "import androidx.compose.ui.platform.LocalView\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1385,
+          "before": "import androidx.compose.ui.unit.lerp\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1385,
+          "before": "import androidx.compose.ui.unit.sp\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1467,
+          "before": "import androidx.compose.ui.draw.clipToBounds\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.draw.drawWithContent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.layout.onGloballyPositioned\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.layout.positionInRoot\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.layout.positionInWindow\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.input.nestedscroll.nestedScroll\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.ui.input.pointer.pointerInput\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.foundation.gestures.detectVerticalDragGestures\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.foundation.gestures.detectDragGestures\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1505,
+          "before": "import androidx.compose.foundation.gestures.draggable\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import androidx.core.view.WindowCompat\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import androidx.core.view.WindowInsetsControllerCompat\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import com.android.purebilibili.data.model.response.BgmInfo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import com.android.purebilibili.data.model.CommentFraudStatus\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import com.android.purebilibili.data.repository.resolveCommentFraudLightMessage\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import com.android.purebilibili.data.repository.shouldShowCommentFraudResultDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1552,
+          "before": "import androidx.core.view.WindowInsetsCompat\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1625,
+          "before": "import androidx.lifecycle.compose.LocalLifecycleOwner\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1741,
+          "before": "import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1965,
+          "before": "import com.android.purebilibili.core.store.PortraitPlayerCollapseMode\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.RelatedVideo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.ReplyItem\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.UgcSeason\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.VideoTag\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.ViewInfo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2008,
+          "before": "import com.android.purebilibili.data.model.response.ViewPoint\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.VideoTitleSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.VideoTitleWithDesc\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.UpInfoSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.DescriptionSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.ActionButtonsRow\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2110,
+          "before": "import com.android.purebilibili.feature.video.ui.section.ActionButton\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.RelatedVideosHeader\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.RelatedVideoItem\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CoinDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CollectionRow\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CollectionSheet\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2200,
+          "before": "import com.android.purebilibili.feature.video.ui.components.PagesSelector\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoComposerViewModel\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoEngagementViewModel\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoEngagementEvent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoSupplementViewModel\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.toEngagementSeed\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2385,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.toSupplementSeed\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.bilipai.desktop.ui.DesktopOriginalMpvVideoPlayerState as VideoPlayerState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.state.rememberVideoPlayerState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.state.shouldReuseMiniPlayerAtEntry\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.ui.section.VideoPlayerSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.ui.section.shouldKeepVideoPlaybackAwake\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.ui.components.ReplyHeader\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.ui.components.ReplyItemView\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2622,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CommentFraudResultDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.CommentSortMode  //  新增\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.ui.components.LikeBurstAnimation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.ui.components.TripleSuccessAnimation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoDetailSkeleton\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoActionFeedbackHost\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.subtitle.SubtitleAutoPreference\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.subtitle.resolveSubtitleDisplayModePreference\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2705,
+          "before": "import com.android.purebilibili.feature.video.progress.PbpProgressData\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2784,
+          "before": "import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2784,
+          "before": "import com.android.purebilibili.feature.video.policy.reduceVideoDetailPostScroll\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2784,
+          "before": "import com.android.purebilibili.feature.video.policy.reduceVideoDetailPreScroll\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2784,
+          "before": "import com.android.purebilibili.feature.video.policy.resolveVideoDetailCollapseProgress\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2784,
+          "before": "import com.android.purebilibili.feature.video.subtitle.resolveSubtitlePreferenceSession\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2849,
+          "before": "import kotlinx.coroutines.Dispatchers\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import androidx.compose.animation.ExperimentalSharedTransitionApi\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import androidx.compose.foundation.shape.RoundedCornerShape\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.LocalSharedTransitionScope\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.LocalAnimatedVisibilityScope\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.LocalVideoSharedTransitionSpeedSettings\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.VideoSharedTransitionPlaybackIntent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionMotionSpec\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionEnterEasing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionReturnEasing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoSharedCoverCacheKey\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoSharedTransitionPlaybackIntent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoSharedTransitionSourceCornerDp\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoSharedTransitionVisualSpec\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.shouldEnableVideoCoverSharedTransition\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.shouldUseVideoCardShellContainerTransform\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.videoCardShellSharedBoundsOrEmpty\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.transition.videoSharedElementBoundsTransformSpec\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.rememberAppCollectionIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.rememberAppDownloadIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.rememberAppMusicIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2934,
+          "before": "import com.android.purebilibili.core.ui.rememberAppPhotoIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2994,
+          "before": "import com.bilipai.desktop.ui.DesktopOriginalVideoHolderMini as MiniPlayerManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2994,
+          "before": "import com.android.purebilibili.feature.video.player.PlaybackService\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3060,
+          "before": "import com.android.purebilibili.feature.video.player.PlaylistManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3060,
+          "before": "import com.android.purebilibili.feature.video.player.PlaylistUiState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3060,
+          "before": "import com.android.purebilibili.feature.video.player.ExternalPlaylistSource\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3060,
+          "before": "import com.android.purebilibili.feature.video.player.buildPipPlaybackRemoteActions\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3060,
+          "before": "import com.android.purebilibili.core.ui.performance.TrackJankStateFlag\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3075,
+          "before": "import com.android.purebilibili.feature.video.ui.overlay.PortraitFullscreenOverlay\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3075,
+          "before": "import com.android.purebilibili.feature.video.ui.overlay.PlayerProgress\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3075,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3075,
+          "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3075,
+          "before": "import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3578,
+          "before": "import com.android.purebilibili.core.util.CardPositionManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3578,
+          "before": "import com.android.purebilibili.core.util.FormatUtils\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.components.InteractiveChoiceOverlay\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.VideoFeedbackAnchor\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.TripleCelebrationPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveQualityReminderPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveTripleCelebrationPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveVideoFeedbackPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.ui.section.resolveForcedReturnCoverSharedElementSourceRoute\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.share.VideoSharePayload\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.share.VideoShareSheet\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.PlayerToastMessage\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.PlayerToastPresentation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4199,
+          "before": "import kotlin.math.abs\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailParentUiSnapshot.kt",
+      "beforeSHA256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "afterSHA256LF": "30077130111e17179ca942ac0bb11eabd4ff4331314941e1813a2cbe55fe204a",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPhoneContent.kt",
+      "beforeSHA256LF": "4fedf32278f58d416f325eb20c39c73cdc1a15241ed0150f7bf64f523268e9b6",
+      "afterSHA256LF": "bff36ca84343dc60c35d43ac4d143fa72c6cdb182b92e04eee4c8c513d97bd45",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 30900,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 28969,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 5951,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 20179,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setCommentDefaultSortMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 19121,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuEnabled(\n                                                context,\n                                                newValue,\n                                                com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT,\n                                            )",
+          "after": "holderPlatform.section.danmakuPreferences.setDanmakuEnabled(newValue,\n                                                com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT,\n                                            )",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 29818,
+          "before": "shouldAllowRuntimeShaderBackedHazeEffect(Build.VERSION.SDK_INT)",
+          "after": "com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()",
+          "label": "Actual Compose blur capability"
+        },
+        {
+          "at": 11321,
+          "before": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.S",
+          "after": "com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported()",
+          "label": "Actual Compose render-effect capability"
+        },
+        {
+          "at": 11764,
+          "before": "AndroidRenderEffect.createBlurEffect(\n                                                blurFrame.blurRadiusPx,\n                                                blurFrame.blurRadiusPx,\n                                                Shader.TileMode.CLAMP,\n                                            ).asComposeRenderEffect()",
+          "after": "androidx.compose.ui.graphics.BlurEffect(radiusX = blurFrame.blurRadiusPx, radiusY = blurFrame.blurRadiusPx)",
+          "label": "Preserve original blur radius using actual Skia Compose effect"
+        },
+        {
+          "at": 5580,
+          "before": "navigateToRelatedVideo: (String, android.os.Bundle?) -> Unit",
+          "after": "navigateToRelatedVideo: (String, Long, String?) -> Unit",
+          "label": "Explicit CID/cover original navigation fields"
+        },
+        {
+          "at": 6122,
+          "before": "val danmakuManager = rememberDanmakuManager(success.info.bvid)",
+          "after": "val danmakuManager = holderPlatform.danmaku",
+          "label": "Same source document, no another manager/parser/session"
+        },
+        {
+          "at": 19838,
+          "before": "com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode(context,",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoCommentSheetSettings.setCommentDefaultSortMode(context.pluginContext,",
+          "label": "Same Root PluginContext consumed by canonical comment sort write"
+        },
+        {
+          "at": 133,
+          "before": "import android.graphics.RenderEffect as AndroidRenderEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 133,
+          "before": "import android.graphics.Shader\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 133,
+          "before": "import android.os.Build\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 133,
+          "before": "import androidx.compose.ui.graphics.asComposeRenderEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 788,
+          "before": "import androidx.compose.foundation.shape.RoundedCornerShape\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1443,
+          "before": "import androidx.compose.ui.unit.sp\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1729,
+          "before": "import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2121,
+          "before": "import com.android.purebilibili.feature.video.danmaku.rememberDanmakuManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlatformEffectsHost.kt",
+      "beforeSHA256LF": "729c49b9cd34419cb1f1843daf855358899c8e296ca745775f15472a15cc9fe8",
+      "afterSHA256LF": "434835dd1b2c8ee676739318861d11a055b3950b3dced460f24d8231a3613706",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 3976,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 2699,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 1151,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlatformPolicy.kt",
+      "beforeSHA256LF": "54c0b7ee143cb6628ac3064bd98816fa8729725341a06a17d8a811bdd292c5b5",
+      "afterSHA256LF": "756a9e36a70706cec42aab1751761a5d6075f405d5a8ca93ab90904be28ae9cf",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 15455,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlaybackSessionEffects.kt",
+      "beforeSHA256LF": "e4f50b5f1c6c113f3d63707507411f21bdbffb2447f58159944b6e7cbb540dd9",
+      "afterSHA256LF": "f0f9aa965cd6c9c8761adce181fc908bba8aba49208c5f4fc9a0ffbeffb5f2b9",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1416,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 1081,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+      "beforeSHA256LF": "bbd53d229b119e4a3fa10a1f3f098bab34aced8c8816325684a7f6d6f84b21a6",
+      "afterSHA256LF": "544b973381ddf1b88aa387964f74d6a7f8085aeb67d5dfc5ddb07b5df797a2a5",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 1026,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 1579,
+          "before": "SettingsManager\n        .getQualitySwitchFailureDialogEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getQualitySwitchFailureDialogEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 1826,
+          "before": "SettingsManager\n        .getQualitySwitchFailureDialogOnceEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getQualitySwitchFailureDialogOnceEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 2072,
+          "before": "SettingsManager\n        .getQualitySwitchFailureDialogShown",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getQualitySwitchFailureDialogShown",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 3161,
+          "before": "SettingsManager\n        .getDanmakuBlockRulesRaw(context, activeDanmakuScope)",
+          "after": "holderPlatform.section.danmakuPreferences.blocks.getDanmakuBlockRulesRaw(activeDanmakuScope)",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 3660,
+          "before": "    LaunchedEffect(danmakuManager, viewModel) {\n        danmakuManager.setOnDanmakuClickListener { text, dmid, userHash, isSelf ->\n            android.util.Log.d(\"VideoDetailScreen\", \"👆 Danmaku clicked: $text\")\n            viewModel.showDanmakuMenu(dmid, text, userHash, isSelf)\n        }\n    }",
+          "after": "    androidx.compose.runtime.DisposableEffect(danmakuManager, viewModel, holderPlatform) {\n        val clickLease = holderPlatform.acquireDanmakuClickListener { text, dmid, userHash, isSelf ->\n            android.util.Log.d(\"VideoDetailScreen\", \"👆 Danmaku clicked: $text\")\n            viewModel.showDanmakuMenu(dmid, text, userHash, isSelf)\n        }\n        onDispose { clickLease.close() }\n    }",
+          "label": "Same source-specific native document click registration, release only this entry lease"
+        },
+        {
+          "at": 176,
+          "before": "import androidx.compose.runtime.LaunchedEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 429,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPlayerTransitionHost.kt",
+      "beforeSHA256LF": "5b6f22fb38945ddbb9129e1e6d107e7cce6a9b89aa38a3d81640c76a7b0e3112",
+      "afterSHA256LF": "3101559448ae6cd01965ccf125817014eea1381f07b733e7d47b7823f91093f0",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 8216,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 2844,
+          "before": "onRelatedVideoClick: (String, android.os.Bundle?) -> Unit",
+          "after": "onRelatedVideoClick: (String, Long, String?) -> Unit",
+          "label": "Explicit CID/cover original navigation fields"
+        },
+        {
+          "at": 17293,
+          "before": "onRelatedVideoClick ?: { _, _ -> }",
+          "after": "onRelatedVideoClick ?: { _, _, _ -> }",
+          "label": "Original optional fallback has the actual typed callback arity"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailPortraitOverlayAdapter.kt",
+      "beforeSHA256LF": "87bcb441d66d3c1569fc98f4381d069da2aeac2931657141d2806f30b0f13cf3",
+      "afterSHA256LF": "af09371ba5ec0da0e2bf403394562f02fcac22e5cfe62612224972d4432c6e54",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 2809,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 5690,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getPortraitOnlyVerticalRecommendations",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSettings.getPortraitOnlyVerticalRecommendations",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 159,
+          "before": "import androidx.compose.animation.ExitTransition\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnLoadBudgetPolicy.kt",
+      "beforeSHA256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "afterSHA256LF": "2572fe1878240885e9da13d884618f3196d3b9213d5adc373c53057fd70885d1",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnMediaLayout.kt",
+      "beforeSHA256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "afterSHA256LF": "2f2b9caed72f23fdcfafc9edef041f903e0c467c0fe0b952bb83ea16105cefb4",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailReturnSourceCardChrome.kt",
+      "beforeSHA256LF": "d225d1876b0e14130897388521c9702394abdbcce423ec07bdf36dfa96ccd315",
+      "afterSHA256LF": "4ac061f56642786372300071c1f7e27e588eb6f9d5764a7c6c9a18e85b6b67f2",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 39317,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 38934,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 37823,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 35824,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 34625,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 32852,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 26482,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 23554,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 10538,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailScreenContent.kt",
+      "beforeSHA256LF": "b500a69a55fa24b0a579361e2ef7f76446a43221fd7264809fadf8f16a16d95d",
+      "afterSHA256LF": "38ba605e572240d0f1a801ce0209751902b8d348ab40b23a3fb484e6a90ffb12",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 567,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "beforeSHA256LF": "9d283a30d6ec0eb316cad8e6b827b566a2e0cac7955efee0ae6dc5d8e3d1026b",
+      "afterSHA256LF": "7f7b3265f1b4cde93214161f0a365c6fa505d79a5c439d1fd10dcf7a27664a22",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 273707,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 157011,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 24503,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 16353,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 25377,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getAutoPortraitFullscreen",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getAutoPortraitFullscreen",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 85864,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getAutoRotateEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getAutoRotateEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 86615,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCardAnimationEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getCardAnimationEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 28693,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getClickToPlay",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlay",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 28855,
+          "before": "com.android.purebilibili.core.store.SettingsManager.getClickToPlaySync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getClickToPlaySync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 55898,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCommentDefaultSortMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 56063,
+          "before": "com.android.purebilibili.core.store.SettingsManager.getCommentDefaultSortModeSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentDefaultSortModeSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 56267,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCommentFraudDetectionEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentFraudDetectionEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 56546,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getCommentMemberDecorationsEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 149416,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getDanmakuSendColor",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendColor",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 149804,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getDanmakuSendFontSize",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendFontSize",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 149619,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getDanmakuSendMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.getDanmakuSendMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 62412,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getFullscreenMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getFullscreenMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 60206,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getHideVideoPageStatusBar",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBar",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 60378,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                .getHideVideoPageStatusBarSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getHideVideoPageStatusBarSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 25575,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getHomeUpBadgesVisible",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHomeUpBadgesVisible",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 59882,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getHorizontalAdaptationEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getHorizontalAdaptationEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 25791,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getLiveSurfaceCardTransitionEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getLiveSurfaceCardTransitionEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 89354,
+          "before": "com.android.purebilibili.core.store.SettingsManager.getMiniPlayerModeSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getMiniPlayerModeSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 204229,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .getPauseOnPlayerCollapseEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPauseOnPlayerCollapseEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 193722,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .getPortraitPlayerCollapseMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getPortraitPlayerCollapseMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 68452,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getProgressPeakDanmakuEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings.getProgressPeakDanmakuEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 137591,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                .getStopPlaybackOnExitSync",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getStopPlaybackOnExitSync",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 103145,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getSubtitleAutoPreference",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getSubtitleAutoPreference",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 56940,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getTabletCommentPanelWidthPreset",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getTabletCommentPanelWidthPreset",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 57293,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getVideoAiSummaryEntryEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings.getVideoAiSummaryEntryEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 57751,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getVideoNoteDefaultCollapsed",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalPlayerSectionSettings.getVideoNoteDefaultCollapsed",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 57528,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getVideoNoteEnabled",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings.getVideoNoteEnabled",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 170068,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuSendColor",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendColor",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 154715,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .setDanmakuSendColor",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendColor",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 170323,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuSendFontSize",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendFontSize",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 154989,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .setDanmakuSendFontSize",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendFontSize",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 170199,
+          "before": "com.android.purebilibili.core.store.SettingsManager.setDanmakuSendMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 154850,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n                            .setDanmakuSendMode",
+          "after": "com.android.purebilibili.core.store.DesktopOriginalVideoHolderSendSettings.setDanmakuSendMode",
+          "label": "Reuse sole original setting family over actual Root global Store"
+        },
+        {
+          "at": 55958,
+          "before": "DesktopOriginalReplySettings.getCommentDefaultSortMode(context)",
+          "after": "DesktopOriginalReplySettings.getCommentDefaultSortMode(context.pluginContext)",
+          "label": "Existing common Reply settings consume the same PluginContext"
+        },
+        {
+          "at": 56137,
+          "before": "DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context)",
+          "after": "DesktopOriginalReplySettings.getCommentDefaultSortModeSync(context.pluginContext)",
+          "label": "Existing common Reply settings consume the same PluginContext"
+        },
+        {
+          "at": 56355,
+          "before": "DesktopOriginalReplySettings.getCommentFraudDetectionEnabled(context)",
+          "after": "DesktopOriginalReplySettings.getCommentFraudDetectionEnabled(context.pluginContext)",
+          "label": "Existing common Reply settings consume the same PluginContext"
+        },
+        {
+          "at": 56648,
+          "before": "DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled(context)",
+          "after": "DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled(context.pluginContext)",
+          "label": "Existing common Reply settings consume the same PluginContext"
+        },
+        {
+          "at": 58542,
+          "before": "com.android.purebilibili.core.store.SettingsManager\n        .getDanmakuEnabled(\n            context,\n            com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT\n        )",
+          "after": "holderPlatform.section.danmakuPreferences.getDanmakuSettings(com.android.purebilibili.core.store.DanmakuSettingsScope.PORTRAIT\n        ).map { it.enabled }",
+          "label": "Original scope/value mapped to sole real global settings and runtime owner"
+        },
+        {
+          "at": 47325,
+          "before": "cid = resolvedCid, coverUrl = targetCover",
+          "after": "targetCid = resolvedCid, coverUrl = targetCover",
+          "label": "Exact sole navigation helper parameter name"
+        },
+        {
+          "at": 285259,
+          "before": "navigateToRelatedVideo(targetVideoId, null)",
+          "after": "navigateToRelatedVideo(targetVideoId, 0L, null)",
+          "label": "Original absent CID/cover navigation semantics"
+        },
+        {
+          "at": 51120,
+          "before": "navigateToRelatedVideo(target.videoId, null)",
+          "after": "navigateToRelatedVideo(target.videoId, 0L, null)",
+          "label": "Original absent CID/cover navigation semantics"
+        },
+        {
+          "at": 281301,
+          "before": "context.findActivity()",
+          "after": "platform.window.presentation",
+          "label": "Same actual Root Window presentation owner"
+        },
+        {
+          "at": 142665,
+          "before": "context.findActivity()",
+          "after": "platform.window.presentation",
+          "label": "Same actual Root Window presentation owner"
+        },
+        {
+          "at": 59483,
+          "before": "AppScreenshotGestureBlockState.fullscreenPlayerLocked",
+          "after": "platform.fullscreenPlayerLocked",
+          "label": "Same Root fullscreen lock projection used by Section, no global singleton state"
+        },
+        {
+          "at": 30490,
+          "before": "com.android.purebilibili.core.store.FavoriteInteractionSettingsStore\n        .getQuickSaveDefaultFolder(context)",
+          "after": "platform.favoritePreferences.getQuickSaveDefaultFolder()",
+          "label": "Same canonical Favorites global settings"
+        },
+        {
+          "at": 58119,
+          "before": "VideoDetailCommentFraudOverlayAdapter(\n        context = context,",
+          "after": "VideoDetailCommentFraudOverlayAdapter(\n        platform = platform.commentsPlatform,",
+          "label": "Original full Playback VM overload and existing Comment VM own the sent/fraud events"
+        },
+        {
+          "at": 25072,
+          "before": "    val context = platform.settingsContext",
+          "after": "    val context = platform.settingsContext\n    val coilContext = coil3.compose.LocalPlatformContext.current",
+          "label": "Capture actual Coil Windows context before remember calculation"
+        },
+        {
+          "at": 225209,
+          "before": "coil3.request.ImageRequest.Builder(context)",
+          "after": "coil3.request.ImageRequest.Builder(coilContext)",
+          "label": "Actual Coil Windows context preserves exact URL/cache keys"
+        },
+        {
+          "at": 132949,
+          "before": "com.android.purebilibili.core.player.PlayerVolumeController\n                     .applyPreferredVolume(playerState.player)",
+          "after": "platform.applyPreferredVolume(playerState.player)",
+          "label": "Same native player preferred volume owner"
+        },
+        {
+          "at": 218031,
+          "before": "                        val collapsedSystemBarInset = remember(view, configuration.densityDpi) {\n                            val rootInsetPx = ViewCompat.getRootWindowInsets(view)\n                                ?.getInsetsIgnoringVisibility(\n                                    WindowInsetsCompat.Type.statusBars() or\n                                        WindowInsetsCompat.Type.displayCutout()\n                                )\n                                ?.top\n                                ?: 0\n                            val statusBarResourceId = context.resources.getIdentifier(\n                                \"status_bar_height\",\n                                \"dimen\",\n                                \"android\",\n                            )\n                            val resourceInsetPx = if (statusBarResourceId != 0) {\n                                context.resources.getDimensionPixelSize(statusBarResourceId)\n                            } else {\n                                0\n                            }\n                            with(insetDensity) { maxOf(rootInsetPx, resourceInsetPx).toDp() }\n                        }",
+          "after": "                        val collapsedSystemBarInset = with(insetDensity) {\n                            platform.section.statusBarInsetPixels.toDp()\n                        }",
+          "label": "Actual stable Root client inset; no Android resource fallback or guessed status bar"
+        },
+        {
+          "at": 266407,
+          "before": "                                                val vipPlaybackCandidates = remember(errorState.error) {\n                                                    val currentPlaybackMid = com.android.purebilibili.core.network.NetworkModule\n                                                        .playbackAccount()?.mid\n                                                    com.android.purebilibili.core.store.AccountSessionStore\n                                                        .getAccounts(context)\n                                                        .filter { account ->\n                                                            account.isVip &&\n                                                                account.sessData.isNotBlank() &&\n                                                                account.mid != currentPlaybackMid\n                                                        }\n                                                }",
+          "after": "                                                val vipPlaybackCandidates by androidx.compose.runtime.produceState(\n                                                    initialValue = emptyList<com.android.purebilibili.core.store.StoredAccountSession>(),\n                                                    key1 = errorState.error, key2 = platform.accounts,\n                                                ) {\n                                                    val currentPlaybackMid = platform.accounts.getPlaybackAccountMid() ?: platform.accounts.getActiveAccountMid()\n                                                    val candidates = platform.accounts.getAccounts()\n                                                        .filter { account ->\n                                                            account.isVip &&\n                                                                account.sessData.isNotBlank() &&\n                                                                account.mid != currentPlaybackMid\n                                                        }\n                                                    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                                                    if (platform.isCurrent()) value = candidates\n                                                }",
+          "label": "Same owned encrypted Store account query; original VIP/credential/current-MID filters intact"
+        },
+        {
+          "at": 268138,
+          "before": "                                                            com.android.purebilibili.core.store.AccountSessionStore\n                                                                .setPlaybackAccountMid(context, vipCandidate.mid)\n                                                            android.widget.Toast.makeText(\n                                                                context,\n                                                                \"已使用「${vipCandidate.name.ifBlank { \"UID ${vipCandidate.mid}\" }}」的大会员播放\",\n                                                                android.widget.Toast.LENGTH_SHORT\n                                                            ).show()\n                                                            viewModel.retry()",
+          "after": "                                                            scope.launch {\n                                                                if (platform.accounts.setPlaybackAccountMid(vipCandidate.mid)) {\n                                                                    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                                                                    if (platform.isCurrent()) {\n                                                                        platform.showFeedback(\"已使用「${vipCandidate.name.ifBlank { \"UID ${vipCandidate.mid}\" }}」的大会员播放\")\n                                                                        viewModel.retry()\n                                                                    }\n                                                                }\n                                                            }",
+          "label": "Same owned playback selection install; no stale UI receipt/retry after retirement"
+        },
+        {
+          "at": 281166,
+          "before": "isActivityInMultiWindowOrFloatingMode(\n                        activity = hostActivity,\n                        displayContext = displayContext,\n                    )",
+          "after": "hostActivity.isInMultiWindowMode",
+          "label": "Actual Root Window capability"
+        },
+        {
+          "at": 192118,
+          "before": "WindowInsets.statusBarsIgnoringVisibility\n                                .asPaddingValues()\n                                .calculateTopPadding()\n                                .value",
+          "after": "with(LocalDensity.current) { holderPlatform.section.statusBarInsetPixels.toDp().value }",
+          "label": "Actual stable Window client inset"
+        },
+        {
+          "at": 10781,
+          "before": "import io.github.alexzhirkevich.cupertino.icons.outlined.*\n",
+          "after": "",
+          "label": "Unused Android-only icon namespace; original UI already uses sole AppIcons"
+        },
+        {
+          "at": 697,
+          "before": "import com.android.purebilibili.core.ui.components.AppTextButton\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 852,
+          "before": "import com.bilipai.desktop.ui.DesktopOriginalVideoWindowOrientation as Configuration\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1025,
+          "before": "import androidx.compose.animation.core.animateFloat\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1075,
+          "before": "import androidx.compose.animation.core.Easing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1264,
+          "before": "import androidx.compose.animation.EnterExitState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1264,
+          "before": "import androidx.compose.animation.slideOutVertically\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1583,
+          "before": "import androidx.compose.animation.fadeOut\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1583,
+          "before": "import androidx.compose.animation.scaleOut\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1766,
+          "before": "import androidx.compose.foundation.BorderStroke\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1812,
+          "before": "import androidx.compose.foundation.rememberScrollState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1812,
+          "before": "import androidx.compose.foundation.interaction.MutableInteractionSource\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1856,
+          "before": "import androidx.compose.foundation.lazy.LazyColumn\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 1910,
+          "before": "import androidx.compose.foundation.lazy.items\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2022,
+          "before": "import androidx.compose.foundation.verticalScroll\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2559,
+          "before": "import androidx.compose.runtime.saveable.listSaver\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2690,
+          "before": "import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 2931,
+          "before": "import androidx.compose.ui.text.font.FontWeight\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3208,
+          "before": "import androidx.compose.ui.unit.sp\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3667,
+          "before": "import androidx.compose.ui.input.pointer.pointerInput\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3667,
+          "before": "import androidx.compose.foundation.gestures.detectVerticalDragGestures\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3667,
+          "before": "import androidx.compose.foundation.gestures.detectDragGestures\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3667,
+          "before": "import androidx.compose.foundation.gestures.draggable\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3774,
+          "before": "import com.android.purebilibili.data.model.CommentFraudStatus\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3774,
+          "before": "import com.android.purebilibili.data.repository.resolveCommentFraudLightMessage\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 3774,
+          "before": "import com.android.purebilibili.data.repository.shouldShowCommentFraudResultDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.RelatedVideo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.ReplyItem\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.UgcSeason\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.VideoTag\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.ViewInfo\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.data.model.response.ViewPoint\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4328,
+          "before": "import com.android.purebilibili.feature.common.resolveIndexedVideoLazyKey\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.VideoTitleSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.VideoTitleWithDesc\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.UpInfoSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.DescriptionSection\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.ActionButtonsRow\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.section.ActionButton\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.RelatedVideosHeader\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.RelatedVideoItem\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CoinDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CollectionRow\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CollectionSheet\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4356,
+          "before": "import com.android.purebilibili.feature.video.ui.components.PagesSelector\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4701,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.VideoEngagementEvent\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4782,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.toEngagementSeed\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4782,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.toSupplementSeed\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4782,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.QualitySwitchFailureDialogState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 4782,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.CommentUiState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.video.ui.section.shouldKeepVideoPlaybackAwake\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.screenshot.AppScreenshotGestureBlockState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.video.ui.components.ReplyHeader\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.video.ui.components.ReplyItemView\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.video.ui.components.CommentFraudResultDialog\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5467,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoCommentSheetHost\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5641,
+          "before": "import com.android.purebilibili.feature.video.ui.components.LikeBurstAnimation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5641,
+          "before": "import com.android.purebilibili.feature.video.ui.components.TripleSuccessAnimation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5721,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoActionFeedbackHost\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 5966,
+          "before": "import com.android.purebilibili.feature.video.progress.PbpProgressData\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 6771,
+          "before": "import io.github.alexzhirkevich.cupertino.icons.CupertinoIcons\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 6809,
+          "before": "import kotlinx.coroutines.CoroutineScope\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 7014,
+          "before": "import com.android.purebilibili.core.ui.LocalPredictiveBackGestureEnabled\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 7773,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionEnterEasing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 7773,
+          "before": "import com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionReturnEasing\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 8858,
+          "before": "import com.android.purebilibili.core.ui.rememberAppCollectionIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 8858,
+          "before": "import com.android.purebilibili.core.ui.rememberAppDownloadIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 8858,
+          "before": "import com.android.purebilibili.core.ui.rememberAppMusicIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 8858,
+          "before": "import com.android.purebilibili.core.ui.rememberAppPhotoIcon\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 8940,
+          "before": "import com.android.purebilibili.feature.video.player.PlaylistItem\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9171,
+          "before": "import com.android.purebilibili.feature.video.ui.overlay.PortraitFullscreenOverlay\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9171,
+          "before": "import com.android.purebilibili.feature.video.ui.overlay.PlayerProgress\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9171,
+          "before": "import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9171,
+          "before": "import com.android.purebilibili.core.ui.blur.shouldAllowRuntimeShaderBackedHazeEffect\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9171,
+          "before": "import com.android.purebilibili.core.ui.blur.unifiedBlur\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9306,
+          "before": "import com.android.purebilibili.core.util.FormatUtils\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import dev.chrisbanes.haze.HazeState\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.components.DanmakuContextMenu\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.components.DanmakuBlockActionTarget\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.components.resolveDanmakuBlockActionFeedbackMessage\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.danmaku.appendDanmakuKeywordBlockRule\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.danmaku.appendDanmakuUserHashBlockRule\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.components.InteractiveChoiceOverlay\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.VideoFeedbackAnchor\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.TripleCelebrationPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveQualityReminderPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveTripleCelebrationPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9418,
+          "before": "import com.android.purebilibili.feature.video.ui.feedback.resolveVideoFeedbackPlacement\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 9524,
+          "before": "import com.android.purebilibili.feature.video.viewmodel.PlayerToastPresentation\n",
+          "after": "",
+          "label": "Lexically unused import after tracked Windows platform substitutions"
+        },
+        {
+          "at": 51,
+          "before": "package com.android.purebilibili.feature.video.screen\n",
+          "after": "package com.android.purebilibili.feature.video.screen\nimport kotlinx.coroutines.flow.map\n",
+          "label": "Flow projection of actual original settings"
+        },
+        {
+          "at": 51,
+          "before": "package com.android.purebilibili.feature.video.screen\n",
+          "after": "package com.android.purebilibili.feature.video.screen\nimport kotlinx.coroutines.ensureActive\n",
+          "label": "Actual caller coroutine cancellation before UI receipt"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt",
+      "beforeSHA256LF": "3eda952d449333ab1478323667dd01c09820bc8d58e5f045e7b4ddfb13286660",
+      "afterSHA256LF": "3eda952d449333ab1478323667dd01c09820bc8d58e5f045e7b4ddfb13286660",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTopBarActionPolicy.kt",
+      "beforeSHA256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "afterSHA256LF": "e3cad5ad9439b22a46358695ab5ec07773f61a5c3b21302c269e36ae8346163a",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTransitionHost.kt",
+      "beforeSHA256LF": "3665f4b977d31146f0899af5dd479ed9f3eedd584ceb5c433ba5b562ed2d02a2",
+      "afterSHA256LF": "6122ceb524413d8167c6d4c32194eae4456454f1e79502dc6c353eb3f1f6ad0c",
+      "exactInverse": true,
+      "edits": [
+        {
+          "at": 14764,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 10911,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 10002,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        },
+        {
+          "at": 3316,
+          "before": "",
+          "after": "\n    val holderPlatform = com.bilipai.desktop.ui.LocalDesktopOriginalVideoHolderPlatform.current",
+          "label": "Capture required same-entry platform for effect/callback lifecycle"
+        }
+      ]
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoDetailTransitionPolicy.kt",
+      "beforeSHA256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "afterSHA256LF": "2ab6815a877d08723378da15915facc9a7d93195e2b8ccc2d775435820c3314b",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoInitialPagePolicy.kt",
+      "beforeSHA256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "afterSHA256LF": "a7e40d099325072ddae650dc452f0f841f3183cfbb6f17d7dc6791f59df5036c",
+      "exactInverse": true,
+      "edits": []
+    },
+    {
+      "output": "com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "beforeSHA256LF": "cc77ae5a921237aec3bce7fe5cfec664beb9ef0441e2d9f3fc99305f9979c488",
+      "afterSHA256LF": "cc77ae5a921237aec3bce7fe5cfec664beb9ef0441e2d9f3fc99305f9979c488",
+      "exactInverse": true,
+      "edits": []
+    }
+  ],
+  "productRuntimeAccepted": false
+}
