@@ -1,0 +1,59 @@
+{
+  "status": "NO_BLOCKER_FOUND_IN_NARROW_SOURCE_SCOPE",
+  "preparedOnly": true,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+      "sha256LF": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoritesRootEntry.kt",
+      "sha256Bytes": "e744706cc1f5021c68d38a5af3affadba9ef47a3b27c87697481df93a0079856",
+      "sha256LF": "e744706cc1f5021c68d38a5af3affadba9ef47a3b27c87697481df93a0079856"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "sha256Bytes": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "sha256LF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0"
+    }
+  ],
+  "originalSource": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80"
+  },
+  "evidence": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+      "anchor": "395 addAllToCurrentPlaylist",
+      "finding": "Original existingBvids set and items.filter{bvid !in existing} retained. Neither branch overwrites existing BVID metadata/CID/order/index; Listen applies its already-existing normalization boundary."
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+      "anchor": "25 openQueue / 44 revealIfOwned / 53 appendQueue / 67 owns",
+      "finding": "Per-open lease, one-use reveal ticket and selected audio/video target gate. Revealing does not issue normal open again. Append checks same actual Controller/Listen owner; close clears bridge tickets without modifying queue authority."
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "anchor": "124 ordinary start / 128 owner start / 145 playAt / 205 pause / 235 ownsQueue",
+      "finding": "Ordinary start passes null owner and retires previous lease. Internal next/previous use playAt, carrying lease into the new playGeneration and native baseline. Loaded pause retains current owner; pending pause retires it. Admission while preparing requires unchanged stopped native baseline AND no foreign current snapshot."
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "anchor": "244 appendQueueForOwner / 485 stopOwnedSource",
+      "finding": "Append operates actual existing state and changeQueue; preserves loaded native source and current pause/position. Stop/close clears owner and stops only the owned native version."
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoritesRootEntry.kt",
+      "anchor": "27 child SupervisorJob / 46 isOwned / 54 close / 60 shutdownForRestore",
+      "finding": "Entry ownership checks alive, own job, epoch and Root lifetime. Covering is not a close action. Only explicit close cancels its child job/channels; restore waits for it. Root caller must retain this same entry while covered; this source review does not verify mounted navigation lifetime."
+    }
+  ],
+  "blockers": [],
+  "limitations": [
+    "Read-only source audit. No Gradle, runtime native actor/window, account or HTTP.",
+    "Prepared queue helpers are not claimed installed Main17 or mounted Root consumer.",
+    "Normal Root video/audio callbacks and queue-token policy must remain the sole native playback authority."
+  ]
+}

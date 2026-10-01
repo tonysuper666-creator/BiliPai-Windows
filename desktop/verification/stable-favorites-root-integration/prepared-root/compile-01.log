@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\fixture\RootFavoritesWiringFixture.kt:205:105: warning: this is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+        verify(f.controller.state.value.queue.size == 2 && !entry.scope.isActive && entry.searchChannel.isClosedForSend,
+                                                                                                        ^^^^^^^^^^^^^^^

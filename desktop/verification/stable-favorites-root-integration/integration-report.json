@@ -1,0 +1,95 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "wholeClasses22Passed": true,
+  "sourceIdentities": 748,
+  "resources": 210,
+  "originalFullFavoritesRootSourceMounted": true,
+  "oldSimplifiedFavoritesRootRemoved": true,
+  "originalRetainedVmAndConflatedChannels": true,
+  "actualMeasuredViewport": true,
+  "originalFullFolderContinuationAndSameNativeQueues": true,
+  "appendOnlyUnseenBvidsAndPreservePreparedCid": true,
+  "realNextAndLoadedPauseRetainQueueOwner": true,
+  "pendingForeignSourceAndOrdinaryOpenRetireOldOwner": true,
+  "callbackTimeOwnerChecksAndOldSaveableKeysCleanup": true,
+  "sameGlobalPreferencesAndNativeShareActor": true,
+  "actualProduct22QueueProofGroups": 4,
+  "actualProduct22QueueProofAssertions": 28,
+  "actualProduct22ProofOverrides": 0,
+  "originalUiProductPhase": 17,
+  "originalUiThemes": 2,
+  "originalUiAssertions": 26,
+  "originalUiPointerPairs": 20,
+  "originalUiEditableTextActions": 4,
+  "junitMethods": 17,
+  "junitSuites": [
+    {
+      "name": "com.bilipai.desktop.audio.ListenAudioLifecycleTest",
+      "methods": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.bilipai.desktop.audio.ListenWriterBarrierTest",
+      "methods": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest",
+      "methods": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "initialClasses21Failure": "Root attempted to read the manual environment owner predicate before it was exposed; added isOwned using the existing predicate/scope, assertOwned delegates unchanged, classes22 succeeds",
+  "originalMiuixLabelSlotBehaviorRetained": true,
+  "actualRootMountedUiAccepted": false,
+  "actualVideoAudioDecodingAccepted": false,
+  "realOnlineFolderContinuationAccepted": false,
+  "realAccountOrSystemShareAccepted": false,
+  "desktopExeReplaced": false,
+  "publicReleaseAccepted": false,
+  "proofScope": "Actual product22 six owners/VM classes, synthetic memory APIs and unattached native actors; original17 offscreen UI uses synthetic folders and real Compose events; no socket/HWND/account mutation",
+  "pending": [
+    "Mounted Root navigation/list-state restoration and actual account folder continuation",
+    "Complete Home/FrostedBottomBar/music/settings/player/danmaku/space UI",
+    "Full Root/PiP/DPI/native sharing and desktop EXE delivery"
+  ],
+  "excludedTaskBinaries": [
+    {
+      "cohort": "actual17-original-ui",
+      "path": "runs/01/favorite-main17-ui-fixture.jar",
+      "bytes": 34158,
+      "sha256Bytes": "df6afb0125e36559b39ed673953cffefe7062344fae9a01b584479e26db669a9"
+    },
+    {
+      "cohort": "actual17-original-ui",
+      "path": "runs/02/favorite-main17-ui-fixture.jar",
+      "bytes": 34158,
+      "sha256Bytes": "df6afb0125e36559b39ed673953cffefe7062344fae9a01b584479e26db669a9"
+    },
+    {
+      "cohort": "actual17-original-ui",
+      "path": "runs/03/favorite-main17-ui-fixture.jar",
+      "bytes": 34275,
+      "sha256Bytes": "e51ff5bde9e38d891d7bcf0ac098640cd497bdc2ffc181bdf5b0e1a340466a3a"
+    },
+    {
+      "cohort": "actual17-original-ui",
+      "path": "runs/04/favorite-main17-ui-fixture.jar",
+      "bytes": 34592,
+      "sha256Bytes": "3adc52c0e9c57b5fbc5484413de01fed7dccf60086d3e40aa9ecfe0c92cab5c2"
+    },
+    {
+      "cohort": "actual17-original-ui",
+      "path": "runs/05/favorite-main17-ui-fixture.jar",
+      "bytes": 34948,
+      "sha256Bytes": "2a52b072620782951582af5257b9119c6e735e8c7ae123b58c0ce33c17d4238b"
+    }
+  ]
+}

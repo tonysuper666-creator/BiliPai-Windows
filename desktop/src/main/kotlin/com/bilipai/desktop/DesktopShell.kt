@@ -209,6 +209,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var preferences by remember { mutableStateOf(preferenceStore.read().let { it.copy(speed = it.preferredSpeed) }) }
     val latestPreferences by rememberUpdatedState(preferences)
     val scope = rememberCoroutineScope()
+    val favoritesEntryRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoritesRootEntry?>() }
+    val favoritesQueueRef = remember(repository, sessionEpoch) { java.util.concurrent.atomic.AtomicReference<DesktopFavoriteQueueBridge?>() }
     val social = remember(repository) { DesktopSocialRepository(repository) }
     val community = remember(repository, discovery.blockedUps) { DesktopCommunityRepository(repository, discovery.blockedUps) }
     val space = remember(repository) { DesktopSpaceRepository(repository) }
@@ -255,6 +257,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache, imageSaveLifetime) {
         DesktopPluginRuntime(pluginStore, repository, community, discovery,
             beforeStoreFreeze = {
+                favoritesQueueRef.getAndSet(null)?.close()
+                favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
                 imageSaveLifetime.close()
                 dynamicCache.shutdownForRestore()
                 diagnosticLifecycle?.shutdownForRestore()
@@ -372,6 +376,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var section by remember { mutableStateOf(DesktopSection.HOME) }
     var jsSettingsOrigin by remember { mutableStateOf(false) }
     var showVideo by remember { mutableStateOf(initialVideo != null) }
+    var favoritesEntry by remember(repository, sessionEpoch) { mutableStateOf<DesktopFavoritesRootEntry?>(null) }
+    var favoritesAudioCover by remember(repository, sessionEpoch) { mutableStateOf(false) }
+    val favoritesSaveable = androidx.compose.runtime.saveable.rememberSaveableStateHolder()
+    DisposableEffect(favoritesEntryRef, favoritesQueueRef, favoritesSaveable) { onDispose {
+        favoritesQueueRef.getAndSet(null)?.close()
+        favoritesEntryRef.getAndSet(null)?.let { entry ->
+            entry.savedStateKeys.forEach(favoritesSaveable::removeState)
+            entry.close()
+        }
+    } }
     var lastMediaSection by remember { mutableStateOf<DesktopSection?>(null) }
     var mediaPrevious by remember { mutableStateOf<(() -> Unit)?>(null) }
     var mediaNext by remember { mutableStateOf<(() -> Unit)?>(null) }
@@ -447,6 +461,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
             closeDiscoveryStorage()
+            favoritesQueueRef.getAndSet(null)?.close()
+            favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
             downloadNotificationRetired.set(true)
             downloadNotification.getAndSet(null)?.close()
             nativeTextShare.shutdown()
@@ -462,6 +478,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         registerShutdown?.invoke {
             withContext(NonCancellable) {
                 closeDiscoveryStorage()
+                favoritesQueueRef.getAndSet(null)?.close()
+                favoritesEntryRef.getAndSet(null)?.shutdownForRestore()
                 downloadNotificationRetired.set(true)
                 downloadNotification.getAndSet(null)?.close()
                 nativeTextShare.shutdown()
@@ -588,8 +606,47 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         error = playback.state.value.error ?: "播放记录保存失败，请检查本地隐私和存储设置"
         return false
     }
+    fun retireFavoritesEntry() {
+        favoritesQueueRef.getAndSet(null)?.close()
+        (favoritesEntryRef.getAndSet(null) ?: favoritesEntry)?.let { entry ->
+            entry.savedStateKeys.forEach(favoritesSaveable::removeState)
+            entry.close()
+        }
+        favoritesEntry = null; favoritesAudioCover = false
+    }
+    fun ensureFavoritesEntry(): DesktopFavoritesRootEntry {
+        favoritesEntryRef.get()?.takeIf { it.isOwned() }?.let { return it }
+        retireFavoritesEntry()
+        val capturedEpoch = repository.sessionEpoch
+        val entry = DesktopFavoritesRootEntry(capturedEpoch, { repository.sessionEpoch }, scope,
+            community.favoriteApi, community.favoriteSpaceApi, community.favoriteDynamicApi, community.favoriteBangumiApi,
+            pluginStore, { repository.account.value?.mid }, { repository.requireCsrf() }, { error = it },
+            rootAlive = { !isClosing() && !activatingUpdate })
+        val queue = DesktopFavoriteQueueBridge(playback, listen, entry::isOwned,
+            isSelectedTarget = { audio -> systemTargetAudio == audio },
+            beforeOpen = { audio ->
+                if (isClosing() || activatingUpdate || !entry.isOwned() || !checkpointForNavigation() || (audio && listen == null)) false
+                else {
+                    changePreferences(preferences.copy(playbackMode = com.bilipai.desktop.player.PlaybackMode.SEQUENTIAL))
+                    storyHost.retire(); retainedMedia.stop()
+                    if (audio) { playback.pause(); systemTargetAudio = true }
+                    else { listen?.pause(); systemTargetAudio = false }
+                    true
+                }
+            },
+            revealVideo = { showVideo = true; mediaActive = false; playerFocused = false },
+            revealAudio = { showVideo = false; playerFocused = false; mediaActive = false
+                favoritesAudioCover = true; section = DesktopSection.LISTEN })
+        favoritesEntryRef.set(entry); favoritesQueueRef.set(queue); favoritesEntry = entry
+        return entry
+    }
     fun navigate(target: DesktopSection, commit: () -> Unit = {}): Boolean {
         if (activatingUpdate || !checkpointForNavigation()) return false
+        if (target == DesktopSection.CLOUD_FAVORITES) {
+            val entry = ensureFavoritesEntry()
+            if (section == target && !showVideo) entry.scrollToTopChannel.trySend(Unit)
+            favoritesAudioCover = false
+        } else retireFavoritesEntry()
         if (target != DesktopSection.STORY) storyHost.retire()
         if (target == DesktopSection.DYNAMIC) dynamicRoute = null
         commit()
@@ -866,6 +923,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             retainedMedia.external -> lastMediaSection = DesktopSection.EXTERNAL_MEDIA
             else -> Unit
         }
+    }
+    val capturedFavoritesUiEpoch = sessionEpoch
+    LaunchedEffect(capturedFavoritesUiEpoch, section) {
+        if (section == DesktopSection.CLOUD_FAVORITES && repository.sessionEpoch == capturedFavoritesUiEpoch &&
+            !isClosing() && !activatingUpdate && favoritesEntryRef.get()?.isOwned() != true) ensureFavoritesEntry()
     }
     DesktopHistoryRefreshEffects(browseMemory, showVideo && playing.details != null)
     LaunchedEffect(retainedMedia, jsExecutionRevision, sessionEpoch) {
@@ -1360,9 +1422,62 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         error = "已加入下载队列"
                                     } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure.message ?: "下载失败" }
                                 } })
-                            section in listOf(DesktopSection.CLOUD_FAVORITES, DesktopSection.CLOUD_HISTORY, DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS, DesktopSection.LIKED) ->
+                            section == DesktopSection.CLOUD_FAVORITES -> {
+                                val entry = favoritesEntry
+                                val queue = favoritesQueueRef.get()
+                                if (entry == null || queue == null || !entry.isOwned()) {
+                                    TextButton(onClick = { if (!isClosing() && !activatingUpdate) ensureFavoritesEntry() }) { Text("重新打开收藏") }
+                                } else {
+                                    DesktopDetailWindow {
+                                    val prefs = entry.preferences
+                                    val bindings = remember(entry, queue, rootTextShareBindings) {
+                                        DesktopFavoriteBindings(prefs.showOnlineCount, prefs.homeSettings, prefs.initialHomeSettings(),
+                                            prefs.navigationSettings, prefs.initialNavigationSettings(), entry.categories,
+                                            queue::openQueue, queue::appendQueue,
+                                            share = { subject, text, _ -> requestDesktopTextShare(rootTextShareBindings,
+                                                entry.scope, subject, text, entry::isOwned, { error = it }) },
+                                            homeFeedCardStyle = prefs.homeFeedCardStyle,
+                                            hazeEffectSupported = false,
+                                            backToTopEnabled = prefs.backToTopEnabled, initialBackToTopEnabled = prefs.initialBackToTopEnabled(),
+                                            backToTopOffset = prefs.backToTopOffset, initialBackToTopOffset = prefs.initialBackToTopOffset(),
+                                            setBackToTopOffset = { x, y -> if (entry.isOwned()) prefs.setBackToTopOffset(x, y) },
+                                            updateBackToTopOffset = { x, y -> if (entry.isOwned()) prefs.updateBackToTopOffset(x, y) })
+                                    }
+                                    val detail = entry.currentDetail
+                                    favoritesSaveable.SaveableStateProvider(entry.stateKey(detail)) {
+                                        DesktopOriginalFavoritesHost(entry.environment, bindings,
+                                            onBack = { if (entry.isOwned()) {
+                                                if (entry.currentDetail != null) entry.currentDetail = null else navigate(DesktopSection.HOME)
+                                            } },
+                                            onVideoClick = { bvid, cid, cover, _ ->
+                                                if (entry.isOwned() && !queue.revealIfOwned(bvid, cid, false))
+                                                    openVideo(VideoCard(bvid, bvid, cover, "", 0, 0, preferredCid = cid))
+                                            }, onUpClick = { if (entry.isOwned()) openUser(it) },
+                                            onCollectionClick = { if (entry.isOwned()) entry.currentDetail = it },
+                                            onFolderClick = { mediaId, ownerMid, title, ownerName ->
+                                                if (entry.isOwned()) entry.currentDetail = com.android.purebilibili.feature.list.FavoriteCollectionRoute("favorite", mediaId, ownerMid, title, ownerName) },
+                                            onBangumi = { if (entry.isOwned()) openBangumi(it) },
+                                            onArticle = { id, _ -> if (entry.isOwned()) openArticle(id) },
+                                            onTopic = { if (entry.isOwned()) openTopic(it) },
+                                            onCourse = { if (entry.isOwned()) showSeason(it, course = true) },
+                                            onWeb = { url, title -> if (entry.isOwned()) openDynamicWeb(url, title) },
+                                            onPlayAllAudio = { bvid, cid ->
+                                                if (entry.isOwned() && !queue.revealIfOwned(bvid, cid, true)) {
+                                                    val fallback = com.android.purebilibili.feature.video.player.PlaylistItem(bvid, cid, bvid, "", "")
+                                                    if (queue.openQueue(listOf(fallback), 0, true) != null) queue.revealIfOwned(bvid, cid, true)
+                                                    else error = "音频播放器当前不可用"
+                                                }
+                                            }, detail = detail,
+                                            listScopedSearchChannel = entry.searchChannel, scrollToTopChannel = entry.scrollToTopChannel,
+                                            isCurrentPage = !showVideo && !activatingUpdate,
+                                            retainedViewModel = detail?.let(entry::detailViewModel) ?: entry.viewModel,
+                                            loadFavoriteViewModelOnEnter = false)
+                                    }
+                                    }
+                                }
+                            }
+                            section in listOf(DesktopSection.CLOUD_HISTORY, DesktopSection.WATCH_LATER, DesktopSection.FOLLOWINGS, DesktopSection.LIKED) ->
                                 PersonalContentScreen(when(section) {
-                                    DesktopSection.CLOUD_FAVORITES -> PersonalSection.FAVORITES
                                     DesktopSection.CLOUD_HISTORY -> PersonalSection.HISTORY
                                     DesktopSection.WATCH_LATER -> PersonalSection.WATCH_LATER
                                     DesktopSection.LIKED -> PersonalSection.LIKED

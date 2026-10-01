@@ -1,0 +1,7 @@
+Prepared Root Favorites wiring 4 groups / 28 assertions PASS; actual HWND=false; socket=false; mountedRoot=false
+CodeSource com.bilipai.desktop.ui.DesktopFavoriteQueueBridge: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-root-wiring/classes-final/
+CodeSource com.bilipai.desktop.ui.DesktopFavoritesRootEntry: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-root-wiring/classes-final/
+CodeSource com.bilipai.desktop.audio.ListenAudioSession: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-root-wiring/classes-final/
+CodeSource com.bilipai.desktop.DesktopPlaybackController: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar
+CodeSource com.bilipai.desktop.plugins.DesktopPluginStore: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar
+CodeSource com.android.purebilibili.feature.list.FavoriteViewModel: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar

@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-main17-ui-proof\\runs\\05\\source-inputs\\FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "b419c9815d04f8681f731bd3b6e1f683535a5f55496749c09551d49288795394"
+    }
+  ],
+  "productionSourceInputs": 0,
+  "jarSha256Bytes": "2a52b072620782951582af5257b9119c6e735e8c7ae123b58c0ce33c17d4238b",
+  "fixtureClasses": [
+    "com/bilipai/desktop/diagnostics/favoriteui17/FavoriteSheetUiFixtureKt$main$1.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/FavoriteSheetUiFixtureKt.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Fence.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Scene$edit$1.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Scene$pointer$1.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Scene$wait$1.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Scene$wait$2.class",
+    "com/bilipai/desktop/diagnostics/favoriteui17/Scene.class"
+  ],
+  "productionClassOverlap": [],
+  "actualSnapshotManifestSha256Bytes": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "orderedCp92Sha256Bytes": "25533b03785344f3a4a360a6db292775ad370824449c7a9c3a5b98702e3812d6"
+}

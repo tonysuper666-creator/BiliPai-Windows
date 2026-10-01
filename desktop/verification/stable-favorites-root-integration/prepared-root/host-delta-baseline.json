@@ -1,0 +1,6 @@
+{
+  "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+  "baseLF": "d8d99ea930f5fb2a7ba47cee427184f30532b1762fbffa34a70d37964bbc39bf",
+  "desiredLF": "15f272c6d9bf552d2f0f145a922df0133fe1e0ff00e2ced3d6424cb9bcdb2f9f",
+  "change": "Compatible Root already-initialized VM tail; old callers unchanged"
+}

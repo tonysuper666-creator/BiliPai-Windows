@@ -1,0 +1,96 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt
+@@ -60,6 +60,9 @@
+     private var savingJob: Job? = null
+     private var lyricsOffsetSavingJob: Job? = null
+     private var playGeneration = 0L
++    /** Navigation-entry lease only; queue/items/native state remain the original session's. */
++    private data class QueueOwnership(val owner: Any, val generation: Long, val nativeBaseline: Long)
++    private var queueOwnership: QueueOwnership? = null
+     private var ownedSourceVersion: Long? = null
+     /** Actual ownership, including stopped/closed native players, without exposing a source or its credentials. */
+     internal val ownedPlaybackSourceVersion: Long? get() = if (!sessionIsCurrent()) null else ownedSourceVersion?.takeIf {
+@@ -118,12 +121,22 @@
+ 
+     fun play(items: List<PlaylistItem>, index: Int = 0) = playStartingAt(items, index, 0.0)
+ 
+-    internal fun playStartingAt(items: List<PlaylistItem>, index: Int = 0, positionSeconds: Double = 0.0) {
++    internal fun playStartingAt(items: List<PlaylistItem>, index: Int = 0, positionSeconds: Double = 0.0) =
++        startQueue(items, index, positionSeconds, null)
++
++    /** Same native actor as ordinary Listen playback; no fabricated parallel session. */
++    internal fun playQueueForOwner(owner: Any, items: List<PlaylistItem>, index: Int = 0): Boolean {
++        startQueue(items, index, 0.0, owner)
++        return ownsQueue(owner)
++    }
++
++    private fun startQueue(items: List<PlaylistItem>, index: Int, positionSeconds: Double, owner: Any?) {
+         if (!sessionIsCurrent()) return
+         val clicked = items.getOrNull(index)?.bvid ?: return
+         val queue = normalizeListenQueue(items)
+         if (queue.isEmpty()) return
+         val selected = queue.indexOfFirst { it.bvid == clicked }.coerceAtLeast(0)
++        queueOwnership = owner?.let { QueueOwnership(it, playGeneration, player.currentSourceVersion) }
+         shuffle = ShuffleProgress(history = listOf(selected), historyIndex = 0, cyclePlayed = setOf(selected))
+         mutableState.update { it.copy(queue = queue, currentIndex = selected) }
+         playAt(selected, positionSeconds)
+@@ -140,6 +153,7 @@
+         val generation = playGeneration
+         player.stop()
+         val pendingSourceVersion = player.currentSourceVersion
++        queueOwnership = queueOwnership?.copy(generation = generation, nativeBaseline = pendingSourceVersion)
+         ownedSourceVersion = null
+         musicLyrics = null; subtitleLyrics = null
+         mutableState.update { it.copy(currentIndex = index, loading = true, active = true, error = null, lyrics = null, songInfo = null,
+@@ -190,7 +204,9 @@
+ 
+     fun pause() {
+         if (!sessionIsCurrent()) return
++        val loadedOwner = queueOwnership?.takeIf { ownedPlaybackSourceVersion != null }
+         playJob?.cancel(); playGeneration++
++        queueOwnership = loadedOwner?.copy(generation = playGeneration)
+         mutableState.update { it.copy(active = false, loading = false) }
+         if (ownsSource()) player.setPaused(true)
+         persist()
+@@ -214,6 +230,33 @@
+             shuffle.history.getOrNull(shuffle.historyIndex)
+         } else resolveLinearPlayPreviousIndex(current.queue.size, current.currentIndex, preferences.playbackMode in setOf(PlaybackMode.REPEAT_ALL, PlaybackMode.SHUFFLE))
+         if (index != null) playAt(index)
++    }
++
++    internal fun ownsQueue(owner: Any): Boolean {
++        val lease = queueOwnership ?: return false
++        if (lease.owner !== owner || lease.generation != playGeneration || !sessionIsCurrent()) return false
++        if (ownedSourceVersion != null) return ownedPlaybackSourceVersion != null
++        val current = mutableState.value
++        return (current.loading || current.error != null) && player.currentSourceVersion == lease.nativeBaseline &&
++            player.currentSourceSnapshot() == null
++    }
++
++    /** Original PlaylistManager addAllToCurrentPlaylist BVID append policy. */
++    internal fun appendQueueForOwner(owner: Any, items: List<PlaylistItem>): Boolean {
++        if (!ownsQueue(owner)) return false
++        val existing = mutableState.value.queue.mapTo(mutableSetOf()) { it.bvid }
++        val appended = items.filter { it.bvid !in existing }
++        if (appended.isNotEmpty()) changeQueue(normalizeListenQueue(mutableState.value.queue + appended))
++        return ownsQueue(owner)
++    }
++
++    internal fun stopQueueForOwner(owner: Any): Boolean {
++        if (!ownsQueue(owner)) return false
++        playJob?.cancel(); lyricsJob?.cancel(); playGeneration++; lyricsGeneration++
++        stopOwnedSource()
++        mutableState.update { it.copy(active = false, loading = false, lyricsLoading = false) }
++        persist()
++        return true
+     }
+ 
+     fun enqueue(items: List<PlaylistItem>) { if (sessionIsCurrent()) changeQueue(normalizeListenQueue(mutableState.value.queue + items)) }
+@@ -440,6 +483,7 @@
+     }
+ 
+     private fun stopOwnedSource() {
++        queueOwnership = null
+         ownedSourceVersion?.let(player::stopIfSourceVersion)
+         ownedSourceVersion = null
+     }

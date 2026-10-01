@@ -1,0 +1,7 @@
+{
+  "file": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+  "baseLF": "a5a84bc6d2aa41bc2672b3e16894a79f421a676a2aab9da9cd0809096ca41c2b",
+  "desiredLF": "cc0df5e64b24119c2b08f14b78ec8000075a9526b97d5e95b32fae4ce7e2ce58",
+  "install": "Local hunks only; reference full source is not an installation payload",
+  "scope": "Favorites page only; preserves Root video favorite drawer, API getters and guarded count"
+}

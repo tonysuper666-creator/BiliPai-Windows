@@ -1,0 +1,17 @@
+PASS: full original header and explanatory subtitle are rendered
+PASS: all original folder title/count rows visible
+PASS: two distinct actual row callbacks and retained multi-selection
+PASS: one real save pointer yields exactly one Save callback
+PASS: original MATERIAL3 title/intro/privacy labels all present
+PASS: actual editable text field 0 contains full input
+PASS: actual editable text field 1 contains full input
+PASS: one actual Create callback preserves full title/intro/privacy
+PASS: creating does not implicitly save selected memberships
+PASS: cancel adds no Create callback
+PASS: installed modal consumes actual AWT-converted Escape
+PASS: one original sheet dismissal callback
+PASS: no network/process/native chooser/account operations
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.favoriteui17.FavoriteSheetUiFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-main17-ui-proof/runs/05/favorite-main17-ui-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.favoriteui17.FavoriteSheetUiFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

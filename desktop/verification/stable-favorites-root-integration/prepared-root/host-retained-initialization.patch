@@ -1,0 +1,17 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt
+@@ -33,12 +33,13 @@
+     onOpenSearchDestination:((String)->Unit)?=null,
+     isCurrentPage:Boolean=true,
+     retainedViewModel:BaseListViewModel?=null,
++    loadFavoriteViewModelOnEnter:Boolean=true,
+ ) {
+     val viewModel=retainedViewModel ?: remember(environment,detail) {
+         if(detail==null) FavoriteViewModel(environment)
+         else SeasonSeriesDetailViewModel(environment).also{it.init(detail.type,detail.id,detail.mid,detail.title,detail.ownerName)}
+     }
+-    LaunchedEffect(viewModel) {if(viewModel is FavoriteViewModel) viewModel.loadData()}
++    LaunchedEffect(viewModel) {if(loadFavoriteViewModelOnEnter && viewModel is FavoriteViewModel) viewModel.loadData()}
+     val window=LocalWindowSizeClass.current
+     CompositionLocalProvider(LocalDesktopFavoriteBindings provides bindings,
+         LocalDesktopFavoriteViewport provides DesktopFavoriteViewport(window.widthDp.value.toInt(),window.heightDp.value.toInt())) {

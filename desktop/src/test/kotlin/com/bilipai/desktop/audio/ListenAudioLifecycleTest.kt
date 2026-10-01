@@ -25,6 +25,57 @@ class ListenAudioLifecycleTest {
     private fun prepared(item: PlaylistItem) = PreparedListenAudio(item.copy(title = "已解析 ${item.title}"),
         PlaybackSource("file:///C:/listen-test.mp4", title = "已解析 ${item.title}"))
 
+    @Test fun `favorite continuation keeps loaded next track and paused source and rejects retired owners`() {
+        Fixture(FakeSource(::prepared)).use { fixture ->
+            val owner = Any()
+            SwingUtilities.invokeAndWait {
+                assertTrue(fixture.session.playQueueForOwner(owner, listOf(item("BVfirst", 11), item("BVsecond", 22))))
+            }
+            fixture.await { it.active && !it.loading }
+            SwingUtilities.invokeAndWait { fixture.session.next() }
+            fixture.await { it.current?.bvid == "BVsecond" && !it.loading }
+            val selected = fixture.session.state.value.current
+            val sourceVersion = fixture.player.currentSourceVersion
+            SwingUtilities.invokeAndWait {
+                fixture.session.pause()
+                assertTrue(fixture.session.ownsQueue(owner))
+                assertTrue(fixture.session.appendQueueForOwner(owner,
+                    listOf(item("BVsecond", 999), item("BVthird", 33), item("BVthird", 44))))
+            }
+            assertEquals(listOf("BVfirst", "BVsecond", "BVthird"), fixture.session.state.value.queue.map { it.bvid })
+            assertEquals(selected, fixture.session.state.value.current)
+            assertEquals(1, fixture.session.state.value.currentIndex)
+            assertEquals(sourceVersion, fixture.player.currentSourceVersion)
+            assertTrue(fixture.player.state.value.paused)
+            SwingUtilities.invokeAndWait {
+                fixture.session.play(listOf(item("BVnormal")))
+                assertFalse(fixture.session.ownsQueue(owner))
+                assertFalse(fixture.session.appendQueueForOwner(owner, listOf(item("BVstale"))))
+            }
+            assertEquals(listOf("BVnormal"), fixture.session.state.value.queue.map { it.bvid })
+        }
+    }
+
+    @Test fun `pending favorite owner cannot append or replace a foreign native source`() {
+        val started = CompletableDeferred<Unit>()
+        val completion = CompletableDeferred<PreparedListenAudio>()
+        Fixture(FakeSource { selected -> started.complete(Unit); completion.await().copy(item = selected) }).use { fixture ->
+            val owner = Any()
+            SwingUtilities.invokeAndWait { assertTrue(fixture.session.playQueueForOwner(owner, listOf(item("BVpending")))) }
+            runBlocking { withTimeout(3_000) { started.await() } }
+            val foreignVersion = fixture.player.loadVersioned(PlaybackSource("file:///C:/foreign-listen.mp4", title = "Foreign"))
+            SwingUtilities.invokeAndWait {
+                assertFalse(fixture.session.ownsQueue(owner))
+                assertFalse(fixture.session.appendQueueForOwner(owner, listOf(item("BVstale"))))
+            }
+            completion.complete(prepared(item("BVpending")))
+            fixture.await { !it.loading }
+            assertEquals(foreignVersion, fixture.player.currentSourceVersion)
+            assertEquals("Foreign", fixture.player.state.value.sourceTitle)
+            assertEquals(listOf("BVpending"), fixture.session.state.value.queue.map { it.bvid })
+        }
+    }
+
     @Test fun `cold queue resumes the selected part and active session destruction releases its actual source`() {
         val saved = ListenAudioSaved(listOf(item("BVfirst"), item("BVsecond", 22)), 1, positionSeconds = 27.25)
         Fixture(FakeSource(::prepared), saved).use { fixture ->

@@ -1,0 +1,720 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared-root/audit-review/findings.json",
+      "sha256Bytes": "e8d39551617a5db903f93faedbc258c8af9e81fb015a21e0dd0130a851968fb8",
+      "sizeBytes": 4924
+    },
+    {
+      "path": "prepared-root/audit-review/review.py",
+      "sha256Bytes": "c8722f97950028fdcf44c295452c3f14809d41fafe1f32aaa2c37eab29eec473",
+      "sizeBytes": 3433
+    },
+    {
+      "path": "prepared-root/audit_direct_owners.py",
+      "sha256Bytes": "d0ef8ffb0699cd6d656906692ed6ec74854f3311327baa14b4a16c639430e0f5",
+      "sizeBytes": 1593
+    },
+    {
+      "path": "prepared-root/compile-01.log",
+      "sha256Bytes": "72bd31131cd43b8b737fc9ca4f6addad44a5d6d2bfb39e6ca3b995eac041cc3b",
+      "sizeBytes": 514
+    },
+    {
+      "path": "prepared-root/compile-evidence.json",
+      "sha256Bytes": "9d0bc4163bc1a0ec29da7f8cc8fa8c8f0069f027f171e1e52901923641281523",
+      "sizeBytes": 1574
+    },
+    {
+      "path": "prepared-root/compile-final-01.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "sizeBytes": 24506
+    },
+    {
+      "path": "prepared-root/compile-final-01.log",
+      "sha256Bytes": "13923d0527557712ffb37a29e172c11e2d320e446d550b55e95e5339ed95d12d",
+      "sizeBytes": 361
+    },
+    {
+      "path": "prepared-root/compile-final-02.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "sizeBytes": 24506
+    },
+    {
+      "path": "prepared-root/compile-final-02.log",
+      "sha256Bytes": "347c02762287a3ca5220fccc459b72f7111626ae62181067f35d7402284967aa",
+      "sizeBytes": 5743
+    },
+    {
+      "path": "prepared-root/compile-final-03.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "sizeBytes": 24506
+    },
+    {
+      "path": "prepared-root/compile-final-03.log",
+      "sha256Bytes": "347c02762287a3ca5220fccc459b72f7111626ae62181067f35d7402284967aa",
+      "sizeBytes": 5743
+    },
+    {
+      "path": "prepared-root/compile-final-04.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "sizeBytes": 24506
+    },
+    {
+      "path": "prepared-root/compile-final-04.log",
+      "sha256Bytes": "85227570911e65d142d8b3cd3a8a0cba7fe5de56e6052f99fc3e4a9359a4ee88",
+      "sizeBytes": 5743
+    },
+    {
+      "path": "prepared-root/compile-final-evidence.json",
+      "sha256Bytes": "a86c8964786a1f9cdf2ae92b1f42840f1d4fae08345ca61809a916cb93fe678d",
+      "sizeBytes": 2449
+    },
+    {
+      "path": "prepared-root/compile.args",
+      "sha256Bytes": "38a232b72feecbca4158f87c02e422d2420ae4eea57a6ebbcd53d0a6f85fc354",
+      "sizeBytes": 24515
+    },
+    {
+      "path": "prepared-root/compile.log",
+      "sha256Bytes": "a5ee29437c5d31bdce4959b374eca40aad08a77ceb685b10fa9eb160dcd872cf",
+      "sizeBytes": 1151
+    },
+    {
+      "path": "prepared-root/compile.py",
+      "sha256Bytes": "b7901709fa332f6b0b144f69431e678ba1c0c40f9f897f2442878814f6ba3db4",
+      "sizeBytes": 2644
+    },
+    {
+      "path": "prepared-root/compile_final.py",
+      "sha256Bytes": "96cbb66920115e99382332db341d0d5ed66a504c547a8a449103e22212863bf5",
+      "sizeBytes": 3087
+    },
+    {
+      "path": "prepared-root/compiled-artifact-identities.json",
+      "sha256Bytes": "d4ec32fe8b8cfc683550668e9a6d86922b212a8f92f637c3869415f19420b8f2",
+      "sizeBytes": 85226
+    },
+    {
+      "path": "prepared-root/direct-owner-audit.json",
+      "sha256Bytes": "4d87bbae846ca0e363a88656159119956be9d53d5ada2b68c199ff5d4bf5e60b",
+      "sizeBytes": 13553
+    },
+    {
+      "path": "prepared-root/fixture/RootFavoritesWiringFixture.kt",
+      "sha256Bytes": "eca12805ef7af9a03bdece2bcde4eb959e5502f675edd3e608b0325a0897a7bd",
+      "sizeBytes": 14172
+    },
+    {
+      "path": "prepared-root/host-delta-baseline.json",
+      "sha256Bytes": "46a5079100846a5c675770b8867aa057a2e0647d03364a332f70ad459b2c0c48",
+      "sizeBytes": 344
+    },
+    {
+      "path": "prepared-root/host-retained-initialization.patch",
+      "sha256Bytes": "cef468d3857aac8c89db403e03d939c52762ebd794cbd36e012a3a312510c953",
+      "sizeBytes": 1112
+    },
+    {
+      "path": "prepared-root/install-whitelist.json",
+      "sha256Bytes": "4810e58e8c5ec73839a18b2369b35023932e26198db339a405118953b53dab65",
+      "sizeBytes": 2268
+    },
+    {
+      "path": "prepared-root/listen-delta-baseline.json",
+      "sha256Bytes": "85f4f49faefd5cee9720d5977bb6077a74e67fd806b82b3e3eb35af30ccd3b0d",
+      "sizeBytes": 467
+    },
+    {
+      "path": "prepared-root/listen-owned-queue.patch",
+      "sha256Bytes": "f7eff91fc06696bb89086685bc32a4a3f855c1ab3eeb354014340708cde95fe3",
+      "sizeBytes": 5194
+    },
+    {
+      "path": "prepared-root/original-reference-identities.json",
+      "sha256Bytes": "33a5df597081e55764962fbeda3bdee82687016b2847f977d3e58667130ef3db",
+      "sizeBytes": 1399
+    },
+    {
+      "path": "prepared-root/prepare_host_delta.py",
+      "sha256Bytes": "dbabbee52840b5b8079041ebf72e3dc2c79d20c3e37cbdb669e1aa4816d0e4d2",
+      "sizeBytes": 1322
+    },
+    {
+      "path": "prepared-root/prepare_listen_delta.py",
+      "sha256Bytes": "8cda219112c879dc61a7b3c47b7dc385f8a63f9ed71b47a882b5b50617479de4",
+      "sizeBytes": 5328
+    },
+    {
+      "path": "prepared-root/prepare_shell_delta.py",
+      "sha256Bytes": "4752110431f94a644aab40bd2af915c44ae3203633e0860f8fe814493eccbf6e",
+      "sizeBytes": 11620
+    },
+    {
+      "path": "prepared-root/prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "sizeBytes": 29443
+    },
+    {
+      "path": "prepared-root/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+      "sizeBytes": 3632
+    },
+    {
+      "path": "prepared-root/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "sha256Bytes": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2",
+      "sizeBytes": 3105
+    },
+    {
+      "path": "prepared-root/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "15f272c6d9bf552d2f0f145a922df0133fe1e0ff00e2ced3d6424cb9bcdb2f9f",
+      "sizeBytes": 2970
+    },
+    {
+      "path": "prepared-root/proof-scope.json",
+      "sha256Bytes": "7564077b8f486a259f60c20e4342033f714f7b6d14748845df321bbaf5002094",
+      "sizeBytes": 871
+    },
+    {
+      "path": "prepared-root/reference/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "cc0df5e64b24119c2b08f14b78ec8000075a9526b97d5e95b32fae4ce7e2ce58",
+      "sizeBytes": 134251
+    },
+    {
+      "path": "prepared-root/ROOT-INTEGRATION.md",
+      "sha256Bytes": "4130a4f7bd0dab1df5f00930b951bea8910199df01ac881cb7d2b0eea5a84570",
+      "sizeBytes": 8834
+    },
+    {
+      "path": "prepared-root/root-shell.patch",
+      "sha256Bytes": "798dec2f5e9dcb433e5cdc0b26faa0ac73665ebd45b5b3cc27f0d192c40ddfa8",
+      "sizeBytes": 12610
+    },
+    {
+      "path": "prepared-root/run-01.log",
+      "sha256Bytes": "35462b5705cbd199a697333d2d77f767ae2f88b01ca942db0ccdb3a1a35b9910",
+      "sizeBytes": 1386
+    },
+    {
+      "path": "prepared-root/run-final-02.log",
+      "sha256Bytes": "3817f6df6b688fc2bbfdb074942b50ada0bfc56aba87ca44673d4a639605048d",
+      "sizeBytes": 1400
+    },
+    {
+      "path": "prepared-root/run-final-03.log",
+      "sha256Bytes": "3817f6df6b688fc2bbfdb074942b50ada0bfc56aba87ca44673d4a639605048d",
+      "sizeBytes": 1400
+    },
+    {
+      "path": "prepared-root/shell-baseline.json",
+      "sha256Bytes": "baacea05ad392c9cd05321fa650dabb93d97c5fce50b3aa3386c76ce08ce932d",
+      "sizeBytes": 434
+    },
+    {
+      "path": "prepared-root/frozen-handoff.json",
+      "sha256Bytes": "f936ef8fac172cf6e71d11b4cefd0bb257d99127656546d898c19e23e05ea38f",
+      "sizeBytes": 7483
+    },
+    {
+      "path": "actual17-original-ui/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "b419c9815d04f8681f731bd3b6e1f683535a5f55496749c09551d49288795394",
+      "sizeBytes": 11563
+    },
+    {
+      "path": "actual17-original-ui/freeze.py",
+      "sha256Bytes": "b315452731c759cf99b4bc2e1795455c5b4a64654ddd45cbfe0770eadb9c99b2",
+      "sizeBytes": 4326
+    },
+    {
+      "path": "actual17-original-ui/review-root.py",
+      "sha256Bytes": "0147c7820e02397e965190778b43decabfa877b575645192b527a464274b84cb",
+      "sizeBytes": 6073
+    },
+    {
+      "path": "actual17-original-ui/run.py",
+      "sha256Bytes": "a049eea7d961ef4d783148b5ab7bf2fc24412cbcf572ae26aefce3a52f11a2ac",
+      "sizeBytes": 5189
+    },
+    {
+      "path": "actual17-original-ui/runs/01/compile-result.json",
+      "sha256Bytes": "cf499757057546d8e0ac02be5277bbb25bbd945004d130980b73c1ffdb93b3e7",
+      "sizeBytes": 1349
+    },
+    {
+      "path": "actual17-original-ui/runs/01/compiler.args",
+      "sha256Bytes": "be980b97389f31970fab4736ecb3453dcb0d941bb94bcffbb3289c402bd1de2e",
+      "sizeBytes": 23451
+    },
+    {
+      "path": "actual17-original-ui/runs/01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual17-original-ui/runs/01/MATERIAL3-720/java-command.json",
+      "sha256Bytes": "7371bc9afbdb95aabc61d8d13cdedb0fc9bb295f11416a7ad929418e5c1ac2f3",
+      "sizeBytes": 24758
+    },
+    {
+      "path": "actual17-original-ui/runs/01/runtime-pins-before.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/01/source-inputs/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "57563194f619fcf089f0e176e62bbb1561d76ead05ff487c1e5408488bb39607",
+      "sizeBytes": 10034
+    },
+    {
+      "path": "actual17-original-ui/runs/02/accepted-comparison.json",
+      "sha256Bytes": "69d55682c1e83bf21b5da254587d3c101ad99efe3d599345f88af553653dbe32",
+      "sizeBytes": 64
+    },
+    {
+      "path": "actual17-original-ui/runs/02/compile-result.json",
+      "sha256Bytes": "5f9d8139208edec06994244aca644854b65ed9d26885918c65dba2164d7e047d",
+      "sizeBytes": 1349
+    },
+    {
+      "path": "actual17-original-ui/runs/02/compiler.args",
+      "sha256Bytes": "254a2d4457dca9c6e41b34a6401ec93e46c2e80be3bed5bdb1e1964d92785418",
+      "sizeBytes": 23451
+    },
+    {
+      "path": "actual17-original-ui/runs/02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual17-original-ui/runs/02/MATERIAL3-720/java-command.json",
+      "sha256Bytes": "69cdc6428273a528ee81f82fdf0d70f722934cf79c25b19d0f5df1103927dee8",
+      "sizeBytes": 24843
+    },
+    {
+      "path": "actual17-original-ui/runs/02/MATERIAL3-720/runtime.log",
+      "sha256Bytes": "311200d16fd9fed15c705e703078f8fe7da6e221bd6f170919644c68acf5b664",
+      "sizeBytes": 3326
+    },
+    {
+      "path": "actual17-original-ui/runs/02/MATERIAL3-720/stderr.raw",
+      "sha256Bytes": "cb9cd8897bdd066c6eb86dd4db4b6d002a62eff44059d208823b0235ca86e676",
+      "sizeBytes": 2733
+    },
+    {
+      "path": "actual17-original-ui/runs/02/MATERIAL3-720/stdout.raw",
+      "sha256Bytes": "6890dfe25eb3a1d60c5e25191ba7ce26fca823f300f8f1b3097f67965ec9c110",
+      "sizeBytes": 593
+    },
+    {
+      "path": "actual17-original-ui/runs/02/runtime-pins-before.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/02/source-inputs/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "57563194f619fcf089f0e176e62bbb1561d76ead05ff487c1e5408488bb39607",
+      "sizeBytes": 10034
+    },
+    {
+      "path": "actual17-original-ui/runs/03/accepted-comparison.json",
+      "sha256Bytes": "8ad2c7152617fa868fdfa9b6bdc66ee5ebd82392014793e83891e059be309908",
+      "sizeBytes": 60
+    },
+    {
+      "path": "actual17-original-ui/runs/03/compile-result.json",
+      "sha256Bytes": "596fe48adfe0fef5959094fc51a38717eed54103435191126068b968abd4bff9",
+      "sizeBytes": 1349
+    },
+    {
+      "path": "actual17-original-ui/runs/03/compiler.args",
+      "sha256Bytes": "7c2dbe1d78ee3b37e14bfe28bad7c947212b676f6b3547896f6af31e11fa2469",
+      "sizeBytes": 23451
+    },
+    {
+      "path": "actual17-original-ui/runs/03/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MATERIAL3-720/java-command.json",
+      "sha256Bytes": "807e4b9fef2c1d304476c706dfecdbbbc0a1a6d1d2203d37199672d6e65c4634",
+      "sizeBytes": 24843
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MATERIAL3-720/result.json",
+      "sha256Bytes": "60450e7a2c726946baba301bdf2e59e5c7f84e0ad4c6663d055694a85daa47a8",
+      "sizeBytes": 3798
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MATERIAL3-720/runtime.log",
+      "sha256Bytes": "ed989921f00d665389237d4d4bf3d71bb74f9c85eae1be90df6ba645adb198be",
+      "sizeBytes": 1360
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MATERIAL3-720/stderr.raw",
+      "sha256Bytes": "c4c078b832f8b7d2f73fabaf94cb6511e2828b242be8855775d57399b8f3988a",
+      "sizeBytes": 602
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MATERIAL3-720/stdout.raw",
+      "sha256Bytes": "bd9b7c847dadc1431525b55bd3fa088e0bf7240fc5cc6c854210602ad34e732b",
+      "sizeBytes": 758
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MIUIX-900/java-command.json",
+      "sha256Bytes": "d3bced0df4b044c1e1d460a001639254d567e8a5a191a5aaa98f1994af6a1f67",
+      "sizeBytes": 24835
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MIUIX-900/runtime.log",
+      "sha256Bytes": "32c46a1c6d6d56c4e5f3198058e94ab657a8720dc8d9fce6a3336daedceb8cb7",
+      "sizeBytes": 2671
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MIUIX-900/stderr.raw",
+      "sha256Bytes": "d516815b8607ee21019f4af9144f1225686b60bc2aa9d92776f21a4ff63584dd",
+      "sizeBytes": 2421
+    },
+    {
+      "path": "actual17-original-ui/runs/03/MIUIX-900/stdout.raw",
+      "sha256Bytes": "87fd3a74749edfab027d3aa01818d58e18231caca20d398c0add5bc509a4e59d",
+      "sizeBytes": 250
+    },
+    {
+      "path": "actual17-original-ui/runs/03/runtime-pins-before.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/03/source-inputs/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "a1608d22d4e4c48c53ff557b995326b8b340a2556fc3a2c290716e63ef1f7277",
+      "sizeBytes": 10814
+    },
+    {
+      "path": "actual17-original-ui/runs/04/accepted-comparison.json",
+      "sha256Bytes": "8ad2c7152617fa868fdfa9b6bdc66ee5ebd82392014793e83891e059be309908",
+      "sizeBytes": 60
+    },
+    {
+      "path": "actual17-original-ui/runs/04/compile-result.json",
+      "sha256Bytes": "8371b3cc20a9204e61302c4afa6ff9863140e80af85383e9f117691c9c2266ac",
+      "sizeBytes": 1349
+    },
+    {
+      "path": "actual17-original-ui/runs/04/compiler.args",
+      "sha256Bytes": "232626b4c6fa069906d5ef79313fbc7f46b0d06568f0eef24cd873d44d62dc53",
+      "sizeBytes": 23451
+    },
+    {
+      "path": "actual17-original-ui/runs/04/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MATERIAL3-720/java-command.json",
+      "sha256Bytes": "f52b143e4280cdb248f5e6040bee1a747fa34bf6cdb20e82ed26a79ca2b23a4b",
+      "sizeBytes": 24843
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MATERIAL3-720/result.json",
+      "sha256Bytes": "60450e7a2c726946baba301bdf2e59e5c7f84e0ad4c6663d055694a85daa47a8",
+      "sizeBytes": 3798
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MATERIAL3-720/runtime.log",
+      "sha256Bytes": "287527d556cbda7c278f5ca0f03c63f16baeebf83da2dbcd88514b6cc5915150",
+      "sizeBytes": 1360
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MATERIAL3-720/stderr.raw",
+      "sha256Bytes": "04d18d4859c6ad4ec7329d45f151bec51124147b939fa6688e2fce0fa6257875",
+      "sizeBytes": 602
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MATERIAL3-720/stdout.raw",
+      "sha256Bytes": "bd9b7c847dadc1431525b55bd3fa088e0bf7240fc5cc6c854210602ad34e732b",
+      "sizeBytes": 758
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MIUIX-900/java-command.json",
+      "sha256Bytes": "936f9212e74181eb70544cfa0b28f9baa24171c95435edad526ce20a0e58a85e",
+      "sizeBytes": 24835
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MIUIX-900/runtime.log",
+      "sha256Bytes": "95c974ab7a8fd0ec608d4ed42871a7d40e9e0ba23eac93b899684c819a32595b",
+      "sizeBytes": 3035
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MIUIX-900/stderr.raw",
+      "sha256Bytes": "773d0ff22fe3941f482e93f12ae9a37dfbb590d8e229ed41bc59caa18a2b546e",
+      "sizeBytes": 2785
+    },
+    {
+      "path": "actual17-original-ui/runs/04/MIUIX-900/stdout.raw",
+      "sha256Bytes": "87fd3a74749edfab027d3aa01818d58e18231caca20d398c0add5bc509a4e59d",
+      "sizeBytes": 250
+    },
+    {
+      "path": "actual17-original-ui/runs/04/runtime-pins-before.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/04/source-inputs/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "71f346a63731f43a6b73dbedad697f6ba9dad44746781e913e5b5a42a447f380",
+      "sizeBytes": 10963
+    },
+    {
+      "path": "actual17-original-ui/runs/05/accepted-comparison.json",
+      "sha256Bytes": "b5f71ee8945a9b042ebec2ad22127e3428b0f2b8368337639c78971d3fe1f179",
+      "sizeBytes": 9554
+    },
+    {
+      "path": "actual17-original-ui/runs/05/compile-result.json",
+      "sha256Bytes": "60864f0a5ede71e28a32a0bbf6d7951fe0b7cdaecf13a5e05d5be600f2337913",
+      "sizeBytes": 1349
+    },
+    {
+      "path": "actual17-original-ui/runs/05/compiler.args",
+      "sha256Bytes": "5e1771d3625135941c59e7ed91b4d4a391131ad64e3b773c3c8995f9208ea608",
+      "sizeBytes": 23451
+    },
+    {
+      "path": "actual17-original-ui/runs/05/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MATERIAL3-720/java-command.json",
+      "sha256Bytes": "ef54861db4fdd93161ac5397dfa9f220be6d69029ce582d1d6498fe93fe18666",
+      "sizeBytes": 24843
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MATERIAL3-720/result.json",
+      "sha256Bytes": "6f6c0d72ec4d0f40c8ec74a2ab47cfc1482bfe2c55789ec4623b1ed0511fee3b",
+      "sizeBytes": 3859
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MATERIAL3-720/runtime.log",
+      "sha256Bytes": "efdb64c47d664a552c46aee43efe257e1f741be8f81113eac76b3eca30a5b1be",
+      "sizeBytes": 1363
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MATERIAL3-720/stderr.raw",
+      "sha256Bytes": "a96df00727445669c001a015034a00ee786e305366440440f4a7f909290c03ea",
+      "sizeBytes": 602
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MATERIAL3-720/stdout.raw",
+      "sha256Bytes": "5a2d991da7d8a302ad85cac4220e8999d2528ab643cf858c1fff62cbec352799",
+      "sizeBytes": 761
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MIUIX-900/java-command.json",
+      "sha256Bytes": "31470da9c2d7e3d48fb93dc609a852a0726455644daa60a28f077f588d3345de",
+      "sizeBytes": 24835
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MIUIX-900/result.json",
+      "sha256Bytes": "958b3e1fe19bb315e5f3786b7ca441f529fb81e83d7c67876623f68136a40151",
+      "sizeBytes": 3855
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MIUIX-900/runtime.log",
+      "sha256Bytes": "a9b728edab595a7433f1501b4e6bdb036ca10a22d303461966e6c40bedd0bdf9",
+      "sizeBytes": 1364
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MIUIX-900/stderr.raw",
+      "sha256Bytes": "a96df00727445669c001a015034a00ee786e305366440440f4a7f909290c03ea",
+      "sizeBytes": 602
+    },
+    {
+      "path": "actual17-original-ui/runs/05/MIUIX-900/stdout.raw",
+      "sha256Bytes": "7efe4a5d7e25fa001e3dd29ce4b4cdd4fd40ded04bcc3f8f7e67f69a75804c75",
+      "sizeBytes": 762
+    },
+    {
+      "path": "actual17-original-ui/runs/05/runtime-pins-after.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/05/runtime-pins-before.json",
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5",
+      "sizeBytes": 41450
+    },
+    {
+      "path": "actual17-original-ui/runs/05/source-inputs/FavoriteSheetUiFixture.kt",
+      "sha256Bytes": "b419c9815d04f8681f731bd3b6e1f683535a5f55496749c09551d49288795394",
+      "sizeBytes": 11563
+    },
+    {
+      "path": "actual17-original-ui/source-review/current-root-fixed/DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b",
+      "sizeBytes": 6381
+    },
+    {
+      "path": "actual17-original-ui/source-review/historical-main17/DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796",
+      "sizeBytes": 6337
+    },
+    {
+      "path": "actual17-original-ui/source-review/original-AppPrimitiveComponents.kt",
+      "sha256Bytes": "a7d390ce2b3065fedbdca611c79d9fd0b13dd6a286b54550ffa4d42c4f4e15b4",
+      "sizeBytes": 48533
+    },
+    {
+      "path": "actual17-original-ui/source-review/original-FavoriteFolderSheet.kt",
+      "sha256Bytes": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b",
+      "sizeBytes": 9998
+    },
+    {
+      "path": "actual17-original-ui/source-review/review.json",
+      "sha256Bytes": "18c45063b56bec9885105093aa6de33ccbde8f5805d8ad2b5fd367d3f8511992",
+      "sizeBytes": 4327
+    },
+    {
+      "path": "actual17-original-ui/ui-boundaries.json",
+      "sha256Bytes": "a4dd85ca9687f2eb7a6e88c9347fef93e0942b6c443a5596cf5ae7c4ddc93521",
+      "sizeBytes": 2084
+    },
+    {
+      "path": "actual17-original-ui/frozen-handoff.json",
+      "sha256Bytes": "17b1144a92de580182ab481b1c907f642dd81862bc099fa0f6ea5ab83c0cb9fc",
+      "sizeBytes": 14675
+    },
+    {
+      "path": "root/install-favorites-root.py",
+      "sha256Bytes": "6e66e56a3c306169708d318d67749e9321fffe20bf9f111fd7776d408d249ed6",
+      "sizeBytes": 2687
+    },
+    {
+      "path": "root/favorites-root-install.json",
+      "sha256Bytes": "56ab31f16ad87225b48bf6e77842352ae797bbc92dc0fce3e40a1bd29c49093b",
+      "sizeBytes": 1982
+    },
+    {
+      "path": "root/prove-favorites-main22.py",
+      "sha256Bytes": "d667983b4dd77b86207be0903d4115936cb4ab540166e2fca99ab8824a254446",
+      "sizeBytes": 3862
+    },
+    {
+      "path": "root/freeze-favorites-root.py",
+      "sha256Bytes": "b627e5b20f392c0b1778c83770b8295b16d3417bd51bad148668b05c1bdc84cd",
+      "sizeBytes": 6257
+    },
+    {
+      "path": "root/classes-21.log",
+      "sha256Bytes": "85a6206937f1d0fa82f6c105a8250f1beb334154d752d84ef76d295ba37006c3",
+      "sizeBytes": 7511
+    },
+    {
+      "path": "root/classes-22.log",
+      "sha256Bytes": "15fc5529b3ecce84739c9eb67c5a9890ada9f3a5f3d713f4e117efa204275bf4",
+      "sizeBytes": 9930
+    },
+    {
+      "path": "root/favorites-root-tests-22.log",
+      "sha256Bytes": "f51f34462f361a3003e196c6161445bf16832735f846a9c7d6ecb9f1d2bac95c",
+      "sizeBytes": 7103
+    },
+    {
+      "path": "root/snapshot22/manifest.json",
+      "sha256Bytes": "90df091a72910d314030cac755dcc980a8fc711111b8e5d20886fbf22e182cba",
+      "sizeBytes": 114779
+    },
+    {
+      "path": "root/snapshot22/ordered-runtime-cp.json",
+      "sha256Bytes": "f871605f15d537b71a0981bc556b47979f68d413447dfc1d97cad373c43374fb",
+      "sizeBytes": 34388
+    },
+    {
+      "path": "root/actual22/RootFavoritesWiringFixture.kt",
+      "sha256Bytes": "eca12805ef7af9a03bdece2bcde4eb959e5502f675edd3e608b0325a0897a7bd",
+      "sizeBytes": 14172
+    },
+    {
+      "path": "root/actual22/compile.args",
+      "sha256Bytes": "7bc480ddb755aa4d5abcf211404edf24b7bb4237bd12a5dfcae8c179c69728a1",
+      "sizeBytes": 23433
+    },
+    {
+      "path": "root/actual22/compile.log",
+      "sha256Bytes": "5d29fdfd7467135672e4cc1ad82b12ca1bc9e67609b07cb8f3970909bb80fd6e",
+      "sizeBytes": 506
+    },
+    {
+      "path": "root/actual22/run.log",
+      "sha256Bytes": "78a8993c822d90a80153c2a820ebc909855bafc10d33d61e9d5e72fed2b07285",
+      "sizeBytes": 1397
+    },
+    {
+      "path": "root/actual22/result.json",
+      "sha256Bytes": "14a25047cdd388f6c0767ae57a770d46ec881061455f6f58b2b70cbba1a020be",
+      "sizeBytes": 1960
+    },
+    {
+      "path": "root/junit/TEST-com.bilipai.desktop.audio.ListenAudioLifecycleTest.xml",
+      "sha256Bytes": "7a301a004623e078e172696343a5a9bcf63433e5596fed96f5a712735375a461",
+      "sizeBytes": 1436
+    },
+    {
+      "path": "root/junit/TEST-com.bilipai.desktop.audio.ListenWriterBarrierTest.xml",
+      "sha256Bytes": "6a4284132004c8d282d522e2e434c8fac8e912411a8b0e06d309bb504ca6d5ab",
+      "sizeBytes": 1901
+    },
+    {
+      "path": "root/junit/TEST-com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest.xml",
+      "sha256Bytes": "f9470f76ab8e05dc2b5a8749d39dd6b29fd7e0124f303d28a22ecace949b9a2d",
+      "sizeBytes": 500
+    },
+    {
+      "path": "root/installed/DesktopShell.kt",
+      "sha256Bytes": "effb653e7b0bb18d32e8312aee1f6fd3dc650edeece988e327379cb5e0d271ce",
+      "sizeBytes": 136834
+    },
+    {
+      "path": "root/installed/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b55e3f13066bb6194c3b0c9b886205cbfafa20fa561667256bdad9a047423cbe",
+      "sizeBytes": 29990
+    },
+    {
+      "path": "root/installed/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "66452c07ff3716e941d923ec6d2926419b6f6d494c639e57a3c6571ab3d89c2d",
+      "sizeBytes": 3065
+    },
+    {
+      "path": "root/installed/ui/DesktopFavoritesRootEntry.kt",
+      "sha256Bytes": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2",
+      "sizeBytes": 3105
+    },
+    {
+      "path": "root/installed/ui/DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+      "sizeBytes": 3632
+    },
+    {
+      "path": "root/installed/DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "122e661942bfbf3fa74f5760a42bf6ed0442046ebe490bf6b065e12cd487fe80",
+      "sizeBytes": 5905
+    },
+    {
+      "path": "root/final-test/ListenAudioLifecycleTest.kt",
+      "sha256Bytes": "fc91fbe678391af9a8b32ced18857d4b6741ae9d206a5a3d6420d35ff5f29467",
+      "sizeBytes": 10248
+    },
+    {
+      "path": "root/installed-local-hunks.patch",
+      "sha256Bytes": "15ed4d4245138c65eb7021ea8436557bc6a53f4905365059f2433ba86e416515",
+      "sizeBytes": 26184
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "ec8f6074618f9dbd4b74816df354cf09845528c275c1904610b366946b83cf54",
+      "sizeBytes": 3612
+    }
+  ]
+}

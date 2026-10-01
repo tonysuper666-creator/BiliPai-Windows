@@ -1,0 +1,218 @@
+{
+  "frozen": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "Prepared Favorites Root retention/owned queues/Shell local hunks; not mounted Main acceptance",
+  "artifactCount": 42,
+  "artifacts": [
+    {
+      "path": "audit-review/findings.json",
+      "sha256Bytes": "e8d39551617a5db903f93faedbc258c8af9e81fb015a21e0dd0130a851968fb8",
+      "size": 4924
+    },
+    {
+      "path": "audit-review/review.py",
+      "sha256Bytes": "c8722f97950028fdcf44c295452c3f14809d41fafe1f32aaa2c37eab29eec473",
+      "size": 3433
+    },
+    {
+      "path": "audit_direct_owners.py",
+      "sha256Bytes": "d0ef8ffb0699cd6d656906692ed6ec74854f3311327baa14b4a16c639430e0f5",
+      "size": 1593
+    },
+    {
+      "path": "compile-01.log",
+      "sha256Bytes": "72bd31131cd43b8b737fc9ca4f6addad44a5d6d2bfb39e6ca3b995eac041cc3b",
+      "size": 514
+    },
+    {
+      "path": "compile-evidence.json",
+      "sha256Bytes": "9d0bc4163bc1a0ec29da7f8cc8fa8c8f0069f027f171e1e52901923641281523",
+      "size": 1574
+    },
+    {
+      "path": "compile-final-01.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "size": 24506
+    },
+    {
+      "path": "compile-final-01.log",
+      "sha256Bytes": "13923d0527557712ffb37a29e172c11e2d320e446d550b55e95e5339ed95d12d",
+      "size": 361
+    },
+    {
+      "path": "compile-final-02.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "size": 24506
+    },
+    {
+      "path": "compile-final-02.log",
+      "sha256Bytes": "347c02762287a3ca5220fccc459b72f7111626ae62181067f35d7402284967aa",
+      "size": 5743
+    },
+    {
+      "path": "compile-final-03.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "size": 24506
+    },
+    {
+      "path": "compile-final-03.log",
+      "sha256Bytes": "347c02762287a3ca5220fccc459b72f7111626ae62181067f35d7402284967aa",
+      "size": 5743
+    },
+    {
+      "path": "compile-final-04.args",
+      "sha256Bytes": "feda8dc2bc97e3436003fa86bccd91714cb8a2cee676d4b4e135f1987a00bea9",
+      "size": 24506
+    },
+    {
+      "path": "compile-final-04.log",
+      "sha256Bytes": "85227570911e65d142d8b3cd3a8a0cba7fe5de56e6052f99fc3e4a9359a4ee88",
+      "size": 5743
+    },
+    {
+      "path": "compile-final-evidence.json",
+      "sha256Bytes": "a86c8964786a1f9cdf2ae92b1f42840f1d4fae08345ca61809a916cb93fe678d",
+      "size": 2449
+    },
+    {
+      "path": "compile.args",
+      "sha256Bytes": "38a232b72feecbca4158f87c02e422d2420ae4eea57a6ebbcd53d0a6f85fc354",
+      "size": 24515
+    },
+    {
+      "path": "compile.log",
+      "sha256Bytes": "a5ee29437c5d31bdce4959b374eca40aad08a77ceb685b10fa9eb160dcd872cf",
+      "size": 1151
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "b7901709fa332f6b0b144f69431e678ba1c0c40f9f897f2442878814f6ba3db4",
+      "size": 2644
+    },
+    {
+      "path": "compile_final.py",
+      "sha256Bytes": "96cbb66920115e99382332db341d0d5ed66a504c547a8a449103e22212863bf5",
+      "size": 3087
+    },
+    {
+      "path": "compiled-artifact-identities.json",
+      "sha256Bytes": "d4ec32fe8b8cfc683550668e9a6d86922b212a8f92f637c3869415f19420b8f2",
+      "size": 85226
+    },
+    {
+      "path": "direct-owner-audit.json",
+      "sha256Bytes": "4d87bbae846ca0e363a88656159119956be9d53d5ada2b68c199ff5d4bf5e60b",
+      "size": 13553
+    },
+    {
+      "path": "fixture/RootFavoritesWiringFixture.kt",
+      "sha256Bytes": "eca12805ef7af9a03bdece2bcde4eb959e5502f675edd3e608b0325a0897a7bd",
+      "size": 14172
+    },
+    {
+      "path": "host-delta-baseline.json",
+      "sha256Bytes": "46a5079100846a5c675770b8867aa057a2e0647d03364a332f70ad459b2c0c48",
+      "size": 344
+    },
+    {
+      "path": "host-retained-initialization.patch",
+      "sha256Bytes": "cef468d3857aac8c89db403e03d939c52762ebd794cbd36e012a3a312510c953",
+      "size": 1112
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "4810e58e8c5ec73839a18b2369b35023932e26198db339a405118953b53dab65",
+      "size": 2268
+    },
+    {
+      "path": "listen-delta-baseline.json",
+      "sha256Bytes": "85f4f49faefd5cee9720d5977bb6077a74e67fd806b82b3e3eb35af30ccd3b0d",
+      "size": 467
+    },
+    {
+      "path": "listen-owned-queue.patch",
+      "sha256Bytes": "f7eff91fc06696bb89086685bc32a4a3f855c1ab3eeb354014340708cde95fe3",
+      "size": 5194
+    },
+    {
+      "path": "original-reference-identities.json",
+      "sha256Bytes": "33a5df597081e55764962fbeda3bdee82687016b2847f977d3e58667130ef3db",
+      "size": 1399
+    },
+    {
+      "path": "prepare_host_delta.py",
+      "sha256Bytes": "dbabbee52840b5b8079041ebf72e3dc2c79d20c3e37cbdb669e1aa4816d0e4d2",
+      "size": 1322
+    },
+    {
+      "path": "prepare_listen_delta.py",
+      "sha256Bytes": "8cda219112c879dc61a7b3c47b7dc385f8a63f9ed71b47a882b5b50617479de4",
+      "size": 5328
+    },
+    {
+      "path": "prepare_shell_delta.py",
+      "sha256Bytes": "4752110431f94a644aab40bd2af915c44ae3203633e0860f8fe814493eccbf6e",
+      "size": 11620
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "size": 29443
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+      "size": 3632
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "sha256Bytes": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2",
+      "size": 3105
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "15f272c6d9bf552d2f0f145a922df0133fe1e0ff00e2ced3d6424cb9bcdb2f9f",
+      "size": 2970
+    },
+    {
+      "path": "proof-scope.json",
+      "sha256Bytes": "7564077b8f486a259f60c20e4342033f714f7b6d14748845df321bbaf5002094",
+      "size": 871
+    },
+    {
+      "path": "reference/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "cc0df5e64b24119c2b08f14b78ec8000075a9526b97d5e95b32fae4ce7e2ce58",
+      "size": 134251
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "4130a4f7bd0dab1df5f00930b951bea8910199df01ac881cb7d2b0eea5a84570",
+      "size": 8834
+    },
+    {
+      "path": "root-shell.patch",
+      "sha256Bytes": "798dec2f5e9dcb433e5cdc0b26faa0ac73665ebd45b5b3cc27f0d192c40ddfa8",
+      "size": 12610
+    },
+    {
+      "path": "run-01.log",
+      "sha256Bytes": "35462b5705cbd199a697333d2d77f767ae2f88b01ca942db0ccdb3a1a35b9910",
+      "size": 1386
+    },
+    {
+      "path": "run-final-02.log",
+      "sha256Bytes": "3817f6df6b688fc2bbfdb074942b50ada0bfc56aba87ca44673d4a639605048d",
+      "size": 1400
+    },
+    {
+      "path": "run-final-03.log",
+      "sha256Bytes": "3817f6df6b688fc2bbfdb074942b50ada0bfc56aba87ca44673d4a639605048d",
+      "size": 1400
+    },
+    {
+      "path": "shell-baseline.json",
+      "sha256Bytes": "baacea05ad392c9cd05321fa650dabb93d97c5fce50b3aa3386c76ce08ce932d",
+      "size": 434
+    }
+  ]
+}

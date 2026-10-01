@@ -1,0 +1,20 @@
+{
+  "exitCode": 0,
+  "mainSnapshotSha256": "d5a8a3d5bfea1f5ad1911448d974344e5567e1069d205865a1417f29d2ab7c18",
+  "classpathEntries": 92,
+  "preparedParentOverlay": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-parity\\host-tail-classes",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-parity\\classes-install-final"
+  ],
+  "preparedOverrides": [
+    "ListenAudioSession.kt"
+  ],
+  "sourceFiles": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoritesRootEntry.kt",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\fixture\\RootFavoritesWiringFixture.kt"
+  ],
+  "sharedGradle": false,
+  "mainModified": false
+}

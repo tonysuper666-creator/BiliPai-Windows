@@ -1,0 +1,43 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+    "sha256LF": "a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80",
+    "anchors": [
+      "setExternalPlaylist",
+      "addAllToPlaylistIfCurrent",
+      "addAllToCurrentPlaylist"
+    ],
+    "mode": "existing-reference",
+    "registryAppend": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+    "sha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+    "anchors": [
+      "favoriteScrollChannel",
+      "favoriteListScopedSearchChannel"
+    ],
+    "mode": "existing-reference",
+    "registryAppend": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+    "sha256LF": "3b7f9f11283ced21a58739277ec270e086991d630c2af24c3c33d770d87ee4c4",
+    "anchors": [
+      "class FavoriteViewModel",
+      "loadAllForPlayback"
+    ],
+    "mode": "existing-reference",
+    "registryAppend": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+    "sha256LF": "fa688e0dcd59efc702bf71c1bee5742c7e3a03297ed70a10babfa355265a7827",
+    "anchors": [
+      "playFavoriteVideo",
+      "startPlayback"
+    ],
+    "mode": "existing-reference",
+    "registryAppend": false
+  }
+]

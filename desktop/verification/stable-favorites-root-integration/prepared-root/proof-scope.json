@@ -1,0 +1,34 @@
+{
+  "prepared": true,
+  "actualMainConsumer": false,
+  "mainSnapshot": "Main17",
+  "cpEntries": 92,
+  "parentFavoritesOverlay": false,
+  "finalCompileLog": "compile-final-04.log",
+  "ownershipRunLog": "run-final-03.log",
+  "groups": 4,
+  "assertions": 28,
+  "originalVM": true,
+  "realController": true,
+  "preparedListenLease": true,
+  "realGlobalStore": "Task temporary same-instance store",
+  "fakeAPI": true,
+  "syntheticEpochPort": true,
+  "libmpvWorker": false,
+  "HWND": false,
+  "GPU": false,
+  "HTTP": false,
+  "userAccountMutation": false,
+  "classOverlaps": [
+    "ListenAudioSession.kt",
+    "DesktopOriginalFavoritesHost.kt",
+    "DesktopShell.kt"
+  ],
+  "newManualSources": 2,
+  "directOutputOwnersAudit": {
+    "outputs": 25,
+    "exactSingleOwners": 25
+  },
+  "frozenParentChanged": false,
+  "frozenDrawerChanged": false
+}

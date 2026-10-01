@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "cells": 2,
+  "assertions": 26,
+  "pointerPairs": 20,
+  "actualEditableTextActions": 4,
+  "productionClassOverrides": 0,
+  "loadedClassBytePinsPerCell": 8,
+  "results": [
+    {
+      "passed": true,
+      "style": "MATERIAL3",
+      "viewportWidth": 900,
+      "viewportHeight": 720,
+      "assertions": 13,
+      "checks": [
+        "full original header and explanatory subtitle are rendered",
+        "all original folder title/count rows visible",
+        "two distinct actual row callbacks and retained multi-selection",
+        "one real save pointer yields exactly one Save callback",
+        "original MATERIAL3 title/intro/privacy labels all present",
+        "actual editable text field 0 contains full input",
+        "actual editable text field 1 contains full input",
+        "one actual Create callback preserves full title/intro/privacy",
+        "creating does not implicitly save selected memberships",
+        "cancel adds no Create callback",
+        "installed modal consumes actual AWT-converted Escape",
+        "one original sheet dismissal callback",
+        "no network/process/native chooser/account operations"
+      ],
+      "pointerPairs": 10,
+      "actualEditableTextActions": 2,
+      "saveCallbacks": 1,
+      "createCallbacks": 1,
+      "dismissCallbacks": 1,
+      "productionClassOverrides": 0,
+      "actualCodeSources": [
+        {
+          "class": "com.android.purebilibili.feature.video.ui.components.FavoriteFolderSheetKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "2df57242bdcafbd4c4c16447b4f0c3f9374bcb1ae1e10bfe294a0cdf987c422e"
+        },
+        {
+          "class": "com.android.purebilibili.data.model.response.FavFolder",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "79330eb1ecd3c264f958bfa0b1784085b4da5af7e73c3155daad715ccac12e66"
+        },
+        {
+          "class": "com.android.purebilibili.feature.video.viewmodel.DesktopOriginalFavoriteFolderSession",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "85a306c171955900eaba502b4e56100e24abc1a9d930504394bc4826f04250a8"
+        },
+        {
+          "class": "com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "d8c1efbeafdee8319922834fe05fc3fc6fbf1495f156c21ff4288b42f6acd34b"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopFavoriteFolderEnvironment",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "249d46adbf1a0b4ad562c28fbb2114c9eef03059b6934889a56f6243fc3f8019"
+        },
+        {
+          "class": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "48c9b80f415521a3c379e315555fae913cf34831dfd1e28fde369203bf1eff3c"
+        },
+        {
+          "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopVideoFavoriteRootKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "d08c9e71747463d1f7487b56b1ec76659422f63bef8d936971b5bf963713704a"
+        }
+      ],
+      "fixtureOnlySuppliesFoldersSelectionAndCallbacks": true,
+      "RootFavoriteButtonOrActualSessionTransportExecuted": false,
+      "originalMiuixComposableFieldLabelSlotsNotRendered": false,
+      "nativeWindowOrExternalAppOrAccountOrHttp": false,
+      "networkOrProcessAttempts": 0
+    },
+    {
+      "passed": true,
+      "style": "MIUIX",
+      "viewportWidth": 900,
+      "viewportHeight": 900,
+      "assertions": 13,
+      "checks": [
+        "full original header and explanatory subtitle are rendered",
+        "all original folder title/count rows visible",
+        "two distinct actual row callbacks and retained multi-selection",
+        "one real save pointer yields exactly one Save callback",
+        "original MIUIX renders two actual fields and privacy label",
+        "actual editable text field 0 contains full input",
+        "actual editable text field 1 contains full input",
+        "one actual Create callback preserves full title/intro/privacy",
+        "creating does not implicitly save selected memberships",
+        "cancel adds no Create callback",
+        "installed modal consumes actual AWT-converted Escape",
+        "one original sheet dismissal callback",
+        "no network/process/native chooser/account operations"
+      ],
+      "pointerPairs": 10,
+      "actualEditableTextActions": 2,
+      "saveCallbacks": 1,
+      "createCallbacks": 1,
+      "dismissCallbacks": 1,
+      "productionClassOverrides": 0,
+      "actualCodeSources": [
+        {
+          "class": "com.android.purebilibili.feature.video.ui.components.FavoriteFolderSheetKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "2df57242bdcafbd4c4c16447b4f0c3f9374bcb1ae1e10bfe294a0cdf987c422e"
+        },
+        {
+          "class": "com.android.purebilibili.data.model.response.FavFolder",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "79330eb1ecd3c264f958bfa0b1784085b4da5af7e73c3155daad715ccac12e66"
+        },
+        {
+          "class": "com.android.purebilibili.feature.video.viewmodel.DesktopOriginalFavoriteFolderSession",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "85a306c171955900eaba502b4e56100e24abc1a9d930504394bc4826f04250a8"
+        },
+        {
+          "class": "com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "d8c1efbeafdee8319922834fe05fc3fc6fbf1495f156c21ff4288b42f6acd34b"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopFavoriteFolderEnvironment",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "249d46adbf1a0b4ad562c28fbb2114c9eef03059b6934889a56f6243fc3f8019"
+        },
+        {
+          "class": "com.android.purebilibili.core.ui.DesktopOriginalDetailAppSheetComponentsKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "48c9b80f415521a3c379e315555fae913cf34831dfd1e28fde369203bf1eff3c"
+        },
+        {
+          "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopVideoFavoriteRootKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-17/main-kotlin.jar",
+          "classSha256Bytes": "d08c9e71747463d1f7487b56b1ec76659422f63bef8d936971b5bf963713704a"
+        }
+      ],
+      "fixtureOnlySuppliesFoldersSelectionAndCallbacks": true,
+      "RootFavoriteButtonOrActualSessionTransportExecuted": false,
+      "originalMiuixComposableFieldLabelSlotsNotRendered": true,
+      "nativeWindowOrExternalAppOrAccountOrHttp": false,
+      "networkOrProcessAttempts": 0
+    }
+  ],
+  "scope": "Actual installed Main17 original Sheet/CreateDialog offscreen pointer and text actions, fake folders/selection/callbacks only. No Root button/Session transport/native dialog HWND/E2E claim."
+}

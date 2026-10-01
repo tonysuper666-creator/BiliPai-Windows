@@ -1,0 +1,420 @@
+{
+  "frozen": true,
+  "scope": "actual immutable Main17 original favorite sheet/create dialog minimal offscreen UI proof plus separate Root source-only review",
+  "actualMain17ManifestSha256Bytes": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "orderedRuntimeCp92Sha256Bytes": "25533b03785344f3a4a360a6db292775ad370824449c7a9c3a5b98702e3812d6",
+  "accepted": {
+    "path": "runs/05/accepted-comparison.json",
+    "sha256Bytes": "b5f71ee8945a9b042ebec2ad22127e3428b0f2b8368337639c78971d3fe1f179",
+    "cells": 2,
+    "assertions": 26,
+    "pointerPairs": 20,
+    "actualEditableTextActions": 4,
+    "actualCodeSourceAndClassBytePinsPerCell": 8,
+    "productionClassOverrides": 0
+  },
+  "RootSourceReview": {
+    "path": "source-review/review.json",
+    "sha256Bytes": "18c45063b56bec9885105093aa6de33ccbde8f5805d8ad2b5fd367d3f8511992",
+    "currentRootFixedSourceSha256LF": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b",
+    "historicalMain17SourceSha256LF": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796",
+    "currentRootSourceOnlyNotMain17Execution": true
+  },
+  "artifactCount": 78,
+  "artifacts": [
+    {
+      "path": "FavoriteSheetUiFixture.kt",
+      "bytes": 11563,
+      "sha256Bytes": "b419c9815d04f8681f731bd3b6e1f683535a5f55496749c09551d49288795394"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 4326,
+      "sha256Bytes": "b315452731c759cf99b4bc2e1795455c5b4a64654ddd45cbfe0770eadb9c99b2"
+    },
+    {
+      "path": "review-root.py",
+      "bytes": 6073,
+      "sha256Bytes": "0147c7820e02397e965190778b43decabfa877b575645192b527a464274b84cb"
+    },
+    {
+      "path": "run.py",
+      "bytes": 5189,
+      "sha256Bytes": "a049eea7d961ef4d783148b5ab7bf2fc24412cbcf572ae26aefce3a52f11a2ac"
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "bytes": 1349,
+      "sha256Bytes": "cf499757057546d8e0ac02be5277bbb25bbd945004d130980b73c1ffdb93b3e7"
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "bytes": 23451,
+      "sha256Bytes": "be980b97389f31970fab4736ecb3453dcb0d941bb94bcffbb3289c402bd1de2e"
+    },
+    {
+      "path": "runs/01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/01/favorite-main17-ui-fixture.jar",
+      "bytes": 34158,
+      "sha256Bytes": "df6afb0125e36559b39ed673953cffefe7062344fae9a01b584479e26db669a9"
+    },
+    {
+      "path": "runs/01/MATERIAL3-720/java-command.json",
+      "bytes": 24758,
+      "sha256Bytes": "7371bc9afbdb95aabc61d8d13cdedb0fc9bb295f11416a7ad929418e5c1ac2f3"
+    },
+    {
+      "path": "runs/01/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/01/source-inputs/FavoriteSheetUiFixture.kt",
+      "bytes": 10034,
+      "sha256Bytes": "57563194f619fcf089f0e176e62bbb1561d76ead05ff487c1e5408488bb39607"
+    },
+    {
+      "path": "runs/02/accepted-comparison.json",
+      "bytes": 64,
+      "sha256Bytes": "69d55682c1e83bf21b5da254587d3c101ad99efe3d599345f88af553653dbe32"
+    },
+    {
+      "path": "runs/02/compile-result.json",
+      "bytes": 1349,
+      "sha256Bytes": "5f9d8139208edec06994244aca644854b65ed9d26885918c65dba2164d7e047d"
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "bytes": 23451,
+      "sha256Bytes": "254a2d4457dca9c6e41b34a6401ec93e46c2e80be3bed5bdb1e1964d92785418"
+    },
+    {
+      "path": "runs/02/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/02/favorite-main17-ui-fixture.jar",
+      "bytes": 34158,
+      "sha256Bytes": "df6afb0125e36559b39ed673953cffefe7062344fae9a01b584479e26db669a9"
+    },
+    {
+      "path": "runs/02/MATERIAL3-720/java-command.json",
+      "bytes": 24843,
+      "sha256Bytes": "69cdc6428273a528ee81f82fdf0d70f722934cf79c25b19d0f5df1103927dee8"
+    },
+    {
+      "path": "runs/02/MATERIAL3-720/runtime.log",
+      "bytes": 3326,
+      "sha256Bytes": "311200d16fd9fed15c705e703078f8fe7da6e221bd6f170919644c68acf5b664"
+    },
+    {
+      "path": "runs/02/MATERIAL3-720/stderr.raw",
+      "bytes": 2733,
+      "sha256Bytes": "cb9cd8897bdd066c6eb86dd4db4b6d002a62eff44059d208823b0235ca86e676"
+    },
+    {
+      "path": "runs/02/MATERIAL3-720/stdout.raw",
+      "bytes": 593,
+      "sha256Bytes": "6890dfe25eb3a1d60c5e25191ba7ce26fca823f300f8f1b3097f67965ec9c110"
+    },
+    {
+      "path": "runs/02/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/02/source-inputs/FavoriteSheetUiFixture.kt",
+      "bytes": 10034,
+      "sha256Bytes": "57563194f619fcf089f0e176e62bbb1561d76ead05ff487c1e5408488bb39607"
+    },
+    {
+      "path": "runs/03/accepted-comparison.json",
+      "bytes": 60,
+      "sha256Bytes": "8ad2c7152617fa868fdfa9b6bdc66ee5ebd82392014793e83891e059be309908"
+    },
+    {
+      "path": "runs/03/compile-result.json",
+      "bytes": 1349,
+      "sha256Bytes": "596fe48adfe0fef5959094fc51a38717eed54103435191126068b968abd4bff9"
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "bytes": 23451,
+      "sha256Bytes": "7c2dbe1d78ee3b37e14bfe28bad7c947212b676f6b3547896f6af31e11fa2469"
+    },
+    {
+      "path": "runs/03/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/03/favorite-main17-ui-fixture.jar",
+      "bytes": 34275,
+      "sha256Bytes": "e51ff5bde9e38d891d7bcf0ac098640cd497bdc2ffc181bdf5b0e1a340466a3a"
+    },
+    {
+      "path": "runs/03/MATERIAL3-720/java-command.json",
+      "bytes": 24843,
+      "sha256Bytes": "807e4b9fef2c1d304476c706dfecdbbbc0a1a6d1d2203d37199672d6e65c4634"
+    },
+    {
+      "path": "runs/03/MATERIAL3-720/result.json",
+      "bytes": 3798,
+      "sha256Bytes": "60450e7a2c726946baba301bdf2e59e5c7f84e0ad4c6663d055694a85daa47a8"
+    },
+    {
+      "path": "runs/03/MATERIAL3-720/runtime.log",
+      "bytes": 1360,
+      "sha256Bytes": "ed989921f00d665389237d4d4bf3d71bb74f9c85eae1be90df6ba645adb198be"
+    },
+    {
+      "path": "runs/03/MATERIAL3-720/stderr.raw",
+      "bytes": 602,
+      "sha256Bytes": "c4c078b832f8b7d2f73fabaf94cb6511e2828b242be8855775d57399b8f3988a"
+    },
+    {
+      "path": "runs/03/MATERIAL3-720/stdout.raw",
+      "bytes": 758,
+      "sha256Bytes": "bd9b7c847dadc1431525b55bd3fa088e0bf7240fc5cc6c854210602ad34e732b"
+    },
+    {
+      "path": "runs/03/MIUIX-900/java-command.json",
+      "bytes": 24835,
+      "sha256Bytes": "d3bced0df4b044c1e1d460a001639254d567e8a5a191a5aaa98f1994af6a1f67"
+    },
+    {
+      "path": "runs/03/MIUIX-900/runtime.log",
+      "bytes": 2671,
+      "sha256Bytes": "32c46a1c6d6d56c4e5f3198058e94ab657a8720dc8d9fce6a3336daedceb8cb7"
+    },
+    {
+      "path": "runs/03/MIUIX-900/stderr.raw",
+      "bytes": 2421,
+      "sha256Bytes": "d516815b8607ee21019f4af9144f1225686b60bc2aa9d92776f21a4ff63584dd"
+    },
+    {
+      "path": "runs/03/MIUIX-900/stdout.raw",
+      "bytes": 250,
+      "sha256Bytes": "87fd3a74749edfab027d3aa01818d58e18231caca20d398c0add5bc509a4e59d"
+    },
+    {
+      "path": "runs/03/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/03/source-inputs/FavoriteSheetUiFixture.kt",
+      "bytes": 10814,
+      "sha256Bytes": "a1608d22d4e4c48c53ff557b995326b8b340a2556fc3a2c290716e63ef1f7277"
+    },
+    {
+      "path": "runs/04/accepted-comparison.json",
+      "bytes": 60,
+      "sha256Bytes": "8ad2c7152617fa868fdfa9b6bdc66ee5ebd82392014793e83891e059be309908"
+    },
+    {
+      "path": "runs/04/compile-result.json",
+      "bytes": 1349,
+      "sha256Bytes": "8371b3cc20a9204e61302c4afa6ff9863140e80af85383e9f117691c9c2266ac"
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "bytes": 23451,
+      "sha256Bytes": "232626b4c6fa069906d5ef79313fbc7f46b0d06568f0eef24cd873d44d62dc53"
+    },
+    {
+      "path": "runs/04/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/04/favorite-main17-ui-fixture.jar",
+      "bytes": 34592,
+      "sha256Bytes": "3adc52c0e9c57b5fbc5484413de01fed7dccf60086d3e40aa9ecfe0c92cab5c2"
+    },
+    {
+      "path": "runs/04/MATERIAL3-720/java-command.json",
+      "bytes": 24843,
+      "sha256Bytes": "f52b143e4280cdb248f5e6040bee1a747fa34bf6cdb20e82ed26a79ca2b23a4b"
+    },
+    {
+      "path": "runs/04/MATERIAL3-720/result.json",
+      "bytes": 3798,
+      "sha256Bytes": "60450e7a2c726946baba301bdf2e59e5c7f84e0ad4c6663d055694a85daa47a8"
+    },
+    {
+      "path": "runs/04/MATERIAL3-720/runtime.log",
+      "bytes": 1360,
+      "sha256Bytes": "287527d556cbda7c278f5ca0f03c63f16baeebf83da2dbcd88514b6cc5915150"
+    },
+    {
+      "path": "runs/04/MATERIAL3-720/stderr.raw",
+      "bytes": 602,
+      "sha256Bytes": "04d18d4859c6ad4ec7329d45f151bec51124147b939fa6688e2fce0fa6257875"
+    },
+    {
+      "path": "runs/04/MATERIAL3-720/stdout.raw",
+      "bytes": 758,
+      "sha256Bytes": "bd9b7c847dadc1431525b55bd3fa088e0bf7240fc5cc6c854210602ad34e732b"
+    },
+    {
+      "path": "runs/04/MIUIX-900/java-command.json",
+      "bytes": 24835,
+      "sha256Bytes": "936f9212e74181eb70544cfa0b28f9baa24171c95435edad526ce20a0e58a85e"
+    },
+    {
+      "path": "runs/04/MIUIX-900/runtime.log",
+      "bytes": 3035,
+      "sha256Bytes": "95c974ab7a8fd0ec608d4ed42871a7d40e9e0ba23eac93b899684c819a32595b"
+    },
+    {
+      "path": "runs/04/MIUIX-900/stderr.raw",
+      "bytes": 2785,
+      "sha256Bytes": "773d0ff22fe3941f482e93f12ae9a37dfbb590d8e229ed41bc59caa18a2b546e"
+    },
+    {
+      "path": "runs/04/MIUIX-900/stdout.raw",
+      "bytes": 250,
+      "sha256Bytes": "87fd3a74749edfab027d3aa01818d58e18231caca20d398c0add5bc509a4e59d"
+    },
+    {
+      "path": "runs/04/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/04/source-inputs/FavoriteSheetUiFixture.kt",
+      "bytes": 10963,
+      "sha256Bytes": "71f346a63731f43a6b73dbedad697f6ba9dad44746781e913e5b5a42a447f380"
+    },
+    {
+      "path": "runs/05/accepted-comparison.json",
+      "bytes": 9554,
+      "sha256Bytes": "b5f71ee8945a9b042ebec2ad22127e3428b0f2b8368337639c78971d3fe1f179"
+    },
+    {
+      "path": "runs/05/compile-result.json",
+      "bytes": 1349,
+      "sha256Bytes": "60864f0a5ede71e28a32a0bbf6d7951fe0b7cdaecf13a5e05d5be600f2337913"
+    },
+    {
+      "path": "runs/05/compiler.args",
+      "bytes": 23451,
+      "sha256Bytes": "5e1771d3625135941c59e7ed91b4d4a391131ad64e3b773c3c8995f9208ea608"
+    },
+    {
+      "path": "runs/05/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/05/favorite-main17-ui-fixture.jar",
+      "bytes": 34948,
+      "sha256Bytes": "2a52b072620782951582af5257b9119c6e735e8c7ae123b58c0ce33c17d4238b"
+    },
+    {
+      "path": "runs/05/MATERIAL3-720/java-command.json",
+      "bytes": 24843,
+      "sha256Bytes": "ef54861db4fdd93161ac5397dfa9f220be6d69029ce582d1d6498fe93fe18666"
+    },
+    {
+      "path": "runs/05/MATERIAL3-720/result.json",
+      "bytes": 3859,
+      "sha256Bytes": "6f6c0d72ec4d0f40c8ec74a2ab47cfc1482bfe2c55789ec4623b1ed0511fee3b"
+    },
+    {
+      "path": "runs/05/MATERIAL3-720/runtime.log",
+      "bytes": 1363,
+      "sha256Bytes": "efdb64c47d664a552c46aee43efe257e1f741be8f81113eac76b3eca30a5b1be"
+    },
+    {
+      "path": "runs/05/MATERIAL3-720/stderr.raw",
+      "bytes": 602,
+      "sha256Bytes": "a96df00727445669c001a015034a00ee786e305366440440f4a7f909290c03ea"
+    },
+    {
+      "path": "runs/05/MATERIAL3-720/stdout.raw",
+      "bytes": 761,
+      "sha256Bytes": "5a2d991da7d8a302ad85cac4220e8999d2528ab643cf858c1fff62cbec352799"
+    },
+    {
+      "path": "runs/05/MIUIX-900/java-command.json",
+      "bytes": 24835,
+      "sha256Bytes": "31470da9c2d7e3d48fb93dc609a852a0726455644daa60a28f077f588d3345de"
+    },
+    {
+      "path": "runs/05/MIUIX-900/result.json",
+      "bytes": 3855,
+      "sha256Bytes": "958b3e1fe19bb315e5f3786b7ca441f529fb81e83d7c67876623f68136a40151"
+    },
+    {
+      "path": "runs/05/MIUIX-900/runtime.log",
+      "bytes": 1364,
+      "sha256Bytes": "a9b728edab595a7433f1501b4e6bdb036ca10a22d303461966e6c40bedd0bdf9"
+    },
+    {
+      "path": "runs/05/MIUIX-900/stderr.raw",
+      "bytes": 602,
+      "sha256Bytes": "a96df00727445669c001a015034a00ee786e305366440440f4a7f909290c03ea"
+    },
+    {
+      "path": "runs/05/MIUIX-900/stdout.raw",
+      "bytes": 762,
+      "sha256Bytes": "7efe4a5d7e25fa001e3dd29ce4b4cdd4fd40ded04bcc3f8f7e67f69a75804c75"
+    },
+    {
+      "path": "runs/05/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/05/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "a7296544b69d4035b31c0646003203b87c6735e1b35374ab708ccefd290fd9b5"
+    },
+    {
+      "path": "runs/05/source-inputs/FavoriteSheetUiFixture.kt",
+      "bytes": 11563,
+      "sha256Bytes": "b419c9815d04f8681f731bd3b6e1f683535a5f55496749c09551d49288795394"
+    },
+    {
+      "path": "source-review/current-root-fixed/DesktopVideoFavoriteRoot.kt",
+      "bytes": 6381,
+      "sha256Bytes": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b"
+    },
+    {
+      "path": "source-review/historical-main17/DesktopVideoFavoriteRoot.kt",
+      "bytes": 6337,
+      "sha256Bytes": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796"
+    },
+    {
+      "path": "source-review/original-AppPrimitiveComponents.kt",
+      "bytes": 48533,
+      "sha256Bytes": "a7d390ce2b3065fedbdca611c79d9fd0b13dd6a286b54550ffa4d42c4f4e15b4"
+    },
+    {
+      "path": "source-review/original-FavoriteFolderSheet.kt",
+      "bytes": 9998,
+      "sha256Bytes": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b"
+    },
+    {
+      "path": "source-review/review.json",
+      "bytes": 4327,
+      "sha256Bytes": "18c45063b56bec9885105093aa6de33ccbde8f5805d8ad2b5fd367d3f8511992"
+    },
+    {
+      "path": "ui-boundaries.json",
+      "bytes": 2084,
+      "sha256Bytes": "a4dd85ca9687f2eb7a6e88c9347fef93e0942b6c443a5596cf5ae7c4ddc93521"
+    }
+  ],
+  "noSharedSourceEdits": true,
+  "noGradle": true,
+  "noNativeWindowsOrExternalApps": true,
+  "noAccountOrHttp": true
+}

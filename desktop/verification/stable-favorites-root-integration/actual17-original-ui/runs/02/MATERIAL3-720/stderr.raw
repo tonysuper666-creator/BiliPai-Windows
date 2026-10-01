@@ -1,0 +1,25 @@
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.diagnostics.favoriteui17.FavoriteSheetUiFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-main17-ui-proof/runs/02/favorite-main17-ui-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.diagnostics.favoriteui17.FavoriteSheetUiFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release
+Exception in thread "main" java.lang.IllegalStateException: actual outside pointer dismisses modal sheet: actual labels=[添加到收藏夹, 新建, 可勾选一个或多个收藏夹，将视频收藏到自己的收藏夹, 原收藏夹甲, 3个内容, 原收藏夹乙, 5个内容, 原收藏夹丙, 8个内容, 已选择 2 个收藏夹, 保存]
+	at com.bilipai.desktop.diagnostics.favoriteui17.Scene.wait(FavoriteSheetUiFixture.kt:43)
+	at com.bilipai.desktop.diagnostics.favoriteui17.Scene$wait$1.invokeSuspend(FavoriteSheetUiFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.diagnostics.favoriteui17.FavoriteSheetUiFixtureKt.main(FavoriteSheetUiFixture.kt:63)

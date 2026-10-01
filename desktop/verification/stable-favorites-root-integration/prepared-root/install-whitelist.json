@@ -1,0 +1,49 @@
+{
+  "newFiles": [
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "sha256LF": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2",
+      "mode": "new-manual-platform-source"
+    },
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "sha256LF": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386",
+      "mode": "new-manual-platform-source"
+    }
+  ],
+  "patches": [
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "baseLF": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2",
+      "desiredLF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+      "patch": "listen-owned-queue.patch",
+      "patchSHA": "f7eff91fc06696bb89086685bc32a4a3f855c1ab3eeb354014340708cde95fe3",
+      "mode": "exact-local-hunks"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "baseLF": "d8d99ea930f5fb2a7ba47cee427184f30532b1762fbffa34a70d37964bbc39bf",
+      "desiredLF": "15f272c6d9bf552d2f0f145a922df0133fe1e0ff00e2ced3d6424cb9bcdb2f9f",
+      "patch": "host-retained-initialization.patch",
+      "patchSHA": "cef468d3857aac8c89db403e03d939c52762ebd794cbd36e012a3a312510c953",
+      "mode": "exact-local-hunks"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseLF": "a5a84bc6d2aa41bc2672b3e16894a79f421a676a2aab9da9cd0809096ca41c2b",
+      "desiredLF": "cc0df5e64b24119c2b08f14b78ec8000075a9526b97d5e95b32fae4ce7e2ce58",
+      "patch": "root-shell.patch",
+      "patchSHA": "798dec2f5e9dcb433e5cdc0b26faa0ac73665ebd45b5b3cc27f0d192c40ddfa8",
+      "mode": "exact-local-hunks"
+    }
+  ],
+  "neverInstall": [
+    "reference full DesktopShell.kt",
+    "classes*/**",
+    "task-store*/**",
+    "snapshot or dependency JARs",
+    "any producer/registry/build from parent lane"
+  ]
+}

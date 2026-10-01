@@ -1,0 +1,80 @@
+{
+  "status": "NO_REMAINING_BLOCKER_IN_NARROW_CURRENT_ROOT_SOURCE",
+  "actualMain17ManifestSha256Bytes": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "sourceRows": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoFavoriteRoot.kt",
+      "copy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-main17-ui-proof\\source-review\\current-root-fixed\\DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b",
+      "sha256LF": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b",
+      "cohort": "Source-only current Root fix; not executed by Main17 UI fixture"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-main17-ui-proof\\source-review\\historical-main17\\DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796",
+      "sha256LF": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796",
+      "cohort": "Main17 input reconstructed by exact two-line inverse; byte hash equals immutable manifest input"
+    }
+  ],
+  "findings": [
+    {
+      "id": "owner-key",
+      "sourceLine": 39,
+      "finding": "Aid and account epoch replace the keyed drawer scope/session; callbacks read rememberUpdatedState projections.",
+      "status": "PASS_SOURCE"
+    },
+    {
+      "id": "epoch-and-page-admission",
+      "sourceLine": 46,
+      "finding": "Alive, child scope active, caller stillOwned, and captured sessionEpoch all gate mutations/receipts.",
+      "status": "PASS_SOURCE"
+    },
+    {
+      "id": "store-serialized-receipt",
+      "sourceLine": 48,
+      "finding": "Receipt runs under the same Repository current-owner guard and rechecks page ownership before UI callback.",
+      "status": "PASS_SOURCE"
+    },
+    {
+      "id": "immutable-aid-callbacks",
+      "sourceLine": 63,
+      "finding": "Folder operations bind keyed immutable aid; current count/loaded/saved/feedback callbacks read latest refs.",
+      "status": "PASS_SOURCE"
+    },
+    {
+      "id": "child-retirement",
+      "sourceLine": 96,
+      "finding": "Disposal first denies admission, closes sole session, then cancels only child scope.",
+      "status": "PASS_SOURCE"
+    },
+    {
+      "id": "quick-saving-admission",
+      "sourceLine": 78,
+      "finding": "Current source marks quickSaving synchronously before scope.launch; finally clears only while the same keyed owner remains current.",
+      "status": "FIXED_SOURCE_ONLY"
+    }
+  ],
+  "history": {
+    "issue": "Main17 quickSaving was set inside launch, admitting two queued activations before the coroutine starts.",
+    "rootAcknowledged": true,
+    "currentFix": "Synchronously mark quickSaving before launch; retain owned finally guard.",
+    "main17SourceInput": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8cd048a02735b9682416d8048288dcad2bca183de3c7c1f47eb87ab1668af796"
+    },
+    "historicalInverseByteExact": true,
+    "Main18RuntimeValidatedByThisReview": false
+  },
+  "original": {
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+    "sha256Bytes": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b",
+    "sha256LF": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b",
+    "createCallbackContract": "onConfirm(title,intro,isPrivate), without trimming title/intro; original create dialog clears after callback.",
+    "sheetCallbackContract": "Folder item toggles supplied selection; Save invokes once per button click; cancel dismisses create dialog only."
+  },
+  "boundaries": [
+    "Source review only for Root callbacks/epoch/aid/scope; actual Main17 UI proof does not execute Root favorite entry or Session transport.",
+    "No Main/shared sources, Gradle, external HTTP/account, HWND/native windows or external applications operated."
+  ]
+}

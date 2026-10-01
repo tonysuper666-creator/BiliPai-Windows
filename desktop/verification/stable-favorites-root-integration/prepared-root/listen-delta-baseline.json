@@ -1,0 +1,8 @@
+{
+  "file": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+  "baseLF": "36211368f1171d007e9afcaeb98dfcd96ba32a3b569fde3102b8cf82aa3342f2",
+  "desiredLF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0",
+  "preparedOnly": true,
+  "sharedMainChanged": false,
+  "semantics": "Real Listen session epoch/native-source lease; normal start retires, same queue next/pause-loaded retains, original BVID append no reload"
+}

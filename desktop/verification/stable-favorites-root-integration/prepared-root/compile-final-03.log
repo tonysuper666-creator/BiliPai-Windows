@@ -1,0 +1,33 @@
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\fixture\RootFavoritesWiringFixture.kt:206:105: warning: this is a delicate API and its use requires care. Make sure you fully read and understand documentation of the declaration that is marked as a delicate API.
+        verify(f.controller.state.value.queue.size == 2 && !entry.scope.isActive && entry.searchChannel.isClosedForSend,
+                                                                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:832:66: warning: elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+                else if (!item.bvid.isNullOrBlank() || (item.aid ?: 0) > 0) openVideo(VideoCard(item.bvid.orEmpty().ifBlank { "av${item.aid}" },
+                                                                 ^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:985:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                title = if (audioTarget) audio!!.current!!.title else if (retainedMedia.current != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                              ^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:986:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                artist = if (audioTarget) audio!!.current!!.owner else if (retainedMedia.current != null) "" else current.details?.author.orEmpty(),
+                                               ^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:987:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else if (retainedMedia.current != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                ^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:989:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                    ^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:990:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                ^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1147:34: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
+                                 ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1233:49: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+                                                ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1255:49: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+                                if (!pipActive) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.width(180.dp).fillMaxHeight())
+                                                ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\reference\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1358:61: warning: unnecessary safe call on a non-null receiver of type 'MpvPlayer'.
+                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L
+                                                            ^^

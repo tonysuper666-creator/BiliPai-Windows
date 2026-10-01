@@ -1,0 +1,4 @@
+PASS: full original header and explanatory subtitle are rendered
+PASS: all original folder title/count rows visible
+PASS: two distinct actual row callbacks and retained multi-selection
+PASS: one real save pointer yields exactly one Save callback

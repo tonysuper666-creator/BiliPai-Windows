@@ -1,0 +1,33 @@
+{
+  "originalMiuixFieldLabels": {
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+    "sha256Bytes": "a7d390ce2b3065fedbdca611c79d9fd0b13dd6a286b54550ffa4d42c4f4e15b4",
+    "sha256LF": "a7d390ce2b3065fedbdca611c79d9fd0b13dd6a286b54550ffa4d42c4f4e15b4",
+    "sourceLine": 678,
+    "finding": "Stable original AppOutlinedTextField MIUIX branch reads labelText/placeholderText, ignoring composable label slots. Original Sheet supplies composable labels, so two actual MIUIX editable fields have no title/intro label semantics. Preserved upstream behavior; no replacement labels/UI emitted."
+  },
+  "modalDismiss": {
+    "accepted": "Both styles original Create Cancel and actual AWT-converted Escape close successfully.",
+    "outsidePointer": "MATERIAL3 centered full-size Dialog did not dismiss after an outside pointer in run02. Actual result retained; no OS HWND/clickOutside guarantee claimed."
+  },
+  "failedAttempts": [
+    {
+      "run": "01",
+      "reason": "Runner incorrectly decoded JVM stderr strictly as UTF-8; failed runner, not an acceptance. Compiler jar/input and partial artifacts retained."
+    },
+    {
+      "run": "02",
+      "reason": "Fixture assumed centered Dialog outside-pointer dismissal; actual original full-size modal remained open. Raw stdout/stderr/log retained."
+    },
+    {
+      "run": "03",
+      "reason": "MATERIAL3 all13 assertions passed; fixture incorrectly expected MIUIX composable field label slots. Raw result/error retained."
+    },
+    {
+      "run": "04",
+      "reason": "Waiting does not produce original MIUIX composable labels; source identified original facade contract. Raw result/error retained."
+    }
+  ],
+  "evidenceScope": "Only original Main17 Sheet/CreateDialog pointer/text/rendered semantics were exercised. Session/protocol/Root classes are actual loaded-byte identities, not executed transport/button proof. No production override, native window/chooser/external app/HTTP/account operation."
+}

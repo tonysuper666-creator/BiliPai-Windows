@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "actualProductPhase": 22,
+  "actualManifestSha256Bytes": "90df091a72910d314030cac755dcc980a8fc711111b8e5d20886fbf22e182cba",
+  "actualCpSha256Bytes": "f871605f15d537b71a0981bc556b47979f68d413447dfc1d97cad373c43374fb",
+  "productionClassOverrides": 0,
+  "classOverlaps": [],
+  "fixtureSources": 1,
+  "groups": 4,
+  "assertions": 28,
+  "exactPreviouslyFrozenFixtureSha256Bytes": "eca12805ef7af9a03bdece2bcde4eb959e5502f675edd3e608b0325a0897a7bd",
+  "actualCodeSources": [
+    "CodeSource com.bilipai.desktop.ui.DesktopFavoriteQueueBridge: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar",
+    "CodeSource com.bilipai.desktop.ui.DesktopFavoritesRootEntry: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar",
+    "CodeSource com.bilipai.desktop.audio.ListenAudioSession: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar",
+    "CodeSource com.bilipai.desktop.DesktopPlaybackController: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar",
+    "CodeSource com.bilipai.desktop.plugins.DesktopPluginStore: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar",
+    "CodeSource com.android.purebilibili.feature.list.FavoriteViewModel: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-22/main-kotlin.jar"
+  ],
+  "actualRootMountedPointerAccepted": false,
+  "realHttpOrAccountMutation": false,
+  "actualHwndOrCodecAccepted": false
+}

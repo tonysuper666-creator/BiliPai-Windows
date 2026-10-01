@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\fixture\RootFavoritesWiringFixture.kt:28:108: error: unresolved reference 'Swing'.
+private suspend fun await(condition: () -> Boolean) = withTimeout(5_000) { while (!withContext(Dispatchers.Swing) { condition() }) delay(5) }
+                                                                                                           ^^^^^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\fixture\RootFavoritesWiringFixture.kt:38:48: error: 'fun plus(other: Job): Job' is deprecated. Operator '+' on two Job objects is meaningless. Job is a coroutine context element and `+` is a set-sum operator for coroutine contexts. The job to the right of `+` just replaces the job the left of `+`.
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+                                               ^
+work\BiliPai\desktop\.local\stable-favorites-root-wiring\fixture\RootFavoritesWiringFixture.kt:38:62: error: unresolved reference 'Swing'.
+    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Swing)
+                                                             ^^^^^

@@ -1,0 +1,39 @@
+{
+  "exitCode": 0,
+  "mainSnapshotSha256": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "classpathEntries": 92,
+  "parentPreparedOverlay": false,
+  "preparedOverrides": [
+    "DesktopShell.kt",
+    "ListenAudioSession.kt",
+    "DesktopOriginalFavoritesHost.kt"
+  ],
+  "sourceFiles": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "sha256LF": "b4fccf961b47f7ee507714414c641450e4a886d2cc3014d1d15c0e91a8e864e0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+      "sha256LF": "e9c504a6032be32d84ed0ec5f2f10b2eda4829b1c30d6ecae60c1cee133fd386"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoritesRootEntry.kt",
+      "sha256LF": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalFavoritesHost.kt",
+      "sha256LF": "15f272c6d9bf552d2f0f145a922df0133fe1e0ff00e2ced3d6424cb9bcdb2f9f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\reference\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256LF": "cc0df5e64b24119c2b08f14b78ec8000075a9526b97d5e95b32fae4ce7e2ce58"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-root-wiring\\fixture\\RootFavoritesWiringFixture.kt",
+      "sha256LF": "eca12805ef7af9a03bdece2bcde4eb959e5502f675edd3e608b0325a0897a7bd"
+    }
+  ],
+  "sharedGradle": false,
+  "mainModified": false
+}

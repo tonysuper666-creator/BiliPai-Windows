@@ -33,12 +33,14 @@ fun DesktopOriginalFavoritesHost(
     onOpenSearchDestination:((String)->Unit)?=null,
     isCurrentPage:Boolean=true,
     retainedViewModel:BaseListViewModel?=null,
+    loadFavoriteViewModelOnEnter:Boolean=true,
 ) {
+    if (!environment.isOwned()) return
     val viewModel=retainedViewModel ?: remember(environment,detail) {
         if(detail==null) FavoriteViewModel(environment)
         else SeasonSeriesDetailViewModel(environment).also{it.init(detail.type,detail.id,detail.mid,detail.title,detail.ownerName)}
     }
-    LaunchedEffect(viewModel) {if(viewModel is FavoriteViewModel) viewModel.loadData()}
+    LaunchedEffect(viewModel) {if(loadFavoriteViewModelOnEnter && viewModel is FavoriteViewModel) viewModel.loadData()}
     val window=LocalWindowSizeClass.current
     CompositionLocalProvider(LocalDesktopFavoriteBindings provides bindings,
         LocalDesktopFavoriteViewport provides DesktopFavoriteViewport(window.widthDp.value.toInt(),window.heightDp.value.toInt())) {
