@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "candidateJarSha256Bytes": "a838b8bc5bfa59e9b7b2eaf1af0d2d13dd75b08c22e95673f5084f8755af335a",
+  "fixtureJarSha256Bytes": "19788fba424a3a09d3648970f51fe66f05099bce12d949fb049f92c0fd100fe5",
+  "fixtureSourceSha256Bytes": "9d0184cc9a9707a846635fd8b2c87f875f18a94d05c57033eee677e110b3df41",
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "noAccountReads": true,
+  "groupedCases": 4,
+  "assertions": 33,
+  "actualCodeSources": 5,
+  "zeroActualClassOverlap": true,
+  "resultSha256Bytes": "8e7877187dd3fb1b15e4cae52a24a41a1489f79dedeb818211007608d2057e12",
+  "actualOriginalUiMounted": false,
+  "actualRootVideoStateProjectionConsumed": false
+}

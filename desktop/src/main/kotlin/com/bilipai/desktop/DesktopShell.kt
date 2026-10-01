@@ -1273,9 +1273,18 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 onStory = { openStory(playing.details!!.asCard().copy(preferredCid = playing.details!!.pages[playing.currentPart].cid)) },
                                 engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                                     DesktopVideoMetadataHost(playing.details!!, repository, social, ::openUser, ::openVideoHonorLink, { error = it })
+                                    val favoriteVideoAid = playing.details!!.aid
+                                    val favoriteVideoEpoch = sessionEpoch
                                     VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
                                     cid = playing.details!!.pages[playing.currentPart].cid,
+                                    globalStore = pluginStore,
+                                    stillOwned = {
+                                        repository.sessionEpoch == favoriteVideoEpoch && !isClosing() && !activatingUpdate && showVideo &&
+                                            playback.state.value.details?.aid == favoriteVideoAid
+                                    }, onFavoriteCount = { count ->
+                                        playback.updateFavoriteCountForOwner(favoriteVideoAid, favoriteVideoEpoch, count)
+                                    },
                                     commentContent = {
                                         val rawCommentInfo = playing.details!!.raw
                                         val commentCid = playing.details!!.pages[playing.currentPart].cid

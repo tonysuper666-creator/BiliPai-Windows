@@ -1,0 +1,13 @@
+--- original/showFavoriteFolderDialog
+
++++ owned-session/showFavoriteFolderDialog
+
+@@ -1,5 +1,6 @@
+
+     fun showFavoriteFolderDialog(requestedAid: Long? = null) {
+-        val currentAid = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.aid
++        environment.assertOwned()
++        val currentAid = environment.currentAid()
+         val targetAid = resolveFavoriteFolderDialogTargetAid(
+             requestedAid = requestedAid,
+             currentAid = currentAid

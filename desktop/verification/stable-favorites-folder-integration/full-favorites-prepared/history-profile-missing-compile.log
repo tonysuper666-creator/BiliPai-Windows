@@ -1,0 +1,12 @@
+work\BiliPai\desktop\.local\stable-favorites-parity\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:61:50: error: unresolved reference 'resolveDeviceUiProfile'.
+import com.android.purebilibili.core.ui.adaptive.resolveDeviceUiProfile
+                                                 ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:285:27: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val deviceUiProfile = remember(windowSizeClass.widthSizeClass) {
+                          ^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:286:9: error: unresolved reference 'resolveDeviceUiProfile'.
+        resolveDeviceUiProfile(
+        ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:291:36: error: unresolved reference 'motionTier'.
+        baseTier = deviceUiProfile.motionTier,
+                                   ^^^^^^^^^^

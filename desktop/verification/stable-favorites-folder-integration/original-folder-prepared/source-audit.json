@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "original-full-file-reverse:com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "passed": true
+    },
+    {
+      "name": "original-full-file-reverse:com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "passed": true
+    },
+    {
+      "name": "original-full-file-reverse:com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "passed": true
+    },
+    {
+      "name": "original-full-file-reverse:com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "passed": true
+    },
+    {
+      "name": "protocol-original-reverse:getFavoriteFolders",
+      "passed": true
+    },
+    {
+      "name": "protocol-original-reverse:updateFavoriteFolders",
+      "passed": true
+    },
+    {
+      "name": "load-result-selection-keep-and-fallback-body-exact",
+      "passed": true
+    },
+    {
+      "name": "save-receipt-folder-state-count-event-dismiss-feedback-body-exact",
+      "passed": true
+    },
+    {
+      "name": "VM-selected-policy-exact:resolveFavoriteFolderMutation",
+      "passed": true
+    },
+    {
+      "name": "VM-selected-policy-exact:resolveFavoriteFolderDialogTargetAid",
+      "passed": true
+    },
+    {
+      "name": "VM-selected-policy-exact:shouldSyncFavoriteFolderUiState",
+      "passed": true
+    },
+    {
+      "name": "compiled-input-payload-byte-identity",
+      "passed": true
+    },
+    {
+      "name": "default-production-does-not-emit-direct-policy",
+      "passed": true
+    },
+    {
+      "name": "actual-class-FQN-intersection-zero",
+      "passed": true
+    },
+    {
+      "name": "actual-same-package-JVM-name-parameter-descriptor-intersection-zero",
+      "passed": true
+    }
+  ],
+  "checkCount": 15,
+  "preparedOnly": true,
+  "sessionPlatformAdaptations": [
+    "Root aid/count/state callbacks replace VideoPlaybackUiState ownership",
+    "Existing caller scope replaces Android viewModelScope; no new ViewModel store",
+    "request IDs and owner guards reject cancelled/retired completions",
+    "same-request finally releases busy; busy admitted synchronously to avoid queued duplicate mutation",
+    "cache invalidation cancels pending old read",
+    "all create jobs cancelled on close; atomic closed gate",
+    "Original protocols rethrow cancellation instead of converting it to ordinary failure; Android log omitted"
+  ],
+  "originalSaveAlgorithmPreserved": true,
+  "RootVideoProjectionStillRequired": true
+}

@@ -1,0 +1,10 @@
+{
+  "productSnapshotSha": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "entries": 92,
+  "sourceCount": 64,
+  "productSourceCount": 63,
+  "fixtureSourceCount": 1,
+  "mainOverrides": false,
+  "preparedCandidate": true,
+  "compiler": "Kotlin2.4.0/Compose2.4.0"
+}

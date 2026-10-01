@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceCount": 9,
+  "sourceInputs": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFavoriteFolderProtocol.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFavoriteFolderProtocol.kt",
+      "sha256LF": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\FavoriteFolderSheet.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\components\\FavoriteFolderSheet.kt",
+      "sha256LF": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalFavoriteFolderSession.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\DesktopOriginalFavoriteFolderSession.kt",
+      "sha256LF": "8b96a297c891caff45f977d6d433d5a1ee93d2b951d00f97fef4a541f59d5a10"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\FavoriteFolderSessionPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\video\\viewmodel\\FavoriteFolderSessionPolicy.kt",
+      "sha256LF": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\feature\\video\\policy\\FavoriteFolderIdPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\feature\\video\\policy\\FavoriteFolderIdPolicy.kt",
+      "sha256LF": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\feature\\video\\screen\\VideoFavoriteActionPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\feature\\video\\screen\\VideoFavoriteActionPolicy.kt",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\generated\\feature\\video\\viewmodel\\FavoriteSaveUiPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\generated\\feature\\video\\viewmodel\\FavoriteSaveUiPolicy.kt",
+      "sha256LF": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\platform\\com\\bilipai\\desktop\\ui\\DesktopFavoriteFolderEnvironment.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\platform\\com\\bilipai\\desktop\\ui\\DesktopFavoriteFolderEnvironment.kt",
+      "sha256LF": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\platform\\com\\bilipai\\desktop\\ui\\DesktopOriginalFavoriteFolderDrawer.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-favorites-folder-sheet-parity\\compile-02\\source-inputs\\platform\\com\\bilipai\\desktop\\ui\\DesktopOriginalFavoriteFolderDrawer.kt",
+      "sha256LF": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    }
+  ],
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "preparedOnly": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "jarSha256Bytes": "a838b8bc5bfa59e9b7b2eaf1af0d2d13dd75b08c22e95673f5084f8755af335a",
+  "allCandidateClasses": [
+    "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol$getFavoriteFolders$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol$getFavoriteFolders$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol$updateFavoriteFolders$1.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol$updateFavoriteFolders$2.class",
+    "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.class",
+    "com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicyKt.class",
+    "com/android/purebilibili/feature/video/screen/VideoFavoriteAction.class",
+    "com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicyKt$WhenMappings.class",
+    "com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicyKt.class",
+    "com/android/purebilibili/feature/video/screen/VideoFavoriteEntryPoint.class",
+    "com/android/purebilibili/feature/video/ui/components/ComposableSingletons$FavoriteFolderSheetKt.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt$FavoriteFolderSheet$4$1$4$1$2$1$1.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt$FavoriteFolderSheet$lambda$7$0$3$0$$inlined$items$default$1.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt$FavoriteFolderSheet$lambda$7$0$3$0$$inlined$items$default$2.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt$FavoriteFolderSheet$lambda$7$0$3$0$$inlined$items$default$3.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt$FavoriteFolderSheet$lambda$7$0$3$0$$inlined$items$default$4.class",
+    "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheetKt.class",
+    "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession$createFavoriteFolder$createJob$1.class",
+    "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession$loadFavoriteFolders$1.class",
+    "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession$saveFavoriteFolderSelection$1.class",
+    "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession.class",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteFolderMutation.class",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSaveEvent.class",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicyKt.class",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicyKt.class",
+    "com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiState.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment$createFavFolder$1.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment$getFavoriteFolders$1.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment$updateFavoriteFolders$1.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironmentKt.class",
+    "com/bilipai/desktop/ui/DesktopFavoriteFolderViewport.class",
+    "com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawerKt$DesktopOriginalFavoriteFolderDrawer$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawerKt$DesktopOriginalFavoriteFolderDrawer$2$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawerKt$DesktopOriginalFavoriteFolderDrawer$3$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawerKt$DesktopOriginalFavoriteFolderDrawer$4$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawerKt.class"
+  ],
+  "actualClassOverlap": [],
+  "noOperationsStoreOrModelsOverrides": true
+}

@@ -1,0 +1,11 @@
+--- original/toggleFavoriteFolderSelection
+
++++ owned-session/toggleFavoriteFolderSelection
+
+@@ -1,4 +1,5 @@
+
+     fun toggleFavoriteFolderSelection(folderId: Long) {
++        environment.assertOwned()
+         if (folderId <= 0L) return
+         _favoriteSelectedFolderIds.update { selected ->
+             if (selected.contains(folderId)) {

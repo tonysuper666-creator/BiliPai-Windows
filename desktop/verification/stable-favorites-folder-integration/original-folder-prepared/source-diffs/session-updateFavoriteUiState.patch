@@ -1,0 +1,21 @@
+--- original/updateFavoriteUiState
+
++++ owned-session/updateFavoriteUiState
+
+@@ -1,13 +1,7 @@
+
+     private fun updateFavoriteUiState(targetAid: Long?, selectedFolderIds: Set<Long>) {
+-        val currentAid = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.aid
++        val currentAid = environment.currentAid()
+         if (!shouldSyncFavoriteFolderUiState(targetAid = targetAid, currentAid = currentAid)) {
+             return
+         }
+-        _uiState.update { state ->
+-            if (state is VideoPlaybackUiState.Success) {
+-                state.copy(isFavorited = selectedFolderIds.isNotEmpty())
+-            } else {
+-                state
+-            }
+-        }
++        environment.confirmFavoriteLoaded(selectedFolderIds.isNotEmpty())
+     }

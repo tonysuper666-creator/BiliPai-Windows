@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "candidateJarSha256Bytes": "a838b8bc5bfa59e9b7b2eaf1af0d2d13dd75b08c22e95673f5084f8755af335a",
+  "actualMain15JarSha256Bytes": "37553f7eca0952c52e3dfba13d4ef7d99106f65392e7bdf61d9d3721c5214d28",
+  "candidateClasses": 37,
+  "actualClasses": 8907,
+  "classIntersections": [],
+  "candidateTopLevelPublicStaticMethods": 11,
+  "actualTopLevelPublicStaticMethods": 3334,
+  "topLevelIntersections": [],
+  "matchingRule": "same package, JVM name and parameter descriptor; return ignored; private/access helpers excluded"
+}

@@ -1,0 +1,410 @@
+{
+  "message": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\MainActivity.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\CacheUtils.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\CrashReporter.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\Logger.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\database\\entity\\CommentFraudRecord.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\grpc\\ProtoWire.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\VideoLoadError.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\AicuResponsePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\AiSummaryFetchPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BangumiRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BilibiliBlockedListSyncRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BlockedUpRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\DanmakuRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\DynamicRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\LiveInteractionModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\LiveRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\MessageShareGrpcRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\SponsorBlockRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\AicuModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\AiSummaryResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ArticleModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\BangumiModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\BangumiReviewModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\CaptchaModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\DanmakuThumbupResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\DynamicCreateModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\DynamicModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\DynamicVoteModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\EmoteModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\FavoriteModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\HistoryModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\InteractVideoResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\IpLocationResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LikedVideosModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ListModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LiveDanmuInfoResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LiveFeedModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LiveModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LoginModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\MessageResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\NavModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\OnlineResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\PbpModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\PersonalFavoriteModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\PlayerInfoResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ResponseModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\SearchModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\SendDanmakuResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\SpaceModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\SplashModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\StoryModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\UserModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\VideoDetailResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\VideoNoteResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\VideoResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\VideoshotResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleDetailScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\bangumi\\BangumiHubViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\bangumi\\BangumiPlayerViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\bangumi\\BangumiViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\DownloadManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\DynamicDetailScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\following\\FollowingListScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\FavoriteCollectionPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\FavoriteFolderCardList.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\ListViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LivePlayerViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LiveRealtimeMessagePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\BiliPaiTransferSession.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\LoginScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\LoginViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\EyeProtectionPlugin.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\privacy\\PrivacyAuthenticationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\profile\\ProfileSpacePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\profile\\ProfileViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\search\\TopicDetailViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\notification\\MessageNotificationChecker.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\notification\\MessageNotificationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\screen\\AppearanceSettingsScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\screen\\MessageNotificationSettingsScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\screen\\PluginsScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\screen\\SettingsScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\update\\AppUpdateChecker.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuSyncStatusPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\state\\PlayerErrorRecoveryPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\AiSummaryUiPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\PlayerToastPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\RelatedVideoItem.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\ReplyCommentImageSaver.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\PlayerOverlayModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\VideoPlayerOverlay.kt"
+  ],
+  "value": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\MainActivity.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\MessageLinkNavigationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiNavKeyMappingPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\WbiUtils.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\performance\\NativeExitTrace.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\LiquidGlassReadabilityMode.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\PlayerSettingsCache.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\ThemeRoleOverridePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\BilibiliNavigationTargetParser.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\BilibiliUrlParser.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\grpc\\ProtoWire.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\plugin\\feed\\FeedHtmlParser.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\plugin\\js\\BiliPaiJsPluginModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\plugin\\json\\JsonRulePlugin.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\plugin\\skin\\UiSkinImportPackageResolver.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\common\\TextSelectionPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\PlaybackSpeedPreferenceControl.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardReturnTimeline.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionDiagnostics.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\AicuResponsePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\ArticleRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\SearchRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\BangumiModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\CaptchaModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\HistoryModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\InteractVideoResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LoginModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\MessageResponse.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\PersonalFavoriteModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\SearchModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleContentBlockParser.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\cast\\SsdpDevicePresentationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\cast\\SsdpDiscovery.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LivePlayerScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\LoginRiskPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\ChatScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\InboxUserInfoResolver.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\AdFilterInsightPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\SponsorBlockCommunityPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\SponsorBlockInsightPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\SponsorBlockPlugin.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\plugin\\TodayWatchTasteInsightPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\screenshot\\AppScreenshotPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\screenshot\\AppScreenshotRegionPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\AppLanguage.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\AppThemeMode.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\DarkThemeStyle.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\LiquidGlassLivePreview.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\SettingsViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceHeaderPresentationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\anime4k\\gl\\Anime4KPipelineRenderer.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\anime4k\\gl\\MpvAnime4KShader.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerBlurBackground.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerFlowBackground.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\audio\\lyrics\\halcyon\\PlayerPalette.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\bangumi\\policy\\BangumiHubPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\DynamicRichTextPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DampedDragAnimation.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\ui\\SettingsSections.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\update\\AppBuildVerificationPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\CommandDanmakuPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuKeywordFilterPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuParser.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuProto.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\interaction\\InteractiveVideoVariablePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\progress\\PbpProgressPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuComposerPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\DanmakuSettingsPanel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\components\\ReplyComponents.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\PlayerOverlayModels.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSection.kt"
+  ],
+  "activity": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\AppNavigation.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\ScreenUtils.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\WindowSizeUtils.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\performance\\PanelFrameRateOverridePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\bangumi\\BangumiPlayerScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LivePlayerScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\CaptchaManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\LoginComponents.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\login\\LoginScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\components\\ImagePreviewDialog.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\components\\LivePlayerControls.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\screen\\AppearanceSettingsScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\AudioModeScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\TabletVideoLayout.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailScreenStateHolder.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\FullscreenPlayerOverlay.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoPager.kt"
+  ],
+  "setBottomBarVisible": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\AppNavigation.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\dynamic\\DynamicScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\ui\\SettingsPageScaffold.kt"
+  ],
+  "isBottomBarBlurEnabled": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\AppNavigation.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+  ],
+  "animatePagerSelection": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\PagerSelectionMotion.kt"
+  ],
+  "HomeSettings": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\ScreenRoutes.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation3\\BiliPaiNavKey.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "getSpaceCoinArchive": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt"
+  ],
+  "updateBangumiFollowStatus": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BangumiRepository.kt"
+  ],
+  "delFavPugv": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt"
+  ],
+  "getSpaceLikedArchive": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt"
+  ],
+  "unfollowBangumi": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BangumiRepository.kt"
+  ],
+  "getMyFollowBangumi": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BangumiRepository.kt"
+  ],
+  "api": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\WbiKeyManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\ActionRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BangumiRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BilibiliBlockedListSyncRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\BlockedUpRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\CommentRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\DanmakuRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\FavoriteRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\HistoryRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\LiveRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\MessageRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\PersonalFavoriteRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\SearchRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\SplashRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\VideoNoteRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\VideoRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\WatchLaterRepository.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LivePlayerViewModel.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\watchlater\\WatchLaterScreen.kt"
+  ],
+  "NetworkModule": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\ApiClient.kt"
+  ],
+  "WbiKeyManager": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\network\\WbiKeyManager.kt"
+  ],
+  "WatchLaterRefreshBus": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\refresh\\WatchLaterRefreshBus.kt"
+  ],
+  "headerBlurMode": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "resolveHomeHeaderBlurEnabled": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "AppNavigationSettings": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "CommonListHeaderCollapseMode": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "SettingsManager": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+  ],
+  "androidNativeLiquidGlassEnabled": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\onboarding\\OnboardingSettingsGuidePolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\search\\SearchScreen.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\SettingsViewModel.kt"
+  ],
+  "TokenManager": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\TokenManager.kt"
+  ],
+  "rememberBackToTopButtonEnabled": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BackToTopPreference.kt"
+  ],
+  "rememberStickyBottomBarContentPadding": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BottomBarScrollHidePolicy.kt"
+  ],
+  "BottomBarScrollHideIntent": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BottomBarScrollHidePolicy.kt"
+  ],
+  "rememberBottomBarScrollHideConnection": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BottomBarScrollHidePolicy.kt"
+  ],
+  "BottomBarScrollHideTopRevealPx": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BottomBarScrollHidePolicy.kt"
+  ],
+  "shouldAutoHideBottomBarOnScroll": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\BottomBarScrollHidePolicy.kt"
+  ],
+  "LocalBottomBarVisible": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\CompositionLocals.kt"
+  ],
+  "LocalSetBottomBarVisible": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\CompositionLocals.kt"
+  ],
+  "LocalBottomBarContentPadding": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\CompositionLocals.kt"
+  ],
+  "VideoGridItemSkeleton": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\ModifierExt.kt"
+  ],
+  "resolveScrollToTopPlan": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\ScrollToTopPolicy.kt"
+  ],
+  "ShareUtils": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\ShareUtils.kt"
+  ],
+  "resolveSingleColumnFeedMaxWidth": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\WindowSizeUtils.kt"
+  ],
+  "rememberResponsiveSpacing": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\WindowSizeUtils.kt"
+  ],
+  "resolveDeviceUiProfile": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\adaptive\\DeviceUiProfileAdapter.kt"
+  ],
+  "motionTier": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\adaptive\\DeviceUiProfileAdapter.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionBackgroundPolicy.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionHostDepthLayer.kt",
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeWallpaperBackdrop.kt"
+  ],
+  "DissolveAnimationPreset": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\animation\\ParticleDissolveEffect.kt"
+  ],
+  "MaybeDissolvableVideoCard": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\animation\\ParticleDissolveEffect.kt"
+  ],
+  "rememberRecoverableHazeState": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\RecoverableVisualEffects.kt"
+  ],
+  "shouldAllowRenderEffectBackedHazeEffect": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\RecoverableVisualEffects.kt"
+  ],
+  "AppLiquidAwareSearchField": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidAwareSearchField.kt"
+  ],
+  "AppLiquidGlassBackToTopButton": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidGlassBackToTopButton.kt"
+  ],
+  "AnimatedVideoListItem": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\VideoListLayoutControl.kt"
+  ],
+  "resolveFavoriteResourceRequestParams": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\FavoriteRepository.kt"
+  ],
+  "FavoriteRepository": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\FavoriteRepository.kt"
+  ],
+  "LikedVideosRepository": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\repository\\LikedVideosRepository.kt"
+  ],
+  "resolveArticleSharedTransitionKey": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleSharedTransitionPolicy.kt"
+  ],
+  "ArticleSharedElementSlot": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleSharedTransitionPolicy.kt"
+  ],
+  "resolveHistoryArticleCoverAspectRatio": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleSharedTransitionPolicy.kt"
+  ],
+  "resolveHomeFeedPinchColumnBounds": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt"
+  ],
+  "GridPinchColumnHudPill": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt"
+  ],
+  "LocalHomeScrollOffset": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+  ],
+  "LocalHomeFeedScrollInProgress": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+  ],
+  "mapSeriesArchiveToVideoItem": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceLoadPolicy.kt"
+  ],
+  "mapSeasonArchiveToVideoItem": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\space\\SpaceLoadPolicy.kt"
+  ],
+  "resolveHomeTopSearchRowHorizontalPadding": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeHeader.kt"
+  ],
+  "resolveHomeTopSearchPillHeight": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeHeader.kt"
+  ],
+  "resolveHomeTopTabRowHeight": [
+    "work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeHeader.kt"
+  ]
+}

@@ -85,6 +85,7 @@ class DesktopPlaybackController internal constructor(
     }
     private val controllerScope = CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job]))
     private val mutableState = MutableStateFlow(DesktopPlaybackState())
+    private val cloudProjectionGuard = repository.dynamicCacheSessionGuard
     val state = mutableState.asStateFlow()
     private val closed = AtomicBoolean()
     private val generation = AtomicLong()
@@ -475,6 +476,23 @@ class DesktopPlaybackController internal constructor(
         val index = info.pages.indexOfFirst { it.cid == cid }
         if (index < 0) return
         if (index == state.value.currentPart) seekTo(seconds) else playPart(index, seconds)
+    }
+    /** Cloud membership changes project into the existing video's raw server model. */
+    internal fun updateFavoriteCountForOwner(aid: Long, expectedEpoch: Long, count: Int): Boolean {
+        val owner = cloudProjectionGuard.dynamicCacheOwner()?.takeIf { it.epoch == expectedEpoch } ?: return false
+        var changed = false
+        cloudProjectionGuard.withCurrentDynamicCacheOwner(owner) {
+            if (closed.get() || playback.sessionEpoch != expectedEpoch) return@withCurrentDynamicCacheOwner
+            val context = current?.takeIf(::owns) ?: return@withCurrentDynamicCacheOwner
+            if (context.accountEpoch != expectedEpoch || context.details.aid != aid) return@withCurrentDynamicCacheOwner
+            val info = mutableState.value.details?.takeIf { it.aid == aid } ?: return@withCurrentDynamicCacheOwner
+            val raw = info.raw ?: return@withCurrentDynamicCacheOwner
+            val updated = info.copy(raw = raw.copy(stat = raw.stat.copy(favorite = count.coerceAtLeast(0))))
+            current = context.copy(details = updated)
+            mutableState.update { value -> if (value.details === info) value.copy(details = updated) else value }
+            changed = mutableState.value.details === updated
+        }
+        return changed
     }
     fun seekTo(seconds: Double) { submitUserSeek(seconds) }
     private fun submitUserSeek(seconds: Double): Long? {

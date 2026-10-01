@@ -2,17 +2,15 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.data.model.response.AiSummaryData
 import com.android.purebilibili.data.model.response.PlayerInfoData
 import com.bilipai.desktop.data.*
+import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
 
@@ -20,15 +18,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, onUser: (Long) -> Unit, onLogin: () -> Unit, onNotes: (VideoDetails) -> Unit,
-    onSeek: (cid: Long, seconds: Double) -> Unit, commentContent: @Composable () -> Unit, modifier: Modifier = Modifier,
+    onSeek: (cid: Long, seconds: Double) -> Unit, commentContent: @Composable () -> Unit,
+    globalStore: DesktopPluginStore, stillOwned: () -> Boolean, onFavoriteCount: (Int) -> Unit, modifier: Modifier = Modifier,
     cid: Long = details.pages.firstOrNull()?.cid ?: 0L) {
     val scope = rememberCoroutineScope()
     val account by repository.account.collectAsState()
-    var relation by remember(details.aid, account?.mid) { mutableStateOf<VideoRelation?>(null) }
-    var uploader by remember(details.authorMid, account?.mid) { mutableStateOf<UserProfile?>(null) }
+    val epoch by repository.sessionEpochFlow.collectAsState()
+    val capturedEpoch = epoch
+    val currentStillOwned by rememberUpdatedState(stillOwned)
+    fun owned() = repository.sessionEpoch == capturedEpoch && currentStillOwned()
+    var relation by remember(details.aid, epoch) { mutableStateOf<VideoRelation?>(null) }
+    var relationRevision by remember(details.aid, epoch) { mutableLongStateOf(0L) }
+    var favoriteMessage by remember(details.aid, epoch) { mutableStateOf<String?>(null) }
+    var uploader by remember(details.authorMid, epoch) { mutableStateOf<UserProfile?>(null) }
     var error by remember(details.aid) { mutableStateOf<Throwable?>(null) }
     var coins by remember { mutableStateOf(false) }
-    var favorites by remember { mutableStateOf(false) }
     var metadata by remember(details.bvid, cid) { mutableStateOf<PlayerInfoData?>(null) }
     var summary by remember(details.bvid, cid) { mutableStateOf<AiSummaryData?>(null) }
     var metadataLoading by remember { mutableStateOf(false) }
@@ -38,17 +42,19 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
     var likeEffectVersion by remember(details.aid, account?.mid) { mutableIntStateOf(0) }
     val feedMemory = remember(details.aid, account?.mid) { CommunityFeedMemory() }
     fun refreshRelation() { if (account != null) scope.launch {
-        try { relation = social.videoRelation(details.aid) }
-        catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
+        val revision = relationRevision
+        try { val value = social.videoRelation(details.aid); if (owned() && revision == relationRevision) relation = value }
+        catch (failure: Exception) { if (failure is CancellationException) throw failure; if (owned()) error = failure }
     } }
-    LaunchedEffect(details.aid, details.authorMid, account?.mid) {
+    LaunchedEffect(details.aid, details.authorMid, epoch) {
         if (account != null) {
-            try { relation = social.videoRelation(details.aid) }
-            catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
+            val revision = relationRevision
+            try { val value = social.videoRelation(details.aid); if (owned() && revision == relationRevision) relation = value }
+            catch (failure: Exception) { if (failure is CancellationException) throw failure; if (owned()) error = failure }
         }
         if (details.authorMid > 0) {
-            try { uploader = social.userProfile(details.authorMid) }
-            catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
+            try { val value = social.userProfile(details.authorMid); if (owned()) uploader = value }
+            catch (failure: Exception) { if (failure is CancellationException) throw failure; if (owned()) error = failure }
         }
     }
     CompositionLocalProvider(LocalCommunityFeedMemory provides feedMemory, LocalCommunityFeedNamespace provides Pair("engagement", details.aid)) {
@@ -61,11 +67,16 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
                         if (!liked) { likeEffectVersion++; likeEffect = true }
                     })
                 TextButton(onClick = { if (account == null) onLogin() else coins = true }) { Text("投币${relation?.coins?.takeIf { it > 0 }?.let { " · 已投 $it" }.orEmpty()}") }
-                TextButton(onClick = { if (account == null) onLogin() else favorites = true }) { Text(if (relation?.favorited == true) "已收藏 · 管理" else "云端收藏") }
+                details.raw?.let { raw -> DesktopVideoFavoriteRoot(details.aid, repository, community, globalStore, relation?.favorited,
+                    raw.stat.favorite, ::owned,
+                    onFavoriteLoaded = { value -> relationRevision++; relation = (relation ?: VideoRelation(false, false, 0)).copy(favorited = value) },
+                    onFavoriteSaved = { value, count -> relationRevision++; relation = (relation ?: VideoRelation(false, false, 0)).copy(favorited = value); onFavoriteCount(count) },
+                    onLogin = onLogin, feedback = { message -> favoriteMessage = message }) }
                 CommunityAction("加入稍后再看", onLogin, action = { social.setWatchLater(details.aid, true) })
                 CommunityAction("移出稍后再看", onLogin, action = { social.setWatchLater(details.aid, false) })
                 TextButton(onClick = { onNotes(details) }) { Text("视频笔记") }
             }
+            favoriteMessage?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
             key(likeEffectVersion) { DesktopSkinLikeEffect(likeEffect, onFinished = { likeEffect = false }) }
             if (details.authorMid > 0) Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 TextButton(onClick = { onUser(details.authorMid) }) { Text("${details.author} · 查看空间") }
@@ -122,7 +133,6 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
         }
     }
     if (coins) VideoCoinDialog(details.aid, social, onLogin, onDismiss = { coins = false }, onComplete = { coins = false; refreshRelation() })
-    if (favorites) VideoFavoriteDialog(details.aid, repository, social, onLogin, onDismiss = { favorites = false }, onChanged = { refreshRelation() })
 }
 
 @Composable
@@ -141,37 +151,6 @@ private fun VideoCoinDialog(aid: Long, social: DesktopSocialRepository, onLogin:
         }
     }, confirmButton = { CommunityAction("投 $quantity 枚硬币", onLogin, action = { social.giveCoins(aid, quantity, alsoLike) }, onSuccess = onComplete) },
         dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } })
-}
-
-@Composable
-private fun VideoFavoriteDialog(aid: Long, repository: DesktopRepository, social: DesktopSocialRepository, onLogin: () -> Unit,
-    onDismiss: () -> Unit, onChanged: () -> Unit) {
-    var folders by remember { mutableStateOf(emptyList<CloudFavoriteFolder>()) }
-    var error by remember { mutableStateOf<Throwable?>(null) }
-    var loading by remember { mutableStateOf(true) }
-    var revision by remember { mutableIntStateOf(0) }
-    var title by remember { mutableStateOf("") }
-    LaunchedEffect(revision) {
-        loading = true; error = null
-        try { folders = repository.cloudFavoriteFolders() }
-        catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure }
-        finally { loading = false }
-    }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text("选择云端收藏夹") }, text = {
-        Column(Modifier.width(600.dp).heightIn(max = 500.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-            if (loading) LinearProgressIndicator(Modifier.fillMaxWidth())
-            error?.let { CommunityFailure(it, onLogin) { revision++ } }
-            folders.forEach { folder ->
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) { Text(folder.title, fontWeight = FontWeight.SemiBold); Text("${folder.mediaCount} 个收藏", style = MaterialTheme.typography.bodySmall) }
-                    CommunityAction("收藏到此夹", onLogin, action = { social.setFavorite(aid, folder.id, true) }, onSuccess = onChanged)
-                    CommunityAction("从此夹移出", onLogin, action = { social.setFavorite(aid, folder.id, false) }, onSuccess = onChanged)
-                }
-            }
-            OutlinedTextField(title, { title = it }, label = { Text("新收藏夹名称") }, singleLine = true)
-            if (title.isNotBlank()) CommunityAction("创建收藏夹", onLogin, action = { social.createFavoriteFolder(title) }, onSuccess = { title = ""; revision++ })
-        }
-    }, confirmButton = { TextButton(onClick = onDismiss) { Text("完成") } })
 }
 
 private fun panelTime(seconds: Long) = "${seconds / 60}:${(seconds % 60).toString().padStart(2, '0')}"

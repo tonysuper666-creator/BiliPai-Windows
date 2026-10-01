@@ -4,7 +4,7 @@
 
 这是持续维护的 Windows 移植分支。APK 是 Android 安装包；更新流程跟踪作者发布的源码版本，再构建已经移植的 Windows 功能，并不会把任意 APK 自动转换成完整 Windows 程序。
 
-当前对齐目标是正式版 `v0.2.3`（国庆特别版），固定提交 `3d5d19a2f994daccd0e2f8b5f522b6d82f43d589`。候选整包 classes16 编译通过，已接入完整原视频评论的线程、搜索、草稿、输入与发送链路，并复用 BGM 评论的同一 Root 绑定。动态、评论、空间与 BGM 的文字分享接入同一 Windows actor；自建真实窗口验证了原生打开请求及页面失效释放，未验证实际 Root 分享按钮、系统接收方或发送。收藏原页与其他交互仍在对齐；游客网络检查在视频详情返回 HTTP 412，目前已验收运行包仍基于 alpha.9。进度和验收边界见 `PARITY.md`、`upstream-target.json` 与 `verification/stable-comments-sharing-integration`。
+当前对齐目标是正式版 `v0.2.3`（国庆特别版），固定提交 `3d5d19a2f994daccd0e2f8b5f522b6d82f43d589`。候选整包 classes18 编译通过，已接入完整原视频评论的线程、搜索、草稿、输入与发送链路，并复用 BGM 评论的同一 Root 绑定。动态、评论、空间与 BGM 的文字分享接入同一 Windows actor；自建真实窗口验证了原生打开请求及页面失效释放，未验证实际 Root 分享按钮、系统接收方或发送。完整原收藏页已编译，视频收藏抽屉与原多选、新建、一次保存及同全局快捷偏好已接；收藏页保留与队列继续接线，其他交互仍在对齐；游客网络检查在视频详情返回 HTTP 412，目前已验收运行包仍基于 alpha.9。进度和验收边界见 `PARITY.md`、`upstream-target.json` 与 `verification/stable-comments-sharing-integration`。
 
 ## 当前功能范围
 

@@ -1,0 +1,18 @@
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1353:43: warning: condition is always 'false'.
+                            columns = if (favoriteViewModel != null) personalListColumns else columns,
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1354:54: warning: condition is always 'false'.
+                            isFavoritePersonalList = favoriteViewModel != null,
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1355:49: warning: condition is always 'false'.
+                            favoriteBatchMode = favoriteViewModel != null && isFavoriteBatchMode,
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1357:58: warning: condition is always 'false'.
+                            onFavoriteToggleSelect = if (favoriteViewModel != null) toggleFavoriteResourceSelection else null,
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1358:55: warning: condition is always 'false'.
+                            onFavoriteLongPress = if (favoriteViewModel != null) enterFavoriteBatchMode else null,
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-favorites-parity\prepared\generated\com\android\purebilibili\feature\list\CommonListScreen.kt:1387:33: warning: condition is always 'false'.
+                                favoriteViewModel != null -> ({ favoriteViewModel.removeVideo(it) })
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,183 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b",
+      "gitBlob": "eeb512e607b863ae4ed529aeb4b9de5dd61de192"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326",
+      "gitBlob": "4e60ab2c2e679d6c6818cce82fc8a0066cf23455"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "gitBlob": "53bb4791cf213ae140037b778a63dcf9636e4ac9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c",
+      "gitBlob": "6a8f9a7a88ee1ac542788af164194dae81105df5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "gitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d26cf8e888df01a42da29ebc747e1c4540c00bd74530f390b727e75ffc59ed50",
+      "gitBlob": "176d3c580348dc8d79b3c485d29210f2c40a105e"
+    }
+  ],
+  "emitted": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "mode": "selected-full-renderer",
+      "sha256LF": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e",
+      "adaptations": [
+        {
+          "before": "import androidx.compose.ui.platform.LocalConfiguration",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopFavoriteFolderViewport as LocalConfiguration"
+        }
+      ],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326",
+      "adaptations": [],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "adaptations": [],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c",
+      "adaptations": [],
+      "reverseNormalizedOriginalByteEqual": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "mode": "selected-policy",
+      "sha256LF": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c",
+      "adaptations": []
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "mode": "selected-protocol",
+      "sha256LF": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406",
+      "adaptations": [
+        {
+          "member": "getFavoriteFolders",
+          "originalBodySha256LF": "7318dea308b9bb8d5da1ee6e142914a6611959c82ffc2dc8a4cf1accb455f074",
+          "adaptedBodySha256LF": "a3e7c1ae83c862b29bb21748405e71b647980efb7706a3815ed5ea9cd0489e65",
+          "originalStartLine": 680
+        },
+        {
+          "member": "updateFavoriteFolders",
+          "originalBodySha256LF": "d4f0f97f049d9be98b6a02c4ac8eb1da2e533a8dc5f26a03d609f3de17a1225e",
+          "adaptedBodySha256LF": "22227b7aaff6a93ebbc7265a07daccc6d7a49e8d6e157af12f594cfe24c7560a",
+          "originalStartLine": 389
+        }
+      ]
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "mode": "selected-session",
+      "sha256LF": "8b96a297c891caff45f977d6d433d5a1ee93d2b951d00f97fef4a541f59d5a10",
+      "adaptations": [
+        {
+          "member": "showFavoriteFolderDialog",
+          "originalStartLine": 1951,
+          "originalBodySha256LF": "aeb1c08399331b0f481522338ae67b526d16453de905dca2b3a37a2af9bf1718",
+          "adaptedBodySha256LF": "8943235ea4b652a9499101848546f07196aeef4fc0b9e1bd39d164605ea1c8c1"
+        },
+        {
+          "member": "dismissFavoriteFolderDialog",
+          "originalStartLine": 1971,
+          "originalBodySha256LF": "a804f45e83b5cbfbae89b08ce13ea03cb3c6beb798f627f6f40146b5f96733c3",
+          "adaptedBodySha256LF": "a804f45e83b5cbfbae89b08ce13ea03cb3c6beb798f627f6f40146b5f96733c3"
+        },
+        {
+          "member": "invalidateFavoriteFolderCache",
+          "originalStartLine": 1975,
+          "originalBodySha256LF": "e72786c97ace60ba5eeed871626e669fc271c0b2bacc87d01c7471092240b4db",
+          "adaptedBodySha256LF": "28f903b746e57074594a04966f67b73e8da9354c1136eed664a1e7ced242f583"
+        },
+        {
+          "member": "loadFavoriteFolders",
+          "originalStartLine": 1982,
+          "originalBodySha256LF": "82a3bce9362fb06e9af29f4f12f3529c4e685d374a205939e1f3e848aa06c2ea",
+          "adaptedBodySha256LF": "3fe676fb3746823ca4ea5eb92e2237226f0122e430c8f8c034e07e990feba526"
+        },
+        {
+          "member": "toggleFavoriteFolderSelection",
+          "originalStartLine": 2028,
+          "originalBodySha256LF": "516ce1148c3c8b832cabe308b80bb2f5d17d55efd2f30e1c79fb0db7570926f7",
+          "adaptedBodySha256LF": "943322cca8d00dfc668c5ce9c1cda5fae1902563fb0621d1b3720cdbf323d646"
+        },
+        {
+          "member": "saveFavoriteFolderSelection",
+          "originalStartLine": 2043,
+          "originalBodySha256LF": "72d5dd3d575b50d5e1f299f23324f7ad21820991290a230beef15e35379a6203",
+          "adaptedBodySha256LF": "ac0a7568ee1057495265564ced760977a71820598fc7e7d4ef92893ba439883a"
+        },
+        {
+          "member": "applyFavoriteSaveUiState",
+          "originalStartLine": 2102,
+          "originalBodySha256LF": "9c7cfa72bfce3855457f2a88e375316145e1cb28ba00778eed71cdafed61096b",
+          "adaptedBodySha256LF": "49d8c3f6bd6f20806e35a72c1f6c342ff5c014b4b537b21fc04cb2184ec616aa"
+        },
+        {
+          "member": "updateFavoriteUiState",
+          "originalStartLine": 2125,
+          "originalBodySha256LF": "41fa14d034de61e5800e6df3993b3e46b8e8cd322eab4292fe26b02dda0283f3",
+          "adaptedBodySha256LF": "6721d69856e7413ac9a654dfbdb23c0d29a2157efca998ec121be003f9e888b3"
+        },
+        {
+          "member": "createFavoriteFolder",
+          "originalStartLine": 2139,
+          "originalBodySha256LF": "8ef7b75b6ff57e084de1545e1e70da794734e3a8e6207133f4560d15a6643691",
+          "adaptedBodySha256LF": "9ae60c3c8d4457085c39abdc23a284095e290de8c98b374c9da60c8adcb576a2"
+        }
+      ]
+    }
+  ],
+  "referenceOnly": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "reason": "Same Root global settings key; do not emit a second SettingsStore"
+    }
+  ],
+  "productionDefault": "These are unique declarations, verify actual symbol owners before registry merge",
+  "standalone": true
+}

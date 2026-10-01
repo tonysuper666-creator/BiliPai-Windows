@@ -24,6 +24,51 @@ import kotlin.test.assertNotNull
 import java.util.concurrent.atomic.AtomicLong
 
 class DesktopPlaybackControllerTest {
+    @Test fun `cloud favorite projection survives part and quality changes in the same video owner`() {
+        val source = FakeSource({ id -> details(id).let { info -> info.copy(raw =
+            com.android.purebilibili.data.model.response.ViewInfo(aid = info.aid, bvid = id,
+                stat = com.android.purebilibili.data.model.response.Stat(favorite = 5))) } }, ::resolved)
+        Fixture(source).use { f ->
+            onSwing { f.controller.open(card("BVA", 11)) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            val nativeOwner = f.player.currentSourceVersion
+            onSwing {
+                assertTrue(f.controller.updateFavoriteCountForOwner(10, f.repository.sessionEpoch, 6))
+                assertFalse(f.controller.updateFavoriteCountForOwner(20, f.repository.sessionEpoch, 99))
+                assertFalse(f.controller.updateFavoriteCountForOwner(10, f.repository.sessionEpoch + 1, 99))
+            }
+            assertEquals(6, f.controller.state.value.details?.raw?.stat?.favorite)
+            assertEquals(nativeOwner, f.player.currentSourceVersion)
+            onSwing { f.controller.switchQuality(64) }
+            f.await { !it.opening && it.effectiveQuality == 64 }
+            assertEquals(6, f.controller.state.value.details?.raw?.stat?.favorite)
+            onSwing { f.controller.playPart(1) }
+            f.await { !it.opening && it.currentPart == 1 }
+            assertEquals(6, f.controller.state.value.details?.raw?.stat?.favorite)
+        }
+    }
+
+    @Test fun `cloud favorite projection rejects changed session and foreign source before flow delivery`() {
+        val epoch = AtomicLong()
+        val base = FakeSource({ id -> details(id).let { info -> info.copy(raw =
+            com.android.purebilibili.data.model.response.ViewInfo(aid = info.aid, bvid = id,
+                stat = com.android.purebilibili.data.model.response.Stat(favorite = 5))) } }, ::resolved)
+        val source = object : DesktopPlaybackDataSource by base { override val sessionEpoch get() = epoch.get() }
+        Fixture(source).use { f ->
+            onSwing { f.controller.open(card("BVA", 11)) }
+            f.await { !it.opening && it.details?.bvid == "BVA" }
+            onSwing {
+                epoch.incrementAndGet()
+                assertFalse(f.controller.updateFavoriteCountForOwner(10, 0, 99))
+                epoch.set(0)
+                f.player.loadVersioned(PlaybackSource("file:///C:/foreign-favorite-fixture.mp4", title = "Foreign"))
+                assertFalse(f.controller.updateFavoriteCountForOwner(10, 0, 99))
+                assertEquals(5, f.controller.state.value.details?.raw?.stat?.favorite)
+                assertEquals("Foreign", f.player.state.value.sourceTitle)
+            }
+        }
+    }
+
     @Test fun `casting cannot read a previous account or a foreign native source before flow delivery`() {
         val epoch = AtomicLong()
         val original = FakeSource(::details, ::resolved)

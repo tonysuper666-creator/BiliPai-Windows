@@ -1,0 +1,13 @@
+--- original/invalidateFavoriteFolderCache
+
++++ owned-session/invalidateFavoriteFolderCache
+
+@@ -1,4 +1,7 @@
+
+     fun invalidateFavoriteFolderCache() {
++        ++loadRequestId
++        loadJob?.cancel()
++        _isFavoriteFoldersLoading.value = false
+         favoriteFoldersBoundAid = null
+         lastSavedFavoriteFolderIds = emptySet()
+         _favoriteFolders.value = emptyList()

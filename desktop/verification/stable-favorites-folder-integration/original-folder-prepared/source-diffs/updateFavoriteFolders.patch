@@ -1,0 +1,39 @@
+--- original/updateFavoriteFolders
+
++++ adapter/updateFavoriteFolders
+
+@@ -3,9 +3,12 @@
+
+         addFolderIds: Set<Long>,
+         removeFolderIds: Set<Long>
+     ): Result<Boolean> {
++        assertOwned()
+         return withContext(Dispatchers.IO) {
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+             try {
+-                val csrf = TokenManager.csrfCache ?: ""
++                val csrf = readCsrf() ?: ""
+                 if (csrf.isEmpty()) {
+                     return@withContext Result.failure(Exception("请先登录"))
+                 }
+@@ -17,13 +20,17 @@
+
+                 val delIds = removeFolderIds.sorted().joinToString(",")
+                 val response = api.dealFavorite(rid = aid, addIds = addIds, delIds = delIds, csrf = csrf)
+ 
++                kotlinx.coroutines.currentCoroutineContext().ensureActive()
++                assertOwned()
+                 if (response.code == 0) {
+                     Result.success(true)
+                 } else {
+                     Result.failure(Exception(response.message.ifEmpty { "操作失败: ${response.code}" }))
+                 }
++            } catch (cancelled: kotlinx.coroutines.CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
+-                android.util.Log.e("ActionRepository", "updateFavoriteFolders failed", e)
++                assertOwned()
+                 Result.failure(e)
+             }
+         }

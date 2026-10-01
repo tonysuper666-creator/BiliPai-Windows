@@ -1,0 +1,25 @@
+--- original/createFavoriteFolder
+
++++ owned-session/createFavoriteFolder
+
+@@ -1,6 +1,9 @@
+
+     fun createFavoriteFolder(title: String, intro: String = "", isPrivate: Boolean = false) {
+-        viewModelScope.launch {
+-            val result = com.android.purebilibili.data.repository.ActionRepository.createFavFolder(title, intro, isPrivate)
++        environment.assertOwned()
++        val createJob = viewModelScope.launch {
++            val result = environment.createFavFolder(title, intro, isPrivate)
++            currentCoroutineContext().ensureActive()
++            environment.assertOwned()
+             result.onSuccess {
+                 toast("创建收藏夹成功")
+                 loadFavoriteFolders(aid = favoriteFoldersBoundAid, keepCurrentSelection = true)
+@@ -8,4 +11,6 @@
+
+                 toast("创建失败: ${e.message}")
+             }
+         }
++        createJobs.add(createJob)
++        createJob.invokeOnCompletion { createJobs.remove(createJob) }
+     }

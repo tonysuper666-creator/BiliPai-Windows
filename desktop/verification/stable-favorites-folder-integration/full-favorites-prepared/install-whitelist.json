@@ -1,0 +1,48 @@
+{
+  "preparedOnly": true,
+  "mainEdits": false,
+  "installFiles": [
+    {
+      "path": "prepared/desktop/tools/extract-upstream-favorites.py",
+      "target": "desktop/tools/extract-upstream-favorites.py",
+      "sha256Bytes": "bc040c78d91da0a58c8a38d3eb6f456492f3940c437c61f5d9584a18c980f71c",
+      "sha256LfUtf8": "bc040c78d91da0a58c8a38d3eb6f456492f3940c437c61f5d9584a18c980f71c"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "cd1317bb66f4206f4b8a7c1af505f7208c9559a64402ec7e606f46c19eaed6d5",
+      "sha256LfUtf8": "cd1317bb66f4206f4b8a7c1af505f7208c9559a64402ec7e606f46c19eaed6d5"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteBindings.kt",
+      "sha256Bytes": "b8e5dc2b7d00f705ce6c8b00a62952130f74b9149760f218b00dbcef4b299add",
+      "sha256LfUtf8": "b8e5dc2b7d00f705ce6c8b00a62952130f74b9149760f218b00dbcef4b299add"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritePreferences.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritePreferences.kt",
+      "sha256Bytes": "e6a3962552708154347a2ffc748194b9d5b7e63a7a9174561fe7840e3d9888e3",
+      "sha256LfUtf8": "e6a3962552708154347a2ffc748194b9d5b7e63a7a9174561fe7840e3d9888e3"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "d8d99ea930f5fb2a7ba47cee427184f30532b1762fbffa34a70d37964bbc39bf",
+      "sha256LfUtf8": "d8d99ea930f5fb2a7ba47cee427184f30532b1762fbffa34a70d37964bbc39bf"
+    }
+  ],
+  "generatedReferenceOnly": "prepared/generated",
+  "doNotCopyGeneratedReferenceToMain": true,
+  "registryDelta": "prepared/registry-delta.json",
+  "mergeOnly": true,
+  "wholeRegistryReplacement": false,
+  "producerCommand": "python desktop/tools/extract-upstream-favorites.py --repo <actual root> --output <desktop/build/generated/favorites>",
+  "defaultSelectedOutputs": 34,
+  "directCopyOutputs": 25,
+  "sourceIdentities": 60,
+  "manualSources": 4,
+  "childDrawerManifest": "../stable-favorites-folder-sheet-parity/frozen-handoff.json",
+  "childDrawerSha256": "df54bc254658fd114a75ec96f5f01776629b02b0623aef7b80c39a44cb3db9d1"
+}

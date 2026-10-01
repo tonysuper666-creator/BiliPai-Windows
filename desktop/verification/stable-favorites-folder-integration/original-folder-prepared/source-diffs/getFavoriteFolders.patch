@@ -1,0 +1,33 @@
+--- original/getFavoriteFolders
+
++++ adapter/getFavoriteFolders
+
+@@ -1,18 +1,26 @@
+
+     suspend fun getFavoriteFolders(aid: Long? = null): Result<List<com.android.purebilibili.data.model.response.FavFolder>> {
++        assertOwned()
+         return withContext(Dispatchers.IO) {
++            kotlinx.coroutines.currentCoroutineContext().ensureActive()
++            assertOwned()
+             try {
+-                val mid = TokenManager.midCache ?: return@withContext Result.failure(Exception("请先登录"))
++                val mid = readMid() ?: return@withContext Result.failure(Exception("请先登录"))
+                 val response = api.getFavFolders(
+                     mid = mid,
+                     type = aid?.let { 2 },
+                     rid = aid
+                 )
++                kotlinx.coroutines.currentCoroutineContext().ensureActive()
++                assertOwned()
+                 if (response.code == 0) {
+                     Result.success(response.data?.list ?: emptyList())
+                 } else {
+                     Result.failure(Exception(response.message))
+                 }
++            } catch (cancelled: kotlinx.coroutines.CancellationException) {
++                throw cancelled
+             } catch (e: Exception) {
++                assertOwned()
+                 Result.failure(e)
+             }
+         }

@@ -50,6 +50,10 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
     private val api = web.create(BilibiliApi::class.java)
     private val dynamic = web.create(DynamicApi::class.java)
     private val space = web.create(SpaceApi::class.java)
+    internal val favoriteApi get() = api
+    internal val favoriteSpaceApi get() = space
+    internal val favoriteDynamicApi get() = dynamic
+    internal val favoriteBangumiApi by lazy { web.create(BangumiApi::class.java) }
     private val searchApi = web.create(SearchApi::class.java)
     private val article = web.create(ArticleApi::class.java)
     private val messages = retrofit("https://api.vc.bilibili.com/").create(MessageApi::class.java)

@@ -1,0 +1,18 @@
+{
+  "reason": "Synchronously admit quick-save before launching; no original algorithm change",
+  "wholeClasses18Passed": true,
+  "originalFolderUiFixtureUsesHistoricalMain17": true,
+  "rootButtonPointerAccepted": false,
+  "artifacts": [
+    {
+      "path": "classes-18.log",
+      "sha256Bytes": "e7477c41092154babf7e26cc65ae5ad86a17f5255adce5e213eca71bb21dd049",
+      "sizeBytes": 6629
+    },
+    {
+      "path": "DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b",
+      "sizeBytes": 6381
+    }
+  ]
+}

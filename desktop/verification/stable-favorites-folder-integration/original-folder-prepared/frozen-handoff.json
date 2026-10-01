@@ -1,0 +1,513 @@
+{
+  "status": "FROZEN_PREPARED",
+  "artifactCount": 98,
+  "sourceClosureCount": 9,
+  "selectedProduced": 4,
+  "directReferenced": 3,
+  "manualPlatform": 2,
+  "actualMain15ManifestSha256Bytes": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "actualCp92Sha256Bytes": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "compileResult": "compile-02/compile-result.json",
+  "acceptedResult": "proof-02/accepted-result.json",
+  "groupedCases": 4,
+  "assertions": 33,
+  "actualCodeSources": 5,
+  "noClassOrTopLevelCallableOverlap": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "notRootUiEndToEndAcceptance": true,
+  "artifacts": [
+    {
+      "path": "audit-and-freeze.py",
+      "bytes": 13394,
+      "sha256Bytes": "8c27084699143f3b06a7986c9f5152efce24ac6b7ef4f2a73b72b63bd6e2c79a"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "bytes": 10064,
+      "sha256Bytes": "62495fbb90e9e09869cb7fdc53c6b33043d8c142cbd7e9dcca334c3c99eef5f3"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "bytes": 25454,
+      "sha256Bytes": "a1588b8e49d606450e569f1da9a2df8126ba4b573110bd3219814e8c4b168ad2"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-01/original-favorite-folder.jar",
+      "bytes": 97883,
+      "sha256Bytes": "21b300ba3243b3fe4f22163eeb80468ef465c237ff079f6bd4f7cdffe04b8d25"
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "bytes": 3154,
+      "sha256Bytes": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 10030,
+      "sha256Bytes": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "bytes": 938,
+      "sha256Bytes": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "bytes": 395,
+      "sha256Bytes": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "bytes": 1414,
+      "sha256Bytes": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "bytes": 906,
+      "sha256Bytes": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "bytes": 2460,
+      "sha256Bytes": "ebbd6cd171dc2c74d676dd2c735f7a59c70b31b31f98e3fe955c66323ed1513c"
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "bytes": 1148,
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "bytes": 10074,
+      "sha256Bytes": "4210bbe954871762ac3e8175311b67de058e00cf8f307259eb4460aa4dd35079"
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "bytes": 25454,
+      "sha256Bytes": "216114fdd9988cb747d9c2ffacce955b4469ed35a0371fd15494dd1680c6c522"
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-02/original-favorite-folder.jar",
+      "bytes": 98900,
+      "sha256Bytes": "a838b8bc5bfa59e9b7b2eaf1af0d2d13dd75b08c22e95673f5084f8755af335a"
+    },
+    {
+      "path": "compile-02/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "bytes": 3154,
+      "sha256Bytes": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 10030,
+      "sha256Bytes": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "bytes": 938,
+      "sha256Bytes": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "bytes": 395,
+      "sha256Bytes": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "bytes": 1414,
+      "sha256Bytes": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "bytes": 906,
+      "sha256Bytes": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "bytes": 2535,
+      "sha256Bytes": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "bytes": 1148,
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    },
+    {
+      "path": "compile.py",
+      "bytes": 3660,
+      "sha256Bytes": "09a9648a1b96a6a77744b62462d389e460390348f0c140c5f9711e29a4d19c60"
+    },
+    {
+      "path": "FavoriteFolderFixture.kt",
+      "bytes": 12252,
+      "sha256Bytes": "9d0184cc9a9707a846635fd8b2c87f875f18a94d05c57033eee677e110b3df41"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 13156,
+      "sha256Bytes": "7825aa0b096b1d272bf6b563667e4c28d1de55418e1619567b8eb48628486c72"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "bytes": 3154,
+      "sha256Bytes": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 10030,
+      "sha256Bytes": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession.kt",
+      "bytes": 10552,
+      "sha256Bytes": "8b96a297c891caff45f977d6d433d5a1ee93d2b951d00f97fef4a541f59d5a10"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "bytes": 938,
+      "sha256Bytes": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "path": "generated/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "bytes": 395,
+      "sha256Bytes": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "path": "generated/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "bytes": 1414,
+      "sha256Bytes": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "path": "generated/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "bytes": 906,
+      "sha256Bytes": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "path": "generated/source-inventory.json",
+      "bytes": 9025,
+      "sha256Bytes": "209a3e19e8bb33017a362b4c6c14b63f143b84e37345edae810e7a79ff36cf33"
+    },
+    {
+      "path": "historical-proof01.json",
+      "bytes": 401,
+      "sha256Bytes": "27a882800c35de8c57ee9918c8704712011e981f91c4c325055f330cbf581432"
+    },
+    {
+      "path": "install-contract.json",
+      "bytes": 7095,
+      "sha256Bytes": "e403ad9a67e5206730902cffe974f31c43d02ed800f751ab7fd5dc4658df4f15"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "bytes": 930,
+      "sha256Bytes": "d26cf8e888df01a42da29ebc747e1c4540c00bd74530f390b727e75ffc59ed50"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "bytes": 37933,
+      "sha256Bytes": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "bytes": 395,
+      "sha256Bytes": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "bytes": 1414,
+      "sha256Bytes": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 9998,
+      "sha256Bytes": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "bytes": 906,
+      "sha256Bytes": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "path": "original-inputs/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "bytes": 398331,
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+    },
+    {
+      "path": "platform/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "bytes": 2535,
+      "sha256Bytes": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "path": "platform/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "bytes": 1148,
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "bytes": 2535,
+      "sha256Bytes": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "bytes": 1148,
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-favorite-folder-sheet.py",
+      "bytes": 13156,
+      "sha256Bytes": "7825aa0b096b1d272bf6b563667e4c28d1de55418e1619567b8eb48628486c72"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "bytes": 3154,
+      "sha256Bytes": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "bytes": 395,
+      "sha256Bytes": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "bytes": 1414,
+      "sha256Bytes": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 10030,
+      "sha256Bytes": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession.kt",
+      "bytes": 10552,
+      "sha256Bytes": "8b96a297c891caff45f977d6d433d5a1ee93d2b951d00f97fef4a541f59d5a10"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "bytes": 938,
+      "sha256Bytes": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "bytes": 906,
+      "sha256Bytes": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326"
+    },
+    {
+      "path": "prepared/generated/source-inventory.json",
+      "bytes": 9902,
+      "sha256Bytes": "909a25fcec44cded6544b41d528e8d7cdd516dcbade6685277e49c6ade4edace"
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/data/repository/DesktopOriginalFavoriteFolderProtocol.kt",
+      "bytes": 3154,
+      "sha256Bytes": "2b77425c377031800b7cfc408bd53f9aafb08f7389e14a9b43e14a62a033a406"
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "bytes": 10030,
+      "sha256Bytes": "697f285318a1a574cd22024dbe84fa49bcff39d830b67178441f309473685d1e"
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalFavoriteFolderSession.kt",
+      "bytes": 10552,
+      "sha256Bytes": "8b96a297c891caff45f977d6d433d5a1ee93d2b951d00f97fef4a541f59d5a10"
+    },
+    {
+      "path": "prepared/production-generated/com/android/purebilibili/feature/video/viewmodel/FavoriteFolderSessionPolicy.kt",
+      "bytes": 938,
+      "sha256Bytes": "140db31c068c1f77af1b7dc8c13e4175788287933c07b90d8ff6d2c1450e4f7c"
+    },
+    {
+      "path": "prepared/production-generated/source-inventory.json",
+      "bytes": 8710,
+      "sha256Bytes": "c7d0d93ad52aa76d216fcac9278a77e9ffc3d3beb59d7572b8a324913b8a276c"
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "bytes": 23803,
+      "sha256Bytes": "daf9bce956a769e41ab2d33d1c48d5e53033d25d4efbf197b95ca916ba5dd024"
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-01/favorite-folder-fixture.jar",
+      "bytes": 47190,
+      "sha256Bytes": "23945b88fe53784c28054c764e39030c17de578af293d0c9c05912e857e76d09"
+    },
+    {
+      "path": "proof-01/FavoriteFolderFixture.kt",
+      "bytes": 11644,
+      "sha256Bytes": "9a7fa1d544343b59b06fc884abe8db6ab57694df9633c2076985d32580d1ec6b"
+    },
+    {
+      "path": "proof-01/runtime-command.json",
+      "bytes": 24869,
+      "sha256Bytes": "57a84542d95c673ed4c0323cd1e5c4055d1a56a16a8847f672b3d23bb36e8ffd"
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "proof-01/scratch/result.json",
+      "bytes": 2089,
+      "sha256Bytes": "6a9353b564b3c8dba31c1f650a2672c403978736f880e181ad78c0e779c436f6"
+    },
+    {
+      "path": "proof-02/accepted-result.json",
+      "bytes": 914,
+      "sha256Bytes": "b671a5127da62a14f32bb6875433ac8942ae55d472526837d9ac16e00e574507"
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "bytes": 23803,
+      "sha256Bytes": "e13bdd2ff6141af52808be92a117447783bd295a9f1fc6df878e0441f436c06f"
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "proof-02/favorite-folder-fixture.jar",
+      "bytes": 47664,
+      "sha256Bytes": "19788fba424a3a09d3648970f51fe66f05099bce12d949fb049f92c0fd100fe5"
+    },
+    {
+      "path": "proof-02/FavoriteFolderFixture.kt",
+      "bytes": 12252,
+      "sha256Bytes": "9d0184cc9a9707a846635fd8b2c87f875f18a94d05c57033eee677e110b3df41"
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "bytes": 24869,
+      "sha256Bytes": "ea88e3438f54f0096b9d57dfa8bd1af9e7f9da3f1aec9c5b3f01742f2744826f"
+    },
+    {
+      "path": "proof-02/runtime-pins-after.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "proof-02/runtime-pins-before.json",
+      "bytes": 41450,
+      "sha256Bytes": "d3e60a889124baccba1d048d70f1b7416956d68c3744c4c4bb816ef7a7f91c6d"
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "bytes": 2090,
+      "sha256Bytes": "a009f5968f6cc057b69fac99f99bf585536563feed5482682a091e3d70e0cbdb"
+    },
+    {
+      "path": "proof-02/scratch/result.json",
+      "bytes": 2089,
+      "sha256Bytes": "8e7877187dd3fb1b15e4cae52a24a41a1489f79dedeb818211007608d2057e12"
+    },
+    {
+      "path": "run-fixture.py",
+      "bytes": 2896,
+      "sha256Bytes": "94d1237e376b2ad76986db0218177e5611fa7a858f8144f69249a5d9b8ad201b"
+    },
+    {
+      "path": "source-audit.json",
+      "bytes": 2516,
+      "sha256Bytes": "24a8e0c358b02313f32fe8ba71b5f337b4b1a3982f13d8f4ffaa7949c0b149d8"
+    },
+    {
+      "path": "source-diffs/getFavoriteFolders.patch",
+      "bytes": 1363,
+      "sha256Bytes": "c941a8a50287ecdb80784440482a4719fdb7719aaa0d9828a9a6b092c4ec4178"
+    },
+    {
+      "path": "source-diffs/session-applyFavoriteSaveUiState.patch",
+      "bytes": 1244,
+      "sha256Bytes": "1d41c571460e5afc80fcb2e07ff5ee35d7be43bcfe396780dfdead5233aa697f"
+    },
+    {
+      "path": "source-diffs/session-createFavoriteFolder.patch",
+      "bytes": 988,
+      "sha256Bytes": "414b83650d13fb1401fb87978ad294a661add485a830bc111e2de0b1b27bba76"
+    },
+    {
+      "path": "source-diffs/session-dismissFavoriteFolderDialog.patch",
+      "bytes": 1,
+      "sha256Bytes": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "source-diffs/session-invalidateFavoriteFolderCache.patch",
+      "bytes": 389,
+      "sha256Bytes": "1225c3db5d3b1864202df547ce75c19b75936e2adafcaff2677153850a6d2fe3"
+    },
+    {
+      "path": "source-diffs/session-loadFavoriteFolders.patch",
+      "bytes": 1164,
+      "sha256Bytes": "3234c9f2c3825d3d1065fecbac01571519b065a5ad835e6839444e60bd34201c"
+    },
+    {
+      "path": "source-diffs/session-saveFavoriteFolderSelection.patch",
+      "bytes": 1721,
+      "sha256Bytes": "6fc5331fe111276e2a4abec3623c2bc936e0e99818eebb444335dd2743260886"
+    },
+    {
+      "path": "source-diffs/session-showFavoriteFolderDialog.patch",
+      "bytes": 479,
+      "sha256Bytes": "716f720c0995360a6bfacd5342f89121ce1870304266fb9c4370a9f46ea1a64c"
+    },
+    {
+      "path": "source-diffs/session-toggleFavoriteFolderSelection.patch",
+      "bytes": 343,
+      "sha256Bytes": "fc5348a032c2565401757af77fdf1acbc3403a39ea5e34a0b729c5cdec28f526"
+    },
+    {
+      "path": "source-diffs/session-updateFavoriteUiState.patch",
+      "bytes": 771,
+      "sha256Bytes": "d574514331bebf6aefde4433ca4a67a08acb080f1bccf53a841161861e31c924"
+    },
+    {
+      "path": "source-diffs/updateFavoriteFolders.patch",
+      "bytes": 1497,
+      "sha256Bytes": "6ffbf4853eb10baf6f955498a8e059c3c08612c33475192bfa85b46bc312fb62"
+    },
+    {
+      "path": "symbol-audit.json",
+      "bytes": 539,
+      "sha256Bytes": "2926fb51c17e063de90f661abb2d9a606aa494d26dd200d37251271cad0515c2"
+    }
+  ]
+}

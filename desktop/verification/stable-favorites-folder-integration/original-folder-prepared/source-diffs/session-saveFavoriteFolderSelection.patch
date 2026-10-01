@@ -1,0 +1,49 @@
+--- original/saveFavoriteFolderSelection
+
++++ owned-session/saveFavoriteFolderSelection
+
+@@ -1,6 +1,7 @@
+
+     fun saveFavoriteFolderSelection() {
++        environment.assertOwned()
+         if (_isSavingFavoriteFolders.value) return
+-        val currentAid = (_uiState.value as? VideoPlaybackUiState.Success)?.info?.aid
++        val currentAid = environment.currentAid()
+         val targetAid = resolveFavoriteFolderDialogTargetAid(
+             requestedAid = favoriteFoldersBoundAid,
+             currentAid = currentAid
+@@ -19,14 +20,19 @@
+
+             return
+         }
+ 
+-        viewModelScope.launch {
+-            _isSavingFavoriteFolders.value = true
+-            val result = interactionUseCase.updateFavoriteFolders(
++        val request = ++saveRequestId
++        _isSavingFavoriteFolders.value = true
++        saveJob = viewModelScope.launch {
++            try {
++            val result = environment.updateFavoriteFolders(
+                 aid = targetAid,
+                 addFolderIds = mutation.addFolderIds,
+                 removeFolderIds = mutation.removeFolderIds
+             )
+ 
++            currentCoroutineContext().ensureActive()
++            if (request != saveRequestId) return@launch
++            environment.assertOwned()
+             result.onSuccess {
+                 lastSavedFavoriteFolderIds = selectedFolderIds
+                 _favoriteFolders.update { folders ->
+@@ -53,6 +59,8 @@
+
+             }.onFailure { e ->
+                 toast("收藏失败: ${e.message}")
+             }
+-            _isSavingFavoriteFolders.value = false
++            } finally {
++                if (request == saveRequestId) _isSavingFavoriteFolders.value = false
++            }
+         }
+     }

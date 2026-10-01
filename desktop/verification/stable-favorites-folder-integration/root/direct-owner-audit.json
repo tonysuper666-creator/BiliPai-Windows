@@ -1,0 +1,257 @@
+{
+  "scope": "Read-only current candidate generated body producer audit, not compile acceptance",
+  "outputs": 25,
+  "allPassed": true,
+  "rows": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListBackToTopPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListBackToTopPolicy.kt",
+      "expectedLF": "f4433ac294dbfcc3ac9738d9efaaee36a7f95d6bd72a0a6f9a166cc8c99bb889",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListBackToTopPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListHeaderLayoutPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListHeaderLayoutPolicy.kt",
+      "expectedLF": "9717acac8b769f3fece85cceaa9b127a63dd5768fb04e2c45ed0c17579dc1353",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListHeaderLayoutPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListMotionSpec.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListMotionSpec.kt",
+      "expectedLF": "971329e03b16895c5765fd92c6277c9dc181e7a4d8e5ace020f43a7f95823633",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListMotionSpec.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListPaginationPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListPaginationPolicy.kt",
+      "expectedLF": "e2fd522bbe5f396206f601266ece033c756dc76abdbf1ca15dfb6088676b3b61",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListPaginationPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListSearchPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListSearchPolicy.kt",
+      "expectedLF": "a16d93d863cad1c982c44de52a834cbeca903b1847dc1253e7f2ae0915de95a9",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListSearchPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/CommonListVideoNavigationPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/CommonListVideoNavigationPolicy.kt",
+      "expectedLF": "f3143866bcb1e9cfbc8eb8f0b2508f236ae068762c0fbab1800c5aba7057e4c7",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\CommonListVideoNavigationPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/FavoriteCategoryPolicy.kt",
+      "expectedLF": "3ea3c007e9f5d6e092685cabea5b44f5c92d6bd549b1dcbbd8f102fcbeece2bd",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\FavoriteCategoryPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "output": "com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "expectedLF": "54b7e13247614c73bceee7c1b2755f91180bfdbfa4a4eff4878c22a92b5c220b",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\FavoriteFolderCardList.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCardSkeleton.kt",
+      "output": "com/android/purebilibili/feature/list/FavoritePersonalCardSkeleton.kt",
+      "expectedLF": "81458662a324cd17c6c61ce2afb8412046f2f9338537014ddae8efce94994378",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\FavoritePersonalCardSkeleton.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/HistoryFilterPolicy.kt",
+      "expectedLF": "3f8e10cb699850e22f4a2cf1e91cb06e5af2397dbd949b8b7379a58f46179fed",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\HistoryFilterPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/HistoryPaginationPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/HistoryPaginationPolicy.kt",
+      "expectedLF": "c0ef2e3465f90c3f62d72b0b019095bfe10163457d8c2c495877a94a421ddc39",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\HistoryPaginationPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchActiveBar.kt",
+      "output": "com/android/purebilibili/feature/list/ListScopedSearchActiveBar.kt",
+      "expectedLF": "3546b51450ef22437a5c32db52f71f83bfd1d5d728eb6b96f4aca28eba5f2b51",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\ListScopedSearchActiveBar.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchPolicy.kt",
+      "output": "com/android/purebilibili/feature/list/ListScopedSearchPolicy.kt",
+      "expectedLF": "f14c17e8c25abb6e6813ae2438baa84cb726f17dacd4bc17e9ffdf23b6aaf5e3",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\list\\ListScopedSearchPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt",
+      "output": "com/android/purebilibili/feature/personal/PersonalMediaCard.kt",
+      "expectedLF": "8736a3417ffdbaeb70e9185c59687a929625be59ab0661a5105eab6340992202",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\personal\\PersonalMediaCard.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/personal/PersonalListLayoutPolicy.kt",
+      "output": "com/android/purebilibili/feature/personal/PersonalListLayoutPolicy.kt",
+      "expectedLF": "105ed9572a251556bf31512c0a71ceac1bbc73514d7f03fa5c58b4015e8739ea",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\personal\\PersonalListLayoutPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/article/ArticleSharedTransitionPolicy.kt",
+      "output": "com/android/purebilibili/feature/article/ArticleSharedTransitionPolicy.kt",
+      "expectedLF": "ab76232e6c6a41bb34dfca364ead564e2d3c7d2623df586a6921d5d877e59744",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\article\\ArticleSharedTransitionPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoListLayoutControl.kt",
+      "output": "com/android/purebilibili/core/ui/components/VideoListLayoutControl.kt",
+      "expectedLF": "643266a0c6c5c185c944ffe1c757f1ba6c0b2b832ae5024cd4bf95b17d47bc2a",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\VideoListLayoutControl.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchField.kt",
+      "output": "com/android/purebilibili/core/ui/components/AppLiquidAwareSearchField.kt",
+      "expectedLF": "c83aeecf154d3481515105fc5ce2de746dc8e6beafcdef3062f3796d144b7a73",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidAwareSearchField.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/ScrollToTopPolicy.kt",
+      "output": "com/android/purebilibili/core/util/ScrollToTopPolicy.kt",
+      "expectedLF": "e02a94adc35bbf7ff9fcce9e156b94535936076d00e24f853d8cc79730a7049c",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\ScrollToTopPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt",
+      "output": "com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt",
+      "expectedLF": "c379b9c7ac5864146792fde72db86046b3aabd8dcec7279d7c093fd31cb75528",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt",
+      "output": "com/android/purebilibili/navigation/PagerSelectionMotion.kt",
+      "expectedLF": "826b6b82d059360283658587b14a0eae81fa40c7a1f52c9855a467476baec119",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\PagerSelectionMotion.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "output": "com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "expectedLF": "16d01f648a23ecb4b09c2f81c928cd31d9f9b89792e8b2e5f411a51c8c761028",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScrollOffsetPolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "output": "com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "expectedLF": "f9e0646000668a5559890d655db5109bd77720da4d4a1e2d8e1daf9f62b7e184",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "output": "com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "expectedLF": "b9b3a2a7a2e175188cbf9a4dd23e06926faf2d42879bba3147cdb57749bb95f0",
+      "registryMode": "policy-extract",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\video-comment-ui\\com\\android\\purebilibili\\core\\ui\\blur\\FloatingChromeBackdrop.kt"
+      ],
+      "passed": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt",
+      "output": "com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt",
+      "expectedLF": "778e9dd64534e55c4646a1c1d0cbcaa10601584767aeb1dd560f5ce569b7680d",
+      "registryMode": "direct",
+      "exactGeneratedOwners": [
+        "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt"
+      ],
+      "passed": true
+    }
+  ]
+}

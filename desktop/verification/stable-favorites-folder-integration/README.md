@@ -1,0 +1,13 @@
+# Stable original Favorites sources and video folder integration
+
+The 204 immutable raw artifacts are bound by artifact-manifest.json, SHA-256 914e076c21c0576cc2339dd100ef990c1e2edfa4ff95f64d2c70ecf65a50e648. This README and the independently pinned root-follow-up directory are outside that manifest. Existing frozen handoffs remain unchanged.
+
+All 741 source identities and 210 resources match the published v0.2.3 tag. The full original Favorites page/category/VM/Repository source closure compiles; its 25 direct outputs each have exactly one producer with the expected hash. The actual Root Favorites page and retained queue/navigation entry are still pending in this slice. Auxiliary History/Liked source dependencies are not mounted-page acceptance.
+
+The video page now wires the original FavoriteFolderSheet, CreateFolderDialog, transient original session and original membership protocol to the existing Community API and same global preferences. Membership uses the aid-specific GET and one sorted add/delete mutation, preserving intro/privacy and multiselect. The current raw favorite count and cloud relation are guarded by immutable aid, credential epoch, caller lifetime and the existing SessionStore admission. The button is a Windows binding; the complete original video action row is not claimed.
+
+Whole classes17 passed. Two actual controller tests prove count preservation across part/quality changes and rejection of a different aid, epoch and foreign native source before observer delivery. One music-route lifecycle method runs 18 original integration cases; three JUnit methods passed. The initial test compile failure is preserved: earlier alpha.9 tests used the removed BGM Native route. Tests now reflect the full stable Detail routing while retaining separate Listen source identity rules. Fixtures use temporary profiles, memory transports and the unattached actual Mpv actor; no real account, socket, native HWND or codec is accepted.
+
+Review then identified that quickSaving was set only after launch began. The root-follow-up source admits the action synchronously before launch; classes18 passed. The count and music tests validate unchanged controller/routing bodies, and do not prove this button's actual pointer admission. The installed producer CLI alone was adapted to explicit repo/output/default production arguments; its selected original algorithms are unchanged.
+
+Full Root Favorites state/queue retention, actual integrated page and modal interactions, real account writes, remaining Home/music/danmaku/settings/player/space closure, full native runtime and a new desktop EXE remain pending. Source counts are not completion percentages; task binaries and temporary profiles remain local.

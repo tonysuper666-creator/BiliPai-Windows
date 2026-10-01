@@ -1,0 +1,131 @@
+{
+  "preparedOnly": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "dd9d124da6629224f3256a564bb6318b40de8da875e3607c6397e0773be7c71b",
+      "gitBlob": "eeb512e607b863ae4ed529aeb4b9de5dd61de192"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326",
+      "gitBlob": "4e60ab2c2e679d6c6818cce82fc8a0066cf23455"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "gitBlob": "53bb4791cf213ae140037b778a63dcf9636e4ac9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c",
+      "gitBlob": "6a8f9a7a88ee1ac542788af164194dae81105df5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "gitBlob": "e58f702e55adce811b25e3230fdabedba4a7f83a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d26cf8e888df01a42da29ebc747e1c4540c00bd74530f390b727e75ffc59ed50",
+      "gitBlob": "176d3c580348dc8d79b3c485d29210f2c40a105e"
+    }
+  ],
+  "producer": "prepared/desktop/tools/extract-upstream-favorite-folder-sheet.py",
+  "producerEntry": "generate(repo, output, standalone=False)",
+  "productionSelectedSourceCount": 4,
+  "productionDirectReferences": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "sha256LF": "df2ffbe15bc4b3d913f88460078a24e167813ee5e72918ca040c15aba79d6326",
+      "owner": "Root sync-upstream direct once"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "sha256LF": "285b6f1138d00a224b0a98037ad26a0eabc6afb5f7003f4d2448465886475307",
+      "owner": "Root sync-upstream direct once"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "sha256LF": "5cc76c73f503f9a1ee6afe40801810755756b7c604488b6fbf917779aa1dce2c",
+      "owner": "Root sync-upstream direct once"
+    }
+  ],
+  "manualPlatformSourceCount": 2,
+  "totalClosureSources": 9,
+  "manualPlatformPayloads": [
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt"
+  ],
+  "requiredExistingMain": [
+    "FavFolder/BilibiliApi and serialized models",
+    "AppModalBottomSheet, AppAlertDialog and original App primitives",
+    "Root same Repository/client and account epoch",
+    "Same global DesktopPluginStore.settings"
+  ],
+  "requiredParentEnvironment": "DesktopFavoriteEnvironment(api,currentMid(),csrf(),assertOwned()) and actions.createFavFolder; no duplicate Favorites Repository/Actions/DTO",
+  "protocolConstructor": "DesktopOriginalFavoriteFolderProtocol(api, readMid:()->Long?, readCsrf:()->String?, assertOwned:()->Unit)",
+  "membershipRead": "getFavoriteFolders(aid) -> GET created/list-all up_mid=ownedMid,type=2,rid=aid,web_location default 333.1387",
+  "membershipWrite": "updateFavoriteFolders(aid,add:Set<Long>,remove:Set<Long>) -> single dealFavorite rid=aid,type=2,sorted comma add/del,csrf; no empty POST",
+  "create": "Inject parent actions::createFavFolder, preserve original title/intro/privacy; do not call old DesktopSocialRepository.createFavoriteFolder (intro missing)",
+  "callerOwner": "Instantiate session/environment per immutable aid + captured sessionEpoch + page lifetime; stillOwned checks all three, cancel caller child scope and session.close() on disposal. Same MID login replacement is a distinct owner.",
+  "measuredViewport": "Provide LocalDesktopFavoriteFolderViewport(DesktopFavoriteFolderViewport(actual host heightDp)) above modal; original max(72% height,360dp) retained.",
+  "originalStateFlows": [
+    "favoriteFolderDialogVisible",
+    "favoriteFolders",
+    "isFavoriteFoldersLoading",
+    "favoriteSelectedFolderIds",
+    "isSavingFavoriteFolders",
+    "favoriteFolderSaveEvent"
+  ],
+  "RootProjection": "onFavoriteLoaded(bool) / onFavoriteSaved(bool,count) update same current Root video relation and raw favorite count only while owned. currentFavoriteCount reads that authority. Do not feed library.isFavorite local bookmarks into cloud membership.",
+  "originalSettings": {
+    "key": "favorite_quick_save_default_folder",
+    "default": false,
+    "source": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+    "notProduced": true,
+    "globalStoreOnly": true
+  },
+  "entryPolicy": "Original VideoFavoriteActionPolicy: long press and AudioMode always drawer; other taps quick=true default-folder toggle, otherwise drawer. Root supplies actual quick toggle callback; this payload does not claim that entry mounted.",
+  "oldConsumer": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+    "relationAnchor": 27,
+    "favoriteClickAnchor": 55,
+    "dialogCallAnchor": 129,
+    "oldDialogAnchor": 147
+  },
+  "noOpsWholeFileOrShellReplacement": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "proof": {
+    "phase": "proof-02",
+    "groupedCases": 4,
+    "assertions": 33,
+    "actualCodeSources": 5,
+    "zeroSocket": true,
+    "actualRootUiMounted": false,
+    "actualRootVideoProjectionConsumed": false
+  },
+  "pending": [
+    "Root source registration and same-API/owner injection",
+    "Root actual VideoEngagementPanel drawer/button/long-press and quick default-folder consumer",
+    "Root actual favorite flag/count projection and save event consumption",
+    "Whole product compilation and mounted original sheet/CreateFolderDialog interactions"
+  ]
+}

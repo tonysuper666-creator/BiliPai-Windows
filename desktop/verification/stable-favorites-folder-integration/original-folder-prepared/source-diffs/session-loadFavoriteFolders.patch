@@ -1,0 +1,33 @@
+--- original/loadFavoriteFolders
+
++++ owned-session/loadFavoriteFolders
+
+@@ -1,8 +1,14 @@
+
+     private fun loadFavoriteFolders(aid: Long? = null, keepCurrentSelection: Boolean = false) {
+-        viewModelScope.launch {
++        val request = ++loadRequestId
++        loadJob?.cancel()
++        loadJob = viewModelScope.launch {
++            try {
+             favoriteFoldersBoundAid = aid
+             _isFavoriteFoldersLoading.value = true
+-            val result = interactionUseCase.getFavoriteFolders(aid)
++            val result = environment.getFavoriteFolders(aid)
++            currentCoroutineContext().ensureActive()
++            if (request != loadRequestId) return@launch
++            environment.assertOwned()
+             result.fold(
+                 onSuccess = { folders ->
+                     _favoriteFolders.value = folders
+@@ -40,6 +46,8 @@
+
+                     toast("加载收藏夹失败: ${e.message}")
+                 }
+             )
+-            _isFavoriteFoldersLoading.value = false
++            } finally {
++                if (request == loadRequestId) _isFavoriteFoldersLoading.value = false
++            }
+         }
+     }

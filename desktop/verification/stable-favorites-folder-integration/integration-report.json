@@ -1,0 +1,80 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentities": 741,
+  "resources": 210,
+  "all951SourceAndResourcePinsVerified": true,
+  "wholeClasses17Passed": true,
+  "fullOriginalFavoritesSourcesCompiled": true,
+  "fullOriginalFavoritesRootMounted": false,
+  "originalFolderSheetRootSourceWired": true,
+  "originalFolderSingleMembershipDelta": true,
+  "sameGlobalQuickPreference": true,
+  "originalLongPressEntryPolicy": true,
+  "sameRootCloudRelationAndRawFavoriteCount": true,
+  "sessionEpochAndAidAndCallerScopeGuarded": true,
+  "actualControllerProjectionTests": 2,
+  "originalMusicRouteLifecycleCases": 18,
+  "junitMethods": 3,
+  "junitSuites": [
+    {
+      "suite": "com.bilipai.desktop.audio.DesktopMusicRootIntegrationTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "com.bilipai.desktop.DesktopPlaybackControllerTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "firstTestCompileFailed": "Existing alpha.9 BGM Native route tests no longer compile against original stable Detail routing",
+  "testRepair": "Retain exact original stable Detail ID/CID routing; separate unchanged Listen audio source rules; final 3 methods pass",
+  "manualFavoriteButtonIsWindowsBinding": true,
+  "fullOriginalVideoActionRowAccepted": false,
+  "actualRootFavoriteButtonAccepted": false,
+  "actualRootFolderWindowAccepted": false,
+  "realAccountOperationsAccepted": false,
+  "desktopExeReplaced": false,
+  "fullStableRuntimeAccepted": false,
+  "publicReleaseAccepted": false,
+  "childEvidenceScope": "Memory transport and isolated original VM/store; no socket/real account/native window",
+  "countTestScope": "Actual current controller and unattached Mpv source actor; fixture metadata/transport, no HWND/codec/online account",
+  "productionCliAdaptation": "Only installed drawer __main accepts --repo/--output/--standalone; generate default4selected unchanged",
+  "pending": [
+    "Full Favorites Root retained navigation and video/Listen queue continuation",
+    "Actual original page/category/drawer interactions in integrated Main",
+    "Full Home/music/danmaku/settings/player/space source closure",
+    "Full Root/PiP/DPI/account/runtime and EXE deployment"
+  ],
+  "excludedTaskBinaries": [
+    {
+      "cohort": "original-folder-prepared",
+      "path": "compile-01/original-favorite-folder.jar",
+      "bytes": 97883,
+      "sha256Bytes": "21b300ba3243b3fe4f22163eeb80468ef465c237ff079f6bd4f7cdffe04b8d25"
+    },
+    {
+      "cohort": "original-folder-prepared",
+      "path": "compile-02/original-favorite-folder.jar",
+      "bytes": 98900,
+      "sha256Bytes": "a838b8bc5bfa59e9b7b2eaf1af0d2d13dd75b08c22e95673f5084f8755af335a"
+    },
+    {
+      "cohort": "original-folder-prepared",
+      "path": "proof-01/favorite-folder-fixture.jar",
+      "bytes": 47190,
+      "sha256Bytes": "23945b88fe53784c28054c764e39030c17de578af293d0c9c05912e857e76d09"
+    },
+    {
+      "cohort": "original-folder-prepared",
+      "path": "proof-02/favorite-folder-fixture.jar",
+      "bytes": 47664,
+      "sha256Bytes": "19788fba424a3a09d3648970f51fe66f05099bce12d949fb049f92c0fd100fe5"
+    }
+  ]
+}

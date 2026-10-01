@@ -1,0 +1,19 @@
+{
+  "groupedCases": 5,
+  "assertions": 26,
+  "actualMainIntegration": false,
+  "preparedOnly": true,
+  "sockets": false,
+  "HWND": false,
+  "productOverrides": false,
+  "productSnapshot": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "stdoutSha256": "7d842213340e6e58c80fefbd61fe6a0baff0a75ca68975ffb8c406d748f4e4e2",
+  "codeSources": [
+    "CodeSource com.android.purebilibili.core.network.BilibiliApi: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar",
+    "CodeSource com.android.purebilibili.data.model.response.FavFolder: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar",
+    "CodeSource com.android.purebilibili.feature.list.DesktopFavoriteEnvironment: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/",
+    "CodeSource com.android.purebilibili.feature.list.FavoriteViewModel: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/",
+    "CodeSource com.bilipai.desktop.ui.DesktopFavoritePreferences: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/",
+    "CodeSource com.bilipai.desktop.plugins.DesktopPluginStore: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar"
+  ]
+}

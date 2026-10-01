@@ -1,0 +1,33 @@
+--- original/applyFavoriteSaveUiState
+
++++ owned-session/applyFavoriteSaveUiState
+
+@@ -2,21 +2,10 @@
+
+         originalFolderIds: Set<Long>,
+         selectedFolderIds: Set<Long>
+     ) {
+-        _uiState.update { state ->
+-            if (state is VideoPlaybackUiState.Success) {
+-                val resolvedState = resolveFavoriteSaveUiState(
+-                    originalFolderIds = originalFolderIds,
+-                    selectedFolderIds = selectedFolderIds,
+-                    currentFavoriteCount = state.info.stat.favorite
+-                )
+-                state.copy(
+-                    isFavorited = resolvedState.isFavorited,
+-                    info = state.info.copy(
+-                        stat = state.info.stat.copy(favorite = resolvedState.favoriteCount)
+-                    )
+-                )
+-            } else {
+-                state
+-            }
+-        }
++        val resolvedState = resolveFavoriteSaveUiState(
++            originalFolderIds = originalFolderIds,
++            selectedFolderIds = selectedFolderIds,
++            currentFavoriteCount = environment.currentFavoriteCount()
++        )
++        environment.confirmFavoriteSave(resolvedState.isFavorited, resolvedState.favoriteCount)
+     }

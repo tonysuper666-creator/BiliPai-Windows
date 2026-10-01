@@ -65,24 +65,24 @@ private class RootMusicFixture(initialAccount: Boolean = false, onAcquire: () ->
 internal fun runMusicRootIntegrationCases(): List<String> = runBlocking {
     val passed = mutableListOf<String>()
     suspend fun case(name: String, action: suspend () -> Unit) { action(); passed += name }
-    case("Original BGM jump_url takes precedence over AU and MA") {
-        same(DesktopBgmMusicTarget.Web("https://www.bilibili.com/audio/au501"),
+    case("Stable original BGM music ID opens detail ahead of its jump URL") {
+        same(DesktopBgmMusicTarget.Detail("au501", cid = 99),
             resolveDesktopBgmMusicTarget(BgmInfo("au501", "Song", "https://www.bilibili.com/audio/au501"), "BVx", 99))
     }
-    case("AU SID501 is independent of video CID and preserves source identity") {
-        same(MusicPlaybackSource.AudioSong(501), (resolveDesktopBgmMusicTarget(BgmInfo("au501"), "BVx", 9988) as DesktopBgmMusicTarget.Native).source)
+    case("AU detail ID is independent of video CID and Listen retains its separate source identity") {
+        same(DesktopBgmMusicTarget.Detail("au501", cid = 9988), resolveDesktopBgmMusicTarget(BgmInfo("au501"), "BVx", 9988))
         same(MusicPlaybackSource.AudioSong(501), nativeMusicSourceForListenItem(PlaylistItem("AU501", 999, "Song", "", "")))
         same(null, nativeMusicSourceForListenItem(PlaylistItem("au0", 12, "Invalid", "", "")))
     }
-    case("Original numeric AU and case-sensitive MA rules remain distinct") {
-        same(MusicPlaybackSource.AudioSong(501), (resolveDesktopBgmMusicTarget(BgmInfo("501"), "BVx", 99) as DesktopBgmMusicTarget.Native).source)
-        same(null, resolveDesktopBgmMusicTarget(BgmInfo("AU501"), "BVx", 99))
-        same(null, resolveDesktopBgmMusicTarget(BgmInfo("ma19"), "BVx", 99))
+    case("Stable detail route retains original server music IDs without inventing a playback source") {
+        same(DesktopBgmMusicTarget.Detail("501", cid = 99), resolveDesktopBgmMusicTarget(BgmInfo("501"), "BVx", 99))
+        same(DesktopBgmMusicTarget.Detail("AU501", cid = 99), resolveDesktopBgmMusicTarget(BgmInfo("AU501"), "BVx", 99))
+        same(DesktopBgmMusicTarget.Detail("ma19", cid = 99), resolveDesktopBgmMusicTarget(BgmInfo("ma19"), "BVx", 99))
+        same(null, resolveDesktopBgmMusicTarget(BgmInfo(""), "BVx", 99))
     }
-    case("MA uses the actual selected part with original title fallback") {
-        same(MusicPlaybackSource.VideoAudio("BVx", 9988, "背景音乐"),
-            (resolveDesktopBgmMusicTarget(BgmInfo("MA19"), "BVx", 9988) as DesktopBgmMusicTarget.Native).source)
-        same(null, resolveDesktopBgmMusicTarget(BgmInfo("MA19"), "BVx", 0))
+    case("MA detail retains the selected part and unknown CID does not manufacture Listen playback") {
+        same(DesktopBgmMusicTarget.Detail("MA19", cid = 9988), resolveDesktopBgmMusicTarget(BgmInfo("MA19"), "BVx", 9988))
+        same(DesktopBgmMusicTarget.Detail("MA19", cid = 0), resolveDesktopBgmMusicTarget(BgmInfo("MA19"), "BVx", 0))
         same(null, nativeMusicSourceForListenItem(PlaylistItem("BVx", 0, "Unknown part", "", "")))
     }
     case("Original pure BGM display preserves list precedence") {
@@ -110,7 +110,7 @@ internal fun runMusicRootIntegrationCases(): List<String> = runBlocking {
         val api = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client).addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(BilibiliApi::class.java)
         val reply = api.getPlayerInfo(mapOf("bvid" to "BVx", "cid" to "9988"))
         same(data, reply.data); same(1, requests.size)
-        same(MusicPlaybackSource.VideoAudio("BVx", 9988, "Part BGM"), (resolveDesktopBgmMusicTarget(reply.data!!.bgmInfo!!, "BVx", 9988) as DesktopBgmMusicTarget.Native).source)
+        same(DesktopBgmMusicTarget.Detail("MA19", cid = 9988), resolveDesktopBgmMusicTarget(reply.data!!.bgmInfo!!, "BVx", 9988))
     }
     case("Actual original AU API SID501 synthetic response has no invented credential or endpoint") {
         val json = Json { ignoreUnknownKeys = true }

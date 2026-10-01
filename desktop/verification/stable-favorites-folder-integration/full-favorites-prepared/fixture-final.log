@@ -1,0 +1,7 @@
+Favorites prepared 5 groups / 26 assertions PASS; socket=false; MainIntegration=false
+CodeSource com.android.purebilibili.core.network.BilibiliApi: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar
+CodeSource com.android.purebilibili.data.model.response.FavFolder: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar
+CodeSource com.android.purebilibili.feature.list.DesktopFavoriteEnvironment: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/
+CodeSource com.android.purebilibili.feature.list.FavoriteViewModel: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/
+CodeSource com.bilipai.desktop.ui.DesktopFavoritePreferences: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-favorites-parity/classes-install-final/
+CodeSource com.bilipai.desktop.plugins.DesktopPluginStore: file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-15/main-kotlin.jar

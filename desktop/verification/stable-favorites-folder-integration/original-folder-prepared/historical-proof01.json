@@ -1,0 +1,7 @@
+{
+  "status": "NOT_ACCEPTED_PROCESS_TIMEOUT",
+  "rawResult": "proof-01/scratch/result.json",
+  "rawAssertions": 31,
+  "reason": "All assertions completed, but task-only OkHttp executor was not explicitly shut down and JVM did not exit within 60 seconds; original result retained. Fresh02 adds executor shutdown and tests current candidate with 33 assertions.",
+  "notUsedForRuntimeAcceptance": true
+}

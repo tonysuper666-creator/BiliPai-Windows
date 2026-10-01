@@ -1,0 +1,365 @@
+{
+  "passed": true,
+  "beforeRegistrySha256Bytes": "538460b6a7d8066fce342f25aaeb664435daeb9e6f6a24d5891796fbeb7f496e",
+  "sourceIdentities": 741,
+  "resources": 210,
+  "frozenArtifactsVerified": 190,
+  "payloads": [
+    {
+      "path": "desktop/tools/extract-upstream-favorites.py",
+      "sha256Bytes": "bc040c78d91da0a58c8a38d3eb6f456492f3940c437c61f5d9584a18c980f71c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "cd1317bb66f4206f4b8a7c1af505f7208c9559a64402ec7e606f46c19eaed6d5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteBindings.kt",
+      "sha256Bytes": "b8e5dc2b7d00f705ce6c8b00a62952130f74b9149760f218b00dbcef4b299add"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritePreferences.kt",
+      "sha256Bytes": "e6a3962552708154347a2ffc748194b9d5b7e63a7a9174561fe7840e3d9888e3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "d8d99ea930f5fb2a7ba47cee427184f30532b1762fbffa34a70d37964bbc39bf"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-favorite-folder-sheet.py",
+      "sha256Bytes": "7825aa0b096b1d272bf6b563667e4c28d1de55418e1619567b8eb48628486c72"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "sha256Bytes": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    }
+  ],
+  "registryOperations": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt",
+      "operation": "merge",
+      "preservedMode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/PersonalFavoriteRepository.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LikedVideosRepository.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModel.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryScreen.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListAppearancePolicy.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListBackToTopPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListHeaderLayoutPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListMotionSpec.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListPaginationPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListSearchPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListVideoNavigationPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteFolderCardList.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCard.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoritePersonalCardSkeleton.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterTabChromePolicy.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryPaginationPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryPersonalCard.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchActiveBar.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/personal/PersonalMediaCard.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/personal/PersonalListLayoutPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/personal/PersonalCardVideoTransition.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleSharedTransitionPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/VideoListLayoutControl.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareSearchField.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/adaptive/DeviceUiProfileAdapter.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BottomBarScrollHidePolicy.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ScrollToTopPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt",
+      "operation": "merge",
+      "preservedMode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/CompositionLocals.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BackToTopPreference.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/animation/ParticleDissolveEffect.kt",
+      "operation": "merge",
+      "preservedMode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ModifierExt.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "operation": "merge",
+      "preservedMode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/FloatingChromeBackdrop.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppTopLevelNavigationPolicy.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/FavoriteFolderSheet.kt",
+      "operation": "append",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/FavoriteSaveUiPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoFavoriteActionPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/FavoriteFolderIdPolicy.kt",
+      "operation": "append",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "operation": "merge",
+      "preservedMode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "operation": "merge",
+      "preservedMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/FavoriteInteractionSettingsStore.kt",
+      "operation": "merge",
+      "preservedMode": "selected"
+    }
+  ],
+  "generatedReferenceCopied": false,
+  "allExistingModesPreserved": true
+}
