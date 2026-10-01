@@ -1224,7 +1224,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     else -> DiscoverySection.WEEKLY
                                 }, discovery, repository, pluginStore, ::openVideo, ::openUser, { loginDialog = true },
                                     onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime,
-                                    onRestart = onRestart, isClosing = isClosing)
+                                    onRestart = onRestart, isClosing = isClosing,
+                                    onWeeklyBack = { navigate(DesktopSection.POPULAR) })
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia)

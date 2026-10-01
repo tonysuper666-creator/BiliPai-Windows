@@ -1,0 +1,14 @@
+{
+  "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt": {
+    "baseLfSha256": "1bcfacea11859762befe41cb3a98e02e67d8e5d1349e11d1f4b9025da0f41543",
+    "desiredLfSha256": "5e67b909a6a29178205fd76bf874a5f492bf07c0c193691b11049d64574a0d40"
+  },
+  "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt": {
+    "baseLfSha256": "21c77135cb2ee223a33efb672535ef48e336ab8694daf57a20591c5a247c279a",
+    "desiredLfSha256": "1fb521739e0380b5193e4b56a805c2828573822f6bf1e2ed11a72fd2940a0720"
+  },
+  "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt": {
+    "baseLfSha256": "e5eaab753d9d7c12759bff0aac93642a005ec75352a68d585a7cab4e6a9d1523",
+    "desiredLfSha256": "76c767c6909f5fd437a050a63c22e5b5611580b34695a8d04448b05593ac81b0"
+  }
+}

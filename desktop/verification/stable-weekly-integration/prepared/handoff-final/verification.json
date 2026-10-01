@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "preservedHistoricalManifest": {
+    "path": "frozen-handoff.json",
+    "sha256Bytes": "55309b578aacba29c219e162da7e71a3323a0dd6bac130d3a82e763a2c4ba7df",
+    "artifacts": 36
+  },
+  "correctedMetadataOnly": true,
+  "sourceOrFixtureChanges": false,
+  "sourceRegenerationOrRuntimeRerun": false,
+  "patchesApplyCheck": {
+    "candidate": "BiliPai-v023",
+    "repository": true,
+    "discoveryConsumer": true,
+    "rootRouting": true
+  },
+  "installPlan": "handoff-final/install-plan.json",
+  "sourceInventoryDelta": "handoff-final/source-inventory-delta.json"
+}

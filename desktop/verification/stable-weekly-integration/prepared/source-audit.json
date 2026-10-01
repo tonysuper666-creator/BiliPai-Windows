@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "checks": [
+    "stable LF source identity: app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt",
+    "stable LF source identity: app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt",
+    "stable LF source identity: app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+    "sole producer reproducible bytes: generated\\com\\android\\purebilibili\\data\\repository\\DesktopWeeklySeriesProtocol.kt",
+    "sole producer reproducible bytes: generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesScreen.kt",
+    "sole producer reproducible bytes: generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesViewModel.kt",
+    "complete original WeeklySeriesContent body is unchanged, including real grid and actual period dialog",
+    "original state schema and resolver body unchanged",
+    "single WEEKLY loader returns before legacy effects, current raw queue uses sole existing original conversion",
+    "only Weekly Screen/ViewModel add identities; existing VideoRepository identity feature merges"
+  ],
+  "pins": {
+    "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt": "9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca",
+    "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt": "0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df",
+    "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496"
+  },
+  "generatedFiles": [
+    {
+      "path": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopWeeklySeriesProtocol.kt",
+      "sha256Bytes": "c0b7839eb90e384f6618a7f668e89c8640269704e2c6f8990a60b142d0cd51e5"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesScreen.kt",
+      "sha256Bytes": "53d0027a5c5e5dac6266686b629523b1b3ae06bca6bb0f96bdef58adfb2b9332"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesViewModel.kt",
+      "sha256Bytes": "5eea8c73f9304c1f0f9c08c5325aba60fe8a58d5eefd56a28c9462d47b4baafd"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "copyPayload": [
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/android/purebilibili/feature/home/DesktopWeeklySeriesPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/DesktopWeeklySeriesPlatform.kt",
+      "sha256Bytes": "64dbb839ca212cd09a74983317b51f6860ee26a4f5d2047bd9672970e9589212"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt",
+      "sha256Bytes": "78d2f99528040628904ff8359faec6af0652983a07868bfdfe7703e4ddf8e782"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-stable-weekly-series.py",
+      "target": "desktop/tools/extract-stable-weekly-series.py",
+      "sha256Bytes": "1ab1a6bae4e54bc046556922df35007db33136d81445950ff55ce1de63d7eff4"
+    }
+  ],
+  "patches": [
+    {
+      "path": "patches/discovery-consumer.patch",
+      "sha256Bytes": "9ac89486d9ba83915fc51d75d47240a197f31bdc5e21b3a09dbfbd1368bc55ea"
+    },
+    {
+      "path": "patches/repository.patch",
+      "sha256Bytes": "51bb0330ca6c5598bb758e84690cf2732b6cab7461fdb8ea67daa2f5fd727651"
+    },
+    {
+      "path": "patches/root-routing.patch",
+      "sha256Bytes": "7b3ba32c190682c287d311ce95ceb5cd1fa7b722f0db9d384bc7b07933d4cf79"
+    }
+  ],
+  "generatedOutputs": [
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopWeeklySeriesProtocol.kt",
+      "sha256Bytes": "c0b7839eb90e384f6618a7f668e89c8640269704e2c6f8990a60b142d0cd51e5"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/DesktopOriginalWeeklySeriesScreen.kt",
+      "sha256Bytes": "53d0027a5c5e5dac6266686b629523b1b3ae06bca6bb0f96bdef58adfb2b9332"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/DesktopOriginalWeeklySeriesViewModel.kt",
+      "sha256Bytes": "5eea8c73f9304c1f0f9c08c5325aba60fe8a58d5eefd56a28c9462d47b4baafd"
+    }
+  ],
+  "registryDelta": "handoff-final/source-inventory-delta.json",
+  "wholeRegistryReplacement": false,
+  "compiledBinariesArePayload": false,
+  "fragment": {
+    "path": "prepared/fragments/DesktopDiscoveryWeeklyMembers.fragment",
+    "sha256Bytes": "9aa953dc441de58ffe9339c00abf0051ac333f3bbfb358c4c0c0b22af6835c31"
+  },
+  "previousPlanMetadataCorrection": "Windows path separators were not removed by removeprefix; copy target now starts desktop/."
+}

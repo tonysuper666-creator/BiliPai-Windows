@@ -1,0 +1,230 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared/candidate-baselines.json",
+      "sha256Bytes": "3fedff15792d6eab14d5bcf215df8fe3088d07011719a65f2d81ca3acde3696e",
+      "sizeBytes": 778
+    },
+    {
+      "path": "prepared/compile-01-evidence.json",
+      "sha256Bytes": "0863df0f78b87c19da94888e93a1848e08136dfab7a596c7191b3be6137d6e41",
+      "sizeBytes": 6202
+    },
+    {
+      "path": "prepared/compile-01.args",
+      "sha256Bytes": "2f63fd445590524ebcf6f01294122a4de24112b3313545a7d52fe31f697fbc85",
+      "sizeBytes": 24849
+    },
+    {
+      "path": "prepared/compile-01.log",
+      "sha256Bytes": "cee46eabec3a7e9c8bedec11aeccd310a239044ff59718b1a66d2d106b3270b8",
+      "sizeBytes": 345
+    },
+    {
+      "path": "prepared/correct-metadata.py",
+      "sha256Bytes": "c5a4f6dc8236f2764124fffb3f59c4a7768f292fb675a679d3e65428dc826f91",
+      "sizeBytes": 3090
+    },
+    {
+      "path": "prepared/fixture/WeeklyFixture.kt",
+      "sha256Bytes": "e27001795f13de0b6e33c3502b6a4683f174165ad34f3d5209eaa53780ecd0f2",
+      "sizeBytes": 14819
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sha256Bytes": "b3b19a2bb4a8246994d218b374162acad87c3c123fc7a20ee6483a72253bf2a3",
+      "sizeBytes": 10103
+    },
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "55309b578aacba29c219e162da7e71a3323a0dd6bac130d3a82e763a2c4ba7df",
+      "sizeBytes": 7083
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/data/repository/DesktopWeeklySeriesProtocol.kt",
+      "sha256Bytes": "c0b7839eb90e384f6618a7f668e89c8640269704e2c6f8990a60b142d0cd51e5",
+      "sizeBytes": 1936
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalWeeklySeriesScreen.kt",
+      "sha256Bytes": "53d0027a5c5e5dac6266686b629523b1b3ae06bca6bb0f96bdef58adfb2b9332",
+      "sizeBytes": 6886
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalWeeklySeriesViewModel.kt",
+      "sha256Bytes": "5eea8c73f9304c1f0f9c08c5325aba60fe8a58d5eefd56a28c9462d47b4baafd",
+      "sizeBytes": 4738
+    },
+    {
+      "path": "prepared/handoff-final/install-plan.json",
+      "sha256Bytes": "dea8f80fd5a62f3496a7c4b4c300162950295f825506178738f72562a1265a16",
+      "sizeBytes": 2408
+    },
+    {
+      "path": "prepared/handoff-final/source-inventory-delta.json",
+      "sha256Bytes": "e2cc8806ba81fce323f7bef7a985b62adf34bcba6559c23a37dcbad4244975c0",
+      "sizeBytes": 1980
+    },
+    {
+      "path": "prepared/handoff-final/verification.json",
+      "sha256Bytes": "855278dbfa8527e68859235bf36100ffe7f74b43ae674ca434b193cd0e8cdab5",
+      "sizeBytes": 580
+    },
+    {
+      "path": "prepared/install-plan.json",
+      "sha256Bytes": "2104caa28324e3d9c230198d0426af3ee141af4a55d4ccae705ef95b89b09637",
+      "sizeBytes": 2353
+    },
+    {
+      "path": "prepared/original/VideoRepository.kt",
+      "sha256Bytes": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "sizeBytes": 103425
+    },
+    {
+      "path": "prepared/original/WeeklySeriesScreen.kt",
+      "sha256Bytes": "9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca",
+      "sizeBytes": 6828
+    },
+    {
+      "path": "prepared/original/WeeklySeriesViewModel.kt",
+      "sha256Bytes": "0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df",
+      "sizeBytes": 3596
+    },
+    {
+      "path": "prepared/patches/discovery-consumer.patch",
+      "sha256Bytes": "9ac89486d9ba83915fc51d75d47240a197f31bdc5e21b3a09dbfbd1368bc55ea",
+      "sizeBytes": 3017
+    },
+    {
+      "path": "prepared/patches/repository.patch",
+      "sha256Bytes": "51bb0330ca6c5598bb758e84690cf2732b6cab7461fdb8ea67daa2f5fd727651",
+      "sizeBytes": 1748
+    },
+    {
+      "path": "prepared/patches/root-routing.patch",
+      "sha256Bytes": "7b3ba32c190682c287d311ce95ceb5cd1fa7b722f0db9d384bc7b07933d4cf79",
+      "sizeBytes": 1406
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sha256Bytes": "6abb37b29e17ce3761618196227072655c9a0fca398b6b82b8d53e1b44fbf1ef",
+      "sizeBytes": 14688
+    },
+    {
+      "path": "prepared/prepared/desktop/src/main/kotlin/com/android/purebilibili/feature/home/DesktopWeeklySeriesPlatform.kt",
+      "sha256Bytes": "64dbb839ca212cd09a74983317b51f6860ee26a4f5d2047bd9672970e9589212",
+      "sizeBytes": 907
+    },
+    {
+      "path": "prepared/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt",
+      "sha256Bytes": "78d2f99528040628904ff8359faec6af0652983a07868bfdfe7703e4ddf8e782",
+      "sizeBytes": 2163
+    },
+    {
+      "path": "prepared/prepared/desktop/tools/extract-stable-weekly-series.py",
+      "sha256Bytes": "1ab1a6bae4e54bc046556922df35007db33136d81445950ff55ce1de63d7eff4",
+      "sizeBytes": 5658
+    },
+    {
+      "path": "prepared/prepared/fragments/DesktopDiscoveryWeeklyMembers.fragment",
+      "sha256Bytes": "9aa953dc441de58ffe9339c00abf0051ac333f3bbfb358c4c0c0b22af6835c31",
+      "sizeBytes": 1209
+    },
+    {
+      "path": "prepared/references/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "5e67b909a6a29178205fd76bf874a5f492bf07c0c193691b11049d64574a0d40",
+      "sizeBytes": 15470
+    },
+    {
+      "path": "prepared/references/DiscoveryScreens.kt",
+      "sha256Bytes": "1fb521739e0380b5193e4b56a805c2828573822f6bf1e2ed11a72fd2940a0720",
+      "sizeBytes": 33879
+    },
+    {
+      "path": "prepared/ROOT-INTEGRATION.md",
+      "sha256Bytes": "bab991ec047d12a5eea55c35cb4b48fefed78a2f5baeb857aa3ae1ebb3be86ff",
+      "sizeBytes": 4161
+    },
+    {
+      "path": "prepared/run-proof.py",
+      "sha256Bytes": "d561f584b100a43c79947e09d4e6e94bc61947c7ab3cfb4c62bf41819c2d5b15",
+      "sizeBytes": 3693
+    },
+    {
+      "path": "prepared/runtime-01-evidence.json",
+      "sha256Bytes": "98ee65d1d66de309421e84d2e9ee78cb67fe0905eb49beb91058da760b5d618d",
+      "sizeBytes": 35706
+    },
+    {
+      "path": "prepared/runtime-01-output/material3-original-history.png",
+      "sha256Bytes": "68ca3e513c4c78287a2f1a8306eca2acd1b78de307d0e648ad7cd45310998a05",
+      "sizeBytes": 16199
+    },
+    {
+      "path": "prepared/runtime-01-output/material3-original-periods.png",
+      "sha256Bytes": "1410470ecc9b505060cc945590f2290339c8b132594009589eb30185ad54c1ab",
+      "sizeBytes": 22478
+    },
+    {
+      "path": "prepared/runtime-01-output/miuix-original-history.png",
+      "sha256Bytes": "569f2d2efdc44b45e4d39b519c54664ec8fa2d3e163a36a870e30d8587f68394",
+      "sizeBytes": 15098
+    },
+    {
+      "path": "prepared/runtime-01-output/miuix-original-periods.png",
+      "sha256Bytes": "0ce41a7656a8da8d6e7723f3782fe4f2ed7876aae3298d4b45a6145eb4abeafe",
+      "sizeBytes": 19627
+    },
+    {
+      "path": "prepared/runtime-01-output/proof.json",
+      "sha256Bytes": "0ad75d805d41a4351a465b149b5ec4a9485a8acb0ea504254c100e0bca4880f2",
+      "sizeBytes": 3414
+    },
+    {
+      "path": "prepared/runtime-01.args",
+      "sha256Bytes": "c4dbd1661e2b9e5474738360cc44c2bd69c1070fdcdb10dc0f1841f149c012b7",
+      "sizeBytes": 22962
+    },
+    {
+      "path": "prepared/runtime-01.log",
+      "sha256Bytes": "8b75b956b7c6d2c9746ea5d75a3d62287b8301ec62d939535d3b4713affc637b",
+      "sizeBytes": 3415
+    },
+    {
+      "path": "prepared/source-audit.json",
+      "sha256Bytes": "742d1d52830dc7efe7c2d56b20e45146c6237523538c179e65e30fb912df451f",
+      "sizeBytes": 2287
+    },
+    {
+      "path": "prepared/source-inventory-delta.json",
+      "sha256Bytes": "f390fd890db96b2da66f41dd5aada9d6cea0d1609d6c9dfb52011f28c9b3d6b8",
+      "sizeBytes": 1854
+    },
+    {
+      "path": "prepared/source-pins.json",
+      "sha256Bytes": "b836365a5586f05791e8c487feed6ad8600fb5017f0e6f382cccb0d7cf72365b",
+      "sizeBytes": 458
+    },
+    {
+      "path": "prepared/handoff-final/frozen-handoff.json",
+      "sha256Bytes": "dd9602e20ee06c4d25fa012d76344d5df66bd4b3a8be08b358430efc5f96f94e",
+      "sizeBytes": 7670
+    },
+    {
+      "path": "root/install-weekly.py",
+      "sha256Bytes": "e7a94924d168958d5570b688a43490d81d125c0e2522ccf9b9322ce7e57ef0ad",
+      "sizeBytes": 1828
+    },
+    {
+      "path": "root/classes-12.log",
+      "sha256Bytes": "ca59ef3531c73df008890af69f933e61766fb04a7ade57bd83d0be65ad09b7aa",
+      "sizeBytes": 10321
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "36f28a27a36cce3e6e6cd9deb22f38a34e9951baf43ce936c888347c3cdec4bc",
+      "sizeBytes": 891
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "classesPassed": true,
+  "classesLog": "root/classes-12.log",
+  "sourceCount": 633,
+  "resourceCount": 210,
+  "sourceIntegrated": [
+    "Full original WeeklySeriesContent and historical-period dialog",
+    "Original ViewModel state and exact API methods",
+    "Single dedicated WEEKLY branch before legacy feed effects",
+    "Root return callback and existing queue conversion"
+  ],
+  "targetedPreparedValidation": "5 protocol, 9 state/owner, 10 dual-theme UI checks; 8 actual offscreen pointer pairs",
+  "noNewStoreClientOrDependencies": true,
+  "applicationRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "pending": [
+    "Actual full Root/native window runtime",
+    "Honor deep-link historical number dispatch",
+    "Real service/user testing",
+    "EXE packaging/deployment"
+  ]
+}

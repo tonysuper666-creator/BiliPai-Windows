@@ -639,6 +639,18 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-protocol"))
 }
 
+val extractStableWeeklySeries by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-weekly-series.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/weekly-series").get().asFile.absolutePath)
+    inputs.files("tools/extract-stable-weekly-series.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
+    inputs.files(listOf("feature/home/WeeklySeriesScreen.kt", "feature/home/WeeklySeriesViewModel.kt", "data/repository/VideoRepository.kt")
+        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+    outputs.dir(layout.buildDirectory.dir("generated/weekly-series"))
+}
+tasks.named("compileKotlin") { dependsOn(extractStableWeeklySeries) }
+
 val extractStableVideoVotes by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -963,6 +975,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-detail-protocol/generated"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/video-votes"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/weekly-series"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }

@@ -1,0 +1,95 @@
+{
+  "passed": true,
+  "preparedOnly": true,
+  "candidateAcceptance": false,
+  "classpathSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "candidateJarSha256Bytes": "4648322c43f9cefae0032d86dcb9dbe1bed7ffff629ecbccefce158d650bae79",
+  "productClassOverrides": [
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$clearFeedback$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$mutationApi$$inlined$-addInterceptor$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$notInterested$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$WhenMappings.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$result$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2$result$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$page$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$ranking$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$syncCreator$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$unblockCreator$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$videoShots$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$weeklyPeriods$2$invokeSuspend$$inlined$sortedByDescending$1.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository$weeklyPeriods$2.class",
+    "com/bilipai/desktop/data/DesktopDiscoveryRepository.class",
+    "com/bilipai/desktop/ui/ComposableSingletons$DiscoveryScreensKt.class",
+    "com/bilipai/desktop/ui/DiscoveryScreenState.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$1$1$2$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$1$6$1$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$1$1$7$3$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$2$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$2.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$3$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$3$2$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$3$3$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$3$1$3.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$4$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$2$1$5$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$3$2$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$6$1$1$1$3$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$fetch$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$41$0$$inlined$itemsIndexed$default$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$41$0$$inlined$itemsIndexed$default$2.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$41$0$$inlined$itemsIndexed$default$3.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$lambda$41$0$$inlined$itemsIndexed$default$4.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryFeed$onlineStore$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$2.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$1$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$4$1$1$3$1$5$1$2.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$2.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$3.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryUgcCollectionPanel$lambda$8$0$0$$inlined$items$default$4.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$2$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt$DiscoveryVideoPreviewDialog$3$1.class",
+    "com/bilipai/desktop/ui/DiscoveryScreensKt.class"
+  ],
+  "sources": [
+    {
+      "path": "generated\\com\\android\\purebilibili\\data\\repository\\DesktopWeeklySeriesProtocol.kt",
+      "sha256Bytes": "c0b7839eb90e384f6618a7f668e89c8640269704e2c6f8990a60b142d0cd51e5"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesScreen.kt",
+      "sha256Bytes": "53d0027a5c5e5dac6266686b629523b1b3ae06bca6bb0f96bdef58adfb2b9332"
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalWeeklySeriesViewModel.kt",
+      "sha256Bytes": "5eea8c73f9304c1f0f9c08c5325aba60fe8a58d5eefd56a28c9462d47b4baafd"
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\android\\purebilibili\\feature\\home\\DesktopWeeklySeriesPlatform.kt",
+      "sha256Bytes": "64dbb839ca212cd09a74983317b51f6860ee26a4f5d2047bd9672970e9589212"
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopWeeklySeriesScreen.kt",
+      "sha256Bytes": "78d2f99528040628904ff8359faec6af0652983a07868bfdfe7703e4ddf8e782"
+    },
+    {
+      "path": "references\\DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "5e67b909a6a29178205fd76bf874a5f492bf07c0c193691b11049d64574a0d40"
+    },
+    {
+      "path": "references\\DiscoveryScreens.kt",
+      "sha256Bytes": "1fb521739e0380b5193e4b56a805c2828573822f6bf1e2ed11a72fd2940a0720"
+    },
+    {
+      "path": "fixture\\WeeklyFixture.kt",
+      "sha256Bytes": "e27001795f13de0b6e33c3502b6a4683f174165ad34f3d5209eaa53780ecd0f2"
+    }
+  ],
+  "sourcesArePreparedOverlay": true,
+  "existingLeavesAndModelsFromActualClasses11": true,
+  "sharedGradle": false,
+  "HWND": false
+}

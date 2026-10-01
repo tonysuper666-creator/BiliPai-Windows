@@ -91,7 +91,11 @@
       "id": "weekly-series",
       "behavior": "每周必看和热门系列的原生导航及历史期数选择",
       "source": "feature/home/WeeklySeriesScreen.kt",
-      "status": "pending"
+      "status": "adapting",
+      "sourceIntegrated": true,
+      "candidateClassesPassed": true,
+      "completeRuntimeAccepted": false,
+      "evidence": "verification/stable-weekly-integration/integration-report.json"
     },
     {
       "id": "space-banner-gallery",
@@ -158,10 +162,11 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 631,
+    "candidateSourceIdentityCount": 633,
     "candidateResourceCount": 210,
     "actualClassesEvidence": "verification/stable-player-download-integration/root/gradle-candidate-11.log",
-    "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json"
+    "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
+    "latestCandidateClassesLog": "verification/stable-weekly-integration/root/classes-12.log"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {

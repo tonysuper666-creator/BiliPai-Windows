@@ -1575,7 +1575,9 @@
       "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
       "sha256": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
       "features": [
-        "discovery"
+        "discovery",
+        "stable-weekly-series-parity",
+        "weekly"
       ],
       "mode": "policy-extract"
     },
@@ -5291,6 +5293,26 @@
         "stable-video-vote-parity",
         "playback",
         "comments"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt",
+      "sha256": "9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca",
+      "mode": "extracted",
+      "features": [
+        "stable-weekly-series-parity",
+        "discovery",
+        "weekly"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt",
+      "sha256": "0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df",
+      "mode": "extracted",
+      "features": [
+        "stable-weekly-series-parity",
+        "discovery",
+        "weekly"
       ]
     }
   ],

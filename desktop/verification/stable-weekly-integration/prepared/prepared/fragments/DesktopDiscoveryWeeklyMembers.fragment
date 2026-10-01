@@ -1,0 +1,19 @@
+
+    // STABLE_WEEKLY_SERIES_MEMBERS: sole original Result protocol / shared API.
+    private val weeklySeriesRequestsDelegate by lazy {
+        object : com.android.purebilibili.feature.home.DesktopWeeklySeriesRequests {
+            private val original = com.android.purebilibili.data.repository.DesktopWeeklySeriesProtocol(api)
+            override suspend fun getWeeklyPeriods(): Result<List<PopularSeriesPeriod>> = withContext(Dispatchers.IO) {
+                try { repository.ensureSession(); original.getWeeklyPeriods() }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (failure: Exception) { Result.failure(failure) }
+            }
+            override suspend fun getWeeklyPeriod(number: Int): Result<PopularSeriesOneData> = withContext(Dispatchers.IO) {
+                try { repository.ensureSession(); original.getWeeklyPeriod(number) }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (failure: Exception) { Result.failure(failure) }
+            }
+        }
+    }
+    fun weeklySeriesRequests(): com.android.purebilibili.feature.home.DesktopWeeklySeriesRequests = weeklySeriesRequestsDelegate
+
