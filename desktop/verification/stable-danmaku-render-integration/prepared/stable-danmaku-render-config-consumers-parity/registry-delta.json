@@ -1,0 +1,81 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newCount": 3,
+  "new": [
+    {
+      "action": "ADD",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/FaceOcclusionPolicy.kt",
+        "sha256": "cb448bd78a562e36cba767d122f372f3b891c365893d5cb628195e2e0c4489a4",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    },
+    {
+      "action": "ADD",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt",
+        "sha256": "7a885958bb3335c7aaf008c0f92660d63bf38bb71317ad228112272c9e5b0e47",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    },
+    {
+      "action": "ADD",
+      "row": {
+        "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt",
+        "sha256": "c3c29bee7a68a611aaac9fd3a14886f68fea52dc17f122517038f546c845d57c",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    }
+  ],
+  "merge": [
+    {
+      "action": "MERGE_EXISTING",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+        "sha256": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    },
+    {
+      "action": "MERGE_EXISTING",
+      "row": {
+        "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+        "sha256": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    },
+    {
+      "action": "MERGE_EXISTING",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+        "sha256": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+        "features": [
+          "stable-danmaku-list-menu"
+        ],
+        "mode": "selected"
+      },
+      "sourceSelection": "See generated inventory; full original retained; never emit unsupported Android renderer/class"
+    }
+  ],
+  "addNoDuplicateDirectViewportOrWeightedModel": true
+}

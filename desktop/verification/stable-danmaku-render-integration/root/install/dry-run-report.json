@@ -1,0 +1,507 @@
+{
+  "applied": false,
+  "wholeOverwritesOnlyTwoExplicitPayloads": true,
+  "localHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "group": "advanced",
+      "reason": "Reuse original layer mapping before type filtering",
+      "beforeLF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+      "afterLF": "b0e38f8ca2a6bb3d1eb64f0894dd8249e1d94135deb3c9cbaf07ca89c3417635"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "group": "advanced",
+      "reason": "Original four advanced fields/defaults",
+      "beforeLF": "b0e38f8ca2a6bb3d1eb64f0894dd8249e1d94135deb3c9cbaf07ca89c3417635",
+      "afterLF": "bb9c0e787d66fb17a078cdcc980570885d777f46e242f7bccf7f1c0691bb00f8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "group": "advanced",
+      "reason": "Original Manager weight setter range",
+      "beforeLF": "bb9c0e787d66fb17a078cdcc980570885d777f46e242f7bccf7f1c0691bb00f8",
+      "afterLF": "44accac89862f852336abe7ccf4d78114f47caadfa92d741b040d03afebced23"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "group": "advanced",
+      "reason": "Original converted type and exact !isSelf/weight filter; XML original false, never MID/hash guess",
+      "beforeLF": "44accac89862f852336abe7ccf4d78114f47caadfa92d741b040d03afebced23",
+      "afterLF": "34e71594727c9256819c2e9e95719568829001bd6738b94d429c6a51690f93c0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "group": "advanced",
+      "reason": "Live uses full original pre-layer/type/rules admission; original live has no video weight predicate",
+      "beforeLF": "34e71594727c9256819c2e9e95719568829001bd6738b94d429c6a51690f93c0",
+      "afterLF": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "group": "advanced",
+      "reason": "Same full original global preferences projected into sole renderer settings",
+      "beforeLF": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "afterLF": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Original neutral config and sole layer/engine budget policies",
+      "beforeLF": "9b24efcbf906d763c38a6cb1aa76a0e27ba940360fd68a8400ddcd558df073f9",
+      "afterLF": "70e433d459678543874bfac8aceb3d183dacbeaab057aaf3cac7d136c951bbd2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Actual font width/ascent required at frame admission",
+      "beforeLF": "70e433d459678543874bfac8aceb3d183dacbeaab057aaf3cac7d136c951bbd2",
+      "afterLF": "b4d751dc85b374a05b1534bb94de8cf662b53e5b16fbd84d79d38793ec6b4171"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Remove production legacy timing/default settings; every caller supplies its actual projection",
+      "beforeLF": "b4d751dc85b374a05b1534bb94de8cf662b53e5b16fbd84d79d38793ec6b4171",
+      "afterLF": "94d07eeadfdb2101b97e72814c9801d5bb7cca9000693a6d5a376ca5817a1c76"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Required original video/live admission semantics; no guessed live self/weight behavior",
+      "beforeLF": "94d07eeadfdb2101b97e72814c9801d5bb7cca9000693a6d5a376ca5817a1c76",
+      "afterLF": "94b9fad41961664a7a40d6e77ae4374c712dc0ce858c67b8f753174e2c831189"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Live preserves original pre-layer admission with no video-only weight filter",
+      "beforeLF": "94b9fad41961664a7a40d6e77ae4374c712dc0ce858c67b8f753174e2c831189",
+      "afterLF": "7f77c2584522be255d99143725ddd08cea4e8a6560e06c9e8e69c67a719b755d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Actual layer/physical track and baseline",
+      "beforeLF": "7f77c2584522be255d99143725ddd08cea4e8a6560e06c9e8e69c67a719b755d",
+      "afterLF": "f2676515bb26afb1477b7f69b1400eb77b2ec1229049829878f01b195380d9a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Config changes remeasure and rebuild visible window",
+      "beforeLF": "f2676515bb26afb1477b7f69b1400eb77b2ec1229049829878f01b195380d9a2",
+      "afterLF": "f69a701e70281ec5ce65b3e984a57044fbd6380e634c596c114f92ce76a6121d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Required full original resolved durations/line budget/bands and real font metrics, keeping Windows collision algorithm explicit",
+      "beforeLF": "f69a701e70281ec5ce65b3e984a57044fbd6380e634c596c114f92ce76a6121d",
+      "afterLF": "158c1508113ab481b55ccf14931e72a35781a400dafc80e684b93950bb24890f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "group": "advanced",
+      "reason": "Remove unused legacy Windows timing/spacing constants",
+      "beforeLF": "158c1508113ab481b55ccf14931e72a35781a400dafc80e684b93950bb24890f",
+      "afterLF": "04132a2cb924ea0837f08b6758791c4b4a652be0393a712620cc1646dc57b83b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Neutral config input for same actual Live settings",
+      "beforeLF": "e5a52a11812a4fd0715d37ef4451fe3503d3b790c1c4725182dccfb530478d61",
+      "afterLF": "5d4c8b0afae8dd22439638264d9b6c9ad212f0e915cce86d8a874200d9b4ebf9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Empty unmounted scheduler explicit original defaults, replaced with actual settings before paint",
+      "beforeLF": "5d4c8b0afae8dd22439638264d9b6c9ad212f0e915cce86d8a874200d9b4ebf9",
+      "afterLF": "d2c264eb50904a8225769338f2c47a26822d4d54cab2a3365b3db891ebc9179a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Empty reset only; actual Live settings arrive before any paint",
+      "beforeLF": "d2c264eb50904a8225769338f2c47a26822d4d54cab2a3365b3db891ebc9179a",
+      "afterLF": "3d31defa8775d55a30ce9a840376fe69bf11abb5961c82cd5b8add0d1563d2b2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Actual live original admission semantics before render layer conversion",
+      "beforeLF": "3d31defa8775d55a30ce9a840376fe69bf11abb5961c82cd5b8add0d1563d2b2",
+      "afterLF": "3695832a32338a66e898b34918b10109a601203d97d497d2483a87cbdde17bf9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Required original Live config on actual physical-pixel band; SC retains full existing height",
+      "beforeLF": "3695832a32338a66e898b34918b10109a601203d97d497d2483a87cbdde17bf9",
+      "afterLF": "5e94acb98fbd3f758dfebcef9543affd910f877d3ec6692a6f9f88bac6289c0b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Original resolved line height, not independent live duration or guessed row budget",
+      "beforeLF": "5e94acb98fbd3f758dfebcef9543affd910f877d3ec6692a6f9f88bac6289c0b",
+      "afterLF": "879003553a9f84804651ce6d5bf80dc0a880465445b293b9d349a8428168ba00"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Actual required Root font/weight and original item size grade",
+      "beforeLF": "879003553a9f84804651ce6d5bf80dc0a880465445b293b9d349a8428168ba00",
+      "afterLF": "431beda8ea6e5ee082741d98d164d0145b135c6d83be299af2edfe4f2a9af87e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Scheduler receives original neutral timing and actual live image/font extents",
+      "beforeLF": "431beda8ea6e5ee082741d98d164d0145b135c6d83be299af2edfe4f2a9af87e",
+      "afterLF": "9474ba3a3b8983487079cfb6fe48018caf02a7abe93e208b520c9f17f244d0ec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Baseline derived from real image extent, no former hardcoded ascent adjustment",
+      "beforeLF": "9474ba3a3b8983487079cfb6fe48018caf02a7abe93e208b520c9f17f244d0ec",
+      "afterLF": "5498e219e298797bfdd6bc165de5e7c3ff906cccda021c7316ee7366aedae3e2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Actual resolved original stroke width",
+      "beforeLF": "5498e219e298797bfdd6bc165de5e7c3ff906cccda021c7316ee7366aedae3e2",
+      "afterLF": "fe5d5fcf72ace3d588fd08fe98e67659811096fcd012ea8d9663c9b8bd918518"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "SC original admission uses allowSpecial/rules, not a video-only weight filter or static standard type flag",
+      "beforeLF": "fe5d5fcf72ace3d588fd08fe98e67659811096fcd012ea8d9663c9b8bd918518",
+      "afterLF": "7a5202dd8afa6abd4b94986e840c7c7d1e1cec1bb2bcd1022bc1d8d85d75927f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "group": "advanced",
+      "reason": "Same actual platform font for existing SC renderer; original SC expiry/countdown untouched",
+      "beforeLF": "7a5202dd8afa6abd4b94986e840c7c7d1e1cec1bb2bcd1022bc1d8d85d75927f",
+      "afterLF": "0745671dd4e8d5643dca02a01e42816c101a3e119ce2cf04691880aa7ad07bae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Original complete neutral config",
+      "beforeLF": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "afterLF": "3f5594fe4077214079b3fb2955de66493d33bf0fbae56f47748f2fc04c064e14"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Required internal platform seam without exposing internal type as public API",
+      "beforeLF": "3f5594fe4077214079b3fb2955de66493d33bf0fbae56f47748f2fc04c064e14",
+      "afterLF": "d08e3b238469536f228402729c79c3b20352f81dee28a6aee856d9db8f803e58"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Actual existing Root window/font provider required at every production constructor",
+      "beforeLF": "d08e3b238469536f228402729c79c3b20352f81dee28a6aee856d9db8f803e58",
+      "afterLF": "95a6526c6c6ef9f09fbc48f5a22780f3ffaa814bcf87e806ec1a909edd217158"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Actual video source admission policy",
+      "beforeLF": "95a6526c6c6ef9f09fbc48f5a22780f3ffaa814bcf87e806ec1a909edd217158",
+      "afterLF": "d7a64ddc854706d81a60543ad865e3c1451bd3d3a6fba4081a574e36f6750e32"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Actual processed video source preserves original video self/weight policy",
+      "beforeLF": "d7a64ddc854706d81a60543ad865e3c1451bd3d3a6fba4081a574e36f6750e32",
+      "afterLF": "686663347503ff096b3ca1c6f376ce648beae3196bbb9e7263b0299f5fda586c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Actual font/config cache with mode identity and no second persistent state or renderer",
+      "beforeLF": "686663347503ff096b3ca1c6f376ce648beae3196bbb9e7263b0299f5fda586c",
+      "afterLF": "a0936e206ab79ffed895b5d40771b5b39ac260548b2cc766009c1a2f2c1c88cd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Live receives actual DPI/device-pixel geometry and the same complete original config",
+      "beforeLF": "a0936e206ab79ffed895b5d40771b5b39ac260548b2cc766009c1a2f2c1c88cd",
+      "afterLF": "e0bf45801660dd69b76a433e4aca801b1bd381b15d1e6e77d17458fa31eb0f22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "advanced",
+      "reason": "Full config -> standard actual AWT paint/Scheduler, separate old special-mode renderer remains explicit",
+      "beforeLF": "e0bf45801660dd69b76a433e4aca801b1bd381b15d1e6e77d17458fa31eb0f22",
+      "afterLF": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "group": "advanced",
+      "reason": "Required actual existing window for original font/DPI platform seam",
+      "beforeLF": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af",
+      "afterLF": "5ab3be1ed9e9e5d37254dee4525199b07c431e0f79356d35d079adc4d19fb115"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "group": "advanced",
+      "reason": "Mounted window is an actual remembered renderer owner key, not a stale captured font/window provider",
+      "beforeLF": "5ab3be1ed9e9e5d37254dee4525199b07c431e0f79356d35d079adc4d19fb115",
+      "afterLF": "ae4aa9a55b7729cae2449ad3cd6fb90f299224c41d8ba61caff9e8110bf99909"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopOverlayNativeSmoke.kt",
+      "group": "advanced",
+      "reason": "Required actual existing window for original font/DPI platform seam",
+      "beforeLF": "a06a66f6793a4a3a52d5810ddb5eb6a7b38e50cfba25e65365d2af3221c9e2c5",
+      "afterLF": "04c7daf2404b037be69b80f5c8f1fbfde650261c6f49a69717d051c3cd00cc07"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "group": "advanced",
+      "reason": "Required actual existing window for original font/DPI platform seam",
+      "beforeLF": "95083f5ecc561289141982b03a632938e3947e31af67c4b1840da7c3007af7c8",
+      "afterLF": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "group": "advanced",
+      "reason": "First genuine page overlay constructor; actual surface window resolved after mount",
+      "beforeLF": "884bff23c3c24309a782777d4aca4cd00cde8682f83df531c348c7e9ae838691",
+      "afterLF": "b0a883e335f52e1574559e084aecf5c0af37b53a9133a25ac1aa370a6f41ff3e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "group": "advanced",
+      "reason": "Second genuine page overlay constructor",
+      "beforeLF": "b0a883e335f52e1574559e084aecf5c0af37b53a9133a25ac1aa370a6f41ff3e",
+      "afterLF": "06b7390a0db107dbcf390fdf6f6fb4c961c7cb1469a2116d80bde28c00cab4f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "group": "monitor",
+      "reason": "Required original maximum display reference, no360 production fallback",
+      "beforeLF": "551d201757f1023987254e5d340a187881e91c34a7eab4c67a7c32e0e64e92ce",
+      "afterLF": "e879e94cfa95838f1df1e84ce831a3f09f2d232873a14ad7bac80848d63ec7e9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "group": "monitor",
+      "reason": "Actual current Root Window physical monitor display mode, not window/video aspect ratio",
+      "beforeLF": "e879e94cfa95838f1df1e84ce831a3f09f2d232873a14ad7bac80848d63ec7e9",
+      "afterLF": "b4a2d6dfd2fa90bdc4568a5e07fbc92138ddb14a826c98f140d51234940fc698"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "group": "monitor",
+      "reason": "Required reference port at all actual physical geometry callsites",
+      "beforeLF": "b4a2d6dfd2fa90bdc4568a5e07fbc92138ddb14a826c98f140d51234940fc698",
+      "afterLF": "19f97f430b331c73dee62f41c3e3d4437dc98c7f31b5d02bc6f3128c10fc1031"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "group": "monitor",
+      "reason": "Whole original resolveDanmakuViewport consumes actual required physical monitor short side",
+      "beforeLF": "19f97f430b331c73dee62f41c3e3d4437dc98c7f31b5d02bc6f3128c10fc1031",
+      "afterLF": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "monitor",
+      "reason": "Independent command UI uses same existing Overlay Root Window reference; no second actor/parameter",
+      "beforeLF": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b",
+      "afterLF": "2f7d9229765fc4216ca21eadbf71006f34ead09311e559a56c8a4afed4c50001"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "monitor",
+      "reason": "One actual physical viewport reference shared by ordinary/authored/live consumers",
+      "beforeLF": "2f7d9229765fc4216ca21eadbf71006f34ead09311e559a56c8a4afed4c50001",
+      "afterLF": "71318bc3baa63481d5478dd447454bc38ec33c4a10f90b4314d2c6dcfd8b936b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "monitor",
+      "reason": "Reuse the same actual measured geometry for live config",
+      "beforeLF": "71318bc3baa63481d5478dd447454bc38ec33c4a10f90b4314d2c6dcfd8b936b",
+      "afterLF": "f504ce8e2bb9a2c2d38a8dc16fb9368707f71ee746207bc57551d73957d563be"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "group": "monitor",
+      "reason": "Reuse the same actual measured geometry for standard config",
+      "beforeLF": "f504ce8e2bb9a2c2d38a8dc16fb9368707f71ee746207bc57551d73957d563be",
+      "afterLF": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "group": "monitor",
+      "reason": "Original dedicated command/vote viewport uses same required actual Overlay Root monitor getter",
+      "beforeLF": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78",
+      "afterLF": "5625e50fd684c78941b7e59b6ee5ddb3b6650037ac3af65581622ce586efe3aa"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "02c7fe69ea1a8dd8d8fc1a2fc11501dd9c3f0b3b523ac0986218487ec418ceba",
+      "afterLF": "f5aaf7af8df56564b74e627d71e2250f24edde01222c5b3875052f6b4770a750"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "f5aaf7af8df56564b74e627d71e2250f24edde01222c5b3875052f6b4770a750",
+      "afterLF": "95ef78210df12c7e4dc50a08166dc064fa4da21968391aa05f142e3932766db1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "95ef78210df12c7e4dc50a08166dc064fa4da21968391aa05f142e3932766db1",
+      "afterLF": "50631a083f8010f170ece1230e22edb457ff1e722bfd81c9fabc72049bf8fe7a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "50631a083f8010f170ece1230e22edb457ff1e722bfd81c9fabc72049bf8fe7a",
+      "afterLF": "cce0e1969a803767173997cdd7d2c25dd7f66a31c63b38e293ae40836767ef51"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "cce0e1969a803767173997cdd7d2c25dd7f66a31c63b38e293ae40836767ef51",
+      "afterLF": "e407cf760c3d539136008a271b0de7b37199e7214a754d0a71ba2ce1eee37b5a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "e407cf760c3d539136008a271b0de7b37199e7214a754d0a71ba2ce1eee37b5a",
+      "afterLF": "a427ad4046fd53f3e1b9f353640697ce20f91db345301653344ae4cf44cbd2d5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "a427ad4046fd53f3e1b9f353640697ce20f91db345301653344ae4cf44cbd2d5",
+      "afterLF": "ef9a0ba6a51e73f60f7118f61694ffdbdb23205c8a4448d968b44e90d5bbc508"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "ef9a0ba6a51e73f60f7118f61694ffdbdb23205c8a4448d968b44e90d5bbc508",
+      "afterLF": "1ae10c091ac10492e60dcf0fae32a9dcf730953a77e4d975b2e12b82fd20b350"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "existing-test-caller",
+      "reason": "existing required test-call capability",
+      "beforeLF": "1ae10c091ac10492e60dcf0fae32a9dcf730953a77e4d975b2e12b82fd20b350",
+      "afterLF": "dfb31d33ea0530613aa7c3b0d3096c5a74609802aaefe101661c117892d6f708"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "group": "monitor-test-required-port",
+      "beforeLF": "dfb31d33ea0530613aa7c3b0d3096c5a74609802aaefe101661c117892d6f708",
+      "afterLF": "3255dca9c03f7c238afde0db652eb25dca92fa8ab178f33bcdc4939f8c5c41dd",
+      "reason": "Existing collision fixture explicitly declares its own new required display port; no product default."
+    }
+  ],
+  "exactLocalHunksRebasedAgainstNewerRoot": [],
+  "installedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "beforeSHA256Bytes": "b2812e7db1e6a27e33f3a27bcd6885f8893acd226e50f5d283588b0609a5e084",
+      "afterSHA256Bytes": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "beforeSHA256Bytes": "10482d35514f66772d081fdd6a5b81e73a160c4b66ff83138f2ad91d845f3428",
+      "afterSHA256Bytes": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "beforeSHA256Bytes": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+      "afterSHA256Bytes": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "beforeSHA256Bytes": "bc64fda802782f281989561740068763929cf05e211ac59fe8af07af1f6a84be",
+      "afterSHA256Bytes": "04132a2cb924ea0837f08b6758791c4b4a652be0393a712620cc1646dc57b83b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "beforeSHA256Bytes": "8dc60a873ac94d557dcfccacff89895b72227d506e9df416bc0a3675dada8d2b",
+      "afterSHA256Bytes": "0745671dd4e8d5643dca02a01e42816c101a3e119ce2cf04691880aa7ad07bae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "beforeSHA256Bytes": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+      "afterSHA256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSHA256Bytes": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af",
+      "afterSHA256Bytes": "ae4aa9a55b7729cae2449ad3cd6fb90f299224c41d8ba61caff9e8110bf99909"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopOverlayNativeSmoke.kt",
+      "beforeSHA256Bytes": "718d7c8add6869e5b7bb41479699182182a886eecafe97d3e5ec7976b5676e68",
+      "afterSHA256Bytes": "04c7daf2404b037be69b80f5c8f1fbfde650261c6f49a69717d051c3cd00cc07"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "beforeSHA256Bytes": "95083f5ecc561289141982b03a632938e3947e31af67c4b1840da7c3007af7c8",
+      "afterSHA256Bytes": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "beforeSHA256Bytes": "7fa4d3604fbc2283c052e11b2f05ec14806c1b166502dbd03c0bc54edbf09b20",
+      "afterSHA256Bytes": "06b7390a0db107dbcf390fdf6f6fb4c961c7cb1469a2116d80bde28c00cab4f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "beforeSHA256Bytes": "4b3aa1497c91423391aa40c1634825600068a7eb01222b6c168357274624cfbc",
+      "afterSHA256Bytes": "5625e50fd684c78941b7e59b6ee5ddb3b6650037ac3af65581622ce586efe3aa"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "beforeSHA256Bytes": "eca4e2a3de4140b540c503e2fa190152d9f8469563045d03b77f85815382e158",
+      "afterSHA256Bytes": "3255dca9c03f7c238afde0db652eb25dca92fa8ab178f33bcdc4939f8c5c41dd"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSHA256Bytes": "13b247f77dbc75e7d700acb68e7a594877cc9bfd2b0d739069f6109747f74cdb",
+      "afterSHA256Bytes": "3d3e9062f51fb1037b1d362e860992c0d77e691096fe5fa9bdf73017ba718175"
+    }
+  ],
+  "candidateSourceIdentities": 773,
+  "resources": 213,
+  "actualRootMonitorRuntimeAccepted": false,
+  "ordinaryNativePassThroughMatchesOriginalDefault": true,
+  "structuredSettingsHostAndRootGuardsModified": false,
+  "originalAdvanced213AndMonitor32FrozenEvidenceModified": false,
+  "wholeClassesPassed": false,
+  "desktopExeReplaced": false
+}

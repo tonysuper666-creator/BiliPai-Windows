@@ -1,0 +1,43 @@
+{
+  "originalSettingsFixtureSHA256": "c4e995eb5a7cb68b86cf883f8cbdc50b165e65f43551e687ace89050e0ee8425",
+  "adaptedFixtureSHA256": "e8845afacd87b3ef153f14d0534903d0fad1f82c9344b909dbd6a9a29e132eff",
+  "edits": [
+    {
+      "old": "DanmakuScheduler(listOf(comment(\"unique-rule-320\")),projected)",
+      "new": "DanmakuScheduler(listOf(comment(\"unique-rule-320\")),projected,liveAdmission=false)"
+    },
+    {
+      "old": "DanmakuScheduler(listOf(comment(\"safe\",\"def456\")),scalar)",
+      "new": "DanmakuScheduler(listOf(comment(\"safe\",\"def456\")),scalar,liveAdmission=false)"
+    },
+    {
+      "old": "DanmakuScheduler(listOf(comment(\"safe\").copy(mode=5)),scalar)",
+      "new": "DanmakuScheduler(listOf(comment(\"safe\").copy(mode=5)),scalar,liveAdmission=false)"
+    },
+    {
+      "old": "scrolling.frame(25.0,100,100,20){10}",
+      "new": "scrolling.frame(10.0,100,360,20){10}"
+    },
+    {
+      "old": "100.0-110.0*25.0/150.0",
+      "new": "100.0-110.0*10.0/20.0"
+    },
+    {
+      "old": "current Scheduler frame uses projected scroll50 times speed3",
+      "new": "current Scheduler resolves saved scroll50 and speed3 through original20s renderer clamp"
+    },
+    {
+      "old": "fixed.frame(49.0,100,100,20){10}.size==1&&fixed.frame(50.0,100,100,20){10}.isEmpty()",
+      "new": "fixed.frame(14.0,100,360,20){10}.size==1&&fixed.frame(15.0,100,360,20){10}.isEmpty()"
+    },
+    {
+      "old": "current Scheduler static50 survives old hidden20 cap",
+      "new": "current Scheduler resolves saved static50 through original15s renderer clamp"
+    }
+  ],
+  "fixtureOnlyRequiredVideoAdmissionAndConfigPort": true,
+  "storedOriginalUpperBoundsRemainAsserted": true,
+  "rendererDurationAssertionsNowFollowOriginal20sScroll15sPinnedPolicies": true,
+  "rootConsumerFixtureByteIdentical": true,
+  "productionOrHistoricalSourceModified": false
+}

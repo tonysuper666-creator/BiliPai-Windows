@@ -1,0 +1,247 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform
+
+> Task :extractImageSaveSettingsUi
+Generated 2
+
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalFavorites
+> Task :extractPlaybackSettings
+> Task :extractPlaybackWatchdogs
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries
+> Task :extractSubtitleLoadPolicy
+
+> Task :extractUpstreamApi
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\api\com\android\purebilibili\core\network\DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance
+
+> Task :extractUpstreamAudio
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\audio\viewmodel\MusicUiState.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\video\player\DesktopPlaylistPolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\audio\library\DesktopListenVideoLibraryLoader.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\data\repository\DesktopFavoriteRequestException.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\audio\com\android\purebilibili\feature\list\DesktopFavoriteRiskPolicy.kt
+
+> Task :extractUpstreamDiscovery
+
+> Task :extractUpstreamBlockedUp
+Generated 3
+
+> Task :extractUpstreamSettingsSearch
+Generated 8
+
+> Task :extractUpstreamSettingsCategories
+Generated 3
+
+> Task :extractUpstreamBlockedListUi
+Generated 5
+
+> Task :extractUpstreamCast
+
+> Task :extractUpstreamComponents
+Generated 4 original component files
+
+> Task :extractUpstreamCrashPrompt
+
+> Task :extractUpstreamDanmaku
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\AdvancedDanmakuData.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\feature\video\danmaku\DesktopAdvancedDanmakuParser.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\danmaku\com\android\purebilibili\data\repository\DesktopDanmakuSegmentPolicy.kt
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDynamicDetail
+> Task :extractUpstreamDynamicDetailContainer
+> Task :extractUpstreamDynamicDetailProtocol
+> Task :extractUpstreamDynamicEditor
+
+> Task :extractUpstreamSettingsHome
+Generated 2
+
+> Task :extractUpstreamDynamicSettings
+Generated 8
+
+> Task :extractUpstreamDynamicTabs
+Generated 15
+
+> Task :extractUpstreamDynamicFollow
+{"generated": 2, "files": ["C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\dynamic-follow\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalFollowStateChange.kt", "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\dynamic-follow\\com\\android\\purebilibili\\feature\\dynamic\\DesktopOriginalDynamicFollowStatePolicy.kt"]}
+
+> Task :extractUpstreamDynamicFullCard
+> Task :extractUpstreamDynamicReply
+> Task :extractUpstreamDynamicReplyProtocol
+
+> Task :extractUpstreamDynamicStaticImageCodec
+{"generated": ["desktopOriginalStaticGalleryKeepBytes", "desktopOriginalStaticGalleryExtension", "desktopOriginalStaticGalleryMimeType", "desktopOriginalStaticGalleryFileName"]}
+
+> Task :extractUpstreamHomeCards
+Generated 5
+
+> Task :extractUpstreamHomeFullCard
+
+> Task :extractUpstreamJs
+Generated 6 original JS policy/store files; JS VM not included
+
+> Task :extractUpstreamLogin
+
+> Task :extractUpstreamMedia
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopMediaPgcPolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopDownloadDanmakuRepository.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\video\danmaku\DesktopDanmakuMetadataParser.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\download\DesktopOfflinePositionPolicy.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopLiveHosts.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\core\network\socket\LiveDanmakuClient.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\data\repository\DesktopLivePolicies.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\live\DesktopLiveDanmakuItem.kt
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\media\com\android\purebilibili\feature\bangumi\DesktopFollowPolicies.kt
+
+> Task :extractUpstreamNetworkProxy
+Generated 4
+
+> Task :extractUpstreamPackages
+Generated 8 original package source files
+
+> Task :extractUpstreamPlayback
+
+> Task :extractUpstreamPlugins
+Generated 34 original plugin source files
+
+> Task :extractUpstreamPreferences
+Generated 5 original preference/navigation files
+
+> Task :extractUpstreamSearch
+> Task :extractUpstreamSettings
+
+> Task :extractUpstreamSettingsEntries
+Generated 2
+
+> Task :extractUpstreamSettingsPrivacy
+Generated 5
+
+> Task :extractUpstreamSettingsStorageEntries
+Generated 1
+
+> Task :extractUpstreamSpace
+> Task :extractUpstreamSpaceContributions
+> Task :extractUpstreamSpaceImagePreviews
+> Task :extractUpstreamSpaceOverview
+
+> Task :extractUpstreamStoryTopic
+Generated 5 original Story/Topic files
+
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+
+> Task :fetchJsWorkerJdk
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\.gradle\js-worker-cache\fixed-jdk
+
+> Task :prepareJsWorker
+{
+  "reused": true,
+  "classpathCount": 13,
+  "resourceCount": 137,
+  "catalogSha256": "0ff5200c111677e78ed303bb8a514aa00ce9c537362848d3079861a98e6258f5"
+}
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 363, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "d6953bbc9311998de6425ad10047ab492e05fc0265627aab06ded84835b189d4"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\eee8f6b1-5d8e-43f1-aadb-934b60b5ab4b", "approvedSourceManifestSha256Bytes": "f1dac93f3883a47fee1b8dd559bff8d366cf3a22e15bacab499154011daeb004", "sourceSha256Bytes": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "d6953bbc9311998de6425ad10047ab492e05fc0265627aab06ded84835b189d4", "stagedDllSha256Bytes": "d6953bbc9311998de6425ad10047ab492e05fc0265627aab06ded84835b189d4", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\eee8f6b1-5d8e-43f1-aadb-934b60b5ab4b\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "0a5d12026d24dd7a8c7a571b78e8a5583accb7b5a71787c113b94ec1e414eea8", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes
+
+> Task :verifyUpstreamDynamicDetailReplyProtocol
+PASS five exact original-source request families in the existing Operations class
+
+> Task :verifyUpstreamDynamicEditorProtocol
+PASS original-source editor request members in the existing Operations class
+
+> Task :extractUpstreamDynamicGalleryMotionPhoto
+PASS original packing with approved three-line XMP attribute fix and unchanged gallery policy; generated 2 Kotlin sources
+
+> Task :verifyUpstreamDynamicMedia
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 195 files; 165 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :compileKotlin UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jar
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :assembleTestResources UP-TO-DATE
+> Task :processTestResources UP-TO-DATE
+
+> Task :compileTestKotlin
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuPluginTest.kt:41:54 Argument type mismatch: actual type is 'Float', but 'Int' was expected.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuPluginTest.kt:41:58 Argument type mismatch: actual type is 'DanmakuSettings', but 'DanmakuRenderConfig' was expected.
+e: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuPluginTest.kt:41:58 No value passed for parameter 'settings'.
+
+> Task :compileTestKotlin FAILED
+
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/reports/problems/problems-report.html
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileTestKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1m 10s
+91 actionable tasks: 80 executed, 11 up-to-date

@@ -1,0 +1,33 @@
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:88:78: error: no value passed for parameter 'liveAdmission'.
+    val blockedScheduler=DanmakuScheduler(listOf(comment("unique-rule-320")),projected)
+                                                                             ^^^^^^^^^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:89:46: error: argument type mismatch: actual type is 'Int', but 'DanmakuRenderConfig' was expected.
+    verify(blockedScheduler.frame(.1,100,100,20){10}.isEmpty(),"actual Main20 Scheduler filtering consumes projected original rules")
+                                             ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:89:50: error: return type mismatch: expected 'DesktopDanmakuTextMetrics', actual 'Int'.
+    verify(blockedScheduler.frame(.1,100,100,20){10}.isEmpty(),"actual Main20 Scheduler filtering consumes projected original rules")
+                                                 ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:99:69: error: no value passed for parameter 'liveAdmission'.
+    val scrolling=DanmakuScheduler(listOf(comment("safe","def456")),scalar)
+                                                                    ^^^^^^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:100:47: error: argument type mismatch: actual type is 'Int', but 'DanmakuRenderConfig' was expected.
+    val position=scrolling.frame(25.0,100,100,20){10}.single()
+                                              ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:100:51: error: return type mismatch: expected 'DesktopDanmakuTextMetrics', actual 'Int'.
+    val position=scrolling.frame(25.0,100,100,20){10}.single()
+                                                  ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:102:69: error: no value passed for parameter 'liveAdmission'.
+    val fixed=DanmakuScheduler(listOf(comment("safe").copy(mode=5)),scalar)
+                                                                    ^^^^^^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:103:37: error: argument type mismatch: actual type is 'Int', but 'DanmakuRenderConfig' was expected.
+    verify(fixed.frame(49.0,100,100,20){10}.size==1&&fixed.frame(50.0,100,100,20){10}.isEmpty(),"current Scheduler static50 survives old hidden20 cap")
+                                    ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:103:41: error: return type mismatch: expected 'DesktopDanmakuTextMetrics', actual 'Int'.
+    verify(fixed.frame(49.0,100,100,20){10}.size==1&&fixed.frame(50.0,100,100,20){10}.isEmpty(),"current Scheduler static50 survives old hidden20 cap")
+                                        ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:103:79: error: argument type mismatch: actual type is 'Int', but 'DanmakuRenderConfig' was expected.
+    verify(fixed.frame(49.0,100,100,20){10}.size==1&&fixed.frame(50.0,100,100,20){10}.isEmpty(),"current Scheduler static50 survives old hidden20 cap")
+                                                                              ^^
+desktop\.local\stable-danmaku-main31-integration-proof\settings\SettingsFixture.kt:103:83: error: return type mismatch: expected 'DesktopDanmakuTextMetrics', actual 'Int'.
+    verify(fixed.frame(49.0,100,100,20){10}.size==1&&fixed.frame(50.0,100,100,20){10}.isEmpty(),"current Scheduler static50 survives old hidden20 cap")
+                                                                                  ^^

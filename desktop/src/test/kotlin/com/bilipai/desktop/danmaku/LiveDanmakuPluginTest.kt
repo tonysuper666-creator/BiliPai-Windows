@@ -2,6 +2,7 @@ package com.bilipai.desktop.danmaku
 
 import com.android.purebilibili.core.plugin.DanmakuStyle
 import com.android.purebilibili.feature.live.LiveDanmakuItem
+import com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +39,17 @@ class LiveDanmakuPluginTest {
             renderer.add(LiveDanmakuItem("raw", mode = 1))
             val image = BufferedImage(640, 360, BufferedImage.TYPE_INT_ARGB)
             val graphics = image.createGraphics()
-            try { renderer.paint(graphics, 640, 360, 1f, DanmakuSettings(opacity = 1f, fontWeight = 1)) }
+            // Original engine disables pinned layers at <=4 tracks; this style fixture needs a visible pinned layer.
+            val settings = DanmakuSettings(opacity = 1f, fontWeight = 1, fontScale = 0.5f)
+            val font = requireNotNull(javax.swing.UIManager.getFont("Label.font"))
+            val platform = object : DesktopOriginalDanmakuRenderPlatform {
+                override fun resolveTypeface(fontWeight: Int) = font
+                override fun systemChromeInsetPx() = 0
+                override fun maximumDisplayShortSidePx() = 360f // Declared test monitor only.
+            }
+            val config = resolveDesktopOriginalLiveDanmakuRenderConfig(settings, 640, 360, 1f, platform)
+            assertTrue(config.lineCount > 4, "style fixture must have an original pinned-layer budget")
+            try { renderer.paint(graphics, 640, 360, 360, config, settings) }
             finally { graphics.dispose() }
             val pixels = image.getRGB(0, 0, 640, 360, null, 0, 640).map { it and 0xffffff }.toSet()
             assertTrue(0xff0000 in pixels, "plugin text color must be painted")

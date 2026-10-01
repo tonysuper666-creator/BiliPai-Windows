@@ -1,0 +1,74 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+    "old": "    fun systemChromeInsetPx():Int",
+    "new": "    fun systemChromeInsetPx():Int\n    fun maximumDisplayShortSidePx():Float",
+    "beforeSha256LF": "551d201757f1023987254e5d340a187881e91c34a7eab4c67a7c32e0e64e92ce",
+    "afterSha256LF": "e879e94cfa95838f1df1e84ce831a3f09f2d232873a14ad7bac80848d63ec7e9",
+    "reason": "Required original maximum display reference, no360 production fallback"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+    "old": "    override fun systemChromeInsetPx():Int {",
+    "new": "    override fun maximumDisplayShortSidePx():Float {\n        val mode=requireNotNull(rootWindow().graphicsConfiguration) { \"Mounted Root has no monitor configuration\" }.device.displayMode\n        check(mode.width>0 && mode.height>0) { \"Current physical monitor has no valid display mode\" }\n        return minOf(mode.width,mode.height).toFloat()\n    }\n    override fun systemChromeInsetPx():Int {",
+    "beforeSha256LF": "e879e94cfa95838f1df1e84ce831a3f09f2d232873a14ad7bac80848d63ec7e9",
+    "afterSha256LF": "b4a2d6dfd2fa90bdc4568a5e07fbc92138ddb14a826c98f140d51234940fc698",
+    "reason": "Actual current Root Window physical monitor display mode, not window/video aspect ratio"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+    "old": "fun from(width:Int,height:Int,transform:AffineTransform):DesktopDanmakuPaintGeometry?",
+    "new": "fun from(width:Int,height:Int,transform:AffineTransform,referenceShortSidePx:Float):DesktopDanmakuPaintGeometry?",
+    "beforeSha256LF": "b4a2d6dfd2fa90bdc4568a5e07fbc92138ddb14a826c98f140d51234940fc698",
+    "afterSha256LF": "19f97f430b331c73dee62f41c3e3d4437dc98c7f31b5d02bc6f3128c10fc1031",
+    "reason": "Required reference port at all actual physical geometry callsites"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+    "old": "y.toFloat(),360f)",
+    "new": "y.toFloat(),referenceShortSidePx)",
+    "beforeSha256LF": "19f97f430b331c73dee62f41c3e3d4437dc98c7f31b5d02bc6f3128c10fc1031",
+    "afterSha256LF": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685",
+    "reason": "Whole original resolveDanmakuViewport consumes actual required physical monitor short side"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "    val currentSettings: DanmakuSettings get() = settings",
+    "new": "    val currentSettings: DanmakuSettings get() = settings\n    internal fun maximumDisplayShortSidePx():Float=renderPlatform.maximumDisplayShortSidePx()",
+    "beforeSha256LF": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b",
+    "afterSha256LF": "2f7d9229765fc4216ca21eadbf71006f34ead09311e559a56c8a4afed4c50001",
+    "reason": "Independent command UI uses same existing Overlay Root Window reference; no second actor/parameter"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "                val density = graphicsConfiguration?.defaultTransform?.scaleX?.toFloat() ?: 1f\n                val viewport = resolveDanmakuViewport(width, height, density, 360f) ?: return",
+    "new": "                val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform,renderPlatform.maximumDisplayShortSidePx()) ?: return\n                val viewport=geometry.viewport",
+    "beforeSha256LF": "2f7d9229765fc4216ca21eadbf71006f34ead09311e559a56c8a4afed4c50001",
+    "afterSha256LF": "71318bc3baa63481d5478dd447454bc38ec33c4a10f90b4314d2c6dcfd8b936b",
+    "reason": "One actual physical viewport reference shared by ordinary/authored/live consumers"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "                    val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform) ?: return",
+    "new": "                    // Uses the actual Root-monitor geometry resolved once above.",
+    "beforeSha256LF": "71318bc3baa63481d5478dd447454bc38ec33c4a10f90b4314d2c6dcfd8b936b",
+    "afterSha256LF": "f504ce8e2bb9a2c2d38a8dc16fb9368707f71ee746207bc57551d73957d563be",
+    "reason": "Reuse the same actual measured geometry for live config"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "                val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform) ?: return",
+    "new": "                // Uses the actual Root-monitor geometry resolved once above.",
+    "beforeSha256LF": "f504ce8e2bb9a2c2d38a8dc16fb9368707f71ee746207bc57551d73957d563be",
+    "afterSha256LF": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78",
+    "reason": "Reuse the same actual measured geometry for standard config"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+    "old": "resolveDanmakuViewport(measured.width, measured.height, density.density, 360f)",
+    "new": "resolveDanmakuViewport(measured.width, measured.height, density.density, danmaku.maximumDisplayShortSidePx())",
+    "beforeSha256LF": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78",
+    "afterSha256LF": "5625e50fd684c78941b7e59b6ee5ddb3b6650037ac3af65581622ce586efe3aa",
+    "reason": "Original dedicated command/vote viewport uses same required actual Overlay Root monitor getter"
+  }
+]

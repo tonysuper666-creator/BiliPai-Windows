@@ -1,0 +1,72 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "0b02c5bf36a199d3468e28bb774d3ff4da0f3983",
+    "sha256Bytes": "10fbb53ca31a6629303ed425028e4c4e35e9179920befc01d8cc3e7400ee5d1e",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\DanmakuViewportHost.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuOverlayViewPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "1a8e4760d833e76c431eaa7f2b803f86b280d52d",
+    "sha256Bytes": "67140108110ea457d299218cd2d4f8cfa0863c3d45d15808aeda2d56dfe5a143",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuOverlayViewPolicy.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "cb34ca4bc2a2fd6f8c82884aa37ce144f5ac8976",
+    "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSection.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "482dbb03fca8e1efad4d565fe54ea5081ec32fd3",
+    "sha256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "b1182d9d3c45c34ec541c325c5b68bb0f398d30c",
+    "sha256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoPager.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "b5d30644f4f8d483a441d188e1027aedff281286",
+    "sha256Bytes": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\FullscreenPlayerOverlay.kt.txt"
+  },
+  {
+    "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuRenderView.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "a4bffc0fa18b356346f183a9c9e2302e92f71fdb",
+    "sha256Bytes": "6bd978e5bb212211edf7cf3f3336e8f62fc37380dba214df2d03d556dad06cda",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuRenderView.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "b6119f8052338ad0cb61b36817a5244d25382d63",
+    "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuManager.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "a9ce5bd4fdeeb246050c0eeb3e0c137aa8f609c1",
+    "sha256Bytes": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailPlayerSettingsOverlayAdapter.kt.txt"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "1775313c3b78d802728b7ac9492a4ba8e27d07a0",
+    "sha256Bytes": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0",
+    "retained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSectionPolicy.kt.txt"
+  }
+]

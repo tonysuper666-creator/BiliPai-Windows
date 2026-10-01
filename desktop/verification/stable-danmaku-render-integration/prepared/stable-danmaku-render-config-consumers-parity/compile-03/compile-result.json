@@ -1,0 +1,75 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "sourceInputs": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuConfig.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\0\\DanmakuConfig.kt",
+      "sha256Bytes": "833f19902c2111845280962635ea86cea032f889dd05e584218728260bf5a7ae"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuRenderConfig.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\1\\DanmakuRenderConfig.kt",
+      "sha256Bytes": "e4663f9436ff0619cafe49b57179a891e6df970079cae926d64cb07083c13c09"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuDisplayBand.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\2\\DanmakuDisplayBand.kt",
+      "sha256Bytes": "e9906bd2e35e7edbd0a7b60c88d46e7b9af5d3623ca6333c0729f0e5bd707335"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalDanmakuLayerPolicy.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\3\\DesktopOriginalDanmakuLayerPolicy.kt",
+      "sha256Bytes": "36e57e5e0c96bf783a070fa68653fde79ad4164b80e9ba257f9736501ec83bce"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalLiveDanmakuRenderConfig.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\4\\DesktopOriginalLiveDanmakuRenderConfig.kt",
+      "sha256Bytes": "c5649e24ad12a87e21b4b652441b3862a6a86d5e01b98da103d7b443d5b7b1ac"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\generated\\com\\android\\purebilibili\\feature\\video\\danmaku\\DesktopOriginalLiveDanmakuAdmission.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\5\\DesktopOriginalLiveDanmakuAdmission.kt",
+      "sha256Bytes": "cbcf58e55c8b50cbd00096790e0426c1108e067ff233548414c254c6c6ef592f"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\6\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "551d201757f1023987254e5d340a187881e91c34a7eab4c67a7c32e0e64e92ce"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\7\\DanmakuOverlay.kt",
+      "sha256Bytes": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuScheduler.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\8\\DanmakuScheduler.kt",
+      "sha256Bytes": "439b85c3eb75d6042e5f3bd4759e3310261c04706e2109b3197e33d79b403dbe"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuSettings.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\9\\DanmakuSettings.kt",
+      "sha256Bytes": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\LiveDanmakuRenderer.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\10\\LiveDanmakuRenderer.kt",
+      "sha256Bytes": "0745671dd4e8d5643dca02a01e42816c101a3e119ce2cf04691880aa7ad07bae"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDanmakuSettingsProjection.kt",
+      "input": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\source-inputs\\11\\DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0"
+    }
+  ],
+  "actualSnapshot": 22,
+  "actualRelocatedCP": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+  "prospectiveSettings179Jar": "549caaf0e59e8cfb46ab07be964b0b163b5f4358e61cfc152167961e46dac63e",
+  "sameByteLibraryRelocation": [
+    3
+  ],
+  "preparedOnly": true,
+  "wholeCallersNotCompiled": "Only actual constructor argument ABI receipt; Root owns full Gradle",
+  "jarSha256Bytes": "5f92ea590c097eec13ebe4bb0624996c9040043870bd3dab487882ea134e9359"
+}

@@ -1,0 +1,228 @@
+{
+  "status": "READY_SOURCE_ONLY_LOCAL_DELTA",
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "priorAdvanced213Manifest": "6d221c053309abd218b55a129634726bf5f99f28d4458a374069351468b69103",
+  "localHunkCount": 9,
+  "localHunksSHA256": "3355e4d0adc00a1f7eb5b8cb7277e6a54b13fd673e88cf2e1a12baf4b4a43890",
+  "onlyExistingThreeRootSourceFiles": true,
+  "payloadCount": 0,
+  "fullOverwritesAuthorized": false,
+  "newRegistryOrDependencyCount": 0,
+  "compiledProductionSources": 2,
+  "compiledProofSources": 1,
+  "compileResultSHA256": "62f19a1dc1f932aec174395769c41c6bed39202a8125bb5e5ab9b68960a0827e",
+  "proof": {
+    "status": "PASS",
+    "assertions": 12,
+    "fixtureOnlyDisplayModes": true,
+    "actualRootMonitorRuntimeAccepted": false,
+    "nativeWindowOrHTTP": false
+  },
+  "passiveDefaultWholePolicyAndAllCallsites": {
+    "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "fullPolicySHA256": "67140108110ea457d299218cd2d4f8cfa0863c3d45d15808aeda2d56dfe5a143",
+    "allCallsites": [
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+        "line": 4404,
+        "source": "configureAsPassiveDanmakuOverlay()",
+        "sourceSHA256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+        "line": 688,
+        "source": "configureAsPassiveDanmakuOverlay()",
+        "sourceSHA256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+        "line": 3835,
+        "source": "configureAsPassiveDanmakuOverlay()",
+        "sourceSHA256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+        "line": 3840,
+        "source": "view.configureAsPassiveDanmakuOverlay()",
+        "sourceSHA256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+        "line": 1091,
+        "source": "configureAsPassiveDanmakuOverlay()",
+        "sourceSHA256Bytes": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb"
+      }
+    ],
+    "defaultPolicy": "ordinary/offline/portrait/fullscreen passive; preserve Windows native mouse-through",
+    "listLongPress": "original DanmakuPoolSheet combinedClickable separately wired",
+    "dedicatedCommandVotes": "original dedicated interactive viewport remains independently hit-tested by Root; does not enable ordinary interception",
+    "correctionToHistorical213Pending": "Ordinary native interception is not a missing stable-tag default feature. Original passive body and all5 calls override that historical pending phrasing.",
+    "runtimeProofClaim": false
+  },
+  "sourceAuditCheckCount": 59,
+  "actualFinal31BuildOwner": "Root",
+  "actualRootMonitorRuntimeAccepted": false,
+  "historical213Fixture360NotRuntimeProof": true,
+  "evidence": [
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "551d201757f1023987254e5d340a187881e91c34a7eab4c67a7c32e0e64e92ce"
+    },
+    {
+      "relative": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+      "sha256Bytes": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78"
+    },
+    {
+      "relative": "baseline-manifest.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\baseline-manifest.json",
+      "sha256Bytes": "bd0ae95cdeb52f41c706b5a369963754f5cb7cdc468f05ca354a75bcb8475a95"
+    },
+    {
+      "relative": "compile-01/compile-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\compile-result.json",
+      "sha256Bytes": "62f19a1dc1f932aec174395769c41c6bed39202a8125bb5e5ab9b68960a0827e"
+    },
+    {
+      "relative": "compile-01/compiler.args",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\compiler.args",
+      "sha256Bytes": "47154f56a5adb189de31a558718092f0e1e133d3789c6e8d26d3d3bf3a9d9c05"
+    },
+    {
+      "relative": "compile-01/compiler.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "relative": "compile-01/monitor-candidate-and-fixture.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\monitor-candidate-and-fixture.jar",
+      "sha256Bytes": "3600490f9aaaa49f79d0f1576fa4ed28830b6500f9278bb08c8742d8fff2ddbf"
+    },
+    {
+      "relative": "compile-01/proof-result.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\proof-result.json",
+      "sha256Bytes": "80f5856fa5f985b1a8e714ca15cc74ccc4399795a6f50d2ff0e5b3e40993663a"
+    },
+    {
+      "relative": "compile-01/runtime.log",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\runtime.log",
+      "sha256Bytes": "53df33655fbad69b425c4e2d38c9386abd0194c10d593cb43a3132244f9e1089"
+    },
+    {
+      "relative": "compile-proof.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-proof.py",
+      "sha256Bytes": "721f62ace579a338b2f1a9d0ac0821a221aafd50ab75bc088f1defcb07cb2897"
+    },
+    {
+      "relative": "contract.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\contract.txt",
+      "sha256Bytes": "0bc19d044d97f94039cec4d42c55f73078cd4a8b9d3ee633ed2c135da58547c5"
+    },
+    {
+      "relative": "freeze.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\freeze.py",
+      "sha256Bytes": "6ce02b04bf8b412733a411fd7d274ce57fb64ea8853149071a97d0afadea8b63"
+    },
+    {
+      "relative": "local-hunks.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\local-hunks.json",
+      "sha256Bytes": "3355e4d0adc00a1f7eb5b8cb7277e6a54b13fd673e88cf2e1a12baf4b4a43890"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\download\\OfflineVideoPlayerScreen.kt.txt",
+      "sha256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuManager.kt.txt",
+      "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuOverlayViewPolicy.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuOverlayViewPolicy.kt.txt",
+      "sha256Bytes": "67140108110ea457d299218cd2d4f8cfa0863c3d45d15808aeda2d56dfe5a143"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPlayerSettingsOverlayAdapter.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\screen\\VideoDetailPlayerSettingsOverlayAdapter.kt.txt",
+      "sha256Bytes": "aa3d9495b2cd9f10b9682f6708182f0edd1655d0eeae1c185abe9f4e94bd73da"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\FullscreenPlayerOverlay.kt.txt",
+      "sha256Bytes": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoPager.kt.txt",
+      "sha256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/ui/section/DanmakuViewportHost.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\DanmakuViewportHost.kt.txt",
+      "sha256Bytes": "10fbb53ca31a6629303ed425028e4c4e35e9179920befc01d8cc3e7400ee5d1e"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSection.kt.txt",
+      "sha256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+    },
+    {
+      "relative": "original-retained/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSectionPolicy.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoPlayerSectionPolicy.kt.txt",
+      "sha256Bytes": "198913c1d091d5aed119b90fedfbb7e77183457584c49c737c4aae7f113f37c0"
+    },
+    {
+      "relative": "original-retained/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuRenderView.kt.txt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\original-retained\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuRenderView.kt.txt",
+      "sha256Bytes": "6bd978e5bb212211edf7cf3f3336e8f62fc37380dba214df2d03d556dad06cda"
+    },
+    {
+      "relative": "passive-default-source-evidence.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\passive-default-source-evidence.json",
+      "sha256Bytes": "abe0dfb967e72592c2c67ee53d443494d841b2e3b6e7b0a70d1f977fdde55d74"
+    },
+    {
+      "relative": "prepare.py",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\prepare.py",
+      "sha256Bytes": "7499cbe45ebd76f6f09da466bc7d407d2194ada81a90948735b37967a554a3a1"
+    },
+    {
+      "relative": "proof/MonitorViewportProof.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\proof\\MonitorViewportProof.kt",
+      "sha256Bytes": "5a2b3973235cfc46486d3d9b9981ef94e409f83ee31606bfc06fb6f4a8fcb0c7"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78"
+    },
+    {
+      "relative": "review-only/desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685"
+    },
+    {
+      "relative": "review-only-callers/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\review-only-callers\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoVotes.kt",
+      "sha256Bytes": "5625e50fd684c78941b7e59b6ee5ddb3b6650037ac3af65581622ce586efe3aa"
+    },
+    {
+      "relative": "source-audit.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\source-audit.json",
+      "sha256Bytes": "7a0ee22c44221dffc3604e3ad5250b51accd67c38b379c50320552bc8bfe35c2"
+    },
+    {
+      "relative": "source-inventory.json",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\source-inventory.json",
+      "sha256Bytes": "df485929a155b097448000dfa69bb6dc4ba86b151a63711fd559c8e41f0e10fe"
+    }
+  ]
+}

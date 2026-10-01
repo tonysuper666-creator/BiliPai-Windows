@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "productionSources": 2,
+  "proofSources": 1,
+  "sourceInputs": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "dba945d6158081370ecd3455f5bbcacfbbae0983c449ed629d63031e54597f78"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "b30a402680e77fcb2f9498c4e76886150bb70634597c60994d5cbbf6317a1685"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\proof\\MonitorViewportProof.kt",
+      "sha256Bytes": "5a2b3973235cfc46486d3d9b9981ef94e409f83ee31606bfc06fb6f4a8fcb0c7"
+    }
+  ],
+  "prospectiveJar": "3600490f9aaaa49f79d0f1576fa4ed28830b6500f9278bb08c8742d8fff2ddbf",
+  "priorAdvancedJar": "74893b2654c255186d02fba174b5b428d041112d784850ef7604c90a2e67e24e",
+  "relocatedActual22CP": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+  "actualProductNotChanged": true,
+  "wholeCommandCallerNotCompiled": true,
+  "commandExpressionABIChecked": true,
+  "actualRootRuntimeAcceptance": false
+}

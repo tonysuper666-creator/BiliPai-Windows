@@ -1,0 +1,82 @@
+[
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio = 1f, allowColorful = false))",
+    "new": "DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio = 1f, allowColorful = false), liveAdmission=false)",
+    "occurrenceOffset": 7015,
+    "beforeSha256LF": "02c7fe69ea1a8dd8d8fc1a2fc11501dd9c3f0b3b523ac0986218487ec418ceba",
+    "afterSha256LF": "f5aaf7af8df56564b74e627d71e2250f24edde01222c5b3875052f6b4770a750",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(listOf(comment(0, 0.0, 6), comment(1, 1.0)))",
+    "new": "DanmakuScheduler(listOf(comment(0, 0.0, 6), comment(1, 1.0)), DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 6123,
+    "beforeSha256LF": "f5aaf7af8df56564b74e627d71e2250f24edde01222c5b3875052f6b4770a750",
+    "afterSha256LF": "95ef78210df12c7e4dc50a08166dc064fa4da21968391aa05f142e3932766db1",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler((0 until 20).map { comment(it, 0.0) }, settings)",
+    "new": "DanmakuScheduler((0 until 20).map { comment(it, 0.0) }, settings, liveAdmission=false)",
+    "occurrenceOffset": 5476,
+    "beforeSha256LF": "95ef78210df12c7e4dc50a08166dc064fa4da21968391aa05f142e3932766db1",
+    "afterSha256LF": "50631a083f8010f170ece1230e22edb457ff1e722bfd81c9fabc72049bf8fe7a",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(comments)",
+    "new": "DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 4734,
+    "beforeSha256LF": "50631a083f8010f170ece1230e22edb457ff1e722bfd81c9fabc72049bf8fe7a",
+    "afterSha256LF": "cce0e1969a803767173997cdd7d2c25dd7f66a31c63b38e293ae40836767ef51",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(listOf(comment(0, 0.0)))",
+    "new": "DanmakuScheduler(listOf(comment(0, 0.0)), DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 4012,
+    "beforeSha256LF": "cce0e1969a803767173997cdd7d2c25dd7f66a31c63b38e293ae40836767ef51",
+    "afterSha256LF": "e407cf760c3d539136008a271b0de7b37199e7214a754d0a71ba2ce1eee37b5a",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(listOf(comment(0, 0.0), comment(1, 1.4)))",
+    "new": "DanmakuScheduler(listOf(comment(0, 0.0), comment(1, 1.4)), DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 3649,
+    "beforeSha256LF": "e407cf760c3d539136008a271b0de7b37199e7214a754d0a71ba2ce1eee37b5a",
+    "afterSha256LF": "a427ad4046fd53f3e1b9f353640697ce20f91db345301653344ae4cf44cbd2d5",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(comments)",
+    "new": "DanmakuScheduler(comments, DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 2830,
+    "beforeSha256LF": "a427ad4046fd53f3e1b9f353640697ce20f91db345301653344ae4cf44cbd2d5",
+    "afterSha256LF": "ef9a0ba6a51e73f60f7118f61694ffdbdb23205c8a4448d968b44e90d5bbc508",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "DanmakuScheduler(listOf(comment(0, 0.0), comment(1, 50.0)))",
+    "new": "DanmakuScheduler(listOf(comment(0, 0.0), comment(1, 50.0)), DanmakuSettings(displayAreaRatio=1f), liveAdmission=false)",
+    "occurrenceOffset": 2145,
+    "beforeSha256LF": "ef9a0ba6a51e73f60f7118f61694ffdbdb23205c8a4448d968b44e90d5bbc508",
+    "afterSha256LF": "1ae10c091ac10492e60dcf0fae32a9dcf730953a77e4d975b2e12b82fd20b350",
+    "testOnly": true
+  },
+  {
+    "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+    "old": "",
+    "append": "\n/** Collision fixtures supply explicit geometry/widths. Production has no rowHeight/config fallback. */\nprivate fun DanmakuScheduler.frame(time:Double,width:Int,height:Int,rowHeight:Int,measure:(DanmakuComment)->Int):List<PositionedDanmaku> {\n    val font=requireNotNull(javax.swing.UIManager.getFont(\"Label.font\"))\n    val platform=object:DesktopOriginalDanmakuRenderPlatform {\n        override fun resolveTypeface(fontWeight:Int)=font\n        override fun systemChromeInsetPx()=0 // Declared unused fixture chrome, never a production default.\n    }\n    val settings=currentSettings\n    val config=settings.originalConfig(platform).resolveRenderConfig(\n        com.android.purebilibili.feature.video.danmaku.DanmakuViewport(width,height,1f,1f)\n    ).copy(lineHeightPx=rowHeight.toFloat(),lineMarginPx=0f,\n        lineCount=(height*settings.displayAreaRatio/rowHeight).toInt().coerceAtLeast(0))\n    return frame(time,width,height,config) {DesktopDanmakuTextMetrics(measure(it),rowHeight-6.0)}\n}\n",
+    "beforeSha256LF": "1ae10c091ac10492e60dcf0fae32a9dcf730953a77e4d975b2e12b82fd20b350",
+    "afterSha256LF": "dfb31d33ea0530613aa7c3b0d3096c5a74609802aaefe101661c117892d6f708",
+    "testOnly": true
+  }
+]

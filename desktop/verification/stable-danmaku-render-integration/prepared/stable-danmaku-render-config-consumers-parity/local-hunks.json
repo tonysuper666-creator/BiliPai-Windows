@@ -1,0 +1,372 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "old": "'danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt']",
+    "new": "'danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt',BASE+'feature/video/danmaku/FaceOcclusionPolicy.kt',BASE+'feature/video/ui/overlay/LiveDanmakuOverlay.kt','danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt']",
+    "beforeSha256LF": "b2812e7db1e6a27e33f3a27bcd6885f8893acd226e50f5d283588b0609a5e084",
+    "afterSha256LF": "8b955a766a2a24dd0a44f6eed8efe8074751a681c90be564fc856a43adb9447a",
+    "reason": "Append fixed source identities for complete DisplayBand, Live config/admission and exact engine budget expressions"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "old": "original=source[PATHS[-1]]",
+    "new": "original=source[PATHS[11]]",
+    "beforeSha256LF": "8b955a766a2a24dd0a44f6eed8efe8074751a681c90be564fc856a43adb9447a",
+    "afterSha256LF": "dbec5581d0298d770a76164578bdab7cb5b3498514aaadfca94ce13d33efa83f",
+    "reason": "Preserve original neutral item source after new source append"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "old": "emit('com/android/purebilibili/danmaku/engine/DanmakuItem.kt',s,PATHS[-1],",
+    "new": "emit('com/android/purebilibili/danmaku/engine/DanmakuItem.kt',s,PATHS[11],",
+    "beforeSha256LF": "dbec5581d0298d770a76164578bdab7cb5b3498514aaadfca94ce13d33efa83f",
+    "afterSha256LF": "738a4fd1ca6f715db0e4ac5aaa1ce85f444f50e53e8dda1c1dd5b0db2321db96",
+    "reason": "Preserve item origin"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "old": " repo_source=source[PATHS[7]];state=",
+    "new": "\n # Full original neutral config and pure geometry/timing algorithms. Only actual Windows platform carriers change.\n full_config=source[PATHS[6]];rows=[];s=full_config\n s=adapt(s,'import android.content.Context','import com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform',rows)\n s=adapt(s,'import android.graphics.Typeface','import java.awt.Font as Typeface',rows)\n s=adapt(s,'import android.os.Build','import com.bilipai.desktop.danmaku.DesktopDanmakuConfigLog',rows)\n s=adapt(s,'class DanmakuConfig {','class DanmakuConfig internal constructor(private val platform: DesktopOriginalDanmakuRenderPlatform) {',rows)\n s=adapt(s,'typeface = resolveDanmakuTypeface(fontWeight),','typeface = resolveDanmakuTypeface(fontWeight, platform),',rows)\n s=adapt(s,'strokeColor = android.graphics.Color.BLACK,','strokeColor = java.awt.Color.BLACK.rgb,',rows)\n status=function(full_config,'getStatusBarHeight','        ')[0]\n s=adapt(s,status,'        internal fun getStatusBarHeight(platform: DesktopOriginalDanmakuRenderPlatform): Int = platform.systemChromeInsetPx()',rows)\n font=function(full_config,'resolveDanmakuTypeface','')[0]\n s=adapt(s,font,'internal fun resolveDanmakuTypeface(fontWeight: Int, platform: DesktopOriginalDanmakuRenderPlatform): Typeface = platform.resolveTypeface(fontWeight)',rows)\n unique_scale=function(full_config,'resolveBilibiliDanmakuFontScale','')[0]\n s=adapt(s,unique_scale,'// Sole resolveBilibiliDanmakuFontScale is selected in DesktopOriginalDanmakuItemParser.kt.',rows)\n s=adapt(s,constant.group(0),'// Sole BILIBILI_STANDARD_DANMAKU_FONT_SIZE is selected beside its original scale helper.',rows)\n s=adapt(s,'        android.util.Log.i(','        DesktopDanmakuConfigLog.i(',rows)\n emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',s,PATHS[6],'selected-full-config-with-required-windows-platform',rows,full_config)\n # Full original constructor, preserving every default except the required real platform font carrier.\n models=source[PATHS[11]];start=models.index('data class DanmakuRenderConfig(')\n end=balanced(masked(models),models.index('(',start));raw=models[start:end];rows=[]\n model=adapt(raw,'val typeface: Typeface? = Typeface.DEFAULT,','val typeface: Typeface,',rows)\n model='package com.android.purebilibili.danmaku.engine\\nimport java.awt.Font as Typeface\\n\\n'+model+'\\n'\n emit('com/android/purebilibili/danmaku/engine/DanmakuRenderConfig.kt',model,PATHS[11],'selected-complete-neutral-render-schema',rows)\n band=class_body(source[PATHS[12]],'DanmakuDisplayBand')\n emit('com/android/purebilibili/feature/video/danmaku/DanmakuDisplayBand.kt','package com.android.purebilibili.feature.video.danmaku\\n\\n'+band+'\\n',PATHS[12],'selected-complete-original-display-band')\n manager=source[PATHS[5]]\n render_layer=function(manager,'resolveDanmakuRenderLayerType','')[0]\n original_map=function(manager,'mapLayerTypeToDanmakuType')[0]\n layer_map=original_map.replace('    private fun','internal fun',1)\n emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLayerPolicy.kt','package com.android.purebilibili.feature.video.danmaku\\nimport com.android.purebilibili.danmaku.engine.*\\n\\n'+render_layer+'\\n\\n'+layer_map+'\\n',PATHS[5],'selected-complete-layer-mapping')\n live=source[PATHS[13]];start=live.index('            val textSize = DEFAULT_DANMAKU_TEXT_SIZE_PX *');end=live.index('\\n        }\\n    )',start);raw=live[start:end];rows=[];s=raw\n s=adapt(s,'            view.engine.updateConfig(','            return (',rows)\n s=adapt(s,'typeface = resolveDanmakuTypeface(danmakuSettings.fontWeight),','typeface = resolveDanmakuTypeface(danmakuSettings.fontWeight, platform),',rows)\n s=adapt(s,'speedFactor = danmakuSettings.speed,','speedFactor = danmakuSettings.speedFactor,',rows)\n s=adapt(s,'viewportWidthPx = view.width','viewportWidthPx = viewWidthPx',rows)\n s=adapt(s,'visibleHeightPx = view.height.toFloat(),','visibleHeightPx = viewHeightPx.toFloat(),',rows)\n s=adapt(s,'val strokeWidth = danmakuSettings.strokeWidth.coerceAtLeast(0f)','val strokeWidth = if(danmakuSettings.strokeEnabled)danmakuSettings.strokeWidth.coerceAtLeast(0f) else 0f',rows)\n body='package com.android.purebilibili.feature.video.danmaku\\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderConfig\\nimport com.bilipai.desktop.danmaku.DanmakuSettings\\nimport com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform\\n\\ninternal fun resolveDesktopOriginalLiveDanmakuRenderConfig(danmakuSettings:DanmakuSettings,viewWidthPx:Int,viewHeightPx:Int,safeDisplayArea:Float,platform:DesktopOriginalDanmakuRenderPlatform):DanmakuRenderConfig {\\n'+s+'\\n}\\n'\n emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuRenderConfig.kt',body,PATHS[13],'selected-complete-original-live-config-constructor',rows)\n start=live.index('            val typeFilter = DanmakuTypeFilterSettings(');end=live.index('            val currentEngine = engine',start);raw=live[start:end];rows=[];s=raw\n s=adapt(s,'                return@collect','                return false',rows) if s.count('                return@collect')==1 else s\n # Three original rejection paths become the corresponding Boolean-policy returns, with exact count-bound replacement.\n before='                return@collect';count=s.count(before)\n if count:\n  assert count==3\n  s=s.replace(before,'                return false');rows.append(dict(before=before,after='                return false',occurrenceCount=3))\n s=adapt(s,'settings.blockRules,','settings.blockedRules + settings.blockedKeywords,',rows)\n body='package com.android.purebilibili.feature.video.danmaku\\nimport com.android.purebilibili.feature.live.LiveDanmakuItem\\nimport com.bilipai.desktop.danmaku.DanmakuSettings\\n\\ninternal fun desktopOriginalLiveDanmakuAllows(item:LiveDanmakuItem,settings:DanmakuSettings):Boolean {\\n'+s+'            return true\\n}\\n'\n emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuAdmission.kt',body,PATHS[13],'selected-complete-original-live-admission',rows)\n engine=source[PATHS[14]]\n pinned=re.search(r'(?m)^            top\\.lineCount = ([^\\n]+)$',engine);assert pinned\n assert '            bottom.lineCount = '+pinned.group(1) in engine\n margin=re.search(r'(?m)^            scroll\\.itemMargin = ([^\\n]+)$',engine);assert margin\n body='package com.android.purebilibili.feature.video.danmaku\\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderConfig\\n\\n/** Exact original updateConfig expressions, exposed as explicit Windows consumer policies; not a replacement engine. */\\ninternal fun desktopOriginalDanmakuPinnedLineCount(config:DanmakuRenderConfig):Int = '+pinned.group(1)+'\\n\\ninternal fun desktopOriginalDanmakuItemMargin(config:DanmakuRenderConfig):Float = '+margin.group(1)+'\\n'\n emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuEngineBudgets.kt',body,PATHS[14],'selected-exact-original-engine-budget-expressions')\n\n repo_source=source[PATHS[7]];state=",
+    "beforeSha256LF": "738a4fd1ca6f715db0e4ac5aaa1ce85f444f50e53e8dda1c1dd5b0db2321db96",
+    "afterSha256LF": "cc46ae7eb04425f73ad35875826a7b51bb94c87c4f81c982ac9598d4701395d4",
+    "reason": "Select full Config/RenderConfig/DisplayBand/layer policies in the existing sole producer"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "old": "pending=['Full DanmakuSettingsPanel/cloud/filter import/smart occlusion','Transparent native overlay pointer/hit testing','Actual Root list/settings entry mounting and native seek callback','Root original TextSelectionBottomSheet delegate under existing owned card provider'],",
+    "new": "pending=['Native smart mask acquisition/bitmap ownership','Transparent native overlay pointer/hit testing','Portrait SCREEN_TOP placement and separate portrait-fullscreen renderer','Full original Android Live append-only queue/bitmap release closure','ByteDance collision/native engine parity and original special-mode renderer closure','Actual Root window/DPI/runtime acceptance for this source-only delta'],",
+    "beforeSha256LF": "cc46ae7eb04425f73ad35875826a7b51bb94c87c4f81c982ac9598d4701395d4",
+    "afterSha256LF": "b001d27e4e30af5c36dfbc990378a6448aabd1dcd532f5e259819e825d873641",
+    "reason": "Update feature inventory after frozen179/515; do not retain obsolete panel/menu consumer pending claims"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "old": "import com.android.purebilibili.feature.video.danmaku.shouldDisplayStandardDanmaku",
+    "new": "import com.android.purebilibili.feature.video.danmaku.shouldDisplayStandardDanmaku\nimport com.android.purebilibili.feature.video.danmaku.resolveDanmakuRenderLayerType\nimport com.android.purebilibili.feature.video.danmaku.mapLayerTypeToDanmakuType",
+    "beforeSha256LF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+    "afterSha256LF": "b0e38f8ca2a6bb3d1eb64f0894dd8249e1d94135deb3c9cbaf07ca89c3417635",
+    "reason": "Reuse original layer mapping before type filtering"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "old": "    val staticDurationSeconds: Float = 4f,",
+    "new": "    val staticDurationSeconds: Float = 4f,\n    val scrollFixedVelocity: Boolean = false,\n    val staticDanmakuToScroll: Boolean = false,\n    val massiveMode: Boolean = false,\n    val weightFilterLevel: Int = 0,",
+    "beforeSha256LF": "b0e38f8ca2a6bb3d1eb64f0894dd8249e1d94135deb3c9cbaf07ca89c3417635",
+    "afterSha256LF": "bb9c0e787d66fb17a078cdcc980570885d777f46e242f7bccf7f1c0691bb00f8",
+    "reason": "Original four advanced fields/defaults"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "old": "        fontWeight = fontWeight.coerceIn(1, 9),",
+    "new": "        fontWeight = fontWeight.coerceIn(1, 9),\n        weightFilterLevel = weightFilterLevel.coerceIn(0, 10),",
+    "beforeSha256LF": "bb9c0e787d66fb17a078cdcc980570885d777f46e242f7bccf7f1c0691bb00f8",
+    "afterSha256LF": "44accac89862f852336abe7ccf4d78114f47caadfa92d741b040d03afebced23",
+    "reason": "Original Manager weight setter range"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "old": "            shouldDisplayStandardDanmaku(comment.mode, comment.color, typeFilters, comment.isVipGradualColor) &&",
+    "new": "            shouldDisplayStandardDanmaku(mapLayerTypeToDanmakuType(resolveDanmakuRenderLayerType(comment.mode, staticDanmakuToScroll)), comment.color, typeFilters, comment.isVipGradualColor) &&\n            !(weightFilterLevel > 0 && comment.originalElement?.isSelf != true && comment.weight < weightFilterLevel) &&",
+    "beforeSha256LF": "44accac89862f852336abe7ccf4d78114f47caadfa92d741b040d03afebced23",
+    "afterSha256LF": "34e71594727c9256819c2e9e95719568829001bd6738b94d429c6a51690f93c0",
+    "reason": "Original converted type and exact !isSelf/weight filter; XML original false, never MID/hash guess"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "old": "    fun allowsAdvanced(comment: AdvancedDanmakuData): Boolean = enabled &&",
+    "new": "    internal fun allowsLive(comment:DanmakuComment):Boolean = enabled &&\n        com.android.purebilibili.feature.video.danmaku.desktopOriginalLiveDanmakuAllows(\n            com.android.purebilibili.feature.live.LiveDanmakuItem(text=comment.text,mode=comment.mode,color=comment.color,uid=comment.userHash.toLongOrNull() ?: 0L),this)\n\n    fun allowsAdvanced(comment: AdvancedDanmakuData): Boolean = enabled &&",
+    "beforeSha256LF": "34e71594727c9256819c2e9e95719568829001bd6738b94d429c6a51690f93c0",
+    "afterSha256LF": "eaafed3a14fcbe95258171cf3aed2cf0b8332e925f7dae1f23806505f299e320",
+    "reason": "Live uses full original pre-layer/type/rules admission; original live has no video weight predicate"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+    "old": "    staticDurationSeconds=original.staticDurationSeconds,lineHeight=original.lineHeight,",
+    "new": "    staticDurationSeconds=original.staticDurationSeconds,lineHeight=original.lineHeight,\n    scrollFixedVelocity=original.scrollFixedVelocity,staticDanmakuToScroll=original.staticDanmakuToScroll,\n    massiveMode=original.massiveMode,weightFilterLevel=original.weightFilterLevel,",
+    "beforeSha256LF": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+    "afterSha256LF": "2ddd07492e3f386950d4fec879a0e5abb1ac5a633f438cf345bdd666312557a0",
+    "reason": "Same full original global preferences projected into sole renderer settings"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "import kotlin.math.abs",
+    "new": "import kotlin.math.abs\nimport com.android.purebilibili.danmaku.engine.*\nimport com.android.purebilibili.feature.video.danmaku.resolveDanmakuRenderLayerType\nimport com.android.purebilibili.feature.video.danmaku.desktopOriginalDanmakuPinnedLineCount\nimport com.android.purebilibili.feature.video.danmaku.desktopOriginalDanmakuItemMargin",
+    "beforeSha256LF": "9b24efcbf906d763c38a6cb1aa76a0e27ba940360fd68a8400ddcd558df073f9",
+    "afterSha256LF": "70e433d459678543874bfac8aceb3d183dacbeaab057aaf3cac7d136c951bbd2",
+    "reason": "Original neutral config and sole layer/engine budget policies"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "data class PositionedDanmaku",
+    "new": "data class DesktopDanmakuTextMetrics(val width:Int,val ascent:Double)\n\ndata class PositionedDanmaku",
+    "beforeSha256LF": "70e433d459678543874bfac8aceb3d183dacbeaab057aaf3cac7d136c951bbd2",
+    "afterSha256LF": "b4d751dc85b374a05b1534bb94de8cf662b53e5b16fbd84d79d38793ec6b4171",
+    "reason": "Actual font width/ascent required at frame admission"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "settings: DanmakuSettings = DanmakuSettings(displayAreaRatio = 1f, scrollDurationSeconds = 8f, staticDurationSeconds = 5f)",
+    "new": "settings: DanmakuSettings",
+    "beforeSha256LF": "b4d751dc85b374a05b1534bb94de8cf662b53e5b16fbd84d79d38793ec6b4171",
+    "afterSha256LF": "94d07eeadfdb2101b97e72814c9801d5bb7cca9000693a6d5a376ca5817a1c76",
+    "reason": "Remove production legacy timing/default settings; every caller supplies its actual projection"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings)",
+    "new": "class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings, private val liveAdmission:Boolean)",
+    "beforeSha256LF": "94d07eeadfdb2101b97e72814c9801d5bb7cca9000693a6d5a376ca5817a1c76",
+    "afterSha256LF": "94b9fad41961664a7a40d6e77ae4374c712dc0ce858c67b8f753174e2c831189",
+    "reason": "Required original video/live admission semantics; no guessed live self/weight behavior"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "val visible = originalComments.filter(settings::allows)",
+    "new": "val visible = originalComments.filter { if(liveAdmission)settings.allowsLive(it) else settings.allows(it) }",
+    "beforeSha256LF": "94b9fad41961664a7a40d6e77ae4374c712dc0ce858c67b8f753174e2c831189",
+    "afterSha256LF": "7f77c2584522be255d99143725ddd08cea4e8a6560e06c9e8e69c67a719b755d",
+    "reason": "Live preserves original pre-layer admission with no video-only weight filter"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "    private data class Scheduled(val comment: DanmakuComment, val lane: Int, val width: Int, val duration: Double) {",
+    "new": "    internal val currentSettings:DanmakuSettings get()=settings\n    private data class Scheduled(val comment: DanmakuComment, val layer: Int, val trackTop:Double, val baseline:Double, val width: Int, val duration: Double) {",
+    "beforeSha256LF": "7f77c2584522be255d99143725ddd08cea4e8a6560e06c9e8e69c67a719b755d",
+    "afterSha256LF": "f2676515bb26afb1477b7f69b1400eb77b2ec1229049829878f01b195380d9a2",
+    "reason": "Actual layer/physical track and baseline"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "    private var viewport = Triple(0, 0, 0)",
+    "new": "    private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig)\n    private var viewport:Geometry?=null",
+    "beforeSha256LF": "f2676515bb26afb1477b7f69b1400eb77b2ec1229049829878f01b195380d9a2",
+    "afterSha256LF": "f69a701e70281ec5ce65b3e984a57044fbd6380e634c596c114f92ce76a6121d",
+    "reason": "Config changes remeasure and rebuild visible window"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "    fun frame(time: Double, width: Int, height: Int, rowHeight: Int, measure: (DanmakuComment) -> Int): List<PositionedDanmaku> {\n        if (!time.isFinite() || time < 0 || width <= 0 || height <= 0 || rowHeight <= 0) return emptyList()\n        val geometry = Triple(width, height, rowHeight)\n        if (!previousTime.isFinite() || time < previousTime || abs(time - previousTime) > 1.0 || viewport != geometry) {\n            active.clear()\n            val longestDuration = maxOf(settings.scrollDurationSeconds * settings.speedFactor, settings.staticDurationSeconds).toDouble()\n            cursor = lowerBound((time - longestDuration).coerceAtLeast(0.0))\n            viewport = geometry\n        }\n        val availableHeight = (height * settings.displayAreaRatio).toInt()\n        if (availableHeight < rowHeight) return emptyList()\n        val laneCount = (availableHeight / rowHeight).coerceIn(1, 50)\n        while (cursor < comments.size && comments[cursor].timeSeconds <= time) {\n            val comment = comments[cursor++]\n            active.removeAll { it.end <= comment.timeSeconds }\n            val textWidth = measure(comment).coerceAtLeast(1)\n            val fixed = comment.mode == 4 || comment.mode == 5\n            val duration = if (fixed) settings.staticDurationSeconds.toDouble()\n                else (settings.scrollDurationSeconds * settings.speedFactor).toDouble()\n            val lanes = if (comment.mode == 4) (laneCount - 1 downTo 0).toList() else (0 until laneCount).toList()\n            val lane = lanes.firstOrNull { candidate ->\n                val occupants = active.filter { it.lane == candidate }\n                if (fixed) occupants.isEmpty() else occupants.all { previous ->\n                    if (previous.comment.mode == 4 || previous.comment.mode == 5 ||\n                        (previous.comment.mode == 6) != (comment.mode == 6)) false else {\n                        val age = comment.timeSeconds - previous.comment.timeSeconds\n                        val oldSpeed = (width + previous.width) / previous.duration\n                        val newSpeed = (width + textWidth) / duration\n                        val gap = oldSpeed * age - previous.width\n                        val catchUpDistance = (newSpeed - oldSpeed).coerceAtLeast(0.0) * (previous.duration - age)\n                        gap >= MIN_GAP + catchUpDistance\n                    }\n                }\n            }\n            if (lane != null) active += Scheduled(comment, lane, textWidth, duration)\n        }\n        active.removeAll { it.end <= time }\n        previousTime = time\n        return active.map { scheduled ->\n            val progress = (time - scheduled.comment.timeSeconds) / scheduled.duration\n            val x = when (scheduled.comment.mode) {\n                4, 5 -> (width - scheduled.width) / 2.0\n                6 -> -scheduled.width + (width + scheduled.width) * progress\n                else -> width - (width + scheduled.width) * progress\n            }\n            PositionedDanmaku(scheduled.comment, x, (scheduled.lane + 1) * rowHeight - 6.0, scheduled.width)\n        }\n    }\n\n",
+    "new": "    fun frame(time: Double, width: Int, height: Int, config:DanmakuRenderConfig, measure: (DanmakuComment) -> DesktopDanmakuTextMetrics): List<PositionedDanmaku> {\n        if (!time.isFinite() || time < 0 || width <= 0 || height <= 0 || config.lineHeightPx <= 0f) return emptyList()\n        val geometry = Geometry(width, height, config)\n        if (!previousTime.isFinite() || time < previousTime || abs(time - previousTime) > 1.0 || viewport != geometry) {\n            active.clear()\n            val longestDuration = maxOf(config.scrollDurationMs, config.pinnedDurationMs)/1000.0\n            cursor = lowerBound((time - longestDuration).coerceAtLeast(0.0))\n            viewport = geometry\n        }\n        if(config.lineCount<=0){active.clear();previousTime=time;return emptyList()}\n        val lineStep=(config.lineHeightPx+config.lineMarginPx).toDouble()\n        // Exact original ByteDanceDanmakuEngine.updateConfig pinned-layer budget; no invented extra tracks.\n        val pinnedLineCount=desktopOriginalDanmakuPinnedLineCount(config)\n        while (cursor < comments.size && comments[cursor].timeSeconds <= time) {\n            val comment = comments[cursor++]\n            active.removeAll { it.end <= comment.timeSeconds }\n            val layer=resolveDanmakuRenderLayerType(comment.mode,settings.staticDanmakuToScroll)\n            val metrics=measure(comment)\n            val textWidth=metrics.width.coerceAtLeast(1)\n            val fixed=layer==DANMAKU_LAYER_TOP || layer==DANMAKU_LAYER_BOTTOM\n            val duration=(if(fixed)config.pinnedDurationMs else config.scrollDurationMs)/1000.0\n            val lineCount=if(fixed)pinnedLineCount else config.lineCount\n            val track=(0 until lineCount).firstOrNull { candidate ->\n                val trackTop=if(layer==DANMAKU_LAYER_BOTTOM)height-config.bottomMarginPx-config.lineHeightPx-candidate*lineStep\n                    else config.topMarginPx+candidate*lineStep\n                val occupants = active.filter { abs(it.trackTop-trackTop)<config.lineHeightPx }\n                if (fixed) occupants.isEmpty() else occupants.all { previous ->\n                    if (previous.layer==DANMAKU_LAYER_TOP || previous.layer==DANMAKU_LAYER_BOTTOM ||\n                        (previous.layer==DANMAKU_LAYER_REVERSE) != (layer==DANMAKU_LAYER_REVERSE)) false else {\n                        val age = comment.timeSeconds - previous.comment.timeSeconds\n                        val oldSpeed = (width + previous.width) / previous.duration\n                        val newSpeed = (width + textWidth) / duration\n                        val gap = oldSpeed * age - previous.width\n                        val catchUpDistance = (newSpeed - oldSpeed).coerceAtLeast(0.0) * (previous.duration - age)\n                        gap >= desktopOriginalDanmakuItemMargin(config) + catchUpDistance\n                    }\n                }\n            }\n            if (track != null) {\n                val top=if(layer==DANMAKU_LAYER_BOTTOM)height-config.bottomMarginPx-config.lineHeightPx-track*lineStep\n                    else config.topMarginPx+track*lineStep\n                active += Scheduled(comment,layer,top,top+metrics.ascent,textWidth,duration)\n            }\n        }\n        active.removeAll { it.end <= time }\n        previousTime = time\n        return active.map { scheduled ->\n            val progress = (time - scheduled.comment.timeSeconds) / scheduled.duration\n            val x = when (scheduled.layer) {\n                DANMAKU_LAYER_BOTTOM,DANMAKU_LAYER_TOP -> (width - scheduled.width) / 2.0\n                DANMAKU_LAYER_REVERSE -> -scheduled.width + (width + scheduled.width) * progress\n                else -> width - (width + scheduled.width) * progress\n            }\n            PositionedDanmaku(scheduled.comment, x, scheduled.baseline, scheduled.width)\n        }\n    }\n\n",
+    "beforeSha256LF": "f69a701e70281ec5ce65b3e984a57044fbd6380e634c596c114f92ce76a6121d",
+    "afterSha256LF": "158c1508113ab481b55ccf14931e72a35781a400dafc80e684b93950bb24890f",
+    "reason": "Required full original resolved durations/line budget/bands and real font metrics, keeping Windows collision algorithm explicit"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "old": "    companion object {\n        const val SCROLL_DURATION = 8.0\n        const val FIXED_DURATION = 5.0\n        private const val MIN_GAP = 24.0\n    }",
+    "new": "    // Timing and item spacing are consumed from the sole original config/policies.",
+    "beforeSha256LF": "158c1508113ab481b55ccf14931e72a35781a400dafc80e684b93950bb24890f",
+    "afterSha256LF": "04132a2cb924ea0837f08b6758791c4b4a652be0393a712620cc1646dc57b83b",
+    "reason": "Remove unused legacy Windows timing/spacing constants"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "import com.android.purebilibili.feature.live.LiveDanmakuItem",
+    "new": "import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig\nimport com.android.purebilibili.feature.live.LiveDanmakuItem",
+    "beforeSha256LF": "e5a52a11812a4fd0715d37ef4451fe3503d3b790c1c4725182dccfb530478d61",
+    "afterSha256LF": "5d4c8b0afae8dd22439638264d9b6c9ad212f0e915cce86d8a874200d9b4ebf9",
+    "reason": "Neutral config input for same actual Live settings"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "    private var scheduler = DanmakuScheduler(emptyList())",
+    "new": "    private var scheduler = DanmakuScheduler(emptyList(),DanmakuSettings(),liveAdmission=true)",
+    "beforeSha256LF": "5d4c8b0afae8dd22439638264d9b6c9ad212f0e915cce86d8a874200d9b4ebf9",
+    "afterSha256LF": "d2c264eb50904a8225769338f2c47a26822d4d54cab2a3365b3db891ebc9179a",
+    "reason": "Empty unmounted scheduler explicit original defaults, replaced with actual settings before paint"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "        scheduler = DanmakuScheduler(emptyList());",
+    "new": "        scheduler = DanmakuScheduler(emptyList(),DanmakuSettings(),liveAdmission=true);",
+    "beforeSha256LF": "d2c264eb50904a8225769338f2c47a26822d4d54cab2a3365b3db891ebc9179a",
+    "afterSha256LF": "3d31defa8775d55a30ce9a840376fe69bf11abb5961c82cd5b8add0d1563d2b2",
+    "reason": "Empty reset only; actual Live settings arrive before any paint"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "DanmakuScheduler(entries.mapNotNull { it.rendered?.comment }, safeSettings)",
+    "new": "DanmakuScheduler(entries.mapNotNull { it.rendered?.comment }, safeSettings,liveAdmission=true)",
+    "beforeSha256LF": "3d31defa8775d55a30ce9a840376fe69bf11abb5961c82cd5b8add0d1563d2b2",
+    "afterSha256LF": "3695832a32338a66e898b34918b10109a601203d97d497d2483a87cbdde17bf9",
+    "reason": "Actual live original admission semantics before render layer conversion"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "fun paint(context: Graphics2D, width: Int, height: Int, scale: Float, settings: DanmakuSettings)",
+    "new": "fun paint(context: Graphics2D, width: Int, height: Int, danmakuHeight:Int, config:DanmakuRenderConfig, settings: DanmakuSettings)",
+    "beforeSha256LF": "3695832a32338a66e898b34918b10109a601203d97d497d2483a87cbdde17bf9",
+    "afterSha256LF": "5e94acb98fbd3f758dfebcef9543affd910f877d3ec6692a6f9f88bac6289c0b",
+    "reason": "Required original Live config on actual physical-pixel band; SC retains full existing height"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "        val largestScale = entries.maxOfOrNull { it.rendered?.style?.scale ?: 1f }?.coerceAtLeast(1f) ?: 1f\n        val rowHeight = (48 * scale * 0.9f * safeSettings.fontScale * safeSettings.lineHeight * largestScale).toInt().coerceAtLeast(18)",
+    "new": "        val scale=config.viewportScale\n        val rowHeight=config.lineHeightPx.toInt().coerceAtLeast(1)",
+    "beforeSha256LF": "5e94acb98fbd3f758dfebcef9543affd910f877d3ec6692a6f9f88bac6289c0b",
+    "afterSha256LF": "879003553a9f84804651ce6d5bf80dc0a880465445b293b9d349a8428168ba00",
+    "reason": "Original resolved line height, not independent live duration or guessed row budget"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "            val size = (25 * scale * 0.9f * safeSettings.fontScale * (style?.scale ?: 1f)).toInt().coerceIn(10, 192)\n            return Font(\"Microsoft YaHei UI\", if (safeSettings.fontWeight >= 5 || style?.bold == true) Font.BOLD else Font.PLAIN, size)",
+    "new": "            return desktopDanmakuFont(config,entry?.rendered?.comment ?: entry?.comment ?: error(\"Live font requested without its entry\"),style?.scale ?: 1f,style?.bold==true)",
+    "beforeSha256LF": "879003553a9f84804651ce6d5bf80dc0a880465445b293b9d349a8428168ba00",
+    "afterSha256LF": "431beda8ea6e5ee082741d98d164d0145b135c6d83be299af2edfe4f2a9af87e",
+    "reason": "Actual required Root font/weight and original item size grade"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "        scheduler.frame(seconds(now), width, height, rowHeight) { comment ->\n            val graphic = image(indexed[comment.id])\n            if (graphic != null) (rowHeight * graphic.width.toDouble() / graphic.height.coerceAtLeast(1)).toInt().coerceIn(rowHeight, rowHeight * 5)\n            else context.getFontMetrics(font(indexed[comment.id])).stringWidth(comment.text)\n        }",
+    "new": "        scheduler.frame(seconds(now), width, danmakuHeight, config) { comment ->\n            val graphic = image(indexed[comment.id])\n            val metrics=context.getFontMetrics(font(indexed[comment.id]))\n            DesktopDanmakuTextMetrics(\n                if (graphic != null) (rowHeight * graphic.width.toDouble() / graphic.height.coerceAtLeast(1)).toInt().coerceIn(rowHeight, rowHeight * 5)\n                else metrics.stringWidth(comment.text),\n                if(graphic!=null)rowHeight.toDouble() else metrics.ascent.toDouble(),\n            )\n        }",
+    "beforeSha256LF": "431beda8ea6e5ee082741d98d164d0145b135c6d83be299af2edfe4f2a9af87e",
+    "afterSha256LF": "9474ba3a3b8983487079cfb6fe48018caf02a7abe93e208b520c9f17f244d0ec",
+    "reason": "Scheduler receives original neutral timing and actual live image/font extents"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "(positioned.baseline - rowHeight + 6).toInt()",
+    "new": "(positioned.baseline - rowHeight).toInt()",
+    "beforeSha256LF": "9474ba3a3b8983487079cfb6fe48018caf02a7abe93e208b520c9f17f244d0ec",
+    "afterSha256LF": "5498e219e298797bfdd6bc165de5e7c3ff906cccda021c7316ee7366aedae3e2",
+    "reason": "Baseline derived from real image extent, no former hardcoded ascent adjustment"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "BasicStroke(safeSettings.strokeWidth * scale,",
+    "new": "BasicStroke(config.strokeWidthPx,",
+    "beforeSha256LF": "5498e219e298797bfdd6bc165de5e7c3ff906cccda021c7316ee7366aedae3e2",
+    "afterSha256LF": "fe5d5fcf72ace3d588fd08fe98e67659811096fcd012ea8d9663c9b8bd918518",
+    "reason": "Actual resolved original stroke width"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "if (!safeSettings.allows(rendered.comment)) return@forEach",
+    "new": "if (!safeSettings.enabled || !safeSettings.allowSpecial || com.android.purebilibili.feature.video.danmaku.shouldBlockDanmakuByRules(rendered.comment.text,safeSettings.blockedRules+safeSettings.blockedKeywords,rendered.comment.userHash)) return@forEach",
+    "beforeSha256LF": "fe5d5fcf72ace3d588fd08fe98e67659811096fcd012ea8d9663c9b8bd918518",
+    "afterSha256LF": "7a5202dd8afa6abd4b94986e840c7c7d1e1cec1bb2bcd1022bc1d8d85d75927f",
+    "reason": "SC original admission uses allowSpecial/rules, not a video-only weight filter or static standard type flag"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "old": "                val cardFont = Font(\"Microsoft YaHei UI\", if (style?.bold == true) Font.BOLD else Font.PLAIN,\n                    (14 * scale * (style?.scale ?: 1f)).toInt().coerceIn(11, 64))",
+    "new": "                val cardFont = config.typeface.deriveFont((config.textSizePx*0.7f*(style?.scale ?: 1f)).coerceAtLeast(1f)).let {\n                    if(style?.bold==true)it.deriveFont(mapOf(java.awt.font.TextAttribute.WEIGHT to java.awt.font.TextAttribute.WEIGHT_BOLD)) else it\n                }",
+    "beforeSha256LF": "7a5202dd8afa6abd4b94986e840c7c7d1e1cec1bb2bcd1022bc1d8d85d75927f",
+    "afterSha256LF": "0745671dd4e8d5643dca02a01e42816c101a3e119ce2cf04691880aa7ad07bae",
+    "reason": "Same actual platform font for existing SC renderer; original SC expiry/countdown untouched"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "import com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport",
+    "new": "import com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport\nimport com.android.purebilibili.feature.video.danmaku.DanmakuViewport\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderConfig",
+    "beforeSha256LF": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+    "afterSha256LF": "3f5594fe4077214079b3fb2955de66493d33bf0fbae56f47748f2fc04c064e14",
+    "reason": "Original complete neutral config"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "class DanmakuOverlay(",
+    "new": "class DanmakuOverlay internal constructor(",
+    "beforeSha256LF": "3f5594fe4077214079b3fb2955de66493d33bf0fbae56f47748f2fc04c064e14",
+    "afterSha256LF": "d08e3b238469536f228402729c79c3b20352f81dee28a6aee856d9db8f803e58",
+    "reason": "Required internal platform seam without exposing internal type as public API"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "    private val player: MpvPlayer,",
+    "new": "    private val player: MpvPlayer,\n    private val renderPlatform:DesktopOriginalDanmakuRenderPlatform,",
+    "beforeSha256LF": "d08e3b238469536f228402729c79c3b20352f81dee28a6aee856d9db8f803e58",
+    "afterSha256LF": "95a6526c6c6ef9f09fbc48f5a22780f3ffaa814bcf87e806ec1a909edd217158",
+    "reason": "Actual existing Root window/font provider required at every production constructor"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "DanmakuScheduler(emptyList(), settings)",
+    "new": "DanmakuScheduler(emptyList(), settings,liveAdmission=false)",
+    "beforeSha256LF": "95a6526c6c6ef9f09fbc48f5a22780f3ffaa814bcf87e806ec1a909edd217158",
+    "afterSha256LF": "d7a64ddc854706d81a60543ad865e3c1451bd3d3a6fba4081a574e36f6750e32",
+    "reason": "Actual video source admission policy"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "DanmakuScheduler(processed.comments, settings)",
+    "new": "DanmakuScheduler(processed.comments, settings,liveAdmission=false)",
+    "beforeSha256LF": "d7a64ddc854706d81a60543ad865e3c1451bd3d3a6fba4081a574e36f6750e32",
+    "afterSha256LF": "686663347503ff096b3ca1c6f376ce648beae3196bbb9e7263b0299f5fda586c",
+    "reason": "Actual processed video source preserves original video self/weight policy"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "    private val measuredWidths = mutableMapOf<Triple<Int, Int, Int>, Int>()",
+    "new": "    private val measuredWidths = mutableMapOf<Pair<Int,Font>, Int>()\n    private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean)\n    private var resolvedConfig:Pair<ConfigKey,DanmakuRenderConfig>?=null",
+    "beforeSha256LF": "686663347503ff096b3ca1c6f376ce648beae3196bbb9e7263b0299f5fda586c",
+    "afterSha256LF": "a0936e206ab79ffed895b5d40771b5b39ac260548b2cc766009c1a2f2c1c88cd",
+    "reason": "Actual font/config cache with mode identity and no second persistent state or renderer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "                    liveRenderer.paint(context, width, height, viewport.scale, configuration)",
+    "new": "                    val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform) ?: return\n                    val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),true)\n                    val bandHeight=(geometry.viewport.heightPx*configuration.displayAreaRatio).toInt().coerceAtLeast(1)\n                    val config=resolvedConfig?.takeIf { it.first==key }?.second ?: com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig(configuration,geometry.viewport.widthPx,bandHeight,configuration.displayAreaRatio,renderPlatform).also { resolvedConfig=key to it }\n                    val physical=context.create() as Graphics2D\n                    try {geometry.configurePhysicalPixels(physical);physical.composite=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,config.alpha/255f);liveRenderer.paint(physical,geometry.viewport.widthPx,geometry.viewport.heightPx,bandHeight,config,configuration)}\n                    finally {physical.dispose()}",
+    "beforeSha256LF": "a0936e206ab79ffed895b5d40771b5b39ac260548b2cc766009c1a2f2c1c88cd",
+    "afterSha256LF": "e0bf45801660dd69b76a433e4aca801b1bd381b15d1e6e77d17458fa31eb0f22",
+    "reason": "Live receives actual DPI/device-pixel geometry and the same complete original config"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "old": "                if (measuredWidths.size > 5_000) measuredWidths.clear()\n                fun fontSize(comment: DanmakuComment): Int =\n                    (comment.size * viewport.scale * 0.9f * configuration.fontScale * (styles[comment.id]?.scale ?: 1f)).toInt().coerceIn(10, 192)\n                fun fontStyle(comment: DanmakuComment): Int = if (configuration.fontWeight >= 5 || styles[comment.id]?.bold == true) Font.BOLD else Font.PLAIN\n                val largestScale = styles.values.maxOfOrNull { it.scale }?.coerceAtLeast(1f) ?: 1f\n                val rowHeight = (48 * viewport.scale * 0.9f * configuration.fontScale * configuration.lineHeight * largestScale).toInt().coerceAtLeast(18)\n                val positioned = scheduler.frame(displayTime, width, height, rowHeight) { comment ->\n                    val size = fontSize(comment)\n                    val weight = fontStyle(comment)\n                    measuredWidths.getOrPut(Triple(comment.id, size, weight)) {\n                        getFontMetrics(Font(\"Microsoft YaHei UI\", weight, size)).stringWidth(comment.text)\n                    }\n                }\n                positioned.forEach { item ->\n                    val style = styles[item.comment.id]\n                    val font = Font(\"Microsoft YaHei UI\", fontStyle(item.comment), fontSize(item.comment))\n                    pluginAwtColor(style?.backgroundColor)?.let { color ->\n                        val metrics = context.getFontMetrics(font)\n                        context.color = color\n                        context.fillRoundRect(item.x.toInt() - 4, item.baseline.toInt() - metrics.ascent - 2,\n                            item.textWidth + 8, metrics.height + 4, 6, 6)\n                    }\n                    val shape = font.createGlyphVector(context.fontRenderContext, item.comment.text)\n                        .getOutline(item.x.toFloat(), item.baseline.toFloat())\n                    if (configuration.strokeEnabled && configuration.strokeWidth > 0f) {\n                        context.color = pluginAwtColor(style?.borderColor) ?: Color.BLACK\n                        context.stroke = BasicStroke(configuration.strokeWidth * viewport.scale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)\n                        context.draw(shape)\n                    }\n                    if (item.comment.isVipGradualColor && style?.textColor == null) {\n                        val x = item.x.toFloat()\n                        context.paint = LinearGradientPaint(x, 0f, x + item.textWidth.coerceAtLeast(1), 0f,\n                            floatArrayOf(0f, 0.5f, 1f), arrayOf(Color(0xff7cba), Color(0xa798ff), Color(0x70d6ff)))\n                    } else context.color = pluginAwtColor(style?.textColor) ?: Color(item.comment.color)\n                    context.fill(shape)\n                }\n",
+    "new": "                val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform) ?: return\n                val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false)\n                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform).resolveRenderConfig(geometry.viewport).also { resolvedConfig=key to it }\n                val physical=context.create() as Graphics2D\n                try {\n                    geometry.configurePhysicalPixels(physical)\n                    physical.composite=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,config.alpha/255f)\n                    if (measuredWidths.size > 5_000) measuredWidths.clear()\n                    fun font(comment:DanmakuComment):Font {\n                        val style=styles[comment.id]\n                        return desktopDanmakuFont(config,comment,style?.scale ?: 1f,style?.bold==true)\n                    }\n                    val positioned = scheduler.frame(displayTime, geometry.viewport.widthPx, geometry.viewport.heightPx, config) { comment ->\n                        val font=font(comment)\n                        val metrics=physical.getFontMetrics(font)\n                        val width=measuredWidths.getOrPut(comment.id to font) {metrics.stringWidth(comment.text)}\n                        DesktopDanmakuTextMetrics(width,metrics.ascent.toDouble())\n                    }\n                    positioned.forEach { item ->\n                        val style = styles[item.comment.id]\n                        val font = font(item.comment)\n                        pluginAwtColor(style?.backgroundColor)?.let { color ->\n                            val metrics = physical.getFontMetrics(font)\n                            physical.color = color\n                            physical.fillRoundRect(item.x.toInt() - 4, item.baseline.toInt() - metrics.ascent - 2,\n                                item.textWidth + 8, metrics.height + 4, 6, 6)\n                        }\n                        val shape = font.createGlyphVector(physical.fontRenderContext, item.comment.text)\n                            .getOutline(item.x.toFloat(), item.baseline.toFloat())\n                        if (config.strokeWidthPx > 0f) {\n                            physical.color = pluginAwtColor(style?.borderColor) ?: Color(config.strokeColor,true)\n                            physical.stroke = BasicStroke(config.strokeWidthPx, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)\n                            physical.draw(shape)\n                        }\n                        if (item.comment.isVipGradualColor && style?.textColor == null) {\n                            val x = item.x.toFloat()\n                            physical.paint = LinearGradientPaint(x, 0f, x + item.textWidth.coerceAtLeast(1), 0f,\n                                floatArrayOf(0f, 0.5f, 1f), arrayOf(Color(0xff7cba), Color(0xa798ff), Color(0x70d6ff)))\n                        } else physical.color = pluginAwtColor(style?.textColor) ?: Color(item.comment.color)\n                        physical.fill(shape)\n                    }\n                } finally {physical.dispose()}\n",
+    "beforeSha256LF": "e0bf45801660dd69b76a433e4aca801b1bd381b15d1e6e77d17458fa31eb0f22",
+    "afterSha256LF": "5d67bf2a8eaf04e777ab5564af6c48bd3bb27da35ed13992e96d71de08e93a3b",
+    "reason": "Full config -> standard actual AWT paint/Scheduler, separate old special-mode renderer remains explicit"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "DanmakuOverlay(it, httpClient = repository.httpClient)",
+    "new": "DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(hostWindow) { \"Danmaku requires the mounted Root window\" } }, httpClient = repository.httpClient)",
+    "beforeSha256LF": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af",
+    "afterSha256LF": "5ab3be1ed9e9e5d37254dee4525199b07c431e0f79356d35d079adc4d19fb115",
+    "reason": "Required actual existing window for original font/DPI platform seam"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "val danmaku = remember(player, repository) {",
+    "new": "val danmaku = remember(player, repository, hostWindow) {",
+    "beforeSha256LF": "5ab3be1ed9e9e5d37254dee4525199b07c431e0f79356d35d079adc4d19fb115",
+    "afterSha256LF": "ae4aa9a55b7729cae2449ad3cd6fb90f299224c41d8ba61caff9e8110bf99909",
+    "reason": "Mounted window is an actual remembered renderer owner key, not a stale captured font/window provider"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopOverlayNativeSmoke.kt",
+    "old": "DanmakuOverlay(player, source = noNetwork)",
+    "new": "DanmakuOverlay(player, renderPlatform = DesktopWindowsDanmakuRenderPlatform { requireNotNull(SwingUtilities.getWindowAncestor(player.surface)) }, source = noNetwork)",
+    "beforeSha256LF": "a06a66f6793a4a3a52d5810ddb5eb6a7b38e50cfba25e65365d2af3221c9e2c5",
+    "afterSha256LF": "04c7daf2404b037be69b80f5c8f1fbfde650261c6f49a69717d051c3cd00cc07",
+    "reason": "Required actual existing window for original font/DPI platform seam"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+    "old": "DanmakuOverlay(player)",
+    "new": "DanmakuOverlay(player, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(javax.swing.SwingUtilities.getWindowAncestor(player.surface)) })",
+    "beforeSha256LF": "95083f5ecc561289141982b03a632938e3947e31af67c4b1840da7c3007af7c8",
+    "afterSha256LF": "ef4fd8c98211a3686824fbe1b55a0dcdf305a09b0598c269adc338f6f088c984",
+    "reason": "Required actual existing window for original font/DPI platform seam"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+    "old": "DanmakuOverlay(it, repository.httpClient)",
+    "new": "DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(javax.swing.SwingUtilities.getWindowAncestor(it.surface)) }, httpClient = repository.httpClient)",
+    "occurrence": 0,
+    "requiredOldCount": 2,
+    "beforeSha256LF": "884bff23c3c24309a782777d4aca4cd00cde8682f83df531c348c7e9ae838691",
+    "afterSha256LF": "b0a883e335f52e1574559e084aecf5c0af37b53a9133a25ac1aa370a6f41ff3e",
+    "reason": "First genuine page overlay constructor; actual surface window resolved after mount"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+    "old": "DanmakuOverlay(it, repository.httpClient)",
+    "new": "DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(javax.swing.SwingUtilities.getWindowAncestor(it.surface)) }, httpClient = repository.httpClient)",
+    "beforeSha256LF": "b0a883e335f52e1574559e084aecf5c0af37b53a9133a25ac1aa370a6f41ff3e",
+    "afterSha256LF": "06b7390a0db107dbcf390fdf6f6fb4c961c7cb1469a2116d80bde28c00cab4f7",
+    "reason": "Second genuine page overlay constructor"
+  }
+]

@@ -1,0 +1,164 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "25189cf639c886f36ae03320b98f59e932e0895b",
+    "sha256Bytes": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+    "checkoutSHA256Bytes": "5b7ca9f1eab38b98357e6df8e67327a58d501f0dcea85a70c5216024e797cfb6",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuConfig.kt.txt",
+    "existingRegistry": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "sha256": "eb3bc94d8a8bc3ac4a22fc734116b977b6ff27f53ee5a7b264090edfe1f12cf1",
+      "mode": "selected",
+      "features": [
+        "stable-danmaku-list-menu"
+      ]
+    },
+    "productionSelected": false
+  },
+  {
+    "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "f2eb3b296dc53960b0454542d0c49c92335c3cbc",
+    "sha256Bytes": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+    "checkoutSHA256Bytes": "4e12e25c009d880a0f7e8c6b66f036266ad9eb13729414a29004698e6a1ebe85",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\DanmakuModels.kt.txt",
+    "existingRegistry": {
+      "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "sha256": "ba80d0cfef445bda5a9e2ebc10f68de83d1ccc24cf881d7a49d02bf656c6cfa7",
+      "mode": "selected",
+      "features": [
+        "stable-danmaku-list-menu"
+      ]
+    },
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "b6119f8052338ad0cb61b36817a5244d25382d63",
+    "sha256Bytes": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+    "checkoutSHA256Bytes": "6ad7669c89538d58b1d9717c5f20415fd381873325dd625ce7f1ab4704e1aee8",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuManager.kt.txt",
+    "existingRegistry": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "sha256": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "features": [
+        "plugins",
+        "stable-danmaku-list-menu"
+      ],
+      "mode": "extracted"
+    },
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/FaceOcclusionPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "34959ed7979e9c89bf3fa903881840f2688d3b44",
+    "sha256Bytes": "cb448bd78a562e36cba767d122f372f3b891c365893d5cb628195e2e0c4489a4",
+    "checkoutSHA256Bytes": "55b9cea7166cd90e1650409218970f0e230adf71ae7e5664f8d65622afcae581",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\FaceOcclusionPolicy.kt.txt",
+    "existingRegistry": null,
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuViewportPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "f1061b66f20adfabce528b1d5be1b1ea9ed099c8",
+    "sha256Bytes": "52abb4af11a3cdafdadd91b7aa2c61a0ca49785d1a399af00c97e37aff559428",
+    "checkoutSHA256Bytes": "6d9b99fb4c32404cbc733c3b1d3ca9731246ef9ad66c309bb3b43e34807b7dd4",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\danmaku\\DanmakuViewportPolicy.kt.txt",
+    "existingRegistry": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuViewportPolicy.kt",
+      "sha256": "52abb4af11a3cdafdadd91b7aa2c61a0ca49785d1a399af00c97e37aff559428",
+      "features": [
+        "danmaku"
+      ],
+      "mode": "direct"
+    },
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+    "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "checkoutSHA256Bytes": "27aa95562630640a5308f02c0c417d2deda7254d08b364b6dd9dbf48facbb542",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt.txt",
+    "existingRegistry": {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "features": [
+        "discovery",
+        "appearance-parity",
+        "settings-privacy-section-parity",
+        "settings-local-diagnostics-parity",
+        "settings-home-dynamic-parity",
+        "settings-home-card-parity",
+        "settings-dynamic-tabs-parity",
+        "home-full-card",
+        "settings-dynamic-full-card-parity",
+        "dynamic-detail-reply",
+        "settings-image-save-path-parity",
+        "stable-collection-sheet",
+        "stable-video-metadata",
+        "stable-shared-liquid-tabs",
+        "stable-video-original-comments",
+        "stable-favorites",
+        "stable-danmaku-list-menu",
+        "stable-linked-dock-search",
+        "stable-frosted-audio-renderer",
+        "stable-danmaku-settings-panel"
+      ],
+      "mode": "policy-extract"
+    },
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "21f2b643e0b78b51b0251355a638150dfde73ce1",
+    "sha256Bytes": "7a885958bb3335c7aaf008c0f92660d63bf38bb71317ad228112272c9e5b0e47",
+    "checkoutSHA256Bytes": "41c261bace095734fee129a065f0b837b935429ab7aef104cf14d9e4c851e1a3",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\LiveDanmakuOverlay.kt.txt",
+    "existingRegistry": null,
+    "productionSelected": false
+  },
+  {
+    "path": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "ad661da900cbd5ce7fe8d4890e91806b2466d4b7",
+    "sha256Bytes": "c3c29bee7a68a611aaac9fd3a14886f68fea52dc17f122517038f546c845d57c",
+    "checkoutSHA256Bytes": "02085e73ee8930a2bad7dcb721808dcae85677f5b1282cd078caf0d9c0fda96c",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\danmaku-engine\\src\\main\\java\\com\\android\\purebilibili\\danmaku\\engine\\ByteDanceDanmakuEngine.kt.txt",
+    "existingRegistry": null,
+    "productionSelected": false
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveSuperChatExpiryPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "gitBlob": "05184f8f89c2e0b85668c7d5d514862c6996561a",
+    "sha256Bytes": "9117507dd3735b0c6871ed7c665d452006a934ae6dcb5eca20c4ee900e26dd9b",
+    "checkoutSHA256Bytes": "5320eb4e03f0fe97dbbe9c598eee8585db29a5ec069a0bcc41f93a1adeb7e43c",
+    "checkoutLFEqual": true,
+    "fullSourceRetained": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\live\\LiveSuperChatExpiryPolicy.kt.txt",
+    "existingRegistry": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveSuperChatExpiryPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "media",
+        "downloads"
+      ],
+      "sha256": "9117507dd3735b0c6871ed7c665d452006a934ae6dcb5eca20c4ee900e26dd9b"
+    },
+    "productionSelected": false
+  }
+]

@@ -1,0 +1,205 @@
+{
+  "passed": true,
+  "actualProductPhase": 31,
+  "actualManifestSHA256": "999bc989c995f877761b22c5c00a6a0d99819100d8cef591a25f94b5d56a3a5d",
+  "actualCP_SHA256": "0da93f5423ef53986a1939d97b37114a97e4a8e64b646052d34eaeaa916a6dee",
+  "sourceRegistryCount": 773,
+  "productionOverrides": 0,
+  "all92RuntimeEntriesPinnedBeforeAndAfter": true,
+  "cases": [
+    {
+      "name": "advanced",
+      "passed": true,
+      "assertions": 2725,
+      "productionClassOverrides": 0,
+      "fixtureClassOverlaps": [],
+      "actualCodeSources": [
+        {
+          "class": "com.android.purebilibili.feature.video.danmaku.DanmakuConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "fe2ea45bbf112962f6d44b1c02365f664f19256795a88068301736654cc46103"
+        },
+        {
+          "class": "com.android.purebilibili.danmaku.engine.DanmakuRenderConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "ca4e4fc94f42412833e7c7a4843421abfc4a816432dec09cb42a11b9cf4cc295"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuScheduler",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "2ed17e34ef871f628add92326f86f5c97c08e48e2912335a859eb66f5f45da6a"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuOverlay",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "f2af77aeaeacb41bdc1d274088eb1ff0b0c05efcd6c79954dae665fa3678fe17"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.LiveDanmakuRenderer",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "426cf7b3679309af9c538cedadacfeb0fb9bd259cc5e9e60a523f51041517042"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "7f910f27f24a154fb0c50c83beca142e845d9077859e66c9942e2ccb235fd664"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuSettings",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "62abfce1b472cb538aaeb28140070769caae68f0371d4655a386257cae267835"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatformKt",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "c60e0a8b0710d3926b9e65dc9bf2a1379bfdc22bc8aa027f1e83bbb742905320"
+        }
+      ],
+      "fixtureSHA256": "651e50be0d1640ef6962b6cef201e721c5ebd600bde5392b1fb9cc55560aaa05",
+      "fixtureJarSHA256": "f0d2911a305ffa30d42f7712aecbeb69f4eb8c42fa5e55446ee4a80dbafc5bee",
+      "headless": true,
+      "actualRootPlaybackOrFullRootAccepted": false,
+      "fixtureResult": {
+        "status": "PASS",
+        "groups": 6,
+        "assertions": 2725,
+        "nativeWindowOrHTTP": false,
+        "actualAWTFont": "Dialog",
+        "byteDanceCollisionParityClaim": false
+      }
+    },
+    {
+      "name": "monitor",
+      "passed": true,
+      "assertions": 12,
+      "productionClassOverrides": 0,
+      "fixtureClassOverlaps": [],
+      "actualCodeSources": [
+        {
+          "class": "com.android.purebilibili.feature.video.danmaku.DanmakuConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "fe2ea45bbf112962f6d44b1c02365f664f19256795a88068301736654cc46103"
+        },
+        {
+          "class": "com.android.purebilibili.danmaku.engine.DanmakuRenderConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "ca4e4fc94f42412833e7c7a4843421abfc4a816432dec09cb42a11b9cf4cc295"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuScheduler",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "2ed17e34ef871f628add92326f86f5c97c08e48e2912335a859eb66f5f45da6a"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuOverlay",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "f2af77aeaeacb41bdc1d274088eb1ff0b0c05efcd6c79954dae665fa3678fe17"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.LiveDanmakuRenderer",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "426cf7b3679309af9c538cedadacfeb0fb9bd259cc5e9e60a523f51041517042"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "7f910f27f24a154fb0c50c83beca142e845d9077859e66c9942e2ccb235fd664"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuSettings",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "62abfce1b472cb538aaeb28140070769caae68f0371d4655a386257cae267835"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatformKt",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "c60e0a8b0710d3926b9e65dc9bf2a1379bfdc22bc8aa027f1e83bbb742905320"
+        }
+      ],
+      "fixtureSHA256": "5a2b3973235cfc46486d3d9b9981ef94e409f83ee31606bfc06fb6f4a8fcb0c7",
+      "fixtureJarSHA256": "56b543ba95da5bfd34cfdfdbd58a0eec22f3f301987dbfe260d5154b7a4d8a00",
+      "headless": true,
+      "actualRootPlaybackOrFullRootAccepted": false,
+      "fixtureResult": {
+        "status": "PASS",
+        "assertions": 12,
+        "fixtureOnlyDisplayModes": true,
+        "actualRootMonitorRuntimeAccepted": false,
+        "nativeWindowOrHTTP": false
+      }
+    },
+    {
+      "name": "actual-hidden-window",
+      "passed": true,
+      "assertions": 8,
+      "productionClassOverrides": 0,
+      "fixtureClassOverlaps": [],
+      "actualCodeSources": [
+        {
+          "class": "com.android.purebilibili.feature.video.danmaku.DanmakuConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "fe2ea45bbf112962f6d44b1c02365f664f19256795a88068301736654cc46103"
+        },
+        {
+          "class": "com.android.purebilibili.danmaku.engine.DanmakuRenderConfig",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "ca4e4fc94f42412833e7c7a4843421abfc4a816432dec09cb42a11b9cf4cc295"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuScheduler",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "2ed17e34ef871f628add92326f86f5c97c08e48e2912335a859eb66f5f45da6a"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuOverlay",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "f2af77aeaeacb41bdc1d274088eb1ff0b0c05efcd6c79954dae665fa3678fe17"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.LiveDanmakuRenderer",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "426cf7b3679309af9c538cedadacfeb0fb9bd259cc5e9e60a523f51041517042"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "7f910f27f24a154fb0c50c83beca142e845d9077859e66c9942e2ccb235fd664"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DanmakuSettings",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "62abfce1b472cb538aaeb28140070769caae68f0371d4655a386257cae267835"
+        },
+        {
+          "class": "com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatformKt",
+          "path": "C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-31/main-kotlin.jar",
+          "classSha256Bytes": "c60e0a8b0710d3926b9e65dc9bf2a1379bfdc22bc8aa027f1e83bbb742905320"
+        }
+      ],
+      "fixtureSHA256": "56f00660556f5f180298a5b4b762ca5d0233631952ee540a3fb28b794a3b3e52",
+      "fixtureJarSHA256": "ca1ba65756ce1b4d35a8b4fbeda7bc447fc3cb790d58246b3b864f772a88b10c",
+      "headless": false,
+      "actualRootPlaybackOrFullRootAccepted": false,
+      "fixtureResult": {
+        "status": "PASS",
+        "assertions": 8,
+        "actualHiddenAWTWindow": true,
+        "actualRootWindowAccepted": false,
+        "accountOrSocket": false,
+        "monitors": [
+          {
+            "index": 0,
+            "physicalWidth": 3840,
+            "physicalHeight": 2160,
+            "shortSide": 2160.0,
+            "viewportScale": 0.33333334
+          }
+        ]
+      }
+    }
+  ],
+  "assertions": 2745,
+  "actualWindowsDisplayGetterAccepted": true,
+  "actualRootOrFullByteDanceRendererParityAccepted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,8 @@
+Exception in thread "main" kotlinx.serialization.SerializationException: Serializer for class 'DanmakuSettings' is not found.
+Please ensure that class is marked as '@Serializable' and that the serialization compiler plugin is applied.
+
+	at kotlinx.serialization.internal.Platform_commonKt.serializerNotRegistered(Platform.common.kt:90)
+	at kotlinx.serialization.internal.PlatformKt.platformSpecificSerializerNotRegistered(Platform.kt:33)
+	at kotlinx.serialization.SerializersKt__SerializersKt.serializer(Serializers.kt:153)
+	at kotlinx.serialization.SerializersKt.serializer(Unknown Source)
+	at com.bilipai.desktop.danmaku.RenderConfigProofKt.main(RenderConfigProof.kt:162)

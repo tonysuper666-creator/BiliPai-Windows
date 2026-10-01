@@ -1,0 +1,41 @@
+{
+  "fixedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fullPolicySHA256": "67140108110ea457d299218cd2d4f8cfa0863c3d45d15808aeda2d56dfe5a143",
+  "allCallsites": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "line": 4404,
+      "source": "configureAsPassiveDanmakuOverlay()",
+      "sourceSHA256Bytes": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "line": 688,
+      "source": "configureAsPassiveDanmakuOverlay()",
+      "sourceSHA256Bytes": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "line": 3835,
+      "source": "configureAsPassiveDanmakuOverlay()",
+      "sourceSHA256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "line": 3840,
+      "source": "view.configureAsPassiveDanmakuOverlay()",
+      "sourceSHA256Bytes": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/FullscreenPlayerOverlay.kt",
+      "line": 1091,
+      "source": "configureAsPassiveDanmakuOverlay()",
+      "sourceSHA256Bytes": "62e28947eccd2a5dd70d1e0ee9458475001c9411af5a02d86c462c7ff7528feb"
+    }
+  ],
+  "defaultPolicy": "ordinary/offline/portrait/fullscreen passive; preserve Windows native mouse-through",
+  "listLongPress": "original DanmakuPoolSheet combinedClickable separately wired",
+  "dedicatedCommandVotes": "original dedicated interactive viewport remains independently hit-tested by Root; does not enable ordinary interception",
+  "correctionToHistorical213Pending": "Ordinary native interception is not a missing stable-tag default feature. Original passive body and all5 calls override that historical pending phrasing.",
+  "runtimeProofClaim": false
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\selected-files\\DesktopDanmakuSettings.kt",
+    "sha256LF": "091ec93f13598c7c79b30762211f0392512aa741c0d8deb26267188f417d588e",
+    "canonical": "Settings179"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-panel-parity\\platform\\DesktopDanmakuSettingsProjection.kt",
+    "sha256LF": "e3a38877315291dbe651256ff2a54a1bab7c51d9084126c87161fa2fbb9f4881",
+    "canonical": "Settings179"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuScheduler.kt",
+    "sha256LF": "9b24efcbf906d763c38a6cb1aa76a0e27ba940360fd68a8400ddcd558df073f9",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\LiveDanmakuRenderer.kt",
+    "sha256LF": "e5a52a11812a4fd0715d37ef4451fe3503d3b790c1c4725182dccfb530478d61",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+    "sha256LF": "7d4630ed6340b48870fe83f5cd47071a22698973924a2b0b571274d1d05ca99b",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+    "sha256LF": "5d6cc681c6ed569632293257e788c7a70a6df7288329b06407e9a1f1a12506af",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopOverlayNativeSmoke.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopOverlayNativeSmoke.kt",
+    "sha256LF": "a06a66f6793a4a3a52d5810ddb5eb6a7b38e50cfba25e65365d2af3221c9e2c5",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DownloadScreens.kt",
+    "sha256LF": "95083f5ecc561289141982b03a632938e3947e31af67c4b1840da7c3007af7c8",
+    "canonical": "actual22 existing Windows consumer"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+    "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\MediaScreens.kt",
+    "sha256LF": "884bff23c3c24309a782777d4aca4cd00cde8682f83df531c348c7e9ae838691",
+    "canonical": "actual22 existing Windows consumer"
+  }
+]

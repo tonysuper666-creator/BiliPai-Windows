@@ -1,0 +1,249 @@
+{
+  "targetTag": "v0.2.3",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceRegistryCount": 773,
+  "resourceCount": 213,
+  "wholeCandidateClassesPhase": 31,
+  "wholeClassesPassed": true,
+  "originalConfigDurationLineBudgetLayerMapLiveAdmissionAndScalarConsumersCompiled": true,
+  "originalWeightUsesPacketIsSelfNotGuessedMID": true,
+  "fullOriginalProducerSelectedOutputs": 16,
+  "all92RuntimeEntriesPinnedBeforeAndAfter": true,
+  "productionOverrides": 0,
+  "actualAdvancedPureAWTAssertions": 2725,
+  "actualFixtureMonitorAssertions": 12,
+  "actualHiddenWindowsMonitorAssertions": 8,
+  "actualSettingsAndOwnershipAssertions": 61,
+  "actualGradleJunitMethods": 13,
+  "actualHiddenMonitorPhysicalMode": [
+    3840,
+    2160
+  ],
+  "actualRootWindowAccepted": false,
+  "ordinaryOverlayDefaultMouseThroughMatchesAllFiveOriginalCalls": true,
+  "longPressMenuUsesOriginalListEntryAndCommandVotingRemainsSeparate": true,
+  "ordinaryOverlayCaptureHitTestRequiredByOriginalDefault": false,
+  "originalStoredDurationsStillAllow50Seconds": true,
+  "originalRendererScrollClampMs": 20000,
+  "originalRendererPinnedClampMs": 15000,
+  "oldFixtureTimingAssumptionsAndCompileFailuresPreserved": true,
+  "fullByteDanceCollisionEngineOrFullLiveQueueParityAccepted": false,
+  "actualRootPlaybackOrAccountsAccepted": false,
+  "desktopExeReplaced": false,
+  "pending": [
+    "Original server WebMask path and native clip owner",
+    "Portrait SCREEN_TOP anchor",
+    "Full ByteDance collision/special engine and full original live queue/image lifecycle",
+    "Whole mounted Root/native playback and EXE delivery"
+  ],
+  "excludedTaskBinaries": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-01\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-01/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "8918f717ca23658bc43b611bf0d46e01bed04258fc9503e00d3b26cd423e1f2c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-02\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-02/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "7910d9ab73835e3f9bd086f139e780e3d57c7911f51f375e250e71abda0a6e24"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-03\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-03/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "5f92ea590c097eec13ebe4bb0624996c9040043870bd3dab487882ea134e9359"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-04\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-04/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "c734e5e3f56daa0de2690c7813294c605e97270f663d3d47ce275186b02ddcc4"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-05\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-05/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "1ac2221a108217a8fb3804a83840fd96daaf03a49ab513846620269a8746c17f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\compile-06\\original-danmaku-render-config-consumers.jar",
+      "relative": "compile-06/original-danmaku-render-config-consumers.jar",
+      "sha256Bytes": "74893b2654c255186d02fba174b5b428d041112d784850ef7604c90a2e67e24e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\existing-tests-01\\fixture.jar",
+      "relative": "existing-tests-01/fixture.jar",
+      "sha256Bytes": "68a9a8b899ef9a79aebf607385bd110f94fa0a1b8dfff27633a9f39cadc0c099"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\existing-tests-02\\fixture.jar",
+      "relative": "existing-tests-02/fixture.jar",
+      "sha256Bytes": "68a9a8b899ef9a79aebf607385bd110f94fa0a1b8dfff27633a9f39cadc0c099"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-01\\fixture.jar",
+      "relative": "proof-01/fixture.jar",
+      "sha256Bytes": "c6aee29b86c57ca4811b776f921a9aa693d264a40c10591469c503f5b9b790ec"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-02\\actual-awt-font-geometry.png",
+      "relative": "proof-02/actual-awt-font-geometry.png",
+      "sha256Bytes": "c62183491fcc8ff009a2f02342f8e7b064b2201288594d1f6eb818310bec5a8a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-02\\fixture.jar",
+      "relative": "proof-02/fixture.jar",
+      "sha256Bytes": "c6aee29b86c57ca4811b776f921a9aa693d264a40c10591469c503f5b9b790ec"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-03\\actual-awt-font-geometry.png",
+      "relative": "proof-03/actual-awt-font-geometry.png",
+      "sha256Bytes": "c62183491fcc8ff009a2f02342f8e7b064b2201288594d1f6eb818310bec5a8a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-03\\fixture.jar",
+      "relative": "proof-03/fixture.jar",
+      "sha256Bytes": "c6aee29b86c57ca4811b776f921a9aa693d264a40c10591469c503f5b9b790ec"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-04\\actual-awt-font-geometry.png",
+      "relative": "proof-04/actual-awt-font-geometry.png",
+      "sha256Bytes": "c62183491fcc8ff009a2f02342f8e7b064b2201288594d1f6eb818310bec5a8a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\proof-04\\fixture.jar",
+      "relative": "proof-04/fixture.jar",
+      "sha256Bytes": "9d09f9cb790f02fb0ee4973a1c744be68baf5e15a9b9d5479ed826bed00b0a51"
+    },
+    {
+      "relative": "compile-01/monitor-candidate-and-fixture.jar",
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\compile-01\\monitor-candidate-and-fixture.jar",
+      "sha256Bytes": "3600490f9aaaa49f79d0f1576fa4ed28830b6500f9278bb08c8742d8fff2ddbf"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-render-main31-proof\\actual-hidden-window\\fixture.jar",
+      "sha256Bytes": "ca1ba65756ce1b4d35a8b4fbeda7bc447fc3cb790d58246b3b864f772a88b10c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-render-main31-proof\\advanced\\fixture.jar",
+      "sha256Bytes": "f0d2911a305ffa30d42f7712aecbeb69f4eb8c42fa5e55446ee4a80dbafc5bee"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-render-main31-proof\\advanced\\scratch\\actual-awt-font-geometry.png",
+      "sha256Bytes": "c62183491fcc8ff009a2f02342f8e7b064b2201288594d1f6eb818310bec5a8a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-render-main31-proof\\monitor\\fixture.jar",
+      "sha256Bytes": "56b543ba95da5bfd34cfdfdbd58a0eec22f3f301987dbfe260d5154b7a4d8a00"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\consumers\\classes\\com\\bilipai\\desktop\\ui\\RecordedInput.class",
+      "sha256Bytes": "dc51ff27e2c9d6b4928a35f9de41532f0219e88b3800b2601b865f81e323d198"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\consumers\\classes\\com\\bilipai\\desktop\\ui\\RootDanmakuConsumerProofKt$main$1$raw4$1.class",
+      "sha256Bytes": "281f973ddeaa5c7fb3e12a0b42ed7bb8189499b4f6ff94826dd36a91abb048aa"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\consumers\\classes\\com\\bilipai\\desktop\\ui\\RootDanmakuConsumerProofKt$main$1.class",
+      "sha256Bytes": "1893c8e1b930d55938d580ef3ed832297c27110e71de0e71ff619bed5abbb377"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\consumers\\classes\\com\\bilipai\\desktop\\ui\\RootDanmakuConsumerProofKt.class",
+      "sha256Bytes": "5f242b44f765579607be14ce91824062fb789276fa4bf7839480c236df82da5b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\NothingApplier.class",
+      "sha256Bytes": "13391b7745a816daf61c924bc8e0b84040b2404098f5dca88c623d208dc26044"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$frame$platform$1.class",
+      "sha256Bytes": "ae1d8319fe59bf124787fe07b73d915d0ac0c184fdfb2f2edb7045d4b1096de9"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$10.class",
+      "sha256Bytes": "c8d31dce3e53182e6a3f9aab039942bdca5028c43b76dbca97e6c04b924f9bad"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$11.class",
+      "sha256Bytes": "b5cc5fdd56ceed59656e668a21a4a94a04558f8a84b94af1ab834bb03189e989"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$12.class",
+      "sha256Bytes": "fa06d5076cba472da10d7171f2c6d16ffacc00721721941936d664a0c6cb98e3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$13.class",
+      "sha256Bytes": "b90853cf006511588cdc27acf24949a97d6a22b3f7b7590a3c14d3ffc384b9f4"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$14.class",
+      "sha256Bytes": "bc4ba55f32ff626ac0724ec4902d92ef004c9223acbbdf82e6095aafe10f5a20"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$15.class",
+      "sha256Bytes": "551a59b9c5431ae1b9b1a6b652f221549893fcedc436cddd3a3d717d216ea4ea"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$16.class",
+      "sha256Bytes": "da128181a4a55ea2fe460d70a8f51f327d79d6585bd21a22d69981cab4c52d31"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$17.class",
+      "sha256Bytes": "52c9fc9e7f8544b018c2c30bfcf56edbf0d39b5b713149fcd1afd956526037c5"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$18.class",
+      "sha256Bytes": "b71024e670c66c826c4da00a87879d9cef774147ce2a36628b556618a8c11971"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$19.class",
+      "sha256Bytes": "45d07fb01101806aa93f037c54fcfe62027e7eda1a02c1015e44ea92f6b21a56"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$20.class",
+      "sha256Bytes": "80148383b2ea95a1b1322edbf560f11ecfa390dc902c73b68355a8b87e5f6218"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$8.class",
+      "sha256Bytes": "65f058837eb83678936866a0e294453e7cafcae394796e508873ba4e76f1b81f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$9.class",
+      "sha256Bytes": "f463b111eeb818c4ac578a54966c99e687043bac2175c1bde07f0efd8e849659"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$getBinding$2.class",
+      "sha256Bytes": "aee2324210b3c535a7c9c505bfa2ee7d5a7373cf9692824fdcf8020f528cf226"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$invokeSuspend$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "98ba97ff394b111fc81918077553e01144be6552f8f2b1b01ed8cb39d9b28d72"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$recomposing$1.class",
+      "sha256Bytes": "580da67d73b52d2f6a4c2c8bb01efe35a7b1550b4e1bf4fb7bdc472810764be6"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1$ticking$1.class",
+      "sha256Bytes": "d0ce1a5a6a89de70fa8ebfe6940540dab1734ecd736f0d284b7518725645e1b8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt$main$1.class",
+      "sha256Bytes": "30fe97fe1d71c608f80bacc4875ce8db1dde65b73775b06a892b03e8b5930c3e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SettingsFixtureKt.class",
+      "sha256Bytes": "d4324d3ef5a7b1e826ed118492d4d6d503285aa6b47bcf6b3ac848f3917a7b3d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SyncPlatform$cloud$1$syncDanmakuCloudConfig$1.class",
+      "sha256Bytes": "f2c4d74db53d906f2faa31cefdb47559d7cb75f0daa33050b9dee55f4b0dbc9c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SyncPlatform$cloud$1.class",
+      "sha256Bytes": "45ac117cff3dffe442fd63bd5d98bb08e2ea48ca19dee45ac54a995c84b4c2c0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-main31-advanced-settings-proof\\settings\\classes\\com\\bilipai\\desktop\\ui\\SyncPlatform.class",
+      "sha256Bytes": "1bcdd7d818e12b82cdecac7e421b45f0d374e04c9b75109ae36ebececde973c1"
+    }
+  ]
+}

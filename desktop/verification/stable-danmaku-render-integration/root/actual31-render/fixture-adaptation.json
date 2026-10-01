@@ -1,0 +1,31 @@
+{
+  "preparedFixtureSHA256": "51dc6abb56465176edd5c2535b01dc783df6ec19bfc33156f8eb53d2e9b465de",
+  "adaptedFixtureSHA256": "651e50be0d1640ef6962b6cef201e721c5ebd600bde5392b1fb9cc55560aaa05",
+  "edits": [
+    {
+      "old": "    override fun systemChromeInsetPx()=16\n",
+      "new": "    override fun systemChromeInsetPx()=16\n    override fun maximumDisplayShortSidePx()=360f // Explicit fixture monitor, no product fallback.\n"
+    },
+    {
+      "old": "DesktopDanmakuPaintGeometry.from(720,480,AffineTransform.getScaleInstance(1.5,1.5))",
+      "new": "DesktopDanmakuPaintGeometry.from(720,480,AffineTransform.getScaleInstance(1.5,1.5),360f)"
+    },
+    {
+      "old": "DesktopDanmakuPaintGeometry.from(0,480,AffineTransform())",
+      "new": "DesktopDanmakuPaintGeometry.from(0,480,AffineTransform(),360f)"
+    }
+  ],
+  "onlyNewRequiredFixtureMonitorPort": true,
+  "productionSourceOrHistoricalEvidenceModified": false,
+  "monitorFixtureByteIdentical": true,
+  "preparedHandoffs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-render-config-consumers-parity\\frozen-handoff.json",
+      "sha256Bytes": "6d221c053309abd218b55a129634726bf5f99f28d4458a374069351468b69103"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-danmaku-monitor-passive-delta\\frozen-handoff.json",
+      "sha256Bytes": "ab13142a81130473f2fa4aaf2dee90816a5cccf24ba175cc499cd480f51f59a5"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.danmaku.LiveDanmakuPluginTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-01T06:32:30.312Z" hostname="TONYSUPER666" time="0.683">
+  <properties/>
+  <testcase name="live styles draw text border and background pixels through real AWT renderer()" classname="com.bilipai.desktop.danmaku.LiveDanmakuPluginTest" time="0.657"/>
+  <testcase name="live plugin blocking applies to ordinary and paid messages and removing processor restores them()" classname="com.bilipai.desktop.danmaku.LiveDanmakuPluginTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
