@@ -1,0 +1,958 @@
+{
+  "currentCommit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+  "provenanceSha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af",
+  "files": [
+    {
+      "path": "build.gradle.kts",
+      "sha256Bytes": "0129c69e7add1f2f7e18442156d9007ba6da60f2e8a26e8003990d022ccb1360"
+    },
+    {
+      "path": "upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af"
+    },
+    {
+      "path": "verify-source.py",
+      "sha256Bytes": "169a672d973f73903b9972693e671b9f4382e6f7799b6a7ea5d52ca9f27069c5"
+    },
+    {
+      "path": "dependency-pins.json",
+      "sha256Bytes": "72665023cb8c7debbafe1695b662f493fad8d2c69bd2c607a6a4fb052e843408"
+    },
+    {
+      "path": "upstream/LICENSE",
+      "originalPath": "LICENSE",
+      "sha256Bytes": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "upstream/gradle/libs.versions.toml",
+      "originalPath": "gradle/libs.versions.toml",
+      "sha256Bytes": "dd185641299d835ae88f2a803dd03b1bb834d2022dc5ed1c4cc85e88e7aa01fd"
+    },
+    {
+      "path": "upstream/miuix-blur/build.gradle.kts",
+      "originalPath": "miuix-blur/build.gradle.kts",
+      "sha256Bytes": "b77cda4a4876a4d1942eaf591ac537b2dc8a5ca438d663c265352c86123999ab"
+    },
+    {
+      "path": "upstream/miuix-blur/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "originalPath": "miuix-blur/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "sha256Bytes": "190839dc972732f631aa67ccb805ab578bb8ab6ea31b60e43389bff22d855b88"
+    },
+    {
+      "path": "upstream/miuix-blur/src/androidMain/kotlin/blur/internal/RenderEffectCompat.android.kt",
+      "originalPath": "miuix-blur/src/androidMain/kotlin/top/yukonga/miuix/kmp/blur/internal/RenderEffectCompat.android.kt",
+      "sha256Bytes": "ec04c12148fda4466005b8c7f3b5a8fbadd62b035c17d901362ca3662d059a24"
+    },
+    {
+      "path": "upstream/miuix-blur/src/androidMain/kotlin/blur/sensor/DeviceTilt.android.kt",
+      "originalPath": "miuix-blur/src/androidMain/kotlin/top/yukonga/miuix/kmp/blur/sensor/DeviceTilt.android.kt",
+      "sha256Bytes": "275c27beb89fde1a41491a8e3067f098f1e1b8b60f2e9f327f155c0a057e3398"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/Backdrop.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/Backdrop.kt",
+      "sha256Bytes": "1bb31cc79f01868e1eec854fd758549465d2b763ee8944086c16e5fe9d781736"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/BackdropEffectScope.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/BackdropEffectScope.kt",
+      "sha256Bytes": "87d45474d1e50f5d4f33b3e7b36a0399e17776f4669ed6b93042015c43efc828"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/BackdropEffects.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/BackdropEffects.kt",
+      "sha256Bytes": "35b6fc8638c5bcc11c90d274804487ec8d21a07d2f119dcce64df89b811de405"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/BlurDefaults.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/BlurDefaults.kt",
+      "sha256Bytes": "a04aba33fb1c2e49fbea80cf4fd778e0a96e7c015310769f38aeb7590f459035"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/DrawBackdropModifier.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/DrawBackdropModifier.kt",
+      "sha256Bytes": "d24e406b9f50b2e58750d8be9079520f02be16218a916742a7a21cde462e5134"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/LayerBackdrop.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/LayerBackdrop.kt",
+      "sha256Bytes": "31d19f3be5b0f9b4a24467a336d923a4e00571fe7109475ad25695a2817e4e93"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/LayerBackdropModifier.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/LayerBackdropModifier.kt",
+      "sha256Bytes": "3f40647d2c78d0152021830a5d105e20df06647e36626f764e6b095c20b48560"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/ProgressiveBlur.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/ProgressiveBlur.kt",
+      "sha256Bytes": "a7164f6ef628a08560b0af02b0fc5754b2bad5e1b54903e3ba81ff3798eb0d23"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/RuntimeShader.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/RuntimeShader.kt",
+      "sha256Bytes": "d36f4181d97580b42490c5cbcc3cc9667d6dff10ccb7be0bbdb9194bb677613a"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/RuntimeShaderCache.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/RuntimeShaderCache.kt",
+      "sha256Bytes": "47b2170773d22dfa2071e76c861f0e515b6ce7d30f0cdc8b370564f8382c6531"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/TextureEffect.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/TextureEffect.kt",
+      "sha256Bytes": "c47f3fd7f550d2467a0d56ec7a58e90447853120e064b53ae082fead5f5224b0"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/highlight/Highlight.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/highlight/Highlight.kt",
+      "sha256Bytes": "47493f22e21d595ede37a889589e14ab66d94400759fb6de9b132aec03f85b53"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/highlight/HighlightDrawing.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/highlight/HighlightDrawing.kt",
+      "sha256Bytes": "ea520ffad9a83db2988c802221797498e7380e17245928ce3366ce5c2678cc56"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/highlight/HighlightStyle.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/highlight/HighlightStyle.kt",
+      "sha256Bytes": "fd9d1f7e034d1d48e0551e5e8a81c729d7cd8b02ef63385368b695118ca64487"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/highlight/TiltLight.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/highlight/TiltLight.kt",
+      "sha256Bytes": "f5cc8fbd3cfbfe8a5efdfc503b63edb58a0c539e3e8f97ac73d243a06c2f680a"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/BlurEffect.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/BlurEffect.kt",
+      "sha256Bytes": "d61cae3136f9c4857301a50c0e0939c370bce2931bf7c5ccb85d78008ea9e17e"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/InverseLayerScope.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/InverseLayerScope.kt",
+      "sha256Bytes": "52930a84ea1802cb3afcadcc650b922145faa5779f73a57893d508c76d7efa85"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/LayerRecorder.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/LayerRecorder.kt",
+      "sha256Bytes": "1864ebbd9d2fc71f32138bfc598c7e59f160026e9a64012173b85a8d19e3bd52"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/RenderEffectCompat.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/RenderEffectCompat.kt",
+      "sha256Bytes": "e74b667d450af38821828362ec540c7a5af4b7d42d825995aa14750ca78952b5"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+      "sha256Bytes": "2703d5a86bbac35797c87fc6131c92be2d126fe77bf0d99fae34e84984c5ecda"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/internal/ShapeProvider.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/ShapeProvider.kt",
+      "sha256Bytes": "7935c7bef2299dd5fd45046f016c6340f296a18f3d137de3b4a37ff97b5726b1"
+    },
+    {
+      "path": "upstream/miuix-blur/src/commonMain/kotlin/blur/sensor/DeviceTilt.kt",
+      "originalPath": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/sensor/DeviceTilt.kt",
+      "sha256Bytes": "45076c7e851dfdd3868ac749f9e87ba7d9622c4ee007d52355642e3bdc92adea"
+    },
+    {
+      "path": "upstream/miuix-blur/src/skikoMain/kotlin/blur/internal/RenderEffectCompat.skiko.kt",
+      "originalPath": "miuix-blur/src/skikoMain/kotlin/top/yukonga/miuix/kmp/blur/internal/RenderEffectCompat.skiko.kt",
+      "sha256Bytes": "f0d62566b2a40a7bb832b2f4c14c2bcffdad9057b762c73da0c6317f35a718a8"
+    },
+    {
+      "path": "upstream/miuix-blur/src/skikoMain/kotlin/blur/sensor/DeviceTilt.skiko.kt",
+      "originalPath": "miuix-blur/src/skikoMain/kotlin/top/yukonga/miuix/kmp/blur/sensor/DeviceTilt.skiko.kt",
+      "sha256Bytes": "9e0c614852a3e252671025244b3d6b3cc980954c99dd62909f30b926075bd5f5"
+    },
+    {
+      "path": "upstream/miuix-core/build.gradle.kts",
+      "originalPath": "miuix-core/build.gradle.kts",
+      "sha256Bytes": "729b3e771d2e8d984d44c83bbce1fd177d88bb51bd5019b33c1f1ff7b6787dfa"
+    },
+    {
+      "path": "upstream/miuix-core/src/androidMain/kotlin/utils/Utils.android.kt",
+      "originalPath": "miuix-core/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.android.kt",
+      "sha256Bytes": "211137e0e062bd013c167c58ccb529592b14605575f47f586e34d5e1fc790104"
+    },
+    {
+      "path": "upstream/miuix-core/src/commonMain/kotlin/icon/MiuixIcons.kt",
+      "originalPath": "miuix-core/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/MiuixIcons.kt",
+      "sha256Bytes": "eb86433f7e94e9cc20f6cc14d15cea66c071c17c3b8dca0b3a0e0a4501b9d4fa"
+    },
+    {
+      "path": "upstream/miuix-core/src/commonMain/kotlin/utils/Utils.kt",
+      "originalPath": "miuix-core/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.kt",
+      "sha256Bytes": "56a6627869bf554819bb141a73aafd865019aed19e2759b6651f969388973d58"
+    },
+    {
+      "path": "upstream/miuix-core/src/desktopMain/kotlin/utils/Utils.desktop.kt",
+      "originalPath": "miuix-core/src/desktopMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.desktop.kt",
+      "sha256Bytes": "a2cd7a436dc665bbd43738a0c303323af00e027b3f9e91e0011fce0b900283a1"
+    },
+    {
+      "path": "upstream/miuix-core/src/iosMain/kotlin/utils/Utils.ios.kt",
+      "originalPath": "miuix-core/src/iosMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.ios.kt",
+      "sha256Bytes": "0e0eb95fa0a5cefcea19d428da9ca13f5e530255d9c9055eb3e699591b339b9b"
+    },
+    {
+      "path": "upstream/miuix-core/src/jsMain/kotlin/utils/Utils.js.kt",
+      "originalPath": "miuix-core/src/jsMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.js.kt",
+      "sha256Bytes": "c514c1a61f2553dbf1f2f65c09f37e6b50767455022c94eb02a8c6157cd3beb0"
+    },
+    {
+      "path": "upstream/miuix-core/src/macosMain/kotlin/utils/Utils.macos.kt",
+      "originalPath": "miuix-core/src/macosMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.macos.kt",
+      "sha256Bytes": "52ed757e8f8741d14159bab7c0c7e71c8e6e54c5f1b28592741c9b8cc7f3d42a"
+    },
+    {
+      "path": "upstream/miuix-core/src/skikoMain/kotlin/utils/Utils.skiko.kt",
+      "originalPath": "miuix-core/src/skikoMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.skiko.kt",
+      "sha256Bytes": "50e0897ac56ef289d17b755b68d04df46f92bfe1489ea35ac941623e679b05ad"
+    },
+    {
+      "path": "upstream/miuix-core/src/wasmJsMain/kotlin/utils/Utils.wasmJs.kt",
+      "originalPath": "miuix-core/src/wasmJsMain/kotlin/top/yukonga/miuix/kmp/utils/Utils.wasmJs.kt",
+      "sha256Bytes": "169d0210992e866ab2bccd5a1dffb1dfadcd8770cb9af6f221bd110bea6cf8ea"
+    },
+    {
+      "path": "upstream/miuix-preference/build.gradle.kts",
+      "originalPath": "miuix-preference/build.gradle.kts",
+      "sha256Bytes": "7f92a3a37eda28e465d23e2833875760db809461bd392e36e2fb8aca6768d80f"
+    },
+    {
+      "path": "upstream/miuix-preference/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "originalPath": "miuix-preference/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "sha256Bytes": "750ce8e286e20d668094136a42c1954b1a1bb53af90204c833008bb0e30a8886"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/OverlayDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/OverlayDropdownMenu.kt",
+      "sha256Bytes": "e098a08a5b3c1a40ad1beed0999a7431a72c5c006c359db8c5c620ba0b52c531"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/OverlayIconCascadingDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/OverlayIconCascadingDropdownMenu.kt",
+      "sha256Bytes": "b415ada0f4428dcb85108426683ba799be824c4c9dd33ca3a29a8dc169857c34"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/OverlayIconDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/OverlayIconDropdownMenu.kt",
+      "sha256Bytes": "96c7771e999a515f13ae5e3165c17de94ed29e192f3752137b39d1e178cabe6d"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/WindowDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/WindowDropdownMenu.kt",
+      "sha256Bytes": "bcdb80fcb202f99a031d2efceaae4d81980e603d7453414568286be3566f8b4b"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/WindowIconCascadingDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/WindowIconCascadingDropdownMenu.kt",
+      "sha256Bytes": "101a9dc320bdc06216ba5df5f79665b80ebfd00e48e2f0242aea1c94e2d177b7"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/menu/WindowIconDropdownMenu.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/menu/WindowIconDropdownMenu.kt",
+      "sha256Bytes": "cdca031818dce0452fc22b48b6e206765181c6925586be618d05f5f2aeba4a8b"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/popup/DropdownEntriesContent.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/popup/DropdownEntriesContent.kt",
+      "sha256Bytes": "def1f4f178cea7c42ae277243c948382aa8bb388c126dfd68b55dda6c3edcc04"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/popup/OverlayDropdownPopup.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/popup/OverlayDropdownPopup.kt",
+      "sha256Bytes": "9feebb363d94b06ad0873d8c372acd918d1381bb86a0f8472f97374fb48ca8be"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/popup/WindowDropdownPopup.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/popup/WindowDropdownPopup.kt",
+      "sha256Bytes": "e614151086935c0d645b24a885d9244be4f4249712d06cdad56bf19be4be173f"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/ArrowPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/ArrowPreference.kt",
+      "sha256Bytes": "507d14e1635aa8916fe8fe607174c05e5e68269f25307bcdcf76ef5976c10dee"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/CheckboxPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/CheckboxPreference.kt",
+      "sha256Bytes": "2b1f3974eaa2a6fbdbb63fa470d09a922a9283613eabc533671598938c02a660"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/OverlayDropdownPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/OverlayDropdownPreference.kt",
+      "sha256Bytes": "21b80aae88d7b0bb8c00400addb28cfe6abbf599e43db42711fc5f229141ac97"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/OverlaySpinnerPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/OverlaySpinnerPreference.kt",
+      "sha256Bytes": "ef1b1e3d9b252cfd6478b8dbaaf088ebf28df2acbe1e038c55b9b9dd76158674"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/RadioButtonPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/RadioButtonPreference.kt",
+      "sha256Bytes": "98d2deaf706fcbec50b1282f58ba1994453a05ee1809d67bf67d134098d91fb8"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/SliderPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/SliderPreference.kt",
+      "sha256Bytes": "8956ef38169302cc8a443d1c0505e336bd6ce65af8c57fec479276ff71b5bd59"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/SwitchPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/SwitchPreference.kt",
+      "sha256Bytes": "1f37665ed4db3dc6bda9a279013c340628733a8d31fec4ef6c82c51569d1e474"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/WindowDropdownPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/WindowDropdownPreference.kt",
+      "sha256Bytes": "a017aaffb51a661837e6cdd3fc1de73d4646ff5ac1b17bfa3ee110cb6394bff6"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/WindowSpinnerPreference.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/WindowSpinnerPreference.kt",
+      "sha256Bytes": "0949db20cd9611f21f363bcced1f889c15b9929163a640653812ecf17264723a"
+    },
+    {
+      "path": "upstream/miuix-preference/src/commonMain/kotlin/preference/internal/StartActionSlot.kt",
+      "originalPath": "miuix-preference/src/commonMain/kotlin/top/yukonga/miuix/kmp/preference/internal/StartActionSlot.kt",
+      "sha256Bytes": "baa430830363ac551d7c03c06dd16510812807c17d9bb7c5a1616aa6b9da0939"
+    },
+    {
+      "path": "upstream/miuix-shader/build.gradle.kts",
+      "originalPath": "miuix-shader/build.gradle.kts",
+      "sha256Bytes": "0d4c9519f96e4aad172e613c305b209e5fffce0c5a42dedf2a6071f9fc3de601"
+    },
+    {
+      "path": "upstream/miuix-shader/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "originalPath": "miuix-shader/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "sha256Bytes": "93524b290b5427b141a159e271d1f0ded82246d91a3138ccfc94c90364922fe7"
+    },
+    {
+      "path": "upstream/miuix-shader/src/androidMain/kotlin/shader/RenderEffect.android.kt",
+      "originalPath": "miuix-shader/src/androidMain/kotlin/top/yukonga/miuix/kmp/shader/RenderEffect.android.kt",
+      "sha256Bytes": "6e67190bc79957d81c058f22369e3b285a7bd787773b5c4f912e145281955b37"
+    },
+    {
+      "path": "upstream/miuix-shader/src/androidMain/kotlin/shader/RuntimeShader.android.kt",
+      "originalPath": "miuix-shader/src/androidMain/kotlin/top/yukonga/miuix/kmp/shader/RuntimeShader.android.kt",
+      "sha256Bytes": "67b9fdad3502b8c6d9c75135957c383b121b6eeb91b0ab0bbbe63704b37f46fe"
+    },
+    {
+      "path": "upstream/miuix-shader/src/commonMain/kotlin/shader/RenderEffect.kt",
+      "originalPath": "miuix-shader/src/commonMain/kotlin/top/yukonga/miuix/kmp/shader/RenderEffect.kt",
+      "sha256Bytes": "33229130f5d44f2ef16109d80832e7ffe53a59eb91ba801425ba806fa2491cad"
+    },
+    {
+      "path": "upstream/miuix-shader/src/commonMain/kotlin/shader/RuntimeShader.kt",
+      "originalPath": "miuix-shader/src/commonMain/kotlin/top/yukonga/miuix/kmp/shader/RuntimeShader.kt",
+      "sha256Bytes": "8a115dfebe64c296a50172e8d3f8bf488439d5af863802780f1f65e0ba7df7cf"
+    },
+    {
+      "path": "upstream/miuix-shader/src/skikoMain/kotlin/shader/RenderEffect.skiko.kt",
+      "originalPath": "miuix-shader/src/skikoMain/kotlin/top/yukonga/miuix/kmp/shader/RenderEffect.skiko.kt",
+      "sha256Bytes": "8cd8af9712c43fe67e9885d5885342964bc3c88775bcdf4a3edc1cd5c4b87545"
+    },
+    {
+      "path": "upstream/miuix-shader/src/skikoMain/kotlin/shader/RuntimeShader.skiko.kt",
+      "originalPath": "miuix-shader/src/skikoMain/kotlin/top/yukonga/miuix/kmp/shader/RuntimeShader.skiko.kt",
+      "sha256Bytes": "e7090b3eab67eb9eb5298c65b8be02fcf4f3029c5cd73ff1e20637fc6e147827"
+    },
+    {
+      "path": "upstream/miuix-squircle/build.gradle.kts",
+      "originalPath": "miuix-squircle/build.gradle.kts",
+      "sha256Bytes": "4810d1c6f9d6341d5b138df696737d675c6ef39c07536bbdc6183fc503926f94"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "originalPath": "miuix-squircle/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "sha256Bytes": "e5917a43f70e60c5607456bb8cc420f21957ee6847221388b2fcd06c0c83ebb7"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/androidMain/kotlin/squircle/internal/AlphaImageBitmap.android.kt",
+      "originalPath": "miuix-squircle/src/androidMain/kotlin/top/yukonga/miuix/kmp/squircle/internal/AlphaImageBitmap.android.kt",
+      "sha256Bytes": "c713365d7efbf8f040c56c4f6d3aeffdc42fca841c28e428a32c7054af2a3b4d"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/commonMain/kotlin/squircle/LocalSquircleEnabled.kt",
+      "originalPath": "miuix-squircle/src/commonMain/kotlin/top/yukonga/miuix/kmp/squircle/LocalSquircleEnabled.kt",
+      "sha256Bytes": "362f15de5d4d5d8784535f8d64e61925e8633796513ba0beec48863a8ef66702"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/commonMain/kotlin/squircle/SquircleBackground.kt",
+      "originalPath": "miuix-squircle/src/commonMain/kotlin/top/yukonga/miuix/kmp/squircle/SquircleBackground.kt",
+      "sha256Bytes": "4f063c99ba6266b83410e4cb51b337a82933ec5c85db8a94d403bef32e3e850f"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/commonMain/kotlin/squircle/SquircleBorder.kt",
+      "originalPath": "miuix-squircle/src/commonMain/kotlin/top/yukonga/miuix/kmp/squircle/SquircleBorder.kt",
+      "sha256Bytes": "a7f6e56af1ce11b281f2706c5681b5aa1c5e663e6ffd9ef60c81bae2e4a0d995"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/commonMain/kotlin/squircle/SquirclePath.kt",
+      "originalPath": "miuix-squircle/src/commonMain/kotlin/top/yukonga/miuix/kmp/squircle/SquirclePath.kt",
+      "sha256Bytes": "b784dc2e81521bff41e234a131eaaa1eb3b680dc6a04ac6393bc511c0c49d69a"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/commonMain/kotlin/squircle/internal/AlphaImageBitmap.kt",
+      "originalPath": "miuix-squircle/src/commonMain/kotlin/top/yukonga/miuix/kmp/squircle/internal/AlphaImageBitmap.kt",
+      "sha256Bytes": "54e42e83ac7204c4090094eb079bdebfe64f7e2e1e9624a22919d809efdb4d6b"
+    },
+    {
+      "path": "upstream/miuix-squircle/src/skikoMain/kotlin/squircle/internal/AlphaImageBitmap.skiko.kt",
+      "originalPath": "miuix-squircle/src/skikoMain/kotlin/top/yukonga/miuix/kmp/squircle/internal/AlphaImageBitmap.skiko.kt",
+      "sha256Bytes": "10ff12ccf7166c28f16d86cc2e26619e6102c7e68ed8b10b0f8ff508e8fa54e9"
+    },
+    {
+      "path": "upstream/miuix-ui/build.gradle.kts",
+      "originalPath": "miuix-ui/build.gradle.kts",
+      "sha256Bytes": "48fab199a0ab5a281abb04c47cecba7cca4c30ea3902b0201adbf9ec36630cfe"
+    },
+    {
+      "path": "upstream/miuix-ui/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "originalPath": "miuix-ui/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "sha256Bytes": "f40d1a55efc5cd4433f5e84fa97d03f4cab1d79a456ad4c9f07c505008db7a6d"
+    },
+    {
+      "path": "upstream/miuix-ui/src/androidMain/kotlin/theme/DynamicColors.android.kt",
+      "originalPath": "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/theme/DynamicColors.android.kt",
+      "sha256Bytes": "2e40d8abf306527436b6b76862d9eff39523b91675e36ab9453ade37001efc45"
+    },
+    {
+      "path": "upstream/miuix-ui/src/androidMain/kotlin/utils/WindowNavigationEventScope.android.kt",
+      "originalPath": "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/WindowNavigationEventScope.android.kt",
+      "sha256Bytes": "b1240856f1d0769a699b6a34bf2a6c948ba362d2843a5f2563079480483f4603"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/anim/AccelerateEasing.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/anim/AccelerateEasing.kt",
+      "sha256Bytes": "443f96899e81385884ebf03e4271f85650c1a4bb55e70012a65e0a2f69577f98"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/anim/DecelerateEasing.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/anim/DecelerateEasing.kt",
+      "sha256Bytes": "3c5877e63432c812c0b47cbb90896c883a130e5508442cfbfe21448b582f3b62"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/anim/MiuixEasing.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/anim/MiuixEasing.kt",
+      "sha256Bytes": "997a0dda3c9258e609858e24ddc27058d1ce5d5f7a52fc87aad2ac1e4384556e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/anim/SinOutEasing.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/anim/SinOutEasing.kt",
+      "sha256Bytes": "a5fd1d9f2f024cfc3b5b25caf098b266e12180e01c92ef7685c315143362dffb"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Badge.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Badge.kt",
+      "sha256Bytes": "8d4ff4d1e0eef05de4de20ef76d24c27985e9e17ec850a1053294c625575c647"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/BreadcrumbBar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/BreadcrumbBar.kt",
+      "sha256Bytes": "0199c0b077917f472ff88595e6909198f6298b24cdd1a9a96b14b395c9340fe2"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Button.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Button.kt",
+      "sha256Bytes": "1bd0eefc46d063344fc1979e9302df6a60058f759dd52ab8fef7c8bab1d3e0ba"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Card.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Card.kt",
+      "sha256Bytes": "2c1617424e052f442474f520608a1be8d4bbb7881288666494d356c246eec5d8"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Checkbox.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Checkbox.kt",
+      "sha256Bytes": "fd8c347cceeb1b5160c0e83fff33b303ccb70c641c18cc75bd33f833c6925888"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/ColorPalette.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/ColorPalette.kt",
+      "sha256Bytes": "6a3b488a6e02fc9575e5f45c197b2dfd4be590b487731be52d6b8eb38e197364"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/ColorPicker.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/ColorPicker.kt",
+      "sha256Bytes": "431bcff0133a50e222375141f1ccd56d9ec860d3e41516bf46e2b3ebf5c2c527"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Component.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Component.kt",
+      "sha256Bytes": "a70311c4e5c22cf45589ba4d3c448c27c7f9ee60f4fdcf8580ccdb656edc5881"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Divider.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Divider.kt",
+      "sha256Bytes": "764fdfc2529e28dd1f7a1790e3ab5dae3601714fb942e6001766388eaa06e47b"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Dropdown.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Dropdown.kt",
+      "sha256Bytes": "8612be7e913041f99f01b7d108b299ea6cc74ca5aa6b7a824093c49c2b7e2aa5"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/FloatingActionButton.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/FloatingActionButton.kt",
+      "sha256Bytes": "e38cc27e9cf555cc93992560a442c22e3ce5550b1219faa6db8b1758867283d8"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/FloatingToolbar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/FloatingToolbar.kt",
+      "sha256Bytes": "4a0ac86ba6e7d69b9a4f643013c455f24a103bf549056169f6dc516ad6e9e73f"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Icon.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Icon.kt",
+      "sha256Bytes": "49010bb8bd1ea6e0b5276657fc15d7ae0c20c94553d9bacabca9529ee7c625b1"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/IconButton.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/IconButton.kt",
+      "sha256Bytes": "6c3a5d1a25e9392da1dfc489cc0360dccad13d54ef1856743056f8e44acc5446"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/ListPopup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/ListPopup.kt",
+      "sha256Bytes": "0d2ced3c909e0735f62d3d2abc8f768a9a9ea15fbf0b56b076b1a9dd0deb6914"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/NavigationBar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationBar.kt",
+      "sha256Bytes": "463fb003a7f2402d0067321189d5e51224c8a10fdf8edbd089d65b0c98a72f30"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/NavigationRail.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationRail.kt",
+      "sha256Bytes": "a99f15bbe3d9d1474f958150fd031cf7f7292299632aa63d847a33bf52eb55ec"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/NumberPicker.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NumberPicker.kt",
+      "sha256Bytes": "d231d62f3b6a8ffed9a74e863ac17bdcf88cbc13c4162312c72795a64b99c0cb"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/ProgressIndicator.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/ProgressIndicator.kt",
+      "sha256Bytes": "f9ee00885dcc49b49d9910bfa8f746fcfbe4e2e8ae59851aa41dd726514c239b"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/PullToRefresh.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/PullToRefresh.kt",
+      "sha256Bytes": "118a2e4d5171015595e8e49f51cb4fc3bb864aed869f6aedc9732c9e6895d12c"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/RadioButton.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/RadioButton.kt",
+      "sha256Bytes": "18c5a5bc91988604c5ebb967b18235c87bee7db38ded216d8a72c5e520f64bc6"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Scaffold.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Scaffold.kt",
+      "sha256Bytes": "d06d000adc93997eb64d558e4c687ffe70d93652c5d3edf634a7bf7cd9a27020"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/ScrollBar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/ScrollBar.kt",
+      "sha256Bytes": "0f24453a597a3be70efe918a26828d3da5e8a076b16db9350ad563f683948fb9"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/SearchBar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/SearchBar.kt",
+      "sha256Bytes": "e9f0af6099b88a47065cd85ccb715ea57eda51ecbd4000ad2d584d397937bd2d"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Slider.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Slider.kt",
+      "sha256Bytes": "9ef2c2f372357bf8b15778bd267a05f067821c95f5261a65d44963a96656e89e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/SmallTitle.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/SmallTitle.kt",
+      "sha256Bytes": "434ec6cfc33e05ef6d857310c42d1595c30f7ea1503e755e120b72331d490fd5"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Snackbar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Snackbar.kt",
+      "sha256Bytes": "3c9c048e7abc4339c68089b2882d507580ac1425e041d76646112d297b8dcb1a"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Surface.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Surface.kt",
+      "sha256Bytes": "214ffe24b4d3f7fb4c5b1a02a08013d7283a553a508d88d9882a645b675f641c"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Switch.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Switch.kt",
+      "sha256Bytes": "0a4cb03161fbc9715a166f2b49004de55b5a7c840c71fc01c4f8ce0b998b6a4b"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/TabRow.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TabRow.kt",
+      "sha256Bytes": "4a7384b04a7de994a9d026e0b9186144329018a4c8a98f881ed919fe5feadd49"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Text.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Text.kt",
+      "sha256Bytes": "e06e8a9cfa67e347e65e345ab9072c7bb2181e5b5c8947341582f0bc6ea5e8c7"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/TextField.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TextField.kt",
+      "sha256Bytes": "9e8699859ec72592ed1e0b4cdadedde83d3570393d33c9eb7c28c774f8c8c92e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/Tooltip.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/Tooltip.kt",
+      "sha256Bytes": "f5a045113f0bb2a136d79b8695faadfa13ff90172101b66d9d8635683b8178a2"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/basic/TopAppBar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TopAppBar.kt",
+      "sha256Bytes": "9c40cd4f06dfde2a8c4b4d71b20e43fbdedbba63b94ed62804b4f3cbff1625b8"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/api/Extensions.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/api/Extensions.kt",
+      "sha256Bytes": "8f2142eb0855a2ca27c6d24460cb788f8fc699b8576eb06a0514f5061f5b8b70"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/core/Transforms.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/core/Transforms.kt",
+      "sha256Bytes": "146b761af6f4018b99fc065789fb08498cb91dfac5da427309d306b4b988c1a7"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/space/Hsv.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/space/Hsv.kt",
+      "sha256Bytes": "a90d8d10ee31ec375b07e02fc6144058054388ad6f6dbe9ce4468ee880d7a78e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/space/OkHsv.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/space/OkHsv.kt",
+      "sha256Bytes": "16cfd06ec3defc526747ef2c79b62735f434dc6c631e436d9cac0855e0181ccf"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/space/OkLab.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/space/OkLab.kt",
+      "sha256Bytes": "5c59b5b16dfc3e1a33dc04a194048d51ae49488b263c3f25f7d941e6d36e1bb0"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/color/space/OkLch.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/color/space/OkLch.kt",
+      "sha256Bytes": "71a51c247874fd8cfc40d06dd031bddb3a6e8a5fcee8eb602e40b23d7915b3e8"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/ArrowRight.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/ArrowRight.kt",
+      "sha256Bytes": "92e10aec73f6f93de2195c45af457c4f4c9684c7d4f994a1aa82e44d86f012dd"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/ArrowUpDown.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/ArrowUpDown.kt",
+      "sha256Bytes": "39d339717db926f333aa5a4aa5e1cfc88fcb31be7122f3d28baf62c078ab9238"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/Check.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/Check.kt",
+      "sha256Bytes": "5821c80ad8ce074ef0dcc8d857cf06c3ac1ef8ef60408b9c874ab42d4050d4c6"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/Close.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/Close.kt",
+      "sha256Bytes": "69877c3ba87c7fd3e9563adcb3499f7e1b98eabd4efdca9e832772fb066ce50f"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/Search.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/Search.kt",
+      "sha256Bytes": "7aa25d1424b2431dc3ba197a256d8cb6ea5bcdde2d81f307456e4a75eab251af"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/SearchCleanup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/SearchCleanup.kt",
+      "sha256Bytes": "61bb9b1c4993f77d8d69e396525d0b23f2be53543a865bc43c018ac20d6b45a6"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/icon/basic/Sidebar.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/basic/Sidebar.kt",
+      "sha256Bytes": "b89c3ecce5e0dce6d86f78444e253daa49ef3c17aaffcf4c383520e7dd961188"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/interfaces/ExperimentalScrollBarApi.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/interfaces/ExperimentalScrollBarApi.kt",
+      "sha256Bytes": "b06522642cdc9b0b1849734f61596477f70cea091da8f7d3cccb310b6243e560"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/interfaces/HoldDownInteraction.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/interfaces/HoldDownInteraction.kt",
+      "sha256Bytes": "630acb97a17630ec3287de6a3e44088b74e78db3dae5ac45ecace502dee79416"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/BottomSheetContentLayout.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/BottomSheetContentLayout.kt",
+      "sha256Bytes": "20307916553aabc0ebff1e2852335712363dae6c4f69e3b1afe41392f7f34eba"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/CascadingListPopupLayout.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/CascadingListPopupLayout.kt",
+      "sha256Bytes": "2264817844dbf5e67b64f834e79cfe48dd04d8ba92ac7dbef8e8748aedca94f6"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/CascadingMorphContent.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/CascadingMorphContent.kt",
+      "sha256Bytes": "2c5d787d4f91d6586e1cd4308ffc8dde28d95794bb1f06ac53ab5c2ad73c78a3"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/DialogContentLayout.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/DialogContentLayout.kt",
+      "sha256Bytes": "6f0273f44558c04cc4a5d179ac25eb0540ffaf83730cf88e862124eb3b2678cd"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/ListPopupLayout.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/ListPopupLayout.kt",
+      "sha256Bytes": "542f06f3d6f92989f55089c1f652a8d15bcdf92eeec8d567e05bd969e0196c6e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/layout/MorphHeaderRow.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/layout/MorphHeaderRow.kt",
+      "sha256Bytes": "53df5f7fb6864c74d16a79dcafce0d0e00e1759a2351f3f731645e7b953762f7"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/overlay/OverlayBottomSheet.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/overlay/OverlayBottomSheet.kt",
+      "sha256Bytes": "7c3b196ac1d75b9da711d41cfe173e63c00ad5c518f037a9a374e3e500a1b59f"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/overlay/OverlayCascadingListPopup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/overlay/OverlayCascadingListPopup.kt",
+      "sha256Bytes": "4149f910bf1f62b21760a5f45afd470bf11447ebc107652ebb7d08b29f2de2e7"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/overlay/OverlayDialog.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/overlay/OverlayDialog.kt",
+      "sha256Bytes": "04759d39d5d4a384362c2fc9a61e8a26ff05b7eb248fc5a8c88308360e76b966"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/overlay/OverlayListPopup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/overlay/OverlayListPopup.kt",
+      "sha256Bytes": "8e00b92ea45d90202c00252910817dcf664d507aa11f5c6efbe6c1cc59102198"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/Colors.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/Colors.kt",
+      "sha256Bytes": "c6885c8025dbc7cb81f11a6395032ea6c802c76862dca09c32365d5f7d40e911"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/ContentColor.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/ContentColor.kt",
+      "sha256Bytes": "0c6a6b10ead27bf124f9d2373f9eecb9b222994f6c795fc72bb52d0d00268aee"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/DismissState.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/DismissState.kt",
+      "sha256Bytes": "e81a9cab2bb7c9ab34200c1582a7e6f3d5ba074c338c17bfe849c96f5b3e9019"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/DynamicColors.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/DynamicColors.kt",
+      "sha256Bytes": "ad44f5ff762e48c40093367b989e7d6a8967b83f911ebcdf0b0d5fc94d9c5d0d"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/MiuixTheme.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/MiuixTheme.kt",
+      "sha256Bytes": "69e1c4fd43c5ebb8353366c01a32f05d7b170eeeac504933a4b19661299cff93"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/MonetMapping.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/MonetMapping.kt",
+      "sha256Bytes": "33637d9e00b30f35b87625319597bfb1063ba4ae742ad6a35192688bb4f94a1b"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/TextStyles.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/TextStyles.kt",
+      "sha256Bytes": "b11d9c7c545e7cdc9d5b016728538ceaf0840709a05df5c44e1b18c944b092e1"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/theme/ThemeController.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/theme/ThemeController.kt",
+      "sha256Bytes": "66cfccb9eccc7fe342496e7984c68caf2758a9df5886c2cbaa05fcaba43327fc"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/MiuixIndication.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/MiuixIndication.kt",
+      "sha256Bytes": "c99dc88bde78a4227ff3f1f37dba221c29c13d6ab876ddfd945bf973fdb21700"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/MiuixPopupUtils.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/MiuixPopupUtils.kt",
+      "sha256Bytes": "684a8ea97dc4b896d7c884509f99575def54bbaba9a8078718ef2f8aa8f31650"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/Overscroll.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Overscroll.kt",
+      "sha256Bytes": "bb935a0b5999576ef2d20c446bfe3bb53204240b03aafbf86dd59a500c12e38b"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/OverscrollFactory.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/OverscrollFactory.kt",
+      "sha256Bytes": "05a0416997c5475a785339bcb294a2c8bde6c8d4524d81f779cca3bcb961a5ee"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/PressFeedback.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PressFeedback.kt",
+      "sha256Bytes": "e712c4700f1ac24f3eac3ff0edf49e6b8bd82dd903c48e2f2eb627f33cf0b0b7"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/Pressable.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Pressable.kt",
+      "sha256Bytes": "c1efea5eadb9306954d07c1daf56b3a52ed4c8a6f6022904d4120533e800e66f"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/ScrollEndHaptic.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/ScrollEndHaptic.kt",
+      "sha256Bytes": "b9fa086529b4ffb3bdbda3bb3707107be561e610df205ebbd0d7daa4691d9fe1"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/SpringUtils.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/SpringUtils.kt",
+      "sha256Bytes": "42547eec9013c5b850800160b88d83ef06ba0533180f0a77be0413ec4eee5ea3"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/utils/WindowNavigationEventScope.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/WindowNavigationEventScope.kt",
+      "sha256Bytes": "c9edaff532bd08cf0ac7e6c866c1cfd526b67427574208ef3618530448ffa487"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/window/WindowBottomSheet.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/window/WindowBottomSheet.kt",
+      "sha256Bytes": "eb5003ee732b360db35e36db926932400b09ed8a7bd6c04ed663081ac3967ce4"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/window/WindowCascadingListPopup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/window/WindowCascadingListPopup.kt",
+      "sha256Bytes": "2696599dca9cd01976baaf138d05054e468b9be365f27095fca0bd879522145e"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/window/WindowDialog.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/window/WindowDialog.kt",
+      "sha256Bytes": "4db4469eeb8a02e7d0a6310521b6649754fc2c03901d37de3a94cca9796e8880"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonMain/kotlin/window/WindowListPopup.kt",
+      "originalPath": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/window/WindowListPopup.kt",
+      "sha256Bytes": "d45aa54b7cd24504277b0a843804d8932de04262bcbaea0f08fbdd29f4c6d723"
+    },
+    {
+      "path": "upstream/miuix-ui/src/commonTest/kotlin/basic/NavigationBarItemColorsTest.kt",
+      "originalPath": "miuix-ui/src/commonTest/kotlin/top/yukonga/miuix/kmp/basic/NavigationBarItemColorsTest.kt",
+      "sha256Bytes": "7afced500eea21dc1b5d48b13d519e509813f6e7ce33aef8a8ce6a76c89240fb"
+    },
+    {
+      "path": "upstream/miuix-ui/src/skikoMain/kotlin/theme/DynamicColors.skiko.kt",
+      "originalPath": "miuix-ui/src/skikoMain/kotlin/top/yukonga/miuix/kmp/theme/DynamicColors.skiko.kt",
+      "sha256Bytes": "5bffc5f134a169b49d7d57431e72cbb9476adc327d41273b422b658748e87eb4"
+    },
+    {
+      "path": "upstream/miuix-ui/src/skikoMain/kotlin/utils/WindowNavigationEventScope.skiko.kt",
+      "originalPath": "miuix-ui/src/skikoMain/kotlin/top/yukonga/miuix/kmp/utils/WindowNavigationEventScope.skiko.kt",
+      "sha256Bytes": "62cafe9762991c066e7b34926761556d3c72eeaaa9c949815adef593ee73cc32"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Search.kt",
+      "sha256Bytes": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Community.kt",
+      "sha256Bytes": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Contacts.kt",
+      "sha256Bytes": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/ContactsCircle.kt",
+      "sha256Bytes": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Favorites.kt",
+      "sha256Bytes": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Folder.kt",
+      "sha256Bytes": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/GridView.kt",
+      "sha256Bytes": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Home.kt",
+      "sha256Bytes": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Music.kt",
+      "sha256Bytes": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Notes.kt",
+      "sha256Bytes": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Play.kt",
+      "sha256Bytes": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Recent.kt",
+      "sha256Bytes": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Recording.kt",
+      "sha256Bytes": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Settings.kt",
+      "sha256Bytes": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Stopwatch.kt",
+      "sha256Bytes": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Store.kt",
+      "sha256Bytes": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Theme.kt",
+      "sha256Bytes": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb"
+    },
+    {
+      "path": "upstream/miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "originalPath": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/TopDownloads.kt",
+      "sha256Bytes": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce"
+    }
+  ],
+  "allBodiesByteEqualOfficialArchive": true
+}

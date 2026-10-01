@@ -1,0 +1,15 @@
+--- before/desktop/tools/extract-upstream-preferences.py
++++ after/desktop/tools/extract-upstream-preferences.py
+@@ -28,11 +28,7 @@
+     return result
+ 
+ def adapt(path, source, host):
+-    if path.endswith("/AppNavigationComponents.kt"):
+-        # The pinned Miuix JVM rail uses state=null for the same non-expandable
+-        # collapsed overload described by the original facade's own comment.
+-        source = host.substitute(source, "            expanded = false,\n", "            state = null,\n")
+-    elif path.endswith("/AdaptivePreferenceComponents.kt"):
++    if path.endswith("/AdaptivePreferenceComponents.kt"):
+         # Keep original rendering/signatures; bind the M3 collector to current hoisted input.
+         duplicate = "import com.android.purebilibili.core.ui.LocalAppThemeConfig\n"
+         if source.count(duplicate) != 2: raise ValueError("Original duplicate preference import changed")

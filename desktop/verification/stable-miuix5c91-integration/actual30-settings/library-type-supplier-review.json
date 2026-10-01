@@ -1,0 +1,20 @@
+{
+  "status": "STATIC_ACTUAL30_CLASSPATH_REVIEW",
+  "types": {
+    "top/yukonga/miuix/kmp/basic/SliderKt.class": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+        "jarSha256Bytes": "e574a17de8136c12212f41c90ff35ba7b46818eef25e83b7c9f9386015da843e",
+        "classSha256Bytes": "650647012313348267cdfb4b4c96abf39fc2584f762f2349a62775526456492c"
+      }
+    ],
+    "top/yukonga/miuix/kmp/theme/MiuixThemeKt.class": [
+      {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+        "jarSha256Bytes": "e574a17de8136c12212f41c90ff35ba7b46818eef25e83b7c9f9386015da843e",
+        "classSha256Bytes": "7b17351c280a87cdd0ec06e785a3e9dd44b944b4e062991a70fb357e97075ddc"
+      }
+    ]
+  },
+  "scope": "Exactly one source-fork JAR supplies these Miuix UI types. This static check is not a replacement for loaded-class evidence or native UI proof."
+}

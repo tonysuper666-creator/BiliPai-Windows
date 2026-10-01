@@ -6,7 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 group = "com.bilipai.windows.sourcefork"
-version = "0.9.4-5157b503-windows-source1"
+version = "0.9.4-5c91d5e5-windows-source1"
 
 val verifyPinnedSource by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "verify-source.py", "--root", projectDir.absolutePath)

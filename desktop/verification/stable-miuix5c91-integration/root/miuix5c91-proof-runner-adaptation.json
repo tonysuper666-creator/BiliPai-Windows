@@ -1,0 +1,11 @@
+{
+  "originalRunnerSha256Bytes": "c57625f1ef8b2ab9e6fdbd49742cf893d82719c94328f8b861d3779ff430ea8f",
+  "newRunnerSha256Bytes": "d37c6ef6f375c130f16b60b7bdfc763966eebc3e0fdf3a682edf75652a54b77d",
+  "changes": [
+    "new independent cohort path",
+    "require actual snapshot770 source identities",
+    "require exact5c91 source-built dependency artifact"
+  ],
+  "behaviorAssertionsChanged": false,
+  "productionClassOverrides": 0
+}

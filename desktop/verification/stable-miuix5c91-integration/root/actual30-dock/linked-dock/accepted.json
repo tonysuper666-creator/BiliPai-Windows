@@ -1,0 +1,28 @@
+{
+  "name": "linked-dock",
+  "passed": true,
+  "exactFrozenFixtureSHA256": "0b8be5cd92e63eca5c199a5bbf82c12ae4dc33749956c4d46083311089a4d2e1",
+  "executedFixtureSHA256": "2ee96b0f6b842364c3980fa23569226fa2e417cdd7639eb2a694a1b88d2d47cc",
+  "fixtureOnlyAdaptation": "Only fixture expected CodeSource for full Home icon points to the actual sole Miuix5157 dependency; every behavior assertion and pointer event is unchanged.",
+  "productionClassOverrides": 0,
+  "overlaps": [],
+  "completedRunCollectedWithoutRepeating": false,
+  "actualProductPhase": 30,
+  "actualProductCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\main-kotlin.jar",
+  "actualMiuixCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+  "assertions": 57,
+  "pointerPairs": 6,
+  "caseCount": 6,
+  "cases": [
+    "actual-global-store-read",
+    "original-submit-native-and-three-channels",
+    "owned-original-nested-scroll",
+    "original-phase-ime-policies",
+    "offscreen-MATERIAL3-full-original-dock-search-glass",
+    "offscreen-MIUIX-full-original-dock-search-glass"
+  ],
+  "noHTTP": true,
+  "noHWND": true,
+  "productionNavigationRendererNotClaimed": true,
+  "productionNowPlayingRendererNotClaimed": true
+}

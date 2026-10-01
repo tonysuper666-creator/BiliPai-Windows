@@ -1,0 +1,140 @@
+{
+  "applied": false,
+  "soleSourceFork": ":miuix5157",
+  "oldCommit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+  "targetCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "targetVersion": "0.9.4-5c91d5e5-windows-source1",
+  "selectedCanonicalFiles": 195,
+  "compiledSources": 165,
+  "additionalCurrentCanonicalRowsMerged": [],
+  "changedFiles": [
+    {
+      "path": "desktop/third-party/miuix5157/upstream/gradle/libs.versions.toml",
+      "beforeSha256Bytes": "dd185641299d835ae88f2a803dd03b1bb834d2022dc5ed1c4cc85e88e7aa01fd",
+      "afterSha256Bytes": "7dc37306989d0cec42366adfb753747b07b9dc14cc223bd65f1d6b833962333a",
+      "bytes": 4479
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-blur/src/commonMain/kotlin/blur/DrawBackdropModifier.kt",
+      "beforeSha256Bytes": "d24e406b9f50b2e58750d8be9079520f02be16218a916742a7a21cde462e5134",
+      "afterSha256Bytes": "2c41ccb6017b89a8a5ea65cc9d1f47e97445e98b9a82644d76a6b7b4d7f26538",
+      "bytes": 47440
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-blur/src/commonMain/kotlin/blur/internal/BlurEffect.kt",
+      "beforeSha256Bytes": "d61cae3136f9c4857301a50c0e0939c370bce2931bf7c5ccb85d78008ea9e17e",
+      "afterSha256Bytes": "1294cbccb4c93be5f296077f0b3b402e9940025d423dceb43d9b85aa2174d520",
+      "bytes": 25609
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt",
+      "beforeSha256Bytes": "2703d5a86bbac35797c87fc6131c92be2d126fe77bf0d99fae34e84984c5ecda",
+      "afterSha256Bytes": "f787566fb38ddd47676de91cef1016f3b8cc9b8cdadec0ed6fea8b8a0a7a7f08",
+      "bytes": 50813
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/basic/BreadcrumbBar.kt",
+      "beforeSha256Bytes": "0199c0b077917f472ff88595e6909198f6298b24cdd1a9a96b14b395c9340fe2",
+      "afterSha256Bytes": "85c5a7d4fa6b6bd5ab84f8bae79862cfadf65b666fb03b63cdc61f9b6b42df9c",
+      "bytes": 15534
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/basic/NavigationRail.kt",
+      "beforeSha256Bytes": "a99f15bbe3d9d1474f958150fd031cf7f7292299632aa63d847a33bf52eb55ec",
+      "afterSha256Bytes": "231daca7b4ba8352092a23cae6376eddbb73e97938dd9117c08c8e691d7f8e7f",
+      "bytes": 32199
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/basic/TabRow.kt",
+      "beforeSha256Bytes": "4a7384b04a7de994a9d026e0b9186144329018a4c8a98f881ed919fe5feadd49",
+      "afterSha256Bytes": "79cf8ed2726d87bb56d1bda888f9ef28922f964b01414ddffd4cd96c3b256ce8",
+      "bytes": 24494
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/utils/Overscroll.kt",
+      "beforeSha256Bytes": "bb935a0b5999576ef2d20c446bfe3bb53204240b03aafbf86dd59a500c12e38b",
+      "afterSha256Bytes": "28b9a1acbd380ab015a29eeafc10dea1bba28e93be476272ac9b6dd7b8b040bb",
+      "bytes": 17474
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/utils/OverscrollFactory.kt",
+      "beforeSha256Bytes": "05a0416997c5475a785339bcb294a2c8bde6c8d4524d81f779cca3bcb961a5ee",
+      "afterSha256Bytes": "70e54e7a53590b3dfe2ccece71a9fb8db618f844937c5c2bd8376475dcd0b3d4",
+      "bytes": 15461
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/androidMain/kotlin/utils/PagerNonTouchScroll.android.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "ad356b070c54eaa73fc63cfc719e6d0f5028db48c3aebcda5c81cfda4dc9d5ac",
+      "bytes": 1847
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/utils/PagerGestureUtils.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "fc495ea5e998a3bcc4ab05bd48dc80d02affc9412bc617239823f96df07f7e5d",
+      "bytes": 27074
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/commonMain/kotlin/utils/PagerNonTouchScroll.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "0f9040ea246b8e554e29c6108aa80553cd6a2d38798a9fe11bd706933977d0bb",
+      "bytes": 37523
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/desktopMain/kotlin/utils/PagerNonTouchScroll.desktop.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "8b50960163b2b8595267f87fdad6edb5038d85f769d28bcb7bf2fc4de53afd6f",
+      "bytes": 4971
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/iosMain/kotlin/utils/PagerNonTouchScroll.ios.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "c4e2405287f3050722a56c517ab597408378f5ed811f906e84273a132df6b920",
+      "bytes": 1124
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/macosMain/kotlin/utils/PagerNonTouchScroll.macos.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "d78b7b1fd8e41a07c6e714807a3ee606834228de0bba749d9e13087a1c0d3aa2",
+      "bytes": 1414
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-ui/src/webMain/kotlin/utils/PagerNonTouchScroll.web.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "d6e6a3f08d43be3079684267490b03b4f2551875e6ac148df83b36ac5c925f9e",
+      "bytes": 8301
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Messages.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "f911c8200fd37077d1e986f52be9693fa90588e39f06cb86be35c5440856f1c0",
+      "bytes": 12591
+    },
+    {
+      "path": "desktop/third-party/miuix5157/build.gradle.kts",
+      "beforeSha256Bytes": "0129c69e7add1f2f7e18442156d9007ba6da60f2e8a26e8003990d022ccb1360",
+      "afterSha256Bytes": "e82496cc8406d13fb6821da00574e9a85c6e8549b2200c8390a87c209e66cdec",
+      "bytes": 6801
+    },
+    {
+      "path": "desktop/third-party/miuix5157/verify-source.py",
+      "beforeSha256Bytes": "169a672d973f73903b9972693e671b9f4382e6f7799b6a7ea5d52ca9f27069c5",
+      "afterSha256Bytes": "6b6be6deab4bfabbe8c9b453ce55b5316175f09260e91bad93d1bfb468332306",
+      "bytes": 1215
+    },
+    {
+      "path": "desktop/third-party/miuix5157/dependency-pins.json",
+      "beforeSha256Bytes": "72665023cb8c7debbafe1695b662f493fad8d2c69bd2c607a6a4fb052e843408",
+      "afterSha256Bytes": "77c5e8ecd3d2de1a2bb65ee31cfb7681ef5fe0e29e69f71f66d4c68ebd96d572",
+      "bytes": 5451
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream-provenance.json",
+      "beforeSha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af",
+      "afterSha256Bytes": "6335d17d09e86ff2e1f8a92f478c3c043ccd330279060fc859e802631d02714a",
+      "bytes": 54245
+    }
+  ],
+  "newBinaryDependencyIntroduced": false,
+  "actualProductRuntimeAccepted": false
+}

@@ -5,7 +5,7 @@ root=args.root.resolve()
 if os.name=="nt" and not str(root).startswith("\\\\?\\"):root=Path("\\\\?\\"+str(root))
 source=root/"upstream"
 provenance=json.loads((root/"upstream-provenance.json").read_text(encoding="utf-8"))
-assert provenance["commit"]=="5157b503e86e2bfc2db61db00fff5df41326394a"
+assert provenance["commit"]=="5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca"
 declared=set()
 for entry in provenance["files"]:
  path=source/entry.get("storagePath",entry["path"])
@@ -15,4 +15,4 @@ for entry in provenance["files"]:
  if path.suffix==".kt" and any("/src/"+s+"/" in entry["path"] for s in provenance["compiledSourceSets"]):declared.add(path.resolve())
 actual={p.resolve() for p in source.rglob("*.kt") if any("/src/"+s+"/" in p.as_posix() for s in provenance["compiledSourceSets"])}
 assert actual==declared,"Unexpected unreviewed compiled source"
-print("Exact Miuix5157 pinned source PASS:",len(provenance["files"]),"files;",len(declared),"compiled source files")
+print("Exact Miuix5c91 pinned source PASS:",len(provenance["files"]),"files;",len(declared),"compiled source files")

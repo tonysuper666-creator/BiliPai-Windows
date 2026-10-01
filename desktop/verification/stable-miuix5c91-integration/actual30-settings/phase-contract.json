@@ -1,0 +1,16 @@
+{
+  "status": "PREPARED_SAME_BEHAVIOR_FIXTURE_NEW_ACTUAL_PHASE",
+  "previousFrozenManifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\frozen-handoff.json",
+  "previousFrozenManifestSha256Bytes": "f8e3c7bc6317e8bbbe35e857036432da4344bdc109f2e8446f2ec706cb29bf46",
+  "fixtureByteIdentical": true,
+  "fixtureSha256Bytes": "d1585ba0dd0478caca02fb09333288bfba26209025a438ee5a6e160bbbe88871",
+  "runnerChangesOnly": {
+    "stable-product-snapshot-27": "stable-product-snapshot-30",
+    "908d5cfdb65a99622fd2822771641b17d2bf35efe501a71ffcd231eace8c1c53": "e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69",
+    "8dcd9678a9f669793267bfb530fda1c09ef3225c50cf54682a12228636afd772": "dcab5cb81f9c62929c07966f76fe3bfd54ee0e7b93614296c576b24f218071c0",
+    "Main27": "Main30"
+  },
+  "behaviorMatrix": "same MATERIAL3/MIUIX 1100x900 actions; no additional cases",
+  "productionOverrides": 0,
+  "snapshot30MiuixSha256Bytes": "e574a17de8136c12212f41c90ff35ba7b46818eef25e83b7c9f9386015da843e"
+}

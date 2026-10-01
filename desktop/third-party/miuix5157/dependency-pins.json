@@ -93,7 +93,7 @@
     },
     {
       "repository": "https://github.com/compose-miuix-ui/miuix",
-      "commit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+      "commit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
       "path": "LICENSE",
       "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
       "resource": "licenses/appearance/miuix-5157-APACHE-2.0.txt"

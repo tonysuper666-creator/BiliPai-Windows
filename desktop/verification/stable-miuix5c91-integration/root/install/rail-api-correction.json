@@ -1,0 +1,9 @@
+{
+  "reason": "Exact Miuix5c91 supplies the original non-expandable expanded=false rail overload; retire only the older5157 state=null adapter. Preserve original v0.2.3 facade without rewriting library body.",
+  "beforeSHA256": "5742a41a68a7401081464e9182809eb86aa265c58fd0334a7b921e02a9cfef54",
+  "afterSHA256": "00fbc7e1a8c2d5247c1c992d94fa73bd754f5684f4ee09b7e8a03347518b3595",
+  "sourceBodyChanged": false,
+  "oldPlatformSubstitutionRetired": true,
+  "failedClassesPhase": 28,
+  "wholeClassesPassed": false
+}

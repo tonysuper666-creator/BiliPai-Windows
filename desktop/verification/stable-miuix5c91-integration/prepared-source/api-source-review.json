@@ -1,0 +1,2989 @@
+{
+  "method": "Source function signatures (public/default+internal), all changed Kotlin files; whole exact unified diffs retained for properties/types/defaults/algorithm changes, no binary ABI acceptance claim.",
+  "files": [
+    {
+      "path": "example/shared/src/commonMain/kotlin/AppContent.kt",
+      "oldDeclarations": [
+        {
+          "name": "fromInt",
+          "signature": "fun fromInt(value: Int)",
+          "line": 147,
+          "visibility": "public/default"
+        },
+        {
+          "name": "AppContent",
+          "signature": "fun AppContent( padding: PaddingValues, )",
+          "line": 156,
+          "visibility": "public/default"
+        },
+        {
+          "name": "AppPager",
+          "signature": "fun AppPager( snackbarHostState: SnackbarHostState, padding: PaddingValues, pagerState: PagerState, modifier: Modifier = Modifier, )",
+          "line": 745,
+          "visibility": "public/default"
+        },
+        {
+          "name": "animateToPage",
+          "signature": "fun animateToPage(targetIndex: Int)",
+          "line": 804,
+          "visibility": "public/default"
+        },
+        {
+          "name": "syncPage",
+          "signature": "fun syncPage()",
+          "line": 847,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberMainPagerState",
+          "signature": "fun rememberMainPagerState( pagerState: PagerState, coroutineScope: CoroutineScope = rememberCoroutineScope(), ): MainPagerState",
+          "line": 855,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "fromInt",
+          "signature": "fun fromInt(value: Int)",
+          "line": 149,
+          "visibility": "public/default"
+        },
+        {
+          "name": "AppContent",
+          "signature": "fun AppContent( padding: PaddingValues, )",
+          "line": 158,
+          "visibility": "public/default"
+        },
+        {
+          "name": "AppPager",
+          "signature": "fun AppPager( snackbarHostState: SnackbarHostState, padding: PaddingValues, pagerState: PagerState, modifier: Modifier = Modifier, )",
+          "line": 747,
+          "visibility": "public/default"
+        },
+        {
+          "name": "animateToPage",
+          "signature": "fun animateToPage(targetIndex: Int)",
+          "line": 825,
+          "visibility": "public/default"
+        },
+        {
+          "name": "syncPage",
+          "signature": "fun syncPage()",
+          "line": 848,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberMainPagerState",
+          "signature": "fun rememberMainPagerState( pagerState: PagerState, coroutineScope: CoroutineScope = rememberCoroutineScope(), ): MainPagerState",
+          "line": 856,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\example\\shared\\src\\commonMain\\kotlin\\AppContent.kt.patch"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/AppState.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\example\\shared\\src\\commonMain\\kotlin\\AppState.kt.patch"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/SettingsPage.kt",
+      "oldDeclarations": [
+        {
+          "name": "SettingsPage",
+          "signature": "fun SettingsPage( padding: PaddingValues, )",
+          "line": 61,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "SettingsPage",
+          "signature": "fun SettingsPage( padding: PaddingValues, )",
+          "line": 62,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\example\\shared\\src\\commonMain\\kotlin\\SettingsPage.kt.patch"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/component/TabRowSection.kt",
+      "oldDeclarations": [
+        {
+          "name": "tabRowSection",
+          "signature": "fun LazyListScope.tabRowSection()",
+          "line": 27,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "tabRowSection",
+          "signature": "fun LazyListScope.tabRowSection()",
+          "line": 30,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\example\\shared\\src\\commonMain\\kotlin\\component\\TabRowSection.kt.patch"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/DrawBackdropModifier.kt",
+      "oldDeclarations": [
+        {
+          "name": "drawBackdrop",
+          "signature": "fun Modifier.drawBackdrop( backdrop: Backdrop, shape: () -> Shape, effects: BackdropEffectScope.() -> Unit, highlight: (BackdropEffectScope.() -> Highlight?)? = null, layerBlock: (GraphicsLayerScope.() -> Unit)? = null, onDrawBehind: (DrawScope.() -> Unit)? = null, onDrawBackdrop: DrawScope.(drawBackdrop: DrawScope.() -> Unit) -> Unit = DefaultOnDrawBackdrop, onDrawSurface: (DrawScope.() -> Unit)? = null, onDrawFront: (DrawScope.() -> Unit)? = null, contentBlendMode: BlendMode = BlendMode.SrcOver, progressiveGradient: ProgressiveBlur? = null, enabled: Boolean = true, ): Modifier",
+          "line": 103,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): DrawBackdropNode",
+          "line": 156,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: DrawBackdropNode)",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 198,
+          "visibility": "public/default"
+        },
+        {
+          "name": "equals",
+          "signature": "override fun equals(other: Any?): Boolean",
+          "line": 204,
+          "visibility": "public/default"
+        },
+        {
+          "name": "hashCode",
+          "signature": "override fun hashCode(): Int",
+          "line": 222,
+          "visibility": "public/default"
+        },
+        {
+          "name": "updateShape",
+          "signature": "fun updateShape(shape: () -> Shape)",
+          "line": 261,
+          "visibility": "public/default"
+        },
+        {
+          "name": "ensureMain",
+          "signature": "fun ensureMain(): GraphicsLayer",
+          "line": 294,
+          "visibility": "public/default"
+        },
+        {
+          "name": "obtainCascade",
+          "signature": "fun obtainCascade(index: Int): GraphicsLayer",
+          "line": 296,
+          "visibility": "public/default"
+        },
+        {
+          "name": "downsampleEffect",
+          "signature": "inline fun downsampleEffect(slot: Int, key: String, w: Int, h: Int, build: () -> RenderEffect): RenderEffect",
+          "line": 308,
+          "visibility": "public/default"
+        },
+        {
+          "name": "noiseRenderEffect",
+          "signature": "inline fun noiseRenderEffect(coeff: Float, build: () -> RenderEffect): RenderEffect",
+          "line": 320,
+          "visibility": "public/default"
+        },
+        {
+          "name": "release",
+          "signature": "fun release()",
+          "line": 329,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure( measurable: Measurable, constraints: Constraints, ): MeasureResult",
+          "line": 520,
+          "visibility": "public/default"
+        },
+        {
+          "name": "draw",
+          "signature": "override fun ContentDrawScope.draw()",
+          "line": 656,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onGloballyPositioned",
+          "signature": "override fun onGloballyPositioned(coordinates: LayoutCoordinates)",
+          "line": 699,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onObservedReadsChanged",
+          "signature": "override fun onObservedReadsChanged()",
+          "line": 711,
+          "visibility": "public/default"
+        },
+        {
+          "name": "invalidateDrawCache",
+          "signature": "fun invalidateDrawCache()",
+          "line": 715,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 969,
+          "visibility": "public/default"
+        },
+        {
+          "name": "releaseCompositeResources",
+          "signature": "fun releaseCompositeResources()",
+          "line": 1064,
+          "visibility": "public/default"
+        },
+        {
+          "name": "releaseGraphicsLayers",
+          "signature": "fun releaseGraphicsLayers()",
+          "line": 1092,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 1102,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "drawBackdrop",
+          "signature": "fun Modifier.drawBackdrop( backdrop: Backdrop, shape: () -> Shape, effects: BackdropEffectScope.() -> Unit, highlight: (BackdropEffectScope.() -> Highlight?)? = null, layerBlock: (GraphicsLayerScope.() -> Unit)? = null, onDrawBehind: (DrawScope.() -> Unit)? = null, onDrawBackdrop: DrawScope.(drawBackdrop: DrawScope.() -> Unit) -> Unit = DefaultOnDrawBackdrop, onDrawSurface: (DrawScope.() -> Unit)? = null, onDrawFront: (DrawScope.() -> Unit)? = null, contentBlendMode: BlendMode = BlendMode.SrcOver, progressiveGradient: ProgressiveBlur? = null, enabled: Boolean = true, ): Modifier",
+          "line": 103,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): DrawBackdropNode",
+          "line": 156,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: DrawBackdropNode)",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 198,
+          "visibility": "public/default"
+        },
+        {
+          "name": "equals",
+          "signature": "override fun equals(other: Any?): Boolean",
+          "line": 204,
+          "visibility": "public/default"
+        },
+        {
+          "name": "hashCode",
+          "signature": "override fun hashCode(): Int",
+          "line": 222,
+          "visibility": "public/default"
+        },
+        {
+          "name": "updateShape",
+          "signature": "fun updateShape(shape: () -> Shape)",
+          "line": 263,
+          "visibility": "public/default"
+        },
+        {
+          "name": "ensureMain",
+          "signature": "fun ensureMain(): GraphicsLayer",
+          "line": 296,
+          "visibility": "public/default"
+        },
+        {
+          "name": "obtainCascade",
+          "signature": "fun obtainCascade(index: Int): GraphicsLayer",
+          "line": 298,
+          "visibility": "public/default"
+        },
+        {
+          "name": "downsampleEffect",
+          "signature": "inline fun downsampleEffect(slot: Int, key: String, w: Int, h: Int, build: () -> RenderEffect): RenderEffect",
+          "line": 310,
+          "visibility": "public/default"
+        },
+        {
+          "name": "noiseRenderEffect",
+          "signature": "inline fun noiseRenderEffect(coeff: Float, build: () -> RenderEffect): RenderEffect",
+          "line": 322,
+          "visibility": "public/default"
+        },
+        {
+          "name": "release",
+          "signature": "fun release()",
+          "line": 331,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure( measurable: Measurable, constraints: Constraints, ): MeasureResult",
+          "line": 522,
+          "visibility": "public/default"
+        },
+        {
+          "name": "draw",
+          "signature": "override fun ContentDrawScope.draw()",
+          "line": 658,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onGloballyPositioned",
+          "signature": "override fun onGloballyPositioned(coordinates: LayoutCoordinates)",
+          "line": 701,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onObservedReadsChanged",
+          "signature": "override fun onObservedReadsChanged()",
+          "line": 713,
+          "visibility": "public/default"
+        },
+        {
+          "name": "invalidateDrawCache",
+          "signature": "fun invalidateDrawCache()",
+          "line": 717,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 971,
+          "visibility": "public/default"
+        },
+        {
+          "name": "releaseCompositeResources",
+          "signature": "fun releaseCompositeResources()",
+          "line": 1066,
+          "visibility": "public/default"
+        },
+        {
+          "name": "releaseGraphicsLayers",
+          "signature": "fun releaseGraphicsLayers()",
+          "line": 1094,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 1104,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-blur\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\blur\\DrawBackdropModifier.kt.patch"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/BlurEffect.kt",
+      "oldDeclarations": [
+        {
+          "name": "createBlurEffect",
+          "signature": "internal fun createBlurEffect( radiusX: Float, radiusY: Float, downScale: Int, adjustedVarianceX: Float, adjustedVarianceY: Float, size: Size, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 52,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveBlurEffect",
+          "signature": "internal fun createProgressiveBlurEffect( radiusX: Float, radiusY: Float, downScale: Int, adjustedVarianceX: Float, adjustedVarianceY: Float, size: Size, padding: Float, compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 134,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveStackEffect",
+          "signature": "internal fun createProgressiveStackEffect( radiusX: Float, radiusY: Float, exp: Int, padding: Float, compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, preEffect: RenderEffect?, postEffect: RenderEffect?, postBlend: BlurColors?, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 225,
+          "visibility": "internal"
+        },
+        {
+          "name": "levelSigma",
+          "signature": "fun levelSigma(sigma: Float, fraction: Float): Float",
+          "line": 258,
+          "visibility": "public/default"
+        },
+        {
+          "name": "progressiveSharpLoopRadius",
+          "signature": "internal fun progressiveSharpLoopRadius(radius: Float, exp: Int): Float",
+          "line": 297,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveSharpOverlayEffect",
+          "signature": "internal fun createProgressiveSharpOverlayEffect( radiusX: Float, radiusY: Float, exp: Int, compW: Float, compH: Float, originX: Float, originY: Float, bandW: Float, bandH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, scope: BackdropEffectScopeImpl, ): RenderEffect",
+          "line": 327,
+          "visibility": "internal"
+        },
+        {
+          "name": "loopPass",
+          "signature": "fun loopPass(axis: String, maxRadius: Float, stepX: Float, stepY: Float, masked: Boolean): RenderEffect",
+          "line": 368,
+          "visibility": "public/default"
+        },
+        {
+          "name": "progressiveSharpBandBounds",
+          "signature": "internal fun progressiveSharpBandBounds( compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, margin: Float, ): Rect?",
+          "line": 421,
+          "visibility": "internal"
+        },
+        {
+          "name": "include",
+          "signature": "fun include(x: Float, y: Float)",
+          "line": 449,
+          "visibility": "public/default"
+        },
+        {
+          "name": "downScaleExpFor",
+          "signature": "internal fun downScaleExpFor(sigmaSquared: Float): Int",
+          "line": 487,
+          "visibility": "internal"
+        },
+        {
+          "name": "adjustedVarianceForExp",
+          "signature": "internal fun adjustedVarianceForExp(sigmaSquared: Float, exp: Int): Float",
+          "line": 496,
+          "visibility": "internal"
+        },
+        {
+          "name": "computeDownScaleBlend",
+          "signature": "internal fun computeDownScaleBlend(sigma: Float): DownScaleBlend",
+          "line": 519,
+          "visibility": "internal"
+        },
+        {
+          "name": "computeBlurParamsInto",
+          "signature": "internal fun computeBlurParamsInto( variance: Float, rawScratch: DoubleArray, outOffsets: FloatArray, outWeights: FloatArray, ): Int",
+          "line": 541,
+          "visibility": "internal"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "createBlurEffect",
+          "signature": "internal fun createBlurEffect( radiusX: Float, radiusY: Float, downScale: Int, adjustedVarianceX: Float, adjustedVarianceY: Float, size: Size, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 52,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveBlurEffect",
+          "signature": "internal fun createProgressiveBlurEffect( radiusX: Float, radiusY: Float, downScale: Int, adjustedVarianceX: Float, adjustedVarianceY: Float, size: Size, padding: Float, compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 134,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveStackEffect",
+          "signature": "internal fun createProgressiveStackEffect( radiusX: Float, radiusY: Float, exp: Int, padding: Float, compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, preEffect: RenderEffect?, postEffect: RenderEffect?, postBlend: BlurColors?, scope: BackdropEffectScopeImpl, ): RenderEffect?",
+          "line": 229,
+          "visibility": "internal"
+        },
+        {
+          "name": "levelSigma",
+          "signature": "fun levelSigma(sigma: Float, fraction: Float): Float",
+          "line": 262,
+          "visibility": "public/default"
+        },
+        {
+          "name": "progressiveSharpLoopRadius",
+          "signature": "internal fun progressiveSharpLoopRadius(radius: Float, exp: Int): Float",
+          "line": 301,
+          "visibility": "internal"
+        },
+        {
+          "name": "createProgressiveSharpOverlayEffect",
+          "signature": "internal fun createProgressiveSharpOverlayEffect( radiusX: Float, radiusY: Float, exp: Int, compW: Float, compH: Float, originX: Float, originY: Float, bandW: Float, bandH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, scope: BackdropEffectScopeImpl, ): RenderEffect",
+          "line": 331,
+          "visibility": "internal"
+        },
+        {
+          "name": "loopPass",
+          "signature": "fun loopPass(axis: Int, maxRadius: Float, stepX: Float, stepY: Float, masked: Boolean): RenderEffect",
+          "line": 372,
+          "visibility": "public/default"
+        },
+        {
+          "name": "progressiveSharpBandBounds",
+          "signature": "internal fun progressiveSharpBandBounds( compW: Float, compH: Float, angleDeg: Float, startFraction: Float, endFraction: Float, curve: Float, margin: Float, ): Rect?",
+          "line": 423,
+          "visibility": "internal"
+        },
+        {
+          "name": "include",
+          "signature": "fun include(x: Float, y: Float)",
+          "line": 451,
+          "visibility": "public/default"
+        },
+        {
+          "name": "downScaleExpFor",
+          "signature": "internal fun downScaleExpFor(sigmaSquared: Float): Int",
+          "line": 489,
+          "visibility": "internal"
+        },
+        {
+          "name": "adjustedVarianceForExp",
+          "signature": "internal fun adjustedVarianceForExp(sigmaSquared: Float, exp: Int): Float",
+          "line": 498,
+          "visibility": "internal"
+        },
+        {
+          "name": "computeDownScaleBlend",
+          "signature": "internal fun computeDownScaleBlend(sigma: Float): DownScaleBlend",
+          "line": 521,
+          "visibility": "internal"
+        },
+        {
+          "name": "computeBlurParamsInto",
+          "signature": "internal fun computeBlurParamsInto( variance: Float, rawScratch: DoubleArray, outOffsets: FloatArray, outWeights: FloatArray, ): Int",
+          "line": 543,
+          "visibility": "internal"
+        }
+      ],
+      "removedOrChangedSignatures": [
+        {
+          "name": "loopPass",
+          "signature": "fun loopPass(axis: String, maxRadius: Float, stepX: Float, stepY: Float, masked: Boolean): RenderEffect",
+          "line": 368,
+          "visibility": "public/default"
+        }
+      ],
+      "addedOrChangedSignatures": [
+        {
+          "name": "loopPass",
+          "signature": "fun loopPass(axis: Int, maxRadius: Float, stepX: Float, stepY: Float, masked: Boolean): RenderEffect",
+          "line": 372,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-blur\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\blur\\internal\\BlurEffect.kt.patch"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+      "oldDeclarations": [
+        {
+          "name": "buildBlurShader",
+          "signature": "internal fun buildBlurShader(tapCount: Int): String",
+          "line": 7,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildProgressiveBlurShader",
+          "signature": "internal fun buildProgressiveBlurShader(maxTap: Int, masked: Boolean = false): String",
+          "line": 64,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveBlurShaderForTap",
+          "signature": "internal fun progressiveBlurShaderForTap(tapBound: Int, masked: Boolean = false): String",
+          "line": 145,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveLoopTapBound",
+          "signature": "internal fun progressiveLoopTapBound(maxRadius: Float): Int",
+          "line": 156,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildBloomStrokeShader",
+          "signature": "internal fun buildBloomStrokeShader(dualPeak: Boolean): String",
+          "line": 398,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildBlendModeShader",
+          "signature": "internal fun buildBlendModeShader(includeExtended: Boolean, rampMix: Boolean = false): String",
+          "line": 526,
+          "visibility": "internal"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "buildBlurShader",
+          "signature": "internal fun buildBlurShader(tapCount: Int): String",
+          "line": 7,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildProgressiveBlurShader",
+          "signature": "internal fun buildProgressiveBlurShader(maxTap: Int, masked: Boolean = false): String",
+          "line": 66,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveBlurShaderForTap",
+          "signature": "internal fun progressiveBlurShaderForTap(tapBound: Int, masked: Boolean = false): String",
+          "line": 142,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveLoopTapBound",
+          "signature": "internal fun progressiveLoopTapBound(maxRadius: Float): Int",
+          "line": 153,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveLoopShaderKey",
+          "signature": "internal fun progressiveLoopShaderKey(axis: Int, downScale: Int, tap: Int): String",
+          "line": 170,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveSharpShaderKey",
+          "signature": "internal fun progressiveSharpShaderKey(axis: Int, tap: Int, masked: Boolean): String",
+          "line": 184,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildBloomStrokeShader",
+          "signature": "internal fun buildBloomStrokeShader(dualPeak: Boolean): String",
+          "line": 423,
+          "visibility": "internal"
+        },
+        {
+          "name": "buildBlendModeShader",
+          "signature": "internal fun buildBlendModeShader(includeExtended: Boolean, rampMix: Boolean = false): String",
+          "line": 551,
+          "visibility": "internal"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "progressiveLoopShaderKey",
+          "signature": "internal fun progressiveLoopShaderKey(axis: Int, downScale: Int, tap: Int): String",
+          "line": 170,
+          "visibility": "internal"
+        },
+        {
+          "name": "progressiveSharpShaderKey",
+          "signature": "internal fun progressiveSharpShaderKey(axis: Int, tap: Int, masked: Boolean): String",
+          "line": 184,
+          "visibility": "internal"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-blur\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\blur\\internal\\Shaders.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LiveNavTransitionScope.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\core\\LiveNavTransitionScope.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LocalNavTransitionScope.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\core\\LocalNavTransitionScope.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+      "oldDeclarations": [
+        {
+          "name": "entry",
+          "signature": "inline fun <reified T : NavKey> entry( noinline contentKey: ((T) -> Any)? = null, transition: NavTransition? = null, swipeDismiss: NavSwipeDirection? = null, metadata: Map<String, Any> = emptyMap(), noinline content: @Composable (T) -> Unit, )",
+          "line": 132,
+          "visibility": "public/default"
+        },
+        {
+          "name": "register",
+          "signature": "internal fun register(clazz: KClass<*>, factory: (NavKey) -> NavEntry<*>)",
+          "line": 159,
+          "visibility": "internal"
+        },
+        {
+          "name": "build",
+          "signature": "internal fun build(): (NavKey) -> NavEntry<*>",
+          "line": 170,
+          "visibility": "internal"
+        },
+        {
+          "name": "entryProvider",
+          "signature": "internal fun entryProvider(builder: NavEntryBuilder.() -> Unit): (NavKey) -> NavEntry<*>",
+          "line": 183,
+          "visibility": "internal"
+        },
+        {
+          "name": "acquire",
+          "signature": "fun acquire(): Long",
+          "line": 294,
+          "visibility": "public/default"
+        },
+        {
+          "name": "release",
+          "signature": "fun release(lease: Long): Boolean",
+          "line": 299,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "fun NavDisplay( backStack: NavBackStack, modifier: Modifier = Modifier, onBack: () -> Unit = { backStack.removeLastOrNull() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), content: NavEntryBuilder.() -> Unit, )",
+          "line": 948,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "fun NavDisplay( navController: NavController, modifier: Modifier = Modifier, onBack: () -> Unit = { navController.pop() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), content: NavEntryBuilder.() -> Unit, )",
+          "line": 979,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "internal fun NavDisplay( backStack: NavBackStack, entryProvider: (NavKey) -> NavEntry<*>, modifier: Modifier = Modifier, onBack: () -> Unit = { backStack.removeLastOrNull() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), )",
+          "line": 1011,
+          "visibility": "internal"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "entry",
+          "signature": "inline fun <reified T : NavKey> entry( noinline contentKey: ((T) -> Any)? = null, transition: NavTransition? = null, swipeDismiss: NavSwipeDirection? = null, metadata: Map<String, Any> = emptyMap(), noinline content: @Composable (T) -> Unit, )",
+          "line": 133,
+          "visibility": "public/default"
+        },
+        {
+          "name": "register",
+          "signature": "internal fun register(clazz: KClass<*>, factory: (NavKey) -> NavEntry<*>)",
+          "line": 160,
+          "visibility": "internal"
+        },
+        {
+          "name": "build",
+          "signature": "internal fun build(): (NavKey) -> NavEntry<*>",
+          "line": 171,
+          "visibility": "internal"
+        },
+        {
+          "name": "entryProvider",
+          "signature": "internal fun entryProvider(builder: NavEntryBuilder.() -> Unit): (NavKey) -> NavEntry<*>",
+          "line": 184,
+          "visibility": "internal"
+        },
+        {
+          "name": "acquire",
+          "signature": "fun acquire(): Long",
+          "line": 295,
+          "visibility": "public/default"
+        },
+        {
+          "name": "release",
+          "signature": "fun release(lease: Long): Boolean",
+          "line": 300,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "fun NavDisplay( backStack: NavBackStack, modifier: Modifier = Modifier, onBack: () -> Unit = { backStack.removeLastOrNull() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), content: NavEntryBuilder.() -> Unit, )",
+          "line": 974,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "fun NavDisplay( navController: NavController, modifier: Modifier = Modifier, onBack: () -> Unit = { navController.pop() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), content: NavEntryBuilder.() -> Unit, )",
+          "line": 1005,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavDisplay",
+          "signature": "internal fun NavDisplay( backStack: NavBackStack, entryProvider: (NavKey) -> NavEntry<*>, modifier: Modifier = Modifier, onBack: () -> Unit = { backStack.removeLastOrNull() }, transition: NavTransition = NavTransitions.MiuixDefault, effects: NavDisplayEffects = NavDisplayEffects(), )",
+          "line": 1037,
+          "visibility": "internal"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\core\\NavDisplay.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+      "oldDeclarations": [
+        {
+          "name": "storeFor",
+          "signature": "fun storeFor(contentKey: Any): ViewModelStore",
+          "line": 38,
+          "visibility": "public/default"
+        },
+        {
+          "name": "clearStore",
+          "signature": "fun clearStore(contentKey: Any)",
+          "line": 41,
+          "visibility": "public/default"
+        },
+        {
+          "name": "clearAll",
+          "signature": "fun clearAll()",
+          "line": 46,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCleared",
+          "signature": "override fun onCleared()",
+          "line": 51,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onRemembered",
+          "signature": "override fun onRemembered()",
+          "line": 66,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onForgotten",
+          "signature": "override fun onForgotten()",
+          "line": 68,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAbandoned",
+          "signature": "override fun onAbandoned()",
+          "line": 70,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberNavEntryViewModelStores",
+          "signature": "internal fun rememberNavEntryViewModelStores(): NavEntryViewModelStores",
+          "line": 83,
+          "visibility": "internal"
+        },
+        {
+          "name": "rememberNavEntryViewModelStoreOwner",
+          "signature": "internal fun rememberNavEntryViewModelStoreOwner( stores: NavEntryViewModelStores, contentKey: Any, ): NavEntryViewModelStoreOwner",
+          "line": 110,
+          "visibility": "internal"
+        },
+        {
+          "name": "ProvideNavEntryViewModelStore",
+          "signature": "internal fun ProvideNavEntryViewModelStore( owner: NavEntryViewModelStoreOwner, content: @Composable () -> Unit, )",
+          "line": 125,
+          "visibility": "internal"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "storeFor",
+          "signature": "fun storeFor(contentKey: Any): ViewModelStore",
+          "line": 42,
+          "visibility": "public/default"
+        },
+        {
+          "name": "clearStore",
+          "signature": "fun clearStore(contentKey: Any)",
+          "line": 45,
+          "visibility": "public/default"
+        },
+        {
+          "name": "clearAll",
+          "signature": "fun clearAll()",
+          "line": 50,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCleared",
+          "signature": "override fun onCleared()",
+          "line": 55,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onRemembered",
+          "signature": "override fun onRemembered()",
+          "line": 70,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onForgotten",
+          "signature": "override fun onForgotten()",
+          "line": 72,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAbandoned",
+          "signature": "override fun onAbandoned()",
+          "line": 74,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberNavEntryViewModelStores",
+          "signature": "internal fun rememberNavEntryViewModelStores(): NavEntryViewModelStores",
+          "line": 87,
+          "visibility": "internal"
+        },
+        {
+          "name": "rememberNavEntryViewModelStoreOwner",
+          "signature": "internal fun rememberNavEntryViewModelStoreOwner( stores: NavEntryViewModelStores, contentKey: Any, parentOwner: ViewModelStoreOwner? = LocalViewModelStoreOwner.current, savedStateRegistryOwner: SavedStateRegistryOwner? = LocalSavedStateRegistryOwner.current, ): ViewModelStoreOwner",
+          "line": 107,
+          "visibility": "internal"
+        },
+        {
+          "name": "ProvideNavEntryViewModelStore",
+          "signature": "internal fun ProvideNavEntryViewModelStore( owner: ViewModelStoreOwner, content: @Composable () -> Unit, )",
+          "line": 140,
+          "visibility": "internal"
+        }
+      ],
+      "removedOrChangedSignatures": [
+        {
+          "name": "rememberNavEntryViewModelStoreOwner",
+          "signature": "internal fun rememberNavEntryViewModelStoreOwner( stores: NavEntryViewModelStores, contentKey: Any, ): NavEntryViewModelStoreOwner",
+          "line": 110,
+          "visibility": "internal"
+        },
+        {
+          "name": "ProvideNavEntryViewModelStore",
+          "signature": "internal fun ProvideNavEntryViewModelStore( owner: NavEntryViewModelStoreOwner, content: @Composable () -> Unit, )",
+          "line": 125,
+          "visibility": "internal"
+        }
+      ],
+      "addedOrChangedSignatures": [
+        {
+          "name": "rememberNavEntryViewModelStoreOwner",
+          "signature": "internal fun rememberNavEntryViewModelStoreOwner( stores: NavEntryViewModelStores, contentKey: Any, parentOwner: ViewModelStoreOwner? = LocalViewModelStoreOwner.current, savedStateRegistryOwner: SavedStateRegistryOwner? = LocalSavedStateRegistryOwner.current, ): ViewModelStoreOwner",
+          "line": 107,
+          "visibility": "internal"
+        },
+        {
+          "name": "ProvideNavEntryViewModelStore",
+          "signature": "internal fun ProvideNavEntryViewModelStore( owner: ViewModelStoreOwner, content: @Composable () -> Unit, )",
+          "line": 140,
+          "visibility": "internal"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\state\\NavEntryViewModel.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransitionScope.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\transition\\NavTransitionScope.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavFocusTest.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pushingEntryClearsFocusFromCoveredEntry",
+          "signature": "fun pushingEntryClearsFocusFromCoveredEntry()",
+          "line": 36,
+          "visibility": "public/default"
+        },
+        {
+          "name": "newEntryCanRequestFocusAfterStackChange",
+          "signature": "fun newEntryCanRequestFocusAfterStackChange()",
+          "line": 65,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pushingEntryClearsFocusFromCoveredEntry",
+          "signature": "fun pushingEntryClearsFocusFromCoveredEntry()",
+          "line": 36,
+          "visibility": "public/default"
+        },
+        {
+          "name": "newEntryCanRequestFocusAfterStackChange",
+          "signature": "fun newEntryCanRequestFocusAfterStackChange()",
+          "line": 65,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\desktopTest\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\core\\NavFocusTest.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavTransitionScopeTest.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "reportsRunningUntilNavigationSettles",
+          "signature": "fun reportsRunningUntilNavigationSettles()",
+          "line": 27,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reportsRunningDuringSwipeAndCancelSettle",
+          "signature": "fun reportsRunningDuringSwipeAndCancelSettle()",
+          "line": 57,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "reportsRunningUntilNavigationSettles",
+          "signature": "fun reportsRunningUntilNavigationSettles()",
+          "line": 27,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reportsRunningDuringSwipeAndCancelSettle",
+          "signature": "fun reportsRunningDuringSwipeAndCancelSettle()",
+          "line": 57,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\desktopTest\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\core\\NavTransitionScopeTest.kt.patch"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModelStoreTest.kt",
+      "oldDeclarations": [
+        {
+          "name": "onCleared",
+          "signature": "override fun onCleared()",
+          "line": 36,
+          "visibility": "public/default"
+        },
+        {
+          "name": "viewModelSurvivesDepthCullingWhileEntryStaysOnBackStack",
+          "signature": "fun viewModelSurvivesDepthCullingWhileEntryStaysOnBackStack()",
+          "line": 52,
+          "visibility": "public/default"
+        },
+        {
+          "name": "viewModelClearedWhenEntryPermanentlyLeavesBackStack",
+          "signature": "fun viewModelClearedWhenEntryPermanentlyLeavesBackStack()",
+          "line": 94,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "onCleared",
+          "signature": "override fun onCleared()",
+          "line": 58,
+          "visibility": "public/default"
+        },
+        {
+          "name": "Host",
+          "signature": "fun Host(content: @Composable () -> Unit)",
+          "line": 77,
+          "visibility": "public/default"
+        },
+        {
+          "name": "viewModelSurvivesDepthCullingWhileEntryStaysOnBackStack",
+          "signature": "fun viewModelSurvivesDepthCullingWhileEntryStaysOnBackStack()",
+          "line": 105,
+          "visibility": "public/default"
+        },
+        {
+          "name": "viewModelClearedWhenEntryPermanentlyLeavesBackStack",
+          "signature": "fun viewModelClearedWhenEntryPermanentlyLeavesBackStack()",
+          "line": 147,
+          "visibility": "public/default"
+        },
+        {
+          "name": "navEntryProvidesHasDefaultViewModelProviderFactoryAndSavedStateExtras",
+          "signature": "fun navEntryProvidesHasDefaultViewModelProviderFactoryAndSavedStateExtras()",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "navEntryProvidesDefaultExtrasWithoutHostSavedStateRegistry",
+          "signature": "fun navEntryProvidesDefaultExtrasWithoutHostSavedStateRegistry()",
+          "line": 204,
+          "visibility": "public/default"
+        },
+        {
+          "name": "savedStateHandleSurvivesProcessRestoration",
+          "signature": "fun savedStateHandleSurvivesProcessRestoration()",
+          "line": 226,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "Host",
+          "signature": "fun Host(content: @Composable () -> Unit)",
+          "line": 77,
+          "visibility": "public/default"
+        },
+        {
+          "name": "navEntryProvidesHasDefaultViewModelProviderFactoryAndSavedStateExtras",
+          "signature": "fun navEntryProvidesHasDefaultViewModelProviderFactoryAndSavedStateExtras()",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "navEntryProvidesDefaultExtrasWithoutHostSavedStateRegistry",
+          "signature": "fun navEntryProvidesDefaultExtrasWithoutHostSavedStateRegistry()",
+          "line": 204,
+          "visibility": "public/default"
+        },
+        {
+          "name": "savedStateHandleSurvivesProcessRestoration",
+          "signature": "fun savedStateHandleSurvivesProcessRestoration()",
+          "line": 226,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-nav\\src\\desktopTest\\kotlin\\top\\yukonga\\miuix\\kmp\\nav\\state\\NavEntryViewModelStoreTest.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.android.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 20,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 38,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 20,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 38,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\androidMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.android.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/BreadcrumbBar.kt",
+      "oldDeclarations": [
+        {
+          "name": "BreadcrumbBar",
+          "signature": "fun BreadcrumbBar( items: List<BreadcrumbItem>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier, highlightIndex: Int = items.lastIndex, enabled: Boolean = true, colors: BreadcrumbBarColors = BreadcrumbBarDefaults.breadcrumbBarColors(), insideMargin: PaddingValues = BreadcrumbBarDefaults.InsideMargin, itemMaxWidth: Dp = BreadcrumbBarDefaults.ItemMaxWidth, scrollState: ScrollState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = LocalIndication.current, )",
+          "line": 91,
+          "visibility": "public/default"
+        },
+        {
+          "name": "breadcrumbBarColors",
+          "signature": "fun breadcrumbBarColors( color: Color = MiuixTheme.colorScheme.onBackground.copy(alpha = 0.55f), highlightColor: Color = MiuixTheme.colorScheme.primary, disabledColor: Color = MiuixTheme.colorScheme.disabledOnSecondaryVariant, separatorColor: Color = MiuixTheme.colorScheme.onSurfaceVariantActions, backgroundColor: Color = MiuixTheme.colorScheme.onBackground.copy(alpha = 0.1f), highlightBackgroundColor: Color = MiuixTheme.colorScheme.primary.copy(alpha = 0.2f), disabledBackgroundColor: Color = MiuixTheme.colorScheme.disabledSecondaryVariant, ): BreadcrumbBarColors",
+          "line": 287,
+          "visibility": "public/default"
+        },
+        {
+          "name": "joinToPath",
+          "signature": "fun List<BreadcrumbItem>.joinToPath(separator: String = \"/\"): String",
+          "line": 334,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "BreadcrumbBar",
+          "signature": "fun BreadcrumbBar( items: List<BreadcrumbItem>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier, highlightIndex: Int = items.lastIndex, enabled: Boolean = true, colors: BreadcrumbBarColors = BreadcrumbBarDefaults.breadcrumbBarColors(), insideMargin: PaddingValues = BreadcrumbBarDefaults.InsideMargin, itemMaxWidth: Dp = BreadcrumbBarDefaults.ItemMaxWidth, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = LocalIndication.current, )",
+          "line": 101,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 208,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling( consumed: Velocity, available: Velocity, ): Velocity",
+          "line": 214,
+          "visibility": "public/default"
+        },
+        {
+          "name": "breadcrumbBarColors",
+          "signature": "fun breadcrumbBarColors( color: Color = MiuixTheme.colorScheme.onBackground.copy(alpha = 0.55f), highlightColor: Color = MiuixTheme.colorScheme.primary, disabledColor: Color = MiuixTheme.colorScheme.disabledOnSecondaryVariant, separatorColor: Color = MiuixTheme.colorScheme.onSurfaceVariantActions, backgroundColor: Color = MiuixTheme.colorScheme.onBackground.copy(alpha = 0.1f), highlightBackgroundColor: Color = MiuixTheme.colorScheme.primary.copy(alpha = 0.2f), disabledBackgroundColor: Color = MiuixTheme.colorScheme.disabledSecondaryVariant, ): BreadcrumbBarColors",
+          "line": 354,
+          "visibility": "public/default"
+        },
+        {
+          "name": "joinToPath",
+          "signature": "fun List<BreadcrumbItem>.joinToPath(separator: String = \"/\"): String",
+          "line": 401,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [
+        {
+          "name": "BreadcrumbBar",
+          "signature": "fun BreadcrumbBar( items: List<BreadcrumbItem>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier, highlightIndex: Int = items.lastIndex, enabled: Boolean = true, colors: BreadcrumbBarColors = BreadcrumbBarDefaults.breadcrumbBarColors(), insideMargin: PaddingValues = BreadcrumbBarDefaults.InsideMargin, itemMaxWidth: Dp = BreadcrumbBarDefaults.ItemMaxWidth, scrollState: ScrollState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = LocalIndication.current, )",
+          "line": 91,
+          "visibility": "public/default"
+        }
+      ],
+      "addedOrChangedSignatures": [
+        {
+          "name": "BreadcrumbBar",
+          "signature": "fun BreadcrumbBar( items: List<BreadcrumbItem>, onItemClick: (Int) -> Unit, modifier: Modifier = Modifier, highlightIndex: Int = items.lastIndex, enabled: Boolean = true, colors: BreadcrumbBarColors = BreadcrumbBarDefaults.breadcrumbBarColors(), insideMargin: PaddingValues = BreadcrumbBarDefaults.InsideMargin, itemMaxWidth: Dp = BreadcrumbBarDefaults.ItemMaxWidth, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = LocalIndication.current, )",
+          "line": 101,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 208,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling( consumed: Velocity, available: Velocity, ): Velocity",
+          "line": 214,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\basic\\BreadcrumbBar.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationRail.kt",
+      "oldDeclarations": [
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( modifier: Modifier = Modifier, state: NavigationRailState? = null, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, expandContentDescription: String = NavigationRailDefaults.ExpandContentDescription, collapseContentDescription: String = NavigationRailDefaults.CollapseContentDescription, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 104,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavigationRailItem",
+          "signature": "fun NavigationRailItem( selected: Boolean, onClick: () -> Unit, icon: ImageVector, label: String, modifier: Modifier = Modifier, enabled: Boolean = true, badge: (@Composable () -> Unit)? = null, )",
+          "line": 252,
+          "visibility": "public/default"
+        },
+        {
+          "name": "expand",
+          "signature": "fun expand()",
+          "line": 605,
+          "visibility": "public/default"
+        },
+        {
+          "name": "collapse",
+          "signature": "fun collapse()",
+          "line": 610,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toggle",
+          "signature": "fun toggle()",
+          "line": 615,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberNavigationRailState",
+          "signature": "fun rememberNavigationRailState( initialValue: NavigationRailValue = NavigationRailValue.Collapsed, ): NavigationRailState",
+          "line": 635,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( modifier: Modifier = Modifier, expanded: Boolean = false, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 91,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( state: NavigationRailState, modifier: Modifier = Modifier, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, expandContentDescription: String = NavigationRailDefaults.ExpandContentDescription, collapseContentDescription: String = NavigationRailDefaults.CollapseContentDescription, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 142,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavigationRailItem",
+          "signature": "fun NavigationRailItem( selected: Boolean, onClick: () -> Unit, icon: ImageVector, label: String, modifier: Modifier = Modifier, enabled: Boolean = true, badge: (@Composable () -> Unit)? = null, )",
+          "line": 329,
+          "visibility": "public/default"
+        },
+        {
+          "name": "expand",
+          "signature": "fun expand()",
+          "line": 701,
+          "visibility": "public/default"
+        },
+        {
+          "name": "collapse",
+          "signature": "fun collapse()",
+          "line": 706,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toggle",
+          "signature": "fun toggle()",
+          "line": 711,
+          "visibility": "public/default"
+        },
+        {
+          "name": "rememberNavigationRailState",
+          "signature": "fun rememberNavigationRailState( initialValue: NavigationRailValue = NavigationRailValue.Collapsed, ): NavigationRailState",
+          "line": 731,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( modifier: Modifier = Modifier, state: NavigationRailState? = null, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, expandContentDescription: String = NavigationRailDefaults.ExpandContentDescription, collapseContentDescription: String = NavigationRailDefaults.CollapseContentDescription, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 104,
+          "visibility": "public/default"
+        }
+      ],
+      "addedOrChangedSignatures": [
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( modifier: Modifier = Modifier, expanded: Boolean = false, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 91,
+          "visibility": "public/default"
+        },
+        {
+          "name": "NavigationRail",
+          "signature": "fun NavigationRail( state: NavigationRailState, modifier: Modifier = Modifier, header: @Composable (ColumnScope.() -> Unit)? = null, color: Color = MiuixTheme.colorScheme.surface, showDivider: Boolean = true, defaultWindowInsetsPadding: Boolean = true, minWidth: Dp = NavigationRailDefaults.MinWidth, expandedWidth: Dp = NavigationRailDefaults.ExpandedWidth, expandContentDescription: String = NavigationRailDefaults.ExpandContentDescription, collapseContentDescription: String = NavigationRailDefaults.CollapseContentDescription, scrollState: ScrollState = rememberScrollState(), content: @Composable ColumnScope.() -> Unit, )",
+          "line": 142,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\basic\\NavigationRail.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TabRow.kt",
+      "oldDeclarations": [
+        {
+          "name": "TabRow",
+          "signature": "fun TabRow( tabs: List<String>, selectedTabIndex: Int, onTabSelected: (Int) -> Unit, modifier: Modifier = Modifier, colors: TabRowColors = TabRowDefaults.tabRowColors(), minWidth: Dp = TabRowDefaults.TabRowMinWidth, maxWidth: Dp = TabRowDefaults.TabRowMaxWidth, height: Dp = TabRowDefaults.TabRowHeight, cornerRadius: Dp = TabRowDefaults.TabRowCornerRadius, itemSpacing: Dp = 9.dp, contentAlignment: Alignment = Alignment.Center, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = null, )",
+          "line": 84,
+          "visibility": "public/default"
+        },
+        {
+          "name": "TabRowWithContour",
+          "signature": "fun TabRowWithContour( tabs: List<String>, selectedTabIndex: Int, onTabSelected: (Int) -> Unit, modifier: Modifier = Modifier, colors: TabRowColors = TabRowDefaults.tabRowColors(), minWidth: Dp = TabRowDefaults.TabRowWithContourMinWidth, maxWidth: Dp = TabRowDefaults.TabRowWithContourMaxWidth, height: Dp = TabRowDefaults.TabRowWithContourHeight, cornerRadius: Dp = TabRowDefaults.TabRowWithContourCornerRadius, itemSpacing: Dp = 5.dp, contentAlignment: Alignment = Alignment.Center, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = null, )",
+          "line": 209,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 330,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling( consumed: Velocity, available: Velocity, ): Velocity",
+          "line": 336,
+          "visibility": "public/default"
+        },
+        {
+          "name": "tabRowColors",
+          "signature": "fun tabRowColors( backgroundColor: Color = MiuixTheme.colorScheme.surface, contentColor: Color = MiuixTheme.colorScheme.onSurfaceVariantSummary, selectedBackgroundColor: Color = MiuixTheme.colorScheme.surfaceContainer, selectedContentColor: Color = MiuixTheme.colorScheme.onBackground, ): TabRowColors",
+          "line": 552,
+          "visibility": "public/default"
+        },
+        {
+          "name": "backgroundColor",
+          "signature": "internal fun backgroundColor(selected: Boolean): Color",
+          "line": 575,
+          "visibility": "internal"
+        },
+        {
+          "name": "contentColor",
+          "signature": "internal fun contentColor(selected: Boolean): Color",
+          "line": 578,
+          "visibility": "internal"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "TabRow",
+          "signature": "fun TabRow( tabs: List<String>, selectedTabIndex: Int, onTabSelected: (Int) -> Unit, modifier: Modifier = Modifier, colors: TabRowColors = TabRowDefaults.tabRowColors(), minWidth: Dp = TabRowDefaults.TabRowMinWidth, maxWidth: Dp = TabRowDefaults.TabRowMaxWidth, height: Dp = TabRowDefaults.TabRowHeight, cornerRadius: Dp = TabRowDefaults.TabRowCornerRadius, itemSpacing: Dp = 9.dp, contentAlignment: Alignment = Alignment.Center, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = null, )",
+          "line": 87,
+          "visibility": "public/default"
+        },
+        {
+          "name": "TabRowWithContour",
+          "signature": "fun TabRowWithContour( tabs: List<String>, selectedTabIndex: Int, onTabSelected: (Int) -> Unit, modifier: Modifier = Modifier, colors: TabRowColors = TabRowDefaults.tabRowColors(), minWidth: Dp = TabRowDefaults.TabRowWithContourMinWidth, maxWidth: Dp = TabRowDefaults.TabRowWithContourMaxWidth, height: Dp = TabRowDefaults.TabRowWithContourHeight, cornerRadius: Dp = TabRowDefaults.TabRowWithContourCornerRadius, itemSpacing: Dp = 5.dp, contentAlignment: Alignment = Alignment.Center, listState: LazyListState? = null, interactionSource: MutableInteractionSource? = null, indication: Indication? = null, )",
+          "line": 228,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 377,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling( consumed: Velocity, available: Velocity, ): Velocity",
+          "line": 383,
+          "visibility": "public/default"
+        },
+        {
+          "name": "tabRowColors",
+          "signature": "fun tabRowColors( backgroundColor: Color = MiuixTheme.colorScheme.surface, contentColor: Color = MiuixTheme.colorScheme.onSurfaceVariantSummary, selectedBackgroundColor: Color = MiuixTheme.colorScheme.surfaceContainer, selectedContentColor: Color = MiuixTheme.colorScheme.onBackground, ): TabRowColors",
+          "line": 599,
+          "visibility": "public/default"
+        },
+        {
+          "name": "backgroundColor",
+          "signature": "internal fun backgroundColor(selected: Boolean): Color",
+          "line": 622,
+          "visibility": "internal"
+        },
+        {
+          "name": "contentColor",
+          "signature": "internal fun contentColor(selected: Boolean): Color",
+          "line": 625,
+          "visibility": "internal"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\basic\\TabRow.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Overscroll.kt",
+      "oldDeclarations": [
+        {
+          "name": "overScrollVertical",
+          "signature": "fun Modifier.overScrollVertical( nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 52,
+          "visibility": "public/default"
+        },
+        {
+          "name": "overScrollHorizontal",
+          "signature": "fun Modifier.overScrollHorizontal( nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 65,
+          "visibility": "public/default"
+        },
+        {
+          "name": "overScrollOutOfBound",
+          "signature": "fun Modifier.overScrollOutOfBound( isVertical: Boolean = true, nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 88,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): OverscrollNode",
+          "line": 109,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: OverscrollNode)",
+          "line": 114,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 122,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 202,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 208,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update( isVertical: Boolean, nestedScrollToParent: Boolean, )",
+          "line": 214,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult",
+          "line": 307,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 322,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset",
+          "line": 374,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 405,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 448,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "overScrollVertical",
+          "signature": "fun Modifier.overScrollVertical( nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 51,
+          "visibility": "public/default"
+        },
+        {
+          "name": "overScrollHorizontal",
+          "signature": "fun Modifier.overScrollHorizontal( nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 64,
+          "visibility": "public/default"
+        },
+        {
+          "name": "overScrollOutOfBound",
+          "signature": "fun Modifier.overScrollOutOfBound( isVertical: Boolean = true, nestedScrollToParent: Boolean = true, isEnabled: () -> Boolean = { true }, ): Modifier",
+          "line": 87,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): OverscrollNode",
+          "line": 108,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: OverscrollNode)",
+          "line": 113,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 121,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 198,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 204,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update( isVertical: Boolean, nestedScrollToParent: Boolean, )",
+          "line": 210,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult",
+          "line": 299,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 314,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset",
+          "line": 367,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 400,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 443,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\Overscroll.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/OverscrollFactory.kt",
+      "oldDeclarations": [
+        {
+          "name": "createOverscrollEffect",
+          "signature": "override fun createOverscrollEffect(): OverscrollEffect",
+          "line": 45,
+          "visibility": "public/default"
+        },
+        {
+          "name": "equals",
+          "signature": "override fun equals(other: Any?): Boolean",
+          "line": 47,
+          "visibility": "public/default"
+        },
+        {
+          "name": "hashCode",
+          "signature": "override fun hashCode(): Int",
+          "line": 49,
+          "visibility": "public/default"
+        },
+        {
+          "name": "resetAll",
+          "signature": "internal fun resetAll()",
+          "line": 118,
+          "visibility": "internal"
+        },
+        {
+          "name": "applyToScroll",
+          "signature": "override fun applyToScroll( delta: Offset, source: NestedScrollSource, performScroll: (Offset) -> Offset, ): Offset",
+          "line": 234,
+          "visibility": "public/default"
+        },
+        {
+          "name": "applyToFling",
+          "signature": "override suspend fun applyToFling( velocity: Velocity, performFling: suspend (Velocity) -> Velocity, )",
+          "line": 318,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 374,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 383,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult",
+          "line": 407,
+          "visibility": "public/default"
+        }
+      ],
+      "newDeclarations": [
+        {
+          "name": "createOverscrollEffect",
+          "signature": "override fun createOverscrollEffect(): OverscrollEffect",
+          "line": 42,
+          "visibility": "public/default"
+        },
+        {
+          "name": "equals",
+          "signature": "override fun equals(other: Any?): Boolean",
+          "line": 44,
+          "visibility": "public/default"
+        },
+        {
+          "name": "hashCode",
+          "signature": "override fun hashCode(): Int",
+          "line": 46,
+          "visibility": "public/default"
+        },
+        {
+          "name": "resetAll",
+          "signature": "internal fun resetAll()",
+          "line": 112,
+          "visibility": "internal"
+        },
+        {
+          "name": "applyToScroll",
+          "signature": "override fun applyToScroll( delta: Offset, source: NestedScrollSource, performScroll: (Offset) -> Offset, ): Offset",
+          "line": 228,
+          "visibility": "public/default"
+        },
+        {
+          "name": "applyToFling",
+          "signature": "override suspend fun applyToFling( velocity: Velocity, performFling: suspend (Velocity) -> Velocity, )",
+          "line": 313,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 366,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDetach",
+          "signature": "override fun onDetach()",
+          "line": 375,
+          "visibility": "public/default"
+        },
+        {
+          "name": "measure",
+          "signature": "override fun MeasureScope.measure(measurable: Measurable, constraints: Constraints): MeasureResult",
+          "line": 399,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\OverscrollFactory.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerGestureUtils.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "springAnimateToPage",
+          "signature": "suspend fun PagerState.springAnimateToPage(target: Int)",
+          "line": 96,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 134,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: PagerInterceptionMode = PagerInterceptionMode.CrossAxis, enabled: Boolean = true, flingTracker: PagerFlingTrackerConnection? = null, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 167,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: Int, enabled: Boolean = true, flingTracker: PagerFlingTrackerConnection? = null, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 199,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: PagerInterceptionMode = PagerInterceptionMode.CrossAxis, enabled: Boolean = true, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 221,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): PagerPageGestureNode",
+          "line": 243,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: PagerPageGestureNode)",
+          "line": 245,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 249,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 284,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onLayoutDirectionChange",
+          "signature": "override fun onLayoutDirectionChange()",
+          "line": 289,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDensityChange",
+          "signature": "override fun onDensityChange()",
+          "line": 291,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize)",
+          "line": 311,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 328,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, onIntercepted: (() -> Unit)?)",
+          "line": 333,
+          "visibility": "public/default"
+        },
+        {
+          "name": "willTrackPointer",
+          "signature": "fun willTrackPointer(pointerEvent: PointerEvent, pass: PointerEventPass): Boolean",
+          "line": 366,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize)",
+          "line": 371,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 431,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startDragImmediately",
+          "signature": "override fun startDragImmediately(): Boolean",
+          "line": 449,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStarted",
+          "signature": "override fun onDragStarted(startedPosition: Offset)",
+          "line": 451,
+          "visibility": "public/default"
+        },
+        {
+          "name": "drag",
+          "signature": "override suspend fun drag(forEachDelta: suspend ((DragEvent.DragDelta) -> Unit) -> Unit)",
+          "line": 455,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStopped",
+          "signature": "override fun onDragStopped(event: DragEvent.DragStopped)",
+          "line": 459,
+          "visibility": "public/default"
+        },
+        {
+          "name": "stop",
+          "signature": "fun stop()",
+          "line": 489,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 495,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 505,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 512,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, intercepted: (() -> Unit)?)",
+          "line": 546,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStarted",
+          "signature": "fun onDragStarted()",
+          "line": 551,
+          "visibility": "public/default"
+        },
+        {
+          "name": "stopChildMotion",
+          "signature": "fun stopChildMotion()",
+          "line": 557,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startTakeoverDrag",
+          "signature": "fun startTakeoverDrag()",
+          "line": 562,
+          "visibility": "public/default"
+        },
+        {
+          "name": "dragBy",
+          "signature": "fun dragBy(deltaX: Float)",
+          "line": 580,
+          "visibility": "public/default"
+        },
+        {
+          "name": "finishTakeoverDrag",
+          "signature": "fun finishTakeoverDrag(velocity: Velocity)",
+          "line": 585,
+          "visibility": "public/default"
+        },
+        {
+          "name": "cancelTakeoverDrag",
+          "signature": "fun cancelTakeoverDrag()",
+          "line": 604,
+          "visibility": "public/default"
+        },
+        {
+          "name": "drag",
+          "signature": "suspend fun drag(forEachDelta: suspend ((DragEvent.DragDelta) -> Unit) -> Unit)",
+          "line": 611,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStopped",
+          "signature": "fun onDragStopped(velocity: Velocity)",
+          "line": 620,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 652,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 665,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 672,
+          "visibility": "public/default"
+        },
+        {
+          "name": "iosStyleMomentumHalt",
+          "signature": "fun Modifier.iosStyleMomentumHalt( flingTracker: PagerFlingTrackerConnection, enabled: Boolean = true, onHalted: (() -> Unit)? = null, ): Modifier",
+          "line": 685,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "springAnimateToPage",
+          "signature": "suspend fun PagerState.springAnimateToPage(target: Int)",
+          "line": 96,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 134,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: PagerInterceptionMode = PagerInterceptionMode.CrossAxis, enabled: Boolean = true, flingTracker: PagerFlingTrackerConnection? = null, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 167,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: Int, enabled: Boolean = true, flingTracker: PagerFlingTrackerConnection? = null, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 199,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerGestureOverride",
+          "signature": "fun Modifier.pagerGestureOverride( pagerState: PagerState, flingBehavior: FlingBehavior, mode: PagerInterceptionMode = PagerInterceptionMode.CrossAxis, enabled: Boolean = true, onTriggered: (() -> Unit)? = null, ): Modifier",
+          "line": 221,
+          "visibility": "public/default"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): PagerPageGestureNode",
+          "line": 243,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: PagerPageGestureNode)",
+          "line": 245,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 249,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 284,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onLayoutDirectionChange",
+          "signature": "override fun onLayoutDirectionChange()",
+          "line": 289,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDensityChange",
+          "signature": "override fun onDensityChange()",
+          "line": 291,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize)",
+          "line": 311,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 328,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, onIntercepted: (() -> Unit)?)",
+          "line": 333,
+          "visibility": "public/default"
+        },
+        {
+          "name": "willTrackPointer",
+          "signature": "fun willTrackPointer(pointerEvent: PointerEvent, pass: PointerEventPass): Boolean",
+          "line": 366,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize)",
+          "line": 371,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 431,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startDragImmediately",
+          "signature": "override fun startDragImmediately(): Boolean",
+          "line": 449,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStarted",
+          "signature": "override fun onDragStarted(startedPosition: Offset)",
+          "line": 451,
+          "visibility": "public/default"
+        },
+        {
+          "name": "drag",
+          "signature": "override suspend fun drag(forEachDelta: suspend ((DragEvent.DragDelta) -> Unit) -> Unit)",
+          "line": 455,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStopped",
+          "signature": "override fun onDragStopped(event: DragEvent.DragStopped)",
+          "line": 459,
+          "visibility": "public/default"
+        },
+        {
+          "name": "stop",
+          "signature": "fun stop()",
+          "line": 489,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 495,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 505,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 512,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, intercepted: (() -> Unit)?)",
+          "line": 546,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStarted",
+          "signature": "fun onDragStarted()",
+          "line": 551,
+          "visibility": "public/default"
+        },
+        {
+          "name": "stopChildMotion",
+          "signature": "fun stopChildMotion()",
+          "line": 557,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startTakeoverDrag",
+          "signature": "fun startTakeoverDrag()",
+          "line": 562,
+          "visibility": "public/default"
+        },
+        {
+          "name": "dragBy",
+          "signature": "fun dragBy(deltaX: Float)",
+          "line": 580,
+          "visibility": "public/default"
+        },
+        {
+          "name": "finishTakeoverDrag",
+          "signature": "fun finishTakeoverDrag(velocity: Velocity)",
+          "line": 585,
+          "visibility": "public/default"
+        },
+        {
+          "name": "cancelTakeoverDrag",
+          "signature": "fun cancelTakeoverDrag()",
+          "line": 604,
+          "visibility": "public/default"
+        },
+        {
+          "name": "drag",
+          "signature": "suspend fun drag(forEachDelta: suspend ((DragEvent.DragDelta) -> Unit) -> Unit)",
+          "line": 611,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDragStopped",
+          "signature": "fun onDragStopped(velocity: Velocity)",
+          "line": 620,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreScroll",
+          "signature": "override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset",
+          "line": 652,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPreFling",
+          "signature": "override suspend fun onPreFling(available: Velocity): Velocity",
+          "line": 665,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 672,
+          "visibility": "public/default"
+        },
+        {
+          "name": "iosStyleMomentumHalt",
+          "signature": "fun Modifier.iosStyleMomentumHalt( flingTracker: PagerFlingTrackerConnection, enabled: Boolean = true, onHalted: (() -> Unit)? = null, ): Modifier",
+          "line": 685,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerGestureUtils.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 67,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset }",
+          "line": 69,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal expect fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig /** * Keeps wheel, Shift+wheel and trackpad input of a [PagerInterceptionMode.CrossAxis] pager on the * framework's rails. * * The mode disables the pager's own scrolling (`userScrollEnabled = false`) so that * [Modifier.pagerGestureOverride] can arbitrate touch drags. Non-touch input therefore has to be * driven here with the same algorithms, constants and batching Compose Foundation 1.12.0 uses in * `ScrollableNode`, `MouseWheelScrollingLogic` and `TrackpadScrollingLogic`. */",
+          "line": 72,
+          "visibility": "internal"
+        },
+        {
+          "name": "pagerNonTouchScroll",
+          "signature": "internal fun Modifier.pagerNonTouchScroll( state: PagerState, flingBehavior: FlingBehavior, ): Modifier",
+          "line": 83,
+          "visibility": "internal"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): PagerNonTouchScrollNode",
+          "line": 92,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: PagerNonTouchScrollNode)",
+          "line": 94,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 98,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "fun scrollBy(offset: Offset, source: NestedScrollSource): Offset }",
+          "line": 109,
+          "visibility": "public/default"
+        },
+        {
+          "name": "plus",
+          "signature": "operator fun plus(other: PagerMouseWheelScrollDelta)",
+          "line": 117,
+          "visibility": "public/default"
+        },
+        {
+          "name": "plus",
+          "signature": "operator fun plus(other: PagerTrackpadScrollDelta)",
+          "line": 132,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 165,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDensityChange",
+          "signature": "override fun onDensityChange()",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 176,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 201,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, flingBehavior: FlingBehavior)",
+          "line": 203,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 268,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 274,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(offset: Offset, source: NestedScrollSource): Offset",
+          "line": 296,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(pagerState: PagerState, flingBehavior: FlingBehavior)",
+          "line": 301,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reverseIfNeeded",
+          "signature": "fun Float.reverseIfNeeded(): Float",
+          "line": 315,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reverseIfNeeded",
+          "signature": "fun Offset.reverseIfNeeded(): Offset",
+          "line": 317,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toOffset",
+          "signature": "fun Float.toOffset(): Offset",
+          "line": 319,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toVelocity",
+          "signature": "fun Float.toVelocity(): Velocity",
+          "line": 321,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toFloat",
+          "signature": "fun Velocity.toFloat(): Float",
+          "line": 323,
+          "visibility": "public/default"
+        },
+        {
+          "name": "singleAxisVelocity",
+          "signature": "fun Velocity.singleAxisVelocity(): Velocity",
+          "line": 325,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun Velocity.update(value: Float): Velocity",
+          "line": 327,
+          "visibility": "public/default"
+        },
+        {
+          "name": "singleAxisOffset",
+          "signature": "fun Offset.singleAxisOffset(): Offset",
+          "line": 329,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toFloat",
+          "signature": "fun Offset.toFloat(): Float",
+          "line": 331,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toSingleAxisDeltaFromAngle",
+          "signature": "fun Offset.toSingleAxisDeltaFromAngle(): Float",
+          "line": 337,
+          "visibility": "public/default"
+        },
+        {
+          "name": "dispatchScroll",
+          "signature": "fun PagerNestedScrollScope.dispatchScroll(delta: Float, source: NestedScrollSource): Float",
+          "line": 343,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scroll",
+          "signature": "suspend fun scroll( scrollPriority: MutatePriority, block: suspend PagerNestedScrollScope.() -> Unit, )",
+          "line": 367,
+          "visibility": "public/default"
+        },
+        {
+          "name": "flingWithVelocity",
+          "signature": "suspend fun flingWithVelocity(initialVelocity: Velocity)",
+          "line": 386,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(pixels: Float): Float",
+          "line": 409,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(pixels: Float): Float",
+          "line": 428,
+          "visibility": "public/default"
+        },
+        {
+          "name": "performFling",
+          "signature": "override suspend fun ScrollScope.performFling(initialVelocity: Float): Float",
+          "line": 439,
+          "visibility": "public/default"
+        },
+        {
+          "name": "addDelta",
+          "signature": "fun addDelta(timeMillis: Long, delta: Offset)",
+          "line": 479,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateVelocity",
+          "signature": "fun calculateVelocity(): Velocity",
+          "line": 484,
+          "visibility": "public/default"
+        },
+        {
+          "name": "updateDensity",
+          "signature": "fun updateDensity(density: Density)",
+          "line": 497,
+          "visibility": "public/default"
+        },
+        {
+          "name": "userScroll",
+          "signature": "internal suspend fun userScroll(block: suspend PagerNestedScrollScope.() -> Unit)",
+          "line": 503,
+          "visibility": "internal"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "abstract fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) /** Begins processing of events sent to [onPointerEvent] using the given [coroutineScope]. */ abstract fun startReceivingEvents(coroutineScope: CoroutineScope) } /** * Mouse wheel support, mirroring `MouseWheelScrollingLogic`. * * Wheel deltas are batched while they keep arriving, applied with the framework's smooth scroll * animation, and followed by the pager's snapping fling once the wheel stops. */",
+          "line": 513,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "abstract fun startReceivingEvents(coroutineScope: CoroutineScope) } /** * Mouse wheel support, mirroring `MouseWheelScrollingLogic`. * * Wheel deltas are batched while they keep arriving, applied with the framework's smooth scroll * animation, and followed by the pager's snapping fling once the wheel stops. */",
+          "line": 516,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 531,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "override fun startReceivingEvents(coroutineScope: CoroutineScope)",
+          "line": 561,
+          "visibility": "public/default"
+        },
+        {
+          "name": "waitNextScrollDelta",
+          "signature": "suspend fun waitNextScrollDelta(timeoutMillis: Long): Boolean",
+          "line": 647,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 763,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "override fun startReceivingEvents(coroutineScope: CoroutineScope)",
+          "line": 799,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 67,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset }",
+          "line": 69,
+          "visibility": "public/default"
+        },
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal expect fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig /** * Keeps wheel, Shift+wheel and trackpad input of a [PagerInterceptionMode.CrossAxis] pager on the * framework's rails. * * The mode disables the pager's own scrolling (`userScrollEnabled = false`) so that * [Modifier.pagerGestureOverride] can arbitrate touch drags. Non-touch input therefore has to be * driven here with the same algorithms, constants and batching Compose Foundation 1.12.0 uses in * `ScrollableNode`, `MouseWheelScrollingLogic` and `TrackpadScrollingLogic`. */",
+          "line": 72,
+          "visibility": "internal"
+        },
+        {
+          "name": "pagerNonTouchScroll",
+          "signature": "internal fun Modifier.pagerNonTouchScroll( state: PagerState, flingBehavior: FlingBehavior, ): Modifier",
+          "line": 83,
+          "visibility": "internal"
+        },
+        {
+          "name": "create",
+          "signature": "override fun create(): PagerNonTouchScrollNode",
+          "line": 92,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "override fun update(node: PagerNonTouchScrollNode)",
+          "line": 94,
+          "visibility": "public/default"
+        },
+        {
+          "name": "inspectableProperties",
+          "signature": "override fun InspectorInfo.inspectableProperties()",
+          "line": 98,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "fun scrollBy(offset: Offset, source: NestedScrollSource): Offset }",
+          "line": 109,
+          "visibility": "public/default"
+        },
+        {
+          "name": "plus",
+          "signature": "operator fun plus(other: PagerMouseWheelScrollDelta)",
+          "line": 117,
+          "visibility": "public/default"
+        },
+        {
+          "name": "plus",
+          "signature": "operator fun plus(other: PagerTrackpadScrollDelta)",
+          "line": 132,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onAttach",
+          "signature": "override fun onAttach()",
+          "line": 165,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onDensityChange",
+          "signature": "override fun onDensityChange()",
+          "line": 171,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 176,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onCancelPointerInput",
+          "signature": "override fun onCancelPointerInput()",
+          "line": 201,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(state: PagerState, flingBehavior: FlingBehavior)",
+          "line": 203,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostScroll",
+          "signature": "override fun onPostScroll( consumed: Offset, available: Offset, source: NestedScrollSource, ): Offset",
+          "line": 268,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPostFling",
+          "signature": "override suspend fun onPostFling(consumed: Velocity, available: Velocity): Velocity",
+          "line": 274,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(offset: Offset, source: NestedScrollSource): Offset",
+          "line": 296,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun update(pagerState: PagerState, flingBehavior: FlingBehavior)",
+          "line": 301,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reverseIfNeeded",
+          "signature": "fun Float.reverseIfNeeded(): Float",
+          "line": 315,
+          "visibility": "public/default"
+        },
+        {
+          "name": "reverseIfNeeded",
+          "signature": "fun Offset.reverseIfNeeded(): Offset",
+          "line": 317,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toOffset",
+          "signature": "fun Float.toOffset(): Offset",
+          "line": 319,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toVelocity",
+          "signature": "fun Float.toVelocity(): Velocity",
+          "line": 321,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toFloat",
+          "signature": "fun Velocity.toFloat(): Float",
+          "line": 323,
+          "visibility": "public/default"
+        },
+        {
+          "name": "singleAxisVelocity",
+          "signature": "fun Velocity.singleAxisVelocity(): Velocity",
+          "line": 325,
+          "visibility": "public/default"
+        },
+        {
+          "name": "update",
+          "signature": "fun Velocity.update(value: Float): Velocity",
+          "line": 327,
+          "visibility": "public/default"
+        },
+        {
+          "name": "singleAxisOffset",
+          "signature": "fun Offset.singleAxisOffset(): Offset",
+          "line": 329,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toFloat",
+          "signature": "fun Offset.toFloat(): Float",
+          "line": 331,
+          "visibility": "public/default"
+        },
+        {
+          "name": "toSingleAxisDeltaFromAngle",
+          "signature": "fun Offset.toSingleAxisDeltaFromAngle(): Float",
+          "line": 337,
+          "visibility": "public/default"
+        },
+        {
+          "name": "dispatchScroll",
+          "signature": "fun PagerNestedScrollScope.dispatchScroll(delta: Float, source: NestedScrollSource): Float",
+          "line": 343,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scroll",
+          "signature": "suspend fun scroll( scrollPriority: MutatePriority, block: suspend PagerNestedScrollScope.() -> Unit, )",
+          "line": 367,
+          "visibility": "public/default"
+        },
+        {
+          "name": "flingWithVelocity",
+          "signature": "suspend fun flingWithVelocity(initialVelocity: Velocity)",
+          "line": 386,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(pixels: Float): Float",
+          "line": 409,
+          "visibility": "public/default"
+        },
+        {
+          "name": "scrollBy",
+          "signature": "override fun scrollBy(pixels: Float): Float",
+          "line": 428,
+          "visibility": "public/default"
+        },
+        {
+          "name": "performFling",
+          "signature": "override suspend fun ScrollScope.performFling(initialVelocity: Float): Float",
+          "line": 439,
+          "visibility": "public/default"
+        },
+        {
+          "name": "addDelta",
+          "signature": "fun addDelta(timeMillis: Long, delta: Offset)",
+          "line": 479,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateVelocity",
+          "signature": "fun calculateVelocity(): Velocity",
+          "line": 484,
+          "visibility": "public/default"
+        },
+        {
+          "name": "updateDensity",
+          "signature": "fun updateDensity(density: Density)",
+          "line": 497,
+          "visibility": "public/default"
+        },
+        {
+          "name": "userScroll",
+          "signature": "internal suspend fun userScroll(block: suspend PagerNestedScrollScope.() -> Unit)",
+          "line": 503,
+          "visibility": "internal"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "abstract fun onPointerEvent(pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize) /** Begins processing of events sent to [onPointerEvent] using the given [coroutineScope]. */ abstract fun startReceivingEvents(coroutineScope: CoroutineScope) } /** * Mouse wheel support, mirroring `MouseWheelScrollingLogic`. * * Wheel deltas are batched while they keep arriving, applied with the framework's smooth scroll * animation, and followed by the pager's snapping fling once the wheel stops. */",
+          "line": 513,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "abstract fun startReceivingEvents(coroutineScope: CoroutineScope) } /** * Mouse wheel support, mirroring `MouseWheelScrollingLogic`. * * Wheel deltas are batched while they keep arriving, applied with the framework's smooth scroll * animation, and followed by the pager's snapping fling once the wheel stops. */",
+          "line": 516,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 531,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "override fun startReceivingEvents(coroutineScope: CoroutineScope)",
+          "line": 561,
+          "visibility": "public/default"
+        },
+        {
+          "name": "waitNextScrollDelta",
+          "signature": "suspend fun waitNextScrollDelta(timeoutMillis: Long): Boolean",
+          "line": 647,
+          "visibility": "public/default"
+        },
+        {
+          "name": "onPointerEvent",
+          "signature": "override fun onPointerEvent( pointerEvent: PointerEvent, pass: PointerEventPass, bounds: IntSize, )",
+          "line": 763,
+          "visibility": "public/default"
+        },
+        {
+          "name": "startReceivingEvents",
+          "signature": "override fun startReceivingEvents(coroutineScope: CoroutineScope)",
+          "line": 799,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\commonMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/desktopMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.desktop.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 24,
+          "visibility": "internal"
+        },
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "override fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 45,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateOffsetByPage",
+          "signature": "protected fun calculateOffsetByPage(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 47,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 79,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 96,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 113,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 24,
+          "visibility": "internal"
+        },
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "override fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 45,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateOffsetByPage",
+          "signature": "protected fun calculateOffsetByPage(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 47,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 79,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 96,
+          "visibility": "public/default"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 113,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\desktopMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.desktop.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/iosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.ios.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 18,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 21,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 18,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 21,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\iosMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.ios.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/macosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.macos.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 18,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 22,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 18,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 22,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\macosMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.macos.kt.patch"
+    },
+    {
+      "path": "miuix-ui/src/webMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.web.kt",
+      "oldDeclarations": [],
+      "newDeclarations": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 29,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 32,
+          "visibility": "public/default"
+        },
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "override fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 55,
+          "visibility": "public/default"
+        }
+      ],
+      "removedOrChangedSignatures": [],
+      "addedOrChangedSignatures": [
+        {
+          "name": "pagerScrollConfig",
+          "signature": "internal actual fun CompositionLocalConsumerModifierNode.pagerScrollConfig(): PagerScrollConfig",
+          "line": 29,
+          "visibility": "internal"
+        },
+        {
+          "name": "calculateMouseWheelScroll",
+          "signature": "override fun Density.calculateMouseWheelScroll(event: PointerEvent, bounds: IntSize): Offset",
+          "line": 32,
+          "visibility": "public/default"
+        },
+        {
+          "name": "isPreciseWheelScroll",
+          "signature": "override fun isPreciseWheelScroll(event: PointerEvent): Boolean",
+          "line": 55,
+          "visibility": "public/default"
+        }
+      ],
+      "fullDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5c91-source-audit\\source-diffs\\miuix-ui\\src\\webMain\\kotlin\\top\\yukonga\\miuix\\kmp\\utils\\PagerNonTouchScroll.web.kt.patch"
+    }
+  ]
+}

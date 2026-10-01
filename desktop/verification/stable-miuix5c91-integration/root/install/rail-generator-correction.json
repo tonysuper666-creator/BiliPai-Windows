@@ -1,0 +1,7 @@
+{
+  "reason": "The producer strictly rejects unmatched adapted paths. Keep AppNavigationComponents as an explicitly approved unchanged original facade after retiring old5157 substitution.",
+  "beforeSHA256": "00fbc7e1a8c2d5247c1c992d94fa73bd754f5684f4ee09b7e8a03347518b3595",
+  "afterSHA256": "df0baa29e92b978d5f5b360dbbff96d787ace8041e855a9f381530f0fbdb1c22",
+  "failedGeneratorPhase": 29,
+  "unsupportedPathRejectionPreserved": true
+}

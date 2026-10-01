@@ -1,0 +1,37 @@
+--- frozen-main27/run.py
++++ new-main30/run.py
+@@ -3,7 +3,7 @@
+ sys.dont_write_bytecode=True
+ HERE=Path(__file__).resolve().parent
+ MAIN=next(p for p in HERE.parents if (p/'.git').exists())
+-SNAP=MAIN/'desktop/.local/stable-product-snapshot-27'
++SNAP=MAIN/'desktop/.local/stable-product-snapshot-30'
+ def safe(p):
+  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
+ def sha(p):return hashlib.sha256(safe(p).read_bytes()).hexdigest()
+@@ -12,8 +12,8 @@
+ def pins(cp):
+  rows=[dict(path=x['path'],expected=x['sha256Bytes'],actual=sha(x['path'])) for x in cp];assert all(x['actual']==x['expected'] for x in rows);return rows
+ def main():
+- assert sha(SNAP/'manifest.json')=='908d5cfdb65a99622fd2822771641b17d2bf35efe501a71ffcd231eace8c1c53'
+- assert sha(SNAP/'ordered-runtime-cp.json')=='8dcd9678a9f669793267bfb530fda1c09ef3225c50cf54682a12228636afd772'
++ assert sha(SNAP/'manifest.json')=='e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69'
++ assert sha(SNAP/'ordered-runtime-cp.json')=='dcab5cb81f9c62929c07966f76fe3bfd54ee0e7b93614296c576b24f218071c0'
+  cp=json.loads(safe(SNAP/'ordered-runtime-cp.json').read_text(encoding='utf-8'));assert len(cp)==92
+  out=HERE/('runs/'+(sys.argv[1] if len(sys.argv)>1 else '01'));assert not safe(out).exists();safe(out).mkdir(parents=True)
+  save(out/'runtime-pins-before.json',pins(cp))
+@@ -46,12 +46,12 @@
+    save(out/'accepted-comparison.json',dict(status='FAIL',style=style,exitCode=r.returncode));print(output);return r.returncode
+   result=json.loads(safe(resultdir/'result.json').read_text(encoding='utf-8'))
+   for row in result['actualCodeSources']:
+-   assert row['codeSource'].endswith('/stable-product-snapshot-27/main-kotlin.jar'),row
++   assert row['codeSource'].endswith('/stable-product-snapshot-30/main-kotlin.jar'),row
+    name=row['class'].replace('.','/')+'.class'
+    with zipfile.ZipFile(safe(SNAP/'main-kotlin.jar')) as z:expected=hashlib.sha256(z.read(name)).hexdigest()
+    assert row['classSha256Bytes']==expected,row
+   allresults.append(result)
+  save(out/'runtime-pins-after.json',pins(cp))
+- accepted=dict(status='PASS',cells=len(allresults),assertions=sum(x['assertions'] for x in allresults),pointerPairs=sum(x['pointerPairs'] for x in allresults),actualEditableTextActions=sum(x['actualEditableTextActions'] for x in allresults),productionClassOverrides=0,loadedClassBytePinsPerCell=11,results=allresults,scope='Actual installed Main27 complete original Danmaku Settings Host/Panel and BlockManager, same actual global Store/scoped preference implementation, offscreen pointer/scroll/edit. Fixture supplies presentation/account state and declared memory-only cloud/file chooser ports; no Root/account/HWND/Android engine parity claim.')
++ accepted=dict(status='PASS',cells=len(allresults),assertions=sum(x['assertions'] for x in allresults),pointerPairs=sum(x['pointerPairs'] for x in allresults),actualEditableTextActions=sum(x['actualEditableTextActions'] for x in allresults),productionClassOverrides=0,loadedClassBytePinsPerCell=11,results=allresults,scope='Actual installed Main30 complete original Danmaku Settings Host/Panel and BlockManager, same actual global Store/scoped preference implementation, offscreen pointer/scroll/edit. Fixture supplies presentation/account state and declared memory-only cloud/file chooser ports; no Root/account/HWND/Android engine parity claim.')
+  save(out/'accepted-comparison.json',accepted);print(json.dumps({k:v for k,v in accepted.items() if k!='results'},ensure_ascii=False));return 0
+ if __name__=='__main__':raise SystemExit(main())

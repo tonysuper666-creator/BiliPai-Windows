@@ -1,0 +1,15 @@
+--- before/desktop/tools/extract-upstream-preferences.py
++++ after/desktop/tools/extract-upstream-preferences.py
+@@ -28,7 +28,11 @@
+     return result
+ 
+ def adapt(path, source, host):
+-    if path.endswith("/AdaptivePreferenceComponents.kt"):
++    if path.endswith("/AppNavigationComponents.kt"):
++        # Exact5c91 supports the original facade unchanged; this explicit whitelist
++        # branch preserves the producer rejection of all other unsupported paths.
++        return source
++    elif path.endswith("/AdaptivePreferenceComponents.kt"):
+         # Keep original rendering/signatures; bind the M3 collector to current hoisted input.
+         duplicate = "import com.android.purebilibili.core.ui.LocalAppThemeConfig\n"
+         if source.count(duplicate) != 2: raise ValueError("Original duplicate preference import changed")

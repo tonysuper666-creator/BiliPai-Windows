@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "phase": "actual-main30-same-frozen-settings-ui-regression-after-5c91-library-upgrade",
+  "actualSnapshot": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\manifest.json",
+      "sha256Bytes": "e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69",
+      "bytes": 116883
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\ordered-runtime-cp.json",
+      "sha256Bytes": "dcab5cb81f9c62929c07966f76fe3bfd54ee0e7b93614296c576b24f218071c0",
+      "bytes": 34652
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\main-kotlin.jar",
+      "sha256Bytes": "2b98eff5f8d6d796c71cfe99b142e2870740c446df967169235d3aab2b19ceb1",
+      "bytes": 28170884
+    }
+  ],
+  "miuix5c91Library": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-30\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+    "sourceDependencyPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5c91d5e5-windows-source1.jar",
+    "sameByteDependencyRelocation": true,
+    "sha256Bytes": "e574a17de8136c12212f41c90ff35ba7b46818eef25e83b7c9f9386015da843e"
+  },
+  "priorUnchangedCohort": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main26-ui-proof\\frozen-handoff.json",
+    "sha256Bytes": "f8e3c7bc6317e8bbbe35e857036432da4344bdc109f2e8446f2ec706cb29bf46",
+    "bytes": 39058
+  },
+  "fixtureByteIdenticalToMain27": true,
+  "runnerDifference": "Only fixed snapshot paths, manifest/CP hashes and Main30 scope label; no behavior changes.",
+  "acceptedComparison": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main30-ui-proof\\runs\\01-actual30\\accepted-comparison.json",
+    "sha256Bytes": "ca0cf897cfd89be75a8cdd84321b92662191cf2b235f1a175fc352db67bf2aa0",
+    "bytes": 35043
+  },
+  "compileResult": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main30-ui-proof\\runs\\01-actual30\\compile-result.json",
+    "sha256Bytes": "70e6335310fa130220e59f690b9ea9b54ed6da50aff133ea80fc131a3f340254",
+    "bytes": 1725
+  },
+  "counts": {
+    "styles": 2,
+    "assertions": 32,
+    "pointerPairs": 58,
+    "editableTextActions": 6,
+    "actualLoadedCodeSourceAndClassBytePinsPerCell": 11,
+    "verifiedRuntimePinsBeforeAndAfter": 92,
+    "productionSourceInputs": 0,
+    "productionClassOverrides": 0,
+    "productionClassOverlap": []
+  },
+  "scope": "Actual installed Main30 complete original Danmaku Settings Host/Panel and BlockManager, same actual global Store/scoped preference implementation, offscreen pointer/scroll/edit. Fixture supplies presentation/account state and declared memory-only cloud/file chooser ports; no Root/account/HWND/Android engine parity claim.",
+  "limits": [
+    "Real offscreen pointer/scroll and editable semantics, not native HWND or physical IME.",
+    "Account/presentation are explicit fixture states, chooser/cloud memory-only ports; no Root account/window/HTTP acceptance.",
+    "Full original Panel/Host actions from the Main27 fixture retained, including scoped settings and full BlockManager add/edit/cancel/import/close.",
+    "Existing Main26 and Main27 failures stay in the prior frozen cohort; Main28/29 build history belongs to Root, not this runtime proof.",
+    "Advanced Windows rendering algorithms and Miuix nav module are not covered by this UI proof."
+  ],
+  "sharedModifications": false
+}

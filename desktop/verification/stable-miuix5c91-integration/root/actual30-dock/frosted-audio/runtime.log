@@ -1,0 +1,5 @@
+CASE MATERIAL3/false
+CASE MATERIAL3/true
+CASE MIUIX/false
+CASE MIUIX/true
+{"status":"PASS","assertions":63,"caseCount":6,"cases":["MATERIAL3-false-whole-frosted-required-root-consumer","MATERIAL3-true-whole-frosted-required-root-consumer","MIUIX-false-whole-frosted-required-root-consumer","MIUIX-true-whole-frosted-required-root-consumer","MATERIAL3-full-audio-controls-bounds-morph-gestures","MIUIX-full-audio-controls-bounds-morph-gestures"],"pointerPairs":32,"themes":2,"actualOriginalRootConsumer":true,"originalAudioDirectUiFixture":true,"actualNativePlayerRuntimeNotExercised":true,"noHTTP":true,"noHWND":true,"preparedOnly":true}

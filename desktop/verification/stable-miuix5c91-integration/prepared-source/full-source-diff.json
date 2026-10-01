@@ -1,0 +1,1593 @@
+{
+  "oldCommit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+  "targetCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "oldArchiveFiles": 777,
+  "targetArchiveFiles": 787,
+  "added": [
+    "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LocalNavTransitionScope.kt",
+    "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavFocusTest.kt",
+    "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavTransitionScopeTest.kt",
+    "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.android.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerGestureUtils.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.kt",
+    "miuix-ui/src/desktopMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.desktop.kt",
+    "miuix-ui/src/iosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.ios.kt",
+    "miuix-ui/src/macosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.macos.kt",
+    "miuix-ui/src/webMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.web.kt"
+  ],
+  "deleted": [],
+  "modified": [
+    "build-plugins/src/main/kotlin/module.spotless.gradle.kts",
+    "docs/components/breadcrumbbar.md",
+    "docs/components/navigationrail.md",
+    "docs/guide/miuix-nav.md",
+    "docs/guide/utils.md",
+    "docs/zh_CN/components/breadcrumbbar.md",
+    "docs/zh_CN/components/navigationrail.md",
+    "docs/zh_CN/guide/miuix-nav.md",
+    "docs/zh_CN/guide/utils.md",
+    "example/shared/src/commonMain/kotlin/AppContent.kt",
+    "example/shared/src/commonMain/kotlin/AppState.kt",
+    "example/shared/src/commonMain/kotlin/SettingsPage.kt",
+    "example/shared/src/commonMain/kotlin/component/TabRowSection.kt",
+    "gradle/libs.versions.toml",
+    "gradle/wrapper/gradle-wrapper.properties",
+    "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/DrawBackdropModifier.kt",
+    "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/BlurEffect.kt",
+    "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+    "miuix-nav/src/androidMain/baselineProfiles/baseline-prof.txt",
+    "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LiveNavTransitionScope.kt",
+    "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+    "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+    "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransitionScope.kt",
+    "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModelStoreTest.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/BreadcrumbBar.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationRail.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TabRow.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Overscroll.kt",
+    "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/OverscrollFactory.kt"
+  ],
+  "rows": [
+    {
+      "path": "build-plugins/src/main/kotlin/module.spotless.gradle.kts",
+      "status": "modified",
+      "oldSha256Bytes": "44a8f779c198dced97685adf3bb1a7ba7dd54870ff29f5ed88e985d9433a28c7",
+      "newSha256Bytes": "c5c7bc18b97c17682b56ad0a43d7ad05eddcc8f107d2ab800205b4f5a5540ab2",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "build-plugins"
+    },
+    {
+      "path": "docs/components/breadcrumbbar.md",
+      "status": "modified",
+      "oldSha256Bytes": "01fc57f2d2accb9d10b98a7730f35665e301786d5cb9e9078ab915d0de07c813",
+      "newSha256Bytes": "74cf4e02a47ec85d0a8ff1139a4a177858c9047127d9537031e9983a5a3d5247",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/components/navigationrail.md",
+      "status": "modified",
+      "oldSha256Bytes": "77d9d1de51e3119b8a662fdac2ee32d86694b714078c98d128eaa6d16a7cbc27",
+      "newSha256Bytes": "9f70e6967dc4b7d0a1aaa29d1ff5d1e7a31568e364af83ffcd2ce505eb02a019",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/guide/miuix-nav.md",
+      "status": "modified",
+      "oldSha256Bytes": "02f536e4a7ebae2b1299a19c792003772c878d6d1922a597ddb66a9c7712ba1f",
+      "newSha256Bytes": "0a78dbe01971c6861c946a0bd0025a93bb59d14209f28ea46d9a2b3a2ff2430c",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/guide/utils.md",
+      "status": "modified",
+      "oldSha256Bytes": "bb3c8aae2001b10e518867df8d971371dde85bc925a404058fdac07415a3afbe",
+      "newSha256Bytes": "f6260d0d49a411d23cd361873e803dbae49d76131fbda833c1dd727749913b38",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/zh_CN/components/breadcrumbbar.md",
+      "status": "modified",
+      "oldSha256Bytes": "344bdd88e3cc8f926c9be797ff811b63e24afce9d10e6ba4e86d1474bcb3b79f",
+      "newSha256Bytes": "c652965ab70fa2e0358d1951215fd5e2c7173ab122a0d5638b02b4ab810733e2",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/zh_CN/components/navigationrail.md",
+      "status": "modified",
+      "oldSha256Bytes": "ee652fbeb7166ecd49f21a35e878733ebc7efc83224922fbf2f894fcf8159207",
+      "newSha256Bytes": "4258759ef7199521a07f220438fe23b165fc2cc806308959c6c9c140d4f30418",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/zh_CN/guide/miuix-nav.md",
+      "status": "modified",
+      "oldSha256Bytes": "6ed676ba257a5e6635d1daaa518e859aae2c3419a3585187844e489125a2f42c",
+      "newSha256Bytes": "7a2398927aa4f2573a45592369c0ba0ed0abe26cab9e97d72fc1aac8d7875938",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "docs/zh_CN/guide/utils.md",
+      "status": "modified",
+      "oldSha256Bytes": "8f2b60e7029a9db9e14a1d985ea3f0474adfd7c4033b88d2bc8c0ccf5e16b149",
+      "newSha256Bytes": "dc812787f48676e101a3735e32054be2dcf58f7f2c407c048fa49bfe42f03bc3",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "docs"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/AppContent.kt",
+      "status": "modified",
+      "oldSha256Bytes": "1bbd84cc637cf83c1c00512847fb9faba4c182e08fe5e45d6ea8f0af1cd223c6",
+      "newSha256Bytes": "c97170a56df14e9752cac3ec316a24c1c2196f35415960b4fbeb77eaab13000b",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "example"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/AppState.kt",
+      "status": "modified",
+      "oldSha256Bytes": "0b263c0ee42e9572d66c76ed1af96215fe46e79f1657874a125b27162fabaca9",
+      "newSha256Bytes": "6f0217effdfe92de55de77c83d0c2443552f748e9f9e24f3bdc92a7f15955dd5",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "example"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/SettingsPage.kt",
+      "status": "modified",
+      "oldSha256Bytes": "54abe93e7060c21576f3f417340748cab515daef5d223f0d1959882680e8ac42",
+      "newSha256Bytes": "842617b7874e1aa65da4bdb178d5e336af5febaff0687f019662addd556f0eb5",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "example"
+    },
+    {
+      "path": "example/shared/src/commonMain/kotlin/component/TabRowSection.kt",
+      "status": "modified",
+      "oldSha256Bytes": "5752ce3f6c6c061fdb6e3b591983ea8378c08b30b6edc0053d233ddb683628c5",
+      "newSha256Bytes": "bf3241a6c0e254d6f55b9e1ccb66fabdf305de38744d5662602e8fea4559e476",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "example"
+    },
+    {
+      "path": "gradle/libs.versions.toml",
+      "status": "modified",
+      "oldSha256Bytes": "dd185641299d835ae88f2a803dd03b1bb834d2022dc5ed1c4cc85e88e7aa01fd",
+      "newSha256Bytes": "7dc37306989d0cec42366adfb753747b07b9dc14cc223bd65f1d6b833962333a",
+      "currentlySelected": true,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "gradle"
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "status": "modified",
+      "oldSha256Bytes": "d01b41913834fb3cb14e71f69a08898e6a47e663b08f5c9b8c7e0772c38889d2",
+      "newSha256Bytes": "d3c8ac7b34869c3184b4c21374153af1ad72c69c1813e723e3cfc7995f3624bd",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "gradle"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/DrawBackdropModifier.kt",
+      "status": "modified",
+      "oldSha256Bytes": "d24e406b9f50b2e58750d8be9079520f02be16218a916742a7a21cde462e5134",
+      "newSha256Bytes": "2c41ccb6017b89a8a5ea65cc9d1f47e97445e98b9a82644d76a6b7b4d7f26538",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-blur"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/BlurEffect.kt",
+      "status": "modified",
+      "oldSha256Bytes": "d61cae3136f9c4857301a50c0e0939c370bce2931bf7c5ccb85d78008ea9e17e",
+      "newSha256Bytes": "1294cbccb4c93be5f296077f0b3b402e9940025d423dceb43d9b85aa2174d520",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-blur"
+    },
+    {
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+      "status": "modified",
+      "oldSha256Bytes": "2703d5a86bbac35797c87fc6131c92be2d126fe77bf0d99fae34e84984c5ecda",
+      "newSha256Bytes": "f787566fb38ddd47676de91cef1016f3b8cc9b8cdadec0ed6fea8b8a0a7a7f08",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-blur"
+    },
+    {
+      "path": "miuix-nav/src/androidMain/baselineProfiles/baseline-prof.txt",
+      "status": "modified",
+      "oldSha256Bytes": "8e669e532d27d7eacf0c53bcc4924a03a520c4011ae548e87a732af48beb4cbe",
+      "newSha256Bytes": "aef5edf311346276c8dc899e2586d6b2e7126f616c7959173b2725531564938d",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LiveNavTransitionScope.kt",
+      "status": "modified",
+      "oldSha256Bytes": "d694b183d780b680bd3de857929502240dd052b39822f459bca1ef5ae0dd0e22",
+      "newSha256Bytes": "213254564fb9ba619f53056b15b8c6f9eb705ceb4d138b3da07040dc5470a466",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/LocalNavTransitionScope.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "af79c44044a8924a48e3bcb553e25361aca12050903298177b6f74da09741e27",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+      "status": "modified",
+      "oldSha256Bytes": "b6db3bb17b729e5dedbd38446532faafc1c71c0c5fd5a2b8e1cc0e1ee98d1206",
+      "newSha256Bytes": "098f004cb630401376b0bf29a0153a48843dbf4ca9dcc50bbc28a6db32308cc1",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModel.kt",
+      "status": "modified",
+      "oldSha256Bytes": "15026b80d04e4d26aaabd7c2bb9f168722a94a82fc74cf273cea97964bcac2bf",
+      "newSha256Bytes": "522e62783a9ea881ea01ec22cf23d4d2f15c2bdea9db7e0b8dd60ebd5d812d52",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/transition/NavTransitionScope.kt",
+      "status": "modified",
+      "oldSha256Bytes": "eb7cccf6c96999e8089a56a7a84cfdca2d206f0b44becd6c4ed54907be2543d9",
+      "newSha256Bytes": "4bcb97e477f0491b7041fe1c37bed1b555be319225e93a640d6fae2a65e3b9bd",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavFocusTest.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "778881f33eeb605ff93af28d26412965e62b076603fa1ed4dec63579af3b3fdc",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/core/NavTransitionScopeTest.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "55940e80ec974b8f0bd43c61deff3b090f632abbf39318d29891dfa387f0be3b",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-nav/src/desktopTest/kotlin/top/yukonga/miuix/kmp/nav/state/NavEntryViewModelStoreTest.kt",
+      "status": "modified",
+      "oldSha256Bytes": "e3ebfda347ef3022243681c8ec0dd374b88ac91fa75c7ea0c4179c131cd30e2c",
+      "newSha256Bytes": "8c34466a060a2edb2f83f2308b8784aa4e46445e5e814d4b6cf2bfd7b5dd8ef1",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-nav"
+    },
+    {
+      "path": "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.android.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "ad356b070c54eaa73fc63cfc719e6d0f5028db48c3aebcda5c81cfda4dc9d5ac",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/BreadcrumbBar.kt",
+      "status": "modified",
+      "oldSha256Bytes": "0199c0b077917f472ff88595e6909198f6298b24cdd1a9a96b14b395c9340fe2",
+      "newSha256Bytes": "85c5a7d4fa6b6bd5ab84f8bae79862cfadf65b666fb03b63cdc61f9b6b42df9c",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationRail.kt",
+      "status": "modified",
+      "oldSha256Bytes": "a99f15bbe3d9d1474f958150fd031cf7f7292299632aa63d847a33bf52eb55ec",
+      "newSha256Bytes": "231daca7b4ba8352092a23cae6376eddbb73e97938dd9117c08c8e691d7f8e7f",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TabRow.kt",
+      "status": "modified",
+      "oldSha256Bytes": "4a7384b04a7de994a9d026e0b9186144329018a4c8a98f881ed919fe5feadd49",
+      "newSha256Bytes": "79cf8ed2726d87bb56d1bda888f9ef28922f964b01414ddffd4cd96c3b256ce8",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Overscroll.kt",
+      "status": "modified",
+      "oldSha256Bytes": "bb935a0b5999576ef2d20c446bfe3bb53204240b03aafbf86dd59a500c12e38b",
+      "newSha256Bytes": "28b9a1acbd380ab015a29eeafc10dea1bba28e93be476272ac9b6dd7b8b040bb",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/OverscrollFactory.kt",
+      "status": "modified",
+      "oldSha256Bytes": "05a0416997c5475a785339bcb294a2c8bde6c8d4524d81f779cca3bcb961a5ee",
+      "newSha256Bytes": "70e54e7a53590b3dfe2ccece71a9fb8db618f844937c5c2bd8376475dcd0b3d4",
+      "currentlySelected": true,
+      "currentlyCompiled": true,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerGestureUtils.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "fc495ea5e998a3bcc4ab05bd48dc80d02affc9412bc617239823f96df07f7e5d",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": true,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "0f9040ea246b8e554e29c6108aa80553cd6a2d38798a9fe11bd706933977d0bb",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": true,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/desktopMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.desktop.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "8b50960163b2b8595267f87fdad6edb5038d85f769d28bcb7bf2fc4de53afd6f",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": true,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/iosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.ios.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "c4e2405287f3050722a56c517ab597408378f5ed811f906e84273a132df6b920",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/macosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.macos.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "d78b7b1fd8e41a07c6e714807a3ee606834228de0bba749d9e13087a1c0d3aa2",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    },
+    {
+      "path": "miuix-ui/src/webMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.web.kt",
+      "status": "added",
+      "oldSha256Bytes": null,
+      "newSha256Bytes": "d6e6a3f08d43be3079684267490b03b4f2551875e6ac148df83b36ac5c925f9e",
+      "currentlySelected": false,
+      "currentlyCompiled": false,
+      "willCompileNewClosure": false,
+      "module": "miuix-ui"
+    }
+  ],
+  "officialCompareExactSetMatch": true,
+  "commits": [
+    {
+      "sha": "5de9d0f52441f3191207422302868bedcf39bd8d",
+      "node_id": "C_kwDOMf535toAKDVkZTlkMGY1MjQ0MWYzMTkxMjA3NDIyMzAyODY4YmVkY2YzOWJkOGQ",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-15T05:52:38Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-15T05:52:38Z"
+        },
+        "message": "library: add LocalNavTransitionScope to miuix-nav (#430)",
+        "tree": {
+          "sha": "b7824131c2414283815f43a258c059f95b351625",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/b7824131c2414283815f43a258c059f95b351625"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/5de9d0f52441f3191207422302868bedcf39bd8d",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqqN0mCRC1aQ7uu5UhlAAAxGkQACCETeJRhjyriiKH8M07fRyH\n11bnTruZmo5EIRV1T5MpO+PuwgQbrD4mqO2BUk0VliAAlwCi06Nyu6mgi/UKJSjS\nPJ7Naz3uqUibnKsAhxpkWMQPSGgXytEZEUVP++3UgXUSLZ0KCSMu+Izzay+mKXsr\nxLnSTkkvpHx6wbhzFrAI6w8ZdzXICl/eDAb/JsguN4G1t+/7xb79gZlqhGtwjosM\nzcVsEN+KxfOIsfnKwT0OP3PIX28vqW/JspSPXgWu7IrVY6yimPnzuaUK6yU4kV5N\nvAeeNCZsf5fydJyZ0uPKKDDVmi9X/ZC/Q4EUo1EEa5CMM0bDZa7vLeWdWRqXFJLH\nM5PWzSsyd2mLaDF5GD5fUuE4AHRuhoFBJrIaCMi7lA4LeQZtXpjxKQO87K7kh4s9\niKYHYaOftncX6xD7dF6sE27hHCTVi4nuB3OJcAmcbl0HMv+zcNOBav7MDZsIXePY\nNrm6p1ZTafRTfUzHuO+8+h1BMruVorgr3Ffo/RU64MRKxld8lS0bHTw4DppglVTP\nVKiF5kuG3ESYQjgWQeLaWaYpsE054TlpOfR0fv5Mqq9BbENBRHxFa+yLJ4ZgHkrO\nPJrKpH6TvzqllmL5GzVddX/IHX3FdBV48t9+qVea6bGvVSBfFr23jEAEFpFz/KBp\ntVSo8zzENpYfcStVnYai\n=U8mV\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree b7824131c2414283815f43a258c059f95b351625\nparent 5157b503e86e2bfc2db61db00fff5df41326394a\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1789451558 +0800\ncommitter GitHub <noreply@github.com> 1789451558 +0800\n\nlibrary: add LocalNavTransitionScope to miuix-nav (#430)",
+          "verified_at": "2026-09-15T05:52:39Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5de9d0f52441f3191207422302868bedcf39bd8d",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/5de9d0f52441f3191207422302868bedcf39bd8d",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5de9d0f52441f3191207422302868bedcf39bd8d/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "5157b503e86e2bfc2db61db00fff5df41326394a",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5157b503e86e2bfc2db61db00fff5df41326394a",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/5157b503e86e2bfc2db61db00fff5df41326394a"
+        }
+      ]
+    },
+    {
+      "sha": "63529058dc5cbbb450707547090544f33f1a66ef",
+      "node_id": "C_kwDOMf535toAKDYzNTI5MDU4ZGM1Y2JiYjQ1MDcwNzU0NzA5MDU0NGYzM2YxYTY2ZWY",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-16T10:55:46Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-16T10:55:46Z"
+        },
+        "message": "library: fix NavigationRail selection highlight (#434)\n\n* Fix #433",
+        "tree": {
+          "sha": "4ed64682daf297368eb9b7435e8d475915cb47eb",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/4ed64682daf297368eb9b7435e8d475915cb47eb"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/63529058dc5cbbb450707547090544f33f1a66ef",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqqnWyCRC1aQ7uu5UhlAAAgBcQAJKlhqkOTkxEtboVxA1zS2mh\njfO+rMU7lQB5Jx/y0eFY3lI/SG1FGmU25Wzdwk6KoJwjOPVxo5YBMH2ohm8tI5bt\nQgdJBPwW9wKCN1h976wf3EPU1febTUlJFcjl0mYO2BBqX9KaDdBu7o5KCRjh+crr\nU3iXgzq/1rRXiOK498wDyfGMpiUGXVcC0nT01YNvCGEL1tWhQYhYSNcPw2uNwBJ9\n6bDeV0iZE2I/laiuGzcALgn9UZo3O8QXz4c/zBZM2vQKsPEbG0Zjbpo1utlg7Tcb\nUueTwADblwUq6psxOJKcGU1HsvxmQmPoW2ZvI8NX2gwI/s+Tm8uV8P8io50PzrpB\nyEcKzWytY2grnwUunEcs1fQU3gaE3jw/UaJkAIRMftPJogrBghSY92XFTneU5KZg\ndcXxZxOS3S87b67W8zOkuMZrv5C8ixwqCKV7k2CzGuhYjGjiAFur47Gn+cP+bKoC\nRXFva+rF0EIB7gybuZSGB4NnZV7RpxXpy9mbFdZKThLQ3HFg3uzMyKFwZw4gbHWo\noiZu/4U3uYar70sguAtqwE4KU2SPRX/KR8v3kgjmt8op8/2YMECcK51yBqg/xUVi\n/BtBsag0OECx5feSHp5oz/aLKAAEUjvIDU4Uw9gdJH96oxjXVqIz9HjuXEGOrbJU\nrMpgg9a2EjhexnVzljOU\n=pWLh\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 4ed64682daf297368eb9b7435e8d475915cb47eb\nparent 5de9d0f52441f3191207422302868bedcf39bd8d\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1789556146 +0800\ncommitter GitHub <noreply@github.com> 1789556146 +0800\n\nlibrary: fix NavigationRail selection highlight (#434)\n\n* Fix #433",
+          "verified_at": "2026-09-16T10:55:46Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/63529058dc5cbbb450707547090544f33f1a66ef",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/63529058dc5cbbb450707547090544f33f1a66ef",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/63529058dc5cbbb450707547090544f33f1a66ef/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "5de9d0f52441f3191207422302868bedcf39bd8d",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5de9d0f52441f3191207422302868bedcf39bd8d",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/5de9d0f52441f3191207422302868bedcf39bd8d"
+        }
+      ]
+    },
+    {
+      "sha": "26b37993ce6073ac7cab9b986ab57352c126dc81",
+      "node_id": "C_kwDOMf535toAKDI2YjM3OTkzY2U2MDczYWM3Y2FiOWI5ODZhYjU3MzUyYzEyNmRjODE",
+      "commit": {
+        "author": {
+          "name": "renovate[bot]",
+          "email": "29139614+renovate[bot]@users.noreply.github.com",
+          "date": "2026-09-19T02:13:20Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-19T02:13:20Z"
+        },
+        "message": "fix(deps): update dependency com.android.tools.build:gradle to v9.4.1 (#436)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "tree": {
+          "sha": "780911ef9cc1aa5f20437b7e7972693c7081a514",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/780911ef9cc1aa5f20437b7e7972693c7081a514"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/26b37993ce6073ac7cab9b986ab57352c126dc81",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqre/ACRC1aQ7uu5UhlAAAhUcQAIArR/QXqVIk+wrxEo7/7pFt\nRpoe+7hhRu/NdkP2WeNPdJkLZozfIMJmOLhFLs0UWRZHmbHU3z3HJcuvgGp0rHIF\nwfbblVV46w+GszsHGATzwjBZmhsAuJbiG8+Nt42VLv6vPlisydRrFi7zSt97lK+V\nKydxYzTUtoFJOI4r3qV1pCEnG87oCnq3HPcSVCAC3jsqlRPAe35fXQ6cHGZ4HsRp\n4ACo/3yAZFTRCBDKHuW7n0DVei+cP95g6tF2O0NiJizgnkHxC8qeFoMLB0Qv31cq\njc6+3Bc2y4VPMWLmNrAOgp4JH2/Q+vgKyrB3xLaWLxoryUTbhbTIxhZCqkmt8YMx\nVO8p34JLzEN1WT9XEv9LT7AUelnvmGgCue0cYp+WSFq3ug0Z7r/IgkGUrYox+dNu\ntHZv7R8pAsvGSE3Q6kCjjQDI6wPadWTWmO1SjQ1MiaXQcKZEgD2W/ZiwbTM9msMU\nHQtRP2nnAAmBwr6NgugkMsoPAm9vQQOjQ56aItbcIuBRqKEmazakIN4xtLgo2ApS\nvpJUuj3wQ88rOCGm0juiiDI58m1F5AIlvh4dMLUs9xCOHKmw7O1sBeLD+NzwowiC\nhfiFbW0NVphaGmaaQpk08dk7XCuqn2VZTfsGU7tawSmCcfQo4Af7uEhU3hpOwLQT\n3LJPlG8i6d3KpepTpKNH\n=UsKC\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 780911ef9cc1aa5f20437b7e7972693c7081a514\nparent 63529058dc5cbbb450707547090544f33f1a66ef\nauthor renovate[bot] <29139614+renovate[bot]@users.noreply.github.com> 1789784000 +0800\ncommitter GitHub <noreply@github.com> 1789784000 +0800\n\nfix(deps): update dependency com.android.tools.build:gradle to v9.4.1 (#436)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "verified_at": "2026-09-19T02:13:21Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/26b37993ce6073ac7cab9b986ab57352c126dc81",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/26b37993ce6073ac7cab9b986ab57352c126dc81",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/26b37993ce6073ac7cab9b986ab57352c126dc81/comments",
+      "author": {
+        "login": "renovate[bot]",
+        "id": 29139614,
+        "node_id": "MDM6Qm90MjkxMzk2MTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/renovate%5Bbot%5D",
+        "html_url": "https://github.com/apps/renovate",
+        "followers_url": "https://api.github.com/users/renovate%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/renovate%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/renovate%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/renovate%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/renovate%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/renovate%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/renovate%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/renovate%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/renovate%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "63529058dc5cbbb450707547090544f33f1a66ef",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/63529058dc5cbbb450707547090544f33f1a66ef",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/63529058dc5cbbb450707547090544f33f1a66ef"
+        }
+      ]
+    },
+    {
+      "sha": "29d6deb3be20721bc4b70439b23544c93289f5bd",
+      "node_id": "C_kwDOMf535toAKDI5ZDZkZWIzYmUyMDcyMWJjNGI3MDQzOWIyMzU0NGM5MzI4OWY1YmQ",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-20T05:43:36Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-20T05:43:36Z"
+        },
+        "message": "library: fix missing SavedState CreationExtras in nav entries (#438)\n\n* Fix #407",
+        "tree": {
+          "sha": "1e0a9091dd2c267efdd1009a136e3ca34e1bdcd0",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/1e0a9091dd2c267efdd1009a136e3ca34e1bdcd0"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/29d6deb3be20721bc4b70439b23544c93289f5bd",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqr3KICRC1aQ7uu5UhlAAApkwQAF/PSU2v5mKkdziYM5h1BpIB\nLpFXKuf7YO+2sYDX/fWIxJl1FldtgLLSwCUvGF74WOEo46wUQmZfBzUAa+KNnDPR\njTUql7WcE6unSU/AKh9s4ApL+k2u/OMzMUhGdY75/tHec0d+TOS3D63S9eO+tCQa\nwZFuBF4i4ScFq+iohfrb8HPF8AmOCxKU6KQGC9VI/DPVNYJ2nLRJDtP/QRIsln2B\nH+gG/Ka4S9JxXfwpH6E2nuicqWsbvPn7dtkaU52NTjhVkSHNZwt6ZgcGRHZw/xD9\n4izv/5Q8B5FRPk9CGAK1Yz0wmc7NVZKgda2gX7XqJmCBZvB7FwJ82MM6Q3pypcCO\nmGiUk33i5MRXpvn6cxIT2yElc59tB4nU6x7OJhYd4u3MRG25PPtbWLV4zBdM64ik\nCfV73ZqCACL+atMlbwOHvd8uFYOZBDA8KhsVWCSTqjMZ/9GVdH0Dr1Yn9nYKXZ8O\nzsbG2cFUbq26+rnD/eQSUfyPDhlBx1qm56RqmUB5xbod8kS3jlGi1BfKIY2xT5rS\nNtExAya1TbcNdsUTjw9DGiLJ99+oYBT5ERC0w3w1PiXjk2LKVGqpLKtvey9J7mHx\nWZgEWzQ89KaCP1vdIDDd7fTjxqN2QN0ZJcf2GsZmCmkHvxrI6DTJEnZymCn6J5Pi\nMIPkHYl/OGuVWg0AK+vq\n=af2d\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 1e0a9091dd2c267efdd1009a136e3ca34e1bdcd0\nparent 26b37993ce6073ac7cab9b986ab57352c126dc81\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1789883016 +0800\ncommitter GitHub <noreply@github.com> 1789883016 +0800\n\nlibrary: fix missing SavedState CreationExtras in nav entries (#438)\n\n* Fix #407",
+          "verified_at": "2026-09-20T05:43:37Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/29d6deb3be20721bc4b70439b23544c93289f5bd",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/29d6deb3be20721bc4b70439b23544c93289f5bd",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/29d6deb3be20721bc4b70439b23544c93289f5bd/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "26b37993ce6073ac7cab9b986ab57352c126dc81",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/26b37993ce6073ac7cab9b986ab57352c126dc81",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/26b37993ce6073ac7cab9b986ab57352c126dc81"
+        }
+      ]
+    },
+    {
+      "sha": "39c40f99844227b853f0049a0933b1f3ae6c00ba",
+      "node_id": "C_kwDOMf535toAKDM5YzQwZjk5ODQ0MjI3Yjg1M2YwMDQ5YTA5MzNiMWYzYWU2YzAwYmE",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-20T06:32:43Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-20T06:32:43Z"
+        },
+        "message": "library: add pager gesture conflict resolution utilities (#437)\n\nResolve horizontal swipe hijacking during vertical list momentum or overscroll.",
+        "tree": {
+          "sha": "67adb062c822131d1d289a9a9491eb1aad19f99b",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/67adb062c822131d1d289a9a9491eb1aad19f99b"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/39c40f99844227b853f0049a0933b1f3ae6c00ba",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqr34LCRC1aQ7uu5UhlAAAqo0QAGWItsn7aG90svns6p2wV28F\nAzSwnfGT9QgmQFgUc6Hav5IDaKdSmXXaYyFcphEJyOgXtKE45mW2J6jOlVt4FNNo\nNKRyiHVZfGMOjZ9uTIh6CcEzbX7lQTO3KoSLSSdWOHxuBZUWuV49Ig+nRzwHih2v\nNlYCa8Jgj/89Im80pPeVNZ5T8TS2pwwv4TIVtXaR+b0jieSM+Z1Gqv4kBOL1MOa6\nZ/ZLAso9M0nC3RXbDSjwOAsp2ycMGjz69Wst05prWNC5+xYJ7lwyoH6B527zLiwh\niufprQMNfozE3LLZHMrh0pKIdk2Ae1GblnPJnyFvUoeLNplT72JfFguo5rd5NJ3a\nJDDO1TPTT/HJ8BQMHgj37lVrMn7tNZFfDXzj5ZUPJeqpgw/6CIb5wbcv6YfStlDk\nNeywdMLrDWzBZ51bHi4T0HU2K7p/RqSptifxvf21KJlCXJJgNN2eYQ6GorcKnFCY\nrdexeN6ZT/rZRZSlPRbrSQcBmQYgDCFTDoBaW0KFZu3cCgSIGfyonhHeB0gQv3Rr\nM8HJ0Y8oRiMBoWq3ID6RNjz7uC8xopEUri2XY3W4Tk6cMDSIbUxZz9/4pwBytjpE\nniPWNGjog15Wdct9YuLxwgEr6/BDGW1AILIohqc/+Z/XErMzlyo5/i7gUry2gySM\n1tUJSQ1rZP/5h7oTclom\n=CkTs\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 67adb062c822131d1d289a9a9491eb1aad19f99b\nparent 29d6deb3be20721bc4b70439b23544c93289f5bd\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1789885963 +0800\ncommitter GitHub <noreply@github.com> 1789885963 +0800\n\nlibrary: add pager gesture conflict resolution utilities (#437)\n\nResolve horizontal swipe hijacking during vertical list momentum or overscroll.",
+          "verified_at": "2026-09-20T06:32:44Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/39c40f99844227b853f0049a0933b1f3ae6c00ba",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/39c40f99844227b853f0049a0933b1f3ae6c00ba",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/39c40f99844227b853f0049a0933b1f3ae6c00ba/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "29d6deb3be20721bc4b70439b23544c93289f5bd",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/29d6deb3be20721bc4b70439b23544c93289f5bd",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/29d6deb3be20721bc4b70439b23544c93289f5bd"
+        }
+      ]
+    },
+    {
+      "sha": "73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+      "node_id": "C_kwDOMf535toAKDczYmE2MDczMjg0YWJlNmQ4ZjZhYTBjOWI2MTg3Y2ZiMmE1ZWMwZTQ",
+      "commit": {
+        "author": {
+          "name": "renovate[bot]",
+          "email": "29139614+renovate[bot]@users.noreply.github.com",
+          "date": "2026-09-23T03:02:18Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-23T03:02:18Z"
+        },
+        "message": "fix(deps): update jetbrains.compose.multiplatform to v1.12.1 (#442)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "tree": {
+          "sha": "a69e8ca2ac2f1f7cdcf581f04f5d7d6e9955a5fe",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/a69e8ca2ac2f1f7cdcf581f04f5d7d6e9955a5fe"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqs0E7CRC1aQ7uu5UhlAAAy0EQAJt6KMhutUpDaMx1btBxLdM9\nmKvEQwP9+cSmjLrqdTDrqNbFRjSLpi14IyNlMW27EdFs7XhwQ6NfIqFJW0/weA6L\n79XP7YZ0pYi0mYLYM1UP+goTEenm3657PsH3aV2VAgDfT3EYm8RrfNypV+Cjdvx9\nTrwoWOFqfoy31eCum4p37SRmdN5ll9EgXmzRfGXcNQu0FYmT7UJ/V8pEZYPaG5ve\nihcizXqt+rJZ9M1dR+H8gfTU0HOFTXkiYtenZdVszeZa981H0BHowGt6VU4IJ6RU\nFZkdCoCEyUwdmRxL1xJvTuc1v9H4614jRTOBzRmgv0rpAzTRoQkMoKx+vp6GM6Dh\nJYFLKEGc0bAQXhub3EpUwMjCgp+l0SH5X8Nh2ofi2L2Z+pe3A9FdzDTc/jR1izv8\nBTRhxsCB3J+pZh+y3+eS/bRIy5RiN8FQCvDlTJaGb/cOzRALZa+31RLROhdSn/Vj\nLugUo3e6a6hyGvYkpi2qmGMlF7BLjbD1VW3ozUFWi09CvjvBoLKkU47L+feBAhyR\nlLgeRV28GUNrsb+yRE5/uYLsNq2HOAFVndDCatlAOPIpRCuAWK108SJkpn6WO21z\nzC3lPJvFYwBwQE0/zrtzPhhL3ci38PJhn/vYHBIedZUR8x/LuSfXH/Mr64B+XjXl\nKBEK8UJ9S0TQuvLKsntz\n=i+s2\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree a69e8ca2ac2f1f7cdcf581f04f5d7d6e9955a5fe\nparent 39c40f99844227b853f0049a0933b1f3ae6c00ba\nauthor renovate[bot] <29139614+renovate[bot]@users.noreply.github.com> 1790132538 +0800\ncommitter GitHub <noreply@github.com> 1790132538 +0800\n\nfix(deps): update jetbrains.compose.multiplatform to v1.12.1 (#442)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "verified_at": "2026-09-23T03:02:19Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4/comments",
+      "author": {
+        "login": "renovate[bot]",
+        "id": 29139614,
+        "node_id": "MDM6Qm90MjkxMzk2MTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/renovate%5Bbot%5D",
+        "html_url": "https://github.com/apps/renovate",
+        "followers_url": "https://api.github.com/users/renovate%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/renovate%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/renovate%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/renovate%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/renovate%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/renovate%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/renovate%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/renovate%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/renovate%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "39c40f99844227b853f0049a0933b1f3ae6c00ba",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/39c40f99844227b853f0049a0933b1f3ae6c00ba",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/39c40f99844227b853f0049a0933b1f3ae6c00ba"
+        }
+      ]
+    },
+    {
+      "sha": "a575835c778ac2b157ce4fb3a9119d22baf57181",
+      "node_id": "C_kwDOMf535toAKGE1NzU4MzVjNzc4YWMyYjE1N2NlNGZiM2E5MTE5ZDIyYmFmNTcxODE",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T03:19:46Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-23T03:19:46Z"
+        },
+        "message": "library: preserve child gestures in cross-axis pager (#440)\n\n* Fix #439",
+        "tree": {
+          "sha": "defee12a370a1ceca9bfd590c1d1618d919ae7cb",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/defee12a370a1ceca9bfd590c1d1618d919ae7cb"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/a575835c778ac2b157ce4fb3a9119d22baf57181",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqs0VSCRC1aQ7uu5UhlAAAljkQAG6QBrVutB/DccE817cwCDFT\nk63Kzpyt4zBmoGs+X9a9QYzRY09mKmtOUVdD0WooEndr0mH46nArr+VGgMPsW0IX\nr3bX2jd8PyXyUDB5j14P1862QwvvKW31806pXCNKj5WOKJlT3/ZSmYBp+zM25bGq\nXLvrUek7KymzOxCjhk1PF3q67lSIT4RiStCAlIAZ5/HNS5kgrDfJfSDbnmvSmfFe\nGxrBSfpJBb9I6Vn/gyD1CzOiQdiGM7qRxyGPGv1vjYy76iDGPriE+rLyjBoTy8DB\ndy5NY1+HGibhAvjKmH9lxHxOrK+fH+EkMpF3bae+2PHbclOwJbr/jd0cygQwxp5R\nWbephOfYV9uJps1Gh1wEkCY0xn7se+NVarmKfaRsKGVHuHhyJ1K/98kPgBE1ccY1\nuiToEXejPRUoRe89oDo4PqSy+zZC08HFbRazgnN5NXDyKnG02wvwJHnwI+VdOlLS\niA/GWOjAdUW0I54MXv6kghM8UM3zrJY6FF+UNyt0P3Lkyh9/RYIqGgQM2fAx79LV\nVAB0UQotbzwfdbu7t5pQf9GLxyg4V2fB+tAvAJp4/Ym4af7GeQ1qd0MG9LaRd6va\nnrqeeFwgL3iISDfGcKSKASXKLi4PbtRvyjRC5wDP/UUk5WaKXU/ffRAFXcSIKF9/\nPUPQsg26UNUTJhNKDcX4\n=UHt0\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree defee12a370a1ceca9bfd590c1d1618d919ae7cb\nparent 73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1790133586 +0800\ncommitter GitHub <noreply@github.com> 1790133586 +0800\n\nlibrary: preserve child gestures in cross-axis pager (#440)\n\n* Fix #439",
+          "verified_at": "2026-09-23T03:19:47Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/a575835c778ac2b157ce4fb3a9119d22baf57181",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/a575835c778ac2b157ce4fb3a9119d22baf57181",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/a575835c778ac2b157ce4fb3a9119d22baf57181/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/73ba6073284abe6d8f6aa0c9b6187cfb2a5ec0e4"
+        }
+      ]
+    },
+    {
+      "sha": "70528417468f0befa97ddac7a4582753d1494c0a",
+      "node_id": "C_kwDOMf535toAKDcwNTI4NDE3NDY4ZjBiZWZhOTdkZGFjN2E0NTgyNzUzZDE0OTRjMGE",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T04:12:59Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-23T04:12:59Z"
+        },
+        "message": "library: clear focus when navigation top changes (#441)\n\nClear focus from covered navigation entries while preserving their state.",
+        "tree": {
+          "sha": "36e378b3001028fb91d5fbde9ad7ed656cfb2b66",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/36e378b3001028fb91d5fbde9ad7ed656cfb2b66"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/70528417468f0befa97ddac7a4582753d1494c0a",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqs1HLCRC1aQ7uu5UhlAAAw68QAFGKmHKrKKUhcM+f8jLTCuoP\neRML/g8VjW/GbJVgqI2o+vCl4T5f+Rr9AJfyFoaNGRBbe1i1VZUTE1BSQSY1WHro\npZHLww99tKjgqKtg274pVNCyp4TcvXEbNi1XWjsfWowdMIe8jwszO5tubvqY8BHM\nO0n9BqUEsNL7pyT6BwYdgalXuKbdQHa3hHSRcSTmc7laJ4A5caMS8Bjk82Yks8qS\nEMyG3CXOnfJRS5tvPa7mzuBSHIMBvQqfxA3dmM+1H7DScg+SjJnIGAFj+Pd3EfKR\nZ5M3Wo/B5OyCvaev288bn89dnjMfqWGj/dRSbcDMAQSpv2psW1rCOQ8f6H1sj3I/\nBkjVp3modq7BJ4jU4mY2+ANAk16AZMo9x4Z1oLE3BQAwXTg7tHtdOdhRnPv7msS2\njXQvp5Cnih4eR8irTxALfbUbwG4gxs0EgQLiaLIm/kfczKyDK6DigdIRAgZadpxT\n3C7nJfdYiEAGsNAd6jjllY2NipbTFE9dZNjPFEj5+XEI0TjVjFbfVWqENLUZktVv\nhsDPFAjvd/EmK7Im64QZPpzUC0z4WwwiuRh7EUqkwgb7st27zj45f1ZTfzgWl/UG\nmfspWs+pTZSl1zC9WwTDHCmnLI9+dgDD9A92lH651WimPN/zm56RXr3LR1Fvr3A0\n3O40e0pOYMoiKTHR5cRv\n=qsnM\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 36e378b3001028fb91d5fbde9ad7ed656cfb2b66\nparent a575835c778ac2b157ce4fb3a9119d22baf57181\nauthor YuKongA <70465933+YuKongA@users.noreply.github.com> 1790136779 +0800\ncommitter GitHub <noreply@github.com> 1790136779 +0800\n\nlibrary: clear focus when navigation top changes (#441)\n\nClear focus from covered navigation entries while preserving their state.",
+          "verified_at": "2026-09-23T04:12:59Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/70528417468f0befa97ddac7a4582753d1494c0a",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/70528417468f0befa97ddac7a4582753d1494c0a",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/70528417468f0befa97ddac7a4582753d1494c0a/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "a575835c778ac2b157ce4fb3a9119d22baf57181",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/a575835c778ac2b157ce4fb3a9119d22baf57181",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/a575835c778ac2b157ce4fb3a9119d22baf57181"
+        }
+      ]
+    },
+    {
+      "sha": "00e2f19338d8c3893588c026546b89f9bc1e4640",
+      "node_id": "C_kwDOMf535toAKDAwZTJmMTkzMzhkOGMzODkzNTg4YzAyNjU0NmI4OWY5YmMxZTQ2NDA",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T07:30:13Z"
+        },
+        "committer": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T07:30:13Z"
+        },
+        "message": "library: fix cross-axis child gestures after pager takeover",
+        "tree": {
+          "sha": "da19c5f0eb85fe7250933d3e9739a8fd14d5e9e8",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/da19c5f0eb85fe7250933d3e9739a8fd14d5e9e8"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/00e2f19338d8c3893588c026546b89f9bc1e4640",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/00e2f19338d8c3893588c026546b89f9bc1e4640",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/00e2f19338d8c3893588c026546b89f9bc1e4640",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/00e2f19338d8c3893588c026546b89f9bc1e4640/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "70528417468f0befa97ddac7a4582753d1494c0a",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/70528417468f0befa97ddac7a4582753d1494c0a",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/70528417468f0befa97ddac7a4582753d1494c0a"
+        }
+      ]
+    },
+    {
+      "sha": "2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+      "node_id": "C_kwDOMf535toAKDJhZmRiYjM5ZjFhYWM1NzQ3MTY1Y2MzNTRjYWZkNGI5MThmYTU1YTU",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T07:55:07Z"
+        },
+        "committer": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-23T07:55:07Z"
+        },
+        "message": "library: keep pager settling during child gestures",
+        "tree": {
+          "sha": "0f0521efddb409e3f4a80742f7f817553cda356c",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/0f0521efddb409e3f4a80742f7f817553cda356c"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/2afdbb39f1aac5747165cc354cafd4b918fa55a5/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "00e2f19338d8c3893588c026546b89f9bc1e4640",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/00e2f19338d8c3893588c026546b89f9bc1e4640",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/00e2f19338d8c3893588c026546b89f9bc1e4640"
+        }
+      ]
+    },
+    {
+      "sha": "abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+      "node_id": "C_kwDOMf535toAKGFiZTBlZGVkZDhlNGNlYTM4NGNhMWJmMzUzMGYzNjBhMzhlNWZjNTA",
+      "commit": {
+        "author": {
+          "name": "renovate[bot]",
+          "email": "29139614+renovate[bot]@users.noreply.github.com",
+          "date": "2026-09-25T07:27:28Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-25T07:27:28Z"
+        },
+        "message": "fix(deps): update dependency io.nlopez.compose.rules:ktlint to v0.6.7 (#444)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "tree": {
+          "sha": "66b638673784fee88f5071b2a3efdabaae2fd2e1",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/66b638673784fee88f5071b2a3efdabaae2fd2e1"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqtiJgCRC1aQ7uu5UhlAAAeSMQAEuD+5P7ZmiC9Xc46sDeUyvr\nUZLOdF+/baRDfmz+I62UA7U4bCRp7ZYEnu6W+6l4HoV81uV9y1Xu7f8FY6XJbze5\no5wOR6vN+bd8tFzrhjGgH5ss/muy81aYtf1d3P1dFNScUYKjBStz5QRm5miaQHgz\nPDFSoTN9g5RLoxGBKJOrOvB/I6QWcb2qJnAg7TvyAZWNtf5UDI0jNMuKW7FLBmmB\ntyveuVhygIIXeXGI+3uPhoIAXhVmLB9G5wDojE6dSkTOVLfwUHblzGpH06B7XXsQ\nEbtT6/zN4lIll+Bmr7II9YwMeHrRxAtWYqMX652qZxhrsKove1ta0h8jLF4ZfC40\nLzj6aowmOrt/HVgHd3w/L4j62pimgkxCEKKZ3bRCG3DYSPtmdzrN6lYJxXZmo1NR\n7fl4LpSGQbgkTHfx9FvWuM2/J2uhND1pkRCnxphYxK/POMQopVc6bPk9R3pfvrU3\n674E90MG0H+2ehVgkinfZfTKv64+w1HIswk8LcYkjKVlNWdARFqEQmDFg+SW+WY0\nbGkZMdXpB5b+ddW4hPyP2x2OqQ/bI1DJZXezhUUmo4A+KV5hvAB5hBMSLpDYSOJl\nYIrOK7NWMs8ieMqdaLM97wLlqjX9g5aKi8b77FOyTTfK9kjx0co54EgzSGGmBpK7\ni16QOrPjVcwOUAW8T7Kx\n=yDkS\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 66b638673784fee88f5071b2a3efdabaae2fd2e1\nparent 2afdbb39f1aac5747165cc354cafd4b918fa55a5\nauthor renovate[bot] <29139614+renovate[bot]@users.noreply.github.com> 1790321248 +0800\ncommitter GitHub <noreply@github.com> 1790321248 +0800\n\nfix(deps): update dependency io.nlopez.compose.rules:ktlint to v0.6.7 (#444)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "verified_at": "2026-09-25T07:27:28Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/abe0ededd8e4cea384ca1bf3530f360a38e5fc50/comments",
+      "author": {
+        "login": "renovate[bot]",
+        "id": 29139614,
+        "node_id": "MDM6Qm90MjkxMzk2MTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/renovate%5Bbot%5D",
+        "html_url": "https://github.com/apps/renovate",
+        "followers_url": "https://api.github.com/users/renovate%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/renovate%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/renovate%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/renovate%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/renovate%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/renovate%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/renovate%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/renovate%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/renovate%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/2afdbb39f1aac5747165cc354cafd4b918fa55a5",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/2afdbb39f1aac5747165cc354cafd4b918fa55a5"
+        }
+      ]
+    },
+    {
+      "sha": "3aa62c8282df950d298d23df9c4d25d63041d6d0",
+      "node_id": "C_kwDOMf535toAKDNhYTYyYzgyODJkZjk1MGQyOThkMjNkZjljNGQyNWQ2MzA0MWQ2ZDA",
+      "commit": {
+        "author": {
+          "name": "renovate[bot]",
+          "email": "29139614+renovate[bot]@users.noreply.github.com",
+          "date": "2026-09-26T03:32:10Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-26T03:32:10Z"
+        },
+        "message": "fix(deps): update dependency com.diffplug.spotless:spotless-plugin-gradle to v8.10.3 (#446)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "tree": {
+          "sha": "23463b72935fddde53ada22e49c74643190bd55d",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/23463b72935fddde53ada22e49c74643190bd55d"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/3aa62c8282df950d298d23df9c4d25d63041d6d0",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqtzy6CRC1aQ7uu5UhlAAAi3UQACkSWwfx8cJ9WXbcauZaIEga\nqtgAdczvOLDgpAUpALRYDcU9k/nKZQV9KhvjVl+GeWRxuynwsbnhHtgTKVjs5MRq\nuM7MHY6KdX9nVgqg3JNlZ8VEJOGHRHhgGAi5aGNN/5tk+Yl/lcdF+XsWWARjP9iD\n/YestDej74sS+eI49u9bJW3rmuIEtamYlxOiagrQDV2F7Bi5H7+y2LdOv0BADP85\n+OlQAoArkQl9bOHK00+4loWqqXi6qwYi+yCFhsY/Cjimh+4KyLFD+NKnVuD1fPBs\nItX6yzD5tlAVyzVf1nAT3t5xTzGdOMSoCzxHARvQ1Y0uXmA2Mih9+Of6eTbClzDC\njHIURcshwRDvGH/5a9gLN67CxGaBTfAaSBc3/FONvhMGEgX9nRNqQYrawmL0+3Gq\nujTBQ3GHdecs1zRU4tT7ihqGFCFzmpAB1PPhMb4AP2OpST8/oVzb/8SiFyzrVy2Q\nd6mupmi5wgR2PeuxOcLVEXoOF+0FJ5JvbHUWGDUy1B0rffofOlHHwKjralW07Lqs\nPn8JcBzsQ9GcrVSPJwUHcQbVessl2kQWsUPGnLscS8B6qw2D22yNNzhgyT0rmWoT\niyaKUDGRT8uV34b5j0xUsZ/gTR1zZP0k7SbiBH9u3p5fU5Ocwuv+82Po6YnJps9g\nQWb4V47Bq3ElZV9fk+LQ\n=hfA2\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 23463b72935fddde53ada22e49c74643190bd55d\nparent abe0ededd8e4cea384ca1bf3530f360a38e5fc50\nauthor renovate[bot] <29139614+renovate[bot]@users.noreply.github.com> 1790393530 +0800\ncommitter GitHub <noreply@github.com> 1790393530 +0800\n\nfix(deps): update dependency com.diffplug.spotless:spotless-plugin-gradle to v8.10.3 (#446)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "verified_at": "2026-09-26T03:32:10Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/3aa62c8282df950d298d23df9c4d25d63041d6d0",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/3aa62c8282df950d298d23df9c4d25d63041d6d0",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/3aa62c8282df950d298d23df9c4d25d63041d6d0/comments",
+      "author": {
+        "login": "renovate[bot]",
+        "id": 29139614,
+        "node_id": "MDM6Qm90MjkxMzk2MTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/renovate%5Bbot%5D",
+        "html_url": "https://github.com/apps/renovate",
+        "followers_url": "https://api.github.com/users/renovate%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/renovate%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/renovate%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/renovate%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/renovate%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/renovate%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/renovate%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/renovate%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/renovate%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/abe0ededd8e4cea384ca1bf3530f360a38e5fc50",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/abe0ededd8e4cea384ca1bf3530f360a38e5fc50"
+        }
+      ]
+    },
+    {
+      "sha": "dfec5b999c70f170521f5d3bb06b761399eb4371",
+      "node_id": "C_kwDOMf535toAKGRmZWM1Yjk5OWM3MGYxNzA1MjFmNWQzYmIwNmI3NjEzOTllYjQzNzE",
+      "commit": {
+        "author": {
+          "name": "renovate[bot]",
+          "email": "29139614+renovate[bot]@users.noreply.github.com",
+          "date": "2026-09-26T03:32:24Z"
+        },
+        "committer": {
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "date": "2026-09-26T03:32:24Z"
+        },
+        "message": "chore(deps): update gradle to v9.8.0 (#445)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+        "tree": {
+          "sha": "7b3dd723af2a6cc006e35049036e46dd29677c9f",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/7b3dd723af2a6cc006e35049036e46dd29677c9f"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/dfec5b999c70f170521f5d3bb06b761399eb4371",
+        "comment_count": 0,
+        "verification": {
+          "verified": true,
+          "reason": "valid",
+          "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqtzzICRC1aQ7uu5UhlAAA3qsQAAgsJJ2NuWc9crpyJp4Y3g4r\nBQzxJPWVECleFgRvoUI+u+MQ7eLEi1cFsy7WeZzwPCJ5+5ItTEx+Nd3shd3vA76D\nQHi31KXj9PnEcGdm+plDQPfSltBPBxOiSdsuXhtU31B+sDDIA3/Px68A+sTnADv2\nmSiTRjPnDwPZjdym9lmRM72A7CDRr3KHdZG6c9L40VULozMa7l+9fvotI0YNUmn2\n+e4nFl8qr8TqyddffeS733WuxUp/c2GBcve4vrLWCbExxzXasanxtwTUXqfC+DIO\nbiG5tgb8uqYfNXu3FjazfyhDHcKfOtYouxT2KaqXN5kedHc1D2Kug4pPp2bPKH6s\ny2momduuSdqPaKO+2DGe7JeBsR7ky4N75KmzKiXFOCufKrnp7XKlT9jyqT/BjV8K\n0temvXqbS6HFmfBZ0WYO4Ct/SdPdZqTg492OA243jZlIgjIYB1Am4DNiRujnxztv\nhnx2e6rylfUK7I7cNFzIZt3YDxF9UMetkF6z2v4QdzFxfTkUv3+JFSL1wVzTCp/x\nBa/q8BDU9+zmJWnutCATY+ZCxpFlkVMYlHikXWQKXIP7O/L7nM72X6WKkATupqmy\niQDNUbayi3udWO0uJTY/cb8/O2QO/uJWiETJD0jI0WiD40PEIou330RKkaPcx7Zc\nCg+CfYctpOnH6scHp3m8\n=DM8l\n-----END PGP SIGNATURE-----\n",
+          "payload": "tree 7b3dd723af2a6cc006e35049036e46dd29677c9f\nparent 3aa62c8282df950d298d23df9c4d25d63041d6d0\nauthor renovate[bot] <29139614+renovate[bot]@users.noreply.github.com> 1790393544 +0800\ncommitter GitHub <noreply@github.com> 1790393544 +0800\n\nchore(deps): update gradle to v9.8.0 (#445)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "verified_at": "2026-09-26T03:32:25Z"
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/dfec5b999c70f170521f5d3bb06b761399eb4371",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/dfec5b999c70f170521f5d3bb06b761399eb4371",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/dfec5b999c70f170521f5d3bb06b761399eb4371/comments",
+      "author": {
+        "login": "renovate[bot]",
+        "id": 29139614,
+        "node_id": "MDM6Qm90MjkxMzk2MTQ=",
+        "avatar_url": "https://avatars.githubusercontent.com/in/2740?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/renovate%5Bbot%5D",
+        "html_url": "https://github.com/apps/renovate",
+        "followers_url": "https://api.github.com/users/renovate%5Bbot%5D/followers",
+        "following_url": "https://api.github.com/users/renovate%5Bbot%5D/following{/other_user}",
+        "gists_url": "https://api.github.com/users/renovate%5Bbot%5D/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/renovate%5Bbot%5D/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/renovate%5Bbot%5D/subscriptions",
+        "organizations_url": "https://api.github.com/users/renovate%5Bbot%5D/orgs",
+        "repos_url": "https://api.github.com/users/renovate%5Bbot%5D/repos",
+        "events_url": "https://api.github.com/users/renovate%5Bbot%5D/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/renovate%5Bbot%5D/received_events",
+        "type": "Bot",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "web-flow",
+        "id": 19864447,
+        "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+        "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/web-flow",
+        "html_url": "https://github.com/web-flow",
+        "followers_url": "https://api.github.com/users/web-flow/followers",
+        "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+        "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+        "organizations_url": "https://api.github.com/users/web-flow/orgs",
+        "repos_url": "https://api.github.com/users/web-flow/repos",
+        "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/web-flow/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "3aa62c8282df950d298d23df9c4d25d63041d6d0",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/3aa62c8282df950d298d23df9c4d25d63041d6d0",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/3aa62c8282df950d298d23df9c4d25d63041d6d0"
+        }
+      ]
+    },
+    {
+      "sha": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+      "node_id": "C_kwDOMf535toAKDVjOTFkNWU1Y2UxYTJmYzdlOGJkYzEyNThhODgxYzU1NTEwMmJiY2E",
+      "commit": {
+        "author": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-27T05:28:51Z"
+        },
+        "committer": {
+          "name": "YuKongA",
+          "email": "70465933+YuKongA@users.noreply.github.com",
+          "date": "2026-09-27T05:28:51Z"
+        },
+        "message": "library: optimize progressive blur shader updates",
+        "tree": {
+          "sha": "b1f4021648e8f06f1e26cb06d4750a2ded0f4a45",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/trees/b1f4021648e8f06f1e26cb06d4750a2ded0f4a45"
+        },
+        "url": "https://api.github.com/repos/compose-miuix-ui/miuix/git/commits/5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+        "comment_count": 0,
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      },
+      "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+      "html_url": "https://github.com/compose-miuix-ui/miuix/commit/5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+      "comments_url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca/comments",
+      "author": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "committer": {
+        "login": "YuKongA",
+        "id": 70465933,
+        "node_id": "MDQ6VXNlcjcwNDY1OTMz",
+        "avatar_url": "https://avatars.githubusercontent.com/u/70465933?v=4",
+        "gravatar_id": "",
+        "url": "https://api.github.com/users/YuKongA",
+        "html_url": "https://github.com/YuKongA",
+        "followers_url": "https://api.github.com/users/YuKongA/followers",
+        "following_url": "https://api.github.com/users/YuKongA/following{/other_user}",
+        "gists_url": "https://api.github.com/users/YuKongA/gists{/gist_id}",
+        "starred_url": "https://api.github.com/users/YuKongA/starred{/owner}{/repo}",
+        "subscriptions_url": "https://api.github.com/users/YuKongA/subscriptions",
+        "organizations_url": "https://api.github.com/users/YuKongA/orgs",
+        "repos_url": "https://api.github.com/users/YuKongA/repos",
+        "events_url": "https://api.github.com/users/YuKongA/events{/privacy}",
+        "received_events_url": "https://api.github.com/users/YuKongA/received_events",
+        "type": "User",
+        "user_view_type": "public",
+        "site_admin": false
+      },
+      "parents": [
+        {
+          "sha": "dfec5b999c70f170521f5d3bb06b761399eb4371",
+          "url": "https://api.github.com/repos/compose-miuix-ui/miuix/commits/dfec5b999c70f170521f5d3bb06b761399eb4371",
+          "html_url": "https://github.com/compose-miuix-ui/miuix/commit/dfec5b999c70f170521f5d3bb06b761399eb4371"
+        }
+      ]
+    }
+  ]
+}

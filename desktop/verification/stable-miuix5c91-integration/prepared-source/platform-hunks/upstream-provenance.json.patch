@@ -1,0 +1,141 @@
+--- desktop/third-party/miuix5157/upstream-provenance.json
++++ desktop/third-party/miuix5157/upstream-provenance.json
+@@ -1,7 +1,7 @@
+ {
+   "repository": "https://github.com/compose-miuix-ui/miuix",
+-  "commit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+-  "archiveSha256": "e6b9f53eff9cfce98580d70a1a8e2ba447038af5f46e8392c96ec843ce0b9e6b",
++  "commit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
++  "archiveSha256": "fe87684eed8a9aac494b5405d00b01121273d83462772b56cb055dbb785269dc",
+   "license": "Apache-2.0",
+   "files": [
+     {
+@@ -11,7 +11,7 @@
+     },
+     {
+       "path": "gradle/libs.versions.toml",
+-      "sha256": "dd185641299d835ae88f2a803dd03b1bb834d2022dc5ed1c4cc85e88e7aa01fd",
++      "sha256": "7dc37306989d0cec42366adfb753747b07b9dc14cc223bd65f1d6b833962333a",
+       "storagePath": "gradle/libs.versions.toml"
+     },
+     {
+@@ -56,7 +56,7 @@
+     },
+     {
+       "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/DrawBackdropModifier.kt",
+-      "sha256": "d24e406b9f50b2e58750d8be9079520f02be16218a916742a7a21cde462e5134",
++      "sha256": "2c41ccb6017b89a8a5ea65cc9d1f47e97445e98b9a82644d76a6b7b4d7f26538",
+       "storagePath": "miuix-blur/src/commonMain/kotlin/blur/DrawBackdropModifier.kt"
+     },
+     {
+@@ -111,7 +111,7 @@
+     },
+     {
+       "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/BlurEffect.kt",
+-      "sha256": "d61cae3136f9c4857301a50c0e0939c370bce2931bf7c5ccb85d78008ea9e17e",
++      "sha256": "1294cbccb4c93be5f296077f0b3b402e9940025d423dceb43d9b85aa2174d520",
+       "storagePath": "miuix-blur/src/commonMain/kotlin/blur/internal/BlurEffect.kt"
+     },
+     {
+@@ -131,7 +131,7 @@
+     },
+     {
+       "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+-      "sha256": "2703d5a86bbac35797c87fc6131c92be2d126fe77bf0d99fae34e84984c5ecda",
++      "sha256": "f787566fb38ddd47676de91cef1016f3b8cc9b8cdadec0ed6fea8b8a0a7a7f08",
+       "storagePath": "miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt"
+     },
+     {
+@@ -441,7 +441,7 @@
+     },
+     {
+       "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/BreadcrumbBar.kt",
+-      "sha256": "0199c0b077917f472ff88595e6909198f6298b24cdd1a9a96b14b395c9340fe2",
++      "sha256": "85c5a7d4fa6b6bd5ab84f8bae79862cfadf65b666fb03b63cdc61f9b6b42df9c",
+       "storagePath": "miuix-ui/src/commonMain/kotlin/basic/BreadcrumbBar.kt"
+     },
+     {
+@@ -516,7 +516,7 @@
+     },
+     {
+       "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/NavigationRail.kt",
+-      "sha256": "a99f15bbe3d9d1474f958150fd031cf7f7292299632aa63d847a33bf52eb55ec",
++      "sha256": "231daca7b4ba8352092a23cae6376eddbb73e97938dd9117c08c8e691d7f8e7f",
+       "storagePath": "miuix-ui/src/commonMain/kotlin/basic/NavigationRail.kt"
+     },
+     {
+@@ -581,7 +581,7 @@
+     },
+     {
+       "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/basic/TabRow.kt",
+-      "sha256": "4a7384b04a7de994a9d026e0b9186144329018a4c8a98f881ed919fe5feadd49",
++      "sha256": "79cf8ed2726d87bb56d1bda888f9ef28922f964b01414ddffd4cd96c3b256ce8",
+       "storagePath": "miuix-ui/src/commonMain/kotlin/basic/TabRow.kt"
+     },
+     {
+@@ -781,12 +781,12 @@
+     },
+     {
+       "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/Overscroll.kt",
+-      "sha256": "bb935a0b5999576ef2d20c446bfe3bb53204240b03aafbf86dd59a500c12e38b",
++      "sha256": "28b9a1acbd380ab015a29eeafc10dea1bba28e93be476272ac9b6dd7b8b040bb",
+       "storagePath": "miuix-ui/src/commonMain/kotlin/utils/Overscroll.kt"
+     },
+     {
+       "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/OverscrollFactory.kt",
+-      "sha256": "05a0416997c5475a785339bcb294a2c8bde6c8d4524d81f779cca3bcb961a5ee",
++      "sha256": "70e54e7a53590b3dfe2ccece71a9fb8db618f844937c5c2bd8376475dcd0b3d4",
+       "storagePath": "miuix-ui/src/commonMain/kotlin/utils/OverscrollFactory.kt"
+     },
+     {
+@@ -938,9 +938,49 @@
+       "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/TopDownloads.kt",
+       "sha256": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce",
+       "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt"
++    },
++    {
++      "path": "miuix-ui/src/androidMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.android.kt",
++      "storagePath": "miuix-ui/src/androidMain/kotlin/utils/PagerNonTouchScroll.android.kt",
++      "sha256": "ad356b070c54eaa73fc63cfc719e6d0f5028db48c3aebcda5c81cfda4dc9d5ac"
++    },
++    {
++      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerGestureUtils.kt",
++      "storagePath": "miuix-ui/src/commonMain/kotlin/utils/PagerGestureUtils.kt",
++      "sha256": "fc495ea5e998a3bcc4ab05bd48dc80d02affc9412bc617239823f96df07f7e5d"
++    },
++    {
++      "path": "miuix-ui/src/commonMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.kt",
++      "storagePath": "miuix-ui/src/commonMain/kotlin/utils/PagerNonTouchScroll.kt",
++      "sha256": "0f9040ea246b8e554e29c6108aa80553cd6a2d38798a9fe11bd706933977d0bb"
++    },
++    {
++      "path": "miuix-ui/src/desktopMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.desktop.kt",
++      "storagePath": "miuix-ui/src/desktopMain/kotlin/utils/PagerNonTouchScroll.desktop.kt",
++      "sha256": "8b50960163b2b8595267f87fdad6edb5038d85f769d28bcb7bf2fc4de53afd6f"
++    },
++    {
++      "path": "miuix-ui/src/iosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.ios.kt",
++      "storagePath": "miuix-ui/src/iosMain/kotlin/utils/PagerNonTouchScroll.ios.kt",
++      "sha256": "c4e2405287f3050722a56c517ab597408378f5ed811f906e84273a132df6b920"
++    },
++    {
++      "path": "miuix-ui/src/macosMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.macos.kt",
++      "storagePath": "miuix-ui/src/macosMain/kotlin/utils/PagerNonTouchScroll.macos.kt",
++      "sha256": "d78b7b1fd8e41a07c6e714807a3ee606834228de0bba749d9e13087a1c0d3aa2"
++    },
++    {
++      "path": "miuix-ui/src/webMain/kotlin/top/yukonga/miuix/kmp/utils/PagerNonTouchScroll.web.kt",
++      "storagePath": "miuix-ui/src/webMain/kotlin/utils/PagerNonTouchScroll.web.kt",
++      "sha256": "d6e6a3f08d43be3079684267490b03b4f2551875e6ac148df83b36ac5c925f9e"
++    },
++    {
++      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Messages.kt",
++      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Messages.kt",
++      "sha256": "f911c8200fd37077d1e986f52be9693fa90588e39f06cb86be35c5440856f1c0"
+     }
+   ],
+-  "buildAdapter": "The six original common/Skiko/Desktop source sets are bundled into one JVM module. Android, browser and native target variants are excluded. Kotlin/Compose compiler2.4.0 and CMP1.12.1 are Windows platform build inputs; no library function bodies are changed.",
++  "buildAdapter": "The existing seven original modules (core/shader/squircle/ui/preference/blur/selected-icons) common/Skiko/Desktop source sets remain in ONE JVM fork. Original function bodies are unchanged. Original Android/iOS/macOS/web variants are retained as reference source but excluded from this Windows build. Original miuix-nav is audited from the complete archive but not compiled by this existing fork. Kotlin/Compose compiler2.4.0 and CMP1.12.1 remain existing Windows platform build inputs; original SDF JVM constant chunking retained.",
+   "compiledSourceSets": [
+     "commonMain",
+     "skikoMain",

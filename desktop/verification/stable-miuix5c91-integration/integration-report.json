@@ -1,0 +1,38 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalAppPinnedMiuixCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "soleProject": ":miuix5157",
+  "canonicalSourceFiles": 195,
+  "compiledOriginalSourceFiles": 165,
+  "librarySha256Bytes": "e574a17de8136c12212f41c90ff35ba7b46818eef25e83b7c9f9386015da843e",
+  "wholeClassesPhase": 30,
+  "wholeClassesPassed": true,
+  "oldRailPlatformSubstitutionRetired": true,
+  "fullOriginalNavigationFacadeBodyByteIdentical": true,
+  "generatedProvenanceHeaderLines": 2,
+  "dockAssertions": 120,
+  "dockPointerPairs": 38,
+  "settingsAssertions": 32,
+  "settingsPointerPairs": 58,
+  "settingsEditableTextActions": 6,
+  "productionClassOverrides": 0,
+  "newParallelForkOrExternalLibraryJar": false,
+  "all92RuntimeEntriesPinned": true,
+  "fullOriginalMiuixNavModuleCompiled": false,
+  "fullRootNavigationMounted": false,
+  "systemWindowOrAccountOrSocketAccepted": false,
+  "desktopExeReplaced": false,
+  "excludedTaskBinaries": [
+    {
+      "relativePath": "runs/01-actual30/settings-main26-ui-fixture.jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-danmaku-settings-main30-ui-proof\\runs\\01-actual30\\settings-main26-ui-fixture.jar",
+      "sha256Bytes": "c5549bf818b8de3b1436c8beef2557144c1685915c8bd064660e334d4e14801a",
+      "bytes": 65958
+    }
+  ],
+  "pending": [
+    "same-source-project original Nav module closure",
+    "Actual Home/native Root integration and EXE delivery"
+  ]
+}

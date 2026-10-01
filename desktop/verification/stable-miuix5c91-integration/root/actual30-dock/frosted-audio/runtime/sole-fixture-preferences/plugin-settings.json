@@ -1,0 +1,10 @@
+{
+    "settings": {
+        "bottom_bar_search_layout_mode": 1,
+        "bottom_bar_search_auto_expand_mode": 2,
+        "liquid_glass_mode": 2,
+        "liquid_glass_strength": 0.5,
+        "liquid_glass_material_progress_v2": 0.37,
+        "bottom_bar_label_mode": 0
+    }
+}

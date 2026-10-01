@@ -1,0 +1,104 @@
+{
+  "status": "SOURCE_ONLY_PASS",
+  "officialRepository": "https://github.com/compose-miuix-ui/miuix",
+  "officialCommitUrl": "https://github.com/compose-miuix-ui/miuix/commit/5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "officialCompareUrl": "https://github.com/compose-miuix-ui/miuix/compare/5157b503e86e2bfc2db61db00fff5df41326394a...5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "officialPackageUrl": "https://github.com/compose-miuix-ui/miuix/packages/2942791",
+  "oldCommit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+  "targetCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+  "oldArchiveSha256Bytes": "e6b9f53eff9cfce98580d70a1a8e2ba447038af5f46e8392c96ec843ce0b9e6b",
+  "targetArchiveSha256Bytes": "fe87684eed8a9aac494b5405d00b01121273d83462772b56cb055dbb785269dc",
+  "officialCommitMetadataSha256Bytes": "bb88d07ebee9b6a342e94348f0578f8cc62434d6ef6ab4ae11873d67e3072402",
+  "officialCompareMetadataSha256Bytes": "55d57d4e486e9f35af01dfcc26f95eeae68d5e752ae029bd58f6ea6b397262c2",
+  "aheadCommitCount": 14,
+  "completeOriginalArchiveFilesOld": 777,
+  "completeOriginalArchiveFilesTarget": 787,
+  "modifiedFiles": 29,
+  "addedFiles": 10,
+  "deletedFiles": 0,
+  "compiledExistingChanges": 8,
+  "compiledNewClosure": 3,
+  "originalAppDependencyAnchors": [
+    {
+      "path": "gradle/libs.versions.toml",
+      "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "bf156ab614b5b27aa15a5318c871529aad92f74d9d92a35131d60f4ab9e3ac67",
+      "lines": [
+        {
+          "line": 14,
+          "text": "miuix = \"0.9.4-5c91d5e5-SNAPSHOT\""
+        },
+        {
+          "line": 33,
+          "text": "miuix-ui = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-ui-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 34,
+          "text": "miuix-preference = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-preference-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 35,
+          "text": "miuix-blur = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-blur-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 36,
+          "text": "miuix-shader = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-shader-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 37,
+          "text": "miuix-squircle = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-squircle-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 38,
+          "text": "miuix-icons = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-icons-android\", version.ref = \"miuix\" }"
+        },
+        {
+          "line": 39,
+          "text": "miuix-navigation = { group = \"top.yukonga.miuix.kmp\", name = \"miuix-nav-android\", version.ref = \"miuix\" }"
+        }
+      ]
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "stableCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "44a86d765faaf08b2af1cc75cf4561a6364d7cee4a557888113478a5cc73aeef",
+      "lines": [
+        {
+          "line": 390,
+          "text": "    implementation(libs.miuix.ui)"
+        },
+        {
+          "line": 391,
+          "text": "    implementation(libs.miuix.preference)"
+        },
+        {
+          "line": 392,
+          "text": "    implementation(libs.miuix.blur)"
+        },
+        {
+          "line": 393,
+          "text": "    implementation(libs.miuix.shader)"
+        },
+        {
+          "line": 394,
+          "text": "    implementation(libs.miuix.squircle)"
+        },
+        {
+          "line": 395,
+          "text": "    implementation(libs.miuix.icons)"
+        },
+        {
+          "line": 396,
+          "text": "    implementation(libs.miuix.navigation)"
+        }
+      ]
+    }
+  ],
+  "candidateSelectedFiles": 195,
+  "candidateCompiledSources": 165,
+  "candidateSourceVerifierPass": true,
+  "compiledOrExecutedCandidate": false,
+  "liveForkEdited": false,
+  "sharedGradleInvoked": false,
+  "newJarIntroduced": false
+}

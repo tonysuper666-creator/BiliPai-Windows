@@ -1,0 +1,1248 @@
+{
+  "status": "PASS",
+  "cells": 2,
+  "assertions": 32,
+  "pointerPairs": 58,
+  "actualEditableTextActions": 6,
+  "productionClassOverrides": 0,
+  "loadedClassBytePinsPerCell": 11,
+  "results": [
+    {
+      "status": "PASS",
+      "style": "MATERIAL3",
+      "viewportWidth": 1100,
+      "viewportHeight": 900,
+      "fixtureLoggedIn": false,
+      "assertions": 16,
+      "checks": [
+        "actual SettingsHost/Root/list Host classes load without JVM sentinel error",
+        "guest/login fixture controls actual cloud section visibility",
+        "original shared font key affects both presentation scopes",
+        "portrait switch does not overwrite landscape scoped key",
+        "same preferences owner retains independent scoped opacity",
+        "original advanced switch remains scoped",
+        "actual field contains 原关键词",
+        "landscape rule save does not create a second list or overwrite portrait",
+        "actual field contains 取消编辑词",
+        "original manager cancel discards local edited draft",
+        "actual field contains 修改关键词",
+        "memory chooser cancellation opens no stream and keeps manager",
+        "required suspend file input consumed exactly one declared memory stream",
+        "full import partitions keyword/regex/hash without losing existing rule",
+        "one actual close callback",
+        "no external network/process/native chooser/account access"
+      ],
+      "pointerPairs": 29,
+      "scrollEvents": 51,
+      "actualEditableTextActions": 3,
+      "memoryOnlyChooserCalls": 2,
+      "memoryOnlyRuleInputCalls": 1,
+      "cloudRuleGetCalls": 4,
+      "memoryOnlyConfigSyncCalls": 0,
+      "productionClassOverrides": 0,
+      "actualCodeSources": [
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuSettingsHostKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "d27211f39dabdf4b67b925a285d772fae786c14ed507d9fb73ca4e694cd7c7b8"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuRootKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "4823ae9c2ff21ff53b1b943968267a771ce6db225f23f936885aff55b3d7c04b"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuHostKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "276723bb3f099ea0a9a01a6b942ddf35248bd6b5b5b29d9de5b35896f3d5f1ed"
+        },
+        {
+          "class": "com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanelKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "50882626ff50f95983e03831141473aa0c9704575ad431519904d289d26a222e"
+        },
+        {
+          "class": "com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "727cc6eb00f49ea8cdd9d46df991d921ab53a0c6513ec4a78536a090cdb72d9f"
+        },
+        {
+          "class": "com.bilipai.desktop.settings.DesktopDanmakuBlockPreferences",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "21724474ec61e7c3da7e7decb613ef8712883b644a4a688f6d06ae27c55aca1c"
+        },
+        {
+          "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuCloudSyncBindingKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "faa386d567356810e797dccad7a96b5ff51b9c35ab39d3475e985f09429f1078"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopDanmakuSettingsPlatformKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "aea12e47d6faea5bae6e4973659a0d191e2bfd6ea3cb1148dd3dc15c25274ce0"
+        },
+        {
+          "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+        },
+        {
+          "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+        }
+      ],
+      "RootOwnerAccountHWNDIntegrated": false,
+      "inputChooserMode": "explicit-memory-only",
+      "events": [
+        {
+          "kind": "actual-slider-drag",
+          "target": "font",
+          "startX": 464.94116,
+          "endX": 819.92,
+          "y": 412.0
+        },
+        {
+          "kind": "actual-slider-drag",
+          "target": "portrait opacity",
+          "startX": 825.4286,
+          "endX": 337.92,
+          "y": 497.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "switch:滚动弹幕",
+          "x": 1010.0,
+          "y": 725.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "高级",
+          "x": 880.0,
+          "y": 256.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "switch:固定滚动速度",
+          "x": 1028.0,
+          "y": 627.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽",
+          "x": 1007.0,
+          "y": 256.5
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 742.0,
+          "y": 694.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 415.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "原关键词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1030.0,
+          "y": 483.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1030.0,
+          "y": 630.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 742.0,
+          "y": 694.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "删除",
+          "x": 1015.0,
+          "y": 550.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 415.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "取消编辑词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1030.0,
+          "y": 483.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "取消",
+          "x": 963.0,
+          "y": 630.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 742.0,
+          "y": 694.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "删除",
+          "x": 1015.0,
+          "y": 550.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 415.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "修改关键词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1030.0,
+          "y": 483.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1030.0,
+          "y": 630.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 742.0,
+          "y": 694.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "导入文件",
+          "x": 92.0,
+          "y": 470.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "导入文件",
+          "x": 92.0,
+          "y": 470.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "合并导入",
+          "x": 622.0,
+          "y": 497.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "正则 1",
+          "x": 139.5,
+          "y": 311.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "UID(hash) 1",
+          "x": 211.5,
+          "y": 336.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1030.0,
+          "y": 630.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "基础",
+          "x": 753.0,
+          "y": 256.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "original panel close",
+          "x": 1054.0,
+          "y": 206.0
+        }
+      ],
+      "globalSettings": {
+        "danmaku_enabled": true,
+        "danmaku_opacity": 0.85,
+        "danmaku_font_scale": 1.0,
+        "danmaku_speed": 1.0,
+        "danmaku_area": 0.5,
+        "danmaku_font_weight": 5,
+        "danmaku_stroke_width": 1.5,
+        "danmaku_line_height": 1.6,
+        "danmaku_scroll_duration_seconds": 7.0,
+        "danmaku_static_duration_seconds": 4.0,
+        "danmaku_allow_scroll": true,
+        "danmaku_allow_top": true,
+        "danmaku_allow_bottom": true,
+        "danmaku_allow_colorful": true,
+        "danmaku_allow_special": true,
+        "danmaku_merge_duplicates": true,
+        "danmaku_duplicate_merge_window_ms": 500,
+        "danmaku_duplicate_merge_count_threshold": 2,
+        "danmaku_block_attention_commands": false,
+        "danmaku_block_rules": "",
+        "danmaku_defaults_version": 5,
+        "danmaku_cloud_sync_enabled": true,
+        "danmaku_landscape_font_scale": 1.6238135,
+        "danmaku_portrait_opacity": 0.49672675,
+        "danmaku_portrait_allow_scroll": false,
+        "danmaku_landscape_scroll_fixed_velocity": true,
+        "danmaku_landscape_block_rules": "修改关键词\n导入关键词\nregex:导入.*\nuid:abcdef"
+      }
+    },
+    {
+      "status": "PASS",
+      "style": "MIUIX",
+      "viewportWidth": 1100,
+      "viewportHeight": 900,
+      "fixtureLoggedIn": true,
+      "assertions": 16,
+      "checks": [
+        "actual SettingsHost/Root/list Host classes load without JVM sentinel error",
+        "guest/login fixture controls actual cloud section visibility",
+        "original shared font key affects both presentation scopes",
+        "portrait switch does not overwrite landscape scoped key",
+        "same preferences owner retains independent scoped opacity",
+        "original advanced switch remains scoped",
+        "actual field contains 原关键词",
+        "landscape rule save does not create a second list or overwrite portrait",
+        "actual field contains 取消编辑词",
+        "original manager cancel discards local edited draft",
+        "actual field contains 修改关键词",
+        "memory chooser cancellation opens no stream and keeps manager",
+        "required suspend file input consumed exactly one declared memory stream",
+        "full import partitions keyword/regex/hash without losing existing rule",
+        "one actual close callback",
+        "no external network/process/native chooser/account access"
+      ],
+      "pointerPairs": 29,
+      "scrollEvents": 51,
+      "actualEditableTextActions": 3,
+      "memoryOnlyChooserCalls": 2,
+      "memoryOnlyRuleInputCalls": 1,
+      "cloudRuleGetCalls": 4,
+      "memoryOnlyConfigSyncCalls": 2,
+      "productionClassOverrides": 0,
+      "actualCodeSources": [
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuSettingsHostKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "d27211f39dabdf4b67b925a285d772fae786c14ed507d9fb73ca4e694cd7c7b8"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuRootKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "4823ae9c2ff21ff53b1b943968267a771ce6db225f23f936885aff55b3d7c04b"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuHostKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "276723bb3f099ea0a9a01a6b942ddf35248bd6b5b5b29d9de5b35896f3d5f1ed"
+        },
+        {
+          "class": "com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanelKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "50882626ff50f95983e03831141473aa0c9704575ad431519904d289d26a222e"
+        },
+        {
+          "class": "com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "727cc6eb00f49ea8cdd9d46df991d921ab53a0c6513ec4a78536a090cdb72d9f"
+        },
+        {
+          "class": "com.bilipai.desktop.settings.DesktopDanmakuBlockPreferences",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "21724474ec61e7c3da7e7decb613ef8712883b644a4a688f6d06ae27c55aca1c"
+        },
+        {
+          "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopOriginalDanmakuCloudSyncBindingKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "faa386d567356810e797dccad7a96b5ff51b9c35ab39d3475e985f09429f1078"
+        },
+        {
+          "class": "com.bilipai.desktop.ui.DesktopDanmakuSettingsPlatformKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "aea12e47d6faea5bae6e4973659a0d191e2bfd6ea3cb1148dd3dc15c25274ce0"
+        },
+        {
+          "class": "com.bilipai.desktop.appearance.DesktopAppearanceThemeKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "4492666cc089c6b2a0dd46b2b7146420cf766f3bc11a207fbe3d2df426f84a27"
+        },
+        {
+          "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+          "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-30/main-kotlin.jar",
+          "classSha256Bytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+        }
+      ],
+      "RootOwnerAccountHWNDIntegrated": false,
+      "inputChooserMode": "explicit-memory-only",
+      "events": [
+        {
+          "kind": "actual-slider-drag",
+          "target": "font",
+          "startX": 466.70587,
+          "endX": 814.31995,
+          "y": 606.0
+        },
+        {
+          "kind": "actual-slider-drag",
+          "target": "portrait opacity",
+          "startX": 819.71436,
+          "endX": 342.32,
+          "y": 691.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 550.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "switch:滚动弹幕",
+          "x": 1011.5,
+          "y": 723.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "高级",
+          "x": 880.0,
+          "y": 272.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "switch:固定滚动速度",
+          "x": 1029.5,
+          "y": 662.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽",
+          "x": 1009.0,
+          "y": 272.5
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": 2.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 744.0,
+          "y": 709.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 412.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "原关键词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1027.0,
+          "y": 479.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1027.0,
+          "y": 627.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 744.0,
+          "y": 709.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "删除",
+          "x": 1011.0,
+          "y": 546.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 412.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "取消编辑词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1027.0,
+          "y": 479.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "取消",
+          "x": 953.0,
+          "y": 627.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 744.0,
+          "y": 709.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "删除",
+          "x": 1011.0,
+          "y": 546.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "actual manager field",
+          "x": 550.0,
+          "y": 412.0
+        },
+        {
+          "kind": "actual-editable-text",
+          "value": "修改关键词"
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "添加",
+          "x": 1027.0,
+          "y": 479.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1027.0,
+          "y": 627.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "屏蔽管理",
+          "x": 744.0,
+          "y": 709.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "导入文件",
+          "x": 90.0,
+          "y": 465.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "导入文件",
+          "x": 90.0,
+          "y": 465.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "合并导入",
+          "x": 668.0,
+          "y": 481.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "正则 1",
+          "x": 551.0,
+          "y": 308.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "UID(hash) 1",
+          "x": 893.5,
+          "y": 333.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "保存",
+          "x": 1027.0,
+          "y": 627.5
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "scroll",
+          "delta": -10.0,
+          "x": 880.0,
+          "y": 450.0
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "基础",
+          "x": 751.0,
+          "y": 272.5
+        },
+        {
+          "kind": "pointer-pair",
+          "target": "original panel close",
+          "x": 1046.0,
+          "y": 214.0
+        }
+      ],
+      "globalSettings": {
+        "danmaku_enabled": true,
+        "danmaku_opacity": 0.85,
+        "danmaku_font_scale": 1.0,
+        "danmaku_speed": 1.0,
+        "danmaku_area": 0.5,
+        "danmaku_font_weight": 5,
+        "danmaku_stroke_width": 1.5,
+        "danmaku_line_height": 1.6,
+        "danmaku_scroll_duration_seconds": 7.0,
+        "danmaku_static_duration_seconds": 4.0,
+        "danmaku_allow_scroll": true,
+        "danmaku_allow_top": true,
+        "danmaku_allow_bottom": true,
+        "danmaku_allow_colorful": true,
+        "danmaku_allow_special": true,
+        "danmaku_merge_duplicates": true,
+        "danmaku_duplicate_merge_window_ms": 500,
+        "danmaku_duplicate_merge_count_threshold": 2,
+        "danmaku_block_attention_commands": false,
+        "danmaku_block_rules": "",
+        "danmaku_defaults_version": 5,
+        "danmaku_cloud_sync_enabled": true,
+        "danmaku_landscape_font_scale": 1.6259999,
+        "danmaku_portrait_opacity": 0.49600002,
+        "danmaku_portrait_allow_scroll": false,
+        "danmaku_landscape_scroll_fixed_velocity": true,
+        "danmaku_landscape_block_rules": "修改关键词\n导入关键词\nregex:导入.*\nuid:abcdef"
+      }
+    }
+  ],
+  "scope": "Actual installed Main30 complete original Danmaku Settings Host/Panel and BlockManager, same actual global Store/scoped preference implementation, offscreen pointer/scroll/edit. Fixture supplies presentation/account state and declared memory-only cloud/file chooser ports; no Root/account/HWND/Android engine parity claim."
+}

@@ -1,0 +1,87 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+> Task :extractBgmDetail UP-TO-DATE
+> Task :extractCommentFraudProtocol UP-TO-DATE
+> Task :extractFrostedAudioRenderer UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 93}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractOriginalDanmakuListMenu UP-TO-DATE
+> Task :extractOriginalDanmakuSettings UP-TO-DATE
+> Task :extractOriginalFavoriteFolder UP-TO-DATE
+> Task :extractOriginalFavorites UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSharedLiquidTabs UP-TO-DATE
+> Task :extractStableCollectionSheet UP-TO-DATE
+> Task :extractStableVideoMetadata UP-TO-DATE
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicDetailContainer UP-TO-DATE
+> Task :extractUpstreamDynamicDetailProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicEditor UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractUpstreamDynamicReply UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+
+> Task :extractUpstreamPreferences FAILED
+Traceback (most recent call last):
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\tools\extract-upstream-preferences.py", line 82, in <module>
+    if args.output: print("Generated", len(generate(args.repo.resolve(), args.output.resolve(), args.standalone)), "original preference/navigation files")
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\tools\extract-upstream-preferences.py", line 62, in generate
+    result.append(host.write(output, path, original, adapt(path, original, host)))
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\tools\extract-upstream-preferences.py", line 50, in adapt
+    else: raise ValueError("No platform binding for " + path)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: No platform binding for design-system/src/main/java/com/android/purebilibili/core/ui/components/AppNavigationComponents.kt
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':extractUpstreamPreferences' (registered in build file 'build.gradle.kts').
+> Process 'command 'C:/Users/TONYS/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s
+55 actionable tasks: 2 executed, 53 up-to-date

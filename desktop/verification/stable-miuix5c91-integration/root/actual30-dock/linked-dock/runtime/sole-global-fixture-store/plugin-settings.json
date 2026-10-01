@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "bottom_bar_label_mode": 2,
+        "bottom_bar_search_enabled": true,
+        "linked_dock_merge_on_scroll_enabled": true,
+        "list_scoped_search_enabled": true
+    }
+}

@@ -1,0 +1,5 @@
+# Original v0.2.3 Miuix source upgrade
+
+The app pins Miuix5c91. Upgrade the existing sole :miuix5157 source project to that exact commit: 195 canonical original files /165 compiled Kotlin source files, unchanged existing module wiring and binary dependency graph. Retire only the old5157 expanded=false -> state=null compatibility substitution. The generated v0.2.3 navigation facade now matches original source byte-for-byte. Keep both failed28 and29 build attempts; final whole classes30 passes.
+
+Fresh actual30 immutable product/dependency graph passes the original full Dock/Frosted/audio fixtures (120 assertions, 38 pointer pairs) and the byte-identical full Settings fixture in two styles (32 assertions, 58 pointer pairs, six text edits). Zero production class overrides; all92 runtime entries pinned before and after. These are isolated real Compose scenes with declared fixture ports, not full account/window/native playback or deployed EXE acceptance. Original Nav module is the next same-project closure; it is not compiled by this slice. Historical5157, actual26/27 and prepared451 records remain unchanged.

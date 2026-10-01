@@ -1,0 +1,490 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared-source/frozen-handoff.json",
+      "sha256Bytes": "023eccf2d42011cd34357017e5a84b812fadf6c1e44be58c4b0b6b13f4ef6c30",
+      "sizeBytes": 106279
+    },
+    {
+      "path": "prepared-source/audit-result.json",
+      "sha256Bytes": "deada078750b1825d404e348dc8060d80f4f1bf7e646968bb2d6fb0ae427b48c",
+      "sizeBytes": 3999
+    },
+    {
+      "path": "prepared-source/install-contract.json",
+      "sha256Bytes": "f3b9f3d49c868bd2e04b380298137e8bdd08328ea5814f842551c88b6f02381d",
+      "sizeBytes": 2065
+    },
+    {
+      "path": "prepared-source/actual-fork-source-pins.json",
+      "sha256Bytes": "18605685e4e74d447a0d98955a99394f622d66b1e941b769fa6c5ab9f469d71b",
+      "sizeBytes": 54659
+    },
+    {
+      "path": "prepared-source/api-source-review.json",
+      "sha256Bytes": "d0789a94819cb7cb87a9b37d0274b183f171fd8ac1245fa5dd53fd921ba3b79e",
+      "sizeBytes": 126349
+    },
+    {
+      "path": "prepared-source/full-source-diff.json",
+      "sha256Bytes": "5afd01ec8aac38bc53668d6f3a9735768a4699656f2caf5f6195ec1caf9a03c5",
+      "sizeBytes": 91598
+    },
+    {
+      "path": "prepared-source/official/fetch-receipt.json",
+      "sha256Bytes": "6a746a4e25c4d9a79ef94159bc579e2188d72daac8794f04b18aad90555631b7",
+      "sizeBytes": 7317
+    },
+    {
+      "path": "prepared-source/official/commit-5c91.json",
+      "sha256Bytes": "bb88d07ebee9b6a342e94348f0578f8cc62434d6ef6ab4ae11873d67e3072402",
+      "sizeBytes": 14090
+    },
+    {
+      "path": "prepared-source/original-app-inputs/gradle/libs.versions.toml",
+      "sha256Bytes": "bf156ab614b5b27aa15a5318c871529aad92f74d9d92a35131d60f4ab9e3ac67",
+      "sizeBytes": 2998
+    },
+    {
+      "path": "prepared-source/original-app-inputs/app/build.gradle.kts",
+      "sha256Bytes": "44a86d765faaf08b2af1cc75cf4561a6364d7cee4a557888113478a5cc73aeef",
+      "sizeBytes": 25342
+    },
+    {
+      "path": "prepared-source/platform-hunks/build.gradle.kts.patch",
+      "sha256Bytes": "b2728764dcbd2f2df60f6dba864b85a5c4d1053b1d24f1f35aab63e0887ec8ee",
+      "sizeBytes": 480
+    },
+    {
+      "path": "prepared-source/platform-hunks/dependency-pins.json.patch",
+      "sha256Bytes": "c02f336f704a5f9672c5dec20681fdd878f2380dc1bb816ae3e633f2004c6c18",
+      "sizeBytes": 509
+    },
+    {
+      "path": "prepared-source/platform-hunks/upstream-provenance.json.patch",
+      "sha256Bytes": "d34ee0ed4d6d18b3c07792016d4178d0d7a7a7c493f6bec1065f7a4d314958e8",
+      "sizeBytes": 7507
+    },
+    {
+      "path": "prepared-source/platform-hunks/verify-source.py.patch",
+      "sha256Bytes": "1bbde212402af4368bb742d38d593643a4095bda4db7265979f3ad6704461c13",
+      "sizeBytes": 1153
+    },
+    {
+      "path": "root/install-miuix5c91.py",
+      "sha256Bytes": "3eb7711aebb26b00ab45b5da1bc7b5f1fa5af781ea6bee6e1d209d50e7ec7919",
+      "sizeBytes": 3850
+    },
+    {
+      "path": "root/correct-miuix5c91-rail-adapter.py",
+      "sha256Bytes": "3297b05f9e367aa4230435f57d20a04250eed081b921693df232536927dc5866",
+      "sizeBytes": 1773
+    },
+    {
+      "path": "root/retain-original-rail-facade.py",
+      "sha256Bytes": "82d403caf1666388a6c5eb20aba15f59cb61fcc2d784b89f4ef431e7e3820782",
+      "sizeBytes": 1666
+    },
+    {
+      "path": "root/prepare-miuix-ui-proof-runner.py",
+      "sha256Bytes": "354bae7fd509fd7433486f0d43009f79d63bff73d8ff099f67e01ca790a61892",
+      "sizeBytes": 1293
+    },
+    {
+      "path": "root/prove-miuix5c91-dock-product.py",
+      "sha256Bytes": "d37c6ef6f375c130f16b60b7bdfc763966eebc3e0fdf3a682edf75652a54b77d",
+      "sizeBytes": 6284
+    },
+    {
+      "path": "root/miuix5c91-proof-runner-adaptation.json",
+      "sha256Bytes": "3fa26a3f2da5c4ac3b0f84fb864a2d1b87c42adea35b8d46ad001478167ade97",
+      "sizeBytes": 442
+    },
+    {
+      "path": "root/audit-jvm-method-names.py",
+      "sha256Bytes": "00760966e46042418519b994c9d0f5c7fc8979a714a171fa7d9527ae8b74f3c4",
+      "sizeBytes": 2423
+    },
+    {
+      "path": "root/jvm-method-name-audit-30.json",
+      "sha256Bytes": "ad3f967946325e641537fb365eca406e1ea4858e41443cbc0aef718194c0eee4",
+      "sizeBytes": 239
+    },
+    {
+      "path": "root/install/baseline/build.gradle.kts",
+      "sha256Bytes": "0129c69e7add1f2f7e18442156d9007ba6da60f2e8a26e8003990d022ccb1360",
+      "sizeBytes": 6801
+    },
+    {
+      "path": "root/install/baseline/dependency-pins.json",
+      "sha256Bytes": "72665023cb8c7debbafe1695b662f493fad8d2c69bd2c607a6a4fb052e843408",
+      "sizeBytes": 5555
+    },
+    {
+      "path": "root/install/baseline/upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af",
+      "sizeBytes": 51694
+    },
+    {
+      "path": "root/install/baseline/upstream/gradle/libs.versions.toml",
+      "sha256Bytes": "dd185641299d835ae88f2a803dd03b1bb834d2022dc5ed1c4cc85e88e7aa01fd",
+      "sizeBytes": 4479
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-blur/src/commonMain/kotlin/blur/DrawBackdropModifier.kt",
+      "sha256Bytes": "d24e406b9f50b2e58750d8be9079520f02be16218a916742a7a21cde462e5134",
+      "sizeBytes": 47384
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-blur/src/commonMain/kotlin/blur/internal/BlurEffect.kt",
+      "sha256Bytes": "d61cae3136f9c4857301a50c0e0939c370bce2931bf7c5ccb85d78008ea9e17e",
+      "sizeBytes": 25636
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt",
+      "sha256Bytes": "2703d5a86bbac35797c87fc6131c92be2d126fe77bf0d99fae34e84984c5ecda",
+      "sizeBytes": 49929
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-ui/src/commonMain/kotlin/basic/BreadcrumbBar.kt",
+      "sha256Bytes": "0199c0b077917f472ff88595e6909198f6298b24cdd1a9a96b14b395c9340fe2",
+      "sizeBytes": 13302
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-ui/src/commonMain/kotlin/basic/NavigationRail.kt",
+      "sha256Bytes": "a99f15bbe3d9d1474f958150fd031cf7f7292299632aa63d847a33bf52eb55ec",
+      "sizeBytes": 28910
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-ui/src/commonMain/kotlin/basic/TabRow.kt",
+      "sha256Bytes": "4a7384b04a7de994a9d026e0b9186144329018a4c8a98f881ed919fe5feadd49",
+      "sizeBytes": 22290
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-ui/src/commonMain/kotlin/utils/Overscroll.kt",
+      "sha256Bytes": "bb935a0b5999576ef2d20c446bfe3bb53204240b03aafbf86dd59a500c12e38b",
+      "sizeBytes": 17898
+    },
+    {
+      "path": "root/install/baseline/upstream/miuix-ui/src/commonMain/kotlin/utils/OverscrollFactory.kt",
+      "sha256Bytes": "05a0416997c5475a785339bcb294a2c8bde6c8d4524d81f779cca3bcb961a5ee",
+      "sizeBytes": 16292
+    },
+    {
+      "path": "root/install/baseline/verify-source.py",
+      "sha256Bytes": "169a672d973f73903b9972693e671b9f4382e6f7799b6a7ea5d52ca9f27069c5",
+      "sizeBytes": 1233
+    },
+    {
+      "path": "root/install/dry-run-report.json",
+      "sha256Bytes": "fa86416a8eb62af17a668c9dd2eeab1be03b903c5bd1c92084c8d75c88a81d62",
+      "sizeBytes": 6816
+    },
+    {
+      "path": "root/install/explicit-original-rail-branch.patch",
+      "sha256Bytes": "647508cc9a3dcb38aaf2bf334cc115161aaed965dcad4a80d1cf828291d7cd6f",
+      "sizeBytes": 837
+    },
+    {
+      "path": "root/install/extract-upstream-preferences.py.after",
+      "sha256Bytes": "00fbc7e1a8c2d5247c1c992d94fa73bd754f5684f4ee09b7e8a03347518b3595",
+      "sizeBytes": 5515
+    },
+    {
+      "path": "root/install/extract-upstream-preferences.py.before",
+      "sha256Bytes": "5742a41a68a7401081464e9182809eb86aa265c58fd0334a7b921e02a9cfef54",
+      "sizeBytes": 5920
+    },
+    {
+      "path": "root/install/install-report.json",
+      "sha256Bytes": "dc0881fd719012e2f32ff4b383dee05be4061e20559921984c2292d1142f673f",
+      "sizeBytes": 6815
+    },
+    {
+      "path": "root/install/rail-api-correction.json",
+      "sha256Bytes": "300c2cd1b11f4c2899440d3e49dbf80107b55ed592565ea06267af9cbbf5f413",
+      "sizeBytes": 513
+    },
+    {
+      "path": "root/install/rail-generator-correction.json",
+      "sha256Bytes": "bec0170dac7b08a36c5b1b750259827b0dbb0c8e9cd658cdc981988c03fdba99",
+      "sizeBytes": 437
+    },
+    {
+      "path": "root/install/rail-step2-after.py",
+      "sha256Bytes": "df0baa29e92b978d5f5b360dbbff96d787ace8041e855a9f381530f0fbdb1c22",
+      "sizeBytes": 5758
+    },
+    {
+      "path": "root/install/rail-step2-before.py",
+      "sha256Bytes": "00fbc7e1a8c2d5247c1c992d94fa73bd754f5684f4ee09b7e8a03347518b3595",
+      "sizeBytes": 5515
+    },
+    {
+      "path": "root/install/remove-old-rail-adaptation.patch",
+      "sha256Bytes": "92109769b25cf262afcefb6d84676e98e2942ed6c47a19b6ec5ddfeb3bf01a40",
+      "sizeBytes": 913
+    },
+    {
+      "path": "root/classes-28.log",
+      "sha256Bytes": "3080a623272fb43b4bc835951fc1bce2c9bfe25b134d7e343f00ef7dbc9d8034",
+      "sizeBytes": 8076
+    },
+    {
+      "path": "root/classes-29.log",
+      "sha256Bytes": "d2e3446ca6fedc28292ba5c27cae30d1d18d863f8b206a9d4e797e9d51b40350",
+      "sizeBytes": 4706
+    },
+    {
+      "path": "root/classes-30.log",
+      "sha256Bytes": "6f8d11f5cb7741d2dcc1ca00a71b8d908bf743b2fe66e29276739096ce2aec51",
+      "sizeBytes": 6860
+    },
+    {
+      "path": "root/snapshot30/manifest.json",
+      "sha256Bytes": "e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69",
+      "sizeBytes": 116883
+    },
+    {
+      "path": "root/snapshot30/ordered-runtime-cp.json",
+      "sha256Bytes": "dcab5cb81f9c62929c07966f76fe3bfd54ee0e7b93614296c576b24f218071c0",
+      "sizeBytes": 34652
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/FrostedAudioFixture.kt",
+      "sha256Bytes": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "sizeBytes": 17542
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/accepted.json",
+      "sha256Bytes": "a30668bf2d0c6ad36355c9ea9a26ad9b50ad562741d896ca0355d72cb7cc047b",
+      "sizeBytes": 1489
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/compile.args",
+      "sha256Bytes": "a11ecff9567f5bc5eee9db77eb7c0fd7e4fed94e73c3515aec4d24f3f5e19e46",
+      "sizeBytes": 23442
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/runtime.log",
+      "sha256Bytes": "f7a09f3120fbf21d750126430df3fc23d63031d31e9ced6c6ef228f7d8290331",
+      "sizeBytes": 643
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/runtime/result.json",
+      "sha256Bytes": "a4c0a8a55196815f9f8fe095bf3796d394c3f3ba8e1c9518f362a9e227cd3879",
+      "sizeBytes": 696
+    },
+    {
+      "path": "root/actual30-dock/frosted-audio/runtime/sole-fixture-preferences/plugin-settings.json",
+      "sha256Bytes": "d1ac40ec06adf9d583838200e33d3b46fdff463003c7695a485565e5531f995e",
+      "sizeBytes": 276
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/LinkedDockFixture.kt",
+      "sha256Bytes": "2ee96b0f6b842364c3980fa23569226fa2e417cdd7639eb2a694a1b88d2d47cc",
+      "sizeBytes": 16381
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/accepted.json",
+      "sha256Bytes": "40ac9dcb1f3f81f61233f2cecce5504444ed7541c9489038358640ff136d00da",
+      "sizeBytes": 1472
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/compile.args",
+      "sha256Bytes": "4a8d78d1507d4534b5f5a7434103cf7e7432510af231cdcbe629e6fa0ac56319",
+      "sizeBytes": 23436
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/runtime.log",
+      "sha256Bytes": "2ff7351b720e4e80fe001e7e50583e4c041bd777f05268e50443c1e27551a868",
+      "sizeBytes": 61
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/runtime/result.json",
+      "sha256Bytes": "3eda8751560a563b3ff24ef123d92c1b0246164e98e67f040d1881434353f181",
+      "sizeBytes": 414
+    },
+    {
+      "path": "root/actual30-dock/linked-dock/runtime/sole-global-fixture-store/plugin-settings.json",
+      "sha256Bytes": "244e455c8ea0d691feafecde3a8db21aa00ab726d6dc1049e83d4f34508aac92",
+      "sizeBytes": 202
+    },
+    {
+      "path": "root/actual30-dock/result.json",
+      "sha256Bytes": "78273ee145970a470920a2669b6624099c504f171e1d48f1c070df3849a6db9e",
+      "sizeBytes": 3743
+    },
+    {
+      "path": "actual30-settings/frozen-handoff.json",
+      "sha256Bytes": "0934f5e71009b8879518ac25133cb46d829073b28b82b947d6eaab87870d5ff0",
+      "sizeBytes": 11640
+    },
+    {
+      "path": "actual30-settings/acceptance-receipt.json",
+      "sha256Bytes": "049829948fb63b21534b5101b3c00b8cf2144965c654390abe6efd030e92057d",
+      "sizeBytes": 4129
+    },
+    {
+      "path": "actual30-settings/DanmakuSettingsUiFixture.kt",
+      "sha256Bytes": "d1585ba0dd0478caca02fb09333288bfba26209025a438ee5a6e160bbbe88871",
+      "sizeBytes": 19699
+    },
+    {
+      "path": "actual30-settings/freeze-evidence.py",
+      "sha256Bytes": "ae3ee1582019d7aa739196b49ac219b9f09ed192bf074ed1180841e179de38eb",
+      "sizeBytes": 7185
+    },
+    {
+      "path": "actual30-settings/library-type-supplier-review.json",
+      "sha256Bytes": "f5cb45f2e2bdf8c47626a2aa9e99e38b34cb4e14929d8e823ead83b5418e4476",
+      "sizeBytes": 1178
+    },
+    {
+      "path": "actual30-settings/phase-contract.json",
+      "sha256Bytes": "8ad441b31a35ade13e6c0931e503c1f2447fc7c32dbedaa9b1fa875f9b5d8c8a",
+      "sizeBytes": 1110
+    },
+    {
+      "path": "actual30-settings/run.py",
+      "sha256Bytes": "1244580f67c556c8cf77614f5ef29ab9cf7158fb073b711cdc006b1c28e2d918",
+      "sizeBytes": 5295
+    },
+    {
+      "path": "actual30-settings/runner-snapshot-only.patch",
+      "sha256Bytes": "94b4219e011e4c7c974dab1113651a907006c3a1bc54eecaf282b40d63d4b088",
+      "sizeBytes": 3603
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/accepted-comparison.json",
+      "sha256Bytes": "ca0cf897cfd89be75a8cdd84321b92662191cf2b235f1a175fc352db67bf2aa0",
+      "sizeBytes": 35043
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/compile-result.json",
+      "sha256Bytes": "70e6335310fa130220e59f690b9ea9b54ed6da50aff133ea80fc131a3f340254",
+      "sizeBytes": 1725
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/compiler.args",
+      "sha256Bytes": "dbf144395c89231e8e4df56bdb2eb2b241ece68282e73091e2cd1ea633594cdf",
+      "sizeBytes": 23481
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/actual-global-store/plugin-settings.json",
+      "sha256Bytes": "6c5e1f15ae926fc8b565afb26b9c8bccf01b5e243d752f3c3157fff805a03649",
+      "sizeBytes": 1203
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/java-command.json",
+      "sha256Bytes": "35b83760121fffe663611d5f8cec818d283f888ce54a568f409286108a45cc79",
+      "sizeBytes": 24840
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/result.json",
+      "sha256Bytes": "26c01d0eb707cec3941d5747c78c923b24aa67e1438026fe7f2954aaa3a78d2c",
+      "sizeBytes": 10616
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/runtime.log",
+      "sha256Bytes": "4c5487cb3282002f6eb2d67c141efebe6cef09ccdfaa045230e681dcc5d84cf0",
+      "sizeBytes": 1562
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/stderr.raw",
+      "sha256Bytes": "602e608bef663c8be0525bc9f893a663edd0cd7bc44cea8cf0e478c35b705001",
+      "sizeBytes": 578
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MATERIAL3-900/stdout.raw",
+      "sha256Bytes": "5453a1ea2bb4c8fbd25fc728b389c06b9473aa80733a2cae56ab415a4a270868",
+      "sizeBytes": 984
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/actual-global-store/plugin-settings.json",
+      "sha256Bytes": "a04dcf9b4918f6484e31ae733cb2cb66963804f8dbc9ae1161215e5460f98636",
+      "sizeBytes": 1203
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/java-command.json",
+      "sha256Bytes": "a80562824b8f3c88025b7e1c5f176663cfb19b8df1461c58b8b132e483c8eef7",
+      "sizeBytes": 24832
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/result.json",
+      "sha256Bytes": "d4ec890859d6991dab7fd4476ef01e221592eae420e682830a10ee080e72c09e",
+      "sizeBytes": 10615
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/runtime.log",
+      "sha256Bytes": "4c5487cb3282002f6eb2d67c141efebe6cef09ccdfaa045230e681dcc5d84cf0",
+      "sizeBytes": 1562
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/stderr.raw",
+      "sha256Bytes": "602e608bef663c8be0525bc9f893a663edd0cd7bc44cea8cf0e478c35b705001",
+      "sizeBytes": 578
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/MIUIX-900/stdout.raw",
+      "sha256Bytes": "5453a1ea2bb4c8fbd25fc728b389c06b9473aa80733a2cae56ab415a4a270868",
+      "sizeBytes": 984
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/runtime-pins-after.json",
+      "sha256Bytes": "acc608c3e2eba06ae7e61b54186216656cd1b8f1f9a434ed8bee7bb51b3f18b4",
+      "sizeBytes": 41444
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/runtime-pins-before.json",
+      "sha256Bytes": "acc608c3e2eba06ae7e61b54186216656cd1b8f1f9a434ed8bee7bb51b3f18b4",
+      "sizeBytes": 41444
+    },
+    {
+      "path": "actual30-settings/runs/01-actual30/source-inputs/DanmakuSettingsUiFixture.kt",
+      "sha256Bytes": "d1585ba0dd0478caca02fb09333288bfba26209025a438ee5a6e160bbbe88871",
+      "sizeBytes": 19699
+    },
+    {
+      "path": "root/installed-upstream-provenance.json",
+      "sha256Bytes": "6335d17d09e86ff2e1f8a92f478c3c043ccd330279060fc859e802631d02714a",
+      "sizeBytes": 54245
+    },
+    {
+      "path": "root/installed-preferences-producer.py",
+      "sha256Bytes": "df0baa29e92b978d5f5b360dbbff96d787ace8041e855a9f381530f0fbdb1c22",
+      "sizeBytes": 5758
+    },
+    {
+      "path": "root/original-navigation-facade-byte-identical.kt",
+      "sha256Bytes": "9794572e0a24c0f014f1088e4199a3df6f7e8b1d112c672054238f09bf418877",
+      "sizeBytes": 8593
+    },
+    {
+      "path": "root/freeze-miuix5c91.py",
+      "sha256Bytes": "832bddcb621397d32114e612b12bc127859d6fb3c2545b4ed5a1490569c2338f",
+      "sizeBytes": 7237
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "4a2c42c1e7bb9f0bcac217aef449e514125a3210806af8f1ab7dee073aa15657",
+      "sizeBytes": 1576
+    }
+  ]
+}
