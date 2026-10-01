@@ -1,0 +1,28 @@
+{
+  "scope": "only two NEW source files; no whole existing family/registry/Gradle/native replacement",
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "sha256Bytes": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356",
+      "sha256LF": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356",
+      "action": "NEW manual source only"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "sha256Bytes": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4",
+      "sha256LF": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4",
+      "action": "NEW manual source only"
+    }
+  ],
+  "existingOriginalIdentitiesFeatureUnion": {
+    "feature": "stable-video-root-effects",
+    "identities": [
+      "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+      "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+    ]
+  }
+}

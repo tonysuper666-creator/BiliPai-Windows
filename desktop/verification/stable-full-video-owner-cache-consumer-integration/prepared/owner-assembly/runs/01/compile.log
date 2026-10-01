@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoOwnerAssembly.kt:75:16: error: return type mismatch: expected 'PlaybackSessionState', actual 'ResumePlaybackSuggestion?'.
+        return playback.resumePlaybackSuggestion.value
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

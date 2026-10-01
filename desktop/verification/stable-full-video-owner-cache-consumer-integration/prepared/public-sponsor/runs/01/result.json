@@ -1,0 +1,34 @@
+{
+  "passed": true,
+  "assertions": 26,
+  "actualBase": "snapshot71 101CP",
+  "prospectiveOverrides": "SponsorRepository and frozen120 helper family",
+  "memoryCallDirectGuardFixture": true,
+  "originalRepositoryPublicHttpExecuted": false,
+  "networkNativeAccountsGuiRun": false,
+  "origins": [
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission",
+      "entry": "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-sponsor-public-execution-parity\\compile\\01\\candidate.jar",
+      "classSHA256Bytes": "9159b9c2bc4fb6d28de2fe474b09d69694d1f64dd78f7a71f375c0a50c35a65f"
+    },
+    {
+      "class": "com.android.purebilibili.data.repository.SponsorBlockRepository",
+      "entry": "com/android/purebilibili/data/repository/SponsorBlockRepository.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-sponsor-public-execution-parity\\compile\\01\\candidate.jar",
+      "classSHA256Bytes": "e3b3fde23318af0b48ef8a566d1cf903fad6b3ce6a197130257ac7394c2988e9"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "entry": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "codeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-71\\main-kotlin.jar",
+      "classSHA256Bytes": "7a94181cde639fd7813cba5d361431d192778bcd75eddd18eafca4bba41c1710"
+    }
+  ],
+  "failure": null,
+  "processExitCode": 0,
+  "actual101CPAndCandidatePrePostVerified": true,
+  "loadedOriginsAndBytesVerified": 3,
+  "fixtureClassIntersectionZero": true
+}

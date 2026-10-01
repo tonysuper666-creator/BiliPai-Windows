@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "selectedOriginalMethods": 5,
+  "selectedOriginalHelper": 1,
+  "sourceBodyInverseExact": true,
+  "sourceOutput": "com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+  "sourceOutputSHA256LF": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+  "reverseExistingFamilySHA256Verified": true,
+  "currentLiveAllBeforeAnchorsUnique": true,
+  "watchLaterInternalTopMethodCollisions": [],
+  "proof03LoadedFamiliesByteIdenticalToFinal06": [
+    {
+      "className": "com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView",
+      "sha256Bytes": "3eef1b526508d044a847285c0220c0d7ae553766b7946debc18ccb34e98815b1",
+      "proof03ByteIdenticalToFinal06": true
+    },
+    {
+      "className": "com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks",
+      "sha256Bytes": "20d9cfee4d888af260da277ea6b1d7e0530f06bfeb1c0142da94c4b194494c97",
+      "proof03ByteIdenticalToFinal06": true
+    },
+    {
+      "className": "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding",
+      "sha256Bytes": "41e8c28a6ccf7af6d7ff8123646b8321eefabdec40ccf0d328901355758ec99f",
+      "proof03ByteIdenticalToFinal06": true
+    },
+    {
+      "className": "com/bilipai/desktop/data/DesktopRepository",
+      "sha256Bytes": "aaf50f46f0f346dcfa1f24d4952b19b2f0f45787a151f11b108d8862ed40f533",
+      "proof03ByteIdenticalToFinal06": true
+    },
+    {
+      "className": "com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus",
+      "sha256Bytes": "104d0c61533fbb1ed519bc1dc44da15adc7c5e8f46d420a77480f5ca0416794b",
+      "proof03ByteIdenticalToFinal06": true
+    }
+  ],
+  "compile06Inputs": 8,
+  "compile06Classes": 278,
+  "compile07CacheCompatibility": true,
+  "proof03Groups": 3,
+  "proof03Assertions": 33,
+  "sourceOnly": true,
+  "wholeOwnerConstructed": false,
+  "RootMounted": false,
+  "native": false,
+  "HTTP": false
+}

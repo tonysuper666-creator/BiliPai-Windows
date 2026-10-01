@@ -1,0 +1,11 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt
+@@ -203,7 +203,7 @@
+     val download:DesktopOriginalVideoOwnerDownload,
+     val network:DesktopOriginalVideoOwnerNetwork,
+     val cache:DesktopOriginalVideoOwnerCache,
+-    val cdnRangeCache:DesktopOriginalCdnRangeCache,
++    val cdnRangeCapture:(DesktopOriginalVideoAcceptedPublication)->DesktopOriginalCdnRangeCapture?,
+     val analytics:DesktopOriginalVideoOwnerAnalytics,
+     val crash:DesktopOriginalVideoOwnerCrash,
+     val comments:DesktopOriginalVideoOwnerComments,

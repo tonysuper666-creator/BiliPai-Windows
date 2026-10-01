@@ -1,0 +1,40 @@
+{
+  "phase": 73,
+  "baseCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "preparedRawArtifacts": 34,
+  "preparedManifestSha256Bytes": "068527d481025253f76c4fd2a57b827b7ff34a2f443cddc4b6bf428b706e6cd3",
+  "payloadCount": 0,
+  "existingFamilyCount": 2,
+  "exactHunks": 3,
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "beforeSha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "afterSha256Bytes": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50",
+      "beforeSha256LF": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "afterSha256LF": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50",
+      "hunks": 2,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "beforeSha256Bytes": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "afterSha256Bytes": "f61b4de950b1139fd25370ffa6b3654c17501fee7df23a6c9f79590a05782ce4",
+      "beforeSha256LF": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "afterSha256LF": "f61b4de950b1139fd25370ffa6b3654c17501fee7df23a6c9f79590a05782ce4",
+      "hunks": 1,
+      "exactIndexedInverse": true
+    }
+  ],
+  "sharedWholeFilesReplaced": false,
+  "originalPublicClientPreserved": true,
+  "originalPostJsonProtocolPreserved": true,
+  "sameRuntimeCapturedOperationAndActualCallerJob": true,
+  "finalRequestPermitLinearizesInFlightIo": true,
+  "executeAndBodyReadOutsideRootGates": true,
+  "newIdentityStoreClientActorScopeDependency": false,
+  "originalOnLoadGetTransportNewlyAdmitted": false,
+  "realPublicHttpAccepted": false,
+  "fullRootMounted": false,
+  "desktopExeReplaced": false
+}

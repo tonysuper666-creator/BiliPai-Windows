@@ -1,0 +1,163 @@
+{
+  "phase": 73,
+  "baseCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "preparedManifestSha256Bytes": "6f2c8dbdd7bf2e0bf9f9c1ecd9cd55ce5fcda1fd0afecb3693efc19ac8161df6",
+  "preparedRawArtifacts": 90,
+  "payloadCount": 4,
+  "existingFamilyCount": 3,
+  "exactHunks": 5,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "sha256Bytes": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "sha256Bytes": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+      "afterSha256Bytes": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "beforeSha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+      "afterSha256Bytes": "aeee153c9df8f84756f5b64a6681b7ecee6aeb7a10b9812314282eda2fafeab8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "beforeSha256Bytes": "b9b62eb4bd7e306d83c39d5ec0155fd866241784d8558284de7d54a1d0ea4322",
+      "afterSha256Bytes": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "70ac4a3edf882b064c836abe09c6efb27a9f6a2989f66bda407a9fae33631c4c",
+      "afterSha256Bytes": "6b667db5788d72e71c6c501276db61d175b7d1f6bd30fb23799e7462e5735e37"
+    }
+  ],
+  "exactRebasedFamilies": [
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "exactHunks": 3,
+      "siblingCacheHunks": 2,
+      "beforeSha256Bytes": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+      "afterSha256Bytes": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11",
+      "beforeSha256LF": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+      "afterSha256LF": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11",
+      "exactIndexedInverse": true,
+      "assemblyAndCacheByteCommute": false,
+      "alternateOrderSameTopLevelDefinitions": true,
+      "requiredCacheThenAssemblyOrderPreserved": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "exactHunks": 1,
+      "siblingCacheHunks": 1,
+      "beforeSha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+      "afterSha256Bytes": "aeee153c9df8f84756f5b64a6681b7ecee6aeb7a10b9812314282eda2fafeab8",
+      "beforeSha256LF": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+      "afterSha256LF": "aeee153c9df8f84756f5b64a6681b7ecee6aeb7a10b9812314282eda2fafeab8",
+      "exactIndexedInverse": true,
+      "assemblyAndCacheByteCommute": true,
+      "alternateOrderSameTopLevelDefinitions": true,
+      "requiredCacheThenAssemblyOrderPreserved": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "exactHunks": 1,
+      "siblingCacheHunks": 0,
+      "beforeSha256Bytes": "b9b62eb4bd7e306d83c39d5ec0155fd866241784d8558284de7d54a1d0ea4322",
+      "afterSha256Bytes": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "beforeSha256LF": "b9b62eb4bd7e306d83c39d5ec0155fd866241784d8558284de7d54a1d0ea4322",
+      "afterSha256LF": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "exactIndexedInverse": true,
+      "assemblyAndCacheByteCommute": true,
+      "alternateOrderSameTopLevelDefinitions": true,
+      "requiredCacheThenAssemblyOrderPreserved": true
+    }
+  ],
+  "existingIdentityFeatureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "discovery",
+        "dynamic-follow-observer-parity",
+        "stable-collection-sheet",
+        "stable-video-metadata",
+        "stable-favorites",
+        "stable-favorite-folder-sheet",
+        "home-protocols",
+        "stable-video-detail-full-units",
+        "stable-personal-following"
+      ],
+      "afterFeatures": [
+        "discovery",
+        "dynamic-follow-observer-parity",
+        "stable-collection-sheet",
+        "stable-video-metadata",
+        "stable-favorites",
+        "stable-favorite-folder-sheet",
+        "home-protocols",
+        "stable-video-detail-full-units",
+        "stable-personal-following",
+        "stable-original-video-full-owner",
+        "desktop-original-video-owner-assembly"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "mode": "extracted",
+      "beforeFeatures": [
+        "cdn",
+        "playback",
+        "stable-danmaku-list-menu",
+        "stable-favorite-folder-sheet",
+        "stable-original-video-full-owner",
+        "stable-video-fullscreen-pager",
+        "stable-video-original-comments",
+        "stable-video-state-core",
+        "subtitle",
+        "watchdogs",
+        "stable-original-video-byte-cache-consumers"
+      ],
+      "afterFeatures": [
+        "cdn",
+        "playback",
+        "stable-danmaku-list-menu",
+        "stable-favorite-folder-sheet",
+        "stable-original-video-full-owner",
+        "stable-video-fullscreen-pager",
+        "stable-video-original-comments",
+        "stable-video-state-core",
+        "subtitle",
+        "watchdogs",
+        "stable-original-video-byte-cache-consumers",
+        "desktop-original-video-owner-assembly"
+      ]
+    }
+  ],
+  "sharedWholeFilesReplaced": false,
+  "newIdentityCount": 0,
+  "newResourceCount": 0,
+  "newDependencyCount": 0,
+  "originalActionFiveAndWatchLaterMembershipInstalled": true,
+  "sameRepositoryStoreEntryLockOrderPreserved": true,
+  "originalActualLoadStateReadOnlyProjectionInstalled": true,
+  "installedWholeOwnerConstructed": false,
+  "fullRootMounted": false,
+  "desktopExeReplaced": false
+}

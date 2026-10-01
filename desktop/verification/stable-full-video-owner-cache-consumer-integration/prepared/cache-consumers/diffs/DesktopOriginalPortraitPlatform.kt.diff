@@ -1,0 +1,12 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt
+@@ -118,7 +118,8 @@
+      * A raw PlayUrl cache alone is not disk-byte media cache parity. No no-op is valid.
+      * Original Wi-Fi gate, video1536KiB/audio256KiB bounds and headers are retained.
+      */
+-    suspend fun prefetchRange(url: String, headers: Map<String,String>, length: Long)
++    fun captureMediaCache(request: DesktopOriginalVideoRepositoryBinding, playData: PlayUrlData,
++        streamUrls: com.android.purebilibili.feature.video.ui.pager.PortraitPlaybackStreamUrls): DesktopOriginalPortraitByteCache
+     fun shareText(text: String)
+     fun showFeedback(text: String)
+     @Composable fun Surface(player: DesktopOriginalMpvSectionControl, foreground: @Composable () -> Unit)

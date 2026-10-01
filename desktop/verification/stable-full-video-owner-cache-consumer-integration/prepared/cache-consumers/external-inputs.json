@@ -1,0 +1,22 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\manifest.json",
+    "sha256Bytes": "f1e410523c6991a1f588ffc4e1d571f1251c81f6ab2b2d25ed9c947f9be03621",
+    "size": 152815
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-70\\ordered-runtime-cp.json",
+    "sha256Bytes": "3e2c79ad73fd69d07025ab12d617d8aa9932cef580ef1046e3550458b8482aba",
+    "size": 38191
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-media-intent-parity\\frozen-handoff.json",
+    "sha256Bytes": "8357e7cdf392d34811330c10a722ef5133abd109a3b6e5767bad5a5c92806a82",
+    "size": 11185
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-actual70-proof\\frozen-handoff.json",
+    "sha256Bytes": "d848a493cef685e3f23dc21bcc6c8157fd009791c197c06576662076504d2b5a",
+    "size": 6400
+  }
+]

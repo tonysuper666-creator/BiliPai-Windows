@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "copyWhitelist": [
+    {
+      "source": {
+        "path": "prepared/manual/com/bilipai/desktop/player/cache/DesktopMediaByteProbeCalls.kt",
+        "sha256Bytes": "651303df1e98327f003ec4d4aea1acc7b92c76c79ca1bcdfaa4f1a53794c1fc5",
+        "size": 4805
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProbeCalls.kt",
+      "kind": "manual-platform-source"
+    },
+    {
+      "source": {
+        "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoByteCacheConsumers.kt",
+        "sha256Bytes": "be126693e1a39f6923a4a43a813cb8ddc675b4bbfc22cd70c266eee1d7f5b126",
+        "size": 14628
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoByteCacheConsumers.kt",
+      "kind": "manual-platform-source"
+    }
+  ],
+  "exactHunks": {
+    "path": "exact-hunks.json",
+    "sha256Bytes": "8733ec47d98cbf423b90d5c65564517d74d8edaa67239c79147e19f55123bce5",
+    "size": 14938
+  },
+  "baselineFamilies": {
+    "path": "baseline-families.json",
+    "sha256Bytes": "83302c3b52b1e021245714e6b75d779cb578b547587163ddaac5049e93c3c05d",
+    "size": 10328
+  },
+  "registryMerge": {
+    "path": "registry-merge-recipe.json",
+    "sha256Bytes": "8e194cd768bab35ca84c61601562d36227ab164b304c8ec57c0c5d95dd247bf6",
+    "size": 3440
+  },
+  "recipe": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "9291213025cd19f9cc2acefb74f35098ec3cb2ef05d7d7c92770e856b207565b",
+    "size": 7946
+  },
+  "productionPayloads": 2,
+  "exactHunkCount": 12,
+  "existingFamilies": 8,
+  "noWholeExistingOverwrite": true,
+  "noProofSourcesOrClasses": true,
+  "dependencyChanges": 0,
+  "identityRowsAdded": 0,
+  "RootInstalledAcceptance": false
+}

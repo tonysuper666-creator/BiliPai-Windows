@@ -1,0 +1,162 @@
+{
+  "phase": 73,
+  "baseCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "preparedRawArtifacts": 260,
+  "preparedManifestSha256Bytes": "b0f87d87632549bf9e5b28ae0f4447f999947253e8cf0bc8d66fde0466a07628",
+  "payloadCount": 2,
+  "existingFamilyCount": 8,
+  "exactHunks": 12,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProbeCalls.kt",
+      "sha256Bytes": "651303df1e98327f003ec4d4aea1acc7b92c76c79ca1bcdfaa4f1a53794c1fc5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoByteCacheConsumers.kt",
+      "sha256Bytes": "be126693e1a39f6923a4a43a813cb8ddc675b4bbfc22cd70c266eee1d7f5b126"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "beforeSha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "afterSha256Bytes": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619",
+      "exactHunks": 1,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "beforeSha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "afterSha256Bytes": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+      "exactHunks": 3,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "beforeSha256Bytes": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "afterSha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+      "exactHunks": 1,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "beforeSha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+      "afterSha256Bytes": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+      "exactHunks": 1,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "beforeSha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267",
+      "afterSha256Bytes": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad",
+      "exactHunks": 1,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "afterSha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+      "exactHunks": 1,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+      "afterSha256Bytes": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+      "exactHunks": 2,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "beforeSha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8",
+      "afterSha256Bytes": "da0c0aa9245aad12f69a499067a915806639fcf43d67b9ef3df7d2ee14b94cb8",
+      "exactHunks": 2,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "68e89a8bdc4696154240831a0c3c8f473996537a416101727eb8b3dab0e33778",
+      "afterSha256Bytes": "70ac4a3edf882b064c836abe09c6efb27a9f6a2989f66bda407a9fae33631c4c",
+      "exactHunks": 0,
+      "exactIndexedInverse": false
+    }
+  ],
+  "existingIdentityFeatureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "mode": "extracted",
+      "beforeFeatures": [
+        "cdn",
+        "playback",
+        "stable-danmaku-list-menu",
+        "stable-favorite-folder-sheet",
+        "stable-original-video-full-owner",
+        "stable-video-fullscreen-pager",
+        "stable-video-original-comments",
+        "stable-video-state-core",
+        "subtitle",
+        "watchdogs"
+      ],
+      "afterFeatures": [
+        "cdn",
+        "playback",
+        "stable-danmaku-list-menu",
+        "stable-favorite-folder-sheet",
+        "stable-original-video-full-owner",
+        "stable-video-fullscreen-pager",
+        "stable-video-original-comments",
+        "stable-video-state-core",
+        "subtitle",
+        "watchdogs",
+        "stable-original-video-byte-cache-consumers"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "sha256": "7bc193930ff8ebcae7b8e5e47412a043df6bf54502724c809b9ce0ac8f4e159d",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "stable-original-video-full-owner"
+      ],
+      "afterFeatures": [
+        "stable-original-video-full-owner",
+        "stable-original-video-byte-cache-consumers"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+      "mode": "selected",
+      "beforeFeatures": [
+        "stable-video-fullscreen-pager"
+      ],
+      "afterFeatures": [
+        "stable-video-fullscreen-pager",
+        "stable-original-video-byte-cache-consumers"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "sha256": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3",
+      "mode": "selected",
+      "beforeFeatures": [
+        "stable-video-fullscreen-pager"
+      ],
+      "afterFeatures": [
+        "stable-video-fullscreen-pager",
+        "stable-original-video-byte-cache-consumers"
+      ]
+    }
+  ],
+  "sharedWholeFilesReplaced": false,
+  "newIdentityCount": 0,
+  "newDependencyCount": 0,
+  "sameBoundNativeAndOriginalCdnAndPortraitConsumersInstalled": true,
+  "exactFullPlanRequiredForRetainedCarrierReuse": true,
+  "callerAndLeaseCancellationThroughBodyClose": true,
+  "nativeCacheErrorDirectObserverInstalled": false,
+  "installedNativeDirectRecoveryAccepted": false,
+  "fullRootMounted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,41 @@
+{
+  "rows": [
+    {
+      "path": "prepared/existing/desktop/tools/__pycache__/extract-upstream-video-full-owner.cpython-312.pyc",
+      "sha256Bytes": "f05af25b62ff654d123339e9a9f150c048c8e42a205c06d78405a8f62013d7c9",
+      "size": 217511
+    },
+    {
+      "path": "proof-runs/02/fixture.jar",
+      "sha256Bytes": "60addd10feec3c01d3c4af46ea4b5fdec40191f817d93ebecd912ec651c41bc9",
+      "size": 52844
+    },
+    {
+      "path": "proof-runs/03/fixture.jar",
+      "sha256Bytes": "58ae1e61de33b7ce2b99f39e2dc1e65adde21c7a76447b800edf7f6aed49971a",
+      "size": 52851
+    },
+    {
+      "path": "runs/03/candidate.jar",
+      "sha256Bytes": "063d67380450426728e15099a9b3f7a99153dd8a6bf353a4ed802d84c4b5ce22",
+      "size": 698949
+    },
+    {
+      "path": "runs/05/candidate.jar",
+      "sha256Bytes": "d3fd704a4cb7a31c5d2b2473f397ed396f0f2cd492eba32bd96a1ec38b14bc60",
+      "size": 844325
+    },
+    {
+      "path": "runs/06/candidate.jar",
+      "sha256Bytes": "1123e28bc1305a02333e03d707ca0c061577923793dab2722e96b0874147d767",
+      "size": 845677
+    },
+    {
+      "path": "runs/07/candidate.jar",
+      "sha256Bytes": "b536baf88bfc8db0bf9760cbe370b374d124690e69bada799f96777fd4ef2fb2",
+      "size": 851235
+    }
+  ],
+  "installOrCommit": false,
+  "immutableInputSourceSnapshots": "runs/*/source-inputs retained on disk; exact source-input hashes and matching args/logs archived, not duplicate whole source clones"
+}

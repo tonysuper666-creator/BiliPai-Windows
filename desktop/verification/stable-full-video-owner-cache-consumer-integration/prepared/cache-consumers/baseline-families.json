@@ -1,0 +1,190 @@
+{
+  "baselineCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "hashMeaning": "whole file hashes; hunk beforeSha256LF/afterSha256LF hash only the exact anchor text",
+  "families": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "baselineWholeFileSha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "baselineWholeFileSha256LF": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "candidateWholeFileSha256LF": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+        "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+        "size": 7655
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+        "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+        "size": 7655
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+        "sha256Bytes": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619",
+        "size": 7788
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "baselineWholeFileSha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "baselineWholeFileSha256LF": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "candidateWholeFileSha256LF": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+        "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+        "size": 29409
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+        "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+        "size": 29409
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+        "sha256Bytes": "6af5b637eb442be9fdde1803032e0d54f06c61c9bf7dbe011dc910e82b78be4e",
+        "size": 30758
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "baselineWholeFileSha256Bytes": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "baselineWholeFileSha256LF": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "candidateWholeFileSha256LF": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+        "sha256Bytes": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+        "size": 11099
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+        "sha256Bytes": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+        "size": 11099
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+        "sha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896",
+        "size": 11680
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "baselineWholeFileSha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+      "baselineWholeFileSha256LF": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+      "candidateWholeFileSha256LF": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+        "sha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+        "size": 13462
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+        "sha256Bytes": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+        "size": 13462
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+        "sha256Bytes": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+        "size": 13510
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "baselineWholeFileSha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267",
+      "baselineWholeFileSha256LF": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267",
+      "candidateWholeFileSha256LF": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+        "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267",
+        "size": 7636
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+        "sha256Bytes": "1c751a856baeca8b382f3f4f0f037d331a94547febb6448d3ff5d5dc0a5ad267",
+        "size": 7636
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+        "sha256Bytes": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad",
+        "size": 7777
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "baselineWholeFileSha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "baselineWholeFileSha256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "candidateWholeFileSha256LF": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+        "sha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+        "size": 21900
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+        "sha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+        "size": 21900
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+        "sha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03",
+        "size": 23903
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/tools/extract-upstream-video-full-owner.py",
+      "baselineWholeFileSha256Bytes": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+      "baselineWholeFileSha256LF": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+      "candidateWholeFileSha256LF": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/tools/extract-upstream-video-full-owner.py",
+        "sha256Bytes": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+        "size": 205960
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/tools/extract-upstream-video-full-owner.py",
+        "sha256Bytes": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+        "size": 205960
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/tools/extract-upstream-video-full-owner.py",
+        "sha256Bytes": "e0f877b5980e6774193b345e6087d93ba82f439f353fb39c145891a0449400c7",
+        "size": 208073
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    },
+    {
+      "target": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "baselineWholeFileSha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8",
+      "baselineWholeFileSha256LF": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8",
+      "candidateWholeFileSha256LF": "da0c0aa9245aad12f69a499067a915806639fcf43d67b9ef3df7d2ee14b94cb8",
+      "baselineRaw": {
+        "path": "baseline-bytes/desktop/tools/extract-upstream-video-fullscreen-pager.py",
+        "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8",
+        "size": 118281
+      },
+      "baselineLF": {
+        "path": "baseline/desktop/tools/extract-upstream-video-fullscreen-pager.py",
+        "sha256Bytes": "8ce884f47fe8f508f0b36f3b345f686e1c0c124485e5004fbcc2886ca6a44be8",
+        "size": 118281
+      },
+      "reviewOnlyCandidate": {
+        "path": "prepared/existing/desktop/tools/extract-upstream-video-fullscreen-pager.py",
+        "sha256Bytes": "da0c0aa9245aad12f69a499067a915806639fcf43d67b9ef3df7d2ee14b94cb8",
+        "size": 120386
+      },
+      "install": "exact-hunks-only",
+      "forwardReversePASS": true
+    }
+  ]
+}

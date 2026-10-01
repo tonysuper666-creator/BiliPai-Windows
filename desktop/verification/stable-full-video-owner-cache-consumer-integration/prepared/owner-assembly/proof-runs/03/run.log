@@ -1,0 +1,7 @@
+OWNER_ACTION_STATUS_PASS checks=33 groups=3 HTTP=false native=false mounted=false
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoOwnerActionView file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-assembly-parity/runs/05/candidate.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoEntryReadbacks file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-assembly-parity/runs/05/candidate.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoRepositoryBinding file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-assembly-parity/runs/05/candidate.jar
+ORIGIN com.bilipai.desktop.data.DesktopRepository file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-assembly-parity/runs/05/candidate.jar
+ORIGIN com.android.purebilibili.data.repository.DesktopOriginalVideoActionStatus file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-assembly-parity/runs/05/candidate.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackInvocationPorts file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-71/main-kotlin.jar

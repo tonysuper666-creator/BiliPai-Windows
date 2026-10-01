@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "exitCode": 1,
+  "inputs": 1,
+  "classes": 0,
+  "runtimeEntries": 101,
+  "actual71ProductSnapshot": true,
+  "preparedAssemblyOnly": true,
+  "declaredFamilyOverrides": [],
+  "undeclaredProductionOverrides": [],
+  "wholeOriginalVMFromActual71": true,
+  "wholeHolderFromActual71": true,
+  "RootFactoryRuntimeAccepted": false,
+  "HTTP": false,
+  "native": false,
+  "wholeOwnerConstructed": false,
+  "candidateJarSHA256Bytes": null
+}

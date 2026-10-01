@@ -1,0 +1,473 @@
+{
+  "frozen": true,
+  "scope": "source-only public Sponsor postJson execution admission supplement",
+  "baseFinalWrite120SHA256Bytes": "829c748364219b1458151c546bbdae62d8cd053f613d877b94285f9b9143f5cb",
+  "actual71ManifestSHA256Bytes": "416f1ec5fdf577f13c607d52248ca3c97d39420d363bac78f500d119053e6ad1",
+  "actualRuntimeEntries": 101,
+  "prospectiveExistingFamilies": [
+    "frozen120 helper",
+    "SponsorBlockRepository"
+  ],
+  "sourceInputs": 2,
+  "classes": 28,
+  "compilePassed": true,
+  "memoryCallGuardAssertions": 26,
+  "fullOriginalRepositoryInverse": true,
+  "sourceOnlyInstall": "install-exact-hunks.json",
+  "wholeFileInstall": false,
+  "newIdentityStoreClientActorScope": false,
+  "originalRepositoryPublicHttpExecuted": false,
+  "httpAccountsNativeGui": false,
+  "rawRows": 34,
+  "artifacts": [
+    {
+      "path": "PublicExecutionFixture.kt",
+      "sha256Bytes": "ea90e5fec29716b56ae68a3302d2ae7e84171ac34ff4992f250697e74a2072db",
+      "bytes": 10609
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "5597d30837c779d0303923efa76e6c7a5caaa3e8d69e4704841e3df1938c6563",
+      "bytes": 3976
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "3c95f3d6b937da952e3c20a5996b1ce258959c4a195ded3f68dd002d4e91570c",
+      "bytes": 13348
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "bytes": 5083
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "bytes": 35860
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "b1bcd99b9602bf6c62b720e725bdf4099b6f972a477f82c8965113a657155a86",
+      "bytes": 3646
+    },
+    {
+      "path": "compile/01/compile.args",
+      "sha256Bytes": "8a9ba128ea677f84003a105d22159f1abd80282087337bb18da5961fd3382b38",
+      "bytes": 26351
+    },
+    {
+      "path": "compile/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile/01/inputs/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50",
+      "bytes": 5734
+    },
+    {
+      "path": "compile/01/inputs/SponsorBlockRepository.kt",
+      "sha256Bytes": "37432eae7bba44a2cde076f8751ff4b3b3461033f1d18d420bbc1164b0988462",
+      "bytes": 13421
+    },
+    {
+      "path": "compile/01/pins-after.json",
+      "sha256Bytes": "da74ee954bada13d0a44a22f992574d34e411fb6ba128eb6838917267c5f946b",
+      "bytes": 44145
+    },
+    {
+      "path": "compile/01/pins-before.json",
+      "sha256Bytes": "da74ee954bada13d0a44a22f992574d34e411fb6ba128eb6838917267c5f946b",
+      "bytes": 44145
+    },
+    {
+      "path": "compile/01/result.json",
+      "sha256Bytes": "69070937fd4447b292692d1b1d5bfd57b1bb28067d723df455f04e946a05d55f",
+      "bytes": 3111
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "fbe375097d7580fcd47ee19380a87692feae7fa1c84ed83742e332951ced6401",
+      "bytes": 2384
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "37432eae7bba44a2cde076f8751ff4b3b3461033f1d18d420bbc1164b0988462",
+      "bytes": 13421
+    },
+    {
+      "path": "install-exact-hunks.json",
+      "sha256Bytes": "ad391610ead85bbe9bbc7518709aebd560fdef73b9b43798d83e9017d4514379",
+      "bytes": 3517
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "285097e87708908aee3811a6ba05809cb95888ebc1736b30d72381604f56e0e5",
+      "bytes": 5651
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50",
+      "bytes": 5734
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "f61b4de950b1139fd25370ffa6b3654c17501fee7df23a6c9f79590a05782ce4",
+      "bytes": 36716
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "90aa6b3b72e7c3c6c36d085a39d15897abea58bdf545ba1659a7b0ffc71a7c2e",
+      "bytes": 4418
+    },
+    {
+      "path": "runs/01/PublicExecutionFixture.kt",
+      "sha256Bytes": "ea90e5fec29716b56ae68a3302d2ae7e84171ac34ff4992f250697e74a2072db",
+      "bytes": 10609
+    },
+    {
+      "path": "runs/01/actual-code-origins.json",
+      "sha256Bytes": "4c1e2f9e1bc43f6712f3931fe508304131b4b3eeb609f18b6b92b2cab494f895",
+      "bytes": 1451
+    },
+    {
+      "path": "runs/01/class-overlap.json",
+      "sha256Bytes": "05d071059a5cdca28a539ea0c806df94efca20450e1cd17bdd50c006ea10c27a",
+      "bytes": 1242
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "1396de6cb34ba3fd2f6a4c5130bc44b5e150d5184f1cbe219de83897cfc2e626",
+      "bytes": 91
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "09d8aceb03b83c04d4a452f2eaea044d0f56e54851ea9c493c3ca9c9bc4f4956",
+      "bytes": 26148
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "6d1f60e1ee46b11596841151a307341b5d92d16cede7c85c57b29ab6a079bd70",
+      "bytes": 394
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "c8116bcd31e53e0f060c1a62ffa0acca8e308daad5e86e773b9ecba6ab2ca230",
+      "bytes": 43393
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "c8116bcd31e53e0f060c1a62ffa0acca8e308daad5e86e773b9ecba6ab2ca230",
+      "bytes": 43393
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "7e968e0eea6673bfe493c62785980e058631f62785aca392bd6e8b0e47ad43fc",
+      "bytes": 1850
+    },
+    {
+      "path": "runs/01/run-command.json",
+      "sha256Bytes": "5240f75f3de0d06fa0384ae7d67d5a2b0fe107c5a2ce6dacdd91fb17e480a92c",
+      "bytes": 27430
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "0dedfd00d56124fffdcf9934184c6d76fc1cde145f14431d176384a47ecadc32",
+      "bytes": 1760
+    },
+    {
+      "path": "runs/01/runner.py",
+      "sha256Bytes": "90aa6b3b72e7c3c6c36d085a39d15897abea58bdf545ba1659a7b0ffc71a7c2e",
+      "bytes": 4418
+    },
+    {
+      "path": "runs/01/runtime/result.json",
+      "sha256Bytes": "7b68f79823c62b1a5bc91421041b222564f657099806b0a31d73e59ed73831d3",
+      "bytes": 1813
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "3b182cc8ae0ae6647defca1ead74d2b113c1e05aab2a34f03fad8a4b64c448da",
+      "bytes": 612
+    }
+  ],
+  "excluded": [
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "baseline-generated/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "compile/01/candidate.jar",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/CastPluginApi.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/PluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/PluginStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/DesktopFeedConditionalValidators.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/DesktopSavedSubscriptionFeed.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedFetcher.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/feed/FeedTitleResolver.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/JsonPluginManager.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/JsonPluginStatsNotificationPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/plugin/json/RuleEngine.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/TodayWatchProfileStore.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/anime4k/Anime4KOutputPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/DesktopTodayWatchModels.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/DesktopTodayWatchPlanConversion.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/DanmakuEnhancePlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/EyeProtectionPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SponsorBlockInsightPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SponsorBlockPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/danmaku/DesktopPluginDanmakuPolicy.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/components/Anime4KSettingsUi.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/player/DesktopFsrShaderLicense.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/player/platform/DesktopMedia3ColorTransfers.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/plugins/DesktopPluginAssetHashes.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "generated/com/bilipai/desktop/ui/DesktopVideoEnhancementSettingsContent.kt",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    },
+    {
+      "path": "runs/01/fixture.jar",
+      "reason": "binary/private fixture Store/unchanged existing producer output"
+    }
+  ],
+  "boundaries": [
+    "Root supplies fixed real native completed ticket and optional upload consent",
+    "accepted final request permit is in-flight and cannot recall sent request",
+    "Sponsor on-load GET and standalone settings status/user-info unchanged"
+  ]
+}

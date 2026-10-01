@@ -1,0 +1,45 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt
+@@ -252,6 +252,11 @@
+         } finally { requestHook.dispose(); leaseHook.dispose(); call.cancel() }
+     }
+ 
++    internal fun probeAdmission(): DesktopMediaByteAdmission { check(); return frame.get().admission }
++    @OptIn(InternalCoroutinesApi::class)
++    internal fun watchProbeCancellation(handler: (Throwable?) -> Unit): DisposableHandle =
++        leaseJob.invokeOnCompletion(onCancelling = true, invokeImmediately = true) { if (it != null) handler(it) }
++
+     suspend fun metadata(track: DesktopMediaByteTrack): DesktopMediaResource {
+         metadata[track]?.let { check(); return it }
+         val key = resourceBase(track)
+@@ -368,7 +373,20 @@
+ }
+ 
+ internal class DesktopBoundMediaByteCache(private val lease: DesktopMediaByteLease, private val tracks: List<DesktopMediaByteTrack>) : AutoCloseable {
++    private val preparedManifestFingerprint = AtomicReference<String?>()
++    private fun manifestFingerprint(value: String?): String =
++        mediaDigest(if (value == null) "separate/edl" else "adaptive-mpd\n$value")
++    internal fun matchesCapturedPlan(values: List<DesktopMediaByteTrack>, fullAdaptiveManifest: String?): Boolean {
++        lease.check()
++        return preparedManifestFingerprint.get() == manifestFingerprint(fullAdaptiveManifest) &&
++            tracks.size == values.size && tracks.zip(values).all { (a, b) ->
++                a.url == b.url && a.urls == b.urls && a.cacheKey == b.cacheKey &&
++                    a.representation == b.representation && a.headers == b.headers
++            }
++    }
+     override fun close() = lease.close()
++    internal fun probeCalls(callerJob: Job, stillCurrent: () -> Boolean): okhttp3.Call.Factory =
++        DesktopMediaByteProbeCalls(lease, tracks, callerJob, stillCurrent)
+     suspend fun prefetchRange(url: String, cacheKey: String, position: Long, length: Long, headers: Map<String,String>) = withContext(Dispatchers.IO) {
+         currentCoroutineContext().ensureActive(); lease.check()
+         val track = tracks.firstOrNull { url in it.urls && it.cacheKey == cacheKey } ?: throw IOException("Range is not in captured media tracks")
+@@ -409,7 +427,8 @@
+                 audio=source.audioUrl?.let { byUrl[it] ?: error("Native audio track missing") };progressive=emptyList()
+             }
+         }
+-        return DesktopNativeMediaTransport(lease,mode,video,audio,progressive,mediaSourceFingerprint(source))
++        check(preparedManifestFingerprint.compareAndSet(null, manifestFingerprint(fullAdaptiveManifest)))
++        return DesktopNativeMediaTransport(lease,mode,video,audio,progressive,mediaSourceFingerprint(source),this)
+     }
+ }
+ 

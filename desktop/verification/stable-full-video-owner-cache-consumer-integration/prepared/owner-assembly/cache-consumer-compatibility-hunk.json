@@ -1,0 +1,19 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+  "baseSha256LF": "3a466002cda83c218dd813f1b3a44d4b8d2331d7835de5763425f5411649c384",
+  "desiredSha256LF": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+  "requiredSiblingManifestSHA256": "b0f87d87632549bf9e5b28ae0f4447f999947253e8cf0bc8d66fde0466a07628",
+  "hunks": [
+    {
+      "before": "    val cdnRangeCache: DesktopOriginalCdnRangeCache,\n",
+      "after": ""
+    },
+    {
+      "before": "                    effects.cdnRangeCache, effects.analytics, effects.crash, comments, effects.danmaku,\n",
+      "after": "                    { expected ->\n                        if (owner.native.isCurrent(expected) && expected.nativeSource.source.nativeTransport != null)\n                            DesktopOriginalCdnRangeCapture(expected, owner.native::isCurrent)\n                        else null // actual direct source or retired lease; no fake cache success\n                    }, effects.analytics, effects.crash, comments, effects.danmaku,\n"
+    }
+  ],
+  "oldStaticRangePortRemoved": true,
+  "sameNativeOwnerCapturedCacheOnly": true,
+  "newAuthority": false
+}

@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:246:18: error: unresolved reference 'withPrimaryAccountAdmission'.
+        sessions.withPrimaryAccountAdmission(expectedEpoch,stillOwned) {
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^

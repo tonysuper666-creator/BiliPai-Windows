@@ -1,0 +1,226 @@
+{
+  "passed": true,
+  "scope": "source checks + one actual71 narrow compilation; no execution/Root/native/analytics upload claims",
+  "checks": [
+    {
+      "name": "fixed original identity app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "passed": true
+    },
+    {
+      "name": "fixed original identity app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "passed": true
+    },
+    {
+      "name": "fixed original identity app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+      "passed": true
+    },
+    {
+      "name": "fixed original identity app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "passed": true
+    },
+    {
+      "name": "unchanged actual71 source dependency desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "passed": true
+    },
+    {
+      "name": "unchanged actual71 source dependency desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "passed": true
+    },
+    {
+      "name": "unchanged actual71 source dependency desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "passed": true
+    },
+    {
+      "name": "official local SDK IF_TYPE_IEEE80211=71",
+      "passed": true
+    },
+    {
+      "name": "official local SDK IF_TYPE_WWANPP=243",
+      "passed": true
+    },
+    {
+      "name": "official local SDK IF_TYPE_WWANPP2=244",
+      "passed": true
+    },
+    {
+      "name": "no network false fallback",
+      "passed": true
+    },
+    {
+      "name": "network before/after entry guard",
+      "passed": true
+    },
+    {
+      "name": "same original owner interfaces",
+      "passed": true
+    },
+    {
+      "name": "same global preference keys",
+      "passed": true
+    },
+    {
+      "name": "original event names and non-sensitive quality payload",
+      "passed": true
+    },
+    {
+      "name": "no identity payload",
+      "passed": true
+    },
+    {
+      "name": "no wait/fatal/write/flush in effect consumer",
+      "passed": true
+    },
+    {
+      "name": "queue only existing diagnostic actor",
+      "passed": true
+    },
+    {
+      "name": "no new client/firebase/notification transport",
+      "passed": true
+    }
+  ],
+  "checkCount": 19,
+  "originalSourceIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "bytesLF": 5026,
+      "existingRegistryMode": "policy-extract",
+      "action": "feature union only; preserve mode/body/owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc",
+      "bytesLF": 30668,
+      "existingRegistryMode": "policy-extract",
+      "action": "feature union only; preserve mode/body/owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6",
+      "bytesLF": 23202,
+      "existingRegistryMode": "policy-extract",
+      "action": "feature union only; preserve mode/body/owner"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "bytesLF": 396158,
+      "existingRegistryMode": "policy-extract",
+      "action": "feature union only; preserve mode/body/owner"
+    }
+  ],
+  "currentReadOnlyDependencies": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "sha256LF": "652e5a060c2e87d36b46a5bdb5e581d5fff28acca8e6a45f036062f36f2aa4a7",
+      "bytesLF": 13462
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256LF": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355",
+      "bytesLF": 7608
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnostics.kt",
+      "sha256LF": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066",
+      "bytesLF": 15256
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginStore.kt",
+      "sha256LF": "d2adc11fb607f4321c4fef40fa0dc5af5e403efd91ae356ff304c5878333e30b",
+      "bytesLF": 16233
+    }
+  ],
+  "officialLocalSdk": {
+    "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ipifcons.h",
+    "sha256LF": "40316a261c17df2fcb4a15883aa396d960c5ec19bfed367b958c1397d06906fc",
+    "bytesLF": 18581
+  },
+  "selectedPolicyAnchors": {
+    "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt": {
+      "isWifi": [
+        28,
+        33
+      ],
+      "isMobileData": [
+        38,
+        43
+      ],
+      "originalQualityMapping": [
+        60,
+        73
+      ]
+    },
+    "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt": {
+      "privacy": [
+        17,
+        43
+      ],
+      "videoPlay": [
+        315,
+        345
+      ],
+      "qualityChange": [
+        704,
+        716
+      ]
+    },
+    "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt": {
+      "sensitiveVideoId": [
+        17,
+        25
+      ],
+      "headroom": [
+        57,
+        74
+      ],
+      "videoError": [
+        399,
+        429
+      ],
+      "ratePolicy": [
+        117,
+        118,
+        594,
+        607
+      ]
+    },
+    "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt": {
+      "defaultTrue": [
+        96,
+        97
+      ],
+      "keysGetters": [
+        6237,
+        6244,
+        6280,
+        6285
+      ]
+    }
+  },
+  "queueAdmissionReview": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+    "recordLines": [
+      75,
+      87
+    ],
+    "submitLines": [
+      51,
+      64
+    ],
+    "finding": "record sanitizes and synchronously enqueues on the existing writer; collector.add/file IO is within the submitted lambda. No blocking future.get/flush/close/persistLocalCrash is called by this adapter. Accepted enqueue is in-flight; owner retirement does not revoke an already accepted diagnostic write."
+  },
+  "platformBoundaries": [
+    "no Firebase/Crashlytics transport or custom-key/session/last-event backend",
+    "I events need original analytics_enabled AND current DesktopDiagnostics enhanced-local-I policy; E non-fatal errors need original crash_tracking_enabled",
+    "original non-fatal rate/headroom policy is retained in this entry effect view; no global remote dedupe/session claim",
+    "Wi-Fi is the preferred real WinRT profile IANA71; WWAN uses the same original Root observation; absence false, failures typed unavailable",
+    "original getDefaultQualityId is inherited unchanged from existing owner interface; no new formula"
+  ],
+  "runtimeProof": false
+}

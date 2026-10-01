@@ -1,0 +1,34 @@
+{
+  "failures": [
+    {
+      "run": "runs/01",
+      "reason": "fixture/assembly source initially mistook ResumePlaybackSuggestion flow for full PlaybackSessionState"
+    },
+    {
+      "run": "runs/02",
+      "reason": "incorrect FollowStateChange package import"
+    },
+    {
+      "run": "runs/04",
+      "reason": "misnamed nonexistent Store admission; fixed to existing Repository.withPrimaryPlaybackAdmission"
+    },
+    {
+      "run": "runs/05",
+      "reason": "compiler passed; postcompile overlap audit omitted same-file DesktopSessionEpoch; separate audit correction preserves declaration"
+    },
+    {
+      "run": "proof-runs/01",
+      "reason": "test-only fake MediaPort generic signature and ambiguous PlaybackSource imports"
+    },
+    {
+      "run": "proof-runs/02",
+      "reason": "test expected CancellationException; actual existing Store rejection is BiliApiException"
+    }
+  ],
+  "correctedFinal": [
+    "runs/06",
+    "runs/07",
+    "proof-runs/03"
+  ],
+  "productionRuntimeAccepted": false
+}

@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\compile-reference\VideoPlaybackViewModel.kt:1756:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoOwnerAssembly.kt:110:62: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Throwable'.
+                if (first == null) first = failure else first!!.addSuppressed(failure)
+                                                             ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalVideoOwnerAssembly.kt:197:81: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoOwnerComments' is named 'root'. This may cause problems when calling this function with named arguments.
+                    override suspend fun addComment(aid: Long, message: String, rootId: Long, parent: Long,
+                                                                                ^^^^^^

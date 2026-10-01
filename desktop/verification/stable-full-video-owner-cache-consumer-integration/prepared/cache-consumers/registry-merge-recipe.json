@@ -1,0 +1,73 @@
+{
+  "identityRowsAdded": 0,
+  "featuresOnly": true,
+  "rows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "mode": "extracted",
+      "existingFeatures": [
+        "cdn",
+        "playback",
+        "stable-danmaku-list-menu",
+        "stable-favorite-folder-sheet",
+        "stable-original-video-full-owner",
+        "stable-video-fullscreen-pager",
+        "stable-video-original-comments",
+        "stable-video-state-core",
+        "subtitle",
+        "watchdogs"
+      ],
+      "requiredFeature": "stable-original-video-byte-cache-consumers",
+      "output": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "identityRowsAdded": 0,
+      "preserveAllExistingFeatures": true,
+      "originalGeneratedBodySha256LF": "c74ece85f0e0f5a35c18de23056c9356a6b2a733ca32fcacfca4d47bdb170585",
+      "candidateGeneratedBodySha256LF": "3b046712700ba4611f7cb75e8e9b6ab94d9c99322c0a15427da1121b2640fa40"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "sha256": "7bc193930ff8ebcae7b8e5e47412a043df6bf54502724c809b9ce0ac8f4e159d",
+      "mode": "policy-extract",
+      "existingFeatures": [
+        "stable-original-video-full-owner"
+      ],
+      "requiredFeature": "stable-original-video-byte-cache-consumers",
+      "output": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "identityRowsAdded": 0,
+      "preserveAllExistingFeatures": true,
+      "originalGeneratedBodySha256LF": "5fba0c6a74be3130bc31ee9f48d4009047c74a0cbe23c0eb51577a7f67d9e85d",
+      "candidateGeneratedBodySha256LF": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+      "mode": "selected",
+      "existingFeatures": [
+        "stable-video-fullscreen-pager"
+      ],
+      "requiredFeature": "stable-original-video-byte-cache-consumers",
+      "output": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "identityRowsAdded": 0,
+      "preserveAllExistingFeatures": true,
+      "originalGeneratedBodySha256LF": "4cda773fac87eb413ccaedb35d5ded586dc21501631e9d43968a72eb3becd0d1",
+      "candidateGeneratedBodySha256LF": "fc3b8883fb49570d6776ab6126b541e4674c67ad6e54c75cbb46103c2ea4ecd7"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "sha256": "e80e604e6393d0e44764b49e813fff004fb581293f8d71eeb8bdeaf18c9a9fc3",
+      "mode": "selected",
+      "existingFeatures": [
+        "stable-video-fullscreen-pager"
+      ],
+      "requiredFeature": "stable-original-video-byte-cache-consumers",
+      "output": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt",
+      "identityRowsAdded": 0,
+      "preserveAllExistingFeatures": true,
+      "originalGeneratedBodySha256LF": "6e2e4bf11aff2d40996541f02d7e3426706f16837033d5d2c1ac180ca66dada4",
+      "candidateGeneratedBodySha256LF": "1e5808341c07188bdc82334a5e20c948809915ddb853a4927f61dd3e03ba790f"
+    }
+  ],
+  "noNewOriginalIdentities": true,
+  "keepOtherFamilies": true
+}

@@ -1,0 +1,3 @@
+desktop\.local\stable-sponsor-public-execution-parity\runs\01\PublicExecutionFixture.kt:66:26: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+    override fun enqueue(callback: Callback) = error("Original Sponsor uses execute, not enqueue")
+                         ^^^^^^^^

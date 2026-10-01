@@ -1,0 +1,15 @@
+PASS raw captured request exposes real sameStore byte receipt
+PASS explicit key groups registered signed mirrors without changing key
+PASS source carrier holds the exact prepared Bound
+Exception in thread "main" java.lang.IllegalStateException: original SIDX prefetch writes real selected interval into same native Bound
+	at com.bilipai.desktop.ui.CapturedCacheConsumersProofKt.verify(CapturedCacheConsumersProof.kt:25)
+	at com.bilipai.desktop.ui.CapturedCacheConsumersProofKt.access$verify(CapturedCacheConsumersProof.kt:1)
+	at com.bilipai.desktop.ui.CapturedCacheConsumersProofKt$main$1$2.invokeSuspend(CapturedCacheConsumersProof.kt:80)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)

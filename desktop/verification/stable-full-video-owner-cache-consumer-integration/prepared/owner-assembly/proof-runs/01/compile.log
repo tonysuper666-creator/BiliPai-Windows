@@ -1,0 +1,33 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:26:27: error: class '<anonymous>' is not abstract and does not implement abstract members:
+fun withPlaybackIntent(startPositionMs: Long, playWhenReady: Boolean, action: () -> Unit): Unit
+fun accept(source: PlaybackSource): Unit
+private val unusedMedia = object:DesktopOriginalVideoMediaPort {
+                          ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:27:5: error: 'withPlaybackIntent' overrides nothing. Potential signatures for overriding:
+fun withPlaybackIntent(startPositionMs: Long, playWhenReady: Boolean, action: () -> Unit): Unit
+    override fun <T> withPlaybackIntent(startMs:Long,playWhenReady:Boolean,action:()->T):T = error("No media intent in protocol proof")
+    ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:28:77: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareLegacyDash(v:String,a:String?,k:Map<String,String>):PlaybackSource = error("No media")
+                                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:29:89: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareAdaptiveDash(s:AdaptiveDashPlaybackSource,k:Map<String,String>):PlaybackSource? = error("No media")
+                                                                                        ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:30:49: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareProgressive(url:String):PlaybackSource = error("No media")
+                                                ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:31:5: error: 'accept' overrides nothing. Potential signatures for overriding:
+fun accept(source: PlaybackSource): Unit
+    override fun accept(source:PlaybackSource) = error("No native acceptance")
+    ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:31:32: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun accept(source:PlaybackSource) = error("No native acceptance")
+                               ^^^^^^^^^^^^^^

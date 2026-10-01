@@ -1,0 +1,26 @@
+--- desktop/tools/extract-upstream-video-full-owner.py
++++ desktop/tools/extract-upstream-video-full-owner.py
+@@ -17,6 +17,15 @@
+  assert body.count(before)==1,'retained paused-handoff anchor'
+  return body.replace(before,after,1)
+ 
++
++def captured_media_byte_consumer_delta(path, text):
++ edits=[{'path': 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt', 'before': '        playbackCdnPrefetchJob = environment.invocations.launch {\n', 'after': '        val capturedCache = environment.cdnRangeCapture(expected) ?: return\n        playbackCdnPrefetchJob = environment.invocations.launch {\n'}, {'path': 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt', 'before': '                cache = environment.cdnRangeCache,\n                client = environment.repository.playbackCalls\n', 'after': '                cache = capturedCache,\n                client = capturedCache.calls(checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job])),\n                headers = capturedCache.headers\n'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '    private val client: okhttp3.Call.Factory\n', 'after': '    private val client: okhttp3.Call.Factory,\n    private val headers: Map<String, String>\n'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': 'headers = PLAYBACK_HEADERS', 'after': 'headers = headers'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '            .header("Referer", "https://www.bilibili.com")\n', 'after': '            .apply { headers.forEach { (name, value) -> header(name, value) } }\n', 'count': 2}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '    private companion object {\n        val PLAYBACK_HEADERS = mapOf(\n            "Referer" to "https://www.bilibili.com",\n            "User-Agent" to "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"\n        )\n    }\n', 'after': ''}]
++ for edit in edits:
++  if edit["path"]!=path:continue
++  count=edit.get("count",1);assert text.count(edit["before"])==count,(path,"byte-cache consumer anchor")
++  text=text.replace(edit["before"],edit["after"],count)
++ return text
++
+ def generate(repo,output,standalone=False):
+  outputs=[]
+  for recipe in RECIPES:
+@@ -30,6 +39,7 @@
+   assert last==len(lines) and ''.join(inverse)==raw
+   body=''.join(parts);assert sha(body)==recipe['outputSha256LF'],recipe['output']
+   body=retained_handoff_platform_delta(recipe['output'],body)
++  body=captured_media_byte_consumer_delta(recipe['output'],body)
+   emitted=standalone or recipe['mode']!='direct'
+   if emitted:
+    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

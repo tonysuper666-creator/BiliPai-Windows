@@ -1,0 +1,38 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
+@@ -354,6 +354,35 @@
+         }
+     }
+ 
++    /** Cache-error fallback is the original remote semantic source. Required failed
++     * attempt and accepted identity prevent retrying a replaced/recovered native load. */
++    fun recoverDirectAfterCacheError(expected: DesktopOriginalVideoAcceptedPublication,
++        positionSeconds: Double, paused: Boolean, expectedFailureAttemptId: Long): Boolean {
++        if (!owns(expected) || expected.nativeSource.source.nativeTransport == null ||
++            expectedFailureAttemptId <= 0L || !positionSeconds.isFinite() || positionSeconds < 0.0) return false
++        var recovered = false
++        try {
++            publication.admit(expected.nativeSource.source, { owns(expected) }) {
++                withEntryAdmission {
++                    if (!owns(expected) || player.state.value.failure?.attemptId != expectedFailureAttemptId) return@withEntryAdmission
++                    lateinit var next: DesktopOriginalVideoAcceptedPublication
++                    val direct = retainedSource(expected.nativeSource.source.copy(nativeTransport = null,
++                        startPositionSeconds = positionSeconds, startPaused = paused)) { owns(next) }
++                    if (!player.recoverSource(expected.sourceVersion, direct, positionSeconds, paused,
++                            expectedFailureAttemptId = expectedFailureAttemptId)) return@withEntryAdmission
++                    next = DesktopOriginalVideoAcceptedPublication(expected.request,
++                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) })
++                    accepted.set(next)
++                    inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
++                        inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
++                    }
++                    onAccepted(next); recovered = true
++                }
++            }
++        } catch (_: CancellationException) { return false }
++        return recovered
++    }
++
+     /** Called by the existing full-owner position observer, with no new poller.
+      * Read the actual native clock; clear only after its mute readback matches.
+      * Publication and native version/revision both guard the queued restoration. */

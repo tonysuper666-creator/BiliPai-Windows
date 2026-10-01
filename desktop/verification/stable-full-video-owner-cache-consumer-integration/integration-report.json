@@ -1,0 +1,72 @@
+{
+  "phase": 73,
+  "baseCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "preparedRawArtifacts": {
+    "public-sponsor": 34,
+    "root-effects": 10,
+    "cache-consumers": 260,
+    "owner-assembly": 90
+  },
+  "preparedTotalRawArtifacts": 394,
+  "originalPreparedEvidenceRemainsExplicitlyProspective": true,
+  "preparedPublicMemoryCallAssertions": 26,
+  "preparedCacheLocalIoAssertions": 27,
+  "preparedActionStatusMemoryAssertions": 33,
+  "preparedNetworkEffectsSourceChecks": 19,
+  "payloadCount": 8,
+  "existingSourceFamilies": 11,
+  "sourceExactHunks": 20,
+  "existingIdentityFeatureUnionOperations": 10,
+  "sourceIdentityCount": 1169,
+  "resourceCount": 213,
+  "runtimeEntries": 101,
+  "newIdentityCount": 0,
+  "newDependencyCount": 0,
+  "wholeClassesPassed": true,
+  "wholeTestSourcesCompiled": true,
+  "kotlinClassCount": 15273,
+  "illegalJvmMethodNames": 0,
+  "generatedOutputsMatchingFrozenCandidateSources": [
+    {
+      "path": "plugins/com/android/purebilibili/data/repository/SponsorBlockRepository.kt",
+      "sha256Bytes": "37432eae7bba44a2cde076f8751ff4b3b3461033f1d18d420bbc1164b0988462",
+      "sha256LF": "3e1545d6399ef3b97926d679f1db4e054564008585662428d6f15abcf174801c"
+    },
+    {
+      "path": "original-video-full-owner/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+      "sha256Bytes": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+      "sha256LF": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957"
+    },
+    {
+      "path": "original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+      "sha256LF": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1"
+    },
+    {
+      "path": "original-video-full-owner/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "sha256Bytes": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57",
+      "sha256LF": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57"
+    },
+    {
+      "path": "original-video-fullscreen-pager/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256Bytes": "fc3b8883fb49570d6776ab6126b541e4674c67ad6e54c75cbb46103c2ea4ecd7",
+      "sha256LF": "fc3b8883fb49570d6776ab6126b541e4674c67ad6e54c75cbb46103c2ea4ecd7"
+    }
+  ],
+  "originalActionFiveAndActualLoadStateProjectionInstalled": true,
+  "sameStoreThenEntryMemoryCommitOrderInstalled": true,
+  "cacheThenAssemblyOrderPreserved": true,
+  "sameBoundNativeOriginalCdnPortraitConsumerInstalled": true,
+  "cacheReuseRequiresWholeFingerprintOrderedTracksAndFullMpd": true,
+  "requiredOriginalIntentPreparationAndNativePublisherInstalled": true,
+  "callerAndLeaseCancellationThroughActualBodyReadInstalled": true,
+  "originalPublicSponsorFinalRequestPermitInstalled": true,
+  "alreadyAcceptedIoIsAnInFlightOperation": true,
+  "sameRootNetworkAndDiagnosticsViewsInstalled": true,
+  "firebaseRemoteTransportAvailable": false,
+  "installedNativeConsumerOrCacheFailureRecoveryAccepted": false,
+  "wholeOwnerConstructed": false,
+  "fullRootMounted": false,
+  "realAccountExternalHttpOrMainStartupAccepted": false,
+  "desktopExeReplaced": false
+}

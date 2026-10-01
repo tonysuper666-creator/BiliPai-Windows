@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "baselineCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "hunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "label": "carrier exact bound reference",
+      "before": "    private val fingerprint: String,\n",
+      "after": "    private val fingerprint: String,\n    /** Same captured Bound survives native publication adoption; no re-bind. */\n    internal val bound: DesktopBoundMediaByteCache,\n",
+      "beforeSha256LF": "e04694a73d77d2436fa11a4eef05e9dffa93a3dd703c89e883fe37ff58ee83f7",
+      "afterSha256LF": "464ac23c125d353a7cc58ae866def1b7cd592c0550bcdc0e7a495711388413d2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "label": "same lease captured probe admission and immediate cancellation",
+      "before": "    suspend fun metadata(track: DesktopMediaByteTrack): DesktopMediaResource {\n",
+      "after": "    internal fun probeAdmission(): DesktopMediaByteAdmission { check(); return frame.get().admission }\n    @OptIn(InternalCoroutinesApi::class)\n    internal fun watchProbeCancellation(handler: (Throwable?) -> Unit): DisposableHandle =\n        leaseJob.invokeOnCompletion(onCancelling = true, invokeImmediately = true) { if (it != null) handler(it) }\n\n    suspend fun metadata(track: DesktopMediaByteTrack): DesktopMediaResource {\n",
+      "beforeSha256LF": "7e75883527c515f8120a56743bfab43b040d6751fb68b14f0dae2c113ff2881b",
+      "afterSha256LF": "4b1fd305877bb3a1d9d6ba5755fe99fe711b0c9bd10a72a02ac308783715ad50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "label": "same bound actual probe and exact captured plan identity",
+      "before": "    override fun close() = lease.close()\n",
+      "after": "    private val preparedManifestFingerprint = AtomicReference<String?>()\n    private fun manifestFingerprint(value: String?): String =\n        mediaDigest(if (value == null) \"separate/edl\" else \"adaptive-mpd\\n$value\")\n    internal fun matchesCapturedPlan(values: List<DesktopMediaByteTrack>, fullAdaptiveManifest: String?): Boolean {\n        lease.check()\n        return preparedManifestFingerprint.get() == manifestFingerprint(fullAdaptiveManifest) &&\n            tracks.size == values.size && tracks.zip(values).all { (a, b) ->\n                a.url == b.url && a.urls == b.urls && a.cacheKey == b.cacheKey &&\n                    a.representation == b.representation && a.headers == b.headers\n            }\n    }\n    override fun close() = lease.close()\n    internal fun probeCalls(callerJob: Job, stillCurrent: () -> Boolean): okhttp3.Call.Factory =\n        DesktopMediaByteProbeCalls(lease, tracks, callerJob, stillCurrent)\n",
+      "beforeSha256LF": "371cd502ea47a38eb2e986a38e28f4f181bfc96dd09a47630ee4fee8bfaedc4f",
+      "afterSha256LF": "64c97a58a0d7aeb8ad93b7e2ac09ecda531546e1613f4cafba0f62da343f2fab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "label": "same bound and full manifest carried once",
+      "before": "return DesktopNativeMediaTransport(lease,mode,video,audio,progressive,mediaSourceFingerprint(source))",
+      "after": "check(preparedManifestFingerprint.compareAndSet(null, manifestFingerprint(fullAdaptiveManifest)))\n        return DesktopNativeMediaTransport(lease,mode,video,audio,progressive,mediaSourceFingerprint(source),this)",
+      "beforeSha256LF": "6fe9e1e3ea30f66b68463705edbbd323fdd5f1a381d6f45325ac2bc4edd46372",
+      "afterSha256LF": "b8f55bfb91e5a734d6bf1643f1a6d7e55be357d2a5399b75969b04714d416136"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "label": "same request captured byte view",
+      "before": "    companion object {\n",
+      "after": "    /** Same raw request's exact account/Job/entry admission for native byte preparation. */\n    fun captureMediaBytes(cache: com.bilipai.desktop.player.cache.DesktopMediaByteCache): DesktopOriginalVideoByteCacheRequest = read {\n        val namespace = repository.capturePlaybackCachePartition(receipt, ::entryCurrent)\n        DesktopOriginalVideoByteCacheRequest(cache,\n            com.bilipai.desktop.player.cache.DesktopMediaByteRepositoryAdmission(repository, authorization,\n                namespace, requestJob, ::entryCurrent, commitIfEntryCurrent), ::assertCurrent)\n    }\n\n    companion object {\n",
+      "beforeSha256LF": "bf33027bc20b5bcc4b1390b636b2aca8b0853bf50204b0209a17b8f48407c78b",
+      "afterSha256LF": "c38ee63102801f401ddf320951459b5fe3e507d862a759e3d565e4cdb7ba5821"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "label": "required accepted-source capture factory; null only actual direct source",
+      "before": "    val cdnRangeCache:DesktopOriginalCdnRangeCache,\n",
+      "after": "    val cdnRangeCapture:(DesktopOriginalVideoAcceptedPublication)->DesktopOriginalCdnRangeCapture?,\n",
+      "beforeSha256LF": "7f98247038957a75b63dcc25438eee4815e103f21645220653a715af80e8a5fa",
+      "afterSha256LF": "62d0048f117265f0f36b30c1b0ba5cd00b4634ef87a022b9eeb99a6dc5f51623"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "label": "retain exact raw request for head consumer",
+      "before": "    suspend fun prefetchRange(url: String, headers: Map<String,String>, length: Long)\n",
+      "after": "    fun captureMediaCache(request: DesktopOriginalVideoRepositoryBinding, playData: PlayUrlData,\n        streamUrls: com.android.purebilibili.feature.video.ui.pager.PortraitPlaybackStreamUrls): DesktopOriginalPortraitByteCache\n",
+      "beforeSha256LF": "0e925b6b4e8fe859b937910c54219fa489e23732a34f2cb7a37ff55722957941",
+      "afterSha256LF": "5d9a0a18ce7807f7362d56a1ee05c414a731d4f06adeeeac6f2a75f795df1a75"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "real one-shot guarded direct native recovery",
+      "before": "    /** Called by the existing full-owner position observer, with no new poller.\n",
+      "after": "    /** Cache-error fallback is the original remote semantic source. Required failed\n     * attempt and accepted identity prevent retrying a replaced/recovered native load. */\n    fun recoverDirectAfterCacheError(expected: DesktopOriginalVideoAcceptedPublication,\n        positionSeconds: Double, paused: Boolean, expectedFailureAttemptId: Long): Boolean {\n        if (!owns(expected) || expected.nativeSource.source.nativeTransport == null ||\n            expectedFailureAttemptId <= 0L || !positionSeconds.isFinite() || positionSeconds < 0.0) return false\n        var recovered = false\n        try {\n            publication.admit(expected.nativeSource.source, { owns(expected) }) {\n                withEntryAdmission {\n                    if (!owns(expected) || player.state.value.failure?.attemptId != expectedFailureAttemptId) return@withEntryAdmission\n                    lateinit var next: DesktopOriginalVideoAcceptedPublication\n                    val direct = retainedSource(expected.nativeSource.source.copy(nativeTransport = null,\n                        startPositionSeconds = positionSeconds, startPaused = paused)) { owns(next) }\n                    if (!player.recoverSource(expected.sourceVersion, direct, positionSeconds, paused,\n                            expectedFailureAttemptId = expectedFailureAttemptId)) return@withEntryAdmission\n                    next = DesktopOriginalVideoAcceptedPublication(expected.request,\n                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) })\n                    accepted.set(next)\n                    inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->\n                        inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))\n                    }\n                    onAccepted(next); recovered = true\n                }\n            }\n        } catch (_: CancellationException) { return false }\n        return recovered\n    }\n\n    /** Called by the existing full-owner position observer, with no new poller.\n",
+      "beforeSha256LF": "7820493576fbbaa91946adfa447d7ee09189039d8d6e6e448ed3e65ce4151c4f",
+      "afterSha256LF": "41ea0c0d95b49c4704ad74d63f67c2365efc6ceff7bab4dc470e293c5e25944d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "label": "strict post-original delta body",
+      "before": "def generate(repo,output,standalone=False):\n",
+      "after": "\ndef captured_media_byte_consumer_delta(path, text):\n edits=[{'path': 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt', 'before': '        playbackCdnPrefetchJob = environment.invocations.launch {\\n', 'after': '        val capturedCache = environment.cdnRangeCapture(expected) ?: return\\n        playbackCdnPrefetchJob = environment.invocations.launch {\\n'}, {'path': 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt', 'before': '                cache = environment.cdnRangeCache,\\n                client = environment.repository.playbackCalls\\n', 'after': '                cache = capturedCache,\\n                client = capturedCache.calls(checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job])),\\n                headers = capturedCache.headers\\n'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '    private val client: okhttp3.Call.Factory\\n', 'after': '    private val client: okhttp3.Call.Factory,\\n    private val headers: Map<String, String>\\n'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': 'headers = PLAYBACK_HEADERS', 'after': 'headers = headers'}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '            .header(\"Referer\", \"https://www.bilibili.com\")\\n', 'after': '            .apply { headers.forEach { (name, value) -> header(name, value) } }\\n', 'count': 2}, {'path': 'com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt', 'before': '    private companion object {\\n        val PLAYBACK_HEADERS = mapOf(\\n            \"Referer\" to \"https://www.bilibili.com\",\\n            \"User-Agent\" to \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\\n        )\\n    }\\n', 'after': ''}]\n for edit in edits:\n  if edit[\"path\"]!=path:continue\n  count=edit.get(\"count\",1);assert text.count(edit[\"before\"])==count,(path,\"byte-cache consumer anchor\")\n  text=text.replace(edit[\"before\"],edit[\"after\"],count)\n return text\n\ndef generate(repo,output,standalone=False):\n",
+      "beforeSha256LF": "29b357d72f1caaf7385c52669500d6905e98ebddb3dbcd1309719e9414d79087",
+      "afterSha256LF": "5d623f06a176a9afaf8a54cc1bac24ee6b988689ed5a47dd532d88459eb27fb7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "label": "apply source delta after original inverse proof",
+      "before": "  body=retained_handoff_platform_delta(recipe['output'],body)\n",
+      "after": "  body=retained_handoff_platform_delta(recipe['output'],body)\n  body=captured_media_byte_consumer_delta(recipe['output'],body)\n",
+      "beforeSha256LF": "8b6ba54de6763fb2f83a131c8a80f7b363a38a75b30c565b4edd68f477cfe99b",
+      "afterSha256LF": "331bf9963ebefda98f48a9e1a17357dd7762b9bd59d6d7bb5af1c87a9c8fc224"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "label": "strict post-original delta body",
+      "before": "def generate(repo,output,standalone=False):\n",
+      "after": "\ndef captured_media_byte_consumer_delta(path, text):\n edits=[{'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt', 'before': 'val playData = platform.capturePlaybackRequest().protocol.preloadPortraitPlayUrl(', 'after': 'val byteRequest = platform.capturePlaybackRequest()\\n                    val playData = byteRequest.protocol.preloadPortraitPlayUrl(', 'count': 2}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt', 'before': 'prefetchPortraitPlaybackHead(platform, streamUrls)', 'after': 'prefetchPortraitPlaybackHead(platform, streamUrls, platform.captureMediaCache(byteRequest, playData, streamUrls))', 'count': 2}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '    streamUrls: PortraitPlaybackStreamUrls\\n) {\\n    // 头部预取', 'after': '    streamUrls: PortraitPlaybackStreamUrls,\\n    capturedCache: com.bilipai.desktop.ui.DesktopOriginalPortraitByteCache\\n) {\\n    // 头部预取'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '    if (!context.isWifi()) return\\n    coroutineScope {\\n', 'after': '    if (!context.isWifi()) { capturedCache.close(); return }\\n    try { coroutineScope {\\n'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': 'context.prefetchRange(url, buildPortraitPlaybackHttpHeaders(), length)', 'after': 'capturedCache.prefetchHead(url, length)'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '        }.awaitAll()\\n    }\\n}\\n\\ninternal fun buildPortraitCachedMediaSourceFactory', 'after': '        }.awaitAll()\\n    } } finally { capturedCache.close() }\\n}\\n\\ninternal fun buildPortraitCachedMediaSourceFactory'}]\n for edit in edits:\n  if edit[\"path\"]!=path:continue\n  count=edit.get(\"count\",1);assert text.count(edit[\"before\"])==count,(path,\"byte-cache consumer anchor\")\n  text=text.replace(edit[\"before\"],edit[\"after\"],count)\n return text\n\ndef generate(repo,output,standalone=False):\n",
+      "beforeSha256LF": "29b357d72f1caaf7385c52669500d6905e98ebddb3dbcd1309719e9414d79087",
+      "afterSha256LF": "1f36dd4add453a859003505563f5dd2b95f344c57bfd9ab72c06ed542452610d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "label": "apply source delta after original inverse proof",
+      "before": "  text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==spec['outputSHA'],spec['output']\n",
+      "after": "  text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==spec['outputSHA'],spec['output']\n  text=captured_media_byte_consumer_delta(spec['output'],text)\n",
+      "beforeSha256LF": "90c1cab07db65191d0b2e9afc00d9b78aeae090fb5401c8b877910aecb045f13",
+      "afterSha256LF": "2c46a2e308e18a47c8342c003afbc5fd825b803d7e1ba7859f80b5e248f1f7f7"
+    }
+  ]
+}

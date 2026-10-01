@@ -1,0 +1,21 @@
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\1\DesktopMediaByteProbeCalls.kt:68:34: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+            override fun enqueue(callback: Callback) {
+                                 ^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\10\PortraitVideoPager.kt:1805:45: warning: the corresponding parameter in the supertype 'Listener' is named 'isPlaying'. This may cause problems when calling this function with named arguments.
+            override fun onIsPlayingChanged(isPlaying_: Boolean) {
+                                            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\10\PortraitVideoPager.kt:1818:54: warning: the corresponding parameter in the supertype 'Listener' is named 'parameters'. This may cause problems when calling this function with named arguments.
+            override fun onPlaybackParametersChanged(playbackParameters: PlaybackParameters) {
+                                                     ^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\10\PortraitVideoPager.kt:3000:9: warning: expression is unused.
+        Unit
+        ^^^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\6\DesktopMediaByteCache.kt:266:42: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                val body = response.body ?: throw IOException("Media body missing")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\6\DesktopMediaByteCache.kt:317:46: warning: unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+                    val input = response.body?.byteStream() ?: throw IOException("Media body missing")
+                                             ^^
+work\BiliPai\desktop\.local\stable-original-video-byte-cache-consumers-parity\runs\proof-05\inputs\8\VideoPlaybackViewModel.kt:1754:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^

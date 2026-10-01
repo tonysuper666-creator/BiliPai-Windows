@@ -1,0 +1,151 @@
+{
+  "phase": 73,
+  "baseCommit": "08d31bd020c515fc1e48775809766082fead6117",
+  "preparedRawArtifacts": 10,
+  "preparedManifestSha256Bytes": "25771d468adc09c45e200ff8e85477688532e869d9c6acb4befcbd02eaa0374a",
+  "payloadCount": 2,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "sha256Bytes": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "sha256Bytes": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "6e4e61cbb89b1a9dde88c0b1ca83500d94608a09850daf7eee05c3f5f7120f46",
+      "afterSha256Bytes": "68e89a8bdc4696154240831a0c3c8f473996537a416101727eb8b3dab0e33778"
+    }
+  ],
+  "existingOriginalIdentityFeatureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/NetworkUtils.kt",
+      "sha256": "306e82c59477a5b8801a86f85d0d0c856c31fc5801d52dd626af3765afc4530e",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "stable-original-video-full-owner"
+      ],
+      "afterFeatures": [
+        "stable-original-video-full-owner",
+        "stable-video-root-effects"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/AnalyticsHelper.kt",
+      "sha256": "b8a96390d286964518caea6849afaeba075f5d3e8ac1cdb23b73af17feac6ccc",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "home-protocol-platform-reference",
+        "stable-video-detail-full-units"
+      ],
+      "afterFeatures": [
+        "home-protocol-platform-reference",
+        "stable-video-detail-full-units",
+        "stable-video-root-effects"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/CrashReporter.kt",
+      "sha256": "f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "settings-local-diagnostics-parity"
+      ],
+      "afterFeatures": [
+        "settings-local-diagnostics-parity",
+        "stable-video-root-effects"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "mode": "policy-extract",
+      "beforeFeatures": [
+        "appearance-parity",
+        "discovery",
+        "dynamic-detail-reply",
+        "home-full-card",
+        "home-page",
+        "home-protocol-platform-reference",
+        "live-sub-navigation",
+        "original-video-detail-holder-full",
+        "settings-dynamic-full-card-parity",
+        "settings-dynamic-tabs-parity",
+        "settings-home-card-parity",
+        "settings-home-dynamic-parity",
+        "settings-image-save-path-parity",
+        "settings-local-diagnostics-parity",
+        "settings-privacy-section-parity",
+        "stable-collection-sheet",
+        "stable-danmaku-list-menu",
+        "stable-danmaku-settings-panel",
+        "stable-download-list-original",
+        "stable-favorites",
+        "stable-frosted-audio-renderer",
+        "stable-linked-dock-search",
+        "stable-music-player-original",
+        "stable-navigation3-host",
+        "stable-original-video-full-owner",
+        "stable-profile-windows-platform",
+        "stable-shared-liquid-tabs",
+        "stable-video-content-full",
+        "stable-video-detail-full-units",
+        "stable-video-fullscreen-pager",
+        "stable-video-metadata",
+        "stable-video-original-comments",
+        "stable-video-player-full-controls",
+        "stable-video-player-section-full",
+        "stable-video-tablet-original"
+      ],
+      "afterFeatures": [
+        "appearance-parity",
+        "discovery",
+        "dynamic-detail-reply",
+        "home-full-card",
+        "home-page",
+        "home-protocol-platform-reference",
+        "live-sub-navigation",
+        "original-video-detail-holder-full",
+        "settings-dynamic-full-card-parity",
+        "settings-dynamic-tabs-parity",
+        "settings-home-card-parity",
+        "settings-home-dynamic-parity",
+        "settings-image-save-path-parity",
+        "settings-local-diagnostics-parity",
+        "settings-privacy-section-parity",
+        "stable-collection-sheet",
+        "stable-danmaku-list-menu",
+        "stable-danmaku-settings-panel",
+        "stable-download-list-original",
+        "stable-favorites",
+        "stable-frosted-audio-renderer",
+        "stable-linked-dock-search",
+        "stable-music-player-original",
+        "stable-navigation3-host",
+        "stable-original-video-full-owner",
+        "stable-profile-windows-platform",
+        "stable-shared-liquid-tabs",
+        "stable-video-content-full",
+        "stable-video-detail-full-units",
+        "stable-video-fullscreen-pager",
+        "stable-video-metadata",
+        "stable-video-original-comments",
+        "stable-video-player-full-controls",
+        "stable-video-player-section-full",
+        "stable-video-tablet-original",
+        "stable-video-root-effects"
+      ]
+    }
+  ],
+  "newIdentityCount": 0,
+  "newClientStoreActorScopeDependencyCount": 0,
+  "realPreferredNetworkQueryRuntimeAccepted": false,
+  "diagnosticWriterRuntimeAccepted": false,
+  "firebaseTransportAvailable": false,
+  "fullRootMounted": false,
+  "desktopExeReplaced": false
+}

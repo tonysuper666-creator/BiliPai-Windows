@@ -1,0 +1,40 @@
+{
+  "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+  "originalSha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+  "gitBlob": "377e9680841ef3c1f2edcc2aca3605008099606a",
+  "output": "com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+  "outputSha256LF": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+  "functions": [
+    {
+      "name": "checkFavoriteStatus",
+      "sha256LF": "9b6d5bfe26d9b972dc027d685964468036286e243a6255643dc561f503161534",
+      "body": "    suspend fun checkFavoriteStatus(aid: Long): Boolean {\n        return withContext(Dispatchers.IO) {\n            try {\n                val response = api.checkFavoured(aid)\n                if (response.code == 0) {\n                    val isFavoured = response.data?.favoured ?: false\n                    com.android.purebilibili.core.util.Logger.d(\"ActionRepository\", \" checkFavoriteStatus: aid=$aid, isFavoured=$isFavoured\")\n                    isFavoured\n                } else {\n                    false\n                }\n            } catch (e: Exception) {\n                android.util.Log.e(\"ActionRepository\", \"checkFavoriteStatus failed\", e)\n                false\n            }\n        }\n    }\n"
+    },
+    {
+      "name": "checkLikeStatus",
+      "sha256LF": "ffbd46c3dc5c1f6438bfe6903d8f6cf49340f811e84d11bfb2b18dd840ad4b4a",
+      "body": "    suspend fun checkLikeStatus(aid: Long): Boolean {\n        return withContext(Dispatchers.IO) {\n            try {\n                val response = api.hasLiked(aid)\n                if (response.code == 0) {\n                    val isLiked = response.data == 1\n                    com.android.purebilibili.core.util.Logger.d(\"ActionRepository\", \" checkLikeStatus: aid=$aid, isLiked=$isLiked\")\n                    isLiked\n                } else {\n                    false\n                }\n            } catch (e: Exception) {\n                android.util.Log.e(\"ActionRepository\", \"checkLikeStatus failed\", e)\n                false\n            }\n        }\n    }\n"
+    },
+    {
+      "name": "checkDislikeStatus",
+      "sha256LF": "5d326b7355531b92886568375fbc45ff6444cbb2715d3ccf67a060b95527321d",
+      "body": "    suspend fun checkDislikeStatus(aid: Long): Boolean {\n        return withContext(Dispatchers.IO) {\n            try {\n                val response = api.getVideoRelation(aid = aid)\n                if (response.code == 0) {\n                    response.data?.dislike ?: false\n                } else {\n                    false\n                }\n            } catch (e: Exception) {\n                android.util.Log.e(\"ActionRepository\", \"checkDislikeStatus failed\", e)\n                false\n            }\n        }\n    }\n"
+    },
+    {
+      "name": "checkCoinStatus",
+      "sha256LF": "c30cc7718d3b4c6f3ddc4192c19890a94af55456e78c0eb33f59d791f4cc4722",
+      "body": "    suspend fun checkCoinStatus(aid: Long): Int {\n        return withContext(Dispatchers.IO) {\n            try {\n                val response = api.hasCoined(aid)\n                if (response.code == 0) {\n                    val coinCount = response.data?.multiply ?: 0\n                    com.android.purebilibili.core.util.Logger.d(\"ActionRepository\", \" checkCoinStatus: aid=$aid, coinCount=$coinCount\")\n                    coinCount\n                } else {\n                    0\n                }\n            } catch (e: Exception) {\n                android.util.Log.e(\"ActionRepository\", \"checkCoinStatus failed\", e)\n                0\n            }\n        }\n    }\n"
+    },
+    {
+      "name": "checkWatchLaterStatus",
+      "sha256LF": "73e90b197ced502c89fce2f79e1a9117ca14a13c90fdef89452adc9a8a5f0768",
+      "body": "    suspend fun checkWatchLaterStatus(aid: Long): Boolean = withContext(Dispatchers.IO) {\n        if (aid <= 0L || TokenManager.sessDataCache.isNullOrEmpty()) return@withContext false\n        runCatching {\n            val response = api.getWatchLaterList()\n            response.code == 0 && isWatchLaterAid(response.data?.list.orEmpty(), aid)\n        }.getOrDefault(false)\n    }\n"
+    }
+  ],
+  "helper": "internal fun isWatchLaterAid(items: List<WatchLaterItem>, aid: Long): Boolean {\n    return aid > 0L && items.any { it.aid == aid }\n}\n",
+  "helperSha256LF": "97f2f6099298fe0d0aee3c55435ce64040946ee85461391abb8ebc7aaf616b35",
+  "platformSubstitution": {
+    "TokenManager.sessDataCache": "primarySessData()"
+  },
+  "existingFollowStatus": "DesktopOriginalCreatorStatus.checkFollowStatus"
+}

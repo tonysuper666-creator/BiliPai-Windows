@@ -1,0 +1,498 @@
+{
+  "schema": 1,
+  "scope": "prepared original ordinary-video Assembly/Action/Request/EntryReadback source, NOT actual Root owner acceptance",
+  "rows": [
+    {
+      "path": "ActionStatusProof.kt",
+      "sha256Bytes": "9c71daecf9b72a7f4df36264ce7cab6318dc918d78286cafe459e9998cd34fb6",
+      "size": 11738
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "759cde1ad7ffd6ec40f1232853d73c0760e7ffa60453893df2746912374d3690",
+      "size": 12390
+    },
+    {
+      "path": "action-status-selection.json",
+      "sha256Bytes": "b0e1aea694e4b37eb5869b42f2c8ce61b232890ab25ab89e9697c6fdc7aa1371",
+      "size": 4653
+    },
+    {
+      "path": "cache-consumer-compatibility-hunk.json",
+      "sha256Bytes": "1a4d40557ba6c4d253ee3c49c24baf520181589a5504b0846a3a2c2265e88045",
+      "size": 1197
+    },
+    {
+      "path": "compile-cache-compatible.py",
+      "sha256Bytes": "dd85df9513cecae775317d6bf0afe3bef5fd9d598f7ef9f069fe1618a5328715",
+      "size": 5822
+    },
+    {
+      "path": "compile-reference/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "70e9512fc0f47534ff380ea8b6ba69507a8972bf3ab8b6617d930087b4dbd48b",
+      "size": 386594
+    },
+    {
+      "path": "compile-reference/cache-compatible/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "aeee153c9df8f84756f5b64a6681b7ecee6aeb7a10b9812314282eda2fafeab8",
+      "size": 12036
+    },
+    {
+      "path": "compile-reference/cache-compatible/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+      "size": 386755
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "805af75d9a67aa0b1d7f00a9934352f6564b7ea86458d5aab1d3e7d77f4a18cb",
+      "size": 4153
+    },
+    {
+      "path": "compile05-audit-correction.json",
+      "sha256Bytes": "36811693606adc2c83b1c124d47d128e5b2ca7d8aa76b0f071d18fc6588415c6",
+      "size": 25170
+    },
+    {
+      "path": "controller-facade-inventory.json",
+      "sha256Bytes": "409015700863826b354ef8a89346f071fa67e079939053eb0e83b96b1abeb09d",
+      "size": 15770
+    },
+    {
+      "path": "controller-facade-inventory.md",
+      "sha256Bytes": "e4bfac102d693d159c765c8510ade0e06db806b62d836552555af7db9322b50c",
+      "size": 5710
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "2385dcd68b28fb7cfeaa567e4ea6ca3b8b0633a3712d12002bdb662b87b7d53c",
+      "size": 14051
+    },
+    {
+      "path": "excluded-compiled-artifacts.json",
+      "sha256Bytes": "f903269c1a9ab881793477f7481311d7f800dc7557e658872a17ede55338d776",
+      "size": 1429
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "b6c2e606ca4a6be7dfc8a54feb492599413a0341d181fd3878a0b2a589e48605",
+      "size": 10243
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+      "sha256Bytes": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+      "size": 3638
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "70e9512fc0f47534ff380ea8b6ba69507a8972bf3ab8b6617d930087b4dbd48b",
+      "size": 386594
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+      "sha256Bytes": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+      "size": 3638
+    },
+    {
+      "path": "history-and-scope.json",
+      "sha256Bytes": "359d48848adf79acd324b3d7161254219c9c38b85f6c365db99c3d990f0711f4",
+      "size": 1020
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "f9328bf10b896a43abcb05eb34173d1dbffde38c4c285c6dfbe5f0e7031e2e9f",
+      "size": 2349
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "a8bfd5312e06c77e4804d5a724baa1d55fbc44ab9a99f3f854d5f4179423a61d",
+      "size": 8122
+    },
+    {
+      "path": "prepared/cache-compatible/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "size": 14262
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "size": 59193
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "b01a7c5d73599667cb9fca0bd080322993ff929ea67f8c54861c38c44d21a247",
+      "size": 11455
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "c59452bab31b9d9abbf2e95a65b688d4255e9a63d55a91056e398dc9a59deb9b",
+      "size": 215416
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "sha256Bytes": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5",
+      "size": 2776
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "sha256Bytes": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715",
+      "size": 4984
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "3a466002cda83c218dd813f1b3a44d4b8d2331d7835de5763425f5411649c384",
+      "size": 13991
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "size": 3632
+    },
+    {
+      "path": "proof-runs/01/ActionStatusProof.kt",
+      "sha256Bytes": "bc7e11097392f6069d79fb16dbd20d61638f7fe8e79d15d676798da61dc6c6a7",
+      "size": 11671
+    },
+    {
+      "path": "proof-runs/01/compile.args",
+      "sha256Bytes": "ed450f24c6cba23b76febb2c9a9acad28d1b6dba7ab2e200f15db79558bb3024",
+      "size": 26159
+    },
+    {
+      "path": "proof-runs/01/compile.log",
+      "sha256Bytes": "6fdd74619ed3dbe46adc737af271d8edab1e357290ff98ad031abf91b01a1939",
+      "size": 2728
+    },
+    {
+      "path": "proof-runs/01/pins-after.json",
+      "sha256Bytes": "afab15b97256df75a46b9a50e2c9fbe87124b81a512747026f20730abcee317f",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/01/pins-before.json",
+      "sha256Bytes": "afab15b97256df75a46b9a50e2c9fbe87124b81a512747026f20730abcee317f",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/01/result.json",
+      "sha256Bytes": "50276c855e0cfaaf3306415b287ff06f0729cb8b8138d79605229a8a45bd4365",
+      "size": 22131
+    },
+    {
+      "path": "proof-runs/02/ActionStatusProof.kt",
+      "sha256Bytes": "9a8edbeafd148052482d45602a809368de86c28257118a07f4bbcf7e70a81702",
+      "size": 11730
+    },
+    {
+      "path": "proof-runs/02/compile.args",
+      "sha256Bytes": "be5df0b062c2c8aed4a006c08d3755f4e35238fa230cae68ea11d37e92c5fd9d",
+      "size": 26159
+    },
+    {
+      "path": "proof-runs/02/compile.log",
+      "sha256Bytes": "579c56c1a5ca94f80941b36df99d54396cb42d00d621805bf67de816f78a6730",
+      "size": 2238
+    },
+    {
+      "path": "proof-runs/02/pins-after.json",
+      "sha256Bytes": "af993f758cb1602226ac0e2333f7099f5ff678f1d353bb841ee303d2ba1b964a",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/02/pins-before.json",
+      "sha256Bytes": "af993f758cb1602226ac0e2333f7099f5ff678f1d353bb841ee303d2ba1b964a",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/02/result.json",
+      "sha256Bytes": "196726d1dfd73b196aeee2e7cd91d62dcb68d159710d6508204d8c51c2744835",
+      "size": 22277
+    },
+    {
+      "path": "proof-runs/02/run.log",
+      "sha256Bytes": "c7648c4868c28a6263a07f732aeb8a21a68fdc7ab545f6dc3b5182c68c6b9401",
+      "size": 1485
+    },
+    {
+      "path": "proof-runs/02/runtime-command.json",
+      "sha256Bytes": "22bab8f6e8e4b87f90893af650f32142a14dac0fe70479c1ae9601554e8a1d4c",
+      "size": 27224
+    },
+    {
+      "path": "proof-runs/03/ActionStatusProof.kt",
+      "sha256Bytes": "9c71daecf9b72a7f4df36264ce7cab6318dc918d78286cafe459e9998cd34fb6",
+      "size": 11738
+    },
+    {
+      "path": "proof-runs/03/compile.args",
+      "sha256Bytes": "6ac2eef160cdabca15ba9f42bcce306590b462f9cbce2b25e6bb55e32b7dc11e",
+      "size": 26159
+    },
+    {
+      "path": "proof-runs/03/compile.log",
+      "sha256Bytes": "579c56c1a5ca94f80941b36df99d54396cb42d00d621805bf67de816f78a6730",
+      "size": 2238
+    },
+    {
+      "path": "proof-runs/03/pins-after.json",
+      "sha256Bytes": "e6eeda12cf36ced7f1b438a906889b5b9395a82a149b40d2abf2c9a6770e329d",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/03/pins-before.json",
+      "sha256Bytes": "e6eeda12cf36ced7f1b438a906889b5b9395a82a149b40d2abf2c9a6770e329d",
+      "size": 65030
+    },
+    {
+      "path": "proof-runs/03/result.json",
+      "sha256Bytes": "bdb8402b5a11e58ac827deede1e660a33d63a9d118138524cd16ad9703184eda",
+      "size": 22276
+    },
+    {
+      "path": "proof-runs/03/run.log",
+      "sha256Bytes": "6a6ef26edfa5eb868851e777ea10128a9a4e9052d66f96622ff15c499deab7ad",
+      "size": 1500
+    },
+    {
+      "path": "proof-runs/03/runtime-command.json",
+      "sha256Bytes": "db3a5a83c8ba5c44e55bc143dfd14b00083e1b6e6e01f57a82fdbdcc58099902",
+      "size": 27224
+    },
+    {
+      "path": "registry-merge.json",
+      "sha256Bytes": "a260e870e359d550ad5c504127163758c3b213b21dbdf4350972a5d86ead3dfe",
+      "size": 1827
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "6f769ad7ac3a6a63bf9dee9e70568383f8139c4a22f0dade11d1a93f2eae7d8e",
+      "size": 4370
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "a4a817759c45ee44c49dc00081cf28e858cdc2a13311cfef73e52c386fbf7395",
+      "size": 452
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "50df10c4a1ef9e3ae0e9a39bbb0e1f5645805d6e5899aadba021d2cd4639f91f",
+      "size": 25880
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "f5133d490ae864fe11e7e2ce02bc5011c7ce15ce1b394e2173cf017ab644c2e7",
+      "size": 362
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "e7a7dcd44a9f4f541e4310f322538dc593ad639461ff37f1a096f8ab866ea940",
+      "size": 43365
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "e7a7dcd44a9f4f541e4310f322538dc593ad639461ff37f1a096f8ab866ea940",
+      "size": 43365
+    },
+    {
+      "path": "runs/02/compile-result.json",
+      "sha256Bytes": "c54db77b7e408b355a59e47d1bd730967cf9b04a1d3a9db0c00c31dc9a0f8c8c",
+      "size": 465
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "7b43e2465c3bc067a38e91a438925ae0fa6e01c25945aaeda1c2b18cb3e8391d",
+      "size": 26779
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "a5f13224710c8a503e4b81a2b1cffc21b2a47d9a13e00be35b5a31672e62c451",
+      "size": 659
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "257650a36e37b588e9ebf81d8a1261dca30fe47fd9c043464a1c16b8de9fcb3e",
+      "size": 44795
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "257650a36e37b588e9ebf81d8a1261dca30fe47fd9c043464a1c16b8de9fcb3e",
+      "size": 44795
+    },
+    {
+      "path": "runs/03/compile-result.json",
+      "sha256Bytes": "9feda17518460af6a884567e48404291baad813996d99eae3adcd7c977fe5986",
+      "size": 20192
+    },
+    {
+      "path": "runs/03/compile.args",
+      "sha256Bytes": "00d824a7792cbd7371f3fd2a616a1270f8280768f5fff13f8912ebe964481fa1",
+      "size": 26779
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "8c26fac451ed44af9e6af990f9f25e8ba4dd790fe04d0a062bf045f41f1e4863",
+      "size": 1200
+    },
+    {
+      "path": "runs/03/pins-after.json",
+      "sha256Bytes": "ad7c87e99ba9b4ce38d6ca233ecb5b48b779e7ebd274a101f13e9cd387bc7ae4",
+      "size": 44795
+    },
+    {
+      "path": "runs/03/pins-before.json",
+      "sha256Bytes": "ad7c87e99ba9b4ce38d6ca233ecb5b48b779e7ebd274a101f13e9cd387bc7ae4",
+      "size": 44795
+    },
+    {
+      "path": "runs/04/compile-result.json",
+      "sha256Bytes": "58b54b374df0d92545e4f85803e94f3059badd17cf50ae7822c21dd3befcc7b1",
+      "size": 465
+    },
+    {
+      "path": "runs/04/compile.args",
+      "sha256Bytes": "f420598a3d65ee68f4d10d1bbf6d0548b49359fc9306f88d8def4b44bd580428",
+      "size": 27464
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "e742d68635b4fd7b232a553823a9f978512daf56b50cc05cec3d553a608f24a3",
+      "size": 344
+    },
+    {
+      "path": "runs/04/pins-after.json",
+      "sha256Bytes": "4dce29bc4e049061f54d6ebce35cb1936a70f7074273dbd28e6287bf33f587e2",
+      "size": 45883
+    },
+    {
+      "path": "runs/04/pins-before.json",
+      "sha256Bytes": "4dce29bc4e049061f54d6ebce35cb1936a70f7074273dbd28e6287bf33f587e2",
+      "size": 45883
+    },
+    {
+      "path": "runs/05/compile.args",
+      "sha256Bytes": "cb46cb9fdee3d8151d50adb42c2186d6223c5670d375910eca14e9b07584587a",
+      "size": 27464
+    },
+    {
+      "path": "runs/05/compile.log",
+      "sha256Bytes": "b0b4289c51a52308311d9b880a5bf7637a2c7b4b8276794ea1139d7a7c0c2ad5",
+      "size": 1953
+    },
+    {
+      "path": "runs/05/pins-after.json",
+      "sha256Bytes": "70993c19a7f81d070aa46b5595df85fca25ab51f026d7f72843422523414d097",
+      "size": 45883
+    },
+    {
+      "path": "runs/05/pins-before.json",
+      "sha256Bytes": "70993c19a7f81d070aa46b5595df85fca25ab51f026d7f72843422523414d097",
+      "size": 45883
+    },
+    {
+      "path": "runs/06/compile-result.json",
+      "sha256Bytes": "e3fbb1fb5dbcff8bc84143e33454e377a6e3364a83cc9217fad93e6b70982903",
+      "size": 22334
+    },
+    {
+      "path": "runs/06/compile.args",
+      "sha256Bytes": "337886a6f8e43b4a4fb99fd1a1bef90374f38d9a6e65aff29c31fd282ca01e43",
+      "size": 27464
+    },
+    {
+      "path": "runs/06/compile.log",
+      "sha256Bytes": "6e22b200a11700b918e10060c4aca56761180fea23437bae2b6232b37c2a311d",
+      "size": 1953
+    },
+    {
+      "path": "runs/06/pins-after.json",
+      "sha256Bytes": "812d6a6c52a8e4f5a64bad1ce5bf285691c9ddba9d3ad77a6db355f47c5ffac7",
+      "size": 45883
+    },
+    {
+      "path": "runs/06/pins-before.json",
+      "sha256Bytes": "812d6a6c52a8e4f5a64bad1ce5bf285691c9ddba9d3ad77a6db355f47c5ffac7",
+      "size": 45883
+    },
+    {
+      "path": "runs/07/compile-result.json",
+      "sha256Bytes": "6b1c9009df5390dea2fceab8cbbb131e4163b518f4df9d34b9cc4f8e02749ddf",
+      "size": 356
+    },
+    {
+      "path": "runs/07/compile.args",
+      "sha256Bytes": "8b118ba5759a3d7f729e6620bcb45c2f61c7e086820675bb0d9c53c64f43894c",
+      "size": 27792
+    },
+    {
+      "path": "runs/07/compile.log",
+      "sha256Bytes": "8b357eb1eda0352ee899ae774d27bffd297d22cc1edb0419175407cbdfa2e5f1",
+      "size": 1990
+    },
+    {
+      "path": "runs/07/pins-after.json",
+      "sha256Bytes": "1e39d254dd2f26777825f53d470e8789b7c3404d76555c27f90257af90ddaa70",
+      "size": 68049
+    },
+    {
+      "path": "runs/07/pins-before.json",
+      "sha256Bytes": "1e39d254dd2f26777825f53d470e8789b7c3404d76555c27f90257af90ddaa70",
+      "size": 68049
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "a7b3482ed4838c6df36ad8620747bd51eae27acaae66202b6256995f712fc325",
+      "size": 3892
+    },
+    {
+      "path": "source-only-audit.json",
+      "sha256Bytes": "488f03a72598cdeaf249a6bfb936444a4c1d53a89653e256ca17258e6f98f039",
+      "size": 1958
+    },
+    {
+      "path": "source-replay-audit.json",
+      "sha256Bytes": "656f94a0930311ec4d82179c074ee883a87f3d774e3b472a66464043a60c3c11",
+      "size": 6571
+    }
+  ],
+  "artifacts": 90,
+  "copyWhitelist": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "sha256Bytes": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5",
+      "sha256LF": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "sha256Bytes": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715",
+      "sha256LF": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/cache-compatible/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "sha256LF": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "sha256LF": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "newManualOnly": true
+    }
+  ],
+  "exactHunksSHA256Bytes": "2385dcd68b28fb7cfeaa567e4ea6ca3b8b0633a3712d12002bdb662b87b7d53c",
+  "sourceAuditSHA256Bytes": "488f03a72598cdeaf249a6bfb936444a4c1d53a89653e256ca17258e6f98f039",
+  "actual71ManifestSHA256": "416f1ec5fdf577f13c607d52248ca3c97d39420d363bac78f500d119053e6ad1",
+  "actual71OrderedCPSHA256": "6ec3765f3ced6095ac01d2c2908550e9487bfcd586c1008ff4a582920f84f55f",
+  "prospectiveCacheConsumerManifestSHA256": "b0f87d87632549bf9e5b28ae0f4447f999947253e8cf0bc8d66fde0466a07628",
+  "compilerPassed": true,
+  "actionStatusFixturePassed": true,
+  "wholeOwnerConstructed": false,
+  "RootMounted": false,
+  "native": false,
+  "HTTP": false
+}

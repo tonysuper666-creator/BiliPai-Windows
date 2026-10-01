@@ -1,0 +1,26 @@
+PASS raw captured request exposes real sameStore byte receipt
+PASS explicit key groups registered signed mirrors without changing key
+PASS source carrier holds the exact prepared Bound
+PASS same separate track plan can be retained
+PASS changed mirror or explicit cache key refuses old native plan
+PASS original SIDX prefetch writes real selected interval into same native Bound
+PASS original worker uses final native headers on both probe and cached range wire
+PASS head clipping retains existing SIDX byte coverage instead of duplicate full range
+PASS consumer refuses mismatched final headers rather than false success
+PASS captured probe refuses an uncaptured URL
+PASS full adaptive plan captures both video representations and audio
+PASS full manifest preparation retains all original representation and range rows
+PASS same full adaptive plan retains original representation identity
+PASS changed MPD range refuses old native plan
+PASS separate and full MPD plans never reuse each other's carrier
+PASS cache factory refuses preparation outside original lexical intent
+PASS cache decorator preserves exact original lexical seek pause and receipt
+PASS unsupported transport is explicit typed Direct with unchanged original source
+PASS unsupported preparation does not allocate native byte capability
+PASS unsupported legacy input returns typed Direct before HTTP track construction
+PASS unsupported full adaptive path preserves original legacy fallback decision
+PASS real delayed probe delivered headers before body read
+PASS actual CallerJob retirement rejects later response body read
+PASS request entry retirement rejects late cache preparation
+PASS completed unaccepted request retires its prepared registration
+{"groups":5,"assertions":25,"runtimeSnapshot":70,"explicitCandidateFamilyOverrides":true,"RootInstalledAcceptance":false,"newConsumerLocalIO":true,"nativeReplayed":false,"HTTPExternal":false,"account":false,"window":false}

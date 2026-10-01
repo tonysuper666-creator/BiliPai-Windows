@@ -1,0 +1,94 @@
+{
+  "originals": [
+    {
+      "originalIdentity": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+        "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+        "features": [
+          "discovery",
+          "dynamic-follow-observer-parity",
+          "stable-collection-sheet",
+          "stable-video-metadata",
+          "stable-favorites",
+          "stable-favorite-folder-sheet",
+          "home-protocols",
+          "stable-video-detail-full-units",
+          "stable-personal-following"
+        ],
+        "mode": "policy-extract"
+      },
+      "featureUnion": [
+        "stable-original-video-full-owner",
+        "desktop-original-video-owner-assembly"
+      ],
+      "preserveExistingModeAndSHA": true,
+      "newIdentity": false
+    },
+    {
+      "originalIdentity": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+        "mode": "extracted",
+        "features": [
+          "cdn",
+          "playback",
+          "stable-danmaku-list-menu",
+          "stable-favorite-folder-sheet",
+          "stable-original-video-full-owner",
+          "stable-video-fullscreen-pager",
+          "stable-video-original-comments",
+          "stable-video-state-core",
+          "subtitle",
+          "watchdogs",
+          "stable-original-video-byte-cache-consumers"
+        ],
+        "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+      },
+      "featureUnion": [
+        "stable-original-video-full-owner",
+        "desktop-original-video-owner-assembly"
+      ],
+      "preserveExistingModeAndSHA": true,
+      "newIdentity": false
+    }
+  ],
+  "soleProducer": "desktop/tools/extract-upstream-video-full-owner.py",
+  "newOutput": "com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+  "manuals": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "sha256Bytes": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5",
+      "sha256LF": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "sha256Bytes": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715",
+      "sha256LF": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/cache-compatible/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "sha256LF": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "newManualOnly": true
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "sha256LF": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "newManualOnly": true
+    }
+  ],
+  "sharedSourcesReferencedOnly": [
+    "original CreatorStatus/folder/engagement/FavoriteEnvironment",
+    "actual Holder/Section/Core",
+    "same native/Store/Repository/cache",
+    "sibling byte-cache consumer"
+  ],
+  "newOriginalIdentities": 0,
+  "existingFamilyOverridesExplicit": true
+}

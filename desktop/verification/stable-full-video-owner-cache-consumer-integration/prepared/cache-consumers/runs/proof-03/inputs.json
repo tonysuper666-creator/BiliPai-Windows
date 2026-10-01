@@ -1,0 +1,182 @@
+[
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoByteCacheConsumers.kt",
+      "size": 13902,
+      "sha256Bytes": "2df21086204df657fc67ffa60bd0897d342a9995521b01bba6c67b73e6eada1b"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\0\\DesktopOriginalVideoByteCacheConsumers.kt",
+      "size": 13902,
+      "sha256Bytes": "2df21086204df657fc67ffa60bd0897d342a9995521b01bba6c67b73e6eada1b"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\manual\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProbeCalls.kt",
+      "size": 4773,
+      "sha256Bytes": "7033065977ad5869e78f1ba649ff371129039e95b83185fc60e59276c09cbcce"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\1\\DesktopMediaByteProbeCalls.kt",
+      "size": 4773,
+      "sha256Bytes": "7033065977ad5869e78f1ba649ff371129039e95b83185fc60e59276c09cbcce"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitPlatform.kt",
+      "size": 7777,
+      "sha256Bytes": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\2\\DesktopOriginalPortraitPlatform.kt",
+      "size": 7777,
+      "sha256Bytes": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "size": 23903,
+      "sha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\3\\DesktopOriginalVideoNativeOwner.kt",
+      "size": 23903,
+      "sha256Bytes": "ec052008c2261556543d437e28ce294d3d977132c394339179268efc3a0f5a03"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "size": 13510,
+      "sha256Bytes": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\4\\DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "size": 13510,
+      "sha256Bytes": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoRepositoryBinding.kt",
+      "size": 11680,
+      "sha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\5\\DesktopOriginalVideoRepositoryBinding.kt",
+      "size": 11680,
+      "sha256Bytes": "81267cfe01d5f892529333d904b35352443d0494b65a25d6aee6693f64c9c896"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "size": 29849,
+      "sha256Bytes": "d166f842f099ebc4d8a8fc257a29df7eba10b5cd8f99bfcf64562f24ea848d95"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\6\\DesktopMediaByteCache.kt",
+      "size": 29849,
+      "sha256Bytes": "d166f842f099ebc4d8a8fc257a29df7eba10b5cd8f99bfcf64562f24ea848d95"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocol.kt",
+      "size": 7788,
+      "sha256Bytes": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\7\\DesktopMediaByteProtocol.kt",
+      "size": 7788,
+      "sha256Bytes": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\generated\\full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+      "size": 386610,
+      "sha256Bytes": "3b046712700ba4611f7cb75e8e9b6ab94d9c99322c0a15427da1121b2640fa40"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\8\\VideoPlaybackViewModel.kt",
+      "size": 386610,
+      "sha256Bytes": "3b046712700ba4611f7cb75e8e9b6ab94d9c99322c0a15427da1121b2640fa40"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\generated\\full-owner\\com\\android\\purebilibili\\feature\\plugin\\CdnDashSegmentPrefetcher.kt",
+      "size": 5030,
+      "sha256Bytes": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\9\\CdnDashSegmentPrefetcher.kt",
+      "size": 5030,
+      "sha256Bytes": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\generated\\portrait\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoPager.kt",
+      "size": 178483,
+      "sha256Bytes": "fc3b8883fb49570d6776ab6126b541e4674c67ad6e54c75cbb46103c2ea4ecd7"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\10\\PortraitVideoPager.kt",
+      "size": 178483,
+      "sha256Bytes": "fc3b8883fb49570d6776ab6126b541e4674c67ad6e54c75cbb46103c2ea4ecd7"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\generated\\portrait\\com\\android\\purebilibili\\feature\\video\\ui\\pager\\PortraitVideoLoadPolicy.kt",
+      "size": 15705,
+      "sha256Bytes": "1e5808341c07188bdc82334a5e20c948809915ddb853a4927f61dd3e03ba790f"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\11\\PortraitVideoLoadPolicy.kt",
+      "size": 15705,
+      "sha256Bytes": "1e5808341c07188bdc82334a5e20c948809915ddb853a4927f61dd3e03ba790f"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-media-intent-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoMediaIntent.kt",
+      "size": 3869,
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\12\\DesktopOriginalVideoMediaIntent.kt",
+      "size": 3869,
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-media-intent-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "size": 4515,
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\13\\DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "size": 4515,
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04"
+    }
+  },
+  {
+    "source": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\fixture\\CapturedCacheConsumersProof.kt",
+      "size": 11967,
+      "sha256Bytes": "327c1db053b3fb5666c6d8c52bade2338fd50ddc86c619208de9bd2308ca2b95"
+    },
+    "copied": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-video-byte-cache-consumers-parity\\runs\\proof-03\\inputs\\14\\CapturedCacheConsumersProof.kt",
+      "size": 11967,
+      "sha256Bytes": "327c1db053b3fb5666c6d8c52bade2338fd50ddc86c619208de9bd2308ca2b95"
+    }
+  }
+]

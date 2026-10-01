@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "fullRepositoryInverseByteEqualsBase120": true,
+  "changedOutputs": [
+    "com/android/purebilibili/data/repository/SponsorBlockRepository.kt"
+  ],
+  "unchangedOutputs": 33,
+  "originalSourceSHAHeader": "// LF-normalized SHA-256: eb7b82d766d32fd9be380c491b87c5bd7705fe12f61ef73773067f55de1b9468",
+  "originalPublicClientUnchanged": true,
+  "threeOriginalPublicMethodsUseSolePostJson": [
+    "uploadViewedSegment",
+    "submitSegments",
+    "voteOnSegment"
+  ],
+  "legacyNoContextUsesOriginalExecuteUse": true,
+  "shortGateOnlyRequestPermit": true,
+  "executeAndBodyReadOutsideGate": true
+}

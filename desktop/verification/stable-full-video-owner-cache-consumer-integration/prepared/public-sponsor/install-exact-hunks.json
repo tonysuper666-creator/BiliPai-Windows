@@ -1,0 +1,36 @@
+{
+  "baseFrozen120SHA256Bytes": "829c748364219b1458151c546bbdae62d8cd053f613d877b94285f9b9143f5cb",
+  "operations": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "baseLF": "307eea214e4b8efc7d67db6b853861ace3a35697c6b2ea7bc5463fa202731162",
+      "candidateLF": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50",
+      "replacements": [
+        {
+          "before": "            require(context.store === store) { \"Captured playback plugin write has a different Store\" }\n            callerJob.ensureActive(); check()",
+          "after": "            require(context.store === store) { \"Captured playback plugin write has a different Store\" }\n            return requestPermit(callerJob)\n        }\n\n        fun requestPermit(callerJob: Job): Permit {\n            callerJob.ensureActive(); check()",
+          "count": 1
+        },
+        {
+          "before": "    /** The cancellation registration covers execute AND all blocking response-body reads. */",
+          "after": "    /** Original public transport is unchanged. Admission only mints an in-flight request permit;\n     * execute and response-body IO run after the Root gate has been released. */\n    suspend fun <T> executePublicOrOriginal(call: Call, block: (Response) -> T): T {\n        val captured = operation.get() ?: return call.execute().use(block)\n        val caller = currentCoroutineContext()[Job] ?: error(\"Sponsor request requires a caller Job\")\n        captured.requestPermit(caller).consume()\n        return executeOrOriginal(call, block)\n    }\n\n    /** The cancellation registration covers execute AND all blocking response-body reads. */",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "baseLF": "d7f369cead1c538a2e4fe6f785ee321c0f804b51141fdf5b6f38c5b2a60aacb9",
+      "candidateLF": "f61b4de950b1139fd25370ffa6b3654c17501fee7df23a6c9f79590a05782ce4",
+      "replacements": [
+        {
+          "before": "    body = substitute(body, \"android.os.SystemClock.elapsedRealtime()\", \"com.bilipai.desktop.appearance.DesktopMonotonicClock.elapsedRealtime()\", count=2)\n    generated.append(write(output, path, source, body))",
+          "after": "    body = substitute(body, \"android.os.SystemClock.elapsedRealtime()\", \"com.bilipai.desktop.appearance.DesktopMonotonicClock.elapsedRealtime()\", count=2)\n    body = substitute(body, \"    private suspend fun postJson(url: String, body: String): Result<String> = withContext(Dispatchers.IO) {\\n        runCatching {\\n            val request = Request.Builder()\\n                .url(url)\\n                .post(body.toRequestBody(\\\"application/json\\\".toMediaType()))\\n                .build()\\n            client.newCall(request).execute().use { response ->\", \"    private suspend fun postJson(url: String, body: String): Result<String> = withContext(Dispatchers.IO) {\\n        runCatching {\\n            val request = Request.Builder()\\n                .url(url)\\n                .post(body.toRequestBody(\\\"application/json\\\".toMediaType()))\\n                .build()\\n            com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.executePublicOrOriginal(client.newCall(request)) { response ->\", 1)\n    generated.append(write(output, path, source, body))",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "wholeFileReplace": false,
+  "newStoreClientScope": false
+}

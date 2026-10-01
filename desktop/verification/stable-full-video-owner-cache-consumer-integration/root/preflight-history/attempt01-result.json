@@ -1,0 +1,7 @@
+{
+  "installerSha256Bytes": "0c599453de686ad2d97f99d8b4130e8ad06ad41932ffd4aa27cd6aa0d81104f0",
+  "installedProductionFiles": false,
+  "check": "byte equality of two installation orders",
+  "outcome": "failed preflight",
+  "reason": "Both frozen packets insert independent top-level functions before generate; swapping order changes function positions. Required Cache then Assembly exact replay remains valid."
+}

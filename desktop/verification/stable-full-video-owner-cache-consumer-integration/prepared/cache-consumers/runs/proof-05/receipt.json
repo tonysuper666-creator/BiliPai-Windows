@@ -1,0 +1,10 @@
+{
+  "snapshot": 70,
+  "entries": 101,
+  "compilePASS": true,
+  "runtimeExit": 0,
+  "pinsUnchanged": true,
+  "explicitPreparedSources": 15,
+  "unexpectedClassOverrides": [],
+  "RootInstalledAcceptance": false
+}

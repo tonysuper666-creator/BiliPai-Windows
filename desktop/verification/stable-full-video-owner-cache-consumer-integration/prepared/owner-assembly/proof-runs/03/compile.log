@@ -1,0 +1,15 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:29:36: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'videoUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v:String,a:String?,k:Map<String,String>):PlaybackSource = error("No media")
+                                   ^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:29:45: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'audioUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v:String,a:String?,k:Map<String,String>):PlaybackSource = error("No media")
+                                            ^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:29:55: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'cdnCacheKeysByUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v:String,a:String?,k:Map<String,String>):PlaybackSource = error("No media")
+                                                      ^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:30:38: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'source'. This may cause problems when calling this function with named arguments.
+    override fun prepareAdaptiveDash(s:AdaptiveDashPlaybackSource,k:Map<String,String>):PlaybackSource? = error("No media")
+                                     ^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\ActionStatusProof.kt:30:67: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'cdnCacheKeysByUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareAdaptiveDash(s:AdaptiveDashPlaybackSource,k:Map<String,String>):PlaybackSource? = error("No media")
+                                                                  ^

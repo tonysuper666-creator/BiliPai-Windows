@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceInputs": 2,
+  "prospectiveOnly": true,
+  "productionOverridesExplicit": [
+    "SponsorBlockRepository family",
+    "frozen120 DesktopPlayerPluginWriteAdmission family"
+  ],
+  "newManualHelper": "DesktopPlayerPluginWriteAdmission",
+  "actual71CPEntries": 101,
+  "classes": 28,
+  "jarSHA256Bytes": "986577a7e6064995abe5cfb85a6822cc4e43d7de11aa5063da598fb62660fdc4",
+  "declaredActualClassOverrides": [
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$CachedSegments.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$CommunityUserInfo.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmission$$serializer.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmission$Companion.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmission.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmissionRequest$$serializer.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmissionRequest$Companion.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SegmentSubmissionRequest.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$ServerStatus.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$SponsorBlockRequestException.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$checkServerStatus$2.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$getCommunityUserInfo$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$getCommunityUserInfo$2.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$getSegments$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$loadSegments$2.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$postJson$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$postJson$2.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$submitSegments$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$uploadViewedSegment$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository$voteOnSegment$1.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepository.class",
+    "com/android/purebilibili/data/repository/SponsorBlockRepositoryKt.class"
+  ],
+  "newClasses": [
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission$Operation.class",
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission$Permit.class",
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission$launchOrOriginal$1$1.class",
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission$launchOrOriginal$1.class",
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission$withCaptured$2.class",
+    "com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.class"
+  ]
+}

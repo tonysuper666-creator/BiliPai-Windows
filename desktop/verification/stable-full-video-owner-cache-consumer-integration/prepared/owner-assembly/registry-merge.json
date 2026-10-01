@@ -1,0 +1,58 @@
+{
+  "rows": [
+    {
+      "originalIdentity": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+        "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+        "features": [
+          "discovery",
+          "dynamic-follow-observer-parity",
+          "stable-collection-sheet",
+          "stable-video-metadata",
+          "stable-favorites",
+          "stable-favorite-folder-sheet",
+          "home-protocols",
+          "stable-video-detail-full-units",
+          "stable-personal-following"
+        ],
+        "mode": "policy-extract"
+      },
+      "featureUnion": [
+        "stable-original-video-full-owner",
+        "desktop-original-video-owner-assembly"
+      ],
+      "preserveExistingModeAndSHA": true,
+      "newIdentity": false
+    },
+    {
+      "originalIdentity": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+        "mode": "extracted",
+        "features": [
+          "cdn",
+          "playback",
+          "stable-danmaku-list-menu",
+          "stable-favorite-folder-sheet",
+          "stable-original-video-full-owner",
+          "stable-video-fullscreen-pager",
+          "stable-video-original-comments",
+          "stable-video-state-core",
+          "subtitle",
+          "watchdogs",
+          "stable-original-video-byte-cache-consumers"
+        ],
+        "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
+      },
+      "featureUnion": [
+        "stable-original-video-full-owner",
+        "desktop-original-video-owner-assembly"
+      ],
+      "preserveExistingModeAndSHA": true,
+      "newIdentity": false
+    }
+  ],
+  "newOriginalIdentities": 0,
+  "newResources": 0,
+  "newDependencies": 0,
+  "newGradleTask": false
+}

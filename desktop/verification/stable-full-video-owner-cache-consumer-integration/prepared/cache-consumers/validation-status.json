@@ -1,0 +1,34 @@
+{
+  "final": {
+    "snapshot": 70,
+    "entries": 101,
+    "compilePASS": true,
+    "runtimeExit": 0,
+    "pinsUnchanged": true,
+    "explicitPreparedSources": 15,
+    "unexpectedClassOverrides": [],
+    "RootInstalledAcceptance": false
+  },
+  "groups": 5,
+  "assertions": 27,
+  "sourceChecks": 50,
+  "originalWholeProducerInverseReplay": true,
+  "familyHunkReverse": true,
+  "fullPlanReuse": true,
+  "immediateCallerAndLeaseCancellation": true,
+  "failedHistory": {
+    "compile-01": "declared whitelist missed existing enums/helpers, corrected test audit only",
+    "proof-02": "fixturebuffer2s violates original15s policy; corrected fixture20s"
+  },
+  "supersededPassedHistory": [
+    "proof-03",
+    "proof-04",
+    "proof-05"
+  ],
+  "notProved": [
+    "installed Root factory/VM/Pager mount",
+    "native cache-error recovery observer/ACK",
+    "external CDN/account"
+  ],
+  "native70Replayed": false
+}

@@ -1,0 +1,15 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\compile-reference\cache-compatible\VideoPlaybackViewModel.kt:1756:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\cache-compatible\com\bilipai\desktop\ui\DesktopOriginalVideoOwnerAssembly.kt:118:62: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Throwable'.
+                if (first == null) first = failure else first!!.addSuppressed(failure)
+                                                             ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\cache-compatible\com\bilipai\desktop\ui\DesktopOriginalVideoOwnerAssembly.kt:206:81: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoOwnerComments' is named 'root'. This may cause problems when calling this function with named arguments.
+                    override suspend fun addComment(aid: Long, message: String, rootId: Long, parent: Long,
+                                                                                ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:831:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+work\BiliPai\desktop\.local\stable-video-full-owner-assembly-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:832:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^

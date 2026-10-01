@@ -1,0 +1,11 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt
+@@ -95,6 +95,8 @@
+     internal val audioUri: String?,
+     progressiveUris: List<String>,
+     private val fingerprint: String,
++    /** Same captured Bound survives native publication adoption; no re-bind. */
++    internal val bound: DesktopBoundMediaByteCache,
+ ) {
+     internal val progressiveUris: List<String> = Collections.unmodifiableList(progressiveUris.toList())
+     internal fun validate(source: PlaybackSource) {

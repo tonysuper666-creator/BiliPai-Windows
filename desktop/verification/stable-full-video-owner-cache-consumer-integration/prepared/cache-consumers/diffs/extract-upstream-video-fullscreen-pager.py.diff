@@ -1,0 +1,26 @@
+--- desktop/tools/extract-upstream-video-fullscreen-pager.py
++++ desktop/tools/extract-upstream-video-fullscreen-pager.py
+@@ -44,6 +44,15 @@
+   assert row['originalBody']in raw
+   assert digest(row['candidateBody'])==row['candidateBodySHA256LF']
+  return '\n'.join(row['candidateBody']for row in PROTOCOL)
++
++def captured_media_byte_consumer_delta(path, text):
++ edits=[{'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt', 'before': 'val playData = platform.capturePlaybackRequest().protocol.preloadPortraitPlayUrl(', 'after': 'val byteRequest = platform.capturePlaybackRequest()\n                    val playData = byteRequest.protocol.preloadPortraitPlayUrl(', 'count': 2}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt', 'before': 'prefetchPortraitPlaybackHead(platform, streamUrls)', 'after': 'prefetchPortraitPlaybackHead(platform, streamUrls, platform.captureMediaCache(byteRequest, playData, streamUrls))', 'count': 2}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '    streamUrls: PortraitPlaybackStreamUrls\n) {\n    // 头部预取', 'after': '    streamUrls: PortraitPlaybackStreamUrls,\n    capturedCache: com.bilipai.desktop.ui.DesktopOriginalPortraitByteCache\n) {\n    // 头部预取'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '    if (!context.isWifi()) return\n    coroutineScope {\n', 'after': '    if (!context.isWifi()) { capturedCache.close(); return }\n    try { coroutineScope {\n'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': 'context.prefetchRange(url, buildPortraitPlaybackHttpHeaders(), length)', 'after': 'capturedCache.prefetchHead(url, length)'}, {'path': 'com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt', 'before': '        }.awaitAll()\n    }\n}\n\ninternal fun buildPortraitCachedMediaSourceFactory', 'after': '        }.awaitAll()\n    } } finally { capturedCache.close() }\n}\n\ninternal fun buildPortraitCachedMediaSourceFactory'}]
++ for edit in edits:
++  if edit["path"]!=path:continue
++  count=edit.get("count",1);assert text.count(edit["before"])==count,(path,"byte-cache consumer anchor")
++  text=text.replace(edit["before"],edit["after"],count)
++ return text
++
+ def generate(repo,output,standalone=False):
+  global parser
+  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
+@@ -54,6 +63,7 @@
+   for edit in spec['edits']:
+    count=edit.get('count',1);assert text.count(edit['before'])>=count,(spec['output'],edit.get('label'));text=text.replace(edit['before'],edit['after'],count)
+   text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==spec['outputSHA'],spec['output']
++  text=captured_media_byte_consumer_delta(spec['output'],text)
+   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
+   if generated:
+    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

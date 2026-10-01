@@ -1,0 +1,373 @@
+{
+  "schema": 1,
+  "scope": "read-only current Candidate sources; no compilation/runtime/native proof; only these two new task-owned files written",
+  "sourceCommitTarget": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourcePins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256LF": "4ceac1d05e306f00c66b4cf306226db96ec44b2f3fc08d31ee429395153eba6f",
+      "bytesLF": 67902
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopFavoriteQueueBridge.kt",
+      "sha256LF": "1ca11e61906f6a98da809612a3068c0ea303191ad6762c93bfb0c43695f256fb",
+      "bytesLF": 3740
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopStoryPlaybackHost.kt",
+      "sha256LF": "d810cd6eb19faa4055ae7052cdaf7758e7dae04436999a6b11d47172aee8e1a8",
+      "bytesLF": 4758
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\ListenAudioSession.kt",
+      "sha256LF": "4f4ec3ad0dfc0aa1eb5ba5147b9632f3619d0f79961bbb783755ff853ab96523",
+      "bytesLF": 31531
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256LF": "ea6a5c124ad58f574c9489bcd17a38a48acaf1583980725b29e1ae15a7e770dd",
+      "bytesLF": 162046
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-video-full-owner\\com\\android\\purebilibili\\feature\\video\\viewmodel\\VideoPlaybackViewModel.kt",
+      "sha256LF": "c74ece85f0e0f5a35c18de23056c9356a6b2a733ca32fcacfca4d47bdb170585",
+      "bytesLF": 386449
+    }
+  ],
+  "controllerPublicAndInternalMethods": [
+    {
+      "line": 50,
+      "name": "videoDetails",
+      "declaration": "suspend fun videoDetails(bvid: String): VideoDetails"
+    },
+    {
+      "line": 51,
+      "name": "related",
+      "declaration": "suspend fun related(bvid: String): List<VideoCard>"
+    },
+    {
+      "line": 52,
+      "name": "playback",
+      "declaration": "suspend fun playback(details: VideoDetails, index: Int, quality: Int, codecOverride: String? = null,\n        forceRefresh: Boolean = false): ResolvedSource"
+    },
+    {
+      "line": 54,
+      "name": "playbackConfigured",
+      "declaration": "suspend fun playbackConfigured(details: VideoDetails, index: Int, quality: Int, playbackPreferences: PlayerPreferences,\n        blockedVideoCodecs: Set<String>, codecOverride: String? = null, forceRefresh: Boolean = false): ResolvedSource ="
+    },
+    {
+      "line": 57,
+      "name": "reportHeartbeat",
+      "declaration": "suspend fun reportHeartbeat(report: DesktopHeartbeatReport): Boolean = false"
+    },
+    {
+      "line": 195,
+      "name": "open",
+      "declaration": "fun open(card: VideoCard) { if (!closed.get()) openQueue(listOf(card), 0) }"
+    },
+    {
+      "line": 196,
+      "name": "open",
+      "declaration": "fun open(bvid: String) = open(VideoCard(bvid, \"\", \"\", \"\", 0, 0))"
+    },
+    {
+      "line": 201,
+      "name": "openVideoDetail",
+      "declaration": "fun openVideoDetail(card: VideoCard, resumePositionMs: Long, keepMatchingSource: Boolean): Boolean {"
+    },
+    {
+      "line": 221,
+      "name": "open",
+      "declaration": "fun open(card: VideoCard, resumePositionMs: Long) {"
+    },
+    {
+      "line": 225,
+      "name": "openQueue",
+      "declaration": "fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null,\n        resumePositionMs: Long? = null) ="
+    },
+    {
+      "line": 243,
+      "name": "ownsQueue",
+      "declaration": "fun ownsQueue(owner: Any): Boolean {"
+    },
+    {
+      "line": 256,
+      "name": "updateQueueForOwner",
+      "declaration": "fun updateQueueForOwner(owner: Any, cards: List<VideoCard>, selectedIndex: Int): Boolean {"
+    },
+    {
+      "line": 275,
+      "name": "retryQueueForOwner",
+      "declaration": "fun retryQueueForOwner(owner: Any): Boolean {"
+    },
+    {
+      "line": 287,
+      "name": "stopQueueForOwner",
+      "declaration": "fun stopQueueForOwner(owner: Any): Boolean {"
+    },
+    {
+      "line": 336,
+      "name": "playPart",
+      "declaration": "fun playPart(index: Int, position: Double = 0.0, paused: Boolean = false) {"
+    },
+    {
+      "line": 389,
+      "name": "onPlaybackPreferencesChanged",
+      "declaration": "fun onPlaybackPreferencesChanged(previous: PlayerPreferences, next: PlayerPreferences) {"
+    },
+    {
+      "line": 409,
+      "name": "selectAudioQuality",
+      "declaration": "fun selectAudioQuality(preferenceId: Int) {"
+    },
+    {
+      "line": 416,
+      "name": "setAutomaticSubtitleMode",
+      "declaration": "fun setAutomaticSubtitleMode(mode: com.android.purebilibili.feature.video.subtitle.SubtitleDisplayMode): Boolean ="
+    },
+    {
+      "line": 419,
+      "name": "notifyUserSubtitleTrackSelection",
+      "declaration": "fun notifyUserSubtitleTrackSelection() { current?.takeIf(::owns)?.let { automaticSubtitles?.onUserTrackSelection(it.sourceVersion) } }"
+    },
+    {
+      "line": 428,
+      "name": "switchQuality",
+      "declaration": "fun switchQuality(quality: Int) {"
+    },
+    {
+      "line": 435,
+      "name": "retry",
+      "declaration": "fun retry() {"
+    },
+    {
+      "line": 483,
+      "name": "previous",
+      "declaration": "fun previous() { target(true, true)?.let(::playTarget) }"
+    },
+    {
+      "line": 484,
+      "name": "next",
+      "declaration": "fun next() { target(false, true)?.let(::playTarget) }"
+    },
+    {
+      "line": 517,
+      "name": "nextAtEnd",
+      "declaration": "fun nextAtEnd() {"
+    },
+    {
+      "line": 537,
+      "name": "seek",
+      "declaration": "fun seek(cid: Long, seconds: Double) {"
+    },
+    {
+      "line": 544,
+      "name": "updateFavoriteCountForOwner",
+      "declaration": "internal fun updateFavoriteCountForOwner(aid: Long, expectedEpoch: Long, count: Int): Boolean {"
+    },
+    {
+      "line": 560,
+      "name": "seekTo",
+      "declaration": "fun seekTo(seconds: Double) { submitUserSeek(seconds) }"
+    },
+    {
+      "line": 570,
+      "name": "seekBy",
+      "declaration": "fun seekBy(seconds: Double) { if (seconds.isFinite()) player?.state?.value?.let { seekTo(it.positionSeconds + seconds) } }"
+    },
+    {
+      "line": 571,
+      "name": "executeManualSkip",
+      "declaration": "fun executeManualSkip() {"
+    },
+    {
+      "line": 792,
+      "name": "currentCastSource",
+      "declaration": "internal fun currentCastSource(expectedSourceVersion: Long): ResolvedSource? = current?.takeIf {"
+    },
+    {
+      "line": 848,
+      "name": "checkpoint",
+      "declaration": "fun checkpoint(): Boolean {"
+    },
+    {
+      "line": 887,
+      "name": "stop",
+      "declaration": "fun stop() {"
+    },
+    {
+      "line": 892,
+      "name": "pause",
+      "declaration": "fun pause() {"
+    },
+    {
+      "line": 917,
+      "name": "setInBackground",
+      "declaration": "fun setInBackground(value: Boolean) {"
+    },
+    {
+      "line": 925,
+      "name": "dismissError",
+      "declaration": "fun dismissError() { mutableState.update { it.copy(error = null) } }"
+    },
+    {
+      "line": 935,
+      "name": "drainForOriginalVideoOwner",
+      "declaration": "internal suspend fun drainForOriginalVideoOwner(expectedEpoch: Long, expectedSourceVersion: Long,\n        expectedBvid: String, expectedCid: Long): DesktopOrdinaryPlaybackHandoff? = withContext(Dispatchers.Main.immediate) {"
+    },
+    {
+      "line": 1002,
+      "name": "awaitRetiredOrdinaryProducers",
+      "declaration": "internal suspend fun awaitRetiredOrdinaryProducers(): Boolean ="
+    }
+  ],
+  "findings": [
+    {
+      "id": "authority-handoff",
+      "severity": "required-assembly",
+      "source": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "lines": [
+        935,
+        970,
+        1002
+      ],
+      "finding": "drainForOriginalVideoOwner is terminal for the old Controller, even on failed/canceled final adoption: closed is set, old producers joined outside gates, finally clears current/queue/state. It preserves the native source without stop/pause/reload. No later old Controller command or state collector may remain the ordinary authority.",
+      "required": "Root-selected current-authority facade must switch queue commands and state atomically with full owner installation; never call old close on the adopted source."
+    },
+    {
+      "id": "favorites-queue",
+      "severity": "required-assembly",
+      "source": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "lines": [
+        24,
+        43,
+        53,
+        66
+      ],
+      "finding": "FavoriteQueueBridge constructor captures the old Controller. Exact opaque token and isSelectedTarget checks are required. Original append deduplicates BVID, while Controller raw queue identity is BVID/CID/page. revealIfOwned consumes its one-shot ticket and reveals the existing source; it must not reopen it.",
+      "required": "Replace only the fixed Controller dependency with the same authority facade. Transfer the same opaque queue owner from handoff; preserve BVID append and no-reload update behavior."
+    },
+    {
+      "id": "story-queue",
+      "severity": "required-assembly",
+      "source": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHost.kt",
+      "lines": [
+        10,
+        18,
+        35,
+        40,
+        62,
+        74,
+        82
+      ],
+      "finding": "ControllerStoryQueuePlayer and snapshot accept the old Controller/state. Append updates the selected queue without reload, Select opens only the stable request owner, retry/release reject foreign owners and old account epochs.",
+      "required": "Provide real full-owner implementations of open/update/stop/retry/ownsQueue and current state projection, preserving the same owner identity/revision. No second story queue or controller."
+    },
+    {
+      "id": "listen",
+      "severity": "preserve-existing-actor",
+      "source": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "lines": [
+        134,
+        152,
+        235,
+        265,
+        275,
+        283
+      ],
+      "finding": "Listen is a separate existing audio actor with exact owner/generation/native-version guards. Loaded pause keeps its queue; loading pause retires it. append only adds unseen BVIDs. Audio route resume is seconds; Controller route resume is milliseconds.",
+      "required": "Keep Listen unchanged and route only the active audio branch to it. Do not make it a compatibility scheduler for ordinary full VideoVM."
+    },
+    {
+      "id": "root-consumers",
+      "severity": "required-assembly",
+      "source": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "lines": [
+        362,
+        381,
+        653,
+        720,
+        733,
+        1088,
+        1089,
+        1329,
+        1464,
+        1480,
+        1557,
+        1642,
+        1690
+      ],
+      "finding": "Shell still constructs Controller Story/Favorites bridges and observes playback.state for seek, PiP, comments, favorites and download metadata. Old state becomes empty at drain.",
+      "required": "One real current-authority state/command facade must cover these callers. Fullscreen uses real Main Window placement getter/setter; never a blind toggle or inferred video aspect."
+    },
+    {
+      "id": "projection",
+      "severity": "required-assembly",
+      "source": "desktop/build/generated/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "lines": [
+        881,
+        891,
+        2545,
+        6907,
+        7879,
+        7882
+      ],
+      "finding": "Original canonical UiState/subject is richer than DesktopPlaybackState. loadVideo supports aid/cid/fallbackResumePositionMs; switchPage takes page index/ignoreSavedProgress; seekTo takes Long milliseconds.",
+      "required": "Use canonical original VM and its same playlist/domain owners. Do not recreate original UI state from the old flattened Controller state or drop CID/ms/source/openId."
+    }
+  ],
+  "mapping": [
+    {
+      "old": "open / openVideoDetail",
+      "original": "loadVideo(bvid, aid=0, force=false, autoPlay=null, ignoreSavedProgress=false, audioLang=null, videoCodecOverride=null, cid=0, fallbackResumePositionMs=0)",
+      "note": "Not a drop-in: route precise CID/ms and Root original entry flags; keepMatching adoption belongs to real native handoff, not another load."
+    },
+    {
+      "old": "playPart(index, position seconds, paused)",
+      "original": "switchPage(pageIndex, ignoreSavedProgress=false)",
+      "note": "Original switchPage owns original resume/quality request algorithm. Any explicit seconds/paused route intent must be captured and consumed by original owner/native port, not silently flattened."
+    },
+    {
+      "old": "seekTo(seconds) / seekBy(seconds)",
+      "original": "seekTo(pos:Long milliseconds) / currentPlayer native facade",
+      "note": "Convert units exactly and retain current source/admission guard."
+    },
+    {
+      "old": "switchQuality(qn)",
+      "original": "changeQuality(...)",
+      "note": "Root should use the original method actual signature and quality policy; no direct old fetch/load."
+    },
+    {
+      "old": "selectAudioQuality / subtitles / playback speed",
+      "original": "setAudioQuality / selectSubtitleTrack / applyPlaybackSpeedFromUi",
+      "note": "Original settings/UseCase and same native facade, no duplicate settings owner."
+    },
+    {
+      "old": "retry",
+      "original": "retry() / reloadVideo() / retryWithCodecFallback()",
+      "note": "Choose the original trigger-specific method; preserve original fallback/cancellation semantics."
+    },
+    {
+      "old": "hasPrevious/Next / previous/next / nextAtEnd",
+      "original": "environment.playlist + playPreviousPageOrRecommended/playNextPageOrRecommended",
+      "note": "Preserve page/recommendation/external playlist policy and transferred shuffle/partShuffle. Public VideoVM alone does not expose opaque queue-owner update/stop/retry contract."
+    },
+    {
+      "old": "checkpoint / setInBackground",
+      "original": "saveCurrentPosition / flushPlaybackHeartbeatSnapshot / original background/heartbeat ports",
+      "note": "Same library/history authority and admission. No old Controller heartbeat loop after terminal drain."
+    }
+  ],
+  "missingRequiredFacade": [
+    "opaque ownsQueue(owner), updateQueueForOwner(owner,cards,index) preserving exact selected tuple/no reload",
+    "owned openQueue/retryQueue/stopQueue plus BVID append policy and one-shot reveal",
+    "real current ordinary state projection for same native source and canonical Success/subject",
+    "checkpoint/heartbeat/background calls through the original owner after terminal drain",
+    "same external playlist identity + queue owner/shuffle/partShuffle handoff; no reconstructed queue/list authority"
+  ],
+  "noClaims": [
+    "no full Root runtime/queue/native acceptance",
+    "no new player/client/store/list/DTO",
+    "public original methods are not a substitute for missing opaque queue-owner APIs"
+  ]
+}

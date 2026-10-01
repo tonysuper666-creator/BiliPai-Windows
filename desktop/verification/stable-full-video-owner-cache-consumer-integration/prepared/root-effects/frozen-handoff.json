@@ -1,0 +1,117 @@
+{
+  "frozen": true,
+  "schema": 1,
+  "packet": "stable-video-root-effects-source-only",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "TWO new concrete same-root Network/Analytics/Crash views; no existing source changed, no shared build/Gradle/runtime/native/account/HTTP performed",
+  "actualDependencyPhase": 71,
+  "orderedRuntimeClasspathSha256Bytes": "6ec3765f3ced6095ac01d2c2908550e9487bfcd586c1008ff4a582920f84f55f",
+  "runtimeEntries": 101,
+  "sourceAuditChecks": 19,
+  "compilerSourceCount": 2,
+  "compiledNewClasses": 2,
+  "actualProductClassOverlap": [],
+  "runtimeAccepted": false,
+  "payloads": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "sha256Bytes": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356",
+      "sha256LF": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356",
+      "action": "NEW manual source only"
+    },
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "sha256Bytes": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4",
+      "sha256LF": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4",
+      "action": "NEW manual source only"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\audit.py",
+      "sha256Bytes": "55ca3c3d04a59a7fb619126f1fef1038138d30d8f3283392a76bc928c04c618e",
+      "bytes": 7126
+    },
+    {
+      "path": "compile/01/compile.log",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\compile\\01\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile/01/compiler.args",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\compile\\01\\compiler.args",
+      "sha256Bytes": "7902ab4baeba408556b00b0c43489390a550343fe5b80a8980350339a96a9f01",
+      "bytes": 25793
+    },
+    {
+      "path": "compile/01/result.json",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\compile\\01\\result.json",
+      "sha256Bytes": "00e73476a9d4a37fdf978152fce1adb098565b8a6a5e64f1f504b805a7c69ae3",
+      "bytes": 79258
+    },
+    {
+      "path": "compile.py",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\compile.py",
+      "sha256Bytes": "47b3e1bbb707a820b7c3311210f7df40fa95bf4ea320eb17a34250bf8b867c46",
+      "bytes": 3800
+    },
+    {
+      "path": "install-whitelist.json",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\install-whitelist.json",
+      "sha256Bytes": "e57acfe4e3a95cf627432cde3f18d7580ed5fe5fa23bccbb00d0b4eac7f3ecad",
+      "bytes": 1768
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "sha256Bytes": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356",
+      "bytes": 4334
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "sha256Bytes": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4",
+      "bytes": 1263
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\ROOT-INTEGRATION.md",
+      "sha256Bytes": "664ee2b6ca34c4997cb493547516a6fdef47a503056890b82c16bd54f7991e72",
+      "bytes": 4079
+    },
+    {
+      "path": "source-audit.json",
+      "absolutePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-effects-parity\\source-audit.json",
+      "sha256Bytes": "a10cd1b33c68efb6af50f0b7ed296e424cb98deb4c953ac2a75a4bfb449d62fd",
+      "bytes": 8041
+    }
+  ],
+  "artifactCount": 10,
+  "excluded": [
+    {
+      "path": "compile/01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.class",
+      "reason": "compiler binary output, not source-only handoff"
+    },
+    {
+      "path": "compile/01/classes/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.class",
+      "reason": "compiler binary output, not source-only handoff"
+    },
+    {
+      "path": "compile/01/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "reason": "compiler binary output, not source-only handoff"
+    }
+  ],
+  "boundaries": [
+    "original owner interfaces/UI/models/VM/Core untouched",
+    "single same Root native preferences platform + diagnostic writer/global Store, per-entry ownership view only",
+    "preferred actual network query unavailable propagates; no false fallback",
+    "local diagnostics no Firebase/Crashlytics backend; no fatal snapshot triggered",
+    "only existing serial diagnostic enqueue inside Root gate; IO/waits outside",
+    "accepted queue operation is in-flight; retirement cannot revoke an accepted write"
+  ],
+  "installContractSha256Bytes": "664ee2b6ca34c4997cb493547516a6fdef47a503056890b82c16bd54f7991e72"
+}

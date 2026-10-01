@@ -1,0 +1,26 @@
+ASSERT 1 public execute outside short admission monitor
+ASSERT 2 public response-body IO outside short admission monitor
+ASSERT 3 public response-body IO outside short admission monitor
+ASSERT 4 no-context legacy original execute/use returns unchanged body
+ASSERT 5 legacy has no introduced admission or resource leak
+ASSERT 6 public execute outside short admission monitor
+ASSERT 7 public response-body IO outside short admission monitor
+ASSERT 8 public response-body IO outside short admission monitor
+ASSERT 9 captured public request admitted once, original Call executes once and body closes
+ASSERT 10 retired source rejected before public request starts
+ASSERT 11 retired source performed no execute or publication
+ASSERT 12 short final admission rejects still-owned source
+ASSERT 13 admission rejection starts no public IO
+ASSERT 14 canceled fixed origin rejected without late-current retag
+ASSERT 15 canceled origin starts no public request
+ASSERT 16 public execute outside short admission monitor
+ASSERT 17 public response-body IO outside short admission monitor
+ASSERT 18 public response-body IO outside short admission monitor
+ASSERT 19 normally completed fixed origin can still use same accepted source
+ASSERT 20 public execute outside short admission monitor
+ASSERT 21 public response-body IO outside short admission monitor
+ASSERT 22 actual caller cancellation cancels in-flight public body and closes response exactly once
+ASSERT 23 only caller Job canceled; accepted owner/fixed origin remain alive
+ASSERT 24 public execute outside short admission monitor
+ASSERT 25 source retired after permit rejects public result
+ASSERT 26 accepted request is in-flight, not falsely revoked; stale response closes before body/result

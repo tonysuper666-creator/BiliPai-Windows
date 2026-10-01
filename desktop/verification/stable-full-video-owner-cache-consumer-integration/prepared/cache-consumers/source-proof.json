@@ -1,0 +1,207 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "checks": [
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt inverse unique 90292a4e",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt inverse unique 5d894d6a",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt source delta anchor 4159f54c",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt source delta anchor 72337b9d",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt full original output plus explicit delta",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt inverse exact original output",
+      "PASS": true
+    },
+    {
+      "check": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt fixed Git blob matches existing registry",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt emitted inventory output hash",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt inverse unique 5fd43b3d",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt inverse unique 15eee07d",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt inverse unique 21d6a702",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt source delta anchor f3bdc3a6",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt source delta anchor 586b952c",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt source delta anchor 5d547bd5",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt source delta anchor 52ade35b",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt full original output plus explicit delta",
+      "PASS": true
+    },
+    {
+      "check": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt fixed Git blob matches existing registry",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt emitted inventory output hash",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt inverse unique 673d60fe",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt inverse unique d7d7f7a8",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt source delta anchor dd9dbecf",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt source delta anchor b47d9a97",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt full original output plus explicit delta",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt inverse exact original output",
+      "PASS": true
+    },
+    {
+      "check": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt fixed Git blob matches existing registry",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt emitted inventory output hash",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt inverse unique 5760b32e",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt inverse unique 50a0ce10",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt inverse unique 78d57d2c",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt inverse unique 3f173138",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt source delta anchor eaa41d91",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt source delta anchor 85fc419d",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt source delta anchor 06ebde4e",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt source delta anchor 69999794",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt full original output plus explicit delta",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt inverse exact original output",
+      "PASS": true
+    },
+    {
+      "check": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt fixed Git blob matches existing registry",
+      "PASS": true
+    },
+    {
+      "check": "com/android/purebilibili/feature/video/ui/pager/PortraitVideoLoadPolicy.kt emitted inventory output hash",
+      "PASS": true
+    },
+    {
+      "check": "full captured plan includes primary aliases keys role headers",
+      "PASS": true
+    },
+    {
+      "check": "full raw MPD identity retained",
+      "PASS": true
+    },
+    {
+      "check": "reuse checks native Source and complete plan",
+      "PASS": true
+    },
+    {
+      "check": "lease cancellation begins immediately",
+      "PASS": true
+    },
+    {
+      "check": "CallerJob cancellation begins immediately",
+      "PASS": true
+    },
+    {
+      "check": "body-read ownership before after actual read",
+      "PASS": true
+    },
+    {
+      "check": "actual probe uses existing lease admission",
+      "PASS": true
+    },
+    {
+      "check": "new bridge has no additional client/store/cache actor",
+      "PASS": true
+    },
+    {
+      "check": "Direct is typed no unsupported cache success",
+      "PASS": true
+    },
+    {
+      "check": "prepare retains same captured Bound",
+      "PASS": true
+    },
+    {
+      "check": "cached publication must be actual accepted object",
+      "PASS": true
+    },
+    {
+      "check": "recover actual failure ticket/source guarded",
+      "PASS": true
+    }
+  ],
+  "count": 50,
+  "RootInstalledAcceptance": false
+}

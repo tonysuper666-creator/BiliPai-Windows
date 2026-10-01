@@ -1,0 +1,17 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt
+@@ -168,6 +168,14 @@
+     /** Preserve this receipt through DASH/CDN/plugin transformations and final native
+      * publication. This method stamps metadata only; it never publishes or loads MPV. */
+     fun authorized(source: PlaybackSource): PlaybackSource = read { source.copy(authorizationReceipt = receipt) }
++
++    /** Same raw request's exact account/Job/entry admission for native byte preparation. */
++    fun captureMediaBytes(cache: com.bilipai.desktop.player.cache.DesktopMediaByteCache): DesktopOriginalVideoByteCacheRequest = read {
++        val namespace = repository.capturePlaybackCachePartition(receipt, ::entryCurrent)
++        DesktopOriginalVideoByteCacheRequest(cache,
++            com.bilipai.desktop.player.cache.DesktopMediaByteRepositoryAdmission(repository, authorization,
++                namespace, requestJob, ::entryCurrent, commitIfEntryCurrent), ::assertCurrent)
++    }
+ 
+     companion object {
+         suspend fun capture(
