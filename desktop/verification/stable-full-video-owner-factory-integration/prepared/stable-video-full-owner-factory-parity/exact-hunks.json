@@ -1,0 +1,29 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "dependency": "frozen captured-metadata facet16 first",
+    "baseSHA256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+    "desiredSHA256LF": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+    "hunks": [
+      {
+        "before": "    fun hasPrimarySession(): Boolean = read {\n",
+        "after": "    /** Exact primary values of this request, admitted by its original receipt.\n     * Used by original Notes/heartbeat; no page-wide credential or MID cache. */\n    fun primaryMid(): Long? = read { capturedPrimaryMid }\n    fun primaryCsrf(): String? = read {\n        repository.ownedHomeCookie(\"bili_jct\", receipt.accountEpoch, ::entryCurrent)\n    }\n    /** Fixed request's short Store -> entry mutation admission. No wait/IO may\n     * occur in action. Success is never reported for an expired request. */\n    fun admitCurrentMutation(action: () -> Unit): Boolean = try {\n        read(action)\n        true\n    } catch (_: CancellationException) { false }\n    fun hasPrimarySession(): Boolean = read {\n"
+      }
+    ]
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+    "baseSHA256LF": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833",
+    "desiredSHA256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+    "hunks": [
+      {
+        "before": "    suspend fun import(track: SubtitleTrackMeta): Path = withContext(Dispatchers.IO) {\n",
+        "after": "    suspend fun import(track: SubtitleTrackMeta): Path = import(track, client)\n\n    /** Same application-owned files/document/cancellation; caller supplies the\n     * already captured Repository Call.Factory. This creates no downloader/client. */\n    internal suspend fun import(track: SubtitleTrackMeta, ownedCalls: Call.Factory): Path = withContext(Dispatchers.IO) {\n"
+      },
+      {
+        "before": "        val call = client.newCall(Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).get()\n",
+        "after": "        val call = ownedCalls.newCall(Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).get()\n"
+      }
+    ]
+  }
+]

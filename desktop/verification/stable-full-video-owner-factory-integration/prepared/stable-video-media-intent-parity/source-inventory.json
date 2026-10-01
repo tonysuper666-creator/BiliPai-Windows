@@ -1,0 +1,12 @@
+{
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalIdentity": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+  "originalSHA256LF": "518cac4c89acb92aa97c3945b16fe5662f678bff6dcd67a5803f70165e5ae63f",
+  "sourceMode": "existing sole Core producer; no new identity",
+  "manualSHA256LF": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c",
+  "generatedUseCase": "generated-replay/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt",
+  "candidateCoreSHA256LF": "a2839c6e734e64d2b3e12c9cda0ce1b10d8a1d7673c85e38e20a97c8a031daa7",
+  "inverseReceipt": "source-replay-audit.json",
+  "actual69ManifestSHA256": "4524b0c8b5e4e97bb88223a6a6f71c126bc17586111d50a10fb49f186a3d695d",
+  "actual69OrderedCPSHA256": "125c041f103947b5aa4be065a182cc561528bde575afe682db9e9af43a42dc9f"
+}

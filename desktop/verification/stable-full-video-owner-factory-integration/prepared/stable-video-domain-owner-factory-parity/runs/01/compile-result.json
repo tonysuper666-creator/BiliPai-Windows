@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceInputs": 3,
+  "newFactorySources": 1,
+  "explicitUninstalledComposerReferences": 2,
+  "composerReferencesLFIdenticalToFrozenHolder337": true,
+  "classes": 47,
+  "actualRuntimeEntries": 101,
+  "productionOverrides": [],
+  "productAndDependencyClassIntersection": [],
+  "productRuntimeAccepted": false,
+  "guiHttpNativeExecution": false,
+  "candidateJarSHA256Bytes": "4ac9101fdadf85fe3d420ba42b166f3391f2d80c7d764c52b5536412ff9bd39a"
+}

@@ -1,0 +1,20 @@
+{
+  "compilePassed": true,
+  "compileExitCode": 0,
+  "runtimeEntries": 101,
+  "actual69ImmutableGraph": true,
+  "preparedFamilies": [
+    "DesktopOriginalVideoRepositoryBinding",
+    "DesktopSubtitleAssets"
+  ],
+  "originalVMOverride": false,
+  "fullOwnerConstructed": false,
+  "mounted": false,
+  "HTTP": false,
+  "native": false,
+  "realAccountIO": false,
+  "classes": 84,
+  "jarSHA256Bytes": "8c1a9befd164ccfd26a86c81189343db69cbe0b5afb33d710745a3902cb06e12",
+  "runtimeExitCode": 0,
+  "passed": true
+}

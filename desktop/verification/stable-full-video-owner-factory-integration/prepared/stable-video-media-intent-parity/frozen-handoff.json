@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "scope": "original Core initial MPV intent lexical platform delta",
+  "artifacts": [
+    {
+      "path": "MediaIntentProof.kt",
+      "sha256Bytes": "23f984ee483dcad08012d1ef2e986debab367e45e380ae848e8d4c8b8aa60af7",
+      "size": 7401
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "74c9afa622c12f69e04d77296911c47e7ab7da8f978b67648fee2a3644c89afb",
+      "size": 6601
+    },
+    {
+      "path": "compile-reference-actual69/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "b36f83d3124fbee3fef4e6853a55c4d60d7ad24ee4dacf330270f6e5f6c76664",
+      "size": 19512
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "bd1b2e0c8bf1ba558586ea4badb026493c144200bbace646db2b6ebe38a84cf9",
+      "size": 3989
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "29359debe0a5a2062e387957f03e425dc9983c8b48c17a55db9f4ab574c4d87d",
+      "size": 5174
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "7f25b7f52e25e2a9d3c81161e200effbd972216dc83bd617cbf69441cb4caedc",
+      "size": 419
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "4a730bde01270bb2c5633656e065ad73c92253e74f4cdfedc00c8f0631a954de",
+      "size": 3795
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+      "sha256Bytes": "62102a37824deac43b35a83b62e9b43252506f04e30a004673525e9e7dbcd7ec",
+      "size": 9524
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "eab897146b94f95c1a5e04bdc12a9a112d428d1c405979d51d1756d8a076fe5c",
+      "size": 48159
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "sha256Bytes": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308",
+      "size": 2007
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoLoadModels.kt",
+      "sha256Bytes": "9ef04ed55677cb779b95a35d30658f1bebd4bae458eb1483687160b8de90027a",
+      "size": 3346
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt",
+      "sha256Bytes": "a2839c6e734e64d2b3e12c9cda0ce1b10d8a1d7673c85e38e20a97c8a031daa7",
+      "size": 47479
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoPlaybackUiState.kt",
+      "sha256Bytes": "6cfee432aa9fa5a3e8358ec6cc72c1d1280f91c8226501a0456807f7644159c2",
+      "size": 6275
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSuccessExtensions.kt",
+      "sha256Bytes": "fb17bdcb248aecaa0fe652db29459840d9de107bb2e83689cc345fbf24191af3",
+      "size": 3166
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
+      "sha256Bytes": "376e4356b3c196b0323c7f132272a87849a844ddc928a5c8447a02e18c5e827c",
+      "size": 2887
+    },
+    {
+      "path": "generated-replay/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+      "sha256Bytes": "f0e1d6537da8b5d4036d5c480902eb090eb0330e1bb73674180729ae0ab16a5f",
+      "size": 3418
+    },
+    {
+      "path": "generated-replay/original-video-state-core-selection.json",
+      "sha256Bytes": "b22db7ef2b9b1e2c7d94d83f798cd7cc569e264168d6d11176ea868a5460714f",
+      "size": 29551
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "59434c08d113a78e78c0429694c21c6bd3c2ae398e868e5e46677d48ab0fbf6d",
+      "size": 1830
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "ffcf87ff37e58c0220b324a5e900b1510235c2b35d64dc8667758d9761bc0a86",
+      "size": 6758
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "size": 21900
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "size": 9342
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "size": 4515
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-video-state-core.py",
+      "sha256Bytes": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "size": 32709
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c",
+      "size": 3869
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "3a2ac9be36a91087ac829bd5ef7ef0c54ef3bf0e0f0ed8919bb1095c142c3465",
+      "size": 7785
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "98cd0ec4ad6bd95a729d6580e1cfcc5506f61f85dc0d3d4d5eef34bd39a31c38",
+      "size": 27019
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "859e6b379828e0108518899f3f1fb908ec25e94ddfce6a725df5f8cf1fe5a90a",
+      "size": 45169
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "859e6b379828e0108518899f3f1fb908ec25e94ddfce6a725df5f8cf1fe5a90a",
+      "size": 45169
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "048ca6b5281eb019e802c53b50ebb445261ed51804840b31443f077e7593949c",
+      "size": 488
+    },
+    {
+      "path": "runs/01/run.log",
+      "sha256Bytes": "5bdc648c6ce49d02f17a409d25e2ac74a345285fc5d9a004f2f0833fc6f47315",
+      "size": 1220
+    },
+    {
+      "path": "runs/01/runtime-command.json",
+      "sha256Bytes": "f6a68ddf6dffc648f88fa06f4f6c2550f38acf682fec29b2cfa957b021882857",
+      "size": 27039
+    },
+    {
+      "path": "runs/01/source-inputs/MediaIntentProof.kt",
+      "sha256Bytes": "75ff559f9d79527d7f8cd6941172e2012704906ecb02ef9ea3e9c4f46af6c622",
+      "size": 7150
+    },
+    {
+      "path": "runs/01/source-inputs/compile-reference-actual69/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "b36f83d3124fbee3fef4e6853a55c4d60d7ad24ee4dacf330270f6e5f6c76664",
+      "size": 19512
+    },
+    {
+      "path": "runs/01/source-inputs/generated-replay/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt",
+      "sha256Bytes": "a2839c6e734e64d2b3e12c9cda0ce1b10d8a1d7673c85e38e20a97c8a031daa7",
+      "size": 47479
+    },
+    {
+      "path": "runs/01/source-inputs/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "size": 9342
+    },
+    {
+      "path": "runs/01/source-inputs/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "size": 4515
+    },
+    {
+      "path": "runs/01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256Bytes": "38f5ca9e7ee28047430000a807531f4c795926ae16397ce2e8713ee1d2e2e73f",
+      "size": 3870
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "e41195a0343a7a109acd00aea8f55f4f65f998f08a7f5a1481d6ce8c6c177adc",
+      "size": 7785
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "c5d4e195336dc97cf0674d06d0d722cb7dc61efacc7cbfc837a8bb2af7827fa3",
+      "size": 27019
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "32a5ee12dbf3a3011656cbccd02ec8be47d71af8579adab4c6e2d44c6ce2c6ed",
+      "size": 45169
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "32a5ee12dbf3a3011656cbccd02ec8be47d71af8579adab4c6e2d44c6ce2c6ed",
+      "size": 45169
+    },
+    {
+      "path": "runs/02/result.json",
+      "sha256Bytes": "23539fa80357ec1f7d92f14cd6e27e2a3c02498eb273b3b05fc6599ceb8141d9",
+      "size": 487
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "613487bbcb0d726b4f07b9601811210936750bae6d64a3b37726f8a46b0615c3",
+      "size": 1045
+    },
+    {
+      "path": "runs/02/runtime-command.json",
+      "sha256Bytes": "105c5c8615afdc0c8665afc2ed3d2bf67a5188c58780ea3b36e0f7a18002cc32",
+      "size": 27039
+    },
+    {
+      "path": "runs/02/source-inputs/MediaIntentProof.kt",
+      "sha256Bytes": "23f984ee483dcad08012d1ef2e986debab367e45e380ae848e8d4c8b8aa60af7",
+      "size": 7401
+    },
+    {
+      "path": "runs/02/source-inputs/compile-reference-actual69/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "b36f83d3124fbee3fef4e6853a55c4d60d7ad24ee4dacf330270f6e5f6c76664",
+      "size": 19512
+    },
+    {
+      "path": "runs/02/source-inputs/generated-replay/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt",
+      "sha256Bytes": "a2839c6e734e64d2b3e12c9cda0ce1b10d8a1d7673c85e38e20a97c8a031daa7",
+      "size": 47479
+    },
+    {
+      "path": "runs/02/source-inputs/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "size": 9342
+    },
+    {
+      "path": "runs/02/source-inputs/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "size": 4515
+    },
+    {
+      "path": "runs/02/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c",
+      "size": 3869
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "36dea9056faed5fbc2f55da4c8ed6be7d62e6eaae1f3bba363e9c4780981322b",
+      "size": 887
+    },
+    {
+      "path": "source-replay-audit.json",
+      "sha256Bytes": "ce75745a77bc7d36820ca6cb9cec0b564ff41b0c9c8f70f20453d13aab226eb9",
+      "size": 7695
+    }
+  ],
+  "installContract": "install-contract.json",
+  "sourceOnly": true,
+  "groups": 3,
+  "assertions": 13,
+  "declaredPreparedFamilies": [
+    "CoreUseCase",
+    "MediaPortEnvironment",
+    "Invocation",
+    "NativeOwner-derived-actual69"
+  ],
+  "zeroProductOverride": false,
+  "HTTP": false,
+  "native": false,
+  "rootMounted": false,
+  "pauseRuntimeAccepted": false,
+  "history": [
+    "01 compiler success; original StateFlow equality revealed overstrict candidate reference guard",
+    "02 original value/token semantics corrected; final pass"
+  ]
+}

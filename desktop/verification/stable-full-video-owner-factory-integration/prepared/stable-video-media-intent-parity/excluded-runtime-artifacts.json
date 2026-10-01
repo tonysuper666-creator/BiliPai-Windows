@@ -1,0 +1,12 @@
+[
+  {
+    "path": "runs/01/candidate-proof.jar",
+    "sha256Bytes": "9a02cb3a6a21194de02479b47ad0710c9e2e2ce71f3b0b202cf0fe3118ccfa7f",
+    "reason": "compile/test reference; never install/archive binary"
+  },
+  {
+    "path": "runs/02/candidate-proof.jar",
+    "sha256Bytes": "bc556d5a9593e432e896370e0aee213d3dba14d5721f906a8b446f0d3f6cb59d",
+    "reason": "compile/test reference; never install/archive binary"
+  }
+]

@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceInputs": 1,
+  "classes": 23,
+  "actualRuntimeEntries": 101,
+  "declaredProspectiveOverrideFamily": "DesktopOriginalVideoRepositoryBinding only",
+  "declaredClassOverlap": [
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$assertCurrent$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$buvidApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$11$refreshed$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$11.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$12.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$3$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$guestApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$playbackApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$read$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$views$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.class"
+  ],
+  "undeclaredProductionOverrides": [],
+  "repositoryVisitorVisibilityHunkSourceOnly": true,
+  "parentMetadataProtocolNotReproducedOrOverridden": true,
+  "productRuntimeAccepted": false,
+  "candidateJarSHA256Bytes": "0de6dc6a5986a4dd2454af98d653ec857aef90b71243a6403b8940fec797fbc3"
+}

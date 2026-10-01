@@ -1,0 +1,17 @@
+{
+  "compilePassed": false,
+  "compileExitCode": 1,
+  "runtimeEntries": 101,
+  "actual69ImmutableGraph": true,
+  "preparedFamilies": [
+    "DesktopOriginalVideoRepositoryBinding",
+    "DesktopSubtitleAssets"
+  ],
+  "originalVMOverride": false,
+  "fullOwnerConstructed": false,
+  "mounted": false,
+  "HTTP": false,
+  "native": false,
+  "realAccountIO": false,
+  "passed": false
+}

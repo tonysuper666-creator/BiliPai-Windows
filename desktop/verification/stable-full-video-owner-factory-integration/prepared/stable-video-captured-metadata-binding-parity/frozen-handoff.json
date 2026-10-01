@@ -1,0 +1,115 @@
+{
+  "frozen": true,
+  "status": "SOURCE_READY_BINDING_FACET_COMPILED",
+  "actualBase": 67,
+  "runtimeEntries": 101,
+  "existingBindingCaptureAndConstructorAbiUnchanged": true,
+  "exactBindingHunks": 4,
+  "exactRepositoryVisibilityHunks": 1,
+  "parentMetadataProtocolAndWbiSourceOwnerReferencedOnly": true,
+  "newStoreClientCacheOrModels": false,
+  "compiledSourceInputs": 1,
+  "compiledClasses": 23,
+  "explicitProspectiveOverride": "DesktopOriginalVideoRepositoryBinding family only",
+  "repositoryVisibilityAccessorNotCompiledOverride": true,
+  "runtimeOrHttpAccountGuiNativeRun": false,
+  "baseBindingSHA256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+  "candidateBindingSHA256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+  "repositoryBaseSHA256LF": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+  "repositoryCandidateSHA256LF": "db1ad55a2d61128f7d2a242c0f75146be46fbe3b109f673a967a0a83816008dd",
+  "installation": "ROOT-INTEGRATION.md",
+  "pending": [
+    "Parent sole metadata/core getWbiKeys visibility installation",
+    "Full request factory forwarding actual primaryApi/playbackCalls and required visitor getter",
+    "VIP change may invalidate old receipt; explicit request retirement/recapture policy required"
+  ],
+  "artifacts": [
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "93e4d92b52a1cb9cff8f1377822ff9d5524762886dd6d73a876f4a94a609c438",
+      "bytes": 6520
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "de23db521d4e168ba790faaae438745bf2ccea9cf679049cfa62f0f14c29cc12",
+      "bytes": 3246
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "e1111f46950d34c1843eae37b0ce1d82ec7f74a1424b3a523a076295700beb40",
+      "bytes": 2587
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "dc103587cc702eaf37b9852dedc2c499f9fc3f94c9ab5816b1e04189c8120f7f",
+      "bytes": 3843
+    },
+    {
+      "path": "source-contract.json",
+      "sha256Bytes": "0c285345780265c4d40ceba681d96cd9e9bee99658c6b7a86b5258d38b364085",
+      "bytes": 1062
+    },
+    {
+      "path": "local-hunks/binding.json",
+      "sha256Bytes": "7ec7bd83e28268c4bd5132472ca3b5c2113224f640fac6b4df32f77953f2e057",
+      "bytes": 3484
+    },
+    {
+      "path": "local-hunks/repository-visitor.json",
+      "sha256Bytes": "5a93a0a35a9627a635c34a75fe836a7a1af40df28b40fac4e9f460f4bc872390",
+      "bytes": 1011
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "bytes": 57554
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "bytes": 8489
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "bytes": 10442
+    },
+    {
+      "path": "runs/01/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "bytes": 10442
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "3ce8b9893aa9d76acf289dcab02b44eb82f6a2576acb091ce09db8b594b5ee01",
+      "bytes": 25854
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "6681a73ed82efcb3bb62ee8c091996054b9c8f6e5d14e44ed8498477ef50283f",
+      "bytes": 1813
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "39bd862015c17108a7d99408fe8ee1cbc9b705a638520e0cc1722a4df5498162",
+      "bytes": 43074
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "39bd862015c17108a7d99408fe8ee1cbc9b705a638520e0cc1722a4df5498162",
+      "bytes": 43074
+    }
+  ],
+  "rawArtifactCount": 16,
+  "excluded": [
+    "runs/01/candidate.jar",
+    "*.class",
+    "all actual product dependency binaries"
+  ],
+  "installWholeFile": false
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+    "baseSHA256LF": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+    "desiredSHA256LF": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+    "hunks": [
+      {
+        "before": "internal interface DesktopOriginalVideoMediaPort {\n",
+        "after": "internal interface DesktopOriginalVideoMediaPort {\n    /** Required synchronous lexical span. Native Load needs these exact original\n     * arguments before enqueue; no Store/native gate or waiting is implied. */\n    fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit)\n"
+      }
+    ]
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+    "baseSHA256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+    "desiredSHA256LF": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+    "hunks": [
+      {
+        "before": "    private fun activeMedia(): DesktopOriginalVideoMediaPort =\n        activeThreadInvocation()?.media ?: acceptedMedia().also { assertCurrent() }\n",
+        "after": "    // Only a synchronous call span. Fixed accepted media must not be rebuilt\n    // between withPlaybackIntent/prepare/accept, especially outside an invocation.\n    private val lexicalMedia = ThreadLocal<DesktopOriginalVideoMediaPort?>()\n    private fun activeMedia(): DesktopOriginalVideoMediaPort = lexicalMedia.get()\n        ?: activeThreadInvocation()?.media ?: acceptedMedia().also { assertCurrent() }\n"
+      },
+      {
+        "before": "    val media: DesktopOriginalVideoMediaPort = object : DesktopOriginalVideoMediaPort {\n",
+        "after": "    val media: DesktopOriginalVideoMediaPort = object : DesktopOriginalVideoMediaPort {\n        override fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit) {\n            val captured = activeMedia()\n            val previous = lexicalMedia.get()\n            lexicalMedia.set(captured)\n            try { captured.withPlaybackIntent(startPositionMs,playWhenReady,action) }\n            finally { if (previous == null) lexicalMedia.remove() else lexicalMedia.set(previous) }\n        }\n"
+      }
+    ]
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+    "baseSHA256LF": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+    "desiredSHA256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+    "hunks": [
+      {
+        "before": "        return object : DesktopOriginalVideoMediaPort {\n            override fun prepareLegacyDash",
+        "after": "        return object : DesktopOriginalVideoMediaPort {\n            override fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit) {\n                checkCurrent()\n                delegate.withPlaybackIntent(startPositionMs,playWhenReady) {\n                    checkCurrent(); action()\n                }\n            }\n            override fun prepareLegacyDash"
+      }
+    ]
+  },
+  {
+    "target": "desktop/tools/extract-upstream-video-state-core.py",
+    "baseSHA256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+    "desiredSHA256LF": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+    "hunks": [
+      {
+        "before": "s=s.replace('val mediaItem = MediaItem.fromUri(url)\\n        player.setMediaItem(mediaItem)','val mediaItem = environment.media.prepareProgressive(url)\\n        environment.media.accept(mediaItem)')\n",
+        "after": "s=s.replace('val mediaItem = MediaItem.fromUri(url)\\n        player.setMediaItem(mediaItem)','val mediaItem = environment.media.prepareProgressive(url)\\n        environment.media.accept(mediaItem)')\n# Original Exo assigns a source before prepare. MPV enqueues Load at accept:\n# capture the EXACT original play call arguments first, preserving source policy\n# and every subsequent original property/seek/prepare expression and order.\nswap('        val dashSegmentRequestsEnabled = resolveDashSegmentRequestsEnabled()\\n',\n     '        environment.media.withPlaybackIntent(seekTo, playWhenReady) {\\n        val dashSegmentRequestsEnabled = resolveDashSegmentRequestsEnabled()\\n',\n     'Windows native initial Load original lexical intent begin DASH')\nswap('        environment.media.accept(finalSource)\\n        player.playWhenReady = playWhenReady',\n     '        environment.media.accept(finalSource)\\n        }\\n        player.playWhenReady = playWhenReady',\n     'Windows native original lexical intent end DASH')\nswap('        val mediaItem = environment.media.prepareProgressive(url)\\n        environment.media.accept(mediaItem)',\n     '        environment.media.withPlaybackIntent(seekTo, playWhenReady) {\\n        val mediaItem = environment.media.prepareProgressive(url)\\n        environment.media.accept(mediaItem)\\n        }',\n     'Windows native initial Load original lexical intent progressive')\n"
+      }
+    ]
+  }
+]

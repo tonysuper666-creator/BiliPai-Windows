@@ -1,0 +1,401 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceOnly": true,
+  "fullVmHolderAccepted": false,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/VideoLoadError.kt",
+      "sha256LF": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/AdaptiveDashPlaybackSource.kt",
+      "sha256LF": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+      "sha256LF": "e266056182d40e924535401011071fc61fcfc59738e9263076717f49765c47fa",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "sha256LF": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt",
+      "sha256LF": "e5fb1f278eba66228597dfc631b275b835b11a577c23c0eebfc460821b839918",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackRequest.kt",
+      "sha256LF": "ff75b5af9a8cd4cec42f393a40a3e45bff20d52c1dc821f333076da377b6eb4e",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoadResult.kt",
+      "sha256LF": "a527931bc3236db1f4c103adfc1e193521423369e0bbbf9b5801764d254b2ed1",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
+      "sha256LF": "09d952f46d7eaa505aa3d23dd6435a24e87d44b45fcd47dad0cf29185c868655",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/coordinator/PlaybackCoordinator.kt",
+      "sha256LF": "1968820cd98d97cbe745363a799e0ae08e172b3ba7881a0d1696777b799a7454",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+      "sha256LF": "4f5d3bddd5281e611179aa6c93ae8c81e68a74cd64cd13e30ed6ae691a6b2fdd",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/controller/QualityManager.kt",
+      "sha256LF": "4e2895dfd69d83c398b0e1719267513598fd3f3c33fd157f169d0c6f7b66a496",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+      "sha256LF": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
+      "sha256LF": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+      "sha256LF": "083a8ed64ab0f63bc7d86c96c1f55b453ce0df075a7acad4a47f7dd7edc1447d",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "sha256LF": "ab9cce54896ecdb0a05c5632cc0e0db6730e0cf6a3589e3d3e665e160e7e6b49",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "sha256LF": "518cac4c89acb92aa97c3945b16fe5662f678bff6dcd67a5803f70165e5ae63f",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+      "sha256LF": "f14bec14a699587e36fbaa7e94636f1274fcd0e69b3bbb3d0c8309aa0170e440",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoPlaybackUiState.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "6cfee432aa9fa5a3e8358ec6cc72c1d1280f91c8226501a0456807f7644159c2",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/data/model/VideoLoadError.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/model/VideoLoadError.kt",
+      "mode": "direct",
+      "sha256LF": "d13abdfe7ad6ec158e4046f30ea1ad38d1c68202c08dba73df0936284695a3df",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/dash/AdaptiveDashPlaybackSource.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/dash/AdaptiveDashPlaybackSource.kt",
+      "mode": "direct",
+      "sha256LF": "dcf96628f58f40d06d9a64608b82ccefc45ee4b3be4beda41fa402b5427ff405",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSuccessExtensions.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSubjectSnapshot.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "fb17bdcb248aecaa0fe652db29459840d9de107bb2e83689cc345fbf24191af3",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/loader/PlaybackRequest.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackRequest.kt",
+      "mode": "direct",
+      "sha256LF": "ff75b5af9a8cd4cec42f393a40a3e45bff20d52c1dc821f333076da377b6eb4e",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/loader/PlaybackLoadResult.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoadResult.kt",
+      "mode": "direct",
+      "sha256LF": "a527931bc3236db1f4c103adfc1e193521423369e0bbbf9b5801764d254b2ed1",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackSessionStore.kt",
+      "mode": "direct",
+      "sha256LF": "09d952f46d7eaa505aa3d23dd6435a24e87d44b45fcd47dad0cf29185c868655",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/coordinator/PlaybackCoordinator.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/coordinator/PlaybackCoordinator.kt",
+      "mode": "direct",
+      "sha256LF": "1968820cd98d97cbe745363a799e0ae08e172b3ba7881a0d1696777b799a7454",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/policy/ResumePlaybackPolicy.kt",
+      "mode": "direct",
+      "sha256LF": "4f5d3bddd5281e611179aa6c93ae8c81e68a74cd64cd13e30ed6ae691a6b2fdd",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/controller/QualityManager.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/controller/QualityManager.kt",
+      "mode": "direct",
+      "sha256LF": "4e2895dfd69d83c398b0e1719267513598fd3f3c33fd157f169d0c6f7b66a496",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailPresentationState.kt",
+      "mode": "direct",
+      "sha256LF": "450cd98e1b0e6e03c87a1f6e0c0e38e85cd3955e82e7aec2387d711c2e066250",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailRenderContracts.kt",
+      "mode": "direct",
+      "sha256LF": "e9820ea7274bfce8993adadcafd6da519b8722ff3511a3a83c2be7476ebf17d1",
+      "generated": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+      "mode": "full-original-native-constant-alias",
+      "sha256LF": "f0e1d6537da8b5d4036d5c480902eb090eb0330e1bb73674180729ae0ab16a5f",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "mode": "full-original-required-port-alias",
+      "sha256LF": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoLoadModels.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "mode": "full-original-result-contracts",
+      "sha256LF": "9ef04ed55677cb779b95a35d30658f1bebd4bae458eb1483687160b8de90027a",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "a2839c6e734e64d2b3e12c9cda0ce1b10d8a1d7673c85e38e20a97c8a031daa7",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "62102a37824deac43b35a83b62e9b43252506f04e30a004673525e9e7dbcd7ec",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "eab897146b94f95c1a5e04bdc12a9a112d428d1c405979d51d1756d8a076fe5c",
+      "generated": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoSupplementViewModel.kt",
+      "origin": [
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt"
+      ],
+      "mode": "selected-original-platform-adapt",
+      "sha256LF": "376e4356b3c196b0323c7f132272a87849a844ddc928a5c8447a02e18c5e827c",
+      "generated": true
+    }
+  ],
+  "audits": {
+    "usecase-adaptations.json": [
+      {
+        "label": "Required same-root usecase environment replaces Android defaults",
+        "before": "class VideoPlaybackUseCase(\n    private var progressManager: PlaybackProgressManager = PlaybackProgressManager(),\n    private val qualityManager: QualityManager = QualityManager()\n) {",
+        "after": "class VideoPlaybackUseCase internal constructor(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackUseCaseEnvironment,\n    private val qualityManager: QualityManager = QualityManager()\n) : com.bilipai.desktop.ui.DesktopOriginalVideoLoadPort {\n    private val progressManager get() = environment.progress\n    private val VideoRepository get() = environment.repository\n    private val ActionRepository get() = environment.actions"
+      },
+      {
+        "label": "Actual context/progress authority, no second manager",
+        "before": "appContext = context.applicationContext\n        progressManager = PlaybackProgressManager.getInstance(context)",
+        "after": "require(context === environment.context) { \"Original video context must use the same global store\" }\n        appContext = context"
+      },
+      {
+        "label": "Task-owned entry admission before original cooldown/network work",
+        "before": "    ): VideoLoadResult {\n        try {",
+        "after": "    ): VideoLoadResult {\n        environment.assertOwned()\n        try {"
+      },
+      {
+        "label": "Retired task cannot apply original load result/cooldown success",
+        "before": "            return detailResult.fold(",
+        "after": "            environment.assertOwned()\n            return detailResult.fold("
+      },
+      {
+        "label": "Windows native initial Load original lexical intent begin DASH",
+        "before": "        val dashSegmentRequestsEnabled = resolveDashSegmentRequestsEnabled()\n",
+        "after": "        environment.media.withPlaybackIntent(seekTo, playWhenReady) {\n        val dashSegmentRequestsEnabled = resolveDashSegmentRequestsEnabled()\n"
+      },
+      {
+        "label": "Windows native original lexical intent end DASH",
+        "before": "        environment.media.accept(finalSource)\n        player.playWhenReady = playWhenReady",
+        "after": "        environment.media.accept(finalSource)\n        }\n        player.playWhenReady = playWhenReady"
+      },
+      {
+        "label": "Windows native initial Load original lexical intent progressive",
+        "before": "        val mediaItem = environment.media.prepareProgressive(url)\n        environment.media.accept(mediaItem)",
+        "after": "        environment.media.withPlaybackIntent(seekTo, playWhenReady) {\n        val mediaItem = environment.media.prepareProgressive(url)\n        environment.media.accept(mediaItem)\n        }"
+      },
+      {
+        "label": "Android media boundary createLegacyDashMediaSource",
+        "before": "        private fun createLegacyDashMediaSource(\n        videoUrl: String,\n        audioUrl: String?,\n        cdnCacheKeysByUrl: Map<String, String>\n    ): MediaSource {\n        val headers = mapOf(\n            \"Referer\" to \"https://www.bilibili.com\",\n            \"User-Agent\" to \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\n        )\n        val upstreamFactory = androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(\n            NetworkModule.playbackOkHttpClient\n        ).setDefaultRequestProperties(headers)\n        val dataSourceFactory = buildCachedPlaybackDataSourceFactory(upstreamFactory, cdnCacheKeysByUrl)\n\n        val mediaSourceFactory = androidx.media3.exoplayer.source.ProgressiveMediaSource.Factory(dataSourceFactory)\n        val videoSource = mediaSourceFactory.createMediaSource(MediaItem.fromUri(videoUrl))\n\n        return if (audioUrl != null) {\n            val audioSource = mediaSourceFactory.createMediaSource(MediaItem.fromUri(audioUrl))\n            androidx.media3.exoplayer.source.MergingMediaSource(videoSource, audioSource)\n        } else {\n            videoSource\n        }\n    }",
+        "after": "private fun createLegacyDashMediaSource(videoUrl:String,audioUrl:String?,cdnCacheKeysByUrl:Map<String,String>):com.bilipai.desktop.player.PlaybackSource =\n        environment.media.prepareLegacyDash(videoUrl,audioUrl,cdnCacheKeysByUrl)"
+      },
+      {
+        "label": "Android media boundary createAdaptiveDashMediaSource",
+        "before": "        private fun createAdaptiveDashMediaSource(\n        adaptiveDashSource: AdaptiveDashPlaybackSource?,\n        cdnCacheKeysByUrl: Map<String, String>\n    ): MediaSource? {\n        val source = adaptiveDashSource ?: return null\n        val context = appContext ?: NetworkModule.appContext ?: return null\n        val manifestUri = writeAdaptiveDashManifest(context, source.manifest) ?: return null\n        val headers = mapOf(\n            \"Referer\" to \"https://www.bilibili.com\",\n            \"User-Agent\" to \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\n        )\n        val upstreamFactory = androidx.media3.datasource.okhttp.OkHttpDataSource.Factory(\n            NetworkModule.playbackOkHttpClient\n        ).setDefaultRequestProperties(headers)\n        val dataSourceFactory = androidx.media3.datasource.DefaultDataSource.Factory(\n            context,\n            PlaybackMediaCache.buildCdnOptimizedDataSourceFactory(\n                context = context,\n                upstreamFactory = upstreamFactory,\n                cacheKeysByUrl = cdnCacheKeysByUrl\n            )\n        )\n        val mediaItem = MediaItem.Builder()\n            .setUri(manifestUri)\n            .setMimeType(MimeTypes.APPLICATION_MPD)\n            .build()\n        return DashMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem)\n    }",
+        "after": "private fun createAdaptiveDashMediaSource(adaptiveDashSource:AdaptiveDashPlaybackSource?,cdnCacheKeysByUrl:Map<String,String>):com.bilipai.desktop.player.PlaybackSource? =\n        adaptiveDashSource?.let { environment.media.prepareAdaptiveDash(it,cdnCacheKeysByUrl) }"
+      },
+      {
+        "label": "Android media boundary buildCachedPlaybackDataSourceFactory",
+        "before": "    private fun buildCachedPlaybackDataSourceFactory(\n        upstreamFactory: DataSource.Factory,\n        cdnCacheKeysByUrl: Map<String, String> = emptyMap()\n    ): DataSource.Factory {\n        val context = appContext ?: NetworkModule.appContext ?: return upstreamFactory\n        return PlaybackMediaCache.buildCdnOptimizedDataSourceFactory(\n            context = context,\n            upstreamFactory = upstreamFactory,\n            cacheKeysByUrl = cdnCacheKeysByUrl\n        )\n    }",
+        "after": ""
+      },
+      {
+        "label": "Android media boundary resolveDashSegmentRequestsEnabled",
+        "before": "    private fun resolveDashSegmentRequestsEnabled(): Boolean {\n        val context = appContext ?: NetworkModule.appContext ?: return true\n        return PlayerSettingsCache.isDashSegmentRequestsEnabled(context)\n    }",
+        "after": "private fun resolveDashSegmentRequestsEnabled():Boolean = environment.dashSegmentRequestsEnabled()"
+      },
+      {
+        "label": "Android media boundary writeAdaptiveDashManifest",
+        "before": "    private fun writeAdaptiveDashManifest(context: Context, manifest: String): Uri? {\n        return runCatching {\n            val manifestDir = File(context.cacheDir, \"dash_manifests\").apply { mkdirs() }\n            val manifestFile = File(manifestDir, resolveLocalDashManifestFileName(manifest))\n            if (!manifestFile.exists() || manifestFile.readText() != manifest) {\n                manifestFile.writeText(manifest)\n            }\n            Uri.fromFile(manifestFile)\n        }.onFailure { error ->\n            Logger.w(\"VideoPlaybackUseCase\", \" Failed to cache adaptive DASH manifest: ${error.message}\")\n        }.getOrNull()\n    }",
+        "after": ""
+      }
+    ],
+    "raw-protocol-adaptations.json": [
+      {
+        "label": "Captured SAME playback authorization API",
+        "before": "NetworkModule.playbackApi()",
+        "after": "environment.playbackApi",
+        "count": 4
+      },
+      {
+        "label": "Captured visitor-only original guest API",
+        "before": "NetworkModule.guestApi",
+        "after": "environment.guestApi",
+        "count": 1
+      },
+      {
+        "label": "Existing safe desktop diagnostics logger",
+        "before": "com.android.purebilibili.core.util.Logger",
+        "after": "Logger",
+        "count": 53
+      },
+      {
+        "label": "Exact original Android token platform supplied by same session port",
+        "before": "com.android.purebilibili.core.store.TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID",
+        "after": "environment.androidAccessTokenPlatform",
+        "count": 1
+      },
+      {
+        "label": "Captured primary account refresh admission",
+        "before": "applicationContext != null && playbackAccount() == null",
+        "after": "environment.canRefreshPrimaryToken() && playbackAccount() == null",
+        "count": 1
+      },
+      {
+        "label": "SAME session original refresh actor",
+        "before": "com.android.purebilibili.core.network.TokenRefreshHelper.refresh(applicationContext!!)",
+        "after": "environment.refreshPrimaryToken()",
+        "count": 1
+      },
+      {
+        "label": "Original exp_auto_1080p same-global read",
+        "before": "val auto1080pEnabled = try {\n            val context = NetworkModule.appContext\n            context?.getSharedPreferences(\"settings_prefs\", android.content.Context.MODE_PRIVATE)\n                ?.getBoolean(\"exp_auto_1080p\", true) ?: true\n        } catch (e: Exception) {\n            true\n        }",
+        "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+        "count": 1
+      },
+      {
+        "label": "Original exp_auto_1080p same-global read",
+        "before": "val auto1080pEnabled = try {\n                val context = com.android.purebilibili.core.network.NetworkModule.appContext\n                context?.getSharedPreferences(\"settings_prefs\", android.content.Context.MODE_PRIVATE)\n                    ?.getBoolean(\"exp_auto_1080p\", true) ?: true // 默认开启\n            } catch (e: Exception) {\n                true // 出错时默认开启\n            }",
+        "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+        "count": 1
+      },
+      {
+        "label": "Original flow same-global read",
+        "before": "val auto1080pEnabled = NetworkModule.appContext?.let { context ->\n            runCatching { SettingsManager.getAuto1080p(context).first() }.getOrDefault(true)\n        } ?: true",
+        "after": "val auto1080pEnabled = environment.auto1080pEnabled()",
+        "count": 1
+      },
+      {
+        "label": "Original directed traffic consent same-global",
+        "before": "NetworkModule.appContext?.let {\n                SettingsManager.getBiliDirectedTrafficEnabledSync(it)\n            } ?: false",
+        "after": "environment.directedTrafficEnabled()",
+        "count": 1
+      },
+      {
+        "label": "Real Windows WWAN query",
+        "before": "NetworkModule.appContext?.let {\n                NetworkUtils.isMobileData(it)\n            } ?: false",
+        "after": "environment.isMobileData()",
+        "count": 1
+      },
+      {
+        "label": "Sole existing Root playback cache port",
+        "before": "PlayUrlCache.",
+        "after": "environment.cache.",
+        "count": 4
+      },
+      {
+        "label": "Safe logging, no raw stdout exception",
+        "before": "e.printStackTrace()",
+        "after": "Logger.e(\"VideoRepo\", \"Original video detail failed\", e)",
+        "count": 1
+      }
+    ],
+    "supplement-adaptations.json": {
+      "before": "class VideoSupplementViewModel(\n    private val loader: VideoSupplementLoader = EmptyVideoSupplementLoader,\n    private val startDelayMs: Long = 300L\n) : ViewModel() {\n    private val _uiState = MutableStateFlow(VideoSupplementUiState())\n    val uiState = _uiState.asStateFlow()\n    private var subjectJob: Job? = null\n\n    fun bindSubject(subject: VideoSubjectSnapshot, seed: VideoSupplementSeed) {\n        if (!shouldRebindVideoDomain(_uiState.value.subject, subject)) {\n            sync(seed)\n            return\n        }\n        subjectJob?.cancel()\n        _uiState.value = VideoSupplementUiState(\n            subject = subject,\n            visible = _uiState.value.visible,\n            aiSummary = seed.aiSummary,\n            videoNoteState = seed.videoNoteState,\n            videoTags = seed.videoTags,\n            onlineCount = seed.onlineCount,\n            ownerFollowerCount = seed.ownerFollowerCount,\n            ownerVideoCount = seed.ownerVideoCount\n        )\n        startDeferredLoad(subject)\n    }\n\n    fun sync(seed: VideoSupplementSeed) {\n        val current = _uiState.value\n        _uiState.value = current.copy(\n            aiSummary = seed.aiSummary,\n            videoNoteState = seed.videoNoteState,\n            videoTags = seed.videoTags,\n            onlineCount = seed.onlineCount,\n            ownerFollowerCount = seed.ownerFollowerCount,\n            ownerVideoCount = seed.ownerVideoCount\n        )\n    }\n\n    fun setVisible(visible: Boolean) {\n        if (_uiState.value.visible == visible) return\n        _uiState.value = _uiState.value.copy(visible = visible)\n        if (!visible) subjectJob?.cancel()\n        else _uiState.value.subject?.let(::startDeferredLoad)\n    }\n\n    private fun startDeferredLoad(subject: VideoSubjectSnapshot) {\n        if (!_uiState.value.visible) return\n        subjectJob?.cancel()\n        subjectJob = viewModelScope.launch {\n            delay(startDelayMs)\n            val loaded = loader.load(subject) ?: return@launch\n            val current = _uiState.value\n            if (current.visible && current.subject?.generation == subject.generation) {\n                sync(loaded)\n            }\n        }\n    }\n\n    override fun onCleared() {\n        subjectJob?.cancel()\n        super.onCleared()\n    }\n}\n\n",
+      "after": "internal class VideoSupplementViewModel(\n    private val environment:com.bilipai.desktop.ui.DesktopOriginalVideoSupplementEnvironment,\n    private val loader:VideoSupplementLoader,\n    private val startDelayMs:Long=300L,\n) : AutoCloseable {\n    private val viewModelScope get() = environment.scope\n    private fun <T> MutableStateFlow(initial:T):MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, environment::commit)\n\n    private val _uiState = MutableStateFlow(VideoSupplementUiState())\n    val uiState = _uiState.asStateFlow()\n    private var subjectJob: Job? = null\n\n    fun bindSubject(subject: VideoSubjectSnapshot, seed: VideoSupplementSeed) {\n        if (!shouldRebindVideoDomain(_uiState.value.subject, subject)) {\n            sync(seed)\n            return\n        }\n        subjectJob?.cancel()\n        _uiState.value = VideoSupplementUiState(\n            subject = subject,\n            visible = _uiState.value.visible,\n            aiSummary = seed.aiSummary,\n            videoNoteState = seed.videoNoteState,\n            videoTags = seed.videoTags,\n            onlineCount = seed.onlineCount,\n            ownerFollowerCount = seed.ownerFollowerCount,\n            ownerVideoCount = seed.ownerVideoCount\n        )\n        startDeferredLoad(subject)\n    }\n\n    fun sync(seed: VideoSupplementSeed) {\n        val current = _uiState.value\n        _uiState.value = current.copy(\n            aiSummary = seed.aiSummary,\n            videoNoteState = seed.videoNoteState,\n            videoTags = seed.videoTags,\n            onlineCount = seed.onlineCount,\n            ownerFollowerCount = seed.ownerFollowerCount,\n            ownerVideoCount = seed.ownerVideoCount\n        )\n    }\n\n    fun setVisible(visible: Boolean) {\n        if (_uiState.value.visible == visible) return\n        _uiState.value = _uiState.value.copy(visible = visible)\n        if (!visible) subjectJob?.cancel()\n        else _uiState.value.subject?.let(::startDeferredLoad)\n    }\n\n    private fun startDeferredLoad(subject: VideoSubjectSnapshot) {\n        if (!_uiState.value.visible) return\n        subjectJob?.cancel()\n        subjectJob = viewModelScope.launch {\n            delay(startDelayMs)\n            val loaded = loader.load(subject) ?: return@launch\n            val current = _uiState.value\n            if (current.visible && current.subject?.generation == subject.generation) {\n                sync(loaded)\n            }\n        }\n    }\n\n    override fun close() {\n        subjectJob?.cancel()\n\n    }\n}\n\n",
+      "originalSha": "e5fb1f278eba66228597dfc631b275b835b11a577c23c0eebfc460821b839918",
+      "boundary": "Required actual loader+same entry scope/owned flow; no default EmptyLoader/ViewModel base"
+    }
+  }
+}

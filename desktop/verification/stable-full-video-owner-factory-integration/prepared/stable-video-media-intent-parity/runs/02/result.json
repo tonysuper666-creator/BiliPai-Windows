@@ -1,0 +1,20 @@
+{
+  "compilePassed": true,
+  "compileExitCode": 0,
+  "actual69CP": 101,
+  "preparedFamilyOverrides": [
+    "CoreUseCase",
+    "MediaPortEnvironment",
+    "Invocation",
+    "NativeOwner-derived-actual69"
+  ],
+  "originalVMOverride": false,
+  "cache70NativeOverrideNotCompiled": true,
+  "HTTP": false,
+  "native": false,
+  "mounted": false,
+  "classes": 63,
+  "jarSHA256Bytes": "bc556d5a9593e432e896370e0aee213d3dba14d5721f906a8b446f0d3f6cb59d",
+  "passed": true,
+  "runtimeExitCode": 0
+}

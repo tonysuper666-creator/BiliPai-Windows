@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "sourceInputs": 1,
+  "newFactorySources": 1,
+  "explicitProspectiveReferences": 0,
+  "allFourOriginalDomainClassesFromActual69": true,
+  "classes": 36,
+  "actualRuntimeEntries": 101,
+  "productionOverrides": [],
+  "productAndDependencyClassIntersection": [],
+  "productRuntimeAccepted": false,
+  "guiHttpNativeExecution": false,
+  "candidateJarSHA256Bytes": "78adeb08b1c9b205c9a01c894dc8d49aaa4d444b426fdc94dae61fcdbc71d604"
+}

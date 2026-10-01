@@ -1,0 +1,13 @@
+{
+  "actualBase": 67,
+  "baseRuntimeEntries": 101,
+  "bindings": 8,
+  "store": "Existing SessionStore",
+  "primaryApi": "Existing ownedHomeService; getter read admission and transport captures original request receipt/Job",
+  "playbackCalls": "Existing ownedPlaybackCallFactory(authorization, ::current), no new Call.Factory/client authority",
+  "visitorQuery": "Required per-metadata query of actual Repository-owned visitorInitialized AND visitorGeneration; no constructor/capture ABI change",
+  "vipCommit": "Existing withProfileAccountAdmission + saveProfileVipStatus under outer receipt Store -> entry gate; primary MID captured; no credential or MID replacement",
+  "getWbiKeysVisibility": "REFERENCE ONLY: parent sole frozen metadata/core visibility hunk; not reproduced in this packet",
+  "vipRevisionBoundary": "Changed VIP is in existing playback authorization identity. Actual Store can retire this receipt; original full load must retire/re-capture rather than silently retag. Store policy is unchanged.",
+  "noHttpOrAccountOrGuiOrNativeRun": true
+}

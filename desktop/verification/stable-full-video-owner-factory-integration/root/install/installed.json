@@ -1,0 +1,188 @@
+{
+  "phase": 71,
+  "baseCommit": "efc9b0c0f1827b9d1d29b324f9ad25e9be3e513c",
+  "frozenPackets": [
+    {
+      "lane": "stable-video-captured-metadata-binding-parity",
+      "manifestSha256Bytes": "73b2cb6a872a561c14f67eb5d72288d8e26e6f07ec8a64abdabd5da4165639f2",
+      "rawCount": 16
+    },
+    {
+      "lane": "stable-video-full-owner-factory-parity",
+      "manifestSha256Bytes": "04b2b35a64c7fea1fcc691a487b45665c61b38ab0a773ca810ddbeae51363319",
+      "rawCount": 73
+    },
+    {
+      "lane": "stable-video-domain-owner-factory-parity",
+      "manifestSha256Bytes": "5c571ec3907e6037707b5430b4c92042b920a828f21affd8f28774df2ed70c12",
+      "rawCount": 26
+    },
+    {
+      "lane": "stable-video-media-intent-parity",
+      "manifestSha256Bytes": "8357e7cdf392d34811330c10a722ef5133abd109a3b6e5767bad5a5c92806a82",
+      "rawCount": 52
+    }
+  ],
+  "payloadCount": 3,
+  "existingFamilyCount": 8,
+  "exactHunks": 15,
+  "patchRecords": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "hunks": 4,
+      "inputSha256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "outputSha256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "frozenBaseSha256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "frozenDesiredSha256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "hunks": 1,
+      "inputSha256LF": "344eba61e1ea606541a5a3e43a9b2ab7d277f1beb22cd20618de0a120299ff97",
+      "outputSha256LF": "b9b62eb4bd7e306d83c39d5ec0155fd866241784d8558284de7d54a1d0ea4322",
+      "frozenBaseSha256LF": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "frozenDesiredSha256LF": "db1ad55a2d61128f7d2a242c0f75146be46fbe3b109f673a967a0a83816008dd",
+      "rebasedOverExactCache70": true,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "hunks": 1,
+      "inputSha256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "outputSha256LF": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "frozenBaseSha256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "frozenDesiredSha256LF": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "hunks": 2,
+      "inputSha256LF": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833",
+      "outputSha256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+      "frozenBaseSha256LF": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833",
+      "frozenDesiredSha256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "hunks": 2,
+      "inputSha256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+      "outputSha256LF": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+      "frozenBaseSha256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+      "frozenDesiredSha256LF": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "hunks": 1,
+      "inputSha256LF": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+      "outputSha256LF": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "frozenBaseSha256LF": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+      "frozenDesiredSha256LF": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "hunks": 2,
+      "inputSha256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+      "outputSha256LF": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "frozenBaseSha256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+      "frozenDesiredSha256LF": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "hunks": 1,
+      "inputSha256LF": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+      "outputSha256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "frozenBaseSha256LF": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+      "frozenDesiredSha256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "hunks": 1,
+      "inputSha256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+      "outputSha256LF": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "frozenBaseSha256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+      "frozenDesiredSha256LF": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "rebasedOverExactCache70": false,
+      "exactIndexedInverse": true
+    }
+  ],
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+      "sha256Bytes": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c",
+      "sha256LF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c",
+      "sha256LF": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoDomainOwners.kt",
+      "sha256Bytes": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6",
+      "sha256LF": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "beforeSha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "afterSha256Bytes": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "beforeSha256Bytes": "344eba61e1ea606541a5a3e43a9b2ab7d277f1beb22cd20618de0a120299ff97",
+      "afterSha256Bytes": "b9b62eb4bd7e306d83c39d5ec0155fd866241784d8558284de7d54a1d0ea4322"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "beforeSha256Bytes": "bf2c957d4cef7e1daacc8522521f4aae3440aa2d11f159f80992db8b3a837dd5",
+      "afterSha256Bytes": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+      "afterSha256Bytes": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "beforeSha256Bytes": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+      "afterSha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "beforeSha256Bytes": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+      "afterSha256Bytes": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256Bytes": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+      "afterSha256Bytes": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "beforeSha256Bytes": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+      "afterSha256Bytes": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31"
+    }
+  ],
+  "wholeFileReplacement": false,
+  "sourceIdentityDelta": 0,
+  "resourceDelta": 0,
+  "dependencyDelta": 0,
+  "gradleDelta": 0,
+  "fullRootMounted": false,
+  "nativeInitialIntentAccepted": false,
+  "desktopExeReplaced": false
+}

@@ -1,0 +1,42 @@
+{
+  "copyWhitelist": [
+    {
+      "source": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoMediaIntent.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256LF": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c"
+    }
+  ],
+  "exactPatchOrder": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "baseSHA256LF": "69d193e6a4fc190b3e82a3f0b27fb4866ead59e3b8847da830b9f1286b120a80",
+      "desiredSHA256LF": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04",
+      "hunks": 1
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "baseSHA256LF": "07dce47a6343209ab2b9857a58aab6895547cc615dc3322a79f4b84e710d67aa",
+      "desiredSHA256LF": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea",
+      "hunks": 2
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "baseSHA256LF": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+      "desiredSHA256LF": "6c0780172204a36d7faea1159f7ec0f44142bb011f04da8bbf4f00e38c558b1a",
+      "hunks": 1
+    },
+    {
+      "target": "desktop/tools/extract-upstream-video-state-core.py",
+      "baseSHA256LF": "3d3832655af7f07b85a32c427ae62a819552145a5f1728c90101662c267d0fdb",
+      "desiredSHA256LF": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "hunks": 1
+    }
+  ],
+  "compileOnlyActual69Reference": "compile-reference-actual69",
+  "wholeExistingReplacementAllowed": false,
+  "registryDelta": [],
+  "gradleDelta": [],
+  "dependenciesDelta": [],
+  "nativeAccepted": false,
+  "rootMounted": false
+}

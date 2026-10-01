@@ -1,0 +1,5 @@
+MEDIA_INTENT_PASS groups=3 assertions=13 native=false HTTP=false mounted=false
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoMediaIntentView file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-media-intent-parity/runs/02/candidate-proof.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackInvocationPorts file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-media-intent-parity/runs/02/candidate-proof.jar
+ORIGIN com.android.purebilibili.feature.video.playback.session.PlaybackSessionStore file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-69/main-kotlin.jar
+ORIGIN com.android.purebilibili.feature.video.usecase.VideoPlaybackUseCase file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-media-intent-parity/runs/02/candidate-proof.jar

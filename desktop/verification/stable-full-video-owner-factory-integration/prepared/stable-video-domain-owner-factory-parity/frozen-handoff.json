@@ -1,0 +1,150 @@
+{
+  "frozen": true,
+  "status": "SOURCE_READY_COMPILED_ACTUAL69_REFERENCES",
+  "actual69ManifestSHA256Bytes": "4524b0c8b5e4e97bb88223a6a6f71c126bc17586111d50a10fb49f186a3d695d",
+  "rawArtifactRows": 26,
+  "artifacts": [
+    {
+      "path": "audit-and-freeze.py",
+      "sha256Bytes": "f20d0049553f3a01c03cc75a4b22af576a41be06189700e7ca739b5e19b29c4f",
+      "bytes": 9712
+    },
+    {
+      "path": "compile-actual69.py",
+      "sha256Bytes": "19cb2bf64b70df27dc8cfcf983677c09d5abd603ccf64d26c2a98ec4cdeece5c",
+      "bytes": 3612
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "26e9da90867375ecb2a6dea05f6ecc083a6d520e1a833d3fc905428f0fb02a07",
+      "bytes": 4095
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "32facd4be73240a81198ef4709196ad72261642431543e58447613adf7ebf78d",
+      "bytes": 3391
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoDomainOwners.kt",
+      "sha256Bytes": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6",
+      "bytes": 8130
+    },
+    {
+      "path": "reference/original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt.txt",
+      "sha256Bytes": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "bytes": 55780
+    },
+    {
+      "path": "reference/original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt.txt",
+      "sha256Bytes": "6500e13a311b41e86e35b60d1fb3144cdb658b5ce09bd2d6f20ef467b325312d",
+      "bytes": 1874
+    },
+    {
+      "path": "reference/original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt.txt",
+      "sha256Bytes": "377a74a359cc84eb2961f5ff022da12158345a677d14087ea1fc7d3991f148c8",
+      "bytes": 24037
+    },
+    {
+      "path": "reference/original-stable/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoSupplementViewModel.kt.txt",
+      "sha256Bytes": "e5fb1f278eba66228597dfc631b275b835b11a577c23c0eebfc460821b839918",
+      "bytes": 4000
+    },
+    {
+      "path": "runs/01/class-symbols.json",
+      "sha256Bytes": "32390de8b8acbf4c9ebdd4bddd6d8b525d68bdf853e2524626bbe37d087fbb02",
+      "bytes": 4624
+    },
+    {
+      "path": "runs/01/compile-result.json",
+      "sha256Bytes": "3e4d055844f754793453a8aae0ca768ef4980ed70d02925eab866bb6b645a26d",
+      "bytes": 480
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "50eef19f7d6ecb740001bb9a151e0264580d715e13a7d73639fdcc0180bea3f1",
+      "bytes": 26258
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "4032257de24f2f37062b33d405f4dcd278aaa749605a26b1daa59898ba2365e3",
+      "bytes": 45098
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "4032257de24f2f37062b33d405f4dcd278aaa749605a26b1daa59898ba2365e3",
+      "bytes": 45098
+    },
+    {
+      "path": "runs/01/source-inputs/DesktopOriginalVideoComposerEnvironment.kt",
+      "sha256Bytes": "5da87756b834e6974f48bdcfdd0798dc05a06a77a5a38d006fc44970ddc80e74",
+      "bytes": 911
+    },
+    {
+      "path": "runs/01/source-inputs/DesktopOriginalVideoDomainOwners.kt",
+      "sha256Bytes": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6",
+      "bytes": 8130
+    },
+    {
+      "path": "runs/01/source-inputs/VideoComposerViewModel.kt",
+      "sha256Bytes": "a275b5effce310e9458f6c9609bdc614e53cb612e2b3ff92630384817f042dc7",
+      "bytes": 2531
+    },
+    {
+      "path": "runs/02/class-symbols.json",
+      "sha256Bytes": "f1dcd7ec4a323f9d00ea4b350aaa39b9b64b1ef51bdae1bb6d897b00a702c5ba",
+      "bytes": 3541
+    },
+    {
+      "path": "runs/02/compile-result.json",
+      "sha256Bytes": "d7224d95012e66905f8646cb805736397aa4f466cead17b4c80ed10a54d75407",
+      "bytes": 466
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "a17046c783b5341ede2e3aff63705290d6a14fc779925a5d0abce6083dbe3ec3",
+      "bytes": 25853
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "7212c55e0c6498e3e37b930eb275739175502aa384d16a1939f94d6b9980679c",
+      "bytes": 43692
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "7212c55e0c6498e3e37b930eb275739175502aa384d16a1939f94d6b9980679c",
+      "bytes": 43692
+    },
+    {
+      "path": "runs/02/source-inputs/DesktopOriginalVideoDomainOwners.kt",
+      "sha256Bytes": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6",
+      "bytes": 8130
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "9e74c1ee17085ade3567be7b47eddd5661b191e2562229b932f1ac7c1e672b62",
+      "bytes": 21498
+    }
+  ],
+  "excludedArtifacts": [
+    {
+      "path": "runs/01/candidate.jar",
+      "reason": "compiler binary/cache; not installation or formal raw source evidence"
+    },
+    {
+      "path": "runs/02/candidate.jar",
+      "reason": "compiler binary/cache; not installation or formal raw source evidence"
+    }
+  ],
+  "scope": "One new manual same-entry factory only. All original domain/model/request/env declarations referenced from actual69. Historical actual68+Composer prospective compile retained separately; current final compile uses actual69 only.",
+  "runtimeAcceptance": false
+}

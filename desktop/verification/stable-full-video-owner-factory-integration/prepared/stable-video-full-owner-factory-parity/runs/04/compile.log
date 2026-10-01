@@ -1,0 +1,24 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:49:36: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'videoUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v: String, a: String?, k: Map<String, String>): PlaybackSource = error("No media in terminal proof")
+                                   ^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:49:47: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'audioUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v: String, a: String?, k: Map<String, String>): PlaybackSource = error("No media in terminal proof")
+                                              ^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:49:59: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'cdnCacheKeysByUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareLegacyDash(v: String, a: String?, k: Map<String, String>): PlaybackSource = error("No media in terminal proof")
+                                                          ^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:50:38: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'source'. This may cause problems when calling this function with named arguments.
+    override fun prepareAdaptiveDash(s: AdaptiveDashPlaybackSource, k: Map<String, String>): PlaybackSource? = error("No media in terminal proof")
+                                     ^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:50:69: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoMediaPort' is named 'cdnCacheKeysByUrl'. This may cause problems when calling this function with named arguments.
+    override fun prepareAdaptiveDash(s: AdaptiveDashPlaybackSource, k: Map<String, String>): PlaybackSource? = error("No media in terminal proof")
+                                                                    ^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:172:26: warning: the corresponding parameter in the supertype 'Call' is named 'responseCallback'. This may cause problems when calling this function with named arguments.
+    override fun enqueue(callback: Callback) {
+                         ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:88:48: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+            override fun onFailure(call: Call, failure: IOException) {
+                                               ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:96:50: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                        val body = response.body ?: error("×ÖÄ»ÄÚÈÝÎª¿Õ")
+                                                 ^^^^^^^^^^^^^^^^^^

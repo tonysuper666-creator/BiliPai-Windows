@@ -1,0 +1,59 @@
+{
+  "declaredFamilyOverlaps": [
+    "com/bilipai/desktop/player/DesktopSubtitleAssets$Companion.class",
+    "com/bilipai/desktop/player/DesktopSubtitleAssets$download$2$1.class",
+    "com/bilipai/desktop/player/DesktopSubtitleAssets$download$2$2.class",
+    "com/bilipai/desktop/player/DesktopSubtitleAssets$import$2.class",
+    "com/bilipai/desktop/player/DesktopSubtitleAssets.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$Companion.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$assertCurrent$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$buvidApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$11$refreshed$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$11.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$12.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$2.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$environment$3$1$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$guestApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$playbackApi$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$read$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding$views$1.class",
+    "com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.class"
+  ],
+  "undeclaredOverlaps": [],
+  "origins": [
+    {
+      "className": "com.bilipai.desktop.ui.DesktopOriginalVideoOwnerRequestRepository",
+      "loadedFrom": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-factory-parity\\runs\\04\\candidate-proof.jar",
+      "classBytesSHA256": "7a1867eb14785ecc0fa4a4a7b256975aaae41e9471f05ea3b61142706a933d61",
+      "source": "explicit prepared adapter"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopOriginalVideoRepositoryBinding",
+      "loadedFrom": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-factory-parity\\runs\\04\\candidate-proof.jar",
+      "classBytesSHA256": "7c8c2be5f21b8f27d36fcfa60e548165c04181f3acd99155102ce1c2a18f28d1",
+      "source": "explicit prepared adapter"
+    },
+    {
+      "className": "com.bilipai.desktop.player.DesktopSubtitleAssets",
+      "loadedFrom": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-factory-parity\\runs\\04\\candidate-proof.jar",
+      "classBytesSHA256": "843179d364f6ac22f4376937bcb203ff599af79531724ff8d0a2054bb9f465d9",
+      "source": "explicit prepared adapter"
+    },
+    {
+      "className": "com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackInvocationPorts",
+      "loadedFrom": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-69\\main-kotlin.jar",
+      "classBytesSHA256": "04306bf73994f0833f302aba4439c38402e957c42d397b8b7477ecfd0ab718f9",
+      "source": "immutable actual69"
+    },
+    {
+      "className": "com.android.purebilibili.data.repository.DesktopOriginalVideoNoteProtocol",
+      "loadedFrom": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-69\\main-kotlin.jar",
+      "classBytesSHA256": "198c71e886023ab624b6cfa4c346ebef97a490c7a93f15cc4d716099110b3870",
+      "source": "immutable actual69"
+    }
+  ],
+  "runtimeCodeSourceLog": "runs/04/run.log",
+  "claim": "actual original protocols with explicit candidate adapters; not zero product override"
+}

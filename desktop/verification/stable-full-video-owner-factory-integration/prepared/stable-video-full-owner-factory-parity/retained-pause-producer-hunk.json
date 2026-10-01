@@ -1,0 +1,17 @@
+{
+  "target": "desktop/tools/extract-upstream-video-full-owner.py",
+  "baseSHA256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+  "desiredSHA256LF": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+  "changes": [
+    {
+      "before": "def generate(repo,output,standalone=False):\n",
+      "after": "def retained_handoff_platform_delta(path, body):\n if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body\n before='                                 if (!p.isPlaying) p.play()\\n'\n after='                                 if (shouldAutoPlay && !p.isPlaying) p.play()\\n'\n assert body.count(before)==1,'retained paused-handoff anchor'\n return body.replace(before,after,1)\n\ndef generate(repo,output,standalone=False):\n"
+    },
+    {
+      "before": "  body=''.join(parts);assert sha(body)==recipe['outputSha256LF'],recipe['output']\n",
+      "after": "  body=''.join(parts);assert sha(body)==recipe['outputSha256LF'],recipe['output']\n  body=retained_handoff_platform_delta(recipe['output'],body)\n"
+    }
+  ],
+  "rawPolicy": "Original spans still checked and replayed unchanged; explicit Windows post-replay honors captured pause only in original skip-prepare branch",
+  "installed": false
+}

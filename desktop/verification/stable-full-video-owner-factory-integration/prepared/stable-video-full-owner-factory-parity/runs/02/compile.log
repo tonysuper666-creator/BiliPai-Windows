@@ -1,0 +1,35 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:46:27: error: class '<anonymous>' is not abstract and does not implement abstract member:
+fun accept(source: PlaybackSource): Unit
+private val unusedMedia = object : DesktopOriginalVideoMediaPort {
+                          ^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:47:84: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareLegacyDash(v: String, a: String?, k: Map<String, String>): PlaybackSource = error("No media in terminal proof")
+                                                                                   ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:48:94: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareAdaptiveDash(s: AdaptiveDashPlaybackSource, k: Map<String, String>): PlaybackSource? = error("No media in terminal proof")
+                                                                                             ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:49:51: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun prepareProgressive(url: String): PlaybackSource = error("No media in terminal proof")
+                                                  ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:50:5: error: 'accept' overrides nothing. Potential signatures for overriding:
+fun accept(source: PlaybackSource): Unit
+    override fun accept(source: PlaybackSource) = error("No native acceptance in terminal proof")
+    ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:50:33: error: overload resolution ambiguity between candidates:
+data class PlaybackSource : Any
+data class PlaybackSource : Any
+    override fun accept(source: PlaybackSource) = error("No native acceptance in terminal proof")
+                                ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\RequestRepositoryProof.kt:148:9: error: class 'SubtitleCall' is not abstract and does not implement abstract members:
+fun <T : Any> tag(type: KClass<T>): T?
+fun <T> tag(type: Class<out T>): T?
+fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T
+fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T
+private class SubtitleCall(private val req: Request, private val starts: AtomicInteger) : Call {
+        ^^^^^^^^^^^^^^^^^^

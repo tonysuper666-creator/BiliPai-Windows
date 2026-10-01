@@ -1,0 +1,27 @@
+{
+  "actual69VMSourceSHA256LF": "15d36e1863173138ebac392705afbaebebc8299d5602c7be9ece66bb02e85123",
+  "callers": [
+    {
+      "context": "initial loadVideo preferred-quality refresh",
+      "line": 2823,
+      "token": "val effectiveVip = VideoRepository.refreshVipStatusForPreferredQualityIfNeeded(",
+      "actualSourceExcerpt": "                    val autoHighestEnabled = com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                        .getAutoHighestQualitySync(context)\n                    storedQualityForWarning = storedQuality\n                    autoHighestQualityEnabledForLoad = autoHighestEnabled\n                    val effectiveVip = VideoRepository.refreshVipStatusForPreferredQualityIfNeeded(\n                        isLoggedIn = isLoggedIn,\n                        cachedIsVip = VideoRepository.isPlaybackVip(),\n                        storedQuality = storedQuality,\n                        autoHighestEnabled = autoHighestEnabled\n                    )\n                    com.android.purebilibili.core.util.resolvePlaybackDefaultQualityId("
+    },
+    {
+      "context": "related prefetch; not a second main-load call",
+      "line": 2823,
+      "token": ".refreshVipStatusForPreferredQualityIfNeeded(",
+      "actualSourceExcerpt": "                    val autoHighestEnabled = com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings\n                        .getAutoHighestQualitySync(context)\n                    storedQualityForWarning = storedQuality\n                    autoHighestQualityEnabledForLoad = autoHighestEnabled\n                    val effectiveVip = VideoRepository.refreshVipStatusForPreferredQualityIfNeeded(\n                        isLoggedIn = isLoggedIn,\n                        cachedIsVip = VideoRepository.isPlaybackVip(),\n                        storedQuality = storedQuality,\n                        autoHighestEnabled = autoHighestEnabled\n                    )\n                    com.android.purebilibili.core.util.resolvePlaybackDefaultQualityId(\n                        storedQuality = storedQuality,"
+    },
+    {
+      "context": "accepted deferred nav refresh primary VIP write",
+      "line": 4827,
+      "token": "environment.account.updatePrimaryVip(true)",
+      "actualSourceExcerpt": "            val fetchedDislike = dislikeDeferred.await()\n            val fetchedCoinCount = coinDeferred.await()\n            val fetchedVip = vipDeferred.await()\n\n            if (fetchedVip && !VideoRepository.isUsingDedicatedPlaybackAccount()) {\n                environment.account.updatePrimaryVip(true)\n            }\n\n            withContext(Dispatchers.Main.immediate) {\n                _uiState.update { state ->\n                    val success = state as? VideoPlaybackUiState.Success ?: return@update state\n                    if (success.info.bvid != bvid) return@update state\n\n                    val mergedFollowingMids = success.followingMids.toMutableSet()"
+    }
+  ],
+  "originalLoadSignature": "    fun loadVideo(\n        bvid: String,\n        aid: Long = 0,\n        force: Boolean = false,\n        autoPlay: Boolean? = null,\n        ignoreSavedProgress: Boolean = false,\n        audioLang: String? = null,\n        videoCodecOverride: String? = null,\n        cid: Long = 0L,\n        fallbackResumePositionMs: Long = 0L\n    ) {\n        if (bvid.isBlank()) return\n        // A full media load supersedes an in-place page switch. Without this, a sl",
+  "pending": "Root fixed event/immutable intent capture and fresh-load consumer",
+  "silentRetagForbidden": true,
+  "notes": "Prefetch may retire current accepted authorization; separately reload same accepted subject, never prefetch target."
+}

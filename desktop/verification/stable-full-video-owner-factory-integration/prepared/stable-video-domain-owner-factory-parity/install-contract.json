@@ -1,0 +1,40 @@
+{
+  "status": "SOURCE_READY_COMPILED_NEW_PLATFORM_FACTORY",
+  "onlyInstall": [
+    "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoDomainOwners.kt"
+  ],
+  "referencesOnly": [
+    "actual69 four original VM classes",
+    "actual69 three original environments",
+    "actual69 DesktopOriginalCommentRootOwner/Requests/Ops",
+    "actual69 VideoDetailDomainEffects/Success projections"
+  ],
+  "constructor": "DesktopOriginalVideoDomainOwners.create(context, root, capturedEpoch, stillEntryOwned, commitIfEntryCurrent, currentPlaybackState, analytics)",
+  "properties": [
+    "engagement:VideoEngagementViewModel",
+    "composer:VideoComposerViewModel",
+    "comments:VideoCommentViewModel",
+    "supplement:VideoSupplementViewModel",
+    "scope:CoroutineScope"
+  ],
+  "requiredRootConsumers": [
+    "Construct the existing Common CommentRoot owner at the retained detail-entry boundary above conditional foreground drawing. Keep it alive when video/audio overlays temporarily cover the entry.",
+    "Pass real same-global DesktopPluginContext, immutable captured account epoch, live entry predicate and Store -> entry short atomic commit. No I/O/join/native teardown under this commit.",
+    "Pass the sole full Playback VM uiState.value getter; no parallel Controller loader or second Playback VM. DomainEffects already binds original subject generations/seeds.",
+    "Provide actual interaction analytics capability for all five log methods; no default/empty implementation exists in this packet.",
+    "Render the full Holder with these exact four VM instances. Retire the old DesktopVideoCommentRootHost constructor path at this same ordinary detail leaf; it would otherwise create a second CommentVM/composer.",
+    "Use the existing Common owner CompositionLocal providers for comments, nine-image picker/stream, fraud records, image gallery/export, clipboard, typed share and dialog host; factory does not replace those providers.",
+    "Original Engagement events/folder success, Composer subject, Supplement visible/seeds and original Comment init/route effects remain consumed by full Holder/DomainEffects. Factory does not duplicate them.",
+    "Retire the root entry gate before closing domains, then await closeAndJoin outside Store/entry locks. Factory never retires Root/native/global Operations/Store authorities."
+  ],
+  "supplement": "Existing original 300ms deferred job rereads same Success seed only when exact bvid/cid/aid matches. Network/tag/AI/online polling remains in the sole PlaybackVM; no new polling/API/cache.",
+  "ownership": "One child SupervisorJob under existing CommentRoot scope shared by all four original domains. Comment requests are guarded forwarding views; currentMid is read inside required short atomic commit. Cancellation is thrown, never converted to ordinary failure.",
+  "limits": [
+    "Source-only compile, no mounted UI/Root/full-page acceptance",
+    "No HTTP/real account/GUI/HWND/native execution",
+    "Actual69 class presence and 1-source compiler success are not runtime CodeSource proof",
+    "Factory cannot make an unbound Holder/window/analytics/Playback owner capability implemented",
+    "No automatic rollback of already admitted remote side effects"
+  ],
+  "registry": "New platform factory has no new upstream identity. Preserve existing canonical identities/modes/features; do not produce another VM/model/FQN."
+}

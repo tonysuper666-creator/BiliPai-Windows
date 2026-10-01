@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:88:48: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+            override fun onFailure(call: Call, failure: IOException) {
+                                               ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-full-owner-factory-parity\prepared\existing\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:96:50: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                        val body = response.body ?: error("×ÖÄ»ÄÚÈÝÎª¿Õ")
+                                                 ^^^^^^^^^^^^^^^^^^

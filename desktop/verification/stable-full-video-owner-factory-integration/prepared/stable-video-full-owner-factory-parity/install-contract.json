@@ -1,0 +1,29 @@
+{
+  "actualProduct": "actual69 source-only baseline",
+  "copyWhitelist": [
+    {
+      "source": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerRequestRepository.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+      "sha256LF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c"
+    }
+  ],
+  "prerequisites": [
+    {
+      "manifest": "desktop/.local/stable-video-captured-metadata-binding-parity/frozen-handoff.json",
+      "sha256Bytes": "73b2cb6a872a561c14f67eb5d72288d8e26e6f07ec8a64abdabd5da4165639f2"
+    }
+  ],
+  "existingFamilyPatchOrder": [
+    "exact-hunks.json:0",
+    "exact-hunks.json:1",
+    "retained-pause-producer-hunk.json"
+  ],
+  "wholeFileReplacementAllowed": false,
+  "gradleChange": [],
+  "sourceRegistryDelta": [],
+  "resourceDelta": [],
+  "dependencyDelta": [],
+  "mounted": false,
+  "controllerRetired": false,
+  "nativeAcceptance": false
+}

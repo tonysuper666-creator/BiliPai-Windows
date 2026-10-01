@@ -1,0 +1,15 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+  "baseSHA256LF": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+  "candidateSHA256LF": "db1ad55a2d61128f7d2a242c0f75146be46fbe3b109f673a967a0a83816008dd",
+  "hunks": [
+    {
+      "before": "    internal fun ownedHomeAccessToken(expectedEpoch: Long, stillOwned: () -> Boolean): String? =",
+      "after": "    /** Existing visitor SPI/bootstrap completion only, not Android activation proof. */\n    internal fun ownedHomeVisitorInitialized(expectedEpoch: Long, stillOwned: () -> Boolean): Boolean =\n        sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) {\n            visitorInitialized && visitorGeneration == expectedEpoch\n        }\n\n    internal fun ownedHomeAccessToken(expectedEpoch: Long, stillOwned: () -> Boolean): String? ="
+    }
+  ],
+  "sourceOnlyVisibilityAccessor": true,
+  "compiledOverride": false,
+  "installWholeFile": false,
+  "noVisitorFlagOrCacheProduced": true
+}

@@ -1,0 +1,34 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+  "baseSHA256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+  "candidateSHA256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+  "hunks": [
+    {
+      "before": "    private val primaryApi = repository.ownedHomeService",
+      "after": "    private val capturedPrimaryApi = repository.ownedHomeService",
+      "at": 3392,
+      "label": "Backing identifier only; admitted getter exposes this immutable request API"
+    },
+    {
+      "before": "        api = primaryApi,",
+      "after": "        api = capturedPrimaryApi,",
+      "at": 4318,
+      "label": "Original primary service remains the exact raw protocol transport"
+    },
+    {
+      "before": "    private val preferenceSnapshot = preferences.normalized()",
+      "after": "    // Identity scalar only, captured under the SAME receipt/Store -> entry gate.\n    private val capturedPrimaryMid = read { repository.activeAccountMid() }\n    private val metadataPlaybackCalls = repository.ownedPlaybackCallFactory(authorization, ::current)\n    private val preferenceSnapshot = preferences.normalized()",
+      "at": 2970,
+      "label": "Same request metadata transport and primary identity; no client/cache/store"
+    },
+    {
+      "before": "    val rawRepository: DesktopOriginalVideoLoadRepository get() = protocol\n",
+      "after": "    val rawRepository: DesktopOriginalVideoLoadRepository get() = protocol\n\n    /** Metadata facet of THIS captured request, not a latest-credential service. */\n    val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }\n    val playbackCalls: okhttp3.Call.Factory get() = read { metadataPlaybackCalls }\n    fun hasPrimarySession(): Boolean = read {\n        !repository.ownedHomeCookie(\"SESSDATA\", receipt.accountEpoch, ::entryCurrent).isNullOrEmpty()\n    }\n    fun hasPrimaryCsrf(): Boolean = read {\n        !repository.ownedHomeCookie(\"bili_jct\", receipt.accountEpoch, ::entryCurrent).isNullOrEmpty()\n    }\n    fun hasPrimaryBuvid(): Boolean = read {\n        !repository.ownedHomeCookie(\"buvid3\", receipt.accountEpoch, ::entryCurrent).isNullOrEmpty()\n    }\n    fun hasPrimaryAccessToken(): Boolean = read {\n        !repository.ownedHomeAccessToken(receipt.accountEpoch, ::entryCurrent).isNullOrEmpty()\n    }\n    /** Required query reads Repository's EXISTING visitor generation/flag. It is\n     * supplied only by metadata assembly; the pre-existing capture ABI is intact. */\n    fun isBuvidInitialized(\n        query: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,\n    ): Boolean = read { query(receipt, ::entryCurrent) }\n\n    fun updatePrimaryVip(isVip: Boolean): Unit = read {\n        if (capturedPrimaryMid == null) throw CancellationException(\"Primary VIP session absent\")\n        repository.withProfileAccountAdmission(receipt.accountEpoch, capturedPrimaryMid,\n            ::entryCurrent, commitIfEntryCurrent) { saveProfileVipStatus(isVip) }\n        // The existing Store may advance authorization revision for a changed VIP.\n        // This view is NEVER retagged; subsequent use must reject that old receipt.\n    }\n",
+      "at": 6923,
+      "label": "Eight admitted original metadata views; primary VIP writes the actual encrypted Store"
+    }
+  ],
+  "exactIndexedInverse": true,
+  "captureAndConstructorAbiUnchanged": true,
+  "installWholeFile": false
+}

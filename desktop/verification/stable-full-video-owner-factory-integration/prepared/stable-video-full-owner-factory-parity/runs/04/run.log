@@ -1,0 +1,6 @@
+REQUEST_COMPOSITION_PASS checks=15 groups=5 HTTP=false native=false mounted=false
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoOwnerRequestRepository file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-factory-parity/runs/04/candidate-proof.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoRepositoryBinding file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-factory-parity/runs/04/candidate-proof.jar
+ORIGIN com.bilipai.desktop.player.DesktopSubtitleAssets file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-full-owner-factory-parity/runs/04/candidate-proof.jar
+ORIGIN com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackInvocationPorts file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-69/main-kotlin.jar
+ORIGIN com.android.purebilibili.data.repository.DesktopOriginalVideoNoteProtocol file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-69/main-kotlin.jar

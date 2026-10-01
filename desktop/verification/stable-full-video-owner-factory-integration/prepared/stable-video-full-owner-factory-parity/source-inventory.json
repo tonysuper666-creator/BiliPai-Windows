@@ -1,0 +1,90 @@
+{
+  "original": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "ownership": "reuse installed source identity/sole producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "ownership": "reuse installed source identity/sole producer"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoNoteRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256Bytes": "df1c2c1638be237fc096c685993dc69c577310c3d8fad6dfc108ceb918863130",
+      "ownership": "reuse installed source identity/sole producer"
+    }
+  ],
+  "manual": {
+    "path": "prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerRequestRepository.kt",
+    "sha256LF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c"
+  },
+  "existingFamilies": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "dependency": "frozen captured-metadata facet16 first",
+      "baseSHA256LF": "22d033abfd1b02e65227107ab924a5e8e64f64a55ac7ee003edc63db04374049",
+      "desiredSHA256LF": "733511520671f166d5a7c185711ffa081d12f9fb7cf7ffac6e25def4e14edffe",
+      "hunks": [
+        {
+          "before": "    fun hasPrimarySession(): Boolean = read {\n",
+          "after": "    /** Exact primary values of this request, admitted by its original receipt.\n     * Used by original Notes/heartbeat; no page-wide credential or MID cache. */\n    fun primaryMid(): Long? = read { capturedPrimaryMid }\n    fun primaryCsrf(): String? = read {\n        repository.ownedHomeCookie(\"bili_jct\", receipt.accountEpoch, ::entryCurrent)\n    }\n    /** Fixed request's short Store -> entry mutation admission. No wait/IO may\n     * occur in action. Success is never reported for an expired request. */\n    fun admitCurrentMutation(action: () -> Unit): Boolean = try {\n        read(action)\n        true\n    } catch (_: CancellationException) { false }\n    fun hasPrimarySession(): Boolean = read {\n"
+        }
+      ]
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "baseSHA256LF": "c7d29134d0e4aba1387c0f41ce411025b78cce52b005ba9623a2c233f607b833",
+      "desiredSHA256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+      "hunks": [
+        {
+          "before": "    suspend fun import(track: SubtitleTrackMeta): Path = withContext(Dispatchers.IO) {\n",
+          "after": "    suspend fun import(track: SubtitleTrackMeta): Path = import(track, client)\n\n    /** Same application-owned files/document/cancellation; caller supplies the\n     * already captured Repository Call.Factory. This creates no downloader/client. */\n    internal suspend fun import(track: SubtitleTrackMeta, ownedCalls: Call.Factory): Path = withContext(Dispatchers.IO) {\n"
+        },
+        {
+          "before": "        val call = client.newCall(Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).get()\n",
+          "after": "        val call = ownedCalls.newCall(Request.Builder().url(url).cacheControl(CacheControl.FORCE_NETWORK).get()\n"
+        }
+      ]
+    }
+  ],
+  "soleProducerDelta": {
+    "target": "desktop/tools/extract-upstream-video-full-owner.py",
+    "baseSHA256LF": "20bd5288e650d514632446cdfc7be7cb1e55e5c1c5aaa9ab2c43783c55e69203",
+    "desiredSHA256LF": "e9e4f2f9901d18efae8bf178d817fc4ac2f503265881cccb5ffd00612e36d4ea",
+    "changes": [
+      {
+        "before": "def generate(repo,output,standalone=False):\n",
+        "after": "def retained_handoff_platform_delta(path, body):\n if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body\n before='                                 if (!p.isPlaying) p.play()\\n'\n after='                                 if (shouldAutoPlay && !p.isPlaying) p.play()\\n'\n assert body.count(before)==1,'retained paused-handoff anchor'\n return body.replace(before,after,1)\n\ndef generate(repo,output,standalone=False):\n"
+      },
+      {
+        "before": "  body=''.join(parts);assert sha(body)==recipe['outputSha256LF'],recipe['output']\n",
+        "after": "  body=''.join(parts);assert sha(body)==recipe['outputSha256LF'],recipe['output']\n  body=retained_handoff_platform_delta(recipe['output'],body)\n"
+      }
+    ],
+    "rawPolicy": "Original spans still checked and replayed unchanged; explicit Windows post-replay honors captured pause only in original skip-prepare branch",
+    "installed": false
+  },
+  "replayReceipt": "retained-pause-replay-proof.json",
+  "actualSnapshot": {
+    "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-69\\manifest.json",
+    "sha256Bytes": "4524b0c8b5e4e97bb88223a6a6f71c126bc17586111d50a10fb49f186a3d695d",
+    "orderedCP": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-69\\ordered-runtime-cp.json",
+    "orderedCPSHA256Bytes": "125c041f103947b5aa4be065a182cc561528bde575afe682db9e9af43a42dc9f",
+    "entries": 101
+  },
+  "unchangedPriorPackages": [
+    {
+      "path": "desktop/.local/stable-video-full-owner-parity/install-packet-13/frozen-handoff.json",
+      "sha256Bytes": "51f079a6a39bbe00cf0c19cc40259b26b7696d7e4a5250aa740f3e62fdba5ff4"
+    },
+    {
+      "path": "desktop/.local/stable-video-holder-ui-parity/frozen-handoff.json",
+      "sha256Bytes": "e0764d9788d8993fb46b2ff86b6eeaa4e469da65d414610465835e9da75b46f9"
+    }
+  ]
+}

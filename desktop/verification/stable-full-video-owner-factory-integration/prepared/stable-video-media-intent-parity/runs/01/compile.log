@@ -1,0 +1,51 @@
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:55:43: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'bvid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoInfoOnly(b:String,a:Long,c:Long):Result<ViewInfo> = error("not a network fixture")
+                                          ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:55:52: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'aid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoInfoOnly(b:String,a:Long,c:Long):Result<ViewInfo> = error("not a network fixture")
+                                                   ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:55:59: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'requestedCid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoInfoOnly(b:String,a:Long,c:Long):Result<ViewInfo> = error("not a network fixture")
+                                                          ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:56:48: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'bvid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getInitialPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                               ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:56:57: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'cid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getInitialPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                        ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:56:64: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'targetQuality'. This may cause problems when calling this function with named arguments.
+    override suspend fun getInitialPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                               ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:56:70: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'audioLang'. This may cause problems when calling this function with named arguments.
+    override suspend fun getInitialPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                                     ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:57:42: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'bvid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoDetails(b:String,a:Long,c:Long,q:Int?,l:String?):Result<Pair<ViewInfo,PlayUrlData>> = error("not a network fixture")
+                                         ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:57:51: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'aid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoDetails(b:String,a:Long,c:Long,q:Int?,l:String?):Result<Pair<ViewInfo,PlayUrlData>> = error("not a network fixture")
+                                                  ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:57:58: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'requestedCid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoDetails(b:String,a:Long,c:Long,q:Int?,l:String?):Result<Pair<ViewInfo,PlayUrlData>> = error("not a network fixture")
+                                                         ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:57:65: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'targetQuality'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoDetails(b:String,a:Long,c:Long,q:Int?,l:String?):Result<Pair<ViewInfo,PlayUrlData>> = error("not a network fixture")
+                                                                ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:57:72: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'audioLang'. This may cause problems when calling this function with named arguments.
+    override suspend fun getVideoDetails(b:String,a:Long,c:Long,q:Int?,l:String?):Result<Pair<ViewInfo,PlayUrlData>> = error("not a network fixture")
+                                                                       ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:58:43: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'bvid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getRelatedVideos(b:String):List<RelatedVideo> = error("not a network fixture")
+                                          ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:59:41: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'bvid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                        ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:59:50: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'cid'. This may cause problems when calling this function with named arguments.
+    override suspend fun getPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                 ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:59:57: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'qn'. This may cause problems when calling this function with named arguments.
+    override suspend fun getPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                        ^
+work\BiliPai\desktop\.local\stable-video-media-intent-parity\MediaIntentProof.kt:59:63: warning: the corresponding parameter in the supertype 'DesktopOriginalVideoLoadRepository' is named 'audioLang'. This may cause problems when calling this function with named arguments.
+    override suspend fun getPlayUrlData(b:String,c:Long,q:Int,l:String?):PlayUrlData?=error("not a network fixture")
+                                                              ^

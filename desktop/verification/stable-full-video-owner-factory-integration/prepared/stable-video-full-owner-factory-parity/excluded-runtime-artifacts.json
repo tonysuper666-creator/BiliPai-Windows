@@ -1,0 +1,17 @@
+[
+  {
+    "path": "runs/01/candidate.jar",
+    "sha256Bytes": "c91faf786f182e60046febc88e6cfea757a6d4efddd6e3881b4b66625e8663c1",
+    "reason": "compiled runtime/test-only reference; never install/archive binary"
+  },
+  {
+    "path": "runs/03/candidate-proof.jar",
+    "sha256Bytes": "c019d1bcca81dba9da72aaaca8d704cc3a2f6d9c80fc1c8db3626111b998048d",
+    "reason": "compiled runtime/test-only reference; never install/archive binary"
+  },
+  {
+    "path": "runs/04/candidate-proof.jar",
+    "sha256Bytes": "8c1a9befd164ccfd26a86c81189343db69cbe0b5afb33d710745a3902cb06e12",
+    "reason": "compiled runtime/test-only reference; never install/archive binary"
+  }
+]
