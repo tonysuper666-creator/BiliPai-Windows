@@ -1,0 +1,6 @@
+{
+  "passed": true,
+  "repositoryHunks": 5,
+  "cacheHunks": 3,
+  "scope": "exact selected candidate hunks only; no live mutation or policy/model duplication"
+}

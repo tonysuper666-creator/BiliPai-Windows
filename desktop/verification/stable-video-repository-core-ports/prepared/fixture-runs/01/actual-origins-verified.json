@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "identities": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-repository-core-ports-parity/compile-runs/01/candidate.jar",
+      "sha256ClassBytes": "158501f2a78874db52d1e9a6bd348cea8e6f45b4bbfbe5b60499b8a6ce350b04",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopPlaybackCache",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-repository-core-ports-parity/compile-runs/01/candidate.jar",
+      "sha256ClassBytes": "1994e8abf3c2494560f0f4817ba87fe82cd1fe2403b74cf524edf661b5dd316d",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-50/main-kotlin.jar",
+      "sha256ClassBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-50/main-kotlin.jar",
+      "sha256ClassBytes": "ef10ef78d77a95c7cbd1f9583ba5ae2086f44dc2297013ccd1a18290183fb3c5",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoRepositoryBinding",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-repository-core-ports-parity/compile-runs/01/candidate.jar",
+      "sha256ClassBytes": "090c20f228a29c1176f60893372557bcf7c18eab554d2fc4b0bcd0cb168166ce",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoLoadProtocolEnvironment",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-video-state-holder-parity/install-compile-01/candidate.jar",
+      "sha256ClassBytes": "3d8a7d8390e9ee48834ee9f97a6dc95aa45edb0b75b454f54d7d24616381bac5",
+      "verifiedAgainstJar": true
+    },
+    {
+      "class": "com.android.purebilibili.data.model.response.PlayUrlData",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-50/main-kotlin.jar",
+      "sha256ClassBytes": "24d7a061185d40766ab6fb400b769426ca33e92d55bdc7b165ec8d262f38028d",
+      "verifiedAgainstJar": true
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+  "baseLFsha256": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+  "candidateLFsha256": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+  "hunks": [
+    {
+      "name": "original-capacity-80",
+      "before": "LinkedHashMap<Key, Entry>(8, .75f, true)",
+      "after": "LinkedHashMap<Key, Entry>(80, .75f, true)"
+    },
+    {
+      "name": "original-expiry-10min-strict-greater-preserve-clock-rollback-guard",
+      "before": "now - entry.storedAt >= TimeUnit.MINUTES.toMillis(5)",
+      "after": "now - entry.storedAt > TimeUnit.MINUTES.toMillis(10)"
+    },
+    {
+      "name": "original-lru-capacity-80",
+      "before": "while (entries.size > 8)",
+      "after": "while (entries.size > 80)"
+    }
+  ]
+}

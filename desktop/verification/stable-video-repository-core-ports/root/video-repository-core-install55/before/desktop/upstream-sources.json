@@ -1608,8 +1608,7 @@
         "home-protocols",
         "stable-root-home-navigation",
         "stable-video-detail-full-units",
-        "stable-video-state-core",
-        "stable-video-repository-core-ports"
+        "stable-video-state-core"
       ],
       "mode": "policy-extract"
     },
@@ -8866,14 +8865,6 @@
       "mode": "direct",
       "features": [
         "stable-video-player-section-full"
-      ]
-    },
-    {
-      "path": "app/src/main/java/com/android/purebilibili/core/cache/PlayUrlCache.kt",
-      "sha256": "7ba14a4b369229afee920422a98a669b27a171b906f215edaab7c7704d341eda",
-      "mode": "policy-extract",
-      "features": [
-        "stable-video-repository-core-ports"
       ]
     }
   ],

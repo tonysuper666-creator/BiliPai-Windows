@@ -1,0 +1,381 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "c9128187e1828c0b18a1f1c776d3c3b4f900751bf676f2edbfcbefd628e4437e",
+      "sizeBytes": 8138
+    },
+    {
+      "path": "prepared/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "prepared/baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "28ab5854b9367d372448d4beba5f511715f3f4ecf1a810c96465d1407c888446",
+      "sizeBytes": 50537
+    },
+    {
+      "path": "prepared/cache-local-hunks.json",
+      "sha256Bytes": "ca6d9fc7ba3d772171362315c57ffbf785adea6755104fa6138c858878cbdb0a",
+      "sizeBytes": 834
+    },
+    {
+      "path": "prepared/cache-local.patch",
+      "sha256Bytes": "189369a77672a8b6ab7d60689db27ba414d5a5f3fef8e31a9fa84067129998ca",
+      "sizeBytes": 1534
+    },
+    {
+      "path": "prepared/compile-runs/01/compile.args",
+      "sha256Bytes": "648e6cc85be0996a94afa2538f8af4bb7dd921b8a8199d9c00e2b7c9042d1f50",
+      "sizeBytes": 25705
+    },
+    {
+      "path": "prepared/compile-runs/01/compile.log",
+      "sha256Bytes": "f42b0b3186241fa41e981a567cd769e08e7f82f4980cc5b5fd8f258b512dbc97",
+      "sizeBytes": 901
+    },
+    {
+      "path": "prepared/compile-runs/01/pins-after.json",
+      "sha256Bytes": "5ac29fa96493a39b46f33d89fd726f861d828d488ce4ec2a47b284615a121cad",
+      "sizeBytes": 42746
+    },
+    {
+      "path": "prepared/compile-runs/01/pins-before.json",
+      "sha256Bytes": "5ac29fa96493a39b46f33d89fd726f861d828d488ce4ec2a47b284615a121cad",
+      "sizeBytes": 42746
+    },
+    {
+      "path": "prepared/compile-runs/01/result.json",
+      "sha256Bytes": "c109c266883b4c6af8121f1359077bc84fdaca68b6bd6b48dfaefdc5b4c8ee31",
+      "sizeBytes": 2801
+    },
+    {
+      "path": "prepared/compile-runs/01/source-inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "sizeBytes": 8489
+    },
+    {
+      "path": "prepared/compile-runs/01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "sizeBytes": 1661
+    },
+    {
+      "path": "prepared/compile-runs/01/source-inputs/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "sizeBytes": 55217
+    },
+    {
+      "path": "prepared/compile.py",
+      "sha256Bytes": "acf1524531873189bc2a208dd32b07419d14b5c8d7c4cfd09da7f2c9dc91d32f",
+      "sizeBytes": 3835
+    },
+    {
+      "path": "prepared/CONTRACT.md",
+      "sha256Bytes": "72842599f1c8611b5fd0751c97e653a4330d4df7ef572f1761c2013eade1fe34",
+      "sizeBytes": 3130
+    },
+    {
+      "path": "prepared/finalize.py",
+      "sha256Bytes": "6d2680b1174b85b4fc8634beac5c7b7438422e000e106f496005adab3b0715c1",
+      "sizeBytes": 10500
+    },
+    {
+      "path": "prepared/fixture/RepositoryCoreFixture.kt",
+      "sha256Bytes": "8de0fbdea4f6a6d52366f7f4db9b806d01e02d28396e0d3bfae9c2e3fc9c8353",
+      "sizeBytes": 8866
+    },
+    {
+      "path": "prepared/fixture-runs/01/actual-origins-verified.json",
+      "sha256Bytes": "afdd4bc003d0a88ce77edc3d852040c55b53f570c8c63c5d88b85de5f1ee8226",
+      "sizeBytes": 2864
+    },
+    {
+      "path": "prepared/fixture-runs/01/compile.args",
+      "sha256Bytes": "92986293e4edc6409b93a842022069dccb2fdaa068dc038420c507853c890506",
+      "sizeBytes": 25237
+    },
+    {
+      "path": "prepared/fixture-runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/fixture-runs/01/pins-after.json",
+      "sha256Bytes": "0ccdc79e7616c1bd7a33e2a62171efc155225b0aa841d006846a4d9f2b67c038",
+      "sizeBytes": 38487
+    },
+    {
+      "path": "prepared/fixture-runs/01/pins-before.json",
+      "sha256Bytes": "0ccdc79e7616c1bd7a33e2a62171efc155225b0aa841d006846a4d9f2b67c038",
+      "sizeBytes": 38487
+    },
+    {
+      "path": "prepared/fixture-runs/01/result.json",
+      "sha256Bytes": "a35cdd0c92ae4ecc3dcac6e96fce1490d4c30a936cec6408a96594c6d44b6459",
+      "sizeBytes": 4149
+    },
+    {
+      "path": "prepared/fixture-runs/01/run.log",
+      "sha256Bytes": "01a44c7c16f6b974fd3fed933f76d0e1e4dd866a80be8c8997469a15324d8b9a",
+      "sizeBytes": 67
+    },
+    {
+      "path": "prepared/fixture-runs/01/runner-result.json",
+      "sha256Bytes": "1ae34de3180e740067d52f7409eedbe5ae8a8b269aebbbb2ea7de91662cc7e9e",
+      "sizeBytes": 360
+    },
+    {
+      "path": "prepared/INSTALL-RECIPE.json",
+      "sha256Bytes": "ca483487ea2960db984ccd422c815b9c831d85d0d5046e383f64de9ca3be9cf0",
+      "sizeBytes": 4437
+    },
+    {
+      "path": "prepared/original-source-inventory.json",
+      "sha256Bytes": "8ee53d6dd5e402ce211f8325044ebe055f25b496eb729c606b8c82153dd4c830",
+      "sizeBytes": 929
+    },
+    {
+      "path": "prepared/original-stable/app/src/main/java/com/android/purebilibili/core/cache/PlayUrlCache.kt",
+      "sha256Bytes": "7ba14a4b369229afee920422a98a669b27a171b906f215edaab7c7704d341eda",
+      "sizeBytes": 7003
+    },
+    {
+      "path": "prepared/original-stable/app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "sizeBytes": 148935
+    },
+    {
+      "path": "prepared/original-stable/app/src/main/java/com/android/purebilibili/core/network/TokenRefreshHelper.kt",
+      "sha256Bytes": "372307d8176e88fe7a0a7a7368d5fa4f2d07d8c9888560f0dbb309bc616cbbe5",
+      "sizeBytes": 2856
+    },
+    {
+      "path": "prepared/original-stable/app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256Bytes": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "sizeBytes": 103425
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sha256Bytes": "7d73bf2ee56b2b56379937209c3a460d7c1df7192bd71994be74fcec828575c2",
+      "sizeBytes": 12791
+    },
+    {
+      "path": "prepared/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "sizeBytes": 8489
+    },
+    {
+      "path": "prepared/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "sizeBytes": 1661
+    },
+    {
+      "path": "prepared/proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "sizeBytes": 55217
+    },
+    {
+      "path": "prepared/repository-local-hunks.json",
+      "sha256Bytes": "358259873d3c6e861ccaabb1abc7d8e8fa8f090cae38954b894a36f40acdf85a",
+      "sizeBytes": 11616
+    },
+    {
+      "path": "prepared/repository-local.patch",
+      "sha256Bytes": "39d66f4ada97dfa70166c72a6a001848a5995268847d62f87e3c94c541f0e61c",
+      "sizeBytes": 11180
+    },
+    {
+      "path": "prepared/run-fixture.py",
+      "sha256Bytes": "21181a3e48b93b243a667cec6c353fda7aa12f009546f6d98da916f9df7fc982",
+      "sizeBytes": 3098
+    },
+    {
+      "path": "prepared/source-checks.json",
+      "sha256Bytes": "6ae20127704e5519a1018ea574b7caf5a77ebef4f60079cab8eb011c7b236905",
+      "sizeBytes": 1091
+    },
+    {
+      "path": "prepared/source-current-DesktopPlaybackCache.json",
+      "sha256Bytes": "e105ab293ec5ee0e506bd3b8e86424134261fab80e5dbec5563d948366c6e72d",
+      "sizeBytes": 382
+    },
+    {
+      "path": "prepared/source-current-DesktopRepository.json",
+      "sha256Bytes": "d441334d404b560f0b72d95052471bf13e84b60fc3eef94804fc756c399347e6",
+      "sizeBytes": 379
+    },
+    {
+      "path": "prepared/source-inverse-result.json",
+      "sha256Bytes": "70cdd0acbb32f5b8fb5e79d0ccb23bb0b7e19d980a49872af0493a0d08066288",
+      "sizeBytes": 160
+    },
+    {
+      "path": "root/video-repository-core-install55/after/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "sizeBytes": 1661
+    },
+    {
+      "path": "root/video-repository-core-install55/after/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "sizeBytes": 55217
+    },
+    {
+      "path": "root/video-repository-core-install55/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "sizeBytes": 8489
+    },
+    {
+      "path": "root/video-repository-core-install55/after/desktop/upstream-sources.json",
+      "sha256Bytes": "e81c8996722d1a9bdced37d92eddd5b823445f39bbca271bb5e3de4a9c3bd074",
+      "sizeBytes": 375561
+    },
+    {
+      "path": "root/video-repository-core-install55/before/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "sizeBytes": 1659
+    },
+    {
+      "path": "root/video-repository-core-install55/before/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "0d360c4229b4453d3b2fbcf23de8f1cb97704a3ed59f631f56d257b1bd965dbc",
+      "sizeBytes": 51313
+    },
+    {
+      "path": "root/video-repository-core-install55/before/desktop/upstream-sources.json",
+      "sha256Bytes": "ef5cd2fd92c70697069e589d840628a270c1219adb604c147398209d7046bf46",
+      "sizeBytes": 375226
+    },
+    {
+      "path": "root/video-repository-core-install55/installed.json",
+      "sha256Bytes": "b7044bb63839363be9ca615b907e5550d6300a1b84481fe9c22f8da87c3f37ad",
+      "sizeBytes": 1955
+    },
+    {
+      "path": "root/actual55-repository-fixture01/RepositoryCoreFixture.kt",
+      "sha256Bytes": "8de0fbdea4f6a6d52366f7f4db9b806d01e02d28396e0d3bfae9c2e3fc9c8353",
+      "sizeBytes": 8866
+    },
+    {
+      "path": "root/actual55-repository-fixture01/compile.args",
+      "sha256Bytes": "f5460fc7344ca4bdc1302bdb3fd49c0830c55e053852a23df6df0beede6ddd95",
+      "sizeBytes": 25526
+    },
+    {
+      "path": "root/actual55-repository-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual55-repository-fixture01/pins-after.json",
+      "sha256Bytes": "807130ac9c280c3f864671a8d4b6a0cf1e22faf11b2132f2a6e843236816c6ca",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual55-repository-fixture01/pins-before.json",
+      "sha256Bytes": "807130ac9c280c3f864671a8d4b6a0cf1e22faf11b2132f2a6e843236816c6ca",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual55-repository-fixture01/result.json",
+      "sha256Bytes": "8aebbd145379680b10da9d99f20e00255e92774090867aec0b5fd5ad5b4cd55b",
+      "sizeBytes": 4039
+    },
+    {
+      "path": "root/actual55-repository-fixture01/run.log",
+      "sha256Bytes": "01a44c7c16f6b974fd3fed933f76d0e1e4dd866a80be8c8997469a15324d8b9a",
+      "sizeBytes": 67
+    },
+    {
+      "path": "root/actual55-repository-fixture01/runner-result.json",
+      "sha256Bytes": "c69899f9246d3cb792e7b837909cd8a77bdaf70dfe61f6f0a762cb3fe0eba6ce",
+      "sizeBytes": 3044
+    },
+    {
+      "path": "root/snapshot55/manifest.json",
+      "sha256Bytes": "c26f15be9d6472c30b2a58a97d50c85cedc11d8074df2c1516620dd33334f124",
+      "sizeBytes": 147163
+    },
+    {
+      "path": "root/snapshot55/ordered-runtime-cp.json",
+      "sha256Bytes": "8118ea8bb2d916b8e81ad2f6e678115b437ac458a4c94cd42dc9c1a0813ea55a",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-55.log",
+      "sha256Bytes": "e21111595527e0f275292938a982d47a550cc94ba7a002d7e05ae009686690a5",
+      "sizeBytes": 15140
+    },
+    {
+      "path": "root/classpath-55.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/physical-startup55/PhysicalRootStartupFixture.java",
+      "sha256Bytes": "e680e0d6bdb2dad911dc52e315bc54c3ac484c32d77db993c1a0d3c601b747e9",
+      "sizeBytes": 5134
+    },
+    {
+      "path": "root/physical-startup55/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/physical-startup55/launch.args",
+      "sha256Bytes": "61a5fcd2c89830480475807fe152c75ea1ba255c6e464dd67d6e62a9e0487eb0",
+      "sizeBytes": 25813
+    },
+    {
+      "path": "root/physical-startup55/physical-window.json",
+      "sha256Bytes": "9a6b9efb7ebedb94c58ab75081dd7430eedd6c3ebe2aa6a9a815918c2a6cea7f",
+      "sizeBytes": 210
+    },
+    {
+      "path": "root/physical-startup55/result.json",
+      "sha256Bytes": "18c8a7647af0b0e535fe9c9b282c75ab3e9bfcb8e562149bb42a88fc5fdf117e",
+      "sizeBytes": 1221
+    },
+    {
+      "path": "root/physical-startup55/stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/physical-startup55/stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/install-video-repository-core55.py",
+      "sha256Bytes": "844940fd68612e387f5b47eccbc92f293e8fbe04e76f332ab9995f3ac74e97ed",
+      "sizeBytes": 4808
+    },
+    {
+      "path": "root/run-actual55-repository-fixture.py",
+      "sha256Bytes": "88f54e2222ffe7ef4c7d44d72556b84f7dd8d5eb910b11e30f8dc434aab8ff1a",
+      "sizeBytes": 5126
+    },
+    {
+      "path": "root/freeze-video-repository-core55.py",
+      "sha256Bytes": "174d22312a021060661f67754fa14d7769e52d72bed9402ea39c292a93f22d8f",
+      "sizeBytes": 6182
+    },
+    {
+      "path": "root/jvm-method-name-audit-55.json",
+      "sha256Bytes": "1f10ce03bba352ae7761db4fc1591953ee2ea9fab60c2b896bc1b6cdd9d7e193",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "428f01dcebdc81f043526e60b8657a25ef96f6042f95031903680382eb483a60",
+      "sizeBytes": 5256
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual55-repository-fixture01/fixture.jar",
+      "sha256Bytes": "6d6a3e81175e1cb3c39763f21891440acc22c344f2ff40430060d21b90ffdbfc",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "applied": true,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "baseSha256Bytes": null,
+      "installedSha256Bytes": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536",
+      "installedSha256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseSha256Bytes": "0d360c4229b4453d3b2fbcf23de8f1cb97704a3ed59f631f56d257b1bd965dbc",
+      "installedSha256Bytes": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320",
+      "installedSha256LF": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "baseSha256Bytes": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "installedSha256Bytes": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "installedSha256LF": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "baseSha256Bytes": "ef5cd2fd92c70697069e589d840628a270c1219adb604c147398209d7046bf46",
+      "installedSha256Bytes": "e81c8996722d1a9bdced37d92eddd5b823445f39bbca271bb5e3de4a9c3bd074",
+      "installedSha256LF": "e81c8996722d1a9bdced37d92eddd5b823445f39bbca271bb5e3de4a9c3bd074"
+    }
+  ],
+  "sourceIdentityCount": 1056,
+  "newSourceIdentities": 1,
+  "newDependencies": 0,
+  "repositoryLocalHunks": 5,
+  "soleCacheLocalHunks": 3,
+  "separateCacheOrClientConstructed": false,
+  "originalCacheCapacity": 80,
+  "originalCacheMinutes": 10,
+  "originalCacheExpiryComparison": "strict greater than",
+  "soleWbiMinutes": 30,
+  "wholeCompilationPending": true,
+  "fullOrdinaryVideoRootMountAccepted": false,
+  "requiredOwnedTvRefreshTailPending": true
+}

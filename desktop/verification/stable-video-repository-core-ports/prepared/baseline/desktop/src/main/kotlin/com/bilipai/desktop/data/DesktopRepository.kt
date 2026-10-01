@@ -154,87 +154,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     @Volatile private var visitorInitialized = false
     @Volatile private var visitorGeneration = -1L
     private val wbiMutex = Mutex()
-    // Store -> entry admission -> this short monitor. Never suspend or perform IO here.
-    private val playbackProtocolMonitor = Any()
     private var wbiKeys: Pair<String, String>? = null
-    private var wbiExpiresAt = 0L
+    @Volatile private var wbiExpiresAt = 0L
     private var wbiGeneration = -1L
-    private var appApiCooldownUntilMs = 0L
-    private var lastPlayback412Time = 0L
     private val playbackCache = DesktopPlaybackCache()
-    private val originalVideoWbiCacheDurationMs = TimeUnit.MINUTES.toMillis(30)
-
-    private fun resetVideoProtocolGenerationLocked(generation: Long) {
-        if (wbiGeneration != generation) {
-            wbiKeys = null
-            wbiExpiresAt = 0L
-            appApiCooldownUntilMs = 0L
-            lastPlayback412Time = 0L
-            wbiGeneration = generation
-        }
-    }
-
-    /** Views only: the existing playbackCache and WBI/diagnostics fields remain sole owners.
-     * commitIfCurrent must take the same entry gate AFTER this Store admission.
-     * Only short state/cache actions run in this gate; no Call/ACK/native wait or join. */
-    internal fun originalVideoProtocolViews(
-        authorization: DesktopPlaybackAuthorization,
-        stillOwned: () -> Boolean,
-        commitIfCurrent: ((() -> Unit) -> Boolean),
-        cacheKey: (String, Long, Int) -> DesktopPlaybackCache.Key,
-    ): Pair<com.bilipai.desktop.ui.DesktopOriginalVideoRawCache, com.bilipai.desktop.ui.DesktopOriginalVideoProtocolState> {
-        fun <T> admitted(block: () -> T): T = sessions.withPlaybackAuthorizationAdmission(authorization.receipt, stillOwned) {
-            var result: Result<T>? = null
-            if (!commitIfCurrent {
-                if (!stillOwned()) throw CancellationException("Original video request retired")
-                result = runCatching(block)
-            }) throw CancellationException("Original video entry retired")
-            requireNotNull(result).getOrThrow()
-        }
-        fun <T> state(block: () -> T): T = admitted { synchronized(playbackProtocolMonitor) {
-            resetVideoProtocolGenerationLocked(authorization.receipt.accountEpoch)
-            block()
-        } }
-        fun key(bvid: String, cid: Long, quality: Int): DesktopPlaybackCache.Key = cacheKey(bvid, cid, quality).also {
-            require(it.accountEpoch == authorization.receipt.accountEpoch && it.authorizationRevision == authorization.receipt.revision)
-        }
-        val cache = object : com.bilipai.desktop.ui.DesktopOriginalVideoRawCache {
-            override fun get(bvid: String, cid: Long, requestedQuality: Int): PlayUrlData? = admitted {
-                playbackCache.get(key(bvid, cid, requestedQuality))?.data
-            }
-            override fun put(bvid: String, cid: Long, data: PlayUrlData, quality: Int) { admitted {
-                playbackCache.put(key(bvid, cid, quality), data, quality)
-            } }
-        }
-        val protocolState = object : com.bilipai.desktop.ui.DesktopOriginalVideoProtocolState {
-            override var appApiCooldownUntilMs: Long
-                get() = state { this@DesktopRepository.appApiCooldownUntilMs }
-                set(value) { state { this@DesktopRepository.appApiCooldownUntilMs = value } }
-            override var wbiKeys: Pair<String, String>?
-                get() = state { this@DesktopRepository.wbiKeys }
-                set(value) { state { this@DesktopRepository.wbiKeys = value } }
-            override var wbiKeysTimestamp: Long
-                get() = state { if (wbiExpiresAt == 0L) 0L else wbiExpiresAt - originalVideoWbiCacheDurationMs }
-                set(value) { state { wbiExpiresAt = if (value == 0L) 0L else value + originalVideoWbiCacheDurationMs } }
-            override var last412Time: Long
-                get() = state { lastPlayback412Time }
-                set(value) { state { lastPlayback412Time = value } }
-        }
-        return cache to protocolState
-    }
-
-    internal fun originalVideoCacheKey(authorization: DesktopPlaybackAuthorization, bvid: String, cid: Long,
-        quality: Int, preferences: PlayerPreferences, codecOverride: String?, blockedCodecs: Set<String>,
-        av1Supported: Boolean): DesktopPlaybackCache.Key {
-        val codec = normalizeCodecFamilyKey(codecOverride)
-        require(codec == null || codec in setOf("avc1", "hev1", "av01")) { "不支持的视频编码" }
-        return DesktopPlaybackCache.Key(authorization.receipt.accountEpoch, bvid, cid, quality, codec,
-            firstCodec = resolveEffectiveVideoCodecPreference(codec, preferences.videoCodecPreference, blockedCodecs),
-            secondCodec = resolveEffectiveVideoSecondCodecPreference(codec, preferences.videoSecondCodecPreference),
-            audioQuality = resolveSpeedCompatibleAudioQualityPreference(resolveRequestedAudioQuality(
-                preferences.defaultAudioQuality, preferences.lastSelectedAudioQuality), preferences.speed.toFloat()),
-            av1Supported = resolveEffectiveAv1Support(av1Supported, blockedCodecs), authorizationRevision = authorization.receipt.revision)
-    }
 
     internal val playbackAuthorizationRevision: StateFlow<Long> get() = sessions.playbackAuthorizationRevision
     internal fun storedAccountSessions() = sessions.storedAccountSessions()
@@ -320,10 +243,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             if (expectedEpoch != sessions.generation || !stillOwned()) throw kotlinx.coroutines.CancellationException("Home epoch retired")
             sign(emptyMap(), forceRefresh = forceRefresh, requestApi = ownedApi, expectedEpoch = expectedEpoch, stillOwned = stillOwned)
             val keys = wbiMutex.withLock {
-                sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { synchronized(playbackProtocolMonitor) {
-                    resetVideoProtocolGenerationLocked(expectedEpoch)
-                    requireNotNull(wbiKeys)
-                } }
+                if (expectedEpoch != sessions.generation || wbiGeneration != expectedEpoch || !stillOwned())
+                    throw kotlinx.coroutines.CancellationException("Home WBI epoch retired")
+                requireNotNull(wbiKeys)
             }
             Result.success(keys)
         } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
@@ -430,15 +352,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         sessions.removeAccount(mid)
     } }
 
-    private fun resetAuthentication() {
-        client.dispatcher.cancelAll()
-        visitorInitialized = false
-        synchronized(playbackProtocolMonitor) {
-            wbiKeys = null; wbiExpiresAt = 0L; wbiGeneration = -1L
-            appApiCooldownUntilMs = 0L; lastPlayback412Time = 0L
-        }
-        playbackCache.clear()
-    }
+    private fun resetAuthentication() { client.dispatcher.cancelAll(); visitorInitialized = false; wbiExpiresAt = 0; playbackCache.clear() }
 
     internal fun requireAccount(): AccountSummary = account.value?.takeIf { it.mid > 0 }
         ?: throw BiliApiException(-101, "请先登录后查看账号内容")
@@ -575,8 +489,12 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         val blockedSnapshot = blockedVideoCodecs.toSet()
         val codec = normalizeCodecFamilyKey(codecOverride)
         require(codec == null || codec in setOf("avc1", "hev1", "av01")) { "不支持的视频编码" }
-        val cacheKey = originalVideoCacheKey(authorization, details.bvid, part.cid, quality,
-            preferenceSnapshot, codec, blockedSnapshot, av1Supported = true)
+        val cacheKey = DesktopPlaybackCache.Key(epoch, details.bvid, part.cid, quality, codec,
+            firstCodec = resolveEffectiveVideoCodecPreference(codec, preferenceSnapshot.videoCodecPreference, blockedSnapshot),
+            secondCodec = resolveEffectiveVideoSecondCodecPreference(codec, preferenceSnapshot.videoSecondCodecPreference),
+            audioQuality = resolveSpeedCompatibleAudioQualityPreference(resolveRequestedAudioQuality(
+                preferenceSnapshot.defaultAudioQuality, preferenceSnapshot.lastSelectedAudioQuality), preferenceSnapshot.speed.toFloat()),
+            av1Supported = resolveEffectiveAv1Support(true, blockedSnapshot), authorizationRevision = authorization.receipt.revision)
         val cached = sessions.withPlaybackAuthorizationAdmission(authorization.receipt, owned) {
             if (forceRefresh) { playbackCache.invalidateVideo(epoch, details.bvid, part.cid); null } else playbackCache.get(cacheKey)
         }
@@ -736,25 +654,21 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         forceRefresh: Boolean = false, requestApi: BilibiliApi = api, expectedEpoch: Long? = null,
         stillOwned: () -> Boolean = { true }): Map<String, String> {
         val keys = wbiMutex.withLock {
-            val generation = expectedEpoch ?: sessions.generation
             val now = System.currentTimeMillis()
-            val cached = sessions.withHomeRequestAdmission(generation, stillOwned) { synchronized(playbackProtocolMonitor) {
-                resetVideoProtocolGenerationLocked(generation)
-                wbiKeys?.takeIf { !forceRefresh && now < wbiExpiresAt }
-            } }
-            cached ?: run {
-                // Nav fetch remains outside Store/entry/protocol monitor; anonymous -101 can carry keys.
+            val generation = expectedEpoch ?: sessions.generation
+            if (generation != sessions.generation || !stillOwned()) throw CancellationException("WBI owner retired")
+            if (forceRefresh || wbiKeys == null || now >= wbiExpiresAt || wbiGeneration != generation) {
+                // The anonymous nav response can carry WBI keys with code -101.
                 val img = requestApi.getNavInfo().data?.wbi_img ?: throw BiliApiException(-1, "无法获取接口签名信息")
                 val imageKey = img.img_url.substringAfterLast('/').substringBefore('.')
                 val subKey = img.sub_url.substringAfterLast('/').substringBefore('.')
                 require(imageKey.length == 32 && subKey.length == 32) { "接口签名信息格式异常" }
-                sessions.withHomeRequestAdmission(generation, stillOwned) { synchronized(playbackProtocolMonitor) {
-                    resetVideoProtocolGenerationLocked(generation)
-                    wbiKeys = imageKey to subKey
-                    wbiExpiresAt = System.currentTimeMillis() + originalVideoWbiCacheDurationMs
-                    requireNotNull(wbiKeys)
-                } }
+                if (generation != sessions.generation || !stillOwned()) throw CancellationException("WBI owner retired")
+                wbiKeys = imageKey to subKey
+                wbiGeneration = generation
+                wbiExpiresAt = now + TimeUnit.MINUTES.toMillis(5)
             }
+            requireNotNull(wbiKeys)
         }
         return WbiUtils.sign(params, keys.first, keys.second, includeRiskFingerprint = includeRiskFingerprint)
     }

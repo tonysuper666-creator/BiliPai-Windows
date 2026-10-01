@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "sourceChecks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "snapshot50RawSHA": "0d360c4229b4453d3b2fbcf23de8f1cb97704a3ed59f631f56d257b1bd965dbc",
+      "baselineLFSHA": "28ab5854b9367d372448d4beba5f511715f3f4ecf1a810c96465d1407c888446",
+      "baselineLFMatchesSnapshotRaw": false
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "snapshot50RawSHA": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "baselineLFSHA": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "baselineLFMatchesSnapshotRaw": true
+    }
+  ],
+  "canonicalInterfacesProduced": 0,
+  "newManualFiles": 1,
+  "repositoryExactHunks": 5,
+  "cacheExactHunks": 3,
+  "sourceInverse": {
+    "passed": true,
+    "repositoryHunks": 5,
+    "cacheHunks": 3,
+    "scope": "exact selected candidate hunks only; no live mutation or policy/model duplication"
+  },
+  "fixtureAssertions": 27,
+  "originsVerified": 7,
+  "unpermittedClassOverlap": []
+}

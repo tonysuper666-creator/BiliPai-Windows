@@ -1,0 +1,76 @@
+{
+  "preparedOnly": true,
+  "actualProductAcceptance": false,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actual50ManifestSHA": "d9803560314da73036a848cf1be86c5877ff24b3993584379a5e9516165de4eb",
+  "actual50Ordered97CPSHA": "c4615263c430a5b75f86085499bcf3dae27239a005a59e258cdff172bbf75680",
+  "canonicalCoreFrozenSHA": "b51df19b3c3bdc4507cc06ff7c3b7ffb1ef259152d503275c16f5ace43247377",
+  "canonicalCoreJarSHA": "bcd72d8444fdda2598290be787bfacbfdd6fe5a9a5a1051556f7572c5a609027",
+  "installOrder": [
+    "Install canonical core192 source interfaces/protocol first (same sole producer; no JAR install).",
+    "Apply repository-local-hunks.json five exact local hunks to current Repository, retaining unrelated live hunks.",
+    "Apply cache-local-hunks.json three exact hunks to the sole existing DesktopPlaybackCache.",
+    "Copy the one manual DesktopOriginalVideoRepositoryBinding.kt source; append its LF identity to the existing source provenance once.",
+    "Do NOT copy proof-only whole Repository/cache, compiled candidate JAR, original-stable reference files or fixture sources to production.",
+    "Root full original load owner calls capture once INSIDE each load-generation coroutine and passes that immutable rawRepository/receipt to that invocation. No mutable currentBinding and no second planner/cache/client.",
+    "Root required primary token callback must use existing TV refresh actor with receipt+job admission before Call enqueue and credentials commit. Never bind current unowned refreshTvToken directly. Changed credentials retire old load; next load captures a new receipt.",
+    "Final media/CDN/plugin mappings call binding.authorized(source) before the existing receipt-admitted native publication. Original UseCase media.accept cannot lose receipt; no native wait/join/close under Store/entry gate."
+  ],
+  "payload": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-repository-core-ports-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoRepositoryBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256LF": "81711670c1808f81291e191bc68b4e4516c81d0dfa86ae5a2a286d41c40cd536"
+    }
+  ],
+  "localHunks": [
+    {
+      "file": "repository-local-hunks.json",
+      "hunks": 5,
+      "baselineLF": "28ab5854b9367d372448d4beba5f511715f3f4ecf1a810c96465d1407c888446",
+      "candidateLF": "da3e69796b62bbaf9f1e399229ea3a8a99ea4bd4102f140df04ceb611f68b320"
+    },
+    {
+      "file": "cache-local-hunks.json",
+      "hunks": 3,
+      "baselineLF": "e1f142085551a68c6d5b32ccd40b9a5ef8810e79123027ef3324649889f6ffbf",
+      "candidateLF": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24"
+    }
+  ],
+  "cachePolicy": {
+    "originalCapacity": 80,
+    "originalMinutes": 10,
+    "originalExpiredComparison": "now > storedAt + 10min",
+    "retainedWindowsGuards": [
+      "clock rollback removes entry",
+      "accountEpoch/authorizationRevision isolation",
+      "existing codec/audio/AV1 cache key"
+    ]
+  },
+  "wbiPolicy": {
+    "originalMinutes": 30,
+    "soleFields": "DesktopRepository.wbiKeys/wbiExpiresAt/wbiGeneration; canonical timestamp is an admitted view of same expiry field",
+    "originalTimestampAfterNav": true
+  },
+  "lockOrder": [
+    "existing wbiMutex when Root sign is used (no inverse path takes it under Store)",
+    "same SessionStore admission",
+    "same Root entry commit gate for canonical cache/state/scalar reads",
+    "Repository protocol monitor OR existing playbackCache monitor"
+  ],
+  "requiredPorts": [
+    "same entry Job",
+    "same immutable load-generation isEntryCurrent and commitIfEntryCurrent",
+    "actual PlayerPreferences snapshot/codec override/blocked codecs/AV1 capability",
+    "actual global auto1080p/directedTraffic preferences and actual network/mobile getter",
+    "same owned primary TV token refresh actor"
+  ],
+  "deferred": [
+    "Root authority switch/full VM and Holder mount",
+    "subtitle/plugin later request factory",
+    "required TV refresh actor owned tail",
+    "same native media/source final publication factory",
+    "actual installed zero-override runtime proof"
+  ],
+  "scope": "Focused same-cache/state bridge only, no new canonical models/cache/HTTP client/native player/static protocol state"
+}

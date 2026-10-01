@@ -1,0 +1,14 @@
+{
+  "compileExit": 0,
+  "runExit": 0,
+  "fixtureClassProductOverlap": [],
+  "fixtureJarSha256Bytes": "6d6a3e81175e1cb3c39763f21891440acc22c344f2ff40430060d21b90ffdbfc",
+  "explicitPreparedProductOverrides": [
+    "DesktopRepository",
+    "DesktopPlaybackCache"
+  ],
+  "actual50Runtime": 97,
+  "noHTTP": true,
+  "noNative": true,
+  "productAcceptance": false
+}
