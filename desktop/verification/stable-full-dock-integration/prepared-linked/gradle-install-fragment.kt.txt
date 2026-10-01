@@ -1,0 +1,19 @@
+// Root-owned serial integration recipe only. This file is never a production source.
+val extractLinkedDock by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-linked-dock.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/linked-dock").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-linked-dock.py", "tools/sync-upstream.py",
+        "tools/extract-appearance-platform.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/linked-dock"))
+}
+tasks.named("compileKotlin") { dependsOn(extractLinkedDock) }
+// Add in the existing kotlin source set, exactly once:
+// kotlin.srcDir(layout.buildDirectory.dir("generated/linked-dock"))

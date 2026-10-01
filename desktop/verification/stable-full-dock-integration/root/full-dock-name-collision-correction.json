@@ -1,0 +1,25 @@
+{
+  "cause": "Full shared source also contains FloatingDockChrome file-private iosIndicatorSpecular; widening another original file-private name causes a package-level collision.",
+  "originalTwoValuesRetained": true,
+  "originalExpressionsDifferent": true,
+  "correction": "Rename only the shared BottomBar generated value and add an explicit import alias to the complete Frosted renderer; keep all original renderer expressions and private FloatingDockChrome value.",
+  "historicalFrozenHandoffsUnchanged": true,
+  "originalSourceTreesUnchanged": true,
+  "failedClassesPhase": 23,
+  "changes": [
+    {
+      "path": "desktop\\tools\\extract-upstream-shared-liquid-tabs.py",
+      "beforeLF": "d8fba34853f4ad435d32503617e02a997d0d770cb5602d4447d35459ca4dbe4e",
+      "afterLF": "7ff57928bc54dc61d9f4a7b1f37b4a6cb1575061901f78ae3c6bcf7583ff3639",
+      "old": "('private val iosIndicatorSpecular','internal val iosIndicatorSpecular')",
+      "new": "('private val iosIndicatorSpecular','internal val desktopOriginalBottomBarIosIndicatorSpecular')"
+    },
+    {
+      "path": "desktop\\tools\\extract-upstream-frosted-audio-renderer.py",
+      "beforeLF": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe",
+      "afterLF": "21155d42664317be58b33e31ec660bb7cb7a3f740259490225e50978c9aa8b15",
+      "old": " t=header+'\\n'.join(b for _,b in selected)",
+      "new": " header+='import com.android.purebilibili.feature.home.components.desktopOriginalBottomBarIosIndicatorSpecular as iosIndicatorSpecular\\n'\n t=header+'\\n'.join(b for _,b in selected)"
+    }
+  ]
+}

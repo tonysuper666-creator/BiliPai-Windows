@@ -1,0 +1,121 @@
+{
+  "repository": "https://github.com/compose-miuix-ui/miuix",
+  "commit": "5157b503e86e2bfc2db61db00fff5df41326394a",
+  "archive": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\source9-appearance\\original\\5157b503e86e2bfc2db61db00fff5df41326394a.zip",
+  "archiveSha256": "e6b9f53eff9cfce98580d70a1a8e2ba447038af5f46e8392c96ec843ce0b9e6b",
+  "selectedFullSources": [
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Search.kt",
+      "sha256": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Search.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Community.kt",
+      "sha256": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Community.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Contacts.kt",
+      "sha256": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Contacts.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/ContactsCircle.kt",
+      "sha256": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\ContactsCircle.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Favorites.kt",
+      "sha256": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Favorites.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Folder.kt",
+      "sha256": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Folder.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/GridView.kt",
+      "sha256": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\GridView.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Home.kt",
+      "sha256": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Home.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Music.kt",
+      "sha256": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Music.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Notes.kt",
+      "sha256": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Notes.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Play.kt",
+      "sha256": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Play.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Recent.kt",
+      "sha256": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Recent.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Recording.kt",
+      "sha256": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Recording.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Settings.kt",
+      "sha256": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Settings.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Stopwatch.kt",
+      "sha256": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Stopwatch.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Store.kt",
+      "sha256": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Store.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/Theme.kt",
+      "sha256": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Theme.kt"
+    },
+    {
+      "path": "miuix-icons/src/commonMain/kotlin/top/yukonga/miuix/kmp/icon/extended/TopDownloads.kt",
+      "sha256": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce",
+      "storagePath": "miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "payload": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\TopDownloads.kt"
+    }
+  ],
+  "sourceBodyChanges": 0,
+  "upstreamStableAppMiuix": "0.9.4-5c91d5e5-SNAPSHOT",
+  "actualCurrentWindowsMiuix": "0.9.4-5157b503-windows-source1",
+  "versionAlignment": "pending; this only extends existing actual pinned fork",
+  "uniqueExistingCoreMiuixIconsRequired": true
+}

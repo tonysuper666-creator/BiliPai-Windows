@@ -1,0 +1,950 @@
+{
+  "schema": "raw-artifact-manifest-v1",
+  "artifacts": [
+    {
+      "path": "prepared-linked/frozen-handoff.json",
+      "sha256Bytes": "e5eb03ec2e44d0b20e6817bcd53eab30851ff60682f7467cb19ce2475e4a9602",
+      "sizeBytes": 17176
+    },
+    {
+      "path": "prepared-linked/contract.txt",
+      "sha256Bytes": "23aa0d92dcddf33180f0c0fd8bed0940fe37010600b754d2ee4192e5f0691e38",
+      "sizeBytes": 6460
+    },
+    {
+      "path": "prepared-linked/registry-recipe.json",
+      "sha256Bytes": "abb293e3752fe7d939264c739bc1e9d8368b73c4e55119da715f156b8790a30e",
+      "sizeBytes": 5019
+    },
+    {
+      "path": "prepared-linked/miuix-fork-hunk.json",
+      "sha256Bytes": "5be35fbc27f5da049715e42f9c7814eae262a59adce8fc06a9bf0391cc18aeca",
+      "sizeBytes": 522
+    },
+    {
+      "path": "prepared-linked/miuix-icons-source-evidence.json",
+      "sha256Bytes": "d3005b9cf75e358be1757918ace3ead6e66e84bc261815ba752692d3b4fee1af",
+      "sizeBytes": 10833
+    },
+    {
+      "path": "prepared-linked/generated/source-identities.json",
+      "sha256Bytes": "2141709a62bae685904316a473a90872dd489b2bdab57da90647f4281a6bb75a",
+      "sizeBytes": 11013
+    },
+    {
+      "path": "prepared-linked/source-and-symbol-audit.json",
+      "sha256Bytes": "92f4d4d592da10e97a297b90c32cb169dd7b01314971e807a98dc810bf41dc2b",
+      "sizeBytes": 511411
+    },
+    {
+      "path": "prepared-linked/follow-on-source-boundary.json",
+      "sha256Bytes": "7fd7ad3d8684d887de926633c73c50a546032f9b105d5be6df42ed07bd103b24",
+      "sizeBytes": 12591
+    },
+    {
+      "path": "prepared-linked/gradle-install-fragment.kt.txt",
+      "sha256Bytes": "5b840cfafaae7af35029cfff5d4f88e3dec01bc025c6eddd1f5164c5c855315a",
+      "sizeBytes": 1302
+    },
+    {
+      "path": "prepared-linked/prepare.py",
+      "sha256Bytes": "46194d8c179005292a22574b677177b6d90fbb988ad5bdb808028fe4af325fd0",
+      "sizeBytes": 2279
+    },
+    {
+      "path": "prepared-linked/prepare-icons.py",
+      "sha256Bytes": "23e767ccc25395a44517bcbfad80475aa3f8f956be7f6b3fe36a0448e7f1a9ef",
+      "sizeBytes": 2831
+    },
+    {
+      "path": "prepared-linked/producer.pyfrag",
+      "sha256Bytes": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df",
+      "sizeBytes": 13643
+    },
+    {
+      "path": "prepared-linked/compile.py",
+      "sha256Bytes": "8e921cd9a835b1fe32c295482bf2b6c75e5752ba15c68ad790f2e310f0731da5",
+      "sizeBytes": 3987
+    },
+    {
+      "path": "prepared-linked/run-fixture.py",
+      "sha256Bytes": "57f18a036d761aa0c620453cb70e3ab30d1899f9bae9a0e473ad59f79067aaf7",
+      "sizeBytes": 2148
+    },
+    {
+      "path": "prepared-linked/audit.py",
+      "sha256Bytes": "7ec9b2c4b3438ebb93a4341b21443444d54b793e5a0469d6a616a3c10e81f01d",
+      "sizeBytes": 10046
+    },
+    {
+      "path": "prepared-linked/LinkedDockFixture.kt",
+      "sha256Bytes": "0b8be5cd92e63eca5c199a5bbf82c12ae4dc33749956c4d46083311089a4d2e1",
+      "sizeBytes": 16361
+    },
+    {
+      "path": "prepared-linked/runs/08/compile-evidence.json",
+      "sha256Bytes": "08cf6d9a8586530bbda9eb286f0f63af2fa35830bf36436a49f04aa854e5744d",
+      "sizeBytes": 54115
+    },
+    {
+      "path": "prepared-linked/runs/08/accepted-fixture.json",
+      "sha256Bytes": "7b1924a91152dba85aaff92fb5feb5501d24148e051a91662645036906a3810e",
+      "sizeBytes": 1069
+    },
+    {
+      "path": "prepared-linked/runs/08/runtime.log",
+      "sha256Bytes": "89135d4f7c3847728efd43171cb2f50e0093684e85fb43038999b237ffca4259",
+      "sizeBytes": 60
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalLinkedDockRoot.kt",
+      "sha256Bytes": "753413f621408d4ef61fd9752ccdd39bcdecd5abe009bc7975f09ccbb6c00ee1",
+      "sizeBytes": 8468
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "sha256Bytes": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06",
+      "sizeBytes": 34954
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "sha256Bytes": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385",
+      "sizeBytes": 31418
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "sha256Bytes": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33",
+      "sizeBytes": 25360
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "sha256Bytes": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5",
+      "sizeBytes": 23967
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "sha256Bytes": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696",
+      "sizeBytes": 29464
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "sha256Bytes": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c",
+      "sizeBytes": 76511
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "sha256Bytes": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553",
+      "sizeBytes": 16656
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "sha256Bytes": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411",
+      "sizeBytes": 29481
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "sha256Bytes": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e",
+      "sizeBytes": 33671
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "sha256Bytes": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6",
+      "sizeBytes": 19583
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "sha256Bytes": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211",
+      "sizeBytes": 15201
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "sha256Bytes": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df",
+      "sizeBytes": 31982
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "sha256Bytes": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366",
+      "sizeBytes": 18502
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "sha256Bytes": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6",
+      "sizeBytes": 34232
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "sha256Bytes": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1",
+      "sizeBytes": 17897
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "sha256Bytes": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059",
+      "sizeBytes": 31116
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "sha256Bytes": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb",
+      "sizeBytes": 32057
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "sha256Bytes": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce",
+      "sizeBytes": 33133
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/third-party/miuix5157/upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af",
+      "sizeBytes": 51694
+    },
+    {
+      "path": "prepared-linked/prepared/desktop/tools/extract-upstream-linked-dock.py",
+      "sha256Bytes": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df",
+      "sizeBytes": 13643
+    },
+    {
+      "path": "prepared-frosted/frozen-handoff.json",
+      "sha256Bytes": "a35f99c0f41a474c08814fcddfc9dd99f01b003aab83b54b919d9059901efb73",
+      "sizeBytes": 9537
+    },
+    {
+      "path": "prepared-frosted/contract.txt",
+      "sha256Bytes": "33058e3d161d99b8a5d5ac1b14d1e6023bba928df3ea3cdb449c96b76aa30b5f",
+      "sizeBytes": 6639
+    },
+    {
+      "path": "prepared-frosted/registry-recipe.json",
+      "sha256Bytes": "55819eec739000d2bcaae6ecdb5e4b7e3f3ee0ab54fd7130e2fb0478f87141fc",
+      "sizeBytes": 4995
+    },
+    {
+      "path": "prepared-frosted/existing-sole-producer-hunks.json",
+      "sha256Bytes": "61bbee0148bd11a237dd3ec738ea8176d22ace286d3f8471b09bbd81fc709f97",
+      "sizeBytes": 4797
+    },
+    {
+      "path": "prepared-frosted/existing-producer-source-proof.json",
+      "sha256Bytes": "088fbb9006a0a2bababd3842b1cd3f087c78419aeb619d7ef537a0f623becd01",
+      "sizeBytes": 2240
+    },
+    {
+      "path": "prepared-frosted/generated/source-inventory.json",
+      "sha256Bytes": "16dfa103e8f4e1cade1d46ee71dbf58d268998dcdc1a349fad29d790b5d19749",
+      "sizeBytes": 41287
+    },
+    {
+      "path": "prepared-frosted/source-and-symbol-audit.json",
+      "sha256Bytes": "54a513cad7b1b556cf44881739a4ef794205dbe0875f2d0c246f60bcef9cdb94",
+      "sizeBytes": 981431
+    },
+    {
+      "path": "prepared-frosted/gradle-install-fragment.kt.txt",
+      "sha256Bytes": "9641cef6b50503c69d299ce8e97493585ab6553396b14df2b1a0e47f1a8c8b39",
+      "sizeBytes": 1082
+    },
+    {
+      "path": "prepared-frosted/producer.pyfrag",
+      "sha256Bytes": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe",
+      "sizeBytes": 13752
+    },
+    {
+      "path": "prepared-frosted/prepare.py",
+      "sha256Bytes": "5e3045c9f1878db378c25e724b356a328d57f45d9be8b6ede5a30380127f10c3",
+      "sizeBytes": 1880
+    },
+    {
+      "path": "prepared-frosted/integration.py",
+      "sha256Bytes": "308b4f01583f2e13dda8f622a433f8e07648150d1139edd3f679238faa40f960",
+      "sizeBytes": 4334
+    },
+    {
+      "path": "prepared-frosted/prove-existing-producers.py",
+      "sha256Bytes": "5e39d22c9605900aede4d864990839853fed329b3c75372351afc83da163b5df",
+      "sizeBytes": 3068
+    },
+    {
+      "path": "prepared-frosted/compile.py",
+      "sha256Bytes": "49f15da5f2d2ef0827636667568bd4455131ef55f4e09431ee74bdbd0395d22a",
+      "sizeBytes": 4872
+    },
+    {
+      "path": "prepared-frosted/audit.py",
+      "sha256Bytes": "f015b759dd44516f983762c35071240ebca46346924c0e40e5a69d13de22bb9a",
+      "sizeBytes": 10981
+    },
+    {
+      "path": "prepared-frosted/run-fixture.py",
+      "sha256Bytes": "c94ad9b147f79327943b4033b647508a9107e244dd3a9c9b7c5f07b333f2e8ca",
+      "sizeBytes": 2234
+    },
+    {
+      "path": "prepared-frosted/FrostedAudioFixture.kt",
+      "sha256Bytes": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "sizeBytes": 17542
+    },
+    {
+      "path": "prepared-frosted/runs/10/compile-evidence.json",
+      "sha256Bytes": "f72706343fba5789db3d17d02977d1a3b2fefd0eec8e2991f35a40ac68fe755c",
+      "sizeBytes": 63140
+    },
+    {
+      "path": "prepared-frosted/runs/10/accepted-fixture.json",
+      "sha256Bytes": "682c1d21d5e8cbe1fd7dd0e618736e785de6762e707f9ef8d4cc73d882498ac6",
+      "sizeBytes": 1234
+    },
+    {
+      "path": "prepared-frosted/runs/10/compile.log",
+      "sha256Bytes": "65a18f6c865162d6cb3d9766484568594e1c3bcfd9f23ffa4ee38a097ebb7dc6",
+      "sizeBytes": 2821
+    },
+    {
+      "path": "prepared-frosted/runs/10/runtime.log",
+      "sha256Bytes": "4bdcf9f42cb5a8df340835ba775ae7099ca27107fcbc0471301881c3f69757b8",
+      "sizeBytes": 638
+    },
+    {
+      "path": "prepared-frosted/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "sha256Bytes": "eba3ca62fe189d6d95ef88587df3d0d4e5db5a139a608ae5ac36c4b6df4022ef",
+      "sizeBytes": 12678
+    },
+    {
+      "path": "prepared-frosted/prepared/desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "sha256Bytes": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe",
+      "sizeBytes": 13752
+    },
+    {
+      "path": "root/install-full-dock.py",
+      "sha256Bytes": "1603a9086366705a1cc545deee41eab50d6172187cae1f49d166ef583e1b7984",
+      "sizeBytes": 7470
+    },
+    {
+      "path": "root/full-dock-install.json",
+      "sha256Bytes": "ef9495b554bc2b2acec91aa11c2e0670d38857d312dd5d2f9f31416eb3c9c5e5",
+      "sizeBytes": 16367
+    },
+    {
+      "path": "root/correct-full-dock-name-collision.py",
+      "sha256Bytes": "861d501ca2946889311be212634f5816bdd7e7750cfe8f04c976b8d93dd41711",
+      "sizeBytes": 2181
+    },
+    {
+      "path": "root/full-dock-name-collision-correction.json",
+      "sha256Bytes": "87482234875bd8f7a7351f84bc335e41da44ad4db85a0d0ad79bf22f8bb29b67",
+      "sizeBytes": 1604
+    },
+    {
+      "path": "root/correct-full-dock-shared-reference.py",
+      "sha256Bytes": "c283c3d2ab8c6b522d5d4a62670a78ae56a9dede509e82f32319487ba34ca1d6",
+      "sizeBytes": 1521
+    },
+    {
+      "path": "root/full-dock-shared-reference-correction.json",
+      "sha256Bytes": "eae518b02a07156b70e05c85cba77d026bada0fbe0d895595d0391699bdf3dd9",
+      "sizeBytes": 1046
+    },
+    {
+      "path": "root/freeze-product.py",
+      "sha256Bytes": "f5a63aee5b46a140f5ac3c30534c83438c54a5b6a9da597d1f6cd5b8b960614a",
+      "sizeBytes": 3729
+    },
+    {
+      "path": "root/prove-full-dock-actual-product.py",
+      "sha256Bytes": "c57625f1ef8b2ab9e6fdbd49742cf893d82719c94328f8b861d3779ff430ea8f",
+      "sizeBytes": 6231
+    },
+    {
+      "path": "root/freeze-full-dock.py",
+      "sha256Bytes": "927df05fb35f10fcc439ce4554879d6fde6afd41afc6610a284a9f73b773c0da",
+      "sizeBytes": 6287
+    },
+    {
+      "path": "root/initial-baselines/desktop/build.gradle.kts",
+      "sha256Bytes": "f68023083574c171ebe4314b64cd3b42b236f2b23b3a372049bd82d1dd4541a0",
+      "sizeBytes": 88341
+    },
+    {
+      "path": "root/initial-baselines/desktop/third-party/miuix5157/build.gradle.kts",
+      "sha256Bytes": "e6c02dc648ede49ca6835b1f1ff2452a856faedf905bd209622919fa513f7c14",
+      "sizeBytes": 6960
+    },
+    {
+      "path": "root/initial-baselines/desktop/third-party/miuix5157/upstream-provenance.json",
+      "sha256Bytes": "4f841f3f5aea2b8296682e8b6bb5c461c6759da77c324dd678d374bade9d304f",
+      "sizeBytes": 47555
+    },
+    {
+      "path": "root/initial-baselines/desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b",
+      "sizeBytes": 15777
+    },
+    {
+      "path": "root/initial-baselines/desktop/upstream-sources.json",
+      "sha256Bytes": "232e7925b68e536fcf138ab92f515a3b3e5069a95706472e4fcb7b99597a4487",
+      "sizeBytes": 287557
+    },
+    {
+      "path": "root/classes-23.log",
+      "sha256Bytes": "cda38636b402f9d2d30c57b811dc3bc5317b6dac453208c15899e49dcb382bec",
+      "sizeBytes": 10365
+    },
+    {
+      "path": "root/classes-24.log",
+      "sha256Bytes": "f3736c0c1b80d0ff0f3335e6078cd694f143a40d9d82d5e36bc6573ba4025ecc",
+      "sizeBytes": 7633
+    },
+    {
+      "path": "root/classes-25.log",
+      "sha256Bytes": "24abd2974487803b51d3b43b891fe580b20b6325794d97a725559dcefe8924ad",
+      "sizeBytes": 47255
+    },
+    {
+      "path": "root/snapshot25/manifest.json",
+      "sha256Bytes": "03b33e828f3e754a1e2937f4bfefb1aa2c1c1b6796516ed6ab47914e65a7c2a0",
+      "sizeBytes": 115516
+    },
+    {
+      "path": "root/snapshot25/ordered-runtime-cp.json",
+      "sha256Bytes": "18d13ab6a21303dc338f184a4e108e172f2948e5a0b46f99c99c611508ac30dc",
+      "sizeBytes": 34652
+    },
+    {
+      "path": "root/historical-cp-relocation/relocation-ledger.json",
+      "sha256Bytes": "68b9a804eabd84eedaf40c8b8e2487daad060616a4bac754c1f2f7d3be4fafec",
+      "sizeBytes": 4165
+    },
+    {
+      "path": "root/historical-cp-relocation/ordered-runtime-cp-17.json",
+      "sha256Bytes": "3af8514502ab0d187b80b6e051bf7b770018ca307aa988d6f349b29f9b25ce0a",
+      "sizeBytes": 34389
+    },
+    {
+      "path": "root/historical-cp-relocation/ordered-runtime-cp-20.json",
+      "sha256Bytes": "9e1365eb67f97b9930570ff87cd34b514b31d858d78cf210d31783ad87af89cf",
+      "sizeBytes": 34389
+    },
+    {
+      "path": "root/historical-cp-relocation/ordered-runtime-cp-22.json",
+      "sha256Bytes": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+      "sizeBytes": 34389
+    },
+    {
+      "path": "root/historical-cp-relocation/freeze-mutable-fork-runtime.py",
+      "sha256Bytes": "5e3be21a7c5e7d5b8515b0d75ead9883fe31c3a0de05e45bcf50adb5a7518736",
+      "sizeBytes": 2670
+    },
+    {
+      "path": "root/actual25/frosted-audio/FrostedAudioFixture.kt",
+      "sha256Bytes": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "sizeBytes": 17542
+    },
+    {
+      "path": "root/actual25/frosted-audio/accepted.json",
+      "sha256Bytes": "813fdbf6644194e83678e4d82633dbe2e09b880da90eddc850623773f4159999",
+      "sizeBytes": 1488
+    },
+    {
+      "path": "root/actual25/frosted-audio/compile.args",
+      "sha256Bytes": "0a89493a4d83eb7ddb0bfa1f91fc9764c1d1d42d37c1dad7f4f5dd98f82027f1",
+      "sizeBytes": 23432
+    },
+    {
+      "path": "root/actual25/frosted-audio/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual25/frosted-audio/runtime.log",
+      "sha256Bytes": "f7a09f3120fbf21d750126430df3fc23d63031d31e9ced6c6ef228f7d8290331",
+      "sizeBytes": 643
+    },
+    {
+      "path": "root/actual25/frosted-audio/runtime/result.json",
+      "sha256Bytes": "a4c0a8a55196815f9f8fe095bf3796d394c3f3ba8e1c9518f362a9e227cd3879",
+      "sizeBytes": 696
+    },
+    {
+      "path": "root/actual25/frosted-audio/runtime/sole-fixture-preferences/plugin-settings.json",
+      "sha256Bytes": "d1ac40ec06adf9d583838200e33d3b46fdff463003c7695a485565e5531f995e",
+      "sizeBytes": 276
+    },
+    {
+      "path": "root/actual25/linked-dock/LinkedDockFixture.kt",
+      "sha256Bytes": "2ee96b0f6b842364c3980fa23569226fa2e417cdd7639eb2a694a1b88d2d47cc",
+      "sizeBytes": 16381
+    },
+    {
+      "path": "root/actual25/linked-dock/accepted.json",
+      "sha256Bytes": "b4b93929e1b11b1b5fafe115d571e5341435b6f8be3881906eb38d54be2cd893",
+      "sizeBytes": 1471
+    },
+    {
+      "path": "root/actual25/linked-dock/compile.args",
+      "sha256Bytes": "60bb0c6612cc3a9dc55f3ebeb163897ca05b423b6cfddad85231a75a73ed9ae3",
+      "sizeBytes": 23426
+    },
+    {
+      "path": "root/actual25/linked-dock/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual25/linked-dock/runtime.log",
+      "sha256Bytes": "2ff7351b720e4e80fe001e7e50583e4c041bd777f05268e50443c1e27551a868",
+      "sizeBytes": 61
+    },
+    {
+      "path": "root/actual25/linked-dock/runtime/result.json",
+      "sha256Bytes": "3eda8751560a563b3ff24ef123d92c1b0246164e98e67f040d1881434353f181",
+      "sizeBytes": 414
+    },
+    {
+      "path": "root/actual25/linked-dock/runtime/sole-global-fixture-store/plugin-settings.json",
+      "sha256Bytes": "244e455c8ea0d691feafecde3a8db21aa00ab726d6dc1049e83d4f34508aac92",
+      "sizeBytes": 202
+    },
+    {
+      "path": "root/actual25/result.json",
+      "sha256Bytes": "13c3551ad90f48511ecad9f46a065cffd67df3234552ff10f10584723ed4b9e8",
+      "sizeBytes": 3741
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/core/store/DesktopOriginalLinkedDockSettings.kt",
+      "sha256Bytes": "1c90b85b66aac85171636428834525167bf7bc153bfa230023a1c9b03cde2a4e",
+      "sizeBytes": 1849
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "sha256Bytes": "3d0090fb1cb7f476ea1d27f96a0e2e4698bd0a52a1220981f6d99a6fa9543dad",
+      "sizeBytes": 3481
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/feature/home/components/DesktopOriginalLinkedDockControls.kt",
+      "sha256Bytes": "48931ba743057578a49f0c4c39ff3efa4cec14730861c0d2a094af20ab6aac7b",
+      "sizeBytes": 12306
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "sha256Bytes": "3615e0e8633f831a6a1a10e50adbc2f6ba9c4a1cda92ba66c4708c9b34f961cd",
+      "sizeBytes": 5902
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "sha256Bytes": "3a728a68f208162b12c5773db887c4e8c765dc4cc00e6d6ae2b6f3e614e9719f",
+      "sizeBytes": 29437
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "sha256Bytes": "bd69d3f8668f95682ff99d375702f73dd180555928ad5825a2deea9227966490",
+      "sizeBytes": 5517
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/navigation/DesktopOriginalBottomSearchSubmit.kt",
+      "sha256Bytes": "5dd53f5416d61a82980315fb45c16216289c5c49bdbd239550af44266c03f06f",
+      "sizeBytes": 2091
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "sha256Bytes": "40418466f3217f1ed478df25ae8ed43f5dddbbaffea3040db086b5863c6d20cd",
+      "sizeBytes": 911
+    },
+    {
+      "path": "root/actual-generated/linked-dock/com/bilipai/desktop/settings/DesktopLinkedDockVectors.kt",
+      "sha256Bytes": "3e662b8c8bcd216d4bd271b0e96df2956d9bda849e1b7124e65b8e498d1248fe",
+      "sizeBytes": 3974
+    },
+    {
+      "path": "root/actual-generated/linked-dock/source-identities.json",
+      "sha256Bytes": "f27edc552c4addfe8b0fa46c01e485d1b96dc57a4482aadf8a2f967e5e1cc57e",
+      "sizeBytes": 10324
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/core/store/DesktopOriginalBottomSearchModes.kt",
+      "sha256Bytes": "5129e5cfc36dc4b61773a7f53fb73b76a931bd88f293e9eb35ae1c115b63f169",
+      "sizeBytes": 728
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "sha256Bytes": "1ce412eefbf62809cb25f73aa209dee387e2345c93cb3af25bd7f76c7172db95",
+      "sizeBytes": 3462
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt",
+      "sha256Bytes": "2ca2ea50deddf67b7c5a3fc808e45a008c8859e43aff90444e5fca2069500e96",
+      "sizeBytes": 24471
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+      "sha256Bytes": "32f8207237e48b716413ba0e5630ba365f5b96f45eede5f1d761bde626308ecd",
+      "sizeBytes": 3348
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/AudioNowPlayingVisibilityPolicy.kt",
+      "sha256Bytes": "ee23b2de8758145cecc294251d53da79f903107f59f140c87343cc11fd8167a3",
+      "sizeBytes": 1087
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/MusicArtworkRotationPolicy.kt",
+      "sha256Bytes": "92590af9a13d6fb6002c4d3acc65427053c6196a9e3cdbd262a0ff3e2873a362",
+      "sizeBytes": 1507
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/MusicPlayerChromePolicy.kt",
+      "sha256Bytes": "738fe3fde78c5a611268a7cca31f8bf47186f2ba70d59c826efbaaea3914a5de",
+      "sizeBytes": 1404
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt",
+      "sha256Bytes": "4a0c11d241d9fcb39b7d86284345ec11f057e9dc7c85e6e938c09a0d670a539d",
+      "sizeBytes": 7469
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/BottomBarChromeMotionSpec.kt",
+      "sha256Bytes": "d76a57d7e3cba322f3f2c7e84ae4569e8d47f6c12ad6f7e5f76f0d1609d11b12",
+      "sizeBytes": 1336
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+      "sha256Bytes": "72c560b067c3c6873ab9ef4049a182abdad1158980b375603f299568dfbf845d",
+      "sizeBytes": 2274
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+      "sha256Bytes": "6148d013c5aa12cd9efc95d6a37f647821ce0e4f58d888fb187348339b101d5e",
+      "sizeBytes": 23969
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/DesktopOriginalFrostedNavigation.kt",
+      "sha256Bytes": "f81836082755d4fede0e29b223c3d2bb5cb406fd2278790d48093d246d0ea2fd",
+      "sizeBytes": 189421
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/DesktopOriginalSideBarMotion.kt",
+      "sha256Bytes": "1404215013bda86d45eeae05d1a6ce851373d0fed73066293513f7122478ba94",
+      "sizeBytes": 2790
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+      "sha256Bytes": "d467f0ea97ee72fa174f446e9c05ef68f339d692777997acb0355d588b0d27f6",
+      "sizeBytes": 1566
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/com/bilipai/desktop/settings/DesktopOriginalFrostedSettings.kt",
+      "sha256Bytes": "19290b1704875f82acecce9144bccaf819605bc28d1784971ab99040e4cbf021",
+      "sizeBytes": 6503
+    },
+    {
+      "path": "root/actual-generated/frosted-audio-renderer/source-inventory.json",
+      "sha256Bytes": "9ab9a109e7b7daff550c210601927f76420207735c617004e78dbe2eaaceabd5",
+      "sizeBytes": 41287
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3",
+      "sizeBytes": 527
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2",
+      "sizeBytes": 8358
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8",
+      "sizeBytes": 452
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee",
+      "sizeBytes": 21065
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "sha256Bytes": "447ec6804691f260d74779229f70a4ac18d04bc9670b603c95942184888cb7dd",
+      "sizeBytes": 13105
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7",
+      "sizeBytes": 1427
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b",
+      "sizeBytes": 6864
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2",
+      "sizeBytes": 8297
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053",
+      "sizeBytes": 848
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256Bytes": "5366b5a9aa8d643a2901224549d67af37262465f1cc0eaf7db7a5dfdc0bebb70",
+      "sizeBytes": 19773
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474",
+      "sizeBytes": 14885
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd",
+      "sizeBytes": 6260
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a",
+      "sizeBytes": 30659
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "7b52dbc9bee0459d7fabdd28e9778ed43c8bbf9578cec978fba96f1f6812e5c5",
+      "sizeBytes": 16944
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097",
+      "sizeBytes": 58737
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92",
+      "sizeBytes": 15787
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018",
+      "sizeBytes": 19223
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503",
+      "sizeBytes": 853
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87",
+      "sizeBytes": 8498
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6",
+      "sizeBytes": 2596
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc",
+      "sizeBytes": 1762
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39",
+      "sizeBytes": 9252
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a",
+      "sizeBytes": 891
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f",
+      "sizeBytes": 1666
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154",
+      "sizeBytes": 5356
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59",
+      "sizeBytes": 7680
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53",
+      "sizeBytes": 543
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36",
+      "sizeBytes": 11630
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157",
+      "sizeBytes": 3641
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c",
+      "sizeBytes": 5010
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99",
+      "sizeBytes": 812
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff",
+      "sizeBytes": 392
+    },
+    {
+      "path": "root/actual-generated/shared-liquid-tabs/source-inventory.json",
+      "sha256Bytes": "2fb7eb53f04e133a731bf5574ce8222eefaaa783ea53e412813fedafb114ca8f",
+      "sizeBytes": 30799
+    },
+    {
+      "path": "root/final-installed/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalLinkedDockRoot.kt",
+      "sha256Bytes": "753413f621408d4ef61fd9752ccdd39bcdecd5abe009bc7975f09ccbb6c00ee1",
+      "sizeBytes": 8468
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "sha256Bytes": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06",
+      "sizeBytes": 34954
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "sha256Bytes": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385",
+      "sizeBytes": 31418
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "sha256Bytes": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33",
+      "sizeBytes": 25360
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "sha256Bytes": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5",
+      "sizeBytes": 23967
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "sha256Bytes": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696",
+      "sizeBytes": 29464
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "sha256Bytes": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c",
+      "sizeBytes": 76511
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "sha256Bytes": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553",
+      "sizeBytes": 16656
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "sha256Bytes": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411",
+      "sizeBytes": 29481
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "sha256Bytes": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e",
+      "sizeBytes": 33671
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "sha256Bytes": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6",
+      "sizeBytes": 19583
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "sha256Bytes": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211",
+      "sizeBytes": 15201
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "sha256Bytes": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df",
+      "sizeBytes": 31982
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "sha256Bytes": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366",
+      "sizeBytes": 18502
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "sha256Bytes": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6",
+      "sizeBytes": 34232
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "sha256Bytes": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1",
+      "sizeBytes": 17897
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "sha256Bytes": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059",
+      "sizeBytes": 31116
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "sha256Bytes": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb",
+      "sizeBytes": 32057
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "sha256Bytes": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce",
+      "sizeBytes": 33133
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af",
+      "sizeBytes": 51694
+    },
+    {
+      "path": "root/final-installed/desktop/tools/extract-upstream-linked-dock.py",
+      "sha256Bytes": "342f984abf663ea530583c1b1ec59c54a6efe71b9179b40fe41a3ac4fa01d7a2",
+      "sizeBytes": 13845
+    },
+    {
+      "path": "root/final-installed/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "sha256Bytes": "eba3ca62fe189d6d95ef88587df3d0d4e5db5a139a608ae5ac36c4b6df4022ef",
+      "sizeBytes": 12678
+    },
+    {
+      "path": "root/final-installed/desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "sha256Bytes": "21155d42664317be58b33e31ec660bb7cb7a3f740259490225e50978c9aa8b15",
+      "sizeBytes": 13890
+    },
+    {
+      "path": "root/final-installed/desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "89c93a5b78a057373ab4c01ba5efcd585c98143e83a895e5c597e4952e808604",
+      "sizeBytes": 16054
+    },
+    {
+      "path": "root/final-installed/desktop/third-party/miuix5157/build.gradle.kts",
+      "sha256Bytes": "0129c69e7add1f2f7e18442156d9007ba6da60f2e8a26e8003990d022ccb1360",
+      "sizeBytes": 6801
+    },
+    {
+      "path": "root/final-installed/desktop/upstream-sources.json",
+      "sha256Bytes": "bc2b9a7f324adfdd0d9911058366271677af15354eae01dd597ab52344319d8e",
+      "sizeBytes": 285879
+    },
+    {
+      "path": "root/final-installed/desktop/build.gradle.kts",
+      "sha256Bytes": "1474b70d9f550dd264939f10246dbd49887f7f93d7e395f479af9b69a8de59d4",
+      "sizeBytes": 90454
+    },
+    {
+      "path": "root/source-parity-report.json",
+      "sha256Bytes": "94932a59a8e05f1f70ae7ff3f10d7c497779196730f550dabc5426fcac980a20",
+      "sizeBytes": 78378
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "cf373c565942e67b1ad96c69458d5ada36d667096a333bffb9db055cc7b5885f",
+      "sizeBytes": 5621
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+PREPARED ONLY. Stable 3d5d19 tag remains source identity; APK418 identity is unproven.
+
+Install only 2 payloads: new sole source producer + DesktopOriginalFrostedAudioRoot.kt.
+Apply 3 existing sole producer hunks separately: shared32 iosIndicatorSpecular private->internal,
+frozen LinkedDock skip registry DIRECT policies (actual17 HomeScrollOffsetPolicy), then
+reuse actual17 Favorite-owned two LocalHome scroll locals when stable-favorites is present.
+No prepared JAR is an install payload. No fork/icon JAR or dependency changes here.
+Root integrates previously frozen e5eb03 LinkedDock original source and 18 full icons into
+the one existing Miuix5157 fork first; source-only prospective ABI used in narrow proof.
+5157 vs original stable5c91 Miuix alignment remains pending, not claimed exact dependency parity.
+
+The new producer preserves every complete BottomBar declaration except exact sole-owned
+shared32/LinkedDock/capsule declarations. Material/official-floating/Miuix/floating-glass/
+illustrated-skin original renderers and policies remain complete. Actual tag AppUiStyle has
+only MATERIAL3 and MIUIX; legacy iOS maps to MIUIX, no fake third runtime theme is added.
+Root supplies real WindowSizeClass/WindowAdaptiveInfo/Backdrop/GraphicsLayer/theme globals,
+LocalNavigationEventDispatcherOwner and same global liquid settings/capture environment.
+Modifier capture exclusion is on the real dock/audio layer; do not put it on background.
+
+DesktopOriginalFrostedAudioNavigation is the actual consumer of original FrostedBottomBar
+with its complete original LinkedDock nowPlaying slot calling original AudioNowPlayingBar.
+Required navigation state/actions include all item/color/label/unread, current destination,
+main/top-level, indicator/pager/transition/motion/blur budgets, search phase key and callbacks.
+No production Navigation Row or slot skeleton is added. Full HomeScreen orchestration is
+not claimed here and remains the parent Home lane. SideBar.kt/FrostedSideBar belongs to
+that lane; this lane uniquely owns SideBarRendererPolicy/BottomBarUiSkin/remaining motion.
+Original TopTabStylePolicy and HomeScrollOffsetPolicy reuse actual17 Favorites full direct
+definitions. LocalHomeScrollOffset/LocalHomeFeedScrollInProgress now belong to actual17
+DesktopFavoriteScrollLocalsKt; LinkedDock and whole Home must exclude those two globals
+and reuse the same exact locals (historical frozen LinkedDock receives a separate skip delta).
+
+Mount DesktopOriginalLinkedDockOwnerProvider once on the real page scroll ancestor, with
+actual mutable scroll offset/scrolling/retained phase and matching nav-entry ownership.
+Do not mount it on the dock or set mock scroll/phase values. Existing phase reconciliation
+uses original resolveLinkedDockPhaseOnAudioChange and current queue/bar activity/preference.
+Root passes Favorite entry.searchChannel only while actual entry.isOwned; receiver is full
+CommonListScreen. History/WatchLater send ports stay null until actual original receivers
+are mounted. Do not construct fabricated channels. Null uses the original global fallback.
+The original bottom submit parser remains sole and guards Root owner before callbacks.
+
+DesktopOriginalFrostedSettings reads only same Root DesktopPluginContext.settingsDataStore.
+It projects original getHomeSettings local definitions and return expressions/keys/defaults
+into distinctly named 10-field readonly view, preserving migration/readability and original
+icon-cross-scale true/native-glass false defaults. No original HomeSettings alias/fake body,
+new settings store, persistent state or credentials serialization. Parent Home owns full
+HomeSettings model separately and must reuse this lane's two BottomBarSearch enums.
+
+DesktopOriginalAudioNowPlayingBinding requires actual retained ListenAudioSession,
+same DesktopRepository, actual Root coroutine scope and Root/page owner predicate.
+It reads actual Listen state/player state/current queue item/speed/native source version.
+Every control checks scope, repository epoch and matching BV/CID before the same actor call.
+Next/previous target that same queue actor. Play/pause toggles only actual matching native
+source; original unavailable-native fallback opens audio mode via Root. Dismiss pauses only
+the source still owned by Listen then invokes same Root visibility dismiss callback.
+No second MiniPlayerManager/AudioNowPlayingSession/playlist/store/player/HTTP client is created.
+
+Root must supply window-ephemeral barSessionActive independent of ListenAudioState.active:
+original paused bar remains available; original dismiss removes bar. Root marks this true
+on actual acquisition/entry and false on dismiss/owner epoch retirement. Visibility policy
+uses all original audio-mode/PiP/mini/detail/landscape/player exclusions, not invented false
+defaults. Root owns existing bar-overlay visibility publication so Home clearance can read
+the actual mounted full bar. No separate persistent store or competing AudioNowPlaying actor.
+
+Required NowPlayingNavigation supplies actual sourceRoute/openAudioMode/openVideo callbacks,
+opensAudioMode preference, real driveBottomBarByProgress and NowPlayingBarHandoffState.
+BV/CID/AU routes remain Root's actual nativeMusicSourceForListenItem routing; no guessed CID.
+Current source route/window/DPI/cover/body bounds record through existing sole
+CardPositionManager. Required sourceIsOwned checks page/epoch/current item *before* source
+record/compact action/window invalidation, including clicks before recomposition on retirement.
+Return handoff must map same real transition owner's returning target/source-pixel ownership.
+No Idle default at Root binding. Matching source owner alone hides bar at alpha, disables
+original source action and clears descendant semantics; upstream outer content-description
+remains on that disabled node. Original metrics, one morph timeline, rotation/presence/swipe remain.
+This preserves bounds/chrome/handoff protocol. Whole original VideoDetail transition host
+runtime/native-window morph integration is a separate Root caller obligation, not proved by
+offscreen renderer fixture. Global CardPositionManager retirement/invalidation stays Root-owned.
+
+No post-tag six-patch Music/Home partial hunks are applied here. Their independent review
+is immutable; fullMusicPlayerContent/MusicPlayerScreen/AudioMode still need complete migration.
+Offscreen fixture is real Compose rendering/click/bounds/semantic proof, not HWND/user playback
+or Android pixel equality. Native Listen actor commands are compile-linked and source audited;
+actual MPV decoding/queue handoff must be validated by Root after serial integration.

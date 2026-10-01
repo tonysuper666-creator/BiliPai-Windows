@@ -1,0 +1,224 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "95ea60c690ac279b3cb230d4cebe793b8e365556",
+      "currentGitBlob": "95ea60c690ac279b3cb230d4cebe793b8e365556",
+      "sha256LfUtf8": "edd59576e63051b80fcddd1d84b38b3ee61944d4769f5d3eac1a01ad66fb5d82",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1d8541096a6c5a901e52ea57009318078e241a1f",
+      "currentGitBlob": "1d8541096a6c5a901e52ea57009318078e241a1f",
+      "sha256LfUtf8": "bd69d3f8668f95682ff99d375702f73dd180555928ad5825a2deea9227966490",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "997841488f7e00c80826249417a09746d6c1d407",
+      "currentGitBlob": "997841488f7e00c80826249417a09746d6c1d407",
+      "sha256LfUtf8": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "4ebb1a75d62c87dc9f71b4b81d26765a1590e31f",
+      "currentGitBlob": "4ebb1a75d62c87dc9f71b4b81d26765a1590e31f",
+      "sha256LfUtf8": "f89b2381a774e707660df9d23f13c074d8b282952a282a653f4845ec28c4c0b3",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1f8d96aa6dc3e28c08c6bdcef70b98e8afb3343d",
+      "currentGitBlob": "1f8d96aa6dc3e28c08c6bdcef70b98e8afb3343d",
+      "sha256LfUtf8": "16d01f648a23ecb4b09c2f81c928cd31d9f9b89792e8b2e5f411a51c8c761028",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "96eed38257155e5b633ce42b5d1180da09ca56a7",
+      "currentGitBlob": "96eed38257155e5b633ce42b5d1180da09ca56a7",
+      "sha256LfUtf8": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "edb0214f97970eadbd6d610039d3bc06929a4d90",
+      "currentGitBlob": "edb0214f97970eadbd6d610039d3bc06929a4d90",
+      "sha256LfUtf8": "3d0090fb1cb7f476ea1d27f96a0e2e4698bd0a52a1220981f6d99a6fa9543dad",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "currentGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "sha256LfUtf8": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c50e36d1cffa1e002eef53c6b1eeeef04326acf1",
+      "currentGitBlob": "c50e36d1cffa1e002eef53c6b1eeeef04326acf1",
+      "sha256LfUtf8": "40418466f3217f1ed478df25ae8ed43f5dddbbaffea3040db086b5863c6d20cd",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "currentGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "sha256LfUtf8": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": "feature/home/components/LinkedBottomDock.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "selected": null,
+      "adaptations": [
+        "Android BackHandler to actual existing NavigationEvent bridge; Root must mount actual owner",
+        "Android system motion read to existing actual Windows animation preference; original all transitions preserved"
+      ],
+      "sha256LF": "3a728a68f208162b12c5773db887c4e8c765dc4cc00e6d6ae2b6f3e614e9719f"
+    },
+    {
+      "path": "feature/home/components/LinkedDockPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "selected": null,
+      "adaptations": [],
+      "sha256LF": "bd69d3f8668f95682ff99d375702f73dd180555928ad5825a2deea9227966490"
+    },
+    {
+      "path": "feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "selected": null,
+      "adaptations": [],
+      "sha256LF": "3d0090fb1cb7f476ea1d27f96a0e2e4698bd0a52a1220981f6d99a6fa9543dad"
+    },
+    {
+      "path": "navigation/SearchSubmitPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "selected": null,
+      "adaptations": [],
+      "sha256LF": "40418466f3217f1ed478df25ae8ed43f5dddbbaffea3040db086b5863c6d20cd"
+    },
+    {
+      "path": "feature/home/components/DesktopOriginalLinkedDockControls.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "selected": [
+        "BottomNavItem",
+        "SharedFloatingBottomBarIconStyle",
+        "normalizeBottomBarLabelMode",
+        "resolveBiliPaiFloatingBottomBarWidth",
+        "resolveMaterialBottomBarIcon",
+        "resolveHomeNavigationBarIcon",
+        "resolveSharedBottomBarIcon",
+        "BiliPaiBottomBarSearchVisualContent",
+        "shouldRequestBottomBarSearchIme",
+        "resolveBottomNavItemLabel",
+        "resolveBottomNavItemContentDescription",
+        "resolveBottomNavItemLookupKeys"
+      ],
+      "adaptations": [
+        "Android string resource IDs become original XML keys read from same Root LocalDesktopStrings",
+        "Shared icon helper visibility widened so complete original LinkedBottomDock consumes same unique helper"
+      ],
+      "sha256LF": "48931ba743057578a49f0c4c39ff3efa4cec14730861c0d2a094af20ab6aac7b"
+    },
+    {
+      "path": "feature/home/components/HomeNavigationIconPolicy.kt",
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "selected": null,
+      "adaptations": [
+        "Only Android vector resource lookup -> exact original XML geometry Windows vector renderer"
+      ],
+      "sha256LF": "3615e0e8633f831a6a1a10e50adbc2f6ba9c4a1cda92ba66c4708c9b34f961cd"
+    },
+    {
+      "source": "app/src/main/res/drawable/ms_home_fill_24.xml",
+      "mode": "original-vector-paths",
+      "sha256LF": "ff47b2ad7e17e889e842081c3bd5ed08c39e73b2460f0098f9beefef0f4863ae"
+    },
+    {
+      "source": "app/src/main/res/drawable/ms_history_fill_24.xml",
+      "mode": "original-vector-paths",
+      "sha256LF": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e"
+    },
+    {
+      "source": "app/src/main/res/drawable/ms_rss_feed_24.xml",
+      "mode": "original-vector-paths",
+      "sha256LF": "0528ba9f4532752c28eeb3b98cf46d2d57b3784d06725f2cdddca85802649b62"
+    },
+    {
+      "source": "app/src/main/res/drawable/bp_nav_home_outline_24.xml",
+      "mode": "original-vector-paths",
+      "sha256LF": "5571972a94a4e54a0729e9606b0ac76bfa822c68392672d2d0d418d990186919"
+    },
+    {
+      "source": "app/src/main/res/drawable/bp_nav_history_outline_24.xml",
+      "mode": "original-vector-paths",
+      "sha256LF": "46092e9f8c4c4febe63f3059d3ddc82b6d1bea5dd6818a8b86c322cd982aa9d2"
+    },
+    {
+      "path": "core/store/DesktopOriginalLinkedDockSettings.kt",
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "selected": [
+        "KEY_BOTTOM_BAR_LABEL_MODE",
+        "KEY_BOTTOM_BAR_SEARCH_ENABLED",
+        "KEY_LINKED_DOCK_MERGE_ON_SCROLL_ENABLED",
+        "KEY_LIST_SCOPED_SEARCH_ENABLED",
+        "getBottomBarLabelMode",
+        "getBottomBarSearchEnabled",
+        "getLinkedDockMergeOnScrollEnabled",
+        "getListScopedSearchEnabled"
+      ],
+      "adaptations": [],
+      "sha256LF": "1c90b85b66aac85171636428834525167bf7bc153bfa230023a1c9b03cde2a4e"
+    },
+    {
+      "path": "navigation/DesktopOriginalBottomSearchSubmit.kt",
+      "source": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "selected": [
+        "submitSearchKeywordInNavigation3",
+        "submitBottomBarSearchKeyword"
+      ],
+      "adaptations": [
+        "Root existing navigation callbacks and owned same-list channels replace Navigation3 captures only; no new nav store/channel",
+        "Retired page/account refuses callback before original submit closure"
+      ],
+      "sha256LF": "5dd53f5416d61a82980315fb45c16216289c5c49bdbd239550af44266c03f06f"
+    }
+  ],
+  "actualOriginalReuse": [
+    "resolveSharedBottomBarCapsuleShape",
+    "biliPaiFloatingDockShell",
+    "LiquidGlassTuning",
+    "FloatingBottomBar",
+    "ScreenRoutes",
+    "BilibiliNavigationTargetParser"
+  ],
+  "wholeFrostedBottomBarNotClaimed": true,
+  "wholeAudioNowPlayingBarNotClaimed": true
+}

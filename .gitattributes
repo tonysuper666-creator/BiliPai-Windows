@@ -49,3 +49,5 @@ desktop/verification/stable-comments-sharing-integration/** -text
 desktop/verification/stable-favorites-folder-integration/** -text
 desktop/verification/stable-danmaku-list-menu-integration/** -text
 desktop/verification/stable-favorites-root-integration/** -text
+
+desktop/verification/stable-full-dock-integration/** -text

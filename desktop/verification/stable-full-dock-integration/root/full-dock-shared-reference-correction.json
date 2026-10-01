@@ -1,0 +1,11 @@
+{
+  "beforeLF": "7ff57928bc54dc61d9f4a7b1f37b4a6cb1575061901f78ae3c6bcf7583ff3639",
+  "afterLF": "89c93a5b78a057373ab4c01ba5efcd585c98143e83a895e5c597e4952e808604",
+  "before": "('private val iosIndicatorSpecular','internal val desktopOriginalBottomBarIosIndicatorSpecular'),",
+  "after": "('private val iosIndicatorSpecular','internal val desktopOriginalBottomBarIosIndicatorSpecular'),('rememberBiliPaiGravityHighlight(iosIndicatorSpecular, extraDegrees = -45f)','rememberBiliPaiGravityHighlight(desktopOriginalBottomBarIosIndicatorSpecular, extraDegrees = -45f)'),",
+  "failedPhase": 24,
+  "cause": "The original selected biliPaiMiuixFloatingDockSurface remains in the same shared producer and also references the renamed BottomBar file-private value.",
+  "correction": "Apply the same identifier mapping to its one exact call expression. Original parameters/body/math are retained; unrelated FloatingDockChrome default remains private and distinct.",
+  "historicalFrozenHandoffsUnchanged": true,
+  "originalTreesUnchanged": true
+}

@@ -1,0 +1,115 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceRegistryCount": 765,
+  "resourceCount": 213,
+  "wholeClassesPhase": 25,
+  "wholeClassesPassed": true,
+  "originalLinkedDockSourceCompiled": true,
+  "originalFrostedNavigationSourceCompiled": true,
+  "originalAudioNowPlayingBarSourceCompiled": true,
+  "sameMiuix5157ForkExtendedWith18UnchangedFullIcons": true,
+  "noNewBinaryLibraryAdded": true,
+  "reusedSoleFavoritesHomeScrollPolicyAndTwoCompositionLocals": true,
+  "independentOriginalPrivateSpecularValuesPreserved": true,
+  "onlyGeneratedBottomBarIdentifierMapping": true,
+  "actualProductUiAssertions": 120,
+  "actualProductUiPointerPairs": 38,
+  "productionClassOverrides": 0,
+  "actualProductUiCases": [
+    {
+      "name": "frosted-audio",
+      "passed": true,
+      "exactFrozenFixtureSHA256": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "executedFixtureSHA256": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88",
+      "fixtureOnlyAdaptation": null,
+      "productionClassOverrides": 0,
+      "overlaps": [],
+      "completedRunCollectedWithoutRepeating": true,
+      "actualProductPhase": 25,
+      "actualProductCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-25\\main-kotlin.jar",
+      "actualMiuixCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-25\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+      "status": "PASS",
+      "assertions": 63,
+      "caseCount": 6,
+      "cases": [
+        "MATERIAL3-false-whole-frosted-required-root-consumer",
+        "MATERIAL3-true-whole-frosted-required-root-consumer",
+        "MIUIX-false-whole-frosted-required-root-consumer",
+        "MIUIX-true-whole-frosted-required-root-consumer",
+        "MATERIAL3-full-audio-controls-bounds-morph-gestures",
+        "MIUIX-full-audio-controls-bounds-morph-gestures"
+      ],
+      "pointerPairs": 32,
+      "themes": 2,
+      "actualOriginalRootConsumer": true,
+      "originalAudioDirectUiFixture": true,
+      "actualNativePlayerRuntimeNotExercised": true,
+      "noHTTP": true,
+      "noHWND": true,
+      "preparedOnly": true
+    },
+    {
+      "name": "linked-dock",
+      "passed": true,
+      "exactFrozenFixtureSHA256": "0b8be5cd92e63eca5c199a5bbf82c12ae4dc33749956c4d46083311089a4d2e1",
+      "executedFixtureSHA256": "2ee96b0f6b842364c3980fa23569226fa2e417cdd7639eb2a694a1b88d2d47cc",
+      "fixtureOnlyAdaptation": "Only fixture expected CodeSource for full Home icon points to the actual sole Miuix5157 dependency; every behavior assertion and pointer event is unchanged.",
+      "productionClassOverrides": 0,
+      "overlaps": [],
+      "completedRunCollectedWithoutRepeating": true,
+      "actualProductPhase": 25,
+      "actualProductCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-25\\main-kotlin.jar",
+      "actualMiuixCodeSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-25\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+      "assertions": 57,
+      "pointerPairs": 6,
+      "caseCount": 6,
+      "cases": [
+        "actual-global-store-read",
+        "original-submit-native-and-three-channels",
+        "owned-original-nested-scroll",
+        "original-phase-ime-policies",
+        "offscreen-MATERIAL3-full-original-dock-search-glass",
+        "offscreen-MIUIX-full-original-dock-search-glass"
+      ],
+      "noHTTP": true,
+      "noHWND": true,
+      "productionNavigationRendererNotClaimed": true,
+      "productionNowPlayingRendererNotClaimed": true
+    }
+  ],
+  "historical92CpLibraryRelocationSameBytesOnly": true,
+  "actualSnapshotMutableSourceBuiltDependencyCopiedSameBytes": true,
+  "fullHomeRootMounted": false,
+  "fullDockRootMounted": false,
+  "fullMusicPlayerScreenAccepted": false,
+  "actualNativePlaybackAccepted": false,
+  "realAccountOrHTTPUsed": false,
+  "systemHWNDUsed": false,
+  "desktopExeReplaced": false,
+  "originalStableMiuix5c91RevisionAlignmentPending": true,
+  "postTagSixPatchSupplementApplied": false,
+  "scope": "Actual frozen whole candidate product classes and actual same-fork built library, fixture-only compilation with zero production class overrides; offscreen Compose pointer/behavior checks; Root Home/route/audio ownership integration remains required.",
+  "failedBuilds": [
+    {
+      "phase": 23,
+      "cause": "Original file-private same-named values collided after one was widened."
+    },
+    {
+      "phase": 24,
+      "cause": "The existing shared selected surface also required the same exact generated identifier mapping."
+    }
+  ],
+  "excludedTaskBinaries": [
+    {
+      "cohort": "prepared-linked",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "ca67bbace6472bbc3a58ea6a9969dbb55a6cfe339e3d4310c9603fe54628847b"
+    },
+    {
+      "cohort": "prepared-frosted",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\candidate.jar",
+      "sha256Bytes": "22283005a113c0c4bffbcac2319a5da9ea1a876a05a1d74db5c615675a2c5556"
+    }
+  ]
+}

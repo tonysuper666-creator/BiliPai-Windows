@@ -1,0 +1,145 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "appendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "edd59576e63051b80fcddd1d84b38b3ee61944d4769f5d3eac1a01ad66fb5d82"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "bd69d3f8668f95682ff99d375702f73dd180555928ad5825a2deea9227966490"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "f89b2381a774e707660df9d23f13c074d8b282952a282a653f4845ec28c4c0b3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "16d01f648a23ecb4b09c2f81c928cd31d9f9b89792e8b2e5f411a51c8c761028"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "3d0090fb1cb7f476ea1d27f96a0e2e4698bd0a52a1220981f6d99a6fa9543dad"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "sha256": "40418466f3217f1ed478df25ae8ed43f5dddbbaffea3040db086b5863c6d20cd"
+    }
+  ],
+  "featureMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "preserveMode": "selected",
+      "appendFeatures": [
+        "stable-linked-dock-search"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-linked-dock-search"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-linked-dock-search"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-linked-dock-search"
+      ]
+    }
+  ],
+  "originalVectorResources": [
+    {
+      "path": "app/src/main/res/drawable/ms_home_fill_24.xml",
+      "sha256": "ff47b2ad7e17e889e842081c3bd5ed08c39e73b2460f0098f9beefef0f4863ae",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "action": "append",
+      "preserveExistingFeatures": []
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_history_fill_24.xml",
+      "sha256": "810cd1d657367d5f33c56bde96d6b3cb0e714528b8d60fb548a96cd4a63d257e",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "action": "merge-feature",
+      "preserveExistingFeatures": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_rss_feed_24.xml",
+      "sha256": "0528ba9f4532752c28eeb3b98cf46d2d57b3784d06725f2cdddca85802649b62",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "action": "merge-feature",
+      "preserveExistingFeatures": [
+        "settings-search-symbols"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/bp_nav_home_outline_24.xml",
+      "sha256": "5571972a94a4e54a0729e9606b0ac76bfa822c68392672d2d0d418d990186919",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "action": "append",
+      "preserveExistingFeatures": []
+    },
+    {
+      "path": "app/src/main/res/drawable/bp_nav_history_outline_24.xml",
+      "sha256": "46092e9f8c4c4febe63f3059d3ddc82b6d1bea5dd6818a8b86c322cd982aa9d2",
+      "features": [
+        "stable-linked-dock-search"
+      ],
+      "action": "append",
+      "preserveExistingFeatures": []
+    }
+  ],
+  "requiredExistingOrSiblingAuthority": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/list/ListScopedSearchPolicy.kt",
+    "owner": "/root/player_parity Favorites direct registry row",
+    "mode": "direct",
+    "sha256": "f14c17e8c25abb6e6813ae2438baa84cb726f17dacd4bc17e9ffdf23b6aaf5e3",
+    "installedByThisLane": false
+  }
+}

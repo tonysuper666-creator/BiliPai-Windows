@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED_ONLY",
+  "hunks": [
+    {
+      "target": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "baseSHA256LF": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b",
+      "before": " emit(HOME+'BottomBar.kt',['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarContainerColor','resolveAndroidNativeFloatingBottomBarContainerColor','resolveAndroidNativeBottomBarGlassEnabled','shouldUseAndroidNativeFloatingHazeBlur','shouldRenderBottomBarLiquidGlassEffects','biliPaiMiuixFloatingDockSurface','resolveBiliPaiBottomBarContainerColor','resolveBottomBarDarkTheme','BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET','resolveBottomBarCaptureSafeInsetDp','resolveBottomBarSurfaceColor','resolveBiliPaiBottomBarShellColor','BottomBarItemMotionVisual','resolveBottomBarItemCoverage','resolveBottomBarItemMotionScale','resolveBottomBarItemMotionVisual'],imports=imports,transforms=[('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)','): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)','): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    desktopDetailRenderEffectsSupported()')])",
+      "after": " emit(HOME+'BottomBar.kt',['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarContainerColor','resolveAndroidNativeFloatingBottomBarContainerColor','resolveAndroidNativeBottomBarGlassEnabled','shouldUseAndroidNativeFloatingHazeBlur','shouldRenderBottomBarLiquidGlassEffects','biliPaiMiuixFloatingDockSurface','resolveBiliPaiBottomBarContainerColor','resolveBottomBarDarkTheme','BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET','resolveBottomBarCaptureSafeInsetDp','resolveBottomBarSurfaceColor','resolveBiliPaiBottomBarShellColor','BottomBarItemMotionVisual','resolveBottomBarItemCoverage','resolveBottomBarItemMotionScale','resolveBottomBarItemMotionVisual'],imports=imports,transforms=[('private val iosIndicatorSpecular','internal val iosIndicatorSpecular'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)','): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)','): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    desktopDetailRenderEffectsSupported()')])",
+      "resultSHA256LF": "d8fba34853f4ad435d32503617e02a997d0d770cb5602d4447d35459ca4dbe4e",
+      "purpose": "Only existing sole original specular value visibility widened. No second BottomBarKt or copied helper."
+    },
+    {
+      "target": "desktop/tools/extract-upstream-linked-dock.py",
+      "baseSHA256LF": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df",
+      "before": "  p=BASE+rel+'.kt';emit(rel+'.kt',original[p],p)",
+      "after": "  p=BASE+rel+'.kt'\n  registry={r['path']:r for r in json.loads(read(repo/'desktop/upstream-sources.json'))['sources']}\n  if registry[p].get('mode')!='direct':emit(rel+'.kt',original[p],p)",
+      "resultSHA256LF": "0ebcad102e871434f59bab17294b29fd340becd787214e95e14fb53b5dab3359",
+      "base": "historical frozen e5eb03 prepared producer (not installed yet)",
+      "purpose": "Reuse actual17 Favorites direct HomeScrollOffsetPolicy. Any exact source direct policy is synced solely by Root prepareUpstreamSources."
+    },
+    {
+      "target": "desktop/tools/extract-upstream-linked-dock.py",
+      "baseSHA256LF": "0ebcad102e871434f59bab17294b29fd340becd787214e95e14fb53b5dab3359",
+      "before": " emit('feature/home/DesktopOriginalLinkedDockScrollLocals.kt','package com.android.purebilibili.feature.home\\nimport androidx.compose.runtime.*\\n\\n'+decl.declarations(parser,original[p],names),p,names)",
+      "after": " if 'stable-favorites' not in registry[p].get('features',[]):\n  emit('feature/home/DesktopOriginalLinkedDockScrollLocals.kt','package com.android.purebilibili.feature.home\\nimport androidx.compose.runtime.*\\n\\n'+decl.declarations(parser,original[p],names),p,names)",
+      "resultSHA256LF": "342f984abf663ea530583c1b1ec59c54a6efe71b9179b40fe41a3ac4fa01d7a2",
+      "base": "sequential after previous LinkedDock DIRECT-skip hunk",
+      "purpose": "Reuse actual17 Favorites sole DesktopFavoriteScrollLocalsKt exact two original locals; never create second CompositionLocal authority."
+    }
+  ]
+}

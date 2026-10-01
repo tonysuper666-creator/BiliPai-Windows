@@ -1,0 +1,224 @@
+{
+  "status": "READY_PREPARED_ONLY",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceInputCount": 10,
+  "generatedOriginalAndVectorKtCount": 11,
+  "windowsRootBindingKtCount": 1,
+  "pinnedMiuixFullIconSourceCount": 18,
+  "payloadCount": 21,
+  "payload": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalLinkedDockRoot.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalLinkedDockRoot.kt",
+      "sha256Bytes": "753413f621408d4ef61fd9752ccdd39bcdecd5abe009bc7975f09ccbb6c00ee1"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Community.kt",
+      "sha256Bytes": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Contacts.kt",
+      "sha256Bytes": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\ContactsCircle.kt",
+      "sha256Bytes": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Favorites.kt",
+      "sha256Bytes": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Folder.kt",
+      "sha256Bytes": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\GridView.kt",
+      "sha256Bytes": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Home.kt",
+      "sha256Bytes": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Music.kt",
+      "sha256Bytes": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Notes.kt",
+      "sha256Bytes": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Play.kt",
+      "sha256Bytes": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Recent.kt",
+      "sha256Bytes": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Recording.kt",
+      "sha256Bytes": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Search.kt",
+      "sha256Bytes": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Settings.kt",
+      "sha256Bytes": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Stopwatch.kt",
+      "sha256Bytes": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Store.kt",
+      "sha256Bytes": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\Theme.kt",
+      "sha256Bytes": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream\\miuix-icons\\src\\commonMain\\kotlin\\icon\\extended\\TopDownloads.kt",
+      "sha256Bytes": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce"
+    },
+    {
+      "target": "desktop/third-party/miuix5157/upstream-provenance.json",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\third-party\\miuix5157\\upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-linked-dock.py",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepared\\desktop\\tools\\extract-upstream-linked-dock.py",
+      "sha256Bytes": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df"
+    }
+  ],
+  "registryAppendCount": 6,
+  "registryFeatureMergeCount": 4,
+  "resourceAppendCount": 3,
+  "resourceFeatureMergeCount": 2,
+  "compile": "ca67bbace6472bbc3a58ea6a9969dbb55a6cfe339e3d4310c9603fe54628847b",
+  "snapshotManifest": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "snapshotCP": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "actualOrderedCPCount": 92,
+  "fixture": {
+    "assertions": 57,
+    "caseCount": 6,
+    "actualPointerPairs": 6
+  },
+  "audit": {
+    "checkCount": 113,
+    "completeBodyCount": 50,
+    "tokenIdenticalCount": 43,
+    "platformChangedBodyCount": 7,
+    "classIntersection": [],
+    "topMethodIntersection": []
+  },
+  "evidence": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\contract.txt",
+      "sha256Bytes": "23aa0d92dcddf33180f0c0fd8bed0940fe37010600b754d2ee4192e5f0691e38"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\registry-recipe.json",
+      "sha256Bytes": "abb293e3752fe7d939264c739bc1e9d8368b73c4e55119da715f156b8790a30e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\miuix-fork-hunk.json",
+      "sha256Bytes": "5be35fbc27f5da049715e42f9c7814eae262a59adce8fc06a9bf0391cc18aeca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\miuix-icons-source-evidence.json",
+      "sha256Bytes": "d3005b9cf75e358be1757918ace3ead6e66e84bc261815ba752692d3b4fee1af"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\generated\\source-identities.json",
+      "sha256Bytes": "2141709a62bae685904316a473a90872dd489b2bdab57da90647f4281a6bb75a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\source-and-symbol-audit.json",
+      "sha256Bytes": "92f4d4d592da10e97a297b90c32cb169dd7b01314971e807a98dc810bf41dc2b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-source-boundary.json",
+      "sha256Bytes": "7fd7ad3d8684d887de926633c73c50a546032f9b105d5be6df42ed07bd103b24"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\gradle-install-fragment.kt.txt",
+      "sha256Bytes": "5b840cfafaae7af35029cfff5d4f88e3dec01bc025c6eddd1f5164c5c855315a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepare.py",
+      "sha256Bytes": "46194d8c179005292a22574b677177b6d90fbb988ad5bdb808028fe4af325fd0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\prepare-icons.py",
+      "sha256Bytes": "23e767ccc25395a44517bcbfad80475aa3f8f956be7f6b3fe36a0448e7f1a9ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\producer.pyfrag",
+      "sha256Bytes": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\compile.py",
+      "sha256Bytes": "8e921cd9a835b1fe32c295482bf2b6c75e5752ba15c68ad790f2e310f0731da5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\run-fixture.py",
+      "sha256Bytes": "57f18a036d761aa0c620453cb70e3ab30d1899f9bae9a0e473ad59f79067aaf7"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\audit.py",
+      "sha256Bytes": "7ec9b2c4b3438ebb93a4341b21443444d54b793e5a0469d6a616a3c10e81f01d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\LinkedDockFixture.kt",
+      "sha256Bytes": "0b8be5cd92e63eca5c199a5bbf82c12ae4dc33749956c4d46083311089a4d2e1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\runs\\08\\compile-evidence.json",
+      "sha256Bytes": "08cf6d9a8586530bbda9eb286f0f63af2fa35830bf36436a49f04aa854e5744d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\runs\\08\\accepted-fixture.json",
+      "sha256Bytes": "7b1924a91152dba85aaff92fb5feb5501d24148e051a91662645036906a3810e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\runs\\08\\runtime.log",
+      "sha256Bytes": "89135d4f7c3847728efd43171cb2f50e0093684e85fb43038999b237ffca4259"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\runs\\08\\candidate.jar",
+      "sha256Bytes": "ca67bbace6472bbc3a58ea6a9969dbb55a6cfe339e3d4310c9603fe54628847b"
+    }
+  ],
+  "integrationRequiresActualRootCaller": true,
+  "fullNavRendererPending": true,
+  "fullNowPlayingRendererPending": true,
+  "fullHomeOrchestrationPending": true,
+  "Miuix5157VsStable5c91Pending": true,
+  "sharedGradleEdited": false,
+  "liveSourceEdited": false,
+  "noHTTP": true,
+  "noHWND": true
+}

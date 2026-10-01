@@ -1,0 +1,89 @@
+Prepared full original stable v0.2.3 LinkedBottomDock and bottom-search controls.
+Source commit 3d5d19a2f994daccd0e2f8b5f522b6d82f43d589. This is a source closure,
+not a claim that the current product already mounts the complete Home bottom bar.
+
+Installation, serially by Root only:
+1. Install the sole extract-upstream-linked-dock.py and DesktopOriginalLinkedDockRoot.kt.
+2. Merge registry-recipe.json: six new source rows, four existing feature merges;
+   four new vector resources and one existing History vector feature merge. Preserve
+   every existing source mode, feature and hash. ListScopedSearchPolicy is uniquely
+   owned by the Favorites lane/direct sync; this lane does not install that source.
+3. Install 18 complete, byte-identical extended icon sources into the existing sole
+   :miuix5157 fork. Install its extended provenance and one exact originalModules
+   Gradle hunk from miuix-fork-hunk.json. No binary JAR or new dependency is supplied.
+   Archive e6b9f53e... pins current fork 5157b503. Stable app specifies 5c91d5e5;
+   that library revision gap remains explicit. No claim of full stable Miuix parity.
+4. Root owns the small extractLinkedDock task/source-directory recipe. The producer
+   generates 11 complete original/Windows-vector Kt files, references the current
+   32-source liquid/glass closure and never emits its BottomBar original declarations,
+   navigation parser/ScreenRoutes, Back handler or motion preference read bridge.
+5. Compile the whole candidate after Favorites' required pure direct policy is present.
+   Narrow proofs are against actual immutable Main15/92CP plus explicitly declared
+   source-only prospective icons, same direct policy and the proof-only fixture.
+
+Required caller contract, no placeholder values:
+DesktopOriginalLinkedDockOwner(scrollOffset: MutableFloatState,
+  feedScrollInProgress: MutableState<Boolean>, phase: State<LinkedDockPhase>,
+  onPhaseChange: (LinkedDockPhase)->Unit, isOwned:()->Boolean).
+Root retains the same actual page's continuous offset and observed scrolling state
+and its saved phase. Provider publishes those exact original CompositionLocals.
+Apply the supplied pageScrollModifier once to the actual feed/list nested-scroll
+ancestor, outside the dock. The source pre-scroll connection consumes Offset.Zero,
+accumulates every page's continuous delta and gates writes after owner retirement.
+Do not replace it with first-item offset, zero offset, false scrolling or synthetic
+scroll progress. Install the same original back-dispatcher owner on the real page.
+
+DesktopOriginalLinkedDock has required preferenceContext from Root's sole global
+Store, current/first item and label, collapseRequested, isTopLevelDestination,
+isMainHost, hasActiveAudioPlayback, callbacks, all three nullable actual list
+SendChannels, container/backdrop/glass/tuning/icon style/geometry, now-playing slot,
+presence flag, real blur/Haze state, modifier and original navigationContent slot.
+No parameter defaults substitute false, empty navigation, fake audio or geometry.
+Original default preferences (label 0, search false, merge true, list-scoped false)
+are selected from original SettingsManager getters. The binding waits for their
+actual first values; it does not initialize them with invented UI state.
+
+hasActiveAudioPlayback follows original AppNavigation: active session AND current
+item exists AND now-playing bar setting enabled. Use the same existing Root music
+actor and queue; paused active playback still owns a now-playing item. Root keeps
+phase initially Expanded as original rememberSaveable state. The binding selects
+the original active-session phase reconciliation, guarded by the same page owner.
+nowPlayingContent remains null only when the original visibility policy says the
+bar is absent; supply the original AudioNowPlayingBar closure when visible. Its
+six parameters are Modifier, merge provider, icon-only provider, surface-merge
+provider, compact-click override, layout-stable flag. Never discard those providers.
+
+Search routing retains original AppNavigation callback bodies. Root passes the
+same owned History/Favorite/WatchLater channel objects used by its current list
+owners. Only MainHost with both source prefs enabled sends trimmed text there;
+other routes call original SearchSubmitPolicy/native parser and Root navigation.
+No new channel, navigation store or HTTP client is created. onSearchClick owns the
+existing blank-search launch. The original visual component owns focus/IME/query,
+24dp scroll collapse, saved previous-phase restore, submit clear and Back behavior.
+Same Root focus owner and navigation owner must cover the actual input/page.
+
+Backdrop/readability contract: pass the actual same page Miuix Backdrop, its global
+theme/settings/tuning and window geometry. Root's existing background layer and
+readability provider remain sole owners. The binding excludes the complete dock
+from that capture through the existing excludeFromLiquidBackground modifier.
+Do not pass null backdrop/false glass to claim glass behavior has been implemented.
+
+Scope and remaining original callers:
+The complete LinkedBottomDock, complete BiliPaiBottomBarSearchVisualContent,
+complete BottomNavItem/icon roles, linked geometry/phase, continuous scroll,
+presence and submit policies are here. navigationContent must be the original
+navigation renderer; this lane intentionally does not provide a replacement Row.
+follow-on-source-boundary.json retains full FrostedBottomBar, Material/Miuix,
+BiliPaiFloatingBottomBar and BiliPaiFloatingBottomBarChrome source declarations,
+their exact navigation slot, and original dockAudioContent/AudioNowPlayingBar plus
+transition/bounds/state dependencies. These are review-only, not production sources.
+Full original HomeScreen orchestration, full Frosted navigation wrapper, original
+now-playing renderer and original card-source transition owner remain pending.
+Root's current simplified ListenNowPlayingBar is not claimed as original parity.
+
+Evidence: complete original method slices and platform differences are source-
+audited, fresh production generation is byte equal, all92 actual CP class FQNs
+and same-package JVM method parameter signatures have zero overlap. The actual
+offscreen Compose fixture uses proof-only navigation/audio slots (explicitly not
+production replacements), real Store, real original dock/search/glass, actual
+pointer pairs and actual dispatcher. It uses no network, HWND or shared Gradle.

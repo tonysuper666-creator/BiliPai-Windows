@@ -1,0 +1,59 @@
+{
+  "reason": "Preserve byte-identical existing source-built Miuix library before its shared Gradle artifact is rebuilt with original icons",
+  "receipts": [
+    {
+      "phase": 17,
+      "originalManifestSha256Bytes": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+      "originalOrderedCpSha256Bytes": "25533b03785344f3a4a360a6db292775ad370824449c7a9c3a5b98702e3812d6",
+      "relocatedOrderedCpPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\ordered-runtime-cp-17.json",
+      "relocatedOrderedCpSha256Bytes": "3af8514502ab0d187b80b6e051bf7b770018ca307aa988d6f349b29f9b25ce0a",
+      "byteIdenticalLibraryRelocations": [
+        {
+          "originalPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "relocatedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+        }
+      ],
+      "productArtifactsUnchanged": true,
+      "originalSnapshotManifestsUnchanged": true,
+      "productionOverrides": 0,
+      "classpathEntryCount": 92
+    },
+    {
+      "phase": 20,
+      "originalManifestSha256Bytes": "41439c3242e279bc0dc09a20501bdcb36e13cda7f66ab2bbbe537e7538d3ecf2",
+      "originalOrderedCpSha256Bytes": "4d1499c7ddbeeddbf31427505930ab0c3d5c6a3aaaf8dc08d2a585edca720232",
+      "relocatedOrderedCpPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\ordered-runtime-cp-20.json",
+      "relocatedOrderedCpSha256Bytes": "9e1365eb67f97b9930570ff87cd34b514b31d858d78cf210d31783ad87af89cf",
+      "byteIdenticalLibraryRelocations": [
+        {
+          "originalPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "relocatedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+        }
+      ],
+      "productArtifactsUnchanged": true,
+      "originalSnapshotManifestsUnchanged": true,
+      "productionOverrides": 0,
+      "classpathEntryCount": 92
+    },
+    {
+      "phase": 22,
+      "originalManifestSha256Bytes": "90df091a72910d314030cac755dcc980a8fc711111b8e5d20886fbf22e182cba",
+      "originalOrderedCpSha256Bytes": "f871605f15d537b71a0981bc556b47979f68d413447dfc1d97cad373c43374fb",
+      "relocatedOrderedCpPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\ordered-runtime-cp-22.json",
+      "relocatedOrderedCpSha256Bytes": "65e50623a5e52a7a4f0c7421e55dbd20bae752b5c53add8208be9c1f8c9772ae",
+      "byteIdenticalLibraryRelocations": [
+        {
+          "originalPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\third-party\\miuix5157\\build\\libs\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "relocatedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-miuix5157-original-runtime\\miuix5157-jvm-0.9.4-5157b503-windows-source1.jar",
+          "sha256Bytes": "78e22c70dd152058f2f7570f59906607e253231f1db346494820bd7e9db7b215"
+        }
+      ],
+      "productArtifactsUnchanged": true,
+      "originalSnapshotManifestsUnchanged": true,
+      "productionOverrides": 0,
+      "classpathEntryCount": 92
+    }
+  ]
+}

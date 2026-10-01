@@ -1,0 +1,157 @@
+{
+  "status": "READY_PREPARED_ONLY",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "payloadCount": 2,
+  "payload": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalFrostedAudioRoot.kt",
+      "sha256Bytes": "eba3ca62fe189d6d95ef88587df3d0d4e5db5a139a608ae5ac36c4b6df4022ef"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\prepared\\desktop\\tools\\extract-upstream-frosted-audio-renderer.py",
+      "sha256Bytes": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe"
+    }
+  ],
+  "existingSoleProducerHunkCount": 3,
+  "existingProducerHunksSHA256": "61bbee0148bd11a237dd3ec738ea8176d22ace286d3f8471b09bbd81fc709f97",
+  "sourceInputCount": 16,
+  "generatedOriginalKtCount": 15,
+  "registryAppendCount": 12,
+  "registryFeatureMergeCount": 4,
+  "actualSnapshotManifest": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "actualOrderedCPManifest": "25533b03785344f3a4a360a6db292775ad370824449c7a9c3a5b98702e3812d6",
+  "actualOrderedCPCount": 92,
+  "declaredProspectiveInputs": [
+    "historical frozen LinkedDock full original source (actual17 owned pure policy and two globals excluded)",
+    "18 whole icon sources for existing Miuix5157 fork from frozen e5eb03 source receipt",
+    "existing shared32 BottomBar full19 source with one private-to-internal value visibility hunk"
+  ],
+  "compileJarSHA256": "22283005a113c0c4bffbcac2319a5da9ea1a876a05a1d74db5c615675a2c5556",
+  "fixture": {
+    "caseCount": 6,
+    "assertions": 63,
+    "pointerPairs": 32,
+    "actualThemeCount": 2,
+    "actualNativePlayerRuntimeNotExercised": true
+  },
+  "audit": {
+    "checkCount": 458,
+    "completeBodyCount": 289,
+    "tokenIdenticalCount": 283,
+    "platformChangedBodyCount": 6,
+    "newClassOverlap": [],
+    "newTopMethodOverlap": [],
+    "declaredExistingProducerVisibilityClassOverlap": [
+      "com/android/purebilibili/feature/home/components/AndroidNativeBottomBarTuning.class",
+      "com/android/purebilibili/feature/home/components/BottomBarItemMotionVisual.class",
+      "com/android/purebilibili/feature/home/components/BottomBarKt.class"
+    ]
+  },
+  "existingProducerByteProof": {
+    "originalSharedBodyUnchangedExceptVisibility": true,
+    "linkedExactUnchangedKt": 9,
+    "actual17SoleReuse": [
+      "HomeScrollOffsetPolicyKt",
+      "DesktopFavoriteScrollLocalsKt"
+    ]
+  },
+  "evidence": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\contract.txt",
+      "sha256Bytes": "33058e3d161d99b8a5d5ac1b14d1e6023bba928df3ea3cdb449c96b76aa30b5f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\registry-recipe.json",
+      "sha256Bytes": "55819eec739000d2bcaae6ecdb5e4b7e3f3ee0ab54fd7130e2fb0478f87141fc"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\existing-sole-producer-hunks.json",
+      "sha256Bytes": "61bbee0148bd11a237dd3ec738ea8176d22ace286d3f8471b09bbd81fc709f97"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\existing-producer-source-proof.json",
+      "sha256Bytes": "088fbb9006a0a2bababd3842b1cd3f087c78419aeb619d7ef537a0f623becd01"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\generated\\source-inventory.json",
+      "sha256Bytes": "16dfa103e8f4e1cade1d46ee71dbf58d268998dcdc1a349fad29d790b5d19749"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\source-and-symbol-audit.json",
+      "sha256Bytes": "54a513cad7b1b556cf44881739a4ef794205dbe0875f2d0c246f60bcef9cdb94"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\gradle-install-fragment.kt.txt",
+      "sha256Bytes": "9641cef6b50503c69d299ce8e97493585ab6553396b14df2b1a0e47f1a8c8b39"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\producer.pyfrag",
+      "sha256Bytes": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\prepare.py",
+      "sha256Bytes": "5e3045c9f1878db378c25e724b356a328d57f45d9be8b6ede5a30380127f10c3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\integration.py",
+      "sha256Bytes": "308b4f01583f2e13dda8f622a433f8e07648150d1139edd3f679238faa40f960"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\prove-existing-producers.py",
+      "sha256Bytes": "5e39d22c9605900aede4d864990839853fed329b3c75372351afc83da163b5df"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\compile.py",
+      "sha256Bytes": "49f15da5f2d2ef0827636667568bd4455131ef55f4e09431ee74bdbd0395d22a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\audit.py",
+      "sha256Bytes": "f015b759dd44516f983762c35071240ebca46346924c0e40e5a69d13de22bb9a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\run-fixture.py",
+      "sha256Bytes": "c94ad9b147f79327943b4033b647508a9107e244dd3a9c9b7c5f07b333f2e8ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\FrostedAudioFixture.kt",
+      "sha256Bytes": "bcf34194dff6081a441f0dcc75c7e674758de6dcb4944315f8082f29246d8f88"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\compile-evidence.json",
+      "sha256Bytes": "f72706343fba5789db3d17d02977d1a3b2fefd0eec8e2991f35a40ac68fe755c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\accepted-fixture.json",
+      "sha256Bytes": "682c1d21d5e8cbe1fd7dd0e618736e785de6762e707f9ef8d4cc73d882498ac6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\compile.log",
+      "sha256Bytes": "65a18f6c865162d6cb3d9766484568594e1c3bcfd9f23ffa4ee38a097ebb7dc6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\runtime.log",
+      "sha256Bytes": "4bdcf9f42cb5a8df340835ba775ae7099ca27107fcbc0471301881c3f69757b8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity\\runs\\10\\candidate.jar",
+      "sha256Bytes": "22283005a113c0c4bffbcac2319a5da9ea1a876a05a1d74db5c615675a2c5556"
+    }
+  ],
+  "fullFrostedBottomBarSourceClosureComplete": true,
+  "fullAudioNowPlayingBarSourceClosureComplete": true,
+  "requiresActualRootOwnerAndNativeCallerIntegration": true,
+  "fullHomeScreenOrchestrationPending": true,
+  "fullMusicPlayerContentScreenPending": true,
+  "fullVideoTransitionHostRuntimePending": true,
+  "SideBarRendererOwner": "parent player_parity whole Home (no SideBar.kt generated here)",
+  "sourceVersionCode415VsApk418IdentityUnproven": true,
+  "Miuix5157VsOriginalStable5c91Pending": true,
+  "postTagSixPatchSupplementApplied": false,
+  "liveSourceEdited": false,
+  "sharedGradleEdited": false,
+  "nativeOrExeEdited": false,
+  "noHTTP": true,
+  "noHWND": true
+}

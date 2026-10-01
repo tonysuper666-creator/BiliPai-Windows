@@ -1,0 +1,208 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "reviewOnly": true,
+  "currentWholeDockAndSearchControlsComplete": true,
+  "wholeFrostedBottomBarPending": true,
+  "wholeAudioNowPlayingBarPending": true,
+  "wholeHomeScreenPending": true,
+  "sourceBoundary": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "FrostedBottomBar",
+      "sha256LF": "9b82a0309af9075116148782f56f49138624f51969cd154e99b2c3b8efc31317",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\FrostedBottomBar.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "MaterialBottomBar",
+      "sha256LF": "c6435f9e2637bbd617c2deda72afac4a5a6a825195f24ab2f58310c2ffab7aff",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\MaterialBottomBar.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "MiuixBottomBar",
+      "sha256LF": "9e67b10cd7880dc3af2c3e9134db033ddb4e19193d239bac93621ba38bf2aa53",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\MiuixBottomBar.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "BiliPaiFloatingBottomBar",
+      "sha256LF": "e00720c6e9e4d1e89674fddb0a1e911b43df0e686612293503eaee55fcc83a78",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\BiliPaiFloatingBottomBar.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "BiliPaiFloatingBottomBarChrome",
+      "sha256LF": "de61942951a0363340c14f8bb89c59707b6fdd5ec9d36217a22b5abe5071ef87",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\BiliPaiFloatingBottomBarChrome.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "declaration": "OfficialMd3FloatingToolbarContent",
+      "sha256LF": "46432a6df78dbafa5c99f6d2479c25311de4adafed751869c8a5220d313c86dd",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\OfficialMd3FloatingToolbarContent.kt.txt",
+      "install": false
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt",
+      "gitBlob": "4e8f17dcdd42ba4ed1f330ca13e8e6ce150f25fb",
+      "sha256LF": "cb868598d30d087f68551c7be98f896b2110fe89f71725967465c82d66170f63",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\AudioNowPlayingBar.kt.txt",
+      "install": false,
+      "imports": [
+        "androidx.compose.animation.AnimatedVisibility",
+        "androidx.compose.animation.expandVertically",
+        "androidx.compose.animation.fadeIn",
+        "androidx.compose.animation.fadeOut",
+        "androidx.compose.animation.shrinkVertically",
+        "androidx.compose.foundation.clickable",
+        "androidx.compose.foundation.basicMarquee",
+        "androidx.compose.foundation.gestures.detectHorizontalDragGestures",
+        "androidx.compose.foundation.layout.Arrangement",
+        "androidx.compose.foundation.layout.Box",
+        "androidx.compose.foundation.layout.Column",
+        "androidx.compose.foundation.layout.Row",
+        "androidx.compose.foundation.layout.fillMaxSize",
+        "androidx.compose.foundation.layout.fillMaxWidth",
+        "androidx.compose.foundation.layout.height",
+        "androidx.compose.foundation.layout.navigationBarsPadding",
+        "androidx.compose.foundation.layout.padding",
+        "androidx.compose.foundation.layout.size",
+        "androidx.compose.foundation.shape.CircleShape",
+        "androidx.compose.material.icons.Icons",
+        "androidx.compose.material.icons.filled.Close",
+        "androidx.compose.material.icons.filled.Pause",
+        "androidx.compose.material.icons.filled.PlayArrow",
+        "androidx.compose.material.icons.outlined.QueueMusic",
+        "com.android.purebilibili.core.theme.LocalAppUiStyle",
+        "com.android.purebilibili.core.theme.LocalSettingsLiquidGlassEnabled",
+        "dev.chrisbanes.haze.HazeState",
+        "com.android.purebilibili.core.ui.AppShapes",
+        "com.android.purebilibili.core.ui.AppSurfaceTokens",
+        "com.android.purebilibili.core.ui.ContainerLevel",
+        "com.android.purebilibili.core.ui.components.AppIcon",
+        "com.android.purebilibili.core.ui.components.AppIconButton",
+        "com.android.purebilibili.core.ui.components.AppText",
+        "com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion",
+        "com.android.purebilibili.core.ui.transition.NowPlayingBarHandoffState",
+        "com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot",
+        "com.android.purebilibili.core.ui.transition.VideoCardSourceLayout",
+        "com.android.purebilibili.core.ui.transition.resolveNowPlayingBarReturnVisibility",
+        "com.android.purebilibili.core.util.CardPositionManager",
+        "androidx.compose.material3.MaterialTheme",
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.remember",
+        "androidx.compose.runtime.SideEffect",
+        "androidx.compose.ui.Alignment",
+        "androidx.compose.ui.Modifier",
+        "androidx.compose.ui.draw.clip",
+        "androidx.compose.ui.draw.clipToBounds",
+        "androidx.compose.ui.graphics.graphicsLayer",
+        "androidx.compose.ui.input.pointer.pointerInput",
+        "androidx.compose.ui.layout.ContentScale",
+        "androidx.compose.ui.layout.Layout",
+        "androidx.compose.ui.layout.LayoutCoordinates",
+        "androidx.compose.ui.layout.boundsInRoot",
+        "androidx.compose.ui.layout.layout",
+        "androidx.compose.ui.layout.onGloballyPositioned",
+        "androidx.compose.ui.platform.LocalConfiguration",
+        "androidx.compose.ui.platform.LocalDensity",
+        "androidx.compose.ui.semantics.semantics",
+        "androidx.compose.ui.semantics.contentDescription",
+        "androidx.compose.ui.semantics.clearAndSetSemantics",
+        "androidx.compose.ui.text.font.FontWeight",
+        "androidx.compose.ui.text.style.TextOverflow",
+        "androidx.compose.ui.unit.Constraints",
+        "androidx.compose.ui.unit.dp",
+        "coil3.compose.AsyncImage",
+        "com.android.purebilibili.feature.home.components.LiquidGlassTuning",
+        "com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig",
+        "com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell",
+        "com.android.purebilibili.feature.home.components.resolveBiliPaiBottomBarShellColor",
+        "com.android.purebilibili.feature.home.components.resolveBottomBarDarkTheme",
+        "com.android.purebilibili.feature.home.components.resolveSharedBottomBarCapsuleShape",
+        "kotlin.math.abs",
+        "top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+      "gitBlob": "5ec55955828c488117de96fdd66e6ead432a3447",
+      "sha256LF": "32f8207237e48b716413ba0e5630ba365f5b96f45eede5f1d761bde626308ecd",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\AudioNowPlayingBarMotionPolicy.kt.txt",
+      "install": false,
+      "imports": [
+        "kotlin.math.roundToInt"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "gitBlob": "be5c31f9c2b56ca7678a66f4c04e19c395ba11b6",
+      "sha256LF": "1ce412eefbf62809cb25f73aa209dee387e2345c93cb3af25bd7f76c7172db95",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\NowPlayingBarHandoff.kt.txt",
+      "install": false,
+      "imports": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/util/CardPositionManager.kt",
+      "gitBlob": "32e94d2a5722511aa39fd82e9e8725358b666d6b",
+      "sha256LF": "4a814bc762fbcc5b16e5f9f771884c25b871ce4795bb37454476bb27951ccccd",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\CardPositionManager.kt.txt",
+      "install": false,
+      "imports": [
+        "androidx.compose.ui.geometry.Offset",
+        "androidx.compose.ui.geometry.Rect",
+        "androidx.compose.runtime.getValue",
+        "androidx.compose.runtime.mutableStateOf",
+        "androidx.compose.runtime.setValue",
+        "androidx.compose.ui.graphics.ImageBitmap",
+        "androidx.compose.ui.graphics.layer.GraphicsLayer",
+        "com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot",
+        "com.android.purebilibili.core.ui.transition.VideoCardSourceLayout",
+        "com.android.purebilibili.core.ui.transition.resolveVideoCardSourceLayout",
+        "java.util.concurrent.atomic.AtomicLong",
+        "kotlin.math.abs"
+      ]
+    },
+    {
+      "source": "design-system/src/main/java/com/android/purebilibili/core/ui/AppBottomNavigationHost.kt",
+      "gitBlob": "4dbca20261d05b4d4e20de5fc5f1263479d22d3a",
+      "sha256LF": "df28c31d9bef0543d9e5dae064aa2d2ee3fb6a0cba42e898cc834e5e94a4f7d3",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\AppBottomNavigationHost.kt.txt",
+      "install": false,
+      "imports": [
+        "androidx.compose.runtime.Composable",
+        "androidx.compose.runtime.remember"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "declaration": "dockAudioContent",
+      "sha256LF": "ee0be647c95cd8419cf7e3ca2fd87e555252674cb36e68d3967de7e1aafb46f9",
+      "retained": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity\\follow-on-original-source\\OriginalDockAudioSlot.kt.txt",
+      "install": false
+    }
+  ],
+  "ownedNavigationSlot": "LinkedBottomDock.navigationContent -> original BiliPaiFloatingBottomBarChrome (floating path); Material official branch -> OfficialMd3FloatingToolbarContent; FrostedBottomBar owns complete theme/fold/sidebar/click policy wrapper",
+  "audioSlotParameters": [
+    "Modifier",
+    "dockMergeProgress:()->Float",
+    "iconOnlyProgress:()->Float",
+    "surfaceMergeProgress:()->Float",
+    "onCompactClick:(()->Unit)?",
+    "isLayoutStable:Boolean"
+  ],
+  "actualPlayerAuthority": "same Root ListenAudioSession; source states from the same session/queue/current item/playing/speed; no MiniPlayerManager port or second player",
+  "pendingPlatformSeams": [
+    "original HomeSettings full readonly view over sole Root global Store",
+    "full original navigation renderer and skin/window/fold/haptics/click policies",
+    "CardPositionManager source/chrome/bounds and same Root navigation handoff transition owner",
+    "full original AudioNowPlayingBar + motion + same playback callbacks and source route",
+    "same real Root Backdrop/GraphicsLayer/window size; same explicit navigation owner"
+  ]
+}

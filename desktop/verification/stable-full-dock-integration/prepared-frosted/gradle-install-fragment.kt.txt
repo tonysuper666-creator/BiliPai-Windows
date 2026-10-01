@@ -1,0 +1,16 @@
+// Root serial integration recipe only; no Gradle or live source mutation was run here.
+val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-frosted-audio-renderer.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/frosted-audio-renderer").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-frosted-audio-renderer.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-frosted-audio-renderer" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/frosted-audio-renderer"))
+}
+tasks.named("compileKotlin") { dependsOn(extractFrostedAudioRenderer) }
+// Existing kotlin source set, exactly once:
+// kotlin.srcDir(layout.buildDirectory.dir("generated/frosted-audio-renderer"))

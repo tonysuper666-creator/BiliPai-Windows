@@ -1,0 +1,27 @@
+runs\10\sources\AudioNowPlayingBar.kt:383:44: warning: 'val Icons.Outlined.QueueMusic: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.QueueMusic.
+                            Icons.Outlined.QueueMusic,
+                                           ^^^^^^^^^^
+runs\10\sources\DesktopOriginalFrostedAudioRoot.kt:169:76: warning: condition is always 'true'.
+    val slot: LinkedDockNowPlayingSlot? = if (showAudio && item != null && audio != null && native != null) {
+                                                                           ^^^^^^^^^^^^^
+runs\10\sources\DesktopOriginalFrostedAudioRoot.kt:174:31: warning: unnecessary safe call on a non-null receiver of type 'ListenAudioState'.
+                        listen?.active == true && audio.listen.ownedPlaybackSourceVersion != null && native?.paused == false && native?.ended == false,
+                              ^^
+runs\10\sources\DesktopOriginalFrostedAudioRoot.kt:174:108: warning: unnecessary safe call on a non-null receiver of type 'PlayerState'.
+                        listen?.active == true && audio.listen.ownedPlaybackSourceVersion != null && native?.paused == false && native?.ended == false,
+                                                                                                           ^^
+runs\10\sources\DesktopOriginalFrostedAudioRoot.kt:174:135: warning: unnecessary safe call on a non-null receiver of type 'PlayerState'.
+                        listen?.active == true && audio.listen.ownedPlaybackSourceVersion != null && native?.paused == false && native?.ended == false,
+                                                                                                                                      ^^
+runs\10\sources\DesktopOriginalFrostedAudioRoot.kt:175:31: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'PlayerState'.
+                        native!!.speed.toFloat()),
+                              ^^
+runs\10\sources\FrostedAudioFixture.kt:186:50: warning: redundant creation of Json format. Creating instances for each usage can be slow.
+    Files.writeString(out.resolve("result.json"),Json{prettyPrint=true}.encodeToString(JsonObject.serializer(),result)+"\n");println(result)
+                                                 ^^^^^^^^^^^^^^^^^^^^^^
+runs\10\sources\MusicPlayerLayoutPolicy.kt:168:30: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+    val upper = (hingeStartDp!! - MUSIC_PLAYER_HINGE_CLEARANCE_DP).coerceAtLeast(0)
+                             ^^
+runs\10\sources\MusicPlayerLayoutPolicy.kt:169:26: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+    val gap = (hingeEndDp!! - hingeStartDp + MUSIC_PLAYER_HINGE_CLEARANCE_DP * 2)
+                         ^^

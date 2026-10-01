@@ -1,0 +1,135 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "appendRows": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "6148d013c5aa12cd9efc95d6a37f647821ce0e4f58d888fb187348339b101d5e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "72c560b067c3c6873ab9ef4049a182abdad1158980b375603f299568dfbf845d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarChromeMotionSpec.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "d76a57d7e3cba322f3f2c7e84ae4569e8d47f6c12ad6f7e5f76f0d1609d11b12"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "d467f0ea97ee72fa174f446e9c05ef68f339d692777997acb0355d588b0d27f6"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "cb868598d30d087f68551c7be98f896b2110fe89f71725967465c82d66170f63"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "32f8207237e48b716413ba0e5630ba365f5b96f45eede5f1d761bde626308ecd"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingVisibilityPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "ee23b2de8758145cecc294251d53da79f903107f59f140c87343cc11fd8167a3"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerChromePolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "738fe3fde78c5a611268a7cca31f8bf47186f2ba70d59c826efbaaea3914a5de"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicArtworkRotationPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "92590af9a13d6fb6002c4d3acc65427053c6196a9e3cdbd262a0ff3e2873a362"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "4a0c11d241d9fcb39b7d86284345ec11f057e9dc7c85e6e938c09a0d670a539d"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "1ce412eefbf62809cb25f73aa209dee387e2345c93cb3af25bd7f76c7172db95"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/LiquidGlassSettingsStore.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer"
+      ],
+      "sha256": "aa216b2d5e50d68fa74bf0d8a1b250916628f11ddc6b0a739a27078bb64e4661"
+    }
+  ],
+  "featureMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sha256": "0b89a76d5302fc73dc5a7f8bb4dce299f512afc6ad29620d5c2b60d40bd2d9cf",
+      "preserveMode": "extracted",
+      "appendFeatures": [
+        "stable-frosted-audio-renderer"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "preserveMode": "selected",
+      "appendFeatures": [
+        "stable-frosted-audio-renderer"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "preserveMode": "policy-extract",
+      "appendFeatures": [
+        "stable-frosted-audio-renderer"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "sha256": "f9e0646000668a5559890d655db5109bd77720da4d4a1e2d8e1daf9f62b7e184",
+      "preserveMode": "direct",
+      "appendFeatures": [
+        "stable-frosted-audio-renderer"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "compiledJarSha256": "22283005a113c0c4bffbcac2319a5da9ea1a876a05a1d74db5c615675a2c5556",
+  "snapshotManifest": "3b56a4a47fbd1d06b1d3b4be274bc3f69597dea669f04358eb7282292ab51e44",
+  "snapshotCP": "25533b03785344f3a4a360a6db292775ad370824449c7a9c3a5b98702e3812d6",
+  "orderedCPCount": 92,
+  "runtimeLogSha256": "4bdcf9f42cb5a8df340835ba775ae7099ca27107fcbc0471301881c3f69757b8",
+  "offscreenActualComposeScene": true,
+  "MainWritten": false,
+  "sharedGradle": false,
+  "noHTTP": true,
+  "noHWND": true,
+  "status": "PASS",
+  "assertions": 63,
+  "caseCount": 6,
+  "cases": [
+    "MATERIAL3-false-whole-frosted-required-root-consumer",
+    "MATERIAL3-true-whole-frosted-required-root-consumer",
+    "MIUIX-false-whole-frosted-required-root-consumer",
+    "MIUIX-true-whole-frosted-required-root-consumer",
+    "MATERIAL3-full-audio-controls-bounds-morph-gestures",
+    "MIUIX-full-audio-controls-bounds-morph-gestures"
+  ],
+  "pointerPairs": 32,
+  "themes": 2,
+  "actualOriginalRootConsumer": true,
+  "originalAudioDirectUiFixture": true,
+  "actualNativePlayerRuntimeNotExercised": true,
+  "preparedOnly": true,
+  "resultSha256": "a4c0a8a55196815f9f8fe095bf3796d394c3f3ba8e1c9518f362a9e227cd3879"
+}

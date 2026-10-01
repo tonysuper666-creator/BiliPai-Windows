@@ -1,0 +1,295 @@
+{
+  "passed": true,
+  "manifests": [
+    {
+      "lane": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-linked-dock-parity",
+      "sha256Bytes": "e5eb03ec2e44d0b20e6817bcd53eab30851ff60682f7467cb19ce2475e4a9602",
+      "evidenceCount": 19,
+      "payloadCount": 21
+    },
+    {
+      "lane": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-frosted-audio-renderer-parity",
+      "sha256Bytes": "a35f99c0f41a474c08814fcddfc9dd99f01b003aab83b54b919d9059901efb73",
+      "evidenceCount": 20,
+      "payloadCount": 2
+    }
+  ],
+  "exactExistingProducerHunks": [
+    {
+      "target": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "baseSHA256LF": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b",
+      "before": " emit(HOME+'BottomBar.kt',['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarContainerColor','resolveAndroidNativeFloatingBottomBarContainerColor','resolveAndroidNativeBottomBarGlassEnabled','shouldUseAndroidNativeFloatingHazeBlur','shouldRenderBottomBarLiquidGlassEffects','biliPaiMiuixFloatingDockSurface','resolveBiliPaiBottomBarContainerColor','resolveBottomBarDarkTheme','BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET','resolveBottomBarCaptureSafeInsetDp','resolveBottomBarSurfaceColor','resolveBiliPaiBottomBarShellColor','BottomBarItemMotionVisual','resolveBottomBarItemCoverage','resolveBottomBarItemMotionScale','resolveBottomBarItemMotionVisual'],imports=imports,transforms=[('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)','): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)','): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    desktopDetailRenderEffectsSupported()')])",
+      "after": " emit(HOME+'BottomBar.kt',['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarContainerColor','resolveAndroidNativeFloatingBottomBarContainerColor','resolveAndroidNativeBottomBarGlassEnabled','shouldUseAndroidNativeFloatingHazeBlur','shouldRenderBottomBarLiquidGlassEffects','biliPaiMiuixFloatingDockSurface','resolveBiliPaiBottomBarContainerColor','resolveBottomBarDarkTheme','BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET','resolveBottomBarCaptureSafeInsetDp','resolveBottomBarSurfaceColor','resolveBiliPaiBottomBarShellColor','BottomBarItemMotionVisual','resolveBottomBarItemCoverage','resolveBottomBarItemMotionScale','resolveBottomBarItemMotionVisual'],imports=imports,transforms=[('private val iosIndicatorSpecular','internal val iosIndicatorSpecular'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)','): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()'),('    sdkInt: Int = Build.VERSION.SDK_INT\\n): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)','): Boolean = blurEnabled &&\\n    !glassEnabled &&\\n    hasHazeState &&\\n    desktopDetailRenderEffectsSupported()')])",
+      "resultSHA256LF": "d8fba34853f4ad435d32503617e02a997d0d770cb5602d4447d35459ca4dbe4e",
+      "purpose": "Only existing sole original specular value visibility widened. No second BottomBarKt or copied helper."
+    },
+    {
+      "target": "desktop/tools/extract-upstream-linked-dock.py",
+      "baseSHA256LF": "789487c709b092ab298657eed480bcbb2a9d19e1f7dce8baeb3ff5847a2e23df",
+      "before": "  p=BASE+rel+'.kt';emit(rel+'.kt',original[p],p)",
+      "after": "  p=BASE+rel+'.kt'\n  registry={r['path']:r for r in json.loads(read(repo/'desktop/upstream-sources.json'))['sources']}\n  if registry[p].get('mode')!='direct':emit(rel+'.kt',original[p],p)",
+      "resultSHA256LF": "0ebcad102e871434f59bab17294b29fd340becd787214e95e14fb53b5dab3359",
+      "base": "historical frozen e5eb03 prepared producer (not installed yet)",
+      "purpose": "Reuse actual17 Favorites direct HomeScrollOffsetPolicy. Any exact source direct policy is synced solely by Root prepareUpstreamSources."
+    },
+    {
+      "target": "desktop/tools/extract-upstream-linked-dock.py",
+      "baseSHA256LF": "0ebcad102e871434f59bab17294b29fd340becd787214e95e14fb53b5dab3359",
+      "before": " emit('feature/home/DesktopOriginalLinkedDockScrollLocals.kt','package com.android.purebilibili.feature.home\\nimport androidx.compose.runtime.*\\n\\n'+decl.declarations(parser,original[p],names),p,names)",
+      "after": " if 'stable-favorites' not in registry[p].get('features',[]):\n  emit('feature/home/DesktopOriginalLinkedDockScrollLocals.kt','package com.android.purebilibili.feature.home\\nimport androidx.compose.runtime.*\\n\\n'+decl.declarations(parser,original[p],names),p,names)",
+      "resultSHA256LF": "342f984abf663ea530583c1b1ec59c54a6efe71b9179b40fe41a3ac4fa01d7a2",
+      "base": "sequential after previous LinkedDock DIRECT-skip hunk",
+      "purpose": "Reuse actual17 Favorites sole DesktopFavoriteScrollLocalsKt exact two original locals; never create second CompositionLocal authority."
+    }
+  ],
+  "sourceRegistryCount": 765,
+  "resourceCount": 213,
+  "registryOperations": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarChromeMotionSpec.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingVisibilityPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerChromePolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicArtworkRotationPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/home/LiquidGlassSettingsStore.kt",
+      "operation": "append source identity",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "selected"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "operation": "merge existing feature preserving mode",
+      "mode": "direct"
+    }
+  ],
+  "installedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalLinkedDockRoot.kt",
+      "sha256Bytes": "753413f621408d4ef61fd9752ccdd39bcdecd5abe009bc7975f09ccbb6c00ee1"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Community.kt",
+      "sha256Bytes": "7658f8415d7f831ee65393bc581cafddc126ead443f39cc27d813e68bf25bc06"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Contacts.kt",
+      "sha256Bytes": "0ff82377e6e04f71b850491f703cf340a3f3344229f95c9aa759ea529c392385"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/ContactsCircle.kt",
+      "sha256Bytes": "1b9204b004c0195ede9a467dff03f1ea16c50f4fdf98fba752ccb37d35cb9e33"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Favorites.kt",
+      "sha256Bytes": "dce4e982d655717933f631da6cfc95b26d557abe4d1506b357c1e1d030921de5"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Folder.kt",
+      "sha256Bytes": "87d21356293e2813ad8488e10916c3d223f13b363719d2164aca41e51a728696"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/GridView.kt",
+      "sha256Bytes": "737e9e9e8d4c71a1fa764675825fd772fb368f44b40e3328d86ee115abe7c64c"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Home.kt",
+      "sha256Bytes": "848debb467616bc91fa79a1153fbb7353de85dd4e2321b98cf02200ba9d56553"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Music.kt",
+      "sha256Bytes": "d0db3cff318faa696e307a2d934faf451a632843c1c36661ec66c5bf0cd05411"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Notes.kt",
+      "sha256Bytes": "eb2e1ea050bf1bcaf8b4505d4684aae7d858ab2e13539b212647210eb560fe8e"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Play.kt",
+      "sha256Bytes": "9763f7bc1d6a962be81fc59d2cda650d83b31a5e53267ef9c1ea879b15c37ea6"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recent.kt",
+      "sha256Bytes": "abb39cc3b79401efc89813f1ffe579f410c3dd3d003b1078bfb7a42b62ee6211"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Recording.kt",
+      "sha256Bytes": "2cdfa50bdd0afdb63b0bb6a52d133344717e4618d04b8d018823cf404f5bb9df"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Search.kt",
+      "sha256Bytes": "ffe9dc28768b58fb7805ba296b7b0db73af14d062d1f5f6c9c17030f7a94b366"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Settings.kt",
+      "sha256Bytes": "8056f7c9f6fc35bcf67f5c5ca5c760754c6d7fa6e7251bd1cd18e25f053774c6"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Stopwatch.kt",
+      "sha256Bytes": "38929129058502d0ed08faca3dc735d9886b2f5b71fc64c1dd4a7552a26a94a1"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Store.kt",
+      "sha256Bytes": "2a738b849d78dbead8277f05b52f50e74ba4e63bf056a9741bf9167615188059"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Theme.kt",
+      "sha256Bytes": "8c99756fa01df319179e48b7f4a001a2abbcc29db935aff8f7d1639307e38abb"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/TopDownloads.kt",
+      "sha256Bytes": "90c68da75c23b926db4868ee7994c4867deb79c82e20446d54e45227fdc373ce"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/upstream-provenance.json",
+      "sha256Bytes": "6562c9f0e7ccd358aeed01e88626f2594ac0d7e05dbb079edb849770f0e835af"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-linked-dock.py",
+      "sha256Bytes": "342f984abf663ea530583c1b1ec59c54a6efe71b9179b40fe41a3ac4fa01d7a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "sha256Bytes": "eba3ca62fe189d6d95ef88587df3d0d4e5db5a139a608ae5ac36c4b6df4022ef"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "sha256Bytes": "f80aae1c9fb2f690efe7452cf25265cb3882181dde2002be3aa7f543c102a0fe"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "d8fba34853f4ad435d32503617e02a997d0d770cb5602d4447d35459ca4dbe4e"
+    },
+    {
+      "path": "desktop/third-party/miuix5157/build.gradle.kts",
+      "sha256Bytes": "0129c69e7add1f2f7e18442156d9007ba6da60f2e8a26e8003990d022ccb1360"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "bc2b9a7f324adfdd0d9911058366271677af15354eae01dd597ab52344319d8e"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "1474b70d9f550dd264939f10246dbd49887f7f93d7e395f479af9b69a8de59d4"
+    }
+  ],
+  "preservedOriginalTrees": true,
+  "fullDockRootMounted": false,
+  "wholeClassesAccepted": false,
+  "realNativePlaybackAccepted": false,
+  "desktopExeReplaced": false,
+  "oldRuntimeDependencyPreservedByOneSameByteRelocation": true
+}

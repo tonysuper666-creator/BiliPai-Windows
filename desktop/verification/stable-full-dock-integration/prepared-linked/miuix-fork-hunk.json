@@ -1,0 +1,11 @@
+{
+  "path": "desktop/third-party/miuix5157/build.gradle.kts",
+  "baseSha256LF": "39c2decb4b34c083bf7b3bfa5f0ef15a9c70f0baf9a919895521970243b77dce",
+  "hunks": [
+    {
+      "old": "val originalModules = listOf(\"miuix-core\", \"miuix-shader\", \"miuix-squircle\", \"miuix-ui\", \"miuix-preference\", \"miuix-blur\")",
+      "new": "val originalModules = listOf(\"miuix-core\", \"miuix-shader\", \"miuix-squircle\", \"miuix-ui\", \"miuix-preference\", \"miuix-blur\", \"miuix-icons\")"
+    }
+  ],
+  "noNewArtifact": true
+}

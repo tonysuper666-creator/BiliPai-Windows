@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 748,
-    "candidateResourceCount": 210,
+    "candidateSourceIdentityCount": 765,
+    "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-favorites-root-integration/root/classes-22.log",
+    "actualClassesEvidence": "verification/stable-full-dock-integration/root/classes-25.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-favorites-root-integration/root/classes-22.log",
+    "latestCandidateClassesLog": "verification/stable-full-dock-integration/root/classes-25.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -204,7 +204,14 @@
     "favoritesRootSourceMounted": true,
     "favoritesRootJunitMethodsPassed": 17,
     "favoritesActualProduct22QueueProofAssertions": 28,
-    "favoritesRootEvidence": "verification/stable-favorites-root-integration/integration-report.json"
+    "favoritesRootEvidence": "verification/stable-favorites-root-integration/integration-report.json",
+    "all978CurrentSourceAndResourcePinsVerified": true,
+    "fullDockSourceCompiled": true,
+    "fullDockRootMounted": false,
+    "fullDockActualProduct25UiAssertions": 120,
+    "fullDockActualProduct25PointerPairs": 38,
+    "fullDockActualProduct25ProductionOverrides": 0,
+    "fullDockEvidence": "verification/stable-full-dock-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -222,6 +229,7 @@
     "verification/stable-comments-sharing-integration/integration-report.json",
     "verification/stable-favorites-folder-integration/integration-report.json",
     "verification/stable-danmaku-list-menu-integration/integration-report.json",
-    "verification/stable-favorites-root-integration/integration-report.json"
+    "verification/stable-favorites-root-integration/integration-report.json",
+    "verification/stable-full-dock-integration/integration-report.json"
   ]
 }

@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "compiledJarSha256": "ca67bbace6472bbc3a58ea6a9969dbb55a6cfe339e3d4310c9603fe54628847b",
+  "snapshotManifest": "c665e8cc40604866341c9ac5f6ef992ed84b52fe709a1f934337f754012cab87",
+  "snapshotCP": "bcbc863d545922aaa4308076a4d4651c219aafacf339e8cb3000e59696f9e335",
+  "orderedCPCount": 92,
+  "runtimeLogSha256": "89135d4f7c3847728efd43171cb2f50e0093684e85fb43038999b237ffca4259",
+  "offscreenActualComposeScene": true,
+  "MainWritten": false,
+  "sharedGradle": false,
+  "noHTTP": true,
+  "noHWND": true,
+  "assertions": 57,
+  "pointerPairs": 6,
+  "caseCount": 6,
+  "cases": [
+    "actual-global-store-read",
+    "original-submit-native-and-three-channels",
+    "owned-original-nested-scroll",
+    "original-phase-ime-policies",
+    "offscreen-MATERIAL3-full-original-dock-search-glass",
+    "offscreen-MIUIX-full-original-dock-search-glass"
+  ],
+  "productionNavigationRendererNotClaimed": true,
+  "productionNowPlayingRendererNotClaimed": true,
+  "resultSha256": "3eda8751560a563b3ff24ef123d92c1b0246164e98e67f040d1881434353f181"
+}

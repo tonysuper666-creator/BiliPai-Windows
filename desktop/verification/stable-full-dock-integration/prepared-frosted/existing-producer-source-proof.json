@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "shared32ExistingProducerVisibilityOutputSHA256LF": "6d09556eca2c146b323ec8369f6f990abc984a57eae39a161be10b5901b230cb",
+  "shared32AllBodiesUnchangedExceptVisibility": true,
+  "linkedGeneratedKt": 9,
+  "exactLinkedUnchangedSources": [
+    {
+      "path": "com/android/purebilibili/navigation/DesktopOriginalBottomSearchSubmit.kt",
+      "sha256LF": "5dd53f5416d61a82980315fb45c16216289c5c49bdbd239550af44266c03f06f"
+    },
+    {
+      "path": "com/android/purebilibili/navigation/SearchSubmitPolicy.kt",
+      "sha256LF": "40418466f3217f1ed478df25ae8ed43f5dddbbaffea3040db086b5863c6d20cd"
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalLinkedDockSettings.kt",
+      "sha256LF": "1c90b85b66aac85171636428834525167bf7bc153bfa230023a1c9b03cde2a4e"
+    },
+    {
+      "path": "com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy.kt",
+      "sha256LF": "3d0090fb1cb7f476ea1d27f96a0e2e4698bd0a52a1220981f6d99a6fa9543dad"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/DesktopOriginalLinkedDockControls.kt",
+      "sha256LF": "48931ba743057578a49f0c4c39ff3efa4cec14730861c0d2a094af20ab6aac7b"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "sha256LF": "3615e0e8633f831a6a1a10e50adbc2f6ba9c4a1cda92ba66c4708c9b34f961cd"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/LinkedBottomDock.kt",
+      "sha256LF": "3a728a68f208162b12c5773db887c4e8c765dc4cc00e6d6ae2b6f3e614e9719f"
+    },
+    {
+      "path": "com/android/purebilibili/feature/home/components/LinkedDockPolicy.kt",
+      "sha256LF": "bd69d3f8668f95682ff99d375702f73dd180555928ad5825a2deea9227966490"
+    },
+    {
+      "path": "com/bilipai/desktop/settings/DesktopLinkedDockVectors.kt",
+      "sha256LF": "3e662b8c8bcd216d4bd271b0e96df2956d9bda849e1b7124e65b8e498d1248fe"
+    }
+  ],
+  "reusedActual17": [
+    "HomeScrollOffsetPolicyKt",
+    "DesktopFavoriteScrollLocalsKt"
+  ],
+  "newStore": false,
+  "newGlobals": false,
+  "noRootSourceMutation": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true
+}

@@ -1,0 +1,937 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+      "sourceSHA256LF": "6148d013c5aa12cd9efc95d6a37f647821ce0e4f58d888fb187348339b101d5e",
+      "pinnedGitBlob": "a97afe7bdd0beb7777477d91af5a56fcdf013e57",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\BottomBarUiSkin.kt",
+      "outputSHA256LF": "6148d013c5aa12cd9efc95d6a37f647821ce0e4f58d888fb187348339b101d5e",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+      "sourceSHA256LF": "72c560b067c3c6873ab9ef4049a182abdad1158980b375603f299568dfbf845d",
+      "pinnedGitBlob": "04ec09f9b77ec1ab4f1638d0ea537bf3ce19d4a2",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\BottomBarTypographySpec.kt",
+      "outputSHA256LF": "72c560b067c3c6873ab9ef4049a182abdad1158980b375603f299568dfbf845d",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarChromeMotionSpec.kt",
+      "sourceSHA256LF": "d76a57d7e3cba322f3f2c7e84ae4569e8d47f6c12ad6f7e5f76f0d1609d11b12",
+      "pinnedGitBlob": "aa8cfa1f4e76af6b9a59eb093114250a611413b8",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\BottomBarChromeMotionSpec.kt",
+      "outputSHA256LF": "d76a57d7e3cba322f3f2c7e84ae4569e8d47f6c12ad6f7e5f76f0d1609d11b12",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+      "sourceSHA256LF": "d467f0ea97ee72fa174f446e9c05ef68f339d692777997acb0355d588b0d27f6",
+      "pinnedGitBlob": "c16e48e5140e3e66d8fee519e0e694de7acd7e81",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\SideBarRendererPolicy.kt",
+      "outputSHA256LF": "d467f0ea97ee72fa174f446e9c05ef68f339d692777997acb0355d588b0d27f6",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sourceSHA256LF": "0b89a76d5302fc73dc5a7f8bb4dce299f512afc6ad29620d5c2b60d40bd2d9cf",
+      "pinnedGitBlob": "fb87b6f3b7d7f825cdb3c9e699643c75e3e268b7",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\DesktopOriginalSideBarMotion.kt",
+      "outputSHA256LF": "1404215013bda86d45eeae05d1a6ce851373d0fed73066293513f7122478ba94",
+      "selected": [
+        {
+          "name": "NavigationSelectionScale",
+          "sha256LF": "7dcad725e36b32455445c76d514b46daa8ef3d8bfca6524be12d3dc3ba236297"
+        },
+        {
+          "name": "FloatingBottomBarSelectionLiftDp",
+          "sha256LF": "c38336060f38e7b0d13e0f7c740d6ec83985f1696d587396d5d733e56d5f721c"
+        },
+        {
+          "name": "NavigationSelectionWobbleDegrees",
+          "sha256LF": "96f06cdd542b5c221b5366f82952ba4095c6b5c740892fec6e1dfc6b135a687f"
+        },
+        {
+          "name": "NavigationSelectionCounterWobbleDegrees",
+          "sha256LF": "5642bcc748d91ebe8c882bfe257c5fcdc0018f4e18b4449e73210e3ae43128c5"
+        },
+        {
+          "name": "resolveNavigationIconSelectionLiftDp",
+          "sha256LF": "7fe7ab5a32ba44c129eb427078c8a240b20970c311126d8ba3f9575ea97bef41"
+        },
+        {
+          "name": "navigationSelectionScaleMotionSpec",
+          "sha256LF": "e144c5b9a077460c3be2e755d56ee619b0e91feac28b7f8b6b52ba75cd7b2f73"
+        },
+        {
+          "name": "navigationSelectionWobbleMotionSpec",
+          "sha256LF": "a609022f8828f497d15c9d86af06aa3f2b49a2c5e138c380171a9c137a377d06"
+        },
+        {
+          "name": "NavigationSelectionTransform",
+          "sha256LF": "f1d34639fc1bd5a17915ea2ef6edc85d935566c7a48732d4b58d9528bd9586e5"
+        },
+        {
+          "name": "rememberNavigationSelectionTransform",
+          "sha256LF": "5797f4dbaab922f1f7ca7d89b5019ef2b25d8e3a48527ad7c264e93500afa8ca"
+        }
+      ],
+      "adaptations": [
+        "Reuse sole shared32 FloatingBottomBarSelectionScale and resolveNavigationIconCrossScale; every other complete original declaration retained"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBar.kt",
+      "sourceSHA256LF": "cb868598d30d087f68551c7be98f896b2110fe89f71725967465c82d66170f63",
+      "pinnedGitBlob": "4e8f17dcdd42ba4ed1f330ca13e8e6ce150f25fb",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\AudioNowPlayingBar.kt",
+      "outputSHA256LF": "2ca2ea50deddf67b7c5a3fc808e45a008c8859e43aff90444e5fca2069500e96",
+      "selected": null,
+      "adaptations": [
+        "Actual Root LocalWindowSizeClass widthDp/heightDp replace Android Configuration dimensions",
+        "Same existing actual Windows system motion bridge",
+        "Required same Root/page/epoch/current-item ownership guard before original global bounds write/compact callback/window invalidation; original complete expansion body unchanged"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingBarMotionPolicy.kt",
+      "sourceSHA256LF": "32f8207237e48b716413ba0e5630ba365f5b96f45eede5f1d761bde626308ecd",
+      "pinnedGitBlob": "5ec55955828c488117de96fdd66e6ead432a3447",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\AudioNowPlayingBarMotionPolicy.kt",
+      "outputSHA256LF": "32f8207237e48b716413ba0e5630ba365f5b96f45eede5f1d761bde626308ecd",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/AudioNowPlayingVisibilityPolicy.kt",
+      "sourceSHA256LF": "ee23b2de8758145cecc294251d53da79f903107f59f140c87343cc11fd8167a3",
+      "pinnedGitBlob": "dd263ce0d277678c011132851f5928e7bfa4d980",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\AudioNowPlayingVisibilityPolicy.kt",
+      "outputSHA256LF": "ee23b2de8758145cecc294251d53da79f903107f59f140c87343cc11fd8167a3",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerChromePolicy.kt",
+      "sourceSHA256LF": "738fe3fde78c5a611268a7cca31f8bf47186f2ba70d59c826efbaaea3914a5de",
+      "pinnedGitBlob": "4f606d21e5f67b02fdb87012e7449bd40651d36a",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerChromePolicy.kt",
+      "outputSHA256LF": "738fe3fde78c5a611268a7cca31f8bf47186f2ba70d59c826efbaaea3914a5de",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicArtworkRotationPolicy.kt",
+      "sourceSHA256LF": "92590af9a13d6fb6002c4d3acc65427053c6196a9e3cdbd262a0ff3e2873a362",
+      "pinnedGitBlob": "6377e021ea3c4aeece584058cf48bd0fa07fab0d",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\MusicArtworkRotationPolicy.kt",
+      "outputSHA256LF": "92590af9a13d6fb6002c4d3acc65427053c6196a9e3cdbd262a0ff3e2873a362",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicPlayerLayoutPolicy.kt",
+      "sourceSHA256LF": "4a0c11d241d9fcb39b7d86284345ec11f057e9dc7c85e6e938c09a0d670a539d",
+      "pinnedGitBlob": "157ff1b59398673823d145ff271804911ee50cf1",
+      "output": "com\\android\\purebilibili\\feature\\audio\\screen\\MusicPlayerLayoutPolicy.kt",
+      "outputSHA256LF": "4a0c11d241d9fcb39b7d86284345ec11f057e9dc7c85e6e938c09a0d670a539d",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/transition/NowPlayingBarHandoff.kt",
+      "sourceSHA256LF": "1ce412eefbf62809cb25f73aa209dee387e2345c93cb3af25bd7f76c7172db95",
+      "pinnedGitBlob": "be5c31f9c2b56ca7678a66f4c04e19c395ba11b6",
+      "output": "com\\android\\purebilibili\\core\\ui\\transition\\NowPlayingBarHandoff.kt",
+      "outputSHA256LF": "1ce412eefbf62809cb25f73aa209dee387e2345c93cb3af25bd7f76c7172db95",
+      "selected": null,
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sourceSHA256LF": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "pinnedGitBlob": "997841488f7e00c80826249417a09746d6c1d407",
+      "output": "com\\android\\purebilibili\\feature\\home\\components\\DesktopOriginalFrostedNavigation.kt",
+      "outputSHA256LF": "f81836082755d4fede0e29b223c3d2bb5cb406fd2278790d48093d246d0ea2fd",
+      "selected": [
+        {
+          "name": "BottomBarLayoutPolicy",
+          "sha256LF": "22abf8cdde961391b80efefec10648576d7199d0b4f147297d7ca66fec783145"
+        },
+        {
+          "name": "Md3BottomBarDisplayMode",
+          "sha256LF": "24baa8cbda0a8a8424bc9977b573c2363cd841d97a46db02f3506df9282fca25"
+        },
+        {
+          "name": "Md3BottomBarFloatingChromeSpec",
+          "sha256LF": "83887399d60013b28f8cd3eb28f56e4a4a52f4c05bd9419d5253268239bf536a"
+        },
+        {
+          "name": "MaterialDockedBottomBarItemColors",
+          "sha256LF": "ebdf1f8d6ccbd82258bd7126c5b872ad2749d55c670521510e237034e8e15ed5"
+        },
+        {
+          "name": "resolveMaterialDockedBottomBarItemColors",
+          "sha256LF": "6413924e817a315730f61c98bc39c85180c746305e3f48c07bbbf1992c4e8d27"
+        },
+        {
+          "name": "resolveDockedBottomBarIndicatorColor",
+          "sha256LF": "7538ead032c6b8b0f26da85236a7c1f95ec29e2635417ced857891db71fdd193"
+        },
+        {
+          "name": "resolveFloatingBottomBarContainerColor",
+          "sha256LF": "938c2e794a8ef1582fea209dd8765153d30f863308937044246feef9aaa76900"
+        },
+        {
+          "name": "resolveMd3BottomBarFloatingChromeSpec",
+          "sha256LF": "7cce718bc4f7c9747da6018957797fdd741c10885a31655808906780e7b10e05"
+        },
+        {
+          "name": "resolveMd3BottomBarDisplayMode",
+          "sha256LF": "fea7cfca3c1cf26db0f525583967c8a3e5b0098b6ac5b13806ec102f669cdc82"
+        },
+        {
+          "name": "shouldUseOfficialMd3FloatingToolbar",
+          "sha256LF": "23954473f61482f51b430a734acbdac29fdd73640cce4637b953fce242bcb88a"
+        },
+        {
+          "name": "AndroidNativeIndicatorSpec",
+          "sha256LF": "ea228990d9703eb489397e93c957fc4b28fb5be51e93f6b702511cf29e1dc2e6"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarItemSlotWidth",
+          "sha256LF": "7d183a85e48b8b22cd80a2cc36115e5ccfeed61cb8b7eb524d915b76280654b2"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarItemCenterX",
+          "sha256LF": "220041b7c825fb469c1dc135c7f6b4a6c32afa8470a212e7d83bc7b2f6394cae"
+        },
+        {
+          "name": "BiliPaiBottomBarSearchLayout",
+          "sha256LF": "d3b45abbca9c2243ed1274c768e4e68abd102c740abb1a42ace0e4987220280a"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarSearchCircleSize",
+          "sha256LF": "1850cc635755d9c4f7861ed4c4a9082cb5831a4000badd9b5ebeae955c7bfc26"
+        },
+        {
+          "name": "resolveBiliPaiExpandedHomeIconSize",
+          "sha256LF": "de228fb488d846285d498abbb958b0a4b39a83043a631bc1f68c352e96c94e1a"
+        },
+        {
+          "name": "resolveBiliPaiExpandedHomeIconScale",
+          "sha256LF": "bc6c7216aa16a74f64bdce2c27a640fab0a70ad4416269e8d8f94fdb320b16d6"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarSearchFieldExpanded",
+          "sha256LF": "144deaea2a52a177ace084d233808866f0fd2f89514fe194d164deea47fcc97e"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarSearchLayout",
+          "sha256LF": "a84dcaea89aa0d4f5c068842c3a3a025d2e11f859dfd453718e27c6ccc19a65f"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarDockHeight",
+          "sha256LF": "6608e9ce36ea4853ce86814ea21960dc74f0bdd7eaf6f713fd8bed2985e6ebeb"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarIndicatorHeight",
+          "sha256LF": "7ff702242d403392c8a0e92a79c28066acd2aa78c11745a907245ddd87159a51"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarSearchHeight",
+          "sha256LF": "43d691a76d0f41a958e51a0c21f4ef8ad7f04742053ad3d8f75b0a7505efc050"
+        },
+        {
+          "name": "resolveBottomBarRefractionCaptureWidth",
+          "sha256LF": "7b064f47af6a2275884da1d13438304f344eff79e7c85193050bf4611d46fa0f"
+        },
+        {
+          "name": "BiliPaiBottomBarSearchLayoutState",
+          "sha256LF": "f96b584c1e3ef8f57c8a0d91e0f8def4f29c553b0a47ae0e673ed623d68dbce2"
+        },
+        {
+          "name": "rememberBiliPaiBottomBarSearchLayoutState",
+          "sha256LF": "bc679b2389d1a86d97b901d6ce03d5ea345d401b0ffc026f4c507f22aa98aa69"
+        },
+        {
+          "name": "BottomBarSearchTopThresholdPx",
+          "sha256LF": "1bc189abb03ce3c89c4964c926384c14577e45884407d7303ba57121208074d5"
+        },
+        {
+          "name": "BottomBarTransientAlphaThreshold",
+          "sha256LF": "ec93ae5304daf535f4e07f2073cefd8a8ae914e5f4250931553b82eb48b96668"
+        },
+        {
+          "name": "shouldAutoExpandBottomBarSearchAtThreshold",
+          "sha256LF": "d639bb43aab2ab39ce7867172181222784481199edaa43dbf72502fea54c1ccc"
+        },
+        {
+          "name": "shouldAutoExpandBottomBarSearch",
+          "sha256LF": "b2622660cef0c49f2fea484b82d09db5c610471b4522a716d5c2a1d1f83287e9"
+        },
+        {
+          "name": "resolveBottomBarSearchEnabledForItem",
+          "sha256LF": "c4183efc59471e0bdd02d94108948be9d3469044a1061f8ed4eab8264fd530c5"
+        },
+        {
+          "name": "shouldReserveBottomBarSearchLayout",
+          "sha256LF": "13ada6a0b3a82ea149872020707f8559b84179b9743447ff86ca63098afc22e7"
+        },
+        {
+          "name": "resolveBottomBarVisibleItemsForSearchMode",
+          "sha256LF": "56cd638c866eb342270764f42ecd1fccc087210f964e0cbe171df7dd5dc8cdd5"
+        },
+        {
+          "name": "BottomBarSearchExpansionOverride",
+          "sha256LF": "c2a6fbef55fd69311788cb0e40a1e40da130a35e91afeab2b6bef8505e8a2f92"
+        },
+        {
+          "name": "resolveEffectiveBottomBarSearchExpanded",
+          "sha256LF": "16afd4f5a05d12e6466c1bbc01ff4bbd8cc7d19e9094f3ee031b99db4945e1fa"
+        },
+        {
+          "name": "resolveBottomBarSearchExpansionOverrideOnNavItemClick",
+          "sha256LF": "d30135b70053e295546af9ea839095a4a71d3bfdc7e49d548ec4753ca2583f4e"
+        },
+        {
+          "name": "resolveBottomBarSearchExpansionOverrideOnSearchClick",
+          "sha256LF": "3a734332048da3e701689924ae732b3d2c1fdef2448d64485ac9ab3af4eacd5c"
+        },
+        {
+          "name": "shouldResetBottomBarSearchExpansionOverride",
+          "sha256LF": "a2242b2c50ef0d0ed4fa784a0d49cf11c5b51e0fcb7993c2b2b79da86c9c861b"
+        },
+        {
+          "name": "resolveBottomBarSearchExpansionOverrideAfterSubmit",
+          "sha256LF": "cf165da60c89450fa56efa7042385365f216d1ec25094d146a2b892c93adfb9b"
+        },
+        {
+          "name": "shouldDismissBottomBarSearchImeOnScroll",
+          "sha256LF": "9bac9ba809cd0f8b1c3fa391e73f7c5fd1c8a14e7dae14f9635f20af2be85f8c"
+        },
+        {
+          "name": "shouldRenderBottomBarRefractionCapture",
+          "sha256LF": "ae8a03448946a35f2fb04fee1edd365f2837782e6ddc6923a40f47812c51f07a"
+        },
+        {
+          "name": "shouldRenderBottomBarIndicatorBackdrop",
+          "sha256LF": "d0c8ebdd6700ce6c79b97c06246a5c4a383be1c21c7a8d854fef479f39eee9eb"
+        },
+        {
+          "name": "shouldRenderBottomBarHeavyInteractiveEffects",
+          "sha256LF": "4f851b3368aed2c2fd36f889d85c79f528ff693ccbdceaaaf9e51e3711e47efc"
+        },
+        {
+          "name": "shouldUseBottomBarCombinedIndicatorBackdrop",
+          "sha256LF": "16f4277a7a5744abb0a7f6e04f0f36c41c60ffb1b7f8a45cb6f7a5fe475d2a87"
+        },
+        {
+          "name": "shouldUseBottomBarIndicatorLens",
+          "sha256LF": "7675cb950954b057f5553832eb171ebdc497908c30093f8d8a6f6840285f4062"
+        },
+        {
+          "name": "shouldComposeBottomBarDockContent",
+          "sha256LF": "c051faddb80864afbccb231ea84746917118314a22e0819f23bceafe55b2b12d"
+        },
+        {
+          "name": "resolveBottomBarIndicatorEffectsEnabled",
+          "sha256LF": "cf038ccedcab6b8056fe676d2f0474db72c4df97d27810408e785f38e8f22c5b"
+        },
+        {
+          "name": "shouldUseBottomBarCaptureLens",
+          "sha256LF": "d6f27f5c4b63253cbd4bcb6b20086d9808a5ada6d5a4cc2b4efbbc0ff6eb3cc6"
+        },
+        {
+          "name": "shouldBlurBiliPaiBottomBarShell",
+          "sha256LF": "fb96e862ba058141233e7fcdb4db7ffd9b7cbd8461a5a182581670e94fca157b"
+        },
+        {
+          "name": "shouldUsePlainMiuixFloatingBar",
+          "sha256LF": "2477b94ddd3cb83fa354d8dfeb871e6318965d98ae533a1b0fce8071bf5336a1"
+        },
+        {
+          "name": "resolveAndroidNativeIndicatorSpec",
+          "sha256LF": "ffc02e94273e42d7361efc51c614f13133d2d32683112beb041f2eb08dba8cc6"
+        },
+        {
+          "name": "resolveAndroidNativeIndicatorColor",
+          "sha256LF": "0014747bfef462e064b6505134a07ab1beea0c181a5f02e90105af44722876eb"
+        },
+        {
+          "name": "resolveAndroidNativeExportTintColor",
+          "sha256LF": "e46739b81415904c652b972732012e6480d80a6f20aa04682496ef60b7593972"
+        },
+        {
+          "name": "BottomBarSkinContentColors",
+          "sha256LF": "49f421611ad0c4507f8177ec2e8d75177aa3bb298012476cb08c9ea5bb5244e2"
+        },
+        {
+          "name": "resolveFloatingBottomBarLabelColor",
+          "sha256LF": "d257e4299924db01a14c17c93cf3541dbfc4f60eab32b22af34895aa3b4c885b"
+        },
+        {
+          "name": "resolveBottomBarSkinContentColors",
+          "sha256LF": "70e33e4e87123b028b70a80325ef5e46771b3f3240683ebcf97440633cc52032"
+        },
+        {
+          "name": "resolveReadableBottomBarSkinForeground",
+          "sha256LF": "ea7c2b67bf7066e04738dd3feab97bf36f8e0c8fb736064749d2197d6d81e5a9"
+        },
+        {
+          "name": "bottomBarColorContrastRatio",
+          "sha256LF": "274eda8827afcd563bcc849aacaf4804b35adaf5b4e7a64b2d998426c453afde"
+        },
+        {
+          "name": "bottomBarSkinLabelScrim",
+          "sha256LF": "647cdd4f39cdcda2ebea545605da8f1949b30ce0cb88d6d41858804932766737"
+        },
+        {
+          "name": "resolveAndroidNativeIdleIndicatorSurfaceColor",
+          "sha256LF": "f0350eb9dc6648bf14d263bda43702c2ce8cbcd1e1c5570d8bdf109b8f49ed7b"
+        },
+        {
+          "name": "resolveBottomBarIdleIndicatorSurfaceColor",
+          "sha256LF": "03127bf1a0a959c97f2e45a86780b906b69a1d0d30cc5620f458b805bf262d86"
+        },
+        {
+          "name": "resolveAndroidNativePanelOffsetFraction",
+          "sha256LF": "7e38cb6629538f667095cc3666ddda47b8b3a798745743a8e46fe12e25a2fbff"
+        },
+        {
+          "name": "toAppPlatformNavigationDisplayMode",
+          "sha256LF": "16222d9db99571c63d1cc15ef9e92179922bc1d5baf2da6bf6c1164fba18f313"
+        },
+        {
+          "name": "shouldUseMiuixOfficialNavigationBarItem",
+          "sha256LF": "efe9ad202d66b22a1e6ade95bab3bcfe9db85c0f5142f2ea841dd54cace9176d"
+        },
+        {
+          "name": "resolveMiuixDockedBottomBarItemColor",
+          "sha256LF": "6a4bcbaa660cf8c31bb27c19b175f0d6df048920ee421fb36e361018115a8b11"
+        },
+        {
+          "name": "resolveBottomBarFloatingHeightDp",
+          "sha256LF": "a3a730047b32a350d30af6d637b793c83901ff3044109afbb85c58db8caaf2df"
+        },
+        {
+          "name": "shouldShowBottomBarIcon",
+          "sha256LF": "6aedc350719cfbce1ef1c9f65b6017bb6e60882ba90499b7948b8930cf8f9fbb"
+        },
+        {
+          "name": "shouldShowBottomBarDynamicReminderBadge",
+          "sha256LF": "7d0676afc915d0aff516b6f7545aaa4d64aed1af516716d0bb05b1cf7eab7bd7"
+        },
+        {
+          "name": "formatBottomBarDynamicReminderBadge",
+          "sha256LF": "4f0d6b5b559d331f6bd6fb4ac27000e0a8e45c392ac5283554f4d4211d6b96ec"
+        },
+        {
+          "name": "shouldShowBottomBarText",
+          "sha256LF": "4611e2d7edb8ac64a26f4aa0046044b1cf65e1eac945f74a9a8b4f112ede404b"
+        },
+        {
+          "name": "resolveBottomBarBottomPaddingDp",
+          "sha256LF": "8673dee60cc32662dd54e4b48951451dfc1a2987ad7d54903539d02f4f8f003c"
+        },
+        {
+          "name": "BottomBarIndicatorPolicy",
+          "sha256LF": "92a2f59887d8f348395f23d475efc3db2247f18e804c7ff6542e465133e693cd"
+        },
+        {
+          "name": "BottomBarIndicatorVisualPolicy",
+          "sha256LF": "8a6eadda29541dd0ec6670d5e1276c5e3e9a5966b33ca13af688b000852c85e2"
+        },
+        {
+          "name": "BOTTOM_BAR_REFRACTION_IDLE_HOLD_MS",
+          "sha256LF": "2b6bc9ed90a7aede0579b7dff412b34f7061f113578bc37605fb95845e5b2443"
+        },
+        {
+          "name": "BILIPAI_INDICATOR_VELOCITY_NORMALIZATION_DIVISOR",
+          "sha256LF": "edbd58b79d128b3dd4241ed105de24e289bf6d6337a8a008cb635bb5d77263f1"
+        },
+        {
+          "name": "BILIPAI_INDICATOR_VELOCITY_SCALE_X_MULTIPLIER",
+          "sha256LF": "79d22ea42f0beceaa4ca123edec018f80fa43e4f8c5deb1fd82768b452026564"
+        },
+        {
+          "name": "BILIPAI_INDICATOR_VELOCITY_CLAMP",
+          "sha256LF": "36f8a1c2ff3b687a07b43c7f681bad3e5eea0cdbcbaa4b97280f8bfd15f288a3"
+        },
+        {
+          "name": "resolveBottomBarIndicatorVisualPolicyWithHold",
+          "sha256LF": "3ef64164374677fd03b29db970bf5b1def8e6672ee0068c1886c208e8f567c45"
+        },
+        {
+          "name": "BottomBarRefractionLayerPolicy",
+          "sha256LF": "343f062b9cbbcbb1f53b60bc01d397d8f941a785aa17dd19bdf012b607adc879"
+        },
+        {
+          "name": "BottomBarRefractionMotionProfile",
+          "sha256LF": "a6d7c0f05053f1532ee1b648a4f8974d45b28106c8e9969516514173e5fb56f3"
+        },
+        {
+          "name": "BottomBarPresetPanelOffsets",
+          "sha256LF": "e52f0317a7aac7f86b3abc5c9047bdea7692bd4ca2194ee362ade066df71352b"
+        },
+        {
+          "name": "BottomBarBackdropPresetLensSpec",
+          "sha256LF": "f1776382fcaca92295cbf1c8d74771132ce6f071447dd8a45ad84615009888b5"
+        },
+        {
+          "name": "BottomBarBackdropPresetProgress",
+          "sha256LF": "4578c2b5d52d2848db53315e1d4d47cf14d46f11ea3778adacf45ac44c01329e"
+        },
+        {
+          "name": "BottomBarSearchLaunchMorphSpec",
+          "sha256LF": "97d06e33e799ee6714854df3c03c0a9c0b3f2340fbb4a1585ee6ecc1f03c9388"
+        },
+        {
+          "name": "resolveBottomBarSearchLaunchMorphSpec",
+          "sha256LF": "5aacad380a5e1892d424ee63abf97dfa0770890fdfc6cc72d7d8e5c0a00a973f"
+        },
+        {
+          "name": "BottomBarClickPulseTransform",
+          "sha256LF": "7159362624b6b4021b6e94c4b49dc50d7edf685d783779453df0545ef7b272e1"
+        },
+        {
+          "name": "BottomBarIndicatorLayerTransform",
+          "sha256LF": "c905083fa47be927b5dc2e02366e82b8e65ffb45ce6a0e53943ceefd9bebe931"
+        },
+        {
+          "name": "resolveBottomBarClickPulseTransform",
+          "sha256LF": "f89e80dcada1ff9733fdc7132a2045c00f16aef536653d6e9459b81e36869b4c"
+        },
+        {
+          "name": "resolveBottomBarLiquidGlassLensProgress",
+          "sha256LF": "1d13e0d06612cde0df3c427346a0a4020ac95a2400967698204e5ae71c0d8fd9"
+        },
+        {
+          "name": "resolveBottomBarLiquidGlassHighlightAlpha",
+          "sha256LF": "7fb027049d2c215635e0a39deb8c61b9a3f76da586c3df38126501e23311e74e"
+        },
+        {
+          "name": "resolveBottomBarIndicatorGlowAlpha",
+          "sha256LF": "a8a9580515f79723f709bd5fe0976c1fb66e63726aa52c0bf829fb72c7b9ff90"
+        },
+        {
+          "name": "resolveBottomBarBackdropPresetCaptureLens",
+          "sha256LF": "e325dd37a623d4bca49d2c47e23bdbc822a5b141e352e6c115112dcb15e95e05"
+        },
+        {
+          "name": "resolveBottomBarBackdropPresetIndicatorLens",
+          "sha256LF": "60fc75815b6415d3fe627ba51112c14ce6c2d1d8926d70caf070a7c0ac3fa3ce"
+        },
+        {
+          "name": "resolveBottomBarBackdropPresetProgress",
+          "sha256LF": "5f2379f586243422a50b95cb31d2807ef71020fa0fe0a9e08f1bb72dc55aa1fa"
+        },
+        {
+          "name": "resolveBottomBarEffectiveBackdropPresetProgress",
+          "sha256LF": "734de946fb31615556cf18f6b0a4b2b19c18ece310f2884b37760435b315172c"
+        },
+        {
+          "name": "resolveBottomBarIndicatorLayerTransform",
+          "sha256LF": "0bc35ddf0731f15d481ef47fde2f4e5613686b8266948987ddb33ac0c90f5769"
+        },
+        {
+          "name": "rememberBottomBarIndicatorDragScaleProgress",
+          "sha256LF": "4225c41fdbea83ee1faa29b7e4984fb6865a8bd79bc05ec55dca606d6097e29b"
+        },
+        {
+          "name": "rememberBottomBarIndicatorLayerScaleTransform",
+          "sha256LF": "7c414a1324e3de42b811e86c11ede17463d26a164f155c68832cd9a361e7ac85"
+        },
+        {
+          "name": "resolveBottomBarVisualIndicatorPosition",
+          "sha256LF": "83c476dfb6e3dfb61fd4a1ab36d120b6bd3a102ad19adb722fec341d1ec58128"
+        },
+        {
+          "name": "resolveBottomBarEdgeStrain",
+          "sha256LF": "412f16724f8ebc1d922059e22b25d7f6d6fa17ae2ac6283c79eba41753b85a1b"
+        },
+        {
+          "name": "resolveBottomBarEdgeCompressionScaleX",
+          "sha256LF": "5dfd1df05c9d6a906c3639ff83a5e0964ec62a47c2b19c223e5d3c78b748d414"
+        },
+        {
+          "name": "resolveBottomBarSettleReboundTransform",
+          "sha256LF": "d552f715c64103a9c7535e54ce9376c90b5da0cfe65064852f7335b79104b807"
+        },
+        {
+          "name": "rememberBottomBarClickPulseTransform",
+          "sha256LF": "95c08c357145434542d0f6527eae61f2ee5769c22b5044ba2eb7bf974e3ef7ab"
+        },
+        {
+          "name": "rememberBottomBarTapSwitchPressProgress",
+          "sha256LF": "f60678deedb7420052b2b9625db34f7a14a41e60675ed98d52ebdaa9ebe3ddd5"
+        },
+        {
+          "name": "rememberBottomBarSettleReboundTransform",
+          "sha256LF": "ac8a7470a7129890436088483609b45430fbde4e80ea46d98b466788b88d930e"
+        },
+        {
+          "name": "resolveBottomBarSampledItemMotionScale",
+          "sha256LF": "de031a8a3b2ac34962bd6663cf5042b982a51b2c8da2087b28d99a685ccbf867"
+        },
+        {
+          "name": "resolveBottomBarIndicatorVisualPolicy",
+          "sha256LF": "447188781bcc802c4c4d6120c3d483ed2935cabd158bdb06785a6e03efbf26cc"
+        },
+        {
+          "name": "resolveBottomBarRefractionLayerPolicy",
+          "sha256LF": "ae9b59e1a190750d702f59d651a6b718c510efc5799e8d87027eb8bc5c680ea2"
+        },
+        {
+          "name": "resolveBottomBarRefractionMotionProfile",
+          "sha256LF": "d1498af7124815091fbec9f61528547e465893c5e4aedf9ba2c12989c747b8ce"
+        },
+        {
+          "name": "resolveBottomBarEffectiveRefractionMotionProfile",
+          "sha256LF": "e22aa3f10f11828001f6246e16303837adfe888e0a302860ccb5eb9f0a7ad0f4"
+        },
+        {
+          "name": "resolveBottomBarPresetPanelOffsets",
+          "sha256LF": "68047e0aa9dd13ffd1ce062f729822d8d2bbd1ba6d4ac585107fb3900c991e59"
+        },
+        {
+          "name": "resolveBottomBarMovingIndicatorSurfaceColor",
+          "sha256LF": "10df98f2077965fda29cbbb3885066982dc43ceedef4ea33163029f80b5a4d27"
+        },
+        {
+          "name": "resolveIosFloatingBottomIndicatorColor",
+          "sha256LF": "9398ef541b377d65cc5fa565d272ae9eedc0af3056f67cb62b13a1c589349182"
+        },
+        {
+          "name": "resolveIosFloatingBottomIndicatorTintAlpha",
+          "sha256LF": "eced4661f6a4d71077765c91fe3d002624520003245bc22438fcd840541e4cbd"
+        },
+        {
+          "name": "resolveBottomBarIndicatorTintAlpha",
+          "sha256LF": "938bd94b5e1884e57b4fec4787ec18dc07da65bd0deb466bb9da02cc718932eb"
+        },
+        {
+          "name": "resolveBottomBarIndicatorTintAlpha",
+          "sha256LF": "50d4853617558ee56a4a7692b3fba2b7d1da0e70c69f8839b50abcffa97cc9bc"
+        },
+        {
+          "name": "resolveBottomBarIndicatorPolicy",
+          "sha256LF": "3107133074520076c3e8e0642d677eee7fe69fbff89e4041c5387021abfada0f"
+        },
+        {
+          "name": "resolveBottomIndicatorHeightDp",
+          "sha256LF": "9fccbd2a42394428cad8d97105e7e89d7075eb8ba43e2bdaad812cf1eaf1dac8"
+        },
+        {
+          "name": "resolveBottomBarLayoutPolicy",
+          "sha256LF": "7808c3c6c5102a4cbd85c2914f548deda3f3fc93140ac78ddc36bdd21d88c127"
+        },
+        {
+          "name": "FrostedBottomBar",
+          "sha256LF": "9b82a0309af9075116148782f56f49138624f51969cd154e99b2c3b8efc31317"
+        },
+        {
+          "name": "MaterialBottomBar",
+          "sha256LF": "c6435f9e2637bbd617c2deda72afac4a5a6a825195f24ab2f58310c2ffab7aff"
+        },
+        {
+          "name": "OfficialMd3FloatingToolbarContent",
+          "sha256LF": "46432a6df78dbafa5c99f6d2479c25311de4adafed751869c8a5220d313c86dd"
+        },
+        {
+          "name": "OfficialMd3FloatingBottomBar",
+          "sha256LF": "da1c03cd3fcbed69928b9726a98f69ae5a4216109bec3a031e02af02090d4669"
+        },
+        {
+          "name": "MaterialBottomBarAnimatedIcon",
+          "sha256LF": "686a4d80bbb2d64ef423ad66f59dca757353ef6657c3e9f76cb50f6a0ef6c9b9"
+        },
+        {
+          "name": "MiuixBottomBar",
+          "sha256LF": "9e67b10cd7880dc3af2c3e9134db033ddb4e19193d239bac93621ba38bf2aa53"
+        },
+        {
+          "name": "IllustratedSkinBottomBar",
+          "sha256LF": "cb3cf36461f58a724f4ae8042a1d52c1c6e7036d8766dc3e31f427599fb6800e"
+        },
+        {
+          "name": "DockedBottomBarSkinContainer",
+          "sha256LF": "8834abdf9f955bb8814ac4038c80ea1c817cf30da2e7a536aceb73850ef28ce4"
+        },
+        {
+          "name": "MiuixDockedBottomBarItem",
+          "sha256LF": "a5119124c3d6b4958cec65b80b91754f48d11d525327d43d5eee42198c415a87"
+        },
+        {
+          "name": "BiliPaiFloatingBottomBar",
+          "sha256LF": "e00720c6e9e4d1e89674fddb0a1e911b43df0e686612293503eaee55fcc83a78"
+        },
+        {
+          "name": "BiliPaiFloatingBottomBarChrome",
+          "sha256LF": "de61942951a0363340c14f8bb89c59707b6fdd5ec9d36217a22b5abe5071ef87"
+        },
+        {
+          "name": "FloatingBottomBarTabVisual",
+          "sha256LF": "a0b2cd26e310c01d6451e3b4275938a427debd266b77ae841bce39605f483052"
+        },
+        {
+          "name": "BiliPaiMiuixBottomBarIndicatorLayer",
+          "sha256LF": "77c573284192c60c4546c1a0aa7e27ead77dd17db6dde4e653bd2c046d18f2fb"
+        },
+        {
+          "name": "BiliPaiBottomBarSearchSlot",
+          "sha256LF": "05f6a70081e3516aac4cef04fc8eb54d029b4f7f74908faf38bd55252016e252"
+        },
+        {
+          "name": "BiliPaiBottomBarSearchCapsule",
+          "sha256LF": "a5ab9d0461ea2b777e77b672c317f3f62182e7a868194dfde94be69e7be39588"
+        },
+        {
+          "name": "BottomBarInputTarget",
+          "sha256LF": "440927745f92bbf4e503dd2948000e6cfee14749f2a1eabf02599124b04252d8"
+        },
+        {
+          "name": "AndroidNativeBottomBarItem",
+          "sha256LF": "8188b26f1559c1f1a869c7fa25d43c8726fbefa01d0545a78cb8a5cd2b452930"
+        },
+        {
+          "name": "resolveSharedBottomBarSidebarIcon",
+          "sha256LF": "b7575379c5fb6c125301138cc331c5c7507656556b63b68ff1eadd00b92d11be"
+        },
+        {
+          "name": "BottomBarBlendedMiuixIcon",
+          "sha256LF": "5f66542b324307bee2d6e0f45847b776cb50443fe7562ab53a03bdfc2823cd09"
+        },
+        {
+          "name": "BottomBarBlendedMaterialIcon",
+          "sha256LF": "d5968398db26670cccc2cbd2795a9f91b53aca2c474f7edb08439f382b5b18de"
+        },
+        {
+          "name": "BottomBarReminderBadgeAnchor",
+          "sha256LF": "c80cca7ad0f845e552b2cacea59a8fe6d3c2b1760fd7b16c4d6687c3d4494d8b"
+        },
+        {
+          "name": "BottomBarReminderBadgeAnchor",
+          "sha256LF": "9110e0a2adc7f1f9ad826b56ebd56fd0c008e2bf72f696a4ec839c0068d5bae3"
+        },
+        {
+          "name": "shouldUseHomeCombinedClickable",
+          "sha256LF": "919faea17a7657164493bdbe0917192e3f94918f431ba8bf7bad841be808acf9"
+        },
+        {
+          "name": "BottomBarPrimaryTapAction",
+          "sha256LF": "7b5e742a08fc6e5813fd581096084f12ccea4390365411fc329ec4864af2fd4c"
+        },
+        {
+          "name": "resolveBottomBarPrimaryTapAction",
+          "sha256LF": "3d018d9dae6d095a0045247a845db3b31e2818606d81ac28045adfec0e11776d"
+        },
+        {
+          "name": "performBottomBarPrimaryTap",
+          "sha256LF": "d86191a2d6058d44dd632f342f8ab6294277f27ee25b691500c0faff9cbc65b5"
+        },
+        {
+          "name": "performMaterialBottomBarTap",
+          "sha256LF": "73295d0ed61e3ac4ed4ea9c25c1112109269ac04da677a915df894387b4c0bc4"
+        },
+        {
+          "name": "shouldAcceptBottomBarTap",
+          "sha256LF": "66e4e5f3a3e2e6c46004d2463aa33888e91c08e8c0c8b76703d33da8ee641fd3"
+        },
+        {
+          "name": "shouldUseBottomReselectCombinedClickable",
+          "sha256LF": "c17539287f3374f7be5ddf2b4fec329856c812fbc07dd5778a4e5f2f6e802a04"
+        },
+        {
+          "name": "BottomBarItemColorBinding",
+          "sha256LF": "1f24ab1b6847dbeaf7cd0892447083aa5e5d9d836f5df63ae94e1a3afd1210fb"
+        },
+        {
+          "name": "resolveBottomBarItemColorBinding",
+          "sha256LF": "d734a2e47057431d66700b8af64744afda6f32ef6783ccdd3fe8251c1b6e66d9"
+        },
+        {
+          "name": "resolveBottomBarSelectedContentColor",
+          "sha256LF": "7ad1c639ddf65fe844981a18dfbfabbdf389080319c0e2cbcd7d7ce575fdd607"
+        },
+        {
+          "name": "resolveAndroidNativeBottomBarItemContentColor",
+          "sha256LF": "ae560e0d55c377c2cb0651cf8da16a4bf9753cdbb5d983dfc16c2f98cd58f286"
+        },
+        {
+          "name": "resolveBottomBarSlidingContentColor",
+          "sha256LF": "4dc185f704703784e8f9a62b4683f2f0090bee9315eb06a975de59f2e3591a1d"
+        },
+        {
+          "name": "resolveBottomBarReadableContentColor",
+          "sha256LF": "ed0e85c60cce50e2246bc1f65a20782442e41bf70f98f6b44043d65370e747b3"
+        },
+        {
+          "name": "resolveIos26BottomIndicatorGrayColor",
+          "sha256LF": "7e8253ee7334a46daf06c6df206a37d491b7140e91135c5347ec0bb695c1d833"
+        }
+      ],
+      "adaptations": [
+        "Exclude exact sole existing shared32 / LinkedDock / capsule declarations; preserve every other complete original declaration",
+        "Required named read-only original getHomeSettings subset replaces Android HomeSettings constructor",
+        "Android elapsedRealtime -> JVM monotonic nanoseconds in milliseconds",
+        "Sidebar strings -> same Root original XML LocalDesktopStrings"
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt",
+      "sourceSHA256LF": "f9e0646000668a5559890d655db5109bd77720da4d4a1e2d8e1daf9f62b7e184",
+      "mode": "reference-only actual17 sole full original Favorites TopTabStylePolicy",
+      "output": null
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/home/LiquidGlassSettingsStore.kt",
+      "sourceSHA256LF": "aa216b2d5e50d68fa74bf0d8a1b250916628f11ddc6b0a739a27078bb64e4661",
+      "mode": "reference-only exact original readability key; same DesktopPreferenceSnapshot typed lookup",
+      "output": null
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sourceSHA256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "pinnedGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "output": "com\\android\\purebilibili\\core\\store\\DesktopOriginalBottomSearchModes.kt",
+      "outputSHA256LF": "5129e5cfc36dc4b61773a7f53fb73b76a931bd88f293e9eb35ae1c115b63f169",
+      "selected": [
+        {
+          "name": "BottomBarSearchAutoExpandMode",
+          "sha256LF": "dd2b8107a2e6ca353ebd1e2544d65ed7129df6c9325eb3f6511e0223f12d44ae"
+        },
+        {
+          "name": "BottomBarSearchLayoutMode",
+          "sha256LF": "0d03de4ced63b8914c9d8fe051fe6d98dfcc6b2353bb5f671d20ef165585169c"
+        }
+      ],
+      "adaptations": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sourceSHA256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "pinnedGitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "output": "com\\bilipai\\desktop\\settings\\DesktopOriginalFrostedSettings.kt",
+      "outputSHA256LF": "19290b1704875f82acecce9144bccaf819605bc28d1784971ab99040e4cbf021",
+      "selected": [
+        {
+          "name": "KEY_NAVIGATION_ICON_CROSS_SCALE_ENABLED",
+          "sha256LF": "ff9742dac04bfbd0ad1244999766dd4de0c38e76ae9c0e635f831bbf9275e66f"
+        },
+        {
+          "name": "KEY_BOTTOM_BAR_SEARCH_ENABLED",
+          "sha256LF": "e4d7a8d2e7c27f78982444a1ecc068b9aaf2385765d188d77aab9729e6aa06af"
+        },
+        {
+          "name": "KEY_LINKED_DOCK_MERGE_ON_SCROLL_ENABLED",
+          "sha256LF": "e8341e3667101c0ca58d7db9f862d97a70cc30bf3cdfdff10f9d26533fda881e"
+        },
+        {
+          "name": "KEY_BOTTOM_BAR_SEARCH_AUTO_EXPAND_MODE",
+          "sha256LF": "78212d4a77272fe690eb678eedd1409970841d6a43a0ed3403934d96d78f6fc0"
+        },
+        {
+          "name": "KEY_BOTTOM_BAR_SEARCH_LAYOUT_MODE",
+          "sha256LF": "9d6a925a9eb0c9f662b37a9f762f9eb2710a63fbffdf8561f58005bd7f840753"
+        },
+        {
+          "name": "KEY_ANDROID_NATIVE_LIQUID_GLASS_ENABLED",
+          "sha256LF": "d6b12c5e5b0ffd700462a88fcf10990c3635f94bd66b9f856959503a90cb48b6"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_MODE",
+          "sha256LF": "2451eb655f0a4c441c558afef0676e6c2d999f607ad6d516af77c4870d56334b"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_STRENGTH",
+          "sha256LF": "845a9309e4a7d3fd810946700ba295f7fb404483cc358ce584502a4c33e3cec5"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_PROGRESS",
+          "sha256LF": "bc68410d48930a69d9ae20d01577c75915553f26460f4553ca85a35eea5bf5fd"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_ADVANCED_PRESET",
+          "sha256LF": "2749d2dea7a5697c76f5b943508d852e7ac00cf8f76c16f7c15568d4ea6012c1"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_RADIUS",
+          "sha256LF": "e8ed47351f9d138e12737c0cd44ba441cfd8b2e05c6719926f85b161267bca4f"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_EXTENT",
+          "sha256LF": "6106b4762bbec89e86d7b92421f3f4a243179a5392e357a0ecede5249861d926"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_PROGRESSIVE_BLUR_CURVE",
+          "sha256LF": "f0954d29cc0c46e36a51a84c79649b66c56696dbe3fda9c910b28cdb33f70fcc"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_CONTENT_READABILITY",
+          "sha256LF": "16649eae6f5caee4bbd41fd4cd8e9b6a9f6fae05a50fd810c242aa6b5b840040"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_CHROMATIC_ABERRATION",
+          "sha256LF": "1e0424e60da349b681e0652de725755092db25dadd2488bbc6495ab124559f2c"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_CONTENT_DISTORTION",
+          "sha256LF": "7418551d6c43fb54c575ba27b7e31db4de30e423faf54dc1813a88d818edd4cb"
+        },
+        {
+          "name": "KEY_LIQUID_GLASS_STYLE",
+          "sha256LF": "961cf630a09de7f3a543c9d0a8327f5866029d2dba99493e08e8e43a475fc161"
+        }
+      ],
+      "adaptations": [
+        "Exact original getHomeSettings liquid locals, keys and 9 selected return expressions projected into a distinctly named required readonly view; fixed preset matches original HomeSettings field default"
+      ]
+    }
+  ],
+  "excludedBottomBarDeclarations": {
+    "shared": [
+      "iosIndicatorSpecular",
+      "AndroidNativeBottomBarTuning",
+      "resolveAndroidNativeBottomBarTuning",
+      "resolveAndroidNativeBottomBarContainerColor",
+      "resolveAndroidNativeFloatingBottomBarContainerColor",
+      "resolveAndroidNativeBottomBarGlassEnabled",
+      "shouldUseAndroidNativeFloatingHazeBlur",
+      "shouldRenderBottomBarLiquidGlassEffects",
+      "biliPaiMiuixFloatingDockSurface",
+      "resolveBiliPaiBottomBarContainerColor",
+      "resolveBottomBarDarkTheme",
+      "BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET",
+      "resolveBottomBarCaptureSafeInsetDp",
+      "resolveBottomBarSurfaceColor",
+      "resolveBiliPaiBottomBarShellColor",
+      "BottomBarItemMotionVisual",
+      "resolveBottomBarItemCoverage",
+      "resolveBottomBarItemMotionScale",
+      "resolveBottomBarItemMotionVisual"
+    ],
+    "linked": [
+      "BottomNavItem",
+      "SharedFloatingBottomBarIconStyle",
+      "normalizeBottomBarLabelMode",
+      "resolveBiliPaiFloatingBottomBarWidth",
+      "resolveMaterialBottomBarIcon",
+      "resolveHomeNavigationBarIcon",
+      "resolveSharedBottomBarIcon",
+      "BiliPaiBottomBarSearchVisualContent",
+      "shouldRequestBottomBarSearchIme",
+      "resolveBottomNavItemLabel",
+      "resolveBottomNavItemContentDescription",
+      "resolveBottomNavItemLookupKeys"
+    ],
+    "actual": [
+      "resolveSharedBottomBarCapsuleShape"
+    ]
+  }
+}
