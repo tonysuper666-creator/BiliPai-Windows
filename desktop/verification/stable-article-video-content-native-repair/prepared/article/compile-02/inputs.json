@@ -1,0 +1,41 @@
+{
+  "immutable49": true,
+  "runtimeEntries": 97,
+  "sources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\com\\android\\purebilibili\\core\\ui\\BottomSafeAreaPolicy.kt",
+      "sha256Bytes": "52f1a4496022f5257f9a27ebe56e9bb84c8045b4faf42353b9750ab7dcf19e8f"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeleton.kt",
+      "sha256Bytes": "b4b7e5926d58c8f3eb2b76e9105cc6ae31746e8c32b2f6a9db5881e8a6059c75"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\article\\ArticleDetailScreen.kt",
+      "sha256Bytes": "fc65f418d2b945dad15aafeea4c62b7cd275335a6c7896a1dccf9c33d9199620"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\feature\\article\\ArticleDetailLayoutPolicy.kt",
+      "sha256Bytes": "005b05efaba6390f785a1740fc6881bfcc31e58a56b1ef4d639368a91b88359b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\feature\\article\\ArticleImagePreviewPolicy.kt",
+      "sha256Bytes": "61f0e181cd82c97a5268081c78ff4f8bd39727df82a7e904f294fd8c68c7872a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\feature\\article\\ArticleRichTextRenderer.kt",
+      "sha256Bytes": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindings.kt",
+      "sha256Bytes": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\protocol\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "2dccf1f68dd46c4eb9679e96858b8057e87668a12c988d87a83b3850332fde68"
+    }
+  ],
+  "explicitProspectiveOverrideFamilies": [
+    "com.android.purebilibili.data.repository.DesktopDynamicDetailArticleProtocol"
+  ]
+}

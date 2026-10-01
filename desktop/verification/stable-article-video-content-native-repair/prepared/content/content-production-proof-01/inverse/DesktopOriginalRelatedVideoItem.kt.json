@@ -1,0 +1,264 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+  "sourceSha256LF": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+  "generatedSha256LF": "aa829ce6afc4fe277ec41c6eddb03bf9d31459304284343e5811dcd7026c70b2",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "delete",
+      "originalStart": 4,
+      "originalEnd": 5,
+      "generatedStart": 4,
+      "generatedEnd": 4,
+      "originalLines": [
+        "import android.widget.Toast\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 40,
+      "originalEnd": 42,
+      "generatedStart": 39,
+      "generatedEnd": 42,
+      "originalLines": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n",
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings as LocalContext\n",
+        "import coil3.compose.LocalPlatformContext\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 50,
+      "originalEnd": 51,
+      "generatedStart": 50,
+      "generatedEnd": 50,
+      "originalLines": [
+        "import com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 52,
+      "originalEnd": 53,
+      "generatedStart": 51,
+      "generatedEnd": 51,
+      "originalLines": [
+        "import com.android.purebilibili.core.store.TodayWatchFeedbackStore\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 84,
+      "originalEnd": 86,
+      "generatedStart": 82,
+      "generatedEnd": 82,
+      "originalLines": [
+        "import com.android.purebilibili.data.repository.ActionRepository\n",
+        "import com.android.purebilibili.data.repository.BlockedUpRepository\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "insert",
+      "originalStart": 94,
+      "originalEnd": 94,
+      "generatedStart": 90,
+      "generatedEnd": 91,
+      "originalLines": [],
+      "generatedLines": [
+        "import kotlinx.coroutines.ensureActive\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 101,
+      "originalEnd": 102,
+      "generatedStart": 98,
+      "generatedEnd": 98,
+      "originalLines": [
+        "internal const val RELATED_VIDEO_CARD_COVER_ASPECT_RATIO = 16f / 10f\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 163,
+      "originalEnd": 166,
+      "generatedStart": 159,
+      "generatedEnd": 161,
+      "originalLines": [
+        "    val homeFeedCardStyle by SettingsManager\n",
+        "        .getHomeFeedCardStyle(context)\n",
+        "        .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)\n"
+      ],
+      "generatedLines": [
+        "    val homeFeedCardStyle by context.homeSettings.homeFeedCardStyle\n",
+        "        .collectAsStateWithLifecycle()\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 231,
+      "originalEnd": 232,
+      "generatedStart": 226,
+      "generatedEnd": 227,
+      "originalLines": [
+        "    val context = LocalContext.current\n"
+      ],
+      "generatedLines": [
+        "    val context = LocalPlatformContext.current\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 490,
+      "originalEnd": 491,
+      "generatedStart": 485,
+      "generatedEnd": 486,
+      "originalLines": [
+        "    val blockedUpRepository = remember { BlockedUpRepository.getInstance(context) }\n"
+      ],
+      "generatedLines": [
+        "    val blockedUpRepository = context.blockedUps\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 521,
+      "originalEnd": 522,
+      "generatedStart": 516,
+      "generatedEnd": 517,
+      "originalLines": [
+        "                        ActionRepository.toggleWatchLater(pendingVideo.aid, true)\n"
+      ],
+      "generatedLines": [
+        "                        context.toggleWatchLater(pendingVideo.aid, true)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 527,
+      "originalEnd": 528,
+      "generatedStart": 522,
+      "generatedEnd": 523,
+      "originalLines": [
+        "                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n"
+      ],
+      "generatedLines": [
+        "                    context.feedback(message)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 543,
+      "originalEnd": 544,
+      "generatedStart": 538,
+      "generatedEnd": 539,
+      "originalLines": [
+        "                            onVideoHidden?.invoke(pendingVideo)\n"
+      ],
+      "generatedLines": [
+        "                            context.commitUi { onVideoHidden?.invoke(pendingVideo) }\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 545,
+      "originalEnd": 550,
+      "generatedStart": 540,
+      "generatedEnd": 541,
+      "originalLines": [
+        "                        Toast.makeText(\n",
+        "                            context,\n",
+        "                            resolveRelatedFeedbackToast(reason),\n",
+        "                            Toast.LENGTH_SHORT\n",
+        "                        ).show()\n"
+      ],
+      "generatedLines": [
+        "                        context.feedback(resolveRelatedFeedbackToast(reason))\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 590,
+      "originalEnd": 592,
+      "generatedStart": 581,
+      "generatedEnd": 585,
+      "originalLines": [
+        "                                onVideoHidden?.invoke(blockRequest.video)\n",
+        "                                Toast.makeText(context, result.message, Toast.LENGTH_SHORT).show()\n"
+      ],
+      "generatedLines": [
+        "                                kotlinx.coroutines.currentCoroutineContext().ensureActive()\n",
+        "                                context.requireCurrent()\n",
+        "                                context.commitUi { onVideoHidden?.invoke(blockRequest.video) }\n",
+        "                                context.feedback(result.message)\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 613,
+      "originalEnd": 619,
+      "generatedStart": 606,
+      "generatedEnd": 608,
+      "originalLines": [
+        "                                    onVideoHidden?.invoke(request.video)\n",
+        "                                    Toast.makeText(\n",
+        "                                        context,\n",
+        "                                        resolveRelatedFeedbackToast(request.reason),\n",
+        "                                        Toast.LENGTH_SHORT\n",
+        "                                    ).show()\n"
+      ],
+      "generatedLines": [
+        "                                    context.commitUi { onVideoHidden?.invoke(request.video) }\n",
+        "                                    context.feedback(resolveRelatedFeedbackToast(request.reason))\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 637,
+      "originalEnd": 638,
+      "generatedStart": 626,
+      "generatedEnd": 627,
+      "originalLines": [
+        "    context: android.content.Context,\n"
+      ],
+      "generatedLines": [
+        "    context: com.bilipai.desktop.ui.DesktopOriginalVideoContentBindings,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 649,
+      "originalEnd": 650,
+      "generatedStart": 638,
+      "generatedEnd": 639,
+      "originalLines": [
+        "        val snapshot = TodayWatchFeedbackStore.getSnapshot(context).withDislikedVideoFeedback(\n"
+      ],
+      "generatedLines": [
+        "        val snapshot = context.getFeedbackSnapshot().withDislikedVideoFeedback(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 660,
+      "originalEnd": 661,
+      "generatedStart": 649,
+      "generatedEnd": 650,
+      "originalLines": [
+        "        TodayWatchFeedbackStore.saveSnapshot(context, snapshot)\n"
+      ],
+      "generatedLines": [
+        "        context.saveFeedbackSnapshot(snapshot)\n"
+      ]
+    }
+  ]
+}

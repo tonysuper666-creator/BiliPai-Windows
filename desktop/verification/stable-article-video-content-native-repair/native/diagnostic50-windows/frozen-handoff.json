@@ -1,0 +1,124 @@
+{
+  "status": "READONLY_DIAGNOSTIC_AND_UNACCEPTED_ROOT_ADAPTER_PROPOSAL",
+  "diagnosticOnly": true,
+  "actualSnapshot": 50,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "sameActualLazyWinRtLoad": true,
+  "sameActualMtaInitialize": true,
+  "sameActualCallbackRegistration": true,
+  "trueSMTCGetForWindowAccepted": false,
+  "normalWindowLayoutAccepted": false,
+  "rootCauseNativeCppLineProven": false,
+  "UIInput": false,
+  "WindowCreated": false,
+  "CandidateMutations": false,
+  "sharedGradle": false,
+  "all97PinsBeforeAfter": true,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\ActualCallbackRegistrationProbe.java",
+      "sha256Bytes": "28f75582cd8769ce5b56b59ec6c5c102c156121d8ca9c468bfc6915a7d8fcf93",
+      "size": 2181
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\callback-registration.log",
+      "sha256Bytes": "6f6856b9667508486a9bddd73e99df07291dc42e62ab28ac5c69bde05251d6fd",
+      "size": 123
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\Component.java",
+      "sha256Bytes": "e29ec22827f47b8e0553231caf4463b4c79a85ce1f7bbef09442b43b5e667235",
+      "size": 391387
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\freeze.py",
+      "sha256Bytes": "a54c283f2259b5012bf35c46379826794f72f2932c54d4bc7ca933ce61244b0e",
+      "size": 2034
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\GraphicsDevice.java",
+      "sha256Bytes": "5c95d1698bdcca7287cb6b34296b882449c7ba860977137aad5e8b7318b9a68f",
+      "size": 24083
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\inputs.json",
+      "sha256Bytes": "6bdf47af6c0e47cc343370407d78abfac4c398918868df7f7f1b5eda18615131",
+      "size": 38333
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\org_jetbrains_skiko_FullscreenAdapter.javap.txt",
+      "sha256Bytes": "338a923686ed3643a2b25484e8000bcb785af5a4866517f7fa8758167debe9cd",
+      "size": 5891
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\org_jetbrains_skiko_HardwareLayer.javap.txt",
+      "sha256Bytes": "9604e27cd6bd0983831ed48a2caff078442d171f362841883e9152d2736aecbb",
+      "size": 13248
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\org_jetbrains_skiko_PlatformOperationsKt$platformOperations$2$2.javap.txt",
+      "sha256Bytes": "d776a7b75687b9b1f24e807ad866834c81db2089b96797dcc6230b83a33fdfcf",
+      "size": 5115
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\read_actual.py",
+      "sha256Bytes": "44e4ad7e75669cb34b95276ab4034010bdaa4feba851468e4096f9e1c4b76c9e",
+      "size": 2994
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\ROOT-ADAPTER-REVIEW.md",
+      "sha256Bytes": "569e6715c46ccbf53bf4586e23c7174f2edfbab97a66c448399e22d0091faca7",
+      "size": 5176
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\WComponentPeer.java",
+      "sha256Bytes": "65e039c62a4356c94e8ad351c9106fb8f2423857d64551e9c13762e13a41c8fd",
+      "size": 39420
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\Win32GraphicsDevice.java",
+      "sha256Bytes": "fe18285675feec3afd0627f7f52b61f699e1843d67f46d261edbcef1ebffd59d",
+      "size": 25048
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\WindowsMediaSession-error-cause.delta.json",
+      "sha256Bytes": "971d62db0abf44f8571a51b914964dd558251e99b13c9acfa636d32f925840f2",
+      "size": 898
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\winrt-load.log",
+      "sha256Bytes": "499d00c039397603d662d93bf5acb8ffa8b1afe74456448fa06c4a7ca371c840",
+      "size": 234
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\WinRtLoadProbe.java",
+      "sha256Bytes": "99f8b5e27cdae9fcd90ec989d1a4adec0aedb90572273111b34d57220812ff81",
+      "size": 1270
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\WWindowPeer.java",
+      "sha256Bytes": "48f8bfcf47f8f2de3fbe4cc8647a71d2605e84caa10fe5b946f5eaa978856621",
+      "size": 30931
+    }
+  ],
+  "excludedWithHashAndReason": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\classes\\ActualCallbackRegistrationProbe.class",
+      "sha256Bytes": "256f03d6d6f49661d0d5775e0b2ecd9f795b07d21a5c714ca4a334feb5b0f0d1",
+      "size": 4004,
+      "reason": "Rebuildable headless diagnostic class; exact source and hash retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\diagnostic50-windows\\classes\\WinRtLoadProbe.class",
+      "sha256Bytes": "a8744d85a4e056ecdf1907d915de11032e7a1c0dfb01544581b0fb79038f3e82",
+      "size": 2557,
+      "reason": "Rebuildable headless diagnostic class; exact source and hash retained."
+    }
+  ]
+}

@@ -1,0 +1,223 @@
+{
+  "scope": "Official MavenCentral dependency-only read. Prospective narrow compile; not installed product runtime acceptance.",
+  "originalCoordinate": "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14",
+  "jvmCoordinate": "com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14",
+  "originalDeclaration": "app/build.gradle.kts:400 at fixed stable commit 3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "rows": [
+    {
+      "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose/1.0.0-rc14/richeditor-compose-1.0.0-rc14.pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-1.0.0-rc14.pom",
+      "bytes": 3156,
+      "sha256Bytes": "ee477cb56a8ba00dfbf91ca7afcbd8850e357b4b3507c69f2af0ba096da10d6b"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose/1.0.0-rc14/richeditor-compose-1.0.0-rc14.module",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-1.0.0-rc14.module",
+      "bytes": 20605,
+      "sha256Bytes": "d10c29c8bd44368a26728162dbe18f73cfd7644e02267e26eb7263fa7d178db7"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.pom",
+      "bytes": 3204,
+      "sha256Bytes": "059293795b8bae899e35966ac4801dedf016a8dec9d2ac5c4beabd7fb4f643d8"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.module",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.module",
+      "bytes": 4756,
+      "sha256Bytes": "b27a677ae28f89e3cd2c8b038d5c16ee6e55b876205e3e3d24ce822d142da768"
+    },
+    {
+      "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.jar",
+      "bytes": 665369,
+      "sha256Bytes": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb"
+    }
+  ],
+  "dependencies": [
+    {
+      "group": "org.jetbrains.kotlin",
+      "name": "kotlin-stdlib",
+      "version": "2.3.21",
+      "scope": "compile"
+    },
+    {
+      "group": "org.jetbrains.compose.runtime",
+      "name": "runtime-desktop",
+      "version": "1.10.3",
+      "scope": "runtime"
+    },
+    {
+      "group": "org.jetbrains.compose.foundation",
+      "name": "foundation-desktop",
+      "version": "1.10.3",
+      "scope": "runtime"
+    },
+    {
+      "group": "org.jetbrains.compose.material",
+      "name": "material-desktop",
+      "version": "1.10.3",
+      "scope": "runtime"
+    },
+    {
+      "group": "org.jetbrains.compose.material3",
+      "name": "material3-desktop",
+      "version": "1.10.0-alpha05",
+      "scope": "runtime"
+    },
+    {
+      "group": "com.mohamedrejeb.ksoup",
+      "name": "ksoup-html-jvm",
+      "version": "0.6.0",
+      "scope": "runtime"
+    },
+    {
+      "group": "com.mohamedrejeb.ksoup",
+      "name": "ksoup-entities-jvm",
+      "version": "0.6.0",
+      "scope": "runtime"
+    },
+    {
+      "group": "org.jetbrains",
+      "name": "markdown-jvm",
+      "version": "0.7.3",
+      "scope": "runtime"
+    }
+  ],
+  "variants": [
+    {
+      "name": "desktopApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "richeditor-compose-desktop-1.0.0-rc14.jar",
+          "url": "richeditor-compose-desktop-1.0.0-rc14.jar",
+          "size": 665369,
+          "sha512": "adabc3365188d4ea2fed98d41bbf6e9e3c3081cc30c4163c5d4d61e8c3a4aba39a628c9348d6e661c65f2786c32bb142c2106fa4656263564a2a96d51ac0040e",
+          "sha256": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb",
+          "sha1": "b99a02a863fe5a4c779351d06234c6c849829b95",
+          "md5": "acdb8734e94689b553a7f620b25698f6"
+        }
+      ]
+    },
+    {
+      "name": "desktopRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material",
+          "module": "material",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.10.0-alpha05"
+          }
+        },
+        {
+          "group": "com.mohamedrejeb.ksoup",
+          "module": "ksoup-html",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "com.mohamedrejeb.ksoup",
+          "module": "ksoup-entities",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains",
+          "module": "markdown",
+          "version": {
+            "requires": "0.7.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "richeditor-compose-desktop-1.0.0-rc14.jar",
+          "url": "richeditor-compose-desktop-1.0.0-rc14.jar",
+          "size": 665369,
+          "sha512": "adabc3365188d4ea2fed98d41bbf6e9e3c3081cc30c4163c5d4d61e8c3a4aba39a628c9348d6e661c65f2786c32bb142c2106fa4656263564a2a96d51ac0040e",
+          "sha256": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb",
+          "sha1": "b99a02a863fe5a4c779351d06234c6c849829b95",
+          "md5": "acdb8734e94689b553a7f620b25698f6"
+        }
+      ]
+    },
+    {
+      "name": "desktopSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": null,
+      "files": [
+        {
+          "name": "richeditor-compose-desktop-1.0.0-rc14-sources.jar",
+          "url": "richeditor-compose-desktop-1.0.0-rc14-sources.jar",
+          "size": 177752,
+          "sha512": "184e71a8339cf4b035bc224c1731232324066ad46678ab4ae77dc9df64ec98dcc83cae53895c5391ca941348c4bac6847386b9335ab066a61885a52a1362fa37",
+          "sha256": "b3fd9bf9deb93c535437ee97a2ece42775be23d0825e13478e2c5c328989d7f6",
+          "sha1": "e5058e8ead8b490db17fa00b9a97ff6215efcb3a",
+          "md5": "0bf9701ee9ee2f6a61be7b58342d700c"
+        }
+      ]
+    }
+  ]
+}

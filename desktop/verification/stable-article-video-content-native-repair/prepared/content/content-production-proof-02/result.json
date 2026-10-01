@@ -1,0 +1,166 @@
+{
+  "passed": true,
+  "generation": [
+    {
+      "mode": "default",
+      "outputs": [
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentCollapseThreshold.kt",
+        "com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
+        "com/android/purebilibili/feature/video/ui/components/DesktopOriginalRelatedVideoItem.kt",
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalVideoContentSettings.kt"
+      ],
+      "skippedDirectOutputs": [
+        "com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+        "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+        "com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt"
+      ],
+      "byteIdentical": true
+    },
+    {
+      "mode": "standalone",
+      "outputs": [
+        "com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+        "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+        "com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+        "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+        "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentCollapseThreshold.kt",
+        "com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
+        "com/android/purebilibili/feature/video/ui/components/DesktopOriginalRelatedVideoItem.kt",
+        "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt",
+        "com/android/purebilibili/core/store/DesktopOriginalVideoContentSettings.kt"
+      ],
+      "skippedDirectOutputs": [],
+      "byteIdentical": true
+    }
+  ],
+  "inverseAudits": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+      "mode": "direct-complete-original",
+      "exactOriginalBytes": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentCollapseThreshold.kt",
+      "mode": "complete-original-collapse-threshold-function",
+      "sourceSelection": "Exact original whole named declaration or remaining full renderer. Registry counts this as selected, not an entire original file."
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
+      "mode": "complete-original-remaining-filter-bar-reference-sole-generic-header-and-policies",
+      "sourceSelection": "Exact original whole named declaration or remaining full renderer. Registry counts this as selected, not an entire original file."
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalRelatedVideoItem.kt",
+      "mode": "complete-original-related-card-grid-feedback-actions-owner-platform-adapt",
+      "inverseExactOriginal": true,
+      "changes": 21
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt",
+      "mode": "complete-original-content-groups-body-all-panels-reference-sole-commenttab-platform-adapt",
+      "inverseExactOriginal": true,
+      "changes": 16
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoContentSettings.kt",
+      "mode": "selected-exact-original-read-getters-keys-same-global-settings",
+      "sourceSelection": "Exact original whole named declaration or remaining full renderer. Registry counts this as selected, not an entire original file."
+    }
+  ],
+  "sourcePins": 19,
+  "noProductAcceptance": true,
+  "declaredSharedReferences": [
+    "Original entire VideoCommentTab is supplied by existing extract-upstream-video-comment-ui.py",
+    "Original cover ratio constant is supplied by existing BGM skeleton producer",
+    "Original CollectionRow/Sheet and image preview remain sole installed consumers",
+    "Original VideoNote/AI raw DTOs and note codec already in actual47"
+  ],
+  "producerSha256LF": "3e187e9fbae8e3980ae8605260007bfa553de1c54b0be6463313b61162af459e"
+}

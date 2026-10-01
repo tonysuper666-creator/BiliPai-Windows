@@ -1,0 +1,556 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.mohamedrejeb.richeditor",
+    "module": "richeditor-compose",
+    "version": "1.0.0-rc14",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.0.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.3.21"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material",
+          "module": "material",
+          "version": {
+            "requires": "1.10.3"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material3",
+          "module": "material3",
+          "version": {
+            "requires": "1.10.0-alpha05"
+          }
+        },
+        {
+          "group": "com.mohamedrejeb.ksoup",
+          "module": "ksoup-html",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "com.mohamedrejeb.ksoup",
+          "module": "ksoup-entities",
+          "version": {
+            "requires": "0.6.0"
+          }
+        },
+        {
+          "group": "org.jetbrains",
+          "module": "markdown",
+          "version": {
+            "requires": "0.7.3"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "richeditor-compose-metadata-1.0.0-rc14.jar",
+          "url": "richeditor-compose-1.0.0-rc14.jar",
+          "size": 75384,
+          "sha512": "a97a6cb55ce88a8186214a164369f345a639c72a558380a20a58b507777a5f386a1ce2b3bd124b4ea353a4e9fd7cbbd1424cd936113be915b7d6abedeca356e8",
+          "sha256": "b3cb77fccfb8ced4a1ed774c3530ec47bf706c080e446ef62286ce229790cb2f",
+          "sha1": "6ed3ae00623424d7b12acd0026d106b4d14d284d",
+          "md5": "2cdcb0d03e8d6b5f2c2dd0113695f130"
+        }
+      ]
+    },
+    {
+      "name": "metadataSourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "files": [
+        {
+          "name": "richeditor-compose-kotlin-1.0.0-rc14-sources.jar",
+          "url": "richeditor-compose-1.0.0-rc14-sources.jar",
+          "size": 177383,
+          "sha512": "353a2d951b91a82cc7b34da5c600737ab5f033f1394bceb2429ceed03e972bc1371c6ec1387c4eab193de17293bbaf9f2658b365ad699a45f303907bdd0d1c9b",
+          "sha256": "9f462825a697824935a656bf76a998d9a30827f9c1c927fc149c4cf894e757c1",
+          "sha1": "52712caeed20d18ae0937b98c53cd8d0dc51551a",
+          "md5": "517b69096c66b4be25a5ea08e973ffbf"
+        }
+      ]
+    },
+    {
+      "name": "releaseApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-android/1.0.0-rc14/richeditor-compose-android-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-android",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "releaseRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-android/1.0.0-rc14/richeditor-compose-android-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-android",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "releaseSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "android",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "androidJvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-android/1.0.0-rc14/richeditor-compose-android-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-android",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "desktopApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-desktop",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "desktopRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-desktop",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "desktopSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-desktop",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosarm64/1.0.0-rc14/richeditor-compose-iosarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosarm64/1.0.0-rc14/richeditor-compose-iosarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosArm64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosarm64/1.0.0-rc14/richeditor-compose-iosarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosarm64/1.0.0-rc14/richeditor-compose-iosarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iossimulatorarm64/1.0.0-rc14/richeditor-compose-iossimulatorarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iossimulatorarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iossimulatorarm64/1.0.0-rc14/richeditor-compose-iossimulatorarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iossimulatorarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iossimulatorarm64/1.0.0-rc14/richeditor-compose-iossimulatorarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iossimulatorarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosSimulatorArm64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_simulator_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iossimulatorarm64/1.0.0-rc14/richeditor-compose-iossimulatorarm64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iossimulatorarm64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosX64ApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosx64/1.0.0-rc14/richeditor-compose-iosx64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosx64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosX64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosx64/1.0.0-rc14/richeditor-compose-iosx64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosx64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosX64ResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresources",
+        "org.gradle.usage": "kotlin-multiplatformresources",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosx64/1.0.0-rc14/richeditor-compose-iosx64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosx64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "iosX64MetadataElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.native.target": "ios_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-iosx64/1.0.0-rc14/richeditor-compose-iosx64-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-iosx64",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "jsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-js/1.0.0-rc14/richeditor-compose-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "jsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-js/1.0.0-rc14/richeditor-compose-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "jsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-js/1.0.0-rc14/richeditor-compose-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "jsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.js.compiler": "ir",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-js/1.0.0-rc14/richeditor-compose-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "wasmJsApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-wasm-js/1.0.0-rc14/richeditor-compose-wasm-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-wasm-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "wasmJsRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-wasm-js/1.0.0-rc14/richeditor-compose-wasm-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-wasm-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "wasmJsSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-wasm-js/1.0.0-rc14/richeditor-compose-wasm-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-wasm-js",
+        "version": "1.0.0-rc14"
+      }
+    },
+    {
+      "name": "wasmJsResourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "non-jvm",
+        "org.gradle.libraryelements": "kotlin-multiplatformresourcesjs",
+        "org.gradle.usage": "kotlin-multiplatformresourcesjs",
+        "org.jetbrains.kotlin.platform.type": "wasm",
+        "org.jetbrains.kotlin.wasm.target": "js"
+      },
+      "available-at": {
+        "url": "../../richeditor-compose-wasm-js/1.0.0-rc14/richeditor-compose-wasm-js-1.0.0-rc14.module",
+        "group": "com.mohamedrejeb.richeditor",
+        "module": "richeditor-compose-wasm-js",
+        "version": "1.0.0-rc14"
+      }
+    }
+  ]
+}

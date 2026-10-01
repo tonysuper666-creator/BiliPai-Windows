@@ -1,0 +1,57 @@
+[
+  {
+    "label": "existing Root back dispatcher",
+    "before": "import androidx.activity.compose.BackHandler",
+    "after": "import com.android.purebilibili.core.ui.LocalNavigationBackHandler as BackHandler"
+  },
+  {
+    "label": "same original multilingual resource map",
+    "before": "import androidx.compose.ui.res.stringResource",
+    "after": "import com.bilipai.desktop.ui.desktopHomeStringResource"
+  },
+  {
+    "label": "required owned loader",
+    "before": "import com.android.purebilibili.R\n",
+    "after": "import com.bilipai.desktop.ui.DesktopOriginalArticleBindings\n"
+  },
+  {
+    "label": "screen required loader ABI",
+    "before": "    onBack: (Boolean) -> Unit,\n    onUserClick: (Long) -> Unit\n) {",
+    "after": "    onBack: (Boolean) -> Unit,\n    onUserClick: (Long) -> Unit,\n    bindings: DesktopOriginalArticleBindings,\n) {"
+  },
+  {
+    "label": "original resource common_back",
+    "before": "stringResource(R.string.common_back)",
+    "after": "desktopHomeStringResource(\"common_back\")"
+  },
+  {
+    "label": "original resource common_retry",
+    "before": "stringResource(R.string.common_retry)",
+    "after": "desktopHomeStringResource(\"common_retry\")"
+  },
+  {
+    "label": "original resource dynamic_detail_load_failed",
+    "before": "stringResource(R.string.dynamic_detail_load_failed)",
+    "after": "desktopHomeStringResource(\"dynamic_detail_load_failed\")"
+  },
+  {
+    "label": "sole original owned Article protocol",
+    "before": "ArticleRepository.getArticleDetail(articleId)",
+    "after": "bindings.load(articleId)"
+  },
+  {
+    "label": "no singleton transport",
+    "before": "import com.android.purebilibili.data.repository.ArticleRepository\n",
+    "after": ""
+  },
+  {
+    "label": "required existing Root back admission",
+    "before": "    BackHandler {",
+    "after": "    BackHandler(enabled = true) {"
+  },
+  {
+    "label": "Windows client area has no Android nav-bar inset",
+    "before": "navigationBarsBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()",
+    "after": "navigationBarsBottom = 0.dp"
+  }
+]

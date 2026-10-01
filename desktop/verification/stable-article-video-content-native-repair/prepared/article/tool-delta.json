@@ -1,0 +1,27 @@
+{
+  "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+  "baseLfSha256": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce",
+  "candidateLfSha256": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937",
+  "hunks": [
+    {
+      "label": "canonical complete original model method",
+      "before": "    get_article = get_article.replace('Result<ArticleDetailUiModel>', 'Result<Pair<String,List<ArticleContentBlock>>>')",
+      "after": "    get_article = get_article.replace('fun getArticleDetail(', 'fun getArticleUiDetail(')"
+    },
+    {
+      "label": "retain whole original conversion and merge",
+      "before": "    get_article = get_article.replace('val fromView = response.data.toUiModel()', 'val fromView = response.data.toDetailTitleAndBlocks()')\n    get_article = get_article.replace('fromView.copy(blocks = selectRicherArticleBlocks(fromView.blocks, opusBlocks))', 'fromView.first to selectRicherArticleBlocks(fromView.second, opusBlocks)')\n",
+      "after": ""
+    },
+    {
+      "label": "original loaded article history identity",
+      "before": "callback(response.data.id)",
+      "after": "callback(merged.articleId)"
+    },
+    {
+      "label": "retain full original model/conversion/URL normalization; keep sole Pair ABI",
+      "before": "    start = original_extension.index('val parsedBlocks')\n    stop = original_extension.index('        val resolvedSummary')\n    slice_title = original_extension[start:stop]\n    title_extension = '    private fun ArticleViewData.toDetailTitleAndBlocks():Pair<String,List<ArticleContentBlock>> {\\n        ' + slice_title + '        return resolvedTitle to parsedBlocks\\n    }\\n'\n    article_helper = '// GENERATED selected original Article view/opus/consumed title+blocks.\\n// Original: ' + article_path + '\\n// Original LF SHA-256: ' + digest(article) + '\\n' + imports + 'internal class DesktopDynamicDetailArticleProtocol(\\n    private val articleApi: ArticleApi,\\n    private val dynamicApi: DynamicApi,\\n    private val signDetailParams: suspend (Map<String,String>) -> Map<String,String>,\\n    private val assertOwner: () -> Unit,\\n    private val onArticleViewed: (suspend (Long) -> Unit)?,\\n) {\\n' + common + owned_calls(get_article) + '\\n' + owned_calls(fetch_article) + '\\n' + title_extension + '}\\n'\n",
+      "after": "    normalize_image = extract(article, 'String?.normalizeImageUrl', article_path)\n    model_start = article.index('data class ArticleDetailUiModel(')\n    model_open = masked(article).index('(', model_start)\n    model_end = balanced(masked(article), model_open)\n    model = article[model_start:model_end]\n    records.append(dict(source=article_path, name='ArticleDetailUiModel', startLine=article[:model_start].count('\\n')+1, endLine=article[:model_end].count('\\n')+1, sha256LfUtf8=digest(model)))\n    projection = '    suspend fun getArticleDetail(articleId:Long):Result<Pair<String,List<ArticleContentBlock>>> = getArticleUiDetail(articleId).map { it.title to it.blocks }\\n'\n    article_helper = '// GENERATED complete original Article detail algorithm/model; existing Pair consumer is a projection.\\n// Original: ' + article_path + '\\n// Original LF SHA-256: ' + digest(article) + '\\n' + imports + 'import com.android.purebilibili.core.util.FormatUtils\\n' + model + '\\ninternal class DesktopDynamicDetailArticleProtocol(\\n    private val articleApi: ArticleApi,\\n    private val dynamicApi: DynamicApi,\\n    private val signDetailParams: suspend (Map<String,String>) -> Map<String,String>,\\n    private val assertOwner: () -> Unit,\\n    private val onArticleViewed: (suspend (Long) -> Unit)?,\\n) {\\n' + common + projection + owned_calls(get_article) + '\\n' + owned_calls(fetch_article) + '\\n' + original_extension + '\\n' + normalize_image + '\\n}\\n'\n"
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "snapshot": 53,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "diagnosticBaselinesMounted": false,
+  "JDWPEnabled": false,
+  "originalEntryFullscreenAccepted": true,
+  "stableOriginalControlFullscreenAccepted": true,
+  "realSkyMousePairs": 6,
+  "checks": [
+    {
+      "name": "Unchanged full original renderer owns exact local task and actual native first frame",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual original landscape entry applies real fixture Window fullscreen placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Original exit fullscreen control receives real HWND messages and changes original local state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Stable original native fullscreen control applies actual placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Native HWND delivery reaches original next-episode action and exact current manager task",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual Windows SMTC GetForWindow is available on fixture-owned HWND",
+      "passed": true,
+      "details": {
+        "error": ""
+      }
+    },
+    {
+      "name": "Same product media adapter publishes original title/artist/bvid and exact current queue",
+      "passed": true,
+      "details": {
+        "nativeTitle": "Offline Native 2",
+        "nativePlaybackStatus": 4
+      }
+    },
+    {
+      "name": "Injected existing source command callback with empty retained next target preserves source",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Injected source callback seeks same actual native owner",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual existing PiP owns same Canvas while main shaped carrier is excluded",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual PiP native title and queue controls use current offline metadata",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "PiP restore returns sole Canvas and original foreground without changing native source token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Retired fixture epoch rejects injected seek/queue command for still-current native token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Original disposal restores current actual Windows chrome/client theme and clears only owned media",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Fixture performed no HTTP, account login or chooser operation",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "assertions": 15,
+  "passedChecks": 15,
+  "failedChecks": 0,
+  "requestedScopeFullyAccepted": false,
+  "layoutAcceptedByRawGeometryAlone": false,
+  "rootVisualObservation": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\root-visual-observation.json",
+    "sha256Bytes": "aa02827ea89fcad36ce38bf084770c73324f1255e68e1a923ac151dfa7f9a2aa",
+    "size": 2600
+  },
+  "rootVisualObservationSource": {
+    "path": "work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\native53-root-observation.json",
+    "sha256Bytes": "aa02827ea89fcad36ce38bf084770c73324f1255e68e1a923ac151dfa7f9a2aa",
+    "size": 2600
+  },
+  "layoutAcceptanceBoundary": "Root visual receipt accepts observed normal-window geometry after both exits and observed full-screen state in this standalone fixture; task-next remount geometry is separate and not claimed accepted.",
+  "SMTCFailedChecks": [],
+  "SMTCUnavailableCause": null,
+  "PiPAndSMTCCommandScopeCompleted": true,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "externalF11Accepted": false,
+  "arbitraryRouteDisposalPlacementRestorationAccepted": false
+}

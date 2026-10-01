@@ -1,0 +1,114 @@
+package com.bilipai.desktop.ui
+
+import com.android.purebilibili.core.network.*
+import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.repository.*
+import com.android.purebilibili.feature.article.*
+import com.bilipai.desktop.data.*
+import kotlinx.coroutines.*
+import kotlinx.serialization.json.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ResponseBody.Companion.toResponseBody
+import java.nio.file.*
+import java.util.concurrent.*
+import java.util.concurrent.atomic.AtomicReference
+
+private var assertions = 0
+private fun verify(ok: Boolean, message: String) { check(ok) { message }; assertions++; println("PASS $message") }
+private data class Hold(val started: CountDownLatch = CountDownLatch(1), val release: CountDownLatch = CountDownLatch(1))
+
+// Actual original Retrofit interfaces, serializers, shared SessionStore/Call.Factory and
+// canonical nine-field Article protocol. The terminal interceptor never chain.proceed().
+fun main(args: Array<String>): Unit = runBlocking {
+    val directory = Path.of(args[0]); Files.createDirectories(directory)
+    val sessions = DesktopSessionStore(directory.resolve("never-persisted.json"), persistent = false)
+    fun credentials(label: String) = sessions.saveAccount(mapOf("SESSDATA" to "synthetic-$label", "bili_jct" to "synthetic-csrf"), AccountSummary(501, "Fixture", ""))
+    credentials("one")
+    val repository = DesktopRepository(sessions)
+    val calls = CopyOnWriteArrayList<Request>()
+    val phase = AtomicReference("rich")
+    val hold = AtomicReference<Hold?>(null)
+    val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
+    fun article(): String {
+        val fallback = phase.get() == "fallback"
+        return json.encodeToString(ArticleDetailResponse.serializer(), ArticleDetailResponse(data = ArticleViewData(
+            id = 42, title = if (fallback) "" else "Original title", summary = if (fallback) "" else "Original summary",
+            author = ArticleAuthor(701, "Original author", " http://fixture.invalid/face.png "),
+            publishTime = 1_700_000_000, bannerUrl = if (fallback) " " else " //fixture.invalid/banner.png ",
+            originImageUrls = listOf(" http://fixture.invalid/origin.png "), imageUrls = listOf("https://fixture.invalid/last.png"),
+            dynamicId = if (fallback) "" else " opus-42 ", opus = if (fallback) ArticleOpus(title = "Original opus title") else null,
+            content = "<h2>Heading</h2><p>Original paragraph.</p><blockquote>Quote</blockquote><ul><li>One</li><li>Two</li></ul><pre><code>Code</code></pre><img src=\"//fixture.invalid/content.png\" width=\"600\" height=\"400\"/>"
+        )))
+    }
+    fun opus(): String = """{"code":0,"data":{"item":{"id_str":"opus-42","type":"DYNAMIC_TYPE_DRAW","modules":[{"module_dynamic":{"major":{"type":"MAJOR_TYPE_OPUS","opus":{"summary":{"text":"preview"}}}}},{"module_type":"MODULE_TYPE_CONTENT","module_content":{"paragraphs":[{"para_type":1,"text":{"nodes":[{"word":{"words":"${"Richer original Opus text ".repeat(60)}"}}]}}]}}]}}}"""
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+        val request = chain.request(); calls += request
+        if (request.url.encodedPath == "/x/article/view") hold.getAndSet(null)?.let { it.started.countDown(); check(it.release.await(10, TimeUnit.SECONDS)) }
+        val body = when (request.url.encodedPath) {
+            "/x/web-interface/nav" -> """{"code":0,"data":{"wbi_img":{"img_url":"https://fixture.invalid/7cd084941338484aae1ad9425b84077c.png","sub_url":"https://fixture.invalid/4932caff0ff746eab6f01bf08b70ac45.png"}}}"""
+            "/x/article/view" -> if (phase.get() == "missing") """{"code":-404,"message":"Synthetic unavailable"}""" else article()
+            "/x/polymer/web-dynamic/v1/opus/detail" -> if (phase.get() == "opusFailure") """{"code":-400}""" else opus()
+            "/x/v2/history/report" -> if (phase.get() == "historyFailure") """{"code":-400,"message":"Synthetic history failure"}""" else """{"code":0}"""
+            else -> error("Unexpected synthetic API path: ${request.url.encodedPath}; no network fallback")
+        }
+        Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("Synthetic").body(body.toResponseBody("application/json".toMediaType())).build()
+    }.build()
+    repository.javaClass.getDeclaredField("client").apply { isAccessible = true }.set(repository, terminal)
+    var privacy = false
+    fun fixture(): Triple<CoroutineScope, DesktopHomeRetainedGate, DesktopOriginalArticleBindings> {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        val gate = DesktopHomeRetainedGate(sessions, checkNotNull(sessions.dynamicCacheOwner()), { repository.sessionEpoch }, { repository.account.value?.mid }, { scope.isActive }, scope)
+        return Triple(scope, gate, desktopOriginalArticleBindings(repository, gate, scope) { privacy })
+    }
+    val (scope, gate, binding) = fixture()
+    try {
+        val model = binding.load(42).getOrThrow()
+        verify(model.articleId == 42L && model.title == "Original title" && model.summary == "Original summary" && model.authorName == "Original author" && model.authorMid == 701L && model.authorFace == "https://fixture.invalid/face.png" && model.publishTime == FormatUtils.formatPrecisePublishTime(1_700_000_000) && model.bannerUrl == "https://fixture.invalid/banner.png" && model.blocks.isNotEmpty(), "all nine original UI fields survive DTO conversion and normalized URLs")
+        verify(model.blocks.filterIsInstance<ArticleContentBlock.Paragraph>().single().text == "Richer original Opus text ".repeat(60).trim(), "original richer-block score selects complete Opus content without replacing metadata")
+        val view = calls.single { it.url.encodedPath == "/x/article/view" }.url
+        val op = calls.single { it.url.encodedPath.endsWith("/opus/detail") }.url
+        verify(view.queryParameter("id") == "42" && view.queryParameter("gaia_source") == "main_web" && view.queryParameter("web_location") == "333.976" && !view.queryParameter("w_rid").isNullOrBlank() && !view.queryParameter("wts").isNullOrBlank(), "original Article fields use same owned API and actual WBI signing")
+        verify(op.queryParameter("id") == "opus-42" && op.queryParameter("timezone_offset") == "-480" && op.queryParameter("features") == OPUS_DETAIL_FEATURES, "original secondary Opus request trims ID and retains complete feature flags")
+        val report = calls.single { it.url.encodedPath == "/x/v2/history/report" }.body as FormBody
+        val fields = (0 until report.size).associate { report.name(it) to report.value(it) }
+        verify(fields == mapOf("aid" to "42", "type" to "5", "csrf" to "synthetic-csrf"), "existing original History consumer reports loaded article identity and same-session CSRF")
+        verify(calls.all { it.header("Cookie")?.contains("SESSDATA=synthetic-one") == true }, "all actual application requests retain existing captured SessionStore credentials")
+        phase.set("historyFailure"); verify(binding.load(42).isSuccess, "original history failure is best effort and preserves successful detail")
+        privacy = true; val reportsBefore = calls.count { it.url.encodedPath == "/x/v2/history/report" }
+        verify(binding.load(42).isSuccess && calls.count { it.url.encodedPath == "/x/v2/history/report" } == reportsBefore, "same original privacy consumer suppresses history transport")
+        privacy = false; phase.set("fallback")
+        val fallback = binding.load(42).getOrThrow()
+        verify(fallback.title == "Original opus title" && fallback.summary == "Original paragraph." && fallback.bannerUrl == "https://fixture.invalid/origin.png", "original title summary and banner fallback chains remain intact")
+        verify(fallback.blocks.any { it is ArticleContentBlock.Heading } && fallback.blocks.any { it is ArticleContentBlock.Quote } && fallback.blocks.any { it is ArticleContentBlock.ListBlock } && fallback.blocks.any { it is ArticleContentBlock.Code } && fallback.blocks.any { it is ArticleContentBlock.Image }, "canonical parser retains original semantic rich blocks and images")
+        phase.set("opusFailure"); verify(binding.load(42).getOrThrow().blocks.any { it is ArticleContentBlock.Heading }, "secondary Opus failure keeps original Article view body")
+        phase.set("missing"); verify(binding.load(42).exceptionOrNull() is IllegalStateException, "original API failure returns an owned UI failure without success history")
+        val count = calls.size; verify(binding.load(0).exceptionOrNull() is IllegalArgumentException && calls.size == count, "invalid ID performs no API or history request")
+        phase.set("rich")
+        suspend fun retiredLate(closeScope: Boolean) {
+            val held = Hold(); hold.set(held); val oldReports = calls.count { it.url.encodedPath == "/x/v2/history/report" }
+            val pending = async(Dispatchers.Default) { binding.load(42) }
+            verify(withContext(Dispatchers.IO) { held.started.await(10, TimeUnit.SECONDS) }, "delayed original Article terminal entered before ${if (closeScope) "scope close" else "epoch renewal"}")
+            if (closeScope) scope.cancel() else credentials("renewed")
+            held.release.countDown()
+            verify(runCatching { pending.await() }.exceptionOrNull() is kotlinx.coroutines.CancellationException && calls.count { it.url.encodedPath == "/x/v2/history/report" } == oldReports, "retired ${if (closeScope) "scope" else "same-MID epoch"} rejects late model and history callback")
+        }
+        retiredLate(false)
+        val before = calls.size
+        verify(runCatching { binding.load(42) }.exceptionOrNull() is kotlinx.coroutines.CancellationException && calls.size == before, "retired bindings reject admission before any subsequent API")
+        val (nextScope, nextGate, nextBinding) = fixture()
+        try {
+            val held = Hold(); hold.set(held); val oldReports = calls.count { it.url.encodedPath == "/x/v2/history/report" }
+            val pending = async(Dispatchers.Default) { nextBinding.load(42) }
+            verify(withContext(Dispatchers.IO) { held.started.await(10, TimeUnit.SECONDS) }, "new same-MID owner uses renewed graph before delayed close")
+            nextScope.cancel(); held.release.countDown()
+            verify(runCatching { pending.await() }.exceptionOrNull() is kotlinx.coroutines.CancellationException && calls.count { it.url.encodedPath == "/x/v2/history/report" } == oldReports, "closed page scope rejects late source and best-effort callback")
+        } finally { nextGate.closeAndJoin(); nextScope.cancel() }
+        verify(!Files.exists(directory.resolve("never-persisted.json")), "synthetic credentials are never persisted to user account storage")
+        println("ORIGIN candidateProtocol=" + DesktopDynamicDetailArticleProtocol::class.java.protectionDomain.codeSource.location)
+        println("ORIGIN actualDTO=" + ArticleViewData::class.java.protectionDomain.codeSource.location)
+        println("ORIGIN actualSession=" + DesktopSessionStore::class.java.protectionDomain.codeSource.location)
+        println("RESULT assertions=$assertions groups=1 prepared=true MainRuntimeAccepted=false sockets=false GUI=false")
+    } finally { hold.getAndSet(null)?.release?.countDown(); gate.closeAndJoin(); scope.cancel(); terminal.dispatcher.executorService.shutdown(); terminal.connectionPool.evictAll() }
+}

@@ -1,0 +1,22 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+PASS Actual original landscape entry applies real fixture Window fullscreen placement
+WAITING_ROOT_SKY step=1 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-1.done
+PASS Original exit fullscreen control receives real HWND messages and changes original local state
+WAITING_ROOT_SKY step=2 control=全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-2.done
+PASS Stable original native fullscreen control applies actual placement
+WAITING_ROOT_SKY step=3 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-3.done
+WAITING_ROOT_SKY step=4 control=下一集 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-4.done
+PASS Native HWND delivery reaches original next-episode action and exact current manager task
+PASS Actual Windows SMTC GetForWindow is available on fixture-owned HWND
+PASS Same product media adapter publishes original title/artist/bvid and exact current queue
+PASS Injected existing source command callback with empty retained next target preserves source
+PASS Injected source callback seeks same actual native owner
+WAITING_ROOT_SKY step=5 control=浮窗 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-5.done
+PASS Actual existing PiP owns same Canvas while main shaped carrier is excluded
+PASS Actual PiP native title and queue controls use current offline metadata
+WAITING_ROOT_SKY step=6 control=返回主窗口 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof51\runs\actual53-01-normal\fixture-owned-runtime\external-input-6.done
+PASS PiP restore returns sole Canvas and original foreground without changing native source token
+PASS Retired fixture epoch rejects injected seek/queue command for still-current native token
+PASS Original disposal restores current actual Windows chrome/client theme and clears only owned media
+PASS Fixture performed no HTTP, account login or chooser operation
+OFFLINE_NATIVE_OBSERVATIONS_COMPLETED

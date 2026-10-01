@@ -1,0 +1,38 @@
+{
+  "kind": "additive resource copies only",
+  "payloads": [
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ksoup-html-jvm-0.6.0-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-html-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ksoup-entities-jvm-0.6.0-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-entities-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/markdown-jvm-0.7.3-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\markdown-jvm-0.7.3-LICENSE.txt",
+      "sha256Bytes": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+      "size": 11325
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ATTRIBUTIONS.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ATTRIBUTIONS.txt",
+      "sha256Bytes": "b3454386c3661ad3326e935fa5567bc690d81d6da15707aa2c868c2ab8e8c2b1",
+      "size": 2785
+    }
+  ],
+  "requiredExistingDistributionResourceRoot": "desktop/src/main/resources",
+  "forbidden": "No runtime CP change, dependency rebuild, Android source or registry modification.",
+  "licenseEvidenceVersion": "actual52 101 CP; four binary hashes fixed; Root may integrate into later unchanged-library cohort."
+}

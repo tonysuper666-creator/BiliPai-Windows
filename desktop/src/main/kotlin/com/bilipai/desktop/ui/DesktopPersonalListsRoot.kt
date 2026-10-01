@@ -51,6 +51,10 @@ internal class DesktopPersonalListsRoot(
     }
     private val privacy = privacyModeEnabled
     private val onFeedback = feedback
+    fun articleBindings(leafScope: CoroutineScope): DesktopOriginalArticleBindings {
+        assertOwned()
+        return desktopOriginalArticleBindings(repository, gate, leafScope, privacy)
+    }
     private fun environment(entry: DesktopPersonalListEntry): DesktopFavoriteEnvironment =
         environment(entry.scope, entry::owns, entry::assertOwned, entry::commit)
     private fun environment(entryScope: CoroutineScope, owned: () -> Boolean,

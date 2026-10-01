@@ -88,7 +88,11 @@ class WindowsMediaSession(
                 snapshot.get()?.let(native::update)
             }
         } catch (failure: Throwable) {
-            if (!closed.get()) mutableStatus.value = WindowsMediaSessionStatus(error = failure.message ?: "Windows media controls failed")
+            if (!closed.get()) {
+                java.util.logging.Logger.getLogger("BiliPai.WindowsMediaSession")
+                    .log(java.util.logging.Level.WARNING, "Windows media controls initialization or publication failed", failure)
+                mutableStatus.value = WindowsMediaSessionStatus(error = failure.toString())
+            }
         } finally {
             runCatching { resources?.close() }
             if (initialized) WinRt.api.RoUninitialize()
@@ -263,8 +267,8 @@ class WindowsMediaSession(
         fun WindowsCreateString(value: WString, length: Int, result: PointerByReference): Int
         fun WindowsDeleteString(value: Pointer): Int
         fun WindowsGetStringRawBuffer(value: Pointer?, length: IntByReference): Pointer?
-        fun RoGetActivationFactory(name: Pointer, iid: Pointer, result: PointerByReference): Int
-        fun RoActivateInstance(name: Pointer, result: PointerByReference): Int
+        fun RoGetActivationFactory(name: Pointer?, iid: Pointer, result: PointerByReference): Int
+        fun RoActivateInstance(name: Pointer?, result: PointerByReference): Int
         companion object { val api: WinRt by lazy { Native.load("combase", WinRt::class.java) } }
     }
 
@@ -294,11 +298,11 @@ class WindowsMediaSession(
             val result = PointerByReference(); checkHr(call(instance, slot, result), operation)
             return requireNotNull(result.value)
         }
-        private inline fun <T> withString(value: String, block: (Pointer) -> T): T {
+        private inline fun <T> withString(value: String, block: (Pointer?) -> T): T {
             val result = PointerByReference()
             checkHr(WinRt.api.WindowsCreateString(WString(value), value.length, result), "WindowsCreateString")
             // The empty HSTRING is represented by null, which is legal for Windows string APIs.
-            val string = result.value ?: Pointer.NULL
+            val string = result.value
             return try { block(string) } finally { if (result.value != null) WinRt.api.WindowsDeleteString(result.value) }
         }
         private fun putString(instance: Pointer, slot: Int, value: String, operation: String) {

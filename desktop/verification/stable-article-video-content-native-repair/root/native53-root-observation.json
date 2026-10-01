@@ -1,0 +1,29 @@
+{
+  "actualSnapshot": 53,
+  "orderedRuntimeEntries": 101,
+  "productionOverrides": 0,
+  "inputApi": "@oai/sky",
+  "uniqueWindowTitle": "BiliPai fixture-owned full Offline native acceptance",
+  "actions": [
+    {"step": 1, "originalControl": "exit fullscreen", "screenshotCoordinateLogical": [2528, 1412], "clickedAndImmediatelyRefreshed": true},
+    {"step": 2, "originalControl": "enter fullscreen", "screenshotCoordinateLogical": [854, 556], "clickedAndImmediatelyRefreshed": true},
+    {"step": 3, "originalControl": "exit fullscreen", "screenshotCoordinateLogical": [2518, 1406], "clickedAndImmediatelyRefreshed": true},
+    {"step": 4, "originalControl": "next episode", "screenshotCoordinateLogical": [156, 508], "clickedAndImmediatelyRefreshed": true},
+    {"step": 5, "originalControl": "picture in picture", "screenshotCoordinateLogical": [840, 83], "clickedAndImmediatelyRefreshed": true},
+    {"step": 6, "originalControl": "return to main", "screenshotCoordinateLogical": [830, 112], "clickedAndImmediatelyRefreshed": true}
+  ],
+  "visualNormalWindowAlignmentAfterBothExits": "PASS_OBSERVED",
+  "normalWindowObservation": "Normal Main contains the original player and shaped controls after both fullscreen exits, with aligned 900x620 outer and 886x584 popup helper captures.",
+  "visualFirstFullscreenAlignment": "PASS_OBSERVED",
+  "visualReenteredFullscreenAlignment": "FAIL_OBSERVED",
+  "fullscreenFailure": "Settled re-entered fullscreen shows narrow borders and an inset player. Recorded native Main window/client is3840x2160 while actual AWT anchor remains2546x1404 at7,30, consistent with retained normal insets. This observed failure is distinct from52's passing fullscreen view.",
+  "pictureInPictureVisualAcceptance": "NOT_INDEPENDENTLY_OBSERVED",
+  "pictureInPictureObservation": "Root clicked the original floating action and observed the Main black video region with its original return button, then clicked return. The fixture owns the separate native PiP handoff/restore assertions; Root did not independently capture the PiP window contents.",
+  "nativeFixtureAssertions": {"status": "PASS", "count": 15, "realSkyMousePairs": 6},
+  "nativeSMTCPublicationAccepted": true,
+  "OSSMTCButtonAccepted": false,
+  "actualMainShellAccepted": false,
+  "realAccountAccepted": false,
+  "newExeDeployed": false,
+  "scope": "Original Offline renderer on the actual53 product graph, one observed150% display. Callback tests preserve current source and epoch ownership but do not represent OS-generated media events. All requested functional/visual Main Shell scope remains unaccepted."
+}

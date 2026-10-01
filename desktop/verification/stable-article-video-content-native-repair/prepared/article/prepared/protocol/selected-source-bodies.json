@@ -1,0 +1,72 @@
+[
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "name": "getDynamicDetail",
+    "startLine": 277,
+    "endLine": 350,
+    "sha256LfUtf8": "a5ff61adec1f886d0541d2468cc7829c72c2314ec2aa0fc351200eb60754419c"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "name": "signDynamicWbi",
+    "startLine": 400,
+    "endLine": 414,
+    "sha256LfUtf8": "2fd2145a0ca7f98dd4b72dd7ef7699ef965ca353e4feaccd42d239dbd34efc71"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "name": "fetchWebDetailItem",
+    "startLine": 352,
+    "endLine": 365,
+    "sha256LfUtf8": "42773b6aecf65207f2bd656018e50513bd494a434c206f9f98e6b3ff8318a9a8"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "name": "fetchOpusDetail",
+    "startLine": 372,
+    "endLine": 398,
+    "sha256LfUtf8": "71470e4fd7b408eb3ff8ee0368db5d90723fda4ffaa8b4321dfc1cfc375fe6a8"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/DynamicRepository.kt",
+    "name": "fetchDesktopDetailItem",
+    "startLine": 416,
+    "endLine": 421,
+    "sha256LfUtf8": "651e9021e4681d409284985219c9addd12aaedb7422d5fd2c07675487c68bc96"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "name": "getArticleDetail",
+    "startLine": 31,
+    "endLine": 61,
+    "sha256LfUtf8": "a0ee8cc1fa1f1df02e4703dbf6eb21f0ff3546dbd01a32459d03962db76e528b"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "name": "fetchOpusArticleBlocks",
+    "startLine": 63,
+    "endLine": 81,
+    "sha256LfUtf8": "d3599a6f2c1f497ebff853247f3986154ef639291b1c22db3da717dfc3715a96"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "name": "ArticleViewData.toUiModel",
+    "startLine": 83,
+    "endLine": 117,
+    "sha256LfUtf8": "8ec03c6c3a31f9728a2942a488d581146a3783c9d7d08765331b7d97944dee5c"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "name": "String?.normalizeImageUrl",
+    "startLine": 135,
+    "endLine": 143,
+    "sha256LfUtf8": "79f69a4ddb3de0d9a43bd0f4b8b9a15e74694d97c0e11193d1941d6949472744"
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+    "name": "ArticleDetailUiModel",
+    "startLine": 15,
+    "endLine": 25,
+    "sha256LfUtf8": "1a7c0a9b7f90ca840ac71fb9f5c22ee0ebb09d4c9b688704be7cc0b66a4de62f"
+  }
+]

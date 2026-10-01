@@ -1,0 +1,32 @@
+{
+  "copies": [
+    {
+      "source": "prepared/tools/extract-upstream-article-detail.py",
+      "target": "desktop/tools/extract-upstream-article-detail.py",
+      "sha256Bytes": "b7c86811b011a8c4923d5c4e2232286d560cb24e8368f3c41bedddd9f8ddea56"
+    },
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalArticleBindings.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleBindings.kt",
+      "sha256Bytes": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92"
+    }
+  ],
+  "patches": [
+    {
+      "path": "protocol-producer.patch",
+      "sha256Bytes": "d85856b1c696f629ff60e88a9bdbe2924e5d8e16e1409b714bc66d5888267806",
+      "base": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce",
+      "desired": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937"
+    }
+  ],
+  "registryUnion": "registry-delta.json",
+  "gradleSnippet": "gradle-snippet.kts",
+  "rootLeafRecipe": "ROOT-INTEGRATION.md",
+  "doNotInstall": [
+    "prepared/selected task-only whole direct closure",
+    "prepared/protocol outputs or whole producer replacement",
+    "task class/JAR/DLL/temp Stores",
+    "audit replay/registry overlays",
+    "old failure payloads"
+  ]
+}

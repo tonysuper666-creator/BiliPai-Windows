@@ -1,0 +1,18 @@
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:67:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:68:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:69:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:276:25: error: unresolved reference 'rememberRichTextState'.
+    val richTextState = rememberRichTextState()
+                        ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:333:17: error: unresolved reference 'BasicRichTextEditor'.
+                BasicRichTextEditor(
+                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\02\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:347:17: error: unresolved reference 'RichTextEditor'.
+                RichTextEditor(
+                ^^^^^^^^^^^^^^

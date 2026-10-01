@@ -1,0 +1,186 @@
+{
+  "scope": "four newly installed Content dependency JARs only; raw license material, no product writes",
+  "actualSnapshot": 52,
+  "manifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-52\\manifest.json",
+    "sha256Bytes": "1ea937e921f1d190b20018066509d1cb36051ea9f6eff54d974f7013794e532c",
+    "size": 145369
+  },
+  "orderedRuntimeCp": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-52\\ordered-runtime-cp.json",
+    "sha256Bytes": "7690288dfb690dbdaedb8249050bb05a4af32826b37e6a17465970f4f14bf304",
+    "size": 38191
+  },
+  "dependencyEvidenceManifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\dependency-manifest.json",
+    "sha256Bytes": "3bdbc3854381d3ba249aa85e45fcc5dd6c900545eebdf5aee3075bf149fce6a3",
+    "size": 8749
+  },
+  "dependencies": [
+    {
+      "coordinate": "com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14",
+      "runtimeJar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.richeditor\\richeditor-compose-desktop\\1.0.0-rc14\\b99a02a863fe5a4c779351d06234c6c849829b95\\richeditor-compose-desktop-1.0.0-rc14.jar",
+        "sha256Bytes": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb",
+        "size": 665369
+      },
+      "pomAndModule": [
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.pom",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.pom",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\richeditor-compose-desktop-1.0.0-rc14.pom",
+          "sha256Bytes": "059293795b8bae899e35966ac4801dedf016a8dec9d2ac5c4beabd7fb4f643d8",
+          "size": 3204
+        },
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.module",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/richeditor/richeditor-compose-desktop/1.0.0-rc14/richeditor-compose-desktop-1.0.0-rc14.module",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\richeditor-compose-desktop-1.0.0-rc14.module",
+          "sha256Bytes": "b27a677ae28f89e3cd2c8b038d5c16ee6e55b876205e3e3d24ce822d142da768",
+          "size": 4756
+        }
+      ],
+      "jarLicenseNoticeEntries": [],
+      "repository": "MohamedRejeb/Compose-Rich-Editor",
+      "tag": "v1.0.0-rc14",
+      "commit": "afc44f915e2eccab0a63823c2840fe3d52f56473"
+    },
+    {
+      "coordinate": "com.mohamedrejeb.ksoup:ksoup-html-jvm:0.6.0",
+      "runtimeJar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-html-jvm\\0.6.0\\a6515ca740e81b8e051070b55d31293058e185b8\\ksoup-html-jvm-0.6.0.jar",
+        "sha256Bytes": "396d52c83d11708634f4a3cf848de194d7a0e2cab8e4106a59325af8514681b6",
+        "size": 104655
+      },
+      "pomAndModule": [
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-html-jvm\\0.6.0\\ba885d1263ef15daf5bff2a7cc2b7d0e3684f1b0\\ksoup-html-jvm-0.6.0.pom",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/ksoup/ksoup-html-jvm/0.6.0/ksoup-html-jvm-0.6.0.pom",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\ksoup-html-jvm-0.6.0.pom",
+          "sha256Bytes": "2af7fbe0d6395326d00242a34a0026a8d98522f6bcad9c3f5ba9f11db99a57b3",
+          "size": 1934
+        },
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-html-jvm\\0.6.0\\bf1696809a3abf2df042b697aa77d4abd07ffd1d\\ksoup-html-jvm-0.6.0.module",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/ksoup/ksoup-html-jvm/0.6.0/ksoup-html-jvm-0.6.0.module",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\ksoup-html-jvm-0.6.0.module",
+          "sha256Bytes": "22e49ebd27a2092c4a25d69c8ee256e4a1f566557c4d1bd2776efa43c58d89dc",
+          "size": 3565
+        }
+      ],
+      "jarLicenseNoticeEntries": [],
+      "repository": "MohamedRejeb/Ksoup",
+      "tag": "v0.6.0",
+      "commit": "8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d"
+    },
+    {
+      "coordinate": "com.mohamedrejeb.ksoup:ksoup-entities-jvm:0.6.0",
+      "runtimeJar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-entities-jvm\\0.6.0\\d856b3b5344ac92ee74e0498d8fe480022bcc53\\ksoup-entities-jvm-0.6.0.jar",
+        "sha256Bytes": "6c41eb42e4f7dd27b7a68f234b74ea802027e9ddb523db09376902ba23259185",
+        "size": 69336
+      },
+      "pomAndModule": [
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-entities-jvm\\0.6.0\\3ab9b258a712a6f24741be1e1811eec0e2fc8c8b\\ksoup-entities-jvm-0.6.0.pom",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/ksoup/ksoup-entities-jvm/0.6.0/ksoup-entities-jvm-0.6.0.pom",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\ksoup-entities-jvm-0.6.0.pom",
+          "sha256Bytes": "df610397a0a158426ae445672687025d4bdb945878ed9892434d015f84123b8d",
+          "size": 1745
+        },
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\com.mohamedrejeb.ksoup\\ksoup-entities-jvm\\0.6.0\\6e9eab7dfc053312101b41c2e3263d6747637751\\ksoup-entities-jvm-0.6.0.module",
+          "url": "https://repo.maven.apache.org/maven2/com/mohamedrejeb/ksoup/ksoup-entities-jvm/0.6.0/ksoup-entities-jvm-0.6.0.module",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\ksoup-entities-jvm-0.6.0.module",
+          "sha256Bytes": "4ca2726766d4a6f8aa87899ca7d4e59c4215a7940ec5f1082f9a3aae897791e8",
+          "size": 3428
+        }
+      ],
+      "jarLicenseNoticeEntries": [],
+      "repository": "MohamedRejeb/Ksoup",
+      "tag": "v0.6.0",
+      "commit": "8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d"
+    },
+    {
+      "coordinate": "org.jetbrains:markdown-jvm:0.7.3",
+      "runtimeJar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\markdown-jvm\\0.7.3\\83df25f4bb0a51e979774c02530824af8ec6b03e\\markdown-jvm-0.7.3.jar",
+        "sha256Bytes": "893abb31f15b6216f74dc704c0c6bf1e567dcf2b62cca29cf42e4f53153637ac",
+        "size": 548313
+      },
+      "pomAndModule": [
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\markdown-jvm\\0.7.3\\de05ba2e35000fad6f79c179c7063ef25dd16ee8\\markdown-jvm-0.7.3.pom",
+          "url": "https://repo.maven.apache.org/maven2/org/jetbrains/markdown-jvm/0.7.3/markdown-jvm-0.7.3.pom",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\markdown-jvm\\markdown-jvm-0.7.3.pom",
+          "sha256Bytes": "acb9d157ffc7a64ee62be8edd9600d26b5db03270a74e8be53cd79fe0b26f3cd",
+          "size": 1743
+        },
+        {
+          "sourcePath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains\\markdown-jvm\\0.7.3\\59337ce0bbaff51015e0dbbd2b9fde40ee255e84\\markdown-jvm-0.7.3.module",
+          "url": "https://repo.maven.apache.org/maven2/org/jetbrains/markdown-jvm/0.7.3/markdown-jvm-0.7.3.module",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\markdown-jvm\\markdown-jvm-0.7.3.module",
+          "sha256Bytes": "7029b63c74964e5b4334308ee729e95b538da5ed6ac12b2e477d478572d02252",
+          "size": 3365
+        }
+      ],
+      "jarLicenseNoticeEntries": [],
+      "repository": "JetBrains/markdown",
+      "tag": null,
+      "commit": null
+    }
+  ],
+  "repositories": {
+    "MohamedRejeb/Compose-Rich-Editor": {
+      "commit": "afc44f915e2eccab0a63823c2840fe3d52f56473",
+      "sourceTreeUrl": "https://api.github.com/repos/MohamedRejeb/Compose-Rich-Editor/git/trees/afc44f915e2eccab0a63823c2840fe3d52f56473?recursive=1",
+      "licenseNoticePaths": [
+        "LICENSE"
+      ],
+      "versionAssociation": "release tag from ls-remote",
+      "rawFiles": [
+        {
+          "repositoryPath": "LICENSE",
+          "url": "https://raw.githubusercontent.com/MohamedRejeb/Compose-Rich-Editor/afc44f915e2eccab0a63823c2840fe3d52f56473/LICENSE",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\MohamedRejeb_Compose-Rich-Editor\\LICENSE",
+          "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+          "size": 11343
+        }
+      ]
+    },
+    "MohamedRejeb/Ksoup": {
+      "commit": "8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d",
+      "sourceTreeUrl": "https://api.github.com/repos/MohamedRejeb/Ksoup/git/trees/8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d?recursive=1",
+      "licenseNoticePaths": [
+        "LICENSE"
+      ],
+      "versionAssociation": "release tag from ls-remote",
+      "rawFiles": [
+        {
+          "repositoryPath": "LICENSE",
+          "url": "https://raw.githubusercontent.com/MohamedRejeb/Ksoup/8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d/LICENSE",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\MohamedRejeb_Ksoup\\LICENSE",
+          "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+          "size": 11343
+        }
+      ]
+    },
+    "JetBrains/markdown": {
+      "commit": "82b3d42b698b20b4604afb9a4e4fdb1df442b5e4",
+      "sourceTreeUrl": "https://api.github.com/repos/JetBrains/markdown/git/trees/82b3d42b698b20b4604afb9a4e4fdb1df442b5e4?recursive=1",
+      "licenseNoticePaths": [
+        "LICENSE"
+      ],
+      "versionAssociation": "POM names this repository; repository HEAD pinned for license evidence, not claimed artifact-source commit",
+      "rawFiles": [
+        {
+          "repositoryPath": "LICENSE",
+          "url": "https://raw.githubusercontent.com/JetBrains/markdown/82b3d42b698b20b4604afb9a4e4fdb1df442b5e4/LICENSE",
+          "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\JetBrains_markdown\\LICENSE",
+          "sha256Bytes": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+          "size": 11325
+        }
+      ]
+    }
+  }
+}

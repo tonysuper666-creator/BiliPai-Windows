@@ -1,0 +1,96 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:45:26: error: return type mismatch: expected 'String', actual 'JsonObject'.
+    fun opus(): String = buildJsonObject {
+                         ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:5: error: syntax error: Expecting ')'.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+    ^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:9: error: unresolved reference 'terminal'.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+        ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:18: error: syntax error: Expecting an element.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                 ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:30: error: syntax error: Expecting an element.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                             ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:41: error: syntax error: Expecting an element.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                                        ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:53: error: syntax error: Expecting an expression.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                                                    ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:55: error: unresolved reference 'addInterceptor'.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                                                      ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:60:72: error: cannot infer type for value parameter 'chain'. Specify it explicitly.
+    val terminal = repository.httpClient.newBuilder().addInterceptor { chain ->
+                                                                       ^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:61:29: error: unresolved reference 'request'.
+        val request = chain.request(); calls += request
+                            ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:72:99: error: unresolved reference 'terminal'.
+    repository.javaClass.getDeclaredField("client").apply { isAccessible = true }.set(repository, terminal)
+                                                                                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:81:29: error: suspension functions can only be called within coroutine body.
+        val model = binding.load(42).getOrThrow()
+                            ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:92:53: error: suspension functions can only be called within coroutine body.
+        phase.set("historyFailure"); verify(binding.load(42).isSuccess, "original history failure is best effort and preserves successful detail")
+                                                    ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:94:24: error: suspension functions can only be called within coroutine body.
+        verify(binding.load(42).isSuccess && calls.count { it.url.encodedPath == "/x/v2/history/report" } == reportsBefore, "same original privacy consumer suppresses history transport")
+                       ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:96:32: error: suspension functions can only be called within coroutine body.
+        val fallback = binding.load(42).getOrThrow()
+                               ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:99:50: error: suspension functions can only be called within coroutine body.
+        phase.set("opusFailure"); verify(binding.load(42).getOrThrow().blocks.any { it is ArticleContentBlock.Heading }, "secondary Opus failure keeps original Article view body")
+                                                 ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:100:46: error: suspension functions can only be called within coroutine body.
+        phase.set("missing"); verify(binding.load(42).exceptionOrNull() is IllegalStateException, "original API failure returns an owned UI failure without success history")
+                                             ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:101:48: error: suspension functions can only be called within coroutine body.
+        val count = calls.size; verify(binding.load(0).exceptionOrNull() is IllegalArgumentException && calls.size == count, "invalid ID performs no API or history request")
+                                               ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:109:73: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+            verify(runCatching { pending.await() }.exceptionOrNull() is CancellationException && calls.count { it.url.encodedPath == "/x/v2/history/report" } == oldReports, "retired ${if (closeScope) "scope" else "same-MID epoch"} rejects late model and history callback")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:111:9: error: suspension functions can only be called within coroutine body.
+        retiredLate(false)
+        ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:113:38: error: suspension functions can only be called within coroutine body.
+        verify(runCatching { binding.load(42) }.exceptionOrNull() is CancellationException && calls.size == before, "retired bindings reject admission before any subsequent API")
+                                     ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:113:70: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+        verify(runCatching { binding.load(42) }.exceptionOrNull() is CancellationException && calls.size == before, "retired bindings reject admission before any subsequent API")
+                                                                     ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:118:20: error: suspension functions can only be called within coroutine body.
+            verify(withContext(Dispatchers.IO) { held.started.await(10, TimeUnit.SECONDS) }, "new same-MID owner uses renewed graph before delayed close")
+                   ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:120:42: error: suspension functions can only be called within coroutine body.
+            verify(runCatching { pending.await() }.exceptionOrNull() is CancellationException && calls.count { it.url.encodedPath == "/x/v2/history/report" } == oldReports, "closed page scope rejects late source and best-effort callback")
+                                         ^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:120:73: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+            verify(runCatching { pending.await() }.exceptionOrNull() is CancellationException && calls.count { it.url.encodedPath == "/x/v2/history/report" } == oldReports, "closed page scope rejects late source and best-effort callback")
+                                                                        ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:121:30: error: suspension functions can only be called within coroutine body.
+        } finally { nextGate.closeAndJoin(); nextScope.cancel() }
+                             ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:127:66: error: suspension functions can only be called within coroutine body.
+    } finally { hold.getAndSet(null)?.release?.countDown(); gate.closeAndJoin(); scope.cancel(); terminal.dispatcher.executorService.shutdown(); terminal.connectionPool.evictAll() }
+                                                                 ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:127:98: error: unresolved reference 'terminal'.
+    } finally { hold.getAndSet(null)?.release?.countDown(); gate.closeAndJoin(); scope.cancel(); terminal.dispatcher.executorService.shutdown(); terminal.connectionPool.evictAll() }
+                                                                                                 ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:127:146: error: unresolved reference 'terminal'.
+    } finally { hold.getAndSet(null)?.release?.countDown(); gate.closeAndJoin(); scope.cancel(); terminal.dispatcher.executorService.shutdown(); terminal.connectionPool.evictAll() }
+                                                                                                                                                 ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\fixtures\ArticleFixture.kt:128:2: error: syntax error: Expecting '}'.
+}
+ ^

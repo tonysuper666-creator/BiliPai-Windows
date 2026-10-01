@@ -1,0 +1,421 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+  "sourceSha256LF": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+  "generatedSha256LF": "4ba98117cb2347e33219e4c582bb800028408ab8057f0b457597993cfea165f3",
+  "inverseExactOriginal": true,
+  "lineChanges": [
+    {
+      "tag": "replace",
+      "originalStart": 42,
+      "originalEnd": 44,
+      "generatedStart": 42,
+      "generatedEnd": 45,
+      "originalLines": [
+        "import androidx.compose.ui.platform.LocalConfiguration\n",
+        "import androidx.compose.ui.platform.LocalContext\n"
+      ],
+      "generatedLines": [
+        "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration\n",
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\n",
+        "import com.bilipai.desktop.ui.LocalDesktopOriginalVideoContentBindings\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 51,
+      "originalEnd": 52,
+      "generatedStart": 52,
+      "generatedEnd": 52,
+      "originalLines": [
+        "import com.android.purebilibili.core.util.ShareUtils\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 64,
+      "originalEnd": 65,
+      "generatedStart": 64,
+      "generatedEnd": 65,
+      "originalLines": [
+        "import com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "generatedLines": [
+        "import com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings as SettingsManager\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 486,
+      "originalEnd": 487,
+      "generatedStart": 486,
+      "generatedEnd": 487,
+      "originalLines": [
+        "    val onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,\n"
+      ],
+      "generatedLines": [
+        "    val onRelatedVideoClick: (String, Long, String?) -> Unit,\n"
+      ]
+    },
+    {
+      "tag": "insert",
+      "originalStart": 712,
+      "originalEnd": 712,
+      "generatedStart": 712,
+      "generatedEnd": 713,
+      "originalLines": [],
+      "generatedLines": [
+        "    val platform = LocalDesktopOriginalVideoContentBindings.current\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 713,
+      "originalEnd": 715,
+      "generatedStart": 714,
+      "generatedEnd": 715,
+      "originalLines": [
+        "        ShareUtils.shareText(\n",
+        "            context = context,\n"
+      ],
+      "generatedLines": [
+        "        platform.shareText(\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 721,
+      "originalEnd": 723,
+      "generatedStart": 721,
+      "generatedEnd": 722,
+      "originalLines": [
+        "            ),\n",
+        "            chooserTitle = \"分享视频笔记\"\n"
+      ],
+      "generatedLines": [
+        "            )\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1208,
+      "originalEnd": 1209,
+      "generatedStart": 1207,
+      "generatedEnd": 1209,
+      "originalLines": [
+        "                            buildVideoNavigationOptions(targetCid = episode.cid)\n"
+      ],
+      "generatedLines": [
+        "                            episode.cid,\n",
+        "                            null\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1312,
+      "originalEnd": 1313,
+      "generatedStart": 1312,
+      "generatedEnd": 1313,
+      "originalLines": [
+        "    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit,\n"
+      ],
+      "generatedLines": [
+        "    onRelatedVideoClick: (String, Long, String?) -> Unit,\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1433,
+      "originalEnd": 1438,
+      "generatedStart": 1433,
+      "generatedEnd": 1434,
+      "originalLines": [
+        "                        val navOptions = buildVideoNavigationOptions(\n",
+        "                            targetCid = video.cid,\n",
+        "                            coverUrl = video.pic\n",
+        "                        )\n",
+        "                        onRelatedVideoClick(video.bvid, navOptions)\n"
+      ],
+      "generatedLines": [
+        "                        onRelatedVideoClick(video.bvid, video.cid, video.pic)\n"
+      ]
+    },
+    {
+      "tag": "delete",
+      "originalStart": 1449,
+      "originalEnd": 1632,
+      "generatedStart": 1445,
+      "generatedEnd": 1445,
+      "originalLines": [
+        "@Composable\n",
+        "internal fun VideoCommentTab(\n",
+        "    listState: LazyListState,\n",
+        "    modifier: Modifier,\n",
+        "    info: ViewInfo,\n",
+        "    replies: List<ReplyItem>,\n",
+        "    replyCount: Int,\n",
+        "    emoteMap: Map<String, String>,\n",
+        "    isRepliesLoading: Boolean,\n",
+        "    isRepliesEnd: Boolean,\n",
+        "    voteCard: ReplyVoteCard?,\n",
+        "    videoTags: List<VideoTag>,\n",
+        "    onUpClick: (Long) -> Unit,\n",
+        "    onSubReplyClick: (ReplyItem, Long) -> Unit,\n",
+        "    onCommentReplyClick: (ReplyItem) -> Unit,\n",
+        "    onLoadMoreReplies: () -> Unit,\n",
+        "    onImagePreview: (List<String>, Int, ImagePreviewSourceAnchor?, ImagePreviewTextContent?) -> Unit,\n",
+        "    onTimestampClick: ((Long) -> Unit)?,\n",
+        "    contentPadding: PaddingValues,\n",
+        "    // [新增] 参数\n",
+        "    currentMid: Long,\n",
+        "    showUpFlag: Boolean,\n",
+        "    dissolvingIds: Set<Long>,\n",
+        "    onDeleteComment: (Long) -> Unit,\n",
+        "    onDissolveStart: (Long) -> Unit,\n",
+        "    // [新增] 点赞回调\n",
+        "    onCommentLike: (Long) -> Unit,\n",
+        "    onCommentHate: (Long) -> Unit,\n",
+        "    likedComments: Set<Long>,\n",
+        "    hatedComments: Set<Long>,\n",
+        "    onCommentUrlClick: (String) -> Unit,\n",
+        "    onReportComment: (Long, Int) -> Unit,\n",
+        "    onToggleTopComment: (ReplyItem) -> Unit,\n",
+        "    onCheckCommentFraud: (ReplyItem) -> Unit,\n",
+        "    showIdentityDecorations: Boolean,\n",
+        "    lightweightCommentRendering: Boolean,\n",
+        "    sortMode: CommentSortMode = CommentSortMode.HOT,\n",
+        "    onSortModeChange: (CommentSortMode) -> Unit = {},\n",
+        "    showNativeSortHeader: Boolean = false,\n",
+        "    showSortControlInHeader: Boolean = false,\n",
+        "    showHeader: Boolean = true,\n",
+        "    floatingHeaderContentPadding: Dp = 0.dp,\n",
+        "    onSearchClick: (() -> Unit)? = null,\n",
+        ") {\n",
+        "    val commentAppearance = rememberVideoCommentAppearance()\n",
+        "    val layoutDirection = androidx.compose.ui.platform.LocalLayoutDirection.current\n",
+        "    val shouldLoadMore by remember(\n",
+        "        listState,\n",
+        "        replies.size,\n",
+        "        replyCount,\n",
+        "        isRepliesLoading,\n",
+        "        isRepliesEnd\n",
+        "    ) {\n",
+        "        derivedStateOf {\n",
+        "            shouldLoadMoreVideoComments(\n",
+        "                lastVisibleItemIndex = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1,\n",
+        "                totalItemsCount = listState.layoutInfo.totalItemsCount,\n",
+        "                isLoading = isRepliesLoading,\n",
+        "                // 置顶/热评会额外插入列表，已渲染条数不能推断服务端分页已结束。\n",
+        "                isEnd = isRepliesEnd\n",
+        "            )\n",
+        "        }\n",
+        "    }\n",
+        "    LaunchedEffect(shouldLoadMore) {\n",
+        "        if (shouldLoadMore) {\n",
+        "            onLoadMoreReplies()\n",
+        "        }\n",
+        "    }\n",
+        "    Column(modifier = modifier.fillMaxSize()) {\n",
+        "        if (showHeader && showSortControlInHeader) {\n",
+        "            if (showNativeSortHeader) {\n",
+        "                CommentSortHeader(\n",
+        "                    count = replyCount,\n",
+        "                    sortMode = sortMode,\n",
+        "                    onSortModeChange = onSortModeChange,\n",
+        "                    onSearchClick = onSearchClick,\n",
+        "                )\n",
+        "            } else {\n",
+        "                CommentListHeader(\n",
+        "                    count = replyCount,\n",
+        "                    title = \"${sortMode.label}评论\",\n",
+        "                )\n",
+        "            }\n",
+        "        } else if (showHeader) {\n",
+        "            CommentListHeader(\n",
+        "                count = replyCount,\n",
+        "                title = \"${sortMode.label}评论\",\n",
+        "            )\n",
+        "        }\n",
+        "        Box(modifier = Modifier.weight(1f).fillMaxWidth()) {\n",
+        "            LazyColumn(\n",
+        "                state = listState,\n",
+        "                modifier = Modifier\n",
+        "                    .fillMaxSize(),\n",
+        "                contentPadding = PaddingValues(\n",
+        "                    start = contentPadding.calculateStartPadding(layoutDirection),\n",
+        "                    top = contentPadding.calculateTopPadding() + floatingHeaderContentPadding,\n",
+        "                    end = contentPadding.calculateEndPadding(layoutDirection),\n",
+        "                    bottom = contentPadding.calculateBottomPadding(),\n",
+        "                )\n",
+        "            ) {\n",
+        "            voteCard?.let { card ->\n",
+        "                item(key = \"inline_vote_${card.voteId}\") {\n",
+        "                    VideoCommentVoteCard(\n",
+        "                        card = card,\n",
+        "                        modifier = Modifier.fillMaxWidth().padding(12.dp),\n",
+        "                    )\n",
+        "                }\n",
+        "            }\n",
+        "            if (isRepliesLoading && replies.isEmpty()) {\n",
+        "                item {\n",
+        "                    com.android.purebilibili.core.ui.skeleton.CommentListColumnSkeleton()\n",
+        "                }\n",
+        "            } else if (replies.isEmpty() && voteCard == null) {\n",
+        "                item {\n",
+        "                    Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {\n",
+        "                        // replyCount 来自详情/游标 all_count：>0 却列表空 = 最热链路空成功，勿误报「暂无」\n",
+        "                        AppText(\n",
+        "                            text = if (replyCount > 0) {\n",
+        "                                \"评论暂时无法加载，可切换「最新」或稍后重试\"\n",
+        "                            } else {\n",
+        "                                \"暂无评论\"\n",
+        "                            },\n",
+        "                            color = commentAppearance.secondaryTextColor\n",
+        "                        )\n",
+        "                    }\n",
+        "                }\n",
+        "            } else {\n",
+        "                items(\n",
+        "                    items = replies,\n",
+        "                    key = { it.rpid },\n",
+        "                    contentType = { resolveReplyItemContentType(it) }\n",
+        "                ) { reply ->\n",
+        "                    // [新增] 使用 DissolvableVideoCard 包裹\n",
+        "                    com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(\n",
+        "                        isDissolving = reply.rpid in dissolvingIds,\n",
+        "                        onDissolveComplete = { onDeleteComment(reply.rpid) },\n",
+        "                        cardId = \"comment_${reply.rpid}\",\n",
+        "                        modifier = Modifier.padding(bottom = 1.dp) // 小间距防止裁剪\n",
+        "                    ) {\n",
+        "                        ReplyItemView(\n",
+        "                            showUpFlag = showUpFlag,\n",
+        "                            item = reply,\n",
+        "                            upMid = info.owner.mid,\n",
+        "                            emoteMap = emoteMap,\n",
+        "                            lightweightMode = lightweightCommentRendering,\n",
+        "                            showIdentityDecorations = showIdentityDecorations,\n",
+        "                            onClick = {},\n",
+        "                            onSubClick = onSubReplyClick,\n",
+        "                            onTimestampClick = onTimestampClick,\n",
+        "                            maxTimestampMs = info.pages.firstOrNull { it.cid == info.cid }?.duration?.times(1000L)\n",
+        "                                ?: info.pages.firstOrNull()?.duration?.times(1000L),\n",
+        "                            onImagePreview = { images, index, rect, textContent ->\n",
+        "                                onImagePreview(images, index, rect, textContent)\n",
+        "                            },\n",
+        "                            // [新增] 点赞事件\n",
+        "                            onLikeClick = { onCommentLike(reply.rpid) },\n",
+        "                            onHateClick = { onCommentHate(reply.rpid) },\n",
+        "                            onReplyClick = { onCommentReplyClick(reply) },\n",
+        "                            onReportClick = { reason -> onReportComment(reply.rpid, reason) },\n",
+        "                            canToggleTop = shouldShowReplyTopAction(\n",
+        "                                currentMid = currentMid,\n",
+        "                                upMid = info.owner.mid,\n",
+        "                                item = reply\n",
+        "                            ),\n",
+        "                            onToggleTopClick = { onToggleTopComment(reply) },\n",
+        "                            // [修复] 正确传递点赞状态 (API数据 或 本地乐观更新)\n",
+        "                            isLiked = reply.action == 1 || reply.rpid in likedComments,\n",
+        "                            isHated = reply.action == 2 || reply.rpid in hatedComments,\n",
+        "                            // [新增] 仅当评论 mid 与当前登录用户 mid 一致时显示删除按钮\n",
+        "                            onDeleteClick = if (currentMid > 0 && reply.mid == currentMid) {\n",
+        "                                { onDissolveStart(reply.rpid) }\n",
+        "                            } else null,\n",
+        "                            onCheckFraudClick = if (currentMid > 0 && reply.mid == currentMid) {\n",
+        "                                { onCheckCommentFraud(reply) }\n",
+        "                            } else null,\n",
+        "                            // [新增] URL 点击跳转\n",
+        "                            onUrlClick = onCommentUrlClick,\n",
+        "                            // [新增] 头像点击\n",
+        "                            onAvatarClick = { mid -> mid.toLongOrNull()?.let { onUpClick(it) } }\n",
+        "                        )\n",
+        "                    }\n",
+        "                }\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "delete",
+      "originalStart": 1633,
+      "originalEnd": 1655,
+      "generatedStart": 1446,
+      "generatedEnd": 1446,
+      "originalLines": [
+        "                // 加载更多\n",
+        "                item {\n",
+        "                    Box(\n",
+        "                        modifier = Modifier.fillMaxWidth().padding(16.dp),\n",
+        "                        contentAlignment = Alignment.Center\n",
+        "                    ) {\n",
+        "                        when {\n",
+        "                            isRepliesLoading -> AdaptiveLoadingIndicator()\n",
+        "                            isRepliesEnd -> {\n",
+        "                                AppText(\"—— end ——\", color = commentAppearance.secondaryTextColor, style = MaterialTheme.typography.bodySmall)\n",
+        "                            }\n",
+        "                            // 当 shouldLoadMore 为 true 时才显示加载指示器\n",
+        "                            shouldLoadMore -> AdaptiveLoadingIndicator()\n",
+        "                        }\n",
+        "                    }\n",
+        "                }\n",
+        "            }\n",
+        "            }\n",
+        "\n",
+        "        }\n",
+        "    }\n",
+        "}\n"
+      ],
+      "generatedLines": []
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1877,
+      "originalEnd": 1878,
+      "generatedStart": 1668,
+      "generatedEnd": 1669,
+      "originalLines": [
+        "    onRelatedVideoClick: (String, android.os.Bundle?) -> Unit = { _, _ -> },\n"
+      ],
+      "generatedLines": [
+        "    onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _, _ -> },\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1886,
+      "originalEnd": 1887,
+      "generatedStart": 1677,
+      "generatedEnd": 1678,
+      "originalLines": [
+        "    val videoAiSummaryEntryEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "generatedLines": [
+        "    val videoAiSummaryEntryEnabled by SettingsManager\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1890,
+      "originalEnd": 1891,
+      "generatedStart": 1681,
+      "generatedEnd": 1682,
+      "originalLines": [
+        "    val videoNoteEnabled by com.android.purebilibili.core.store.SettingsManager\n"
+      ],
+      "generatedLines": [
+        "    val videoNoteEnabled by SettingsManager\n"
+      ]
+    },
+    {
+      "tag": "replace",
+      "originalStart": 1943,
+      "originalEnd": 1944,
+      "generatedStart": 1734,
+      "generatedEnd": 1735,
+      "originalLines": [
+        "            onRelatedVideoClick = onRelatedVideoClick,\n"
+      ],
+      "generatedLines": [
+        "            onRelatedVideoClick = { bvid, cid -> onRelatedVideoClick(bvid, cid, null) },\n"
+      ]
+    }
+  ]
+}

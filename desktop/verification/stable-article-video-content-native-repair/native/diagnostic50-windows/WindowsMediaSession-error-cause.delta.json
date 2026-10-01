@@ -1,0 +1,8 @@
+{
+  "candidateOnly": true,
+  "source": "desktop/src/main/kotlin/com/bilipai/desktop/player/WindowsMediaSession.kt",
+  "scope": "One diagnostic hunk in the existing sole actor; no protocol, callback, COM ownership or success-state change",
+  "expectedCount": 1,
+  "before": "        } catch (failure: Throwable) {\n            if (!closed.get()) mutableStatus.value = WindowsMediaSessionStatus(error = failure.message ?: \"Windows media controls failed\")\n",
+  "after": "        } catch (failure: Throwable) {\n            if (!closed.get()) {\n                java.util.logging.Logger.getLogger(WindowsMediaSession::class.java.name).log(java.util.logging.Level.WARNING, \"Windows media controls failed\", failure)\n                mutableStatus.value = WindowsMediaSessionStatus(error = failure.javaClass.name + \": \" + (failure.message ?: \"Windows media controls failed\"))\n            }\n"
+}

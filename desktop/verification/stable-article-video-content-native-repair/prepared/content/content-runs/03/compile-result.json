@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "sources": 20,
+  "exitCode": 0,
+  "actual47RuntimeEntries": 97,
+  "productAcceptance": false,
+  "explicitProspectiveFoundations": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\12\\candidate.jar",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-full-controls-parity\\runs\\11\\candidate.jar"
+  ],
+  "explicitProspectiveOriginalDependency": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-page-parity\\dependency-evidence\\richeditor-compose-desktop-1.0.0-rc14.jar",
+  "candidateJarSha256Bytes": "c3effc28cb7a82d77eefb9b3a9598fc01f9427e1f2a9752dcd6af46f9595f4f6"
+}

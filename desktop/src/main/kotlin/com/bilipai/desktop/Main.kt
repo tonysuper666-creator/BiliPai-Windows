@@ -199,21 +199,18 @@ fun main(args: Array<String>) {
                 }
             }
             val danmakuPresentation = com.bilipai.desktop.ui.rememberDesktopWindowsDanmakuPresentation(window, windowState)
+            val fullscreenControl = com.bilipai.desktop.ui.rememberDesktopWindowsFullscreenControl(window, windowState)
             androidx.compose.runtime.CompositionLocalProvider(
                 com.bilipai.desktop.ui.LocalDesktopApplicationImageLoader provides applicationImages,
             ) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
-                onExit = { closeApp() }, onToggleFullscreen = {
-                    windowState.placement = if (windowState.placement == WindowPlacement.Fullscreen) WindowPlacement.Floating else WindowPlacement.Fullscreen
-                }, hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
+                onExit = { closeApp() }, onToggleFullscreen = fullscreenControl::toggle,
+                hostWindow = window, registerShutdown = shutdown::set, onRestart = { closeApp(restart = true) },
                 applicationPluginStore = applicationPluginStore, isClosing = closing::get,
                 diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
                 danmakuPresentation = danmakuPresentation,
                 isFullscreen = { windowState.placement == WindowPlacement.Fullscreen },
-                setFullscreen = { enabled ->
-                    val destination = if(enabled) WindowPlacement.Fullscreen else WindowPlacement.Floating
-                    if(windowState.placement != destination) windowState.placement = destination
-                })
+                setFullscreen = fullscreenControl::setFullscreen)
             }
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },

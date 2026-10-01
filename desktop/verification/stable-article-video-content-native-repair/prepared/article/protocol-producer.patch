@@ -1,0 +1,36 @@
+--- a/desktop/tools/extract-upstream-dynamic-detail-protocol.py
++++ b/desktop/tools/extract-upstream-dynamic-detail-protocol.py
+@@ -80,11 +80,9 @@
+     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt', '// GENERATED full original pure detail policy; sole producer.\n// Original: ' + policy_path + '\n// Original LF SHA-256: ' + digest(sources[policy_path]) + '\n' + sources[policy_path])
+     article = sources[article_path]
+     get_article = adapt(extract(article, 'getArticleDetail', article_path))
+-    get_article = get_article.replace('Result<ArticleDetailUiModel>', 'Result<Pair<String,List<ArticleContentBlock>>>')
++    get_article = get_article.replace('fun getArticleDetail(', 'fun getArticleUiDetail(')
+     get_article = get_article.replace('signWithWbi(', 'signDetailParams(')
+-    get_article = get_article.replace('val fromView = response.data.toUiModel()', 'val fromView = response.data.toDetailTitleAndBlocks()')
+-    get_article = get_article.replace('fromView.copy(blocks = selectRicherArticleBlocks(fromView.blocks, opusBlocks))', 'fromView.first to selectRicherArticleBlocks(fromView.second, opusBlocks)')
+-    get_article = get_article.replace('ownedCatching { HistoryRepository.reportArticleView(merged.articleId) }', 'ownedCatching { onArticleViewed?.let { callback -> ownedCall { callback(response.data.id) } } }')
++    get_article = get_article.replace('ownedCatching { HistoryRepository.reportArticleView(merged.articleId) }', 'ownedCatching { onArticleViewed?.let { callback -> ownedCall { callback(merged.articleId) } } }')
+     fetch_article = adapt(extract(article, 'fetchOpusArticleBlocks', article_path)).replace('signWithWbi(', 'signDetailParams(')
+     extension = extract(article, 'ArticleViewData.toUiModel', article_path) if False else None
+     ma = masked(article)
+@@ -93,11 +91,14 @@
+     end = balanced(ma, op, '{', '}')
+     original_extension = article[m.start():end]
+     records.append(dict(source=article_path, name='ArticleViewData.toUiModel', startLine=article[:m.start()].count('\n') + 1, endLine=article[:end].count('\n') + 1, sha256LfUtf8=digest(original_extension)))
+-    start = original_extension.index('val parsedBlocks')
+-    stop = original_extension.index('        val resolvedSummary')
+-    slice_title = original_extension[start:stop]
+-    title_extension = '    private fun ArticleViewData.toDetailTitleAndBlocks():Pair<String,List<ArticleContentBlock>> {\n        ' + slice_title + '        return resolvedTitle to parsedBlocks\n    }\n'
+-    article_helper = '// GENERATED selected original Article view/opus/consumed title+blocks.\n// Original: ' + article_path + '\n// Original LF SHA-256: ' + digest(article) + '\n' + imports + 'internal class DesktopDynamicDetailArticleProtocol(\n    private val articleApi: ArticleApi,\n    private val dynamicApi: DynamicApi,\n    private val signDetailParams: suspend (Map<String,String>) -> Map<String,String>,\n    private val assertOwner: () -> Unit,\n    private val onArticleViewed: (suspend (Long) -> Unit)?,\n) {\n' + common + owned_calls(get_article) + '\n' + owned_calls(fetch_article) + '\n' + title_extension + '}\n'
++    normalize_image = extract(article, 'String?.normalizeImageUrl', article_path)
++    model_start = article.index('data class ArticleDetailUiModel(')
++    model_open = masked(article).index('(', model_start)
++    model_end = balanced(masked(article), model_open)
++    model = article[model_start:model_end]
++    records.append(dict(source=article_path, name='ArticleDetailUiModel', startLine=article[:model_start].count('\n')+1, endLine=article[:model_end].count('\n')+1, sha256LfUtf8=digest(model)))
++    projection = '    suspend fun getArticleDetail(articleId:Long):Result<Pair<String,List<ArticleContentBlock>>> = getArticleUiDetail(articleId).map { it.title to it.blocks }\n'
++    article_helper = '// GENERATED complete original Article detail algorithm/model; existing Pair consumer is a projection.\n// Original: ' + article_path + '\n// Original LF SHA-256: ' + digest(article) + '\n' + imports + 'import com.android.purebilibili.core.util.FormatUtils\n' + model + '\ninternal class DesktopDynamicDetailArticleProtocol(\n    private val articleApi: ArticleApi,\n    private val dynamicApi: DynamicApi,\n    private val signDetailParams: suspend (Map<String,String>) -> Map<String,String>,\n    private val assertOwner: () -> Unit,\n    private val onArticleViewed: (suspend (Long) -> Unit)?,\n) {\n' + common + projection + owned_calls(get_article) + '\n' + owned_calls(fetch_article) + '\n' + original_extension + '\n' + normalize_image + '\n}\n'
+     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt', article_helper)
+     fragment = "// Additional members inside the existing DesktopDynamicCardOperations; no replacement Ops file.\n// Seed is the original DynamicItem captured by the owner's caller. No new seed cache.\n// Null history callback explicitly leaves the original best-effort article history side effect unbound.\nsuspend fun getDynamicDetail(\n    dynamicId:String,\n    seedItem:DynamicItem?,\n    onArticleViewed:(suspend (Long)->Unit)?=null,\n):Result<DynamicItem> = result { read {\n    val articleProtocol=com.android.purebilibili.data.repository.DesktopDynamicDetailArticleProtocol(\n        web.create(ArticleApi::class.java), dynamic, ::signOriginalDetailParams, ::assertOwned, onArticleViewed)\n    val protocol=com.android.purebilibili.data.repository.DesktopDynamicDetailProtocol(\n        dynamic, ::signOriginalDetailParams,\n        { id -> articleProtocol.getArticleDetail(id).getOrNull() }, ::assertOwned)\n    protocol.getDynamicDetail(dynamicId,seedItem).getOrThrow()\n} }\nprivate suspend fun signOriginalDetailParams(params:Map<String,String>):Map<String,String> {\n    coroutineContext.ensureActive();assertOwned()\n    return try { repository.signWebParams(params).also { coroutineContext.ensureActive();assertOwned() }\n    } catch(cancelled:CancellationException) { throw cancelled\n    } catch(failure:Exception) { coroutineContext.ensureActive();assertOwned();params }\n}\n"
+     write(HERE / 'DesktopDynamicDetailOperations.fragment.kt', fragment)

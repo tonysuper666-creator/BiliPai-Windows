@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\06\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:273:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\06\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoSupplementSection.kt:99:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\06\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoSupplementSection.kt:140:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

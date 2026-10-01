@@ -1,0 +1,23 @@
+PASS all nine original UI fields survive DTO conversion and normalized URLs
+PASS original richer-block score selects complete Opus content without replacing metadata
+PASS original Article fields use same owned API and actual WBI signing
+PASS original secondary Opus request trims ID and retains complete feature flags
+PASS existing original History consumer reports loaded article identity and same-session CSRF
+PASS actual CookieJar admission reads captured credentials within same request epoch (terminal runs before BridgeInterceptor)
+PASS original history failure is best effort and preserves successful detail
+PASS same original privacy consumer suppresses history transport
+PASS original title summary and banner fallback chains remain intact
+PASS canonical parser retains original semantic rich blocks and images
+PASS secondary Opus failure keeps original Article view body
+PASS original API failure returns an owned UI failure without success history
+PASS invalid ID performs no API or history request
+PASS delayed original Article terminal entered before epoch renewal
+PASS retired same-MID epoch rejects late model and history callback
+PASS retired bindings reject admission before any subsequent API
+PASS new same-MID owner uses renewed graph before delayed close
+PASS closed page scope rejects late source and best-effort callback
+PASS synthetic credentials are never persisted to user account storage
+ORIGIN candidateProtocol=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-article-full-parity/compile-02/classes/
+ORIGIN actualDTO=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-49/main-kotlin.jar
+ORIGIN actualSession=file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-49/main-kotlin.jar
+RESULT assertions=19 groups=1 prepared=true MainRuntimeAccepted=false sockets=false GUI=false

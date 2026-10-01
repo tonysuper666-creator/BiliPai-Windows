@@ -1,0 +1,177 @@
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:85:58: error: unresolved reference 'resolveVideoDetailMotionBudget'.
+import com.android.purebilibili.feature.video.ui.section.resolveVideoDetailMotionBudget
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:86:58: error: unresolved reference 'shouldAnimateVideoDetailLayout'.
+import com.android.purebilibili.feature.video.ui.section.shouldAnimateVideoDetailLayout
+                                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:97:61: error: unresolved reference 'CommentSortFilterBar'.
+import com.android.purebilibili.feature.video.ui.components.CommentSortFilterBar
+                                                            ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:105:61: error: unresolved reference 'shouldShowVideoCommentBackToTop'.
+import com.android.purebilibili.feature.video.ui.components.shouldShowVideoCommentBackToTop
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:682:36: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val videoDetailMotionBudget by remember {
+                                   ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:682:36: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val videoDetailMotionBudget by remember {
+                                   ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:683:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        derivedStateOf {
+        ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:684:13: error: unresolved reference 'resolveVideoDetailMotionBudget'.
+            resolveVideoDetailMotionBudget(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:690:36: error: unresolved reference 'shouldAnimateVideoDetailLayout'.
+    val animateVideoDetailLayout = shouldAnimateVideoDetailLayout(videoDetailMotionBudget)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:764:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        snapshotFlow {
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:765:13: error: unresolved reference 'isVideoDetailIntroScrollPastCollapseThreshold'.
+            isVideoDetailIntroScrollPastCollapseThreshold(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:770:14: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            .distinctUntilChanged()
+             ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:793:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val showCommentBackToTop by remember(commentListState) {
+                                ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:793:33: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val showCommentBackToTop by remember(commentListState) {
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:794:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        derivedStateOf {
+        ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:795:13: error: unresolved reference 'shouldShowVideoCommentBackToTop'.
+            shouldShowVideoCommentBackToTop(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:801:31: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val showIntroBackToTop by remember(introListState) {
+                              ^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:801:31: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val showIntroBackToTop by remember(introListState) {
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:802:9: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        derivedStateOf {
+        ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:803:13: error: unresolved reference 'shouldShowVideoCommentBackToTop'.
+            shouldShowVideoCommentBackToTop(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:1140:17: error: unresolved reference 'CommentSortFilterBar'.
+                CommentSortFilterBar(
+                ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:1514:21: error: unresolved reference 'CommentSortFilterBar'.
+                    CommentSortFilterBar(
+                    ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\screen\DesktopOriginalVideoContentSection.kt:1669:58: error: initializer type mismatch: expected '(String, Long, String?) -> Unit', actual '(String, Long) -> Unit'.
+    onRelatedVideoClick: (String, Long, String?) -> Unit = { _, _ -> },
+                                                         ^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\AiSummarySection.kt:178:21: error: unresolved reference 'VideoDetailSecondaryButton'.
+                    VideoDetailSecondaryButton(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\AiSummarySection.kt:182:25: error: @Composable invocations can only happen from the context of a @Composable function
+                        AppIcon(
+                        ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\AiSummarySection.kt:187:25: error: @Composable invocations can only happen from the context of a @Composable function
+                        Spacer(modifier = Modifier.width(6.dp))
+                        ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\AiSummarySection.kt:188:25: error: @Composable invocations can only happen from the context of a @Composable function
+                        AppText("生成笔记草稿")
+                        ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:63:52: error: unresolved reference 'hasUnsavedVideoNoteDraft'.
+import com.android.purebilibili.feature.video.note.hasUnsavedVideoNoteDraft
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:64:52: error: unresolved reference 'resolveVideoNotePrimaryActionLabel'.
+import com.android.purebilibili.feature.video.note.resolveVideoNotePrimaryActionLabel
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:65:52: error: unresolved reference 'resolveVideoNoteEmptyMessage'.
+import com.android.purebilibili.feature.video.note.resolveVideoNoteEmptyMessage
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:66:52: error: unresolved reference 'shouldShowVideoNoteBody'.
+import com.android.purebilibili.feature.video.note.shouldShowVideoNoteBody
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:67:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:68:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.ui.BasicRichTextEditor
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:69:12: error: unresolved reference 'mohamedrejeb'.
+import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
+           ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:84:27: error: unresolved reference 'hasUnsavedVideoNoteDraft'.
+    val hasUnsavedDraft = hasUnsavedVideoNoteDraft(noteState)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:86:30: error: unresolved reference 'resolveVideoNotePrimaryActionLabel'.
+    val primaryActionLabel = resolveVideoNotePrimaryActionLabel(noteState)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:88:20: error: unresolved reference 'shouldShowVideoNoteBody'.
+    val showBody = shouldShowVideoNoteBody(
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:170:52: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+                    noteState.privateNoteDocument?.let { privateDocument ->
+                                                   ^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:171:25: error: unresolved reference 'VideoDetailSecondaryButton'.
+                        VideoDetailSecondaryButton(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:174:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            AppIcon(
+                            ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:179:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            Spacer(modifier = Modifier.width(6.dp))
+                            ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:180:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            AppText("分享")
+                            ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:182:25: error: unresolved reference 'VideoDetailSecondaryButton'.
+                        VideoDetailSecondaryButton(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:186:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            AppIcon(
+                            ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:191:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            Spacer(modifier = Modifier.width(6.dp))
+                            ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:192:29: error: @Composable invocations can only happen from the context of a @Composable function
+                            AppText("删除")
+                            ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:276:25: error: unresolved reference 'rememberRichTextState'.
+    val richTextState = rememberRichTextState()
+                        ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:333:17: error: unresolved reference 'BasicRichTextEditor'.
+                BasicRichTextEditor(
+                ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:347:17: error: unresolved reference 'RichTextEditor'.
+                RichTextEditor(
+                ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:375:17: error: unresolved reference 'VideoDetailSecondaryButton'.
+                VideoDetailSecondaryButton(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:387:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    AppIcon(Icons.Outlined.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:388:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    Spacer(modifier = Modifier.width(6.dp))
+                    ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:389:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    AppText("分享")
+                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:501:17: error: unresolved reference 'VideoDetailSecondaryButton'.
+                VideoDetailSecondaryButton(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:504:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    AppIcon(
+                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:509:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    Spacer(modifier = Modifier.width(6.dp))
+                    ^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:510:21: error: @Composable invocations can only happen from the context of a @Composable function
+                    AppText(timestamp.label)
+                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:534:9: error: unresolved reference 'hasUnsavedVideoNoteDraft'.
+        hasUnsavedVideoNoteDraft(noteState) -> "草稿还在，点继续编辑可以把这一段认真留下来。"
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-video-player-page-parity\content-runs\01\source-inputs\generated\com\android\purebilibili\feature\video\ui\section\VideoNoteSection.kt:535:17: error: unresolved reference 'resolveVideoNoteEmptyMessage'.
+        else -> resolveVideoNoteEmptyMessage(isLoggedIn, noteState.forbidNoteEntrance)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

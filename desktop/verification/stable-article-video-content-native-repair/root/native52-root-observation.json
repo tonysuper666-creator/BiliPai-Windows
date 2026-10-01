@@ -1,0 +1,23 @@
+{
+  "actualSnapshot": 52,
+  "orderedRuntimeEntries": 101,
+  "productionOverrides": 0,
+  "inputApi": "@oai/sky",
+  "uniqueWindowTitle": "BiliPai fixture-owned full Offline native acceptance",
+  "actions": [
+    {"step": 1, "originalControl": "exit fullscreen", "screenshotCoordinateLogical": [2528, 1412], "clickedAndImmediatelyRefreshed": true},
+    {"step": 2, "originalControl": "enter fullscreen", "screenshotCoordinateLogical": [854, 556], "clickedAndImmediatelyRefreshed": true},
+    {"step": 3, "originalControl": "exit fullscreen", "screenshotCoordinateLogical": [2528, 1412], "clickedAndImmediatelyRefreshed": true},
+    {"step": 4, "originalControl": "next episode", "screenshotCoordinateLogical": [156, 508], "clickedAndImmediatelyRefreshed": true}
+  ],
+  "visualNormalWindowAlignmentAfterBothExits": "PASS_OBSERVED",
+  "normalWindowObservations": "Main title and client contain the original player and controls after both fullscreen exits. The shaped popup follows the Main client instead of extending outside its native bounds.",
+  "visualFullscreenAlignment": "PASS_OBSERVED",
+  "fullWindowObservation": "Observed fullscreen spans the 2560 by 1440 logical display and the original controls remain inside it.",
+  "actualMainShellAccepted": false,
+  "realAccountAccepted": false,
+  "PiPAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "newExeDeployed": false,
+  "scope": "Root observes and inputs the actual52 unchanged full original Offline renderer fixture only; actor assertions, raw native geometry and expected existing SMTC failure belong to the independently preserved fixture output."
+}

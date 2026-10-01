@@ -1,0 +1,101 @@
+{
+  "scope": "Independent read-only source review, no compile/runtime/HTTP/UI claim",
+  "sourceCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceIdentityPins": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailScreen.kt",
+      "sha256": "c1d2eb23bd186fce229fb1025abe32ed8fea9592725fc6e739f43294161e25e8",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleRichTextRenderer.kt",
+      "sha256": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleImagePreviewPolicy.kt",
+      "sha256": "61f0e181cd82c97a5268081c78ff4f8bd39727df82a7e904f294fd8c68c7872a",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailLayoutPolicy.kt",
+      "sha256": "005b05efaba6390f785a1740fc6881bfcc31e58a56b1ef4d639368a91b88359b",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "sha256": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt",
+      "sha256": "a04d5aaf29a8416304bc6198724247f86719b9d0e6984b6098d0a6c4732d5445",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/BottomSafeAreaPolicy.kt",
+      "sha256": "52f1a4496022f5257f9a27ebe56e9bb84c8045b4faf42353b9750ab7dcf19e8f",
+      "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "independentlyPinnedGitBody": true
+    }
+  ],
+  "full505LineUiInverseByteEqual": true,
+  "declaredUiEdits": 11,
+  "canonicalModelFieldCount": 9,
+  "canonicalModelFields": [
+    "articleId",
+    "title",
+    "summary",
+    "authorName",
+    "authorMid",
+    "authorFace",
+    "publishTime",
+    "bannerUrl",
+    "blocks"
+  ],
+  "canonicalModelExactOriginalDeclaration": true,
+  "viewOpusRicherMergePreserved": true,
+  "historyUsesMergedArticleId": true,
+  "cancellationOwnedLoadBeforeAndAfter": true,
+  "protocolBlockersFound": [],
+  "requiredRootBoundaries": [
+    {
+      "risk": "Same article ID with replacement entry/epoch cannot restart the unkeyed loader through bindings alone",
+      "anchor": "ArticleDetailScreen.kt:99-102",
+      "contract": "Wrap screen in key(capturedEpoch, leafEntryIdentity), and create bindings with leaf-owned CoroutineScope. produceState keys are original articleId and retryToken; preview remember state also belongs to this leaf."
+    },
+    {
+      "risk": "Actual source throws cancellation; a synthetic required request must not return Result.failure(CancellationException)",
+      "anchor": "DesktopOriginalArticleBindings.kt:17-21",
+      "contract": "Keep existing owned protocol rethrow behavior; no account cancellation converted to Article Error UI."
+    }
+  ],
+  "observedPayloadPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\selected\\com\\android\\purebilibili\\feature\\article\\ArticleDetailScreen.kt",
+      "sha256LF": "fc65f418d2b945dad15aafeea4c62b7cd275335a6c7896a1dccf9c33d9199620"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\protocol\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol.kt",
+      "sha256LF": "2dccf1f68dd46c4eb9679e96858b8057e87668a12c988d87a83b3850332fde68"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindings.kt",
+      "sha256LF": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\tools\\extract-upstream-article-detail.py",
+      "sha256LF": "b7c86811b011a8c4923d5c4e2232286d560cb24e8368f3c41bedddd9f8ddea56"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\prepared\\tools\\extract-upstream-dynamic-detail-protocol.py",
+      "sha256LF": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937"
+    }
+  ]
+}

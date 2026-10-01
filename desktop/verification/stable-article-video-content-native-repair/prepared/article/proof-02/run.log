@@ -1,0 +1,14 @@
+PASS all nine original UI fields survive DTO conversion and normalized URLs
+Exception in thread "main" java.lang.IllegalStateException: original richer-block score selects complete Opus content without replacing metadata
+	at com.bilipai.desktop.ui.ArticleFixtureKt.verify(ArticleFixture.kt:19)
+	at com.bilipai.desktop.ui.ArticleFixtureKt.access$verify(ArticleFixture.kt:1)
+	at com.bilipai.desktop.ui.ArticleFixtureKt$main$1.invokeSuspend(ArticleFixture.kt:69)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.ArticleFixtureKt.main(ArticleFixture.kt:24)

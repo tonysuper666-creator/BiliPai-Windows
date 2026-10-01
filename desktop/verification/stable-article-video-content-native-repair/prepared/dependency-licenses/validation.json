@@ -1,0 +1,62 @@
+{
+  "status": "PASS_FOUR_FIXED_DEPENDENCIES_ONLY",
+  "dependencies": [
+    {
+      "coordinate": "com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14",
+      "declaredLicense": [
+        "Apache-2.0",
+        "https://opensource.org/licenses/Apache-2.0"
+      ],
+      "actual52JarVerified": true,
+      "originalLicenseBytesUnchanged": true,
+      "noUpstreamNoticeInJarOrPinnedFullTree": true,
+      "repositoryCommit": "afc44f915e2eccab0a63823c2840fe3d52f56473",
+      "releaseLicenseTagVerified": true,
+      "binaryBuildSourceCommitProven": false
+    },
+    {
+      "coordinate": "com.mohamedrejeb.ksoup:ksoup-html-jvm:0.6.0",
+      "declaredLicense": [
+        "Apache-2.0",
+        "https://opensource.org/licenses/Apache-2.0"
+      ],
+      "actual52JarVerified": true,
+      "originalLicenseBytesUnchanged": true,
+      "noUpstreamNoticeInJarOrPinnedFullTree": true,
+      "repositoryCommit": "8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d",
+      "releaseLicenseTagVerified": true,
+      "binaryBuildSourceCommitProven": false
+    },
+    {
+      "coordinate": "com.mohamedrejeb.ksoup:ksoup-entities-jvm:0.6.0",
+      "declaredLicense": [
+        "Apache-2.0",
+        "https://opensource.org/licenses/Apache-2.0"
+      ],
+      "actual52JarVerified": true,
+      "originalLicenseBytesUnchanged": true,
+      "noUpstreamNoticeInJarOrPinnedFullTree": true,
+      "repositoryCommit": "8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d",
+      "releaseLicenseTagVerified": true,
+      "binaryBuildSourceCommitProven": false
+    },
+    {
+      "coordinate": "org.jetbrains:markdown-jvm:0.7.3",
+      "declaredLicense": [
+        "The Apache Software License, Version 2.0",
+        "http://www.apache.org/licenses/LICENSE-2.0.txt"
+      ],
+      "actual52JarVerified": true,
+      "originalLicenseBytesUnchanged": true,
+      "noUpstreamNoticeInJarOrPinnedFullTree": true,
+      "repositoryCommit": "82b3d42b698b20b4604afb9a4e4fdb1df442b5e4",
+      "releaseLicenseTagVerified": false,
+      "binaryBuildSourceCommitProven": false
+    }
+  ],
+  "productionChanges": 0,
+  "addedDependencies": 0,
+  "sharedGradle": false,
+  "libraryBinaryModification": false,
+  "note": "Markdown POM supplies version/license. Its primary repository has no 0.7.3 tag; pinned HEAD LICENSE is evidence, not a claim of exact artifact source identity."
+}

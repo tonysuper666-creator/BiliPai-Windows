@@ -1,0 +1,54 @@
+{
+  "fixtureOnly": true,
+  "productionOverrides": 0,
+  "baseSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof\\runs\\actual50-03-normal\\OfflineNativeFixture.kt",
+    "sha256Bytes": "5c83b50d4ffe7df0efed8bd05d3d4e594e73f17025efe319f1c57f3f24a02246"
+  },
+  "hunks": [
+    {
+      "name": "remember actual sole Root controller",
+      "expectedCount": 1,
+      "before": "                val presentation=rememberDesktopWindowsDanmakuPresentation(actualWindow,state)\n",
+      "after": "                val presentation=rememberDesktopWindowsDanmakuPresentation(actualWindow,state)\n                val fullscreenControl=rememberDesktopWindowsFullscreenControl(actualWindow,state)\n"
+    },
+    {
+      "name": "delegate original callback to the same Root controller",
+      "expectedCount": 1,
+      "before": "                                val target=if(fullscreen)WindowPlacement.Fullscreen else WindowPlacement.Floating\n                                if(rootWindowState.placement!=target){rootWindowState.placement=target;fullscreenCalls++}\n",
+      "after": "                                val beforePlacement=rootWindowState.placement\n                                fullscreenControl.setFullscreen(fullscreen)\n                                if(rootWindowState.placement!=beforePlacement)fullscreenCalls++\n"
+    },
+    {
+      "name": "record actual new controller class origin",
+      "expectedCount": 1,
+      "before": "                    for(name in listOf(\"com.bilipai.desktop.ui.DesktopOriginalOfflineRootHostKt\",",
+      "after": "                    for(name in listOf(\"com.bilipai.desktop.ui.DesktopWindowsFullscreenControlKt\",\"com.bilipai.desktop.ui.DesktopWindowsFullscreenControl\",\"com.bilipai.desktop.ui.DesktopOriginalOfflineRootHostKt\","
+    }
+  ],
+  "runnerHunks": [
+    {
+      "name": "require actual Root controller classes",
+      "expectedCount": 1,
+      "before": "runtime_sources=['com/bilipai/desktop/ui/DesktopOriginalOfflineRootHostKt.class'",
+      "after": "runtime_sources=['com/bilipai/desktop/ui/DesktopWindowsFullscreenControlKt.class','com/bilipai/desktop/ui/DesktopWindowsFullscreenControl.class','com/bilipai/desktop/ui/DesktopOriginalOfflineRootHostKt.class'"
+    },
+    {
+      "name": "Root-delivered exact runtime count",
+      "expectedCount": 1,
+      "before": "assert args.entries==97",
+      "after": "assert args.snapshot>=51 and args.entries>0"
+    },
+    {
+      "name": "preserve exact-count receipt without historical97 label",
+      "expectedCount": 1,
+      "before": "'all97PinsBeforeAfter':True",
+      "after": "'allExpectedRuntimePinsBeforeAfter':True"
+    },
+    {
+      "name": "separate controls from external visual acceptance",
+      "expectedCount": 1,
+      "before": "'fullRequestedScopeAccepted':proof['status']=='PASS'",
+      "after": "'fullRequestedScopeAccepted':False,'logicAndNativeControlScopeCompleted':proof['status']=='PASS','visualAcceptanceRequiresRootSkyReceipt':True"
+    }
+  ]
+}

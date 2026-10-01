@@ -1,0 +1,10 @@
+10ÔÂ 01, 2026 2:20:58 ÏÂÎç com.bilipai.desktop.player.WindowsMediaSession runNative
+¾¯¸æ: Windows media controls initialization or publication failed
+java.lang.NullPointerException
+	at com.bilipai.desktop.player.WindowsMediaSession$Companion.putString(WindowsMediaSession.kt:338)
+	at com.bilipai.desktop.player.WindowsMediaSession$Companion.access$putString(WindowsMediaSession.kt:275)
+	at com.bilipai.desktop.player.WindowsMediaSession$NativeSession.update(WindowsMediaSession.kt:196)
+	at com.bilipai.desktop.player.WindowsMediaSession.runNative(WindowsMediaSession.kt:88)
+	at com.bilipai.desktop.player.WindowsMediaSession.worker$lambda$0(WindowsMediaSession.kt:67)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+

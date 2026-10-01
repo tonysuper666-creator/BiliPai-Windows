@@ -1,0 +1,31 @@
+{
+  "status": "PREPARED_NOT_COMPILED_NOT_RUN",
+  "expectedActualSnapshot": 51,
+  "requiredRuntimeEntries": "Root-delivered exact count, matched to every ordered CP row",
+  "productionOverrides": 0,
+  "needsRootPinsAndWindowSlot": true,
+  "sameActualMainFullscreenControlRequired": true,
+  "historicalReceiptsModified": false,
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\OfflineNativeFixture.kt",
+      "sha256Bytes": "4c4f443a3b35cbd3c73d73ee1728479b814a62de3ea70db944dd3a5b43d54bcd",
+      "size": 42082
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\run.py",
+      "sha256Bytes": "43959ec24a2295a6495682596caaa50854e21bc42d41157148a18c3a20d42543",
+      "size": 7670
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\fixture-delta.json",
+      "sha256Bytes": "55b263906bd7528ee97e2d656c2c64d39389e2050edbb0f4c105b85af75677fa",
+      "size": 3110
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\prepare.py",
+      "sha256Bytes": "69b2247d54a522197c627046ecddcc303dd74e39b5caebc2b0bb21cff35f1ea6",
+      "size": 4578
+    }
+  ]
+}

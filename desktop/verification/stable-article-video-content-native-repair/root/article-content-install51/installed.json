@@ -1,0 +1,62 @@
+{
+  "applied": true,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-article-detail.py",
+      "baseLfSha256": null,
+      "installedLfSha256": "b7c86811b011a8c4923d5c4e2232286d560cb24e8368f3c41bedddd9f8ddea56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleBindings.kt",
+      "baseLfSha256": null,
+      "installedLfSha256": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "baseLfSha256": "16971528080ffe72d67453d5276b3cbe3583c394477b8e5a5144546f3a9433ce",
+      "installedLfSha256": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-content-full.py",
+      "baseLfSha256": null,
+      "installedLfSha256": "6fa5b8edc7252f7533049d039a0b181a0440a692f11c594b9c2d70a21f0b1047"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-video-content-full.py",
+      "baseLfSha256": null,
+      "installedLfSha256": "ec4b8fdcf655c6870377c6785b64075a3397118f52379e3f318210b24ced633c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoContentBindings.kt",
+      "baseLfSha256": null,
+      "installedLfSha256": "8fb52219b4f9dc4a4f703a9ce8700f0edcb3830b81f4b8ec3879c7b8f26ec1f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRelatedBlockedPort.kt",
+      "baseLfSha256": null,
+      "installedLfSha256": "45b5dac8df524d74b4717a403bc63a92887318cf4ddcbf54202205e5ef288671"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "baseLfSha256": "58c6b3af2d592e038b92156ae898fcd6ebe25322672c4381f5d39f161e7213bb",
+      "installedLfSha256": "7c10b11078b4dabeabe093e0988544249b7a5c4f0600a1c480b926ec898056c6"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "baseLfSha256": "b2328bee5b4252332dcb4bbab28333202d67bdad86755d590651572181ded4d8",
+      "installedLfSha256": "2a5dbf2f795ce0f2170f740add1948c1515caba1c9ec226e8d555f760371ce60"
+    }
+  ],
+  "newSourceIdentities": 21,
+  "sourceIdentityCount": 1028,
+  "newDependency": {
+    "originalCoordinate": "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14",
+    "jvmArtifact": "com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14",
+    "jarSha256Bytes": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb",
+    "runtimeGraphMustBeResolvedByRoot": true
+  },
+  "fullArticleRootMountPending": true,
+  "fullOrdinaryVideoMountPending": true,
+  "wholeCompilationPending": true,
+  "originalBusinessHunks": 0
+}

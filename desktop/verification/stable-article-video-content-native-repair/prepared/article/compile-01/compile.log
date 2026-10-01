@@ -1,0 +1,9 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\prepared\selected\com\android\purebilibili\feature\article\ArticleDetailScreen.kt:113:5: error: no value passed for parameter 'enabled'.
+    BackHandler {
+    ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\prepared\selected\feature\article\ArticleDetailLayoutPolicy.kt:5:41: error: unresolved reference 'resolveBottomSafeAreaPadding'.
+import com.android.purebilibili.core.ui.resolveBottomSafeAreaPadding
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-article-full-parity\prepared\selected\feature\article\ArticleDetailLayoutPolicy.kt:11:12: error: unresolved reference 'resolveBottomSafeAreaPadding'.
+    return resolveBottomSafeAreaPadding(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^

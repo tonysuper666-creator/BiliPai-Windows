@@ -1,0 +1,54 @@
+{
+  "status": "FAIL",
+  "snapshot": 50,
+  "runtimeEntries": 97,
+  "productionOverrides": 0,
+  "diagnosticBaselinesMounted": false,
+  "originalEntryFullscreenAccepted": true,
+  "stableOriginalControlFullscreenAccepted": true,
+  "realSkyMousePairs": 4,
+  "assertions": 6,
+  "logicAndNativeControlScopeCompleted": false,
+  "requestedScopeFullyAccepted": false,
+  "layoutAccepted": false,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "externalF11Accepted": false,
+  "arbitraryRouteDisposalPlacementRestorationAccepted": false,
+  "checks": [
+    {
+      "name": "Unchanged full original renderer owns exact local task and actual native first frame",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual original landscape entry applies real fixture Window fullscreen placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Original exit fullscreen control receives real HWND messages and changes original local state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Stable original native fullscreen control applies actual placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Native HWND delivery reaches original next-episode action and exact current manager task",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual Windows SMTC GetForWindow is available on fixture-owned HWND",
+      "passed": false,
+      "details": {
+        "error": "Windows media controls failed"
+      }
+    }
+  ]
+}

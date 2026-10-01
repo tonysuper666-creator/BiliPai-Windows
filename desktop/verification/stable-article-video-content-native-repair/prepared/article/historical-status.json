@@ -1,0 +1,10 @@
+{
+  "productionUnchangedByProof": true,
+  "proof01": "fixture syntax and runner variable shadow; failed source preserved",
+  "proof02": "original parser trims trailing whitespace; expected literal corrected",
+  "proof03": "terminal application interceptor precedes BridgeInterceptor Cookie header; actual admitted CookieJar tested instead",
+  "audit01": "inverse removed import reinserted at wrong position",
+  "audit02": "required new registry row absent from live baseline; explicit prospective replay overlay added",
+  "audit03": "inverse mapping omitted NetworkModule qualifier",
+  "rootPreparedFailures": "prepare-attempt01/02/03 and compile01 preserved under original scope"
+}

@@ -1,0 +1,184 @@
+{
+  "stage": "Complete original VideoContentSection/related actions/AI/note UI closure; original PlayerSection/StateHolder assembly remains next",
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "baseline": "immutable actual47/97 plus explicitly prospective frozen Stage1/Stage2; rich editor official JVM artifact is an additional compiler-only dependency",
+  "generator": "generate(repo,output,standalone=False)",
+  "soleTools": [
+    {
+      "path": "prepared/desktop/tools/extract-upstream-video-content-full.py",
+      "sha256LF": "6fa5b8edc7252f7533049d039a0b181a0440a692f11c594b9c2d70a21f0b1047"
+    },
+    {
+      "path": "prepared/desktop/tools/verify-upstream-video-content-full.py",
+      "sha256LF": "ec4b8fdcf655c6870377c6785b64075a3397118f52379e3f318210b24ced633c"
+    }
+  ],
+  "generatedDirectory": "build/generated/original-video-content-full",
+  "directCopyOnce": [
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+      "sha256LF": "b7ca333ec57ea45ad5b629e7072f79cedc896524017df838ed0f7a19d91fb534",
+      "mode": "direct-complete-original",
+      "lines": 438
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+      "sha256LF": "f9c45d1d837a424657b3e94fc87a3b2877bccb82957427217fd96b7d98c2d9ab",
+      "mode": "direct-complete-original",
+      "lines": 80
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+      "sha256LF": "0bc2f3965f4d26dd57e590e3fe1a15ca1a771e10079b93eb5a232764009f84ca",
+      "mode": "direct-complete-original",
+      "lines": 143
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+      "sha256LF": "7fd5637fc32c52f8f2c3213886b6c6d2e948da46028fefe1483a86f663b1252d",
+      "mode": "direct-complete-original",
+      "lines": 160
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+      "sha256LF": "386de35141a8a103f94dea863caa5a6f9d6001f801721aa6455a085d442ba865",
+      "mode": "direct-complete-original",
+      "lines": 585
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+      "sha256LF": "825650c9d684434c14eef6ed8c34e297f8edc227a1e9f5c317d048dfd9e2a146",
+      "mode": "direct-complete-original",
+      "lines": 216
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+      "sha256LF": "fff4998471798fca6c73a1c53eb046010f11dbaff5131399a72b955ad7515a1c",
+      "mode": "direct-complete-original",
+      "lines": 114
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+      "sha256LF": "07b1b5849436163e8cc90ebdd75e0b5fada8f87628221f17dc91cf21f7379e4d",
+      "mode": "direct-complete-original",
+      "lines": 16
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoDetailMotionBudgetPolicy.kt",
+      "sha256LF": "4060700bda58e62c0bb5c2c9e0949e1ad3bfcf824d20a24f2e2a9d367255f5db",
+      "mode": "direct-complete-original",
+      "lines": 21
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCommentBackToTopPolicy.kt",
+      "sha256LF": "89cd53e725343a801476a762cba314deb597dd1ee5fb5ed91dc301a8666b088f",
+      "mode": "direct-complete-original",
+      "lines": 10
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoDetailSecondaryButton.kt",
+      "sha256LF": "f7385b05c3d40526141b2a2d9dfc8184d42f7fb577ac8355f87356cd65073c1f",
+      "mode": "direct-complete-original",
+      "lines": 35
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+      "sha256LF": "37019f5bee733834d70b8ee8f4359a25dfb7f5bc1c99e58f80ba95c9d5c05247",
+      "mode": "direct-complete-original",
+      "lines": 40
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+      "sha256LF": "f8afdd070bc4ac7ddf6d561975e802d1ef8571cfb08bf060b690e390728a7ae6",
+      "mode": "direct-complete-original",
+      "lines": 25
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+      "sha256LF": "dac221c56f2521a48250891b439222a088a15cc66d552b482274f135d163f273",
+      "mode": "direct-complete-original",
+      "lines": 19
+    }
+  ],
+  "selectedOutputs": [
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentCollapseThreshold.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/PortraitDetailPresentationPolicy.kt",
+      "sha256LF": "068b7ef4283603a727fcb6de9470bf65e6aae633bec1518a03d07e9d7581e38b",
+      "mode": "complete-original-collapse-threshold-function",
+      "lines": 8
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortFilterBar.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "sha256LF": "9efae6d710775e2f844b42dc5fbc9715a6c80409904815a8efab9e74b31d3752",
+      "mode": "complete-original-remaining-filter-bar-reference-sole-generic-header-and-policies",
+      "lines": 115
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoNavigationOptions.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoNavigationCidPolicy.kt",
+      "sha256LF": "084a1414da9111b082ae8720d1b68fe881590a82e2464029afdf413fff2ff6da",
+      "mode": "complete-original-navigation-builder-two-key-platform-adapt",
+      "lines": 13
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalRelatedVideoItem.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "sha256LF": "7fe048283e62798f5d0d66e8efc6786952b037e046afa6c05509ccf2396c146a",
+      "mode": "complete-original-related-card-grid-feedback-actions-owner-platform-adapt",
+      "lines": 661
+    },
+    {
+      "path": "com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "sha256LF": "26b20b5ccef7329181b7ead9da8fea8538dddcd7ceeff5783c8816470fc1f4a6",
+      "mode": "complete-original-content-groups-body-all-panels-reference-sole-commenttab-platform-adapt",
+      "lines": 2001
+    },
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalVideoContentSettings.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "8634f03b6712e425e0e765862aadd7f33721cb8656ba1117ca918b88039186c3",
+      "mode": "selected-exact-original-read-getters-keys-same-global-settings",
+      "lines": 35
+    }
+  ],
+  "manualPayloads": [
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoContentBindings.kt",
+      "sha256LF": "8fb52219b4f9dc4a4f703a9ce8700f0edcb3830b81f4b8ec3879c7b8f26ec1f9"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoRelatedBlockedPort.kt",
+      "sha256LF": "45b5dac8df524d74b4717a403bc63a92887318cf4ddcbf54202205e5ef288671"
+    }
+  ],
+  "registryDelta": "content-registry-delta.json",
+  "compilerEvidence": "content-runs/06/compile-result.json",
+  "symbolEvidence": "content-runs/06/symbol-audit.json",
+  "sourceProof": "content-production-proof-03/result.json",
+  "rootContract": "CONTENT-ROOT-CONTRACT.md",
+  "dependency": {
+    "originalCoordinate": "com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc14",
+    "jvmArtifact": "com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14",
+    "jarSha256Bytes": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb",
+    "runtimeGraphMustBeResolvedByRoot": true
+  },
+  "noWholeControllerOpsListenShellPayload": true,
+  "acceptance": "SOURCE-ONLY; no runtime/UI/native/page/account/HTTP acceptance"
+}

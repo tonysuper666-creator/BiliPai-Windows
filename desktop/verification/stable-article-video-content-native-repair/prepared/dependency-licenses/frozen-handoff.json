@@ -1,0 +1,211 @@
+{
+  "schema": "path,sha256Bytes,size",
+  "status": "FROZEN_RAW_LICENSE_AND_NOTICE_EVIDENCE",
+  "scope": "Exactly four new Content dependencies",
+  "preparedPayloads": [
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ksoup-html-jvm-0.6.0-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-html-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ksoup-entities-jvm-0.6.0-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-entities-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/markdown-jvm-0.7.3-LICENSE.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\markdown-jvm-0.7.3-LICENSE.txt",
+      "sha256Bytes": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+      "size": 11325
+    },
+    {
+      "targetRelativePath": "desktop/src/main/resources/licenses/rich-content/ATTRIBUTIONS.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ATTRIBUTIONS.txt",
+      "sha256Bytes": "b3454386c3661ad3326e935fa5567bc690d81d6da15707aa2c868c2ab8e8c2b1",
+      "size": 2785
+    }
+  ],
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\JetBrains_markdown\\head-ls-remote.txt",
+      "sha256Bytes": "05f4eefc917192052b29b5ef033f36ac947902b172df135000d56e3d4e4a73bb",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\JetBrains_markdown\\tree.json",
+      "sha256Bytes": "1765a079e1d1d16941ffc5800d1677980aeffe65e2b2f0a9c71329208040e1a1",
+      "size": 130070
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\jar-entry-inventory.json",
+      "sha256Bytes": "1c39b102a77e8c540f446c59bb1643634a4fbe13b2df4b4092d46e509288526a",
+      "size": 1336
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\ksoup-entities-jvm-0.6.0.module",
+      "sha256Bytes": "4ca2726766d4a6f8aa87899ca7d4e59c4215a7940ec5f1082f9a3aae897791e8",
+      "size": 3428
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\ksoup-entities-jvm-0.6.0.pom",
+      "sha256Bytes": "df610397a0a158426ae445672687025d4bdb945878ed9892434d015f84123b8d",
+      "size": 1745
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-entities-jvm\\tag-ls-remote.txt",
+      "sha256Bytes": "85a66b0f02f04408abbaaf457af3f5d90dea66db1856a02264f020053fff7823",
+      "size": 58
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\jar-entry-inventory.json",
+      "sha256Bytes": "19ddfdd8fdc447cea6561441e62a5d3e737b9166f69f13e546007f8a90ba3986",
+      "size": 4624
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\ksoup-html-jvm-0.6.0.module",
+      "sha256Bytes": "22e49ebd27a2092c4a25d69c8ee256e4a1f566557c4d1bd2776efa43c58d89dc",
+      "size": 3565
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\ksoup-html-jvm-0.6.0.pom",
+      "sha256Bytes": "2af7fbe0d6395326d00242a34a0026a8d98522f6bcad9c3f5ba9f11db99a57b3",
+      "size": 1934
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\ksoup-html-jvm\\tag-ls-remote.txt",
+      "sha256Bytes": "85a66b0f02f04408abbaaf457af3f5d90dea66db1856a02264f020053fff7823",
+      "size": 58
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\markdown-jvm\\jar-entry-inventory.json",
+      "sha256Bytes": "787852b75973df2d9a2d0daa41341cd35648b9040687ad47cadf1c9657a647c5",
+      "size": 18363
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\markdown-jvm\\markdown-jvm-0.7.3.module",
+      "sha256Bytes": "7029b63c74964e5b4334308ee729e95b538da5ed6ac12b2e477d478572d02252",
+      "size": 3365
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\markdown-jvm\\markdown-jvm-0.7.3.pom",
+      "sha256Bytes": "acb9d157ffc7a64ee62be8edd9600d26b5db03270a74e8be53cd79fe0b26f3cd",
+      "size": 1743
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\MohamedRejeb_Compose-Rich-Editor\\tree.json",
+      "sha256Bytes": "6407a622dde43f989c1a85260288194427ff07384418727cd14da7f8a0d4d9da",
+      "size": 148984
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\MohamedRejeb_Ksoup\\tree.json",
+      "sha256Bytes": "fb6bdbf56c23f22271b0a7c7f3e7eceff642ea74f648c9b5a0ad4aeb3470e7b9",
+      "size": 23403
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\jar-entry-inventory.json",
+      "sha256Bytes": "ee66474aed97ee04cadaa8ae1c42b893e67e76da2a6811c55d649a62656543b8",
+      "size": 15990
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\richeditor-compose-desktop-1.0.0-rc14.module",
+      "sha256Bytes": "b27a677ae28f89e3cd2c8b038d5c16ee6e55b876205e3e3d24ce822d142da768",
+      "size": 4756
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\richeditor-compose-desktop-1.0.0-rc14.pom",
+      "sha256Bytes": "059293795b8bae899e35966ac4801dedf016a8dec9d2ac5c4beabd7fb4f643d8",
+      "size": 3204
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\evidence\\richeditor-compose-desktop\\tag-ls-remote.txt",
+      "sha256Bytes": "47f50ef4f5b0986d1d2378f18a9a26ba9bdeacdc83b8ab841edbc95a2416428a",
+      "size": 63
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\freeze.py",
+      "sha256Bytes": "ee3031cef3d198b9870a91aa8ba564c2fcfeb1281025dc06a36ab596c9a916b5",
+      "size": 6110
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\inspection.json",
+      "sha256Bytes": "90314c60fc13354f89086262f4ec7a98d3676d3a0698d25fc26dabd317c4c190",
+      "size": 13086
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\install-recipe.json",
+      "sha256Bytes": "df46ae9f7899d50204cff1b00fa17e960867f421f67f14c53fc5727388703220",
+      "size": 2908
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepare.py",
+      "sha256Bytes": "6c30885291679567a2e3af2b794017e9632c6f8d8d90789efceeaf1fc7bb6f44",
+      "size": 5425
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ATTRIBUTIONS.txt",
+      "sha256Bytes": "b3454386c3661ad3326e935fa5567bc690d81d6da15707aa2c868c2ab8e8c2b1",
+      "size": 2785
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-entities-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\ksoup-html-jvm-0.6.0-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\markdown-jvm-0.7.3-LICENSE.txt",
+      "sha256Bytes": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+      "size": 11325
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\desktop\\src\\main\\resources\\licenses\\rich-content\\richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\JetBrains_markdown\\LICENSE",
+      "sha256Bytes": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14",
+      "size": 11325
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\MohamedRejeb_Compose-Rich-Editor\\LICENSE",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\prepared\\licenses\\MohamedRejeb_Ksoup\\LICENSE",
+      "sha256Bytes": "188187b988999fc9f6ecdae6ba6e49e4f53f0488ec5af68acbfff3b2cf0c8722",
+      "size": 11343
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\ROOT-INTEGRATION.md",
+      "sha256Bytes": "8ed7b936154a8e29d6a35ab1b111e82ecc251950841afd11dbe0123436c29cda",
+      "size": 1031
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-content-dependency-license-parity\\validation.json",
+      "sha256Bytes": "ca43f8de4dabdce2a41c6cbcc32bd386c6336b395e626587e243ad37e7bf92bf",
+      "size": 2334
+    }
+  ],
+  "productionWrites": false,
+  "sharedGradle": false,
+  "newDependencies": false,
+  "realUserData": false,
+  "upstreamLicenseTextModified": false,
+  "upstreamNoticeInvented": false,
+  "exactMarkdownSourceCommitClaimed": false
+}

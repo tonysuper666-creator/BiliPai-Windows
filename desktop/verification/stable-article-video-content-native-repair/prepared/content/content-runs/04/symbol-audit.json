@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "scope": "actual47 plus explicitly prospective frozen stage1 and stage2 foundations; not runtime acceptance",
+  "candidateJarSha256Bytes": "f9546f13d0f1d4c5affadf5a0edafb7f6e981b8059fcda4c1752566d6403da50",
+  "candidateClasses": 101,
+  "referenceJars": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-47\\main-kotlin.jar",
+      "sha256Bytes": "6c67aade3e1862046237409101cff747c0f0913f5a868ed10b5955e3410dda2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-detail-full-ui-parity\\runs\\12\\candidate.jar",
+      "sha256Bytes": "5beaaedff287e7ce61161be31fd01c40583fd59ee783352963819c9c2c8d2a31"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-player-full-controls-parity\\runs\\11\\candidate.jar",
+      "sha256Bytes": "87ba0992e4932a473c2be003b441802f0b9e6df0f236c3802be873a5916576f3"
+    }
+  ],
+  "classOverlaps": [],
+  "topLevelMethodIntersections": [],
+  "illegalNonLocalReturnClasses": []
+}

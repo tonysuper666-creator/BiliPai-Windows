@@ -1,0 +1,164 @@
+{
+  "immutable49Manifest": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+  "immutable49Cp": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+  "preparedOnly": true,
+  "compileExit": 0,
+  "fixtureSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-article-full-parity\\fixtures\\ArticleFixture.kt",
+      "sha256Bytes": "e9d936714aeb710a61f561047464fdbef84cf304028388d22387579394c92481"
+    }
+  ],
+  "candidateClasses": [
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\BottomSafeAreaPolicyKt.class",
+      "sha256Bytes": "04bc3017c0116eb0b8367de70d077e710531be4e8d3162052c145b6d815c4340"
+    },
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeletonKt$ArticleDetailSkeleton$lambda$0$0$$inlined$items$default$1.class",
+      "sha256Bytes": "48d121cd3d877b98f5405954c4f5b04c1eef92340962c76311cae176a9e72c61"
+    },
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeletonKt$ArticleDetailSkeleton$lambda$0$0$$inlined$items$default$2.class",
+      "sha256Bytes": "16681bdd2d8cdc6d033328b67d3e4fce5b0582393081ee1280bb4a01397777bf"
+    },
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeletonKt$ArticleDetailSkeleton$lambda$0$0$$inlined$items$default$3.class",
+      "sha256Bytes": "fb87bdc53dae9bbdfec6dea32a8fb77676ace77a5871cda101eabebdc57534ce"
+    },
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeletonKt$ArticleDetailSkeleton$lambda$0$0$$inlined$items$default$4.class",
+      "sha256Bytes": "2448675d9be6986508289d665451d1cda33700d75fad7c78938493cf9765a0d8"
+    },
+    {
+      "path": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalArticleSkeletonKt.class",
+      "sha256Bytes": "b50961637b858d0ade3118230c52ba1ca362c4ae2537bd94c7c67ddcc681284b"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\ArticleDetailUiModel.class",
+      "sha256Bytes": "2f945057e9b54d19d391053e351029ec987571fd818ccc3ab454b86ada48e210"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol$fetchOpusArticleBlocks$1.class",
+      "sha256Bytes": "7706fa0e4820ec753970508b1ec62fd00db50f3ccdb29d91645c004cc48046ff"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol$getArticleDetail$1.class",
+      "sha256Bytes": "b016561f42acb6790020ee29d339c38c6d12f0da833195668d301c881cb2761d"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol$getArticleUiDetail$1.class",
+      "sha256Bytes": "0a6e84fe5168312913ef1c2fdbd9ffcfb416f9cd52a1cc559cb4cc680138246f"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol$getArticleUiDetail$2.class",
+      "sha256Bytes": "8f3c04914ddc4bf8ccf8c1c9e2ffbb6eb8b73318efae323c27e96b4886859222"
+    },
+    {
+      "path": "com\\android\\purebilibili\\data\\repository\\DesktopDynamicDetailArticleProtocol.class",
+      "sha256Bytes": "835fbafffa88f12e651c8955e767ad63f47eabaf090798e7c04c86a2f39d9374"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailLayoutPolicyKt.class",
+      "sha256Bytes": "2fc6483c9573567b78a0cf68fe3f81204dedff59d8894b6921af3ee230174963"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$1$1.class",
+      "sha256Bytes": "100ab311fc08d344ae73b82a5f8ec0f525321231f6606e3a17fcd750037fdadb"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$2$1$4$3$1.class",
+      "sha256Bytes": "96af24d086b3328e65bccb7152f8f69f760f99f55db9d573a73787a882c5a219"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$2$1$4$4$1.class",
+      "sha256Bytes": "f996f28258694e523e2123287a99eb432c42952b21285d83ff38d6a23dddcf34"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$lambda$17$0$$inlined$itemsIndexed$default$1.class",
+      "sha256Bytes": "949fc0a8a4caecaef0fe4cc2f96be06611649275171089b2c4f8914af9a87290"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$lambda$17$0$$inlined$itemsIndexed$default$2.class",
+      "sha256Bytes": "21c60afcad3cd85d627f8e39aaae952419135e5114328ab0bfd1565a8ce1ea42"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailContent$lambda$17$0$$inlined$itemsIndexed$default$3.class",
+      "sha256Bytes": "744ed74ccfa2f2eea43fdf52b021411a532e1f30001e6d3a5ecea9e07004ac6c"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt$ArticleDetailScreen$uiState$2$1.class",
+      "sha256Bytes": "5f883e8b8ed6c3492abf4df6ade3e4e2735b8c3c8736b6d669bef35febdf4bea"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailScreenKt.class",
+      "sha256Bytes": "e6907a303d2f28856baba99f416d2af73431b98c012e82dc80a73f0144152138"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailUiState$Error.class",
+      "sha256Bytes": "8c006c69590d4ae450fa75c0b801215dda2b9f26a0069aa595a60719c716ae83"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailUiState$Loading.class",
+      "sha256Bytes": "243ebfd9501a42d081ecbd1f3b18bdb1c728884924eac3ecf10f30a30035d341"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailUiState$Success.class",
+      "sha256Bytes": "c9eb93518ce005e286991557114eff827cf89e1b39e73d69c648cde907b694fa"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleDetailUiState.class",
+      "sha256Bytes": "193e4c8ebb2817a7128895122ea394f7bb7942be8ca0565a1a66aee9156c1c7f"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleImagePreviewPayload.class",
+      "sha256Bytes": "6707a0553cf047e997dafe6703df7c50aaadf0beae513d59ac1e2dd9be5bbc1d"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleImagePreviewPolicyKt.class",
+      "sha256Bytes": "fb6b6c7cbee434d5acb5fb4beee59d10675082eb229de09553147e2ebf3d74f8"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleImagePreviewRequest.class",
+      "sha256Bytes": "216b0814509e8c5245e4f62d9fbe19e463c4928426df3bb2b9da1f3271b08d31"
+    },
+    {
+      "path": "com\\android\\purebilibili\\feature\\article\\ArticleRichTextRendererKt.class",
+      "sha256Bytes": "31783d747b61f9026066f91a656222053b38fb76c194aaeba82ad0984d095ff3"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindings$load$1.class",
+      "sha256Bytes": "096fe90647569654af773d98c196b8b732f4492860da7a1800d2a9522e1cf648"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindings.class",
+      "sha256Bytes": "ee313de119b95481b9d472c6b62c824f7a29212d64628f033c0cb74e47ac23f8"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt$desktopOriginalArticleBindings$1$invoke-gIAlu-s$1.class",
+      "sha256Bytes": "1d1c4c51ec3b7a4613876bc7d74d2842e818e25b08ffa3132e372eb91371eb0a"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt$desktopOriginalArticleBindings$1.class",
+      "sha256Bytes": "3135d928a8e30b55e2b8c889ca33c2d9ceb13eb28c1639dfc0ab57d9528f27c2"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt$desktopOriginalArticleBindings$protocol$1.class",
+      "sha256Bytes": "475b4e2c71148bd36d9d84b2e76098d72ae6bbeba0e3d52eb700ad120ef00e0a"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt$desktopOriginalArticleBindings$protocol$2.class",
+      "sha256Bytes": "014ce8ca6979179a8253a442b0078970f1c1f682f4cd133a3a026294d6fdc729"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt$desktopOriginalArticleBindings$protocol$3.class",
+      "sha256Bytes": "ec754688aa1fad48254a781686442d2dd19c44620dd06bcb1f73892db8dfb392"
+    },
+    {
+      "path": "com\\bilipai\\desktop\\ui\\DesktopOriginalArticleBindingsKt.class",
+      "sha256Bytes": "2c40b982154e00b141e84282a5086360d31364b89f5c6295c58a73a7de3fed23"
+    }
+  ],
+  "declaredProductFamilyOverride": "DesktopDynamicDetailArticleProtocol only; new nine-field model/UI/binding/policies",
+  "runExit": 0
+}

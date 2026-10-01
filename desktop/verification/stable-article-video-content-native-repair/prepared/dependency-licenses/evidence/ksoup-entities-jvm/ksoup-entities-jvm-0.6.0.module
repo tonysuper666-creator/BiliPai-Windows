@@ -1,0 +1,102 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ksoup-entities/0.6.0/ksoup-entities-0.6.0.module",
+    "group": "com.mohamedrejeb.ksoup",
+    "module": "ksoup-entities",
+    "version": "0.6.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.11"
+    }
+  },
+  "variants": [
+    {
+      "name": "jvmApiElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ksoup-entities-jvm-0.6.0.jar",
+          "url": "ksoup-entities-jvm-0.6.0.jar",
+          "size": 69336,
+          "sha512": "4dc3ca6a019cdd15219a96aceebb3cd999aeb8d4676c589050bfbd7b27d33fa2f018501430e4ecca5160b2a007892f00fff31724a5f5ddd2f7b2d9dc9360d581",
+          "sha256": "6c41eb42e4f7dd27b7a68f234b74ea802027e9ddb523db09376902ba23259185",
+          "sha1": "0d856b3b5344ac92ee74e0498d8fe480022bcc53",
+          "md5": "df0b90490efbba4c8cc8ce1efc51a770"
+        }
+      ]
+    },
+    {
+      "name": "jvmRuntimeElements-published",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.1.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ksoup-entities-jvm-0.6.0.jar",
+          "url": "ksoup-entities-jvm-0.6.0.jar",
+          "size": 69336,
+          "sha512": "4dc3ca6a019cdd15219a96aceebb3cd999aeb8d4676c589050bfbd7b27d33fa2f018501430e4ecca5160b2a007892f00fff31724a5f5ddd2f7b2d9dc9360d581",
+          "sha256": "6c41eb42e4f7dd27b7a68f234b74ea802027e9ddb523db09376902ba23259185",
+          "sha1": "0d856b3b5344ac92ee74e0498d8fe480022bcc53",
+          "md5": "df0b90490efbba4c8cc8ce1efc51a770"
+        }
+      ]
+    },
+    {
+      "name": "jvmSourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "files": [
+        {
+          "name": "ksoup-entities-jvm-0.6.0-sources.jar",
+          "url": "ksoup-entities-jvm-0.6.0-sources.jar",
+          "size": 29074,
+          "sha512": "c778c915fbf940bc712fcceea63c0ea5a9fa3e3c996a7d9101f3078809c9932684e29acb41bfc7bf32eaaedf3ae9eb8e9f6bc824c215b8050761d802874bd247",
+          "sha256": "26afa9311cb6cffe2dbb205124c261208da6eeafc8c6f63745730445ffc19291",
+          "sha1": "6741e0b05811f530d6c00ef86bb2d62da445d2c8",
+          "md5": "10ed8e5d26536304d8abe7d0dfbd29d8"
+        }
+      ]
+    }
+  ]
+}

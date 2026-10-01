@@ -1,0 +1,1 @@
+Unique hunk rejected onUserClick tail because both public screen and private content share that tail. Candidate unchanged; use complete public signature context.

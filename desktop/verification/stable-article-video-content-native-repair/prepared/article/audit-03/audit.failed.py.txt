@@ -1,0 +1,94 @@
+from pathlib import Path
+import hashlib,importlib.util,json,os,re,subprocess,sys,difflib
+H=Path(__file__).resolve().parent; MAIN=H.parents[2];REPO=MAIN.parent/'BiliPai-v023';PREFIX=chr(92)*2+'?'+chr(92)
+def wide(p):
+ s=os.path.abspath(p);return Path(s if s.startswith(PREFIX) else PREFIX+s)
+def read(p):return wide(p).read_text(encoding='utf-8').replace('\r\n','\n')
+def sha(p):return hashlib.sha256(wide(p).read_bytes()).hexdigest()
+def digest(s):return hashlib.sha256(s.encode()).hexdigest()
+def write(p,s):wide(p).parent.mkdir(parents=True,exist_ok=True);wide(p).write_text(s,encoding='utf-8',newline='\n')
+OUT=H/('audit-'+sys.argv[1]);wide(OUT).mkdir(exist_ok=False);checks=[]
+def verify(ok,name):assert ok,name;checks.append(name)
+COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+ids=json.loads(read(H/'source-identity.json'))
+for r in ids:
+ original=subprocess.check_output(['git','show',COMMIT+':'+r['path']],cwd=REPO).decode().replace('\r\n','\n')
+ verify(read(REPO/r['path'])==original and digest(original)==r['sha256'],'pinned original '+r['path'])
+ui=read(H/'prepared/selected/com/android/purebilibili/feature/article/ArticleDetailScreen.kt')
+for r in reversed(json.loads(read(H/'ui-platform-edits.json'))):
+ verify(ui.count(r['after'])==1 if r['after'] else True,'inverse UI edit '+r['label'])
+ if r['after']:ui=ui.replace(r['after'],r['before'],1)
+ else:
+  # The single removed transport import retains its original position before UiModel.
+  anchor='import com.android.purebilibili.data.repository.ArticleDetailUiModel\n'
+  verify(anchor in ui,'original ArticleRepository import anchor');ui=ui.replace(anchor,anchor+r['before'],1)
+verify(ui==read(REPO/ids[0]['path']),'whole 505-line original UI inverse byte equality')
+def module(path,name):
+ sp=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);return m
+lexer=module(REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','articleAuditLexer')
+producer=module(H/'prepared/tools/extract-upstream-article-detail.py','articleUIReplay')
+# Required new registry identities are an explicit in-memory prospective overlay only.
+registryOverlay=json.loads(read(REPO/'desktop/upstream-sources.json'))
+overlayExisting={r['path'] for r in registryOverlay['sources']}
+registryOverlay['sources'] += [dict(path=r['path'],sha256=r['sha256'],mode='selected' if r==ids[0] else 'direct',features=['stable-article-full']) for r in ids if r['path'] not in overlayExisting]
+write(OUT/'prospective-registry.json',json.dumps(registryOverlay,indent=2)+'\n')
+originalRead=Path.read_text
+def prospectiveRead(self,*args,**kwargs):
+ if str(self).replace('\\','/').removeprefix('//?/').lower()==str(REPO/'desktop/upstream-sources.json').replace('\\','/').lower():return json.dumps(registryOverlay)
+ return originalRead(self,*args,**kwargs)
+Path.read_text=prospectiveRead
+try:producer.generate(REPO,OUT/'ui-replay')
+finally:Path.read_text=originalRead
+
+for relative in ['com/android/purebilibili/feature/article/ArticleDetailScreen.kt','com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt']:
+ verify(read(OUT/'ui-replay'/relative)==read(H/'prepared/selected'/relative),'production UI replay '+relative)
+verify(len(list(wide(OUT/'ui-replay').rglob('*.kt')))==2,'production UI selected2 only; no direct duplicates')
+for r in ids[1:4]+ids[6:7]:
+ p=next(p for p in wide(H/'prepared/selected').rglob(Path(r['path']).name))
+ verify(read(p)==read(REPO/r['path']),'whole direct original '+p.name)
+basePath=REPO/'desktop/tools/extract-upstream-dynamic-detail-protocol.py';delta=json.loads(read(H/'tool-delta.json'));base=read(basePath)
+verify(digest(base)==delta['baseLfSha256'],'sole existing protocol producer baseline exact')
+desired=base
+for r in delta['hunks']:
+ verify(desired.count(r['before'])==1,'exact protocol tool hunk '+r['label']);desired=desired.replace(r['before'],r['after'],1)
+verify(desired==read(H/'prepared/tools/extract-upstream-dynamic-detail-protocol.py'),'exact four-hunk desired sole producer')
+write(H/'protocol-producer.patch',''.join(difflib.unified_diff(base.splitlines(True),desired.splitlines(True),fromfile='a/desktop/tools/extract-upstream-dynamic-detail-protocol.py',tofile='b/desktop/tools/extract-upstream-dynamic-detail-protocol.py')))
+for file,label in [(basePath,'old'),(H/'prepared/tools/extract-upstream-dynamic-detail-protocol.py','new')]:
+ m=module(file,'articleProtocolReplay'+label);m.__file__=str(basePath);m.generate(REPO,OUT/(label+'-protocol'))
+old=OUT/'old-protocol';new=OUT/'new-protocol';changed=[]
+for p in wide(new).rglob('*.kt'):
+ relative=p.relative_to(wide(new))
+ if read(p)!=read(old/relative):changed.append(relative.as_posix())
+ verify(read(p)==read(H/'prepared/protocol'/relative),'sole protocol prospective replay '+relative.as_posix())
+verify(changed==['generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt'],'only Article family output changes; existing Ops/detail/fallback byte-identical')
+original=read(REPO/'app/src/main/java/com/android/purebilibili/data/repository/ArticleRepository.kt');generated=read(new/'generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt')
+model_start=original.index('data class ArticleDetailUiModel(');model_end=lexer.balanced(lexer.masked(original),original.index('(',model_start))
+verify(original[model_start:model_end] in generated,'all nine fields original model exact')
+for name in ['ArticleViewData.toUiModel','String?.normalizeImageUrl']:
+ if name=='ArticleViewData.toUiModel':
+  ma=lexer.masked(original);start=re.search('    private fun ArticleViewData\\.toUiModel\\(\\)',ma).start();end=lexer.balanced(ma,ma.index('{',start),'{','}')
+ else:start,end=lexer.fun_span(original,name)
+ verify(original[start:end] in generated,'whole original '+name+' exact')
+def remove_owned_calls(t):
+ for match in reversed(list(re.finditer(r'ownedCall\s*\{',lexer.masked(t)))):
+  ma=lexer.masked(t);start=ma.index('{',match.start());end=lexer.balanced(ma,start,'{','}');inside=t[start+1:end-1]
+  if inside.startswith(' '):inside=inside[1:]
+  if inside.endswith(' '):inside=inside[:-1]
+  t=t[:match.start()]+inside+t[end:]
+ return t
+for name,generated_name in [('getArticleDetail','getArticleUiDetail'),('fetchOpusArticleBlocks','fetchOpusArticleBlocks')]:
+ a,b=lexer.fun_span(original,name);c,d=lexer.fun_span(generated,generated_name);t=remove_owned_calls(generated[c:d]);t=t.replace('getArticleUiDetail(','getArticleDetail(').replace('signDetailParams(','signWithWbi(').replace('ownedCatching','runCatching')
+ t=t.replace('runCatching { onArticleViewed?.let { callback -> callback(merged.articleId) } }','runCatching { HistoryRepository.reportArticleView(merged.articleId) }')
+ verify(t==original[a:b],'whole original '+name+' inverse owned-call equality')
+verify('getArticleUiDetail(articleId).map { it.title to it.blocks }' in generated,'old Pair ABI is canonical model projection')
+registry=json.loads(read(REPO/'desktop/upstream-sources.json'));existing={r['path']:r for r in registry['sources']}
+direct=ids[1:4]+ids[6:7];selected=[ids[0]];merges=[ids[4],ids[5]]
+for r in direct+selected:verify(r['path'] not in existing,'new identity no producer overlap '+r['path'])
+rows=[dict(path=r['path'],sha256=r['sha256'],mode='direct',features=['stable-article-full']) for r in direct]+[dict(path=ids[0]['path'],sha256=ids[0]['sha256'],mode='selected',features=['stable-article-full'])]
+merge=[dict(path=r['path'],sha256=r['sha256'],features=['stable-article-full'],preserveExistingMode=True) for r in merges]
+# Existing ArticleRepository identity may be missing from current registry even though its selected producer exists.
+for r in merge:
+ if r['path'] not in existing:r['mode']='selected'
+write(H/'registry-delta.json',json.dumps(dict(new=rows,featureUnions=merge,globalReplace=False,sourceCountNotes='4 direct +1 selected new original identity; original Repository selected feature may require identity append; Skeleton existing feature union'),indent=2)+'\n')
+write(OUT/'result.json',json.dumps(dict(passed=True,count=len(checks),checks=checks,changedProtocolOutputs=changed,fullOriginalUiLines=len(ui.splitlines()),productionSelectedOutputs=2,directOutputs=4,MainRuntimeAccepted=False),indent=2)+'\n')
+print(json.dumps(dict(passed=True,checks=len(checks),direct4=True,productionSelected2=True)))

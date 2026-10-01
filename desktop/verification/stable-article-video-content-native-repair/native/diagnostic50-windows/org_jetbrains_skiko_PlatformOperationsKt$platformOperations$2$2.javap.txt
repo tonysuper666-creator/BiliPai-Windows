@@ -1,0 +1,105 @@
+Compiled from "PlatformOperations.kt"
+public final class org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2 implements org.jetbrains.skiko.PlatformOperations {
+  org.jetbrains.skiko.PlatformOperationsKt$platformOperations$2$2();
+    Code:
+       0: aload_0
+       1: invokespecial #10                 // Method java/lang/Object."<init>":()V
+       4: return
+    LineNumberTable:
+      line 86: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       5     0  this   Lorg/jetbrains/skiko/PlatformOperationsKt$platformOperations$2$2;
+
+  public boolean isFullscreen(java.awt.Component);
+    Code:
+       0: aload_1
+       1: ldc           #16                 // String component
+       3: invokestatic  #22                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_1
+       7: invokestatic  #28                 // Method javax/swing/SwingUtilities.getRoot:(Ljava/awt/Component;)Ljava/awt/Component;
+      10: dup
+      11: ldc           #30                 // String null cannot be cast to non-null type java.awt.Window
+      13: invokestatic  #33                 // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;Ljava/lang/String;)V
+      16: checkcast     #35                 // class java/awt/Window
+      19: astore_2
+      20: aload_2
+      21: invokevirtual #39                 // Method java/awt/Window.getGraphicsConfiguration:()Ljava/awt/GraphicsConfiguration;
+      24: invokevirtual #45                 // Method java/awt/GraphicsConfiguration.getDevice:()Ljava/awt/GraphicsDevice;
+      27: astore_3
+      28: aload_3
+      29: invokevirtual #51                 // Method java/awt/GraphicsDevice.getFullScreenWindow:()Ljava/awt/Window;
+      32: aload_2
+      33: invokestatic  #55                 // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+      36: ireturn
+    LineNumberTable:
+      line 88: 6
+      line 89: 20
+      line 90: 28
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         20      17     2 window   Ljava/awt/Window;
+         28       9     3 device   Ljava/awt/GraphicsDevice;
+          0      37     0  this   Lorg/jetbrains/skiko/PlatformOperationsKt$platformOperations$2$2;
+          0      37     1 component   Ljava/awt/Component;
+
+  public void setFullscreen(java.awt.Component, boolean);
+    Code:
+       0: aload_1
+       1: ldc           #16                 // String component
+       3: invokestatic  #22                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_1
+       7: invokestatic  #28                 // Method javax/swing/SwingUtilities.getRoot:(Ljava/awt/Component;)Ljava/awt/Component;
+      10: dup
+      11: ldc           #30                 // String null cannot be cast to non-null type java.awt.Window
+      13: invokestatic  #33                 // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;Ljava/lang/String;)V
+      16: checkcast     #35                 // class java/awt/Window
+      19: astore_3
+      20: aload_3
+      21: invokevirtual #39                 // Method java/awt/Window.getGraphicsConfiguration:()Ljava/awt/GraphicsConfiguration;
+      24: invokevirtual #45                 // Method java/awt/GraphicsConfiguration.getDevice:()Ljava/awt/GraphicsDevice;
+      27: astore        4
+      29: aload         4
+      31: iload_2
+      32: ifeq          39
+      35: aload_3
+      36: goto          40
+      39: aconst_null
+      40: invokevirtual #66                 // Method java/awt/GraphicsDevice.setFullScreenWindow:(Ljava/awt/Window;)V
+      43: return
+    LineNumberTable:
+      line 94: 6
+      line 95: 20
+      line 96: 29
+      line 97: 43
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+         20      24     3 window   Ljava/awt/Window;
+         29      15     4 device   Ljava/awt/GraphicsDevice;
+          0      44     0  this   Lorg/jetbrains/skiko/PlatformOperationsKt$platformOperations$2$2;
+          0      44     1 component   Ljava/awt/Component;
+          0      44     2 value   Z
+
+  public void disableTitleBar(java.awt.Component, float);
+    Code:
+       0: aload_1
+       1: ldc           #16                 // String component
+       3: invokestatic  #22                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: return
+    LineNumberTable:
+      line 100: 6
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       7     0  this   Lorg/jetbrains/skiko/PlatformOperationsKt$platformOperations$2$2;
+          0       7     1 component   Ljava/awt/Component;
+          0       7     2 headerHeight   F
+
+  public void orderEmojiAndSymbolsPopup();
+    Code:
+       0: return
+    LineNumberTable:
+      line 103: 0
+    LocalVariableTable:
+      Start  Length  Slot  Name   Signature
+          0       1     0  this   Lorg/jetbrains/skiko/PlatformOperationsKt$platformOperations$2$2;
+}

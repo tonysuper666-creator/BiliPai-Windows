@@ -1,0 +1,403 @@
+{
+  "scope": "prepared complete original Article UI/model/protocol and focused owned request proof",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "mainIntegration": false,
+  "actualBase": {
+    "snapshot": "stable-product-snapshot-49",
+    "manifest": "7db2b7bc2816c9b7f10521c1ad1678196f4446a8bcde5cc5a837d678ac675a35",
+    "cp": "569b953e5def0dcaba76d9a6a6d96fea9f3572ad910e6edf13f23b88d91ee821",
+    "entries": 97
+  },
+  "gates": {
+    "compile": "compile-02",
+    "inputs": 8,
+    "classes": 37,
+    "proof": "proof-04",
+    "assertions": 19,
+    "groups": 1,
+    "sourceAudit": "audit-04",
+    "sourceChecks": 49,
+    "originalUiLines": 505
+  },
+  "installWhitelistSha": "44f1fc71abbe2b4512f2ba4ddddb29549e842f788af5410304096b415b4380d7",
+  "recipeSha": "c26762fe64cb2e968840ca76ba564abacac43b3cfc7f43aac12ffa3c59a640c6",
+  "artifactsCount": 74,
+  "artifacts": [
+    {
+      "path": "audit-01/audit.failed.py.txt",
+      "sha256Bytes": "b446fa5cf5ff1d304610b3509a7f1de596069d437181e637cce9378282cd0956",
+      "sizeBytes": 7616
+    },
+    {
+      "path": "audit-02/audit.failed.py.txt",
+      "sha256Bytes": "c7a1d773f9a5e409e6abfbed6c1a8394e69ea3a24d808f4bd6b307c65c8cd642",
+      "sizeBytes": 7616
+    },
+    {
+      "path": "audit-03/audit.failed.py.txt",
+      "sha256Bytes": "9190b84d352aadb822be990e50a9b30f04dec79d179cbcfd30dbb7708b63b57d",
+      "sizeBytes": 8477
+    },
+    {
+      "path": "audit-03/prospective-registry.json",
+      "sha256Bytes": "4b5e4887266bad5b636622e2a06ded829b985947899ade8fc9111e95ee00c2dc",
+      "sizeBytes": 361822
+    },
+    {
+      "path": "audit-04/prospective-registry.json",
+      "sha256Bytes": "4b5e4887266bad5b636622e2a06ded829b985947899ade8fc9111e95ee00c2dc",
+      "sizeBytes": 361822
+    },
+    {
+      "path": "audit-04/result.json",
+      "sha256Bytes": "2bea598f8bda3cc31eddc9c66ab42f6a7fa46093f9f833e574e232aa697bf0b4",
+      "sizeBytes": 4227
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "3cde29db069008b8b9426e15fa1329e773ee184992fea7239fa6e785f81814ce",
+      "sizeBytes": 8502
+    },
+    {
+      "path": "compile-01/compile.log",
+      "sha256Bytes": "d29fb94931c09cb5047f4ac4bcc1c8e778d89f62bb038f715d99b80dd22b3412",
+      "sizeBytes": 1060
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "4bff900a2f46cf86e055c46f298ace8094a75e94a9dd728b3f9992e2c81889f1",
+      "sizeBytes": 26156
+    },
+    {
+      "path": "compile-01/inputs.json",
+      "sha256Bytes": "db2c14701700d44b99480a3149d65db6137fbe47d2ff28b32441fed8464348d9",
+      "sizeBytes": 2691
+    },
+    {
+      "path": "compile-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "80ca143150fc86641fb9f506019824740c51ae803a949054b63d43662252292d",
+      "sizeBytes": 376
+    },
+    {
+      "path": "compile-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "88319081938bb1f674be3f164699929956a6cddb866028acccf4eaef6044da00",
+      "sizeBytes": 26368
+    },
+    {
+      "path": "compile-02/inputs.json",
+      "sha256Bytes": "9daa08267223695325a2f36778552898cd5f06788dac78343e889612953317c5",
+      "sizeBytes": 3044
+    },
+    {
+      "path": "compile-02/result.json",
+      "sha256Bytes": "ce391b696dcfb56b2391968ae03d9b6b83c522a4081beee56563dc7709d00c07",
+      "sizeBytes": 489
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "2167efae77a1e86df7ad25591bc8f9919475460cdd1a30e004d155de35c22efd",
+      "sizeBytes": 3138
+    },
+    {
+      "path": "excluded-runtime-artifacts.json",
+      "sha256Bytes": "d9bb51fa29ff8432201b726a6491eaa1b6e0540b26b81880631a45de25eea636",
+      "sizeBytes": 16331
+    },
+    {
+      "path": "fixtures/ArticleFixture.kt",
+      "sha256Bytes": "e9d936714aeb710a61f561047464fdbef84cf304028388d22387579394c92481",
+      "sizeBytes": 11769
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "26c327524c6ad5a75fa19ad08cbfc7fa4ded0ca8c08895da622e2cb197ed830a",
+      "sizeBytes": 4281
+    },
+    {
+      "path": "gradle-snippet.kts",
+      "sha256Bytes": "8b6f12fd6d66577a9f2d4941fc24b7c3d087fd2450d76987c5a6fb019289d334",
+      "sizeBytes": 1298
+    },
+    {
+      "path": "historical-status.json",
+      "sha256Bytes": "470f3a310b968642fe40262c4912bdbb09b8018a4c00f890406d9c34f41648fe",
+      "sizeBytes": 693
+    },
+    {
+      "path": "independent-source-review.json",
+      "sha256Bytes": "b6aed300c2c1f3b88aa67284d350bd30617ca19181c246b976a49facec945ba8",
+      "sizeBytes": 5311
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "44f1fc71abbe2b4512f2ba4ddddb29549e842f788af5410304096b415b4380d7",
+      "sizeBytes": 1285
+    },
+    {
+      "path": "prepare-attempt01/preflight-failure.txt",
+      "sha256Bytes": "565ae08a60e8944cf24e07becdf07e4de4345bd14d7f5eca48ccd08b69262d6c",
+      "sizeBytes": 223
+    },
+    {
+      "path": "prepare-attempt01/prepare.py",
+      "sha256Bytes": "ded38aec3be580f5150ea379b2335ca7dc18e6a3e8c61f51b3db0e2fa1d73859",
+      "sizeBytes": 7625
+    },
+    {
+      "path": "prepare-attempt02/preflight-failure.txt",
+      "sha256Bytes": "4f04adada984c1ddc611043e900946cc5eef7d74e35bfaade94538c8b0600078",
+      "sizeBytes": 163
+    },
+    {
+      "path": "prepare-attempt02/prepare.py",
+      "sha256Bytes": "618f28ec6a0c2f1c25e1fb9549f872d3fae77dc53ff6347fb4dc9390ad23d95a",
+      "sizeBytes": 7925
+    },
+    {
+      "path": "prepare-attempt03/preflight-failure.txt",
+      "sha256Bytes": "3d3c83c2b88c0adb4b2622d2bdde5e651ed1d2c383e46ee1a746b1d5d1a21388",
+      "sizeBytes": 157
+    },
+    {
+      "path": "prepare-attempt03/prepare.py",
+      "sha256Bytes": "52fb0ce4897058b2e608a0b697ef2e2872b3f2366b704094cc1261a1401875eb",
+      "sizeBytes": 7989
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "146b7042d82dcaf8cd046c698fa14eccab02215ccf499900eb0b188a3031269b",
+      "sizeBytes": 8559
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalArticleBindings.kt",
+      "sha256Bytes": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92",
+      "sizeBytes": 2666
+    },
+    {
+      "path": "prepared/protocol/DesktopDynamicDetailOperations.fragment.kt",
+      "sha256Bytes": "feaddb448c71ee4b15838dbf49d83e6aa133dc0aa3727617617412b2e8e1c1c4",
+      "sizeBytes": 1357
+    },
+    {
+      "path": "prepared/protocol/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.kt",
+      "sha256Bytes": "2dccf1f68dd46c4eb9679e96858b8057e87668a12c988d87a83b3850332fde68",
+      "sizeBytes": 5629
+    },
+    {
+      "path": "prepared/protocol/generated/com/android/purebilibili/data/repository/DesktopDynamicDetailProtocol.kt",
+      "sha256Bytes": "d2660b7233603c35daa84bbc0c5adc0ed99518257019250cac3a94500d251e1d",
+      "sizeBytes": 6426
+    },
+    {
+      "path": "prepared/protocol/generated/com/android/purebilibili/data/repository/DesktopOriginalDynamicDetailFallbackPolicy.kt",
+      "sha256Bytes": "1929a1d230f324dcf6e7d9353eae1c1cbf574818411ee8e8cc99cf02ad649ee4",
+      "sizeBytes": 18742
+    },
+    {
+      "path": "prepared/protocol/selected-source-bodies.json",
+      "sha256Bytes": "72965275bda619808b15a28ca3dde47b8b879aee2b3dc958655a70d9bcba9ffd",
+      "sizeBytes": 2699
+    },
+    {
+      "path": "prepared/protocol/source-identity.json",
+      "sha256Bytes": "5e894bb38255a10320e71d9e7f5ef0a020f47043734c837c31e742fa625e7346",
+      "sizeBytes": 2687
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/core/ui/BottomSafeAreaPolicy.kt",
+      "sha256Bytes": "52f1a4496022f5257f9a27ebe56e9bb84c8045b4faf42353b9750ab7dcf19e8f",
+      "sizeBytes": 430
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/core/ui/skeleton/DesktopOriginalArticleSkeleton.kt",
+      "sha256Bytes": "b4b7e5926d58c8f3eb2b76e9105cc6ae31746e8c32b2f6a9db5881e8a6059c75",
+      "sizeBytes": 1912
+    },
+    {
+      "path": "prepared/selected/com/android/purebilibili/feature/article/ArticleDetailScreen.kt",
+      "sha256Bytes": "fc65f418d2b945dad15aafeea4c62b7cd275335a6c7896a1dccf9c33d9199620",
+      "sizeBytes": 22372
+    },
+    {
+      "path": "prepared/selected/feature/article/ArticleDetailLayoutPolicy.kt",
+      "sha256Bytes": "005b05efaba6390f785a1740fc6881bfcc31e58a56b1ef4d639368a91b88359b",
+      "sizeBytes": 646
+    },
+    {
+      "path": "prepared/selected/feature/article/ArticleImagePreviewPolicy.kt",
+      "sha256Bytes": "61f0e181cd82c97a5268081c78ff4f8bd39727df82a7e904f294fd8c68c7872a",
+      "sizeBytes": 1011
+    },
+    {
+      "path": "prepared/selected/feature/article/ArticleRichTextRenderer.kt",
+      "sha256Bytes": "4ddf0670b9fbabbda3e1f765ca868ea60c2df1159089a1c8ec86274c628dc723",
+      "sizeBytes": 2064
+    },
+    {
+      "path": "prepared/tools/extract-upstream-article-detail.py",
+      "sha256Bytes": "b7c86811b011a8c4923d5c4e2232286d560cb24e8368f3c41bedddd9f8ddea56",
+      "sizeBytes": 4418
+    },
+    {
+      "path": "prepared/tools/extract-upstream-dynamic-detail-protocol.py",
+      "sha256Bytes": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937",
+      "sizeBytes": 10468
+    },
+    {
+      "path": "proof-01/ArticleFixture.failed.kt.txt",
+      "sha256Bytes": "6497532972f14077f46175baff8d5e043d6e90fc4b937ee368761ef0c555f277",
+      "sizeBytes": 12258
+    },
+    {
+      "path": "proof-01/compile.args",
+      "sha256Bytes": "3ccd5699c7f2f7262efff7fe3e9bf5bd7e85f198b2c28fa2a953351985bc3749",
+      "sizeBytes": 24810
+    },
+    {
+      "path": "proof-01/compile.log",
+      "sha256Bytes": "9c9cee5b0960837ee0cb075db3af947313f1875be4cb810ffe59d8787cdc6251",
+      "sizeBytes": 12522
+    },
+    {
+      "path": "proof-01/proof.json",
+      "sha256Bytes": "cb636370d0af908df17f011c7d1aba7cbfca70a9dc5815d4dec9dc260c1d001c",
+      "sizeBytes": 8915
+    },
+    {
+      "path": "proof-02/ArticleFixture.failed.kt.txt",
+      "sha256Bytes": "2989bd35bb082115c1ec8e551d5b39e9771ef74cd3ed84c11d00ca8d0ecbbaf6",
+      "sizeBytes": 11652
+    },
+    {
+      "path": "proof-02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "8eaccb8e1b3d00eb38553e54520706e151a6bc3f96eec04fb17041022fd3c5fd",
+      "sizeBytes": 68
+    },
+    {
+      "path": "proof-02/compile.args",
+      "sha256Bytes": "4ebc5994900e78c39d747873bcd586952db383c42c1b602c9523c2e686d40e48",
+      "sizeBytes": 24810
+    },
+    {
+      "path": "proof-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-02/proof.json",
+      "sha256Bytes": "616037471084f5f12634ae0e0d372cc04d92190036aeb4d54357d13bfdd1002d",
+      "sizeBytes": 8932
+    },
+    {
+      "path": "proof-02/run.log",
+      "sha256Bytes": "2ce7de6e249218d345af1ffe430bd24b515576dd57ce835ce9bd9fd2c161a562",
+      "sizeBytes": 1142
+    },
+    {
+      "path": "proof-03/ArticleFixture.failed.kt.txt",
+      "sha256Bytes": "7e3499c1bd929522d1485838c06f00635ca7cfed98c632aa6712c39d062f5c60",
+      "sizeBytes": 11659
+    },
+    {
+      "path": "proof-03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "8eaccb8e1b3d00eb38553e54520706e151a6bc3f96eec04fb17041022fd3c5fd",
+      "sizeBytes": 68
+    },
+    {
+      "path": "proof-03/compile.args",
+      "sha256Bytes": "402b7edaa1398bd3007e97f3f8684196393976364be281e916fe79cb674444fb",
+      "sizeBytes": 24810
+    },
+    {
+      "path": "proof-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-03/proof.json",
+      "sha256Bytes": "57e9e481ccdbb3f6896a0bfa0b4e90e7cf27f65b88f06dacf2395316329143eb",
+      "sizeBytes": 8932
+    },
+    {
+      "path": "proof-03/run.log",
+      "sha256Bytes": "6caf508b1ccb54647278ec6133d3b24367825e9a02d9be17dd31eaa4db037ab1",
+      "sizeBytes": 1479
+    },
+    {
+      "path": "proof-04/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "8eaccb8e1b3d00eb38553e54520706e151a6bc3f96eec04fb17041022fd3c5fd",
+      "sizeBytes": 68
+    },
+    {
+      "path": "proof-04/compile.args",
+      "sha256Bytes": "da9a4fd40af3f7a0c9d0a17f6f49c61d9c9c3e21a4f96d79b8e23976feed1fdf",
+      "sizeBytes": 24810
+    },
+    {
+      "path": "proof-04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "proof-04/proof.json",
+      "sha256Bytes": "feac38327cf67fc9562e34c23abd2de62662012fab276b933d107479c983b745",
+      "sizeBytes": 8932
+    },
+    {
+      "path": "proof-04/run.log",
+      "sha256Bytes": "7d2cf7db5053b61df409eac50c0b3ceb76cc1749e3f29373ea0ba1bc7c71dac1",
+      "sizeBytes": 2054
+    },
+    {
+      "path": "protocol-producer.patch",
+      "sha256Bytes": "d85856b1c696f629ff60e88a9bdbe2924e5d8e16e1409b714bc66d5888267806",
+      "sizeBytes": 6253
+    },
+    {
+      "path": "prove.py",
+      "sha256Bytes": "26c856c0515ec68c07a4ea922e7109c09cfc2919866dec5cd2a45431eabfc0c3",
+      "sizeBytes": 2912
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "bc9bac49269719e3e403d49db1b98b38a308d7022d66e4b73fc7d394a671bfee",
+      "sizeBytes": 2230
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "c26762fe64cb2e968840ca76ba564abacac43b3cfc7f43aac12ffa3c59a640c6",
+      "sizeBytes": 7206
+    },
+    {
+      "path": "selected-source-bodies.json",
+      "sha256Bytes": "aba51602fd6f519fc65fc4ffe95c1260923dae764f72ba9e973f3f516e834f97",
+      "sizeBytes": 276
+    },
+    {
+      "path": "source-identity.json",
+      "sha256Bytes": "26f2a2b18f3c67f3a2eeff6c50bce73c66215fdd93b6f72789a8ca544c253a74",
+      "sizeBytes": 1796
+    },
+    {
+      "path": "tool-delta.json",
+      "sha256Bytes": "e718a7aaeebdd66099259e06995c8ec1716d2cd6523350e2b77e932e0ef05757",
+      "sizeBytes": 3850
+    },
+    {
+      "path": "ui-platform-edits.json",
+      "sha256Bytes": "4e3be486b4fbbd483a8d374464f9ed45d8fa05b379f7d08c9b1b5fe837131838",
+      "sizeBytes": 2102
+    }
+  ],
+  "outsideScope": [
+    "Root typed leaf mounted runtime",
+    "real account/HTTP/TLS",
+    "physical window/native Gallery/input",
+    "EXE/package delivery"
+  ]
+}

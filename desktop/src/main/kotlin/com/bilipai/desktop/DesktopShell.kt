@@ -1885,7 +1885,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
                                     locateBvid = (entryKey as? BiliPaiNavKey.Space)?.targetBvid?.takeIf{it.isNotBlank()} ?: playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
                             }
-                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.ARTICLE, DesktopSection.NOTES) ->
+                            entryKey is BiliPaiNavKey.ArticleDetail -> {
+                                val articleHomeSettings by originalHomePreferences.homeSettings.collectAsState()
+                                DesktopDetailWindow {
+                                    DesktopOriginalArticleRootHost(entryKey, personalLists, commands,
+                                        transitionEnabled = articleHomeSettings.cardTransitionEnabled)
+                                }
+                            }
+                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.NOTES) ->
                                 CommunityContentScreen(when(section) {
                                     DesktopSection.DYNAMIC -> CommunitySection.DYNAMIC
                                     DesktopSection.SEARCH -> CommunitySection.SEARCH

@@ -1,0 +1,403 @@
+{
+  "status": "PASS",
+  "snapshot": 53,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "diagnosticBaselinesMounted": false,
+  "JDWPEnabled": false,
+  "originalEntryFullscreenAccepted": true,
+  "stableOriginalControlFullscreenAccepted": true,
+  "realSkyMousePairs": 6,
+  "checks": [
+    {
+      "name": "Unchanged full original renderer owns exact local task and actual native first frame",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual original landscape entry applies real fixture Window fullscreen placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Original exit fullscreen control receives real HWND messages and changes original local state",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Stable original native fullscreen control applies actual placement",
+      "passed": true,
+      "requiredForIndependentControls": false
+    },
+    {
+      "name": "Native HWND delivery reaches original next-episode action and exact current manager task",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual Windows SMTC GetForWindow is available on fixture-owned HWND",
+      "passed": true,
+      "details": {
+        "error": ""
+      }
+    },
+    {
+      "name": "Same product media adapter publishes original title/artist/bvid and exact current queue",
+      "passed": true,
+      "details": {
+        "nativeTitle": "Offline Native 2",
+        "nativePlaybackStatus": 4
+      }
+    },
+    {
+      "name": "Injected existing source command callback with empty retained next target preserves source",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Injected source callback seeks same actual native owner",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual existing PiP owns same Canvas while main shaped carrier is excluded",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Actual PiP native title and queue controls use current offline metadata",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "PiP restore returns sole Canvas and original foreground without changing native source token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Retired fixture epoch rejects injected seek/queue command for still-current native token",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Original disposal restores current actual Windows chrome/client theme and clears only owned media",
+      "passed": true,
+      "details": {}
+    },
+    {
+      "name": "Fixture performed no HTTP, account login or chooser operation",
+      "passed": true,
+      "details": {}
+    }
+  ],
+  "assertions": 15,
+  "passedChecks": 15,
+  "failedChecks": 0,
+  "requestedScopeFullyAccepted": false,
+  "layoutAcceptedByRawGeometryAlone": false,
+  "rootVisualObservation": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\root-visual-observation.json",
+    "sha256Bytes": "aa02827ea89fcad36ce38bf084770c73324f1255e68e1a923ac151dfa7f9a2aa",
+    "size": 2600
+  },
+  "rootVisualObservationSource": {
+    "path": "work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\native53-root-observation.json",
+    "sha256Bytes": "aa02827ea89fcad36ce38bf084770c73324f1255e68e1a923ac151dfa7f9a2aa",
+    "size": 2600
+  },
+  "layoutAcceptanceBoundary": "Root visual receipt accepts observed normal-window geometry after both exits and observed full-screen state in this standalone fixture; task-next remount geometry is separate and not claimed accepted.",
+  "SMTCFailedChecks": [],
+  "SMTCUnavailableCause": null,
+  "PiPAndSMTCCommandScopeCompleted": true,
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false,
+  "realAccountAccepted": false,
+  "OSSMTCButtonAccepted": false,
+  "externalF11Accepted": false,
+  "arbitraryRouteDisposalPlacementRestorationAccepted": false,
+  "schema": "path,sha256Bytes,size",
+  "rawArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\acceptance-result.json",
+      "sha256Bytes": "64687d5aa2d1b5efce04cef303446e88cda538b747890ff05f448f38933f61c0",
+      "size": 789
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\compile-result.json",
+      "sha256Bytes": "f95324e9cca73b46972a74878bc6e8e4a9bc800e083d9fbdebdb9913cb7c37b0",
+      "size": 1086
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\compiler.args",
+      "sha256Bytes": "699dd915191de920959a05d6d2b892d336c9093eb6a2b5107e02e2ddf427eeb3",
+      "size": 25817
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-1.done",
+      "sha256Bytes": "9a7f0a480f47815824afa734197c691715a7b7fd8c11fed1a9f4d936c55dfd22",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-2.done",
+      "sha256Bytes": "4b02bb6ad9b41cea907088c338216548720896c0c06a494ae5b2635f512bc0b8",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-3.done",
+      "sha256Bytes": "22654d75996d8200e9ee530d7ff5db45685a1fae9f9b37906dc1ea4b8b9b58ff",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-4.done",
+      "sha256Bytes": "bbb160d16692590ed78b84d1eff4765e7392afdba3d9410e393125bf01030057",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-5.done",
+      "sha256Bytes": "4e5ba0190f25350bd0b74a68aa8516327b771aef5602483c31610fefbc5f5676",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-6.done",
+      "sha256Bytes": "353913edb48232a6c637298db387796bfb7915af888e6870f6c4ad3b48465cf8",
+      "size": 46
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\external-input-request.json",
+      "sha256Bytes": "04700fe8bec38c35e1dd5192018ae9b17188bfd7745bc4b79104dc14e159967c",
+      "size": 4306
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\native-proof.json",
+      "sha256Bytes": "5d9ccf8ac8c59424a10dd4e56cb274e8aa20451b6562b463f417c1675adbb34b",
+      "size": 96161
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\owned-geometries.json",
+      "sha256Bytes": "10428618f1f7100ae865661a32c0eb7bc96a671bb5b915e9f5d51bd7e59fa12a",
+      "size": 42670
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\owned-geometry-before-mount.json",
+      "sha256Bytes": "77d20048c4e7771548c1b253c0a08cb38bad8597e9319fc7534ae48d2ad3a103",
+      "size": 668
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\OfflineNativeFixture.kt",
+      "sha256Bytes": "4c4f443a3b35cbd3c73d73ee1728479b814a62de3ea70db944dd3a5b43d54bcd",
+      "size": 42082
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\pins-after.json",
+      "sha256Bytes": "aa08be2e515bb6088b4ece1037108c5e6f873bc7cdbfe59c08a135bd90ebc3e8",
+      "size": 40104
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\pins-before.json",
+      "sha256Bytes": "aa08be2e515bb6088b4ece1037108c5e6f873bc7cdbfe59c08a135bd90ebc3e8",
+      "size": 40104
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\runtime-command.json",
+      "sha256Bytes": "165e1e78f5a4b5793ae020bb405b40a6b298014b060dd99393f12e20e30433b4",
+      "size": 27718
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\runtime.log",
+      "sha256Bytes": "5a50bb5f682887e6f762a41d28421af4a76012bbfc2c7f500bb3efc3e42de9a2",
+      "size": 2953
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\CONTRACT.md",
+      "sha256Bytes": "ea186c549f5b28f44d3936bf146b7a02f1d5917a7a47758a57b5348e08183b4a",
+      "size": 2221
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\freeze_normal.py",
+      "sha256Bytes": "8b6253422ed94c6887654284caafc14176adcdfd4817198eb0348f0b8f117244",
+      "size": 5338
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\prepare.py",
+      "sha256Bytes": "69b2247d54a522197c627046ecddcc303dd74e39b5caebc2b0bb21cff35f1ea6",
+      "size": 4578
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\root-visual-observation.json",
+      "sha256Bytes": "aa02827ea89fcad36ce38bf084770c73324f1255e68e1a923ac151dfa7f9a2aa",
+      "size": 2600
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\run.py",
+      "sha256Bytes": "43959ec24a2295a6495682596caaa50854e21bc42d41157148a18c3a20d42543",
+      "size": 7670
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\closed-actual53-01-normal\\summary.json",
+      "sha256Bytes": "6bc3152d678441f5ca4bbbcd7ff827080677fa82c252b8f1a0c64368d02ae5e8",
+      "size": 4068
+    }
+  ],
+  "excludedWithHashAndReason": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$2.class",
+      "sha256Bytes": "d364261e1216239e4b8ddd8ffbc48bfd4aab47687591e405d6166b3d5fb6995f",
+      "size": 1736,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$3.class",
+      "sha256Bytes": "3bb48e0645ba03d58e6b285164593148c6327b3a554c9ad093e0f9a2f71022f1",
+      "size": 3332,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$clickOriginal$observer$1.class",
+      "sha256Bytes": "a9ed11151be1f45ebfdf414f2c70cec357df98e4739137380a93114bcc9bf721",
+      "size": 2295,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$1.class",
+      "sha256Bytes": "7af589804d0d19747831495d92f601b58f72006afe33971c5eccbe9919d9e8ff",
+      "size": 3433,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$4.class",
+      "sha256Bytes": "431c28744bc765a2f3f9781b941df1f6b8a8f5844c9a4a19efdeaaa230342bd2",
+      "size": 3395,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$5$1.class",
+      "sha256Bytes": "a49ffed882e79df792b99faae1afdd17917e2d105eacdd33a989b52ac406c2ca",
+      "size": 1661,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$6$2.class",
+      "sha256Bytes": "f189a5aff903d03d9e3c87dddddb9ef128019e482866294555ba36dbb33cafc4",
+      "size": 2001,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1$6.class",
+      "sha256Bytes": "f23ee769f48af76db4494dbeaa554d7a51993babb44f798b54cc242ab85e5ef4",
+      "size": 4619,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$2$1.class",
+      "sha256Bytes": "b4f0a879459c8cca84817774a1a1072b75f175238ff4585dce26de6ead57f0f0",
+      "size": 17749,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$create$1$1$2$3$1$5$1.class",
+      "sha256Bytes": "ae4b91dcf22676c85c3c5c19b26bb20281647e323c1b0af769d3992b677932c7",
+      "size": 1464,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$special$$inlined$-addInterceptor$1.class",
+      "sha256Bytes": "d0bc5a5dc6fefa5e313f6f48fe80e0ce271dccf2adba09b8ee02918c141a8c34",
+      "size": 2359,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture$WhenMappings.class",
+      "sha256Bytes": "be3b286b4a5b312fb48f7a6a313f44d6f594a2a67968de7ef29ba668b9780154",
+      "size": 1086,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\Fixture.class",
+      "sha256Bytes": "91b5e5db38c2d5919cb56206cf08fb17164e55d3b188f66624dd794a8e908c77",
+      "size": 121664,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\FixtureMessages.class",
+      "sha256Bytes": "379bbb12cacb93038c02dd8bd3e006ae3d52f911f8536f9a0352922fd40bc328",
+      "size": 1243,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\FixtureRect.class",
+      "sha256Bytes": "e369063f8a8d7542a7b5e7bcaaa931785dda57ec7c09c571a64cb5915327023e",
+      "size": 1320,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\com\\bilipai\\desktop\\offlinenativefixture\\OfflineNativeFixtureKt.class",
+      "sha256Bytes": "62e99da8d6aa3d01fd4498b77a61cc395bbe030ed118f4d8f956bafff78c18b4",
+      "size": 7729,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\classes\\META-INF\\offline_native_fixture.kotlin_module",
+      "sha256Bytes": "a07008cdeaca800fd61be819ea327892b473e6829f6eabb4ebbc3fa6420a5f54",
+      "size": 92,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\fixture-downloads\\download-38640b2a8844e8730c4717c3\\.bilipai-download",
+      "sha256Bytes": "38640b2a8844e8730c4717c3bc122528307fbbeb44328a63bceb88ec9c9f1031",
+      "size": 14,
+      "reason": "Disposable synthetic task/Store/media data; no real account or personal files."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\fixture-downloads\\download-38640b2a8844e8730c4717c3\\video.mp4",
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656",
+      "size": 273705,
+      "reason": "Disposable synthetic task/Store/media data; no real account or personal files."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\fixture-downloads\\download-918fb1252169401802bd8f1f\\.bilipai-download",
+      "sha256Bytes": "918fb1252169401802bd8f1fb6178f47d133ab730e24f5bad73741c11fb542e3",
+      "size": 14,
+      "reason": "Disposable synthetic task/Store/media data; no real account or personal files."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\fixture-downloads\\download-918fb1252169401802bd8f1f\\video.mp4",
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656",
+      "size": 273705,
+      "reason": "Disposable synthetic task/Store/media data; no real account or personal files."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\fixture-queue.json",
+      "sha256Bytes": "0ba4ededba971795ec16a007940fb274b157ec31566163fc634b211a2f99debd",
+      "size": 2314,
+      "reason": "Disposable synthetic task/Store/media data; no real account or personal files."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\original-native-foreground.png",
+      "sha256Bytes": "845794045b6b1dabf0fdf5b04f8aeda6ff2de4069b23e204046b14b050b1ca87",
+      "size": 51658,
+      "reason": "Fixture-owned Skia backing capture; pixels excluded, exact hash retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\fixture-owned-runtime\\restored-original-foreground.png",
+      "sha256Bytes": "b921634df70b21dae779e451e474fb55cc919a27314699b61f6c32e6278529e9",
+      "size": 53394,
+      "reason": "Fixture-owned Skia backing capture; pixels excluded, exact hash retained."
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-offline-native-integration-proof51\\runs\\actual53-01-normal\\offline-native-fixture.jar",
+      "sha256Bytes": "1a6fefd7d8d9cb0f8608dc8fd9a11fe4ea1d87e543f900b37bc089020284066b",
+      "size": 71221,
+      "reason": "Rebuildable fixture output; exact hash, compiler args and source retained."
+    }
+  ],
+  "allExpectedRuntimePinsBeforeAfter": true,
+  "classOriginsAllActualMainKotlin": true,
+  "sharedGradle": false,
+  "productionMutations": false,
+  "previousClosedReceiptsModified": false
+}

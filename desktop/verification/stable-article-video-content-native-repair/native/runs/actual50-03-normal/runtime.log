@@ -1,0 +1,14 @@
+PASS Unchanged full original renderer owns exact local task and actual native first frame
+PASS Actual original landscape entry applies real fixture Window fullscreen placement
+WAITING_ROOT_SKY step=1 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-03-normal\fixture-owned-runtime\external-input-1.done
+PASS Original exit fullscreen control receives real HWND messages and changes original local state
+WAITING_ROOT_SKY step=2 control=全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-03-normal\fixture-owned-runtime\external-input-2.done
+PASS Stable original native fullscreen control applies actual placement
+WAITING_ROOT_SKY step=3 control=退出全屏 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-03-normal\fixture-owned-runtime\external-input-3.done
+WAITING_ROOT_SKY step=4 control=下一集 acknowledgement=C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-offline-native-integration-proof\runs\actual50-03-normal\fixture-owned-runtime\external-input-4.done
+PASS Native HWND delivery reaches original next-episode action and exact current manager task
+FAIL Actual Windows SMTC GetForWindow is available on fixture-owned HWND
+Exception in thread "main" java.lang.IllegalStateException: Actual Windows SMTC GetForWindow is available on fixture-owned HWND
+	at com.bilipai.desktop.offlinenativefixture.Fixture.record(OfflineNativeFixture.kt:223)
+	at com.bilipai.desktop.offlinenativefixture.Fixture.run(OfflineNativeFixture.kt:449)
+	at com.bilipai.desktop.offlinenativefixture.OfflineNativeFixtureKt.main(OfflineNativeFixture.kt:533)

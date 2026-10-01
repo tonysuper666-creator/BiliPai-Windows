@@ -1,0 +1,23 @@
+{
+  "phase": 51,
+  "jarSHA256": "fe3d720cc970d05b305b395dfdc5bfbadd650e6a1f9d3d4a4d92073ffc82bf04",
+  "classCount": 13103,
+  "issueCount": 1,
+  "issues": [
+    {
+      "classFile": "com/bilipai/desktop/ui/DesktopOriginalArticleRootHostKt.class",
+      "classSHA256": "aa3eaab89cdb4c7867e7737d8a4a62b4c497375200a4b2d7a62c467a2433406d",
+      "invalidMethodNames": [
+        {
+          "kind": "constant-pool-method-reference",
+          "index": 225,
+          "owner": "$$$$$NON_LOCAL_RETURN$$$$$",
+          "name": "<anonymous>",
+          "descriptor": "()V"
+        }
+      ]
+    }
+  ],
+  "staticClassfileCheckOnly": true,
+  "allClassesRuntimeLoaded": false
+}

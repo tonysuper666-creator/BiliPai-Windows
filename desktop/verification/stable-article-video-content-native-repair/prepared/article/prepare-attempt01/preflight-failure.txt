@@ -1,0 +1,1 @@
+Pinned-manifest helper rejected new unregistered ArticleDetailScreen identity before Candidate mutation. New original paths must be verified against exact stable Git tree rather than assuming they are already in registry.

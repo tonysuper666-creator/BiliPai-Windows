@@ -12,6 +12,8 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
 internal interface DesktopOriginalRootRouteCommands {
     fun push(key: BiliPaiNavKey): Boolean
     fun back(): Boolean
+    fun articleBack(article: BiliPaiNavKey.ArticleDetail, useSharedReturn: Boolean): Boolean
+    fun containsEntry(key: BiliPaiNavKey): Boolean
     fun home(): Boolean
     fun video(key: BiliPaiNavKey.VideoDetail)
     fun videoRoute(route: String, sourceRoute: String)

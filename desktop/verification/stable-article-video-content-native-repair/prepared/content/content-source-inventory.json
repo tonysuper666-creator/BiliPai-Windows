@@ -1,0 +1,101 @@
+{
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "sha256LF": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+      "gitBlob": "7a5fc40b8d47e23460e2b1f1e1ae71d0e92bc487",
+      "lines": 2209
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/AiSummarySection.kt",
+      "sha256LF": "b7ca333ec57ea45ad5b629e7072f79cedc896524017df838ed0f7a19d91fb534",
+      "gitBlob": "19eab3bf1bf4c536e2655ca06e1ce02e9f864bec",
+      "lines": 438
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/AiSummaryUiPolicy.kt",
+      "sha256LF": "f9c45d1d837a424657b3e94fc87a3b2877bccb82957427217fd96b7d98c2d9ab",
+      "gitBlob": "d4c35ad3d3039442bcf5a17992f1a0d0229009a9",
+      "lines": 80
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/AiSummaryFetchPolicy.kt",
+      "sha256LF": "0bc2f3965f4d26dd57e590e3fe1a15ca1a771e10079b93eb5a232764009f84ca",
+      "gitBlob": "8591e232531e0551d68290f18d7b5f6fd904b61e",
+      "lines": 143
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoSupplementSection.kt",
+      "sha256LF": "7fd5637fc32c52f8f2c3213886b6c6d2e948da46028fefe1483a86f663b1252d",
+      "gitBlob": "cd3b0ae18e76942fe608f335e189137339d2de21",
+      "lines": 160
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt",
+      "sha256LF": "386de35141a8a103f94dea863caa5a6f9d6001f801721aa6455a085d442ba865",
+      "gitBlob": "978978a7042205dff87c5a0d788b2a7bf24e96b7",
+      "lines": 585
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "sha256LF": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "gitBlob": "c0386b40d894687a5f15dbe2660bbc526c7acdb9",
+      "lines": 663
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "gitBlob": "bf13a0defbea20cfe427048925082f5dcb2b3e35",
+      "lines": 8396
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteModels.kt",
+      "sha256LF": "8d18610b54301d2c2cf2e2b352461d51a9ef4a425a55e58544886109a401f6a7",
+      "gitBlob": "1601b8936153dbb96e2f89d12b81efdbd2ba3702",
+      "lines": 71
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "sha256LF": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "gitBlob": "a11992b1a44cef761577a8bd0875c37606283981",
+      "lines": 55
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionSheet.kt",
+      "sha256LF": "825650c9d684434c14eef6ed8c34e297f8edc227a1e9f5c317d048dfd9e2a146",
+      "gitBlob": "d66820ad5440e1dfd75dee851032a4e3c892a39d",
+      "lines": 216
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoActionPolicy.kt",
+      "sha256LF": "fff4998471798fca6c73a1c53eb046010f11dbaff5131399a72b955ad7515a1c",
+      "gitBlob": "98778473a45e7e400a65a4502c8965f096490c62",
+      "lines": 114
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoCardLayoutPolicy.kt",
+      "sha256LF": "07b1b5849436163e8cc90ebdd75e0b5fada8f87628221f17dc91cf21f7379e4d",
+      "gitBlob": "4da5eea4ab8cebb5a38c0c5e6bbdf0545308d785",
+      "lines": 16
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEditorStatePolicy.kt",
+      "sha256LF": "37019f5bee733834d70b8ee8f4359a25dfb7f5bc1c99e58f80ba95c9d5c05247",
+      "gitBlob": "c91253418565f67029cf30f4553b00f10f6b119f",
+      "lines": 40
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteEmotionPolicy.kt",
+      "sha256LF": "f8afdd070bc4ac7ddf6d561975e802d1ef8571cfb08bf060b690e390728a7ae6",
+      "gitBlob": "8b383e08585c4a119a7b7ea00dfa1054e8b73f1a",
+      "lines": 25
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/note/VideoNoteVisibilityPolicy.kt",
+      "sha256LF": "dac221c56f2521a48250891b439222a088a15cc66d552b482274f135d163f273",
+      "gitBlob": "30a3344e7bad2e2781fe2ceb5ba037d865452aab",
+      "lines": 19
+    }
+  ]
+}

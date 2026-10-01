@@ -1,0 +1,43 @@
+Rich Content dependency attributions
+
+This index was written for the BiliPai Windows distribution. It is not an upstream NOTICE file.
+The four unmodified binary dependencies below declare Apache License 2.0 in their published Maven POMs.
+Full upstream LICENSE files are included alongside this index. No upstream NOTICE file was found in
+the inspected binary JAR entries or the complete pinned primary repository trees.
+
+com.mohamedrejeb.richeditor:richeditor-compose-desktop:1.0.0-rc14
+Project: https://github.com/MohamedRejeb/Compose-Rich-Editor
+Published license: Apache-2.0 (https://opensource.org/licenses/Apache-2.0)
+Binary SHA-256: c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb
+License source: https://raw.githubusercontent.com/MohamedRejeb/Compose-Rich-Editor/afc44f915e2eccab0a63823c2840fe3d52f56473/LICENSE
+Included license: richeditor-compose-desktop-1.0.0-rc14-LICENSE.txt
+License association: release tag from ls-remote
+Upstream NOTICE: none present in inspected binary JAR and pinned repository tree.
+
+com.mohamedrejeb.ksoup:ksoup-html-jvm:0.6.0
+Project: https://github.com/MohamedRejeb/Ksoup
+Published license: Apache-2.0 (https://opensource.org/licenses/Apache-2.0)
+Binary SHA-256: 396d52c83d11708634f4a3cf848de194d7a0e2cab8e4106a59325af8514681b6
+License source: https://raw.githubusercontent.com/MohamedRejeb/Ksoup/8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d/LICENSE
+Included license: ksoup-html-jvm-0.6.0-LICENSE.txt
+License association: release tag from ls-remote
+Upstream NOTICE: none present in inspected binary JAR and pinned repository tree.
+
+com.mohamedrejeb.ksoup:ksoup-entities-jvm:0.6.0
+Project: https://github.com/MohamedRejeb/Ksoup
+Published license: Apache-2.0 (https://opensource.org/licenses/Apache-2.0)
+Binary SHA-256: 6c41eb42e4f7dd27b7a68f234b74ea802027e9ddb523db09376902ba23259185
+License source: https://raw.githubusercontent.com/MohamedRejeb/Ksoup/8481f11dd9c9fc8ef0f1488a1a1fd61205dfb13d/LICENSE
+Included license: ksoup-entities-jvm-0.6.0-LICENSE.txt
+License association: release tag from ls-remote
+Upstream NOTICE: none present in inspected binary JAR and pinned repository tree.
+
+org.jetbrains:markdown-jvm:0.7.3
+Project: https://github.com/JetBrains/markdown
+Published license: The Apache Software License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.txt)
+Binary SHA-256: 893abb31f15b6216f74dc704c0c6bf1e567dcf2b62cca29cf42e4f53153637ac
+License source: https://raw.githubusercontent.com/JetBrains/markdown/82b3d42b698b20b4604afb9a4e4fdb1df442b5e4/LICENSE
+Included license: markdown-jvm-0.7.3-LICENSE.txt
+License association: POM names this repository; repository HEAD pinned for license evidence, not claimed artifact-source commit
+Upstream NOTICE: none present in inspected binary JAR and pinned repository tree.
+

@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "inputSources": 8,
+  "classes": 37,
+  "explicitProspectiveProductOverrides": [
+    "com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol$fetchOpusArticleBlocks$1.class",
+    "com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol$getArticleDetail$1.class",
+    "com/android/purebilibili/data/repository/DesktopDynamicDetailArticleProtocol.class"
+  ],
+  "MainRuntimeAccepted": false,
+  "liveMutation": false
+}

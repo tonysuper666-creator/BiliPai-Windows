@@ -133,6 +133,22 @@ internal class DesktopHomeReturnNavigationOwner(
         mutableSession.value = mutableSession.value.clearReturning()
     }
 
+    /** Full original Article caller chooses markReturning or clearReturning before pop. */
+    fun returnFromArticle(useSharedReturn: Boolean, performBack: () -> Unit): Boolean {
+        if (!owns()) return false
+        var returned = false
+        admitRootNavigation {
+            mutate {
+                mutableSession.value = if (useSharedReturn)
+                    mutableSession.value.markReturning(monotonicMillis())
+                else mutableSession.value.clearReturning()
+                performBack()
+                returned = true
+            }
+        }
+        return returned
+    }
+
     /** Actual navigation/clock exposure, never an elapsed timer or pretend immediate idle. */
     fun onRelatedReturnExposure(animated: Boolean, exposure: VideoCardTransitionExposure): Boolean = mutate {
         val decision = resolveRelatedReturnSourceRestoreDecision(relatedRestorePending,

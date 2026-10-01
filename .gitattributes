@@ -73,3 +73,6 @@ desktop/verification/stable-concrete-original-root-integration/** -text
 
 desktop/verification/stable-original-video-offline-personal-integration/** -text
 desktop/verification/stable-full-controls-personal-window-readiness/** -text
+
+desktop/verification/stable-article-video-content-native-repair/** -text
+desktop/src/main/resources/licenses/rich-content/** -text

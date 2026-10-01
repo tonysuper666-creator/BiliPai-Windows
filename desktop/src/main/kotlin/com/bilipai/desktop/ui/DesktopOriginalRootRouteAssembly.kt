@@ -45,6 +45,7 @@ internal class DesktopOriginalRootRouteAssembly(
     val currentKey: BiliPaiNavKey get() = stack.lastOrNull() ?: BiliPaiNavKey.MainHost
     val previousKey: BiliPaiNavKey? get() = stack.getOrNull(stack.lastIndex - 1)
     fun owns() = !closed.get() && routeJob.isActive && root.isCurrentOwner()
+    override fun containsEntry(key: BiliPaiNavKey): Boolean = owns() && stack.contains(key)
 
     /** Called by the genuinely mounted original MainHost pager; unbind by exact callback.
      * Its return false means target is not an original visible tab, so Nav3 must push it. */
@@ -155,6 +156,12 @@ internal class DesktopOriginalRootRouteAssembly(
             return accepted
         }
         return admitted { replaceStack(BiliPaiNavBackStackController(stack.toList()).pop().backStack) }
+    }
+    override fun articleBack(article: BiliPaiNavKey.ArticleDetail, useSharedReturn: Boolean): Boolean {
+        if (!owns() || currentKey != article || stack.size <= 1) return false
+        return root.returns.returnFromArticle(useSharedReturn) {
+            if (owns() && currentKey == article) replaceStack(BiliPaiNavBackStackController(stack.toList()).pop().backStack)
+        }
     }
     /** Original sibling-tab selection resets only non-root Nav3 entries. Must be invoked by
      * the bound actual pager after its privacy/Root admission, never from an unrelated section. */

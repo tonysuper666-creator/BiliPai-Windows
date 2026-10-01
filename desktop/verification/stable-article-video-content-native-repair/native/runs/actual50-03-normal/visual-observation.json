@@ -1,0 +1,14 @@
+{
+  "observer": "Root using computer-use sky on the unique fixture-owned window",
+  "actualSnapshot": 50,
+  "productionOverrides": 0,
+  "normalWindowLayout": "FAIL",
+  "fullscreenBorderLayout": "NOT_ACCEPTED",
+  "layoutAccepted": false,
+  "observation": "Normal-window Main screenshot about 588x407 and original controls popup about 886x584 remained visibly mismatched. Fullscreen layers filled the display but slight border inconsistency was also observed, so geometry is not accepted.",
+  "realSkySteps": ["exit fullscreen", "enter fullscreen", "exit fullscreen", "next episode"],
+  "controlResult": "All four real original controls accepted; exact next task BVfixture_2_80/native source3 had an actual native ready first frame.",
+  "SMTCResult": "Actual existing WindowsMediaSession returned available=false/error=Windows media controls failed. This is a retained failure; OS publication and callbacks, PiP and disposal were not reached.",
+  "actualMainShellAccepted": false,
+  "hardwareMouseAccepted": false
+}
