@@ -1,0 +1,50 @@
+PASS real cold movie range written
+PASS carrier keeps remote semantic address
+PASS loopback binds independently of origin
+PASS actual MPV decodes warmed loopback byte stream
+PASS warm native playback makes no new movie origin range
+PASS positive actual served cache bytes
+PASS resolver normal completion did not retire native reader
+PASS native is actually ready for publication adoption
+PASS same native publication transfer keeps byte lease
+PASS same actor progresses after byte-lease adoption
+PASS same token is not a new load
+PASS old publication cannot transfer lease again
+PASS exact source retirement closes registration
+PASS retired capability cannot read bytes
+PASS multi-span actual interval committed
+PASS persistent interval reused after actor restart
+PASS disk budget including file headers remains bounded
+PASS /bad cannot report successful prefetch
+PASS /ignored cannot report successful prefetch
+PASS real delayed origin entered
+PASS caller cancellation did not publish a span
+PASS cancelled staging bytes cleaned
+PASS LRU preserves pinned reader
+PASS bounded store includes real disk and reservations
+PASS clear deletes only fixture byte spans
+PASS complete MPD rewrite retains representation and ranges
+PASS XML external entity is rejected
+PASS actual receipt revision retires captured cache binding
+{"groups":5,"assertions":28,"actualSnapshot":66,"productOverrides":0,"nativeWarmBytes":true,"rootCarrierFieldInstalled":false,"fullAdaptiveMpdNative":false,"realAccount":false,"window":false}
+10�� 01, 2026 7:47:05 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.net.SocketException: ��������е�������ֹ��һ���ѽ��������ӡ�
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:57)
+	at java.base/sun.nio.ch.NioSocketImpl.tryWrite(NioSocketImpl.java:394)
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:410)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:440)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:819)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1195)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBody(NanoHTTPD.java:1694)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectEncoding(NanoHTTPD.java:1667)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectTransferAndEncoding(NanoHTTPD.java:1657)
+	at fi.iki.elonen.NanoHTTPD$Response.send(NanoHTTPD.java:1624)
+	at fi.iki.elonen.NanoHTTPD$HTTPSession.execute(NanoHTTPD.java:957)
+	at fi.iki.elonen.NanoHTTPD$ClientHandler.run(NanoHTTPD.java:192)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+[Fatal Error] :1:10: ������ "http://apache.org/xml/features/disallow-doctype-decl" ����Ϊ���桱ʱ, ������ʹ�� DOCTYPE��

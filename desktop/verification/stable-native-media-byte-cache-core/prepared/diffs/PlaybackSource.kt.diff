@@ -1,0 +1,20 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt
+@@ -21,6 +21,8 @@
+     val authorizationReceipt: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt? = null,
+     val primaryAccountEpoch: Long? = null,
+     val nativePublication: DesktopNativePlaybackPublication? = null,
++    /** Native-only local byte ingress; original remote fields stay authoritative. */
++    val nativeTransport: com.bilipai.desktop.player.cache.DesktopNativeMediaTransport? = null,
+ ) {
+     init {
+         copyPlaybackStreamHeaders(streamHeaders)
+@@ -41,7 +43,7 @@
+ 
+     /** mpv EDL exposes all progressive segments as one continuous duration/seek clock. */
+     internal val nativeLoadUrl: String
+-        get() = if (progressiveSegments.isEmpty()) videoUrl else "edl://" + progressiveSegments.joinToString(";") { segment ->
++        get() = nativeTransport?.nativeVideo(this) ?: if (progressiveSegments.isEmpty()) videoUrl else "edl://" + progressiveSegments.joinToString(";") { segment ->
+             val address = segment.nativeUrl
+             val escaped = "%${address.toByteArray(Charsets.UTF_8).size}%$address"
+             if (segment.durationSeconds == null) escaped else "$escaped,0,${segment.durationSeconds}"

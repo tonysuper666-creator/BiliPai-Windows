@@ -1,0 +1,82 @@
+{
+  "ffmpeg": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\ffmpeg.exe",
+    "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+    "size": 113981440
+  },
+  "input": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\actual33-01\\local-media\\moving.mp4",
+    "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656",
+    "size": 273705
+  },
+  "command": [
+    "ffmpeg",
+    "-nostdin",
+    "-hide_banner",
+    "-n",
+    "-i",
+    "<frozen actual33 moving.mp4>",
+    "-f",
+    "lavfi",
+    "-i",
+    "sine=frequency=440:sample_rate=48000",
+    "-t",
+    "4",
+    "-map",
+    "0:v",
+    "-map",
+    "0:v",
+    "-map",
+    "1:a",
+    "-c:v",
+    "mpeg4",
+    "-b:v:0",
+    "90k",
+    "-b:v:1",
+    "45k",
+    "-filter:v:1",
+    "scale=80:46",
+    "-g",
+    "15",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "64k",
+    "-f",
+    "dash",
+    "-single_file",
+    "1",
+    "-use_template",
+    "0",
+    "-use_timeline",
+    "0",
+    "-seg_duration",
+    "1",
+    "-adaptation_sets",
+    "id=0,streams=v id=1,streams=a",
+    "<owned output>/dash.mpd"
+  ],
+  "outputs": [
+    {
+      "path": "mpd-media\\dash-stream0.mp4",
+      "sha256Bytes": "ad8462a35e60b90c7207bb8487535a36930775467b556554a4a226b8f87fbf12",
+      "size": 85091
+    },
+    {
+      "path": "mpd-media\\dash-stream1.mp4",
+      "sha256Bytes": "2e226a2b3ac716f52c2950b849b00e144bdf93a889d5d1ccea10b8fe9878d24e",
+      "size": 39841
+    },
+    {
+      "path": "mpd-media\\dash-stream2.mp4",
+      "sha256Bytes": "8bbb62d3499cfb8109d21ed2eeab7beff17811c9e220602dc33a60e8ab674db8",
+      "size": 34871
+    },
+    {
+      "path": "mpd-media\\dash.mpd",
+      "sha256Bytes": "b8a15ae8a3e4c673932041f47b85d5f486ec38a4409587415ae57ffd71597159",
+      "size": 2879
+    }
+  ],
+  "failedInitialEncoderAttempt": "libx264 absent from bundled LGPL FFmpeg; no output/native proof. Final recipe uses actual builtin MPEG4 encoder."
+}

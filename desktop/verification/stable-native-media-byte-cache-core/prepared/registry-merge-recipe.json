@@ -1,0 +1,19 @@
+{
+  "existing": {
+    "path": "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt",
+    "sha256": "7194fa15b896c882df5b8e2424632ddaadc2ffb8c26e8b5484a96e0566368f6c",
+    "features": [
+      "stable-video-player-full-controls"
+    ],
+    "mode": "reference-only"
+  },
+  "requiredFeature": "stable-native-media-byte-cache",
+  "newMode": "policy-extract",
+  "preserveAllExistingFeatures": true,
+  "identityRowsAdded": 0,
+  "selected": [
+    "resolvePlaybackMediaCacheMaxBytes",
+    "shouldUsePlaybackMediaCache(rawUri:String)",
+    "buildPlaybackCacheKey(rawUri:String,explicitKey:String?)"
+  ]
+}

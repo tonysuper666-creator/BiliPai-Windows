@@ -1,0 +1,45 @@
+{
+  "snapshot": 66,
+  "runtimeEntries": 101,
+  "productOverrides": 0,
+  "cohorts": [
+    {
+      "run": "proof-09",
+      "groups": 5,
+      "assertions": 34,
+      "receipt": {
+        "path": "runs\\proof-09\\receipt.json",
+        "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+        "size": 199
+      }
+    },
+    {
+      "run": "mpd-03",
+      "groups": 1,
+      "assertions": 8,
+      "receipt": {
+        "path": "runs\\mpd-03\\receipt.json",
+        "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+        "size": 199
+      }
+    }
+  ],
+  "actualNativeWarmBytes": true,
+  "actualSameMpvPublicationAdoption": true,
+  "completeThreeRepresentationMpdVideoAndAudio": true,
+  "actualRootCarrierFieldInstalled": false,
+  "actualRootFinalHeaderInterceptorInstalled": false,
+  "actualRootNamespaceGetterInstalled": false,
+  "nativeMpdLayout": "complete standards MPD SegmentList; SegmentBase ranges structurally retained",
+  "realAccount": false,
+  "externalHttp": false,
+  "window": false,
+  "rootMountAccepted": false,
+  "historicalFailures": {
+    "compile-01": "NanoHTTPD has no BAD_GATEWAY enum/private Reader constructor",
+    "proof-01": "fixture nullable player smartcast",
+    "proof-02": "fixture first frame preceded actual native ready/codec poll; stdout console codec failure after raw log retained",
+    "proof-03": "real socket cancellation escaped as IOException; production preserves actual caller/source CancellationException thereafter"
+  },
+  "warnings": "NanoHTTPD peer socket close on retirement and secure XML DOCTYPE rejection retained in raw logs"
+}

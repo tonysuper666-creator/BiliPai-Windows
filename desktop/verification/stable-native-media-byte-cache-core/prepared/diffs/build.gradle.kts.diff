@@ -1,0 +1,23 @@
+--- desktop/build.gradle.kts
++++ desktop/build.gradle.kts
+@@ -2001,6 +2001,20 @@
+ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-audio-full/com")) }
+ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoAudioFull) }
+ 
++val extractOriginalMediaByteCachePolicy by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media-byte-cache-policy.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/original-media-byte-cache-policy").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-media-byte-cache-policy.py", sourceManifest,
++        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt"))
++    outputs.dir(layout.buildDirectory.dir("generated/original-media-byte-cache-policy"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-media-byte-cache-policy")) }
++tasks.named("compileKotlin") { dependsOn(extractOriginalMediaByteCachePolicy) }
++
++
+ 
+ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
+     dependsOn(prepareUpstreamSources, extractOriginalVideoStateCore, extractOriginalPlayerFullControls,

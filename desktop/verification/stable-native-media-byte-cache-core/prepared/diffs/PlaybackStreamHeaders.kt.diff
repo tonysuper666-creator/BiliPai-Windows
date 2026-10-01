@@ -1,0 +1,20 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt
+@@ -24,10 +24,13 @@
+ }
+ 
+ /** Copy before handing ownership to the native actor; callers cannot later mutate its credentials or segments. */
+-internal fun PlaybackSource.immutableSnapshot(): PlaybackSource = copy(
+-    progressiveSegments = Collections.unmodifiableList(progressiveSegments.toList()),
+-    streamHeaders = copyPlaybackStreamHeaders(streamHeaders),
+-)
++internal fun PlaybackSource.immutableSnapshot(): PlaybackSource {
++    nativeTransport?.validate(this)
++    return copy(
++        progressiveSegments = Collections.unmodifiableList(progressiveSegments.toList()),
++        streamHeaders = copyPlaybackStreamHeaders(streamHeaders),
++    )
++}
+ 
+ internal fun Map<String, String>.playbackHeader(name: String): String? =
+     entries.lastOrNull { it.key.equals(name, ignoreCase = true) }?.value

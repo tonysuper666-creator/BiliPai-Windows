@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\compile-01\inputs\DesktopMediaByteCache.kt:130:78: error: unresolved reference 'BAD_GATEWAY'.
+            catch (_: Exception) { job.cancel(); return fail(Response.Status.BAD_GATEWAY) }
+                                                                             ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\compile-01\inputs\DesktopMediaByteSpanStore.kt:94:22: error: cannot access 'DesktopMediaByteSpanStore.constructor(span: DesktopMediaByteSpanStore.Span, file: RandomAccessFile, position: Long): DesktopMediaByteSpanStore.Reader': it is private in 'com.bilipai.desktop.player.cache.DesktopMediaByteSpanStore.Reader'.
+        try { return Reader(span, RandomAccessFile(span.path.toFile(), "r"), position) }
+                     ^^^^^^

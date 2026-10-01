@@ -1,0 +1,22 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -132,7 +132,9 @@
+             } else if (forcedCookie != null) {
+                 request.newBuilder().header("Cookie", forcedCookie).removeHeader(FORCE_COOKIE_HEADER).build()
+             } else request
+-            val response = chain.proceed(stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement)))
++            val stripped = stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement))
++            val mediaOrigin = stripped.tag(com.bilipai.desktop.player.cache.DesktopMediaOriginHeaders::class.java)
++            val response = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)
+             // BridgeInterceptor saves response cookies after this interceptor returns. An old
+             // account's in-flight response must never populate the newly activated account jar.
+             if (epoch != sessions.generation || !requestOwner.stillOwned() || requestOwner.playbackAuthorization?.let { !sessions.isPlaybackAuthorizationCurrent(it.receipt) } == true) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
+@@ -244,6 +246,8 @@
+     internal fun getPlaybackAccount() = sessions.getPlaybackAccount()
+     internal fun setPlaybackAccountMid(mid: Long?, expectedEpoch: Long, stillOwned: () -> Boolean): Boolean =
+         sessions.setPlaybackAccountMid(mid, expectedEpoch, stillOwned)
++    internal fun capturePlaybackCachePartition(receipt: DesktopPlaybackAuthorizationReceipt, stillOwned: () -> Boolean): String =
++        sessions.capturePlaybackCachePartition(receipt, stillOwned)
+     internal fun capturePlaybackAuthorization(expectedEpoch: Long, stillOwned: () -> Boolean) =
+         sessions.capturePlaybackAuthorization(expectedEpoch, stillOwned)
+     internal fun assertPlaybackAuthorization(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean) =

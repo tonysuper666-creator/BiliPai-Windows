@@ -1,0 +1,38 @@
+{
+  "exit": 0,
+  "snapshot": 66,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "8edfa06e4b2bfdac21f512eb3156a472b340a82e894995219e7b9428de3695d6",
+      "size": 27501
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c7ae7588740610c0ffb596c0ebae22ed7766ce8c23bba171c89f410020e4684c",
+      "size": 7121
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "f4e0012e965dfbb73ea34aa095ce842513f95d967b8f969b8d5b5585c3070c5b",
+      "size": 9453
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\proof-05\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "375aadd04da7252675a70554a14a69294267400046bae0c96e6ad3fa5468c626",
+      "size": 13588
+    }
+  ]
+}

@@ -1,0 +1,1229 @@
+{
+  "schema": 1,
+  "status": "source-only installable core; required actualRoot consumer integration pending",
+  "fixedOriginalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualProofSnapshot": 66,
+  "actualProofRuntimeEntries": 101,
+  "productOverrides": 0,
+  "payloadCount": 5,
+  "exactHunkCount": 21,
+  "exactHunkFileCount": 9,
+  "registryIdentityRowsAdded": 0,
+  "currentCompile": "proof-09 five prospective sources, class overlap0",
+  "groups": 6,
+  "assertions": 42,
+  "rawCount": 240,
+  "artifacts": [
+    {
+      "path": "acceptance.json",
+      "sha256Bytes": "6030d543eb7b24a6afb952ba78b5d69420adfeec25d0dd031b25aa62afd45842",
+      "size": 1648
+    },
+    {
+      "path": "baseline\\desktop\\build.gradle.kts",
+      "sha256Bytes": "3f608b15cd75706f3481c7675fbc43ce0d8971ac7ec004c9c09c03c261246863",
+      "size": 136659
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "size": 57554
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSessionStore.kt",
+      "sha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327",
+      "size": 30929
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "b12f1bbaa608ab4c2b871668437c68507d54f43bc769dc1475a17e4e75877762",
+      "size": 68898
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+      "sha256Bytes": "75852a21db0f83c15bfda3852f39efe95daa2268bba9ed745b3143892199029c",
+      "size": 7615
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "c4f87f9826d703a5349158a051e7aa717a532027c8680c956843fb9337cdad2b",
+      "size": 70463
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackSource.kt",
+      "sha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "size": 6374
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackStreamHeaders.kt",
+      "sha256Bytes": "ebf2de1e1d161ad27d1b62e37a7f227fd8a7d84a69ec2abb2ad69bca52c50392",
+      "size": 1949
+    },
+    {
+      "path": "baseline\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "1b5862146101648f222c0c8d9de6225bee8c091c9cf0f2ab35132d19a512b9c9",
+      "size": 19221
+    },
+    {
+      "path": "diffs\\build.gradle.kts.diff",
+      "sha256Bytes": "3e9044df269a823887b01fa3aa173e87ff6b9947f1095de680dd82da941427c4",
+      "size": 1378
+    },
+    {
+      "path": "diffs\\DesktopOriginalVideoNativeOwner.kt.diff",
+      "sha256Bytes": "e72fbab160fc5e9192c4b420037ad88429eb0eed13ee411621ef54aaf470b42b",
+      "size": 5085
+    },
+    {
+      "path": "diffs\\DesktopPlaybackController.kt.diff",
+      "sha256Bytes": "94f92004116773c93f8744646ca4af3f3c070849c2561c57196214354e019f23",
+      "size": 1063
+    },
+    {
+      "path": "diffs\\DesktopRepository.kt.diff",
+      "sha256Bytes": "c379f27ecc9215bdbfb52d067510375de055947dbb6c2afc0e99ea84f77bb544",
+      "size": 2029
+    },
+    {
+      "path": "diffs\\DesktopSessionStore.kt.diff",
+      "sha256Bytes": "217a2afffcc9e077cc859b595c1b3a1ef30dcfb73ff36d54b20bbd248942f692",
+      "size": 1601
+    },
+    {
+      "path": "diffs\\MpvNative.kt.diff",
+      "sha256Bytes": "76c9c6e46bb8b70bbea95c0fda298a341c4897dac9c2218da7ee3ee700842c09",
+      "size": 1815
+    },
+    {
+      "path": "diffs\\MpvPlayer.kt.diff",
+      "sha256Bytes": "d15a11018e0f2565c4c3b92a79dd66e64945b043d89536c316e53dd6097521c8",
+      "size": 1688
+    },
+    {
+      "path": "diffs\\PlaybackSource.kt.diff",
+      "sha256Bytes": "b1c373ddc2d020cf61ad4269ec676dd067cec3bb0787a4ae8714349600fbc864",
+      "size": 1306
+    },
+    {
+      "path": "diffs\\PlaybackStreamHeaders.kt.diff",
+      "sha256Bytes": "2bb617c24ed2e8135c632d0f53de1c92bc155d034ea19ab149d87dc45953fcee",
+      "size": 967
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "43be87c3b6a4a9388456d7523f491ea935059f0a500a232078e9c120d5acf2e4",
+      "size": 19226
+    },
+    {
+      "path": "finalize.py",
+      "sha256Bytes": "ee37d8e004708b49151caea86fc67b8b07d0b3ea8a10453f230664f0a60e6039",
+      "size": 7869
+    },
+    {
+      "path": "generated\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "8d242b2074d6265df4bcb8696e42f2b8cff1014c6c6a596a25e529b9ba266056",
+      "size": 3758
+    },
+    {
+      "path": "MediaByteCacheProof.kt",
+      "sha256Bytes": "dffc77d2cc1e8895ceec9cfa2498cc0256542306c16db51e8c9eded3b1ef60d4",
+      "size": 15592
+    },
+    {
+      "path": "MediaByteMpdProof.kt",
+      "sha256Bytes": "94050c72f8524e2d7a7f74947ce5b050b48e076244f325952cff27a93f569d04",
+      "size": 6321
+    },
+    {
+      "path": "mpd-media\\dash.mpd",
+      "sha256Bytes": "b8a15ae8a3e4c673932041f47b85d5f486ec38a4409587415ae57ffd71597159",
+      "size": 2879
+    },
+    {
+      "path": "mpd-media\\generator-receipt.json",
+      "sha256Bytes": "81cdbb067c1ab5296da26d72d04a18f8c1b2f041ab38496e997d84de76616c09",
+      "size": 2141
+    },
+    {
+      "path": "original-stable\\PlaybackMediaCache.kt",
+      "sha256Bytes": "7194fa15b896c882df5b8e2424632ddaadc2ffb8c26e8b5484a96e0566368f6c",
+      "size": 8806
+    },
+    {
+      "path": "prepare-deltas.py",
+      "sha256Bytes": "f3dfc610313b41e4e08dd862a629baa31874e8cbfeaf39816d6b169de94dc498",
+      "size": 15413
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "size": 29409
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+      "size": 9943
+    },
+    {
+      "path": "prepared\\desktop\\tools\\extract-upstream-media-byte-cache-policy.py",
+      "sha256Bytes": "406583ee9b2374baf8b9f433857ac4a190cb867795d7599c83ab36d8d101011a",
+      "size": 1966
+    },
+    {
+      "path": "registry-merge-recipe.json",
+      "sha256Bytes": "f4f3234eb95c0d6218d6d87b7dffaa7b5e256df843b2f7472f9c3cdd09589a84",
+      "size": 620
+    },
+    {
+      "path": "review-only\\desktop\\build.gradle.kts",
+      "sha256Bytes": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6",
+      "size": 137575
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "344eba61e1ea606541a5a3e43a9b2ab7d277f1beb22cd20618de0a120299ff97",
+      "size": 57935
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSessionStore.kt",
+      "sha256Bytes": "ed7449505c4254a7ab384539c73f40c0befa697db1b37fc734018c1397f77e0f",
+      "size": 31859
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopPlaybackController.kt",
+      "sha256Bytes": "4ceac1d05e306f00c66b4cf306226db96ec44b2f3fc08d31ee429395153eba6f",
+      "size": 67902
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+      "sha256Bytes": "8c9c91eedb07ac6eeac399142deaa980565866fffdc3781a7e76ac880188404d",
+      "size": 7733
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677",
+      "size": 71009
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackSource.kt",
+      "sha256Bytes": "84f0ab9100d4e1ce3dc994a80ae8d56bd1f1111982f84c4c3481936aaf213457",
+      "size": 6593
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\PlaybackStreamHeaders.kt",
+      "sha256Bytes": "077c3f59e2714d48685792246e52f9df4882fff5bd25e2348aaa218adc04dd98",
+      "size": 1975
+    },
+    {
+      "path": "review-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d",
+      "size": 21609
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "505e0a3712d0a905c442f78be3db0762d8662539c6930014b4f94716ce6fe5cb",
+      "size": 10365
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "897c12e6d8bcf1fc2468576aed7aed3d21923b2acaff320c6ee79e495cf9bb9e",
+      "size": 4479
+    },
+    {
+      "path": "runs\\compile-01\\compile-result.json",
+      "sha256Bytes": "734c0d2bfdb2e219dc63e2b18fe9b3912680f08d809a5767b1a69745ded58734",
+      "size": 1132
+    },
+    {
+      "path": "runs\\compile-01\\compile.log",
+      "sha256Bytes": "f92ee10a637bf0d689e364128ab3154f2dfe27150ddc24aa91bb5c735c517e02",
+      "size": 848
+    },
+    {
+      "path": "runs\\compile-01\\compiler.args",
+      "sha256Bytes": "90e36733f9b8b6e88278873b368c1034b75de4efefaa5a382d8b12af4fe0f032",
+      "size": 25925
+    },
+    {
+      "path": "runs\\compile-01\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "9b0591b0649ae2cd558dec0a1da429bdd74a741ad669be8509a4c4544118246a",
+      "size": 25762
+    },
+    {
+      "path": "runs\\compile-01\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c856bf2af207b412ab4aa75908e0a296e4fca5604542c83f77cab3152a1a1a41",
+      "size": 6516
+    },
+    {
+      "path": "runs\\compile-01\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "9c78cb3041da0f1f96e3a6125fab27afd63481600c6050bac22a453e663c6ba3",
+      "size": 9285
+    },
+    {
+      "path": "runs\\compile-01\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\compile-02\\compile-result.json",
+      "sha256Bytes": "e158254a2701f6866348f88bf62f98e54ee59179851e5161deb84cf0c397b0a6",
+      "size": 1132
+    },
+    {
+      "path": "runs\\compile-02\\compile.log",
+      "sha256Bytes": "9629222e394b5995dbda8f3c26d5b36e4744b26bdb1b613abeb450afb3c2b5f0",
+      "size": 739
+    },
+    {
+      "path": "runs\\compile-02\\compiler.args",
+      "sha256Bytes": "105dcf947721d9f782c051cedfefe8954bab8e983b8d1bde927dc1a109182e89",
+      "size": 25925
+    },
+    {
+      "path": "runs\\compile-02\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "7edb1104388d73baacbd159fd85d6e5d883c8fee321fba68abfcb9f558a07948",
+      "size": 25770
+    },
+    {
+      "path": "runs\\compile-02\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c856bf2af207b412ab4aa75908e0a296e4fca5604542c83f77cab3152a1a1a41",
+      "size": 6516
+    },
+    {
+      "path": "runs\\compile-02\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "c148c8295ad9b2e5aa05ec76de288e5d2453a3338039c20d596c6c8a35670187",
+      "size": 9287
+    },
+    {
+      "path": "runs\\compile-02\\overlap.json",
+      "sha256Bytes": "d13f925bcfcc8ee1f0d746359b2af3f9c3af4b2411b5ef7e02ad78987608f39f",
+      "size": 70
+    },
+    {
+      "path": "runs\\compile-02\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\compile-02\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\compile-02\\receipt.json",
+      "sha256Bytes": "1e8facd5509bab93c6ad6f448521ab930edad844e09df7ae195b899fdd06cf01",
+      "size": 202
+    },
+    {
+      "path": "runs\\mpd-01\\compile-result.json",
+      "sha256Bytes": "af6679c1ae1ef9cf47133b471a50bf09333eaff0933d20e3be19f77ed1e56aa9",
+      "size": 1806
+    },
+    {
+      "path": "runs\\mpd-01\\compile.log",
+      "sha256Bytes": "46eb6c9fafb24c647a27b5d2008f2e68fb10fa8fd13a89e59e9aba03ffe31e31",
+      "size": 731
+    },
+    {
+      "path": "runs\\mpd-01\\compiler.args",
+      "sha256Bytes": "9999235b737fdfbed80141d31feeb75b13d881ed9980956d94c1bfb538354cec",
+      "size": 26293
+    },
+    {
+      "path": "runs\\mpd-01\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "f9c1f8e4c6eb3251f5e98598cac1dd02fa44289d01a1b1e437114e59d62f4c84",
+      "size": 27185
+    },
+    {
+      "path": "runs\\mpd-01\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "b0e32c4150027ef6c2195e9a78b9bb3c09d35eae60cb5309a156722b79c0dc33",
+      "size": 6576
+    },
+    {
+      "path": "runs\\mpd-01\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\mpd-01\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "fbb6581a8a9fb3e4630337fe81fb4695b3af800471b70ca25401b4c6a01111bf",
+      "size": 9357
+    },
+    {
+      "path": "runs\\mpd-01\\inputs\\MediaByteMpdProof.kt",
+      "sha256Bytes": "3ee3e106fb839e5f8a363b8412171d8f9676bd05b28c4c27b8cba2529946f099",
+      "size": 6316
+    },
+    {
+      "path": "runs\\mpd-01\\overlap.json",
+      "sha256Bytes": "43af26b848347af74d81ea62940499f4daaa10ef175d2cfa629fe5973e1b12ea",
+      "size": 70
+    },
+    {
+      "path": "runs\\mpd-01\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-01\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-01\\receipt.json",
+      "sha256Bytes": "2cfe694a3ffe1aea39379d26214ba3458ebdceb0b6ef494d5e98d02bbf6225ae",
+      "size": 199
+    },
+    {
+      "path": "runs\\mpd-01\\runtime-command.json",
+      "sha256Bytes": "c014f31163e5233eb01a8a86796c85e05b1f0172b340124b4ecb780451f6a35e",
+      "size": 27796
+    },
+    {
+      "path": "runs\\mpd-01\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\mpd-01\\runtime.log",
+      "sha256Bytes": "5c1a918e0292b252161f5487a129926d8e3d31b185aa308e93bea4d4e94ddcd9",
+      "size": 613
+    },
+    {
+      "path": "runs\\mpd-02\\compile-result.json",
+      "sha256Bytes": "7e2cfb0ab7720f6429013b54e3ceae578d460701752f2943fa053cdff7ae3788",
+      "size": 2161
+    },
+    {
+      "path": "runs\\mpd-02\\compile.log",
+      "sha256Bytes": "5dcf1c7d18e49b38a1afc78402b797f837e5119ad53551a2831851a46c0583ca",
+      "size": 731
+    },
+    {
+      "path": "runs\\mpd-02\\compiler.args",
+      "sha256Bytes": "19e9485dfa4c6e7d09d04e9da068288676f39934fc2ddaf27da0cdb720cda52e",
+      "size": 26498
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "e7afbc2c5657e0c14e98a9e390436432005da984ca66e4d741ec746da2e692b5",
+      "size": 29224
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "f4e0012e965dfbb73ea34aa095ce842513f95d967b8f969b8d5b5585c3070c5b",
+      "size": 9453
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\mpd-02\\inputs\\MediaByteMpdProof.kt",
+      "sha256Bytes": "94050c72f8524e2d7a7f74947ce5b050b48e076244f325952cff27a93f569d04",
+      "size": 6321
+    },
+    {
+      "path": "runs\\mpd-02\\overlap.json",
+      "sha256Bytes": "d5a2c0556d3c6bbf111dffac097ebf6c9b8717cc80f9b3a3a1869d0493126c0f",
+      "size": 70
+    },
+    {
+      "path": "runs\\mpd-02\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-02\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-02\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\mpd-02\\runtime-command.json",
+      "sha256Bytes": "f075c88ecdca001aeb2e3d8c062e643014ea9dcd15ce210a7dacd9c277f423b8",
+      "size": 27796
+    },
+    {
+      "path": "runs\\mpd-02\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\mpd-02\\runtime.log",
+      "sha256Bytes": "5c1a918e0292b252161f5487a129926d8e3d31b185aa308e93bea4d4e94ddcd9",
+      "size": 613
+    },
+    {
+      "path": "runs\\mpd-03\\compile-result.json",
+      "sha256Bytes": "241627d88e9451042ffe8816df062acc4c1c4f398a11dadebac5c40e7285f256",
+      "size": 2161
+    },
+    {
+      "path": "runs\\mpd-03\\compile.log",
+      "sha256Bytes": "79ea9dbd0ae1fb2c69837d236c238d18f1253f382d8d6a1ecdf3a85121fdf757",
+      "size": 731
+    },
+    {
+      "path": "runs\\mpd-03\\compiler.args",
+      "sha256Bytes": "d5a8d62b8eb1b1e33fc79cce8d87e3fcfdc39b280b060978f615fd50d8a66892",
+      "size": 26498
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "size": 29409
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+      "size": 9943
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\mpd-03\\inputs\\MediaByteMpdProof.kt",
+      "sha256Bytes": "94050c72f8524e2d7a7f74947ce5b050b48e076244f325952cff27a93f569d04",
+      "size": 6321
+    },
+    {
+      "path": "runs\\mpd-03\\overlap.json",
+      "sha256Bytes": "d5a2c0556d3c6bbf111dffac097ebf6c9b8717cc80f9b3a3a1869d0493126c0f",
+      "size": 70
+    },
+    {
+      "path": "runs\\mpd-03\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-03\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\mpd-03\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\mpd-03\\runtime-command.json",
+      "sha256Bytes": "a6e655b48a05d5941947884564ed77ffa0bb7a59bb3a6452ccdbe78b8e9969aa",
+      "size": 27796
+    },
+    {
+      "path": "runs\\mpd-03\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\mpd-03\\runtime.log",
+      "sha256Bytes": "5c1a918e0292b252161f5487a129926d8e3d31b185aa308e93bea4d4e94ddcd9",
+      "size": 613
+    },
+    {
+      "path": "runs\\proof-01\\compile-result.json",
+      "sha256Bytes": "77f3cbcd2f1c22dbfb37f429f1adff243f1236ea9aa6bb5455a3e0646bff0265",
+      "size": 1465
+    },
+    {
+      "path": "runs\\proof-01\\compile.log",
+      "sha256Bytes": "b949ad26c76b8fdb8939ccf02e6946c69818eaf9093907be4a1986d8e4d336b0",
+      "size": 811
+    },
+    {
+      "path": "runs\\proof-01\\compiler.args",
+      "sha256Bytes": "233757e99f3c38b2da5f01dc1e0b7f763f1a97ea07e29272090570a21f4a71a7",
+      "size": 26104
+    },
+    {
+      "path": "runs\\proof-01\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "11c7995a753fa23c765744b4ebad415275777f720c30637ac0b70f153193c760",
+      "size": 26184
+    },
+    {
+      "path": "runs\\proof-01\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c856bf2af207b412ab4aa75908e0a296e4fca5604542c83f77cab3152a1a1a41",
+      "size": 6516
+    },
+    {
+      "path": "runs\\proof-01\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "c148c8295ad9b2e5aa05ec76de288e5d2453a3338039c20d596c6c8a35670187",
+      "size": 9287
+    },
+    {
+      "path": "runs\\proof-01\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "491fc08c8c1a09bf3ca38f2c2eb3b4f8f88e92e626dae2793bf8b1cf51e075db",
+      "size": 13897
+    },
+    {
+      "path": "runs\\proof-01\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-02\\compile-result.json",
+      "sha256Bytes": "47d004e0f48341b43c7e092a7fe2752265cda6893d23ce9267c36c07af48b198",
+      "size": 1465
+    },
+    {
+      "path": "runs\\proof-02\\compile.log",
+      "sha256Bytes": "506e1b48f6a710bd19e5605589de3807ae8b15da718095ad177c5171e78992f0",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-02\\compiler.args",
+      "sha256Bytes": "98c68c3da93c1055a6cd7ef99f2c82c0782976a2b5f97b0c97cdd7a77abc22a4",
+      "size": 26104
+    },
+    {
+      "path": "runs\\proof-02\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "11c7995a753fa23c765744b4ebad415275777f720c30637ac0b70f153193c760",
+      "size": 26184
+    },
+    {
+      "path": "runs\\proof-02\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c856bf2af207b412ab4aa75908e0a296e4fca5604542c83f77cab3152a1a1a41",
+      "size": 6516
+    },
+    {
+      "path": "runs\\proof-02\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "c148c8295ad9b2e5aa05ec76de288e5d2453a3338039c20d596c6c8a35670187",
+      "size": 9287
+    },
+    {
+      "path": "runs\\proof-02\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "c45be2e0f5b8f5b6e3ad0d2ddea9635ba03a349f1a10bc4d9ae9aa62b2a9bafd",
+      "size": 13909
+    },
+    {
+      "path": "runs\\proof-02\\overlap.json",
+      "sha256Bytes": "1d261a55215ac46361936e444170f551013a342d6127328569c5afef92c31ad8",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-02\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-02\\runtime-command.json",
+      "sha256Bytes": "25cf3c2382091bb810ae409809f1ddfa06f3374cdd50f1e67cc1b9316e1f6aa4",
+      "size": 27634
+    },
+    {
+      "path": "runs\\proof-02\\runtime-result.json",
+      "sha256Bytes": "1518e0f5274681fed59ca5359af0b87c9adb7ea25f43808d001d1d20169a58b9",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-02\\runtime.log",
+      "sha256Bytes": "e2a1f56031edee3925bbaaee1d6633af5cce64267997cef3613fa306794b93d8",
+      "size": 3111
+    },
+    {
+      "path": "runs\\proof-03\\compile-result.json",
+      "sha256Bytes": "6450895b3f851d234940b43e7192ef373fd9c41f17d59806449971249e78188d",
+      "size": 1465
+    },
+    {
+      "path": "runs\\proof-03\\compile.log",
+      "sha256Bytes": "401262b495c5523359bf7f30de3a2eea7acaf198ad6bdd16eb50d0d7f1447e7f",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-03\\compiler.args",
+      "sha256Bytes": "5bcf5af0bb7e9a7fd10547c216f6ac3349320fbe44d8e9569d0fd4e386365568",
+      "size": 26104
+    },
+    {
+      "path": "runs\\proof-03\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "0f70e5aa2c0f41e569661e3519d81efba1ee6d8de896c052ea528105409f05bc",
+      "size": 26327
+    },
+    {
+      "path": "runs\\proof-03\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "b0e32c4150027ef6c2195e9a78b9bb3c09d35eae60cb5309a156722b79c0dc33",
+      "size": 6576
+    },
+    {
+      "path": "runs\\proof-03\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "c148c8295ad9b2e5aa05ec76de288e5d2453a3338039c20d596c6c8a35670187",
+      "size": 9287
+    },
+    {
+      "path": "runs\\proof-03\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "3e47577e21424785654da9eaa313828f70238e5cae704edce185d3b0150a18c8",
+      "size": 14129
+    },
+    {
+      "path": "runs\\proof-03\\overlap.json",
+      "sha256Bytes": "1d261a55215ac46361936e444170f551013a342d6127328569c5afef92c31ad8",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-03\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-03\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-03\\receipt.json",
+      "sha256Bytes": "17d4465817defb05caf0bd8dad45cde5e1c459ab1db5bcbcc285693e8c73e2a1",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-03\\runtime-command.json",
+      "sha256Bytes": "39cd3d8fe0685dde2e00134592a153d0d734ff18777653519e0ddc4a2d3e22d3",
+      "size": 27634
+    },
+    {
+      "path": "runs\\proof-03\\runtime-result.json",
+      "sha256Bytes": "1518e0f5274681fed59ca5359af0b87c9adb7ea25f43808d001d1d20169a58b9",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-03\\runtime.log",
+      "sha256Bytes": "003045a83cb225cf64dd351bffb0e7ed67455217b19bdee8cfe45d96b9c39f18",
+      "size": 5200
+    },
+    {
+      "path": "runs\\proof-04\\compile-result.json",
+      "sha256Bytes": "cf3f0821af2fb7a448b653515fd3b88263caa3efdee0b0b5ea139869b9f77294",
+      "size": 1465
+    },
+    {
+      "path": "runs\\proof-04\\compile.log",
+      "sha256Bytes": "1b98d1ffd9af2c8e660af39140c368a060522892b5e08902bbd4a96811545d45",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-04\\compiler.args",
+      "sha256Bytes": "81cbd8905dee160ef6adb4976005a3c05518b8f015ff4108becfe38a845df552",
+      "size": 26104
+    },
+    {
+      "path": "runs\\proof-04\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c80f5b029025a3d3c3bc8b3e136be45e858154e78718543540f0327f55efa7df",
+      "size": 26627
+    },
+    {
+      "path": "runs\\proof-04\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "b0e32c4150027ef6c2195e9a78b9bb3c09d35eae60cb5309a156722b79c0dc33",
+      "size": 6576
+    },
+    {
+      "path": "runs\\proof-04\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "fbb6581a8a9fb3e4630337fe81fb4695b3af800471b70ca25401b4c6a01111bf",
+      "size": 9357
+    },
+    {
+      "path": "runs\\proof-04\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "3e47577e21424785654da9eaa313828f70238e5cae704edce185d3b0150a18c8",
+      "size": 14129
+    },
+    {
+      "path": "runs\\proof-04\\overlap.json",
+      "sha256Bytes": "1d261a55215ac46361936e444170f551013a342d6127328569c5afef92c31ad8",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-04\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-04\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-04\\receipt.json",
+      "sha256Bytes": "0ddcfb756ea2056757eb430201e52820f08c480cd8d0c306864b4853a6f1da46",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-04\\runtime-command.json",
+      "sha256Bytes": "58557b06a7ba1bfd4cdffd5c11745ac4c0932b08d7f98b1f780240a9920c4dcb",
+      "size": 27634
+    },
+    {
+      "path": "runs\\proof-04\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-04\\runtime.log",
+      "sha256Bytes": "e6bf91a129e89ad95dddf98cc487f81cfc8ac23bf813fceb9cfdacd8061f02e3",
+      "size": 3114
+    },
+    {
+      "path": "runs\\proof-05\\compile-result.json",
+      "sha256Bytes": "ce11f194800f8eac30bce295c177dfc5f24f6b4b798f36b6f3fd05393034c548",
+      "size": 2176
+    },
+    {
+      "path": "runs\\proof-05\\compile.log",
+      "sha256Bytes": "e3c997eaa2adb986eccb00d57fae4733de757e62567849113165e725e31ea343",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-05\\compiler.args",
+      "sha256Bytes": "c6619872bed96033e60e710a6e835bbc9eb8d15c781cedc81e4443768b3c30c3",
+      "size": 26514
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "8edfa06e4b2bfdac21f512eb3156a472b340a82e894995219e7b9428de3695d6",
+      "size": 27501
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c7ae7588740610c0ffb596c0ebae22ed7766ce8c23bba171c89f410020e4684c",
+      "size": 7121
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "f4e0012e965dfbb73ea34aa095ce842513f95d967b8f969b8d5b5585c3070c5b",
+      "size": 9453
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\proof-05\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "375aadd04da7252675a70554a14a69294267400046bae0c96e6ad3fa5468c626",
+      "size": 13588
+    },
+    {
+      "path": "runs\\proof-05\\overlap.json",
+      "sha256Bytes": "f6787e878b973024b5f49f7cecd2a60c5bb3fbe318b3ba9c4cd4c6541bedef57",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-05\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-05\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-05\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-05\\runtime-command.json",
+      "sha256Bytes": "8b762ab2c2ffc8a139c8b2a09a004664f04877501c6e665b5341fa0b1054fed0",
+      "size": 27802
+    },
+    {
+      "path": "runs\\proof-05\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-05\\runtime.log",
+      "sha256Bytes": "533e7b633173f08600c38cfa1c976c2032780fcbcfdf6f295db80b4d94d3b70e",
+      "size": 3114
+    },
+    {
+      "path": "runs\\proof-06\\compile-result.json",
+      "sha256Bytes": "3c97ac794feeb587b2bab3e9b324b64a5561a497dc010e0973c31813b6eb04ab",
+      "size": 2176
+    },
+    {
+      "path": "runs\\proof-06\\compile.log",
+      "sha256Bytes": "db41cb4a88c937c6697eb2f0632e5c39d0a2c08df40063bfea643854e9ec0e22",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-06\\compiler.args",
+      "sha256Bytes": "95903ea5dc16fc2869c3cb76b74f94ce20022135a8d464e3cd52a060faa4e6f0",
+      "size": 26514
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "3a8864c3f1ecc9c820dae3bcb27f72b481a9610ea5d9a8ae8ec42626189007bf",
+      "size": 27973
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "f4e0012e965dfbb73ea34aa095ce842513f95d967b8f969b8d5b5585c3070c5b",
+      "size": 9453
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\proof-06\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "0cebe305f662332d3bde2f06977c2632e5aa49bf8a6040573538842027f4cc47",
+      "size": 14963
+    },
+    {
+      "path": "runs\\proof-06\\overlap.json",
+      "sha256Bytes": "f6787e878b973024b5f49f7cecd2a60c5bb3fbe318b3ba9c4cd4c6541bedef57",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-06\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-06\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-06\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-06\\runtime-command.json",
+      "sha256Bytes": "bce395c7853d10af368cf73ef84604ae8e9da9a085be99f3efd331f72b88cdf0",
+      "size": 27802
+    },
+    {
+      "path": "runs\\proof-06\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-06\\runtime.log",
+      "sha256Bytes": "ca50189f8e95b31f97da57e24904e8cf146b554bbc1b907810e7c9262d27a772",
+      "size": 3365
+    },
+    {
+      "path": "runs\\proof-07\\compile-result.json",
+      "sha256Bytes": "101c7fc3227e7c7b763734dc666691d9c3ab92f10ec250af7097a97b32c77fd4",
+      "size": 2176
+    },
+    {
+      "path": "runs\\proof-07\\compile.log",
+      "sha256Bytes": "5a4676b6872461a4230f7bba86371c9ec4fe968c0991f38eeba8fd11a204b451",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-07\\compiler.args",
+      "sha256Bytes": "1a2c739c8d3fffdad975df842a82d7abd938a9ccebd0474d66b95a5cd0824641",
+      "size": 26514
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "e7afbc2c5657e0c14e98a9e390436432005da984ca66e4d741ec746da2e692b5",
+      "size": 29224
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "f4e0012e965dfbb73ea34aa095ce842513f95d967b8f969b8d5b5585c3070c5b",
+      "size": 9453
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\proof-07\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "9bd8b319dcdc462bf96ef6d5c2d4aec790a2d639cd843d6b768dfabc0c823e1d",
+      "size": 14973
+    },
+    {
+      "path": "runs\\proof-07\\overlap.json",
+      "sha256Bytes": "b00e48d0aca135a624f5dde15491e8dedc4ab6d628470df2ba964cc492bf262d",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-07\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-07\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-07\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-07\\runtime-command.json",
+      "sha256Bytes": "8b02ddb569d21fb198008c7a5ca4c2b0375120dc0fc13cd62889afe9cd275108",
+      "size": 27802
+    },
+    {
+      "path": "runs\\proof-07\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-07\\runtime.log",
+      "sha256Bytes": "eda312afe7b003304accb0c30053d89d5de6cc5600cc6ba4767fbc05ed4be82c",
+      "size": 3365
+    },
+    {
+      "path": "runs\\proof-08\\compile-result.json",
+      "sha256Bytes": "c964537da62888159225ded15cef2fda851f65f61e791580e8e0090627384238",
+      "size": 2176
+    },
+    {
+      "path": "runs\\proof-08\\compile.log",
+      "sha256Bytes": "3b997d10a6e36a93491455134d3a32df79a10ca4130ec82bdebfe4a59133f9b6",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-08\\compiler.args",
+      "sha256Bytes": "0b372c7c0c2eb0be85a37da9d646b9c2faf0638af9f9cf37ebc74ef30bd041ff",
+      "size": 26514
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "size": 29409
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+      "size": 9943
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\proof-08\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "2a4e5bc45442416e3382614e1be2ac8b04ec52d7be729cd4982fb95e2d8eae2c",
+      "size": 15455
+    },
+    {
+      "path": "runs\\proof-08\\overlap.json",
+      "sha256Bytes": "b00e48d0aca135a624f5dde15491e8dedc4ab6d628470df2ba964cc492bf262d",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-08\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-08\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-08\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-08\\runtime-command.json",
+      "sha256Bytes": "d34ee10669d50f598f7927f1a6a8f36b921e73b4b76d1e96a05ac8fec11bc72e",
+      "size": 27802
+    },
+    {
+      "path": "runs\\proof-08\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-08\\runtime.log",
+      "sha256Bytes": "e72e04e084340b9afef39c0eef115db20c1b084ceebbb8daba7349b17cb1a6b1",
+      "size": 3490
+    },
+    {
+      "path": "runs\\proof-09\\compile-result.json",
+      "sha256Bytes": "8ee3ad780ec751becfe97c3ef4d2a36e8481904dfbabd5580f47a8a77a84bc72",
+      "size": 2176
+    },
+    {
+      "path": "runs\\proof-09\\compile.log",
+      "sha256Bytes": "94920b9acc710ff20935b01e2790868ba3d8ed315221cd2b1830bf44f5fd076b",
+      "size": 735
+    },
+    {
+      "path": "runs\\proof-09\\compiler.args",
+      "sha256Bytes": "fc66fdc0fc161c9acd9dc13ba1c2cde65d109f37299e3a8329e2db48c1c0b4d4",
+      "size": 26514
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "size": 29409
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+      "size": 9943
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "runs\\proof-09\\inputs\\MediaByteCacheProof.kt",
+      "sha256Bytes": "dffc77d2cc1e8895ceec9cfa2498cc0256542306c16db51e8c9eded3b1ef60d4",
+      "size": 15592
+    },
+    {
+      "path": "runs\\proof-09\\overlap.json",
+      "sha256Bytes": "b00e48d0aca135a624f5dde15491e8dedc4ab6d628470df2ba964cc492bf262d",
+      "size": 70
+    },
+    {
+      "path": "runs\\proof-09\\pins-after.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-09\\pins-before.json",
+      "sha256Bytes": "19d27bb50e6c06a617ff464178cc94cae629e8e0ebed94f949b0589c45d5ba31",
+      "size": 39682
+    },
+    {
+      "path": "runs\\proof-09\\receipt.json",
+      "sha256Bytes": "6e9360e730bca7ebfd79e62010fa4280e080193044cbe199bac3ee0be10991a0",
+      "size": 199
+    },
+    {
+      "path": "runs\\proof-09\\runtime-command.json",
+      "sha256Bytes": "382366c4af945052cf0b1209170bc70790ae3f2c68cb44203ad980e3e1171775",
+      "size": 27802
+    },
+    {
+      "path": "runs\\proof-09\\runtime-result.json",
+      "sha256Bytes": "7effba87da05225cd06ced9e7f216f00e7243af286f410738446dc385939f57d",
+      "size": 657
+    },
+    {
+      "path": "runs\\proof-09\\runtime.log",
+      "sha256Bytes": "d1f98f729a8ffb9eae8ea4571003210283266529d1cb3a2e6eff87c1f0114ecf",
+      "size": 3490
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "b317ba9e08721807c3694681f86d280ce3cf8093bf56e5faa325ad71602946b0",
+      "size": 2166
+    },
+    {
+      "path": "excluded-artifacts.json",
+      "sha256Bytes": "7feb0094131026be497428f81f7505cc5c0d9f1f08d2f60449f0276d9b9b512c",
+      "size": 184860
+    }
+  ],
+  "exclusions": {
+    "path": "excluded-artifacts.json",
+    "sha256Bytes": "7feb0094131026be497428f81f7505cc5c0d9f1f08d2f60449f0276d9b9b512c",
+    "size": 184860
+  },
+  "installation": {
+    "path": "install-contract.json",
+    "sha256Bytes": "8d242b2074d6265df4bcb8696e42f2b8cff1014c6c6a596a25e529b9ba266056",
+    "size": 3758
+  },
+  "rootInstalledAccepted": false
+}

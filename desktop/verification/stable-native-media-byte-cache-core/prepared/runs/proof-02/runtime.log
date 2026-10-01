@@ -1,0 +1,43 @@
+PASS real cold movie range written
+PASS carrier keeps remote semantic address
+PASS loopback binds independently of origin
+PASS actual MPV decodes warmed loopback byte stream
+PASS warm native playback makes no new movie origin range
+PASS positive actual served cache bytes
+PASS resolver normal completion did not retire native reader
+10�� 01, 2026 7:23:11 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.net.SocketException: ��������е�������ֹ��һ���ѽ��������ӡ�
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:57)
+	at java.base/sun.nio.ch.NioSocketImpl.tryWrite(NioSocketImpl.java:394)
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:410)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:440)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:819)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1195)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBody(NanoHTTPD.java:1694)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectEncoding(NanoHTTPD.java:1667)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectTransferAndEncoding(NanoHTTPD.java:1657)
+	at fi.iki.elonen.NanoHTTPD$Response.send(NanoHTTPD.java:1624)
+	at fi.iki.elonen.NanoHTTPD$HTTPSession.execute(NanoHTTPD.java:957)
+	at fi.iki.elonen.NanoHTTPD$ClientHandler.run(NanoHTTPD.java:192)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+Exception in thread "main" java.lang.IllegalStateException: same native publication transfer keeps byte lease
+	at com.bilipai.desktop.player.cache.MediaByteCacheProofKt.verify(MediaByteCacheProof.kt:27)
+	at com.bilipai.desktop.player.cache.MediaByteCacheProofKt.access$verify(MediaByteCacheProof.kt:1)
+	at com.bilipai.desktop.player.cache.MediaByteCacheProofKt$main$1.invokeSuspend(MediaByteCacheProof.kt:124)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.player.cache.MediaByteCacheProofKt.main(MediaByteCacheProof.kt:30)

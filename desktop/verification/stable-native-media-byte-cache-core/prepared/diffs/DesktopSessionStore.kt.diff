@@ -1,0 +1,23 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt
+@@ -83,6 +83,20 @@
+         stillOwned: () -> Boolean, block: () -> T): T = synchronized(lock) {
+         if (!isPlaybackAuthorizationCurrent(receipt) || !stillOwned()) throw kotlinx.coroutines.CancellationException("Playback authorization retired")
+         block()
++    }
++    internal fun capturePlaybackCachePartition(receipt: DesktopPlaybackAuthorizationReceipt,
++        stillOwned: () -> Boolean): String = withPlaybackAuthorizationAdmission(receipt, stillOwned) {
++        val account = playbackIdentity.effective
++        val identity = buildString {
++            append("BiliPai Windows native media byte cache v1\n")
++            listOf(account?.mid?.toString().orEmpty(), account?.sessData.orEmpty(), account?.csrf.orEmpty(),
++                account?.accessToken.orEmpty(), account?.refreshToken.orEmpty(), account?.accessTokenPlatform.orEmpty(),
++                account?.buvid3.orEmpty(), account?.isVip?.toString().orEmpty()).forEach { value ->
++                append(value.length); append(':'); append(value)
++            }
++        }
++        java.security.MessageDigest.getInstance("SHA-256").digest(identity.toByteArray(Charsets.UTF_8))
++            .joinToString("") { "%02x".format(it) }
+     }
+     internal fun playbackRequestCookies(authorization: DesktopPlaybackAuthorization, url: HttpUrl,
+         stillOwned: () -> Boolean): Map<String, String> = withPlaybackAuthorizationAdmission(authorization.receipt, stillOwned) {

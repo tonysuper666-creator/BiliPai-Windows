@@ -1,0 +1,3422 @@
+[
+  {
+    "path": "mpd-media\\dash-stream0.mp4",
+    "sha256Bytes": "ad8462a35e60b90c7207bb8487535a36930775467b556554a4a226b8f87fbf12",
+    "size": 85091,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "mpd-media\\dash-stream1.mp4",
+    "sha256Bytes": "2e226a2b3ac716f52c2950b849b00e144bdf93a889d5d1ccea10b8fe9878d24e",
+    "size": 39841,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "mpd-media\\dash-stream2.mp4",
+    "sha256Bytes": "8bbb62d3499cfb8109d21ed2eeab7beff17811c9e220602dc33a60e8ab674db8",
+    "size": 34871,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "e74fb7aeecbc7f5ac55713d5a015368efe1d36f9dd60a3021778c20c523906c2",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "01bbfee16ce635473b1674ff2b19de4fcd086f820e66c617d537f159b220eb35",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "ba3dc36e7e8a01f018e14e2f70b14a220bea91fb66dc5232293700f2e24eea9a",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "f6dec55e784b66259fcf9365a7f997be68dafbb3a64953d03f7e419cb80a97ed",
+    "size": 15830,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "4ee9b4435e73b90ac0a15e5b867bee02445f38361360d4a599ec94be5c753b97",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "825fb43eee1f57f532f2c783d5924d9c2eab053835112c5eace1e9b627fbc86f",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "e92445c4934a9f65f0f9ad2cade6ececcfd9bac8d07ae1e1ed980f50c73b5627",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "09497aedfc607d42ddb951063651a632e45da5a7e30362f8620e28087c4ca1c2",
+    "size": 4350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "933e842771b1d75ff21e8fc133de25d42358e98f9516a9d4da4bd0c073e2fce4",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "149bb7c9cfaf7d9bf6de4b39ec5fcca683e07d97d2cba1413eb927344be41ffe",
+    "size": 14469,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "02834827af63a7b6487edd784b738d91ea96b3f4b22ae4d08d6167419df9d119",
+    "size": 17859,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "8d8f5aea6943dd0783d76c4b8f1289ea3d0b53ef6dee9817e70133e7c012fe24",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "60c4e18dee2061af536a1c745bd65ea3781e4022ae71736e632bba076a6420ea",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "2f593e2e4e664886a6ba85f0218e0da4dd7f46a0eab1d9243be94bacd8e02746",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "572fefcf32f0418656269e03ed5012758352f3a9683ef2ffc7a5c0766bbdf740",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "fc5b5f81bb3d67f1a6dec43f2027c07d9b58be630296646d2de4899428c6daa3",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "29ddae3e296b72d177fa425a9325cb0331365c31572875f79f83c46e7f4f905f",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "adc37952f432dbb56d0c94c1c67aaeaaa843c40e4372ed0b5564462a66044d87",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$1.class",
+    "sha256Bytes": "83bd597c603c6e751ad734d1948769809619dadb519223cfcab4a798462262ff",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "a91e95ca16164f4e029b1f2463f1bc31fb534754f7c9b165714b0e9ac9217966",
+    "size": 8118,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "6955050fca2cd77d4db9d9e0ef635d28d33f89a10031771b6f2c18a728f590c7",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "88c5b3ed9893c7a020421824d26fdab587875b0a32bcd76833570a7b8c8ed145",
+    "size": 42527,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "685747c90e96cc841abb9f564dbc27b27af67a36c6a5e470e8e2ed559aa6c2a9",
+    "size": 8919,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "15dd3aa5dbbc5077d44210c8f9754104f23b1b6b04f2cdc8c4a69d2779b6dd75",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "98172ee9187ca25e19cdff1e5b9070c8bf5692286e6c180f7aa47e8e7066a232",
+    "size": 3947,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "f97baf86cc14b18c25183dc927b8aea5cb71a77f73d7acf396c6e58f95618c3c",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "bbe9beb0741331a6a3fcc963a0a5658f5bc730fe4052068c6b8d50c248eb0ddf",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "1e8590d2bbb635944dedc725b50abafa36070d912443ffb9278565fb3e6ba73b",
+    "size": 24648,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "155dc0b8f01bc0aa51326892ae9b6995ebcd66bd01f78bddb4f66caf9e3178ca",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "62a35d04a78e3b14b07a4bff1979c84f8b3998ac6f0e96f9387a663a177de62b",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "57f5a3f732a0c45b044a7345b6ecc352696543306729f5c44422a5a6c80edb0a",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "ddb1a9bd24fc44fce494a09186a92fcccc6d7e70e3168bf161b610631c1cf188",
+    "size": 9703,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "3317ee7f6d8878c1c9cd70d74031097ac39380097ee8dfa4753b40ec1a8567ea",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\compile-02\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "dd7be30672f42245d00bdb73f6ded442ce977cd535c3490ef195bd4c529257eb",
+    "size": 113,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "ad68c1c63f78f9c99d50193ecd65f3289debb03210760cddfc4953221a999a2f",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "6883a26901d2f0e8d4b51d1300742bbe35fc991585cd5a091b2fb21d3823cbdf",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "98de8a0975acd9d771ea5531d771dfee25cbb13ba2133587f0d2e99690c946a2",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "d92a77b58e6a77f97bf4fce6b7093bc4e58f70590093c0078ac16a02a32a2635",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "d5d1c302a2c6a505cb92422078d441bcbe5848ce559fbb8521169e562a670554",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "244705f8528ffc60467f94ca3802dadc7aaaab40977f9de8c417d9a3a4a49cde",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "a5f94797a54467f095870609bcfa74939cad00533101772cb5ca3d1b7515e59f",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "a96b42f2688851ca86e3feab126b31c7b8dde1735b1e9f9a4c00785daf74b172",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "3c7d998c6e364999c5fbdc77257311eb8ff866dd4c12d05ba582f71d84bfd806",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "b1b10d1f40404074871184ad58daa3195af010ea524299cc97b5d5d1ba24d048",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "ac51e9ee22e333d4dc0fb29aa42be7154a86f6368d20af3eb61ae62758c3f058",
+    "size": 19307,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "276ee9c6a00113e8a2234e513fcdf9313fe3bb02457df9af6530cd4d416d437c",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "8bd25d7468b0d3667b564ca81c84890bc27b98a79fd791616eef680b36489312",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "fae76314a7ad5fc41d590eac0b4860b98024c2172b78bde536441350686915c4",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "9e0bb240ab1c31333d0c5c980ea3bdfb6d11f5e1820d9780d70b6c3a273148f3",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "c11f07c42147cb42cfa115b82d7632588798f5701d40bf134f572b3b1a0b5ffc",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "eadd5b1a929ce863d156ce1c9a027729800e43359fa6dd5de78d3c566b143c8a",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "b7f51b68d94b772a941e0619da8650264333da1d7ba8ad314bd10a54cecd8cef",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "c50f5ab4c846a3961fa7e8d5b3910f2c565f0272e200e0ed261ff07bddf89aa0",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "a89f93f7d15b3bd557d92e776a0b87f65f68fcb77c95e5eb6413f71b1817b555",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "95eef256e1c18225c34b4f8ec635295adf7cfcb85bc1824da4c0a52a51cccbad",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "7ae2483f5f395813bdf98bbe06d9d6d15b002ab322daf68760dfa34e1637e894",
+    "size": 42166,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "b117be482dd166eb8d58cdacb2a67450e930f921d47418193bfcb55979a91738",
+    "size": 8919,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "15dd3aa5dbbc5077d44210c8f9754104f23b1b6b04f2cdc8c4a69d2779b6dd75",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "740114e2e37251560b407ec5bf0402eb3be47690244736787437342ff4544030",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "f97baf86cc14b18c25183dc927b8aea5cb71a77f73d7acf396c6e58f95618c3c",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "3b2b704dcfac28e1c129d0ae2a9296e0436a23aede60797eebdb4d6374505628",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e4a8bf14df4962eabdae828c28c05de994c171008632e2ed2c5bf953d74a10f3",
+    "size": 24648,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "333a40fcdc7e3e232ec8487d3ab8c0b7218bb4fc8e4db284a66ae9ac3f5f2dcb",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "d0b608618c86e1f4aa0ecb520a360682bae06cf66e3ff1a72829aad2cbab8057",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "5f5b1d4a21132b0c502582142fd59b84953ad4daf8f4a5af29ff7348f8470e0b",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "1de904e6e12d20f0ad8063efcbadf725a6f22fce7492c0eb831c23ddefa8e236",
+    "size": 9703,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "0cb079b78c8a3aa850ba407e3ad2e187acddf020174363f0df656916cd3c4c8d",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4$1.class",
+    "sha256Bytes": "3b80e0370d7f67eefe5a041a507e6bc69b00ab80530a0f35f34d671994214fb8",
+    "size": 3330,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4.class",
+    "sha256Bytes": "9158c1d5abfbc306760e74ce4526f4e01a977fec3dcbad171ec7ab3453a0cff9",
+    "size": 3804,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$5.class",
+    "sha256Bytes": "0efd4858cb728eeae51eda15ed47710924e47406604213609ef988a9f595e06e",
+    "size": 4438,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1.class",
+    "sha256Bytes": "a098960fced18b73b62d8a35fe06b2bcd719b9a67c675901bc49a8191496c038",
+    "size": 35771,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt.class",
+    "sha256Bytes": "90c86b7edb7cf5a24fe8450ff280cefb5efdae10ea16d08c67f4b7c2fefff5b6",
+    "size": 1195,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "39f5ce4bcdb1e9d44e569fe32eb819c9b0a64707d30905a572e471a77e186606",
+    "size": 134,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\owned-data\\cache\\917bfc59-6403-46d8-b6d1-2baa5feb252a.span",
+    "sha256Bytes": "54daf1a4e89f68b2b040bc3e2e1a309f43114bfdf99c09a7d2ee30171c1c88e9",
+    "size": 39928,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\owned-data\\cache\\c3cb5553-900d-4b46-aff4-09d61d8f2691.span",
+    "sha256Bytes": "0d0b1b1cd4bc9ae72682c9cee80cdcdd7de75e675f9228a9b7207ef68f17c1de",
+    "size": 85178,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-01\\owned-data\\cache\\ea74c8dd-b462-4f68-a0c6-5d56b0d976d5.span",
+    "sha256Bytes": "c23b8d168ad46584aa67572f7654f784affb055e806a6d5018c7260cd425057b",
+    "size": 34958,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "7097f0114eef9440786db759246bf4119c88c7f6b71f14f72ccb02378a37276a",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "60363907d74d3f25c8026dbe006e6a5baa4e22432d3d90a422513b2bb45a01e3",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "e4c843be0bebd4f4e37db6d2ce8bc6717af3f363652ad35edd3f3197429669a0",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "c672a91eebaac6370999e35809324986b4a00bc334e85209f23eb2ae2ce924ac",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$1.class",
+    "sha256Bytes": "d9a0874f48b70b9e2d1a7077d531b22e291c6d867697c762ffca47577357f1a5",
+    "size": 2967,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$2.class",
+    "sha256Bytes": "fee2304cdb5199a6a39fd2f2b9c038883ec1131aa41c95adca605fdfc5c8b9c3",
+    "size": 4371,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1.class",
+    "sha256Bytes": "55d0a191e8795e5b27c38531fd709f52c8d26f1510ce250320ea7d1f74bee8a5",
+    "size": 4454,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "3e6645d2a9dd68cc1faba869b435097ddc9f4600baea42d8d33e826f6ad40226",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "0cdff76a4910268ecb0ff0d43399cd1e4e72e846f07b82fdee1cf887e9838135",
+    "size": 2087,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$5.class",
+    "sha256Bytes": "b2ebc26c127c6747a354cc3b7f5108dcf0e46e9d8c606fbc829c097c60a26714",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "67a219c94cd810ff8f2cb3c0a263d1e93a39007a1bd0e07bf5704baf3f930494",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "73637641fcda24dad3e5b62d5d88a883e97563bd717cb9c393fd6fb817ca0c3a",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "082faa83c7269c80cf40db45e1f8aa703d67dd8dce883aede8ef6312eff1117b",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "bd6e726165133a325af8932fb4e2d03639e8a555e7646d58a58ee15da6d1ea30",
+    "size": 21137,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "4d56974edbc9da4604b1c2ca2e3928e7eadc87c7226075115671bb9fe80a4c84",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$awaitWrites$1.class",
+    "sha256Bytes": "c336711f43640c7cec7ba099e2b4037e3482b81c64e01988a7645b1c3bd1406c",
+    "size": 1979,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "85c9c0fbbf8300bc7b6b357f735691608c1fa4bb0959619846b0d36000bed5ad",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "9773c95be4030168c6bf772859bc7645b4f47f4fbf0ef5db7c55261848d1d3d8",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "00f482d56220d80ea912c1f6a9a678c71e5dc9220954b15ad39767d407430492",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "666b67a5a7acf34b48168e3f6721b916452e357c18431b1a032887974da6d1f1",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "0bd13c3c8119473911027299fec420e416e9daf25a3be572455fdf4675f06770",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "ea224f55c571848b30a4807a6e6f84313605cfd11243c00b4dbd458a5c9ead52",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "8bce14e5f27f0598dc3fb7519afe53de0fb5883824e6505519a5f65d095c6380",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "28e2d5a2c079f8c88522d69a63a5c0f475b85d73af92bc3d5c12b218c7f21881",
+    "size": 2408,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpanOwned$1.class",
+    "sha256Bytes": "9667b1fb452bc40f12dee2fd08ac24a6c5a9d455d27054fc79aaccd3603c2022",
+    "size": 2470,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "261416fd7b6e689d3e60466a42ca3f1af6617ed3eecab6f720fc6a73a9bb3cde",
+    "size": 46159,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "fc881c2704346571fba3b4de339e1a07d353faf26f3dfc09f5c8ab3ec9929c42",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "4a12d4b82567826f7c551a94f791ef63dfcb27efacb5d6f27d17170055368399",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "706470f5044a250420c053fee3008ddfc499231c7111761b21db2a18f402764a",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e40948c9b8f493cf3261853f95e7c9342cc6192a2871f413d033a9e97752fde9",
+    "size": 24769,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "6e3ae3b480f72c006cb39fa28d0f745318247239cb3e9b2b83e7a1b787615054",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4$1.class",
+    "sha256Bytes": "3b80e0370d7f67eefe5a041a507e6bc69b00ab80530a0f35f34d671994214fb8",
+    "size": 3330,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4.class",
+    "sha256Bytes": "9158c1d5abfbc306760e74ce4526f4e01a977fec3dcbad171ec7ab3453a0cff9",
+    "size": 3804,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$5.class",
+    "sha256Bytes": "0efd4858cb728eeae51eda15ed47710924e47406604213609ef988a9f595e06e",
+    "size": 4438,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1.class",
+    "sha256Bytes": "4481c2b716be41373e154ab6db02e942e2e088e21bb3b74d3249c54debdcad4b",
+    "size": 35971,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt.class",
+    "sha256Bytes": "90c86b7edb7cf5a24fe8450ff280cefb5efdae10ea16d08c67f4b7c2fefff5b6",
+    "size": 1195,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "72f8476fecf432f2099c1f1280eef4e97fcf1cc38b78cbfe8ddf34687f261a7c",
+    "size": 217,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\owned-data\\cache\\5d415514-a032-489e-ae24-bf793a5afc4a.span",
+    "sha256Bytes": "0d0b1b1cd4bc9ae72682c9cee80cdcdd7de75e675f9228a9b7207ef68f17c1de",
+    "size": 85178,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\owned-data\\cache\\be91a991-beec-456e-808f-544ec6974275.span",
+    "sha256Bytes": "c23b8d168ad46584aa67572f7654f784affb055e806a6d5018c7260cd425057b",
+    "size": 34958,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-02\\owned-data\\cache\\f0fb6269-129d-4cc9-8599-0c17a8667410.span",
+    "sha256Bytes": "54daf1a4e89f68b2b040bc3e2e1a309f43114bfdf99c09a7d2ee30171c1c88e9",
+    "size": 39928,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "0200ccdca19cb63d2d1155c8b57035de9b0434cc6689d796d4a221f451c9c94b",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "4ae97d0113a5b22d7de58b64cdb51a8eb96f4f8833dccd8527b25bbd3e88df61",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "661446f0f8e11fc750075079b84215445a5b55019fa0508580474d7c581c0ac8",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "b8f34324ee6ee05fc0c23b956806e7c823e14cc2f2642aefef26ec17b064b8e5",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$1.class",
+    "sha256Bytes": "d9a0874f48b70b9e2d1a7077d531b22e291c6d867697c762ffca47577357f1a5",
+    "size": 2967,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$2.class",
+    "sha256Bytes": "972a1d1344c8aa577d0d7f3fa9ab1dcc04cb444d5b9c970b41db2352f8798568",
+    "size": 4371,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1.class",
+    "sha256Bytes": "55d0a191e8795e5b27c38531fd709f52c8d26f1510ce250320ea7d1f74bee8a5",
+    "size": 4454,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "3e6645d2a9dd68cc1faba869b435097ddc9f4600baea42d8d33e826f6ad40226",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "53a7dd8f9b23f03d3d09fc043f147a8bda650ac03252c749fa7c97f23c2f2413",
+    "size": 2087,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$5.class",
+    "sha256Bytes": "b2ebc26c127c6747a354cc3b7f5108dcf0e46e9d8c606fbc829c097c60a26714",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "6f06c586d126c61b30303c3d33efc88328bdf76ba530f71d098972b035f6af43",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "73637641fcda24dad3e5b62d5d88a883e97563bd717cb9c393fd6fb817ca0c3a",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "93e284c51325540bdffc81b8d34d16428422d2df9e0f2a4bb97fe14828a0584c",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "ed62ce1e42b9c8c8c25dcb0dbb5e169ce2cbb2d4f754c41cc41d9804acee0a31",
+    "size": 21137,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "fbdb4672788f7cd7b3120249827c89ab2bdccb9c24c9e4a44d1f7af3b834745c",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$awaitWrites$1.class",
+    "sha256Bytes": "d52b0b6293be23d3a9576fe6f26dd13b1497c2960ed510cef87e32cb0dae9b78",
+    "size": 1979,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "6ce5ff4e15fd866cdae53a1460349987d69e84faa64b2f08ed0f2d59e5bfe01e",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "28606a6ab08d4a5a6f468a40a59aa29ac99c1886bb86116fb7a649f71fb0e914",
+    "size": 2452,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "00f482d56220d80ea912c1f6a9a678c71e5dc9220954b15ad39767d407430492",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "382aea1d9b66ce20e365b0d9590d0a146e72abe4d79fbcbd3bf939345433dda8",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "0bd13c3c8119473911027299fec420e416e9daf25a3be572455fdf4675f06770",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "1ac858b31aaab683e0c920a723921b2a064bb1ebeb9bfb4a0e0a5bd9f4e4511c",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "58a4a365473c4d9c9be0975327a9e5f1f2296666a1ce4008a81840f05b9334c3",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "d584c39a4d8f6afee7032f6ef7defa4b1dbd2774a6409aca6c6b08b7308a8808",
+    "size": 2408,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpanOwned$1.class",
+    "sha256Bytes": "5add9acd0a08272d0570ca7f2aeed4c67ee9fa3bd1991280a1edf280beba9bc0",
+    "size": 2470,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "d8d438e602d804b60ca4d4f64d989b9bae3a72313254da4d30d413141d520931",
+    "size": 46538,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "29ed683369c800a31252f34dca1fdf8b88d00c02270690492429c9e60c575758",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "b167b61b64f6c046e352c3a81d2f49ec6fc1fd006abaecec970743f38c4e33ca",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "acea4d56ae74e64ac5ddcefec9af60c5f6f30a2cb19bff2dd03bc8adf7edb0c2",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "45b4e5d9923a41a2ffd96750bd6b3003bdeb10f4678d3c52b1ffcac19e844a72",
+    "size": 27835,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "6e3ae3b480f72c006cb39fa28d0f745318247239cb3e9b2b83e7a1b787615054",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4$1.class",
+    "sha256Bytes": "3b80e0370d7f67eefe5a041a507e6bc69b00ab80530a0f35f34d671994214fb8",
+    "size": 3330,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$4.class",
+    "sha256Bytes": "9158c1d5abfbc306760e74ce4526f4e01a977fec3dcbad171ec7ab3453a0cff9",
+    "size": 3804,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1$5.class",
+    "sha256Bytes": "0efd4858cb728eeae51eda15ed47710924e47406604213609ef988a9f595e06e",
+    "size": 4438,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt$main$1.class",
+    "sha256Bytes": "4481c2b716be41373e154ab6db02e942e2e088e21bb3b74d3249c54debdcad4b",
+    "size": 35971,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteMpdProofKt.class",
+    "sha256Bytes": "90c86b7edb7cf5a24fe8450ff280cefb5efdae10ea16d08c67f4b7c2fefff5b6",
+    "size": 1195,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "72f8476fecf432f2099c1f1280eef4e97fcf1cc38b78cbfe8ddf34687f261a7c",
+    "size": 217,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\owned-data\\cache\\028df16d-9ee5-4cf1-96fb-6f9a103fa54b.span",
+    "sha256Bytes": "c23b8d168ad46584aa67572f7654f784affb055e806a6d5018c7260cd425057b",
+    "size": 34958,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\owned-data\\cache\\4dde02c8-6ed3-49f2-98e5-8c683e2b54f7.span",
+    "sha256Bytes": "54daf1a4e89f68b2b040bc3e2e1a309f43114bfdf99c09a7d2ee30171c1c88e9",
+    "size": 39928,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\mpd-03\\owned-data\\cache\\83767a4b-6338-41b5-a271-01e8568a9cf7.span",
+    "sha256Bytes": "0d0b1b1cd4bc9ae72682c9cee80cdcdd7de75e675f9228a9b7207ef68f17c1de",
+    "size": 85178,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "0ab29f6a23beca35bb46bbda40401e8a07e8a6e379233570cd8cfda808225a8a",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "d30d47a3566401135ca24a77561bb14bfa3f3561cb1aaa6d4d06f916e224f25a",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "18294277563e40d269db7afa97adadb61e108115feff085d351b929da6beba26",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "7dd6f14a35f1b47b27fa01d37e80ac723862f52655f6df130053a7de18539127",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "d5d1c302a2c6a505cb92422078d441bcbe5848ce559fbb8521169e562a670554",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "244705f8528ffc60467f94ca3802dadc7aaaab40977f9de8c417d9a3a4a49cde",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "a5f94797a54467f095870609bcfa74939cad00533101772cb5ca3d1b7515e59f",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "85474ad2e183b8288204e24baf26fe0810fe1d3ac34dc8ba9ab9b62bc5b26445",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "1ac5e62d0d0551e26edb76af6422097fd6b032df8e5a129d684ffe1be888d5e6",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "71dbfae73002dde243313c52acaf6702a81adc27df67e6ad8dea76f8e24089c1",
+    "size": 14469,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "15ac56753c45c4fa74bf4c3697c5bb6b0ba2050c3565876e28912d7ed79d2b4d",
+    "size": 19301,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "469f8c60521975c5497eccb4c64fa5d96bc74753e036a9c54e7ffb83fb89c797",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "60c4e18dee2061af536a1c745bd65ea3781e4022ae71736e632bba076a6420ea",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "2c8fd053d28a7b06e39c1f8ea0653ff4f3168aede86226d830fef21d3b079886",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "ad5281128b83e2fafcdf547cf2621d7a4597474fc374d8ade82dc3c566218e2e",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "26fdaf677c62b2f36f701b2b58f581f1c399a75fa673fe5bfeed76713e73b03c",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "f2740b132450c13b605b795906af98d3b504b1256b11ef43866b95d352a9da60",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "882cd7c34af89a9d3c8705e253997e16039b8919336b6d690098ba442f4aa039",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$1.class",
+    "sha256Bytes": "26985c4f0f3448b0f71d0ce262b7716384d2e19c30cf09c7c20a586850c9d47a",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "7baf9fc056b0b3138c5471ceae8abc0092d3bb0d073686ca21ea87c373751311",
+    "size": 8118,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "a79fe007ca97ff10c4c42b7f51ebda76cebcb5281d0c74513d824ac5b061a1ca",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "8bc757810ef960b5a2429554c5eb63d9c1cbca972fba7f3bda7d5d0062179b7b",
+    "size": 42535,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "685747c90e96cc841abb9f564dbc27b27af67a36c6a5e470e8e2ed559aa6c2a9",
+    "size": 8919,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "15dd3aa5dbbc5077d44210c8f9754104f23b1b6b04f2cdc8c4a69d2779b6dd75",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "98172ee9187ca25e19cdff1e5b9070c8bf5692286e6c180f7aa47e8e7066a232",
+    "size": 3947,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "f97baf86cc14b18c25183dc927b8aea5cb71a77f73d7acf396c6e58f95618c3c",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "bbe9beb0741331a6a3fcc963a0a5658f5bc730fe4052068c6b8d50c248eb0ddf",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "1e8590d2bbb635944dedc725b50abafa36070d912443ffb9278565fb3e6ba73b",
+    "size": 24648,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "155dc0b8f01bc0aa51326892ae9b6995ebcd66bd01f78bddb4f66caf9e3178ca",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "62a35d04a78e3b14b07a4bff1979c84f8b3998ac6f0e96f9387a663a177de62b",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "e050cfd2cb01af37247eb13b2b1dd0a6ad1f1c0cc11520ced8647d0a3889b8cf",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "ddb1a9bd24fc44fce494a09186a92fcccc6d7e70e3168bf161b610631c1cf188",
+    "size": 9703,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "3317ee7f6d8878c1c9cd70d74031097ac39380097ee8dfa4753b40ec1a8567ea",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$7.class",
+    "sha256Bytes": "606e4b709e3e048c13377f932013d3c9d851900bf09515a89664ffb2a1226230",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$admission$2.class",
+    "sha256Bytes": "bc2bf78125c61fa43cd942030f9ac19eaae1dae10526d1f4fc7138f1018d1f3a",
+    "size": 6931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "c8499e363bc5a6d7890d98a9b367af868e737dbf20c89250bd0247dbada02bda",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "6d8ee88e40481c71079350051ff9958a89962f2693ae5a3663c756089506e677",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "7867ec623015d3ea3329a6b1340785bc856b55cf3e1cca48377c1c02ac824e9e",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "9e082af544680a95757bbae7f2047f32de37ae5fb503d0120c42091ea819a594",
+    "size": 68522,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "2dcfe2f256e4445185a7670f94dc2b1b29edde6ebf2c1c2991adec2a1e94addd",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "84743d18f4d64aed941302112076c7c42ee3084f10e821bf4fea6f48495eea47",
+    "size": 136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-02\\owned-data\\byte-cache\\0932d72f-ca39-460c-92ea-cc5a1c49e256.span",
+    "sha256Bytes": "f70f951fbeb5e5223cbef99e090d2a26c05520a96b500380dd8a017d210f0195",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "952e6bf55f719bb42deb111b21faf47bfca8354dec848fb5b9394c0aea47fd72",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "91a82662d922446d4aa128521369966fc4be58c8e971ccc2dd0e136f3d6a426b",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "7ef7f6a5ff072bb4c8bbb7be6f08dd6d8a2f2849393f4bb7b766b4208c920b7f",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "713b6d3c75a9de530fd25ef22811091df33ea5f3fd23f800d78a5830a5667a38",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "d5d1c302a2c6a505cb92422078d441bcbe5848ce559fbb8521169e562a670554",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "244705f8528ffc60467f94ca3802dadc7aaaab40977f9de8c417d9a3a4a49cde",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "a5f94797a54467f095870609bcfa74939cad00533101772cb5ca3d1b7515e59f",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "c074cacfe86f3154a2d93f20d66fd911a859aed5434f8cab68667d0307539e1a",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "3c7d998c6e364999c5fbdc77257311eb8ff866dd4c12d05ba582f71d84bfd806",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "227d7730b6d61e922d964440471ea15b6c32fe20d8861db74ab6564c6c7d64b3",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "6e1fce32834c865e38132e7409719e488a3e944418268dbff6c6bebf2f9b43a9",
+    "size": 19307,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "4075a371d7774348af044a95398341bfb3a6a68122fb0a079f1900147c68c203",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "8bd25d7468b0d3667b564ca81c84890bc27b98a79fd791616eef680b36489312",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "49dd16399ac20b92dec56009c41125e797562686b27b5118d7fcaf65316ea05f",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "76bebb22202ad5079f02afd2f00cd73594e9d54ed7ec400be41f234e5802d8f3",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "c11f07c42147cb42cfa115b82d7632588798f5701d40bf134f572b3b1a0b5ffc",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "01ce86d45abd639156a590089de758d5edbf074396dc724ce095945b6b0c818a",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "58eb94a4455fb58879391cd9a512392f1088e9630b2f50796aa5abcbc3f77f42",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$1.class",
+    "sha256Bytes": "565d4e38d330d1a5c79ff731a37a2ba4f17e4ebc13faf175be22ccf5639932f1",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "88f72273ff46f9045bfd14b596fb2dba9c9d6a424728a3e4cd64eab73fa0757d",
+    "size": 8118,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "3a177bc4a6446336448c4cd47db0cd6cdd8e2172d90390174ea5b2226538ea9b",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "a25cbca933bf3ac5743e55519d983758331c7ad74749634e690f64acb3cbe701",
+    "size": 42535,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "b117be482dd166eb8d58cdacb2a67450e930f921d47418193bfcb55979a91738",
+    "size": 8919,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "15dd3aa5dbbc5077d44210c8f9754104f23b1b6b04f2cdc8c4a69d2779b6dd75",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "98172ee9187ca25e19cdff1e5b9070c8bf5692286e6c180f7aa47e8e7066a232",
+    "size": 3947,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "f97baf86cc14b18c25183dc927b8aea5cb71a77f73d7acf396c6e58f95618c3c",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "bbe9beb0741331a6a3fcc963a0a5658f5bc730fe4052068c6b8d50c248eb0ddf",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "1e8590d2bbb635944dedc725b50abafa36070d912443ffb9278565fb3e6ba73b",
+    "size": 24648,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "333a40fcdc7e3e232ec8487d3ab8c0b7218bb4fc8e4db284a66ae9ac3f5f2dcb",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "d0b608618c86e1f4aa0ecb520a360682bae06cf66e3ff1a72829aad2cbab8057",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "5f5b1d4a21132b0c502582142fd59b84953ad4daf8f4a5af29ff7348f8470e0b",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "1de904e6e12d20f0ad8063efcbadf725a6f22fce7492c0eb831c23ddefa8e236",
+    "size": 9703,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "0cb079b78c8a3aa850ba407e3ad2e187acddf020174363f0df656916cd3c4c8d",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "f9a7b478155a787f9fa95b4bfb9e7945649b9489a8c2fe8aa3e98b11b5c6f9e6",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$admission$2.class",
+    "sha256Bytes": "4fa3da479a5b00235e0c6c1448abb58133df28fbf435c88f7828015c0382bcc6",
+    "size": 7336,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "d2bc29688cb61a902eec6b3dc243a8012d4e2684444638a92f25c1b13c274cfc",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "6d8ee88e40481c71079350051ff9958a89962f2693ae5a3663c756089506e677",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "7867ec623015d3ea3329a6b1340785bc856b55cf3e1cca48377c1c02ac824e9e",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "c04f365f38d253e2c6004d496233cfb86b5e1b070fca50129a877c0acb6a9cac",
+    "size": 70472,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "1c203d843dad1f6e6d870890142861ef85bf7a8478168cf54f43640d6a4f6fc6",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "84743d18f4d64aed941302112076c7c42ee3084f10e821bf4fea6f48495eea47",
+    "size": 136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\owned-data\\byte-cache\\44eb7ff5-8205-414e-a471-af846bed829f.span",
+    "sha256Bytes": "fd36757707d479357404c9256d6de50f248b5eac201ce4fec796af83e650ff3a",
+    "size": 1048663,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\owned-data\\byte-cache\\941006c7-5331-455c-851c-aa993df781f4.span",
+    "sha256Bytes": "45447d8e0d596c8099c56d5a2452ad7d8ffc6fd32578176f89300a86833deb06",
+    "size": 96,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-03\\owned-data\\byte-cache\\99bb545d-d5ee-44fc-8f3a-200da1ebc7f7.span",
+    "sha256Bytes": "f70f951fbeb5e5223cbef99e090d2a26c05520a96b500380dd8a017d210f0195",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "091a6228a5feb2f8953dcc70e5ed98ed616a487275fe46dfe0d0fb1ca91f7615",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "bd6a020efbdc46277221bb3ed7685631df375e8bdfec999a2e6b5be0eba666c3",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "d54af5f9eff0600b624f1353bf13088b817448c6e37577ea90f4bfcf8d9be670",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "0019b2cfd0a3f789828cb4b3073da843db4cb84e7fc0094c35536f27ac4e7c0b",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "d5d1c302a2c6a505cb92422078d441bcbe5848ce559fbb8521169e562a670554",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "244705f8528ffc60467f94ca3802dadc7aaaab40977f9de8c417d9a3a4a49cde",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "a5f94797a54467f095870609bcfa74939cad00533101772cb5ca3d1b7515e59f",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "0f94215eed12c2ecaa5618459f3fb906933a0334a09aa60c7b83e0fdc1350392",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "3c7d998c6e364999c5fbdc77257311eb8ff866dd4c12d05ba582f71d84bfd806",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "93096aaca88641bb61c525a5028ed863781fa7bcec085b8f05c5d1f3ea4fb71e",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "509e873a874c3aa3761b50e9005e6894f51211e780ceba11858f9cc343722dc9",
+    "size": 19307,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "d1d1b99645d297610f62f442317815d3b72643f7e7acc662646dc878d6ccee18",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "8bd25d7468b0d3667b564ca81c84890bc27b98a79fd791616eef680b36489312",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "ab4d9b570ce5fea96c0239b66f9819f94b327abd5c375f4030e5a874a2d2d4ee",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "f123ba5f107ef2fad5d4b1908e28f8c287b5dfab6865b228ca6524ab4f4e064f",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "c11f07c42147cb42cfa115b82d7632588798f5701d40bf134f572b3b1a0b5ffc",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "936585c13ec2504e21aea66e23fd9675e32fbfd4d1c3c357d481778a24412733",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "58eb94a4455fb58879391cd9a512392f1088e9630b2f50796aa5abcbc3f77f42",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$1.class",
+    "sha256Bytes": "23acbf6fd9326176d8a7d4d73cc1721bc9bdc15a788d0e55582a530f52ffad4f",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "764eb536c41b133d4407bd262f69bb2d01dee2d3580d938a9400a54dc500e77b",
+    "size": 8118,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "2b464e9deaed29783ea17082cc7222f080e48ecb8bd80839263b70d28538871a",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "d0ca839168f4f6d47816981f88286b6901c2793fa377f2ca8029da346f559593",
+    "size": 42597,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "b117be482dd166eb8d58cdacb2a67450e930f921d47418193bfcb55979a91738",
+    "size": 8919,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "15dd3aa5dbbc5077d44210c8f9754104f23b1b6b04f2cdc8c4a69d2779b6dd75",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "740114e2e37251560b407ec5bf0402eb3be47690244736787437342ff4544030",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "f97baf86cc14b18c25183dc927b8aea5cb71a77f73d7acf396c6e58f95618c3c",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "3b2b704dcfac28e1c129d0ae2a9296e0436a23aede60797eebdb4d6374505628",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e4a8bf14df4962eabdae828c28c05de994c171008632e2ed2c5bf953d74a10f3",
+    "size": 24648,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "333a40fcdc7e3e232ec8487d3ab8c0b7218bb4fc8e4db284a66ae9ac3f5f2dcb",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "d0b608618c86e1f4aa0ecb520a360682bae06cf66e3ff1a72829aad2cbab8057",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "5f5b1d4a21132b0c502582142fd59b84953ad4daf8f4a5af29ff7348f8470e0b",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "1de904e6e12d20f0ad8063efcbadf725a6f22fce7492c0eb831c23ddefa8e236",
+    "size": 9703,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "0cb079b78c8a3aa850ba407e3ad2e187acddf020174363f0df656916cd3c4c8d",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "f9a7b478155a787f9fa95b4bfb9e7945649b9489a8c2fe8aa3e98b11b5c6f9e6",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$admission$2.class",
+    "sha256Bytes": "4fa3da479a5b00235e0c6c1448abb58133df28fbf435c88f7828015c0382bcc6",
+    "size": 7336,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "d2bc29688cb61a902eec6b3dc243a8012d4e2684444638a92f25c1b13c274cfc",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "6d8ee88e40481c71079350051ff9958a89962f2693ae5a3663c756089506e677",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "7867ec623015d3ea3329a6b1340785bc856b55cf3e1cca48377c1c02ac824e9e",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "c04f365f38d253e2c6004d496233cfb86b5e1b070fca50129a877c0acb6a9cac",
+    "size": 70472,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "1c203d843dad1f6e6d870890142861ef85bf7a8478168cf54f43640d6a4f6fc6",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "84743d18f4d64aed941302112076c7c42ee3084f10e821bf4fea6f48495eea47",
+    "size": 136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\owned-data\\byte-cache\\1091edda-5f2e-406d-a6c6-1e0f45b0377f.span",
+    "sha256Bytes": "fd36757707d479357404c9256d6de50f248b5eac201ce4fec796af83e650ff3a",
+    "size": 1048663,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\owned-data\\byte-cache\\74314260-570c-454d-8b3c-4ba1e6c17c00.span",
+    "sha256Bytes": "f70f951fbeb5e5223cbef99e090d2a26c05520a96b500380dd8a017d210f0195",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-04\\owned-data\\byte-cache\\ac62ea96-6a1f-4104-9689-94ed0c8205ca.span",
+    "sha256Bytes": "45447d8e0d596c8099c56d5a2452ad7d8ffc6fd32578176f89300a86833deb06",
+    "size": 96,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "efea8e66ba8bdb9817a3903a60ee0016aa0e88041ebb314d0b074a24d48e2a3c",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "a7e8552c47a759d875e07a0c4dd9307382e82d1e3e6030bc280b993bc75bba44",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "f449a4d5d6d6d73cff25495124a044bf6a8eabe62a860cd8d0120657447b6fe5",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "7ea0b4268c7b85d8692703c23c1d9e384465f2a594f60bf34c253f2b81bd4bb1",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "42e52f108cdf8c35941b7a952498d32094c260ebe2f5dc92881f4f25d6be343e",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "83237f291f30e48508d96824ec4d1d02f2285ce447d4a1b60cabcde0b996990f",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "15fcf3f41d904bafad4a946118c76cb3de26013f5d740fb8e8604e23823f3e4a",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "5968ba48f63574bf896c3a668f15e252e8e2d7b297c70bc9779ae76ed88dec01",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "7989f1a001c0f0a040522e89a21182fe1b4be3129b3fff7686d784daf575073e",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "97a5f787d10fe92217f934605109e0baeaeee29ac0fa1152f0d766b9b9b99c3b",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "0efc50fc26a028a25f7e0966ae0b6747f85c82c7cbebcb25e6fe8b279620b54b",
+    "size": 19428,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "1803d0be70e35f7d3af5d9f14dc81f40037278e8501be71e9aa2d9f53fe2e5c9",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "5c03ecc842f5ea5016e728f66712de537669ff61a18fa71e1a409424e3858728",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "ca2323ff584d6950f63615a258e5be78a381f36e9ff86d576d881f11e86f455e",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "eff261046916318cc74cc07585957e50267d4fbd16454a308859512ed518e7dc",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "61fe2ae2ee09d67bf7a618e4a72aba72b48704531747de7d1618d5cbd0ad7d04",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "dabb9d29316a1345cea27860866e9abaacfbf208dad1889526a1131cbd1923f0",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "c55c9986cf1973335e9b79d33c84005305f65e83031e9ac3ee517fd7d9f01ee1",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "f4d4e01f24dea745eed4e52b088bcb1f9c88e42b77e24ec73294d41d8d0dfb54",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "4539e38780fabfa2a32777f6bf8c87b5305abfc83fb1775356d3d96baa9646d0",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "ebcaa0569e9d9c88ab2e0a541b9bc7c8c6611a2b40f4351d4454443b8e3a3586",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "e7b4ed261cd494bd5ce57dcbc61ad4404e4199dd77ce4c2f468bc089f5e5b396",
+    "size": 42599,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "9e0a7b0e60adfeb1a6a43b378adf2c842aae54aab75180ad4be347895b709b3d",
+    "size": 10245,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "fc881c2704346571fba3b4de339e1a07d353faf26f3dfc09f5c8ab3ec9929c42",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "4a12d4b82567826f7c551a94f791ef63dfcb27efacb5d6f27d17170055368399",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "706470f5044a250420c053fee3008ddfc499231c7111761b21db2a18f402764a",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e40948c9b8f493cf3261853f95e7c9342cc6192a2871f413d033a9e97752fde9",
+    "size": 24769,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "52f3353a6c5a5460ddf533d310aefeb1a02dd57a50d4da429ca974193e945c25",
+    "size": 6208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "e1faefe9ae946e1fa53dade97b35b3033422264b78e93ae707853a777cfb3f9f",
+    "size": 4639,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "b67cf4e5050e0baad3f6da81dc3ef96c97e6ee1ab2c17fe058e9dbf10ffef065",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "df1027b50d101f9a28efb9edf2156dd3efd4f12293a8ec4b24a0a9b77213cd59",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "8bef42e56457dca257bf63ae1829b7723b9b5ebb2d6ce8e5efa4918a743880c8",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "df64c03db5c2cab99088fa0b511672d0fdea68b50c15aece993dea4814b8b7ae",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "8666f8d471f5a3b9ffc0b5e3b6e7cb3b40ae798acdf7c324d6fd9354f087c48a",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "005af2556d1092c3eab22df3b4631bdcd2e94418b32d6f4bc46c7dccb4106f23",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "a9b56fc65d3422455f1f094f22c73242a21b4fd804b1599921b1ae8771a284a2",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "eafa41e1561ca9244c579905d0e73dda0766318e5a7b3eaeee8f704940bcd90b",
+    "size": 71255,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "80d947523abdd2946bea2daf4921137a2ae5b88e9645cf1f91258df5161c0684",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "139331f6bd2ba5c32bf03d5b07bf5b7a4108c179852859bbb224a387e1b54f82",
+    "size": 219,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\owned-data\\byte-cache\\48b3677e-b623-4ea0-8144-79bf8073fa26.span",
+    "sha256Bytes": "bb07a280546332b16827ed03d0d5dded1d2cec1882b8a5497eccbf7c8d594068",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\owned-data\\byte-cache\\72310e5a-b826-48ce-89f4-72fd68670810.span",
+    "sha256Bytes": "0ffd646ddbf3c42204f72a4a6225a67a32c450d403d38f90dcf06435d3d20837",
+    "size": 96,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-05\\owned-data\\byte-cache\\a23b357f-1aec-4fe0-b3b6-d60c3929b891.span",
+    "sha256Bytes": "58225d10b7c9ba7c2e10e2fa3e982b61cbd7438500da0907d67e74287e1be551",
+    "size": 1048663,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "5145b88d7c76a973f5b112be457452510f12f61e65f088823608eb21553a8921",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "cd69a45c81a7c9c60b24876983fedc2e2fcce80d0a7c4c9f7d103b778fcac45a",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "cb6371af81cb45aecec0f0594d86b1269f1f634f5195ff72253c1cadb2564770",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "c4c544b76427900ed0ea2da3b587958a1883336e04366f81b29e6198f7df5782",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "ba30fe7474d1a1967fdc967624c02d1ceb856ea86c25bee9be7ee2505a75a6fc",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "5121fd785886121dc40bdbedb797c25b084f02a97df0e05c4f7fa4ded5846c30",
+    "size": 1962,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$4.class",
+    "sha256Bytes": "2335c460f049205ccf15aaa9d238de364043e359e57ef26bb6034530a2726238",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "64afc840de72a42c0dff9bb9011bc602e1215645e645a495a93aee9f5135383f",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "635715e2f95710b81c1990b26dd4edcdb6b6dff3227f90d3e9a25a69b9350c22",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "2d18efd9485997d43616a5c76af90752eaf0312db3bd68d3c8b5b52ffdca6988",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "56714868bff5365105a749d64ea360e4eb2b83cf9472ee4f2b06dee5387fbb0a",
+    "size": 20236,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "61c22a24ca4afaa1b345534876ec869dd8568b965602d63d6071e6fdb4bde593",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "2741d4f7d880a9f28d3cfc64a794610d44bec0c1654ebd3943615425e98d7d4c",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "de75de94431e56ba5443231d2add3efce0213f8897b12e8be963579df76eaecf",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "e07840305e29592d0c492f2fb47e090fdd307274b476e101daccbe574d7ebedd",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "0646d16649670c0cf873c8b49f265e89e03323e3a206c9896db9ba279de9b094",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "c3a51c7e8e0e6d1678b7f8d8a00228e4b40436863e135109c4b6b7600f758915",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "270d51ed6f2e5a51039824774c215f8efc20a080a3a4289fa191ed1e1fbb2e4d",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "ca12f5239cd6145f575708dcdd8a1b347a60234ffa0866d9a9a07b8c0fe5355f",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "75c3b20b9ca08d8212e7ebc1446416b02355a3e30875c5bc6187c8b05dcd5bb8",
+    "size": 2445,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "6907e786ce28d816458984f1fde3ef286a1d68a101177f2ad49b65cf2fccafb0",
+    "size": 42837,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "fc881c2704346571fba3b4de339e1a07d353faf26f3dfc09f5c8ab3ec9929c42",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "4a12d4b82567826f7c551a94f791ef63dfcb27efacb5d6f27d17170055368399",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "706470f5044a250420c053fee3008ddfc499231c7111761b21db2a18f402764a",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e40948c9b8f493cf3261853f95e7c9342cc6192a2871f413d033a9e97752fde9",
+    "size": 24769,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "4759daaa960b88b82ba3643428851781c3428d967f4e81c3aa3711901dd15a8f",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "bbbd9a0cf5c78824b9cf3518cb65ca702a21031e406c860275fe08be6ddf65ae",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "4715690fc754fe91b714b5d46a7a10e23cb82db817ea221e0ffe023297262f16",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "005af2556d1092c3eab22df3b4631bdcd2e94418b32d6f4bc46c7dccb4106f23",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "a9b56fc65d3422455f1f094f22c73242a21b4fd804b1599921b1ae8771a284a2",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "862d22a20186274191397e4264a039095a55634f15a56b7fa84e8e147633150a",
+    "size": 74949,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "88a505184a1dcaf9894976e4b82567923631dd0a13b3d3923028ca701c868406",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "139331f6bd2ba5c32bf03d5b07bf5b7a4108c179852859bbb224a387e1b54f82",
+    "size": 219,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\owned-data\\byte-cache\\78d9065a-fb0c-4c55-a935-6a5850674d4b.span",
+    "sha256Bytes": "bb07a280546332b16827ed03d0d5dded1d2cec1882b8a5497eccbf7c8d594068",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\owned-data\\byte-cache\\d38c2458-8e20-402f-a430-2ea2cc343c3c.span",
+    "sha256Bytes": "0ffd646ddbf3c42204f72a4a6225a67a32c450d403d38f90dcf06435d3d20837",
+    "size": 96,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-06\\owned-data\\byte-cache\\dd219093-624b-4327-9a8b-426fdad544b3.span",
+    "sha256Bytes": "58225d10b7c9ba7c2e10e2fa3e982b61cbd7438500da0907d67e74287e1be551",
+    "size": 1048663,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "7097f0114eef9440786db759246bf4119c88c7f6b71f14f72ccb02378a37276a",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "60363907d74d3f25c8026dbe006e6a5baa4e22432d3d90a422513b2bb45a01e3",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "e4c843be0bebd4f4e37db6d2ce8bc6717af3f363652ad35edd3f3197429669a0",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "c672a91eebaac6370999e35809324986b4a00bc334e85209f23eb2ae2ce924ac",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$1.class",
+    "sha256Bytes": "d9a0874f48b70b9e2d1a7077d531b22e291c6d867697c762ffca47577357f1a5",
+    "size": 2967,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$2.class",
+    "sha256Bytes": "fee2304cdb5199a6a39fd2f2b9c038883ec1131aa41c95adca605fdfc5c8b9c3",
+    "size": 4371,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1.class",
+    "sha256Bytes": "55d0a191e8795e5b27c38531fd709f52c8d26f1510ce250320ea7d1f74bee8a5",
+    "size": 4454,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "3e6645d2a9dd68cc1faba869b435097ddc9f4600baea42d8d33e826f6ad40226",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "0cdff76a4910268ecb0ff0d43399cd1e4e72e846f07b82fdee1cf887e9838135",
+    "size": 2087,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$5.class",
+    "sha256Bytes": "b2ebc26c127c6747a354cc3b7f5108dcf0e46e9d8c606fbc829c097c60a26714",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "67a219c94cd810ff8f2cb3c0a263d1e93a39007a1bd0e07bf5704baf3f930494",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "73637641fcda24dad3e5b62d5d88a883e97563bd717cb9c393fd6fb817ca0c3a",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "082faa83c7269c80cf40db45e1f8aa703d67dd8dce883aede8ef6312eff1117b",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "bd6e726165133a325af8932fb4e2d03639e8a555e7646d58a58ee15da6d1ea30",
+    "size": 21137,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "4d56974edbc9da4604b1c2ca2e3928e7eadc87c7226075115671bb9fe80a4c84",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$awaitWrites$1.class",
+    "sha256Bytes": "c336711f43640c7cec7ba099e2b4037e3482b81c64e01988a7645b1c3bd1406c",
+    "size": 1979,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "85c9c0fbbf8300bc7b6b357f735691608c1fa4bb0959619846b0d36000bed5ad",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "9773c95be4030168c6bf772859bc7645b4f47f4fbf0ef5db7c55261848d1d3d8",
+    "size": 2386,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "00f482d56220d80ea912c1f6a9a678c71e5dc9220954b15ad39767d407430492",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "666b67a5a7acf34b48168e3f6721b916452e357c18431b1a032887974da6d1f1",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "0bd13c3c8119473911027299fec420e416e9daf25a3be572455fdf4675f06770",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "ea224f55c571848b30a4807a6e6f84313605cfd11243c00b4dbd458a5c9ead52",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "8bce14e5f27f0598dc3fb7519afe53de0fb5883824e6505519a5f65d095c6380",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "28e2d5a2c079f8c88522d69a63a5c0f475b85d73af92bc3d5c12b218c7f21881",
+    "size": 2408,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpanOwned$1.class",
+    "sha256Bytes": "9667b1fb452bc40f12dee2fd08ac24a6c5a9d455d27054fc79aaccd3603c2022",
+    "size": 2470,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "261416fd7b6e689d3e60466a42ca3f1af6617ed3eecab6f720fc6a73a9bb3cde",
+    "size": 46159,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "fc881c2704346571fba3b4de339e1a07d353faf26f3dfc09f5c8ab3ec9929c42",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "4a12d4b82567826f7c551a94f791ef63dfcb27efacb5d6f27d17170055368399",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "706470f5044a250420c053fee3008ddfc499231c7111761b21db2a18f402764a",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "e40948c9b8f493cf3261853f95e7c9342cc6192a2871f413d033a9e97752fde9",
+    "size": 24769,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "6e3ae3b480f72c006cb39fa28d0f745318247239cb3e9b2b83e7a1b787615054",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "bbbd9a0cf5c78824b9cf3518cb65ca702a21031e406c860275fe08be6ddf65ae",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "4715690fc754fe91b714b5d46a7a10e23cb82db817ea221e0ffe023297262f16",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "005af2556d1092c3eab22df3b4631bdcd2e94418b32d6f4bc46c7dccb4106f23",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "a9b56fc65d3422455f1f094f22c73242a21b4fd804b1599921b1ae8771a284a2",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "5e450f9d40d6849044ce2aa7067d8d1e994b255a8266e7efb9d92ddd6b5dc04f",
+    "size": 74999,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "88a505184a1dcaf9894976e4b82567923631dd0a13b3d3923028ca701c868406",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "139331f6bd2ba5c32bf03d5b07bf5b7a4108c179852859bbb224a387e1b54f82",
+    "size": 219,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\owned-data\\byte-cache\\6c60730d-74b0-4e6c-93ed-4994208c7652.span",
+    "sha256Bytes": "0ffd646ddbf3c42204f72a4a6225a67a32c450d403d38f90dcf06435d3d20837",
+    "size": 96,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\owned-data\\byte-cache\\c64fb3bd-6217-49c6-be3a-d94fcaea8a35.span",
+    "sha256Bytes": "58225d10b7c9ba7c2e10e2fa3e982b61cbd7438500da0907d67e74287e1be551",
+    "size": 1048663,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-07\\owned-data\\byte-cache\\ead49d73-e959-49f1-bd66-6f8f99874894.span",
+    "sha256Bytes": "bb07a280546332b16827ed03d0d5dded1d2cec1882b8a5497eccbf7c8d594068",
+    "size": 273792,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "0200ccdca19cb63d2d1155c8b57035de9b0434cc6689d796d4a221f451c9c94b",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "4ae97d0113a5b22d7de58b64cdb51a8eb96f4f8833dccd8527b25bbd3e88df61",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "661446f0f8e11fc750075079b84215445a5b55019fa0508580474d7c581c0ac8",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "b8f34324ee6ee05fc0c23b956806e7c823e14cc2f2642aefef26ec17b064b8e5",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$1.class",
+    "sha256Bytes": "d9a0874f48b70b9e2d1a7077d531b22e291c6d867697c762ffca47577357f1a5",
+    "size": 2967,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$2.class",
+    "sha256Bytes": "972a1d1344c8aa577d0d7f3fa9ab1dcc04cb444d5b9c970b41db2352f8798568",
+    "size": 4371,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1.class",
+    "sha256Bytes": "55d0a191e8795e5b27c38531fd709f52c8d26f1510ce250320ea7d1f74bee8a5",
+    "size": 4454,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "3e6645d2a9dd68cc1faba869b435097ddc9f4600baea42d8d33e826f6ad40226",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "53a7dd8f9b23f03d3d09fc043f147a8bda650ac03252c749fa7c97f23c2f2413",
+    "size": 2087,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$5.class",
+    "sha256Bytes": "b2ebc26c127c6747a354cc3b7f5108dcf0e46e9d8c606fbc829c097c60a26714",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "6f06c586d126c61b30303c3d33efc88328bdf76ba530f71d098972b035f6af43",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "73637641fcda24dad3e5b62d5d88a883e97563bd717cb9c393fd6fb817ca0c3a",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "93e284c51325540bdffc81b8d34d16428422d2df9e0f2a4bb97fe14828a0584c",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "ed62ce1e42b9c8c8c25dcb0dbb5e169ce2cbb2d4f754c41cc41d9804acee0a31",
+    "size": 21137,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "fbdb4672788f7cd7b3120249827c89ab2bdccb9c24c9e4a44d1f7af3b834745c",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$awaitWrites$1.class",
+    "sha256Bytes": "d52b0b6293be23d3a9576fe6f26dd13b1497c2960ed510cef87e32cb0dae9b78",
+    "size": 1979,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "6ce5ff4e15fd866cdae53a1460349987d69e84faa64b2f08ed0f2d59e5bfe01e",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "28606a6ab08d4a5a6f468a40a59aa29ac99c1886bb86116fb7a649f71fb0e914",
+    "size": 2452,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "00f482d56220d80ea912c1f6a9a678c71e5dc9220954b15ad39767d407430492",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "382aea1d9b66ce20e365b0d9590d0a146e72abe4d79fbcbd3bf939345433dda8",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "0bd13c3c8119473911027299fec420e416e9daf25a3be572455fdf4675f06770",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "1ac858b31aaab683e0c920a723921b2a064bb1ebeb9bfb4a0e0a5bd9f4e4511c",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "58a4a365473c4d9c9be0975327a9e5f1f2296666a1ce4008a81840f05b9334c3",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "d584c39a4d8f6afee7032f6ef7defa4b1dbd2774a6409aca6c6b08b7308a8808",
+    "size": 2408,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpanOwned$1.class",
+    "sha256Bytes": "5add9acd0a08272d0570ca7f2aeed4c67ee9fa3bd1991280a1edf280beba9bc0",
+    "size": 2470,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "d8d438e602d804b60ca4d4f64d989b9bae3a72313254da4d30d413141d520931",
+    "size": 46538,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "29ed683369c800a31252f34dca1fdf8b88d00c02270690492429c9e60c575758",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "b167b61b64f6c046e352c3a81d2f49ec6fc1fd006abaecec970743f38c4e33ca",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "acea4d56ae74e64ac5ddcefec9af60c5f6f30a2cb19bff2dd03bc8adf7edb0c2",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "45b4e5d9923a41a2ffd96750bd6b3003bdeb10f4678d3c52b1ffcac19e844a72",
+    "size": 27835,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "6e3ae3b480f72c006cb39fa28d0f745318247239cb3e9b2b83e7a1b787615054",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "36cbaa3d9af7e423f7936552313ef35cf19e1b2c314535f820d84a2562fcf856",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "da612c9efd37727738eebc32a2ec07617b8145883a3c6bc6bd571a67d3dbfdb2",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "005af2556d1092c3eab22df3b4631bdcd2e94418b32d6f4bc46c7dccb4106f23",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "a9b56fc65d3422455f1f094f22c73242a21b4fd804b1599921b1ae8771a284a2",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "2caee90ae07f8073efdd901ecb0f07b6dc35308146a2fb6956b1e33f7f6d5bfb",
+    "size": 80516,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "f95a438ce51ccccd1b9508827291f289a1039cbc2065c57c16c4d526bb1cf9fd",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-08\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "139331f6bd2ba5c32bf03d5b07bf5b7a4108c179852859bbb224a387e1b54f82",
+    "size": 219,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\android\\purebilibili\\core\\player\\DesktopOriginalPlaybackMediaCachePolicyKt.class",
+    "sha256Bytes": "ada47209cd0ed77da657cab4233b6f77225c638e1698a29f860407e7a855db2b",
+    "size": 3842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$1.class",
+    "sha256Bytes": "0200ccdca19cb63d2d1155c8b57035de9b0434cc6689d796d4a221f451c9c94b",
+    "size": 2202,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchHeadRange$total$1.class",
+    "sha256Bytes": "4ae97d0113a5b22d7de58b64cdb51a8eb96f4f8833dccd8527b25bbd3e88df61",
+    "size": 4208,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache$prefetchRange$2.class",
+    "sha256Bytes": "661446f0f8e11fc750075079b84215445a5b55019fa0508580474d7c581c0ac8",
+    "size": 9910,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopBoundMediaByteCache.class",
+    "sha256Bytes": "b8f34324ee6ee05fc0c23b956806e7c823e14cc2f2642aefef26ec17b064b8e5",
+    "size": 16020,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteAdmission.class",
+    "sha256Bytes": "54cfe75c40d13f60adf8e0304398ae660e18ac535e1f9176bcab07e2c5171599",
+    "size": 1815,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$1.class",
+    "sha256Bytes": "d9a0874f48b70b9e2d1a7077d531b22e291c6d867697c762ffca47577357f1a5",
+    "size": 2967,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1$2.class",
+    "sha256Bytes": "972a1d1344c8aa577d0d7f3fa9ab1dcc04cb444d5b9c970b41db2352f8798568",
+    "size": 4371,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$1.class",
+    "sha256Bytes": "55d0a191e8795e5b27c38531fd709f52c8d26f1510ce250320ea7d1f74bee8a5",
+    "size": 4454,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$cleanupLater$1.class",
+    "sha256Bytes": "3e6645d2a9dd68cc1faba869b435097ddc9f4600baea42d8d33e826f6ad40226",
+    "size": 3350,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$1.class",
+    "sha256Bytes": "53a7dd8f9b23f03d3d09fc043f147a8bda650ac03252c749fa7c97f23c2f2413",
+    "size": 2087,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$clear$5.class",
+    "sha256Bytes": "b2ebc26c127c6747a354cc3b7f5108dcf0e46e9d8c606fbc829c097c60a26714",
+    "size": 3854,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$1.class",
+    "sha256Bytes": "6f06c586d126c61b30303c3d33efc88328bdf76ba530f71d098972b035f6af43",
+    "size": 4352,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback$serve$metadata$1.class",
+    "sha256Bytes": "73637641fcda24dad3e5b62d5d88a883e97563bd717cb9c393fd6fb817ca0c3a",
+    "size": 4151,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache$Loopback.class",
+    "sha256Bytes": "93e284c51325540bdffc81b8d34d16428422d2df9e0f2a4bb97fe14828a0584c",
+    "size": 15459,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.class",
+    "sha256Bytes": "ed62ce1e42b9c8c8c25dcb0dbb5e169ce2cbb2d4f754c41cc41d9804acee0a31",
+    "size": 21137,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheKt.class",
+    "sha256Bytes": "fbdb4672788f7cd7b3120249827c89ab2bdccb9c24c9e4a44d1f7af3b834745c",
+    "size": 9198,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCacheStats.class",
+    "sha256Bytes": "ce3f540653a23d3ab29036f9ad1a824fbff94c258c8896532c99352736a3a601",
+    "size": 3716,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$awaitWrites$1.class",
+    "sha256Bytes": "d52b0b6293be23d3a9576fe6f26dd13b1497c2960ed510cef87e32cb0dae9b78",
+    "size": 1979,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Companion.class",
+    "sha256Bytes": "6ce5ff4e15fd866cdae53a1460349987d69e84faa64b2f08ed0f2d59e5bfe01e",
+    "size": 956,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$ensureRange$1.class",
+    "sha256Bytes": "28606a6ab08d4a5a6f468a40a59aa29ac99c1886bb86116fb7a649f71fb0e914",
+    "size": 2452,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$Frame.class",
+    "sha256Bytes": "00f482d56220d80ea912c1f6a9a678c71e5dc9220954b15ad39767d407430492",
+    "size": 4931,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$metadata$1.class",
+    "sha256Bytes": "382aea1d9b66ce20e365b0d9590d0a146e72abe4d79fbcbd3bf939345433dda8",
+    "size": 2030,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$origin$call$1.class",
+    "sha256Bytes": "0bd13c3c8119473911027299fec420e416e9daf25a3be572455fdf4675f06770",
+    "size": 1449,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1$read$3.class",
+    "sha256Bytes": "1ac858b31aaab683e0c920a723921b2a064bb1ebeb9bfb4a0e0a5bd9f4e4511c",
+    "size": 4545,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$stream$1.class",
+    "sha256Bytes": "58a4a365473c4d9c9be0975327a9e5f1f2296666a1ce4008a81840f05b9334c3",
+    "size": 9476,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpan$1.class",
+    "sha256Bytes": "d584c39a4d8f6afee7032f6ef7defa4b1dbd2774a6409aca6c6b08b7308a8808",
+    "size": 2408,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease$writeSpanOwned$1.class",
+    "sha256Bytes": "5add9acd0a08272d0570ca7f2aeed4c67ee9fa3bd1991280a1edf280beba9bc0",
+    "size": 2470,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteLease.class",
+    "sha256Bytes": "d8d438e602d804b60ca4d4f64d989b9bae3a72313254da4d30d413141d520931",
+    "size": 46538,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocolKt.class",
+    "sha256Bytes": "15c5058676bdc3c9f11525ef89670365ef2b501db837c24da60c33a2944b7350",
+    "size": 11348,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.class",
+    "sha256Bytes": "d248988f732f2a229d553b93002c28f4a754cf1e06eeca3df9ddf8ae4e66c989",
+    "size": 8015,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Companion.class",
+    "sha256Bytes": "29ed683369c800a31252f34dca1fdf8b88d00c02270690492429c9e60c575758",
+    "size": 1401,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reader.class",
+    "sha256Bytes": "b167b61b64f6c046e352c3a81d2f49ec6fc1fd006abaecec970743f38c4e33ca",
+    "size": 4136,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Reservation.class",
+    "sha256Bytes": "acea4d56ae74e64ac5ddcefec9af60c5f6f30a2cb19bff2dd03bc8adf7edb0c2",
+    "size": 1695,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore$Span.class",
+    "sha256Bytes": "f0829eb399e324faf8a2358bf85391a001c5ea39f653331c8069e987ba781c6d",
+    "size": 5713,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.class",
+    "sha256Bytes": "45b4e5d9923a41a2ffd96750bd6b3003bdeb10f4678d3c52b1ffcac19e844a72",
+    "size": 27835,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteTrack.class",
+    "sha256Bytes": "00eac628f6153e631dd48aeae231247ffa8a868766db667deae1e4a97dffd51d",
+    "size": 6332,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaOriginHeaders.class",
+    "sha256Bytes": "9f6d39550baada889e48819fc5aa4c2aa2123e60f32abb719af4afc08323e4bf",
+    "size": 4650,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaResource.class",
+    "sha256Bytes": "6e3ae3b480f72c006cb39fa28d0f745318247239cb3e9b2b83e7a1b787615054",
+    "size": 4311,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransport.class",
+    "sha256Bytes": "42b540a57968153cb5a30934d4eaa108ee054e262019d82ae59e1b9a890e0355",
+    "size": 10081,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\DesktopNativeMediaTransportMode.class",
+    "sha256Bytes": "028ee74f0e5feefc9bc725e9234c118bc1f74a90edfde623d626d753af606dec",
+    "size": 2115,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$8.class",
+    "sha256Bytes": "36cbaa3d9af7e423f7936552313ef35cf19e1b2c314535f820d84a2562fcf856",
+    "size": 3390,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$cancelled$1.class",
+    "sha256Bytes": "da612c9efd37727738eebc32a2ec07617b8145883a3c6bc6bd571a67d3dbfdb2",
+    "size": 4049,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1$1.class",
+    "sha256Bytes": "005af2556d1092c3eab22df3b4631bdcd2e94418b32d6f4bc46c7dccb4106f23",
+    "size": 3365,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1$first$1.class",
+    "sha256Bytes": "a9b56fc65d3422455f1f094f22c73242a21b4fd804b1599921b1ae8771a284a2",
+    "size": 3848,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$main$1.class",
+    "sha256Bytes": "20eb4dbc0cd7e8c5df9058bc231012087556678c54633b823858e01e1e0b7470",
+    "size": 80750,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$1.class",
+    "sha256Bytes": "8786290a71f3b504ac15bad51e3027c7069858c9af579975289e6813477cc7e9",
+    "size": 1682,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt$waitFor$2.class",
+    "sha256Bytes": "24bbd85808a81e51c490d141288662a555f78a6a680ad0b81b7e1ac2d143aa43",
+    "size": 3582,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\com\\bilipai\\desktop\\player\\cache\\MediaByteCacheProofKt.class",
+    "sha256Bytes": "9c460e1cf9ba98e0c4d8187c3c4e4edb1006fa5396f4eec11e99f5783bfa005d",
+    "size": 4842,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  },
+  {
+    "path": "runs\\proof-09\\classes\\META-INF\\com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "139331f6bd2ba5c32bf03d5b07bf5b7a4108c179852859bbb224a387e1b54f82",
+    "size": 219,
+    "reason": "fixture-owned/rebuildable binary output; not a production payload or user media"
+  }
+]

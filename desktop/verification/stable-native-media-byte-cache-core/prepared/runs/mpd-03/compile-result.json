@@ -1,0 +1,38 @@
+{
+  "exit": 0,
+  "snapshot": 66,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+      "size": 29409
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+      "size": 7655
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+      "size": 9943
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\DesktopOriginalPlaybackMediaCachePolicy.kt",
+      "sha256Bytes": "7ba8d2760df748367db08b2b51704a2047f8e84a3bb336fc7d59d4ee462c4592",
+      "size": 833
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-03\\inputs\\MediaByteMpdProof.kt",
+      "sha256Bytes": "94050c72f8524e2d7a7f74947ce5b050b48e076244f325952cff27a93f569d04",
+      "size": 6321
+    }
+  ]
+}

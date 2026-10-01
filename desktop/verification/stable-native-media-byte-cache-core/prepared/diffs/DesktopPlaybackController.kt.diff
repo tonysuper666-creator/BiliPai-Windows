@@ -1,0 +1,11 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt
+@@ -944,7 +944,7 @@
+                 snapshot.source == initial.source && publication.isCurrent(snapshot.source) &&
+                 snapshot.source.authorizationReceipt?.accountEpoch == expectedEpoch &&
+                 context.source.authorizationReceipt == snapshot.source.authorizationReceipt &&
+-                snapshot.source.copy(startPositionSeconds = 0.0, startPaused = true, nativePublication = null) == context.source.toNative(0.0, true)
++                snapshot.source.copy(startPositionSeconds = 0.0, startPaused = true, nativePublication = null, nativeTransport = null) == context.source.toNative(0.0, true)
+         fun ready(readback: PlayerState): Boolean = readback.ready && !readback.loading && !readback.ended &&
+             readback.error == null && readback.failure == null && readback.nativePaused != null &&
+             (readback.videoCodec != null || readback.audioCodec != null)

@@ -1,0 +1,101 @@
+{
+  "applied": true,
+  "payloadCount": 5,
+  "rawPacketArtifactsVerified": 240,
+  "exactHunks": 21,
+  "exactHunkFiles": 9,
+  "sourceIdentityCount": 1169,
+  "resourceCount": 213,
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "newHttpClients": 0,
+  "wholeReferenceFilesInstalled": false,
+  "wholeSharedFamilyReplacement": false,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-media-byte-cache-policy.py",
+      "sha256Bytes": "406583ee9b2374baf8b9f433857ac4a190cb867795d7599c83ab36d8d101011a"
+    }
+  ],
+  "changedFiles": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "beforeSha256Bytes": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "afterSha256Bytes": "84f0ab9100d4e1ce3dc994a80ae8d56bd1f1111982f84c4c3481936aaf213457"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt",
+      "beforeSha256Bytes": "ebf2de1e1d161ad27d1b62e37a7f227fd8a7d84a69ec2abb2ad69bca52c50392",
+      "afterSha256Bytes": "077c3f59e2714d48685792246e52f9df4882fff5bd25e2348aaa218adc04dd98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "beforeSha256Bytes": "75852a21db0f83c15bfda3852f39efe95daa2268bba9ed745b3143892199029c",
+      "afterSha256Bytes": "8c9c91eedb07ac6eeac399142deaa980565866fffdc3781a7e76ac880188404d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "beforeSha256Bytes": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "afterSha256Bytes": "344eba61e1ea606541a5a3e43a9b2ab7d277f1beb22cd20618de0a120299ff97"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "beforeSha256Bytes": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327",
+      "afterSha256Bytes": "ed7449505c4254a7ab384539c73f40c0befa697db1b37fc734018c1397f77e0f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "beforeSha256Bytes": "c4f87f9826d703a5349158a051e7aa717a532027c8680c956843fb9337cdad2b",
+      "afterSha256Bytes": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "beforeSha256Bytes": "b12f1bbaa608ab4c2b871668437c68507d54f43bc769dc1475a17e4e75877762",
+      "afterSha256Bytes": "4ceac1d05e306f00c66b4cf306226db96ec44b2f3fc08d31ee429395153eba6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256Bytes": "1b5862146101648f222c0c8d9de6225bee8c091c9cf0f2ab35132d19a512b9c9",
+      "afterSha256Bytes": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "3f608b15cd75706f3481c7675fbc43ce0d8971ac7ec004c9c09c03c261246863",
+      "afterSha256Bytes": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "3af7e671b1fb5ab5f0e9fca33ad80a1d9c7303a45b767f9b25cf208b63950925",
+      "afterSha256Bytes": "7ee3c3ac044449a10289ed6ecd4a36817b05c931e081dd31430c59e18ed7f1cf"
+    }
+  ],
+  "originalPolicyModePromotion": {
+    "path": "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt",
+    "sha256": "7194fa15b896c882df5b8e2424632ddaadc2ffb8c26e8b5484a96e0566368f6c",
+    "features": [
+      "stable-native-media-byte-cache",
+      "stable-video-player-full-controls"
+    ],
+    "mode": "policy-extract"
+  },
+  "wholeCompilationPending": true,
+  "actualInstalledNativeCarrierAccepted": false,
+  "rootConsumerMounted": false,
+  "desktopExeReplaced": false
+}

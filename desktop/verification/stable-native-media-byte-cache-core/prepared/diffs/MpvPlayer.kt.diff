@@ -1,0 +1,30 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
+@@ -164,6 +164,10 @@
+             check(!closed.get()) { "Player is closed" }
+             // Validate and freeze caller-owned maps before transferring media ownership.
+             val retainedSource = source.immutableSnapshot()
++            val previousTransport = requestedSource?.nativeTransport
++            if (!preserveSubtitles) retainedSource.nativeTransport?.lease?.requireUnattached()
++            if (!preserveSubtitles || previousTransport !== retainedSource.nativeTransport)
++                previousTransport?.retire(sourceVersion, requestedSource?.nativePublication)
+             if (!preserveSubtitles) {
+                 sourceVersion++; softwareDecodingRequested = false
+                 if (videoShaderSourceVersion != null) installVideoShaders(PreparedVideoShaders(emptyList(), emptySet()))
+@@ -448,6 +452,7 @@
+     }
+     fun stop() {
+         synchronized(lock) {
++            requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication)
+             requestedSource = null
+             softwareTarget?.clear()
+             softwareDecodingRequested = false
+@@ -519,7 +524,7 @@
+     override fun close() {
+         if (closed.compareAndSet(false, true)) {
+             softwareTarget?.close()
+-            synchronized(lock) { requestedSource = null; externalSubtitles.clear() }
++            synchronized(lock) { requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication); requestedSource = null; externalSubtitles.clear() }
+             detach()
+         }
+     }

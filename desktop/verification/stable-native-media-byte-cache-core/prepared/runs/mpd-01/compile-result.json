@@ -1,0 +1,33 @@
+{
+  "exit": 0,
+  "snapshot": 66,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-01\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "f9c1f8e4c6eb3251f5e98598cac1dd02fa44289d01a1b1e437114e59d62f4c84",
+      "size": 27185
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-01\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "b0e32c4150027ef6c2195e9a78b9bb3c09d35eae60cb5309a156722b79c0dc33",
+      "size": 6576
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-01\\inputs\\DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+      "size": 1818
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-01\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "fbb6581a8a9fb3e4630337fe81fb4695b3af800471b70ca25401b4c6a01111bf",
+      "size": 9357
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\mpd-01\\inputs\\MediaByteMpdProof.kt",
+      "sha256Bytes": "3ee3e106fb839e5f8a363b8412171d8f9676bd05b28c4c27b8cba2529946f099",
+      "size": 6316
+    }
+  ]
+}

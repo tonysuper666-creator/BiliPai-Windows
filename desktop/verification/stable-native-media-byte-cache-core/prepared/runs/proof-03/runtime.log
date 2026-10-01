@@ -1,0 +1,73 @@
+PASS real cold movie range written
+PASS carrier keeps remote semantic address
+PASS loopback binds independently of origin
+PASS actual MPV decodes warmed loopback byte stream
+PASS warm native playback makes no new movie origin range
+PASS positive actual served cache bytes
+PASS resolver normal completion did not retire native reader
+PASS native is actually ready for publication adoption
+PASS same native publication transfer keeps byte lease
+PASS same actor progresses after byte-lease adoption
+PASS same token is not a new load
+PASS old publication cannot transfer lease again
+PASS exact source retirement closes registration
+PASS retired capability cannot read bytes
+PASS multi-span actual interval committed
+PASS persistent interval reused after actor restart
+PASS disk budget including file headers remains bounded
+PASS /bad cannot report successful prefetch
+PASS /ignored cannot report successful prefetch
+PASS real delayed origin entered
+10�� 01, 2026 7:30:04 ���� fi.iki.elonen.NanoHTTPD$Response send
+����: Could not send response to the client
+java.net.SocketException: Connection reset by peer
+	at java.base/sun.nio.ch.SocketDispatcher.write0(Native Method)
+	at java.base/sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:57)
+	at java.base/sun.nio.ch.NioSocketImpl.tryWrite(NioSocketImpl.java:394)
+	at java.base/sun.nio.ch.NioSocketImpl.implWrite(NioSocketImpl.java:410)
+	at java.base/sun.nio.ch.NioSocketImpl.write(NioSocketImpl.java:440)
+	at java.base/sun.nio.ch.NioSocketImpl$2.write(NioSocketImpl.java:819)
+	at java.base/java.net.Socket$SocketOutputStream.write(Socket.java:1195)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBody(NanoHTTPD.java:1694)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectEncoding(NanoHTTPD.java:1667)
+	at fi.iki.elonen.NanoHTTPD$Response.sendBodyWithCorrectTransferAndEncoding(NanoHTTPD.java:1657)
+	at fi.iki.elonen.NanoHTTPD$Response.send(NanoHTTPD.java:1624)
+	at fi.iki.elonen.NanoHTTPD$HTTPSession.execute(NanoHTTPD.java:957)
+	at fi.iki.elonen.NanoHTTPD$ClientHandler.run(NanoHTTPD.java:192)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+
+Exception in thread "main" java.net.SocketException: Socket closed
+	at java.base/sun.nio.ch.NioSocketImpl.endRead(NioSocketImpl.java:243)
+	at java.base/sun.nio.ch.NioSocketImpl.implRead(NioSocketImpl.java:323)
+	at java.base/sun.nio.ch.NioSocketImpl.read(NioSocketImpl.java:346)
+	at java.base/sun.nio.ch.NioSocketImpl$1.read(NioSocketImpl.java:796)
+	at java.base/java.net.Socket$SocketInputStream.read(Socket.java:1099)
+	at okio.internal.DefaultSocket$SocketSource.read(DefaultSocket.kt:124)
+	at okio.RealBufferedSource.read(RealBufferedSource.kt:215)
+	at okhttp3.internal.http1.Http1ExchangeCodec$AbstractSource.read(Http1ExchangeCodec.kt:375)
+	at okhttp3.internal.http1.Http1ExchangeCodec$FixedLengthSource.read(Http1ExchangeCodec.kt:419)
+	at okhttp3.internal.connection.Exchange$ResponseBodySource.read(Exchange.kt:346)
+	at okio.RealBufferedSource$inputStream$1.read(RealBufferedSource.kt:169)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpan$lambda$0(DesktopMediaByteCache.kt:276)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.origin(DesktopMediaByteCache.kt:218)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.writeSpan(DesktopMediaByteCache.kt:268)
+	at com.bilipai.desktop.player.cache.DesktopMediaByteLease.ensureRange(DesktopMediaByteCache.kt:259)
+	at com.bilipai.desktop.player.cache.DesktopBoundMediaByteCache$prefetchRange$2.invokeSuspend(DesktopMediaByteCache.kt:335)
+	at com.bilipai.desktop.player.cache.DesktopBoundMediaByteCache$prefetchRange$2.invoke(DesktopMediaByteCache.kt)
+	at com.bilipai.desktop.player.cache.DesktopBoundMediaByteCache$prefetchRange$2.invoke(DesktopMediaByteCache.kt)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndspatched(Undispatched.kt:66)
+	at kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)
+	at kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:165)
+	at kotlinx.coroutines.BuildersKt.withContext(Unknown Source)
+	at com.bilipai.desktop.player.cache.DesktopBoundMediaByteCache.prefetchRange(DesktopMediaByteCache.kt:328)
+	at com.bilipai.desktop.player.cache.MediaByteCacheProofKt$main$1$cancelled$1.invokeSuspend(MediaByteCacheProof.kt:157)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.internal.LimitedDispatcher$Worker.run(LimitedDispatcher.kt:124)
+	at kotlinx.coroutines.scheduling.TaskImpl.run(Tasks.kt:89)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:820)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)

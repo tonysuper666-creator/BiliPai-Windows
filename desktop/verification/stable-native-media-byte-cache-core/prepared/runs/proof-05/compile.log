@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\proof-05\inputs\DesktopMediaByteCache.kt:241:42: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                val body = response.body ?: throw IOException("Media body missing")
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\proof-05\inputs\DesktopMediaByteCache.kt:284:46: warning: unnecessary safe call on a non-null receiver of type 'ResponseBody'.
+                    val input = response.body?.byteStream() ?: throw IOException("Media body missing")
+                                             ^^

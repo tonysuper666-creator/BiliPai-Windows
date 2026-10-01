@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "baselineCommit": "9fbfe50973de4dc2b04984ef6ef6870bee617f2b",
+  "hunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "label": "native-only carrier at constructor tail",
+      "before": "    val nativePublication: DesktopNativePlaybackPublication? = null,\n",
+      "after": "    val nativePublication: DesktopNativePlaybackPublication? = null,\n    /** Native-only local byte ingress; original remote fields stay authoritative. */\n    val nativeTransport: com.bilipai.desktop.player.cache.DesktopNativeMediaTransport? = null,\n",
+      "beforeSha256LF": "d94c6045f28d1f4610b8fb6aa1a7cdd431dcd4412db12f707ddb19e8d5de077f",
+      "afterSha256LF": "66774e7643ccb29b865c8164e135b0c6a4d398301a40c9c5d55ef5af8a904c23"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "label": "native URI projection only",
+      "before": "        get() = if (progressiveSegments.isEmpty()) videoUrl else \"edl://\" + progressiveSegments.joinToString(\";\") { segment ->",
+      "after": "        get() = nativeTransport?.nativeVideo(this) ?: if (progressiveSegments.isEmpty()) videoUrl else \"edl://\" + progressiveSegments.joinToString(\";\") { segment ->",
+      "beforeSha256LF": "66774e7643ccb29b865c8164e135b0c6a4d398301a40c9c5d55ef5af8a904c23",
+      "afterSha256LF": "84f0ab9100d4e1ce3dc994a80ae8d56bd1f1111982f84c4c3481936aaf213457"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt",
+      "label": "validate immutable carrier semantic identity",
+      "before": "internal fun PlaybackSource.immutableSnapshot(): PlaybackSource = copy(\n    progressiveSegments = Collections.unmodifiableList(progressiveSegments.toList()),\n    streamHeaders = copyPlaybackStreamHeaders(streamHeaders),\n)",
+      "after": "internal fun PlaybackSource.immutableSnapshot(): PlaybackSource {\n    nativeTransport?.validate(this)\n    return copy(\n        progressiveSegments = Collections.unmodifiableList(progressiveSegments.toList()),\n        streamHeaders = copyPlaybackStreamHeaders(streamHeaders),\n    )\n}",
+      "beforeSha256LF": "19647fffb511aafc2d31fbedf0ce7cfad30464f9454ef165f7a7a631c5f75e7b",
+      "afterSha256LF": "077c3f59e2714d48685792246e52f9df4882fff5bd25e2348aaa218adc04dd98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "label": "clear origin credentials on native loopback; full MPD has own audio adaptation",
+      "before": "    audioUrl?.takeIf { it.isNotBlank() }?.let { put(\"audio-files\", escapeMpvListItem(it, ';')) }\n    val explicit = copyPlaybackStreamHeaders(streamHeaders)",
+      "after": "    val transport = nativeTransport\n    (if (transport == null) audioUrl else transport.audioUri)?.takeIf { it.isNotBlank() }\n        ?.let { put(\"audio-files\", escapeMpvListItem(it, ';')) }\n    if (transport != null && transport.audioUri == null) put(\"audio-files\", \"\")\n    val explicit = if (transport == null) copyPlaybackStreamHeaders(streamHeaders) else emptyMap()",
+      "beforeSha256LF": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "afterSha256LF": "d12f28b3aca87afc4e835c7137380f3cea209d070d5df897a244af4da27d45f3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "label": "local input Referrer and UA do not contain origin data",
+      "before": "    put(\"referrer\", if (explicit.playbackHeader(\"Referer\") != null) \"\" else referer)\n    put(\"user-agent\", if (explicit.playbackHeader(\"User-Agent\") != null) \"\" else userAgent)",
+      "after": "    put(\"referrer\", if (transport != null || explicit.playbackHeader(\"Referer\") != null) \"\" else referer)\n    put(\"user-agent\", if (transport != null || explicit.playbackHeader(\"User-Agent\") != null) \"\" else userAgent)",
+      "beforeSha256LF": "d12f28b3aca87afc4e835c7137380f3cea209d070d5df897a244af4da27d45f3",
+      "afterSha256LF": "2e9046deab2fa6db44b2229e0e7733d7690c1bb25e9c9522d32426af1efd7532"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "label": "local input Cookie does not contain origin data",
+      "before": "        if (explicit.playbackHeader(\"Cookie\") == null && cookieHeader.isNotBlank()) add(\"Cookie: $cookieHeader\")",
+      "after": "        if (transport == null && explicit.playbackHeader(\"Cookie\") == null && cookieHeader.isNotBlank()) add(\"Cookie: $cookieHeader\")",
+      "beforeSha256LF": "2e9046deab2fa6db44b2229e0e7733d7690c1bb25e9c9522d32426af1efd7532",
+      "afterSha256LF": "8c9c91eedb07ac6eeac399142deaa980565866fffdc3781a7e76ac880188404d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "label": "typed final same-client headers after CookieJar and existing guest strips",
+      "before": "            val response = chain.proceed(stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement)))",
+      "after": "            val stripped = stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement))\n            val mediaOrigin = stripped.tag(com.bilipai.desktop.player.cache.DesktopMediaOriginHeaders::class.java)\n            val response = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)",
+      "beforeSha256LF": "a2c7a3e148cb3b86d5bc1e30a3e6cccb1dd9cf0da5f25e90ee39f5517b6e2815",
+      "afterSha256LF": "2a9fd7704387d5e654646e013c7a16acd937acebad8251d7da39ec8217d5fb25"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "label": "same Store effective playback partition getter",
+      "before": "    internal fun capturePlaybackAuthorization(expectedEpoch: Long, stillOwned: () -> Boolean) =",
+      "after": "    internal fun capturePlaybackCachePartition(receipt: DesktopPlaybackAuthorizationReceipt, stillOwned: () -> Boolean): String =\n        sessions.capturePlaybackCachePartition(receipt, stillOwned)\n    internal fun capturePlaybackAuthorization(expectedEpoch: Long, stillOwned: () -> Boolean) =",
+      "beforeSha256LF": "2a9fd7704387d5e654646e013c7a16acd937acebad8251d7da39ec8217d5fb25",
+      "afterSha256LF": "344eba61e1ea606541a5a3e43a9b2ab7d277f1beb22cd20618de0a120299ff97"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "label": "digest effective playback credentials inside existing Store only; no extra persisted identity",
+      "before": "    internal fun playbackRequestCookies(authorization: DesktopPlaybackAuthorization, url: HttpUrl,",
+      "after": "    internal fun capturePlaybackCachePartition(receipt: DesktopPlaybackAuthorizationReceipt,\n        stillOwned: () -> Boolean): String = withPlaybackAuthorizationAdmission(receipt, stillOwned) {\n        val account = playbackIdentity.effective\n        val identity = buildString {\n            append(\"BiliPai Windows native media byte cache v1\\n\")\n            listOf(account?.mid?.toString().orEmpty(), account?.sessData.orEmpty(), account?.csrf.orEmpty(),\n                account?.accessToken.orEmpty(), account?.refreshToken.orEmpty(), account?.accessTokenPlatform.orEmpty(),\n                account?.buvid3.orEmpty(), account?.isVip?.toString().orEmpty()).forEach { value ->\n                append(value.length); append(':'); append(value)\n            }\n        }\n        java.security.MessageDigest.getInstance(\"SHA-256\").digest(identity.toByteArray(Charsets.UTF_8))\n            .joinToString(\"\") { \"%02x\".format(it) }\n    }\n    internal fun playbackRequestCookies(authorization: DesktopPlaybackAuthorization, url: HttpUrl,",
+      "beforeSha256LF": "5eb88e5254d9b251d0c70995c478cb857b24188dff6dfbc923763f66f9dba327",
+      "afterSha256LF": "ed7449505c4254a7ab384539c73f40c0befa697db1b37fc734018c1397f77e0f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "label": "retire replaced byte capability with sourceVersion; IO cancellation asynchronously outside native lock",
+      "before": "            val retainedSource = source.immutableSnapshot()\n            if (!preserveSubtitles) {",
+      "after": "            val retainedSource = source.immutableSnapshot()\n            val previousTransport = requestedSource?.nativeTransport\n            if (!preserveSubtitles) retainedSource.nativeTransport?.lease?.requireUnattached()\n            if (!preserveSubtitles || previousTransport !== retainedSource.nativeTransport)\n                previousTransport?.retire(sourceVersion, requestedSource?.nativePublication)\n            if (!preserveSubtitles) {",
+      "beforeSha256LF": "c4f87f9826d703a5349158a051e7aa717a532027c8680c956843fb9337cdad2b",
+      "afterSha256LF": "24117fbd1c3f9e659889e093632f216bcde3ff245e46ade17653de53892fa75f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "label": "exact native stop retires its current read capability",
+      "before": "            requestedSource = null\n            softwareTarget?.clear()",
+      "after": "            requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication)\n            requestedSource = null\n            softwareTarget?.clear()",
+      "beforeSha256LF": "24117fbd1c3f9e659889e093632f216bcde3ff245e46ade17653de53892fa75f",
+      "afterSha256LF": "5f986b5ebb3609cb5f1bae557ea025ddcf2cd92d1017d1015c7802c16c8128ad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "label": "exact native close retires its current read capability",
+      "before": "            synchronized(lock) { requestedSource = null; externalSubtitles.clear() }",
+      "after": "            synchronized(lock) { requestedSource?.nativeTransport?.retire(sourceVersion, requestedSource?.nativePublication); requestedSource = null; externalSubtitles.clear() }",
+      "beforeSha256LF": "5f986b5ebb3609cb5f1bae557ea025ddcf2cd92d1017d1015c7802c16c8128ad",
+      "afterSha256LF": "23f2361ffff70191afe0bc8dbdd66593e062e8b8629902e5bf4ccd267a3d6677"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "label": "drain compares all original remote fields; exact carrier stays in earlier complete native snapshot check",
+      "before": "                snapshot.source.copy(startPositionSeconds = 0.0, startPaused = true, nativePublication = null) == context.source.toNative(0.0, true)",
+      "after": "                snapshot.source.copy(startPositionSeconds = 0.0, startPaused = true, nativePublication = null, nativeTransport = null) == context.source.toNative(0.0, true)",
+      "beforeSha256LF": "f1dba82957356ea5650b84dd52e1d128c466b988b6ccbafd814334bd268e3975",
+      "afterSha256LF": "4ceac1d05e306f00c66b4cf306226db96ec44b2f3fc08d31ee429395153eba6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "same original initial transient guard reused for byte reads until ACK",
+      "before": "    override fun onLoadCommandAccepted() { consumed.set(true) }",
+      "after": "    internal fun isTransportCurrent(): Boolean = current()\n    override fun onLoadCommandAccepted() { consumed.set(true) }",
+      "beforeSha256LF": "1b5862146101648f222c0c8d9de6225bee8c091c9cf0f2ab35132d19a512b9c9",
+      "afterSha256LF": "792b67da6d616a6f662336dbc662cc6393ee1d07c004da1611f8abd487a75731"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "required same Root source lifetime admission factory",
+      "before": "    private val onAccepted: (DesktopOriginalVideoAcceptedPublication) -> Unit,",
+      "after": "    private val onAccepted: (DesktopOriginalVideoAcceptedPublication) -> Unit,\n    private val mediaByteAdmission: (DesktopOriginalVideoAcceptedPublication, () -> Boolean) ->\n        com.bilipai.desktop.player.cache.DesktopMediaByteAdmission,",
+      "beforeSha256LF": "792b67da6d616a6f662336dbc662cc6393ee1d07c004da1611f8abd487a75731",
+      "afterSha256LF": "fa7763720b33a5cf3b6cb75c88de7daf2be10c228212fe6764a036158e5b1a03"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "transactional source lease attach/adopt; failed transfer cannot claim native owner",
+      "before": "    fun current(): DesktopOriginalVideoAcceptedPublication? = accepted.get()?.takeIf(::owns)",
+      "after": "    private fun bindAcceptedTransport(value: DesktopOriginalVideoAcceptedPublication,\n        previous: DesktopOriginalVideoAcceptedPublication?, stillOwned: () -> Boolean) {\n        val transport = value.nativeSource.source.nativeTransport ?: return\n        try {\n            val admission = mediaByteAdmission(value, stillOwned)\n            val newPublication = checkNotNull(value.nativeSource.source.nativePublication)\n            if (previous?.nativeSource?.source?.nativeTransport === transport) {\n                if (!transport.adopt(value.sourceVersion, checkNotNull(previous.nativeSource.source.nativePublication),\n                        newPublication, admission)) throw CancellationException(\"Native byte handoff retired\")\n            } else transport.attach(value.sourceVersion, newPublication, admission)\n        } catch (failure: Throwable) {\n            accepted.compareAndSet(value, null)\n            transport.retire(value.sourceVersion)\n            player.stopIfSourceVersion(value.sourceVersion)\n            throw failure\n        }\n    }\n\n    fun current(): DesktopOriginalVideoAcceptedPublication? = accepted.get()?.takeIf(::owns)",
+      "beforeSha256LF": "fa7763720b33a5cf3b6cb75c88de7daf2be10c228212fe6764a036158e5b1a03",
+      "afterSha256LF": "05ac1e5fe13e80f582f251d2e734cb8c19e3a64f3f0f3b23f9ffff3c925c9bba"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "initial accepts Root source Job; completed resolver is not reader lifetime",
+      "before": "                accepted.set(next)\n                inheritedMute.set(null)",
+      "after": "                accepted.set(next)\n                bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }\n                inheritedMute.set(null)",
+      "beforeSha256LF": "05ac1e5fe13e80f582f251d2e734cb8c19e3a64f3f0f3b23f9ffff3c925c9bba",
+      "afterSha256LF": "307ed4beae7399476b7f067e23b777020f81a54639c584ae72abefedb8f23e7a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "same-source drain/adopt retains carrier and changes only publication",
+      "before": "                    accepted.set(next)\n                    inheritedMute.set(handoff.pluginMute?.let { InheritedMute(next, it) })",
+      "after": "                    accepted.set(next)\n                    before.source.nativeTransport?.let { transport ->\n                        try {\n                            if (!transport.adopt(next.sourceVersion, checkNotNull(before.source.nativePublication),\n                                    checkNotNull(next.nativeSource.source.nativePublication), mediaByteAdmission(next) { owns(next) }))\n                                throw CancellationException(\"Native byte handoff retired\")\n                        } catch (failure: Throwable) {\n                            accepted.compareAndSet(next, null); transport.retire(next.sourceVersion)\n                            player.stopIfSourceVersion(next.sourceVersion); throw failure\n                        }\n                    }\n                    inheritedMute.set(handoff.pluginMute?.let { InheritedMute(next, it) })",
+      "beforeSha256LF": "307ed4beae7399476b7f067e23b777020f81a54639c584ae72abefedb8f23e7a",
+      "afterSha256LF": "8bd16b2e23570b9c100ea50f1fa86209fac4be6dcf1189e2cab29be87f5ddf70"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "context-free recovery rebinds current byte frame or attaches new complete source",
+      "before": "                        accepted.set(next)\n                        inheritedMute.get()?.takeIf { it.lease === lease }",
+      "after": "                        accepted.set(next)\n                        bindAcceptedTransport(next, lease) { owns(next) }\n                        inheritedMute.get()?.takeIf { it.lease === lease }",
+      "beforeSha256LF": "8bd16b2e23570b9c100ea50f1fa86209fac4be6dcf1189e2cab29be87f5ddf70",
+      "afterSha256LF": "5df946ab7837b5090c55752d6c6746acbcd59652483f219a3f9b09dc31654c43"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "label": "stale old-owner close cannot retire adopted reader publication",
+      "before": "        val retire = { closed.set(true); accepted.set(null); inheritedMute.set(null) }",
+      "after": "        val retire = {\n            closed.set(true)\n            accepted.getAndSet(null)?.let { value -> value.nativeSource.source.nativeTransport\n                ?.retire(value.sourceVersion, value.nativeSource.source.nativePublication) }\n            inheritedMute.set(null)\n        }",
+      "beforeSha256LF": "5df946ab7837b5090c55752d6c6746acbcd59652483f219a3f9b09dc31654c43",
+      "afterSha256LF": "3dc3ecad9b179addb576e199789fbe79e070c46b18f47f8831e9e5ab4a535a8d"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "label": "sole source producer task, no dependency added",
+      "before": "tasks.named(\"compileKotlin\") { dependsOn(extractOriginalVideoAudioFull) }",
+      "after": "tasks.named(\"compileKotlin\") { dependsOn(extractOriginalVideoAudioFull) }\n\nval extractOriginalMediaByteCachePolicy by tasks.registering(Exec::class) {\n    dependsOn(prepareUpstreamSources)\n    workingDir(projectDir)\n    commandLine(System.getenv(\"PYTHON_EXECUTABLE\") ?: \"python\", \"tools/extract-upstream-media-byte-cache-policy.py\",\n        \"--repo\", repositoryRoot.absolutePath,\n        \"--output\", layout.buildDirectory.dir(\"generated/original-media-byte-cache-policy\").get().asFile.absolutePath)\n    inputs.files(\"tools/extract-upstream-media-byte-cache-policy.py\", sourceManifest,\n        File(repositoryRoot, \"app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt\"))\n    outputs.dir(layout.buildDirectory.dir(\"generated/original-media-byte-cache-policy\"))\n}\nkotlin.sourceSets.named(\"main\") { kotlin.srcDir(layout.buildDirectory.dir(\"generated/original-media-byte-cache-policy\")) }\ntasks.named(\"compileKotlin\") { dependsOn(extractOriginalMediaByteCachePolicy) }\n",
+      "beforeSha256LF": "3f608b15cd75706f3481c7675fbc43ce0d8971ac7ec004c9c09c03c261246863",
+      "afterSha256LF": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6"
+    }
+  ],
+  "reverseCheck": true,
+  "installation": "single-anchor sequential only; review-only full files MUST NOT overwrite product"
+}

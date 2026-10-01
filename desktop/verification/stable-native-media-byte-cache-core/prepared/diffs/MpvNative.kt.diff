@@ -1,0 +1,25 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt
+@@ -140,14 +140,17 @@
+ }
+ 
+ internal fun PlaybackSource.mpvFileOptions(): Map<String, String> = buildMap {
+-    audioUrl?.takeIf { it.isNotBlank() }?.let { put("audio-files", escapeMpvListItem(it, ';')) }
+-    val explicit = copyPlaybackStreamHeaders(streamHeaders)
++    val transport = nativeTransport
++    (if (transport == null) audioUrl else transport.audioUri)?.takeIf { it.isNotBlank() }
++        ?.let { put("audio-files", escapeMpvListItem(it, ';')) }
++    if (transport != null && transport.audioUri == null) put("audio-files", "")
++    val explicit = if (transport == null) copyPlaybackStreamHeaders(streamHeaders) else emptyMap()
+     // FFmpeg otherwise sends both a builtin Referer and the explicit header. Preserve
+     // the original field (including an explicitly empty value) through one transport path.
+-    put("referrer", if (explicit.playbackHeader("Referer") != null) "" else referer)
+-    put("user-agent", if (explicit.playbackHeader("User-Agent") != null) "" else userAgent)
++    put("referrer", if (transport != null || explicit.playbackHeader("Referer") != null) "" else referer)
++    put("user-agent", if (transport != null || explicit.playbackHeader("User-Agent") != null) "" else userAgent)
+     val fields = buildList {
+-        if (explicit.playbackHeader("Cookie") == null && cookieHeader.isNotBlank()) add("Cookie: $cookieHeader")
++        if (transport == null && explicit.playbackHeader("Cookie") == null && cookieHeader.isNotBlank()) add("Cookie: $cookieHeader")
+         explicit.forEach { (name, value) -> add("$name: $value") }
+     }
+     // The empty value is deliberate: a new empty stream must never inherit old native header fields.

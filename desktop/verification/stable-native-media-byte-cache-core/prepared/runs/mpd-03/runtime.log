@@ -1,0 +1,9 @@
+PASS all three original MPD representations retained
+PASS video/audio adaptation and exact range tables retained
+PASS MPD has no external origin transport address
+PASS actual same MPV decodes full MPD video and audio
+PASS native manifest consumption uses only warmed byte spans
+PASS all three tracks were populated through same owned origin
+PASS completed resolver leaves complete MPD reader live
+PASS native MPD capability retires with actual version
+{"groups":1,"assertions":8,"snapshot":66,"productOverrides":0,"fullAdaptiveMpdNative":true,"rootCarrierFieldInstalled":false,"realAccount":false,"window":false}

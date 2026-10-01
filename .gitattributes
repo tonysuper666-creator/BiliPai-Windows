@@ -90,3 +90,4 @@ desktop/verification/stable-owned-seek-native-receipts/** -text
 desktop/verification/stable-native-playback-dispatch/** -text
 desktop/verification/stable-runtime-plugin-dispatch/** -text
 desktop/verification/stable-full-video-owner-holder-integration/** -text
+desktop/verification/stable-native-media-byte-cache-core/** -text

@@ -1,0 +1,23 @@
+{
+  "exit": 1,
+  "snapshot": 66,
+  "entries": 101,
+  "productionOverrides": 0,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\compile-01\\inputs\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "9b0591b0649ae2cd558dec0a1da429bdd74a741ad669be8509a4c4544118246a",
+      "size": 25762
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\compile-01\\inputs\\DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "c856bf2af207b412ab4aa75908e0a296e4fca5604542c83f77cab3152a1a1a41",
+      "size": 6516
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-media-byte-cache-parity\\runs\\compile-01\\inputs\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "9c78cb3041da0f1f96e3a6125fab27afd63481600c6050bac22a453e663c6ba3",
+      "size": 9285
+    }
+  ]
+}

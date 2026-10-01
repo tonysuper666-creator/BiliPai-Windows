@@ -1,0 +1,6 @@
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\proof-01\inputs\MediaByteCacheProof.kt:120:21: error: smart cast to 'MpvPlayer' is impossible, because 'player' is a local variable that is mutated in a capturing closure.
+            adopted=player.adoptPublication(version,expected.source,replacement)&&carrier.adopt(version,pub,nextPub,
+                    ^^^^^^
+work\BiliPai\desktop\.local\stable-native-media-byte-cache-parity\runs\proof-01\inputs\MediaByteCacheProof.kt:126:68: error: smart cast to 'MpvPlayer' is impossible, because 'player' is a local variable that is mutated in a capturing closure.
+        waitFor("same actor progresses after byte-lease adoption"){player.state.value.positionSeconds>0.3}
+                                                                   ^^^^^^

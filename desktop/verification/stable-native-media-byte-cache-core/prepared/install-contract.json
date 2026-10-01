@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "payloadWhitelist": [
+    {
+      "source": {
+        "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+        "sha256Bytes": "c338dfa0dbd83926861cea25f071d16c3b4bbee4bb87468c15738339b0d79958",
+        "size": 29409
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "kind": "manual-platform-source"
+    },
+    {
+      "source": {
+        "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteProtocol.kt",
+        "sha256Bytes": "0b2af580a2ee357e806b5dd2e97019f0eb5f9159603380cd191baed40efd5574",
+        "size": 7655
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "kind": "manual-platform-source"
+    },
+    {
+      "source": {
+        "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteRepositoryAdmission.kt",
+        "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5",
+        "size": 1818
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteRepositoryAdmission.kt",
+      "kind": "manual-platform-source"
+    },
+    {
+      "source": {
+        "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.kt",
+        "sha256Bytes": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+        "size": 9943
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt",
+      "kind": "manual-platform-source"
+    },
+    {
+      "source": {
+        "path": "prepared\\desktop\\tools\\extract-upstream-media-byte-cache-policy.py",
+        "sha256Bytes": "406583ee9b2374baf8b9f433857ac4a190cb867795d7599c83ab36d8d101011a",
+        "size": 1966
+      },
+      "target": "desktop/tools/extract-upstream-media-byte-cache-policy.py",
+      "kind": "sole-pinned-source-producer"
+    }
+  ],
+  "exactHunks": {
+    "path": "exact-hunks.json",
+    "sha256Bytes": "43be87c3b6a4a9388456d7523f491ea935059f0a500a232078e9c120d5acf2e4",
+    "size": 19226
+  },
+  "registryMerge": {
+    "path": "registry-merge-recipe.json",
+    "sha256Bytes": "f4f3234eb95c0d6218d6d87b7dffaa7b5e256df843b2f7472f9c3cdd09589a84",
+    "size": 620
+  },
+  "recipe": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "505e0a3712d0a905c442f78be3db0762d8662539c6930014b4f94716ce6fe5cb",
+    "size": 10365
+  },
+  "sourceAudit": {
+    "path": "source-audit.json",
+    "sha256Bytes": "b317ba9e08721807c3694681f86d280ce3cf8093bf56e5faa325ad71602946b0",
+    "size": 2166
+  },
+  "generatedByProducer": [
+    "com/android/purebilibili/core/player/DesktopOriginalPlaybackMediaCachePolicy.kt"
+  ],
+  "newDependencies": 0,
+  "newHttpClients": 0,
+  "newAccountStores": 0,
+  "newPlayers": 0,
+  "newCastServers": 0,
+  "requiredRootPorts": [
+    "one applicationIO cache/Repository/scope",
+    "effective playback partition sameStore getter",
+    "initial resolver captured tracks+keys+headers+Job+entry gate",
+    "same Bound in Invocation/CdnPrefetcher/Portrait and native prepare",
+    "accepted Rootsource lifetime admission callback; transient guard until same native ACK",
+    "same epoch/account/newload/route retirement; same native snapshot carrier object during adoption",
+    "original direct-source cache-error recovery"
+  ],
+  "forbiddenInstall": [
+    "baseline",
+    "review-only",
+    "runs",
+    "fixture sources",
+    "classes/JARs",
+    "synthetic media",
+    "full shared-file replacements"
+  ],
+  "rootInstalledCarrierAccepted": false,
+  "proofExistingClassOverrides": 0
+}

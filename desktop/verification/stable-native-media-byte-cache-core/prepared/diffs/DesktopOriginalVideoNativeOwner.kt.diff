@@ -1,0 +1,91 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt
+@@ -116,6 +116,7 @@
+         true
+     } catch (_: CancellationException) { false }
+ 
++    internal fun isTransportCurrent(): Boolean = current()
+     override fun onLoadCommandAccepted() { consumed.set(true) }
+ }
+ 
+@@ -136,6 +137,8 @@
+     private val isEntryCurrent: () -> Boolean,
+     private val withEntryAdmission: ((() -> Unit) -> Boolean),
+     private val onAccepted: (DesktopOriginalVideoAcceptedPublication) -> Unit,
++    private val mediaByteAdmission: (DesktopOriginalVideoAcceptedPublication, () -> Boolean) ->
++        com.bilipai.desktop.player.cache.DesktopMediaByteAdmission,
+ ) : AutoCloseable {
+     private val closed = AtomicBoolean(false)
+     private val accepted = AtomicReference<DesktopOriginalVideoAcceptedPublication?>()
+@@ -165,6 +168,24 @@
+                 true
+             } catch (_: CancellationException) { false }
+         })
++
++    private fun bindAcceptedTransport(value: DesktopOriginalVideoAcceptedPublication,
++        previous: DesktopOriginalVideoAcceptedPublication?, stillOwned: () -> Boolean) {
++        val transport = value.nativeSource.source.nativeTransport ?: return
++        try {
++            val admission = mediaByteAdmission(value, stillOwned)
++            val newPublication = checkNotNull(value.nativeSource.source.nativePublication)
++            if (previous?.nativeSource?.source?.nativeTransport === transport) {
++                if (!transport.adopt(value.sourceVersion, checkNotNull(previous.nativeSource.source.nativePublication),
++                        newPublication, admission)) throw CancellationException("Native byte handoff retired")
++            } else transport.attach(value.sourceVersion, newPublication, admission)
++        } catch (failure: Throwable) {
++            accepted.compareAndSet(value, null)
++            transport.retire(value.sourceVersion)
++            player.stopIfSourceVersion(value.sourceVersion)
++            throw failure
++        }
++    }
+ 
+     fun current(): DesktopOriginalVideoAcceptedPublication? = accepted.get()?.takeIf(::owns)
+ 
+@@ -234,6 +255,7 @@
+                 next = DesktopOriginalVideoAcceptedPublication(request,
+                     checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) })
+                 accepted.set(next)
++                bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }
+                 inheritedMute.set(null)
+                 result = next
+                 onAccepted(next)
+@@ -262,6 +284,16 @@
+                     next = DesktopOriginalVideoAcceptedPublication(handoff.request,
+                         checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == before.sourceVersion) })
+                     accepted.set(next)
++                    before.source.nativeTransport?.let { transport ->
++                        try {
++                            if (!transport.adopt(next.sourceVersion, checkNotNull(before.source.nativePublication),
++                                    checkNotNull(next.nativeSource.source.nativePublication), mediaByteAdmission(next) { owns(next) }))
++                                throw CancellationException("Native byte handoff retired")
++                        } catch (failure: Throwable) {
++                            accepted.compareAndSet(next, null); transport.retire(next.sourceVersion)
++                            player.stopIfSourceVersion(next.sourceVersion); throw failure
++                        }
++                    }
+                     inheritedMute.set(handoff.pluginMute?.let { InheritedMute(next, it) })
+                     result = next
+                     onAccepted(next)
+@@ -305,6 +337,7 @@
+                         next = DesktopOriginalVideoAcceptedPublication(lease.request,
+                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == lease.sourceVersion) })
+                         accepted.set(next)
++                        bindAcceptedTransport(next, lease) { owns(next) }
+                         inheritedMute.get()?.takeIf { it.lease === lease }?.let { previous ->
+                             inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
+                         }
+@@ -345,7 +378,12 @@
+     /** Admission retirement only; Root cancelAndJoin and optional owned stop are
+      * explicit outside locks. Never stop the shared MPV from this fa莽ade close. */
+     override fun close() {
+-        val retire = { closed.set(true); accepted.set(null); inheritedMute.set(null) }
++        val retire = {
++            closed.set(true)
++            accepted.getAndSet(null)?.let { value -> value.nativeSource.source.nativeTransport
++                ?.retire(value.sourceVersion, value.nativeSource.source.nativePublication) }
++            inheritedMute.set(null)
++        }
+         if (!withEntryAdmission(retire)) retire()
+     }
+ }
