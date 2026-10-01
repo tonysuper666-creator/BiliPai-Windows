@@ -1,0 +1,58 @@
+{
+    "status": "PASS",
+    "assertions": 40,
+    "caseCount": 12,
+    "cases": [
+        "root-guest-original-header-and-literal-invisible-limit",
+        "sub-last-prev-use-real-rcount",
+        "sub-ctime-binary-five-step-bound-algorithm",
+        "sub-auth-full-nested-model-invisible",
+        "root-auth-top-wbi-and-guest-single-omitted-type",
+        "root-auth-invisible-and-deleted-hint",
+        "root-double-miss-real-second-probe-delay",
+        "root-retry-guest-reappearance-avoids-false-deletion",
+        "ordinary-raw-failure-is-unknown-and-next-check-remains-usable",
+        "cancel-wait-is-cancellation-not-unknown",
+        "retired-owner-late-raw-response-closed-and-canceled",
+        "actual-ops-same-mid-epoch-replacement"
+    ],
+    "actualCodeSources": [
+        {
+            "class": "com.android.purebilibili.data.repository.DesktopOriginalCommentFraudProtocol",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-02\\prepared-fraud-protocol.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.CommentFraudStatus",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-02\\prepared-fraud-protocol.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopDynamicCardOperations",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-02\\prepared-fraud-protocol.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopSessionStore",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.data.DesktopRepository",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.core.network.BilibiliApi",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.data.model.response.ReplyItem",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        }
+    ],
+    "fakeRetrofitCallFactoryNoSocket": true,
+    "oneActualOpsTerminalInterceptorNoProceed": true,
+    "actualTemporarySessionStoreSameMidEpoch": true,
+    "noHTTP": true,
+    "noSocket": true,
+    "noHWND": true,
+    "noMainEdits": true,
+    "preparedProtocolOnly": true,
+    "notBgmUiOrPersistentFraudRecordsE2E": true
+}

@@ -1,0 +1,58 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadWorker.kt",
+      "gitBlob": "6cb3375cf8ba35dd3445044327931870f014b02b",
+      "sha256LF": "bef909e3f7a65013fb07b12b548a68ebceefa952c74290aecef0c2a7db963f0f",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\original-source\\DownloadWorker.kt",
+      "anchors": {
+        "identity": 32,
+        "updater": 92,
+        "foreground": 142,
+        "percentage": 144,
+        "title": 149,
+        "ongoing": 153,
+        "onlyAlertOnce": 154
+      },
+      "mode": "reference-only-not-emitted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTask.kt",
+      "gitBlob": "ad467cfa2150f97a82495670dd66076ab8486306",
+      "sha256LF": "8a018fe4a83eae2690645c0fef92bc23b0482429bffb90a252d8b5a5581dae15",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\original-source\\DownloadTask.kt",
+      "anchors": {
+        "status": 9,
+        "taskSchema": 57,
+        "progress": 76,
+        "isDownloading": 98
+      },
+      "mode": "reference-only-not-emitted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListNavigationPolicy.kt",
+      "gitBlob": "8ab86cff73d11ad259433021afb031468102f48c",
+      "sha256LF": "767f1778a03e02c99ca75d9dd29546c9b238e2c4649cfa3246f5069bbf39964d",
+      "copiedSource": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\original-source\\DownloadListNavigationPolicy.kt",
+      "anchors": {
+        "pauseAll": 23,
+        "continueAll": 27
+      },
+      "mode": "reference-only-not-emitted"
+    }
+  ],
+  "originalSelectedBodies": {
+    "getForegroundInfoSha256LF": "c44159b9a34953f1278a9a8a484874d6500ea953b2fd245199a5987b5f30e260",
+    "progressUpdaterSha256LF": "2fe522f12b668eed7c389bf721eb18a48849844413a52d0314728581a6e82cf9"
+  },
+  "payload": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadNotifications.kt",
+      "sha256LF": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815",
+      "mode": "manual-windows-platform-adapter"
+    }
+  ],
+  "noOriginalAndroidWorkerEmitted": true,
+  "noNewModelsOrStore": true
+}

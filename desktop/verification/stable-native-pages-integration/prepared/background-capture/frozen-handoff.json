@@ -1,0 +1,189 @@
+{
+  "frozen": true,
+  "artifactCount": 33,
+  "artifacts": [
+    {
+      "path": "audit-freeze.py",
+      "sha256Bytes": "b455fc1acfd0d1e5afc06d38f14687e7c73d1dcc7085e6769c17f15de2940725",
+      "bytes": 5353
+    },
+    {
+      "path": "CaptureFixture.kt",
+      "sha256Bytes": "765a5b3ed41a2abd88ee079087eca1f01a09f328c4405d6d4c6e6d7401ea0525",
+      "bytes": 10637
+    },
+    {
+      "path": "contract.txt",
+      "sha256Bytes": "90e5156f61bf20dcd3b2a8aae89cfa6888b9540678b848ce1235fc173321e96a",
+      "bytes": 3024
+    },
+    {
+      "path": "independent-pillow-result.json",
+      "sha256Bytes": "7e60c75c536ba9175963fd67f6d8051e92c20b1d1e107261f3219deb94737efa",
+      "bytes": 1993
+    },
+    {
+      "path": "proof-01/accepted-result.json",
+      "sha256Bytes": "f70e6469e83bbefb84d93b10011f37f5cd67830c84f26c66ef7d8d4e46e6ed31",
+      "bytes": 746
+    },
+    {
+      "path": "proof-01/capture-fixture.jar",
+      "sha256Bytes": "bdfd32b0e5a28f301751e3bea398716a17dc8600bb6231e896b5c3f36313ba79",
+      "bytes": 27050
+    },
+    {
+      "path": "proof-01/CaptureFixture.kt",
+      "sha256Bytes": "2f5f7266b25240e66e24dc9e2543456acd09cbd3ba9b8c2dd4cb06a5f1a66dab",
+      "bytes": 10044
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "a9131576af1da5e07fd1ba1b15413415ea77df925813a95e832ed4a5a5909aaa",
+      "bytes": 23413
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-01/runtime-command.json",
+      "sha256Bytes": "f2ab2d88da1e5536482808253898d36d615e3cd5750b5c35cddd654a84d046ba",
+      "bytes": 24826
+    },
+    {
+      "path": "proof-01/runtime-pins-after.json",
+      "sha256Bytes": "da012bbcac347136c3cbc2ce4f201954a470d0b9192252a630dc382ba3fe40bc",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "sha256Bytes": "da012bbcac347136c3cbc2ce4f201954a470d0b9192252a630dc382ba3fe40bc",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-01/runtime.log",
+      "sha256Bytes": "d5e33464be794744a729dbcdef6f1a02cd836fada27d8c617170d17f093f12ab",
+      "bytes": 2269
+    },
+    {
+      "path": "proof-01/scratch/black-normal-with-foreground.png",
+      "sha256Bytes": "6c44e60b6cddb8bba6662afa7aab7d08dd339ce71d1f2319b9d925ff27c702e0",
+      "bytes": 3741
+    },
+    {
+      "path": "proof-01/scratch/fixture-global-store/plugin-settings.json",
+      "sha256Bytes": "1ce36a5029cc78caa22e631afe12ab088fb9a352cb10f897156608fe9d1d3a0d",
+      "bytes": 132
+    },
+    {
+      "path": "proof-01/scratch/result.json",
+      "sha256Bytes": "dbb1d07febc6555285114a11dcfbb9b12ebf2552852f8c7404a927d2a30a76f1",
+      "bytes": 2725
+    },
+    {
+      "path": "proof-01/scratch/white-normal-with-foreground.png",
+      "sha256Bytes": "430ef45799b5e3a8cb865595a7da717ef485fee3e00ec515790591b87a73b4bd",
+      "bytes": 4867
+    },
+    {
+      "path": "proof-02/accepted-result.json",
+      "sha256Bytes": "3bf841808c180200504519df763ac394062dadeeaf11c8ad96df8c7a1685406a",
+      "bytes": 746
+    },
+    {
+      "path": "proof-02/capture-fixture.jar",
+      "sha256Bytes": "5f29d2ec9880dbacb697e4e5dfd21592d3de43fb31b4bb4c7715b6ba89523167",
+      "bytes": 27804
+    },
+    {
+      "path": "proof-02/CaptureFixture.kt",
+      "sha256Bytes": "765a5b3ed41a2abd88ee079087eca1f01a09f328c4405d6d4c6e6d7401ea0525",
+      "bytes": 10637
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "d7ad5be93fd27d5bb57a02ca440d3d29fac1b693748e112dfec5f49b75aff070",
+      "bytes": 23413
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "sha256Bytes": "ff1feed3faf45340921df29e77264359216be3381f95a2608ae35b70c30b93df",
+      "bytes": 24826
+    },
+    {
+      "path": "proof-02/runtime-pins-after.json",
+      "sha256Bytes": "da012bbcac347136c3cbc2ce4f201954a470d0b9192252a630dc382ba3fe40bc",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime-pins-before.json",
+      "sha256Bytes": "da012bbcac347136c3cbc2ce4f201954a470d0b9192252a630dc382ba3fe40bc",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "d1bbdb1bad3b1b0facf19a79f6675785e6e46ef10cb0fd31d6e13d9b87192239",
+      "bytes": 2269
+    },
+    {
+      "path": "proof-02/scratch/black-normal-with-foreground.png",
+      "sha256Bytes": "d629ace276ce685ab432e20d900b70e67b77c7783c753e3b13518293d0ed5fbb",
+      "bytes": 3675
+    },
+    {
+      "path": "proof-02/scratch/fixture-global-store/plugin-settings.json",
+      "sha256Bytes": "76f01fd83bbf8bded811af6cb0f8ab281dbbd0ad04eeaa45e6a9192680f0e669",
+      "bytes": 123
+    },
+    {
+      "path": "proof-02/scratch/result.json",
+      "sha256Bytes": "e15c1bb46ba5a0d36936d57fbd7507703453bcf7a7447175253d7870b71b577a",
+      "bytes": 2725
+    },
+    {
+      "path": "proof-02/scratch/white-normal-with-foreground.png",
+      "sha256Bytes": "430ef45799b5e3a8cb865595a7da717ef485fee3e00ec515790591b87a73b4bd",
+      "bytes": 4867
+    },
+    {
+      "path": "reference-root-record-pattern.txt",
+      "sha256Bytes": "69285f815da7e375e8494ae72aec4cac3d3cafad8a07ae54b97fee33cf51a3e0",
+      "bytes": 354
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "598f76d8b66840d146619813ae5932e0337f4449e083c6944cb488ebac8e5587",
+      "bytes": 3822
+    },
+    {
+      "path": "source-and-identity-audit.json",
+      "sha256Bytes": "c2d44c93027d9b63b453f992ea0cc90c069fc86f5110d9b84b95b0dee59bf861",
+      "bytes": 6277
+    }
+  ],
+  "scope": "Evidence-only actual Main14 liquid background capture seam; no install payload",
+  "installPayload": [],
+  "actualMain14ManifestSha256Bytes": "58ba697f6d436b7b859d21a2da92a4bbc5ed5aa0d566110489633b4d2c8f16f2",
+  "actualCp92Sha256Bytes": "64869241fd1a85eacfe072814c28bb91377dc0106a13b11810c30b6295ab101a",
+  "proof": {
+    "cells": 1,
+    "assertions": 25,
+    "actualBackgroundSamples": 2,
+    "actualCodeSources": 6,
+    "productOverrides": 0,
+    "independentPillowImages": 2,
+    "actualRootMounted": false,
+    "noHWND": true,
+    "noHTTP": true,
+    "noMainEdits": true,
+    "noSharedGradle": true
+  },
+  "history": "proof-01 retained: capture/normal/finally passed but string readability preference decoded original STABLE; proof-02 uses original ADAPTIVE integer and independently asserts it. No product source changed."
+}

@@ -1,0 +1,117 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCount": 690,
+  "resourceCount": 210,
+  "wholeClassesPassed": true,
+  "classesLog": "root/classes-15.log",
+  "sourceIntegrated": [
+    "Full original BGM detail/heat/related/comment/detail/inline player entry",
+    "Original comment record/fraud policy and protocol in existing Operations",
+    "Original full UGC collection drawer/subscription/sort/share text and exact CID queue selection",
+    "Original honor/declaration/staff renderers and same social owner",
+    "Original shared liquid/tab renderer and seven shared settings",
+    "Windows owned video command native window/card/modal input regions",
+    "Windows same-manager taskbar/tray download progress and actions",
+    "Native text share prepare/retire/session actor and collection dispatch"
+  ],
+  "targetedValidation": {
+    "bgmBackendCases": 12,
+    "bgmBackendAssertions": 43,
+    "fraudCases": 12,
+    "fraudAssertions": 40,
+    "nativePopupGates": 8,
+    "nativePopupPointerPairs": 6,
+    "downloadNotificationAssertions": 34,
+    "actualMain14CaptureAssertions": 25,
+    "nativeTextPrepareRetireAssertions": 52,
+    "nativeTextActorCases": 3,
+    "nativeTextActorAssertions": 19
+  },
+  "exactOperationsFamilies": 5,
+  "gradeHashGatePreserved": true,
+  "source13FailedAndRetained": true,
+  "source14And15Passed": true,
+  "realAccountAccepted": false,
+  "actualFullRootRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "pending": [
+    "Full video comment/composer host",
+    "Full original favorite page/drawers",
+    "Full original video page/remaining player/danmaku interactions",
+    "Actual Root pages/native overlay/PiP/cross-DPI runtime",
+    "Visible taskbar/tray acceptance",
+    "Native share pane/DataRequested/target selection",
+    "Remaining original UI/search/preview/transitions/settings features",
+    "Complete stable EXE packaging/deployment"
+  ],
+  "binaryTaskArtifactsExcluded": [
+    {
+      "cohort": "shared-tabs",
+      "path": "compile-03/prepared-shared-liquid-tabs.jar",
+      "byteSize": 585550,
+      "sha256Bytes": "96eb88f19f844115894297bb59e5081caa361c0d49e96f681852c55947ddc688"
+    },
+    {
+      "cohort": "shared-tabs",
+      "path": "ui-proof-02/liquid-tabs-fixture.jar",
+      "byteSize": 33699,
+      "sha256Bytes": "264f7905ad7d126a3f47247e52b732969eba9738fbd586e7082ace8feccde534"
+    },
+    {
+      "cohort": "fraud",
+      "path": "compile-02/prepared-fraud-protocol.jar",
+      "byteSize": 312579,
+      "sha256Bytes": "abb0cbad4a7d20c7ed77896e10d95fa4e5e02c4a1635bd678853259577088bac"
+    },
+    {
+      "cohort": "fraud",
+      "path": "fixture-04/fraud-protocol-fixture.jar",
+      "byteSize": 77057,
+      "sha256Bytes": "5657139c4d4ab5b463aab491dfaa577f3d721065ef0f32d58269b6af36936218"
+    },
+    {
+      "cohort": "download-notification",
+      "path": "compile-01/prepared-download-notification.jar",
+      "sha256Bytes": "592a37ecb79fc77c91f51ccfbd6c01c097a32bfceb69136d9d1f4469c0cbab22",
+      "bytes": 26081
+    },
+    {
+      "cohort": "download-notification",
+      "path": "compile-02/prepared-download-notification.jar",
+      "sha256Bytes": "dc0f70a68de56030fbb89a5eed9a877ac53e7adde5679c1693af960e2045f216",
+      "bytes": 26121
+    },
+    {
+      "cohort": "download-notification",
+      "path": "proof-02/notification-fixture.jar",
+      "sha256Bytes": "ecb41f7ae270c671d07f0289b0743e7bb0649c335f3f0109903e81f51d6be37c",
+      "bytes": 32530
+    },
+    {
+      "cohort": "download-notification",
+      "path": "proof-03/notification-fixture.jar",
+      "sha256Bytes": "978334a1523d7faf8c3cd233d2d080f80a7492acec202ed5d1daa8022ef4e35e",
+      "bytes": 32965
+    },
+    {
+      "cohort": "background-capture",
+      "path": "proof-01/capture-fixture.jar",
+      "sha256Bytes": "bdfd32b0e5a28f301751e3bea398716a17dc8600bb6231e896b5c3f36313ba79",
+      "bytes": 27050
+    },
+    {
+      "cohort": "background-capture",
+      "path": "proof-02/capture-fixture.jar",
+      "sha256Bytes": "5f29d2ec9880dbacb697e4e5dfd21592d3de43fb31b4bb4c7715b6ba89523167",
+      "bytes": 27804
+    },
+    {
+      "cohort": "bgm",
+      "path": "runs/16/candidate.jar",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\runs\\16\\candidate.jar",
+      "sha256Bytes": "af50da7065d6cc3958414355c59a84c2ccb3ab55da13e1f23053eabf2d66b941",
+      "install": false
+    }
+  ]
+}

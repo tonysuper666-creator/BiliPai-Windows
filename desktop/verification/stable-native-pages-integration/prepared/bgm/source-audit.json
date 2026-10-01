@@ -1,0 +1,2349 @@
+{
+  "passed": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "4c2c56d2a73c329325d3bf423f0c62e8a14aa87a",
+      "currentGitBlob": "4c2c56d2a73c329325d3bf423f0c62e8a14aa87a",
+      "sha256LfUtf8": "e1fc5fd13a007b37b387c3391e233fb45b83784ff8f364c407f1b33d282cc0ac",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "b1623629763ca5263dd848a8265990f41d41d26f",
+      "currentGitBlob": "b1623629763ca5263dd848a8265990f41d41d26f",
+      "sha256LfUtf8": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "2e3afdd5d3f0ab93792e7187205f130efad1c18d",
+      "currentGitBlob": "2e3afdd5d3f0ab93792e7187205f130efad1c18d",
+      "sha256LfUtf8": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "97daffd44d2c6f1b60a1a4fc71120eb5a4b143ec",
+      "currentGitBlob": "97daffd44d2c6f1b60a1a4fc71120eb5a4b143ec",
+      "sha256LfUtf8": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "71d6448b7e79822e457e4236b8f5a74fb8373575",
+      "currentGitBlob": "71d6448b7e79822e457e4236b8f5a74fb8373575",
+      "sha256LfUtf8": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/PlayerInfoResponse.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e6bd9c0d25d9be99f2450f7bebafb248c1591457",
+      "currentGitBlob": "e6bd9c0d25d9be99f2450f7bebafb248c1591457",
+      "sha256LfUtf8": "9dafa480e4f4eabd24ae791ff4beb46844b64a541f64912d80655346917ed3b2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "currentGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "sha256LfUtf8": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "currentGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "sha256LfUtf8": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1b526e9016c8d557f0d63314836a99cbe1e148e6",
+      "currentGitBlob": "1b526e9016c8d557f0d63314836a99cbe1e148e6",
+      "sha256LfUtf8": "bf3f2e86d526e60a48787f17b578afea86f0515e8ee62894bfdeb7eec5d63dd8",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+      "currentGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+      "sha256LfUtf8": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1cc06bf4cbf392d29bcb13c315cbca03a40765e5",
+      "currentGitBlob": "1cc06bf4cbf392d29bcb13c315cbca03a40765e5",
+      "sha256LfUtf8": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "30d194757554b7e26c0835e3c1ec826f752dbaed",
+      "currentGitBlob": "30d194757554b7e26c0835e3c1ec826f752dbaed",
+      "sha256LfUtf8": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "98f8fd31774ac78f6fdf6fa7bacad141898de42f",
+      "currentGitBlob": "98f8fd31774ac78f6fdf6fa7bacad141898de42f",
+      "sha256LfUtf8": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e443d9a630c922891ee8805c93da285828542e27",
+      "currentGitBlob": "e443d9a630c922891ee8805c93da285828542e27",
+      "sha256LfUtf8": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1bf88bdfd8a5c076564dbdc167ac6d7664be90a6",
+      "currentGitBlob": "1bf88bdfd8a5c076564dbdc167ac6d7664be90a6",
+      "sha256LfUtf8": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "de29531cfe6fb1ae6bdfb625ed7cc67a3f2f9ad6",
+      "currentGitBlob": "de29531cfe6fb1ae6bdfb625ed7cc67a3f2f9ad6",
+      "sha256LfUtf8": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "338f52e0194995a3cbb0c04fbf76bc5b7d719232",
+      "currentGitBlob": "338f52e0194995a3cbb0c04fbf76bc5b7d719232",
+      "sha256LfUtf8": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613",
+      "currentGitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613",
+      "sha256LfUtf8": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "6b06da09b784f6534bac6f187b9199a1cd2ae80e",
+      "currentGitBlob": "6b06da09b784f6534bac6f187b9199a1cd2ae80e",
+      "sha256LfUtf8": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a25268ed3cbd7a72ec105609975f64022f2bafe7",
+      "currentGitBlob": "a25268ed3cbd7a72ec105609975f64022f2bafe7",
+      "sha256LfUtf8": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "39dc76cb7708487684d0f5f736db14039790d371",
+      "currentGitBlob": "39dc76cb7708487684d0f5f736db14039790d371",
+      "sha256LfUtf8": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a11992b1a44cef761577a8bd0875c37606283981",
+      "currentGitBlob": "a11992b1a44cef761577a8bd0875c37606283981",
+      "sha256LfUtf8": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c0386b40d894687a5f15dbe2660bbc526c7acdb9",
+      "currentGitBlob": "c0386b40d894687a5f15dbe2660bbc526c7acdb9",
+      "sha256LfUtf8": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "490f6ce915e4bd71e74e6ff2278183dbe0f57a14",
+      "currentGitBlob": "490f6ce915e4bd71e74e6ff2278183dbe0f57a14",
+      "sha256LfUtf8": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "7da2be3116555bf29f85d8ef50809c0bac837ef2",
+      "currentGitBlob": "7da2be3116555bf29f85d8ef50809c0bac837ef2",
+      "sha256LfUtf8": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "40a0abcb22bd2de308e80af58cc6c35c3ad83463",
+      "currentGitBlob": "40a0abcb22bd2de308e80af58cc6c35c3ad83463",
+      "sha256LfUtf8": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "21d014000f4b13d00257ba28ac8da44ce55d40ad",
+      "currentGitBlob": "21d014000f4b13d00257ba28ac8da44ce55d40ad",
+      "sha256LfUtf8": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "f746915e2079fc5773e8ee12529da4b17da99099",
+      "currentGitBlob": "f746915e2079fc5773e8ee12529da4b17da99099",
+      "sha256LfUtf8": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a00a4e210a0b5b2056fec40c31928a6400de75a2",
+      "currentGitBlob": "a00a4e210a0b5b2056fec40c31928a6400de75a2",
+      "sha256LfUtf8": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "b570f8569e0a1ee6591794dc7374b629bc715704",
+      "currentGitBlob": "b570f8569e0a1ee6591794dc7374b629bc715704",
+      "sha256LfUtf8": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e53cd28d3823ecc635f69a58a967a6ecf288f15f",
+      "currentGitBlob": "e53cd28d3823ecc635f69a58a967a6ecf288f15f",
+      "sha256LfUtf8": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "selectedSources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "strategy": "full original object body; constructor receives sole existing API and repository signer; no new transport/cache/store",
+      "originalSha256": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f",
+      "generatedSha256": "584a7b74270c11ebbcac5802bec66837a887de8e8f7f057658c0343ac8cb5114",
+      "generatedPath": "com/android/purebilibili/data/repository/DesktopOriginalBgmRepository.kt",
+      "originalNamedFunctionCount": 4,
+      "selectedNamedFunctionCount": 4,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [
+        {
+          "name": "getBgmList",
+          "originalLine": 17,
+          "generatedLine": 17,
+          "originalTokenSha256": "9ae9f89a0f1ec93fe445ea21ee044369b57393c6bfac1cc8a8bc1d3421d370ee",
+          "generatedTokenSha256": "b4aaa4353512d35e2a0d3740d97072716158b1fe957614e5b2578b7e59c86d3a"
+        },
+        {
+          "name": "getBgmDetail",
+          "originalLine": 37,
+          "generatedLine": 37,
+          "originalTokenSha256": "77dab3b9961b1eee3edee3a49f0ca4b21d3e4322035fd810b269f7cee1d28403",
+          "generatedTokenSha256": "c7f72955708218f0cd101470e1be3b83f07fcafcd3a56439a649eb3415b774d6"
+        },
+        {
+          "name": "getBgmRecommendVideos",
+          "originalLine": 56,
+          "generatedLine": 55,
+          "originalTokenSha256": "402754998db4125e84b979e6eb265a2c2ac28c37b6e8834604f6b17a4599f7a0",
+          "generatedTokenSha256": "0272fb89fdae215078a2056702c9437ebba1581dd067e6f6e11e882ffd4c216e"
+        },
+        {
+          "name": "getAllBgmRecommendVideos",
+          "originalLine": 80,
+          "generatedLine": 79,
+          "originalTokenSha256": "595a4a8cb9358cf3dcfa37f1f94928089113da2bea7462591d0a049b67a73600",
+          "generatedTokenSha256": "1c631bc5f7b9f4aa3ccbee046e32c04c239a1d9c754637bb1c646b6ed4b32f62"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "strategy": "full original UI state and every method; Android ViewModelScope/TokenManager/API become required existing-owner request/scope seams; retired owner state admission",
+      "originalSha256": "e1fc5fd13a007b37b387c3391e233fb45b83784ff8f364c407f1b33d282cc0ac",
+      "generatedSha256": "eff8c900f0287dc40b81c6628c39af59124e28e1b52b26375a15b1e491929e4a",
+      "generatedPath": "com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "originalNamedFunctionCount": 3,
+      "selectedNamedFunctionCount": 4,
+      "sameTokenFunctions": [
+        {
+          "name": "initialize",
+          "originalLine": 36,
+          "generatedLine": 38,
+          "originalTokenSha256": "52cb7d0621156c5478817079e24f7367013331dc15108fe4d93d4b05c657144f",
+          "generatedTokenSha256": "52cb7d0621156c5478817079e24f7367013331dc15108fe4d93d4b05c657144f"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "refresh",
+          "originalLine": 44,
+          "generatedLine": 46,
+          "originalTokenSha256": "65e6caed19e96126acae8e42ac4220d7ec2b49a2fbe0f67a81c424680c6c9761",
+          "generatedTokenSha256": "88b5988952065a1ed116d862765423eecfef98870227c7dba5624b1c99bda944"
+        },
+        {
+          "name": "toggleWish",
+          "originalLine": 58,
+          "generatedLine": 60,
+          "originalTokenSha256": "a924277aae4c9389748e2c07d6a971ad72de2bcadacb31cded86e07c0217b3f2",
+          "generatedTokenSha256": "aef7195c6a4c77842935b94e1994b8dc93061607fcebcd703a0e76afab7838a0"
+        }
+      ],
+      "additionalPlatformFunctions": [
+        {
+          "name": "updateOwnedState",
+          "generatedLine": 27,
+          "role": "required existing-owner platform seam or selected original extension body"
+        }
+      ],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "strategy": "full original LF-identical file",
+      "originalSha256": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c",
+      "generatedSha256": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c",
+      "generatedPath": "com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "originalNamedFunctionCount": 3,
+      "selectedNamedFunctionCount": 3,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveBgmHeatPoints",
+          "originalLine": 6,
+          "generatedLine": 6,
+          "originalTokenSha256": "4f8967f46d918214743e68933b754f0a76d7e711adb66c4d59cade2c0b506080",
+          "generatedTokenSha256": "4f8967f46d918214743e68933b754f0a76d7e711adb66c4d59cade2c0b506080"
+        },
+        {
+          "name": "resolveBgmCommentType",
+          "originalLine": 9,
+          "generatedLine": 9,
+          "originalTokenSha256": "ee717e245504be91f186c9b1564bbfd72156e21b3555a851a1cba27f3d314fc9",
+          "generatedTokenSha256": "ee717e245504be91f186c9b1564bbfd72156e21b3555a851a1cba27f3d314fc9"
+        },
+        {
+          "name": "resolveBgmHeatRange",
+          "originalLine": 13,
+          "generatedLine": 13,
+          "originalTokenSha256": "64bf9189771da6003d643b9ec6b2d00809970e60d315752857b0cfe89bce24a0",
+          "generatedTokenSha256": "64bf9189771da6003d643b9ec6b2d00809970e60d315752857b0cfe89bce24a0"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "strategy": "full original LF-identical file",
+      "originalSha256": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f",
+      "generatedSha256": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f",
+      "generatedPath": "com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "BgmHeatChart",
+          "originalLine": 28,
+          "generatedLine": 28,
+          "originalTokenSha256": "13b7a14099e3de1916f58b7f67d6352e38ebd5ceea10aea4d338e1d80834939f",
+          "generatedTokenSha256": "13b7a14099e3de1916f58b7f67d6352e38ebd5ceea10aea4d338e1d80834939f"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "strategy": "Full original generic VM, including typed subjects, paging, subreply/conversation, send/pictures/sync, reactions, delete, original fraud hooks; sole editor/count-helper declarations omitted because already emitted once. Android lifecycle/Uri/currentMid/fraud persistence become required same-owner seams. No DynamicItem surrogate.",
+      "originalSha256": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "generatedSha256": "2f06949a68cc4219510c33db33c4558bdd1e9a1ae0c68a1f2c839dcf009c5c0a",
+      "generatedPath": "com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "originalNamedFunctionCount": 43,
+      "selectedNamedFunctionCount": 40,
+      "sameTokenFunctions": [
+        {
+          "name": "shouldApplyCommentSubjectResult",
+          "originalLine": 55,
+          "generatedLine": 44,
+          "originalTokenSha256": "80a2b0e85aa13f3423d79680689b225aefd4431c3ae33dc68b44ee385be744fe",
+          "generatedTokenSha256": "80a2b0e85aa13f3423d79680689b225aefd4431c3ae33dc68b44ee385be744fe"
+        },
+        {
+          "name": "shouldApplySubReplyResult",
+          "originalLine": 62,
+          "generatedLine": 51,
+          "originalTokenSha256": "d37f1b9fa645a6cff70fd4b42a7d9ad084bda82036206e0d3527ad6c6dcdf5ca",
+          "generatedTokenSha256": "d37f1b9fa645a6cff70fd4b42a7d9ad084bda82036206e0d3527ad6c6dcdf5ca"
+        },
+        {
+          "name": "shouldApplyConversationReplyResult",
+          "originalLine": 75,
+          "generatedLine": 64,
+          "originalTokenSha256": "f809e347e540492f5f0d64abdc9ceb81c160c71a34e071f7f2612f0ae324566a",
+          "generatedTokenSha256": "f809e347e540492f5f0d64abdc9ceb81c160c71a34e071f7f2612f0ae324566a"
+        },
+        {
+          "name": "resolveSubReplyPageEnd",
+          "originalLine": 184,
+          "generatedLine": 121,
+          "originalTokenSha256": "d37d89fd1fc02fb052d1bdb21d378d8ddc019a68426013a17f4edec50c8e3569",
+          "generatedTokenSha256": "d37d89fd1fc02fb052d1bdb21d378d8ddc019a68426013a17f4edec50c8e3569"
+        },
+        {
+          "name": "shouldStartRoutedSubReplyOpen",
+          "originalLine": 225,
+          "generatedLine": 154,
+          "originalTokenSha256": "50fc6e5204f81d16c6d3f4accec91fd4c9b6d8d41641be75f8a6031cc9a563b9",
+          "generatedTokenSha256": "50fc6e5204f81d16c6d3f4accec91fd4c9b6d8d41641be75f8a6031cc9a563b9"
+        },
+        {
+          "name": "openSubReply",
+          "originalLine": 425,
+          "generatedLine": 363,
+          "originalTokenSha256": "932fc8860fae87ea97bf3357ed1d2e593aed18057fc622ae4fe04db191e8396d",
+          "generatedTokenSha256": "932fc8860fae87ea97bf3357ed1d2e593aed18057fc622ae4fe04db191e8396d"
+        },
+        {
+          "name": "closeSubReply",
+          "originalLine": 535,
+          "generatedLine": 475,
+          "originalTokenSha256": "e435b7f6fe8cebb457185da83483844f647db1f5d149f23b3585337ae2b73aa3",
+          "generatedTokenSha256": "e435b7f6fe8cebb457185da83483844f647db1f5d149f23b3585337ae2b73aa3"
+        },
+        {
+          "name": "onExternalCommentSent",
+          "originalLine": 547,
+          "generatedLine": 487,
+          "originalTokenSha256": "850e12ba43817c0f7a836514607d30c1b423f514f2c9796ccde9249a959c90e8",
+          "generatedTokenSha256": "850e12ba43817c0f7a836514607d30c1b423f514f2c9796ccde9249a959c90e8"
+        },
+        {
+          "name": "setSubReplySortMode",
+          "originalLine": 630,
+          "generatedLine": 570,
+          "originalTokenSha256": "8480d64f099adf05fa2cadcf8991805e34f090d0a7bc6260886fa5c4f523edf3",
+          "generatedTokenSha256": "8480d64f099adf05fa2cadcf8991805e34f090d0a7bc6260886fa5c4f523edf3"
+        },
+        {
+          "name": "loadMoreSubReplies",
+          "originalLine": 639,
+          "generatedLine": 579,
+          "originalTokenSha256": "5c8a005e5984d9d61d46aabd799704310731d6a077df463b7bbf0620d9960e67",
+          "generatedTokenSha256": "5c8a005e5984d9d61d46aabd799704310731d6a077df463b7bbf0620d9960e67"
+        },
+        {
+          "name": "openSubReplyConversation",
+          "originalLine": 657,
+          "generatedLine": 597,
+          "originalTokenSha256": "fb5604ac5cde780460214ad612263131b33725ec4516f526a570169614aedc43",
+          "generatedTokenSha256": "fb5604ac5cde780460214ad612263131b33725ec4516f526a570169614aedc43"
+        },
+        {
+          "name": "closeSubReplyConversation",
+          "originalLine": 682,
+          "generatedLine": 622,
+          "originalTokenSha256": "5e2961d13945a57d71eb73a0ff38f875dc1031510338c36519dab051f5374b6d",
+          "generatedTokenSha256": "5e2961d13945a57d71eb73a0ff38f875dc1031510338c36519dab051f5374b6d"
+        },
+        {
+          "name": "resolveConversationDialogId",
+          "originalLine": 858,
+          "generatedLine": 802,
+          "originalTokenSha256": "04be356d86fade79bafe3ac09e05629474b54fcd58fb1d09f0d983bc6ef13487",
+          "generatedTokenSha256": "04be356d86fade79bafe3ac09e05629474b54fcd58fb1d09f0d983bc6ef13487"
+        },
+        {
+          "name": "resolveLocalConversationItems",
+          "originalLine": 866,
+          "generatedLine": 810,
+          "originalTokenSha256": "5ebced56cd1e88ce7507762517ec65d18c12e932e12d188d2fa8cc803b0c90c6",
+          "generatedTokenSha256": "5ebced56cd1e88ce7507762517ec65d18c12e932e12d188d2fa8cc803b0c90c6"
+        },
+        {
+          "name": "replyTo",
+          "originalLine": 1091,
+          "generatedLine": 1016,
+          "originalTokenSha256": "c3b94f0aa01172fb745c3fe454df2574939a4c8505272e4fa3014f8da5967b9d",
+          "generatedTokenSha256": "c3b94f0aa01172fb745c3fe454df2574939a4c8505272e4fa3014f8da5967b9d"
+        },
+        {
+          "name": "cancelReply",
+          "originalLine": 1095,
+          "generatedLine": 1020,
+          "originalTokenSha256": "043798f6340109fef4ff8cf059b046910fcd23c18c01ab8831c3c0a23d419bbf",
+          "generatedTokenSha256": "043798f6340109fef4ff8cf059b046910fcd23c18c01ab8831c3c0a23d419bbf"
+        },
+        {
+          "name": "checkCommentFraud",
+          "originalLine": 1239,
+          "generatedLine": 1170,
+          "originalTokenSha256": "6c489ea1fa77f0b439c327344e589b912f39615cc97042b2dec1efb4f50dbc1f",
+          "generatedTokenSha256": "6c489ea1fa77f0b439c327344e589b912f39615cc97042b2dec1efb4f50dbc1f"
+        },
+        {
+          "name": "dismissFraudResult",
+          "originalLine": 1255,
+          "generatedLine": 1186,
+          "originalTokenSha256": "0f74372c80768005800c98a9039a1ecfb0360490778abc689615f7ad0b7f5773",
+          "generatedTokenSha256": "0f74372c80768005800c98a9039a1ecfb0360490778abc689615f7ad0b7f5773"
+        },
+        {
+          "name": "startDissolve",
+          "originalLine": 1268,
+          "generatedLine": 1199,
+          "originalTokenSha256": "e80fb28e77673d575e0f93bf0780a84f8d09e0d41d1d84bfdc47a7026219ed5e",
+          "generatedTokenSha256": "e80fb28e77673d575e0f93bf0780a84f8d09e0d41d1d84bfdc47a7026219ed5e"
+        },
+        {
+          "name": "startSubDissolve",
+          "originalLine": 1307,
+          "generatedLine": 1239,
+          "originalTokenSha256": "5ff4a57464edc61988e847e66d4ad79f59e4f7c1fee8bce59ca4ba4e97c89a7e",
+          "generatedTokenSha256": "5ff4a57464edc61988e847e66d4ad79f59e4f7c1fee8bce59ca4ba4e97c89a7e"
+        },
+        {
+          "name": "reloadCommentsFromStart",
+          "originalLine": 1339,
+          "generatedLine": 1272,
+          "originalTokenSha256": "42e26d2d228773dd296ad4cd0478a90a58af7e7e6326035d83c4dc875f95ab9d",
+          "generatedTokenSha256": "42e26d2d228773dd296ad4cd0478a90a58af7e7e6326035d83c4dc875f95ab9d"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "clearForVideoChange",
+          "originalLine": 253,
+          "generatedLine": 192,
+          "originalTokenSha256": "cec0b03664db1829fd77ba6ee4272977b1a8d1889115ec721b5ed74b3b346e74",
+          "generatedTokenSha256": "79f0bd75a7ed8e06455cf687337ca633e4d4ee0e11a28642be356b04fabeff45"
+        },
+        {
+          "name": "init",
+          "originalLine": 265,
+          "generatedLine": 204,
+          "originalTokenSha256": "7a85784fdba667645a252dec30e3ea8a93309db5e75fece5977f6a99db78877a",
+          "generatedTokenSha256": "5453fc2d49a97d7504b6dfcac24a60982d409578aa03cdecaf900593542d067c"
+        },
+        {
+          "name": "refreshCurrentMid",
+          "originalLine": 299,
+          "generatedLine": 238,
+          "originalTokenSha256": "5ff9bd2f5aa0c0a443b5adaa539adcdab9880acbfe6cb29511d7011ee6d3d0c0",
+          "generatedTokenSha256": "d5e359391af2b9a70ecd1b606e5d3478f12c77aadb92bc3f66acef427f9f804e"
+        },
+        {
+          "name": "setSortMode",
+          "originalLine": 309,
+          "generatedLine": 248,
+          "originalTokenSha256": "f210327d573f66bb0e079bd9c8682745b50c727e9b7c4d0535385fedb2c44031",
+          "generatedTokenSha256": "b414a6b211b20dd08330a18c0efbf45c192e52cf8058d25df02cc5c3d583940b"
+        },
+        {
+          "name": "loadComments",
+          "originalLine": 325,
+          "generatedLine": 264,
+          "originalTokenSha256": "ed3c48688caa43f50feda8b12f3b0a10e8c38fc98a856bdd0ba0926c19279de2",
+          "generatedTokenSha256": "ebd87873ec4a6ea64007084ae76682f963f86607e1ce202c6136c65de662e485"
+        },
+        {
+          "name": "openSubReplyFromRoute",
+          "originalLine": 450,
+          "generatedLine": 388,
+          "originalTokenSha256": "9514dc5e03fa4f2921bc96ff49fcae2b07719f7b76cf8e2bd4228e35c7282ed5",
+          "generatedTokenSha256": "c15a4bf9c34c8a64ac905f6680d32f6673e1f9fd64b88bbf1337fe70c5649c0d"
+        },
+        {
+          "name": "loadSubReplies",
+          "originalLine": 696,
+          "generatedLine": 636,
+          "originalTokenSha256": "e1a76a87d729c7c1051d64bdc75f25595a1b974099141cb9df1bb3c4cfbfaa05",
+          "generatedTokenSha256": "7b85740ffaa7ad28e5423bf087abecdacf921d7c53520f24de46a53f65f6ea25"
+        },
+        {
+          "name": "loadConversationReplies",
+          "originalLine": 779,
+          "generatedLine": 721,
+          "originalTokenSha256": "3560652e51884b54483fecb7e586f445652233338bb0f5fc1edd22b12efe6d96",
+          "generatedTokenSha256": "9fc6903411229a6fa672e7941683fef6200ca5d4b46ddd615fa97df3e268449b"
+        },
+        {
+          "name": "sendComment",
+          "originalLine": 889,
+          "generatedLine": 833,
+          "originalTokenSha256": "f57a54e175805e1e72f60bfbcb2720ad6e54251cc02f640f70c1bf9e63727ef5",
+          "generatedTokenSha256": "261f738608178cdc21a50891c301090037ff9d4c940244ec16b1693233601266"
+        },
+        {
+          "name": "uploadCommentPictures",
+          "originalLine": 1056,
+          "generatedLine": 1003,
+          "originalTokenSha256": "0bb4717bff51a8664e03f3180f740200bc2a54446bbfd05de5e9c3ed5bf760f0",
+          "generatedTokenSha256": "8014fcb1c2f66a6659412c4923f39e218c1b9db11c7e3146c1ca2fb254d91b47"
+        },
+        {
+          "name": "likeComment",
+          "originalLine": 1099,
+          "generatedLine": 1024,
+          "originalTokenSha256": "fe4ebd3d581fcd5d00802fb419d45ec3e450cff4f84a4cf403da36e6a092829c",
+          "generatedTokenSha256": "9231dde36405a259e56f593886dfe37c60f1f60c22aaae887da84c3f18414160"
+        },
+        {
+          "name": "hateComment",
+          "originalLine": 1121,
+          "generatedLine": 1047,
+          "originalTokenSha256": "5d103981a1427d0a5be1c2faac39a13c7920dbedba0d93c5d8dafe56acc763de",
+          "generatedTokenSha256": "dd47ba987e90bee9ba94a43c4d52be1d3d2aa5d8f1bdbc1c77fd16133ad172fa"
+        },
+        {
+          "name": "reportComment",
+          "originalLine": 1145,
+          "generatedLine": 1072,
+          "originalTokenSha256": "323850cbb4dd0f2af9a6546ea704430d744d883cd7167e274583ed0f2165f1b1",
+          "generatedTokenSha256": "24d2105b5a31a93dc7f76257b7ebf32b729f7c2f3b3aabe2a9f74b396edcb620"
+        },
+        {
+          "name": "toggleTopComment",
+          "originalLine": 1157,
+          "generatedLine": 1084,
+          "originalTokenSha256": "50633f080e9d6f23b33e0a6b376527b5d8be3797ec459c1021b8f65d83c7cac1",
+          "generatedTokenSha256": "0a2d8ec20afe6c9c27b87b7cc9b23e090da5b7aad89a6ff8b1276a369b0a1c50"
+        },
+        {
+          "name": "launchFraudDetection",
+          "originalLine": 1180,
+          "generatedLine": 1109,
+          "originalTokenSha256": "5a71a53799d50ffc2baaf0349c3e78a25131e6ba3e5d2783fbc29f1c7f31722c",
+          "generatedTokenSha256": "770815c3b6d9ce023fe64c2ec7f5fc5a4c0192e53a4e72a253b777cdc660d254"
+        },
+        {
+          "name": "deleteComment",
+          "originalLine": 1276,
+          "generatedLine": 1207,
+          "originalTokenSha256": "379cb1ca0dc4f47cf576ab850a7981efcfb2ce6b4bb8e19fd733448a470f82a2",
+          "generatedTokenSha256": "9f89965c2e3bd242f14e359b45af30a41a5fff5b1a5cbdb82c8baa9ab42c1a05"
+        },
+        {
+          "name": "deleteSubComment",
+          "originalLine": 1315,
+          "generatedLine": 1247,
+          "originalTokenSha256": "c8c89ba694ccb626ce1eb5f4dd8a6e77c2514467ca064632220075ac380805db",
+          "generatedTokenSha256": "fa0d56467b9d5692fc2ffca7176451c1320c8bb46753095cfabdcc116c1b9b3c"
+        }
+      ],
+      "additionalPlatformFunctions": [
+        {
+          "name": "ensureRequestOwned",
+          "generatedLine": 165,
+          "role": "required existing-owner platform seam or selected original extension body"
+        },
+        {
+          "name": "launchOwned",
+          "generatedLine": 169,
+          "role": "required existing-owner platform seam or selected original extension body"
+        }
+      ],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "fromApiMode",
+          "originalLine": 42
+        },
+        {
+          "name": "resolveSubReplyRemoteTotalCount",
+          "originalLine": 148
+        },
+        {
+          "name": "resolveSubReplyLoadedTotalCount",
+          "originalLine": 165
+        },
+        {
+          "name": "resolveRoutedCommentRootReply",
+          "originalLine": 215
+        },
+        {
+          "name": "queryDisplayName",
+          "originalLine": 1076
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "strategy": "Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.",
+      "originalSha256": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "generatedSha256": "4d029ce2991899f3a804dc54d546a1e0301f2b9da77cd93897c9033bb963b0a4",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "originalNamedFunctionCount": 10,
+      "selectedNamedFunctionCount": 10,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveCommentInputDialogLayoutPolicy",
+          "originalLine": 110,
+          "generatedLine": 106,
+          "originalTokenSha256": "744f9e72fe915ed6c0e651e8a647c01cb9ea671b1b51197c0e69dab47b9636ad",
+          "generatedTokenSha256": "744f9e72fe915ed6c0e651e8a647c01cb9ea671b1b51197c0e69dab47b9636ad"
+        },
+        {
+          "name": "shouldAutoShowCommentKeyboard",
+          "originalLine": 154,
+          "generatedLine": 150,
+          "originalTokenSha256": "d654c93c5964f89c9aa6f4d792e4db95d070411445339edb62faf1c57ffb50de",
+          "generatedTokenSha256": "d654c93c5964f89c9aa6f4d792e4db95d070411445339edb62faf1c57ffb50de"
+        },
+        {
+          "name": "resolveCommentProgressInsertText",
+          "originalLine": 162,
+          "generatedLine": 158,
+          "originalTokenSha256": "7be8df8fa66d737ac84fbf5a5bb5bd9b6be13f53e021b5ed540c1af42712c68a",
+          "generatedTokenSha256": "7be8df8fa66d737ac84fbf5a5bb5bd9b6be13f53e021b5ed540c1af42712c68a"
+        },
+        {
+          "name": "commentDraftTextFieldValue",
+          "originalLine": 166,
+          "generatedLine": 162,
+          "originalTokenSha256": "04c56c685158c892638771686ebb5e58bc0d3fbe07d2bb45db85d0c361c4a429",
+          "generatedTokenSha256": "04c56c685158c892638771686ebb5e58bc0d3fbe07d2bb45db85d0c361c4a429"
+        },
+        {
+          "name": "canPublishCommentDraft",
+          "originalLine": 173,
+          "generatedLine": 169,
+          "originalTokenSha256": "4c8f5af169964a51ad60e5e82f088b66690059e7f8c03d59f2f689c249149945",
+          "generatedTokenSha256": "4c8f5af169964a51ad60e5e82f088b66690059e7f8c03d59f2f689c249149945"
+        },
+        {
+          "name": "updateTextFieldValue",
+          "originalLine": 265,
+          "generatedLine": 252,
+          "originalTokenSha256": "d16eabff10f45deae74def367f81aa081f4f66432e460825274c2f5f36b7f3ba",
+          "generatedTokenSha256": "d16eabff10f45deae74def367f81aa081f4f66432e460825274c2f5f36b7f3ba"
+        },
+        {
+          "name": "insertTextAtCursor",
+          "originalLine": 283,
+          "generatedLine": 270,
+          "originalTokenSha256": "ac9940d6711730354a449419151deaaba5b57a4758122a939470de495636a9b3",
+          "generatedTokenSha256": "ac9940d6711730354a449419151deaaba5b57a4758122a939470de495636a9b3"
+        },
+        {
+          "name": "requestInputFocusWithRetry",
+          "originalLine": 290,
+          "generatedLine": 277,
+          "originalTokenSha256": "ff573c241b0e5ca2bee274d7f5e797bb95315252395ce50a8fd2a8d31bbfc9b7",
+          "generatedTokenSha256": "ff573c241b0e5ca2bee274d7f5e797bb95315252395ce50a8fd2a8d31bbfc9b7"
+        },
+        {
+          "name": "CommentMentionSearchPanel",
+          "originalLine": 883,
+          "generatedLine": 872,
+          "originalTokenSha256": "356c0b09ba8b646fa1498d7c88243d8e21bf9b63f949187b8b4b1712403e17f4",
+          "generatedTokenSha256": "356c0b09ba8b646fa1498d7c88243d8e21bf9b63f949187b8b4b1712403e17f4"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "CommentInputDialog",
+          "originalLine": 188,
+          "generatedLine": 184,
+          "originalTokenSha256": "f1d15836942f74dcf4c2569ae701a83786e09e1c755f6f9280c85dc84c6f6cdb",
+          "generatedTokenSha256": "b82c3272250e4c770fcf63468f2863a6f1faed39d1d121df66c8de38850e0190"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "strategy": "Full original generic header/list-title and preceding policies; unrelated filter-bar/segmented renderer stays outside this consumer selection.",
+      "originalSha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "generatedSha256": "3b4424d7e161f570147a65cf5b620cbed80fac20c047aa7ae14709ae7eb2515b",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/DesktopOriginalCommentSortHeader.kt",
+      "originalNamedFunctionCount": 8,
+      "selectedNamedFunctionCount": 6,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveCommentSortSegmentedControlSpec",
+          "originalLine": 37,
+          "generatedLine": 36,
+          "originalTokenSha256": "cd386ca919eee9e6a1d1f9f18560b0a0ed1e4baf9cef5b3c63967b109732cb72",
+          "generatedTokenSha256": "cd386ca919eee9e6a1d1f9f18560b0a0ed1e4baf9cef5b3c63967b109732cb72"
+        },
+        {
+          "name": "hasCommentSortIndicatorScaleClearance",
+          "originalLine": 45,
+          "generatedLine": 44,
+          "originalTokenSha256": "a6be5b81d304cf7d01a03c24c73e2edfd01b57b4366979b6d1b66922c1dd812d",
+          "generatedTokenSha256": "a6be5b81d304cf7d01a03c24c73e2edfd01b57b4366979b6d1b66922c1dd812d"
+        },
+        {
+          "name": "resolveCommentSortDockViewportOverflowDp",
+          "originalLine": 56,
+          "generatedLine": 55,
+          "originalTokenSha256": "8a99bfb2d251ee43550f1eb0b501796f9e5ac6152ce3d3e571124c274c53ab94",
+          "generatedTokenSha256": "8a99bfb2d251ee43550f1eb0b501796f9e5ac6152ce3d3e571124c274c53ab94"
+        },
+        {
+          "name": "CommentListHeader",
+          "originalLine": 73,
+          "generatedLine": 72,
+          "originalTokenSha256": "23bf9fe1df94d760aca5f88c74ace0e2111a1f54dc2459944ff79c17d4673383",
+          "generatedTokenSha256": "23bf9fe1df94d760aca5f88c74ace0e2111a1f54dc2459944ff79c17d4673383"
+        },
+        {
+          "name": "CommentListTitle",
+          "originalLine": 91,
+          "generatedLine": 90,
+          "originalTokenSha256": "54cfdfe47e71fbd171da26529a4b8a62a6383e086b97a475d998cb99eb1bc16d",
+          "generatedTokenSha256": "54cfdfe47e71fbd171da26529a4b8a62a6383e086b97a475d998cb99eb1bc16d"
+        },
+        {
+          "name": "CommentSortHeader",
+          "originalLine": 116,
+          "generatedLine": 115,
+          "originalTokenSha256": "d3a80a5ff68879b287be0e0c61584104ac9ad23bc888beede0110fc00be19bde",
+          "generatedTokenSha256": "d3a80a5ff68879b287be0e0c61584104ac9ad23bc888beede0110fc00be19bde"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "CommentSortFilterBar",
+          "originalLine": 202
+        },
+        {
+          "name": "CommentSegmentedControl",
+          "originalLine": 254
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "strategy": "Entire original Screen/Content/InfoCard/Videos retained, with owned required VM/platform callbacks, actual ListenAudioSession overlay parameter, and original external-media-search fallback. Native BGM never becomes legacy AU/Music page.",
+      "originalSha256": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00",
+      "generatedSha256": "44dee4b1cd4f67f7eb46225003c2af1fb947140c6edf9416ff88a85d3339f1f2",
+      "generatedPath": "com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "originalNamedFunctionCount": 6,
+      "selectedNamedFunctionCount": 6,
+      "sameTokenFunctions": [
+        {
+          "name": "BgmVideos",
+          "originalLine": 320,
+          "generatedLine": 306,
+          "originalTokenSha256": "4161c01f2e27d1a32e0807746b039a9dd95487611826b81907516f5abf9e67ff",
+          "generatedTokenSha256": "4161c01f2e27d1a32e0807746b039a9dd95487611826b81907516f5abf9e67ff"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "BgmDetailScreen",
+          "originalLine": 42,
+          "generatedLine": 33,
+          "originalTokenSha256": "b4aef732043ad67511159b2fc744e02de90631d9ddec782f21325e5bc1e5712e",
+          "generatedTokenSha256": "11ffa20f955705bf3cc12b2a8bd2f35e097bdf2bcfc7c3c7ea8017ad51b22c92"
+        },
+        {
+          "name": "compose",
+          "originalLine": 82,
+          "generatedLine": 76,
+          "originalTokenSha256": "b9821bbb80ebdadfaf54cb4e9fd94d3d6f8a865321d75e73dd7ec36676f99a6b",
+          "generatedTokenSha256": "ac03c3bb0dae72419023bf2db5f4a21add1215e862722172f1483db55f755af2"
+        },
+        {
+          "name": "BgmDetailContent",
+          "originalLine": 119,
+          "generatedLine": 111,
+          "originalTokenSha256": "54f5be57ff6f1ad51970b05c9886795fa276dda044b2a2bda5811a8978f5559a",
+          "generatedTokenSha256": "c64a9ce760cd0796778fcd5d9e13fac3afa8a2026e07c14a6880c9dd19e440a7"
+        },
+        {
+          "name": "BgmInfoCard",
+          "originalLine": 249,
+          "generatedLine": 240,
+          "originalTokenSha256": "444ea376bf17cec160210746cc7d6f579fb52cb1c35e6c8d75404a8483f6e899",
+          "generatedTokenSha256": "1386e46d115fa631b6db5de67a66ac7842453982523f7d323ef07f248ecbadf1"
+        },
+        {
+          "name": "copy",
+          "originalLine": 258,
+          "generatedLine": 250,
+          "originalTokenSha256": "75572a8ff0cc580fea292f900a68af57c244750a6dbc9a265ace94eb8f8e62db",
+          "generatedTokenSha256": "3094f1a70ac599b03e05a606b4bf0d1615fbe61d0785dfd655177b02cc183b23"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "strategy": "Exact original serializable record schema, computations, enums and JSON SerialName fields; only Room Entity/PrimaryKey metadata removed.",
+      "originalSha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "generatedSha256": "9031d881ca98072dcd2cf934fdb2b82e1593aaa0e780dd136588904d58565d76",
+      "generatedPath": "com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "parseStatus",
+          "originalLine": 112,
+          "generatedLine": 108,
+          "originalTokenSha256": "70a655ec6fe7ae3c7dbe78c88b64f1f9fbb88f543d3af8f4dd91a227409fc937",
+          "generatedTokenSha256": "70a655ec6fe7ae3c7dbe78c88b64f1f9fbb88f543d3af8f4dd91a227409fc937"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "strategy": "Full original DAO method contract; Room annotations/SQL replaced by Windows adapter preserving primary-key replacement and effective post-time DESC ordering.",
+      "originalSha256": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "generatedSha256": "d756ba5f4d91c4bbd58d18fbf14aefc2491d477d385c61981dd32e29d4de8714",
+      "generatedPath": "com/android/purebilibili/data/repository/DesktopCommentFraudDao.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 0,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "insertOrUpdate",
+          "originalLine": 11
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "strategy": "Complete original record merge/save/recheck/delete/export/import bodies; Android Room getDao/context replaced by required same-account Windows DAO, requests remain existing-owner callbacks; cancellation rethrows.",
+      "originalSha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "generatedSha256": "c5ac18ef4a3de034171ed6274a24448ef979c97a9dead980c7661d3375d5e754",
+      "generatedPath": "com/android/purebilibili/data/repository/DesktopOriginalCommentFraudRepository.kt",
+      "originalNamedFunctionCount": 9,
+      "selectedNamedFunctionCount": 9,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [
+        {
+          "name": "getDao",
+          "originalLine": 24,
+          "generatedLine": 26,
+          "originalTokenSha256": "e84ca9e98110ac8dba1887adf5f662f4e15373c0694f70da8686d2e74b02ca3f",
+          "generatedTokenSha256": "72421f488e24ec028accccdc315f0fbf2af28863232cbb875ba39db1c25bb7ed"
+        },
+        {
+          "name": "saveRecord",
+          "originalLine": 30,
+          "generatedLine": 31,
+          "originalTokenSha256": "ff353ad629f98aa55bea98efa0c2e0b9e4071ba0384feeef8cc290d6f0821fe4",
+          "generatedTokenSha256": "2b3b153f8494b79ea0609e453b0b111cb50115c54d3bc911603cd4debba0e031"
+        },
+        {
+          "name": "getAllRecordsFlow",
+          "originalLine": 71,
+          "generatedLine": 72,
+          "originalTokenSha256": "a22f2274340eae55b3e779151d2fe49a4aa055516fb26fd9d8c0604dd1c2f342",
+          "generatedTokenSha256": "01dfb72bb34115c887c75cbbf45d9014529d0b3f9e926b600b82392ea3d20275"
+        },
+        {
+          "name": "recheckRecord",
+          "originalLine": 78,
+          "generatedLine": 79,
+          "originalTokenSha256": "beea05852823d150baf3832a6ea83d2a9ab4f706618a103ffa39636fdf7321a5",
+          "generatedTokenSha256": "f755e0a4cd33a922da7857f7aa59c2bf3b01edcbcb12fa444cb2ca4d4a62a98f"
+        },
+        {
+          "name": "deleteBiliComment",
+          "originalLine": 105,
+          "generatedLine": 101,
+          "originalTokenSha256": "ecc11088a055de39ce81acdc5879e1e0e25a7ad73fdca2331d2f49d8c8f84435",
+          "generatedTokenSha256": "dee8677543736e34b4c55036bda2fc4a87e0389edca8164c08b94f839a81b727"
+        },
+        {
+          "name": "deleteLocalRecord",
+          "originalLine": 128,
+          "generatedLine": 121,
+          "originalTokenSha256": "adea54d61607ba8b7816362592bb854298eef89444d55efb310a4d2722c4460a",
+          "generatedTokenSha256": "db25299d4590e438cacc7def6e66416a0fe4cba4e15b03d905b468ab88f14ce6"
+        },
+        {
+          "name": "clearAllRecords",
+          "originalLine": 132,
+          "generatedLine": 125,
+          "originalTokenSha256": "cf6ea124189f832b94a4f07fcccd108b3114361d10d57a852af0adea5e1747e6",
+          "generatedTokenSha256": "0d6879406521ed4e9957e14e680bd4fbdca891278574601d81f96554d7c7a491"
+        },
+        {
+          "name": "exportToJson",
+          "originalLine": 136,
+          "generatedLine": 129,
+          "originalTokenSha256": "cc1831ae889aa53d11e1c136e430651b1e3b05747c808fb73d500fd0f5898dcc",
+          "generatedTokenSha256": "fec6e6d59d3761f54e7b38cbb58b236ee5e3dc47568254052f068bf49589d998"
+        },
+        {
+          "name": "importFromJson",
+          "originalLine": 141,
+          "generatedLine": 134,
+          "originalTokenSha256": "d6e5672405f56c7fe6a707feccbe1ad0ce48a0bff58d906b2fbd4b30242cd347",
+          "generatedTokenSha256": "c948ae629762f1f0ef3675fc7b4844661f24fbbd4608100af32c2971cb1a4201"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "strategy": "Full original pure helper file, LF-identical.",
+      "originalSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "generatedSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "originalNamedFunctionCount": 2,
+      "selectedNamedFunctionCount": 2,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveActiveCommentMentionQuery",
+          "originalLine": 10,
+          "generatedLine": 10,
+          "originalTokenSha256": "1acdaaa0d3c6700c0b4d0bcd7f5d82c14528874210cc2a98fab4841236c274a2",
+          "generatedTokenSha256": "1acdaaa0d3c6700c0b4d0bcd7f5d82c14528874210cc2a98fab4841236c274a2"
+        },
+        {
+          "name": "insertCommentMentionText",
+          "originalLine": 26,
+          "generatedLine": 26,
+          "originalTokenSha256": "13f66a6c59c4263baf5c9c2e6d732934f0f4690bbecc5937ea1ce845080656de",
+          "generatedTokenSha256": "13f66a6c59c4263baf5c9c2e6d732934f0f4690bbecc5937ea1ce845080656de"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "strategy": "Full original pure helper file, LF-identical.",
+      "originalSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "generatedSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "generatedPath": "com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveCommentPageResolution",
+          "originalLine": 10,
+          "generatedLine": 10,
+          "originalTokenSha256": "32c31cbf4c46e5d667902cce0721c60d5cbebea3a590a81d940dac5f4fd146a4",
+          "generatedTokenSha256": "32c31cbf4c46e5d667902cce0721c60d5cbebea3a590a81d940dac5f4fd146a4"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "strategy": "Full original Compose reveal motion file, LF-identical.",
+      "originalSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "generatedSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "generatedPath": "com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "originalNamedFunctionCount": 8,
+      "selectedNamedFunctionCount": 8,
+      "sameTokenFunctions": [
+        {
+          "name": "resolveCommentVerticalContentRevealMotionSpec",
+          "originalLine": 26,
+          "generatedLine": 26,
+          "originalTokenSha256": "6d6e455da20962095ac2958aac313c3469024f369d2235ed3d6b11cc7a9fa276",
+          "generatedTokenSha256": "6d6e455da20962095ac2958aac313c3469024f369d2235ed3d6b11cc7a9fa276"
+        },
+        {
+          "name": "resolveDetailVerticalContentRevealMotionSpec",
+          "originalLine": 36,
+          "generatedLine": 36,
+          "originalTokenSha256": "154d42cd93cf78990779a7d316d86137a3af3a135bb3d4b4e144a61686949cb3",
+          "generatedTokenSha256": "154d42cd93cf78990779a7d316d86137a3af3a135bb3d4b4e144a61686949cb3"
+        },
+        {
+          "name": "verticalContentRevealEnterTransition",
+          "originalLine": 51,
+          "generatedLine": 51,
+          "originalTokenSha256": "d2e52ba4b3b721dc9647cfa6a0de485c1af687c7abfe225b8e6800dbbdada169",
+          "generatedTokenSha256": "d2e52ba4b3b721dc9647cfa6a0de485c1af687c7abfe225b8e6800dbbdada169"
+        },
+        {
+          "name": "verticalContentRevealExitTransition",
+          "originalLine": 60,
+          "generatedLine": 60,
+          "originalTokenSha256": "7d0596d5a7ec73d4c58feb7d9d91cabfe56e382caa6ba36d3302d8d484b309ba",
+          "generatedTokenSha256": "7d0596d5a7ec73d4c58feb7d9d91cabfe56e382caa6ba36d3302d8d484b309ba"
+        },
+        {
+          "name": "folmeExpandSpringSpec",
+          "originalLine": 70,
+          "generatedLine": 70,
+          "originalTokenSha256": "ef25f44f2e3606e5fa685d7c418349922118d8bf1a4e78d271e07053f4a5acb7",
+          "generatedTokenSha256": "ef25f44f2e3606e5fa685d7c418349922118d8bf1a4e78d271e07053f4a5acb7"
+        },
+        {
+          "name": "folmeExpandFadeSpec",
+          "originalLine": 72,
+          "generatedLine": 72,
+          "originalTokenSha256": "eb82d8f1e54e9cca77d43819d09a7e59467943d9afc22c957b867c7a8d2ac0c6",
+          "generatedTokenSha256": "eb82d8f1e54e9cca77d43819d09a7e59467943d9afc22c957b867c7a8d2ac0c6"
+        },
+        {
+          "name": "folmeExpandEnterTransition",
+          "originalLine": 75,
+          "generatedLine": 75,
+          "originalTokenSha256": "61161412c82b10a5dcc28e5b2643b033c37d3b16381d68bcc820e4cac79119b3",
+          "generatedTokenSha256": "61161412c82b10a5dcc28e5b2643b033c37d3b16381d68bcc820e4cac79119b3"
+        },
+        {
+          "name": "folmeExpandExitTransition",
+          "originalLine": 87,
+          "generatedLine": 87,
+          "originalTokenSha256": "e4d6f357551ff5380b9ae07862549f220b7734582fabd295f0548e2344be5de9",
+          "generatedTokenSha256": "e4d6f357551ff5380b9ae07862549f220b7734582fabd295f0548e2344be5de9"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "strategy": "Complete original EmptyState body and original LottieUrls; only Android Lottie animation API maps to existing Skottie with required same-owner anonymous loader.",
+      "originalSha256": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "generatedSha256": "07681ebdda134d8c327f430ce8a0f6e94e805439e96204b71f272499c02cc7a6",
+      "generatedPath": "com/android/purebilibili/core/ui/DesktopOriginalBgmEmptyState.kt",
+      "originalNamedFunctionCount": 6,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [
+        {
+          "name": "EmptyState",
+          "originalLine": 132,
+          "generatedLine": 22,
+          "originalTokenSha256": "370d8ffa59d5c7e3f1bdd4874bfac34f29cd9704af80e0e7b06e65d18596fbc3",
+          "generatedTokenSha256": "77d8f71406ad48993fbe27a6a74f5810ff7dd95455c2071635a6e4ddb078ee0b"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "LottieAnimation",
+          "originalLine": 40
+        },
+        {
+          "name": "LoadingAnimation",
+          "originalLine": 66
+        },
+        {
+          "name": "CutePersonLoadingIndicator",
+          "originalLine": 113
+        },
+        {
+          "name": "ErrorState",
+          "originalLine": 209
+        },
+        {
+          "name": "SuccessAnimation",
+          "originalLine": 286
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "strategy": "Entire original BGM-only InlineBgmSection/BgmInfoRow/selection sheet/detail/recommendation paging/strip/skeleton + all consumed pure helpers. Existing shared display/tag helpers remain sole-owned. Android Bundle/Uri/Coil/context/settings singletons map to same existing Root owners/typed cid; no UI simplification.",
+      "originalSha256": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "generatedSha256": "e9001958b2043dcaa17b6b2e30ad1db75ba7189137cdea03de715c0f9089e29b",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/section/DesktopOriginalBgmDiscovery.kt",
+      "originalNamedFunctionCount": 41,
+      "selectedNamedFunctionCount": 25,
+      "sameTokenFunctions": [
+        {
+          "name": "BgmInfoRow",
+          "originalLine": 1671,
+          "generatedLine": 101,
+          "originalTokenSha256": "7c902636014df9cae48f4824875c4c7d0cd72686d50556d1f2d14bbbd9261aeb",
+          "generatedTokenSha256": "7c902636014df9cae48f4824875c4c7d0cd72686d50556d1f2d14bbbd9261aeb"
+        },
+        {
+          "name": "BgmDiscoveryRelatedHeader",
+          "originalLine": 1991,
+          "generatedLine": 423,
+          "originalTokenSha256": "7a6e41281f0f28e9dbd2767c05e2ff26557f2cabfa4b56eb41d3ce316bbe99d7",
+          "generatedTokenSha256": "7a6e41281f0f28e9dbd2767c05e2ff26557f2cabfa4b56eb41d3ce316bbe99d7"
+        },
+        {
+          "name": "bgmRecommendVideoToVideoItem",
+          "originalLine": 2078,
+          "generatedLine": 508,
+          "originalTokenSha256": "cfb824a06136c3a2b2c57d7fd92ad784a74f4ceb6dd8294acb21b68a35b80c9f",
+          "generatedTokenSha256": "cfb824a06136c3a2b2c57d7fd92ad784a74f4ceb6dd8294acb21b68a35b80c9f"
+        },
+        {
+          "name": "BgmSelectionStrip",
+          "originalLine": 2099,
+          "generatedLine": 529,
+          "originalTokenSha256": "da8b8f361a9334cf76f75a1a444ab0e2b1e51a0051090c9badd94a132ee44c4f",
+          "generatedTokenSha256": "da8b8f361a9334cf76f75a1a444ab0e2b1e51a0051090c9badd94a132ee44c4f"
+        },
+        {
+          "name": "BgmDetailCard",
+          "originalLine": 2182,
+          "generatedLine": 612,
+          "originalTokenSha256": "0f94fae097c46e2c09ef00b5163632620cadee358405a0a0c8a94581f1f90e1a",
+          "generatedTokenSha256": "0f94fae097c46e2c09ef00b5163632620cadee358405a0a0c8a94581f1f90e1a"
+        },
+        {
+          "name": "BgmDetailCardSkeleton",
+          "originalLine": 2291,
+          "generatedLine": 721,
+          "originalTokenSha256": "0abe4f35bd268750b115b154039dfbb25b81746a6f04d4b15c8117de397714a6",
+          "generatedTokenSha256": "0abe4f35bd268750b115b154039dfbb25b81746a6f04d4b15c8117de397714a6"
+        },
+        {
+          "name": "BgmDetailCover",
+          "originalLine": 2354,
+          "generatedLine": 784,
+          "originalTokenSha256": "6430ab195e3efb2b542e05029b0cae21925340dc3867e2085e84d5d7a06693e2",
+          "generatedTokenSha256": "6430ab195e3efb2b542e05029b0cae21925340dc3867e2085e84d5d7a06693e2"
+        },
+        {
+          "name": "resolveBgmScoreText",
+          "originalLine": 2390,
+          "generatedLine": 820,
+          "originalTokenSha256": "d43a75a34c0045e43873ca80b6e3426c38dbb0b05f99edf3974d36af6d40a0e7",
+          "generatedTokenSha256": "d43a75a34c0045e43873ca80b6e3426c38dbb0b05f99edf3974d36af6d40a0e7"
+        },
+        {
+          "name": "resolveBgmStatLine",
+          "originalLine": 2398,
+          "generatedLine": 828,
+          "originalTokenSha256": "8751837ec50236dc60867374ae16a4135bae2bfbfae68319f4f0e8ba97518556",
+          "generatedTokenSha256": "8751837ec50236dc60867374ae16a4135bae2bfbfae68319f4f0e8ba97518556"
+        },
+        {
+          "name": "resolveUnavailableBgmStatLine",
+          "originalLine": 2407,
+          "generatedLine": 837,
+          "originalTokenSha256": "cbd0f71e8c55d59169e9dd9aa35b00844ea23028768534b5a94ec1155d229224",
+          "generatedTokenSha256": "cbd0f71e8c55d59169e9dd9aa35b00844ea23028768534b5a94ec1155d229224"
+        },
+        {
+          "name": "resolveBgmCommentText",
+          "originalLine": 2411,
+          "generatedLine": 841,
+          "originalTokenSha256": "a13e7695b7e9ac8c17045f7fe04a1b5caa88e8a00824423c02b8da366627ea7d",
+          "generatedTokenSha256": "a13e7695b7e9ac8c17045f7fe04a1b5caa88e8a00824423c02b8da366627ea7d"
+        },
+        {
+          "name": "resolveBgmRecommendRowKey",
+          "originalLine": 2416,
+          "generatedLine": 846,
+          "originalTokenSha256": "c39bbe80c13f6349c01eae5f47c706e16bff919c42825bbfab04fcc6068eeea9",
+          "generatedTokenSha256": "c39bbe80c13f6349c01eae5f47c706e16bff919c42825bbfab04fcc6068eeea9"
+        },
+        {
+          "name": "resolveBgmRecommendRowItemIndex",
+          "originalLine": 2426,
+          "generatedLine": 856,
+          "originalTokenSha256": "e89a71510d084cf9244518bd71d361b9c27741ac8e07894991cc7d9b20d4a066",
+          "generatedTokenSha256": "e89a71510d084cf9244518bd71d361b9c27741ac8e07894991cc7d9b20d4a066"
+        },
+        {
+          "name": "resolveBgmItemKey",
+          "originalLine": 2465,
+          "generatedLine": 881,
+          "originalTokenSha256": "5a20a390cccd6160c721a3909be5eee66d5276c75cbeba8cde0a3c425b0e5894",
+          "generatedTokenSha256": "5a20a390cccd6160c721a3909be5eee66d5276c75cbeba8cde0a3c425b0e5894"
+        },
+        {
+          "name": "shouldLoadBgmDiscoveryItem",
+          "originalLine": 2476,
+          "generatedLine": 892,
+          "originalTokenSha256": "f8253ec422dd143f37403402cfdd7cfa80083aec1cb0976c2b97c833a7e8c2b4",
+          "generatedTokenSha256": "f8253ec422dd143f37403402cfdd7cfa80083aec1cb0976c2b97c833a7e8c2b4"
+        },
+        {
+          "name": "shouldShowBgmDetailSkeleton",
+          "originalLine": 2487,
+          "generatedLine": 903,
+          "originalTokenSha256": "d6291dd61210413a1ce59d4bc0309e63a28dba462d6ca6fbb4a271381b9d57b2",
+          "generatedTokenSha256": "d6291dd61210413a1ce59d4bc0309e63a28dba462d6ca6fbb4a271381b9d57b2"
+        },
+        {
+          "name": "shouldShowInitialBgmRecommendationPlaceholders",
+          "originalLine": 2493,
+          "generatedLine": 909,
+          "originalTokenSha256": "5afec68b7b807b63735032c5f2dd18ba8c56d06f086157a05bce551cc39fc2eb",
+          "generatedTokenSha256": "5afec68b7b807b63735032c5f2dd18ba8c56d06f086157a05bce551cc39fc2eb"
+        },
+        {
+          "name": "shouldLoadMoreBgmRecommendations",
+          "originalLine": 2500,
+          "generatedLine": 916,
+          "originalTokenSha256": "5fc00922e0c677f5284aa2a1ac940a3dc2c11e666e1e1cc4ae4cd1e8544197c7",
+          "generatedTokenSha256": "5fc00922e0c677f5284aa2a1ac940a3dc2c11e666e1e1cc4ae4cd1e8544197c7"
+        },
+        {
+          "name": "mergeBgmRecommendedVideos",
+          "originalLine": 2560,
+          "generatedLine": 977,
+          "originalTokenSha256": "e11abc33ba6a33266c10b0be8d831de10ce78cee47037f10c1e0445a12110d83",
+          "generatedTokenSha256": "e11abc33ba6a33266c10b0be8d831de10ce78cee47037f10c1e0445a12110d83"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "InlineBgmSection",
+          "originalLine": 1614,
+          "generatedLine": 44,
+          "originalTokenSha256": "c282fd274ae0c553603fa50ed88f767951af06120e9471763307e7ed4d48f7e6",
+          "generatedTokenSha256": "544d58016fe561da67f18c193d248692aace05224094d4de6fb1c88b47e51480"
+        },
+        {
+          "name": "BgmSelectionSheet",
+          "originalLine": 1739,
+          "generatedLine": 169,
+          "originalTokenSha256": "a301671a7b1cac60785f8eef43a439c05d3047fafa2efe912556b66036f4d595",
+          "generatedTokenSha256": "5937da99449494e071c377908370b926a7d4e85d0e148566f9668283562ecec0"
+        },
+        {
+          "name": "BgmRecommendVideoCardRow",
+          "originalLine": 2008,
+          "generatedLine": 440,
+          "originalTokenSha256": "58660a03d6b20ced8a5cfc280d57b5a403e29964559720a3bf0b1b2e02051ebe",
+          "generatedTokenSha256": "c47a7fee187b355b8ec28820ec4ddb54eb80490490395efa5e0f2bf781644434"
+        },
+        {
+          "name": "BgmRecommendVideoSkeletonRow",
+          "originalLine": 2049,
+          "generatedLine": 480,
+          "originalTokenSha256": "2243dff5bac41a882b0633018bc573735012ee1468666966e415bf3fe7854528",
+          "generatedTokenSha256": "253bb48b3c4882bdbe3dd71b0ef1399ef13ecd7eab2e2a6874d2107dc36bb1dc"
+        },
+        {
+          "name": "resolveQueryLongParam",
+          "originalLine": 2444,
+          "generatedLine": 860,
+          "originalTokenSha256": "189ae77b70a8ef04517669cc78403037b0485a7050870b1d585b55dccc2b4ffd",
+          "generatedTokenSha256": "3d1262f0d56e840f168c2e96975f49faf3bbe3823bbd611c693f13d7876ff096"
+        },
+        {
+          "name": "loadMoreBgmRecommendations",
+          "originalLine": 2513,
+          "generatedLine": 929,
+          "originalTokenSha256": "9ff5404994c30e84e76f7889beac4fd66209e9f2bcdf1f3c3da23734f346cb7a",
+          "generatedTokenSha256": "14500f1f8a41a6caef435db23af6a7547963b5adfc5d23372f8682a866088d66"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "buildVideoDescriptionAnnotatedString",
+          "originalLine": 125
+        },
+        {
+          "name": "buildVideoDescriptionAnnotatedString",
+          "originalLine": 140
+        },
+        {
+          "name": "buildRawDescriptionAnnotatedString",
+          "originalLine": 170
+        },
+        {
+          "name": "resolveVideoInfoInitialExpandedState",
+          "originalLine": 278
+        },
+        {
+          "name": "VideoTitleSection",
+          "originalLine": 295
+        },
+        {
+          "name": "VideoDetailSponsorLabelChip",
+          "originalLine": 400
+        },
+        {
+          "name": "VideoTitleWithDesc",
+          "originalLine": 440
+        },
+        {
+          "name": "VideoDetailBadgeChip",
+          "originalLine": 941
+        },
+        {
+          "name": "VideoArgueMsgRow",
+          "originalLine": 956
+        },
+        {
+          "name": "VideoHonorChip",
+          "originalLine": 980
+        },
+        {
+          "name": "UpInfoSection",
+          "originalLine": 1004
+        },
+        {
+          "name": "CreatorTeamSection",
+          "originalLine": 1359
+        },
+        {
+          "name": "CreatorTeamMemberChip",
+          "originalLine": 1433
+        },
+        {
+          "name": "DescriptionSection",
+          "originalLine": 1560
+        },
+        {
+          "name": "resolveBgmTagInfo",
+          "originalLine": 2430
+        },
+        {
+          "name": "resolveDisplayBgmList",
+          "originalLine": 2435
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "strategy": "Full original LF-identical helper; existing Root navigation-event/settings/skeleton owners stay sole-defined.",
+      "originalSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "generatedSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "generatedPath": "com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "LocalNavigationBackHandler",
+          "originalLine": 9,
+          "generatedLine": 9,
+          "originalTokenSha256": "7e27d981b0305da0b5149085e4c1565f69213f5503ec7841a9781809ffbd2ea5",
+          "generatedTokenSha256": "7e27d981b0305da0b5149085e4c1565f69213f5503ec7841a9781809ffbd2ea5"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "strategy": "Full original LF-identical helper; existing Root navigation-event/settings/skeleton owners stay sole-defined.",
+      "originalSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "generatedSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "VideoCardSkeleton",
+          "originalLine": 28,
+          "generatedLine": 28,
+          "originalTokenSha256": "0cc1353854bb0ea46b0790d0725bcfea7242fa563fd3fe4057bde6fa9828fd9e",
+          "generatedTokenSha256": "0cc1353854bb0ea46b0790d0725bcfea7242fa563fd3fe4057bde6fa9828fd9e"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "strategy": "Full original LF-identical helper; existing Root navigation-event/settings/skeleton owners stay sole-defined.",
+      "originalSha256": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "generatedSha256": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "originalNamedFunctionCount": 6,
+      "selectedNamedFunctionCount": 6,
+      "sameTokenFunctions": [
+        {
+          "name": "contentCard",
+          "originalLine": 21,
+          "generatedLine": 21,
+          "originalTokenSha256": "351904bd1f876d8c4766922ec6b19ecd20de083d00aa40bf188059e82f845a6e",
+          "generatedTokenSha256": "351904bd1f876d8c4766922ec6b19ecd20de083d00aa40bf188059e82f845a6e"
+        },
+        {
+          "name": "media",
+          "originalLine": 27,
+          "generatedLine": 27,
+          "originalTokenSha256": "3bde1a4c3302045985478808a2c521b0cba2a1d2e22c5b84b4ab9a2ad15e9442",
+          "generatedTokenSha256": "3bde1a4c3302045985478808a2c521b0cba2a1d2e22c5b84b4ab9a2ad15e9442"
+        },
+        {
+          "name": "field",
+          "originalLine": 33,
+          "generatedLine": 33,
+          "originalTokenSha256": "c6153d024a8931a909fd705c5e7b492aa1bf077036c2ad4152b2a4b2d2f25f77",
+          "generatedTokenSha256": "c6153d024a8931a909fd705c5e7b492aa1bf077036c2ad4152b2a4b2d2f25f77"
+        },
+        {
+          "name": "leadingIcon",
+          "originalLine": 39,
+          "generatedLine": 39,
+          "originalTokenSha256": "51e41deb88bd239934d3263bf9eb520b478f028db80e1a26aa0cae6d46098762",
+          "generatedTokenSha256": "51e41deb88bd239934d3263bf9eb520b478f028db80e1a26aa0cae6d46098762"
+        },
+        {
+          "name": "compactIcon",
+          "originalLine": 45,
+          "generatedLine": 45,
+          "originalTokenSha256": "267e6b5002c40b113175b20898523722d6dad0a9b67ad2ffd4b50c316dbc43dd",
+          "generatedTokenSha256": "267e6b5002c40b113175b20898523722d6dad0a9b67ad2ffd4b50c316dbc43dd"
+        },
+        {
+          "name": "action",
+          "originalLine": 51,
+          "generatedLine": 51,
+          "originalTokenSha256": "24c210fded6e3de31f5e46323d2d0a66f2280958a6f5d8cf88577a059bcc4b5a",
+          "generatedTokenSha256": "24c210fded6e3de31f5e46323d2d0a66f2280958a6f5d8cf88577a059bcc4b5a"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "strategy": "Full original skeleton renderer/body, animation and color policies; sole Home card settings owner replaces Android SettingsManager read.",
+      "originalSha256": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "generatedSha256": "a268f34a153d20de2ef88049c51f6bee9ad799aed33ca024fb5d739c4462cfe5",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "originalNamedFunctionCount": 14,
+      "selectedNamedFunctionCount": 14,
+      "sameTokenFunctions": [
+        {
+          "name": "ShimmerContainer",
+          "originalLine": 45,
+          "generatedLine": 43,
+          "originalTokenSha256": "32696f4f622eea6d385c2f863fb11a87432af63005f1fe60d0962065d25de905",
+          "generatedTokenSha256": "32696f4f622eea6d385c2f863fb11a87432af63005f1fe60d0962065d25de905"
+        },
+        {
+          "name": "SkeletonBox",
+          "originalLine": 60,
+          "generatedLine": 58,
+          "originalTokenSha256": "87b9a79f93e02b1c70eb833bd8f40ffcffdb73e56f54483bed964397fe809837",
+          "generatedTokenSha256": "87b9a79f93e02b1c70eb833bd8f40ffcffdb73e56f54483bed964397fe809837"
+        },
+        {
+          "name": "SkeletonCircle",
+          "originalLine": 73,
+          "generatedLine": 71,
+          "originalTokenSha256": "7c9adac7f7248c0da50d1bf67099ce837225921ee3d212697bb5f1177ba2adbd",
+          "generatedTokenSha256": "7c9adac7f7248c0da50d1bf67099ce837225921ee3d212697bb5f1177ba2adbd"
+        },
+        {
+          "name": "VideoDetailSkeleton",
+          "originalLine": 81,
+          "generatedLine": 79,
+          "originalTokenSha256": "c8a5ac408c754c9a41868c42c56e6fb35c62f94578197cfbca48df429b03f433",
+          "generatedTokenSha256": "c8a5ac408c754c9a41868c42c56e6fb35c62f94578197cfbca48df429b03f433"
+        },
+        {
+          "name": "VideoDetailTabBarSkeleton",
+          "originalLine": 110,
+          "generatedLine": 108,
+          "originalTokenSha256": "29eb78c169d70213f1f6dbbdf0117c3e04c0d2ed26a7f892d8ce5c5ec5a89e66",
+          "generatedTokenSha256": "29eb78c169d70213f1f6dbbdf0117c3e04c0d2ed26a7f892d8ce5c5ec5a89e66"
+        },
+        {
+          "name": "VideoDetailUpInfoSkeleton",
+          "originalLine": 146,
+          "generatedLine": 144,
+          "originalTokenSha256": "fcebfad830dca8447abd7ce37b1e6a7ec73fd9c4ed14d4fff4c85505c12bc791",
+          "generatedTokenSha256": "fcebfad830dca8447abd7ce37b1e6a7ec73fd9c4ed14d4fff4c85505c12bc791"
+        },
+        {
+          "name": "VideoDetailTitleInfoSkeleton",
+          "originalLine": 165,
+          "generatedLine": 163,
+          "originalTokenSha256": "eddcc3bc852e680d3f3d62dd37b69c10a53d0a8f21c78e8f28f496c3020d5959",
+          "generatedTokenSha256": "eddcc3bc852e680d3f3d62dd37b69c10a53d0a8f21c78e8f28f496c3020d5959"
+        },
+        {
+          "name": "VideoDetailActionButtonsSkeleton",
+          "originalLine": 204,
+          "generatedLine": 202,
+          "originalTokenSha256": "b134253c78fccfb134941d11d37b35830cf40c8964d51b29d46ef2298b8e784f",
+          "generatedTokenSha256": "b134253c78fccfb134941d11d37b35830cf40c8964d51b29d46ef2298b8e784f"
+        },
+        {
+          "name": "VideoDetailRelatedHeaderSkeleton",
+          "originalLine": 230,
+          "generatedLine": 228,
+          "originalTokenSha256": "0778e8b2d31c07623cd020dd2a25565b41b98b2d55f3e3c53657f4cb3d183ecc",
+          "generatedTokenSha256": "0778e8b2d31c07623cd020dd2a25565b41b98b2d55f3e3c53657f4cb3d183ecc"
+        },
+        {
+          "name": "RelatedVideoItemSkeleton",
+          "originalLine": 264,
+          "generatedLine": 261,
+          "originalTokenSha256": "991bd213a3ec2bc4ee8b9c616ebb28d3781e16300faefaed9f69fc5b3e542f90",
+          "generatedTokenSha256": "991bd213a3ec2bc4ee8b9c616ebb28d3781e16300faefaed9f69fc5b3e542f90"
+        },
+        {
+          "name": "SkeletonBlock",
+          "originalLine": 298,
+          "generatedLine": 295,
+          "originalTokenSha256": "579b9186b18235395faa8fe2346a1f6c69c0e73ebb94321a31e143ce844a23dd",
+          "generatedTokenSha256": "579b9186b18235395faa8fe2346a1f6c69c0e73ebb94321a31e143ce844a23dd"
+        },
+        {
+          "name": "rememberVideoSkeletonPulse",
+          "originalLine": 310,
+          "generatedLine": 307,
+          "originalTokenSha256": "cb7bb03c7f43a17786e59aefbec1c4fca914b7fdec34029210697698d2c9686c",
+          "generatedTokenSha256": "cb7bb03c7f43a17786e59aefbec1c4fca914b7fdec34029210697698d2c9686c"
+        },
+        {
+          "name": "rememberVideoSkeletonBlockColor",
+          "originalLine": 331,
+          "generatedLine": 328,
+          "originalTokenSha256": "d6c850163bc1a8c6504dbd3e5d47387484da47ef94bb7a78fdca2054994c7589",
+          "generatedTokenSha256": "d6c850163bc1a8c6504dbd3e5d47387484da47ef94bb7a78fdca2054994c7589"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "RelatedVideoGridRowSkeleton",
+          "originalLine": 243,
+          "generatedLine": 241,
+          "originalTokenSha256": "f45d22b39b8e3e51e07f0d89fb5c32abca74f79b6b41d61e5cded84e3a3beb5a",
+          "generatedTokenSha256": "07bcc989b205a54e6e39c03a570b6ddb8415ec434969bfc6032c202aaeb99a3e"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "strategy": "Exact original shared cover-ratio constant consumed by the complete original SkeletonComponents renderer; no related-video UI selected in this lane.",
+      "originalSha256": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "generatedSha256": "7b18a3b98ca671fe2891807cff39c23c0cb14ae1ebd84c08ed2ccae1a411cdbc",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/DesktopRelatedVideoSkeletonGeometry.kt",
+      "originalNamedFunctionCount": 10,
+      "selectedNamedFunctionCount": 0,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "RelatedVideosHeader",
+          "originalLine": 110
+        },
+        {
+          "name": "resolveRelatedVideoCardPressScaleTarget",
+          "originalLine": 131
+        },
+        {
+          "name": "shouldEnableRelatedVideoCoverCrossfade",
+          "originalLine": 137
+        },
+        {
+          "name": "shouldTriggerRelatedVideoPressHaptic",
+          "originalLine": 142
+        },
+        {
+          "name": "resolveRelatedVideoSharedElementSourceRoute",
+          "originalLine": 147
+        },
+        {
+          "name": "chunkRelatedVideosForHomeStyleGrid",
+          "originalLine": 154
+        },
+        {
+          "name": "rememberRelatedVideoCardLayout",
+          "originalLine": 162
+        },
+        {
+          "name": "RelatedVideoItem",
+          "originalLine": 180
+        },
+        {
+          "name": "RelatedVideoGridRow",
+          "originalLine": 475
+        },
+        {
+          "name": "recordRelatedVideoFeedback",
+          "originalLine": 637
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "strategy": "Full original CommentDetail VM: root-target load, sorting/pagination/conversation, send/reactions/delete/dissolve/type1 fraud. Android Uri/lifecycle/singleton repositories become required same-owner requests/scope. Original pictures parameter remains unused by original sendReply; no fabricated image-upload parity.",
+      "originalSha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "generatedSha256": "32d172f0b96df6f915caae47dbdb5a419a314232408b13ee0effa6dcabdf9a51",
+      "generatedPath": "com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "originalNamedFunctionCount": 15,
+      "selectedNamedFunctionCount": 17,
+      "sameTokenFunctions": [
+        {
+          "name": "dismissFraudResult",
+          "originalLine": 81,
+          "generatedLine": 91,
+          "originalTokenSha256": "ee52483c4c6e5539ec67bd0d65036979e919109de66e5b227ba641fde22be639",
+          "generatedTokenSha256": "ee52483c4c6e5539ec67bd0d65036979e919109de66e5b227ba641fde22be639"
+        },
+        {
+          "name": "loadInitial",
+          "originalLine": 91,
+          "generatedLine": 101,
+          "originalTokenSha256": "bdea6f8411ec36c2c9f49eb58f66a69a5bed70ddf2ff5079d7d96eb6c10d6187",
+          "generatedTokenSha256": "bdea6f8411ec36c2c9f49eb58f66a69a5bed70ddf2ff5079d7d96eb6c10d6187"
+        },
+        {
+          "name": "setSortMode",
+          "originalLine": 120,
+          "generatedLine": 130,
+          "originalTokenSha256": "e04c7b988f49f58a8cc197d043a213530e19acb897926199590251371012ace2",
+          "generatedTokenSha256": "e04c7b988f49f58a8cc197d043a213530e19acb897926199590251371012ace2"
+        },
+        {
+          "name": "loadMore",
+          "originalLine": 128,
+          "generatedLine": 138,
+          "originalTokenSha256": "1d551d3cb45b556575393efa97856d69664a3c60ae35cb5328741e7d0b29949a",
+          "generatedTokenSha256": "1d551d3cb45b556575393efa97856d69664a3c60ae35cb5328741e7d0b29949a"
+        },
+        {
+          "name": "openConversation",
+          "originalLine": 212,
+          "generatedLine": 222,
+          "originalTokenSha256": "500ea0e613206d2124aa72bdaf5d05c495c1b8db07f06b0c44e86b7e7ab06cd9",
+          "generatedTokenSha256": "500ea0e613206d2124aa72bdaf5d05c495c1b8db07f06b0c44e86b7e7ab06cd9"
+        },
+        {
+          "name": "closeConversation",
+          "originalLine": 216,
+          "generatedLine": 226,
+          "originalTokenSha256": "6cafe0e7f3d919848fe7df0860a24271fb423172215f0bd64a40643a74600d3c",
+          "generatedTokenSha256": "6cafe0e7f3d919848fe7df0860a24271fb423172215f0bd64a40643a74600d3c"
+        },
+        {
+          "name": "showReplyInput",
+          "originalLine": 220,
+          "generatedLine": 230,
+          "originalTokenSha256": "1a44383640c17edef67a37130d16549ebf951bd3a1b6c5650959ea6ed22cd6a7",
+          "generatedTokenSha256": "1a44383640c17edef67a37130d16549ebf951bd3a1b6c5650959ea6ed22cd6a7"
+        },
+        {
+          "name": "hideReplyInput",
+          "originalLine": 225,
+          "generatedLine": 235,
+          "originalTokenSha256": "389ba182e7602b51b040ce4f2f0434b66dc92f0b30ce408938b52edf5935908a",
+          "generatedTokenSha256": "389ba182e7602b51b040ce4f2f0434b66dc92f0b30ce408938b52edf5935908a"
+        },
+        {
+          "name": "startDissolve",
+          "originalLine": 314,
+          "generatedLine": 324,
+          "originalTokenSha256": "5515ded6ef66c5991a9772d74c1b85015b7ce4c99014418e6dc84c0227b61872",
+          "generatedTokenSha256": "5515ded6ef66c5991a9772d74c1b85015b7ce4c99014418e6dc84c0227b61872"
+        }
+      ],
+      "platformAdaptedFunctions": [
+        {
+          "name": "checkCommentFraud",
+          "originalLine": 53,
+          "generatedLine": 63,
+          "originalTokenSha256": "87308e6b20c7ef0a05222590e4a463499b90894d2ac8667174333aa88f58f974",
+          "generatedTokenSha256": "8e200e14c59b7a05284eb3daa69d0935f8aea244a3ad09aab83b7658e3f052e9"
+        },
+        {
+          "name": "loadSubReplies",
+          "originalLine": 136,
+          "generatedLine": 146,
+          "originalTokenSha256": "0f18eb0cb96d98391084086ccf62eddd1b3ace0dde0936dda869fbd8818d5c64",
+          "generatedTokenSha256": "d5bbe1cc97ec4012d789f185d5b10226c3e7676f0b68373ac6d867fc3e624d08"
+        },
+        {
+          "name": "sendReply",
+          "originalLine": 230,
+          "generatedLine": 240,
+          "originalTokenSha256": "ccc7b67a30e6d4c2bad1e22739b0119bdb7e7398b10b4db28fc0c2e5e28f5fee",
+          "generatedTokenSha256": "e07ebe6f21abbe4fd723e7ad987246c4705736a547027e38d4134f991b690d59"
+        },
+        {
+          "name": "likeComment",
+          "originalLine": 270,
+          "generatedLine": 280,
+          "originalTokenSha256": "958954a433b069ed15d43070858b7aa324ada2077db42985a0c675e57694c987",
+          "generatedTokenSha256": "dad7e97b279a4322ed3b41905178190f780923cbf2527a2e1794fed4c5473c33"
+        },
+        {
+          "name": "hateComment",
+          "originalLine": 285,
+          "generatedLine": 295,
+          "originalTokenSha256": "acd362ccb6003b3e0798a0cd1a2dd783e8d4789066f2b2fc5165356568f8dc9f",
+          "generatedTokenSha256": "628c9bba4fa9282a1e19737046d9acf5ad7cfa42b8b865d4ccfbcfbe1902efaa"
+        },
+        {
+          "name": "deleteComment",
+          "originalLine": 300,
+          "generatedLine": 310,
+          "originalTokenSha256": "b7b0898e55f945cbe04e47258bef151eaa35717ec66f85637a93854b39cedc2f",
+          "generatedTokenSha256": "7f674dae67977475c8b8b5d91ba02c54d14ba887842d14027963b17668212b1e"
+        }
+      ],
+      "additionalPlatformFunctions": [
+        {
+          "name": "ensureOwned",
+          "generatedLine": 34,
+          "role": "required existing-owner platform seam or selected original extension body"
+        },
+        {
+          "name": "launchOwned",
+          "generatedLine": 38,
+          "role": "required existing-owner platform seam or selected original extension body"
+        }
+      ],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "strategy": "Full original BGM navigation destination CommentDetailScreen; all SubReplyDetailContent/image/composer/fraud/back branches retained. Only current owner VM/platform/ID and desktop navigation event seams replace Android bindings.",
+      "originalSha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "generatedSha256": "caa441ab87c27e27c0652f0bbad03da01a26a8f1418a22f95d46457604859fe5",
+      "generatedPath": "com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "originalNamedFunctionCount": 1,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [
+        {
+          "name": "CommentDetailScreen",
+          "originalLine": 49,
+          "generatedLine": 46,
+          "originalTokenSha256": "48a62e97ce61a57472b2b4407e5b44f1e81533e5f654d28dbb54e472770224ca",
+          "generatedTokenSha256": "2fe75adcd84c545809322659ae7134fd02bcc97fef77cbb1ff35ca1a320af447"
+        }
+      ],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "strategy": "Full original LF-identical fraud dialog, banner, models.",
+      "originalSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "generatedSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "generatedPath": "com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "originalNamedFunctionCount": 2,
+      "selectedNamedFunctionCount": 2,
+      "sameTokenFunctions": [
+        {
+          "name": "CommentFraudResultDialog",
+          "originalLine": 27,
+          "generatedLine": 27,
+          "originalTokenSha256": "ca64dbf6a1deed93794ef8c9576d48c60ec1387374b2f0a8a0d9cd4e7082effd",
+          "generatedTokenSha256": "ca64dbf6a1deed93794ef8c9576d48c60ec1387374b2f0a8a0d9cd4e7082effd"
+        },
+        {
+          "name": "CommentFraudDetectingBanner",
+          "originalLine": 131,
+          "generatedLine": 131,
+          "originalTokenSha256": "597fb0dc3a6837d08ed48b62c354f4681eeb63be092536132bd3f707b0f4c3ed",
+          "generatedTokenSha256": "597fb0dc3a6837d08ed48b62c354f4681eeb63be092536132bd3f707b0f4c3ed"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "strategy": "Complete original MessageFeedError function consumed by CommentDetailScreen; no unrelated message-feed renderers selected.",
+      "originalSha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "generatedSha256": "a38a1aa47b2501374616dea2abd5665016acffbe83152dc96cb0e0b05aeae396",
+      "generatedPath": "com/android/purebilibili/feature/message/feed/DesktopCommentDetailError.kt",
+      "originalNamedFunctionCount": 9,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [
+        {
+          "name": "MessageFeedError",
+          "originalLine": 180,
+          "generatedLine": 11,
+          "originalTokenSha256": "8d990477147d908d858f9d3978bf867d09b963c8e5d24d3acb5d6b48b13e7a2f",
+          "generatedTokenSha256": "8d990477147d908d858f9d3978bf867d09b963c8e5d24d3acb5d6b48b13e7a2f"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "formatMessageFeedTime",
+          "originalLine": 33
+        },
+        {
+          "name": "firstNonBlank",
+          "originalLine": 47
+        },
+        {
+          "name": "buildMessageFeedCommentNavigationLink",
+          "originalLine": 51
+        },
+        {
+          "name": "MessageFeedAvatar",
+          "originalLine": 154
+        },
+        {
+          "name": "MessageFeedEmpty",
+          "originalLine": 170
+        },
+        {
+          "name": "MessageFeedLoadMore",
+          "originalLine": 198
+        },
+        {
+          "name": "MessageFeedSectionHeader",
+          "originalLine": 223
+        },
+        {
+          "name": "MessageFeedCard",
+          "originalLine": 234
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "strategy": "Exact original addCommentForSubject background record save block; Root same-account epoch scope replaces AppScope, original UID/type/root/parent/server ctime/UNKNOWN merge preserved.",
+      "originalSha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "generatedSha256": "9a404c66d3e06ca23d12be8968e8e3270cd2137c776bca3f78452c3e560f9667",
+      "generatedPath": "com/android/purebilibili/data/repository/DesktopOriginalPublishedCommentRecord.kt",
+      "originalNamedFunctionCount": 53,
+      "selectedNamedFunctionCount": 1,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [
+        {
+          "name": "savePublishedCommentRecord",
+          "generatedLine": 5,
+          "role": "required existing-owner platform seam or selected original extension body"
+        }
+      ],
+      "outsideSelectionOrSoleOwnedFunctions": [
+        {
+          "name": "getWbiKeysOrNull",
+          "originalLine": 60
+        },
+        {
+          "name": "getWbiKeys",
+          "originalLine": 77
+        },
+        {
+          "name": "resolveReadApi",
+          "originalLine": 122
+        },
+        {
+          "name": "fetchNonWbiCommentFallback",
+          "originalLine": 129
+        },
+        {
+          "name": "fetchCommentsByApi",
+          "originalLine": 156
+        },
+        {
+          "name": "fetchGuestHotCommentsCompat",
+          "originalLine": 226
+        },
+        {
+          "name": "fetchLegacyHotCommentsCompat",
+          "originalLine": 250
+        },
+        {
+          "name": "fetchCommentEmptySuccessFallback",
+          "originalLine": 283
+        },
+        {
+          "name": "getComments",
+          "originalLine": 391
+        },
+        {
+          "name": "getCommentsForSubject",
+          "originalLine": 408
+        },
+        {
+          "name": "getCommentCountForSubject",
+          "originalLine": 569
+        },
+        {
+          "name": "getSubComments",
+          "originalLine": 589
+        },
+        {
+          "name": "getSortedSubCommentsForSubject",
+          "originalLine": 601
+        },
+        {
+          "name": "getSubCommentsForSubject",
+          "originalLine": 629
+        },
+        {
+          "name": "getDialogCommentsForSubject",
+          "originalLine": 727
+        },
+        {
+          "name": "getEmoteMap",
+          "originalLine": 759
+        },
+        {
+          "name": "getEmotePackages",
+          "originalLine": 780
+        },
+        {
+          "name": "searchMentionUsers",
+          "originalLine": 797
+        },
+        {
+          "name": "addComment",
+          "originalLine": 829
+        },
+        {
+          "name": "addCommentForSubject",
+          "originalLine": 848
+        },
+        {
+          "name": "uploadCommentImage",
+          "originalLine": 926
+        },
+        {
+          "name": "uploadCommentImage",
+          "originalLine": 944
+        },
+        {
+          "name": "uploadCommentImagePart",
+          "originalLine": 981
+        },
+        {
+          "name": "queryContentImageSize",
+          "originalLine": 1036
+        },
+        {
+          "name": "contentType",
+          "originalLine": 1057
+        },
+        {
+          "name": "contentLength",
+          "originalLine": 1058
+        },
+        {
+          "name": "isOneShot",
+          "originalLine": 1059
+        },
+        {
+          "name": "writeTo",
+          "originalLine": 1061
+        },
+        {
+          "name": "buildPicturesPayload",
+          "originalLine": 1068
+        },
+        {
+          "name": "resolveSyncToDynamicField",
+          "originalLine": 1081
+        },
+        {
+          "name": "shouldTryGrpcMainList",
+          "originalLine": 1085
+        },
+        {
+          "name": "resolveCommentMainListPaginationParameters",
+          "originalLine": 1100
+        },
+        {
+          "name": "resolveCommentMainListMode",
+          "originalLine": 1115
+        },
+        {
+          "name": "shouldTryGrpcPagedRequest",
+          "originalLine": 1123
+        },
+        {
+          "name": "likeComment",
+          "originalLine": 1133
+        },
+        {
+          "name": "likeCommentForSubject",
+          "originalLine": 1137
+        },
+        {
+          "name": "hateComment",
+          "originalLine": 1170
+        },
+        {
+          "name": "hateCommentForSubject",
+          "originalLine": 1173
+        },
+        {
+          "name": "deleteComment",
+          "originalLine": 1206
+        },
+        {
+          "name": "deleteCommentForSubject",
+          "originalLine": 1209
+        },
+        {
+          "name": "setCommentTop",
+          "originalLine": 1242
+        },
+        {
+          "name": "setCommentTopForSubject",
+          "originalLine": 1253
+        },
+        {
+          "name": "resolveReplyTopActionField",
+          "originalLine": 1283
+        },
+        {
+          "name": "reportComment",
+          "originalLine": 1291
+        },
+        {
+          "name": "reportCommentForSubject",
+          "originalLine": 1294
+        },
+        {
+          "name": "rawCurlGuest",
+          "originalLine": 1352
+        },
+        {
+          "name": "checkCommentStatus",
+          "originalLine": 1395
+        },
+        {
+          "name": "checkReplyComment",
+          "originalLine": 1447
+        },
+        {
+          "name": "checkRootComment",
+          "originalLine": 1607
+        },
+        {
+          "name": "probeCommentPresenceBySeekRpid",
+          "originalLine": 1685
+        },
+        {
+          "name": "findTargetRpid",
+          "originalLine": 1750
+        },
+        {
+          "name": "match",
+          "originalLine": 1753
+        },
+        {
+          "name": "confirmDeletedBySecondProbe",
+          "originalLine": 1771
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "generatedPath": "com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "strategy": "Full original LF-identical file",
+      "originalSha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "generatedSha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "originalNamedFunctionCount": 0,
+      "selectedNamedFunctionCount": 0,
+      "sameTokenFunctions": [],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "generatedPath": "com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "strategy": "Full original LF-identical file",
+      "originalSha256": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "generatedSha256": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "originalNamedFunctionCount": 6,
+      "selectedNamedFunctionCount": 6,
+      "sameTokenFunctions": [
+        {
+          "name": "shouldStartCommentFraudDetection",
+          "originalLine": 18,
+          "generatedLine": 18,
+          "originalTokenSha256": "af79111269b5bd05756334f44ff0538fe7459e6b004a00f4d6cb886dc2b979ea",
+          "generatedTokenSha256": "af79111269b5bd05756334f44ff0538fe7459e6b004a00f4d6cb886dc2b979ea"
+        },
+        {
+          "name": "shouldContinueSubReplyFraudScan",
+          "originalLine": 23,
+          "generatedLine": 23,
+          "originalTokenSha256": "1847725226cea9e230c9008f7f5be5dddabbcc843d8e5b7c8d1218d38469af22",
+          "generatedTokenSha256": "1847725226cea9e230c9008f7f5be5dddabbcc843d8e5b7c8d1218d38469af22"
+        },
+        {
+          "name": "shouldShowCommentFraudResultDialog",
+          "originalLine": 34,
+          "generatedLine": 34,
+          "originalTokenSha256": "158997d85bab57e4d1d4d6ec87a88c6f82c2806abf6efad24e2360d6fd4b2caf",
+          "generatedTokenSha256": "158997d85bab57e4d1d4d6ec87a88c6f82c2806abf6efad24e2360d6fd4b2caf"
+        },
+        {
+          "name": "resolveCommentFraudLightMessage",
+          "originalLine": 38,
+          "generatedLine": 38,
+          "originalTokenSha256": "849c48ad6d4fe3dc4ac94a087f57243af725bb6c71f4b86e3b3c87137ebaacdc",
+          "generatedTokenSha256": "849c48ad6d4fe3dc4ac94a087f57243af725bb6c71f4b86e3b3c87137ebaacdc"
+        },
+        {
+          "name": "resolveReplyFraudStatus",
+          "originalLine": 46,
+          "generatedLine": 46,
+          "originalTokenSha256": "4111e500d334e82d1f1fd4ffbb51d354a117755934b6c6781f3e5a5bdb7c63ae",
+          "generatedTokenSha256": "4111e500d334e82d1f1fd4ffbb51d354a117755934b6c6781f3e5a5bdb7c63ae"
+        },
+        {
+          "name": "resolveRootFraudStatus",
+          "originalLine": 82,
+          "generatedLine": 82,
+          "originalTokenSha256": "3ec235ce1751f2b0326904d46f110bb3e1f345566b097cac0608df3a7ce54e02",
+          "generatedTokenSha256": "3ec235ce1751f2b0326904d46f110bb3e1f345566b097cac0608df3a7ce54e02"
+        }
+      ],
+      "platformAdaptedFunctions": [],
+      "additionalPlatformFunctions": [],
+      "outsideSelectionOrSoleOwnedFunctions": []
+    }
+  ],
+  "preservedNamedFunctionSelections": 165,
+  "checks": [
+    {
+      "label": "Full BGM screen keeps Content, InfoCard, Videos and heat/comments",
+      "passed": true
+    },
+    {
+      "label": "Full original BGM-only discovery renderer keeps sheet, detail, paging, recommendation and skeleton",
+      "passed": true
+    },
+    {
+      "label": "No Root-owned honor/team function duplicated",
+      "passed": true
+    },
+    {
+      "label": "Generic typed47 owner is not DynamicSession surrogate",
+      "passed": true
+    },
+    {
+      "label": "Original detail pictures parameter remains unused",
+      "passed": true
+    },
+    {
+      "label": "Comment VM takes9 through required stream provider",
+      "passed": true
+    },
+    {
+      "label": "Original fraud type1 limitation preserved",
+      "passed": true
+    },
+    {
+      "label": "Canonical soleproducer Ops family exactly matches fragment",
+      "passed": true
+    },
+    {
+      "label": "Same Root preferences SkeletonBreathing produced by existing sole reply producer",
+      "passed": true
+    },
+    {
+      "label": "Host is stable across showVideos while actual account epoch retires it",
+      "passed": true
+    },
+    {
+      "label": "Fresh soleproducer generation produces exact identical paths and bytes",
+      "passed": true
+    },
+    {
+      "label": "Frozen full UI Host player entry compiled; changing Root Shell excluded",
+      "passed": true
+    },
+    {
+      "label": "No prepared shared liquid overlay FQN duplicate",
+      "passed": true
+    },
+    {
+      "label": "Actual same Store and Repository offline43 asserts PASS",
+      "passed": true
+    }
+  ],
+  "sourceFunctionsMayBePlatformAdapted": true,
+  "MainWrittenByThisLane": false
+}

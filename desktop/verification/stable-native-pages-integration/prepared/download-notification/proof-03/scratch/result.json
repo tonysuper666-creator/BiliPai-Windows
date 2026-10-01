@@ -1,0 +1,63 @@
+{
+    "status": "PASS",
+    "caseCount": 1,
+    "assertions": 34,
+    "ownHiddenHwnd": "24052772",
+    "ownerNativeThread": 28272,
+    "process": 24404,
+    "taskbarNativeApiDispatches": 7,
+    "terminalApplicationInterceptorCalls": 8,
+    "realExternalHTTP": false,
+    "nativeTrayAddRemove": true,
+    "taskbarVisualPixelsVerified": false,
+    "nativeHresultAvailable": false,
+    "noToastEmitted": true,
+    "mainApplicationWindowUsed": false,
+    "codeSources": [
+        {
+            "class": "com.bilipai.desktop.download.DesktopDownloadNotifications",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-download-notification-parity/compile-02/prepared-download-notification.jar",
+            "sha256ClassBytes": "067f4d7958cccc079aba3bfe979454327860ff766ed0e38d33899110850bebd3"
+        },
+        {
+            "class": "com.bilipai.desktop.download.DesktopDownloadManager",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "25f808fb68aeb36004d3a0ed8c04ff54342afd8423152a393a7a464b5ab62de4"
+        },
+        {
+            "class": "com.bilipai.desktop.download.DownloadTask",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "a48a51f045067336d487d027f7ae1d9b1a066dbbc1dbe6637ddc820252ee47b5"
+        },
+        {
+            "class": "com.android.purebilibili.feature.download.DownloadTask",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "758ef6012c78d863c82379531f444386693a33aeaecbfdd8c21abe363adc1811"
+        },
+        {
+            "class": "com.android.purebilibili.feature.download.DownloadStatus",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "2ebbd23496411fd9ce165c63d804ec5808efe485ac350774575b8d7be6ee4e15"
+        },
+        {
+            "class": "com.android.purebilibili.feature.download.DownloadListNavigationPolicyKt",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "6e2c2534cfdbfa9c4c6251a73589dbfbab1ce5de67710baf7be7dedad49c0e06"
+        },
+        {
+            "class": "com.android.purebilibili.feature.download.ResumableAssetDownloader",
+            "location": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-11/main-kotlin.jar",
+            "sha256ClassBytes": "819e42852d0c3d6034864b81986d89d036465061be19988680c7e20933f3c368"
+        },
+        {
+            "class": "java.awt.Taskbar",
+            "location": "jrt:/java.desktop",
+            "sha256ClassBytes": "a99e791ef905bbb5488bc019a50eb3cf6ed2b45bb2dbe603118dfe75f0369e38"
+        },
+        {
+            "class": "java.awt.TrayIcon",
+            "location": "jrt:/java.desktop",
+            "sha256ClassBytes": "77433765a473279230d95be3dc5f6c5c32c8853353ea2f1e057bc3fac3e21624"
+        }
+    ]
+}

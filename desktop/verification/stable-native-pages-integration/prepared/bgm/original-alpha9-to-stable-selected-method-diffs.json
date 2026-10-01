@@ -1,0 +1,1695 @@
+{
+  "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+  "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "29719d3f57fe15803ae48ba3e2fb0d5e3cd9c00e848d89286444573d73428a73",
+      "stableLfSha256": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f",
+      "selectedMethodDiffs": [
+        {
+          "name": "getAllBgmRecommendVideos",
+          "ordinal": 0,
+          "status": "new",
+          "oldLine": null,
+          "stableLine": 80,
+          "oldTokenSha256": null,
+          "stableTokenSha256": "595a4a8cb9358cf3dcfa37f1f94928089113da2bea7462591d0a049b67a73600",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_data_repository_ViewGrpcRepository.kt.getAllBgmRecommendVideos.0.diff"
+        },
+        {
+          "name": "getBgmDetail",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 33,
+          "stableLine": 37,
+          "oldTokenSha256": "a8717d338a27a0763a950c06519a9f90f3009aba07dbffa510ecf1c3c7bb821d",
+          "stableTokenSha256": "77dab3b9961b1eee3edee3a49f0ca4b21d3e4322035fd810b269f7cee1d28403",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_data_repository_ViewGrpcRepository.kt.getBgmDetail.0.diff"
+        },
+        {
+          "name": "getBgmList",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 14,
+          "stableLine": 17,
+          "oldTokenSha256": "844d57e8bd69bb47a22300e83401d25399799ba651a868e03aede1a20d4caa11",
+          "stableTokenSha256": "9ae9f89a0f1ec93fe445ea21ee044369b57393c6bfac1cc8a8bc1d3421d370ee",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_data_repository_ViewGrpcRepository.kt.getBgmList.0.diff"
+        },
+        {
+          "name": "getBgmRecommendVideos",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 46,
+          "stableLine": 56,
+          "oldTokenSha256": "ffedafbdf80a0ce6174aa43c28b320db594f01830d48e4c5c663e79797439650",
+          "stableTokenSha256": "402754998db4125e84b979e6eb265a2c2ac28c37b6e8834604f6b17a4599f7a0",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_data_repository_ViewGrpcRepository.kt.getBgmRecommendVideos.0.diff"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "absentInOld": true,
+      "newNamedFunctions": [
+        {
+          "name": "initialize",
+          "line": 36,
+          "tokenSha256": "52cb7d0621156c5478817079e24f7367013331dc15108fe4d93d4b05c657144f"
+        },
+        {
+          "name": "refresh",
+          "line": 44,
+          "tokenSha256": "65e6caed19e96126acae8e42ac4220d7ec2b49a2fbe0f67a81c424680c6c9761"
+        },
+        {
+          "name": "toggleWish",
+          "line": 58,
+          "tokenSha256": "a924277aae4c9389748e2c07d6a971ad72de2bcadacb31cded86e07c0217b3f2"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "absentInOld": true,
+      "newNamedFunctions": [
+        {
+          "name": "resolveBgmHeatPoints",
+          "line": 6,
+          "tokenSha256": "4f8967f46d918214743e68933b754f0a76d7e711adb66c4d59cade2c0b506080"
+        },
+        {
+          "name": "resolveBgmCommentType",
+          "line": 9,
+          "tokenSha256": "ee717e245504be91f186c9b1564bbfd72156e21b3555a851a1cba27f3d314fc9"
+        },
+        {
+          "name": "resolveBgmHeatRange",
+          "line": 13,
+          "tokenSha256": "64bf9189771da6003d643b9ec6b2d00809970e60d315752857b0cfe89bce24a0"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "absentInOld": true,
+      "newNamedFunctions": [
+        {
+          "name": "BgmHeatChart",
+          "line": 28,
+          "tokenSha256": "13b7a14099e3de1916f58b7f67d6352e38ebd5ceea10aea4d338e1d80834939f"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "8d637e44848bd3bfeaa29a2199d9d68aa3884665bb3650e932d405e4b220ee74",
+      "stableLfSha256": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "selectedMethodDiffs": [
+        {
+          "name": "cancelReply",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1093,
+          "stableLine": 1095,
+          "oldTokenSha256": "043798f6340109fef4ff8cf059b046910fcd23c18c01ab8831c3c0a23d419bbf",
+          "stableTokenSha256": "043798f6340109fef4ff8cf059b046910fcd23c18c01ab8831c3c0a23d419bbf"
+        },
+        {
+          "name": "checkCommentFraud",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1237,
+          "stableLine": 1239,
+          "oldTokenSha256": "6c489ea1fa77f0b439c327344e589b912f39615cc97042b2dec1efb4f50dbc1f",
+          "stableTokenSha256": "6c489ea1fa77f0b439c327344e589b912f39615cc97042b2dec1efb4f50dbc1f"
+        },
+        {
+          "name": "clearForVideoChange",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 251,
+          "stableLine": 253,
+          "oldTokenSha256": "cec0b03664db1829fd77ba6ee4272977b1a8d1889115ec721b5ed74b3b346e74",
+          "stableTokenSha256": "cec0b03664db1829fd77ba6ee4272977b1a8d1889115ec721b5ed74b3b346e74"
+        },
+        {
+          "name": "closeSubReply",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 531,
+          "stableLine": 535,
+          "oldTokenSha256": "e435b7f6fe8cebb457185da83483844f647db1f5d149f23b3585337ae2b73aa3",
+          "stableTokenSha256": "e435b7f6fe8cebb457185da83483844f647db1f5d149f23b3585337ae2b73aa3"
+        },
+        {
+          "name": "closeSubReplyConversation",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 678,
+          "stableLine": 682,
+          "oldTokenSha256": "5e2961d13945a57d71eb73a0ff38f875dc1031510338c36519dab051f5374b6d",
+          "stableTokenSha256": "5e2961d13945a57d71eb73a0ff38f875dc1031510338c36519dab051f5374b6d"
+        },
+        {
+          "name": "deleteComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1274,
+          "stableLine": 1276,
+          "oldTokenSha256": "379cb1ca0dc4f47cf576ab850a7981efcfb2ce6b4bb8e19fd733448a470f82a2",
+          "stableTokenSha256": "379cb1ca0dc4f47cf576ab850a7981efcfb2ce6b4bb8e19fd733448a470f82a2"
+        },
+        {
+          "name": "deleteSubComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1313,
+          "stableLine": 1315,
+          "oldTokenSha256": "c8c89ba694ccb626ce1eb5f4dd8a6e77c2514467ca064632220075ac380805db",
+          "stableTokenSha256": "c8c89ba694ccb626ce1eb5f4dd8a6e77c2514467ca064632220075ac380805db"
+        },
+        {
+          "name": "dismissFraudResult",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1253,
+          "stableLine": 1255,
+          "oldTokenSha256": "0f74372c80768005800c98a9039a1ecfb0360490778abc689615f7ad0b7f5773",
+          "stableTokenSha256": "0f74372c80768005800c98a9039a1ecfb0360490778abc689615f7ad0b7f5773"
+        },
+        {
+          "name": "hateComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1119,
+          "stableLine": 1121,
+          "oldTokenSha256": "5d103981a1427d0a5be1c2faac39a13c7920dbedba0d93c5d8dafe56acc763de",
+          "stableTokenSha256": "5d103981a1427d0a5be1c2faac39a13c7920dbedba0d93c5d8dafe56acc763de"
+        },
+        {
+          "name": "init",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 263,
+          "stableLine": 265,
+          "oldTokenSha256": "7a85784fdba667645a252dec30e3ea8a93309db5e75fece5977f6a99db78877a",
+          "stableTokenSha256": "7a85784fdba667645a252dec30e3ea8a93309db5e75fece5977f6a99db78877a"
+        },
+        {
+          "name": "launchFraudDetection",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1178,
+          "stableLine": 1180,
+          "oldTokenSha256": "5a71a53799d50ffc2baaf0349c3e78a25131e6ba3e5d2783fbc29f1c7f31722c",
+          "stableTokenSha256": "5a71a53799d50ffc2baaf0349c3e78a25131e6ba3e5d2783fbc29f1c7f31722c"
+        },
+        {
+          "name": "likeComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1097,
+          "stableLine": 1099,
+          "oldTokenSha256": "fe4ebd3d581fcd5d00802fb419d45ec3e450cff4f84a4cf403da36e6a092829c",
+          "stableTokenSha256": "fe4ebd3d581fcd5d00802fb419d45ec3e450cff4f84a4cf403da36e6a092829c"
+        },
+        {
+          "name": "loadComments",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 323,
+          "stableLine": 325,
+          "oldTokenSha256": "f5d637ad286b89e6d119d12f1e3ec8ce66d183a1b93e0cc79c823543784f552c",
+          "stableTokenSha256": "ed3c48688caa43f50feda8b12f3b0a10e8c38fc98a856bdd0ba0926c19279de2",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_viewmodel_VideoCommentViewModel.kt.loadComments.0.diff"
+        },
+        {
+          "name": "loadConversationReplies",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 775,
+          "stableLine": 779,
+          "oldTokenSha256": "3560652e51884b54483fecb7e586f445652233338bb0f5fc1edd22b12efe6d96",
+          "stableTokenSha256": "3560652e51884b54483fecb7e586f445652233338bb0f5fc1edd22b12efe6d96"
+        },
+        {
+          "name": "loadMoreSubReplies",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 635,
+          "stableLine": 639,
+          "oldTokenSha256": "5c8a005e5984d9d61d46aabd799704310731d6a077df463b7bbf0620d9960e67",
+          "stableTokenSha256": "5c8a005e5984d9d61d46aabd799704310731d6a077df463b7bbf0620d9960e67"
+        },
+        {
+          "name": "loadSubReplies",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 692,
+          "stableLine": 696,
+          "oldTokenSha256": "e1a76a87d729c7c1051d64bdc75f25595a1b974099141cb9df1bb3c4cfbfaa05",
+          "stableTokenSha256": "e1a76a87d729c7c1051d64bdc75f25595a1b974099141cb9df1bb3c4cfbfaa05"
+        },
+        {
+          "name": "onExternalCommentSent",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 543,
+          "stableLine": 547,
+          "oldTokenSha256": "850e12ba43817c0f7a836514607d30c1b423f514f2c9796ccde9249a959c90e8",
+          "stableTokenSha256": "850e12ba43817c0f7a836514607d30c1b423f514f2c9796ccde9249a959c90e8"
+        },
+        {
+          "name": "openSubReply",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 421,
+          "stableLine": 425,
+          "oldTokenSha256": "932fc8860fae87ea97bf3357ed1d2e593aed18057fc622ae4fe04db191e8396d",
+          "stableTokenSha256": "932fc8860fae87ea97bf3357ed1d2e593aed18057fc622ae4fe04db191e8396d"
+        },
+        {
+          "name": "openSubReplyConversation",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 653,
+          "stableLine": 657,
+          "oldTokenSha256": "fb5604ac5cde780460214ad612263131b33725ec4516f526a570169614aedc43",
+          "stableTokenSha256": "fb5604ac5cde780460214ad612263131b33725ec4516f526a570169614aedc43"
+        },
+        {
+          "name": "openSubReplyFromRoute",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 446,
+          "stableLine": 450,
+          "oldTokenSha256": "9514dc5e03fa4f2921bc96ff49fcae2b07719f7b76cf8e2bd4228e35c7282ed5",
+          "stableTokenSha256": "9514dc5e03fa4f2921bc96ff49fcae2b07719f7b76cf8e2bd4228e35c7282ed5"
+        },
+        {
+          "name": "refreshCurrentMid",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 297,
+          "stableLine": 299,
+          "oldTokenSha256": "5ff9bd2f5aa0c0a443b5adaa539adcdab9880acbfe6cb29511d7011ee6d3d0c0",
+          "stableTokenSha256": "5ff9bd2f5aa0c0a443b5adaa539adcdab9880acbfe6cb29511d7011ee6d3d0c0"
+        },
+        {
+          "name": "reloadCommentsFromStart",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 1337,
+          "stableLine": 1339,
+          "oldTokenSha256": "1c89d83dc143a1a4bbaa14fd426abce52aa7d719b32c59591672d1eaa0fbfff9",
+          "stableTokenSha256": "42e26d2d228773dd296ad4cd0478a90a58af7e7e6326035d83c4dc875f95ab9d",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_viewmodel_VideoCommentViewModel.kt.reloadCommentsFromStart.0.diff"
+        },
+        {
+          "name": "replyTo",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1089,
+          "stableLine": 1091,
+          "oldTokenSha256": "c3b94f0aa01172fb745c3fe454df2574939a4c8505272e4fa3014f8da5967b9d",
+          "stableTokenSha256": "c3b94f0aa01172fb745c3fe454df2574939a4c8505272e4fa3014f8da5967b9d"
+        },
+        {
+          "name": "reportComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1143,
+          "stableLine": 1145,
+          "oldTokenSha256": "323850cbb4dd0f2af9a6546ea704430d744d883cd7167e274583ed0f2165f1b1",
+          "stableTokenSha256": "323850cbb4dd0f2af9a6546ea704430d744d883cd7167e274583ed0f2165f1b1"
+        },
+        {
+          "name": "resolveConversationDialogId",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 854,
+          "stableLine": 858,
+          "oldTokenSha256": "04be356d86fade79bafe3ac09e05629474b54fcd58fb1d09f0d983bc6ef13487",
+          "stableTokenSha256": "04be356d86fade79bafe3ac09e05629474b54fcd58fb1d09f0d983bc6ef13487"
+        },
+        {
+          "name": "resolveLocalConversationItems",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 862,
+          "stableLine": 866,
+          "oldTokenSha256": "5ebced56cd1e88ce7507762517ec65d18c12e932e12d188d2fa8cc803b0c90c6",
+          "stableTokenSha256": "5ebced56cd1e88ce7507762517ec65d18c12e932e12d188d2fa8cc803b0c90c6"
+        },
+        {
+          "name": "resolveSubReplyPageEnd",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 182,
+          "stableLine": 184,
+          "oldTokenSha256": "d37d89fd1fc02fb052d1bdb21d378d8ddc019a68426013a17f4edec50c8e3569",
+          "stableTokenSha256": "d37d89fd1fc02fb052d1bdb21d378d8ddc019a68426013a17f4edec50c8e3569"
+        },
+        {
+          "name": "sendComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 885,
+          "stableLine": 889,
+          "oldTokenSha256": "f57a54e175805e1e72f60bfbcb2720ad6e54251cc02f640f70c1bf9e63727ef5",
+          "stableTokenSha256": "f57a54e175805e1e72f60bfbcb2720ad6e54251cc02f640f70c1bf9e63727ef5"
+        },
+        {
+          "name": "setSortMode",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 307,
+          "stableLine": 309,
+          "oldTokenSha256": "f210327d573f66bb0e079bd9c8682745b50c727e9b7c4d0535385fedb2c44031",
+          "stableTokenSha256": "f210327d573f66bb0e079bd9c8682745b50c727e9b7c4d0535385fedb2c44031"
+        },
+        {
+          "name": "setSubReplySortMode",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 626,
+          "stableLine": 630,
+          "oldTokenSha256": "8480d64f099adf05fa2cadcf8991805e34f090d0a7bc6260886fa5c4f523edf3",
+          "stableTokenSha256": "8480d64f099adf05fa2cadcf8991805e34f090d0a7bc6260886fa5c4f523edf3"
+        },
+        {
+          "name": "shouldApplyCommentSubjectResult",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 54,
+          "stableLine": 55,
+          "oldTokenSha256": "80a2b0e85aa13f3423d79680689b225aefd4431c3ae33dc68b44ee385be744fe",
+          "stableTokenSha256": "80a2b0e85aa13f3423d79680689b225aefd4431c3ae33dc68b44ee385be744fe"
+        },
+        {
+          "name": "shouldApplyConversationReplyResult",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 74,
+          "stableLine": 75,
+          "oldTokenSha256": "f809e347e540492f5f0d64abdc9ceb81c160c71a34e071f7f2612f0ae324566a",
+          "stableTokenSha256": "f809e347e540492f5f0d64abdc9ceb81c160c71a34e071f7f2612f0ae324566a"
+        },
+        {
+          "name": "shouldApplySubReplyResult",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 61,
+          "stableLine": 62,
+          "oldTokenSha256": "d37f1b9fa645a6cff70fd4b42a7d9ad084bda82036206e0d3527ad6c6dcdf5ca",
+          "stableTokenSha256": "d37f1b9fa645a6cff70fd4b42a7d9ad084bda82036206e0d3527ad6c6dcdf5ca"
+        },
+        {
+          "name": "shouldStartRoutedSubReplyOpen",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 223,
+          "stableLine": 225,
+          "oldTokenSha256": "50fc6e5204f81d16c6d3f4accec91fd4c9b6d8d41641be75f8a6031cc9a563b9",
+          "stableTokenSha256": "50fc6e5204f81d16c6d3f4accec91fd4c9b6d8d41641be75f8a6031cc9a563b9"
+        },
+        {
+          "name": "startDissolve",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1266,
+          "stableLine": 1268,
+          "oldTokenSha256": "e80fb28e77673d575e0f93bf0780a84f8d09e0d41d1d84bfdc47a7026219ed5e",
+          "stableTokenSha256": "e80fb28e77673d575e0f93bf0780a84f8d09e0d41d1d84bfdc47a7026219ed5e"
+        },
+        {
+          "name": "startSubDissolve",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1305,
+          "stableLine": 1307,
+          "oldTokenSha256": "5ff4a57464edc61988e847e66d4ad79f59e4f7c1fee8bce59ca4ba4e97c89a7e",
+          "stableTokenSha256": "5ff4a57464edc61988e847e66d4ad79f59e4f7c1fee8bce59ca4ba4e97c89a7e"
+        },
+        {
+          "name": "toggleTopComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1155,
+          "stableLine": 1157,
+          "oldTokenSha256": "50633f080e9d6f23b33e0a6b376527b5d8be3797ec459c1021b8f65d83c7cac1",
+          "stableTokenSha256": "50633f080e9d6f23b33e0a6b376527b5d8be3797ec459c1021b8f65d83c7cac1"
+        },
+        {
+          "name": "uploadCommentPictures",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 1052,
+          "stableLine": 1056,
+          "oldTokenSha256": "0a872ebc1ce73bfc1381f2df4ab11e45f93a0f17c72e981953e10f677a35f9f2",
+          "stableTokenSha256": "0bb4717bff51a8664e03f3180f740200bc2a54446bbfd05de5e9c3ed5bf760f0",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_viewmodel_VideoCommentViewModel.kt.uploadCommentPictures.0.diff"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "5c2a662af64c92d712d9a63c4252ff029634f9999d8fb64e9e495563626d2446",
+      "stableLfSha256": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "selectedMethodDiffs": [
+        {
+          "name": "CommentInputDialog",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 188,
+          "stableLine": 188,
+          "oldTokenSha256": "7ab1eca2d651f152b8da80d8f0803d81bc7f417ecb210749305cd7dc097cdd5b",
+          "stableTokenSha256": "f1d15836942f74dcf4c2569ae701a83786e09e1c755f6f9280c85dc84c6f6cdb",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_ui_components_CommentInputDialog.kt.CommentInputDialog.0.diff"
+        },
+        {
+          "name": "CommentMentionSearchPanel",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 872,
+          "stableLine": 883,
+          "oldTokenSha256": "356c0b09ba8b646fa1498d7c88243d8e21bf9b63f949187b8b4b1712403e17f4",
+          "stableTokenSha256": "356c0b09ba8b646fa1498d7c88243d8e21bf9b63f949187b8b4b1712403e17f4"
+        },
+        {
+          "name": "canPublishCommentDraft",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 173,
+          "stableLine": 173,
+          "oldTokenSha256": "4c8f5af169964a51ad60e5e82f088b66690059e7f8c03d59f2f689c249149945",
+          "stableTokenSha256": "4c8f5af169964a51ad60e5e82f088b66690059e7f8c03d59f2f689c249149945"
+        },
+        {
+          "name": "commentDraftTextFieldValue",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 166,
+          "stableLine": 166,
+          "oldTokenSha256": "04c56c685158c892638771686ebb5e58bc0d3fbe07d2bb45db85d0c361c4a429",
+          "stableTokenSha256": "04c56c685158c892638771686ebb5e58bc0d3fbe07d2bb45db85d0c361c4a429"
+        },
+        {
+          "name": "insertTextAtCursor",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 282,
+          "stableLine": 283,
+          "oldTokenSha256": "ac9940d6711730354a449419151deaaba5b57a4758122a939470de495636a9b3",
+          "stableTokenSha256": "ac9940d6711730354a449419151deaaba5b57a4758122a939470de495636a9b3"
+        },
+        {
+          "name": "requestInputFocusWithRetry",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 289,
+          "stableLine": 290,
+          "oldTokenSha256": "ff573c241b0e5ca2bee274d7f5e797bb95315252395ce50a8fd2a8d31bbfc9b7",
+          "stableTokenSha256": "ff573c241b0e5ca2bee274d7f5e797bb95315252395ce50a8fd2a8d31bbfc9b7"
+        },
+        {
+          "name": "resolveCommentInputDialogLayoutPolicy",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 110,
+          "stableLine": 110,
+          "oldTokenSha256": "744f9e72fe915ed6c0e651e8a647c01cb9ea671b1b51197c0e69dab47b9636ad",
+          "stableTokenSha256": "744f9e72fe915ed6c0e651e8a647c01cb9ea671b1b51197c0e69dab47b9636ad"
+        },
+        {
+          "name": "resolveCommentProgressInsertText",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 162,
+          "stableLine": 162,
+          "oldTokenSha256": "7be8df8fa66d737ac84fbf5a5bb5bd9b6be13f53e021b5ed540c1af42712c68a",
+          "stableTokenSha256": "7be8df8fa66d737ac84fbf5a5bb5bd9b6be13f53e021b5ed540c1af42712c68a"
+        },
+        {
+          "name": "shouldAutoShowCommentKeyboard",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 154,
+          "stableLine": 154,
+          "oldTokenSha256": "d654c93c5964f89c9aa6f4d792e4db95d070411445339edb62faf1c57ffb50de",
+          "stableTokenSha256": "d654c93c5964f89c9aa6f4d792e4db95d070411445339edb62faf1c57ffb50de"
+        },
+        {
+          "name": "updateTextFieldValue",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 264,
+          "stableLine": 265,
+          "oldTokenSha256": "d16eabff10f45deae74def367f81aa081f4f66432e460825274c2f5f36b7f3ba",
+          "stableTokenSha256": "d16eabff10f45deae74def367f81aa081f4f66432e460825274c2f5f36b7f3ba"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "stableLfSha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "selectedMethodDiffs": [
+        {
+          "name": "CommentListHeader",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 73,
+          "stableLine": 73,
+          "oldTokenSha256": "23bf9fe1df94d760aca5f88c74ace0e2111a1f54dc2459944ff79c17d4673383",
+          "stableTokenSha256": "23bf9fe1df94d760aca5f88c74ace0e2111a1f54dc2459944ff79c17d4673383"
+        },
+        {
+          "name": "CommentListTitle",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 91,
+          "stableLine": 91,
+          "oldTokenSha256": "54cfdfe47e71fbd171da26529a4b8a62a6383e086b97a475d998cb99eb1bc16d",
+          "stableTokenSha256": "54cfdfe47e71fbd171da26529a4b8a62a6383e086b97a475d998cb99eb1bc16d"
+        },
+        {
+          "name": "CommentSortHeader",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 116,
+          "stableLine": 116,
+          "oldTokenSha256": "d3a80a5ff68879b287be0e0c61584104ac9ad23bc888beede0110fc00be19bde",
+          "stableTokenSha256": "d3a80a5ff68879b287be0e0c61584104ac9ad23bc888beede0110fc00be19bde"
+        },
+        {
+          "name": "hasCommentSortIndicatorScaleClearance",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 45,
+          "stableLine": 45,
+          "oldTokenSha256": "a6be5b81d304cf7d01a03c24c73e2edfd01b57b4366979b6d1b66922c1dd812d",
+          "stableTokenSha256": "a6be5b81d304cf7d01a03c24c73e2edfd01b57b4366979b6d1b66922c1dd812d"
+        },
+        {
+          "name": "resolveCommentSortDockViewportOverflowDp",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 56,
+          "stableLine": 56,
+          "oldTokenSha256": "8a99bfb2d251ee43550f1eb0b501796f9e5ac6152ce3d3e571124c274c53ab94",
+          "stableTokenSha256": "8a99bfb2d251ee43550f1eb0b501796f9e5ac6152ce3d3e571124c274c53ab94"
+        },
+        {
+          "name": "resolveCommentSortSegmentedControlSpec",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 37,
+          "stableLine": 37,
+          "oldTokenSha256": "cd386ca919eee9e6a1d1f9f18560b0a0ed1e4baf9cef5b3c63967b109732cb72",
+          "stableTokenSha256": "cd386ca919eee9e6a1d1f9f18560b0a0ed1e4baf9cef5b3c63967b109732cb72"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "absentInOld": true,
+      "newNamedFunctions": [
+        {
+          "name": "BgmDetailScreen",
+          "line": 42,
+          "tokenSha256": "b4aef732043ad67511159b2fc744e02de90631d9ddec782f21325e5bc1e5712e"
+        },
+        {
+          "name": "compose",
+          "line": 82,
+          "tokenSha256": "b9821bbb80ebdadfaf54cb4e9fd94d3d6f8a865321d75e73dd7ec36676f99a6b"
+        },
+        {
+          "name": "BgmDetailContent",
+          "line": 119,
+          "tokenSha256": "54f5be57ff6f1ad51970b05c9886795fa276dda044b2a2bda5811a8978f5559a"
+        },
+        {
+          "name": "BgmInfoCard",
+          "line": 249,
+          "tokenSha256": "444ea376bf17cec160210746cc7d6f579fb52cb1c35e6c8d75404a8483f6e899"
+        },
+        {
+          "name": "copy",
+          "line": 258,
+          "tokenSha256": "75572a8ff0cc580fea292f900a68af57c244750a6dbc9a265ace94eb8f8e62db"
+        },
+        {
+          "name": "BgmVideos",
+          "line": 320,
+          "tokenSha256": "4161c01f2e27d1a32e0807746b039a9dd95487611826b81907516f5abf9e67ff"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "stableLfSha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "selectedMethodDiffs": [
+        {
+          "name": "parseStatus",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 112,
+          "stableLine": 112,
+          "oldTokenSha256": "70a655ec6fe7ae3c7dbe78c88b64f1f9fbb88f543d3af8f4dd91a227409fc937",
+          "stableTokenSha256": "70a655ec6fe7ae3c7dbe78c88b64f1f9fbb88f543d3af8f4dd91a227409fc937"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "stableLfSha256": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "selectedMethodDiffs": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "stableLfSha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "selectedMethodDiffs": [
+        {
+          "name": "clearAllRecords",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 132,
+          "stableLine": 132,
+          "oldTokenSha256": "cf6ea124189f832b94a4f07fcccd108b3114361d10d57a852af0adea5e1747e6",
+          "stableTokenSha256": "cf6ea124189f832b94a4f07fcccd108b3114361d10d57a852af0adea5e1747e6"
+        },
+        {
+          "name": "deleteBiliComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 105,
+          "stableLine": 105,
+          "oldTokenSha256": "ecc11088a055de39ce81acdc5879e1e0e25a7ad73fdca2331d2f49d8c8f84435",
+          "stableTokenSha256": "ecc11088a055de39ce81acdc5879e1e0e25a7ad73fdca2331d2f49d8c8f84435"
+        },
+        {
+          "name": "deleteLocalRecord",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 128,
+          "stableLine": 128,
+          "oldTokenSha256": "adea54d61607ba8b7816362592bb854298eef89444d55efb310a4d2722c4460a",
+          "stableTokenSha256": "adea54d61607ba8b7816362592bb854298eef89444d55efb310a4d2722c4460a"
+        },
+        {
+          "name": "exportToJson",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 136,
+          "stableLine": 136,
+          "oldTokenSha256": "cc1831ae889aa53d11e1c136e430651b1e3b05747c808fb73d500fd0f5898dcc",
+          "stableTokenSha256": "cc1831ae889aa53d11e1c136e430651b1e3b05747c808fb73d500fd0f5898dcc"
+        },
+        {
+          "name": "getAllRecordsFlow",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 71,
+          "stableLine": 71,
+          "oldTokenSha256": "a22f2274340eae55b3e779151d2fe49a4aa055516fb26fd9d8c0604dd1c2f342",
+          "stableTokenSha256": "a22f2274340eae55b3e779151d2fe49a4aa055516fb26fd9d8c0604dd1c2f342"
+        },
+        {
+          "name": "getDao",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 24,
+          "stableLine": 24,
+          "oldTokenSha256": "e84ca9e98110ac8dba1887adf5f662f4e15373c0694f70da8686d2e74b02ca3f",
+          "stableTokenSha256": "e84ca9e98110ac8dba1887adf5f662f4e15373c0694f70da8686d2e74b02ca3f"
+        },
+        {
+          "name": "importFromJson",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 141,
+          "stableLine": 141,
+          "oldTokenSha256": "d6e5672405f56c7fe6a707feccbe1ad0ce48a0bff58d906b2fbd4b30242cd347",
+          "stableTokenSha256": "d6e5672405f56c7fe6a707feccbe1ad0ce48a0bff58d906b2fbd4b30242cd347"
+        },
+        {
+          "name": "recheckRecord",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 78,
+          "stableLine": 78,
+          "oldTokenSha256": "beea05852823d150baf3832a6ea83d2a9ab4f706618a103ffa39636fdf7321a5",
+          "stableTokenSha256": "beea05852823d150baf3832a6ea83d2a9ab4f706618a103ffa39636fdf7321a5"
+        },
+        {
+          "name": "saveRecord",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 30,
+          "stableLine": 30,
+          "oldTokenSha256": "ff353ad629f98aa55bea98efa0c2e0b9e4071ba0384feeef8cc290d6f0821fe4",
+          "stableTokenSha256": "ff353ad629f98aa55bea98efa0c2e0b9e4071ba0384feeef8cc290d6f0821fe4"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "stableLfSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "selectedMethodDiffs": [
+        {
+          "name": "insertCommentMentionText",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 26,
+          "stableLine": 26,
+          "oldTokenSha256": "13f66a6c59c4263baf5c9c2e6d732934f0f4690bbecc5937ea1ce845080656de",
+          "stableTokenSha256": "13f66a6c59c4263baf5c9c2e6d732934f0f4690bbecc5937ea1ce845080656de"
+        },
+        {
+          "name": "resolveActiveCommentMentionQuery",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 10,
+          "stableLine": 10,
+          "oldTokenSha256": "1acdaaa0d3c6700c0b4d0bcd7f5d82c14528874210cc2a98fab4841236c274a2",
+          "stableTokenSha256": "1acdaaa0d3c6700c0b4d0bcd7f5d82c14528874210cc2a98fab4841236c274a2"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "stableLfSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "selectedMethodDiffs": [
+        {
+          "name": "resolveCommentPageResolution",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 10,
+          "stableLine": 10,
+          "oldTokenSha256": "32c31cbf4c46e5d667902cce0721c60d5cbebea3a590a81d940dac5f4fd146a4",
+          "stableTokenSha256": "32c31cbf4c46e5d667902cce0721c60d5cbebea3a590a81d940dac5f4fd146a4"
+        }
+      ]
+    },
+    {
+      "source": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "stableLfSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "selectedMethodDiffs": [
+        {
+          "name": "folmeExpandEnterTransition",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 75,
+          "stableLine": 75,
+          "oldTokenSha256": "61161412c82b10a5dcc28e5b2643b033c37d3b16381d68bcc820e4cac79119b3",
+          "stableTokenSha256": "61161412c82b10a5dcc28e5b2643b033c37d3b16381d68bcc820e4cac79119b3"
+        },
+        {
+          "name": "folmeExpandExitTransition",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 87,
+          "stableLine": 87,
+          "oldTokenSha256": "e4d6f357551ff5380b9ae07862549f220b7734582fabd295f0548e2344be5de9",
+          "stableTokenSha256": "e4d6f357551ff5380b9ae07862549f220b7734582fabd295f0548e2344be5de9"
+        },
+        {
+          "name": "folmeExpandFadeSpec",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 72,
+          "stableLine": 72,
+          "oldTokenSha256": "eb82d8f1e54e9cca77d43819d09a7e59467943d9afc22c957b867c7a8d2ac0c6",
+          "stableTokenSha256": "eb82d8f1e54e9cca77d43819d09a7e59467943d9afc22c957b867c7a8d2ac0c6"
+        },
+        {
+          "name": "folmeExpandSpringSpec",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 70,
+          "stableLine": 70,
+          "oldTokenSha256": "ef25f44f2e3606e5fa685d7c418349922118d8bf1a4e78d271e07053f4a5acb7",
+          "stableTokenSha256": "ef25f44f2e3606e5fa685d7c418349922118d8bf1a4e78d271e07053f4a5acb7"
+        },
+        {
+          "name": "resolveCommentVerticalContentRevealMotionSpec",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 26,
+          "stableLine": 26,
+          "oldTokenSha256": "6d6e455da20962095ac2958aac313c3469024f369d2235ed3d6b11cc7a9fa276",
+          "stableTokenSha256": "6d6e455da20962095ac2958aac313c3469024f369d2235ed3d6b11cc7a9fa276"
+        },
+        {
+          "name": "resolveDetailVerticalContentRevealMotionSpec",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 36,
+          "stableLine": 36,
+          "oldTokenSha256": "154d42cd93cf78990779a7d316d86137a3af3a135bb3d4b4e144a61686949cb3",
+          "stableTokenSha256": "154d42cd93cf78990779a7d316d86137a3af3a135bb3d4b4e144a61686949cb3"
+        },
+        {
+          "name": "verticalContentRevealEnterTransition",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 51,
+          "stableLine": 51,
+          "oldTokenSha256": "d2e52ba4b3b721dc9647cfa6a0de485c1af687c7abfe225b8e6800dbbdada169",
+          "stableTokenSha256": "d2e52ba4b3b721dc9647cfa6a0de485c1af687c7abfe225b8e6800dbbdada169"
+        },
+        {
+          "name": "verticalContentRevealExitTransition",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 60,
+          "stableLine": 60,
+          "oldTokenSha256": "7d0596d5a7ec73d4c58feb7d9d91cabfe56e382caa6ba36d3302d8d484b309ba",
+          "stableTokenSha256": "7d0596d5a7ec73d4c58feb7d9d91cabfe56e382caa6ba36d3302d8d484b309ba"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "7c6908ef0b6738f97ce3ea0f3eb3f6b5df66ea7c00a6bf6519fd476fab261d14",
+      "stableLfSha256": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "selectedMethodDiffs": [
+        {
+          "name": "EmptyState",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 131,
+          "stableLine": 132,
+          "oldTokenSha256": "3d4d11c5d392a07261efdd850c797bce3f0bed682e2fefb588365cd896af1d9d",
+          "stableTokenSha256": "370d8ffa59d5c7e3f1bdd4874bfac34f29cd9704af80e0e7b06e65d18596fbc3",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_core_ui_LottieComponents.kt.EmptyState.0.diff"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "fa087c65a13bc0de384dbf751a5f403263d2149739ce1767ecd3eb6404ccb7cb",
+      "stableLfSha256": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "selectedMethodDiffs": [
+        {
+          "name": "BgmDetailCard",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 1905,
+          "stableLine": 2182,
+          "oldTokenSha256": "f962c6a2b3fd89f9c1b4c3b04561bb167c2c91e88a73e28dca49759e4737921a",
+          "stableTokenSha256": "0f94fae097c46e2c09ef00b5163632620cadee358405a0a0c8a94581f1f90e1a",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_ui_section_VideoInfoSection.kt.BgmDetailCard.0.diff"
+        },
+        {
+          "name": "BgmDetailCardSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2012,
+          "stableLine": 2291,
+          "oldTokenSha256": "0abe4f35bd268750b115b154039dfbb25b81746a6f04d4b15c8117de397714a6",
+          "stableTokenSha256": "0abe4f35bd268750b115b154039dfbb25b81746a6f04d4b15c8117de397714a6"
+        },
+        {
+          "name": "BgmDetailCover",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2075,
+          "stableLine": 2354,
+          "oldTokenSha256": "6430ab195e3efb2b542e05029b0cae21925340dc3867e2085e84d5d7a06693e2",
+          "stableTokenSha256": "6430ab195e3efb2b542e05029b0cae21925340dc3867e2085e84d5d7a06693e2"
+        },
+        {
+          "name": "BgmDiscoveryRelatedHeader",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1714,
+          "stableLine": 1991,
+          "oldTokenSha256": "7a6e41281f0f28e9dbd2767c05e2ff26557f2cabfa4b56eb41d3ce316bbe99d7",
+          "stableTokenSha256": "7a6e41281f0f28e9dbd2767c05e2ff26557f2cabfa4b56eb41d3ce316bbe99d7"
+        },
+        {
+          "name": "BgmInfoRow",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1394,
+          "stableLine": 1671,
+          "oldTokenSha256": "7c902636014df9cae48f4824875c4c7d0cd72686d50556d1f2d14bbbd9261aeb",
+          "stableTokenSha256": "7c902636014df9cae48f4824875c4c7d0cd72686d50556d1f2d14bbbd9261aeb"
+        },
+        {
+          "name": "BgmRecommendVideoCardRow",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1731,
+          "stableLine": 2008,
+          "oldTokenSha256": "58660a03d6b20ced8a5cfc280d57b5a403e29964559720a3bf0b1b2e02051ebe",
+          "stableTokenSha256": "58660a03d6b20ced8a5cfc280d57b5a403e29964559720a3bf0b1b2e02051ebe"
+        },
+        {
+          "name": "BgmRecommendVideoSkeletonRow",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1772,
+          "stableLine": 2049,
+          "oldTokenSha256": "2243dff5bac41a882b0633018bc573735012ee1468666966e415bf3fe7854528",
+          "stableTokenSha256": "2243dff5bac41a882b0633018bc573735012ee1468666966e415bf3fe7854528"
+        },
+        {
+          "name": "BgmSelectionSheet",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1462,
+          "stableLine": 1739,
+          "oldTokenSha256": "a301671a7b1cac60785f8eef43a439c05d3047fafa2efe912556b66036f4d595",
+          "stableTokenSha256": "a301671a7b1cac60785f8eef43a439c05d3047fafa2efe912556b66036f4d595"
+        },
+        {
+          "name": "BgmSelectionStrip",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1822,
+          "stableLine": 2099,
+          "oldTokenSha256": "da8b8f361a9334cf76f75a1a444ab0e2b1e51a0051090c9badd94a132ee44c4f",
+          "stableTokenSha256": "da8b8f361a9334cf76f75a1a444ab0e2b1e51a0051090c9badd94a132ee44c4f"
+        },
+        {
+          "name": "InlineBgmSection",
+          "ordinal": 0,
+          "status": "changed",
+          "oldLine": 1337,
+          "stableLine": 1614,
+          "oldTokenSha256": "9b31b139118867e912c500ab5ffb7e2bde7781e265970f80c2bea46b201064ce",
+          "stableTokenSha256": "c282fd274ae0c553603fa50ed88f767951af06120e9471763307e7ed4d48f7e6",
+          "exactMethodDiffPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\method-diffs\\app_src_main_java_com_android_purebilibili_feature_video_ui_section_VideoInfoSection.kt.InlineBgmSection.0.diff"
+        },
+        {
+          "name": "bgmRecommendVideoToVideoItem",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 1801,
+          "stableLine": 2078,
+          "oldTokenSha256": "cfb824a06136c3a2b2c57d7fd92ad784a74f4ceb6dd8294acb21b68a35b80c9f",
+          "stableTokenSha256": "cfb824a06136c3a2b2c57d7fd92ad784a74f4ceb6dd8294acb21b68a35b80c9f"
+        },
+        {
+          "name": "loadMoreBgmRecommendations",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2229,
+          "stableLine": 2513,
+          "oldTokenSha256": "9ff5404994c30e84e76f7889beac4fd66209e9f2bcdf1f3c3da23734f346cb7a",
+          "stableTokenSha256": "9ff5404994c30e84e76f7889beac4fd66209e9f2bcdf1f3c3da23734f346cb7a"
+        },
+        {
+          "name": "mergeBgmRecommendedVideos",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2276,
+          "stableLine": 2560,
+          "oldTokenSha256": "e11abc33ba6a33266c10b0be8d831de10ce78cee47037f10c1e0445a12110d83",
+          "stableTokenSha256": "e11abc33ba6a33266c10b0be8d831de10ce78cee47037f10c1e0445a12110d83"
+        },
+        {
+          "name": "resolveBgmCommentText",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2132,
+          "stableLine": 2411,
+          "oldTokenSha256": "a13e7695b7e9ac8c17045f7fe04a1b5caa88e8a00824423c02b8da366627ea7d",
+          "stableTokenSha256": "a13e7695b7e9ac8c17045f7fe04a1b5caa88e8a00824423c02b8da366627ea7d"
+        },
+        {
+          "name": "resolveBgmItemKey",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2181,
+          "stableLine": 2465,
+          "oldTokenSha256": "5a20a390cccd6160c721a3909be5eee66d5276c75cbeba8cde0a3c425b0e5894",
+          "stableTokenSha256": "5a20a390cccd6160c721a3909be5eee66d5276c75cbeba8cde0a3c425b0e5894"
+        },
+        {
+          "name": "resolveBgmRecommendRowItemIndex",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2147,
+          "stableLine": 2426,
+          "oldTokenSha256": "e89a71510d084cf9244518bd71d361b9c27741ac8e07894991cc7d9b20d4a066",
+          "stableTokenSha256": "e89a71510d084cf9244518bd71d361b9c27741ac8e07894991cc7d9b20d4a066"
+        },
+        {
+          "name": "resolveBgmRecommendRowKey",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2137,
+          "stableLine": 2416,
+          "oldTokenSha256": "c39bbe80c13f6349c01eae5f47c706e16bff919c42825bbfab04fcc6068eeea9",
+          "stableTokenSha256": "c39bbe80c13f6349c01eae5f47c706e16bff919c42825bbfab04fcc6068eeea9"
+        },
+        {
+          "name": "resolveBgmScoreText",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2111,
+          "stableLine": 2390,
+          "oldTokenSha256": "d43a75a34c0045e43873ca80b6e3426c38dbb0b05f99edf3974d36af6d40a0e7",
+          "stableTokenSha256": "d43a75a34c0045e43873ca80b6e3426c38dbb0b05f99edf3974d36af6d40a0e7"
+        },
+        {
+          "name": "resolveBgmStatLine",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2119,
+          "stableLine": 2398,
+          "oldTokenSha256": "8751837ec50236dc60867374ae16a4135bae2bfbfae68319f4f0e8ba97518556",
+          "stableTokenSha256": "8751837ec50236dc60867374ae16a4135bae2bfbfae68319f4f0e8ba97518556"
+        },
+        {
+          "name": "resolveQueryLongParam",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2160,
+          "stableLine": 2444,
+          "oldTokenSha256": "189ae77b70a8ef04517669cc78403037b0485a7050870b1d585b55dccc2b4ffd",
+          "stableTokenSha256": "189ae77b70a8ef04517669cc78403037b0485a7050870b1d585b55dccc2b4ffd"
+        },
+        {
+          "name": "resolveUnavailableBgmStatLine",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2128,
+          "stableLine": 2407,
+          "oldTokenSha256": "cbd0f71e8c55d59169e9dd9aa35b00844ea23028768534b5a94ec1155d229224",
+          "stableTokenSha256": "cbd0f71e8c55d59169e9dd9aa35b00844ea23028768534b5a94ec1155d229224"
+        },
+        {
+          "name": "shouldLoadBgmDiscoveryItem",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2192,
+          "stableLine": 2476,
+          "oldTokenSha256": "f8253ec422dd143f37403402cfdd7cfa80083aec1cb0976c2b97c833a7e8c2b4",
+          "stableTokenSha256": "f8253ec422dd143f37403402cfdd7cfa80083aec1cb0976c2b97c833a7e8c2b4"
+        },
+        {
+          "name": "shouldLoadMoreBgmRecommendations",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2216,
+          "stableLine": 2500,
+          "oldTokenSha256": "5fc00922e0c677f5284aa2a1ac940a3dc2c11e666e1e1cc4ae4cd1e8544197c7",
+          "stableTokenSha256": "5fc00922e0c677f5284aa2a1ac940a3dc2c11e666e1e1cc4ae4cd1e8544197c7"
+        },
+        {
+          "name": "shouldShowBgmDetailSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2203,
+          "stableLine": 2487,
+          "oldTokenSha256": "d6291dd61210413a1ce59d4bc0309e63a28dba462d6ca6fbb4a271381b9d57b2",
+          "stableTokenSha256": "d6291dd61210413a1ce59d4bc0309e63a28dba462d6ca6fbb4a271381b9d57b2"
+        },
+        {
+          "name": "shouldShowInitialBgmRecommendationPlaceholders",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 2209,
+          "stableLine": 2493,
+          "oldTokenSha256": "5afec68b7b807b63735032c5f2dd18ba8c56d06f086157a05bce551cc39fc2eb",
+          "stableTokenSha256": "5afec68b7b807b63735032c5f2dd18ba8c56d06f086157a05bce551cc39fc2eb"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "stableLfSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "selectedMethodDiffs": [
+        {
+          "name": "LocalNavigationBackHandler",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 9,
+          "stableLine": 9,
+          "oldTokenSha256": "7e27d981b0305da0b5149085e4c1565f69213f5503ec7841a9781809ffbd2ea5",
+          "stableTokenSha256": "7e27d981b0305da0b5149085e4c1565f69213f5503ec7841a9781809ffbd2ea5"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "stableLfSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "selectedMethodDiffs": [
+        {
+          "name": "VideoCardSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 28,
+          "stableLine": 28,
+          "oldTokenSha256": "0cc1353854bb0ea46b0790d0725bcfea7242fa563fd3fe4057bde6fa9828fd9e",
+          "stableTokenSha256": "0cc1353854bb0ea46b0790d0725bcfea7242fa563fd3fe4057bde6fa9828fd9e"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "stableLfSha256": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "selectedMethodDiffs": [
+        {
+          "name": "action",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 51,
+          "stableLine": 51,
+          "oldTokenSha256": "24c210fded6e3de31f5e46323d2d0a66f2280958a6f5d8cf88577a059bcc4b5a",
+          "stableTokenSha256": "24c210fded6e3de31f5e46323d2d0a66f2280958a6f5d8cf88577a059bcc4b5a"
+        },
+        {
+          "name": "compactIcon",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 45,
+          "stableLine": 45,
+          "oldTokenSha256": "267e6b5002c40b113175b20898523722d6dad0a9b67ad2ffd4b50c316dbc43dd",
+          "stableTokenSha256": "267e6b5002c40b113175b20898523722d6dad0a9b67ad2ffd4b50c316dbc43dd"
+        },
+        {
+          "name": "contentCard",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 21,
+          "stableLine": 21,
+          "oldTokenSha256": "351904bd1f876d8c4766922ec6b19ecd20de083d00aa40bf188059e82f845a6e",
+          "stableTokenSha256": "351904bd1f876d8c4766922ec6b19ecd20de083d00aa40bf188059e82f845a6e"
+        },
+        {
+          "name": "field",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 33,
+          "stableLine": 33,
+          "oldTokenSha256": "c6153d024a8931a909fd705c5e7b492aa1bf077036c2ad4152b2a4b2d2f25f77",
+          "stableTokenSha256": "c6153d024a8931a909fd705c5e7b492aa1bf077036c2ad4152b2a4b2d2f25f77"
+        },
+        {
+          "name": "leadingIcon",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 39,
+          "stableLine": 39,
+          "oldTokenSha256": "51e41deb88bd239934d3263bf9eb520b478f028db80e1a26aa0cae6d46098762",
+          "stableTokenSha256": "51e41deb88bd239934d3263bf9eb520b478f028db80e1a26aa0cae6d46098762"
+        },
+        {
+          "name": "media",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 27,
+          "stableLine": 27,
+          "oldTokenSha256": "3bde1a4c3302045985478808a2c521b0cba2a1d2e22c5b84b4ab9a2ad15e9442",
+          "stableTokenSha256": "3bde1a4c3302045985478808a2c521b0cba2a1d2e22c5b84b4ab9a2ad15e9442"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "stableLfSha256": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "selectedMethodDiffs": [
+        {
+          "name": "RelatedVideoGridRowSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 243,
+          "stableLine": 243,
+          "oldTokenSha256": "f45d22b39b8e3e51e07f0d89fb5c32abca74f79b6b41d61e5cded84e3a3beb5a",
+          "stableTokenSha256": "f45d22b39b8e3e51e07f0d89fb5c32abca74f79b6b41d61e5cded84e3a3beb5a"
+        },
+        {
+          "name": "RelatedVideoItemSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 264,
+          "stableLine": 264,
+          "oldTokenSha256": "991bd213a3ec2bc4ee8b9c616ebb28d3781e16300faefaed9f69fc5b3e542f90",
+          "stableTokenSha256": "991bd213a3ec2bc4ee8b9c616ebb28d3781e16300faefaed9f69fc5b3e542f90"
+        },
+        {
+          "name": "ShimmerContainer",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 45,
+          "stableLine": 45,
+          "oldTokenSha256": "32696f4f622eea6d385c2f863fb11a87432af63005f1fe60d0962065d25de905",
+          "stableTokenSha256": "32696f4f622eea6d385c2f863fb11a87432af63005f1fe60d0962065d25de905"
+        },
+        {
+          "name": "SkeletonBlock",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 298,
+          "stableLine": 298,
+          "oldTokenSha256": "579b9186b18235395faa8fe2346a1f6c69c0e73ebb94321a31e143ce844a23dd",
+          "stableTokenSha256": "579b9186b18235395faa8fe2346a1f6c69c0e73ebb94321a31e143ce844a23dd"
+        },
+        {
+          "name": "SkeletonBox",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 60,
+          "stableLine": 60,
+          "oldTokenSha256": "87b9a79f93e02b1c70eb833bd8f40ffcffdb73e56f54483bed964397fe809837",
+          "stableTokenSha256": "87b9a79f93e02b1c70eb833bd8f40ffcffdb73e56f54483bed964397fe809837"
+        },
+        {
+          "name": "SkeletonCircle",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 73,
+          "stableLine": 73,
+          "oldTokenSha256": "7c9adac7f7248c0da50d1bf67099ce837225921ee3d212697bb5f1177ba2adbd",
+          "stableTokenSha256": "7c9adac7f7248c0da50d1bf67099ce837225921ee3d212697bb5f1177ba2adbd"
+        },
+        {
+          "name": "VideoDetailActionButtonsSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 204,
+          "stableLine": 204,
+          "oldTokenSha256": "b134253c78fccfb134941d11d37b35830cf40c8964d51b29d46ef2298b8e784f",
+          "stableTokenSha256": "b134253c78fccfb134941d11d37b35830cf40c8964d51b29d46ef2298b8e784f"
+        },
+        {
+          "name": "VideoDetailRelatedHeaderSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 230,
+          "stableLine": 230,
+          "oldTokenSha256": "0778e8b2d31c07623cd020dd2a25565b41b98b2d55f3e3c53657f4cb3d183ecc",
+          "stableTokenSha256": "0778e8b2d31c07623cd020dd2a25565b41b98b2d55f3e3c53657f4cb3d183ecc"
+        },
+        {
+          "name": "VideoDetailSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 81,
+          "stableLine": 81,
+          "oldTokenSha256": "c8a5ac408c754c9a41868c42c56e6fb35c62f94578197cfbca48df429b03f433",
+          "stableTokenSha256": "c8a5ac408c754c9a41868c42c56e6fb35c62f94578197cfbca48df429b03f433"
+        },
+        {
+          "name": "VideoDetailTabBarSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 110,
+          "stableLine": 110,
+          "oldTokenSha256": "29eb78c169d70213f1f6dbbdf0117c3e04c0d2ed26a7f892d8ce5c5ec5a89e66",
+          "stableTokenSha256": "29eb78c169d70213f1f6dbbdf0117c3e04c0d2ed26a7f892d8ce5c5ec5a89e66"
+        },
+        {
+          "name": "VideoDetailTitleInfoSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 165,
+          "stableLine": 165,
+          "oldTokenSha256": "eddcc3bc852e680d3f3d62dd37b69c10a53d0a8f21c78e8f28f496c3020d5959",
+          "stableTokenSha256": "eddcc3bc852e680d3f3d62dd37b69c10a53d0a8f21c78e8f28f496c3020d5959"
+        },
+        {
+          "name": "VideoDetailUpInfoSkeleton",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 146,
+          "stableLine": 146,
+          "oldTokenSha256": "fcebfad830dca8447abd7ce37b1e6a7ec73fd9c4ed14d4fff4c85505c12bc791",
+          "stableTokenSha256": "fcebfad830dca8447abd7ce37b1e6a7ec73fd9c4ed14d4fff4c85505c12bc791"
+        },
+        {
+          "name": "rememberVideoSkeletonBlockColor",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 331,
+          "stableLine": 331,
+          "oldTokenSha256": "d6c850163bc1a8c6504dbd3e5d47387484da47ef94bb7a78fdca2054994c7589",
+          "stableTokenSha256": "d6c850163bc1a8c6504dbd3e5d47387484da47ef94bb7a78fdca2054994c7589"
+        },
+        {
+          "name": "rememberVideoSkeletonPulse",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 310,
+          "stableLine": 310,
+          "oldTokenSha256": "cb7bb03c7f43a17786e59aefbec1c4fca914b7fdec34029210697698d2c9686c",
+          "stableTokenSha256": "cb7bb03c7f43a17786e59aefbec1c4fca914b7fdec34029210697698d2c9686c"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "0b40c4714092269b39889cfef743585221414c1a1fe0afd1f50542e5e6df6304",
+      "stableLfSha256": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "selectedMethodDiffs": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "stableLfSha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "selectedMethodDiffs": [
+        {
+          "name": "checkCommentFraud",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 53,
+          "stableLine": 53,
+          "oldTokenSha256": "87308e6b20c7ef0a05222590e4a463499b90894d2ac8667174333aa88f58f974",
+          "stableTokenSha256": "87308e6b20c7ef0a05222590e4a463499b90894d2ac8667174333aa88f58f974"
+        },
+        {
+          "name": "closeConversation",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 216,
+          "stableLine": 216,
+          "oldTokenSha256": "6cafe0e7f3d919848fe7df0860a24271fb423172215f0bd64a40643a74600d3c",
+          "stableTokenSha256": "6cafe0e7f3d919848fe7df0860a24271fb423172215f0bd64a40643a74600d3c"
+        },
+        {
+          "name": "deleteComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 300,
+          "stableLine": 300,
+          "oldTokenSha256": "b7b0898e55f945cbe04e47258bef151eaa35717ec66f85637a93854b39cedc2f",
+          "stableTokenSha256": "b7b0898e55f945cbe04e47258bef151eaa35717ec66f85637a93854b39cedc2f"
+        },
+        {
+          "name": "dismissFraudResult",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 81,
+          "stableLine": 81,
+          "oldTokenSha256": "ee52483c4c6e5539ec67bd0d65036979e919109de66e5b227ba641fde22be639",
+          "stableTokenSha256": "ee52483c4c6e5539ec67bd0d65036979e919109de66e5b227ba641fde22be639"
+        },
+        {
+          "name": "hateComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 285,
+          "stableLine": 285,
+          "oldTokenSha256": "acd362ccb6003b3e0798a0cd1a2dd783e8d4789066f2b2fc5165356568f8dc9f",
+          "stableTokenSha256": "acd362ccb6003b3e0798a0cd1a2dd783e8d4789066f2b2fc5165356568f8dc9f"
+        },
+        {
+          "name": "hideReplyInput",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 225,
+          "stableLine": 225,
+          "oldTokenSha256": "389ba182e7602b51b040ce4f2f0434b66dc92f0b30ce408938b52edf5935908a",
+          "stableTokenSha256": "389ba182e7602b51b040ce4f2f0434b66dc92f0b30ce408938b52edf5935908a"
+        },
+        {
+          "name": "likeComment",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 270,
+          "stableLine": 270,
+          "oldTokenSha256": "958954a433b069ed15d43070858b7aa324ada2077db42985a0c675e57694c987",
+          "stableTokenSha256": "958954a433b069ed15d43070858b7aa324ada2077db42985a0c675e57694c987"
+        },
+        {
+          "name": "loadInitial",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 91,
+          "stableLine": 91,
+          "oldTokenSha256": "bdea6f8411ec36c2c9f49eb58f66a69a5bed70ddf2ff5079d7d96eb6c10d6187",
+          "stableTokenSha256": "bdea6f8411ec36c2c9f49eb58f66a69a5bed70ddf2ff5079d7d96eb6c10d6187"
+        },
+        {
+          "name": "loadMore",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 128,
+          "stableLine": 128,
+          "oldTokenSha256": "1d551d3cb45b556575393efa97856d69664a3c60ae35cb5328741e7d0b29949a",
+          "stableTokenSha256": "1d551d3cb45b556575393efa97856d69664a3c60ae35cb5328741e7d0b29949a"
+        },
+        {
+          "name": "loadSubReplies",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 136,
+          "stableLine": 136,
+          "oldTokenSha256": "0f18eb0cb96d98391084086ccf62eddd1b3ace0dde0936dda869fbd8818d5c64",
+          "stableTokenSha256": "0f18eb0cb96d98391084086ccf62eddd1b3ace0dde0936dda869fbd8818d5c64"
+        },
+        {
+          "name": "openConversation",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 212,
+          "stableLine": 212,
+          "oldTokenSha256": "500ea0e613206d2124aa72bdaf5d05c495c1b8db07f06b0c44e86b7e7ab06cd9",
+          "stableTokenSha256": "500ea0e613206d2124aa72bdaf5d05c495c1b8db07f06b0c44e86b7e7ab06cd9"
+        },
+        {
+          "name": "sendReply",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 230,
+          "stableLine": 230,
+          "oldTokenSha256": "ccc7b67a30e6d4c2bad1e22739b0119bdb7e7398b10b4db28fc0c2e5e28f5fee",
+          "stableTokenSha256": "ccc7b67a30e6d4c2bad1e22739b0119bdb7e7398b10b4db28fc0c2e5e28f5fee"
+        },
+        {
+          "name": "setSortMode",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 120,
+          "stableLine": 120,
+          "oldTokenSha256": "e04c7b988f49f58a8cc197d043a213530e19acb897926199590251371012ace2",
+          "stableTokenSha256": "e04c7b988f49f58a8cc197d043a213530e19acb897926199590251371012ace2"
+        },
+        {
+          "name": "showReplyInput",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 220,
+          "stableLine": 220,
+          "oldTokenSha256": "1a44383640c17edef67a37130d16549ebf951bd3a1b6c5650959ea6ed22cd6a7",
+          "stableTokenSha256": "1a44383640c17edef67a37130d16549ebf951bd3a1b6c5650959ea6ed22cd6a7"
+        },
+        {
+          "name": "startDissolve",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 314,
+          "stableLine": 314,
+          "oldTokenSha256": "5515ded6ef66c5991a9772d74c1b85015b7ce4c99014418e6dc84c0227b61872",
+          "stableTokenSha256": "5515ded6ef66c5991a9772d74c1b85015b7ce4c99014418e6dc84c0227b61872"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "stableLfSha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "selectedMethodDiffs": [
+        {
+          "name": "CommentDetailScreen",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 49,
+          "stableLine": 49,
+          "oldTokenSha256": "48a62e97ce61a57472b2b4407e5b44f1e81533e5f654d28dbb54e472770224ca",
+          "stableTokenSha256": "48a62e97ce61a57472b2b4407e5b44f1e81533e5f654d28dbb54e472770224ca"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "stableLfSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "selectedMethodDiffs": [
+        {
+          "name": "CommentFraudDetectingBanner",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 131,
+          "stableLine": 131,
+          "oldTokenSha256": "597fb0dc3a6837d08ed48b62c354f4681eeb63be092536132bd3f707b0f4c3ed",
+          "stableTokenSha256": "597fb0dc3a6837d08ed48b62c354f4681eeb63be092536132bd3f707b0f4c3ed"
+        },
+        {
+          "name": "CommentFraudResultDialog",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 27,
+          "stableLine": 27,
+          "oldTokenSha256": "ca64dbf6a1deed93794ef8c9576d48c60ec1387374b2f0a8a0d9cd4e7082effd",
+          "stableTokenSha256": "ca64dbf6a1deed93794ef8c9576d48c60ec1387374b2f0a8a0d9cd4e7082effd"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "stableLfSha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "selectedMethodDiffs": [
+        {
+          "name": "MessageFeedError",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 180,
+          "stableLine": 180,
+          "oldTokenSha256": "8d990477147d908d858f9d3978bf867d09b963c8e5d24d3acb5d6b48b13e7a2f",
+          "stableTokenSha256": "8d990477147d908d858f9d3978bf867d09b963c8e5d24d3acb5d6b48b13e7a2f"
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "80fe4b7dc2d388641b3b5a5cf0cb287567274d91379816131fd1c354707cd998",
+      "stableLfSha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "selectedMethodDiffs": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "stableLfSha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "selectedMethodDiffs": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "oldCommit": "fcf84853b287662e8a9129ea0d38576c36522a34",
+      "newCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "oldLfSha256": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "stableLfSha256": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "selectedMethodDiffs": [
+        {
+          "name": "resolveCommentFraudLightMessage",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 38,
+          "stableLine": 38,
+          "oldTokenSha256": "849c48ad6d4fe3dc4ac94a087f57243af725bb6c71f4b86e3b3c87137ebaacdc",
+          "stableTokenSha256": "849c48ad6d4fe3dc4ac94a087f57243af725bb6c71f4b86e3b3c87137ebaacdc"
+        },
+        {
+          "name": "resolveReplyFraudStatus",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 46,
+          "stableLine": 46,
+          "oldTokenSha256": "4111e500d334e82d1f1fd4ffbb51d354a117755934b6c6781f3e5a5bdb7c63ae",
+          "stableTokenSha256": "4111e500d334e82d1f1fd4ffbb51d354a117755934b6c6781f3e5a5bdb7c63ae"
+        },
+        {
+          "name": "resolveRootFraudStatus",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 82,
+          "stableLine": 82,
+          "oldTokenSha256": "3ec235ce1751f2b0326904d46f110bb3e1f345566b097cac0608df3a7ce54e02",
+          "stableTokenSha256": "3ec235ce1751f2b0326904d46f110bb3e1f345566b097cac0608df3a7ce54e02"
+        },
+        {
+          "name": "shouldContinueSubReplyFraudScan",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 23,
+          "stableLine": 23,
+          "oldTokenSha256": "1847725226cea9e230c9008f7f5be5dddabbcc843d8e5b7c8d1218d38469af22",
+          "stableTokenSha256": "1847725226cea9e230c9008f7f5be5dddabbcc843d8e5b7c8d1218d38469af22"
+        },
+        {
+          "name": "shouldShowCommentFraudResultDialog",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 34,
+          "stableLine": 34,
+          "oldTokenSha256": "158997d85bab57e4d1d4d6ec87a88c6f82c2806abf6efad24e2360d6fd4b2caf",
+          "stableTokenSha256": "158997d85bab57e4d1d4d6ec87a88c6f82c2806abf6efad24e2360d6fd4b2caf"
+        },
+        {
+          "name": "shouldStartCommentFraudDetection",
+          "ordinal": 0,
+          "status": "unchanged",
+          "oldLine": 18,
+          "stableLine": 18,
+          "oldTokenSha256": "af79111269b5bd05756334f44ff0538fe7459e6b004a00f4d6cb886dc2b979ea",
+          "stableTokenSha256": "af79111269b5bd05756334f44ff0538fe7459e6b004a00f4d6cb886dc2b979ea"
+        }
+      ]
+    }
+  ],
+  "coverage": "Only named functions selected by this BGM/comment owner; new stable files are explicitly marked. This is not entire project parity."
+}

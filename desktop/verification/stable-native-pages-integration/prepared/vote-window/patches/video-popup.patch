@@ -1,0 +1,17 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt
+@@ -171,12 +171,8 @@
+  * Native hit testing, focus/fullscreen/PiP behavior is not yet accepted here.
+  */
+ @Composable
+-internal fun DesktopVideoCommandPopup(surfaceSize: IntSize, content: @Composable () -> Unit) {
+-    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return
+-    val density = LocalDensity.current
+-    Popup(alignment = Alignment.TopStart, properties = PopupProperties(focusable = false, clippingEnabled = false)) {
+-        Box(Modifier.size(with(density) { surfaceSize.width.toDp() }, with(density) { surfaceSize.height.toDp() })) { content() }
+-    }
++internal fun DesktopVideoCommandPopup(surfaceSize: IntSize, content: @Composable () -> Unit, anchorComponent: java.awt.Component) {
++    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, content)
+ }
+ 
+ /** Original DynamicVoteDialog only invokes the two vote operations. Unrelated

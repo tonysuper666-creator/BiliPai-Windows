@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "preparedCandidateSha256Bytes": "abb0cbad4a7d20c7ed77896e10d95fa4e5e02c4a1635bd678853259577088bac",
+  "fixtureSha256Bytes": "5657139c4d4ab5b463aab491dfaa577f3d721065ef0f32d58269b6af36936218",
+  "fixtureSourceSha256Bytes": "1b9a4e68546728a576da694806986594a6b91da24b69727925e3fc0d2ee58f4b",
+  "actualStable11CpCount": 92,
+  "declaredPreparedProductOverrides": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noSocket": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "caseCount": 12,
+  "assertions": 40,
+  "resultSha256Bytes": "49a0658244862d77961e6a7e4878711d04920010fa9128813f15497fb4151f3a"
+}

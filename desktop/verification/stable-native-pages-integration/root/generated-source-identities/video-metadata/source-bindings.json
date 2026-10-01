@@ -1,0 +1,26 @@
+[
+  {
+    "original": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+    "originalSha256Lf": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+    "output": "com\\android\\purebilibili\\feature\\video\\ui\\section\\DesktopOriginalVideoMetadata.kt",
+    "generatedSha256Bytes": "a92c8dc2ad5fc05be19e0881369fb48b1ced5d03106d0bef37dc948f1b319032"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+    "originalSha256Lf": "84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128",
+    "output": "com\\android\\purebilibili\\feature\\video\\ui\\section\\DesktopOriginalVideoMetadataPolicy.kt",
+    "generatedSha256Bytes": "0eb5a16d56b163bc6eea6066d5d7ce2a52e584ee61cd092f2833adf9e6a6cc63"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "originalSha256Lf": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "output": "com\\android\\purebilibili\\core\\store\\DesktopOriginalVideoMetadataSettings.kt",
+    "generatedSha256Bytes": "44c0d6d9fe1fd1aeae056defcde5cf20ac8997564541d127358da8b54c2c4fbb"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+    "originalSha256Lf": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+    "output": "com\\android\\purebilibili\\data\\repository\\DesktopOriginalCreatorStatus.kt",
+    "generatedSha256Bytes": "a6edd9d19278ab0ee45332527c1d906640b3346eacfea201879dc1d6ae000201"
+  }
+]

@@ -347,10 +347,10 @@ import com.android.purebilibili.core.ui.*
     path = BASE + 'core/ui/skeleton/SkeletonBreathing.kt'
     original = read(repo, path)
     body = original.replace('import androidx.compose.ui.platform.LocalContext',
-        'import com.bilipai.desktop.ui.LocalDesktopCommentBindings')
+        'import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences')
     body = body.replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle\n', '')
     body = body.replace('val context = LocalContext.current.applicationContext',
-                        'val context = LocalDesktopCommentBindings.current.context')
+                        'val context = checkNotNull(LocalDesktopDynamicTimelinePreferences.current).context')
     body = body.replace('.collectAsStateWithLifecycle(initialValue', '.collectAsState(initial')
     body = body.replace('com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion()',
                         'com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion()')

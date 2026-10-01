@@ -1,0 +1,56 @@
+
+    // STABLE_ORIGINAL_BGM_MEMBERS
+    // Original ViewGrpcRepository BGM operations use this existing owner's API and WBI signer.
+    private val bgm = com.android.purebilibili.data.repository.DesktopOriginalBgmRepository(api,
+        { params -> assertOwned(); repository.signWebParams(params).also { assertOwned() } })
+    suspend fun getBgmList(aid: Long, bvid: String, cid: Long): Result<List<BgmInfo>> = result {
+        read { bgm.getBgmList(aid, bvid, cid).getOrThrow() }
+    }
+    suspend fun getBgmDetail(musicId: String, aid: Long = 0, cid: Long = 0): Result<BgmDetailData?> = result {
+        read { bgm.getBgmDetail(musicId, aid, cid).getOrThrow() }
+    }
+    suspend fun getBgmRecommendVideos(musicId: String, aid: Long, cid: Long, page: Int = 1, pageSize: Int = 5): Result<List<BgmRecommendVideo>> = result {
+        read { bgm.getBgmRecommendVideos(musicId, aid, cid, page, pageSize).getOrThrow() }
+    }
+    suspend fun getAllBgmRecommendVideos(musicId: String): Result<List<BgmRecommendVideo>> = result {
+        read { bgm.getAllBgmRecommendVideos(musicId).getOrThrow() }
+    }
+    suspend fun updateBgmWish(musicId: String, state: Int): Result<SimpleApiResponse> = result {
+        mutate { csrf -> api.updateBgmWish(musicId, state, csrf) }
+    }
+    suspend fun getBgmEmotePackages(): Result<List<EmotePackage>> = result { read {
+        val response = api.getEmotes(mutableMapOf("business" to "reply"))
+        if (response.code == 0) response.data?.packages ?: response.data?.all_packages ?: emptyList()
+        else throw Exception(response.message)
+    } }
+    suspend fun loadBgmEmptyAnimation(url: String): ByteArray = read {
+        require(url == com.android.purebilibili.core.ui.LottieUrls.EMPTY)
+        kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+            val call = guestWeb.callFactory().newCall(okhttp3.Request.Builder().url(url).build())
+            continuation.invokeOnCancellation { call.cancel() }
+            call.enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, failure: IOException) {
+                    if (continuation.isActive) continuation.resumeWith(Result.failure(failure))
+                }
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    try {
+                        val bytes = response.use {
+                            assertOwned(); check(it.isSuccessful)
+                            val bytes = checkNotNull(it.body).byteStream().use { stream -> stream.readNBytes(32 * 1024 * 1024 + 1) }
+                            require(bytes.size <= 32 * 1024 * 1024); assertOwned(); bytes
+                        }
+                        if (continuation.isActive) continuation.resumeWith(Result.success(bytes))
+                    } catch (failed: Exception) { response.close(); if (continuation.isActive) continuation.resumeWith(Result.failure(failed)) }
+                }
+            })
+        }
+    }
+    fun bgmDetailRequests(): com.android.purebilibili.feature.audio.bgm.DesktopBgmDetailRequests =
+        object : com.android.purebilibili.feature.audio.bgm.DesktopBgmDetailRequests {
+            override fun isOwned() = this@DesktopDynamicCardOperations.isOwned()
+            override fun hasLogin() = isOwned() && repository.account.value != null && !repository.authCookies()["bili_jct"].isNullOrBlank()
+            override suspend fun getBgmDetail(musicId: String, aid: Long, cid: Long) = this@DesktopDynamicCardOperations.getBgmDetail(musicId, aid, cid)
+            override suspend fun getAllBgmRecommendVideos(musicId: String) = this@DesktopDynamicCardOperations.getAllBgmRecommendVideos(musicId)
+            override suspend fun updateBgmWish(musicId: String, state: Int) = this@DesktopDynamicCardOperations.updateBgmWish(musicId, state)
+            override suspend fun getEmotePackages() = this@DesktopDynamicCardOperations.getBgmEmotePackages()
+        }

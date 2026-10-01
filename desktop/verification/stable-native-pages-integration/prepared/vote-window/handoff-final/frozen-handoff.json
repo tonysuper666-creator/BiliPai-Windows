@@ -1,0 +1,587 @@
+{
+  "scope": "prepared platform popup only; actual task-owned native fixture proof; product integration pending",
+  "artifacts": [
+    {
+      "path": "baselines.json",
+      "sha256Bytes": "a89f385cbdf7a174f557e14ceee98f41d953ddbd7ae56b5bedc227afcd08fa4c",
+      "bytes": 747
+    },
+    {
+      "path": "compile-01-evidence.json",
+      "sha256Bytes": "fa8c55faa26056fb055f403d5ec36b64d1c047802611f0bcd8028936779a5dc1",
+      "bytes": 2914
+    },
+    {
+      "path": "compile-01.args",
+      "sha256Bytes": "b65ea25387e46320276a3c2dea07c7661a23d767f87b114ff69f0c4082e432dc",
+      "bytes": 24234
+    },
+    {
+      "path": "compile-01.log",
+      "sha256Bytes": "b1669548c8c959af1aa699ab875fe9197e102c9bc8b6cd1b62ffc359b841a4fa",
+      "bytes": 2065
+    },
+    {
+      "path": "fixture/LegacyPopup.kt",
+      "sha256Bytes": "83b27f85c0eba04b372df526dc8cc52cd4bbbdd42b2f370066586a2bff3bd105",
+      "bytes": 835
+    },
+    {
+      "path": "fixture/NativePopupFixture.kt",
+      "sha256Bytes": "e2d4352615949e07d56ee43f8064feda328aca3ab65dc6f31aa45d6af51854f9",
+      "bytes": 16000
+    },
+    {
+      "path": "fixture/ProductNativePopupFixture.kt",
+      "sha256Bytes": "039846a0e04f94e63418874864c624a1bc9e594c4cc3ad1e0e43037df5bd0916",
+      "bytes": 15783
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopVideoGradeProtocol.kt",
+      "sha256Bytes": "86c87a6a23d07a0bb39909de4b0cce92f571f36ab13e49d8005d13ff1b70342c",
+      "bytes": 3373
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",
+      "sha256Bytes": "1f137335cd494eb9e958b4b5d7e1b22cd8d11ce6de2c96a52d814609d4e06796",
+      "bytes": 29285
+    },
+    {
+      "path": "generated/platform/DesktopVideoGradeMembers.fragment",
+      "sha256Bytes": "46c54c11f7e8f1461dcf92989058eccd1497fd1da69e0fd7f6ca979f6814b3a3",
+      "bytes": 448
+    },
+    {
+      "path": "handoff-final/install-plan.json",
+      "sha256Bytes": "13a9cac83f5c138da7564f77b5ac0e188c4c197c8bad8902a57788f917fba6a0",
+      "bytes": 3346
+    },
+    {
+      "path": "handoff-final/ROOT-INTEGRATION.txt",
+      "sha256Bytes": "859ae4d703c053eac20a5ef9ef5351a478665a1709a116aeabc020d0515f456c",
+      "bytes": 1719
+    },
+    {
+      "path": "handoff-final/scope-and-results.json",
+      "sha256Bytes": "5b761acdacaceb218477871d58f51a2f091fb5865ce7be908fb396491c077ebf",
+      "bytes": 6835
+    },
+    {
+      "path": "history/compile-01-fixture-errors/compile-01.args",
+      "sha256Bytes": "b65ea25387e46320276a3c2dea07c7661a23d767f87b114ff69f0c4082e432dc",
+      "bytes": 24234
+    },
+    {
+      "path": "history/compile-01-fixture-errors/compile-01.log",
+      "sha256Bytes": "245f1f84133c9235716993771e43ddb43e25f64424d714496f142b7f5f3dd443",
+      "bytes": 2187
+    },
+    {
+      "path": "history/compile-01-fixture-errors/NativePopupFixture.kt",
+      "sha256Bytes": "4ba48a273dfef0190c2eb7b9d072817e832b2032f299877ce3f1f9f5530bb959",
+      "bytes": 15011
+    },
+    {
+      "path": "history/native-01-foreground-guard/compile-01-evidence.json",
+      "sha256Bytes": "3e9b8c5280cfb577c4720000305d1be09797bb8e1a7993d19087b7758161f0a2",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-01-foreground-guard/native-proof.json",
+      "sha256Bytes": "f124c9f3e0589b81e5ec14358732656e024f558f8e3952a3672268c0d151be85",
+      "bytes": 273
+    },
+    {
+      "path": "history/native-01-foreground-guard/NativePopupFixture.kt",
+      "sha256Bytes": "d58127eb73178ef44c9ac78d59173825490bd614d3ae43058b91cde64a7bcf04",
+      "bytes": 15123
+    },
+    {
+      "path": "history/native-01-foreground-guard/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-01-foreground-guard/runtime-01.log",
+      "sha256Bytes": "52982ddc41e6654be08896bd00f1930a86a965dfda373e6e17884986b61033f3",
+      "bytes": 468
+    },
+    {
+      "path": "history/native-02-empty-shape-layout-starvation/compile-01-evidence.json",
+      "sha256Bytes": "0c393052caf21a2a7dd3f126c428d76c031405b7bdf8949fecbe90bd0d088410",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-02-empty-shape-layout-starvation/native-proof.json",
+      "sha256Bytes": "9877b475ba31ea4413a551c947cadc8b8606e4359e50b19b0d36a102a37ad7d1",
+      "bytes": 535
+    },
+    {
+      "path": "history/native-02-empty-shape-layout-starvation/NativePopupFixture.kt",
+      "sha256Bytes": "a99ae4682c99695698fa00575291b991a81863c0a210fc3ae0c07f1a6a31281b",
+      "bytes": 15107
+    },
+    {
+      "path": "history/native-02-empty-shape-layout-starvation/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-02-empty-shape-layout-starvation/runtime-01.log",
+      "sha256Bytes": "3ae7dea53d3a3e0540e773e19adb7b0eacd52238c7933855ad9bbba4cb29d957",
+      "bytes": 572
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-compile-evidence.json",
+      "sha256Bytes": "400e0bbbed29a0750560169bdd0df9131e909c745265483e19091dfa35c22ab3",
+      "bytes": 649
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-compile.args",
+      "sha256Bytes": "72b7bf697a71ec11f0af740cee692136b7956c6eeea898ec9816217d03f92c93",
+      "bytes": 23439
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-compile.log",
+      "sha256Bytes": "b529452fe9e58d89f9aa38f28035a26723591914cb4846b0e35a2f4b8b877b1e",
+      "bytes": 1215
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-runtime-output/native-proof.json",
+      "sha256Bytes": "740ab3c7a1f4386cef81b93aa6e699996254b3e2ee363d841dd1597bf0fe54ca",
+      "bytes": 1233
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-runtime.args",
+      "sha256Bytes": "c5a259c2234101366dfdc1b1832b17f672933550d978caa1f4e6ad98e592105b",
+      "bytes": 23334
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/product-03-runtime.log",
+      "sha256Bytes": "08e044662e981a3b44bca402f85af9ef5b2b224244a901f77160b599e5776511",
+      "bytes": 623
+    },
+    {
+      "path": "history/native-03-product-card-pointer-pending/ProductNativePopupFixture.kt",
+      "sha256Bytes": "22c1ab4203cd2462ccfe522b4d0b05f9d2b4d0509c1a50653fb58814c9879e2a",
+      "bytes": 14886
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-compile-evidence.json",
+      "sha256Bytes": "2ce98ccc5a0cdabc47922b9c6d4e172b2e24f2a79bd0419cd0496171090650d6",
+      "bytes": 649
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-compile.args",
+      "sha256Bytes": "72b7bf697a71ec11f0af740cee692136b7956c6eeea898ec9816217d03f92c93",
+      "bytes": 23439
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-compile.log",
+      "sha256Bytes": "49cb7741e2c1572629d3fb11e06ca1ac402e211d2f9b0f78ca8d5a953fbf5370",
+      "bytes": 1215
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-runtime-output/before-card-click.png",
+      "sha256Bytes": "6afa09b5ea0718cddf86d818ccb12f80768a92e4d4dd3746919192074b62e7fc",
+      "bytes": 246814
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "3b9fe39c1dbc5adf2c40349b42aed5411b55365ea7b25768cc37a1553d9ead63",
+      "bytes": 246827
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-runtime-output/native-proof.json",
+      "sha256Bytes": "48d3bed783ab978cdf813da29eba3210b51a7712cdefd0c7afe568fbd20d61ee",
+      "bytes": 1850
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-runtime.args",
+      "sha256Bytes": "c5a259c2234101366dfdc1b1832b17f672933550d978caa1f4e6ad98e592105b",
+      "bytes": 23334
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/product-03-runtime.log",
+      "sha256Bytes": "461f918718c06833edb4d522f36a7eede8472113c2f9ad6b6ad29940a9898f02",
+      "bytes": 623
+    },
+    {
+      "path": "history/native-04-product-card-behind-canvas/ProductNativePopupFixture.kt",
+      "sha256Bytes": "039846a0e04f94e63418874864c624a1bc9e594c4cc3ad1e0e43037df5bd0916",
+      "bytes": 15783
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/compile-01-evidence.json",
+      "sha256Bytes": "05095e6388ec5eaafc3e9cc1487a680b05ad2afe6464d0afd29f3b6212df511d",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/compile-01.log",
+      "sha256Bytes": "7d8764b71f28cb90d6e5c79d9a7dd4ef788f96db8c9d7bc9048355d818ec599f",
+      "bytes": 1993
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "05a29cbc44e33d45a4c0e49b231fb7eb8805fe42874ade198a7949b5091dd8ae",
+      "bytes": 8150
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/runtime-01.log",
+      "sha256Bytes": "6d5be6b31780fec912d4afdd9cea2906cff4a5341fa166d2722dd976becf380b",
+      "bytes": 572
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "345d12abfcf1f325350a0a097da47040b70cb315b0eebeff3ca08b97bafd94a9",
+      "bytes": 247070
+    },
+    {
+      "path": "history/native-05-null-initial-region-no-content/runtime-output/native-proof.json",
+      "sha256Bytes": "9877b475ba31ea4413a551c947cadc8b8606e4359e50b19b0d36a102a37ad7d1",
+      "bytes": 535
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/compile-01-evidence.json",
+      "sha256Bytes": "d6a6c67af66051407197089ef304471ce759ef1383a3de32780ffd50ae3e888e",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/compile-01.log",
+      "sha256Bytes": "01fe021abc633a54cae6c1b0853a363e84aee02d156c3960cae4ace486a0ef58",
+      "bytes": 1993
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "81f32974cbddbf64857eeccfd7c3fe458cf64f2fd9c64dbe0193b9ac9426f8a6",
+      "bytes": 8369
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/runtime-01.log",
+      "sha256Bytes": "1aedbd5f210a24ca9aa4ef251f0aa71e7366c5213e9a4e81478a481f20844bd8",
+      "bytes": 1285
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "9a4930824c745bbe137507fa3e72955e5e5c59c4c2bc321dfac1047d3b6107b5",
+      "bytes": 247141
+    },
+    {
+      "path": "history/native-06-occluded-compose-anchor-unmeasured/runtime-output/native-proof.json",
+      "sha256Bytes": "9877b475ba31ea4413a551c947cadc8b8606e4359e50b19b0d36a102a37ad7d1",
+      "bytes": 535
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/compile-01-evidence.json",
+      "sha256Bytes": "a10d4eb40a0a32124de94cca4d389b81d594332a94a76e391eed3d6c52959026",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/compile-01.log",
+      "sha256Bytes": "bfcfff927da4018b9e262ea1c6a1bfdb7658286ea6de2f023dc01d8d819045cd",
+      "bytes": 1611
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "e8ad702ff6097a8d5907ce8896fe29366bcd088dcb94f8c28458aa1acf07b110",
+      "bytes": 8681
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/runtime-01.log",
+      "sha256Bytes": "142e9f9713e2ffccf9fb1b10b3afbcf6617330c39d0203a7bc53bb17917231b8",
+      "bytes": 498
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "1933f92a605624e723cfdb98599b3dfd329bd959afcbdb4c52e3ef2d5fd6feb0",
+      "bytes": 246190
+    },
+    {
+      "path": "history/native-07-anchored-transparent-blank-interceptor/runtime-output/native-proof.json",
+      "sha256Bytes": "0f4084746c1f807098f2866e3c38f09969bb11bd6f623b353dc26b32039d4351",
+      "bytes": 429
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/compile-01-evidence.json",
+      "sha256Bytes": "6207ebc41db7960e459eb53ae8adb56e4be3540266af96ec1ea19f17a2d8443e",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/compile-01.log",
+      "sha256Bytes": "bfcfff927da4018b9e262ea1c6a1bfdb7658286ea6de2f023dc01d8d819045cd",
+      "bytes": 1611
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "02286193d674ba5d5fcc469a03b2d92e2b92aba91a6c49635e82325cb87a9d25",
+      "bytes": 8663
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/runtime-01.log",
+      "sha256Bytes": "142e9f9713e2ffccf9fb1b10b3afbcf6617330c39d0203a7bc53bb17917231b8",
+      "bytes": 498
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "980e65c4c3a4d267131da54239d0b082754fca8e4f46fa3bd61d4264206e8625",
+      "bytes": 246645
+    },
+    {
+      "path": "history/native-08-awt-empty-shape-no-input-pass/runtime-output/native-proof.json",
+      "sha256Bytes": "0f4084746c1f807098f2866e3c38f09969bb11bd6f623b353dc26b32039d4351",
+      "bytes": 429
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/compile-01-evidence.json",
+      "sha256Bytes": "0253af98cb7b5ff1e926679d64896185deeaa574b8020d77c9991d3c42a4ff81",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/compile-01.log",
+      "sha256Bytes": "6b0778ed44b43099dc922f3e72812e7e2988c088b175cbefe429afcbd693c444",
+      "bytes": 2065
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "55048d2a1a0c18c488a11d4b4182165c7b07577f8637f88f51d295e83090b476",
+      "bytes": 9957
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-01.log",
+      "sha256Bytes": "b39809c4b0ce41328cc30c438a5929d00c195ddcd578a1bbd17c42649b4969b8",
+      "bytes": 1247
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-output/before-card-click.png",
+      "sha256Bytes": "7f82e1a6d2cdbedd038be15748e8f8a1621b20204f4867f1347a8c9101767e69",
+      "bytes": 245783
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "28bb9f688c78d01dd72f24e2320e67aaea3ef7ae322e8e2832000051f20ddd3d",
+      "bytes": 253818
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-output/native-proof.json",
+      "sha256Bytes": "72a10c74a301fe3a527cd841eba9b88f70c7059366ac6a8c5d4f4ad1cc3ebcda",
+      "bytes": 903
+    },
+    {
+      "path": "history/native-09-window-region-pass-dialog-same-canvas-clipped/runtime-output/original-dialog-over-mpv.png",
+      "sha256Bytes": "baed5b2c5af77517a0f1dcde886ac36f0811c335cb19a5d92b3e1ca258910c5b",
+      "bytes": 244226
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/compile-01-evidence.json",
+      "sha256Bytes": "5ce1e0763ff9cba1c1c205a40404aa78013669fd486e85a3afa2cff0854db6fa",
+      "bytes": 2914
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/compile-01.log",
+      "sha256Bytes": "733dfb33323055915a438eefeb0f2b0e653fbb03888a22932b3c30f18520e331",
+      "bytes": 2554
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "2f579fe51a6e397c5b9c021d1ff091007e68b49211b29be6faea173be4ba5c7f",
+      "bytes": 10435
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/native-crash-summary.txt",
+      "sha256Bytes": "20c846a1b420b3f2a1a490f4cc210863ade7dcaae080a4c11e031d21f3284b18",
+      "bytes": 1036
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-01.log",
+      "sha256Bytes": "aca8d9523255cf059a3975db39feed73d9ef58fdda99be5d810307880bf8c9a3",
+      "bytes": 1575
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-output/before-card-click.png",
+      "sha256Bytes": "c1927f22f3f4bff2013a505ab4d1efda6f9e4734f934f02a5a842d08a371815c",
+      "bytes": 245894
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "28bb9f688c78d01dd72f24e2320e67aaea3ef7ae322e8e2832000051f20ddd3d",
+      "bytes": 253818
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-output/native-proof.json",
+      "sha256Bytes": "72a10c74a301fe3a527cd841eba9b88f70c7059366ac6a8c5d4f4ad1cc3ebcda",
+      "bytes": 903
+    },
+    {
+      "path": "history/native-10-onwindow-skiko-access-violation/runtime-output/original-dialog-over-mpv.png",
+      "sha256Bytes": "baed5b2c5af77517a0f1dcde886ac36f0811c335cb19a5d92b3e1ca258910c5b",
+      "bytes": 244226
+    },
+    {
+      "path": "patches/player-surface-anchor.patch",
+      "sha256Bytes": "974c16c9b1ba48d8b05126e808abd7ee7fd29add2bce29c51215152d4de6cdd6",
+      "bytes": 1661
+    },
+    {
+      "path": "patches/sole-renderer-generator.patch",
+      "sha256Bytes": "1f647c87c85862f9bb84cae328cb0d860850b040737c0961ef4b444068bce087",
+      "bytes": 1360
+    },
+    {
+      "path": "patches/video-popup.patch",
+      "sha256Bytes": "4b6232761eae7777dfd3e8b9880086522e16a61dd4a6a6ab00182b07539077f0",
+      "bytes": 1020
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "f74f13ea29178c3f61d1245f14f051bf42456c1562d6cef54ef095b50217a332",
+      "bytes": 4623
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "227271fda734b660c0087d97983d3a71c9868d2d89bba1fc6ec290802a77d10f",
+      "bytes": 11170
+    },
+    {
+      "path": "prepared/desktop/tools/extract-stable-video-votes.py",
+      "sha256Bytes": "ab018056ea7b63724397bc3ada5d3a73b3b8495c609af9a02ded9ce04282088d",
+      "bytes": 4490
+    },
+    {
+      "path": "product-03-compile-evidence.json",
+      "sha256Bytes": "2ce98ccc5a0cdabc47922b9c6d4e172b2e24f2a79bd0419cd0496171090650d6",
+      "bytes": 649
+    },
+    {
+      "path": "product-03-compile.args",
+      "sha256Bytes": "72b7bf697a71ec11f0af740cee692136b7956c6eeea898ec9816217d03f92c93",
+      "bytes": 23439
+    },
+    {
+      "path": "product-03-compile.log",
+      "sha256Bytes": "49cb7741e2c1572629d3fb11e06ca1ac402e211d2f9b0f78ca8d5a953fbf5370",
+      "bytes": 1215
+    },
+    {
+      "path": "product-03-runtime-output/before-card-click.png",
+      "sha256Bytes": "6afa09b5ea0718cddf86d818ccb12f80768a92e4d4dd3746919192074b62e7fc",
+      "bytes": 246814
+    },
+    {
+      "path": "product-03-runtime-output/final-or-failed-window.png",
+      "sha256Bytes": "3b9fe39c1dbc5adf2c40349b42aed5411b55365ea7b25768cc37a1553d9ead63",
+      "bytes": 246827
+    },
+    {
+      "path": "product-03-runtime-output/native-proof.json",
+      "sha256Bytes": "48d3bed783ab978cdf813da29eba3210b51a7712cdefd0c7afe568fbd20d61ee",
+      "bytes": 1850
+    },
+    {
+      "path": "product-03-runtime.args",
+      "sha256Bytes": "c5a259c2234101366dfdc1b1832b17f672933550d978caa1f4e6ad98e592105b",
+      "bytes": 23334
+    },
+    {
+      "path": "product-03-runtime.log",
+      "sha256Bytes": "461f918718c06833edb4d522f36a7eede8472113c2f9ad6b6ad29940a9898f02",
+      "bytes": 623
+    },
+    {
+      "path": "references/DesktopVideoVotes.kt",
+      "sha256Bytes": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78",
+      "bytes": 10472
+    },
+    {
+      "path": "references/PlayerPanels.kt",
+      "sha256Bytes": "8a51edfba5939b7d30818b1917f037bcaa02e2785a53c3ed016051145d7e4b17",
+      "bytes": 18033
+    },
+    {
+      "path": "run-product-proof.py",
+      "sha256Bytes": "d9ea81b379a96012381fe42e5b25c46113ed9783923710bc0daa600fdd74e274",
+      "bytes": 3922
+    },
+    {
+      "path": "run-proof.py",
+      "sha256Bytes": "f4f52177ab18f4285e18b15f2be9c19bc911e229436f4613cc99a5fef83fc823",
+      "bytes": 4027
+    },
+    {
+      "path": "runtime-01-evidence.json",
+      "sha256Bytes": "79497ce89622498a1d41351b6bdba203a4c231b28c5db71b36333cad35db47fe",
+      "bytes": 35739
+    },
+    {
+      "path": "runtime-01-output/before-card-click.png",
+      "sha256Bytes": "d5edfc3cabb1431c1623eddf2ba8cd5270d77969855b6d7e5308783177084d6e",
+      "bytes": 246038
+    },
+    {
+      "path": "runtime-01-output/final-or-failed-window.png",
+      "sha256Bytes": "a50d2fb26a10a9b5a2ace129ab5935106cc59b99fda4f59f651439553aa81733",
+      "bytes": 253278
+    },
+    {
+      "path": "runtime-01-output/native-proof.json",
+      "sha256Bytes": "6dadf0df595701ccd6f9a04a2c49d09d9ac6eff182fde87b34db801461c57604",
+      "bytes": 1254
+    },
+    {
+      "path": "runtime-01-output/original-dialog-over-mpv.png",
+      "sha256Bytes": "554d26acb080e269cb22d72539aac18e827b90ea18a9aca591e3b187c9bd2784",
+      "bytes": 216387
+    },
+    {
+      "path": "runtime-01-output/released-popup-native-video.png",
+      "sha256Bytes": "1499c8820e21660156f4be2ef38f872b4f1d5f7b529cab80e228c3bba446b17b",
+      "bytes": 253474
+    },
+    {
+      "path": "runtime-01.args",
+      "sha256Bytes": "6f2c50ddecffea1a3454c3c5349a0c60a14432236bf468fb7f553705aba4bb0d",
+      "bytes": 23313
+    },
+    {
+      "path": "runtime-01.log",
+      "sha256Bytes": "2ef7aecdc19404aa5fab1f5d29350aa1175b069f51156d5992dd5ce354d35971",
+      "bytes": 1003
+    },
+    {
+      "path": "handoff-final/excluded-runtime-artifacts.json",
+      "sha256Bytes": "b3720c0653e7ad73ed05ff27c83cc4377ea0e4b8d98509be514fdc392de8c0d8",
+      "bytes": 775
+    }
+  ],
+  "rawCount": 116,
+  "excludedCount": 3
+}

@@ -1,0 +1,48 @@
+{
+    "status": "PASS",
+    "caseCount": 1,
+    "assertions": 25,
+    "actualBackgroundSamples": 2,
+    "recordPasses": 3,
+    "observedRecordFlagPasses": 3,
+    "foregroundNormalDraws": 3,
+    "actualCodeSources": [
+        {
+            "class": "com.bilipai.desktop.ui.DesktopLiquidReadabilityEnvironment",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "6a445b41b6ed0e500b30f4deb5d7705ca2c70ab2055e896d55846a0e708ed40d"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopLiquidReadabilityPlatformKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "953602592511f3d4be8f109e0f5a8359f2cbc61c78b4c493a295dede1e03b32e"
+        },
+        {
+            "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+        },
+        {
+            "class": "com.android.purebilibili.feature.home.components.FloatingBottomBarKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "615b621f002680bd500c2c627e9a7f161c47980cef8d4216239aeaf4ef3f3bbb"
+        },
+        {
+            "class": "com.bilipai.desktop.settings.DesktopLiquidTabSettings",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "c50566408c9a7fcd8c18ff66b8882f3f9da4a979f92e80dce0f3248333656d8d"
+        },
+        {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+            "sha256ClassBytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+        }
+    ],
+    "productOverrides": 0,
+    "sameCompiledMain14": true,
+    "offscreenActualComposeScene": true,
+    "actualRootMounted": false,
+    "noHWND": true,
+    "noHTTP": true,
+    "noMainEdits": true
+}

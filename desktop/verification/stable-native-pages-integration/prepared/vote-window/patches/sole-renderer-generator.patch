@@ -1,0 +1,17 @@
+--- a/desktop/tools/extract-stable-video-votes.py
++++ b/desktop/tools/extract-stable-video-votes.py
+@@ -28,6 +28,14 @@
+  s=s.replace("import androidx.media3.common.Player","import com.bilipai.desktop.player.MpvPlayer")
+  assert s.count("player: Player,")==1 and s.count("player.currentPosition")==2
+  s=s.replace("player: Player,","player: MpvPlayer,").replace("player.currentPosition","(player.state.value.positionSeconds * 1000.0).toLong()")
++ # Windows-only measured native hit region. Original timing/card/dialog body stays intact.
++ s=s.replace("import androidx.compose.ui.Modifier\n", "import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.desktopCommandHitRegion\nimport com.bilipai.desktop.ui.DesktopCommandModalRegion\n", 1)
++ measured="            .onSizeChanged { measuredCardHeightPx = it.height }\n"
++ assert s.count(measured)==1
++ s=s.replace(measured, measured+"            .desktopCommandHitRegion(item.id)\n", 1)
++ modal="    var votePanelInitialOptionIndex by remember { mutableIntStateOf(-1) }\n"
++ assert s.count(modal)==1
++ s=s.replace(modal,modal+"    DesktopCommandModalRegion(votePanelVoteId != null)\n",1)
+  emit(p,"com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",s)
+  p=BASE+"data/repository/DanmakuRepository.kt";s=read(p)
+  grade=function(s,"suspend fun submitGradeDanmaku(")

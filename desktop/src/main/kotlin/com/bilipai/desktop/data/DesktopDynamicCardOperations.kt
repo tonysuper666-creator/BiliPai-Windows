@@ -190,6 +190,17 @@ internal class DesktopDynamicCardOperations(
             if (reasonType == 0) reasonDesc else null)
         checked(response.code, response.message)
     }
+    private val originalCollectionActions = com.android.purebilibili.data.repository.DesktopOriginalCollectionActions(
+        api, { assertOwned(); repository.requireCsrf() })
+    private val originalCreatorStatus = com.android.purebilibili.data.repository.DesktopOriginalCreatorStatus(api)
+    suspend fun checkCreatorFollowStatus(mid: Long): Boolean =
+        result { read { originalCreatorStatus.checkFollowStatus(mid) } }.getOrDefault(false)
+    suspend fun setCollectionSubscription(seasonId: Long, subscribe: Boolean): Result<Boolean> = result {
+        mutate { originalCollectionActions.setCollectionSubscription(seasonId, subscribe).getOrThrow() }
+    }
+    suspend fun checkCollectionSubscriptionStatus(bvid: String, aid: Long = 0L): Result<Boolean> = result {
+        read { originalCollectionActions.checkCollectionSubscriptionStatus(bvid, aid).getOrThrow() }
+    }
     /** The original checkCreatedDyn intentionally uses a cookie-free service. */
     suspend fun isPubliclyVisible(id: String): Boolean = read {
         require(id.isNotBlank())
@@ -726,5 +737,74 @@ suspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: St
             .submitGradeDanmaku(aid, cid, progress, gradeId, gradeScore, csrf).getOrThrow()
     }
 }
+
+// STABLE_ORIGINAL_COMMENT_FRAUD_MEMBERS
+    // Desktop original fraud protocol binding; BGM owns records/status/policy.
+    private val originalCommentFraud = com.android.purebilibili.data.repository.DesktopOriginalCommentFraudProtocol(
+        api, guestWeb.callFactory(),
+        { assertOwned(); repository.authCookies()["buvid3"] },
+        { params -> assertOwned(); repository.signWebParams(params).also { coroutineContext.ensureActive(); assertOwned() } },
+        { assertOwned(); repository.ensureSession(); assertOwned() },
+        ::assertOwned,
+    )
+    suspend fun checkCommentStatus(aid: Long, rpid: Long, rootId: Long = 0, hasPictures: Boolean = false,
+        sentAtSeconds: Long = 0, waitMs: Long = -1): Result<com.android.purebilibili.data.model.CommentFraudStatus> =
+        result { read { originalCommentFraud.checkCommentStatus(aid, rpid, rootId, hasPictures, sentAtSeconds, waitMs).getOrThrow() } }
+
+    // STABLE_ORIGINAL_BGM_MEMBERS
+    // Original ViewGrpcRepository BGM operations use this existing owner's API and WBI signer.
+    private val bgm = com.android.purebilibili.data.repository.DesktopOriginalBgmRepository(api,
+        { params -> assertOwned(); repository.signWebParams(params).also { assertOwned() } })
+    suspend fun getBgmList(aid: Long, bvid: String, cid: Long): Result<List<BgmInfo>> = result {
+        read { bgm.getBgmList(aid, bvid, cid).getOrThrow() }
+    }
+    suspend fun getBgmDetail(musicId: String, aid: Long = 0, cid: Long = 0): Result<BgmDetailData?> = result {
+        read { bgm.getBgmDetail(musicId, aid, cid).getOrThrow() }
+    }
+    suspend fun getBgmRecommendVideos(musicId: String, aid: Long, cid: Long, page: Int = 1, pageSize: Int = 5): Result<List<BgmRecommendVideo>> = result {
+        read { bgm.getBgmRecommendVideos(musicId, aid, cid, page, pageSize).getOrThrow() }
+    }
+    suspend fun getAllBgmRecommendVideos(musicId: String): Result<List<BgmRecommendVideo>> = result {
+        read { bgm.getAllBgmRecommendVideos(musicId).getOrThrow() }
+    }
+    suspend fun updateBgmWish(musicId: String, state: Int): Result<SimpleApiResponse> = result {
+        mutate { csrf -> api.updateBgmWish(musicId, state, csrf) }
+    }
+    suspend fun getBgmEmotePackages(): Result<List<EmotePackage>> = result { read {
+        val response = api.getEmotes(mutableMapOf("business" to "reply"))
+        if (response.code == 0) response.data?.packages ?: response.data?.all_packages ?: emptyList()
+        else throw Exception(response.message)
+    } }
+    suspend fun loadBgmEmptyAnimation(url: String): ByteArray = read {
+        require(url == com.android.purebilibili.core.ui.LottieUrls.EMPTY)
+        kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+            val call = guestWeb.callFactory().newCall(okhttp3.Request.Builder().url(url).build())
+            continuation.invokeOnCancellation { call.cancel() }
+            call.enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, failure: IOException) {
+                    if (continuation.isActive) continuation.resumeWith(Result.failure(failure))
+                }
+                override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                    try {
+                        val bytes = response.use {
+                            assertOwned(); check(it.isSuccessful)
+                            val bytes = checkNotNull(it.body).byteStream().use { stream -> stream.readNBytes(32 * 1024 * 1024 + 1) }
+                            require(bytes.size <= 32 * 1024 * 1024); assertOwned(); bytes
+                        }
+                        if (continuation.isActive) continuation.resumeWith(Result.success(bytes))
+                    } catch (failed: Exception) { response.close(); if (continuation.isActive) continuation.resumeWith(Result.failure(failed)) }
+                }
+            })
+        }
+    }
+    fun bgmDetailRequests(): com.android.purebilibili.feature.audio.bgm.DesktopBgmDetailRequests =
+        object : com.android.purebilibili.feature.audio.bgm.DesktopBgmDetailRequests {
+            override fun isOwned() = this@DesktopDynamicCardOperations.isOwned()
+            override fun hasLogin() = isOwned() && repository.account.value != null && !repository.authCookies()["bili_jct"].isNullOrBlank()
+            override suspend fun getBgmDetail(musicId: String, aid: Long, cid: Long) = this@DesktopDynamicCardOperations.getBgmDetail(musicId, aid, cid)
+            override suspend fun getAllBgmRecommendVideos(musicId: String) = this@DesktopDynamicCardOperations.getAllBgmRecommendVideos(musicId)
+            override suspend fun updateBgmWish(musicId: String, state: Int) = this@DesktopDynamicCardOperations.updateBgmWish(musicId, state)
+            override suspend fun getEmotePackages() = this@DesktopDynamicCardOperations.getBgmEmotePackages()
+        }
 
 }

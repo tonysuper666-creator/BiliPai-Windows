@@ -1,0 +1,43 @@
+{
+    "status": "PASS",
+    "assertions": 22,
+    "caseCount": 2,
+    "cases": [
+        "MATERIAL3-original-native-liquid-store-toggle-and-recorded-sample",
+        "MIUIX-original-native-liquid-store-toggle-and-recorded-sample"
+    ],
+    "pointerPairs": 4,
+    "actualRecordedLayerSamples": 4,
+    "actualCodeSources": [
+        {
+            "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-03\\prepared-shared-liquid-tabs.jar"
+        },
+        {
+            "class": "com.android.purebilibili.feature.home.components.FloatingBottomBarKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-03\\prepared-shared-liquid-tabs.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.settings.DesktopLiquidTabSettings",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-03\\prepared-shared-liquid-tabs.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.ui.DesktopLiquidReadabilityEnvironment",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-03\\prepared-shared-liquid-tabs.jar"
+        },
+        {
+            "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        },
+        {
+            "class": "com.android.purebilibili.core.ui.components.DesktopOriginalDynamicNativeTabsKt",
+            "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar"
+        }
+    ],
+    "noMainEdits": true,
+    "noHTTP": true,
+    "noHWND": true,
+    "offscreenActualComposeScene": true,
+    "preparedOnly": true,
+    "notRootMountedNativeWindowOrAndroidPixelEquivalence": true
+}

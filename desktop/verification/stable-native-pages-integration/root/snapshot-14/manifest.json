@@ -1,0 +1,60 @@
+{
+  "frozen": true,
+  "phase": "actual-whole-stable-classes14",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 8585,
+      "sha256Bytes": "ac3a90984beaa92f6cfa6cb98a417f693abca6849ad72e20843abe58ea25cb6b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 73,
+      "sha256Bytes": "a784e344d2b168035d829b7ca0b6378e000b9176b966bf1f08c54435b9585104"
+    }
+  ],
+  "orderedRuntimeClasspathSha256Bytes": "64869241fd1a85eacfe072814c28bb91377dc0106a13b11810c30b6295ab101a",
+  "runtimeEntries": 92,
+  "classesLogSha256Bytes": "acb43292d6b7e1b9c21616f958ade5d07b90aaaec48bf331ad1bfe913e5f48b8",
+  "wholeCandidateClassesPassed": true,
+  "actualStableApplicationRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "sourceRegistryCount": 666,
+  "resourceCount": 210,
+  "inputs": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "6870bd09c1c6433aeabbfc3c44ef31f404fa0b761888fd66621541e3ed8a0b39"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "8c529f8f0517f4c599c60e965b6eef6b1b573ea87a2f3e0d7998e0e10081b55e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "f701145370880a235be1f30e7a24976260e70c865f94f5b92fb949158fe96d17"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "728d8728a96b81a188f0b4f89c5e28e584e35edb25f0d95acb71cada3e8e0fa9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "sha256Bytes": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d"
+    }
+  ]
+}

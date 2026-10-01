@@ -1,0 +1,335 @@
+{
+  "frozen": true,
+  "scope": "prepared-only Windows ongoing download notification boundary",
+  "actualBaselineManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualCpSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "artifactCount": 62,
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "sha256Bytes": "4c68ce60d26a3e2fdffc0fc3a5ee9f0c139be894ca1267c5058b526a1c9686eb",
+      "bytes": 6435
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "sha256Bytes": "882130ce7cd457138f33d92d841c28524761b0a1276d325b2409c4f1ea1183db",
+      "bytes": 1135
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "sha256Bytes": "6844d04ed2493b2ab9d0add72bf4c10e37998d80f0221f84f1259341e2cd5242",
+      "bytes": 23221
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-01/prepared-download-notification.jar",
+      "sha256Bytes": "592a37ecb79fc77c91f51ccfbd6c01c097a32bfceb69136d9d1f4469c0cbab22",
+      "bytes": 26081
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadNotifications.kt",
+      "sha256Bytes": "a10d121bd32cbab58e10a56aecc55d2b244c3bd7d51a57bb4267f12510a3117e",
+      "bytes": 13669
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "sha256Bytes": "a2beda3de9637e8200b11cdecb92d45b9186eccebf2187612efd4168a45525c5",
+      "bytes": 1135
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "sha256Bytes": "ae0569cf2e086cfc2114f10d5276650553237f6fde2d414d6b257423bcbbacf7",
+      "bytes": 23221
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "compile-02/prepared-download-notification.jar",
+      "sha256Bytes": "dc0f70a68de56030fbb89a5eed9a877ac53e7adde5679c1693af960e2045f216",
+      "bytes": 26121
+    },
+    {
+      "path": "compile-02/runtime-pins-after.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "compile-02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadNotifications.kt",
+      "sha256Bytes": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815",
+      "bytes": 13687
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "e84bb06ed7f0a1fe7eb07dc03519b8fce24a76d574b35d96b7f01fd482f872ba",
+      "bytes": 3551
+    },
+    {
+      "path": "contract.txt",
+      "sha256Bytes": "9efc54afa4844089e4b06e861b71049483f788b93e81accf21307a628dcc6588",
+      "bytes": 8348
+    },
+    {
+      "path": "DownloadNotificationFixture.kt",
+      "sha256Bytes": "f777bdc5faada566b073d4e562c9c4f5e28fe2261ee5da67299130ded14edf89",
+      "bytes": 11949
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "fb568c0cf8f71d62c3557cbb8a239d8b9c3c0601889049fde7a715b29c3f5244",
+      "bytes": 1465
+    },
+    {
+      "path": "original-source/DownloadListNavigationPolicy.kt",
+      "sha256Bytes": "767f1778a03e02c99ca75d9dd29546c9b238e2c4649cfa3246f5069bbf39964d",
+      "bytes": 1195
+    },
+    {
+      "path": "original-source/DownloadTask.kt",
+      "sha256Bytes": "8a018fe4a83eae2690645c0fef92bc23b0482429bffb90a252d8b5a5581dae15",
+      "bytes": 3462
+    },
+    {
+      "path": "original-source/DownloadWorker.kt",
+      "sha256Bytes": "bef909e3f7a65013fb07b12b548a68ebceefa952c74290aecef0c2a7db963f0f",
+      "bytes": 6811
+    },
+    {
+      "path": "original-source/getForegroundInfo.body.txt",
+      "sha256Bytes": "03df73986f61191564ff994679eb18f52262d72dcb4ad11e8be6e7dd01460620",
+      "bytes": 1102
+    },
+    {
+      "path": "original-source/progressUpdater.body.txt",
+      "sha256Bytes": "0add5c01ba1e2a06212b5e9e0aaa3337b5adc1c90fd5a6b644dd1f75f0a4b2c5",
+      "bytes": 278
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadNotifications.kt",
+      "sha256Bytes": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815",
+      "bytes": 13687
+    },
+    {
+      "path": "proof-01/accepted-result.json",
+      "sha256Bytes": "ec6a089c26a5a73d7f9beca886734fa8c8ee68e89e1d56e1677bed06f5588692",
+      "bytes": 48
+    },
+    {
+      "path": "proof-01/compiler.args",
+      "sha256Bytes": "398a02fb087c69d675d908994e1470d3b443f47e669d18317d68aac7375a4630",
+      "bytes": 23509
+    },
+    {
+      "path": "proof-01/compiler.log",
+      "sha256Bytes": "a08b053405032d07111ca4d78d0268f1f083f601479f3cbc017fdee7bf00b4be",
+      "bytes": 314
+    },
+    {
+      "path": "proof-01/DownloadNotificationFixture.kt",
+      "sha256Bytes": "2c2f17e18a54e17ec73205d13184bf967df0ecf6cc42c617dd5fba12514ae2f8",
+      "bytes": 11652
+    },
+    {
+      "path": "proof-01/runtime-pins-before.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/accepted-result.json",
+      "sha256Bytes": "26da076868932f36d1f75648eec2ca18f40b0ce2849463e5f752925153cefdb6",
+      "bytes": 588
+    },
+    {
+      "path": "proof-02/compiler.args",
+      "sha256Bytes": "ea62ecfd384aac8dd5ec9aaca3a2e9859b9d709cd54326dd7620b1ddf405a56f",
+      "bytes": 23509
+    },
+    {
+      "path": "proof-02/compiler.log",
+      "sha256Bytes": "1b6fdd23c088fe22121b773b1a718f816af433c157f33d6d905df542b9e6040f",
+      "bytes": 2596
+    },
+    {
+      "path": "proof-02/DownloadNotificationFixture.kt",
+      "sha256Bytes": "588022413dc81204f3b28c029a019d4aced09718a7649b50af9e1cd26633e128",
+      "bytes": 11641
+    },
+    {
+      "path": "proof-02/notification-fixture.jar",
+      "sha256Bytes": "ecb41f7ae270c671d07f0289b0743e7bb0649c335f3f0109903e81f51d6be37c",
+      "bytes": 32530
+    },
+    {
+      "path": "proof-02/runtime-command.json",
+      "sha256Bytes": "173412dc06e1973daa6e4ccc85c5f6a86fe2776557912824b6fd4879700e64da",
+      "bytes": 24887
+    },
+    {
+      "path": "proof-02/runtime-pins-after.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime-pins-before.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-02/runtime.log",
+      "sha256Bytes": "73f1d7503824afc0f5c87d160dc8bbab1823584330fbc3171b4d692b50eb3e7d",
+      "bytes": 1960
+    },
+    {
+      "path": "proof-02/scratch/download-tasks.json",
+      "sha256Bytes": "71985ff64d37bf1a6ce80a17d48dd2a09155154db687a5d37f3fdc340a3ffcb0",
+      "bytes": 3193
+    },
+    {
+      "path": "proof-02/scratch/downloads/download-0dd31968bdc38585e06ed36e/.bilipai-download",
+      "sha256Bytes": "0dd31968bdc38585e06ed36e6e2f55f0f677fd09fc6a00cb99e2ac8cf16e97b0",
+      "bytes": 13
+    },
+    {
+      "path": "proof-02/scratch/downloads/download-0dd31968bdc38585e06ed36e/video.m4s",
+      "sha256Bytes": "541b3e9daa09b20bf85fa273e5cbd3e80185aa4ec298e765db87742b70138a53",
+      "bytes": 1000
+    },
+    {
+      "path": "proof-02/scratch/downloads/download-81a8425259de0e046f588f72/.bilipai-download",
+      "sha256Bytes": "81a8425259de0e046f588f72e771f4c3671e14dfeb4e9e0f7cdc33a7daad2a02",
+      "bytes": 13
+    },
+    {
+      "path": "proof-02/scratch/downloads/download-81a8425259de0e046f588f72/video.m4s",
+      "sha256Bytes": "541b3e9daa09b20bf85fa273e5cbd3e80185aa4ec298e765db87742b70138a53",
+      "bytes": 1000
+    },
+    {
+      "path": "proof-03/accepted-result.json",
+      "sha256Bytes": "d2123a23a662b5643215f424a6ddecbbb32d05d72bebdab8a06a33dc5c5786d2",
+      "bytes": 743
+    },
+    {
+      "path": "proof-03/compiler.args",
+      "sha256Bytes": "a51babf6e4fb49397f4fa9b7847ea1b9583c17798054a47cb04691f5aeb62d07",
+      "bytes": 23509
+    },
+    {
+      "path": "proof-03/compiler.log",
+      "sha256Bytes": "7269391b3355652864ae2f3327377dfd937a360a45d1ba1497d92830ba2dd6b7",
+      "bytes": 2596
+    },
+    {
+      "path": "proof-03/DownloadNotificationFixture.kt",
+      "sha256Bytes": "f777bdc5faada566b073d4e562c9c4f5e28fe2261ee5da67299130ded14edf89",
+      "bytes": 11949
+    },
+    {
+      "path": "proof-03/notification-fixture.jar",
+      "sha256Bytes": "978334a1523d7faf8c3cd233d2d080f80a7492acec202ed5d1daa8022ef4e35e",
+      "bytes": 32965
+    },
+    {
+      "path": "proof-03/runtime-command.json",
+      "sha256Bytes": "cc94317e3ca993b12da77737ee569ce3351cf287611d0c692be3ee834d2bc50d",
+      "bytes": 24887
+    },
+    {
+      "path": "proof-03/runtime-pins-after.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-03/runtime-pins-before.json",
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9",
+      "bytes": 41450
+    },
+    {
+      "path": "proof-03/runtime.log",
+      "sha256Bytes": "c5c9db7913095165eac104db8a1cafafca69bcff74baa2b1136812b18f185c24",
+      "bytes": 2956
+    },
+    {
+      "path": "proof-03/scratch/download-tasks.json",
+      "sha256Bytes": "ba9df67b0bc88f757d1674feb4f3f1e34d49092fe3c26bffdb50e55329ffaace",
+      "bytes": 3431
+    },
+    {
+      "path": "proof-03/scratch/downloads/download-0dd31968bdc38585e06ed36e/.bilipai-download",
+      "sha256Bytes": "0dd31968bdc38585e06ed36e6e2f55f0f677fd09fc6a00cb99e2ac8cf16e97b0",
+      "bytes": 13
+    },
+    {
+      "path": "proof-03/scratch/downloads/download-0dd31968bdc38585e06ed36e/video.m4s.part",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-03/scratch/downloads/download-81a8425259de0e046f588f72/.bilipai-download",
+      "sha256Bytes": "81a8425259de0e046f588f72e771f4c3671e14dfeb4e9e0f7cdc33a7daad2a02",
+      "bytes": 13
+    },
+    {
+      "path": "proof-03/scratch/downloads/download-81a8425259de0e046f588f72/video.m4s.part",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-03/scratch/result.json",
+      "sha256Bytes": "f01d4005b54458fe0468ed7b5c42a6da2d0c8d82d7cf73fe2f52184400cc84b1",
+      "bytes": 3591
+    },
+    {
+      "path": "run-fixture.py",
+      "sha256Bytes": "39801592fd2f555126d2064ffeb11acb29a79306cfb782b2bc08000144b88b2c",
+      "bytes": 2257
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "9c160b6b15770ffb6e828e12f2017e15e4fd5a8a6708508f097fd07c6260e369",
+      "bytes": 3334
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "b39e8d80709403de4d0209af0bd4a3cdd1717f64c2e70e45bc9808bc9942d47e",
+      "bytes": 2797
+    }
+  ],
+  "installPayload": [
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadNotifications.kt"
+  ],
+  "proof": {
+    "cases": 1,
+    "assertions": 34,
+    "codeSources": 9,
+    "ownHiddenHWND": true,
+    "nativeTrayAddRemove": true,
+    "visibleTaskbarPixels": false,
+    "exposedHRESULT": false,
+    "actualRootMounted": false,
+    "noMainEdits": true,
+    "noSharedGradle": true,
+    "noExternalHTTP": true
+  }
+}

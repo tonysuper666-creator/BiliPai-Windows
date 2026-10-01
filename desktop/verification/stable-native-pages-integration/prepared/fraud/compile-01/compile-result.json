@@ -1,0 +1,38 @@
+{
+  "status": "FAIL",
+  "sourceInputs": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalCommentFraudProtocol.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-01\\source-inputs\\DesktopOriginalCommentFraudProtocol.kt",
+      "sha256Bytes": "52af7bc4fa847cf990a1a94ef06d5c174101ea7e734faf8fa53ed64af68a8c6e"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\platform\\com\\android\\purebilibili\\data\\repository\\DesktopCommentFraudRawTransport.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-01\\source-inputs\\DesktopCommentFraudRawTransport.kt",
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\proof-only\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopDynamicCardOperations.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-01\\source-inputs\\DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "0644c52d14f167b0671e7f5c9ddd6d6a2d71ff9666e7fefd147d7c9ea4ca3dac"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\dependency-inputs\\data\\model\\CommentFraudStatus.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-01\\source-inputs\\CommentFraudStatus.kt",
+      "sha256Bytes": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\dependency-inputs\\data\\repository\\CommentFraudDetectionPolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-comment-fraud-protocol-parity\\compile-01\\source-inputs\\CommentFraudDetectionPolicy.kt",
+      "sha256Bytes": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58"
+    }
+  ],
+  "exitCode": 1,
+  "actualStableSnapshot11Sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualCp92Sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "preparedOnly": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true
+}

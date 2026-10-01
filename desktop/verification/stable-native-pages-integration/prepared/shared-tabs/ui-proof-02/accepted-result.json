@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "candidateSha256Bytes": "96eb88f19f844115894297bb59e5081caa361c0d49e96f681852c55947ddc688",
+  "fixtureSha256Bytes": "264f7905ad7d126a3f47247e52b732969eba9738fbd586e7082ace8feccde534",
+  "fixtureSourceSha256Bytes": "decfc2db538170e99117118827bbbf7aa00461df8c381f218ef8a18e8b794c93",
+  "actualStable11CpCount": 92,
+  "offscreenActualComposeScene": true,
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "preparedOnly": true,
+  "assertions": 22,
+  "caseCount": 2,
+  "pointerPairs": 4,
+  "actualRecordedLayerSamples": 4,
+  "resultSha256Bytes": "8c98b82e26e17fde596e22f005ba18e91213286f0e0d3fba9254d1a1a89858af"
+}

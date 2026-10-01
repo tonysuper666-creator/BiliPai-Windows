@@ -1,0 +1,6 @@
+{
+    "settings": {
+        "android_native_liquid_glass_enabled": true,
+        "liquid_glass_readability_mode": "adaptive"
+    }
+}

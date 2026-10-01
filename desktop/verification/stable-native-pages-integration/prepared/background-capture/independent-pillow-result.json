@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "imageCount": 2,
+  "images": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-liquid-capture-main14-proof\\proof-02\\scratch\\white-normal-with-foreground.png",
+      "sha256Bytes": "430ef45799b5e3a8cb865595a7da717ef485fee3e00ec515790591b87a73b4bd",
+      "normalRowNonBackgroundPixels": 17712,
+      "backgroundRgb": [
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-liquid-capture-main14-proof\\proof-02\\scratch\\black-normal-with-foreground.png",
+      "sha256Bytes": "d629ace276ce685ab432e20d900b70e67b77c7783c753e3b13518293d0ed5fbb",
+      "normalRowNonBackgroundPixels": 13006,
+      "backgroundRgb": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "PNG dimensions white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal background pixels white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "actual original liquid row pixels independent of sentinel white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal draw red sentinel white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "PNG dimensions black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal background pixels black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "actual original liquid row pixels independent of sentinel black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal draw red sentinel black-normal-with-foreground.png",
+      "pass_": true
+    }
+  ],
+  "scope": "Read actual normal draw PNGs; background layer purity comes from actual sampleBitmap assertions, not screenshot inference."
+}

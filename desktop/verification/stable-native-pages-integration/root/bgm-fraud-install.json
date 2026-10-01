@@ -1,0 +1,172 @@
+{
+  "bgmFrozenManifestSha256Bytes": "82eec7ad6bb03bb6799647fec4fcbb1dd27cef605f034dd6aeafb84742f143cd",
+  "fraudFrozenManifestSha256Bytes": "8fb09519dcebd0f3d9f43bbcc2b3b15fe28ee35f3f6f6aeb40e2dc26ff74e24f",
+  "preciseHunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "Use the actual selected original BGM route type.",
+      "beforeSha256LF": "82bc2f07f01d96c03a9544d3d868d5df891644debd6ee8e13888f20919ef2238",
+      "afterSha256LF": "805a6ab0c50cbaf1e448b83855efd6263e11acec87d3d92f9f2a1cb0966d485b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "Separate original native BGM destination; existing AU/music playback destination stays unchanged.",
+      "beforeSha256LF": "805a6ab0c50cbaf1e448b83855efd6263e11acec87d3d92f9f2a1cb0966d485b",
+      "afterSha256LF": "aeaf91e6d12a982239b2fb06417179b004396881d4889320973ca934c674bb67"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "One original record DAO per current account epoch, shared by BGM and its comment details.",
+      "beforeSha256LF": "aeaf91e6d12a982239b2fb06417179b004396881d4889320973ca934c674bb67",
+      "afterSha256LF": "592631cc10e64ea170de859b89c89d28f0a452415361ed4cb6834b6f37bf0c40"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "BGM route state retires with actual session epoch.",
+      "beforeSha256LF": "592631cc10e64ea170de859b89c89d28f0a452415361ed4cb6834b6f37bf0c40",
+      "afterSha256LF": "fcb041521a57b09f9cb3f9abd0eee46fb64b364fdaa3bd5764cd254465914a31"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "Original AppNavigation BGM\u2192detail\u2192videos/back chain; metadata browse requires no second audio player.",
+      "beforeSha256LF": "fcb041521a57b09f9cb3f9abd0eee46fb64b364fdaa3bd5764cd254465914a31",
+      "afterSha256LF": "ef228f4cb92b4bc32eeefe8bd412981745b09d5ef95589449b1d4a8df291af06"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "Player original inline BGM/discovery uses same existing Root operations and true native BGM route; related CID goes to existing player.",
+      "beforeSha256LF": "ef228f4cb92b4bc32eeefe8bd412981745b09d5ef95589449b1d4a8df291af06",
+      "afterSha256LF": "f5435fa34f192535224460c47d6853bc7dccd2beaac9a61afde8355d6dd56a5a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "BGM is a detail destination, excluded from navigation menu.",
+      "beforeSha256LF": "f5435fa34f192535224460c47d6853bc7dccd2beaac9a61afde8355d6dd56a5a",
+      "afterSha256LF": "a9f2ced0faf3ff4e92a47f6ed700d3be709fec03a9e46b3bccc1f30b157ee0b4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "purpose": "Full original BGM/CommentDetail host shares Root records, emotes, image saving, login and existing Listen overlay. Windows external-media-search falls back to original title copy.",
+      "beforeSha256LF": "a9f2ced0faf3ff4e92a47f6ed700d3be709fec03a9e46b3bccc1f30b157ee0b4",
+      "afterSha256LF": "cea56ab2d34db225b35155ebd78cfe7651432648aa398ddda1acb4b2da31cf38"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "purpose": "Share the already installed gallery platform with BGM; no duplicate transport/gallery renderer.",
+      "beforeSha256LF": "ce19a11f8f32826ae48c8f89b4db309445f89649e19eba303f9e601c90c98420",
+      "afterSha256LF": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "purpose": "Existing player/part adapter now delegates all BGM UI to full original inline/discovery renderer; one same Root Ops binding and original positive-aid multi-song fetch.",
+      "beforeSha256LF": "2ce34dc38667a22cbe1da4bfaf480c386309f30fb58f6a4fd32397395abddd7b",
+      "afterSha256LF": "791499c3078ea47fdeb0230b67d1d896a4987dbf77444599371a7c7a9361abbf"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "purpose": "Existing sole original skeleton breathing helper becomes available to player/BGM consumers through same Root global preferences owner.",
+      "beforeSha256LF": "95dd2763dac9a4f26ec1ad1bef9db3ccd2b8e04132113e93854b1443b1a676c0",
+      "afterSha256LF": "1035ee8a5486b6c5d54138340dccc6e1665e43440e801d4117423740b82885b0"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "purpose": "Root shared global settings context; original breathing algorithm/settings namespace unchanged.",
+      "beforeSha256LF": "1035ee8a5486b6c5d54138340dccc6e1665e43440e801d4117423740b82885b0",
+      "afterSha256LF": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a"
+    }
+  ],
+  "newSourceRows": [
+    "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+    "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+    "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+    "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+    "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+    "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+    "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+    "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt"
+  ],
+  "sourceCount": 690,
+  "resourceCount": 210,
+  "payloads": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopBgmDiscoveryBindings.kt",
+      "sha256Bytes": "1d10908506435370542067140e3718e17a5de4f0220fb4b8330e8180e306b5f3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopMusicRootRoutes.kt",
+      "sha256Bytes": "c4e1afa7e2cc92a5447bc69c8f6fce2755e1d9d4571d097667ba201d98cf9b3a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommentFraudJsonDao.kt",
+      "sha256Bytes": "bcb6094e26e719fa8e30084272c801f13f0b22974318d86b1626feb3f3cd6657"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmLottie.kt",
+      "sha256Bytes": "441ada73f68accf43bc2cd4b434434086388a69a249b6cfeb0d95f89c79c0483"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentFraudRoot.kt",
+      "sha256Bytes": "58ec4a0aa6e2982373464144e29afe3b05e57bcf220c911864a61fa7bb62238a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "sha256Bytes": "ab0cd031888ef7866f205298b5ad9cdc76c2af99ac82403323a48b867037389e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "cea56ab2d34db225b35155ebd78cfe7651432648aa398ddda1acb4b2da31cf38"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "sha256Bytes": "791499c3078ea47fdeb0230b67d1d896a4987dbf77444599371a7c7a9361abbf"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-comment-fraud-protocol.py",
+      "sha256Bytes": "9557e29f1218a13f38b4b5043fe5947e7ab328bf29507ca7fe4816b794e8a358"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/data/repository/DesktopCommentFraudRawTransport.kt",
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "9eac0fd81c0bbcb04fc0ec03d7a3b35f84f5e52a5686467bdba884011a99a029"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "ad3dd665c9a654f57787cedf8667ef9da655c7c2d8a647ec8f30c215c1a067fc"
+    }
+  ],
+  "directVideoDetailShapesReused": true,
+  "bgmGeneratedSourceCount": 30,
+  "wholeClassesPassed": false,
+  "realAccountAccepted": false
+}

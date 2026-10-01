@@ -1,0 +1,706 @@
+{
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceCount": 32,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "sha256LF": "a7f7a122f83cadd8992d0e261616e3b0b9516d6dc0d6232860717f18434fe96e",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidAwareTabRow.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import androidx.compose.ui.Modifier",
+          "replacement": "import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground"
+        },
+        {
+          "original": "        modifier = modifier,\n        enabled = enabled,",
+          "replacement": "        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,"
+        },
+        {
+          "original": "import androidx.compose.ui.platform.LocalConfiguration",
+          "replacement": "import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "sha256LF": "88ef0e49dd37f69d629c770fcd8c11481f055044063c50d760188d5b715c190c",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\components\\TabSelectionScroll.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "sha256LF": "295ca5d2cfbc6c1d4645ccf464b773a9099cef6bbf38528bc662f181d6748152",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\components\\LiquidDockViewport.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256LF": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import android.os.Build\n",
+          "replacement": "import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n"
+        },
+        {
+          "original": "import com.android.purebilibili.core.ui.blur.shouldAllowHomeChromeLiquidGlass\n",
+          "replacement": ""
+        },
+        {
+          "original": "    sdkInt: Int = Build.VERSION.SDK_INT,\n",
+          "replacement": "    renderEffectsSupported: Boolean = desktopDetailRenderEffectsSupported(),\n"
+        },
+        {
+          "original": "!shouldAllowHomeChromeLiquidGlass(sdkInt)",
+          "replacement": "!renderEffectsSupported"
+        },
+        {
+          "original": "import androidx.compose.ui.platform.LocalContext",
+          "replacement": "import com.bilipai.desktop.settings.LocalDesktopLiquidTabSettings"
+        },
+        {
+          "original": "import com.android.purebilibili.core.store.HomeSettings",
+          "replacement": "import com.bilipai.desktop.settings.DesktopLiquidTabHomePreferences as HomeSettings"
+        },
+        {
+          "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "replacement": ""
+        },
+        {
+          "original": "val context = LocalContext.current",
+          "replacement": "val context = LocalDesktopLiquidTabSettings.current"
+        },
+        {
+          "original": "SettingsManager\n        .getHomeSettings(context)",
+          "replacement": "context.homeSettings"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "sha256LF": "9effdedf53643de0d1d60e5416a0c30ecc6f8b96a2547841534afa566469a25e",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarFloatingSegmentedControl.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import androidx.compose.ui.platform.LocalContext",
+          "replacement": "import com.bilipai.desktop.settings.LocalDesktopLiquidTabSettings"
+        },
+        {
+          "original": "import com.android.purebilibili.core.store.HomeSettings",
+          "replacement": "import com.bilipai.desktop.settings.DesktopLiquidTabHomePreferences as HomeSettings"
+        },
+        {
+          "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "replacement": ""
+        },
+        {
+          "original": "val context = LocalContext.current",
+          "replacement": "val context = LocalDesktopLiquidTabSettings.current"
+        },
+        {
+          "original": "SettingsManager\n        .getHomeSettings(context)",
+          "replacement": "context.homeSettings"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "sha256LF": "6c2e14be00f306a4e212803164538541f34ca6b1a3f3f542f295e843bc15c948",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import androidx.compose.ui.platform.LocalConfiguration",
+          "replacement": "import com.bilipai.desktop.ui.DesktopDynamicWindowConfiguration as LocalConfiguration"
+        },
+        {
+          "original": "import android.os.Build\n",
+          "replacement": "import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n"
+        },
+        {
+          "original": "Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU",
+          "replacement": "top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported()"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256LF": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBarGeometry.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256LF": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt",
+      "mode": "selected",
+      "declarations": [
+        {
+          "name": "BottomBarLiquidOrientation",
+          "sha256LF": "7b047ada9225ee75da487bd35de33bcc381e0a9f50e829b3c410014aa165e6a6"
+        },
+        {
+          "name": "LiquidGlassRenderConfig",
+          "sha256LF": "9de43fb4a4b58a8ffa3a1848d35670ab96f1958fcad089c7cf591d0b294f8cba"
+        },
+        {
+          "name": "LocalLiquidGlassRenderConfig",
+          "sha256LF": "abb84ecd6eea1a660f615ea81b5673ca54736d42953a4d91a42610763c483cd6"
+        },
+        {
+          "name": "BottomBarMatchedDockEdge",
+          "sha256LF": "7dda62c276a822b2c3fb98253555727e2cb1df188258363c0f20a5b8ba6fd52c"
+        },
+        {
+          "name": "bottomBarMatchedCaptureOverflow",
+          "sha256LF": "38f6149a24be6f54b8100cdf5753f4f811675221989b1aaab8077700a8c179d0"
+        },
+        {
+          "name": "bottomBarMatchedCaptureOverflow",
+          "sha256LF": "c07da5bbc428c93d37739df200c5af3befd8fe0557654831e44054ff4670f4d1"
+        },
+        {
+          "name": "BottomBarMatchedLiquidChromeState",
+          "sha256LF": "38cad1a0351a3562a9d9f2ecda0b96ebb50160d39a53c058fd933e69563810c5"
+        },
+        {
+          "name": "rememberBottomBarMatchedLiquidChromeState",
+          "sha256LF": "399775f2a81c1ca4e2bb7c6802c9e9e5603425100e5fab7f1b39229d563dbf88"
+        },
+        {
+          "name": "BottomBarMatchedLiquidDock",
+          "sha256LF": "89385db2685b38d196f424dabe870d444caaa0e74f553712c62c75e74a47cd28"
+        },
+        {
+          "name": "bottomBarMatchedLiquidDockSurface",
+          "sha256LF": "a9aee9b036efed644745e62a04788383dfaf581ed3e1121c72c0783a8a54ec71"
+        },
+        {
+          "name": "BottomBarMatchedReusableLiquidDock",
+          "sha256LF": "6a9c83873a0e44ce1b8f65b954ea3634b2911789c5c458f914cc495b57ffc753"
+        }
+      ],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "sha256LF": "e1c3cd43037a554019356472de67e99208d78675ce8b20a40ad84125caf3999e",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "sha256LF": "beb3ad5b46e00191501dbd36befabf7ad768812f0935cf272501a4bed88ecb81",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "sha256LF": "86694ec08b8fa946836379ca95bc52a4e880bcfcbfb0a2c4b14b9852a7e4d452",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassShader.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "sha256LF": "9b2af7e3b9268adb56cbb44c34eda4bb006aa0c181bf60a240cb910e5f269f00",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassSelectionContentPolicy.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "sha256LF": "dbeeb4db12b48ce4803424208e66ba10e0f203c10ad395fc7da7ff0e629d423c",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlight.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import android.annotation.SuppressLint\n",
+          "replacement": ""
+        },
+        {
+          "original": "import android.graphics.RuntimeShader",
+          "replacement": "import top.yukonga.miuix.kmp.shader.RuntimeShader\nimport top.yukonga.miuix.kmp.shader.asBrush"
+        },
+        {
+          "original": "@SuppressLint(\"NewApi\")\n",
+          "replacement": ""
+        },
+        {
+          "original": "ShaderBrush(shader)",
+          "replacement": "shader.asBrush()"
+        },
+        {
+          "original": "InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb(),",
+          "replacement": "Color(InteractiveHighlightPalette.Content.copy(0.12f * progress).toArgb()),"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "sha256LF": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightPalette.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "sha256LF": "39f7825572d2b404d6552e80946958fb60747c87255f094cbbc0fd18cc6afd63",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightMotionSpec.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "sha256LF": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DragGestureInspector.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "sha256LF": "537971a74546a5dbfec259502e5c60935aaedfc0ab3d02888a58419cfaad981c",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DampedDragAnimation.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import android.os.SystemClock\n",
+          "replacement": ""
+        },
+        {
+          "original": "SystemClock.uptimeMillis()",
+          "replacement": "System.nanoTime() / 1_000_000L"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "sha256LF": "579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Lens.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "sha256LF": "f8522497c4281dfd1e9560bb5828082a7b708abe24806ae0a3c31707a7f3616b",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Vibrancy.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "sha256LF": "c6dee226fa5dfc1e93195cf2fc3caaa4b9c68366dd78a25af32853fc11e4cfcd",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\InnerShadow.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "sha256LF": "7a98fe8d8aef8b433a40e2db5c64b95389b9eccb72ba3d201edcdff2ae6a99bc",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\CombinedBackdrop.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "sha256LF": "78f22a8379ee4e948306309a7d82b5b21e091a37e9da173ae72ff2baac4e27b4",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\animation\\DampedDragAnimation.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": [
+        {
+          "original": "import android.os.SystemClock\n",
+          "replacement": ""
+        },
+        {
+          "original": "import kotlinx.coroutines.android.awaitFrame",
+          "replacement": "import androidx.compose.runtime.withFrameNanos"
+        },
+        {
+          "original": "awaitFrame()",
+          "replacement": "withFrameNanos { it }"
+        },
+        {
+          "original": "SystemClock.uptimeMillis()",
+          "replacement": "System.nanoTime() / 1_000_000L"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "sha256LF": "2c5e1b8e308165a3e97b1bc57cb5385808735f75f01279a9aeafbda600ecec0b",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarGlassMaterialPolicy.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "sha256LF": "307752c068645ef965cf65c4e7b6c348270bae0e998989fdbf2c1f71e6581de3",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\motion\\BottomBarMotionSpec.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "sha256LF": "ab972367ac0047d7d832269660e91aef7e0c1351d314eb047a445bdfcfebf4b5",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\HomeSelectionIndicatorPolicy.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "sha256LF": "48b7b79008960c6973fe7334094cc2545988f456f8921cb13962cb957bab88a2",
+      "output": "generated\\com\\android\\purebilibili\\core\\ui\\OpticalContrastPalette.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "sha256LF": "951eaf50d5c751db32be642d33b59a0a4903890d4d99a7d3a015420c07c25dd5",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\HomeVisualPalette.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sha256LF": "0b89a76d5302fc73dc5a7f8bb4dce299f512afc6ad29620d5c2b60d40bd2d9cf",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\SideBarMotionSpec.kt",
+      "mode": "selected",
+      "declarations": [
+        {
+          "name": "FloatingBottomBarSelectionScale",
+          "sha256LF": "ac6e3d1dd2a7213a282c0028fbd670b9bbae5b44e5c13587c1e3038bcd8ec51c"
+        },
+        {
+          "name": "resolveNavigationIconCrossScale",
+          "sha256LF": "bf0c66305a560d88b760246a284fae5cbbee92c0986beedf211dcaa81cdb59f3"
+        }
+      ],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "sha256LF": "414b70073eea199ee79184d7cc2bafd694c74090d55416f85b136ca3dc4860c1",
+      "output": "generated\\com\\android\\purebilibili\\core\\store\\LiquidGlassReadabilityMode.kt",
+      "mode": "direct",
+      "declarations": [],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "output": "generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+      "mode": "selected",
+      "declarations": [
+        {
+          "name": "LiquidGlassStyle",
+          "sha256LF": "c0a2ddc2f26ef332f197c63ae316314ea9cd4866a23aeb7699d9a12761f086c1"
+        },
+        {
+          "name": "LiquidGlassMode",
+          "sha256LF": "4ccdf23a3502064db8e4ed35894ceb267a90e39f37fa0ea8f6dcb505fa477213"
+        },
+        {
+          "name": "LiquidGlassAdvancedPreset",
+          "sha256LF": "65d4c9ca63cb5f56457c0b110f9099cb49853f990020dcec3e92848feda1fb21"
+        },
+        {
+          "name": "LiquidGlassAdvancedSettings",
+          "sha256LF": "779c4276de304f14ca623d4d49e702417e48bf20d33d4ced1ecaab83841cef3b"
+        },
+        {
+          "name": "normalizeLiquidGlassAdvancedValue",
+          "sha256LF": "b0cfa905219130678b787cbc855ba8e0cb449eb32a145fa243f9b8c247a95119"
+        },
+        {
+          "name": "resolveLiquidGlassAdvancedPreset",
+          "sha256LF": "4bda0221f31c4c401bf0de812aede0424d64db474c72e2d402d79d6569002eb7"
+        },
+        {
+          "name": "resolveLiquidGlassAdvancedSettings",
+          "sha256LF": "9230a06dcfd992a76d9273e69fa9a6c97fc3880879aa244622d5d6459b76d328"
+        },
+        {
+          "name": "resolveLegacyLiquidGlassMode",
+          "sha256LF": "743162076d103bcf795d8e2ab5424c870ea637542dfd1e76c5fd323a0e994534"
+        },
+        {
+          "name": "resolveDefaultLiquidGlassStrength",
+          "sha256LF": "ee9784bfa6fc4546f07af28537c11d4ed5bfe9ac685610d27e585d1180205469"
+        },
+        {
+          "name": "normalizeLiquidGlassStrength",
+          "sha256LF": "3f004cc2c219a663980431f66d6932dccc7c5f3b98fa57325d13c253b421d6b2"
+        },
+        {
+          "name": "normalizeLiquidGlassProgress",
+          "sha256LF": "c5fe4fe190b8a9ea7e51b6a953fd03847516bcd15ad507b208e630a40375cdbb"
+        },
+        {
+          "name": "resolveLegacyLiquidGlassProgress",
+          "sha256LF": "5e569cbd4613242205f353f9d99231fedd82f9cdf2698de75ded6a8c8d9b67da"
+        },
+        {
+          "name": "resolveLegacyLiquidGlassProgress",
+          "sha256LF": "2a6cd9a1a4dd5b07c43aad215c12af56886afa49e850c1d4415da91a30bffd24"
+        },
+        {
+          "name": "resolveStoredLiquidGlassProgress",
+          "sha256LF": "98b3d5fcde77e2d9e5ddffc4932482348a247a385d7ffdbbd99834d0364f8af0"
+        },
+        {
+          "name": "resolveLiquidGlassModeFromProgress",
+          "sha256LF": "70e0fbedf4d4d80b2aaa736f7557ff023f3fc7fed5044e1c11da1ae3018ae35e"
+        },
+        {
+          "name": "resolveLiquidGlassStrengthFromProgress",
+          "sha256LF": "0620a42861080203eab2bc1270651ce44e3dedadf8f4fe7d392e85c2480fef93"
+        },
+        {
+          "name": "BottomBarLiquidGlassPreset",
+          "sha256LF": "bfb293163830ca497f4727c462b5b2978a1177a9d53c84553903b53689374b14"
+        }
+      ],
+      "adaptations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256LF": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt",
+      "mode": "selected",
+      "declarations": [
+        {
+          "name": "iosIndicatorSpecular",
+          "sha256LF": "793e91867bf2827b724a82ffb5f328e29b3491f820e2d4b51dc7ce1b5c0f0280"
+        },
+        {
+          "name": "AndroidNativeBottomBarTuning",
+          "sha256LF": "0e1c46746c41ccee7eb64cca641be992320a97d5eff134ae78e8d857a947efaf"
+        },
+        {
+          "name": "resolveAndroidNativeBottomBarTuning",
+          "sha256LF": "ed46bce1b6499f4a38eb27b0173f218b2fd7d73f34ee2bb3c7002c2caa51a9c3"
+        },
+        {
+          "name": "resolveAndroidNativeBottomBarContainerColor",
+          "sha256LF": "d7c0943369fddffbe4b508a3ba2b4bb2601c50dc8f3de1b2cceaa7cfc06f4f6a"
+        },
+        {
+          "name": "resolveAndroidNativeFloatingBottomBarContainerColor",
+          "sha256LF": "6088a8a761efdcb8f73f5c0da166b303ff288ed9e504bc5b3cd6c4148cca57be"
+        },
+        {
+          "name": "resolveAndroidNativeBottomBarGlassEnabled",
+          "sha256LF": "dcf83e42163159c5236343f3ef72a51622b2c1dd7ddd622c7a65d0e35f0c2aab"
+        },
+        {
+          "name": "shouldUseAndroidNativeFloatingHazeBlur",
+          "sha256LF": "b3143a8beddf011b65ef051ebc6ab6cc7b581ed88d3e2541f7a98a32cf18701d"
+        },
+        {
+          "name": "shouldRenderBottomBarLiquidGlassEffects",
+          "sha256LF": "647169c2f0a7a4eed636edc18edfcf1e4fb49bba825821006e1bb8237a8a32c2"
+        },
+        {
+          "name": "biliPaiMiuixFloatingDockSurface",
+          "sha256LF": "7ded075c30be437ac2e329fde6c4f57070768201e76eed70577e4186aed4c9a0"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarContainerColor",
+          "sha256LF": "b4ac14910b431af677725b8439126ba0183691432848b3ebbcdcff948efbadf1"
+        },
+        {
+          "name": "resolveBottomBarDarkTheme",
+          "sha256LF": "7f81448a48a436ea82d36bd4ff1c1833f289402b910071d50918ba52820b5e39"
+        },
+        {
+          "name": "BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET",
+          "sha256LF": "7bc20f8008d518930e85c349c668218bf14196938add3026aa09ea2c86067ec4"
+        },
+        {
+          "name": "resolveBottomBarCaptureSafeInsetDp",
+          "sha256LF": "f87257db8b368106a72c2755710f1c1663fd62ce6e76ff4e5828e7341c4f2235"
+        },
+        {
+          "name": "resolveBottomBarSurfaceColor",
+          "sha256LF": "6e00b05b96440adce822a313c75558d78b27c7efaa45a9c3a240d786916d06de"
+        },
+        {
+          "name": "resolveBiliPaiBottomBarShellColor",
+          "sha256LF": "20f66699d5fcbb801cd25359497a2de097b68c76d6ba732dbecac061322fa0a2"
+        },
+        {
+          "name": "BottomBarItemMotionVisual",
+          "sha256LF": "6bc849d002b291f69a0a0b09c4a86a4ad0ab4fcb0060d8b5d8848f7ddd5d88c8"
+        },
+        {
+          "name": "resolveBottomBarItemCoverage",
+          "sha256LF": "8b4f6db47ab4533fd60c287097a476c4e367a0ed20b1d338e8ad385d055412c3"
+        },
+        {
+          "name": "resolveBottomBarItemMotionScale",
+          "sha256LF": "a2927de56ba5ce6fab7a26227fa406cb57e84c0e99f5eb4693e9befc49e2650c"
+        },
+        {
+          "name": "resolveBottomBarItemMotionVisual",
+          "sha256LF": "bcddf35f6f5ba6f5599970ade76b9d1ab0b54bf00306d44bb8e71baa4bdfa979"
+        }
+      ],
+      "adaptations": [
+        {
+          "original": "    sdkInt: Int = Build.VERSION.SDK_INT\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)",
+          "replacement": "): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()"
+        },
+        {
+          "original": "    sdkInt: Int = Build.VERSION.SDK_INT\n): Boolean = blurEnabled &&\n    !glassEnabled &&\n    hasHazeState &&\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)",
+          "replacement": "): Boolean = blurEnabled &&\n    !glassEnabled &&\n    hasHazeState &&\n    desktopDetailRenderEffectsSupported()"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "sha256LF": "9a6696c3a2ff0c9a67931cb0f7a4a392d1d1fdfb117bc9f22c31b54e01af8174",
+      "output": "generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt",
+      "mode": "selected",
+      "declarations": [
+        {
+          "name": "ADAPTIVE_READABILITY_SAMPLE_INTERVAL_MILLIS",
+          "sha256LF": "74b50224518eba60f6965e6c88f712f5ad8da045007369e6a824f0dc1fb1bd44"
+        },
+        {
+          "name": "ADAPTIVE_READABILITY_INITIAL_DELAY_MILLIS",
+          "sha256LF": "fcf21ce98c89adcf7eacb13f01807f5df93a615bde44a77e068559fa28ef02d6"
+        },
+        {
+          "name": "ADAPTIVE_READABILITY_SAMPLE_WIDTH",
+          "sha256LF": "038022ca493f7547da3e1f09cd4add18a0232f277c617692cacae5e40e7d6614"
+        },
+        {
+          "name": "ADAPTIVE_READABILITY_SAMPLE_HEIGHT",
+          "sha256LF": "3594636b0d092ef72f3e64af31b113560a51fb288421c4082b3cdb1c72c80e4e"
+        },
+        {
+          "name": "ADAPTIVE_READABILITY_LIGHT_TO_DARK_THRESHOLD",
+          "sha256LF": "a8ae77394a5795a20d9c241f4c0ac904a1046ef89d74a9a053ada21819d812e1"
+        },
+        {
+          "name": "ADAPTIVE_READABILITY_DARK_TO_LIGHT_THRESHOLD",
+          "sha256LF": "52f0ff5b487b4e315294fed071adc5c5a4c6d53b35c50a2d3288b864a85df91e"
+        },
+        {
+          "name": "adaptiveReadabilityPixelCopyMutex",
+          "sha256LF": "78c0c2ee4a0b5116036c85345c66bc1081810d4715b585988c441f9752b9f6a3"
+        },
+        {
+          "name": "LiquidGlassAdaptiveForegroundTone",
+          "sha256LF": "29e48679edf84f68dae7037469670d8c1d1c399329738a6917b264cc41071282"
+        },
+        {
+          "name": "resolveLiquidGlassAdaptiveForegroundTone",
+          "sha256LF": "bcfc8c410cba6c491c29f8a1b03f965b66672dd56ea9f2bcb7fae4a25c9cea47"
+        },
+        {
+          "name": "LiquidGlassAdaptiveReadabilityState",
+          "sha256LF": "9b6dd14e09b941fca21b71fd42e6f1d3029c902d02f931cc14d173cab10c2a8f"
+        },
+        {
+          "name": "rememberLiquidGlassAdaptiveReadabilityState",
+          "sha256LF": "ef8cbb15ea14078b3f6727015d53b9eb7c4be25384ee53e0139f09d8603b2244"
+        },
+        {
+          "name": "trackLiquidGlassAdaptiveReadability",
+          "sha256LF": "9b3876db984b6fb0f062614ab1130c995055bbefa973a2fe06a699c2deeb3bbc"
+        },
+        {
+          "name": "rememberLiquidGlassAdaptiveContentColor",
+          "sha256LF": "e15403a82850e94eb7198a5dd6de6d066ec193f59c0c79e5654f4cc81d14b2d7"
+        },
+        {
+          "name": "resolveLiquidGlassContrastGuardedForeground",
+          "sha256LF": "13f3776bc84db7e172153fa5ef7499c6e79934a4cb818ebb5eb2b48a9aae753d"
+        },
+        {
+          "name": "liquidGlassContrastRatio",
+          "sha256LF": "593439000530fa695116f4f903c19fe2234a77943da07a1a320964383aa25513"
+        },
+        {
+          "name": "averageRelativeLuminance",
+          "sha256LF": "bbaefb74ee7c1f3640b9ab7a202da47be20d4603c6ca7b986d361392547ac6ac"
+        },
+        {
+          "name": "toLinearChannel",
+          "sha256LF": "29e03b00ba10909a7653c77730ef162fc9805ea44b9631d827360fdad38270cd"
+        },
+        {
+          "name": "clampedTo",
+          "sha256LF": "ba32ae352f3f185577db53050cf2ffd816eb089709fce36035c91114cbed8784"
+        }
+      ],
+      "adaptations": [
+        {
+          "original": "val context = LocalContext.current",
+          "replacement": "val context = LocalDesktopLiquidReadabilityEnvironment.current"
+        },
+        {
+          "original": "val activity = remember(context) { context.findLiquidGlassHostActivity() }",
+          "replacement": "val activity = context"
+        },
+        {
+          "original": "Build.VERSION.SDK_INT < Build.VERSION_CODES.O",
+          "replacement": "!activity.isSupported"
+        },
+        {
+          "original": "val decorView = activity.window.decorView",
+          "replacement": "val decorView = activity"
+        }
+      ]
+    }
+  ],
+  "explicitActualReuse": [
+    "resolveSharedBottomBarCapsuleShape",
+    "BILIPAI_PROGRESSIVE_TOP_BLUR_START_FRACTION",
+    "desktopDetailRenderEffectsSupported",
+    "DesktopDynamicWindowConfiguration",
+    "AppNativeTabRow",
+    "AppNativeSegmentedControl",
+    "AppSegmentOption",
+    "resolveReadableNativeTabMinWidth"
+  ],
+  "noNewHomeSettings": true,
+  "noNewSettingsManager": true,
+  "noNewStore": true,
+  "noNewClient": true
+}

@@ -41,6 +41,8 @@ struct Session final {
     std::atomic<bool> closingResources{false};
     std::recursive_mutex callbackGate; // safe if COM raises a terminal event during a source callback
     StorageFile file{nullptr};
+    bool textOnly=false;
+    hstring shareTitle, shareText;
     DataTransferManager manager{nullptr};
     DataPackage package{nullptr};
     com_ptr<IDataTransferManagerInterop> interop;
@@ -299,6 +301,24 @@ extern "C" __declspec(dllexport) HRESULT WINAPI BilipaiSharePrepare(wchar_t cons
     } catch(...) { return to_hresult(); }
 }
 
+// Text/link sharing uses the same owner dispatcher and callback retirement,
+// without a temporary file or file-supply lease.
+extern "C" __declspec(dllexport) HRESULT WINAPI BilipaiSharePrepareText(wchar_t const* title,wchar_t const* text,uint64_t* result) noexcept {
+    if(!title||!text||!result)return E_POINTER;
+    *result=0;
+    try {
+        auto titleLength=wcsnlen_s(title,257), textLength=wcsnlen_s(text,65537);
+        if(titleLength==0||titleLength>256||textLength==0||textLength>65536)return E_INVALIDARG;
+        apartment init(RO_INIT_MULTITHREADED);
+        auto value=std::make_shared<Session>();
+        value->textOnly=true;value->shareTitle=hstring(title);value->shareText=hstring(text);
+        auto token=nextToken.fetch_add(1);
+        std::lock_guard lock(registryGate);
+        if(sessions.size()>=8)return HRESULT_FROM_WIN32(ERROR_TOO_MANY_OPEN_FILES);
+        sessions.emplace(token,std::move(value));*result=token;return S_OK;
+    }catch(...){return to_hresult();}
+}
+
 namespace bilipai_native_diagnostic_share_detail {
 HRESULT bindOnOwnerThread(std::shared_ptr<Session> const& value,HWND hwnd) {
     DWORD process=0;auto thread=GetWindowThreadProcessId(hwnd,&process);
@@ -326,9 +346,9 @@ HRESULT bindOnOwnerThread(std::shared_ptr<Session> const& value,HWND hwnd) {
                 }
                 check_hresult(value->revokePackage());
                 value->package=request.Data();
-                value->package.Properties().Title(L"BiliPai 日志反馈");
-                value->package.Properties().Description(L"请查看附件中的日志文件");
-                value->package.SetText(L"请查看附件中的日志文件");
+                value->package.Properties().Title(value->textOnly ? value->shareTitle : hstring(L"BiliPai 日志反馈"));
+                value->package.Properties().Description(value->textOnly ? value->shareTitle : hstring(L"请查看附件中的日志文件"));
+                if(!value->textOnly)value->package.SetText(L"请查看附件中的日志文件");
                 value->package.RequestedOperation(DataPackageOperation::Copy);
                 value->completed=value->package.ShareCompleted([weak](DataPackage const&,ShareCompletedEventArgs const&) {
                     if(auto value=weak.lock();value&&!value->closed) {
@@ -350,6 +370,10 @@ HRESULT bindOnOwnerThread(std::shared_ptr<Session> const& value,HWND hwnd) {
                     // cancellation means an unconfirmed lease, not fake completion.
                     value->hasCanceled=false;
                 }
+                if(value->textOnly) {
+                    if(!value->beginStorageSupply())return;
+                    value->package.SetText(value->shareText);
+                } else {
                 auto items=single_threaded_vector<IStorageItem>(); items.Append(value->file.as<IStorageItem>());
                 // Fail closed even if the OS call throws after a possible partial grant.
                 // false is evidence of no file-supply attempt, never merely no success result.
@@ -358,6 +382,7 @@ HRESULT bindOnOwnerThread(std::shared_ptr<Session> const& value,HWND hwnd) {
                 // admission check from its conservative possible-supply flag.
                 if(!value->beginStorageSupply())return;
                 value->package.SetStorageItems(items,true);
+                }
                 if(!value->closed && value->state<3) value->state=2;
             } catch(...) {
                 value->state=5;

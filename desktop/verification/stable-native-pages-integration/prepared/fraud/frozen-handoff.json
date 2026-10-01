@@ -1,0 +1,420 @@
+{
+  "status": "FROZEN_PREPARED",
+  "artifactCount": 75,
+  "artifacts": [
+    {
+      "path": "audit.py",
+      "byteSize": 5897,
+      "sha256Bytes": "aa77a96841c9c023d2046d7705d6f603cb8df41b3e45fac09eec53e8c8c98147"
+    },
+    {
+      "path": "base-inputs/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "byteSize": 35542,
+      "sha256Bytes": "b3eb4928dd0787279190567ed3c373c4c3912498174cab87661404c8d7a8302f"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "byteSize": 3353,
+      "sha256Bytes": "ec7cd5736575f21e9eb8f12b85e1f69710e009bd15d36fb878558f6d7a6a98a5"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "byteSize": 23951,
+      "sha256Bytes": "f8a6e579ccdfcaba9f8e3a8592b35d7e6fc9cee211a20382821eac3898cd0f61"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "byteSize": 907,
+      "sha256Bytes": "8575f11cf2aef688e07715052f68d5becbad0766e721e32803f95ba3995afcc2"
+    },
+    {
+      "path": "compile-01/input-actual-stable11-manifest.json",
+      "byteSize": 2312,
+      "sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7"
+    },
+    {
+      "path": "compile-01/input-ordered-runtime-cp.json",
+      "byteSize": 34388,
+      "sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa"
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-01/source-inputs/CommentFraudDetectionPolicy.kt",
+      "byteSize": 3505,
+      "sha256Bytes": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58"
+    },
+    {
+      "path": "compile-01/source-inputs/CommentFraudStatus.kt",
+      "byteSize": 518,
+      "sha256Bytes": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopCommentFraudRawTransport.kt",
+      "byteSize": 2006,
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopDynamicCardOperations.kt",
+      "byteSize": 36426,
+      "sha256Bytes": "0644c52d14f167b0671e7f5c9ddd6d6a2d71ff9666e7fefd147d7c9ea4ca3dac"
+    },
+    {
+      "path": "compile-01/source-inputs/DesktopOriginalCommentFraudProtocol.kt",
+      "byteSize": 16383,
+      "sha256Bytes": "52af7bc4fa847cf990a1a94ef06d5c174101ea7e734faf8fa53ed64af68a8c6e"
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "byteSize": 17155,
+      "sha256Bytes": "94a154e3b20b492ab97fe6eee0de3779265539585d74a4efe5ad95cb5e27398e"
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "byteSize": 23951,
+      "sha256Bytes": "588979190289fccf8fb5dd478c78e6ddec775662eaa8aeece822ec660f95b147"
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "byteSize": 1716,
+      "sha256Bytes": "1d2cf25ea3af8f130bfa05d03d464d0e64c2facf2003eb188bf4b97779816c90"
+    },
+    {
+      "path": "compile-02/input-actual-stable11-manifest.json",
+      "byteSize": 2312,
+      "sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7"
+    },
+    {
+      "path": "compile-02/input-ordered-runtime-cp.json",
+      "byteSize": 34388,
+      "sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa"
+    },
+    {
+      "path": "compile-02/prepared-fraud-protocol.jar",
+      "byteSize": 312579,
+      "sha256Bytes": "abb0cbad4a7d20c7ed77896e10d95fa4e5e02c4a1635bd678853259577088bac"
+    },
+    {
+      "path": "compile-02/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-02/source-inputs/CommentFraudDetectionPolicy.kt",
+      "byteSize": 3505,
+      "sha256Bytes": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58"
+    },
+    {
+      "path": "compile-02/source-inputs/CommentFraudStatus.kt",
+      "byteSize": 518,
+      "sha256Bytes": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
+    },
+    {
+      "path": "compile-02/source-inputs/DesktopCommentFraudRawTransport.kt",
+      "byteSize": 2006,
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "compile-02/source-inputs/DesktopDynamicCardOperations.kt",
+      "byteSize": 36426,
+      "sha256Bytes": "0644c52d14f167b0671e7f5c9ddd6d6a2d71ff9666e7fefd147d7c9ea4ca3dac"
+    },
+    {
+      "path": "compile-02/source-inputs/DesktopOriginalCommentFraudProtocol.kt",
+      "byteSize": 16432,
+      "sha256Bytes": "7b71164544ba4d72203c9e4ad1568fd64d2337e73c0aa7cfba609e829225c175"
+    },
+    {
+      "path": "compile.py",
+      "byteSize": 3412,
+      "sha256Bytes": "80acbd482248c1339c8013dc9a575b5b66016bf32def26fda3d8f488d090cafa"
+    },
+    {
+      "path": "contract.txt",
+      "byteSize": 5975,
+      "sha256Bytes": "4d2f4a2050fbc1d1d151ee4b522cc07649760174f7df1bb19be9febb35380bfc"
+    },
+    {
+      "path": "dependency-inputs/data/model/CommentFraudStatus.kt",
+      "byteSize": 518,
+      "sha256Bytes": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
+    },
+    {
+      "path": "dependency-inputs/data/repository/CommentFraudDetectionPolicy.kt",
+      "byteSize": 3505,
+      "sha256Bytes": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58"
+    },
+    {
+      "path": "fixture-01/runtime-pins-before.json",
+      "byteSize": 41526,
+      "sha256Bytes": "41c6e737d68e91d261071ad5f7a60e02ce9bb1d43b6fb946a6829446f292b4ad"
+    },
+    {
+      "path": "fixture-02/compile-result.json",
+      "byteSize": 40,
+      "sha256Bytes": "37f27d1bf2d4b039ef60afd51b8b0ffdefbb7dd8d8ef93a37f8fcb3813cb2675"
+    },
+    {
+      "path": "fixture-02/compiler.args",
+      "byteSize": 23498,
+      "sha256Bytes": "810051ce7bebc3148c9077b74fe4825b9154907e9cb49c76e2eca9d5bb4dd1ea"
+    },
+    {
+      "path": "fixture-02/compiler.log",
+      "byteSize": 470,
+      "sha256Bytes": "8486c5c36a6ee45e218e1eb6b7ea473faf5bdbd8756f7a9f812bc9478b4f5f0f"
+    },
+    {
+      "path": "fixture-02/FraudProtocolFixture.kt",
+      "byteSize": 15030,
+      "sha256Bytes": "91f94cabed6d4cb2a0975b677296d67809bc722862585fb0e314080b5b327e1a"
+    },
+    {
+      "path": "fixture-02/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "fixture-03/compile-result.json",
+      "byteSize": 40,
+      "sha256Bytes": "37f27d1bf2d4b039ef60afd51b8b0ffdefbb7dd8d8ef93a37f8fcb3813cb2675"
+    },
+    {
+      "path": "fixture-03/compiler.args",
+      "byteSize": 23498,
+      "sha256Bytes": "43fc67824e98376eb4d9a9fbe224e77da2f663e20aeae4b49f6fa14e6c0109ea"
+    },
+    {
+      "path": "fixture-03/compiler.log",
+      "byteSize": 759,
+      "sha256Bytes": "3b9ca23f4314c52c359898681390f2ea028927e0449f7758b3fb65a2452a2bd3"
+    },
+    {
+      "path": "fixture-03/FraudProtocolFixture.kt",
+      "byteSize": 15559,
+      "sha256Bytes": "e86b258ebaa8bcd0b9f761102e4af6507b5c3bf23446d78479974ff5ea157acf"
+    },
+    {
+      "path": "fixture-03/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "fixture-04/accepted-result.json",
+      "byteSize": 636,
+      "sha256Bytes": "66275afddef53a23bb437874ba5366d04efedb2f5747ea92e4684aa9bda80c2f"
+    },
+    {
+      "path": "fixture-04/compiler.args",
+      "byteSize": 23498,
+      "sha256Bytes": "81d14abdb0c6b760bcc2b2885d9c473d0c5ae6f782b28e45a2b1b7587dbc47d2"
+    },
+    {
+      "path": "fixture-04/compiler.log",
+      "byteSize": 446,
+      "sha256Bytes": "0ae33f9e897c638d5b8e8c9d0c63a15e7436505242b5e128eaf643a7f0dbd2d0"
+    },
+    {
+      "path": "fixture-04/fraud-protocol-fixture.jar",
+      "byteSize": 77057,
+      "sha256Bytes": "5657139c4d4ab5b463aab491dfaa577f3d721065ef0f32d58269b6af36936218"
+    },
+    {
+      "path": "fixture-04/FraudProtocolFixture.kt",
+      "byteSize": 15563,
+      "sha256Bytes": "1b9a4e68546728a576da694806986594a6b91da24b69727925e3fc0d2ee58f4b"
+    },
+    {
+      "path": "fixture-04/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "fixture-04/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "fixture-04/runtime.log",
+      "byteSize": 2642,
+      "sha256Bytes": "ed50d1b9f8e2e1dd5c32e47255f29fce61ffd9f2bfbc84c85a1b0cf348ca71c6"
+    },
+    {
+      "path": "fixture-04/scratch/result.json",
+      "byteSize": 3167,
+      "sha256Bytes": "49a0658244862d77961e6a7e4878711d04920010fa9128813f15497fb4151f3a"
+    },
+    {
+      "path": "FraudProtocolFixture.kt",
+      "byteSize": 15563,
+      "sha256Bytes": "1b9a4e68546728a576da694806986594a6b91da24b69727925e3fc0d2ee58f4b"
+    },
+    {
+      "path": "freeze.py",
+      "byteSize": 2836,
+      "sha256Bytes": "89a11dc17f76ecf08bcb6c623d334033188a6a4638119fca41e0dfe07c03ee00"
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalCommentFraudProtocol.kt",
+      "byteSize": 16432,
+      "sha256Bytes": "7b71164544ba4d72203c9e4ad1568fd64d2337e73c0aa7cfba609e829225c175"
+    },
+    {
+      "path": "operations-member.fragment.kt",
+      "byteSize": 884,
+      "sha256Bytes": "d7f3b17accb81bb7895a613438d8a7d27477c3fe32a87f969e2e0838c9bf7758"
+    },
+    {
+      "path": "original-bodies/checkCommentStatus.kt",
+      "byteSize": 1213,
+      "sha256Bytes": "0f44de104f39e5eb7887a32805a781ff3a4c58df19db2ab62e85b803731d4ff0"
+    },
+    {
+      "path": "original-bodies/checkReplyComment.kt",
+      "byteSize": 6771,
+      "sha256Bytes": "993079fb47c7eae138b1a19a8eec13c2c38031893bde2ff37fc66c3bc3500e7f"
+    },
+    {
+      "path": "original-bodies/checkRootComment.kt",
+      "byteSize": 3170,
+      "sha256Bytes": "77f0286d11476f1cae28c287d97eccfe8b3f7a98407b01be08cae6b455fcaa02"
+    },
+    {
+      "path": "original-bodies/confirmDeletedBySecondProbe.kt",
+      "byteSize": 641,
+      "sha256Bytes": "9ba4407455b3e4ab831b21c0952b1b5e24fb55d5cebb6d8c1855cb4fe69940fc"
+    },
+    {
+      "path": "original-bodies/findTargetRpid.kt",
+      "byteSize": 768,
+      "sha256Bytes": "b5a44169b6bee915a3cb7fd1002d9169f946172bbf6c8371914564a650f7ad24"
+    },
+    {
+      "path": "original-bodies/probeCommentPresenceBySeekRpid.kt",
+      "byteSize": 1827,
+      "sha256Bytes": "3fc4193483683d92b35879a79433657223119aa8a3930ea96b7b078b81ff1e33"
+    },
+    {
+      "path": "original-bodies/rawCurlGuest.kt",
+      "byteSize": 988,
+      "sha256Bytes": "f19067ed4476d87bfccb627a8cb66c5569f8e7d43868232dad93ac5b0a07cf23"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "byteSize": 73462,
+      "sha256Bytes": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820"
+    },
+    {
+      "path": "platform/com/android/purebilibili/data/repository/DesktopCommentFraudRawTransport.kt",
+      "byteSize": 2006,
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "prepare-production.py",
+      "byteSize": 4793,
+      "sha256Bytes": "b9095bf47998781d9e3c9eb0abaf3ffffc4a26e03f9fa08959e16de8a788b314"
+    },
+    {
+      "path": "prepare.py",
+      "byteSize": 9834,
+      "sha256Bytes": "d82cf54bccdffe8e49cd4b3fbb539d4472e0199d95be4e1cdf160b6765cfa886"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/android/purebilibili/data/repository/DesktopCommentFraudRawTransport.kt",
+      "byteSize": 2006,
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-comment-fraud-protocol.py",
+      "byteSize": 9151,
+      "sha256Bytes": "9557e29f1218a13f38b4b5043fe5947e7ab328bf29507ca7fe4816b794e8a358"
+    },
+    {
+      "path": "production-byte-equality.json",
+      "byteSize": 696,
+      "sha256Bytes": "31268995f9269c26725337ff5421889a936fa08dd3f38ef8460382556e8ededc"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/data/repository/DesktopOriginalCommentFraudProtocol.kt",
+      "byteSize": 16432,
+      "sha256Bytes": "7b71164544ba4d72203c9e4ad1568fd64d2337e73c0aa7cfba609e829225c175"
+    },
+    {
+      "path": "production-byte-proof/source-inventory.json",
+      "byteSize": 4282,
+      "sha256Bytes": "2e4b615737492c8654d4408d9b1be3adacc98f4254bba73ffc2b62cebf627e86"
+    },
+    {
+      "path": "proof-only/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "byteSize": 36426,
+      "sha256Bytes": "0644c52d14f167b0671e7f5c9ddd6d6a2d71ff9666e7fefd147d7c9ea4ca3dac"
+    },
+    {
+      "path": "run-fixture.py",
+      "byteSize": 3549,
+      "sha256Bytes": "280e2ba21c99f3b5d36e20bdeff05ee4123f636119216366e8e5f007292a91a6"
+    },
+    {
+      "path": "source-audit.json",
+      "byteSize": 15697,
+      "sha256Bytes": "c94c57b7e169652b416b762cbeb6237783ebd527bbb96ee18bfdad674be47178"
+    },
+    {
+      "path": "source-inventory.json",
+      "byteSize": 3868,
+      "sha256Bytes": "4ba77631fcff0f31c4e7d2a08ca0f67e0294e7bc604d23b0ae5e16a53fc6fd9c"
+    }
+  ],
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSourceSha256LF": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+  "actualStableSnapshot11Sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "orderedCp92Sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "sourceAuditSha256Bytes": "c94c57b7e169652b416b762cbeb6237783ebd527bbb96ee18bfdad674be47178",
+  "compileResultSha256Bytes": "94a154e3b20b492ab97fe6eee0de3779265539585d74a4efe5ad95cb5e27398e",
+  "fixtureAcceptedSha256Bytes": "66275afddef53a23bb437874ba5366d04efedb2f5747ea92e4684aa9bda80c2f",
+  "caseCount": 12,
+  "assertions": 40,
+  "sourceCheckCount": 22,
+  "sourceContract": "contract.txt",
+  "installPayload": [
+    "prepared/desktop/tools/extract-upstream-comment-fraud-protocol.py",
+    "prepared/desktop/src/main/kotlin/com/android/purebilibili/data/repository/DesktopCommentFraudRawTransport.kt",
+    "operations-member.fragment.kt"
+  ],
+  "forbidInstalling": [
+    "proof-only",
+    "base-inputs",
+    "dependency-inputs",
+    "compile-01",
+    "compile-02",
+    "fixture-01",
+    "fixture-02",
+    "fixture-03",
+    "fixture-04"
+  ],
+  "statusPolicyPersistenceOwner": "/root/video_save_alignment",
+  "preserveOriginalType1": true,
+  "originalRawInvisibleContainsLimitPreserved": true,
+  "noMainOrSiblingEdits": true,
+  "noSharedGradle": true,
+  "noExternalHTTP": true,
+  "noSocket": true,
+  "noHWND": true,
+  "noActualAccount": true,
+  "preparedOnly": true,
+  "notBgmUiOrPersistentRecordE2E": true,
+  "failedAttemptHistoryRetained": true
+}

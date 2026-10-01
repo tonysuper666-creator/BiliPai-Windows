@@ -1,0 +1,32 @@
+[
+  {
+    "original": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt",
+    "output": "com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalCollectionSheet.kt",
+    "originalSha256Lf": "acb0fed81d221b8a4d06564aead150864aaf02e5b04f8ac419d64324c616cb1a",
+    "generatedSha256": "d2ffec8d6f92f234c6faf2f544bed24939d2c440cf19915ff5f0f509960871bc"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",
+    "output": "com\\android\\purebilibili\\feature\\video\\ui\\components\\DesktopOriginalCollectionSubscriptionButton.kt",
+    "originalSha256Lf": "65b3bc3ff27f29ed87f8b7d48ce6f3d17c9c6a7596d6db2a7fc5975c753781a3",
+    "generatedSha256": "194ed7361614a607746180f67f174344cd2c797465a0fbedc1ab8f91fb02d397"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "output": "com\\android\\purebilibili\\core\\store\\DesktopOriginalCollectionSettings.kt",
+    "originalSha256Lf": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "generatedSha256": "33aa3e8a766b918db4035a58efe782848329de758038959d01f46babf3880185"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+    "output": "com\\android\\purebilibili\\data\\repository\\DesktopOriginalCollectionActions.kt",
+    "originalSha256Lf": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+    "generatedSha256": "bdfc1d9837902107601086e781918caf6263765aeff1e9737d9d472b9be6be71"
+  },
+  {
+    "original": "app/src/main/java/com/android/purebilibili/core/util/ShareUtils.kt",
+    "output": "com\\android\\purebilibili\\core\\util\\DesktopOriginalCollectionShareText.kt",
+    "originalSha256Lf": "4df3884a895eb085101db88d0b7d66b74798b6ec9b05cac80abf36f048e445b5",
+    "generatedSha256": "c10345eb11334dde050cc0bed6e77a47d8dd3d0c8d4ce4196d6950d4b1ba578c"
+  }
+]

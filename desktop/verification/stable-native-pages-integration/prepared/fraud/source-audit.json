@@ -1,0 +1,253 @@
+{
+  "status": "PASS",
+  "checkCount": 22,
+  "checks": [
+    {
+      "name": "original exact body pin rawCurlGuest",
+      "status": "PASS",
+      "startLine": 1352,
+      "sha256BodyLF": "3385377dcdf1a8a730dc93d609e49b564feb642beca542973dd8f13444d3ad44"
+    },
+    {
+      "name": "complete original tokens after declared reverse rawCurlGuest",
+      "status": "PASS",
+      "tokenCount": 152
+    },
+    {
+      "name": "original exact body pin checkCommentStatus",
+      "status": "PASS",
+      "startLine": 1395,
+      "sha256BodyLF": "a4c0871be8562bff1a1d374cb1ebe62519ca54a74d1548f09fd42d0f557d33c5"
+    },
+    {
+      "name": "complete original tokens after declared reverse checkCommentStatus",
+      "status": "PASS",
+      "tokenCount": 151
+    },
+    {
+      "name": "original exact body pin checkReplyComment",
+      "status": "PASS",
+      "startLine": 1447,
+      "sha256BodyLF": "6c9c69b9702dd6c83ef61828f28a1d7bc43918e30b629ca1d92ca60899a5fe12"
+    },
+    {
+      "name": "complete original tokens after declared reverse checkReplyComment",
+      "status": "PASS",
+      "tokenCount": 718
+    },
+    {
+      "name": "original exact body pin checkRootComment",
+      "status": "PASS",
+      "startLine": 1607,
+      "sha256BodyLF": "89f4cae3f7c0e0b969d6d2682241f171f248e6cb68632d705a4ad49f5edda2ca"
+    },
+    {
+      "name": "complete original tokens after declared reverse checkRootComment",
+      "status": "PASS",
+      "tokenCount": 287
+    },
+    {
+      "name": "original exact body pin probeCommentPresenceBySeekRpid",
+      "status": "PASS",
+      "startLine": 1685,
+      "sha256BodyLF": "b82e1a887291920910dd8f1f99e5e5c7dad4148ffbeb20bc909ee20d98376ca5"
+    },
+    {
+      "name": "complete original tokens after declared reverse probeCommentPresenceBySeekRpid",
+      "status": "PASS",
+      "tokenCount": 224
+    },
+    {
+      "name": "original exact body pin findTargetRpid",
+      "status": "PASS",
+      "startLine": 1750,
+      "sha256BodyLF": "1ce602ac9a1efece118383b770ca61ba862b1e51182e047c5e4bad88cc346d26"
+    },
+    {
+      "name": "complete original tokens after declared reverse findTargetRpid",
+      "status": "PASS",
+      "tokenCount": 182
+    },
+    {
+      "name": "original exact body pin confirmDeletedBySecondProbe",
+      "status": "PASS",
+      "startLine": 1771,
+      "sha256BodyLF": "320f07834124d8c11be3ba9b3107db8027878edd0b592f7cae08ea998ace8c6c"
+    },
+    {
+      "name": "complete original tokens after declared reverse confirmDeletedBySecondProbe",
+      "status": "PASS",
+      "tokenCount": 85
+    },
+    {
+      "name": "original constant unchanged DEFAULT_WAIT_MS",
+      "status": "PASS",
+      "value": "private const val DEFAULT_WAIT_MS = 5000L"
+    },
+    {
+      "name": "original constant unchanged IMAGE_EXTRA_WAIT_MS",
+      "status": "PASS",
+      "value": "private const val IMAGE_EXTRA_WAIT_MS = 10000L"
+    },
+    {
+      "name": "original constant unchanged DELETE_CONFIRM_RETRY_DELAY_MS",
+      "status": "PASS",
+      "value": "private const val DELETE_CONFIRM_RETRY_DELAY_MS = 2200L"
+    },
+    {
+      "name": "BGM-owned compiler dependency exact data/model/CommentFraudStatus.kt",
+      "status": "PASS",
+      "doNotInstallFromThisLane": true
+    },
+    {
+      "name": "BGM-owned compiler dependency exact data/repository/CommentFraudDetectionPolicy.kt",
+      "status": "PASS",
+      "doNotInstallFromThisLane": true
+    },
+    {
+      "name": "whole proof Ops contains solely appended member delta",
+      "status": "PASS",
+      "baseSha256LF": "b3eb4928dd0787279190567ed3c373c4c3912498174cab87661404c8d7a8302f",
+      "fragmentSha256LF": "d7f3b17accb81bb7895a613438d8a7d27477c3fe32a87f969e2e0838c9bf7758"
+    },
+    {
+      "name": "only proof-owned Ops family overlaps actual stable11; new helper/transport/BGM imported dependencies are absent",
+      "status": "PASS",
+      "overlap": [
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$addCommentForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$addWatchLater$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentGrpc$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$commentProtocol$3.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createReserve$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$createVote$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$delete$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$deleteCommentForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$editDynamic$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$emotes$3.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$fetchMessageUserInfo$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentCountForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getCommentsForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDialogCommentsForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$articleProtocol$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1$protocol$3.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getDynamicDetail$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getMessageSessions$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getPublishedDynamicDetail$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getShareTargets$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSortedSubCommentsForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getSubCommentsForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$getVoteInfo$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$grpc$4.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$guardedClient$lambda$0$$inlined$-addNetworkInterceptor$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$hateCommentForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$isPubliclyVisible$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$jar$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$likeCommentForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$loadReplyInteraction$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$messageShare$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$modifyReplySubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$mutate$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$postSourceComment$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$publishDynamic$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$read$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$report$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reportCommentForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$repost$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$reserve$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$result$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchMentionUsers$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchPublishTopics$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$searchUp$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$sendDynamicShare$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setCommentTopForSubject$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setLike$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setTop$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$setVisibility$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$signOriginalDetailParams$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitGradeDanmaku$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$submitVote$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$translateReply$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$upSearch$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImage$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$2$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadCommentImageBody$2.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorCommentImageBody$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$uploadEditorImage$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations$userInfo$1.class",
+        "com/bilipai/desktop/data/DesktopDynamicCardOperations.class"
+      ]
+    },
+    {
+      "name": "production producer emits compiled identical helper and binding",
+      "status": "PASS",
+      "producerSha256Bytes": "9557e29f1218a13f38b4b5043fe5947e7ab328bf29507ca7fe4816b794e8a358"
+    }
+  ],
+  "originalSourceSha256LF": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+  "preparedOnly": true,
+  "noMainEdits": true
+}

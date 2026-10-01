@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "liquid_glass_mode": 2,
+        "liquid_glass_strength": 0.5,
+        "liquid_glass_material_progress_v2": 0.5,
+        "android_native_liquid_glass_enabled": false
+    }
+}

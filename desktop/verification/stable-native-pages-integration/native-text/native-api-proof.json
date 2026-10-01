@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": 52,
+  "dllSha256Bytes": "d6953bbc9311998de6425ad10047ab492e05fc0265627aab06ded84835b189d4",
+  "sourceSha256Bytes": "5dda917b15ea5892e57e03320877901a35cb8435cc7663cd405dcd1457e4f095",
+  "nativeTextPrepareRetire": true,
+  "sharePaneOpened": false,
+  "receiverSelected": false,
+  "fullDataRequestedAccepted": false
+}

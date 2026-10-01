@@ -59,7 +59,8 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
     onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit,
     onBangumiPartition: (Int) -> Unit, regionId: Int = 0,
     onPlayQueue: (List<VideoCard>, VideoCard) -> Unit = { _, video -> onVideo(video) }, runtime: DesktopPluginRuntime? = null,
-    onRestart: (() -> Unit)? = null, isClosing: () -> Boolean = { false }, onWeeklyBack: (() -> Unit)? = null) {
+    onRestart: (() -> Unit)? = null, isClosing: () -> Boolean = { false }, onWeeklyBack: (() -> Unit)? = null,
+    initialWeeklyNumber: Int? = null) {
     val account by repository.account.collectAsState()
     val epoch by repository.sessionEpochFlow.collectAsState()
     val capturedEpoch = epoch
@@ -75,7 +76,7 @@ fun DiscoveryContentScreen(section: DiscoverySection, discovery: DesktopDiscover
     }
     DesktopDiscoveryStorageBoundary(feedbackGuard, capturedEpoch, onRestart, Modifier.fillMaxSize()) { feedback ->
         DiscoveryContentReady(section, discovery, repository, plugins, onVideo, onUser, onLogin, onBangumiPartition,
-            regionId, onPlayQueue, runtime, capturedMid, feedback, isClosing, onWeeklyBack)
+            regionId, onPlayQueue, runtime, capturedMid, feedback, isClosing, onWeeklyBack, initialWeeklyNumber)
     }
 }
 
@@ -84,7 +85,7 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
     plugins: DesktopPluginStore, onVideo: (VideoCard) -> Unit, onUser: (Long) -> Unit, onLogin: () -> Unit,
     onBangumiPartition: (Int) -> Unit, regionId: Int, onPlayQueue: (List<VideoCard>, VideoCard) -> Unit,
     runtime: DesktopPluginRuntime?, accountMid: Long?, feedbackSource: StateFlow<TodayWatchFeedbackSnapshot>,
-    isClosing: () -> Boolean, onWeeklyBack: (() -> Unit)?) {
+    isClosing: () -> Boolean, onWeeklyBack: (() -> Unit)?, initialWeeklyNumber: Int?) {
     val inherited = LocalDesktopBrowseMemory.current
     val fallback = remember(discovery, accountMid) { DesktopBrowseMemory() }
     val memory = inherited ?: fallback
@@ -94,7 +95,7 @@ private fun DiscoveryContentReady(section: DiscoverySection, discovery: DesktopD
     // The dedicated original stable page owns its state, period selection and grid.
     // Return before legacy weekly period/feed effects so only one loader runs.
     if (mode == DiscoverySection.WEEKLY) {
-        DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(), repository, initialNumber = state.period,
+        DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(), repository, initialNumber = initialWeeklyNumber ?: state.period,
             onBack = { onWeeklyBack?.invoke() ?: run { mode = DiscoverySection.POPULAR } },
             onVideoClick = { video, videos -> onPlayQueue(videos.map(::discoveryVideoCard), discoveryVideoCard(video)) },
             modifier = Modifier.fillMaxSize(), isClosing = isClosing)

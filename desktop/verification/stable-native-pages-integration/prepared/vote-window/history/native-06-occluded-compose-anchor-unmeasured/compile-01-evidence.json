@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "preparedOnly": true,
+  "candidateAcceptance": false,
+  "classpathSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "candidateJarSha256Bytes": "91f9f76bc73e769ef8895f74e11af2454ef55cb86f3452cd721e93ce6cc06d7c",
+  "productClassOverrides": [
+    "com/android/purebilibili/feature/video/ui/overlay/AttentionCommandClickAction.class",
+    "com/android/purebilibili/feature/video/ui/overlay/ComposableSingletons$DesktopOriginalCommandDanmakuOverlayKt.class",
+    "com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlayKt$CommandDanmakuOverlay$currentPosition$2$1.class",
+    "com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlayKt$CommandTripleActionBurst$1$1.class",
+    "com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlayKt$WhenMappings.class",
+    "com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlayKt.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotePlatform$getVoteInfo$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotePlatform$submitVote$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotePlatform.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoCommandVoteContent$1$2$3$1$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoCommentVoteSlot$3$1$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoVoteBindings$2$1$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoVoteBindings$lambda$6$0$$inlined$onDispose$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoVoteBindings$operations$1$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt$DesktopVideoVoteBindings$platform$1$1.class",
+    "com/bilipai/desktop/ui/DesktopVideoVotesKt.class"
+  ],
+  "sources": [
+    {
+      "path": "generated\\com\\android\\purebilibili\\feature\\video\\ui\\overlay\\DesktopOriginalCommandDanmakuOverlay.kt",
+      "sha256Bytes": "72b9433341a050c562167cf007d2cdcf26be73e83dadaa711ed0bda5dc5d1022"
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "81f32974cbddbf64857eeccfd7c3fe458cf64f2fd9c64dbe0193b9ac9426f8a6"
+    },
+    {
+      "path": "references\\DesktopVideoVotes.kt",
+      "sha256Bytes": "61d50540da12c6d4ab9c23821292d133caa7f76042bf9793b8cee677045ad364"
+    },
+    {
+      "path": "fixture\\LegacyPopup.kt",
+      "sha256Bytes": "83b27f85c0eba04b372df526dc8cc52cd4bbbdd42b2f370066586a2bff3bd105"
+    },
+    {
+      "path": "fixture\\NativePopupFixture.kt",
+      "sha256Bytes": "c710a422ef92242e020fed8a157b51712c81c90ab0fd400e93a24f70c98bc71b"
+    }
+  ],
+  "sourcesArePreparedOverlay": true,
+  "existingLeavesAndModelsFromActualClasses11": true,
+  "sharedGradle": false,
+  "HWND": true,
+  "onlyOwnedNativeFixture": true
+}

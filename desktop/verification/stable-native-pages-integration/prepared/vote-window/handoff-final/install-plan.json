@@ -1,0 +1,69 @@
+{
+  "scope": "prepared only; not yet Root/Candidate product acceptance",
+  "copy": [
+    {
+      "source": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "227271fda734b660c0087d97983d3a71c9868d2d89bba1fc6ec290802a77d10f"
+    }
+  ],
+  "patches": [
+    {
+      "source": "patches/video-popup.patch",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "sha256Bytes": "4b6232761eae7777dfd3e8b9880086522e16a61dd4a6a6ab00182b07539077f0"
+    },
+    {
+      "source": "patches/sole-renderer-generator.patch",
+      "target": "desktop/tools/extract-stable-video-votes.py",
+      "sha256Bytes": "1f647c87c85862f9bb84cae328cb0d860850b040737c0961ef4b444068bce087"
+    },
+    {
+      "source": "patches/player-surface-anchor.patch",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "sha256Bytes": "974c16c9b1ba48d8b05126e808abd7ee7fd29add2bce29c51215152d4de6cdd6"
+    }
+  ],
+  "sourceBaselines": {
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt": {
+      "baseLfSha256": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4",
+      "desiredLfSha256": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78"
+    },
+    "desktop/tools/extract-stable-video-votes.py": {
+      "baseLfSha256": "99f00bc28ece1d3d89276373660f1536a318c8720cd706a96e0464f7813de1aa",
+      "desiredLfSha256": "ab018056ea7b63724397bc3ada5d3a73b3b8495c609af9a02ded9ce04282088d"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt": {
+      "baseLfSha256": "64f417cd843ad5145aea259719a8269d3fabea3bd58437a8f9d6016d83575feb",
+      "desiredLfSha256": "8a51edfba5939b7d30818b1917f037bcaa02e2785a53c3ed016051145d7e4b17"
+    }
+  },
+  "gitApplyCheck": true,
+  "sharedGradle": false,
+  "newDependencies": [],
+  "newOriginalSourceIdentities": [],
+  "sourceMerge": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "sourceSha256Lf": "a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe",
+      "featureAppend": [
+        "desktop-native-command-hit-regions"
+      ],
+      "soleProducer": "desktop/tools/extract-stable-video-votes.py"
+    }
+  ],
+  "contract": "DesktopVideoCommandPopup(surfaceSize: IntSize, content: @Composable () -> Unit, anchorComponent: java.awt.Component); both PlayerPanels calls pass player.surface",
+  "gradle": "No new task/source-set needed: existing main Kotlin sourceDir and extractStableVideoVotes producer consumes helper/bindings.",
+  "regenerate": "Run existing production extract-stable-video-votes.py against pinned stable target; generated output SHA must match generatedIdentity below.",
+  "generatedIdentity": {
+    "path": "com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",
+    "sha256Bytes": "1f137335cd494eb9e958b4b5d7e1b22cd8d11ce6de2c96a52d814609d4e06796"
+  },
+  "noInstall": [
+    "references/** (exact desired whole files for review, Root applies narrow patches)",
+    "generated/** (existing sole producer owns output)",
+    "fixture/**",
+    "history/**",
+    "all JAR/class/DLL/private raw crash files"
+  ]
+}

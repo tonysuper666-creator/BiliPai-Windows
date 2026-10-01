@@ -1,0 +1,79 @@
+{
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "originalSource": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+  "originalSourceSha256LF": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+  "bodies": [
+    {
+      "name": "rawCurlGuest",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "3385377dcdf1a8a730dc93d609e49b564feb642beca542973dd8f13444d3ad44",
+      "startLine": 1352
+    },
+    {
+      "name": "checkCommentStatus",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "a4c0871be8562bff1a1d374cb1ebe62519ca54a74d1548f09fd42d0f557d33c5",
+      "startLine": 1395
+    },
+    {
+      "name": "checkReplyComment",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "6c9c69b9702dd6c83ef61828f28a1d7bc43918e30b629ca1d92ca60899a5fe12",
+      "startLine": 1447
+    },
+    {
+      "name": "checkRootComment",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "89f4cae3f7c0e0b969d6d2682241f171f248e6cb68632d705a4ad49f5edda2ca",
+      "startLine": 1607
+    },
+    {
+      "name": "probeCommentPresenceBySeekRpid",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "b82e1a887291920910dd8f1f99e5e5c7dad4148ffbeb20bc909ee20d98376ca5",
+      "startLine": 1685
+    },
+    {
+      "name": "findTargetRpid",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "1ce602ac9a1efece118383b770ca61ba862b1e51182e047c5e4bad88cc346d26",
+      "startLine": 1750
+    },
+    {
+      "name": "confirmDeletedBySecondProbe",
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sha256BodyLF": "320f07834124d8c11be3ba9b3107db8027878edd0b592f7cae08ea998ace8c6c",
+      "startLine": 1771
+    }
+  ],
+  "soleMemberFragment": true,
+  "operationsMemberFragment": "\n    // Desktop original fraud protocol binding; BGM owns records/status/policy.\n    private val originalCommentFraud = com.android.purebilibili.data.repository.DesktopOriginalCommentFraudProtocol(\n        api, guestWeb.callFactory(),\n        { assertOwned(); repository.authCookies()[\"buvid3\"] },\n        { params -> assertOwned(); repository.signWebParams(params).also { coroutineContext.ensureActive(); assertOwned() } },\n        { assertOwned(); repository.ensureSession(); assertOwned() },\n        ::assertOwned,\n    )\n    suspend fun checkCommentStatus(aid: Long, rpid: Long, rootId: Long = 0, hasPictures: Boolean = false,\n        sentAtSeconds: Long = 0, waitMs: Long = -1): Result<com.android.purebilibili.data.model.CommentFraudStatus> =\n        result { read { originalCommentFraud.checkCommentStatus(aid, rpid, rootId, hasPictures, sentAtSeconds, waitMs).getOrThrow() } }\n",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "externalOwnedDependencies": [
+    "com.android.purebilibili.data.model.CommentFraudStatus",
+    "com.android.purebilibili.data.repository.CommentFraudDetectionPolicyKt"
+  ],
+  "declaredPlatformMappings": [
+    "existing guestWeb callFactory; force Cookie only buvid3",
+    "existing same Repository WBI+visitor owner",
+    "structured cancellation instead of UNKNOWN; typed async results guarded",
+    "account/content log removal"
+  ],
+  "originalLimitsPreserved": [
+    "type=1 throughout root/sub/auth",
+    "guest reply-page URL omits type",
+    "String.contains regex-looking literal for guest invisible",
+    "five-step ctime binary search",
+    "root retry2200ms; default5000ms/images15000ms"
+  ]
+}

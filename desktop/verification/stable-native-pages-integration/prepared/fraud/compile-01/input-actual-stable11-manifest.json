@@ -1,0 +1,52 @@
+{
+  "frozen": true,
+  "phase": "actual-whole-stable-classes11",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 149,
+      "sha256Bytes": "167a7915d379755262b88415b4536ff0796048fc1450702746ac3c3b74a2281c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 8231,
+      "sha256Bytes": "f8757184c794e4f27a719e43fc5dcb1a5650571579a2ca1e96f363307700cede"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 73,
+      "sha256Bytes": "a784e344d2b168035d829b7ca0b6378e000b9176b966bf1f08c54435b9585104"
+    }
+  ],
+  "orderedRuntimeClasspathSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "runtimeEntries": 92,
+  "classesLogSha256Bytes": "8fd3084ef4bd3b7483586a342a002511cad26f81a3d4b8f72dc8b8999fec121f",
+  "wholeCandidateClassesPassed": true,
+  "actualStableApplicationRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "sourceRegistryCount": 631,
+  "resourceCount": 210,
+  "inputs": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "2585103553ee75ad80739b72052fb900f90d5c3a15f71bf246aa6ee9f2b2fcb2"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "410ae692ef7c80b798d3be1f27efd7c303c78448d63dfa6a8ef8a7740b669c88"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "e5eaab753d9d7c12759bff0aac93642a005ec75352a68d585a7cab4e6a9d1523"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "6e6206af45bb3a6042db0aace588e520df77237a0be05280614a3c612e62ddf1"
+    }
+  ]
+}

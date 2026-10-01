@@ -1,0 +1,130 @@
+{
+  "passed": true,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "producer": "desktop/tools/extract-upstream-bgm-detail.py",
+  "payloads": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopBgmDiscoveryBindings.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\DesktopBgmDiscoveryBindings.kt",
+      "sha256Bytes": "1d10908506435370542067140e3718e17a5de4f0220fb4b8330e8180e306b5f3",
+      "baseLfSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopMusicRootRoutes.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\DesktopMusicRootRoutes.kt",
+      "sha256Bytes": "c4e1afa7e2cc92a5447bc69c8f6fce2755e1d9d4571d097667ba201d98cf9b3a",
+      "baseLfSha256": "9e81fc23261104e12d1f227d5415c53a24e8e752b4b82cf064d9655fe04015b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommentFraudJsonDao.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopCommentFraudJsonDao.kt",
+      "sha256Bytes": "bcb6094e26e719fa8e30084272c801f13f0b22974318d86b1626feb3f3cd6657",
+      "baseLfSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "78c2e1820fe90292161724942e8719d64162ebb5426c35e925b67a7dc5da9321",
+      "baseLfSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmLottie.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopBgmLottie.kt",
+      "sha256Bytes": "441ada73f68accf43bc2cd4b434434086388a69a249b6cfeb0d95f89c79c0483",
+      "baseLfSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentFraudRoot.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommentFraudRoot.kt",
+      "sha256Bytes": "58ec4a0aa6e2982373464144e29afe3b05e57bcf220c911864a61fa7bb62238a",
+      "baseLfSha256": null
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoMusicEntries.kt",
+      "sha256Bytes": "791499c3078ea47fdeb0230b67d1d896a4987dbf77444599371a7c7a9361abbf",
+      "baseLfSha256": "2ce34dc38667a22cbe1da4bfaf480c386309f30fb58f6a4fd32397395abddd7b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\prepared\\desktop\\tools\\extract-upstream-bgm-detail.py",
+      "sha256Bytes": "240e87f3bd364d25a7ff44e51dea0580d38af92bed1aa482977f9210847f8b90",
+      "baseLfSha256": null
+    },
+    {
+      "path": "ops-bgm-members.ktfrag",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\ops-bgm-members.ktfrag",
+      "sha256Bytes": "2fac9e267a5215ff7b77f4efb88142d6596e3d1ac8d1fffd0fa1564fd29d6635",
+      "install": "member-fragment-only"
+    },
+    {
+      "path": "registry-recipe.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\registry-recipe.json",
+      "sha256Bytes": "f3ead93ead44a7b0b3e52c18efc4ca369e0c813a35d33f69a230e15cf99f5f2f",
+      "install": false
+    },
+    {
+      "path": "root-recipe.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\root-recipe.json",
+      "sha256Bytes": "519eb6f01466adc0dbdf6f65f976221b92c448854534b8e035464cca82687c29",
+      "install": false
+    },
+    {
+      "path": "source-audit.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\source-audit.json",
+      "sha256Bytes": "a1db03367dfe52fc22b1fefeab38c0a22b60b2191b1830b1fafa81ba23b3f741",
+      "install": false
+    },
+    {
+      "path": "original-alpha9-to-stable-selected-method-diffs.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\original-alpha9-to-stable-selected-method-diffs.json",
+      "sha256Bytes": "bc4abbe3acc46a7a16fc1b96795c8cafb6ebbffffe78a085e86f7ba75d8e1d8e",
+      "install": false
+    },
+    {
+      "path": "runs/16/compile-evidence.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\runs\\16\\compile-evidence.json",
+      "sha256Bytes": "03540051e2eac8e2503e8cbba334eef38f906351bdc318ed97f01f95b432bb58",
+      "install": false
+    },
+    {
+      "path": "runs/16/accepted-evidence.json",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\runs\\16\\accepted-evidence.json",
+      "sha256Bytes": "fccddee2bcf0a67a51a367cecf350c174194ab21026dc3d83fc1d01c0139497d",
+      "install": false
+    },
+    {
+      "path": "runs/16/candidate.jar",
+      "preparedPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\.local\\stable-bgm-detail\\runs\\16\\candidate.jar",
+      "sha256Bytes": "af50da7065d6cc3958414355c59a84c2ccb3ab55da13e1f23053eabf2d66b941",
+      "install": false
+    }
+  ],
+  "rootHunksCount": 12,
+  "generatedKotlinSources": 31,
+  "newOriginalSourceRows": 24,
+  "immutableActualProductSnapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-11",
+  "actualClasspathSha256": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "declaredPreparedOverlay": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-03\\prepared-shared-liquid-tabs.jar",
+      "sha256Bytes": "96eb88f19f844115894297bb59e5081caa361c0d49e96f681852c55947ddc688",
+      "scope": "prepared original shared liquid renderer; not installed product"
+    }
+  ],
+  "compileScope": "full-original-bgm-ui-host-entry-excludes-changing-root-shell",
+  "compileEvidenceSha256": "03540051e2eac8e2503e8cbba334eef38f906351bdc318ed97f01f95b432bb58",
+  "actualOfflineFixtureCases": 12,
+  "actualOfflineFixtureAssertions": 43,
+  "MainWrittenByThisLane": false,
+  "sharedGradle": false,
+  "installed": false,
+  "limitations": [
+    "Root owns whole source integration/Gradle/product runtime/deployment; no Root Shell compile claimed here.",
+    "Original CommentDetail.sendReply pictures parameter is unused upstream; main generic9stream does upload.",
+    "Original generic fraud record/checks use type1 even BGM uses typed47 comments; retained exactly.",
+    "Windows external-media-search required seam currently uses original copy-title fallback.",
+    "Existing comment shareText Windows native sheet remains unbound in current platform; no share success claimed.",
+    "JSON record persistence is admitted under actual Store monitor; very large history latency is unmeasured."
+  ]
+}

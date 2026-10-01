@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "fixtureSourceSha256Bytes": "2f5f7266b25240e66e24dc9e2543456acd09cbd3ba9b8c2dd4cb06a5f1a66dab",
+  "fixtureJarSha256Bytes": "bdfd32b0e5a28f301751e3bea398716a17dc8600bb6231e896b5c3f36313ba79",
+  "actualMain14ManifestSha256Bytes": "58ba697f6d436b7b859d21a2da92a4bbc5ed5aa0d566110489633b4d2c8f16f2",
+  "actualCp92Sha256Bytes": "64869241fd1a85eacfe072814c28bb91377dc0106a13b11810c30b6295ab101a",
+  "actualProductOverrides": 0,
+  "classOverlap": [],
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "caseCount": 1,
+  "assertions": 22,
+  "backgroundSamples": 2,
+  "actualCodeSources": 6,
+  "resultSha256Bytes": "dbb1d07febc6555285114a11dcfbb9b12ebf2552852f8c7404a927d2a30a76f1"
+}

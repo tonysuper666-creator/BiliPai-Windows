@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "sourceInputs": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadNotifications.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\compile-02\\source-inputs\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadNotifications.kt",
+      "sha256Bytes": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815"
+    }
+  ],
+  "exitCode": 0,
+  "actualStable11ManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualCp92Sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "noMainEdits": true,
+  "noGradle": true,
+  "preparedOnly": true,
+  "artifactSha256Bytes": "dc0f70a68de56030fbb89a5eed9a877ac53e7adde5679c1693af960e2045f216",
+  "classOverlapWithActual": []
+}

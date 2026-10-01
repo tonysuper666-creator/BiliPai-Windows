@@ -1,0 +1,14 @@
+{
+  "status": "FAIL",
+  "exitCode": 1,
+  "candidateSha256Bytes": "592a37ecb79fc77c91f51ccfbd6c01c097a32bfceb69136d9d1f4469c0cbab22",
+  "fixtureSha256Bytes": "ecb41f7ae270c671d07f0289b0743e7bb0649c335f3f0109903e81f51d6be37c",
+  "fixtureSourceSha256Bytes": "588022413dc81204f3b28c029a019d4aced09718a7649b50af9e1cd26633e128",
+  "actualStable11ManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualRuntimeCpCount": 92,
+  "noMainEdits": true,
+  "noGradle": true,
+  "oneTaskOwnedHiddenHWND": true,
+  "noExternalHTTP": true,
+  "preparedOnly": true
+}

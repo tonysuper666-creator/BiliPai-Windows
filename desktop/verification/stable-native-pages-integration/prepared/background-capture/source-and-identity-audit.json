@@ -1,0 +1,137 @@
+{
+  "status": "PASS",
+  "checkCount": 18,
+  "checks": [
+    {
+      "name": "accepted one focused cell",
+      "pass_": true
+    },
+    {
+      "name": "zero product class overlap/overrides",
+      "pass_": true
+    },
+    {
+      "name": "same fixture source bytes",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.bilipai.desktop.ui.DesktopLiquidReadabilityEnvironment",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.bilipai.desktop.ui.DesktopLiquidReadabilityPlatformKt",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.android.purebilibili.feature.home.components.FloatingBottomBarKt",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.bilipai.desktop.settings.DesktopLiquidTabSettings",
+      "pass_": true
+    },
+    {
+      "name": "actual identity com.bilipai.desktop.plugins.DesktopPluginStore",
+      "pass_": true
+    },
+    {
+      "name": "PNG dimensions white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal background pixels white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "actual original liquid row pixels independent of sentinel white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal draw red sentinel white-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "PNG dimensions black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal background pixels black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "actual original liquid row pixels independent of sentinel black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "normal draw red sentinel black-normal-with-foreground.png",
+      "pass_": true
+    },
+    {
+      "name": "Root capture order retained in fixture",
+      "pass_": true
+    }
+  ],
+  "references": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "currentSha256Bytes": "a1fc2517052d9ee82795d33d32111abffdf079a017404681fb061fe384e013eb",
+      "snapshot14InputSha256Bytes": "f701145370880a235be1f30e7a24976260e70c865f94f5b92fb949158fe96d17",
+      "currentBytesMatchSnapshot14Input": false,
+      "role": "read-only source reference; actual product identity is immutable Main14 jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopLiquidReadabilityPlatform.kt",
+      "currentSha256Bytes": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d",
+      "snapshot14InputSha256Bytes": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d",
+      "currentBytesMatchSnapshot14Input": true,
+      "role": "read-only source reference; actual product identity is immutable Main14 jar"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\tools\\extract-upstream-shared-liquid-tabs.py",
+      "currentSha256Bytes": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b",
+      "snapshot14InputSha256Bytes": "82ea594fa5081b3028e3c402478b7afce1ad125151fa6cf763a8b169a6cf646b",
+      "currentBytesMatchSnapshot14Input": true,
+      "role": "read-only source reference; actual product identity is immutable Main14 jar"
+    }
+  ],
+  "exactRootPatternSha256LF": "b733d875ad63abdc23416e8beef0c604eccf614d5a8dcb1d5bae41bb36e44382",
+  "sixActualClasses": [
+    {
+      "class": "com.bilipai.desktop.ui.DesktopLiquidReadabilityEnvironment",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "6a445b41b6ed0e500b30f4deb5d7705ca2c70ab2055e896d55846a0e708ed40d"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopLiquidReadabilityPlatformKt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "953602592511f3d4be8f109e0f5a8359f2cbc61c78b4c493a295dede1e03b32e"
+    },
+    {
+      "class": "com.android.purebilibili.core.ui.components.AppLiquidAwareTabRowKt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "42cc35f31e377c403263c1cf2dd4057b1980bdc9e62d5f104f5f5a844bdae4b9"
+    },
+    {
+      "class": "com.android.purebilibili.feature.home.components.FloatingBottomBarKt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "615b621f002680bd500c2c627e9a7f161c47980cef8d4216239aeaf4ef3f3bbb"
+    },
+    {
+      "class": "com.bilipai.desktop.settings.DesktopLiquidTabSettings",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "c50566408c9a7fcd8c18ff66b8882f3f9da4a979f92e80dce0f3248333656d8d"
+    },
+    {
+      "class": "com.bilipai.desktop.plugins.DesktopPluginStore",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-14\\main-kotlin.jar",
+      "sha256ClassBytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+    }
+  ],
+  "independentPillowSha256Bytes": "7e60c75c536ba9175963fd67f6d8051e92c20b1d1e107261f3219deb94737efa",
+  "actualMain14ManifestSha256Bytes": "58ba697f6d436b7b859d21a2da92a4bbc5ed5aa0d566110489633b4d2c8f16f2",
+  "actualCp92Sha256Bytes": "64869241fd1a85eacfe072814c28bb91377dc0106a13b11810c30b6295ab101a"
+}

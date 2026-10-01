@@ -46,7 +46,11 @@
       "id": "bgm-detail",
       "behavior": "原生 BGM 音频详情、热门趋势、相关视频和评论",
       "source": "feature/audio/bgm",
-      "status": "pending"
+      "status": "adapting",
+      "sourceIntegrated": true,
+      "candidateClassesPassed": true,
+      "completeRuntimeAccepted": false,
+      "evidence": "verification/stable-native-pages-integration/integration-report.json"
     },
     {
       "id": "chapter-segment-bar",
@@ -61,7 +65,12 @@
       "id": "collection-drawer",
       "behavior": "收藏夹和合集简介、分集、播放数据、一键分享及分区 dock",
       "source": "feature/video/ui",
-      "status": "pending"
+      "status": "adapting",
+      "sourceIntegrated": true,
+      "candidateClassesPassed": true,
+      "completeRuntimeAccepted": false,
+      "evidence": "verification/stable-native-pages-integration/integration-report.json",
+      "sourceIntegrationScope": "Full original UGC collection drawer; original favorite page/drawers still pending"
     },
     {
       "id": "offline-download",
@@ -70,7 +79,8 @@
       "status": "adapting",
       "sourceIntegrated": true,
       "candidateClassesPassed": true,
-      "completeRuntimeAccepted": false
+      "completeRuntimeAccepted": false,
+      "nativePlatformEvidence": "verification/stable-native-pages-integration/integration-report.json"
     },
     {
       "id": "interactive-danmaku",
@@ -79,13 +89,18 @@
       "status": "adapting",
       "sourceIntegrated": true,
       "candidateClassesPassed": true,
-      "completeRuntimeAccepted": false
+      "completeRuntimeAccepted": false,
+      "nativePlatformEvidence": "verification/stable-native-pages-integration/integration-report.json"
     },
     {
       "id": "video-honors-declarations-staff",
       "behavior": "荣誉徽章跳转、争议和禁止转载声明、团队关注",
       "source": "feature/video/ui/section/VideoInfoSection.kt",
-      "status": "pending"
+      "status": "adapting",
+      "sourceIntegrated": true,
+      "candidateClassesPassed": true,
+      "completeRuntimeAccepted": false,
+      "evidence": "verification/stable-native-pages-integration/integration-report.json"
     },
     {
       "id": "weekly-series",
@@ -162,11 +177,11 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 633,
+    "candidateSourceIdentityCount": 690,
     "candidateResourceCount": 210,
-    "actualClassesEvidence": "verification/stable-player-download-integration/root/gradle-candidate-11.log",
+    "actualClassesEvidence": "verification/stable-native-pages-integration/root/classes-15.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-weekly-integration/root/classes-12.log"
+    "latestCandidateClassesLog": "verification/stable-native-pages-integration/root/classes-15.log"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -179,6 +194,7 @@
   },
   "sourceIntegrationEvidence": [
     "verification/stable-source-integration/integration-report.json",
-    "verification/stable-player-download-integration/integration-report.json"
+    "verification/stable-player-download-integration/integration-report.json",
+    "verification/stable-native-pages-integration/integration-report.json"
   ]
 }

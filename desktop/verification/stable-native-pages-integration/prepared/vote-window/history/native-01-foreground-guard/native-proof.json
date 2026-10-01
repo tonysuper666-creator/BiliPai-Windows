@@ -1,0 +1,1 @@
+{"preparedOnly":true,"MainOrCandidateProductAccepted":false,"oneOwnedNativeFixture":true,"checks":[{"name":"real target belongs to actual mpv Canvas HWND","passed":true,"details":{}}],"pointerPairs":0,"BilibiliHTTP":false,"realMpvDecodedFrame":true,"fakeVoteReadOnly":true}

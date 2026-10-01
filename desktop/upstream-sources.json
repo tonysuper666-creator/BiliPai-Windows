@@ -147,7 +147,8 @@
         "search",
         "space-contributions",
         "settings-network-proxy-parity",
-        "dynamic-detail-reply"
+        "dynamic-detail-reply",
+        "stable-bgm-native-detail"
       ],
       "mode": "api-extract"
     },
@@ -392,7 +393,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/model/response/PlayerInfoResponse.kt",
       "sha256": "9dafa480e4f4eabd24ae791ff4beb46844b64a541f64912d80655346917ed3b2",
       "features": [
-        "source-parity"
+        "source-parity",
+        "stable-bgm-native-detail"
       ],
       "mode": "direct"
     },
@@ -1712,7 +1714,10 @@
         "home-full-card",
         "settings-dynamic-full-card-parity",
         "dynamic-detail-reply",
-        "settings-image-save-path-parity"
+        "settings-image-save-path-parity",
+        "stable-collection-sheet",
+        "stable-video-metadata",
+        "stable-shared-liquid-tabs"
       ],
       "mode": "policy-extract"
     },
@@ -1729,7 +1734,9 @@
       "sha256": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
       "features": [
         "discovery",
-        "dynamic-follow-observer-parity"
+        "dynamic-follow-observer-parity",
+        "stable-collection-sheet",
+        "stable-video-metadata"
       ],
       "mode": "policy-extract"
     },
@@ -3128,7 +3135,8 @@
       "mode": "direct",
       "features": [
         "space",
-        "dynamic-detail-container"
+        "dynamic-detail-container",
+        "stable-bgm-native-detail"
       ],
       "sha256": "bf3f2e86d526e60a48787f17b578afea86f0515e8ee62894bfdeb7eec5d63dd8"
     },
@@ -3558,7 +3566,9 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
       "mode": "policy-extract",
       "features": [
-        "resolveDisplayBgmList"
+        "resolveDisplayBgmList",
+        "stable-video-metadata",
+        "stable-bgm-native-detail"
       ],
       "sha256": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
       "declarationSha256": "f7e103373fda9e5f283fff08a798a86ee578e0c217747249e1b38236bcb4fd73"
@@ -4320,7 +4330,8 @@
       "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
       "mode": "policy-extract",
       "features": [
-        "home-full-card"
+        "home-full-card",
+        "stable-bgm-native-detail"
       ],
       "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
     },
@@ -4345,7 +4356,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoDisplayPolicy.kt",
       "mode": "policy-extract",
       "features": [
-        "home-full-card"
+        "home-full-card",
+        "stable-video-metadata"
       ],
       "sha256": "84f95453d715ece786e29ee291570b52e6a40ae99336b77b53f065d68c7b5128"
     },
@@ -4868,7 +4880,9 @@
       "mode": "policy-extract",
       "features": [
         "dynamic-editor-detail-parity",
-        "dynamic-detail-reply"
+        "dynamic-detail-reply",
+        "stable-bgm-native-detail",
+        "stable-comment-fraud-protocol"
       ],
       "sha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820"
     },
@@ -4914,7 +4928,8 @@
       "mode": "policy-extract",
       "features": [
         "dynamic-editor-detail-parity",
-        "dynamic-detail-reply"
+        "dynamic-detail-reply",
+        "stable-bgm-native-detail"
       ],
       "sha256": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517"
     },
@@ -4922,7 +4937,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
       "mode": "reference-only",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "stable-shared-liquid-tabs"
       ],
       "sha256": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad"
     },
@@ -4930,7 +4946,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
       "mode": "reference-only",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "stable-shared-liquid-tabs"
       ],
       "sha256": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10"
     },
@@ -4938,7 +4955,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
       "mode": "reference-only",
       "features": [
-        "dynamic-editor-detail-parity"
+        "dynamic-editor-detail-parity",
+        "stable-shared-liquid-tabs"
       ],
       "sha256": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c"
     },
@@ -5027,7 +5045,8 @@
       "sha256": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
       "mode": "selected",
       "features": [
-        "dynamic-detail-reply"
+        "dynamic-detail-reply",
+        "stable-shared-liquid-tabs"
       ]
     },
     {
@@ -5292,7 +5311,8 @@
       "features": [
         "stable-video-vote-parity",
         "playback",
-        "comments"
+        "comments",
+        "desktop-native-command-hit-regions"
       ]
     },
     {
@@ -5314,6 +5334,463 @@
         "discovery",
         "weekly"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionRow.kt",
+      "sha256": "246b02166845333d0178f0aadd51a1ab67e14f84fc899925a43df76441c4a685",
+      "mode": "direct",
+      "features": [
+        "stable-collection-sheet"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSheet.kt",
+      "sha256": "acb0fed81d221b8a4d06564aead150864aaf02e5b04f8ac419d64324c616cb1a",
+      "mode": "extracted",
+      "features": [
+        "stable-collection-sheet"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionSubscriptionButton.kt",
+      "sha256": "65b3bc3ff27f29ed87f8b7d48ce6f3d17c9c6a7596d6db2a7fc5975c753781a3",
+      "mode": "extracted",
+      "features": [
+        "stable-collection-sheet"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ShareUtils.kt",
+      "sha256": "4df3884a895eb085101db88d0b7d66b74798b6ec9b05cac80abf36f048e445b5",
+      "mode": "extracted",
+      "features": [
+        "stable-collection-sheet"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoFollowVisualPolicy.kt",
+      "sha256": "28a99feed6df363e283381e4270f34093b4de72589a5c231bfde3f38662f1785",
+      "mode": "direct",
+      "features": [
+        "stable-video-metadata"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "sha256": "a7f7a122f83cadd8992d0e261616e3b0b9516d6dc0d6232860717f18434fe96e",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "sha256": "88ef0e49dd37f69d629c770fcd8c11481f055044063c50d760188d5b715c190c",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "sha256": "295ca5d2cfbc6c1d4645ccf464b773a9099cef6bbf38528bc662f181d6748152",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "sha256": "9effdedf53643de0d1d60e5416a0c30ecc6f8b96a2547841534afa566469a25e",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "sha256": "6c2e14be00f306a4e212803164538541f34ca6b1a3f3f542f295e843bc15c948",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "sha256": "e1c3cd43037a554019356472de67e99208d78675ce8b20a40ad84125caf3999e",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "sha256": "beb3ad5b46e00191501dbd36befabf7ad768812f0935cf272501a4bed88ecb81",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "sha256": "86694ec08b8fa946836379ca95bc52a4e880bcfcbfb0a2c4b14b9852a7e4d452",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "sha256": "9b2af7e3b9268adb56cbb44c34eda4bb006aa0c181bf60a240cb910e5f269f00",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "sha256": "dbeeb4db12b48ce4803424208e66ba10e0f203c10ad395fc7da7ff0e629d423c",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "sha256": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "sha256": "39f7825572d2b404d6552e80946958fb60747c87255f094cbbc0fd18cc6afd63",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "sha256": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "sha256": "537971a74546a5dbfec259502e5c60935aaedfc0ab3d02888a58419cfaad981c",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "sha256": "579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "sha256": "f8522497c4281dfd1e9560bb5828082a7b708abe24806ae0a3c31707a7f3616b",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "sha256": "c6dee226fa5dfc1e93195cf2fc3caaa4b9c68366dd78a25af32853fc11e4cfcd",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "sha256": "7a98fe8d8aef8b433a40e2db5c64b95389b9eccb72ba3d201edcdff2ae6a99bc",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "sha256": "78f22a8379ee4e948306309a7d82b5b21e091a37e9da173ae72ff2baac4e27b4",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "sha256": "2c5e1b8e308165a3e97b1bc57cb5385808735f75f01279a9aeafbda600ecec0b",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "sha256": "307752c068645ef965cf65c4e7b6c348270bae0e998989fdbf2c1f71e6581de3",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "sha256": "ab972367ac0047d7d832269660e91aef7e0c1351d314eb047a445bdfcfebf4b5",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "sha256": "48b7b79008960c6973fe7334094cc2545988f456f8921cb13962cb957bab88a2",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "sha256": "951eaf50d5c751db32be642d33b59a0a4903890d4d99a7d3a015420c07c25dd5",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "sha256": "0b89a76d5302fc73dc5a7f8bb4dce299f512afc6ad29620d5c2b60d40bd2d9cf",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "sha256": "414b70073eea199ee79184d7cc2bafd694c74090d55416f85b136ca3dc4860c1",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "sha256": "9a6696c3a2ff0c9a67931cb0f7a4a392d1d1fdfb117bc9f22c31b54e01af8174",
+      "mode": "extracted",
+      "features": [
+        "stable-shared-liquid-tabs"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "sha256": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "mode": "direct",
+      "features": [
+        "stable-video-metadata",
+        "stable-bgm-native-detail"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "e1fc5fd13a007b37b387c3391e233fb45b83784ff8f364c407f1b33d282cc0ac"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728"
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-bgm-native-detail"
+      ],
+      "sha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819"
     }
   ],
   "featureCoverage": {

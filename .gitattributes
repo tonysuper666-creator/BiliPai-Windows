@@ -44,3 +44,4 @@ desktop/src/main/resources/licenses/google-cast-v2/** -text
 desktop/verification/stable-source-integration/** -text
 desktop/verification/stable-player-download-integration/** -text
 desktop/verification/stable-weekly-integration/** -text
+desktop/verification/stable-native-pages-integration/** -text

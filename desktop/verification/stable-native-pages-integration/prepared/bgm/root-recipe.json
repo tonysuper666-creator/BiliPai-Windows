@@ -1,0 +1,98 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "import com.bilipai.desktop.audio.DesktopMusicVideoTarget",
+    "new": "import com.bilipai.desktop.audio.DesktopMusicVideoTarget\nimport com.bilipai.desktop.audio.DesktopBgmMusicTarget",
+    "purpose": "Use the actual selected original BGM route type.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "MUSIC(\"音乐详情\", \"♫\"),",
+    "new": "MUSIC(\"音乐详情\", \"♫\"), BGM(\"背景音乐详情\", \"♫\"),",
+    "purpose": "Separate original native BGM destination; existing AU/music playback destination stays unchanged.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)",
+    "new": "    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)\n    val commentFraud = rememberDesktopCommentFraudRoot(repository, dynamicCardSession, DesktopLibrary.directoryForAccount(null))",
+    "purpose": "One original record DAO per current account epoch, shared by BGM and its comment details.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "    var musicReturnSection by remember { mutableStateOf(DesktopSection.LISTEN) }",
+    "new": "    var musicReturnSection by remember { mutableStateOf(DesktopSection.LISTEN) }\n    var bgmRequest by remember(sessionEpoch) { mutableStateOf<DesktopBgmMusicTarget.Detail?>(null) }\n    var bgmReturnSection by remember { mutableStateOf(DesktopSection.HOME) }\n    var bgmReturnVideo by remember { mutableStateOf(false) }",
+    "purpose": "BGM route state retires with actual session epoch.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "    fun openMusicSource(source: MusicPlaybackSource, startPosition: Double = 0.0) {",
+    "new": "    fun openBgm(request: DesktopBgmMusicTarget.Detail) {\n        if (activatingUpdate || request.musicId.isBlank()) return\n        navigate(DesktopSection.BGM) {\n            if (section != DesktopSection.BGM) { bgmReturnSection = section; bgmReturnVideo = showVideo }\n            bgmRequest = request\n        }\n    }\n    fun closeBgm() {\n        val request = bgmRequest\n        if (request?.showVideos == true) bgmRequest = request.copy(showVideos = false)\n        else if (navigate(bgmReturnSection) && bgmReturnVideo && playing.details != null) showVideo = true\n    }\n    LaunchedEffect(sessionEpoch) {\n        if (section == DesktopSection.BGM && bgmRequest == null) navigate(bgmReturnSection)\n    }\n    fun openMusicSource(source: MusicPlaybackSource, startPosition: Double = 0.0) {",
+    "purpose": "Original AppNavigation BGM→detail→videos/back chain; metadata browse requires no second audio player.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "onMusic = ::openMusicSource, onExternalUrl = { raw ->",
+    "new": "onMusic = ::openMusicSource, onBgm = ::openBgm, operations = dynamicEditor.operations,\n                                        onRelatedVideo = { bvid, cid -> openVideo(VideoCard(bvid, \"\", \"\", \"\", 0, 0, preferredCid = cid)) },\n                                        onExternalUrl = { raw ->",
+    "purpose": "Player original inline BGM/discovery uses same existing Root operations and true native BGM route; related CID goes to existing player.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "DesktopSection.MUSIC, DesktopSection.TOPIC) }.forEach",
+    "new": "DesktopSection.MUSIC, DesktopSection.BGM, DesktopSection.TOPIC) }.forEach",
+    "purpose": "BGM is a detail destination, excluded from navigation menu.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "old": "                            section == DesktopSection.MUSIC -> {",
+    "new": "                            section == DesktopSection.BGM -> bgmRequest?.let { request ->\n                                DesktopBgmDetailRootHost(request, repository, community, commentFraud,\n                                    nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,\n                                    onBack = ::closeBgm,\n                                    onVideosClick = { bgmRequest = request.copy(showVideos = true) },\n                                    onVideoClick = { bvid, cid, cover -> openVideo(VideoCard(bvid, \"\", cover, \"\", 0, 0, preferredCid = cid)) },\n                                    onUserClick = ::openUser, onLinkClick = { raw ->\n                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf(\"http\", \"https\") }?.let {\n                                            runCatching { java.awt.Desktop.getDesktop().browse(it) }\n                                        }\n                                    }, onLogin = { loginDialog = true },\n                                    onMediaSearch = { _, _, _ -> false })\n                            }\n                            section == DesktopSection.MUSIC -> {",
+    "purpose": "Full original BGM/CommentDetail host shares Root records, emotes, image saving, login and existing Listen overlay. Windows external-media-search falls back to original title copy.",
+    "baseLfSha256": "307e92c56a40290d685f1fd698c75441d157108412f1752d13c9bfcb62803588",
+    "candidateLfSha256": "f0c7e77f527c536030c8ea02ab824bb4356b33d8c0fb81d7b1cd717dee8318a0"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+    "old": "private class DesktopSpaceAvatarPlatform(",
+    "new": "internal class DesktopSpaceAvatarPlatform(",
+    "purpose": "Share the already installed gallery platform with BGM; no duplicate transport/gallery renderer.",
+    "baseLfSha256": "ce19a11f8f32826ae48c8f89b4db309445f89649e19eba303f9e601c90c98420",
+    "candidateLfSha256": "1d947ad1b64a70d5d9f85ba1327f76916cce2647108caf48b7ce22b185005ba7"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+    "old": "package com.bilipai.desktop.ui\n\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material3.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.unit.dp\nimport com.android.purebilibili.data.model.response.PlayerInfoData\nimport com.android.purebilibili.feature.audio.player.MusicPlaybackSource\nimport com.android.purebilibili.feature.video.ui.section.resolveDisplayBgmList\nimport com.bilipai.desktop.audio.*\nimport com.bilipai.desktop.data.*\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.launch\n\n/** Real player metadata and current selected part; constructing the component sends no request. */\n@Composable\ninternal fun DesktopVideoMusicEntries(details: VideoDetails, target: DesktopMusicVideoTarget,\n    repository: DesktopRepository, community: DesktopCommunityRepository,\n    currentTarget: (DesktopMusicVideoTarget) -> Boolean, positionSeconds: () -> Double,\n    onMusic: (MusicPlaybackSource, Double) -> Unit, onExternalUrl: (String) -> Unit,\n    modifier: Modifier = Modifier) {\n    val epoch by repository.sessionEpochFlow.collectAsState()\n    val scope = rememberCoroutineScope()\n    var metadata by remember(target, epoch) { mutableStateOf<PlayerInfoData?>(null) }\n    var loading by remember(target, epoch) { mutableStateOf(false) }\n    var error by remember(target, epoch) { mutableStateOf<String?>(null) }\n    val current by rememberUpdatedState(currentTarget)\n    val music by rememberUpdatedState(onMusic)\n    val openWeb by rememberUpdatedState(onExternalUrl)\n    val position by rememberUpdatedState(positionSeconds)\n    fun authorized() = repository.sessionEpoch == target.sessionEpoch && current(target)\n    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {\n        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n            TextButton(enabled = target.cid > 0 && epoch == target.sessionEpoch && authorized(), onClick = {\n                if (authorized()) music(MusicPlaybackSource.VideoAudio(details.bvid, target.cid, details.title),\n                    position().takeIf { it.isFinite() && it >= 0 } ?: 0.0)\n            }) { Text(\"听当前分 P\") }\n            TextButton(enabled = target.cid > 0 && !loading && epoch == target.sessionEpoch && authorized(), onClick = {\n                if (!authorized()) return@TextButton\n                loading = true; error = null\n                scope.launch {\n                    try {\n                        val reply = community.playerMetadata(details.bvid, target.cid)\n                        if (authorized() && (reply.bvid.isBlank() || reply.bvid == target.bvid) && (reply.cid == 0L || reply.cid == target.cid)) metadata = reply\n                    } catch (failure: Exception) {\n                        if (failure is CancellationException) throw failure\n                        if (authorized()) error = failure.message ?: \"背景音乐加载失败\"\n                    } finally { loading = false }\n                }\n            }) { Text(if (loading) \"加载背景音乐…\" else \"背景音乐\") }\n        }\n        metadata?.let { info ->\n            val rows = resolveDisplayBgmList(info.bgmInfo, emptyList())\n            if (rows.isEmpty()) Text(\"当前分 P 没有背景音乐信息\", color = MaterialTheme.colorScheme.onSurfaceVariant)\n            rows.forEach { bgm ->\n                val destination = resolveDesktopBgmMusicTarget(bgm, target.bvid, target.cid)\n                TextButton(enabled = destination != null && epoch == target.sessionEpoch && authorized(), onClick = {\n                    if (!authorized()) return@TextButton\n                    when (destination) {\n                        is DesktopBgmMusicTarget.Web -> openWeb(destination.url)\n                        is DesktopBgmMusicTarget.Native -> music(destination.source,\n                            if (destination.source is MusicPlaybackSource.VideoAudio) position().takeIf { it.isFinite() && it >= 0 } ?: 0.0 else 0.0)\n                        null -> Unit\n                    }\n                }) { Text(listOf(bgm.musicTitle.ifBlank { \"背景音乐\" }, bgm.actor).filter(String::isNotBlank).joinToString(\" · \")) }\n            }\n        }\n        error?.let { Text(it, color = MaterialTheme.colorScheme.error) }\n    }\n}\n",
+    "new": "package com.bilipai.desktop.ui\n\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.material3.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.unit.dp\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.feature.audio.player.MusicPlaybackSource\nimport com.android.purebilibili.feature.video.ui.section.DesktopOriginalInlineBgmSection\nimport com.android.purebilibili.feature.video.ui.section.resolveDisplayBgmList\nimport com.bilipai.desktop.audio.*\nimport com.bilipai.desktop.data.*\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.launch\n\n/** Same real player/part owner; original InlineBgmSection owns every BGM renderer. */\n@Composable internal fun DesktopVideoMusicEntries(\n    details: VideoDetails,\n    target: DesktopMusicVideoTarget,\n    repository: DesktopRepository,\n    community: DesktopCommunityRepository,\n    currentTarget: (DesktopMusicVideoTarget) -> Boolean,\n    positionSeconds: () -> Double,\n    onMusic: (MusicPlaybackSource, Double) -> Unit,\n    onBgm: (DesktopBgmMusicTarget.Detail) -> Unit,\n    operations: DesktopDynamicCardOperations,\n    onRelatedVideo: (String, Long) -> Unit,\n    onExternalUrl: (String) -> Unit,\n    modifier: Modifier = Modifier,\n) {\n    val epoch by repository.sessionEpochFlow.collectAsState()\n    val scope = rememberCoroutineScope()\n    var metadata by remember(target, epoch) { mutableStateOf<PlayerInfoData?>(null) }\n    var bgmInfoList by remember(target, epoch) { mutableStateOf<List<BgmInfo>>(emptyList()) }\n    var loading by remember(target, epoch) { mutableStateOf(false) }\n    var error by remember(target, epoch) { mutableStateOf<String?>(null) }\n    val current by rememberUpdatedState(currentTarget)\n    val music by rememberUpdatedState(onMusic)\n    val openBgm by rememberUpdatedState(onBgm)\n    val openWeb by rememberUpdatedState(onExternalUrl)\n    val relatedVideo by rememberUpdatedState(onRelatedVideo)\n    val position by rememberUpdatedState(positionSeconds)\n    fun authorized() = operations.isOwned() && repository.sessionEpoch == target.sessionEpoch && current(target)\n    suspend fun loadMetadata() {\n        if (!authorized() || loading) return\n        loading = true; error = null\n        try {\n            val reply = community.playerMetadata(details.bvid, target.cid)\n            if (!authorized()) return\n            if ((reply.bvid.isBlank() || reply.bvid == target.bvid) && (reply.cid == 0L || reply.cid == target.cid)) metadata = reply\n            // Original VideoPlaybackViewModel's positive-aid, multi-song source.\n            if (details.aid > 0) {\n                val songs = operations.getBgmList(details.aid, details.bvid, target.cid)\n                if (authorized() && songs.isSuccess && !songs.getOrNull().isNullOrEmpty()) bgmInfoList = songs.getOrThrow()\n            }\n        } catch (cancelled: CancellationException) { throw cancelled }\n        catch (failure: Exception) { if (authorized()) error = failure.message ?: \"背景音乐加载失败\" }\n        finally { if (authorized()) loading = false }\n    }\n    LaunchedEffect(target, epoch) { if (authorized()) loadMetadata() }\n    val discovery = remember(operations, target, epoch) { DesktopBgmDiscoveryOperationsBinding(operations, ::authorized) }\n    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {\n        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {\n            TextButton(enabled = target.cid > 0 && epoch == target.sessionEpoch && authorized(), onClick = {\n                if (authorized()) music(MusicPlaybackSource.VideoAudio(details.bvid, target.cid, details.title),\n                    position().takeIf { it.isFinite() && it >= 0 } ?: 0.0)\n            }) { Text(\"听当前分 P\") }\n            if (loading) Text(\"加载背景音乐…\")\n        }\n        val rows = resolveDisplayBgmList(metadata?.bgmInfo, bgmInfoList)\n        if (rows.isNotEmpty() && authorized()) CompositionLocalProvider(LocalDesktopBgmDiscoveryRequests provides discovery) {\n            DesktopOriginalInlineBgmSection(rows, onBgmClick = { bgm ->\n                if (authorized()) when (val destination = resolveDesktopBgmMusicTarget(bgm, target.bvid, target.cid)) {\n                    is DesktopBgmMusicTarget.Web -> openWeb(destination.url)\n                    is DesktopBgmMusicTarget.Detail -> openBgm(destination)\n                    null -> Unit\n                }\n            }, onRelatedVideoClick = { bvid, cid -> if (authorized()) relatedVideo(bvid, cid) })\n        }\n        error?.let { message ->\n            Text(message, color = MaterialTheme.colorScheme.error)\n            TextButton(enabled = !loading && authorized(), onClick = { scope.launch { loadMetadata() } }) { Text(\"重试\") }\n        }\n    }\n}\n",
+    "purpose": "Existing player/part adapter now delegates all BGM UI to full original inline/discovery renderer; one same Root Ops binding and original positive-aid multi-song fetch.",
+    "baseLfSha256": "2ce34dc38667a22cbe1da4bfaf480c386309f30fb58f6a4fd32397395abddd7b",
+    "candidateLfSha256": "791499c3078ea47fdeb0230b67d1d896a4987dbf77444599371a7c7a9361abbf"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+    "old": "    body = original.replace('import androidx.compose.ui.platform.LocalContext',\n        'import com.bilipai.desktop.ui.LocalDesktopCommentBindings')",
+    "new": "    body = original.replace('import androidx.compose.ui.platform.LocalContext',\n        'import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences')",
+    "purpose": "Existing sole original skeleton breathing helper becomes available to player/BGM consumers through same Root global preferences owner.",
+    "baseLfSha256": "95dd2763dac9a4f26ec1ad1bef9db3ccd2b8e04132113e93854b1443b1a676c0",
+    "candidateLfSha256": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+    "old": "                        'val context = LocalDesktopCommentBindings.current.context')",
+    "new": "                        'val context = checkNotNull(LocalDesktopDynamicTimelinePreferences.current).context')",
+    "purpose": "Root shared global settings context; original breathing algorithm/settings namespace unchanged.",
+    "baseLfSha256": "95dd2763dac9a4f26ec1ad1bef9db3ccd2b8e04132113e93854b1443b1a676c0",
+    "candidateLfSha256": "679bb9b4c4fb7e3c8bb0ff1cec00b9fec0ac1a8ff7c581ecc061f220af11f57a"
+  }
+]

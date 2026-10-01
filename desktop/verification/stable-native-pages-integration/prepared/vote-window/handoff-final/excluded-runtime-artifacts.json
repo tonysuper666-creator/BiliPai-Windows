@@ -1,0 +1,17 @@
+[
+  {
+    "path": "candidate-popup-01.jar",
+    "sha256Bytes": "49f479ec75dc4cfccb79473b848c1556d92aecfbf278fb425c531a46fcf4f96a",
+    "reason": "runtime/compiler binary or private environment diagnostic; not install/archive payload"
+  },
+  {
+    "path": "history/native-10-onwindow-skiko-access-violation/private-hs_err_pid37388.log",
+    "sha256Bytes": "619d52a707d9e2b1944c4e77a481f17804f9d70f5dc1d7a036a11b37c6efab60",
+    "reason": "runtime/compiler binary or private environment diagnostic; not install/archive payload"
+  },
+  {
+    "path": "product-popup-03-fixture.jar",
+    "sha256Bytes": "0b61420555fa2d237d74e9f3ebb6e97765b2325e30fc025e2c34632ef3c0bc4b",
+    "reason": "runtime/compiler binary or private environment diagnostic; not install/archive payload"
+  }
+]

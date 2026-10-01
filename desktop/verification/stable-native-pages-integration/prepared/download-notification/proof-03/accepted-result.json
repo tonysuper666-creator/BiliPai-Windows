@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "candidateSha256Bytes": "dc0f70a68de56030fbb89a5eed9a877ac53e7adde5679c1693af960e2045f216",
+  "fixtureSha256Bytes": "978334a1523d7faf8c3cd233d2d080f80a7492acec202ed5d1daa8022ef4e35e",
+  "fixtureSourceSha256Bytes": "f777bdc5faada566b073d4e562c9c4f5e28fe2261ee5da67299130ded14edf89",
+  "actualStable11ManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualRuntimeCpCount": 92,
+  "noMainEdits": true,
+  "noGradle": true,
+  "oneTaskOwnedHiddenHWND": true,
+  "noExternalHTTP": true,
+  "preparedOnly": true,
+  "caseCount": 1,
+  "assertions": 34,
+  "actualCodeSources": 9,
+  "resultSha256Bytes": "f01d4005b54458fe0468ed7b5c42a6da2d0c8d82d7cf73fe2f52184400cc84b1"
+}

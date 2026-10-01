@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "sameGeneratedHelperBytes": true,
+  "sameOperationsFragmentBytes": true,
+  "originalIdentity": {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+    "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "pinnedTag": "v0.2.3",
+    "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+    "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+    "matchesPinnedCommit": true
+  },
+  "adapterIsExactCompiledInput": true,
+  "producerSha256Bytes": "9557e29f1218a13f38b4b5043fe5947e7ab328bf29507ca7fe4816b794e8a358"
+}

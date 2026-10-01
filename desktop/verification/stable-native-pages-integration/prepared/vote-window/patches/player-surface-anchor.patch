@@ -1,0 +1,20 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt
+@@ -79,7 +79,7 @@
+         Box(modifier.fillMaxSize().background(Color.Black).onSizeChanged { videoSurfaceSize = it }) {
+             if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+             else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
+-            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay)
++            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay, player.surface)
+         }
+         return
+     }
+@@ -88,7 +88,7 @@
+         Box(Modifier.fillMaxWidth().aspectRatio(16f / 9f).background(Color.Black).onSizeChanged { videoSurfaceSize = it }) {
+             if (renderSurface) SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+             else Text("正在浮窗播放", color = Color.White, modifier = Modifier.align(Alignment.Center))
+-            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay)
++            if (renderSurface && commandOverlay != null) DesktopVideoCommandPopup(videoSurfaceSize, commandOverlay, player.surface)
+         }
+         DesktopSkinPlayerProgress(value = (seeking ?: state.positionSeconds.toFloat()).let { if (it.isFinite()) it.coerceIn(0f, duration) else 0f },
+             onValueChange = { seeking = it }, onValueChangeFinished = {

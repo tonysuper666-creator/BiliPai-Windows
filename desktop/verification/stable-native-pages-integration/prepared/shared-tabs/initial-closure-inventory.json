@@ -1,0 +1,539 @@
+{
+  "sourceCount": 22,
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "sha256LF": "a7f7a122f83cadd8992d0e261616e3b0b9516d6dc0d6232860717f18434fe96e",
+      "lineCount": 274,
+      "platformRefs": [
+        {
+          "line": 12,
+          "text": "import androidx.compose.ui.platform.LocalConfiguration"
+        },
+        {
+          "line": 162,
+          "text": "val viewportMaxWidth = LocalConfiguration.current.screenWidthDp.dp"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "sha256LF": "88ef0e49dd37f69d629c770fcd8c11481f055044063c50d760188d5b715c190c",
+      "lineCount": 159,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "sha256LF": "295ca5d2cfbc6c1d4645ccf464b773a9099cef6bbf38528bc662f181d6748152",
+      "lineCount": 32,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "sha256LF": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10",
+      "lineCount": 747,
+      "platformRefs": [
+        {
+          "line": 3,
+          "text": "import android.os.Build"
+        },
+        {
+          "line": 58,
+          "text": "import androidx.compose.ui.platform.LocalContext"
+        },
+        {
+          "line": 69,
+          "text": "import com.android.purebilibili.core.store.SettingsManager"
+        },
+        {
+          "line": 70,
+          "text": "import com.android.purebilibili.core.store.HomeSettings"
+        },
+        {
+          "line": 106,
+          "text": "sdkInt: Int = Build.VERSION.SDK_INT,"
+        },
+        {
+          "line": 437,
+          "text": "val context = LocalContext.current"
+        },
+        {
+          "line": 439,
+          "text": "val homeSettings by SettingsManager"
+        },
+        {
+          "line": 440,
+          "text": ".getHomeSettings(context)"
+        },
+        {
+          "line": 441,
+          "text": ".map { it as HomeSettings? }"
+        },
+        {
+          "line": 448,
+          "text": "val resolvedHomeSettings = homeSettings ?: return"
+        },
+        {
+          "line": 449,
+          "text": "if (!resolvedHomeSettings.androidNativeLiquidGlassEnabled) {"
+        },
+        {
+          "line": 493,
+          "text": "androidNativeLiquidGlassEnabled = resolvedHomeSettings.androidNativeLiquidGlassEnabled,"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "sha256LF": "9effdedf53643de0d1d60e5416a0c30ecc6f8b96a2547841534afa566469a25e",
+      "lineCount": 316,
+      "platformRefs": [
+        {
+          "line": 22,
+          "text": "import androidx.compose.ui.platform.LocalContext"
+        },
+        {
+          "line": 29,
+          "text": "import com.android.purebilibili.core.store.HomeSettings"
+        },
+        {
+          "line": 30,
+          "text": "import com.android.purebilibili.core.store.SettingsManager"
+        },
+        {
+          "line": 78,
+          "text": "val context = LocalContext.current"
+        },
+        {
+          "line": 79,
+          "text": "val homeSettings by SettingsManager"
+        },
+        {
+          "line": 80,
+          "text": ".getHomeSettings(context)"
+        },
+        {
+          "line": 81,
+          "text": ".map { it as HomeSettings? }"
+        },
+        {
+          "line": 86,
+          "text": "val resolvedHomeSettings = homeSettings ?: return"
+        },
+        {
+          "line": 88,
+          "text": "storedLiquidGlassEnabled = resolvedHomeSettings.isBottomBarLiquidGlassEnabled,"
+        },
+        {
+          "line": 91,
+          "text": "androidNativeLiquidGlassEnabled = resolvedHomeSettings.androidNativeLiquidGlassEnabled,"
+        },
+        {
+          "line": 94,
+          "text": "resolvedHomeSettings.liquidGlassProgress,"
+        },
+        {
+          "line": 95,
+          "text": "resolvedHomeSettings.liquidGlassAdvancedSettings,"
+        },
+        {
+          "line": 96,
+          "text": "resolvedHomeSettings.liquidGlassReadabilityMode,"
+        },
+        {
+          "line": 99,
+          "text": "resolvedHomeSettings.liquidGlassProgress,"
+        },
+        {
+          "line": 100,
+          "text": "resolvedHomeSettings.liquidGlassAdvancedSettings,"
+        },
+        {
+          "line": 101,
+          "text": "resolvedHomeSettings.liquidGlassReadabilityMode,"
+        },
+        {
+          "line": 279,
+          "text": "iconCrossScaleEnabled = resolvedHomeSettings.navigationIconCrossScaleEnabled,"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "sha256LF": "6c2e14be00f306a4e212803164538541f34ca6b1a3f3f542f295e843bc15c948",
+      "lineCount": 1265,
+      "platformRefs": [
+        {
+          "line": 16,
+          "text": "import android.os.Build"
+        },
+        {
+          "line": 66,
+          "text": "import androidx.compose.ui.platform.LocalConfiguration"
+        },
+        {
+          "line": 533,
+          "text": "val configuration = LocalConfiguration.current"
+        },
+        {
+          "line": 823,
+          "text": "if (isLiquidGlassMode && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "sha256LF": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c",
+      "lineCount": 381,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "sha256LF": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+      "lineCount": 568,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "sha256LF": "e1c3cd43037a554019356472de67e99208d78675ce8b20a40ad84125caf3999e",
+      "lineCount": 474,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "sha256LF": "beb3ad5b46e00191501dbd36befabf7ad768812f0935cf272501a4bed88ecb81",
+      "lineCount": 183,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "sha256LF": "86694ec08b8fa946836379ca95bc52a4e880bcfcbfb0a2c4b14b9852a7e4d452",
+      "lineCount": 51,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "sha256LF": "9b2af7e3b9268adb56cbb44c34eda4bb006aa0c181bf60a240cb910e5f269f00",
+      "lineCount": 77,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "sha256LF": "9a6696c3a2ff0c9a67931cb0f7a4a392d1d1fdfb117bc9f22c31b54e01af8174",
+      "lineCount": 273,
+      "platformRefs": [
+        {
+          "line": 3,
+          "text": "import android.app.Activity"
+        },
+        {
+          "line": 4,
+          "text": "import android.content.Context"
+        },
+        {
+          "line": 5,
+          "text": "import android.content.ContextWrapper"
+        },
+        {
+          "line": 6,
+          "text": "import android.graphics.Bitmap"
+        },
+        {
+          "line": 7,
+          "text": "import android.graphics.Rect"
+        },
+        {
+          "line": 8,
+          "text": "import android.os.Build"
+        },
+        {
+          "line": 9,
+          "text": "import android.os.Handler"
+        },
+        {
+          "line": 10,
+          "text": "import android.os.Looper"
+        },
+        {
+          "line": 11,
+          "text": "import android.view.PixelCopy"
+        },
+        {
+          "line": 26,
+          "text": "import androidx.compose.ui.platform.LocalContext"
+        },
+        {
+          "line": 118,
+          "text": "val context = LocalContext.current"
+        },
+        {
+          "line": 123,
+          "text": "if (!enabled || activity == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "sha256LF": "dbeeb4db12b48ce4803424208e66ba10e0f203c10ad395fc7da7ff0e629d423c",
+      "lineCount": 124,
+      "platformRefs": [
+        {
+          "line": 3,
+          "text": "import android.annotation.SuppressLint"
+        },
+        {
+          "line": 4,
+          "text": "import android.graphics.RuntimeShader"
+        },
+        {
+          "line": 15,
+          "text": "import androidx.compose.ui.graphics.ShaderBrush"
+        },
+        {
+          "line": 53,
+          "text": "RuntimeShader("
+        },
+        {
+          "line": 90,
+          "text": "ShaderBrush(shader),"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "sha256LF": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a",
+      "lineCount": 7,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "sha256LF": "39f7825572d2b404d6552e80946958fb60747c87255f094cbbc0fd18cc6afd63",
+      "lineCount": 18,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "sha256LF": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db",
+      "lineCount": 104,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "sha256LF": "537971a74546a5dbfec259502e5c60935aaedfc0ab3d02888a58419cfaad981c",
+      "lineCount": 287,
+      "platformRefs": [
+        {
+          "line": 5,
+          "text": "import android.os.SystemClock"
+        },
+        {
+          "line": 273,
+          "text": "SystemClock.uptimeMillis(),"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "sha256LF": "579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e",
+      "lineCount": 200,
+      "platformRefs": [
+        {
+          "line": 12,
+          "text": "import top.yukonga.miuix.kmp.blur.isRuntimeShaderSupported"
+        },
+        {
+          "line": 29,
+          "text": "if (!isRuntimeShaderSupported()) return"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "sha256LF": "f8522497c4281dfd1e9560bb5828082a7b708abe24806ae0a3c31707a7f3616b",
+      "lineCount": 12,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "sha256LF": "c6dee226fa5dfc1e93195cf2fc3caaa4b9c68366dd78a25af32853fc11e4cfcd",
+      "lineCount": 161,
+      "platformRefs": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "sha256LF": "7a98fe8d8aef8b433a40e2db5c64b95389b9eccb72ba3d201edcdff2ae6a99bc",
+      "lineCount": 40,
+      "platformRefs": []
+    }
+  ],
+  "actualStable11Classes": [
+    "com.android.purebilibili.core.store.AccountSessionSnapshot",
+    "com.android.purebilibili.core.store.CreatorSignalSnapshot",
+    "com.android.purebilibili.core.store.DesktopDiscoverySettingsKt",
+    "com.android.purebilibili.core.store.DesktopDynamicCardSettings",
+    "com.android.purebilibili.core.store.DesktopDynamicSettings",
+    "com.android.purebilibili.core.store.DesktopDynamicTabsSettings",
+    "com.android.purebilibili.core.store.DesktopFeedSettings",
+    "com.android.purebilibili.core.store.DesktopHomeCardSettings",
+    "com.android.purebilibili.core.store.DesktopHomeCardVisualSettings",
+    "com.android.purebilibili.core.store.DesktopOriginalDetailLiquidReusePolicyKt",
+    "com.android.purebilibili.core.store.DesktopOriginalHomeCardSettings",
+    "com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettings",
+    "com.android.purebilibili.core.store.DesktopOriginalHomeCardVisualSettingsKt",
+    "com.android.purebilibili.core.store.DesktopOriginalReplySettings",
+    "com.android.purebilibili.core.store.DesktopPrivacyAuthenticationSettings",
+    "com.android.purebilibili.core.store.HomeCardBadgeEffectMode",
+    "com.android.purebilibili.core.store.HomeCardInfoGlassMode",
+    "com.android.purebilibili.core.store.HomeDurationStyle",
+    "com.android.purebilibili.core.store.HomeFeedCardStyle",
+    "com.android.purebilibili.core.store.HomeFeedCardWidthPreset",
+    "com.android.purebilibili.core.store.HomeWallpaperEffectMode",
+    "com.android.purebilibili.core.store.HomeWallpaperEffectScope",
+    "com.android.purebilibili.core.store.NetworkProxyStore",
+    "com.android.purebilibili.core.store.PlaybackSpeedPolicyKt",
+    "com.android.purebilibili.core.store.SearchHintSettingsStore",
+    "com.android.purebilibili.core.store.SettingsSearchHistoryStore",
+    "com.android.purebilibili.core.store.SettingsSearchHistoryStoreKt",
+    "com.android.purebilibili.core.store.SkeletonSettingsStore",
+    "com.android.purebilibili.core.store.StoredAccountSession",
+    "com.android.purebilibili.core.store.ThemeModeRoleOverrides",
+    "com.android.purebilibili.core.store.ThemeRoleOverrides",
+    "com.android.purebilibili.core.store.ThemeSelectionStoreKt",
+    "com.android.purebilibili.core.store.TodayWatchCreatorProfile",
+    "com.android.purebilibili.core.store.TodayWatchDislikedVideoPayload",
+    "com.android.purebilibili.core.store.TodayWatchDislikedVideoSnapshot",
+    "com.android.purebilibili.core.store.TodayWatchFeedbackPayload",
+    "com.android.purebilibili.core.store.TodayWatchFeedbackSnapshot",
+    "com.android.purebilibili.core.store.TodayWatchFeedbackStore",
+    "com.android.purebilibili.core.store.TodayWatchFeedbackStoreKt",
+    "com.android.purebilibili.core.store.TodayWatchProfilePayload",
+    "com.android.purebilibili.core.store.TodayWatchProfileStore",
+    "com.android.purebilibili.core.store.player.DefaultAudioQualityKt",
+    "com.android.purebilibili.core.ui.components.AdaptiveContentCardComponentsKt",
+    "com.android.purebilibili.core.ui.components.AdaptiveListComponentVisualSpec",
+    "com.android.purebilibili.core.ui.components.AdaptiveListItemPolicyKt",
+    "com.android.purebilibili.core.ui.components.AdaptiveListRowVisualSpec",
+    "com.android.purebilibili.core.ui.components.AdaptiveListVisualCapabilities",
+    "com.android.purebilibili.core.ui.components.AdaptivePreferenceComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppBackToTopButtonKt",
+    "com.android.purebilibili.core.ui.components.AppBadgeKt",
+    "com.android.purebilibili.core.ui.components.AppCardColors",
+    "com.android.purebilibili.core.ui.components.AppCardDefaults",
+    "com.android.purebilibili.core.ui.components.AppCardKt",
+    "com.android.purebilibili.core.ui.components.AppCardShape",
+    "com.android.purebilibili.core.ui.components.AppCardVariant",
+    "com.android.purebilibili.core.ui.components.AppCheckboxColors",
+    "com.android.purebilibili.core.ui.components.AppCheckboxDefaults",
+    "com.android.purebilibili.core.ui.components.AppCheckboxKt",
+    "com.android.purebilibili.core.ui.components.AppChoiceOption",
+    "com.android.purebilibili.core.ui.components.AppClickableItemRenderer",
+    "com.android.purebilibili.core.ui.components.AppContentStateAction",
+    "com.android.purebilibili.core.ui.components.AppContentStateComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppContentStateLayoutSpec",
+    "com.android.purebilibili.core.ui.components.AppContentStatePresentation",
+    "com.android.purebilibili.core.ui.components.AppDesktopInteractionKt",
+    "com.android.purebilibili.core.ui.components.AppIconButtonColors",
+    "com.android.purebilibili.core.ui.components.AppIconButtonDefaults",
+    "com.android.purebilibili.core.ui.components.AppIconButtonKt",
+    "com.android.purebilibili.core.ui.components.AppIconButtonVariant",
+    "com.android.purebilibili.core.ui.components.AppIconKt",
+    "com.android.purebilibili.core.ui.components.AppLiquidSegmentedControlSpec",
+    "com.android.purebilibili.core.ui.components.AppListItemKt",
+    "com.android.purebilibili.core.ui.components.AppMiuixActionTone",
+    "com.android.purebilibili.core.ui.components.AppMiuixCompactChipMetrics",
+    "com.android.purebilibili.core.ui.components.AppMiuixSegmentedColors",
+    "com.android.purebilibili.core.ui.components.AppNavigationComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppPlatformNavigationBarDisplayMode",
+    "com.android.purebilibili.core.ui.components.AppPreferenceComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppPreferenceGroupPresentation",
+    "com.android.purebilibili.core.ui.components.AppPreferenceIconTreatment",
+    "com.android.purebilibili.core.ui.components.AppPrimaryButtonKt",
+    "com.android.purebilibili.core.ui.components.AppPrimitiveComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppPrimitiveRendererPolicyKt",
+    "com.android.purebilibili.core.ui.components.AppProgressIndicatorKt",
+    "com.android.purebilibili.core.ui.components.AppRadioButtonKt",
+    "com.android.purebilibili.core.ui.components.AppScrollableUnderlinePolicyKt",
+    "com.android.purebilibili.core.ui.components.AppSearchFieldPresentation",
+    "com.android.purebilibili.core.ui.components.AppSegmentOption",
+    "com.android.purebilibili.core.ui.components.AppSegmentedChrome",
+    "com.android.purebilibili.core.ui.components.AppSegmentedControlColors",
+    "com.android.purebilibili.core.ui.components.AppSegmentedRenderer",
+    "com.android.purebilibili.core.ui.components.AppSelectionPreferenceComponentsKt",
+    "com.android.purebilibili.core.ui.components.AppSingleChoicePresentation",
+    "com.android.purebilibili.core.ui.components.AppSingleChoiceRowKt",
+    "com.android.purebilibili.core.ui.components.AppSliderColors",
+    "com.android.purebilibili.core.ui.components.AppSliderDefaults",
+    "com.android.purebilibili.core.ui.components.AppSliderDialogLayoutPolicy",
+    "com.android.purebilibili.core.ui.components.AppSliderKt",
+    "com.android.purebilibili.core.ui.components.AppSplitAxis",
+    "com.android.purebilibili.core.ui.components.AppSplitLayoutKt",
+    "com.android.purebilibili.core.ui.components.AppSurfaceKt",
+    "com.android.purebilibili.core.ui.components.AppSwitchKt",
+    "com.android.purebilibili.core.ui.components.AppTabRowIndicatorPresentation",
+    "com.android.purebilibili.core.ui.components.AppTabRowSlot",
+    "com.android.purebilibili.core.ui.components.AppTabSlot",
+    "com.android.purebilibili.core.ui.components.AppTagChipMetrics",
+    "com.android.purebilibili.core.ui.components.AppTagChipSize",
+    "com.android.purebilibili.core.ui.components.AppTextKt",
+    "com.android.purebilibili.core.ui.components.AppWindowAction",
+    "com.android.purebilibili.core.ui.components.AppWindowActionMenuKt",
+    "com.android.purebilibili.core.ui.components.ContentSizedTabAnchor",
+    "com.android.purebilibili.core.ui.components.DesktopOriginalDynamicNativeTabsKt",
+    "com.android.purebilibili.core.ui.components.DesktopUpstreamUserLevelBadgeKt",
+    "com.android.purebilibili.core.ui.components.ElasticTabIndicatorBounds",
+    "com.android.purebilibili.core.ui.components.FeedPrependScrollPolicyKt",
+    "com.android.purebilibili.core.ui.components.FeedPrependScrollTarget",
+    "com.android.purebilibili.core.ui.components.FeedVerticalStaggeredGridKt",
+    "com.android.purebilibili.core.ui.components.FeedVisibleAnchor",
+    "com.android.purebilibili.core.ui.components.LongPressActionModifierKt",
+    "com.android.purebilibili.core.ui.components.MiuixNonGlassTabItemWidthMode",
+    "com.android.purebilibili.core.ui.components.NoOpHapticFeedback",
+    "com.android.purebilibili.core.ui.components.UpBadgeNameKt",
+    "com.android.purebilibili.core.ui.components.UpBadgeNamePolicyKt",
+    "com.android.purebilibili.core.ui.components.UserLevelBadgeAsset",
+    "com.android.purebilibili.core.ui.components.UserUpBadgeKt",
+    "com.android.purebilibili.core.ui.components.UserUpBadgeVisualSpec",
+    "com.android.purebilibili.feature.home.components.DesktopOriginalReplyCapsuleShapeKt",
+    "com.android.purebilibili.feature.home.components.ProgressiveTopChromeKt",
+    "com.android.purebilibili.feature.home.components.cards.DesktopHomeCardPlatform",
+    "com.android.purebilibili.feature.home.components.cards.HomeCardBadgeEffectVisual",
+    "com.android.purebilibili.feature.home.components.cards.HomeStyleSingleColumnVideoCardKt",
+    "com.android.purebilibili.feature.home.components.cards.HomeVideoBadgeStyle",
+    "com.android.purebilibili.feature.home.components.cards.HomeVideoCardMetadataColors",
+    "com.android.purebilibili.feature.home.components.cards.HomeVideoGlassBadgeStylePolicy",
+    "com.android.purebilibili.feature.home.components.cards.HomeVideoGlassBadgeStylePolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.HorizontalCardChromeMotionFrame",
+    "com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardFrameKt",
+    "com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardLayoutPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.HorizontalVideoCardStatsKt",
+    "com.android.purebilibili.feature.home.components.cards.SamplingRegion",
+    "com.android.purebilibili.feature.home.components.cards.StoryVideoCardScrollLiteVisualPolicy",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardAdaptiveContentColors",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardAdaptiveTintPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardAmbientDrawSpec",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCompactCoverStatsLayout",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCoverColorStore",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCoverDurationTextKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCoverOverlayBottomLayout",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCoverOverlayTextPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardCoverStatsLayoutPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardDurationBadgeVisualPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardDurationBadgeVisualStyle",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardHistoryProgressPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardOnlineCountCacheEntry",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardOnlineCountStore",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardOnlineCountStoreKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardPillColors",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardScreenMetrics",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardScrollLiteVisualPolicy",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardScrollLiteVisualPolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardSharedTransitionSpecs",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardShellReturnChromeKt",
+    "com.android.purebilibili.feature.home.components.cards.VideoCardTexts",
+    "com.android.purebilibili.feature.home.components.cards.VideoPremiumBadgePolicyKt",
+    "com.android.purebilibili.feature.home.components.cards.WallpaperPalette"
+  ],
+  "actualMainKotlinSha256Bytes": "f8757184c794e4f27a719e43fc5dcb1a5650571579a2ca1e96f363307700cede"
+}

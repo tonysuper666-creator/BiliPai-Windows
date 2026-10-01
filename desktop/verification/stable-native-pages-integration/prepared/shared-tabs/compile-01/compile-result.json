@@ -1,0 +1,173 @@
+{
+  "status": "FAIL",
+  "sourceInputs": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\store\\LiquidGlassReadabilityMode.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\store\\LiquidGlassReadabilityMode.kt",
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt",
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\OpticalContrastPalette.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\ui\\OpticalContrastPalette.kt",
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\animation\\DampedDragAnimation.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\ui\\animation\\DampedDragAnimation.kt",
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidAwareTabRow.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidAwareTabRow.kt",
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\LiquidDockViewport.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\ui\\components\\LiquidDockViewport.kt",
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\TabSelectionScroll.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\core\\ui\\components\\TabSelectionScroll.kt",
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\HomeVisualPalette.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\HomeVisualPalette.kt",
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt",
+      "sha256Bytes": "d5c127400a85c423527a904c44b187c9b818335a993d5e1c6933e6544767128c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarFloatingSegmentedControl.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarFloatingSegmentedControl.kt",
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarGlassMaterialPolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarGlassMaterialPolicy.kt",
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt",
+      "sha256Bytes": "c369016388cb4e01d31187185ba5d04f4505033c08c1d5e32ea9680cd545b9a5"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt",
+      "sha256Bytes": "254f55a6dcf77791b77e2f92090a6b3ae9773fb6ee45b90b89116ac130ee5bbc"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt",
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBarGeometry.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBarGeometry.kt",
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt",
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt",
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassSelectionContentPolicy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassSelectionContentPolicy.kt",
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassShader.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassShader.kt",
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt",
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\SideBarMotionSpec.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\SideBarMotionSpec.kt",
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\CombinedBackdrop.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\CombinedBackdrop.kt",
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\InnerShadow.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\InnerShadow.kt",
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Lens.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Lens.kt",
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Vibrancy.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Vibrancy.kt",
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DampedDragAnimation.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DampedDragAnimation.kt",
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DragGestureInspector.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\DragGestureInspector.kt",
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlight.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlight.kt",
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightMotionSpec.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightMotionSpec.kt",
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightPalette.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\miuix\\InteractiveHighlightPalette.kt",
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\platform\\com\\bilipai\\desktop\\settings\\DesktopLiquidTabSettings.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\platform\\com\\bilipai\\desktop\\settings\\DesktopLiquidTabSettings.kt",
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\platform\\com\\bilipai\\desktop\\ui\\DesktopLiquidReadabilityPlatform.kt",
+      "compileInput": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-shared-liquid-tabs-parity\\compile-01\\source-inputs\\platform\\com\\bilipai\\desktop\\ui\\DesktopLiquidReadabilityPlatform.kt",
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    }
+  ],
+  "exitCode": 1,
+  "actualStable11ManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "actualCp92Sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "noMainEdits": true,
+  "noGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "preparedOnly": true
+}

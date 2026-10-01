@@ -28,6 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -50,11 +55,13 @@ import com.bilipai.desktop.audio.ListenAudioSession
 import com.bilipai.desktop.audio.ListenAudioState
 import com.bilipai.desktop.audio.ListenAudioStore
 import com.bilipai.desktop.audio.DesktopMusicVideoTarget
+import com.bilipai.desktop.audio.DesktopBgmMusicTarget
 import com.bilipai.desktop.audio.nativeMusicSourceForListenItem
 import com.bilipai.desktop.audio.nativeMusicVideoReturnCard
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadMetadata
+import com.bilipai.desktop.download.DesktopDownloadNotifications
 import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.DesktopVideoEnhancementSession
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
@@ -101,7 +108,7 @@ private enum class DesktopSection(val label: String, val symbol: String) {
     FOLLOWINGS("我的关注", "♧"), LIKED("赞过的视频", "♥"), LISTEN("听视频", "♫"), DOWNLOADS("下载与离线", "↓"), MESSAGES("消息", "✉"),
     HISTORY("本地历史", "◷"), FAVORITES("本地收藏", "♡"), SEARCH("搜索", "⌕"), USER("UP 主空间", "♧"),
     ARTICLE("专栏", "▤"), NOTES("视频笔记", "✎"), COLLECTION("合集与系列", "▣"),
-    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐"), MUSIC("音乐详情", "♫"),
+    JS_CONTENT("JS 插件内容", "◇"), EXTERNAL_MEDIA("外部媒体", "▷"), APPEARANCE("外观设置", "◐"), MUSIC("音乐详情", "♫"), BGM("背景音乐详情", "♫"),
     STORY("竖屏播放", "▯"), TOPIC("话题", "#"), SETTINGS("设置", "⚙")
 }
 
@@ -234,6 +241,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
     }
     val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)
+    val commentFraud = rememberDesktopCommentFraudRoot(repository, dynamicCardSession, DesktopLibrary.directoryForAccount(null))
     val dynamicCardRegistry = remember(repository, dynamicCache, sessionEpoch) {
         DesktopDynamicCardStateRegistry(repository.dynamicCacheSessionGuard, dynamicCache, sessionEpoch,
             stillOwned = dynamicCardSession::isOwned)
@@ -259,6 +267,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val homeCardPreferences = remember(pluginStore) {
         DesktopHomeCardPreferences(globalPluginContext)
     }
+    val liquidTabSettings = remember(pluginStore) { DesktopLiquidTabSettings(pluginStore) }
+    val liquidHomeSettings by liquidTabSettings.homeSettings.collectAsState(initial = null)
     val privacyBindings = remember(globalPluginContext, community.searchPreferences) {
         DesktopPrivacySectionBindings(globalPluginContext, community.searchPreferences)
     }
@@ -413,9 +423,28 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         beforeStoryAcquire.set { pip?.close(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false }
         pipSeek.set { seconds -> if (retainedMedia.current != null) player?.seekTo(seconds) else playback.seekTo(seconds) }
     }
-    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle) {
+    val nativeTextShare = remember(hostWindow) {
+        DesktopNativeTextShare(
+            nativeDll = { java.nio.file.Path.of(requireNotNull(System.getProperty("compose.application.resources.dir")),
+                "native", "windows-x64", "bilipai-diagnostic-share.dll") },
+            expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,
+            window = { hostWindow })
+    }
+    val downloadNotification = remember(downloads, hostWindow) {
+        java.util.concurrent.atomic.AtomicReference<DesktopDownloadNotifications?>()
+    }
+    val downloadNotificationRetired = remember(downloads, hostWindow) { java.util.concurrent.atomic.AtomicBoolean(false) }
+    DisposableEffect(downloadNotificationRetired) { onDispose {
+        downloadNotificationRetired.set(true)
+        downloadNotification.getAndSet(null)?.close()
+    } }
+    DisposableEffect(nativeTextShare) { onDispose { nativeTextShare.close() } }
+    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {
         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
             closeDiscoveryStorage()
+            downloadNotificationRetired.set(true)
+            downloadNotification.getAndSet(null)?.close()
+            nativeTextShare.shutdown()
             withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
             cast.quiesce()
             diagnosticLifecycle?.shutdownForRestore()
@@ -428,6 +457,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         registerShutdown?.invoke {
             withContext(NonCancellable) {
                 closeDiscoveryStorage()
+                downloadNotificationRetired.set(true)
+                downloadNotification.getAndSet(null)?.close()
+                nativeTextShare.shutdown()
                 withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }
                 cast.quiesce()
                 diagnosticLifecycle?.shutdownForRestore()
@@ -447,6 +479,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var cards by remember { mutableStateOf(emptyList<VideoCard>()) }
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    val nativeTextShareError by nativeTextShare.error.collectAsState()
+    LaunchedEffect(nativeTextShareError) { nativeTextShareError?.let { error = it } }
     var imageSaveMessage by remember { mutableStateOf<String?>(null) }
     var combinedBackupSettings by remember { mutableStateOf(false) }
     var showDiagnosticViewer by remember { mutableStateOf(false) }
@@ -470,7 +504,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var storyReturnSection by remember { mutableStateOf(DesktopSection.HOME) }
     var musicSource by remember(sessionEpoch) { mutableStateOf<MusicPlaybackSource?>(null) }
     var musicReturnSection by remember { mutableStateOf(DesktopSection.LISTEN) }
+    var bgmRequest by remember(sessionEpoch) { mutableStateOf<DesktopBgmMusicTarget.Detail?>(null) }
+    var bgmReturnSection by remember { mutableStateOf(DesktopSection.HOME) }
+    var bgmReturnVideo by remember { mutableStateOf(false) }
     var musicReturnVideo by remember(sessionEpoch) { mutableStateOf(false) }
+    var weeklyInitialNumber by remember(sessionEpoch) { mutableStateOf<Int?>(null) }
+    var weeklyReturnSection by remember { mutableStateOf(DesktopSection.POPULAR) }
+    var weeklyReturnVideo by remember(sessionEpoch) { mutableStateOf(false) }
     var musicStartPosition by remember(sessionEpoch) { mutableDoubleStateOf(0.0) }
     var articleId by remember { mutableLongStateOf(0) }
     var roomId by remember { mutableLongStateOf(0) }
@@ -569,6 +609,26 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         storyHost.retire(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false
         showVideo = true; mediaActive = false; playback.openQueue(videos, index)
     }
+    fun openVideoHonorLink(url: String) {
+        val target = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url)
+        if (target is com.android.purebilibili.core.util.BilibiliNavigationTarget.PopularFeed) {
+            if (target.subCategoryKey == "weekly") navigate(DesktopSection.WEEKLY) {
+                weeklyReturnSection = section; weeklyReturnVideo = showVideo; weeklyInitialNumber = target.weeklyNumber
+            } else navigate(when (target.subCategoryKey) {
+                "rank" -> DesktopSection.RANKING
+                "all", "precious" -> DesktopSection.PRECIOUS
+                else -> DesktopSection.POPULAR
+            })
+        } else runCatching { java.net.URI(url) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+            runCatching { java.awt.Desktop.getDesktop().browse(uri) }.onFailure { error = "无法打开荣誉链接" }
+        }
+    }
+    fun closeWeeklySeries() {
+        val returnVideo = weeklyReturnVideo
+        if (navigate(if (returnVideo) weeklyReturnSection else DesktopSection.POPULAR) && returnVideo && playing.details != null)
+            showVideo = true
+        weeklyReturnVideo = false
+    }
     fun openUser(id: Long) { navigate(DesktopSection.USER) { userId = id } }
     fun openDynamicRoute(route: DesktopDynamicDetailRoute) { navigate(DesktopSection.DYNAMIC) { dynamicRoute = route } }
     fun openDynamic(id: String) { openDynamicRoute(DesktopDynamicDetailRoute(id)) }
@@ -591,6 +651,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             if (section != DesktopSection.STORY) storyReturnSection = section
             storySeed = card?.let { DesktopStorySeed(it.bvid, it.preferredCid, it.cover, it.title) } ?: DesktopStorySeed()
         }
+    }
+    fun openBgm(request: DesktopBgmMusicTarget.Detail) {
+        if (activatingUpdate || request.musicId.isBlank()) return
+        navigate(DesktopSection.BGM) {
+            if (section != DesktopSection.BGM) { bgmReturnSection = section; bgmReturnVideo = showVideo }
+            bgmRequest = request
+        }
+    }
+    fun closeBgm() {
+        val request = bgmRequest
+        if (request?.showVideos == true) bgmRequest = request.copy(showVideos = false)
+        else if (navigate(bgmReturnSection) && bgmReturnVideo && playing.details != null) showVideo = true
+    }
+    LaunchedEffect(sessionEpoch) {
+        if (section == DesktopSection.BGM && bgmRequest == null) navigate(bgmReturnSection)
     }
     fun openMusicSource(source: MusicPlaybackSource, startPosition: Double = 0.0) {
         if (activatingUpdate || listen == null) return
@@ -764,7 +839,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     DisposableEffect(storyHost) { onDispose { storyHost.close() } }
     DisposableEffect(pluginRuntime) { onDispose { pluginRuntime.close() } }
     DisposableEffect(enhancement) { onDispose { enhancement?.close() } }
-    DisposableEffect(downloads) { onDispose { downloads.close() } }
+    DisposableEffect(downloads) { onDispose {
+        downloadNotificationRetired.set(true)
+        downloadNotification.getAndSet(null)?.close()
+        downloads.close()
+    } }
     DisposableEffect(danmaku) { onDispose { danmaku?.close() } }
     DisposableEffect(listen) { onDispose { listen?.close() } }
     DisposableEffect(audioPlayer) { onDispose { audioPlayer?.close() } }
@@ -902,11 +981,68 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     }
 
+    val latestDownloadNotificationOpen by rememberUpdatedState<() -> Unit>({
+        if (navigate(DesktopSection.DOWNLOADS)) {
+            (hostWindow as? java.awt.Frame)?.let { it.extendedState = it.extendedState and java.awt.Frame.ICONIFIED.inv() }
+            hostWindow?.toFront()
+            hostWindow?.requestFocus()
+        }
+    })
+    val latestDownloadNotificationFailure by rememberUpdatedState<(String) -> Unit>({ error = it })
+    DisposableEffect(downloads, hostWindow, hostDisplayable) {
+        val effectAlive = java.util.concurrent.atomic.AtomicBoolean(true)
+        val window = hostWindow
+        if (window != null && hostDisplayable) javax.swing.SwingUtilities.invokeLater {
+            fun owned() = effectAlive.get() && !downloadNotificationRetired.get() && !latestDynamicIsClosing() && window.isDisplayable
+            if (owned()) try {
+                val notification = DesktopDownloadNotifications(downloads, window, scope, ::owned,
+                    { latestDownloadNotificationOpen() }, { latestDownloadNotificationFailure(it) })
+                if (owned()) downloadNotification.getAndSet(notification)?.close() else notification.close()
+            } catch (failure: Exception) {
+                if (owned()) latestDownloadNotificationFailure(failure.message ?: "Windows 下载进度无法启动")
+            }
+        }
+        onDispose {
+            effectAlive.set(false)
+            downloadNotification.getAndSet(null)?.close()
+        }
+    }
+
     BoxWithConstraints(Modifier.fillMaxSize()) {
     DesktopAppearanceTheme(themeSettings, windowSmallestWidthDp = minOf(maxWidth.value, maxHeight.value).toInt()) {
     val scheme = MaterialTheme.colorScheme
     val strings = LocalDesktopStrings.current
+    val liquidBackground = rememberGraphicsLayer()
+    var liquidBackgroundBounds by remember { mutableStateOf<androidx.compose.ui.geometry.Rect?>(null) }
+    val latestLiquidWindowSize by rememberUpdatedState(LocalWindowInfo.current.containerSize)
+    val latestLiquidBackgroundBounds by rememberUpdatedState(liquidBackgroundBounds)
+    val liquidOwnerAlive = remember(section, showVideo, playing.details?.bvid, sessionEpoch) { java.util.concurrent.atomic.AtomicBoolean(true) }
+    DisposableEffect(liquidOwnerAlive) { onDispose { liquidOwnerAlive.set(false) } }
+    val latestLiquidOwner by rememberUpdatedState<() -> Boolean>({
+        liquidOwnerAlive.get() && !isClosing() && repository.sessionEpoch == sessionEpoch && hostVisible && hostDisplayable &&
+            generateSequence(java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().activeWindow) { it.owner }
+                .any { it === hostWindow }
+    })
+    val liquidEnvironment = remember(liquidBackground, liquidOwnerAlive) {
+        DesktopLiquidReadabilityEnvironment(liquidBackground, { latestLiquidBackgroundBounds },
+            { latestLiquidWindowSize }, { liquidOwnerAlive.get() && latestLiquidOwner() })
+    }
+    val parentThemeConfig = com.android.purebilibili.core.ui.LocalAppThemeConfig.current
+    val parentLiquidConfig = com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig.current
+    val effectiveThemeConfig = liquidHomeSettings?.let { parentThemeConfig.copy(liquidGlassEnabled = it.androidNativeLiquidGlassEnabled) } ?: parentThemeConfig
+    val effectiveLiquidConfig = liquidHomeSettings?.let {
+        com.android.purebilibili.feature.home.components.LiquidGlassRenderConfig(
+            tuning = com.android.purebilibili.feature.home.components.resolveLiquidGlassTuning(
+                progress = it.liquidGlassProgress, advancedSettings = it.liquidGlassAdvancedSettings,
+                readabilityMode = it.liquidGlassReadabilityMode), preset = it.bottomBarLiquidGlassPreset)
+    } ?: parentLiquidConfig
+    val captureLiquidBackground = effectiveThemeConfig.liquidGlassEnabled &&
+        liquidHomeSettings?.liquidGlassReadabilityMode == com.android.purebilibili.core.store.LiquidGlassReadabilityMode.ADAPTIVE
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        LocalDesktopLiquidTabSettings provides liquidTabSettings,
+        LocalDesktopLiquidReadabilityEnvironment provides liquidEnvironment,
+        com.android.purebilibili.core.ui.LocalAppThemeConfig provides effectiveThemeConfig,
+        com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig provides effectiveLiquidConfig,
         LocalDesktopDynamicCache provides dynamicCache,
         LocalDesktopDynamicCardRepository provides repository,
         LocalDesktopDynamicCardSession provides dynamicCardSession,
@@ -950,7 +1086,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         Box(Modifier.fillMaxSize()) {
         // libmpv's audio worker needs a retained native host even when its screen is not visible.
         if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
-        Surface(Modifier.fillMaxSize().onKeyEvent { event ->
+        Surface(Modifier.fillMaxSize().onGloballyPositioned { liquidBackgroundBounds = it.boundsInWindow() }
+            .drawWithContent {
+                if (captureLiquidBackground) liquidEnvironment.recordBackground {
+                    liquidBackground.record { this@drawWithContent.drawContent() }
+                }
+                drawContent()
+            }.onKeyEvent { event ->
             if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { onToggleFullscreen(); true }
             else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
                 // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
@@ -967,7 +1109,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     Text("BiliPai", Modifier.padding(12.dp), style = MaterialTheme.typography.headlineSmall, color = scheme.primary, fontWeight = FontWeight.Bold)
                     Column(Modifier.weight(1f).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         DesktopSection.entries.filter { it !in listOf(DesktopSection.SEARCH, DesktopSection.USER, DesktopSection.ARTICLE, DesktopSection.NOTES, DesktopSection.COLLECTION,
-                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE, DesktopSection.MUSIC, DesktopSection.TOPIC) }.forEach { item ->
+                            DesktopSection.JS_CONTENT, DesktopSection.EXTERNAL_MEDIA, DesktopSection.APPEARANCE, DesktopSection.MUSIC, DesktopSection.BGM, DesktopSection.TOPIC) }.forEach { item ->
                             Surface(Modifier.fillMaxWidth().height(48.dp).clickable { if (item == DesktopSection.STORY) openStory() else navigate(item) {
                                 if (item == DesktopSection.SETTINGS) settingsNavigator.openRoot()
                             } }, shape = RoundedCornerShape(24.dp),
@@ -1123,7 +1265,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 onFavorite = { library.toggleFavorite(playing.details!!.asCard()); favorite = library.isFavorite(playing.details!!.bvid) },
                                 onCast = { castDialog = true },
                                 onStory = { openStory(playing.details!!.asCard().copy(preferredCid = playing.details!!.pages[playing.currentPart].cid)) },
-                                engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) { VideoEngagementPanel(playing.details!!, repository, social, community,
+                                engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                                    DesktopVideoMetadataHost(playing.details!!, repository, social, ::openUser, ::openVideoHonorLink, { error = it })
+                                    VideoEngagementPanel(playing.details!!, repository, social, community,
                                     ::openUser, { loginDialog = true }, ::openNotes, playback::seek,
                                     cid = playing.details!!.pages[playing.currentPart].cid)
                                     val musicTarget = DesktopMusicVideoTarget(playing.details!!.bvid,
@@ -1134,13 +1278,25 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             player?.currentSourceVersion, repository.sessionEpoch) && showVideo && !activatingUpdate &&
                                             playback.currentCastSource(captured.sourceVersion) != null },
                                         positionSeconds = { player?.state?.value?.positionSeconds ?: 0.0 },
-                                        onMusic = ::openMusicSource, onExternalUrl = { raw ->
+                                        onMusic = ::openMusicSource, onBgm = ::openBgm, operations = dynamicEditor.operations,
+                                        onRelatedVideo = { bvid, cid -> openVideo(VideoCard(bvid, "", "", "", 0, 0, preferredCid = cid)) },
+                                        onExternalUrl = { raw ->
                                             runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
                                                 runCatching { java.awt.Desktop.getDesktop().browse(uri) }
                                             }
                                         })
-                                    DiscoveryUgcCollectionPanel(playing.details!!, ::openVideo, ::openQueue,
-                                        currentCid = playing.details!!.pages[playing.currentPart].cid)
+                                    DesktopCollectionSheetHost(playing.details!!, repository,
+                                        currentCid = playing.details!!.pages[playing.currentPart].cid,
+                                        isPlaying = player?.state?.value?.let { it.ready && !it.paused && !it.ended } == true,
+                                        onPlayQueue = ::openQueue, onFeedback = { error = it },
+                                        onShare = { title, text, owned -> scope.launch {
+                                            try {
+                                                if (!nativeTextShare.share(title, text) { owned() && !isClosing() } && owned() && !isClosing())
+                                                    error = "无法打开 Windows 分享面板"
+                                            } catch (cancelled: CancellationException) { throw cancelled }
+                                            catch (failure: Exception) { if (owned() && !isClosing()) error = failure.message ?: "分享合集失败" }
+                                        } },
+                                        stillOwned = { showVideo && playback.state.value.details?.bvid == playing.details!!.bvid && !isClosing() })
                                 } },
                                 onDownload = { requestedQuality, options ->
                                     val expectedEpoch = repository.sessionEpoch
@@ -1225,7 +1381,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 }, discovery, repository, pluginStore, ::openVideo, ::openUser, { loginDialog = true },
                                     onBangumiPartition = { type -> seasonType = type; showSeason(0) }, onPlayQueue = ::openQueue, runtime = pluginRuntime,
                                     onRestart = onRestart, isClosing = isClosing,
-                                    onWeeklyBack = { navigate(DesktopSection.POPULAR) })
+                                    onWeeklyBack = ::closeWeeklySeries,
+                                    initialWeeklyNumber = if (section == DesktopSection.WEEKLY) weeklyInitialNumber else null)
                             section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia)
@@ -1242,6 +1399,19 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 })
                             section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
                                 else Text(playerError ?: "音频播放器未能初始化")
+                            section == DesktopSection.BGM -> bgmRequest?.let { request ->
+                                DesktopBgmDetailRootHost(request, repository, community, commentFraud,
+                                    nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,
+                                    onBack = ::closeBgm,
+                                    onVideosClick = { bgmRequest = request.copy(showVideos = true) },
+                                    onVideoClick = { bvid, cid, cover -> openVideo(VideoCard(bvid, "", cover, "", 0, 0, preferredCid = cid)) },
+                                    onUserClick = ::openUser, onLinkClick = { raw ->
+                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let {
+                                            runCatching { java.awt.Desktop.getDesktop().browse(it) }
+                                        }
+                                    }, onLogin = { loginDialog = true },
+                                    onMediaSearch = { _, _, _ -> false })
+                            }
                             section == DesktopSection.MUSIC -> {
                                 val source = musicSource
                                 if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,

@@ -1,0 +1,14 @@
+{
+  "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt": {
+    "baseLfSha256": "2b41147859cd507320885d1f12d9b26395d4caa9a424644ebf564223de50f9d4",
+    "desiredLfSha256": "d05d79b6129535131e096a452ea097b31b1d3c31b3af5c6475d702b0f3101a78"
+  },
+  "desktop/tools/extract-stable-video-votes.py": {
+    "baseLfSha256": "99f00bc28ece1d3d89276373660f1536a318c8720cd706a96e0464f7813de1aa",
+    "desiredLfSha256": "ab018056ea7b63724397bc3ada5d3a73b3b8495c609af9a02ded9ce04282088d"
+  },
+  "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt": {
+    "baseLfSha256": "64f417cd843ad5145aea259719a8269d3fabea3bd58437a8f9d6016d83575feb",
+    "desiredLfSha256": "8a51edfba5939b7d30818b1917f037bcaa02e2785a53c3ed016051145d7e4b17"
+  }
+}

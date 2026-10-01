@@ -639,6 +639,77 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-protocol"))
 }
 
+val extractBgmDetail by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bgm-detail.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/bgm-detail").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-bgm-detail.py", "tools/sync-upstream.py", "tools/extract-upstream-dynamic-reply-protocol.py",
+        "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py", "tools/extract-upstream-plugins.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-bgm-native-detail" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/bgm-detail"))
+}
+tasks.named("compileKotlin") { dependsOn(extractBgmDetail) }
+
+val extractCommentFraudProtocol by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-comment-fraud-protocol.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/comment-fraud-protocol").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-comment-fraud-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py",
+        "tools/sync-upstream.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt"))
+    outputs.dir(layout.buildDirectory.dir("generated/comment-fraud-protocol"))
+}
+tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
+
+val extractSharedLiquidTabs by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-shared-liquid-tabs.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/shared-liquid-tabs").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-shared-liquid-tabs.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "stable-shared-liquid-tabs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/shared-liquid-tabs"))
+}
+tasks.named("compileKotlin") { dependsOn(extractSharedLiquidTabs) }
+
+val extractStableVideoMetadata by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-video-metadata.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-metadata").get().asFile.absolutePath)
+    inputs.files("tools/extract-stable-video-metadata.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(listOf("feature/video/ui/section/VideoInfoSection.kt", "feature/video/ui/section/VideoInfoDisplayPolicy.kt",
+        "data/repository/ActionRepository.kt", "core/store/SettingsManager.kt")
+        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+    outputs.dir(layout.buildDirectory.dir("generated/video-metadata"))
+}
+tasks.named("compileKotlin") { dependsOn(extractStableVideoMetadata) }
+
+val extractStableCollectionSheet by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-collection-sheet.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/collection-sheet").get().asFile.absolutePath)
+    inputs.files("tools/extract-stable-collection-sheet.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(listOf("feature/video/ui/components/CollectionSheet.kt", "feature/video/ui/components/CollectionSubscriptionButton.kt",
+        "data/repository/ActionRepository.kt", "core/store/SettingsManager.kt", "core/util/ShareUtils.kt")
+        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+    outputs.dir(layout.buildDirectory.dir("generated/collection-sheet"))
+}
+tasks.named("compileKotlin") { dependsOn(extractStableCollectionSheet) }
+
 val extractStableWeeklySeries by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -665,19 +736,24 @@ val extractStableVideoVotes by tasks.registering(Exec::class) {
 }
 
 val verifyUpstreamDynamicDetailReplyProtocol by tasks.registering(Exec::class) {
-    dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, extractStableVideoVotes)
+    dependsOn(extractUpstreamDynamicReplyProtocol, extractUpstreamDynamicDetailProtocol, extractStableVideoVotes,
+        extractBgmDetail, extractCommentFraudProtocol)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/verify-upstream-dynamic-detail-reply-protocol.py",
         "--repo", repositoryRoot.absolutePath,
         "--comment-output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath,
         "--detail-output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath,
         "--grade-output", layout.buildDirectory.file("generated/video-votes/platform/DesktopVideoGradeMembers.fragment").get().asFile.absolutePath,
+        "--bgm-output", layout.buildDirectory.file("generated/bgm-detail/bgm-operations-members.fragment").get().asFile.absolutePath,
+        "--fraud-output", layout.buildDirectory.file("generated/comment-fraud-protocol/source-inventory.json").get().asFile.absolutePath,
         "--output", layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json").get().asFile.absolutePath)
     inputs.files("tools/verify-upstream-dynamic-detail-reply-protocol.py",
         "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
     inputs.file(layout.buildDirectory.file("generated/dynamic-reply-protocol/DesktopDynamicCommentOperations.fragment.kt"))
     inputs.file(layout.buildDirectory.file("generated/dynamic-detail-protocol/DesktopDynamicDetailOperations.fragment.kt"))
     inputs.file(layout.buildDirectory.file("generated/video-votes/platform/DesktopVideoGradeMembers.fragment"))
+    inputs.file(layout.buildDirectory.file("generated/bgm-detail/bgm-operations-members.fragment"))
+    inputs.file(layout.buildDirectory.file("generated/comment-fraud-protocol/source-inventory.json"))
     outputs.file(layout.buildDirectory.file("generated/dynamic-detail-reply-verification.json"))
 }
 
@@ -976,6 +1052,11 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-follow"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/video-votes"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/weekly-series"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/collection-sheet"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/video-metadata"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/shared-liquid-tabs/generated"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/bgm-detail/com"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/comment-fraud-protocol/generated"))
     kotlin.srcDir(nativeDiagnosticShareOutput.map { it.dir("kotlin") })
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamApi, extractUpstreamDanmaku, extractUpstreamMedia, extractUpstreamAudio, extractUpstreamLogin, extractUpstreamPlugins, extractUpstreamDiscovery, extractUpstreamSettings, extractUpstreamPlayback, extractUpstreamSearch, extractUpstreamCast, extractUpstreamPackages, extractPlaybackWatchdogs, extractGoogleCastPlatform) }

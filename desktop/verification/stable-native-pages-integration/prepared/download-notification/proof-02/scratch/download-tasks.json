@@ -1,0 +1,84 @@
+[
+    {
+        "item": {
+            "bvid": "fixtureA",
+            "cid": 1,
+            "title": "任务甲",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 1,
+            "quality": 80,
+            "qualityDesc": "fixture",
+            "videoUrl": "https://offline-notification.invalid/fixtureA",
+            "audioUrl": "",
+            "status": "PAUSED",
+            "progress": 0.9,
+            "downloadedSize": 1000,
+            "createdAt": 1790826620436,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "VIDEO",
+                    "status": "COMPLETED",
+                    "totalBytes": 1000,
+                    "downloadedBytes": 1000,
+                    "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\proof-02\\scratch\\downloads\\download-81a8425259de0e046f588f72\\video.m4s",
+                    "segmentCount": 1
+                },
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\proof-02\\scratch\\downloads"
+    },
+    {
+        "item": {
+            "bvid": "fixtureB",
+            "cid": 1,
+            "title": "",
+            "cover": "",
+            "ownerName": "",
+            "ownerFace": "",
+            "duration": 1,
+            "quality": 80,
+            "qualityDesc": "fixture",
+            "videoUrl": "https://offline-notification.invalid/fixtureB",
+            "audioUrl": "",
+            "status": "PAUSED",
+            "progress": 0.9,
+            "downloadedSize": 1000,
+            "createdAt": 1790826620436,
+            "options": {
+                "includeDanmaku": false
+            },
+            "assets": [
+                {
+                    "kind": "VIDEO",
+                    "status": "COMPLETED",
+                    "totalBytes": 1000,
+                    "downloadedBytes": 1000,
+                    "filePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\proof-02\\scratch\\downloads\\download-0dd31968bdc38585e06ed36e\\video.m4s",
+                    "segmentCount": 1
+                },
+                {
+                    "kind": "COVER",
+                    "status": "SKIPPED"
+                },
+                {
+                    "kind": "DANMAKU",
+                    "status": "SKIPPED"
+                }
+            ]
+        },
+        "destinationRoot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-download-notification-parity\\proof-02\\scratch\\downloads"
+    }
+]

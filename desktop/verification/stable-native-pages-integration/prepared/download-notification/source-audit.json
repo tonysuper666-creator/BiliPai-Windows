@@ -1,0 +1,130 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "exact original percentage expression",
+      "pass_": true
+    },
+    {
+      "name": "original title fallback",
+      "pass_": true
+    },
+    {
+      "name": "original 2000ms updater cadence",
+      "pass_": true
+    },
+    {
+      "name": "sole manager StateFlow sampled",
+      "pass_": true
+    },
+    {
+      "name": "existing pause/continue policy reused",
+      "pass_": true
+    },
+    {
+      "name": "existing manager mutation endpoints reused",
+      "pass_": true
+    },
+    {
+      "name": "no new download/network/store producer",
+      "pass_": true
+    },
+    {
+      "name": "EDT-only actual platform admission",
+      "pass_": true
+    },
+    {
+      "name": "generation guards queued presentation",
+      "pass_": true
+    },
+    {
+      "name": "weak host registry contains only presentation owner",
+      "pass_": true
+    },
+    {
+      "name": "replacement clears old before adopting native host",
+      "pass_": true
+    },
+    {
+      "name": "closed owner cannot clear replacement taskbar",
+      "pass_": true
+    },
+    {
+      "name": "parent cancellation finalizes",
+      "pass_": true
+    },
+    {
+      "name": "native window disposal finalizes",
+      "pass_": true
+    },
+    {
+      "name": "no repeated balloon/toast added",
+      "pass_": true
+    },
+    {
+      "name": "indeterminate state avoids value call",
+      "pass_": true
+    },
+    {
+      "name": "determinate resumes target state explicitly",
+      "pass_": true
+    },
+    {
+      "name": "close clears state OFF",
+      "pass_": true
+    },
+    {
+      "name": "candidate exact bytes equal compiled input",
+      "pass_": true
+    },
+    {
+      "name": "zero actual class FQN overlap",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.download.DesktopDownloadNotifications",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.download.DesktopDownloadManager",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.bilipai.desktop.download.DownloadTask",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.android.purebilibili.feature.download.DownloadTask",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.android.purebilibili.feature.download.DownloadStatus",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.android.purebilibili.feature.download.DownloadListNavigationPolicyKt",
+      "pass_": true
+    },
+    {
+      "name": "actual class bytes com.android.purebilibili.feature.download.ResumableAssetDownloader",
+      "pass_": true
+    },
+    {
+      "name": "actual JDK identity java.awt.Taskbar",
+      "pass_": true
+    },
+    {
+      "name": "actual JDK identity java.awt.TrayIcon",
+      "pass_": true
+    },
+    {
+      "name": "one actual own HWND lifecycle accepted",
+      "pass_": true
+    }
+  ],
+  "checkCount": 30,
+  "sourceSha256LF": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815",
+  "candidateJarSha256Bytes": "dc0f70a68de56030fbb89a5eed9a877ac53e7adde5679c1693af960e2045f216",
+  "acceptedProofSha256Bytes": "d2123a23a662b5643215f424a6ddecbbb32d05d72bebdab8a06a33dc5c5786d2",
+  "sourceInventorySha256Bytes": "b39e8d80709403de4d0209af0bd4a3cdd1717f64c2e70e45bc9808bc9942d47e"
+}

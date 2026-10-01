@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "actualProductClasses11": true,
+  "candidateAcceptance": false,
+  "classpathSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "candidateJarSha256Bytes": "0b61420555fa2d237d74e9f3ebb6e97765b2325e30fc025e2c34632ef3c0bc4b",
+  "productClassOverrides": [],
+  "sources": [
+    {
+      "path": "fixture\\ProductNativePopupFixture.kt",
+      "sha256Bytes": "039846a0e04f94e63418874864c624a1bc9e594c4cc3ad1e0e43037df5bd0916"
+    }
+  ],
+  "sourcesArePureFixtureOnly": true,
+  "existingLeavesAndModelsFromActualClasses11": true,
+  "sharedGradle": false,
+  "HWND": true,
+  "onlyOwnedNativeFixture": true
+}

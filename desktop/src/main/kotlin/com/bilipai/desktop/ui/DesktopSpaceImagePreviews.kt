@@ -101,7 +101,7 @@ internal fun DesktopSpaceImagePreviews(
 /** The already existing platform schema. All service/save calls are forwarded
  * to the existing Operations/Assets; the avatar only uses the image actions.
  */
-private class DesktopSpaceAvatarPlatform(
+internal class DesktopSpaceAvatarPlatform(
     override val context: DesktopPluginContext,
     override val emotes: DesktopDynamicEmotes,
     private val operations: DesktopDynamicCardOperations,

@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "cases": 3,
+  "assertions": 19,
+  "nativeRealDll": true,
+  "windowOpened": false,
+  "sharePaneOpened": false,
+  "fullDataRequestedAccepted": false,
+  "externalHttp": 0,
+  "sourceSha256Bytes": "f89f844ed5328f73f1797ef039ffec310640149efb601c00e93665374100d5cf",
+  "newClassFamily": "DesktopNativeTextShare",
+  "productClassOverrides": 0,
+  "snapshotManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "dllSha256Bytes": "d6953bbc9311998de6425ad10047ab492e05fc0265627aab06ded84835b189d4"
+}

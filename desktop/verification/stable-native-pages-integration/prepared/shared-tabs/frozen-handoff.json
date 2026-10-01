@@ -1,0 +1,1332 @@
+{
+  "status": "FROZEN_PREPARED",
+  "artifactCount": 255,
+  "artifacts": [
+    {
+      "path": "actual-stable11-symbols.javap.txt",
+      "byteSize": 570595,
+      "sha256Bytes": "8c7a73047df67a22d6cfbd9dd76290905ab25f7372bbfca9d711473aa9c1d9d7"
+    },
+    {
+      "path": "actual-stable11-top-level-methods.javap.txt",
+      "byteSize": 1599817,
+      "sha256Bytes": "5ad581dad51b1ed72d7357cbd1280333f4a34ea02467933113a2bdea447a5410"
+    },
+    {
+      "path": "audit.py",
+      "byteSize": 6680,
+      "sha256Bytes": "766b72ed42980dc31b95a027c8f9a5d1b0ce1c8aaccc044842b660e10b9bbc86"
+    },
+    {
+      "path": "candidate-top-level-methods.javap.txt",
+      "byteSize": 159415,
+      "sha256Bytes": "f732378a90ee04dbe3b8f40f4a021bf38087d0cba51b8ef84efee347e2a6bd5a"
+    },
+    {
+      "path": "compile-01/compile-result.json",
+      "byteSize": 21261,
+      "sha256Bytes": "07045595d1681d9441f459b74efd6143bc8fdfa539c46d430485f235b0c9d771"
+    },
+    {
+      "path": "compile-01/compiler.args",
+      "byteSize": 31100,
+      "sha256Bytes": "60ddd4a7591aa512e35cdcde6b839f2a55306d0fb48ab606dd06f4edb11d918c"
+    },
+    {
+      "path": "compile-01/compiler.log",
+      "byteSize": 11290,
+      "sha256Bytes": "cb2ebf43c7f539df9f81b38702f89cd421011ababd3ba96f69b985abe4ea1e94"
+    },
+    {
+      "path": "compile-01/input-manifest.json",
+      "byteSize": 2312,
+      "sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7"
+    },
+    {
+      "path": "compile-01/input-ordered-runtime-cp.json",
+      "byteSize": 34388,
+      "sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa"
+    },
+    {
+      "path": "compile-01/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-01/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 527,
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 8358,
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 21065,
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 13017,
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1427,
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6864,
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 452,
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 17400,
+      "sha256Bytes": "d5c127400a85c423527a904c44b187c9b818335a993d5e1c6933e6544767128c"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14885,
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6260,
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30737,
+      "sha256Bytes": "c369016388cb4e01d31187185ba5d04f4505033c08c1d5e32ea9680cd545b9a5"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 23399,
+      "sha256Bytes": "254f55a6dcf77791b77e2f92090a6b3ae9773fb6ee45b90b89116ac130ee5bbc"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58737,
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15787,
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19223,
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1666,
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5356,
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7680,
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 543,
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 8498,
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2596,
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1762,
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9252,
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11630,
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3641,
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 5010,
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 812,
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 392,
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 891,
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "compile-01/source-inputs/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 848,
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "byteSize": 3699,
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "compile-01/source-inputs/platform/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "byteSize": 3096,
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    },
+    {
+      "path": "compile-02/compile-result.json",
+      "byteSize": 22567,
+      "sha256Bytes": "7bf592f34414baaea5f04da5683bc37d1fd3ddd2ed9e3b5164bb35e2e0efda5a"
+    },
+    {
+      "path": "compile-02/compiler.args",
+      "byteSize": 31590,
+      "sha256Bytes": "775f267ede772773be4173e92cbd20edbf2fa078774ffb5d117edc1d3e6d8222"
+    },
+    {
+      "path": "compile-02/compiler.log",
+      "byteSize": 5887,
+      "sha256Bytes": "c6b2b0d0d3e69b512025f308f3291550b59a0291798cb67d6b19a231d00e4826"
+    },
+    {
+      "path": "compile-02/input-manifest.json",
+      "byteSize": 2312,
+      "sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7"
+    },
+    {
+      "path": "compile-02/input-ordered-runtime-cp.json",
+      "byteSize": 34388,
+      "sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa"
+    },
+    {
+      "path": "compile-02/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-02/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 527,
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 8358,
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 21065,
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 13017,
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1427,
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6864,
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "byteSize": 8297,
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 452,
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 19724,
+      "sha256Bytes": "32655c844847bdaf759fff62342f194e0f1d531df7604f4cc196fcc6b8200382"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14885,
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6260,
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30659,
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 25490,
+      "sha256Bytes": "668fd825f3b7354fe601f2e8f2f6c28725dd06b682faabe0fa2a9447f7c9f678"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58737,
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15787,
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19223,
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "byteSize": 853,
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1666,
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5356,
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7680,
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 543,
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 8498,
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2596,
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1762,
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9252,
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11630,
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3641,
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 5010,
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 812,
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 392,
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 891,
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "compile-02/source-inputs/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 848,
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "byteSize": 3699,
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "compile-02/source-inputs/platform/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "byteSize": 3096,
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    },
+    {
+      "path": "compile-03/compile-result.json",
+      "byteSize": 22692,
+      "sha256Bytes": "73914a5724f019dd1ffc21c7ea835443cc70b1cf38671f981e1320bb0ceed69c"
+    },
+    {
+      "path": "compile-03/compiler.args",
+      "byteSize": 31590,
+      "sha256Bytes": "8853181013fb44fe18131723ae2f724781deef12cab2c24acdc3972d1a805a58"
+    },
+    {
+      "path": "compile-03/compiler.log",
+      "byteSize": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "compile-03/input-manifest.json",
+      "byteSize": 2312,
+      "sha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7"
+    },
+    {
+      "path": "compile-03/input-ordered-runtime-cp.json",
+      "byteSize": 34388,
+      "sha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa"
+    },
+    {
+      "path": "compile-03/prepared-shared-liquid-tabs.jar",
+      "byteSize": 585550,
+      "sha256Bytes": "96eb88f19f844115894297bb59e5081caa361c0d49e96f681852c55947ddc688"
+    },
+    {
+      "path": "compile-03/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-03/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 527,
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 8358,
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 21065,
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 13017,
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1427,
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6864,
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "byteSize": 8297,
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 452,
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 19724,
+      "sha256Bytes": "32655c844847bdaf759fff62342f194e0f1d531df7604f4cc196fcc6b8200382"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14885,
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6260,
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30659,
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 16944,
+      "sha256Bytes": "7b52dbc9bee0459d7fabdd28e9778ed43c8bbf9578cec978fba96f1f6812e5c5"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58737,
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15787,
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19223,
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "byteSize": 853,
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1666,
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5356,
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7680,
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 543,
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 8498,
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2596,
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1762,
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9252,
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11630,
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3641,
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 5010,
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 812,
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 392,
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 891,
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "compile-03/source-inputs/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 848,
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "compile-03/source-inputs/platform/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "byteSize": 3699,
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "compile-03/source-inputs/platform/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "byteSize": 3096,
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    },
+    {
+      "path": "compile.py",
+      "byteSize": 3470,
+      "sha256Bytes": "9ccaeeaebe9247c2ccfde70a1ab5a88afa2791cb9cf0ff907d90931d61c1fdf1"
+    },
+    {
+      "path": "contract.txt",
+      "byteSize": 8652,
+      "sha256Bytes": "92f8d7f6dd19851794e5eb74667dfa6533cfbcd4c406d72269bcb2e02883c830"
+    },
+    {
+      "path": "freeze.py",
+      "byteSize": 3452,
+      "sha256Bytes": "36f431ac1b7bc5b8b5581e1d64d220b75861de8fdb3248b4e6cffa44f0b45196"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 527,
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 8358,
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 21065,
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 13017,
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1427,
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6864,
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "byteSize": 8297,
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 452,
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 19724,
+      "sha256Bytes": "32655c844847bdaf759fff62342f194e0f1d531df7604f4cc196fcc6b8200382"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14885,
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6260,
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30659,
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 16944,
+      "sha256Bytes": "7b52dbc9bee0459d7fabdd28e9778ed43c8bbf9578cec978fba96f1f6812e5c5"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58737,
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15787,
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19223,
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "byteSize": 853,
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1666,
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5356,
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7680,
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 543,
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 8498,
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2596,
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1762,
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9252,
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11630,
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3641,
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 5010,
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 812,
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 392,
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 891,
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 848,
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "initial-closure-inventory.json",
+      "byteSize": 24610,
+      "sha256Bytes": "e8dc58af0817ba603c8dad9a6cf0a68e857600261ba3ff105ea4bbcd8c506541"
+    },
+    {
+      "path": "inspect-closure.py",
+      "byteSize": 3375,
+      "sha256Bytes": "9313dec1fd50559e3ef5a47eb0279a6a628234fe8b3e763fd6f7ebf99a49e697"
+    },
+    {
+      "path": "LiquidTabsFixture.kt",
+      "byteSize": 9967,
+      "sha256Bytes": "decfc2db538170e99117118827bbbf7aa00461df8c381f218ef8a18e8b794c93"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 340,
+      "sha256Bytes": "414b70073eea199ee79184d7cc2bafd694c74090d55416f85b136ca3dc4860c1"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 396158,
+      "sha256Bytes": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 12797,
+      "sha256Bytes": "a7f7a122f83cadd8992d0e261616e3b0b9516d6dc0d6232860717f18434fe96e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1240,
+      "sha256Bytes": "295ca5d2cfbc6c1d4645ccf464b773a9099cef6bbf38528bc662f181d6748152"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6677,
+      "sha256Bytes": "88ef0e49dd37f69d629c770fcd8c11481f055044063c50d760188d5b715c190c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 219089,
+      "sha256Bytes": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14704,
+      "sha256Bytes": "9effdedf53643de0d1d60e5416a0c30ecc6f8b96a2547841534afa566469a25e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6058,
+      "sha256Bytes": "2c5e1b8e308165a3e97b1bc57cb5385808735f75f01279a9aeafbda600ecec0b"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30498,
+      "sha256Bytes": "c14981b9fa8fec1795598356d7f118b08cd3dedc248b074fa4c9b91075a08e10"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 23197,
+      "sha256Bytes": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58473,
+      "sha256Bytes": "6c2e14be00f306a4e212803164538541f34ca6b1a3f3f542f295e843bc15c948"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15588,
+      "sha256Bytes": "3446beb510a4f4164426081c9e139181b33a8cf77612c05a6198fbd994af534c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19031,
+      "sha256Bytes": "e1c3cd43037a554019356472de67e99208d78675ce8b20a40ad84125caf3999e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "byteSize": 651,
+      "sha256Bytes": "ab972367ac0047d7d832269660e91aef7e0c1351d314eb047a445bdfcfebf4b5"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1469,
+      "sha256Bytes": "7a98fe8d8aef8b433a40e2db5c64b95389b9eccb72ba3d201edcdff2ae6a99bc"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5164,
+      "sha256Bytes": "c6dee226fa5dfc1e93195cf2fc3caaa4b9c68366dd78a25af32853fc11e4cfcd"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7495,
+      "sha256Bytes": "579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 354,
+      "sha256Bytes": "f8522497c4281dfd1e9560bb5828082a7b708abe24806ae0a3c31707a7f3616b"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 9670,
+      "sha256Bytes": "9a6696c3a2ff0c9a67931cb0f7a4a392d1d1fdfb117bc9f22c31b54e01af8174"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2389,
+      "sha256Bytes": "9b2af7e3b9268adb56cbb44c34eda4bb006aa0c181bf60a240cb910e5f269f00"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1571,
+      "sha256Bytes": "86694ec08b8fa946836379ca95bc52a4e880bcfcbfb0a2c4b14b9852a7e4d452"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9061,
+      "sha256Bytes": "beb3ad5b46e00191501dbd36befabf7ad768812f0935cf272501a4bed88ecb81"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11457,
+      "sha256Bytes": "537971a74546a5dbfec259502e5c60935aaedfc0ab3d02888a58419cfaad981c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3441,
+      "sha256Bytes": "96926e4606fc6a2d43300d7cdd853188ff31905e6fe8517f7d6545ab60c995db"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 4813,
+      "sha256Bytes": "dbeeb4db12b48ce4803424208e66ba10e0f203c10ad395fc7da7ff0e629d423c"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 602,
+      "sha256Bytes": "39f7825572d2b404d6552e80946958fb60747c87255f094cbbc0fd18cc6afd63"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 185,
+      "sha256Bytes": "3b445d3f2b62627669563e009f09449cf2b5ba3b83681ecd205411c3876c471a"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 3429,
+      "sha256Bytes": "0b89a76d5302fc73dc5a7f8bb4dce299f512afc6ad29620d5c2b60d40bd2d9cf"
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 668,
+      "sha256Bytes": "951eaf50d5c751db32be642d33b59a0a4903890d4d99a7d3a015420c07c25dd5"
+    },
+    {
+      "path": "original-source/design-system/src/main/java/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 20883,
+      "sha256Bytes": "78f22a8379ee4e948306309a7d82b5b21e091a37e9da173ae72ff2baac4e27b4"
+    },
+    {
+      "path": "original-source/design-system/src/main/java/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "byteSize": 8103,
+      "sha256Bytes": "307752c068645ef965cf65c4e7b6c348270bae0e998989fdbf2c1f71e6581de3"
+    },
+    {
+      "path": "original-source/design-system/src/main/java/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 262,
+      "sha256Bytes": "48b7b79008960c6973fe7334094cc2545988f456f8921cb13962cb957bab88a2"
+    },
+    {
+      "path": "package-producer.py",
+      "byteSize": 4245,
+      "sha256Bytes": "45baebabcb33854d523888ad96330fa5ae8768211161a355f194f43b626e776e"
+    },
+    {
+      "path": "platform/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "byteSize": 3699,
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "platform/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "byteSize": 3096,
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    },
+    {
+      "path": "prepare.py",
+      "byteSize": 11649,
+      "sha256Bytes": "c204c2f0138ba3df4cfc704e62aecbfc63220b77e884a231e168ca9c8a70c874"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "byteSize": 3699,
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "byteSize": 3096,
+      "sha256Bytes": "889d73e20d9711335de27310f88232f955822579f1cbfe14c6578b3d393fb041"
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "byteSize": 15436,
+      "sha256Bytes": "169fdab92c35419522121e012532f936a111137e614cce3374083ea3fb54189c"
+    },
+    {
+      "path": "production-byte-equality.json",
+      "byteSize": 6702,
+      "sha256Bytes": "e0e3a6d223022631fb543487d319adb4af9bffc8ecad5d186b5ad988bc437127"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/store/LiquidGlassReadabilityMode.kt",
+      "byteSize": 527,
+      "sha256Bytes": "6c09d7bcbbf0ccad8bad287015d06d70ade91b85ef1007cc181c983aeee1f3b3"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "byteSize": 8358,
+      "sha256Bytes": "2b2a76521991a0292a32db716a42b7d1902135616e78b8a4b08329ae4260c1d2"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/animation/DampedDragAnimation.kt",
+      "byteSize": 21065,
+      "sha256Bytes": "7edf121fbec02deabec7c6e3802e55fb152a7b944afc984f7b18943a1bec58ee"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt",
+      "byteSize": 13017,
+      "sha256Bytes": "8f4d519f020ccf00571a4adeec0d901d0ab77067cd33a92da9d9cc8c51fd5886"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt",
+      "byteSize": 1427,
+      "sha256Bytes": "f8c044c12d3836364b399a61218093a62ed7fa8c19f44a9d9721f1e1545d19b7"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt",
+      "byteSize": 6864,
+      "sha256Bytes": "24b82fb2da27b2e1c105e08345df388b4b672a5f42fc08065dda1ac8e42ac05b"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/motion/BottomBarMotionSpec.kt",
+      "byteSize": 8297,
+      "sha256Bytes": "c08f544c9bef2c5eb9acca0c4a820a1f15a23c2ed2d69acf19a7666b2a78fae2"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/core/ui/OpticalContrastPalette.kt",
+      "byteSize": 452,
+      "sha256Bytes": "dd7b8c98aafae301fb893f0e457a90caec9f299c9b698d574d8e311f7dba48a8"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "byteSize": 19724,
+      "sha256Bytes": "32655c844847bdaf759fff62342f194e0f1d531df7604f4cc196fcc6b8200382"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt",
+      "byteSize": 14885,
+      "sha256Bytes": "ca9c71769cdd92979f977e746e4871632dff8dcf33157ec95b3e20147cef6474"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/BottomBarGlassMaterialPolicy.kt",
+      "byteSize": 6260,
+      "sha256Bytes": "7054d0712e97eb6420f1423de21c90b0c9c9b792190790b37f3c953b786221fd"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt",
+      "byteSize": 30659,
+      "sha256Bytes": "1eb0fdb0e465a9cf59c38416330bab523650a5a7c1e45ca60850b924f9787b1a"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+      "byteSize": 16944,
+      "sha256Bytes": "7b52dbc9bee0459d7fabdd28e9778ed43c8bbf9578cec978fba96f1f6812e5c5"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt",
+      "byteSize": 58737,
+      "sha256Bytes": "db70b4fd3c80c133b5d7c25baf6fce1d205bc9a09cecee9dfb034d4d7cbd9097"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt",
+      "byteSize": 15787,
+      "sha256Bytes": "f9c78a078a1878e2421291fa6c6dbbba977c9ed5ddb7c7a30eae9abec1346b92"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt",
+      "byteSize": 19223,
+      "sha256Bytes": "a7c5cd3b69b5ff7e7c9b07f00b405ae89969bb7db2340e8826536bdf6172d018"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/HomeSelectionIndicatorPolicy.kt",
+      "byteSize": 853,
+      "sha256Bytes": "d38e0b494a9dc9899a2c8a28ef0589a3e5253193c4ed8117b7b093cc0c4f3503"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt",
+      "byteSize": 1666,
+      "sha256Bytes": "5d69ef660cd3a861206e42bdbfffb5a53027a1c2853d4d0d7b292534402b733f"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt",
+      "byteSize": 5356,
+      "sha256Bytes": "fbb387cba197c883792f878511a8ac33916b6877c2a505483d948a5ec0f12154"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+      "byteSize": 7680,
+      "sha256Bytes": "9d95895ba5e761b03879a914a8f66dd468e24f572ec9763cb7d283717dc77b59"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt",
+      "byteSize": 543,
+      "sha256Bytes": "fcbf2ef9cc1f704cc41bba979a01dc772848d5934fa3498fde784df814f62a53"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt",
+      "byteSize": 8498,
+      "sha256Bytes": "7316e796a44422ebf7cc1f4de86a44a933bc3dcdf0627ad4bb72a069216b4a87"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt",
+      "byteSize": 2596,
+      "sha256Bytes": "e2bd60cc0fc7727643be0e330fe3d4d34e4d0a3640a6bfe683bf37261a70f9e6"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt",
+      "byteSize": 1762,
+      "sha256Bytes": "b4cf4605600fe00090558310e3d341f5ce5159899ae64fe63efe44b694a6c5bc"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt",
+      "byteSize": 9252,
+      "sha256Bytes": "d29ff4adf0d89e1f304ff8618b296a6d463943df1b71a3c8880037554fcccc39"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt",
+      "byteSize": 11630,
+      "sha256Bytes": "b78d7aa8fe6445ee7abc5a5aee0ca6b3b7ca66d5e35fb9818c6dadc7ad6ece36"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt",
+      "byteSize": 3641,
+      "sha256Bytes": "9058cbbe2441d610fb973093ddd46193b271555d64b47da837ad5f557bd9c157"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt",
+      "byteSize": 5010,
+      "sha256Bytes": "16dcf88d84f3f52e8a2655add028ceb06ee7d8a8cc4a5897a8a5083aa6a1429c"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt",
+      "byteSize": 812,
+      "sha256Bytes": "693f2d1bc6561f869a972d67cee16000855ebbbcdbcf4a1b8d5e59e776f8dc99"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt",
+      "byteSize": 392,
+      "sha256Bytes": "549900c6e747f6f6b0e775cd5166c9b519888cfb6389dbd8c0229bc1237a7eff"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+      "byteSize": 891,
+      "sha256Bytes": "0954ff64a12009ecb4c42cd428d43c809f526de4b63a881ccc32214de34df47a"
+    },
+    {
+      "path": "production-byte-proof/generated/com/android/purebilibili/feature/home/HomeVisualPalette.kt",
+      "byteSize": 848,
+      "sha256Bytes": "3cd220846f4fc1ab161566fb5c41c7bfef49168981feccb74ba000414d2c8053"
+    },
+    {
+      "path": "production-byte-proof/source-inventory.json",
+      "byteSize": 29967,
+      "sha256Bytes": "280e3d57ce7864fabe7f933828267f4c95cb4b7094caf0101967c3758a0f617a"
+    },
+    {
+      "path": "run-ui-fixture.py",
+      "byteSize": 3484,
+      "sha256Bytes": "94eae1de600e12bc7a7ec6562f602a5271d9489b95e71f47b4f6ce75ca737c1f"
+    },
+    {
+      "path": "source-and-symbol-audit.json",
+      "byteSize": 540407,
+      "sha256Bytes": "9735c5d00c05831d3e1035965aaefd90f6fecc718141e54075538d602fd9f5b4"
+    },
+    {
+      "path": "source-inventory.json",
+      "byteSize": 29967,
+      "sha256Bytes": "280e3d57ce7864fabe7f933828267f4c95cb4b7094caf0101967c3758a0f617a"
+    },
+    {
+      "path": "ui-proof-01/compile-result.json",
+      "byteSize": 40,
+      "sha256Bytes": "37f27d1bf2d4b039ef60afd51b8b0ffdefbb7dd8d8ef93a37f8fcb3813cb2675"
+    },
+    {
+      "path": "ui-proof-01/compiler.args",
+      "byteSize": 23792,
+      "sha256Bytes": "e0a9b3fba069f63ae8984aa7c58bd65ecccbdceabdef552d812d768142db9348"
+    },
+    {
+      "path": "ui-proof-01/compiler.log",
+      "byteSize": 725,
+      "sha256Bytes": "fb6fa332688bb2add3602684f9c45be0b8a49581dcf3b153aa09c1c3726a466b"
+    },
+    {
+      "path": "ui-proof-01/LiquidTabsFixture.kt",
+      "byteSize": 9939,
+      "sha256Bytes": "cac6605957abd3b58a891b8e13b7fd91138a41f0c928e0e505606b7fa5db2787"
+    },
+    {
+      "path": "ui-proof-01/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "ui-proof-02/accepted-result.json",
+      "byteSize": 682,
+      "sha256Bytes": "27243607151ae4e7cd1ae9b03eed29f8ed64fc94d8705581569ccb86ce5c0784"
+    },
+    {
+      "path": "ui-proof-02/compiler.args",
+      "byteSize": 23792,
+      "sha256Bytes": "a9901d32ee8b21b1b691e71c276eeb398a8598b18b0652efaf2609621a881b3b"
+    },
+    {
+      "path": "ui-proof-02/compiler.log",
+      "byteSize": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "ui-proof-02/liquid-tabs-fixture.jar",
+      "byteSize": 33699,
+      "sha256Bytes": "264f7905ad7d126a3f47247e52b732969eba9738fbd586e7082ace8feccde534"
+    },
+    {
+      "path": "ui-proof-02/LiquidTabsFixture.kt",
+      "byteSize": 9967,
+      "sha256Bytes": "decfc2db538170e99117118827bbbf7aa00461df8c381f218ef8a18e8b794c93"
+    },
+    {
+      "path": "ui-proof-02/runtime-pins-after.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "ui-proof-02/runtime-pins-before.json",
+      "byteSize": 41450,
+      "sha256Bytes": "32c50e0cd3ea8ecbda38bf071c6976755cd8e0071470e2221118c4fc4b158dc9"
+    },
+    {
+      "path": "ui-proof-02/runtime.log",
+      "byteSize": 2006,
+      "sha256Bytes": "a3ee77747cc1d2d7fb0cd9fc6cce1d7d5f71c2a6566c1986a0a13d1316ea688a"
+    },
+    {
+      "path": "ui-proof-02/scratch/actual-global-store-fixture/plugin-settings.json",
+      "byteSize": 200,
+      "sha256Bytes": "ab8fb97981a65a365b2cb03e51075845bee985b23f8b7c4a1485a0b333986ca4"
+    },
+    {
+      "path": "ui-proof-02/scratch/result.json",
+      "byteSize": 2389,
+      "sha256Bytes": "8c98b82e26e17fde596e22f005ba18e91213286f0e0d3fba9254d1a1a89858af"
+    }
+  ],
+  "originalCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualStable11ManifestSha256Bytes": "22ceb7285e89fb0ead5731a8035f98f7e3fc0790be264699671edb921aa924c7",
+  "ordered92CpSha256Bytes": "a158698f0c336c7c28d63efc3b07f830576a70c1432a877d5ca2f92aaa3237fa",
+  "sourceCount": 32,
+  "platformSourceCount": 2,
+  "sourceCheckCount": 131,
+  "classOverlapWithActual": 0,
+  "topLevelMethodOverlapWithActual": 0,
+  "candidateTopLevelMethodCount": 205,
+  "actualTopLevelMethodCount": 915,
+  "sourceAuditSha256Bytes": "9735c5d00c05831d3e1035965aaefd90f6fecc718141e54075538d602fd9f5b4",
+  "productionByteEqualitySha256Bytes": "e0e3a6d223022631fb543487d319adb4af9bffc8ecad5d186b5ad988bc437127",
+  "compileResultSha256Bytes": "73914a5724f019dd1ffc21c7ea835443cc70b1cf38671f981e1320bb0ceed69c",
+  "candidateJarSha256Bytes": "96eb88f19f844115894297bb59e5081caa361c0d49e96f681852c55947ddc688",
+  "uiAcceptedSha256Bytes": "27243607151ae4e7cd1ae9b03eed29f8ed64fc94d8705581569ccb86ce5c0784",
+  "themeCellCount": 2,
+  "assertions": 22,
+  "pointerPairs": 4,
+  "actualRecordedLayerSamples": 4,
+  "installPayload": [
+    "prepared/desktop/tools/extract-upstream-shared-liquid-tabs.py",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+    "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt"
+  ],
+  "recipe": "contract.txt",
+  "forbidInstalling": [
+    "original-source",
+    "compile-01",
+    "compile-02",
+    "compile-03",
+    "ui-proof-01",
+    "ui-proof-02"
+  ],
+  "requiredRootBindings": [
+    "LocalDesktopLiquidTabSettings: same existing applicationPluginStore",
+    "LocalAppThemeConfig: copy enabled from same original preference",
+    "LocalLiquidGlassRenderConfig: same original tuning/preset",
+    "LocalDesktopLiquidReadabilityEnvironment: actual independent page GraphicsLayer/window geometry/foreground-page owner"
+  ],
+  "noNewStore": true,
+  "noNewHomeSettings": true,
+  "noNewSettingsManager": true,
+  "noNewClient": true,
+  "noMainOrSiblingEdits": true,
+  "noSharedGradle": true,
+  "noHTTP": true,
+  "noHWND": true,
+  "preparedOnly": true,
+  "notRootNativeWindowOrAndroidPixelEquivalence": true,
+  "adaptiveRootIntegrationPending": true,
+  "failedAttemptHistoryRetained": true
+}
