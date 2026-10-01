@@ -149,7 +149,8 @@ internal class DesktopOriginalVideoNativeOwner(
     }
     private fun owns(value: DesktopOriginalVideoAcceptedPublication): Boolean =
         entryCurrent() && value.accountEpoch == currentEpoch() &&
-            accepted.get() === value && player.ownsSourceSnapshot(value.nativeSource) &&
+            accepted.get() === value && player.ownsSourceVersion(value.sourceVersion) &&
+            player.currentSourceSnapshot()?.source?.nativePublication === value.nativeSource.source.nativePublication &&
             publication.isCurrent(value.nativeSource.source)
 
     private fun retainedSource(source: PlaybackSource, stillOwned: () -> Boolean): PlaybackSource =
@@ -167,47 +168,6 @@ internal class DesktopOriginalVideoNativeOwner(
         })
 
     fun current(): DesktopOriginalVideoAcceptedPublication? = accepted.get()?.takeIf(::owns)
-
-    fun isCurrent(expected: DesktopOriginalVideoAcceptedPublication): Boolean = owns(expected)
-
-    /** A UI action captures this exact accepted object before waiting for its
-     * existing owner coroutine. Recheck it atomically when queuing the seek or
-     * making another short in-memory change. No waiting or IO runs in this gate. */
-    fun admitPlaybackDispatch(expected: DesktopOriginalVideoAcceptedPublication, action: () -> Unit): Boolean {
-        if (!owns(expected)) return false
-        var admitted = false
-        try {
-            publication.admit(expected.nativeSource.source, { owns(expected) }) {
-                if (!withEntryAdmission {
-                    if (!owns(expected)) throw CancellationException("Original playback dispatch retired")
-                    if (!player.admitSourceSnapshot(expected.nativeSource) {
-                        if (!owns(expected)) throw CancellationException("Original playback dispatch source retired")
-                        action()
-                        admitted = true
-                    }) throw CancellationException("Original playback dispatch source changed")
-                }) throw CancellationException("Original playback dispatch entry retired")
-            }
-        } catch (_: CancellationException) { return false }
-        return admitted
-    }
-
-    /** Queue submission is not completion. The existing position observer may
-     * use this exact ticket after MPV playback-restart, with one atomic check of
-     * accepted identity, account/entry and the actual source/readback. */
-    fun completedSeekPositionMs(expected: DesktopOriginalVideoAcceptedPublication,
-        submission: DesktopOriginalNativeSeekSubmission): Long? {
-        if (submission.sourceVersion != expected.sourceVersion || submission.operationId <= 0L) return null
-        var positionMs: Long? = null
-        if (!admitPlaybackDispatch(expected) {
-            val native = player.state.value
-            val position = native.seekCompletedPositionSeconds
-            if (!native.loading && native.error == null && native.failure == null &&
-                native.seekCompletedId == submission.operationId && position != null && position.isFinite() && position >= 0.0) {
-                positionMs = (position * 1_000.0).toLong()
-            }
-        }) return null
-        return positionMs
-    }
 
     /** Initial request acceptance. source MUST already carry that operation's
      * immutable authorization. A request generation guard is REQUIRED separately

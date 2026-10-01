@@ -1,0 +1,141 @@
+{
+  "artifacts": [
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "6842ad1a1abda9c6e4218fade027dd82d2db6076cabd86b8ea99300cd0b54e42",
+      "sizeBytes": 69681
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "c4f87f9826d703a5349158a051e7aa717a532027c8680c956843fb9337cdad2b",
+      "sizeBytes": 70463
+    },
+    {
+      "path": "root/source-diffs/MpvPlayer.kt.diff",
+      "sha256Bytes": "f6a3eeddd090b12741b7bbe01aeee0a5f8b7f19e1b6037cb0c068183a0af4da8",
+      "sizeBytes": 1268
+    },
+    {
+      "path": "root/source-before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "c625313a0d585f6ae546548be74e0137737b95bcde39ddc3c2037b7ccbe29b6b",
+      "sizeBytes": 16986
+    },
+    {
+      "path": "root/source-after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "1b5862146101648f222c0c8d9de6225bee8c091c9cf0f2ab35132d19a512b9c9",
+      "sizeBytes": 19221
+    },
+    {
+      "path": "root/source-diffs/DesktopOriginalVideoNativeOwner.kt.diff",
+      "sha256Bytes": "a09e1f66aadb4075a104a735101dd0594f1607b269e45d8aeac46f6ee7f100d7",
+      "sizeBytes": 3555
+    },
+    {
+      "path": "root/source-delta.json",
+      "sha256Bytes": "8580a616ac7db320510241a1079f1308366472e54674a86867d84a3ed4d8caf1",
+      "sizeBytes": 687
+    },
+    {
+      "path": "root/native-dispatch67/NativeDispatchFixture.kt",
+      "sha256Bytes": "21b892bd496767a0acbdd922133898ccbeabdbf47fb4bc82b28ebffa8d5a3eea",
+      "sizeBytes": 13947
+    },
+    {
+      "path": "root/native-dispatch67/runner-creation.json",
+      "sha256Bytes": "0b34f509612a424993ebe9ede92903f69e8dc136b7c9caaea24533713b4f056b",
+      "sizeBytes": 2379
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/NativeDispatchFixture.kt",
+      "sha256Bytes": "21b892bd496767a0acbdd922133898ccbeabdbf47fb4bc82b28ebffa8d5a3eea",
+      "sizeBytes": 13947
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/compile.args",
+      "sha256Bytes": "878ba2d322b458813ef90acb4f04e31bc8fdac4832ba837edefbf185fa34842f",
+      "sizeBytes": 25536
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/pins-after.json",
+      "sha256Bytes": "b404620a1b71914bcbd8fa3ddb2d10089f5e098c0c2775a8a744d8e89738924e",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/pins-before.json",
+      "sha256Bytes": "b404620a1b71914bcbd8fa3ddb2d10089f5e098c0c2775a8a744d8e89738924e",
+      "sizeBytes": 43089
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/result.json",
+      "sha256Bytes": "0d328c82a8433f0052d69caaa1a39bd52827cbeb50d603f621a3f32a63989d9c",
+      "sizeBytes": 6676
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/run.log",
+      "sha256Bytes": "f044916a38ae63c37687e031b90a2a052dbb92b9cd0d0f30ca350749a5dbf20f",
+      "sizeBytes": 63
+    },
+    {
+      "path": "root/actual67-native-dispatch-fixture01/runner-result.json",
+      "sha256Bytes": "df633dccbc9d2c3f113136e20b83add02ac86a4d401feea4b7604cd81912bc54",
+      "sizeBytes": 2186
+    },
+    {
+      "path": "root/snapshot67/manifest.json",
+      "sha256Bytes": "db10acafc95ee255a5c921f74d4646ace585998d67644cde53b53aac7cf54ef6",
+      "sizeBytes": 149824
+    },
+    {
+      "path": "root/snapshot67/ordered-runtime-cp.json",
+      "sha256Bytes": "25f8c144a4a8aeb5230beb25a927f294567abf019c6249173aec9967195e4807",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-67.log",
+      "sha256Bytes": "3b439f7f021ba76c0333c4a7a8c0818971a39d023f91303d14ded8240a017701",
+      "sizeBytes": 9071
+    },
+    {
+      "path": "root/classpath-67.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/create-native-dispatch-runner67.py",
+      "sha256Bytes": "235aa5f75ff31e42575dd269bb428fa4d578681814209be4c019599fd5e1e336",
+      "sizeBytes": 2383
+    },
+    {
+      "path": "root/run-actual67-native-dispatch-fixture01.py",
+      "sha256Bytes": "1ce7ab33e4b38baef40be8e089aefe4b8548257401b4315a9a50468961eeaa15",
+      "sizeBytes": 5847
+    },
+    {
+      "path": "root/freeze-native-dispatch67.py",
+      "sha256Bytes": "51c47e21cd4d4d6df24e824e52432937293e8f81719b4c60c3ae3c579d999629",
+      "sizeBytes": 7908
+    },
+    {
+      "path": "root/jvm-method-name-audit-67.json",
+      "sha256Bytes": "57cf8c51950b1d7b1aa257fdb2034dc86a823027dfd2b3d049930f1d9c905108",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "4dc7b578d2e422752be4d4e3ddaee96f418b1921fc00dce67ed1f9a8853a8972",
+      "sizeBytes": 4220
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual67-native-dispatch-fixture01/fixture.jar",
+      "sha256Bytes": "39904f587bd4140bec2911c06734c62135994ff6b38403778d661afa94a848a6",
+      "reason": "Rebuildable fixture binary"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 67,
+  "runtimeEntries": 101,
+  "fixtureClasses": 15,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "39904f587bd4140bec2911c06734c62135994ff6b38403778d661afa94a848a6",
+  "byteVerifiedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.player.MpvPlayer",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-67/main-kotlin.jar",
+      "sha256ClassBytes": "d2ddb6ec439587cc4b11b7c01188c1dfda7ccfa8c24425f9a5e7caff1161dd8d"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoNativeOwner",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-67/main-kotlin.jar",
+      "sha256ClassBytes": "26e60e8c4e52e0b8a63676f98226f2142d02610e70554594b8b0948293c55eb3"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-67/main-kotlin.jar",
+      "sha256ClassBytes": "bd3d79ed4a7f97b1c3961f907b90c2282a77ca1f81401459c748456dd93f7ba6"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalNativeSeekSubmission",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-67/main-kotlin.jar",
+      "sha256ClassBytes": "e21c9be2f632ea1dca0552cad2401617db84e62925b874be50ac842bdca5fb8b"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureIsRootOwned": true,
+  "actualCapturedDispatchChecksAccepted": true,
+  "sponsorHistoryWritten": false,
+  "actualAccountUsed": false,
+  "nativeExecuted": true,
+  "actualLocalNativeClip": true,
+  "actualOwnedSeekQueueAndNativeCompletionAccepted": true,
+  "fullControllerFacadeSwitchAccepted": false,
+  "independentVisualAcceptance": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

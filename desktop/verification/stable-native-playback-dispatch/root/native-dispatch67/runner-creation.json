@@ -1,0 +1,50 @@
+{
+  "parentRunnerPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\run-actual66-owned-seek-fixture02.py",
+  "parentRunnerSha256Bytes": "653aebc6cd3f3fd3b235f58318cbcb20d52346200569fc6b624a907a9ccce24b",
+  "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\native-dispatch67\\NativeDispatchFixture.kt",
+  "sourceSha256Bytes": "21b892bd496767a0acbdd922133898ccbeabdbf47fb4bc82b28ebffa8d5a3eea",
+  "newRunnerPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\run-actual67-native-dispatch-fixture01.py",
+  "newRunnerSha256Bytes": "1ce7ab33e4b38baef40be8e089aefe4b8548257401b4315a9a50468961eeaa15",
+  "exactReplacements": [
+    {
+      "before": "LANE = HERE / 'owned-seek66-02'",
+      "after": "LANE = HERE / 'native-dispatch67'"
+    },
+    {
+      "before": "SNAPSHOT = MAIN / 'desktop/.local/stable-product-snapshot-66'",
+      "after": "SNAPSHOT = MAIN / 'desktop/.local/stable-product-snapshot-67'"
+    },
+    {
+      "before": "OUT = HERE / 'actual66-owned-seek-fixture02'",
+      "after": "OUT = HERE / 'actual67-native-dispatch-fixture01'"
+    },
+    {
+      "before": "e549c7badf5b11208e8b9fb3c2d5480759e9202eb157ae165feb0a8354cbcba3",
+      "after": "db10acafc95ee255a5c921f74d4646ace585998d67644cde53b53aac7cf54ef6"
+    },
+    {
+      "before": "43b1e432d592dd74088079e60731eda25d26f6c636df3570644a377b200ba9db",
+      "after": "25f8c144a4a8aeb5230beb25a927f294567abf019c6249173aec9967195e4807"
+    },
+    {
+      "before": "source_pin = 'b352e61ac2399c7379d3f2cac4823c964008a9500a8cb6d8b80668bd2f965b16'",
+      "after": "source_pin = '21b892bd496767a0acbdd922133898ccbeabdbf47fb4bc82b28ebffa8d5a3eea'"
+    },
+    {
+      "before": "return dict(actualProduct=66,",
+      "after": "return dict(actualProduct=67,"
+    },
+    {
+      "before": "actualProductSnapshot=66,",
+      "after": "actualProductSnapshot=67,"
+    },
+    {
+      "before": "exactOwnedSeekChecksReplayed=True,",
+      "after": "actualCapturedDispatchChecksAccepted=result.returncode == 0, sponsorHistoryWritten=False,"
+    },
+    {
+      "before": "TypedSeekFixture",
+      "after": "NativeDispatchFixture"
+    }
+  ]
+}

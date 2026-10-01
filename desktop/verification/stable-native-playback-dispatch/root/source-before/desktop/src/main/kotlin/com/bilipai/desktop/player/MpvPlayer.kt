@@ -94,20 +94,6 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
     }
 
-    /** The publication identity alone is insufficient for same-version recovery:
-     * compare the complete immutable source while holding the native root lock. */
-    internal fun ownsSourceSnapshot(expected: OwnedPlaybackSourceSnapshot): Boolean = synchronized(lock) {
-        !closed.get() && sourceVersion == expected.sourceVersion && requestedSource == expected.source
-    }
-
-    /** Short synchronous work only. The caller enters Store -> entry admission
-     * first; no suspend, network, disk, lifecycle teardown or join belongs here. */
-    internal fun admitSourceSnapshot(expected: OwnedPlaybackSourceSnapshot, action: () -> Unit): Boolean = synchronized(lock) {
-        if (!ownsSourceSnapshot(expected)) return@synchronized false
-        action()
-        true
-    }
-
     /** Wait outside Store/entry locks, after cancelling and joining the old producer jobs.
      * The existing native actor acknowledges earlier commands without issuing a media command. */
     internal suspend fun drainSourceCommands(expectedSourceVersion: Long): Boolean {
