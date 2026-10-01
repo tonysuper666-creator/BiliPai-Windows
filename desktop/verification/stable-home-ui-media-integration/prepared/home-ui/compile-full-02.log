@@ -1,0 +1,338 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\AdaptivePullToRefreshBox.kt:75:32: error: unresolved reference 'resolveMiuixPullToRefreshTexts'.
+                refreshTexts = resolveMiuixPullToRefreshTexts(),
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\ComfortablePullToRefreshBox.kt:37:25: error: unresolved reference 'resolvePullRefreshThresholdDp'.
+            threshold = resolvePullRefreshThresholdDp().dp
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\DesktopHomeLottieUrls.kt:6:12: error: unresolved reference 'airbnb'.
+import com.airbnb.lottie.compose.*
+           ^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\DesktopHomeOriginalErrorState.kt:12:12: error: unresolved reference 'airbnb'.
+import com.airbnb.lottie.compose.*
+           ^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\blur\RecoverableVisualEffects.kt:45:27: error: type 'MutableState<Boolean>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var isAppInBackground by remember(platform.background) { mutableStateOf(platform.background.isInBackground) }
+                          ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\blur\RecoverableVisualEffects.kt:45:27: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var isAppInBackground by remember(platform.background) { mutableStateOf(platform.background.isInBackground) }
+                          ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\blur\RecoverableVisualEffects.kt:46:23: error: type 'MutableIntState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var recreationKey by remember { mutableIntStateOf(0) }
+                      ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\blur\RecoverableVisualEffects.kt:46:23: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var recreationKey by remember { mutableIntStateOf(0) }
+                      ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:679:30: error: type 'MutableFloatState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:679:30: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1096:9: error: unresolved reference 'VideoCardTransitionDiagnostics'.
+        VideoCardTransitionDiagnostics.onBlurEffectUpdated()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1156:30: error: type 'MutableFloatState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1156:30: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var deviceCornerRadiusPx by remember { mutableFloatStateOf(0f) }
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1161:17: error: unresolved reference 'shouldInvalidateSnapshotOnSourceDispose'.
+            if (shouldInvalidateSnapshotOnSourceDispose(isHostOwnedSnapshot = isHostOwnedSnapshot)) {
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1300:21: error: unresolved reference 'VideoCardTransitionDiagnostics'.
+                    VideoCardTransitionDiagnostics.onSourceLayerDrawn()
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1379:13: error: unresolved reference 'VideoCardTransitionDiagnostics'.
+            VideoCardTransitionDiagnostics.onSnapshotRecorded()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionBackgroundPolicy.kt:1438:13: error: unresolved reference 'VideoCardTransitionDiagnostics'.
+            VideoCardTransitionDiagnostics.onSourceLayerDrawn()
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:17:72: error: type 'MutableState<Nothing?>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    private var navigationSettleState: VideoCardTransitionSettleState? by mutableStateOf(null)
+                                                                       ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:17:72: error: type 'MutableState<Nothing?>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, VideoCardTransitionSettleState?)', so it cannot serve as a delegate for var (read-write property).
+    private var navigationSettleState: VideoCardTransitionSettleState? by mutableStateOf(null)
+                                                                       ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:52:51: error: type 'MutableState<VideoCardTransitionBackgroundPhase>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var phase: VideoCardTransitionBackgroundPhase by mutableStateOf(
+                                                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:52:51: error: type 'MutableState<VideoCardTransitionBackgroundPhase>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, VideoCardTransitionBackgroundPhase)', so it cannot serve as a delegate for var (read-write property).
+    var phase: VideoCardTransitionBackgroundPhase by mutableStateOf(
+                                                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:57:30: error: type 'MutableState<Nothing?>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var sourceRoute: String? by mutableStateOf(null)
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:57:30: error: type 'MutableState<Nothing?>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, String?)', so it cannot serve as a delegate for var (read-write property).
+    var sourceRoute: String? by mutableStateOf(null)
+                             ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:60:37: error: type 'MutableState<Nothing?>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var gestureBackProgress: Float? by mutableStateOf(null)
+                                    ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:60:37: error: type 'MutableState<Nothing?>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Float?)', so it cannot serve as a delegate for var (read-write property).
+    var gestureBackProgress: Float? by mutableStateOf(null)
+                                    ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:63:34: error: type 'MutableFloatState' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var gestureStartDepth: Float by mutableFloatStateOf(1f)
+                                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:63:34: error: type 'MutableFloatState' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Float)', so it cannot serve as a delegate for var (read-write property).
+    var gestureStartDepth: Float by mutableFloatStateOf(1f)
+                                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:65:43: error: type 'MutableState<Boolean>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var gestureRestoreInProgress: Boolean by mutableStateOf(false)
+                                          ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:65:43: error: type 'MutableState<Boolean>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Boolean)', so it cannot serve as a delegate for var (read-write property).
+    var gestureRestoreInProgress: Boolean by mutableStateOf(false)
+                                          ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:73:34: error: type 'MutableState<Nothing?>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    var returnDepthFloor: Float? by mutableStateOf(null)
+                                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:73:34: error: type 'MutableState<Nothing?>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Float?)', so it cannot serve as a delegate for var (read-write property).
+    var returnDepthFloor: Float? by mutableStateOf(null)
+                                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:85:45: error: type 'MutableState<Nothing?>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    private var sharedMorphFraction: Float? by mutableStateOf(null)
+                                            ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:85:45: error: type 'MutableState<Nothing?>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Float?)', so it cannot serve as a delegate for var (read-write property).
+    private var sharedMorphFraction: Float? by mutableStateOf(null)
+                                            ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:86:44: error: type 'MutableState<Boolean>' has no method 'getValue(VideoCardTransitionClock, KMutableProperty1<*, *>)', so it cannot serve as a delegate.
+    private var sharedMorphActive: Boolean by mutableStateOf(false)
+                                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:86:44: error: type 'MutableState<Boolean>' has no method 'setValue(VideoCardTransitionClock, KMutableProperty1<*, *>, Boolean)', so it cannot serve as a delegate for var (read-write property).
+    private var sharedMorphActive: Boolean by mutableStateOf(false)
+                                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:7:5: error: unresolved reference 'Modifier'.
+fun Modifier.iOSTapEffect(
+    ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:11:4: error: unresolved reference 'Modifier'.
+): Modifier = composed {
+   ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:11:15: error: unresolved reference 'composed'.
+): Modifier = composed {
+              ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:12:35: error: @Composable invocations can only happen from the context of a @Composable function
+    val uiStyle = LocalAppUiStyle.current
+                                  ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:13:29: error: unresolved reference 'remember'.
+    val interactionSource = remember { MutableInteractionSource() }
+                            ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:13:40: error: unresolved reference 'MutableInteractionSource'.
+    val interactionSource = remember { MutableInteractionSource() }
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:15:18: error: @Composable invocations can only happen from the context of a @Composable function
+    val haptic = rememberHapticFeedback()
+                 ^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:22:26: error: unresolved reference 'animateFloatAsState'.
+    val animatedScale by animateFloatAsState(
+                         ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:24:25: error: unresolved reference 'spring'.
+        animationSpec = spring(
+                        ^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:31:5: error: unresolved reference 'Modifier'.
+    this
+    ^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:32:10: error: unresolved reference 'graphicsLayer'.
+        .graphicsLayer {
+         ^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:33:13: error: unresolved reference 'scaleX'.
+            scaleX = animatedScale
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeTapEffect.kt:34:13: error: unresolved reference 'scaleY'.
+            scaleY = animatedScale
+            ^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:368:13: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:368:13: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:368:13: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:372:17: error: cannot infer type for value parameter 'value'. Specify it explicitly.
+            ) { value, _ ->
+                ^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:372:24: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+            ) { value, _ ->
+                       ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:395:17: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:395:17: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:395:17: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:399:21: error: cannot infer type for value parameter 'value'. Specify it explicitly.
+                ) { value, _ ->
+                    ^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:399:28: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                ) { value, _ ->
+                           ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:256:31: error: type 'State<Dp>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+                    val width by animateDpAsState(
+                              ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:265:31: error: type 'State<Float>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+                    val alpha by animateFloatAsState(
+                              ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:301:20: error: type 'MutableState<String?>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var previewUrl by remember(video.bvid, video.cid) { mutableStateOf<String?>(null) }
+                   ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:301:20: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var previewUrl by remember(video.bvid, video.cid) { mutableStateOf<String?>(null) }
+                   ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:426:19: error: type 'State<Boolean>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+    val isPressed by interactionSource.collectIsPressedAsState()
+                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:427:23: error: type 'State<Float>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+    val pressProgress by animateFloatAsState(
+                      ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:656:31: error: type 'MutableState<Boolean>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var hasRenderedFirstFrame by remember(url) { mutableStateOf(false) }
+                              ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeroCarousel.kt:656:31: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var hasRenderedFirstFrame by remember(url) { mutableStateOf(false) }
+                              ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:181:25: error: type 'MutableLongState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var lastHomeClickMs by remember { mutableLongStateOf(0L) }
+                        ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:181:25: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var lastHomeClickMs by remember { mutableLongStateOf(0L) }
+                        ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:182:28: error: type 'MutableLongState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var lastDynamicClickMs by remember { mutableLongStateOf(0L) }
+                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:182:28: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var lastDynamicClickMs by remember { mutableLongStateOf(0L) }
+                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:389:25: error: type 'MutableLongState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var lastHomeClickMs by remember { mutableLongStateOf(0L) }
+                        ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:389:25: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var lastHomeClickMs by remember { mutableLongStateOf(0L) }
+                        ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:390:28: error: type 'MutableLongState' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var lastDynamicClickMs by remember { mutableLongStateOf(0L) }
+                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:390:28: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var lastDynamicClickMs by remember { mutableLongStateOf(0L) }
+                           ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:463:31: error: type 'State<Color>' has no method 'getValue(Nothing?, KProperty0<*>)', so it cannot serve as a delegate.
+                val iconColor by animateColorAsState(
+                              ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:376:81: error: unresolved reference 'DesktopOriginalHomeSettingConstants'.
+    val cappedCategoryCount = categoryCount.coerceAtMost(com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.MAX_TOP_TABS)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:612:45: error: unresolved reference 'DesktopOriginalHomeSettingConstants'.
+    labelMode: Int = com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.TopTabLabelMode.TEXT_ONLY
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:79:19: error: type 'MutableState<Boolean>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var isPlaying by remember { androidx.compose.runtime.mutableStateOf(false) }
+                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:79:19: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var isPlaying by remember { androidx.compose.runtime.mutableStateOf(false) }
+                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:80:18: error: type 'MutableState<String?>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var videoUrl by remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
+                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:80:18: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var videoUrl by remember { androidx.compose.runtime.mutableStateOf<String?>(null) }
+                 ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:81:19: error: type 'MutableState<Boolean>' has no method 'setValue(Nothing?, KMutableProperty0<*>, ??? (Ambiguity: getValue, [kotlin/getValue, kotlin/getValue, kotlin/getValue, kotlin/collections/getValue, kotlin/collections/getValue, kotlin/collections/getValue]))', so it cannot serve as a delegate for var (read-write property).
+    var isLoading by remember { androidx.compose.runtime.mutableStateOf(false) }
+                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:81:19: error: property delegate must have a 'getValue(Nothing?, KMutableProperty0<*>)' method. None of the following functions is applicable:
+fun <T> Lazy<T>.getValue(thisRef: Any?, property: KProperty<*>): T
+fun <V> KProperty0<V>.getValue(thisRef: Any?, property: KProperty<*>): V
+fun <T, V> KProperty1<T, V>.getValue(thisRef: T, property: KProperty<*>): V
+fun <K, V> Map<K, V>.getValue(key: K): V
+fun <V, V1 : V> Map<in String, V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+fun <V, V1 : V> MutableMap<in String, out V>.getValue(thisRef: Any?, property: KProperty<*>): V1
+    var isLoading by remember { androidx.compose.runtime.mutableStateOf(false) }
+                  ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:143:49: error: unresolved reference 'not' for operator '!'.
+                                    isPlaying = !isPlaying
+                                                ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:162:65: error: smart cast to 'TypeVariable(K)?' is impossible, because 'videoUrl' is a delegated property.
+                                    DisposableVideoPlayer(url = videoUrl!!)
+                                                                ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\VideoPreviewDialog.kt:162:65: error: argument type mismatch: actual type is 'Any', but 'String' was expected.
+                                    DisposableVideoPlayer(url = videoUrl!!)
+                                                                ^^^^^^^^^^

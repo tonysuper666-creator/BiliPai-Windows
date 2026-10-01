@@ -1,0 +1,136 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
+@@ -29,6 +29,10 @@
+  * removal tears down that session before AWT destroys the parent window.
+  */
+ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false) : AutoCloseable {
++    private var softwareTarget: MpvSoftwareTarget? = null
++    internal constructor(softwareTarget: MpvSoftwareTarget, useNullAudioOutput: Boolean = false) : this(useNullAudioOutput) {
++        this.softwareTarget = softwareTarget
++    }
+     private val mutableState = MutableStateFlow(PlayerState())
+     val state: StateFlow<PlayerState> = mutableState.asStateFlow()
+     private val lock = Any()
+@@ -112,6 +116,7 @@
+             if (!preserveSubtitles) { externalSubtitles.clear(); subtitleControlVersion++ }
+             requestedSource = retainedSource
+             val revision = ++playbackRevision
++            softwareTarget?.beginSource(sourceVersion, revision)
+             mutableVideoOutput.update { it.copy(sourceVersion = sourceVersion, inputWidth = 0, inputHeight = 0, displayWidth = 0, displayHeight = 0, gamma = null, dolbyVisionProfile = null) }
+             mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
+             mutableState.update {
+@@ -360,6 +365,7 @@
+     fun stop() {
+         synchronized(lock) {
+             requestedSource = null
++            softwareTarget?.clear()
+             softwareDecodingRequested = false
+             externalSubtitles.clear()
+             sourceVersion++
+@@ -382,9 +388,16 @@
+         if (!closed.get()) session?.commands?.offer(action)
+     }
+ 
++    /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */
++    internal fun startSoftwareTransport() = synchronized(lock) {
++        check(softwareTarget != null) { "A software render target is required" }
++        check(!closed.get()) { "Player is closed" }
++        if (session == null) startSession(0L)
++    }
++
+     private fun attach(windowId: Long) {
+         synchronized(lock) {
+-            if (closed.get() || session != null) return
++            if (closed.get() || session != null || softwareTarget != null) return
+             if (windowId == 0L) {
+                 mutableState.update { it.copy(error = "Cannot attach native player to the Windows video surface.") }
+                 return
+@@ -421,6 +434,7 @@
+ 
+     override fun close() {
+         if (closed.compareAndSet(false, true)) {
++            softwareTarget?.close()
+             synchronized(lock) { requestedSource = null; externalSubtitles.clear() }
+             detach()
+         }
+@@ -464,6 +478,7 @@
+             var native: MpvNative? = null
+             var handle: Pointer? = null
+             var fatalFailure: Throwable? = null
++            var softwareRenderer: MpvSoftwareRenderer? = null
+             try {
+                 native = MpvNative.load()
+                 handle = native.mpv_create() ?: error("Unable to create the native player.")
+@@ -495,11 +510,17 @@
+                     "sub-visibility" to if (state.value.subtitlesVisible) "yes" else "no",
+                     "secondary-sub-visibility" to if (state.value.subtitlesVisible) "yes" else "no",
+                     "screenshot-format" to "png",
+-                ) + if (useNullAudioOutput) mapOf("ao" to "null") else emptyMap()
++                ).let { original ->
++                    if (softwareTarget == null) original else original.filterKeys { it != "wid" && it != "gpu-api" } +
++                        mapOf("vo" to "libmpv", "hwdec" to "no")
++                } + if (useNullAudioOutput) mapOf("ao" to "null") else emptyMap()
+                 options.forEach { (name, value) -> checkResult(native, native.mpv_set_option_string(handle, name, value), name) }
+                 // Read only two exact GPU metadata messages at verbose level; all other verbose text is discarded.
+                 checkResult(native, native.mpv_request_log_messages(handle, "v"), "request-log-messages")
+                 checkResult(native, native.mpv_initialize(handle), "initialize")
++                softwareTarget?.let { target ->
++                    softwareRenderer = MpvSoftwareRenderer(native, handle, target).also { it.start() }
++                }
+                 val shaders = synchronized(lock) { Action.VideoShaders(videoShaderVersion, videoShaderConfiguration) }
+                 perform(native, handle, shaders)
+                 val nativeVersion = property(native, handle, "mpv-version")
+@@ -509,6 +530,7 @@
+                 initialSource?.let { perform(native, handle, Action.Load(it, initialVersion, softwareDecodingRequested, initialRevision)) }
+                 var lastPoll = 0L
+                 while (!closing.get()) {
++                    softwareRenderer?.throwIfFailed()
+                     var action = commands.poll()
+                     while (action != null) {
+                         if (closing.get()) {
+@@ -534,7 +556,9 @@
+                     val pending = commands.poll() ?: break
+                     if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
+                 }
+-                if (native != null && handle != null) native.mpv_terminate_destroy(handle)
++                // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.
++                try { softwareRenderer?.close() }
++                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }
+                 synchronized(lock) {
+                     if (session === this) {
+                         session = null
+@@ -560,11 +584,12 @@
+                         tracks = emptyList()
+                         activeSourceVersion = action.version
+                         activeRevision = action.revision
++                        softwareTarget?.beginSource(action.version, action.revision)
+                         lastShaderPoll = 0L
+                         activeAttemptId = nextAttemptId.incrementAndGet()
+                         seekTracker.reset()
+                         diagnostics.reset(action.source)
+-                        checkResult(native, native.mpv_set_property_string(handle, "hwdec", synchronized(lock) { resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) }), "hwdec")
++                        checkResult(native, native.mpv_set_property_string(handle, "hwdec", synchronized(lock) { if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else "no" }), "hwdec")
+                         loadedSubtitlePaths.clear()
+                         lastTrackPoll = 0L
+                         MpvNodes().use { nodes ->
+@@ -581,7 +606,7 @@
+                             action.version != sourceVersion || action.revision != playbackRevision ||
+                             action.version != activeSourceVersion || action.revision != activeRevision) return
+                         checkResult(native, native.mpv_set_property_string(handle, "hwdec",
+-                            resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested)), "hwdec")
++                            if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested) else "no"), "hwdec")
+                     }
+                     is Action.SubtitleConfiguration -> synchronized(lock) {
+                         if (session !== this || closing.get() || action.controlVersion != subtitleControlVersion ||
+@@ -766,7 +791,10 @@
+                     val outputWidth = property(native, handle, "video-out-params/w")?.toIntOrNull() ?: 0
+                     val outputHeight = property(native, handle, "video-out-params/h")?.toIntOrNull() ?: 0
+                     if (!state.value.audioOnly && outputWidth > 0 && outputHeight > 0 && property(native, handle, "video-codec") != null)
+-                        publishState { it.copy(firstVideoFrameReady = true) }
++                        publishState {
++                            softwareTarget?.enableSource(activeSourceVersion, activeRevision)
++                            it.copy(firstVideoFrameReady = true)
++                        }
+                     val position = property(native, handle, "time-pos")?.toDoubleOrNull() ?: return
+                     val completed = seekTracker.acknowledge(activeSourceVersion, position) ?: return
+                     publishState { it.copy(positionSeconds = position, seekCompletedId = completed.id, seekCompletedPositionSeconds = position) }

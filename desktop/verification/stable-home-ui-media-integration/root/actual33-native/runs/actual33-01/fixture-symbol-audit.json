@@ -1,0 +1,20 @@
+{
+  "fixtureClassCount": 12,
+  "fixtureClasses": [
+    "com/bilipai/desktop/ui/LocalMediaFence.class",
+    "com/bilipai/desktop/ui/LocalMediaLifecycle.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$14.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$9.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$blueFrame$1$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$blueFrame$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$first$1$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1$first$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$main$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$until$1.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt$until$2.class",
+    "com/bilipai/desktop/ui/NativeHomeMediaFixtureKt.class"
+  ],
+  "productionClassIntersection": [],
+  "productionClassOverrides": 0,
+  "fixtureJarSha256Bytes": "1157e29095039b4fea1283564f629c10f49efaf23761cfebd5007940570f44de"
+}

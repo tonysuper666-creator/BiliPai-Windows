@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:29:36: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+                metricsHolder.state?.apply {
+                                   ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:47:22: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+        metrics.state?.apply {
+                     ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:57:26: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+            metrics.state?.removeState(stateName)
+                         ^^

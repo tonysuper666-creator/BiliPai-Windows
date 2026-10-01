@@ -1,0 +1,16 @@
+from pathlib import Path
+p=Path(__file__).parent/'prepare.py';s=p.read_text(encoding='utf-8-sig')
+s=s.replace("('import androidx.compose.ui.platform.LocalContext'", "('import androidx.compose.ui.res.stringResource','import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource'),\n  ('import com.android.purebilibili.R\\n',''),\n  ('import androidx.compose.ui.platform.LocalContext'")
+s=s.replace("'HomeWallpaperBackdrop'}","'HomeWallpaperBackdrop','HomeNavigationIconPolicy'}")
+s=s.replace("replace('com.android.purebilibili.feature.audio.player\\n            .NowPlayingBarOverlayController.overlayVisible'", "replace('com.android.purebilibili.feature.audio.player\\n            .AudioNowPlayingSession.barOverlayVisible'")
+s=s.replace("text=re.sub(r'(?m)^import (androidx\\.media3", "replace('    val context = LocalContext.current','    val context = LocalContext.current\\n    val mediaPorts = com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current')\n  text=re.sub(r'(?m)^import (androidx\\.media3",1)
+s=s.replace('com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current.feedback(\"无法获取预览地址\")','mediaPorts.feedback(\"无法获取预览地址\")')
+# Resource names bridge to the already shared authoritative original XML tables. No new R singleton.
+s=s.replace("out=HERE/'prepared/generated'", "text=re.sub(r'R\\.string\\.(\\w+)',lambda m:'\\\"'+m[1]+'\\\"',text)\n if name=='HomeUiState':text=re.sub(r'(fun resolve\\w+LabelRes\\([^\\n]*\\)): Int',r'\\1: String',text)\n text=text.replace('import com.android.purebilibili.core.store.SettingsManager\\n','')\n out=HERE/'prepared/generated'")
+p.write_text(s,encoding='utf-8',newline='\n')
+p=Path(__file__).parent/'compile_category.py';s=p.read_text(encoding='utf-8-sig').replace("'HomeFeedGridPolicy',",'').replace("'HomeTopCategoryPolicy',",'')
+s=s.replace("r.stdout+r.stderr[-20000:]","(r.stdout+r.stderr[-20000:]).encode('ascii','backslashreplace').decode()")
+s=s.replace("files=[p", "overlay=MAIN.parent/'BiliPai-v023/desktop/.local/stable-frosted-audio-renderer-parity/runs/07/candidate.jar'\nassert hashlib.sha256(safe(overlay).read_bytes()).hexdigest()=='c7b98796bd68b7a5f019b09c5fe4c526872dcdd968842740338ab4eaa4e84bae'\nfiles=[p")
+s=s.replace("'-Xfriend-paths='+str(snap/'main-kotlin.jar')","'-Xfriend-paths='+str(snap/'main-kotlin.jar')+','+str(overlay)")
+s=s.replace("'-cp',';'.join(r['path'] for r in cp)","'-cp',str(overlay)+';'+';'.join(r['path'] for r in cp)")
+p.write_text(s,encoding='utf-8',newline='\n')

@@ -1,0 +1,16 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+  "changes": [
+    {
+      "before": "import com.sun.jna.Pointer\n",
+      "after": "import com.sun.jna.Pointer\nimport com.sun.jna.ptr.PointerByReference\n"
+    },
+    {
+      "before": "    fun mpv_free(data: Pointer)\n",
+      "after": "    fun mpv_free(data: Pointer)\n\n    // Optional same-core render transport, pinned render.h. Existing HWND/client ABI is unchanged.\n    fun mpv_render_context_create(result: PointerByReference, handle: Pointer, params: Pointer): Int\n    fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?)\n    fun mpv_render_context_update(context: Pointer): Long\n    fun mpv_render_context_render(context: Pointer, params: Pointer): Int\n    fun mpv_render_context_free(context: Pointer)\n"
+    }
+  ],
+  "inverseNormalizedSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+  "originalSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+  "inverseByteIdentical": true
+}

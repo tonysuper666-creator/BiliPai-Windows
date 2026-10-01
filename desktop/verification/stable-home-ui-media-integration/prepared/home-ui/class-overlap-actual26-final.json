@@ -1,0 +1,16 @@
+{
+  "productSnapshot": "actual26",
+  "productionClassCount": 332,
+  "productOverlap": [
+    "com/android/purebilibili/core/ui/blur/RecoverableVisualEffectsKt.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrame.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrameCache.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPhase.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt$WhenMappings.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundState.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotHandle.class",
+    "com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotLayerState.class"
+  ],
+  "overlapExplanation": "exactly two existing sole home-full-card output expansions; no newGlobals/Lottie/Home facade duplicate; shared2 from actualMain26"
+}

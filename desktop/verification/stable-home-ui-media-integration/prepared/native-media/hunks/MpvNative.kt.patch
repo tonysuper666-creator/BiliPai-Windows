@@ -1,0 +1,24 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt
+@@ -4,6 +4,7 @@
+ import com.sun.jna.Memory
+ import com.sun.jna.Native
+ import com.sun.jna.Pointer
++import com.sun.jna.ptr.PointerByReference
+ import com.sun.jna.StringArray
+ import java.io.File
+ import java.nio.charset.StandardCharsets.UTF_8
+@@ -25,6 +26,13 @@
+     fun mpv_wait_event(handle: Pointer, timeout: Double): Pointer
+     fun mpv_error_string(error: Int): String
+     fun mpv_free(data: Pointer)
++
++    // Optional same-core render transport, pinned render.h. Existing HWND/client ABI is unchanged.
++    fun mpv_render_context_create(result: PointerByReference, handle: Pointer, params: Pointer): Int
++    fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?)
++    fun mpv_render_context_update(context: Pointer): Long
++    fun mpv_render_context_render(context: Pointer, params: Pointer): Int
++    fun mpv_render_context_free(context: Pointer)
+ 
+     companion object {
+         fun load(): MpvNative {

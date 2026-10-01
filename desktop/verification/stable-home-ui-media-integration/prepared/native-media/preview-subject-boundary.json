@@ -1,0 +1,18 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+  "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceSha256LF": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+  "startLine": 2886,
+  "endLine": 2903,
+  "originalCallerFragment": "        ) {\n            val item = targetVideoItemState.value\n            if (item != null) {\n                com.android.purebilibili.feature.home.components.VideoPreviewDialog(\n                    video = item,\n                    onDismiss = { targetVideoItemState.value = null },\n                    onPlay = {\n                     // 1. Log click\n                     wrappedOnVideoClick(\n                         HomeVideoClickRequest(\n                             bvid = item.bvid,\n                             cid = item.cid,\n                             coverUrl = item.pic,\n                             isVerticalVideo = item.isVertical,\n                             source = HomeVideoClickSource.PREVIEW,\n                             sourceRoute = resolveHomeCategoryVideoSourceRoute(currentCategory)\n                         )\n                     )\n",
+  "callee": "app/src/main/java/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+  "calleeRememberInputs": [
+    "videoUrl = remember { ... }",
+    "isPlaying = remember { ... }",
+    "LaunchedEffect(isPlaying)"
+  ],
+  "requiredCallerAdaptation": "Same parent sole Home producer: inside original if(item!=null), key(item.bvid,item.cid) around the one unchanged full original VideoPreviewDialog call. Outer Root full Home composition key(capturedEpoch).",
+  "notAppliedHere": true,
+  "frozen524NotChanged": true,
+  "reason": "Fast subject replacement while AnimatedVisibility retains the composition otherwise retains old URL/playback coroutine; media sourceVersion checks cannot reconstruct the lost subject identity."
+}

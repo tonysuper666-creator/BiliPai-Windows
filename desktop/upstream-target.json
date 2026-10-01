@@ -186,12 +186,12 @@
     "nativeReleaseGatePassed": false,
     "desktopFolderDeployed": false,
     "autoPublicationAccepted": false,
-    "candidateSourceIdentityCount": 773,
+    "candidateSourceIdentityCount": 831,
     "candidateResourceCount": 213,
     "all907CurrentSourceAndResourcePinsVerified": true,
-    "actualClassesEvidence": "verification/stable-miuix-nav-integration/root/classes-32.log",
+    "actualClassesEvidence": "verification/stable-home-ui-media-integration/root/classes-33.log",
     "scopedRuntimeEvidence": "verification/stable-player-download-integration/download-routing/run-01/accepted-evidence.json",
-    "latestCandidateClassesLog": "verification/stable-miuix-nav-integration/root/classes-32.log",
+    "latestCandidateClassesLog": "verification/stable-home-ui-media-integration/root/classes-33.log",
     "liveGuestBackendPassed": false,
     "liveGuestBackendFailure": "HTTP 412 at video details after popular/search passed",
     "liveGuestBackendEvidence": "verification/stable-comments-sharing-integration/root/actual-guest-backend/run-01/accepted-evidence.json",
@@ -219,7 +219,7 @@
     "fullDanmakuPanelPointerAccepted": false,
     "fullDanmakuAndroidRendererParityAccepted": false,
     "danmakuSettingsRootEvidence": "verification/stable-danmaku-settings-root-integration/integration-report.json",
-    "latestCandidateClassesPhase": 32,
+    "latestCandidateClassesPhase": 33,
     "danmakuActualProduct27Assertions": 61,
     "danmakuSettingsIsolatedPanelPointerAccepted": true,
     "danmakuSettingsIsolatedPanelUiAssertions": 32,
@@ -253,7 +253,16 @@
     "miuixActualProduct32RuntimeEntries": 97,
     "miuixActualProduct32DuplicateNormalJvmClasses": 0,
     "miuixActualRootNavigationDispatcherAccepted": false,
-    "miuixOriginalNavModuleEvidence": "verification/stable-miuix-nav-integration/integration-report.json"
+    "miuixOriginalNavModuleEvidence": "verification/stable-miuix-nav-integration/integration-report.json",
+    "originalHomeUiSourceCompiled": true,
+    "originalHomeViewModelCompiled": false,
+    "originalHomeRootMounted": false,
+    "homeActual33NativeMediaAssertions": 19,
+    "homeActual33PreferencesGates": 6,
+    "homeActual33ProductionOverrides": 0,
+    "homeActual33RuntimeEntries": 97,
+    "homeActualRootWindowOrAccountAccepted": false,
+    "homeSourceIntegrationEvidence": "verification/stable-home-ui-media-integration/integration-report.json"
   },
   "sourceAudit": "verification/upstream-v023/source-delta.json",
   "previousSourceReuseMeasurement": {
@@ -277,6 +286,7 @@
     "verification/stable-danmaku-runtime-integration/integration-report.json",
     "verification/stable-miuix5c91-integration/integration-report.json",
     "verification/stable-danmaku-render-integration/integration-report.json",
-    "verification/stable-miuix-nav-integration/integration-report.json"
+    "verification/stable-miuix-nav-integration/integration-report.json",
+    "verification/stable-home-ui-media-integration/integration-report.json"
   ]
 }

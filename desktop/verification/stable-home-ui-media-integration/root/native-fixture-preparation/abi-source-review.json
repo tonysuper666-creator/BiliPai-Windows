@@ -1,0 +1,250 @@
+{
+  "status": "PASS_SOURCE_AND_ABI_ONLY",
+  "nativeBinary": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+    "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+  },
+  "nativePE": {
+    "machineHex": "0x8664",
+    "peOptionalMagic": "0x20b",
+    "namedExportCount": 206,
+    "exportTableBytes": 7534
+  },
+  "checkedRenderExports": [
+    "mpv_render_context_create",
+    "mpv_render_context_free",
+    "mpv_render_context_render",
+    "mpv_render_context_set_update_callback",
+    "mpv_render_context_update"
+  ],
+  "originalHeaderPins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "sha256Bytes": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\client.h",
+      "sha256Bytes": "1acf99ee77c8c2a6f1d1993bd81bbc8a91d27fb5924e80171670e6139a4bd353"
+    }
+  ],
+  "originalHeaderCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "sourcePins": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "sha256Bytes": "c747310a5200d5d30c3a935d09c21e110cd7269597e9e901a117c54bb4ead889"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\NativeHomeMediaFixture.kt",
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\run.py",
+      "sha256Bytes": "1df4dc7f12cd7bf8065a4f36a347593d13ba4e22c4e5322d47766031b73dacfd"
+    }
+  ],
+  "sourceAnchors": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 55,
+      "token": " * Threading"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 125,
+      "token": " * Software renderer"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 122,
+      "token": " * You must free the context with mpv_render_context_free() before"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 192,
+      "token": "MPV_RENDER_PARAM_API_TYPE = 1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 333,
+      "token": "MPV_RENDER_PARAM_SKIP_RENDERING = 13"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 360,
+      "token": "MPV_RENDER_PARAM_SW_SIZE = 17"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 385,
+      "token": "MPV_RENDER_PARAM_SW_FORMAT = 18"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 406,
+      "token": "MPV_RENDER_PARAM_SW_STRIDE = 19"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 424,
+      "token": "MPV_RENDER_PARAM_SW_POINTER = 20"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 616,
+      "token": "typedef void (*mpv_render_update_fn)"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+      "line": 661,
+      "token": "MPV_EXPORT uint64_t mpv_render_context_update"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 21,
+      "token": "internal class MpvSoftwareTarget"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 68,
+      "token": "internal class MpvSoftwareRenderer"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 76,
+      "token": "private val callback ="
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 126,
+      "token": "params.string(18, \"bgr0\")"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 135,
+      "token": "copied[y * stride + x * 4 + 3] = 0xff.toByte()"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 142,
+      "token": "native.mpv_render_context_free(it)"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "line": 149,
+      "token": "private class RenderParameters"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 31,
+      "token": "internal class DesktopHomeMediaLifetime"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 50,
+      "token": "commitIfCurrent {"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 97,
+      "token": "override fun close()"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 127,
+      "token": "internal fun DesktopHomeMpvTexture"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 150,
+      "token": "ColorAlphaType.OPAQUE"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "line": 154,
+      "token": "LaunchedEffect(own, frame?.sourceVersion)"
+    }
+  ],
+  "scalarAbi": {
+    "platform": "Windows x64 LLP64",
+    "cEnumAndIntBytes": 4,
+    "pointerBytes": 8,
+    "sizeTBytes": 8,
+    "uint64ReturnJna": "Long",
+    "inferredRenderParamBytes": 16,
+    "fieldOffsets": {
+      "type": 0,
+      "data": 8
+    },
+    "note": "Layout derived from fixed x64 PE and official C fields; no native sizeof test has run"
+  },
+  "softwareParameters": {
+    "API_TYPE": 1,
+    "SKIP_RENDERING": 13,
+    "SW_SIZE": 17,
+    "SW_FORMAT": 18,
+    "SW_STRIDE": 19,
+    "SW_POINTER": 20
+  },
+  "bgr0FourthByte": "Officially uninitialized; production copies and sets per-pixel alpha to 255, then uses Skia OPAQUE",
+  "threading": "Separate dedicated render thread; callback only wakes; render context freed and joined before core terminate. Source review, not runtime handle counter proof.",
+  "nativeArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\libmpv-2.dll",
+      "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\ffmpeg.exe",
+      "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\ffprobe.exe",
+      "sha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412"
+    }
+  ],
+  "preparedCompileResults": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\compile-01\\compile-result.json",
+      "sha256Bytes": "3066b599c43c90414883da14f49eb4f9125f0363c283f99dfa453e85a60f0654"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\compile-02\\compile-result.json",
+      "sha256Bytes": "3066b599c43c90414883da14f49eb4f9125f0363c283f99dfa453e85a60f0654"
+    }
+  ],
+  "actual32Preflight": {
+    "manifest": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\manifest.json",
+      "sha256Bytes": "28118f431eb78418791426c914690143faedeeaef14cc11fb216ac648caad413"
+    },
+    "orderedCp": {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-32\\ordered-runtime-cp.json",
+      "sha256Bytes": "aba962efa0ce8cdd882f692e87a95d533e229766e091b4b5fa6f9d68f8b3101c"
+    },
+    "runtimeEntries": 97,
+    "requiredMediaClassesMissing": [
+      "com.bilipai.desktop.player.MpvSoftwareRenderer",
+      "com.bilipai.desktop.player.MpvSoftwareTarget",
+      "com.bilipai.desktop.player.MpvSoftwareFrame",
+      "com.bilipai.desktop.ui.DesktopHomeMediaLifetime",
+      "com.bilipai.desktop.ui.DesktopHomeMediaLease",
+      "com.bilipai.desktop.ui.DesktopHomeOwnedMediaKt"
+    ],
+    "executionAllowed": false
+  },
+  "nativeExecution": false,
+  "dllLoaded": false,
+  "ffmpegExecuted": false,
+  "actualProductRuntimeProof": false
+}

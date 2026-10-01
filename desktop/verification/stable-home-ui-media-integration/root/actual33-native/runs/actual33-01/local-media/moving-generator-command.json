@@ -1,0 +1,20 @@
+[
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\native\\windows-x64\\ffmpeg.exe",
+  "-nostdin",
+  "-hide_banner",
+  "-y",
+  "-f",
+  "lavfi",
+  "-i",
+  "testsrc2=size=160x90:rate=15",
+  "-t",
+  "4",
+  "-c:v",
+  "mpeg4",
+  "-q:v",
+  "2",
+  "-pix_fmt",
+  "yuv420p",
+  "-an",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-native-media-proof\\runs\\actual33-01\\local-media\\moving.mp4"
+]

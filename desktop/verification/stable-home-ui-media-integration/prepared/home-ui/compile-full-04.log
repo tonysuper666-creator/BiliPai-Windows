@@ -1,0 +1,3 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalHomePreferences.kt:20:41: error: unresolved reference 'scope'.
+        .distinctUntilChanged().stateIn(scope,SharingStarted.Eagerly,read(settings.value))
+                                        ^^^^^

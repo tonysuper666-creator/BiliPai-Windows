@@ -1,0 +1,68 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+  "changes": [
+    {
+      "before": "class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false) : AutoCloseable {",
+      "after": "class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false) : AutoCloseable {\n    private var softwareTarget: MpvSoftwareTarget? = null\n    internal constructor(softwareTarget: MpvSoftwareTarget, useNullAudioOutput: Boolean = false) : this(useNullAudioOutput) {\n        this.softwareTarget = softwareTarget\n    }"
+    },
+    {
+      "before": "            val revision = ++playbackRevision\n",
+      "after": "            val revision = ++playbackRevision\n            softwareTarget?.beginSource(sourceVersion, revision)\n"
+    },
+    {
+      "before": "            requestedSource = null\n            softwareDecodingRequested = false\n",
+      "after": "            requestedSource = null\n            softwareTarget?.clear()\n            softwareDecodingRequested = false\n"
+    },
+    {
+      "before": "    private fun attach(windowId: Long) {",
+      "after": "    /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */\n    internal fun startSoftwareTransport() = synchronized(lock) {\n        check(softwareTarget != null) { \"A software render target is required\" }\n        check(!closed.get()) { \"Player is closed\" }\n        if (session == null) startSession(0L)\n    }\n\n    private fun attach(windowId: Long) {"
+    },
+    {
+      "before": "            if (closed.get() || session != null) return\n",
+      "after": "            if (closed.get() || session != null || softwareTarget != null) return\n"
+    },
+    {
+      "before": "        if (closed.compareAndSet(false, true)) {\n",
+      "after": "        if (closed.compareAndSet(false, true)) {\n            softwareTarget?.close()\n"
+    },
+    {
+      "before": "            var fatalFailure: Throwable? = null\n",
+      "after": "            var fatalFailure: Throwable? = null\n            var softwareRenderer: MpvSoftwareRenderer? = null\n"
+    },
+    {
+      "before": "                ) + if (useNullAudioOutput) mapOf(\"ao\" to \"null\") else emptyMap()\n",
+      "after": "                ).let { original ->\n                    if (softwareTarget == null) original else original.filterKeys { it != \"wid\" && it != \"gpu-api\" } +\n                        mapOf(\"vo\" to \"libmpv\", \"hwdec\" to \"no\")\n                } + if (useNullAudioOutput) mapOf(\"ao\" to \"null\") else emptyMap()\n"
+    },
+    {
+      "before": "                checkResult(native, native.mpv_initialize(handle), \"initialize\")\n",
+      "after": "                checkResult(native, native.mpv_initialize(handle), \"initialize\")\n                softwareTarget?.let { target ->\n                    softwareRenderer = MpvSoftwareRenderer(native, handle, target).also { it.start() }\n                }\n"
+    },
+    {
+      "before": "                while (!closing.get()) {\n",
+      "after": "                while (!closing.get()) {\n                    softwareRenderer?.throwIfFailed()\n"
+    },
+    {
+      "before": "                if (native != null && handle != null) native.mpv_terminate_destroy(handle)\n",
+      "after": "                // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.\n                try { softwareRenderer?.close() }\n                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }\n"
+    },
+    {
+      "before": "                        activeRevision = action.revision\n",
+      "after": "                        activeRevision = action.revision\n                        softwareTarget?.beginSource(action.version, action.revision)\n"
+    },
+    {
+      "before": "resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding)",
+      "after": "if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else \"no\""
+    },
+    {
+      "before": "                            resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested)), \"hwdec\")",
+      "after": "                            if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested) else \"no\"), \"hwdec\")"
+    },
+    {
+      "before": "                        publishState { it.copy(firstVideoFrameReady = true) }\n",
+      "after": "                        publishState {\n                            softwareTarget?.enableSource(activeSourceVersion, activeRevision)\n                            it.copy(firstVideoFrameReady = true)\n                        }\n"
+    }
+  ],
+  "inverseNormalizedSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+  "originalSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+  "inverseByteIdentical": true
+}

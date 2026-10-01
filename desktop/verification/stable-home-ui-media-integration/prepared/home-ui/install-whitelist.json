@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "files": [
+    {
+      "prepared": "prepared/tools/extract-upstream-home-page.py",
+      "install": "desktop/tools/extract-upstream-home-page.py",
+      "sha256Bytes": "bfb436456c3dacbbf1868657b9023e48b226d6a7ed6ace23cadb4275211cb6df"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEnvironment.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEnvironment.kt",
+      "sha256Bytes": "4c75e770aa9d19fd617824a07c581d444183124a76562a1af96ba11d3b002695"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeMediaPorts.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeMediaPorts.kt",
+      "sha256Bytes": "60b6595cc8d309ae50f5e4661249dc7c183c81eab4cd87525b61d3151569d263"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeMetricPorts.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeMetricPorts.kt",
+      "sha256Bytes": "5bd2728f6a264d747614cf6891554e9f708511a01d783c23823fd596599ed031"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "sha256Bytes": "4d5989e97318c7264753d076ea2d2fe0ade8be92df6d2029142642782cc0bd64"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeRoot.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeRoot.kt",
+      "sha256Bytes": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984"
+    },
+    {
+      "prepared": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.kt",
+      "install": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.kt",
+      "sha256Bytes": "65b53788070a0ad3beed834d1c4fd808c4454cd446e1ab1897481c039b4cff1b"
+    },
+    {
+      "prepared": "prepared/fork-icons/miuix-icons/src/commonMain/kotlin/icon/extended/Messages.kt",
+      "install": "desktop/third-party/miuix5157/upstream/miuix-icons/src/commonMain/kotlin/icon/extended/Messages.kt",
+      "sha256Bytes": "f911c8200fd37077d1e986f52be9693fa90588e39f06cb86be35c5440856f1c0"
+    }
+  ],
+  "patches": [
+    "home-full-card-source-owner.patch"
+  ],
+  "generateOnly": [
+    "DesktopOriginalHomeSettingConstants.kt",
+    "DesktopOriginalHomeSettingsDecode.kt",
+    "71 production original outputs"
+  ],
+  "doNotInstall": [
+    "classes*/**",
+    "prefs-proof-01/**",
+    "prepared/generated/**",
+    "generator-production-proof/**",
+    "candidate JARs",
+    "old duplicate HomeScreen.kt/DesktopHomeLottieUrls.kt"
+  ],
+  "note": "only explicit 8file whitelist + one soleproducer patch; registry delta/source-dir/task/snippets Root merges serially"
+}

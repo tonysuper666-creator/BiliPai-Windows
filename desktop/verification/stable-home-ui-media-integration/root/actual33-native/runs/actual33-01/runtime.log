@@ -1,0 +1,24 @@
+PASS first-frame uses successful copied CPU frame, not ready/playback-restart state
+PASS opaque BGRA real pixels
+PASS real moving frames progress
+PASS pause holds native position
+PASS pause holds copied frame
+PASS seek keeps same source token
+PASS replacement immediately rejects previous owner token
+PASS replacement cannot retain old copied frame
+PASS paused replacement renders actual new blue pixels
+PASS actual Compose carries native blue with half alpha over white
+PASS actual rounded clip preserves white corner
+PASS same source first-frame callback once
+PASS actual SessionStore guest epoch changed
+PASS retired owner removes native pixels from Compose
+PASS retired owner cannot late callback
+PASS independent protected source remains owned
+PASS no Java external connection/listen
+PASS client + software render thread lifecycle returns to baseline
+PASS closed transport clears frame mailbox
+PASS 19 native/frame/isolated UI assertions
+WARNING: A terminally deprecated method in java.lang.System has been called
+WARNING: System::setSecurityManager has been called by com.bilipai.desktop.ui.NativeHomeMediaFixtureKt$main$1 (file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-home-native-media-proof/runs/actual33-01/native-media-fixture.jar)
+WARNING: Please consider reporting this to the maintainers of com.bilipai.desktop.ui.NativeHomeMediaFixtureKt$main$1
+WARNING: System::setSecurityManager will be removed in a future release

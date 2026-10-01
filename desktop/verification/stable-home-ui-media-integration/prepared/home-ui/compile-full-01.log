@@ -1,0 +1,230 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\transition\VideoCardTransitionClock.kt:370:16: error: unresolved reference 'resolveVideoCardTransitionBackgroundGestureBlurProgress'.
+        return resolveVideoCardTransitionBackgroundGestureBlurProgress(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeFeedSkeletonCard.kt:52:9: error: no parameter with name 'initial' found.
+        initial = 0f,
+        ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeFeedSkeletonCard.kt:61:9: error: no value passed for parameter 'initialValue'.
+        label = "homeFeedSkeletonPulseAlpha"
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:67:41: error: unresolved reference 'AdaptivePullToRefreshBox'.
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:75:50: error: unresolved reference 'GITHUB_URL'.
+import com.android.purebilibili.feature.settings.GITHUB_URL
+                                                 ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:77:44: error: unresolved reference 'SettingsManager'.
+import com.android.purebilibili.core.store.SettingsManager //  ���� SettingsManager
+                                           ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:82:57: error: unresolved reference 'FluidHomeTopBar'.
+import com.android.purebilibili.feature.home.components.FluidHomeTopBar
+                                                        ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:111:53: error: unresolved reference 'shouldReserveHomeBottomBarListPadding'.
+import com.android.purebilibili.feature.home.policy.shouldReserveHomeBottomBarListPadding
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:127:41: error: unresolved reference 'LoadingAnimation'.
+import com.android.purebilibili.core.ui.LoadingAnimation
+                                        ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:128:41: error: unresolved reference 'ErrorState'.
+import com.android.purebilibili.core.ui.ErrorState as ModernErrorState
+                                        ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:134:46: error: unresolved reference 'hazeSourceCompat'.
+import com.android.purebilibili.core.ui.blur.hazeSourceCompat
+                                             ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:141:52: error: unresolved reference 'resolveVideoCardTransitionBackgroundScaleReduction'.
+import com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionBackgroundScaleReduction
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:142:52: error: unresolved reference 'resolveVideoCardTransitionBackgroundSource'.
+import com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionBackgroundSource
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:144:52: error: unresolved reference 'shouldHomeFeedOwnVideoCardTransitionSnapshot'.
+import com.android.purebilibili.core.ui.transition.shouldHomeFeedOwnVideoCardTransitionSnapshot
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:146:52: error: unresolved reference 'shouldUseRealtimeVideoCardTransitionBackgroundBlur'.
+import com.android.purebilibili.core.ui.transition.shouldUseRealtimeVideoCardTransitionBackgroundBlur
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:147:52: error: unresolved reference 'videoCardTransitionBackgroundEffect'.
+import com.android.purebilibili.core.ui.transition.videoCardTransitionBackgroundEffect
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:148:52: error: unresolved reference 'videoCardTransitionOverlayDepthEffect'.
+import com.android.purebilibili.core.ui.transition.videoCardTransitionOverlayDepthEffect
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:150:57: error: unresolved reference 'BottomBarMatchedDockVisibility'.
+import com.android.purebilibili.feature.home.components.BottomBarMatchedDockVisibility
+                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:153:46: error: unresolved reference 'rememberRecoverableHazeState'.
+import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:155:46: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:162:48: error: unresolved reference 'rememberSystemReduceMotion'.
+import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:165:14: error: unresolved reference 'imageLoader'.
+import coil3.imageLoader
+             ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:393:13: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:393:13: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:393:13: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit
+            animate(
+            ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:397:17: error: cannot infer type for value parameter 'value'. Specify it explicitly.
+            ) { value, _ ->
+                ^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:397:24: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+            ) { value, _ ->
+                       ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:420:17: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:420:17: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:420:17: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit
+                animate(
+                ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:424:21: error: cannot infer type for value parameter 'value'. Specify it explicitly.
+                ) { value, _ ->
+                    ^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:424:28: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+                ) { value, _ ->
+                           ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1032:30: error: unresolved reference 'rememberSystemReduceMotion'.
+    val systemReduceMotion = rememberSystemReduceMotion()
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1033:78: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+    val cardAnimationEnabled = homePerformanceConfig.cardAnimationEnabled && !systemReduceMotion
+                                                                             ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1035:80: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+    val cardTransitionEnabled = homePerformanceConfig.cardTransitionEnabled && !systemReduceMotion
+                                                                               ^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1086:9: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+        shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT) &&
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1086:49: error: unresolved reference 'Build'.
+        shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT) &&
+                                                ^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1089:9: error: unresolved reference 'rememberRecoverableHazeState'.
+        rememberRecoverableHazeState(initialBlurEnabled = true)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1204:48: error: unresolved reference 'AnalyticsHelper'.
+            com.android.purebilibili.core.util.AnalyticsHelper.logHomeReturnAnimationPerformance(
+                                               ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1509:43: error: no parameter with name 'initial' found.
+    val drawerState = rememberDrawerState(initial = DrawerValue.Closed)
+                                          ^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1509:43: error: no value passed for parameter 'initialValue'.
+    val drawerState = rememberDrawerState(initial = DrawerValue.Closed)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1865:41: error: unresolved reference 'shouldHomeFeedOwnVideoCardTransitionSnapshot'.
+    val homeFeedOwnsVideoCardSnapshot = shouldHomeFeedOwnVideoCardTransitionSnapshot(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1870:32: error: unresolved reference 'resolveVideoCardTransitionBackgroundSource'.
+        val backgroundSource = resolveVideoCardTransitionBackgroundSource(
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1873:18: error: unresolved reference 'videoCardTransitionBackgroundEffect'.
+        Modifier.videoCardTransitionBackgroundEffect(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1882:17: error: unresolved reference 'shouldUseRealtimeVideoCardTransitionBackgroundBlur'.
+                shouldUseRealtimeVideoCardTransitionBackgroundBlur(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1889:17: error: unresolved reference 'resolveVideoCardTransitionBackgroundScaleReduction'.
+                resolveVideoCardTransitionBackgroundScaleReduction(backgroundSource)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:1931:46: error: unresolved reference 'hazeSourceCompat'.
+                                    Modifier.hazeSourceCompat(state = hazeState)
+                                             ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2124:25: error: unresolved reference 'AdaptivePullToRefreshBox'.
+                        AdaptivePullToRefreshBox(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2139:41: error: @Composable invocations can only happen from the context of a @Composable function
+                                        AppPullRefreshLoadingIndicator(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2157:41: error: @Composable invocations can only happen from the context of a @Composable function
+                                        Md3ScreenshotRefreshIndicator(
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2177:41: error: @Composable invocations can only happen from the context of a @Composable function
+                                        HomeRefreshIndicator(
+                                        ^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2204:31: error: @Composable invocations can only happen from the context of a @Composable function
+                              Box(
+                              ^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2218:41: error: @Composable invocations can only happen from the context of a @Composable function
+                                       .homeFeedPinchZoom(
+                                        ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2296:38: error: unresolved reference 'ModernErrorState'.
+                                     ModernErrorState(
+                                     ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2579:13: error: condition type mismatch: inferred type is 'WideNavigationRailValue' but 'Boolean' was expected.
+            !homeFeedOwnsVideoCardSnapshot && it.phase != VideoCardTransitionBackgroundPhase.IDLE &&
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2590:34: error: unresolved reference 'videoCardTransitionOverlayDepthEffect'.
+                        Modifier.videoCardTransitionOverlayDepthEffect(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2598:33: error: unresolved reference 'resolveVideoCardTransitionBackgroundScaleReduction'.
+                                resolveVideoCardTransitionBackgroundScaleReduction(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2599:37: error: unresolved reference 'resolveVideoCardTransitionBackgroundSource'.
+                                    resolveVideoCardTransitionBackgroundSource(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2612:13: error: unresolved reference 'BottomBarMatchedDockVisibility'.
+            BottomBarMatchedDockVisibility(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:2618:13: error: @Composable invocations can only happen from the context of a @Composable function
+            HomeHeader(
+            ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeScreen.kt:3099:37: error: unresolved reference 'imageLoader'.
+                            context.imageLoader.execute(request)
+                                    ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeWallpaperBackdrop.kt:25:48: error: unresolved reference 'rememberSystemReduceMotion'.
+import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeWallpaperBackdrop.kt:28:41: error: unresolved reference 'wallpaper'.
+import com.android.purebilibili.core.ui.wallpaper.isVideoWallpaper
+                                        ^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\HomeWallpaperBackdrop.kt:126:13: error: unresolved reference 'isVideoWallpaper'.
+    return !isVideoWallpaper(uri) && extension !in setOf("gif", "webp")
+            ^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:62:43: error: unresolved reference 'iOSTapEffect'.
+import com.android.purebilibili.core.util.iOSTapEffect
+                                          ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:68:46: error: unresolved reference 'shouldAllowDirectHazeLiquidGlassFallback'.
+import com.android.purebilibili.core.ui.blur.shouldAllowDirectHazeLiquidGlassFallback
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:69:46: error: unresolved reference 'shouldAllowHomeChromeLiquidGlass'.
+import com.android.purebilibili.core.ui.blur.shouldAllowHomeChromeLiquidGlass
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:99:44: error: unresolved reference 'Messages'.
+import top.yukonga.miuix.kmp.icon.extended.Messages
+                                           ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:125:32: error: unresolved reference 'Messages'.
+            inbox = MiuixIcons.Messages,
+                               ^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:2520:54: error: unresolved reference 'iOSTapEffect'.
+                                            Modifier.iOSTapEffect { onAvatarClick() }
+                                                     ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:2784:58: error: unresolved reference 'iOSTapEffect'.
+                                                Modifier.iOSTapEffect {
+                                                         ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:92:32: error: unresolved reference 'vectorResource'.
+import androidx.compose.ui.res.vectorResource
+                               ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:398:58: error: unresolved reference 'SettingsManager'.
+    val cappedCategoryCount = categoryCount.coerceAtMost(SettingsManager.MAX_TOP_TABS)
+                                                         ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:548:59: error: unresolved reference 'vectorResource'.
+            AppSemanticIconFamily.MATERIAL -> ImageVector.vectorResource(
+                                                          ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:549:42: error: unresolved reference 'R'.
+                com.android.purebilibili.R.drawable.ms_rss_feed_24
+                                         ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\TopBar.kt:636:22: error: unresolved reference 'SettingsManager'.
+    labelMode: Int = SettingsManager.TopTabLabelMode.TEXT_ONLY
+                     ^^^^^^^^^^^^^^^

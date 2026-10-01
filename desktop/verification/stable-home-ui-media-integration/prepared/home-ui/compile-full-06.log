@@ -1,0 +1,21 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:29:36: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+                metricsHolder.state?.apply {
+                                   ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:47:22: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+        metrics.state?.apply {
+                     ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:57:26: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMetricSink'.
+            metrics.state?.removeState(stateName)
+                         ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\DesktopOriginalHomeScreen.kt:619:29: warning: 'when' is exhaustive so 'else' is redundant here.
+                            else -> Unit
+                            ^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeHeader.kt:2331:55: warning: unnecessary safe call on a non-null receiver of type 'HomeUiSkinDecoration'.
+                            1.00f to (uiSkinDecoration?.topAtmosphereTint
+                                                      ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:297:36: warning: 'val Icons.Outlined.ViewSidebar: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ViewSidebar.
+                    Icons.Outlined.ViewSidebar,
+                                   ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\SideBar.kt:586:40: warning: 'val Icons.Outlined.ViewSidebar: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.ViewSidebar.
+                        Icons.Outlined.ViewSidebar,
+                                       ^^^^^^^^^^^

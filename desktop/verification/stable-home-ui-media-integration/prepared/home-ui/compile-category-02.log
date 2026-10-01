@@ -1,0 +1,63 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:8:5: error: 'public' function exposes its 'internal' return type 'DesktopHomeMetricHolder'.
+fun rememberMetricsStateDesktopHomeMetricHolder(): DesktopHomeMetricHolder = LocalDesktopHomeMetricHolder.current
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\ui\performance\DesktopHomeJankTracking.kt:13:5: error: 'public' function exposes its 'internal' parameter type argument 'DesktopHomeMetricHolder'.
+    reportMetric: suspend CoroutineScope.(state: DesktopHomeMetricHolder) -> Unit
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:15:19: error: unresolved reference 'LocalAppUiStyle'.
+    val uiStyle = LocalAppUiStyle.current
+                  ^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:20:24: error: unresolved reference 'AppUiStyle'.
+        if (uiStyle == AppUiStyle.MATERIAL3) 0.985f else pressScale
+                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:25:24: error: unresolved reference 'AppUiStyle'.
+        if (uiStyle == AppUiStyle.MATERIAL3) 2f else pressTranslationY
+                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:33:43: error: unresolved reference 'AppUiStyle'.
+            dampingRatio = if (uiStyle == AppUiStyle.MATERIAL3) 0.92f else if (isPressed) 0.75f else 0.55f,
+                                          ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:34:40: error: unresolved reference 'AppUiStyle'.
+            stiffness = if (uiStyle == AppUiStyle.MATERIAL3) 700f else if (isPressed) 600f else 300f
+                                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:42:43: error: unresolved reference 'AppUiStyle'.
+            dampingRatio = if (uiStyle == AppUiStyle.MATERIAL3) 0.95f else if (isPressed) 0.85f else 0.5f,
+                                          ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\core\util\DesktopHomeCardTapEffect.kt:43:40: error: unresolved reference 'AppUiStyle'.
+            stiffness = if (uiStyle == AppUiStyle.MATERIAL3) 850f else if (isPressed) 800f else 250f
+                                       ^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:7:32: error: unresolved reference 'vectorResource'.
+import androidx.compose.ui.res.vectorResource
+                               ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:8:33: error: unresolved reference 'R'.
+import com.android.purebilibili.R
+                                ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:101:44: error: unresolved reference 'R'.
+            HomeNavigationIconRole.HOME -> R.drawable.ms_home_fill_24
+                                           ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:102:47: error: unresolved reference 'R'.
+            HomeNavigationIconRole.HISTORY -> R.drawable.ms_history_fill_24
+                                              ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:103:53: error: unresolved reference 'R'.
+            HomeNavigationIconRole.SUBSCRIPTIONS -> R.drawable.ms_rss_feed_24
+                                                    ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:106:56: error: unresolved reference 'vectorResource'.
+        if (filledResource != null) return ImageVector.vectorResource(filledResource)
+                                                       ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:111:52: error: unresolved reference 'vectorResource'.
+        HomeNavigationIconRole.HOME -> ImageVector.vectorResource(R.drawable.bp_nav_home_outline_24)
+                                                   ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:111:67: error: unresolved reference 'R'.
+        HomeNavigationIconRole.HOME -> ImageVector.vectorResource(R.drawable.bp_nav_home_outline_24)
+                                                                  ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:114:55: error: unresolved reference 'vectorResource'.
+        HomeNavigationIconRole.HISTORY -> ImageVector.vectorResource(R.drawable.bp_nav_history_outline_24)
+                                                      ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:114:70: error: unresolved reference 'R'.
+        HomeNavigationIconRole.HISTORY -> ImageVector.vectorResource(R.drawable.bp_nav_history_outline_24)
+                                                                     ^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:129:61: error: unresolved reference 'vectorResource'.
+        HomeNavigationIconRole.SUBSCRIPTIONS -> ImageVector.vectorResource(R.drawable.ms_rss_feed_24)
+                                                            ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\generated\com\android\purebilibili\feature\home\components\HomeNavigationIconPolicy.kt:129:76: error: unresolved reference 'R'.
+        HomeNavigationIconRole.SUBSCRIPTIONS -> ImageVector.vectorResource(R.drawable.ms_rss_feed_24)
+                                                                           ^

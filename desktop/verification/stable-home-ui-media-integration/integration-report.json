@@ -1,0 +1,30 @@
+{
+  "targetTag": "v0.2.3",
+  "wholeClassesPhase": 33,
+  "wholeClassesPassed": true,
+  "sourceIdentityCount": 831,
+  "resourceCount": 213,
+  "sourceOnlyUiAndMediaInstalled": true,
+  "preparedHomeUiArtifactsVerified": 524,
+  "preparedMediaArtifactsVerified": 74,
+  "actualNativeMediaAssertions": 19,
+  "actualNativeLoadedClassSources": 9,
+  "actualPreferencesGates": 6,
+  "productionOverrides": 0,
+  "orderedRuntimeEntries": 97,
+  "allRuntimeEntriesPinnedBeforeAndAfter": true,
+  "actualIndependentLocalNativeVideoAndOffscreenCompose": true,
+  "actualHomeVmAndRawProtocolsInstalled": false,
+  "oldTodayWatchPlannerRetired": false,
+  "actualFullRootHomeMounted": false,
+  "realAccountOrExternalHttpAccepted": false,
+  "rootWindowNativeViewportOrScreenPresentationAccepted": false,
+  "performanceBenchmarkAccepted": false,
+  "newExeDeployed": false,
+  "pending": [
+    "Retained complete original HomeViewModel and same-owner raw request binding",
+    "Complete original Home Root/window/embedded-page navigation",
+    "Actual overlay/native viewport and full window acceptance",
+    "Full Windows EXE delivery"
+  ]
+}

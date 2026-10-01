@@ -1,0 +1,9 @@
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalHomeSettingsDecode.kt:314:22: error: unresolved reference 'normalizeBottomBarColorItemId'.
+        val itemId = normalizeBottomBarColorItemId(parts[0])
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalHomeSettingsDecode.kt:316:16: error: cannot infer type for type parameter 'A'. Specify it explicitly.
+        itemId to (parts[1].trim().toIntOrNull() ?: 0)
+               ^^
+work\BiliPai\desktop\.local\stable-home-page-parity\prepared\manual\com\bilipai\desktop\ui\DesktopOriginalHomeSettingsDecode.kt:316:16: error: cannot infer type for type parameter 'B'. Specify it explicitly.
+        itemId to (parts[1].trim().toIntOrNull() ?: 0)
+               ^^

@@ -1,0 +1,18 @@
+--- a/desktop/tools/extract-upstream-home-full-card.py
++++ b/desktop/tools/extract-upstream-home-full-card.py
+@@ -117,6 +117,15 @@
+  for path in DIRECT+list(EXTRACTED)+ADAPTED:
+   source=read(path);pkg=re.search(r'(?m)^package (\S+)',source).group(1);body=source
+   changes=[]
++  if path in {APP+'core/ui/transition/VideoCardTransitionBackgroundPolicy.kt',APP+'core/ui/blur/RecoverableVisualEffects.kt'}:
++   # This producer remains the single owner of the map/state/renderer output.
++   # The full page producer only supplies the source-preserving expansion body.
++   full_home=load('hc_home_page',repo/'desktop/tools/extract-upstream-home-page.py')
++   expanded=full_home.existing_home_card_body(repo,path)
++   out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
++   write(out,expanded)
++   rows.append(dict(path=path,mode='policy-extract',features=['home-full-card','home-page'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((REPO/path).read_bytes()).hexdigest(),changes=[dict(adapter='complete original depth/recoverable body, required actual Windows window boundary')],generated=str(out.relative_to(HERE))))
++   continue
+   if path.endswith('VideoCardTransitionBackgroundPolicy.kt'):
+    EXTRACTED[path]=list(dict.fromkeys(EXTRACTED[path]+re.findall(r'(?m)^(?:internal |private )?(?:const )?val (VIDEO_CARD_\w+)',source)))
+   if path in EXTRACTED:

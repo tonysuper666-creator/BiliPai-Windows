@@ -1,0 +1,302 @@
+{
+  "status": "PASS",
+  "originalSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b",
+      "declarations": [
+        {
+          "name": "isVideoWallpaper",
+          "bodySha256LF": "7d02b8b2256faeee32de689033460ae67da5b5d8a40c51c140c3ac6c547aeae7"
+        },
+        {
+          "name": "WallpaperMedia",
+          "bodySha256LF": "be4308c2e89cd5f535b36e84af7b6207170bc0928d5e4bb9418a1af149ec8540"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "eb5ec33451f5e8ddca271b15ffd5a88739796ad7f7b6566b8b60c4d9380b2637",
+      "declarations": [
+        {
+          "name": "MutedHeroVideoPlayer",
+          "bodySha256LF": "db6620c8734490336ac22a9cc38f92f39fd943ce42881cbcc837927eb7634d86"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "60db1ec6edaeb70967e19fac3c47edee96dcb6928cafb01a86bfe32209f6c0b1",
+      "declarations": [
+        {
+          "name": "VideoPreviewDialog",
+          "bodySha256LF": "a9a05c7d3295bf1665bf9d05113c8f76c9bc6b3608cd787a1dd05ee2bd549f73"
+        },
+        {
+          "name": "DisposableVideoPlayer",
+          "bodySha256LF": "b0f94be6a7086e785b46fec223a441d39c8ef90e7fea6dd834c77eb7d2f3fd99"
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "adc145f30542bcc80858dfa55700b62bec5a05bd7261652ec0a1f226f34f8817",
+      "declarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/SystemBarCompat.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "0e4d5bd971cf452b118e39df4fecd6200630ccbbc784d3a46069a7fedb32ec4c",
+      "declarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+      "declarations": []
+    }
+  ],
+  "existingProductBases": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "actual30RawSha256": "14e23b202e375e3abf736cc899a0373dfd39e9912f921e7a7d29062ca87ec7a3",
+      "baseSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+      "candidateSha256LF": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "inverse": {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+        "changes": [
+          {
+            "before": "import com.sun.jna.Pointer\n",
+            "after": "import com.sun.jna.Pointer\nimport com.sun.jna.ptr.PointerByReference\n"
+          },
+          {
+            "before": "    fun mpv_free(data: Pointer)\n",
+            "after": "    fun mpv_free(data: Pointer)\n\n    // Optional same-core render transport, pinned render.h. Existing HWND/client ABI is unchanged.\n    fun mpv_render_context_create(result: PointerByReference, handle: Pointer, params: Pointer): Int\n    fun mpv_render_context_set_update_callback(context: Pointer, callback: MpvRenderUpdateCallback, data: Pointer?)\n    fun mpv_render_context_update(context: Pointer): Long\n    fun mpv_render_context_render(context: Pointer, params: Pointer): Int\n    fun mpv_render_context_free(context: Pointer)\n"
+          }
+        ],
+        "inverseNormalizedSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+        "originalSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+        "inverseByteIdentical": true
+      }
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "actual30RawSha256": "7512241bb6a2f06d560eabb53cbb0d465faace2e6441543a4a1de3d9ad82d924",
+      "baseSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+      "candidateSha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "inverse": {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+        "changes": [
+          {
+            "before": "class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false) : AutoCloseable {",
+            "after": "class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = false) : AutoCloseable {\n    private var softwareTarget: MpvSoftwareTarget? = null\n    internal constructor(softwareTarget: MpvSoftwareTarget, useNullAudioOutput: Boolean = false) : this(useNullAudioOutput) {\n        this.softwareTarget = softwareTarget\n    }"
+          },
+          {
+            "before": "            val revision = ++playbackRevision\n",
+            "after": "            val revision = ++playbackRevision\n            softwareTarget?.beginSource(sourceVersion, revision)\n"
+          },
+          {
+            "before": "            requestedSource = null\n            softwareDecodingRequested = false\n",
+            "after": "            requestedSource = null\n            softwareTarget?.clear()\n            softwareDecodingRequested = false\n"
+          },
+          {
+            "before": "    private fun attach(windowId: Long) {",
+            "after": "    /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */\n    internal fun startSoftwareTransport() = synchronized(lock) {\n        check(softwareTarget != null) { \"A software render target is required\" }\n        check(!closed.get()) { \"Player is closed\" }\n        if (session == null) startSession(0L)\n    }\n\n    private fun attach(windowId: Long) {"
+          },
+          {
+            "before": "            if (closed.get() || session != null) return\n",
+            "after": "            if (closed.get() || session != null || softwareTarget != null) return\n"
+          },
+          {
+            "before": "        if (closed.compareAndSet(false, true)) {\n",
+            "after": "        if (closed.compareAndSet(false, true)) {\n            softwareTarget?.close()\n"
+          },
+          {
+            "before": "            var fatalFailure: Throwable? = null\n",
+            "after": "            var fatalFailure: Throwable? = null\n            var softwareRenderer: MpvSoftwareRenderer? = null\n"
+          },
+          {
+            "before": "                ) + if (useNullAudioOutput) mapOf(\"ao\" to \"null\") else emptyMap()\n",
+            "after": "                ).let { original ->\n                    if (softwareTarget == null) original else original.filterKeys { it != \"wid\" && it != \"gpu-api\" } +\n                        mapOf(\"vo\" to \"libmpv\", \"hwdec\" to \"no\")\n                } + if (useNullAudioOutput) mapOf(\"ao\" to \"null\") else emptyMap()\n"
+          },
+          {
+            "before": "                checkResult(native, native.mpv_initialize(handle), \"initialize\")\n",
+            "after": "                checkResult(native, native.mpv_initialize(handle), \"initialize\")\n                softwareTarget?.let { target ->\n                    softwareRenderer = MpvSoftwareRenderer(native, handle, target).also { it.start() }\n                }\n"
+          },
+          {
+            "before": "                while (!closing.get()) {\n",
+            "after": "                while (!closing.get()) {\n                    softwareRenderer?.throwIfFailed()\n"
+          },
+          {
+            "before": "                if (native != null && handle != null) native.mpv_terminate_destroy(handle)\n",
+            "after": "                // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.\n                try { softwareRenderer?.close() }\n                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }\n"
+          },
+          {
+            "before": "                        activeRevision = action.revision\n",
+            "after": "                        activeRevision = action.revision\n                        softwareTarget?.beginSource(action.version, action.revision)\n"
+          },
+          {
+            "before": "resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding)",
+            "after": "if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else \"no\""
+          },
+          {
+            "before": "                            resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested)), \"hwdec\")",
+            "after": "                            if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, softwareDecodingRequested) else \"no\"), \"hwdec\")"
+          },
+          {
+            "before": "                        publishState { it.copy(firstVideoFrameReady = true) }\n",
+            "after": "                        publishState {\n                            softwareTarget?.enableSource(activeSourceVersion, activeRevision)\n                            it.copy(firstVideoFrameReady = true)\n                        }\n"
+          }
+        ],
+        "inverseNormalizedSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+        "originalSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+        "inverseByteIdentical": true
+      }
+    }
+  ],
+  "preparedPayloadSources": [
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+      "sha256LF": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "physicalLines": 158
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "physicalLines": 956
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvSoftwareFrames.kt",
+      "sha256LF": "c747310a5200d5d30c3a935d09c21e110cd7269597e9e901a117c54bb4ead889",
+      "physicalLines": 165
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeOwnedMedia.kt",
+      "sha256LF": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "physicalLines": 178
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWallpaperImages.kt",
+      "sha256LF": "f73b775f131559586b8186e2d5bef29c7cc80afa51f28ee4ee305c62754bf879",
+      "physicalLines": 96
+    },
+    {
+      "path": "prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeWindowPlatform.kt",
+      "sha256LF": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "physicalLines": 111
+    }
+  ],
+  "currentRootSeams": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sourceSha256LF": "3e3f79e26f3155c234ec4b77d152c471c03fcc4cfbac944944e5e6718e9ef1e9",
+      "anchors": [
+        {
+          "text": "val listen =",
+          "lines": [
+            331
+          ]
+        },
+        {
+          "text": "listening by",
+          "lines": [
+            336
+          ]
+        },
+        {
+          "text": "NowPlayingBar",
+          "lines": [
+            997
+          ]
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sourceSha256LF": "966cb14244670350865b92a9359831854657f00f4ee1e74907b5c0e4d0f10e90",
+      "anchors": [
+        {
+          "text": "windowState",
+          "lines": [
+            123,
+            150,
+            191
+          ]
+        },
+        {
+          "text": "hostWindow",
+          "lines": [
+            192
+          ]
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "sourceSha256LF": "fab715fddbd5f2181db90bfad48558d20e885815dbb01bd2634755513e7562b0",
+      "anchors": [
+        {
+          "text": "rememberDesktopDynamicReduceMotion",
+          "lines": [
+            32
+          ]
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "sourceSha256LF": "0d8da436f9e2a455eeec672e1b9b9c18cbd622a40d2bbc57f3424cbf42b71af5",
+      "anchors": [
+        {
+          "text": "desktopDetailRenderEffectsSupported",
+          "lines": [
+            14
+          ]
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sourceSha256LF": "50a6b04b1b1b289ab7ca3ac584dbde1e8f71226badb603e1f82e8c48a8a9ad6a",
+      "anchors": [
+        {
+          "text": "withCurrentDynamicCacheOwner",
+          "lines": [
+            46
+          ]
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopAnimatedSkinImage.kt",
+      "sourceSha256LF": "f75bf275c9a7e5702dfc1070656f23d64a1699df33834917c5b2a694e685dff5",
+      "anchors": [
+        {
+          "text": "decodeOrNull",
+          "lines": [
+            37
+          ]
+        },
+        {
+          "text": "render(",
+          "lines": [
+            17
+          ]
+        }
+      ]
+    }
+  ],
+  "sourceOnly": true,
+  "compilePhase": "04",
+  "nativeRuntimeExecuted": false,
+  "networkOperations": [
+    "official pinned mpv headers only"
+  ],
+  "newApiClientStoreDecoderEngine": false,
+  "fullOriginalSourcePreservedOutsideDeclaredHunks": true
+}

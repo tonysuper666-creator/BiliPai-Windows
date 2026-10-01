@@ -472,15 +472,31 @@ val extractUpstreamHomeCards by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/home-cards"))
 }
 
+val extractOriginalHomePage by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-page.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-page"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalHomePage) }
+
 val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
-    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards)
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories, extractUpstreamHomeCards, extractOriginalHomePage)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-full-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-media.py",
+    inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-home-page.py", "tools/extract-upstream-media.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "home-full-card" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { File(repositoryRoot, it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-full-card"))
 }
@@ -1138,6 +1154,7 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/crash-prompt/sources"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-cards"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-full-card/generated"))
+    kotlin.srcDir(layout.buildDirectory.dir("generated/home-page"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-tabs"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-full-card"))
     kotlin.srcDir(layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo"))

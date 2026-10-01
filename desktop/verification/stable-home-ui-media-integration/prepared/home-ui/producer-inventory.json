@@ -1,0 +1,2568 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+    "sha256LF": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+    "allDeclarations": [
+      "HomeScrollRequest",
+      "HOME_RESELECT_DOUBLE_TAP_WINDOW_MS",
+      "mergeHomeScrollRequests",
+      "LocalHomeScrollChannel",
+      "LocalHomeMiuixBackdrop",
+      "LocalHomeWallpaperBackdrop",
+      "LocalHomeWallpaperBackdropReady",
+      "LocalHomeWallpaperIsStatic",
+      "LocalHomeScrollOffset",
+      "LocalHomeFeedScrollInProgress",
+      "HomeScreen",
+      "HomeOverlayMotionSpec",
+      "resolveHomeOverlayMotionSpec",
+      "RETURN_ANIMATION_SUPPRESSION_BUFFER_MS",
+      "RETURN_ANIMATION_SUPPRESSION_TABLET_EXTRA_MS",
+      "resolveReturnAnimationSuppressionDurationMs",
+      "resolveHomeContentInteractionRestoreDelayMs"
+    ],
+    "selectedDeclarations": [
+      "HomeScrollRequest",
+      "HOME_RESELECT_DOUBLE_TAP_WINDOW_MS",
+      "mergeHomeScrollRequests",
+      "LocalHomeScrollChannel",
+      "LocalHomeMiuixBackdrop",
+      "HomeScreen",
+      "HomeOverlayMotionSpec",
+      "resolveHomeOverlayMotionSpec",
+      "RETURN_ANIMATION_SUPPRESSION_BUFFER_MS",
+      "RETURN_ANIMATION_SUPPRESSION_TABLET_EXTRA_MS",
+      "resolveReturnAnimationSuppressionDurationMs",
+      "resolveHomeContentInteractionRestoreDelayMs"
+    ],
+    "alreadyOwnedDeclarations": [
+      "LocalHomeWallpaperBackdrop",
+      "LocalHomeWallpaperBackdropReady",
+      "LocalHomeWallpaperIsStatic",
+      "LocalHomeScrollOffset",
+      "LocalHomeFeedScrollInProgress"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.res.stringResource",
+        "after": "import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+        "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle"
+      },
+      {
+        "before": "import com.android.purebilibili.core.ui.animation.DissolvableVideoCard",
+        "after": "import com.bilipai.desktop.ui.DesktopReplyDissolvableContainer as DissolvableVideoCard"
+      },
+      {
+        "before": "import com.android.purebilibili.core.ui.animation.jiggleOnDissolve",
+        "after": "import com.bilipai.desktop.ui.jiggleOnDissolve"
+      },
+      {
+        "before": "import android.os.SystemClock",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock"
+      },
+      {
+        "before": "import android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "Build.VERSION_CODES.S",
+        "after": "31"
+      },
+      {
+        "before": "initialValue =",
+        "after": "initial ="
+      },
+      {
+        "before": "rememberDrawerState(initial =",
+        "after": "rememberDrawerState(initialValue ="
+      },
+      {
+        "before": "animate(\n                initial =",
+        "after": "animate(\n                initialValue ="
+      },
+      {
+        "before": "animate(\n                    initial =",
+        "after": "animate(\n                    initialValue ="
+      },
+      {
+        "before": "viewModel: HomeViewModel = viewModel(),",
+        "after": "viewModel: com.bilipai.desktop.ui.DesktopOriginalHomeStateOwner,"
+      },
+      {
+        "before": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+        "after": ""
+      },
+      {
+        "before": "import android.annotation.SuppressLint\n",
+        "after": ""
+      },
+      {
+        "before": "import android.content.Context\n",
+        "after": ""
+      },
+      {
+        "before": "val context = LocalContext.current",
+        "after": "val context = LocalContext.current\n    val platform = com.bilipai.desktop.ui.LocalDesktopHomeEnvironment.current"
+      },
+      {
+        "before": "val uiSkinState by rememberUiSkinState(context)",
+        "after": "val uiSkinState = com.android.purebilibili.core.plugin.skin.LocalUiSkinState.current"
+      },
+      {
+        "before": "import com.android.purebilibili.core.plugin.skin.rememberUiSkinState\n",
+        "after": ""
+      },
+      {
+        "before": "initial = com.android.purebilibili.core.store.HomeTopTabSettings(),",
+        "after": ""
+      },
+      {
+        "before": "initial = com.android.purebilibili.core.store.HomeSettings(),",
+        "after": ""
+      },
+      {
+        "before": "initial = AppNavigationSettings(),",
+        "after": ""
+      },
+      {
+        "before": "initial = false",
+        "after": ""
+      },
+      {
+        "before": "initial = com.android.purebilibili.core.store.HomeFeedCardStyle.BILIPAI,",
+        "after": ""
+      },
+      {
+        "before": "initial = \"\"",
+        "after": ""
+      },
+      {
+        "before": "com.android.purebilibili.core.util.AnalyticsHelper.logHomeReturnAnimationPerformance",
+        "after": "platform.analytics.logHomeReturnAnimationPerformance"
+      },
+      {
+        "before": "shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsRenderEffectBackedHaze"
+      },
+      {
+        "before": "import coil3.imageLoader",
+        "after": "import coil3.SingletonImageLoader"
+      },
+      {
+        "before": "context.imageLoader.execute(request)",
+        "after": "SingletonImageLoader.get(context).execute(request)"
+      },
+      {
+        "before": "SettingsManager.isDataSaverActive(context)",
+        "after": "platform.settings.isDataSaverActive()"
+      },
+      {
+        "before": "com.android.purebilibili.core.store.platform.settings",
+        "after": "platform.settings"
+      },
+      {
+        "before": "SettingsManager.setEasterEggEnabled(context,",
+        "after": "platform.settings.setEasterEggEnabled("
+      },
+      {
+        "before": "SettingsManager.setTabletUseSidebar(context,",
+        "after": "platform.settings.setTabletUseSidebar("
+      },
+      {
+        "before": "SettingsManager.setGridColumnCountCompact(context,",
+        "after": "platform.settings.setGridColumnCountCompact("
+      },
+      {
+        "before": "SettingsManager.setGridColumnCount(context,",
+        "after": "platform.settings.setGridColumnCount("
+      },
+      {
+        "before": "com.android.purebilibili.core.plugin.PluginStore\n        .isEnabledFlow(context, com.android.purebilibili.feature.plugin.SubscriptionFeedPlugin.PLUGIN_ID)",
+        "after": "platform.subscriptionPluginEnabled"
+      },
+      {
+        "before": "context = context,\n            installedPlugins",
+        "after": "context = platform.pluginContext,\n            installedPlugins"
+      },
+      {
+        "before": "com.android.purebilibili.core.util.AnalyticsHelper.logScreenView",
+        "after": "platform.analytics.logScreenView"
+      },
+      {
+        "before": "com.android.purebilibili.core.util.AnalyticsHelper.logCategoryView",
+        "after": "platform.analytics.logCategoryView"
+      },
+      {
+        "before": "    val view = androidx.compose.ui.platform.LocalView.current\n    SideEffect {\n        val window = (view.context as? android.app.Activity)?.window ?: return@SideEffect\n        // 保持边到边显示（与 VideoDetailScreen 一致）\n        com.android.purebilibili.core.ui.AppWindowSystemUiController.ensureEdgeToEdge(window)\n    }\n\n",
+        "after": "    SideEffect { platform.ensureEdgeToEdge() }\n\n"
+      },
+      {
+        "before": "    if (!view.isInEditMode && shouldApplyHomeSystemBars(isTopLevelActive)) {\n        SideEffect {\n            val window = (context as? android.app.Activity)?.window ?: return@SideEffect\n            val insetsController = androidx.core.view.WindowCompat.getInsetsController(window, view)\n            //  根据背景亮度设置状态栏图标颜色\n            insetsController.isAppearanceLightStatusBars = useDarkStatusBarIcons\n            //  [修复] 导航栏也需要根据背景亮度设置图标颜色\n            insetsController.isAppearanceLightNavigationBars = isLightBackground\n            //  确保状态栏可见且透明\n            insetsController.show(androidx.core.view.WindowInsetsCompat.Type.statusBars())\n            com.android.purebilibili.core.ui.setWindowStatusBarColor(window, android.graphics.Color.TRANSPARENT)\n            //  [修复] 导航栏也设为透明，确保底栏隐藏时手势区域沉浸\n            com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, android.graphics.Color.TRANSPARENT)\n        }\n    }\n\n",
+        "after": "    if (shouldApplyHomeSystemBars(isTopLevelActive)) {\n        SideEffect { platform.applyHomeSystemBars(useDarkStatusBarIcons,isLightBackground) }\n    }\n\n"
+      },
+      {
+        "before": "val prefs = remember { context.getSharedPreferences(\"app_prefs\", Context.MODE_PRIVATE) }",
+        "after": "val prefs = remember(platform) { platform.globalNamespace(\"app_prefs\") }"
+      },
+      {
+        "before": "val welcomePrefs = remember { context.getSharedPreferences(\"app_welcome\", Context.MODE_PRIVATE) }",
+        "after": "val welcomePrefs = remember(platform) { platform.globalNamespace(\"app_welcome\") }"
+      },
+      {
+        "before": "com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.currentPalette",
+        "after": "platform.wallpaperPalette"
+      },
+      {
+        "before": "com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore.loadWallpaperPalette(\n                    context = context,\n                    uri = homeWallpaperUri,\n                    scope = this\n                )",
+        "after": "platform.loadWallpaperPalette(homeWallpaperUri, this)"
+      },
+      {
+        "before": "androidx.lifecycle.compose.LocalLifecycleOwner.current",
+        "after": "platform.lifecycleOwner"
+      },
+      {
+        "before": "Build.VERSION.SDK_INT <= 31",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.legacyTopChromeSafetyGapRequired"
+      },
+      {
+        "before": "import com.android.purebilibili.feature.bangumi.HomeBangumiTabPage\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.feature.live.LiveListScreen\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.feature.partition.PartitionContent\n",
+        "after": ""
+      },
+      {
+        "before": "com.android.purebilibili.feature.home.subscription.SubscriptionFeedPage(",
+        "after": "platform.pages.SubscriptionFeedPage("
+      },
+      {
+        "before": "com.android.purebilibili.feature.video.share.VideoShareSheetHost(",
+        "after": "platform.overlays.VideoShareSheetHost("
+      },
+      {
+        "before": "com.android.purebilibili.feature.home.components.CrashTrackingConsentDialog(",
+        "after": "platform.overlays.CrashTrackingConsentDialog("
+      },
+      {
+        "before": "com.android.purebilibili.feature.download.DownloadManager\n                                .saveImageToGallery(context, coverUrl, item.title)",
+        "after": "platform.saveCover(coverUrl, item.title)"
+      },
+      {
+        "before": "androidx.activity.compose.BackHandler",
+        "after": "com.android.purebilibili.core.ui.LocalNavigationBackHandler"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+    "sha256LF": "0d350bbae49db96c6290220767155433df729fa16e852f31544faeb2aeb17ea2",
+    "allDeclarations": [
+      "resolveHomeCategoryVideoGridKey",
+      "resolveHomeCategoryVideoGridKeys",
+      "resolveHomeFeedAlignedRows",
+      "resolveHomeOldContentGridItemIndex",
+      "resolveHomeHeroCarouselDedupKey",
+      "shouldRequestHomeCategoryLoadMore",
+      "HomeCategoryPageContent",
+      "PopularSubCategorySegmentedControl",
+      "TodayWatchModeSegmentedControl",
+      "TodayWatchPlanCard",
+      "WaterfallReveal",
+      "OldContentDivider"
+    ],
+    "selectedDeclarations": [
+      "resolveHomeCategoryVideoGridKey",
+      "resolveHomeCategoryVideoGridKeys",
+      "resolveHomeFeedAlignedRows",
+      "resolveHomeOldContentGridItemIndex",
+      "resolveHomeHeroCarouselDedupKey",
+      "shouldRequestHomeCategoryLoadMore",
+      "HomeCategoryPageContent",
+      "PopularSubCategorySegmentedControl",
+      "TodayWatchModeSegmentedControl",
+      "TodayWatchPlanCard",
+      "WaterfallReveal",
+      "OldContentDivider"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.res.stringResource",
+        "after": "import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration"
+      },
+      {
+        "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+        "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle"
+      },
+      {
+        "before": "import com.android.purebilibili.core.ui.animation.DissolveAnimationPreset",
+        "after": "import com.bilipai.desktop.ui.DissolveAnimationPreset"
+      },
+      {
+        "before": "import com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard",
+        "after": "import com.bilipai.desktop.ui.DesktopReplyDissolvableContainer as MaybeDissolvableVideoCard"
+      },
+      {
+        "before": "import com.android.purebilibili.core.ui.animation.jiggleOnDissolve",
+        "after": "import com.bilipai.desktop.ui.jiggleOnDissolve"
+      },
+      {
+        "before": "com.android.purebilibili.feature.audio.player\n            .AudioNowPlayingSession.barOverlayVisible",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current.musicOverlayVisible"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+    "sha256LF": "3dd55fff4015adb388f9a403e6ae585a01b4a81f9aff3502a3af97f069187939",
+    "allDeclarations": [
+      "UserState",
+      "HomeCategory",
+      "LiveSubCategory",
+      "PopularSubCategory",
+      "TodayWatchMode",
+      "resolveHomeCategoryLabelRes",
+      "resolveLiveSubCategoryLabelRes",
+      "resolvePopularSubCategoryLabelRes",
+      "resolveTodayWatchModeLabelRes",
+      "TodayUpRank",
+      "TodayWatchPlan",
+      "TodayWatchCardUiConfig",
+      "CategoryContent",
+      "HomeUiState"
+    ],
+    "selectedDeclarations": [
+      "UserState",
+      "LiveSubCategory",
+      "resolveHomeCategoryLabelRes",
+      "resolveLiveSubCategoryLabelRes",
+      "resolvePopularSubCategoryLabelRes",
+      "resolveTodayWatchModeLabelRes",
+      "TodayWatchCardUiConfig",
+      "CategoryContent",
+      "HomeUiState"
+    ],
+    "alreadyOwnedDeclarations": [
+      "HomeCategory",
+      "PopularSubCategory",
+      "TodayWatchMode",
+      "TodayUpRank",
+      "TodayWatchPlan"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeUiState.kt",
+    "changes": [
+      {
+        "before": "import com.android.purebilibili.R\n",
+        "after": ""
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+    "sha256LF": "6a1e4d560e4a2d564670185bafe8f601d9c227a37a59d867816b53cc54c2620f",
+    "allDeclarations": [
+      "HOME_HEADER_LIQUID_GLASS_ALPHA",
+      "HomeTopActionIcons",
+      "resolveHomeTopActionIcons",
+      "HomeTopChromeMotionPolicy",
+      "HomeTopLinkedBottomBarAppearance",
+      "shouldExportHomeTopActionIconThroughLiquidGlass",
+      "resolveHomeSkinSearchSurfaceColor",
+      "resolveHomeSkinTopTabContentColor",
+      "resolveHomeSkinTopTabUnselectedContentColor",
+      "resolveHomeSkinTopTabIndicatorColor",
+      "resolveHomeSkinTopTabRowHeight",
+      "HomeTopChromeRenderMode",
+      "HomeTopChromeSurfaceTreatment",
+      "resolveHomeTopLinkedBottomBarAppearance",
+      "shouldUseLegacyHomeTopTabs",
+      "formatHomeTopRightUnreadBadge",
+      "HomeTopRightUnreadBadgeLayout",
+      "resolveHomeTopRightUnreadBadgeLayout",
+      "resolveHomeTopRightActionSlotWidth",
+      "resolveHomeTopRightActionContentDescription",
+      "resolveHomeTopChromeLiquidGlassEnabled",
+      "resolveHomeTopTabIndicatorLiquidGlassEnabled",
+      "resolveHomeTopSearchLiquidGlassEnabled",
+      "resolveHomeTopChromeMaterialMode",
+      "resolveHomeTopChromeRenderMode",
+      "shouldDrawHomeTopSearchLegacyHighlight",
+      "resolveHomeTopChromeSurfaceTreatment",
+      "resolveHomeHeaderSurfaceAlpha",
+      "resolveHomeTopBlurContainerAlpha",
+      "resolveHomeTopTabOverlayAlpha",
+      "resolveHomeTopTabVerticalPaddingDp",
+      "resolveNonNegativeHomeTopPadding",
+      "resolveHomeTopTabYOffsetDp",
+      "resolveHomeTopSearchBarHeight",
+      "HomeHeaderScrollLayout",
+      "HomeTopPinnedChromeLayout",
+      "resolveHomeTopPinnedChromeLayout",
+      "resolveHomeTopSearchRevealDeadZone",
+      "resolveHomeTopVisibleSearchHeightPx",
+      "usesImmediateHomeTopSearchReveal",
+      "resolveHomeTopSearchContentRevealFraction",
+      "resolveHomeTopSearchContentTranslationYPx",
+      "resolveHomeHeaderScrollLayout",
+      "resolveHomeTopTabRowHeight",
+      "resolveHomeTopSearchRowHorizontalPadding",
+      "resolveHomeTopSearchPillHeight",
+      "resolveHomeTopSearchContentHorizontalPadding",
+      "resolveHomeTopSearchIconTextGap",
+      "resolveHomeTopSearchContainerShape",
+      "resolveHomeTopEdgeButtonShape",
+      "resolveHomeTopEdgeControlHeight",
+      "resolveHomeTopAvatarOuterSize",
+      "resolveHomeTopAvatarInnerSize",
+      "resolveHomeTopSettingsButtonSize",
+      "resolveHomeTopSettingsIconSize",
+      "resolveHomeTopEdgeControlGap",
+      "shouldUseUnifiedHomeTopPanel",
+      "shouldUseDetachedHomeTopTabDock",
+      "resolveHomeTopUnifiedPanelHorizontalPadding",
+      "resolveHomeTopUnifiedPanelInnerPadding",
+      "shouldRenderHomeTopUnifiedPanelChrome",
+      "resolveHomeTopUnifiedPanelCornerRadius",
+      "resolveHomeTopReservedContentBottomGap",
+      "resolveHomeTopEmbeddedTabHorizontalPadding",
+      "resolveHomeTopTabHorizontalPadding",
+      "resolveHomeTopControlsContentWidthDp",
+      "resolveHomeTopSearchToTabsSpacing",
+      "resolveHomeTopTabsToContentSpacing",
+      "resolveHomeTopSearchCollapseExtraSpacing",
+      "resolveHomeTopSearchCollapseDistance",
+      "shouldUseIntegratedCollapsedHomeTopBar",
+      "resolveHomeTopContinuousSlabOverlap",
+      "resolveHomeTopContinuousSlabShape",
+      "resolveHomeTopReservedListPadding",
+      "resolveHomeTopBlurContainerColors",
+      "resolveHomeTopBlurSurfaceType",
+      "resolveHomeTopContinuousSlabRenderMode",
+      "resolveHomeTopContinuousSlabHeight",
+      "resolveHomeTopContinuousSlabSurfaceColor",
+      "resolveHomeTopPanelChromeRenderMode",
+      "resolveHomeTopSearchChromeRenderMode",
+      "resolveHomeTopUnifiedTabChromeRenderMode",
+      "resolveHomeTopUnifiedLocalTabChromeRenderMode",
+      "resolveHomeTopTabDockChromeRenderMode",
+      "shouldApplyHomeTopTabDockHaze",
+      "resolveHomeTopUnifiedTabSurfaceColor",
+      "resolveHomeTopDetachedTabDockSurfaceColor",
+      "resolveHomeTopUnifiedSearchContainerColor",
+      "resolveHomeTopSearchDarkWhiteOverlayMultiplier",
+      "resolveHomeTopUnifiedSearchBorderColor",
+      "resolveHomeTopEdgeControlContainerColor",
+      "resolveHomeTopEdgeControlBorderColor",
+      "resolveHomeTopUnifiedPanelReadabilityColor",
+      "resolveHomeTopWideChromePreferFlatGlass",
+      "resolveHomeTopLocalChromeRenderMode",
+      "resolveHomeTopChromeMotionPolicy",
+      "resolveHomeTopTabChromeMotionPolicy",
+      "shouldEnableTopTabSecondaryBlur",
+      "resolveHomeHeaderTabBorderAlpha",
+      "resolveHomeTopChromeReadabilityAlpha",
+      "resolveHomeTopSearchContentAlpha",
+      "resolveHomeTopForegroundColor",
+      "resolveHomeTopInnerUnderlayColor",
+      "resolveHomeTopChromeHighlightOverlayColor",
+      "tuneHomeTopGlassColors",
+      "resolveHomeTopContainerColors",
+      "resolveHomeTopActionIconAlpha",
+      "resolveHomeTopUnifiedPanelDividerAlpha",
+      "shouldShowUnifiedHomeTopPanelDivider",
+      "resolveHomeTopTabContentUnderlayAlpha",
+      "resolveHomeTopChromeLensShape",
+      "HomeTopChromeSurfaceStyle",
+      "HomeTopChromeBackdropSpec",
+      "resolveHomeTopChromeBackdropSpec",
+      "resolveHomeTopChromeSurfaceColor",
+      "homeTopChromeSurface",
+      "HomeHeader"
+    ],
+    "selectedDeclarations": [
+      "HOME_HEADER_LIQUID_GLASS_ALPHA",
+      "HomeTopActionIcons",
+      "resolveHomeTopActionIcons",
+      "HomeTopChromeMotionPolicy",
+      "HomeTopLinkedBottomBarAppearance",
+      "shouldExportHomeTopActionIconThroughLiquidGlass",
+      "resolveHomeSkinSearchSurfaceColor",
+      "resolveHomeSkinTopTabContentColor",
+      "resolveHomeSkinTopTabUnselectedContentColor",
+      "resolveHomeSkinTopTabIndicatorColor",
+      "resolveHomeSkinTopTabRowHeight",
+      "HomeTopChromeRenderMode",
+      "HomeTopChromeSurfaceTreatment",
+      "resolveHomeTopLinkedBottomBarAppearance",
+      "shouldUseLegacyHomeTopTabs",
+      "formatHomeTopRightUnreadBadge",
+      "HomeTopRightUnreadBadgeLayout",
+      "resolveHomeTopRightUnreadBadgeLayout",
+      "resolveHomeTopRightActionSlotWidth",
+      "resolveHomeTopRightActionContentDescription",
+      "resolveHomeTopChromeLiquidGlassEnabled",
+      "resolveHomeTopTabIndicatorLiquidGlassEnabled",
+      "resolveHomeTopSearchLiquidGlassEnabled",
+      "resolveHomeTopChromeMaterialMode",
+      "resolveHomeTopChromeRenderMode",
+      "shouldDrawHomeTopSearchLegacyHighlight",
+      "resolveHomeTopChromeSurfaceTreatment",
+      "resolveHomeHeaderSurfaceAlpha",
+      "resolveHomeTopBlurContainerAlpha",
+      "resolveHomeTopTabOverlayAlpha",
+      "resolveHomeTopTabVerticalPaddingDp",
+      "resolveNonNegativeHomeTopPadding",
+      "resolveHomeTopTabYOffsetDp",
+      "resolveHomeTopSearchBarHeight",
+      "HomeHeaderScrollLayout",
+      "HomeTopPinnedChromeLayout",
+      "resolveHomeTopPinnedChromeLayout",
+      "resolveHomeTopSearchRevealDeadZone",
+      "resolveHomeTopVisibleSearchHeightPx",
+      "usesImmediateHomeTopSearchReveal",
+      "resolveHomeTopSearchContentRevealFraction",
+      "resolveHomeTopSearchContentTranslationYPx",
+      "resolveHomeHeaderScrollLayout",
+      "resolveHomeTopSearchContentHorizontalPadding",
+      "resolveHomeTopSearchIconTextGap",
+      "resolveHomeTopSearchContainerShape",
+      "resolveHomeTopEdgeButtonShape",
+      "resolveHomeTopEdgeControlHeight",
+      "resolveHomeTopAvatarOuterSize",
+      "resolveHomeTopAvatarInnerSize",
+      "resolveHomeTopSettingsButtonSize",
+      "resolveHomeTopSettingsIconSize",
+      "resolveHomeTopEdgeControlGap",
+      "shouldUseUnifiedHomeTopPanel",
+      "shouldUseDetachedHomeTopTabDock",
+      "resolveHomeTopUnifiedPanelHorizontalPadding",
+      "resolveHomeTopUnifiedPanelInnerPadding",
+      "shouldRenderHomeTopUnifiedPanelChrome",
+      "resolveHomeTopUnifiedPanelCornerRadius",
+      "resolveHomeTopReservedContentBottomGap",
+      "resolveHomeTopEmbeddedTabHorizontalPadding",
+      "resolveHomeTopTabHorizontalPadding",
+      "resolveHomeTopControlsContentWidthDp",
+      "resolveHomeTopSearchToTabsSpacing",
+      "resolveHomeTopTabsToContentSpacing",
+      "resolveHomeTopSearchCollapseExtraSpacing",
+      "resolveHomeTopSearchCollapseDistance",
+      "shouldUseIntegratedCollapsedHomeTopBar",
+      "resolveHomeTopContinuousSlabOverlap",
+      "resolveHomeTopContinuousSlabShape",
+      "resolveHomeTopReservedListPadding",
+      "resolveHomeTopBlurContainerColors",
+      "resolveHomeTopBlurSurfaceType",
+      "resolveHomeTopContinuousSlabRenderMode",
+      "resolveHomeTopContinuousSlabHeight",
+      "resolveHomeTopContinuousSlabSurfaceColor",
+      "resolveHomeTopPanelChromeRenderMode",
+      "resolveHomeTopSearchChromeRenderMode",
+      "resolveHomeTopUnifiedTabChromeRenderMode",
+      "resolveHomeTopUnifiedLocalTabChromeRenderMode",
+      "resolveHomeTopTabDockChromeRenderMode",
+      "shouldApplyHomeTopTabDockHaze",
+      "resolveHomeTopUnifiedTabSurfaceColor",
+      "resolveHomeTopDetachedTabDockSurfaceColor",
+      "resolveHomeTopUnifiedSearchContainerColor",
+      "resolveHomeTopSearchDarkWhiteOverlayMultiplier",
+      "resolveHomeTopUnifiedSearchBorderColor",
+      "resolveHomeTopEdgeControlContainerColor",
+      "resolveHomeTopEdgeControlBorderColor",
+      "resolveHomeTopUnifiedPanelReadabilityColor",
+      "resolveHomeTopWideChromePreferFlatGlass",
+      "resolveHomeTopLocalChromeRenderMode",
+      "resolveHomeTopChromeMotionPolicy",
+      "resolveHomeTopTabChromeMotionPolicy",
+      "shouldEnableTopTabSecondaryBlur",
+      "resolveHomeHeaderTabBorderAlpha",
+      "resolveHomeTopChromeReadabilityAlpha",
+      "resolveHomeTopSearchContentAlpha",
+      "resolveHomeTopForegroundColor",
+      "resolveHomeTopInnerUnderlayColor",
+      "resolveHomeTopChromeHighlightOverlayColor",
+      "tuneHomeTopGlassColors",
+      "resolveHomeTopContainerColors",
+      "resolveHomeTopActionIconAlpha",
+      "resolveHomeTopUnifiedPanelDividerAlpha",
+      "shouldShowUnifiedHomeTopPanelDivider",
+      "resolveHomeTopTabContentUnderlayAlpha",
+      "resolveHomeTopChromeLensShape",
+      "HomeTopChromeSurfaceStyle",
+      "HomeTopChromeBackdropSpec",
+      "resolveHomeTopChromeBackdropSpec",
+      "resolveHomeTopChromeSurfaceColor",
+      "homeTopChromeSurface",
+      "HomeHeader"
+    ],
+    "alreadyOwnedDeclarations": [
+      "resolveHomeTopTabRowHeight",
+      "resolveHomeTopSearchRowHorizontalPadding",
+      "resolveHomeTopSearchPillHeight"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+    "changes": [
+      {
+        "before": "import android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "shouldAllowHomeChromeLiquidGlass(Build.VERSION.SDK_INT)",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsHomeChromeLiquidGlass"
+      },
+      {
+        "before": "shouldAllowDirectHazeLiquidGlassFallback(Build.VERSION.SDK_INT)",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.supportsDirectHazeLiquidGlassFallback"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopControls.kt",
+    "sha256LF": "6e4fe801eb4b4666faf274480784d2b2eb497c0bfbdc4ed323ea458757cc3d66",
+    "allDeclarations": [
+      "HomeTopAvatarContent",
+      "HomeTopSearchPillContent",
+      "HomeTopUnreadBadge"
+    ],
+    "selectedDeclarations": [
+      "HomeTopAvatarContent",
+      "HomeTopSearchPillContent",
+      "HomeTopUnreadBadge"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopControls.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabChrome.kt",
+    "sha256LF": "20d99c3a011f86931099e194b049b9ccb06cbf39178e7d7955472ef1411fd045",
+    "allDeclarations": [
+      "HomeTopTabChrome",
+      "CollapsedTopTabHandle"
+    ],
+    "selectedDeclarations": [
+      "HomeTopTabChrome",
+      "CollapsedTopTabHandle"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabChrome.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDock.kt",
+    "sha256LF": "b2093f257e619373761f1a97f44788f781ad08a1ae8cc9877a9b6248bd0d4b90",
+    "allDeclarations": [
+      "shouldHomeTopTabUseFloatingBottomBarDock",
+      "shouldHomeTopTabChromeDrawOuterShell",
+      "shouldUseOfficialMd3HomeTopToolbar",
+      "shouldUseOfficialMiuixHomeTopTabs",
+      "resolveHomeTopTabFloatingDockWidth",
+      "HomeTopTabFloatingDock"
+    ],
+    "selectedDeclarations": [
+      "shouldHomeTopTabUseFloatingBottomBarDock",
+      "shouldHomeTopTabChromeDrawOuterShell",
+      "shouldUseOfficialMd3HomeTopToolbar",
+      "shouldUseOfficialMiuixHomeTopTabs",
+      "resolveHomeTopTabFloatingDockWidth",
+      "HomeTopTabFloatingDock"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDock.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpec.kt",
+    "sha256LF": "a30e34a0b0c4693edf8e3e73abd7dd175d9ce2c40fe4ac4f009b0b16f61773a8",
+    "allDeclarations": [
+      "iosTopTabCapsuleMotionSpec"
+    ],
+    "selectedDeclarations": [
+      "iosTopTabCapsuleMotionSpec"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpec.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawer.kt",
+    "sha256LF": "65af2ef6f212169e0613132546d42b0daa7058ee777cf94e0fa5c2d84912011b",
+    "allDeclarations": [
+      "MineSideDrawer"
+    ],
+    "selectedDeclarations": [
+      "MineSideDrawer"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawer.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+    "sha256LF": "c6d4fc1543fcef185e87208c9e473ea9bdf8cee6e6693847c061323d71484444",
+    "allDeclarations": [
+      "MineSideDrawerLayoutPolicy",
+      "resolveMineSideDrawerLayoutPolicy",
+      "resolveMineSideDrawerWidthDp",
+      "resolveMineSideDrawerFooterSpacerHeightDp"
+    ],
+    "selectedDeclarations": [
+      "MineSideDrawerLayoutPolicy",
+      "resolveMineSideDrawerLayoutPolicy",
+      "resolveMineSideDrawerWidthDp",
+      "resolveMineSideDrawerFooterSpacerHeightDp"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+    "sha256LF": "5a26bd2ebd2526d345e8a5045ee129f5eee56faa27f2bc62f284b2becad8435c",
+    "allDeclarations": [
+      "DrawerGlassPalette",
+      "resolveDrawerGlassPalette",
+      "resolveHomeDrawerScrimAlpha"
+    ],
+    "selectedDeclarations": [
+      "DrawerGlassPalette",
+      "resolveDrawerGlassPalette",
+      "resolveHomeDrawerScrimAlpha"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBar.kt",
+    "sha256LF": "d6ab43391f1a67f13bd44b981fbbcf0f8a1563ecb08ff91bf0e5c2c8a210e060",
+    "allDeclarations": [
+      "performHomeSideBarItemTap",
+      "FrostedSideBar",
+      "MiuixSideBar",
+      "MiuixSideBarSkinItem",
+      "FrostedSideBarBlendedMaterialIcon",
+      "FrostedSideBarContent",
+      "SideBarAccountSwitchButton"
+    ],
+    "selectedDeclarations": [
+      "performHomeSideBarItemTap",
+      "FrostedSideBar",
+      "MiuixSideBar",
+      "MiuixSideBarSkinItem",
+      "FrostedSideBarBlendedMaterialIcon",
+      "FrostedSideBarContent",
+      "SideBarAccountSwitchButton"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/SideBar.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.res.stringResource",
+        "after": "import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource"
+      },
+      {
+        "before": "import com.android.purebilibili.R\n",
+        "after": ""
+      },
+      {
+        "before": "import android.os.SystemClock",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+    "sha256LF": "eb5ec33451f5e8ddca271b15ffd5a88739796ad7f7b6566b8b60c4d9380b2637",
+    "allDeclarations": [
+      "HomeHeroCarousel",
+      "HomeHeroCarouselCard",
+      "MutedHeroVideoPlayer"
+    ],
+    "selectedDeclarations": [
+      "HomeHeroCarousel",
+      "HomeHeroCarouselCard",
+      "MutedHeroVideoPlayer"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration"
+      },
+      {
+        "before": "@Composable\nprivate fun MutedHeroVideoPlayer(url: String) {\n    val context = LocalContext.current\n    var hasRenderedFirstFrame by remember(url) { mutableStateOf(false) }\n    val player = remember {\n        ExoPlayer.Builder(context).build().apply {\n            playWhenReady = true\n            repeatMode = Player.REPEAT_MODE_ONE\n            volume = 0f\n        }\n    }\n    LaunchedEffect(url) {\n        hasRenderedFirstFrame = false\n        player.setMediaItem(MediaItem.fromUri(Uri.parse(url)))\n        player.prepare()\n    }\n    DisposableEffect(player) {\n        val listener = object : Player.Listener {\n            override fun onRenderedFirstFrame() {\n                hasRenderedFirstFrame = true\n            }\n        }\n        player.addListener(listener)\n        onDispose {\n            player.removeListener(listener)\n            player.release()\n        }\n    }\n    AndroidView(\n        factory = { ctx ->\n            PlayerView(ctx).apply {\n                this.player = player\n                useController = false\n                resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM\n                setShutterBackgroundColor(android.graphics.Color.TRANSPARENT)\n            }\n        },\n        modifier = Modifier\n            .fillMaxSize()\n            .graphicsLayer {\n                alpha = resolveHomeHeroCarouselPreviewAlpha(hasRenderedFirstFrame)\n            }\n    )\n}",
+        "after": "@Composable\nprivate fun MutedHeroVideoPlayer(url:String) {\n    var hasRenderedFirstFrame by remember(url) { mutableStateOf(false) }\n    com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current.previewSurface(\n        url, true, { hasRenderedFirstFrame = true },\n        Modifier.fillMaxSize().graphicsLayer { alpha = resolveHomeHeroCarouselPreviewAlpha(hasRenderedFirstFrame) })\n}",
+        "reason": "actual independent owned MPV surface; same original first-frame alpha policy"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+    "sha256LF": "60db1ec6edaeb70967e19fac3c47edee96dcb6928cafb01a86bfe32209f6c0b1",
+    "allDeclarations": [
+      "shouldEnableSaveCoverAction",
+      "shouldShowBlockCreatorAction",
+      "VideoPreviewDialog",
+      "DisposableVideoPlayer",
+      "PreviewMenuItem",
+      "MenuDivider"
+    ],
+    "selectedDeclarations": [
+      "shouldEnableSaveCoverAction",
+      "shouldShowBlockCreatorAction",
+      "VideoPreviewDialog",
+      "DisposableVideoPlayer",
+      "PreviewMenuItem",
+      "MenuDivider"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "    val context = LocalContext.current",
+        "after": "    val context = LocalContext.current\n    val mediaPorts = com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current"
+      },
+      {
+        "before": "@Composable\nfun DisposableVideoPlayer(url: String) {\n    val context = LocalContext.current\n    val mediaPorts = com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current\n    \n    // Create Player\n    val player = androidx.compose.runtime.remember {\n        androidx.media3.exoplayer.ExoPlayer.Builder(context).build().apply {\n            playWhenReady = true\n            repeatMode = androidx.media3.common.Player.REPEAT_MODE_ONE\n        }\n    }\n\n    // Set Media Item\n    androidx.compose.runtime.LaunchedEffect(url) {\n        player.setMediaItem(androidx.media3.common.MediaItem.fromUri(android.net.Uri.parse(url)))\n        player.prepare()\n    }\n\n    // Cleanup\n    androidx.compose.runtime.DisposableEffect(Unit) {\n        onDispose {\n            player.release()\n        }\n    }\n\n    AndroidView(\n        factory = { ctx ->\n            androidx.media3.ui.PlayerView(ctx).apply {\n                this.player = player\n                useController = false\n                resizeMode = androidx.media3.ui.AspectRatioFrameLayout.RESIZE_MODE_ZOOM\n            }\n        },\n        modifier = Modifier.fillMaxSize()\n    )\n}",
+        "after": "@Composable\nfun DisposableVideoPlayer(url:String) {\n    com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current.previewSurface(url, false, null, Modifier.fillMaxSize())\n}",
+        "reason": "actual owned MPV sink replaces Android PlayerView only"
+      },
+      {
+        "before": "android.widget.Toast.makeText(context, \"无法获取预览地址\", android.widget.Toast.LENGTH_SHORT).show()",
+        "after": "mediaPorts.feedback(\"无法获取预览地址\")"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheet.kt",
+    "sha256LF": "3ff7c53ca24d750689066d0366245533c4f36b1956c303b0d0fd16ef16f4ad04",
+    "allDeclarations": [
+      "HomeNotInterestedReasonSheet",
+      "ReasonGroup"
+    ],
+    "selectedDeclarations": [
+      "HomeNotInterestedReasonSheet",
+      "ReasonGroup"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheet.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeRefreshIndicator.kt",
+    "sha256LF": "5da4d452d383e457ed308471f8b63ed2122d0631bf584fe44d127a4770c38560",
+    "allDeclarations": [
+      "Md3ScreenshotRefreshIndicator",
+      "HomeRefreshIndicator"
+    ],
+    "selectedDeclarations": [
+      "Md3ScreenshotRefreshIndicator",
+      "HomeRefreshIndicator"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeRefreshIndicator.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpec.kt",
+    "sha256LF": "7cc4ed9a6ebeb2fa2a3eb2d12f7157b70c02da7b04998452eeaf13cf188fce6f",
+    "allDeclarations": [
+      "md3RefreshAlphaMotionSpec",
+      "md3RefreshScaleMotionSpec",
+      "iosRefreshArrowMotionSpec",
+      "iosRefreshAlphaMotionSpec",
+      "iosRefreshScaleMotionSpec"
+    ],
+    "selectedDeclarations": [
+      "md3RefreshAlphaMotionSpec",
+      "md3RefreshScaleMotionSpec",
+      "iosRefreshArrowMotionSpec",
+      "iosRefreshAlphaMotionSpec",
+      "iosRefreshScaleMotionSpec"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpec.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+    "sha256LF": "5c1d96c026bbe54f7d9214b2123695f9ce05ff960d50b7e720dd94a6894bb77a",
+    "allDeclarations": [
+      "StoryVideoCard"
+    ],
+    "selectedDeclarations": [
+      "StoryVideoCard"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "allDeclarations": [
+      "Context",
+      "DEFAULT_CRASH_TRACKING_ENABLED",
+      "DEFAULT_ANALYTICS_ENABLED",
+      "DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ENABLED",
+      "DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ONCE_ENABLED",
+      "DEFAULT_DASH_SEGMENT_REQUESTS_ENABLED",
+      "resolveDefaultPlayerDiagnosticLoggingEnabled",
+      "DEFAULT_PLAYER_DIAGNOSTIC_LOGGING_ENABLED",
+      "LiquidGlassStyle",
+      "LiquidGlassMode",
+      "LiquidGlassAdvancedPreset",
+      "LiquidGlassAdvancedSettings",
+      "normalizeLiquidGlassAdvancedValue",
+      "resolveLiquidGlassAdvancedPreset",
+      "resolveLiquidGlassAdvancedSettings",
+      "resolveLegacyLiquidGlassMode",
+      "resolveDefaultLiquidGlassStrength",
+      "normalizeLiquidGlassStrength",
+      "normalizeLiquidGlassProgress",
+      "LONG_PRESS_SPEED_HINT_SCALE_MIN",
+      "LONG_PRESS_SPEED_HINT_SCALE_MAX",
+      "LONG_PRESS_SPEED_HINT_DEFAULT_SCALE",
+      "LONG_PRESS_SPEED_HINT_ALPHA_MIN",
+      "LONG_PRESS_SPEED_HINT_ALPHA_MAX",
+      "LONG_PRESS_SPEED_HINT_DEFAULT_ALPHA",
+      "LONG_PRESS_SPEED_HINT_STEP",
+      "normalizeLongPressSpeedHintScale",
+      "normalizeLongPressSpeedHintAlpha",
+      "resolveLegacyLiquidGlassProgress",
+      "resolveLegacyLiquidGlassProgress",
+      "resolveStoredLiquidGlassProgress",
+      "resolveLiquidGlassModeFromProgress",
+      "resolveLiquidGlassStrengthFromProgress",
+      "resolveLegacyLiquidGlassStyleFromProgress",
+      "HomeHeaderBlurMode",
+      "resolveHomeHeaderBlurEnabled",
+      "resolveHomeHeaderBlurModePreference",
+      "PlaybackCompletionBehavior",
+      "PortraitPlayerCollapseMode",
+      "FullscreenMode",
+      "FullscreenAspectRatio",
+      "BottomProgressBehavior",
+      "PlayerProgressPlacement",
+      "PlayerControlVisibilitySettings",
+      "normalizeDanmakuDisplayArea",
+      "normalizeDanmakuFontScale",
+      "DEFAULT_HOME_REFRESH_COUNT",
+      "MIN_HOME_REFRESH_COUNT",
+      "MAX_HOME_REFRESH_COUNT",
+      "normalizeHomeRefreshCount",
+      "HomeFeedCardWidthPreset",
+      "HomeFeedCardStyle",
+      "HomeDurationStyle",
+      "HomeCardBadgeEffectMode",
+      "HomeCardInfoGlassMode",
+      "BottomBarLiquidGlassPreset",
+      "HomeSettings",
+      "resolveHomeCardFrostedGlassEnabled",
+      "AppThemeSettings",
+      "ThemeModeRoleOverrides",
+      "ThemeRoleOverrides",
+      "BottomBarSearchAutoExpandMode",
+      "BottomBarSearchLayoutMode",
+      "HomeWallpaperEffectMode",
+      "HomeWallpaperEffectScope",
+      "HomeTopRightAction",
+      "HomeTopLayoutOrder",
+      "HomeHeaderCollapseMode",
+      "HomeBarHideType",
+      "CommonListHeaderCollapseMode",
+      "resolveHomeHeaderCollapseModeForTopBarHide",
+      "resolveHomeHeaderCollapseModeForTopTabs",
+      "resolveHomeHeaderCollapseModeForSearch",
+      "resolveUiPresetPreferenceValue",
+      "resolveAndroidNativeVariantPreferenceValue",
+      "DanmakuPanelWidthMode",
+      "PortraitDanmakuDisplayAreaMode",
+      "TabletCommentPanelWidthPreset",
+      "TabletSecondaryDefaultTab",
+      "normalizeDanmakuFullscreenPanelWidthMode",
+      "DanmakuSettingsScope",
+      "resolveDanmakuSettingsScope",
+      "DanmakuSettings",
+      "AppNavigationSettings",
+      "BottomTabMigrationResult",
+      "resolveListenVideoBottomTabMigration",
+      "HomeTopTabSettings",
+      "AutoExitFullscreenMode",
+      "resolveAutoExitFullscreenMode",
+      "PlayerInteractionSettings",
+      "ShareablePreferenceDefinition",
+      "BooleanShareablePreferenceDefinition",
+      "IntShareablePreferenceDefinition",
+      "FloatShareablePreferenceDefinition",
+      "StringShareablePreferenceDefinition",
+      "mapHomeSettingsFromPreferences",
+      "mapAppThemeSettingsFromPreferences",
+      "mapDanmakuSettingsFromPreferences",
+      "mapAppNavigationSettingsFromPreferences",
+      "defaultTabletUseSidebar",
+      "mapHomeTopTabSettingsFromPreferences",
+      "mapPlayerInteractionSettingsFromPreferences",
+      "decodeCollectionSubscriptionIds",
+      "encodeCollectionSubscriptionIds",
+      "toggleCollectionSubscription",
+      "setCollectionSubscription",
+      "decodeCollectionSortPreferences",
+      "encodeCollectionSortPreferences",
+      "SettingsManager"
+    ],
+    "selectedDeclarations": [
+      "HomeSettings",
+      "HomeTopRightAction",
+      "HomeTopLayoutOrder",
+      "HomeHeaderCollapseMode",
+      "HomeBarHideType",
+      "AppNavigationSettings",
+      "HomeTopTabSettings"
+    ],
+    "alreadyOwnedDeclarations": [
+      "LiquidGlassStyle",
+      "LiquidGlassMode",
+      "LiquidGlassAdvancedPreset",
+      "LiquidGlassAdvancedSettings",
+      "normalizeLiquidGlassAdvancedValue",
+      "resolveLiquidGlassAdvancedPreset",
+      "resolveLiquidGlassAdvancedSettings",
+      "resolveLegacyLiquidGlassMode",
+      "resolveDefaultLiquidGlassStrength",
+      "normalizeLiquidGlassStrength",
+      "normalizeLiquidGlassProgress",
+      "resolveLegacyLiquidGlassProgress",
+      "resolveLegacyLiquidGlassProgress",
+      "resolveStoredLiquidGlassProgress",
+      "resolveLiquidGlassModeFromProgress",
+      "resolveLiquidGlassStrengthFromProgress",
+      "HomeHeaderBlurMode",
+      "resolveHomeHeaderBlurEnabled",
+      "resolveHomeHeaderBlurModePreference",
+      "DEFAULT_HOME_REFRESH_COUNT",
+      "MIN_HOME_REFRESH_COUNT",
+      "MAX_HOME_REFRESH_COUNT",
+      "normalizeHomeRefreshCount",
+      "HomeFeedCardWidthPreset",
+      "HomeFeedCardStyle",
+      "HomeDurationStyle",
+      "HomeCardBadgeEffectMode",
+      "HomeCardInfoGlassMode",
+      "BottomBarLiquidGlassPreset",
+      "resolveHomeCardFrostedGlassEnabled",
+      "ThemeModeRoleOverrides",
+      "ThemeRoleOverrides",
+      "HomeWallpaperEffectMode",
+      "HomeWallpaperEffectScope",
+      "CommonListHeaderCollapseMode",
+      "DanmakuSettingsScope",
+      "decodeCollectionSubscriptionIds",
+      "encodeCollectionSubscriptionIds",
+      "toggleCollectionSubscription",
+      "setCollectionSubscription",
+      "decodeCollectionSortPreferences",
+      "encodeCollectionSortPreferences"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+    "sha256LF": "4052122d98eeb925b932db1b0ab104ff871e0546469a3bc6bfc2a5d96be25449",
+    "allDeclarations": [
+      "HomeFeedScrollAnchor",
+      "HomeFeedScrollAnchorSaver",
+      "captureHomeFeedScrollAnchor",
+      "shouldRestoreHomeFeedScrollAnchor",
+      "shouldApplyHomeFeedScrollAnchor",
+      "shouldReserveHomeBottomBarListPadding"
+    ],
+    "selectedDeclarations": [
+      "HomeFeedScrollAnchor",
+      "HomeFeedScrollAnchorSaver",
+      "captureHomeFeedScrollAnchor",
+      "shouldRestoreHomeFeedScrollAnchor",
+      "shouldApplyHomeFeedScrollAnchor"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt",
+    "sha256LF": "bfaec603c9f73da7f50f6f54456fe7f2c942962ae3b30a92c303f248420ed702",
+    "allDeclarations": [
+      "HomePagerSettledAction",
+      "shouldEnableHomeTopPagerUserScroll",
+      "shouldDisplayHomeTopCategoryInline",
+      "shouldSwitchHomeCategoryFromPager",
+      "resolveHomePagerSettledAction",
+      "shouldUseInitialHomePagerSnap",
+      "shouldSkipHomePagerStateDrive",
+      "shouldAnimateHomePagerToCategory",
+      "resolveHomeInitialTopTabPage",
+      "shouldTreatInitialHomePagerPageAsSyncedWithState",
+      "resolveHomePagerTargetPage"
+    ],
+    "selectedDeclarations": [
+      "HomePagerSettledAction",
+      "shouldEnableHomeTopPagerUserScroll",
+      "shouldDisplayHomeTopCategoryInline",
+      "shouldSwitchHomeCategoryFromPager",
+      "resolveHomePagerSettledAction",
+      "shouldUseInitialHomePagerSnap",
+      "shouldSkipHomePagerStateDrive",
+      "shouldAnimateHomePagerToCategory",
+      "resolveHomeInitialTopTabPage",
+      "shouldTreatInitialHomePagerPageAsSyncedWithState",
+      "resolveHomePagerTargetPage"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+    "sha256LF": "bc58b113c871cc7aac5e71698b2607b4bb69a10f74bf15e19450ad866f95f921",
+    "allDeclarations": [
+      "shouldOpenLiveListFromHomeTopTab",
+      "shouldOpenBangumiFromHomeTopTab",
+      "shouldEmbedLivePageInHomeTopTab",
+      "shouldEmbedBangumiPageInHomeTopTab",
+      "HomeTopTabScrollTarget",
+      "resolveHomeTopTabScrollTarget"
+    ],
+    "selectedDeclarations": [
+      "shouldEmbedLivePageInHomeTopTab",
+      "shouldEmbedBangumiPageInHomeTopTab",
+      "HomeTopTabScrollTarget",
+      "resolveHomeTopTabScrollTarget"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+    "sha256LF": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+    "allDeclarations": [
+      "DepthSyncedGlobalHomeWallpaperBackdrop",
+      "HomeWallpaperBackdrop",
+      "isStaticHomeWallpaperUri"
+    ],
+    "selectedDeclarations": [
+      "HomeWallpaperBackdrop",
+      "isStaticHomeWallpaperUri"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration"
+      },
+      {
+        "before": "com.android.purebilibili.core.ui.wallpaper.WallpaperMedia(",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomeMediaPorts.current.wallpaper.wallpaperSurface("
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+    "sha256LF": "7cba90be328190cd3965923b19836c7e6c9ce241678f0b19ffef5308f3e7e4ec",
+    "allDeclarations": [
+      "resolveGlobalLiquidGlassReuseEnabled",
+      "LiquidGlassReuseSurface",
+      "resolveLiquidGlassReuseParticipates",
+      "resolveSharedLiquidGlassChromeEnabled",
+      "resolveEffectiveHomeSettings"
+    ],
+    "selectedDeclarations": [
+      "resolveEffectiveHomeSettings"
+    ],
+    "alreadyOwnedDeclarations": [
+      "resolveGlobalLiquidGlassReuseEnabled"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+    "sha256LF": "108cc19dfffb6fba72908eb0ce5ba26dd63b1ae6a766a53bbb608cc67d88c12e",
+    "allDeclarations": [
+      "HomeVideoClickSource",
+      "HomeVideoClickRequest",
+      "resolveHomeCategoryVideoSourceRoute"
+    ],
+    "selectedDeclarations": [
+      "HomeVideoClickSource",
+      "HomeVideoClickRequest",
+      "resolveHomeCategoryVideoSourceRoute"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+    "sha256LF": "97b76d437936dddfccb4b0f553b14f3b3105ef012fdd520ac293d5863a5fcced",
+    "allDeclarations": [
+      "WECHAT_PACKAGE_NAME",
+      "QQ_PACKAGE_NAME",
+      "VideoSharePayload",
+      "VideoShareTarget",
+      "resolveVideoShareRecipientIds",
+      "VideoShareStyle",
+      "buildVideoSharePayload",
+      "resolveVideoShareCardMetaLine",
+      "resolveVideoShareCardFileName",
+      "buildVideoShareIntent",
+      "buildTargetedShareIntent",
+      "buildVideoCoverShareIntent",
+      "resolveVideoShareChooserTitle",
+      "ShareActivityCandidate",
+      "SHARE_EXCLUDE_LABEL_TOKENS",
+      "SHARE_EXCLUDE_CLASS_TOKENS",
+      "SHARE_FRIEND_LABEL_TOKENS",
+      "SHARE_FRIEND_CLASS_TOKENS",
+      "containsAnyToken",
+      "isExcludedShareActivity",
+      "scoreShareActivityCandidate",
+      "resolvePreferredShareActivity"
+    ],
+    "selectedDeclarations": [
+      "VideoSharePayload",
+      "buildVideoSharePayload"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/NavigationUiPolicy.kt",
+    "sha256LF": "e13e473aedf4d6846f60aa4ef184773242bb9989d5a5427ba2600f298fdc3a18",
+    "allDeclarations": [
+      "shouldUseSidebarNavigationForLayout",
+      "shouldEnableHomeDrawer",
+      "shouldUseExpandedNavigationRailForLayout"
+    ],
+    "selectedDeclarations": [
+      "shouldUseSidebarNavigationForLayout",
+      "shouldEnableHomeDrawer",
+      "shouldUseExpandedNavigationRailForLayout"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/util/NavigationUiPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
+    "sha256LF": "f73c04a5d670c052f8aa2d19c737c81f6865ff7fa960dcb998960e33b5d3a7d1",
+    "allDeclarations": [
+      "rememberHomeFeedSkeletonPulseState",
+      "HomeFeedSkeletonCard",
+      "HomeFeedSkeletonTitleRow",
+      "HomeFeedSkeletonMetaRow",
+      "HomeFeedSkeletonBlock",
+      "HomeFeedHeroCarouselSkeleton",
+      "homeFeedSkeletonBlockBackground",
+      "homeFeedSkeletonBlockAlpha",
+      "HOME_FEED_SKELETON_PULSE_DURATION_MILLIS",
+      "HOME_FEED_SKELETON_LIGHT_MIN_ALPHA",
+      "HOME_FEED_SKELETON_LIGHT_MAX_ALPHA",
+      "HOME_FEED_SKELETON_DARK_MIN_ALPHA",
+      "HOME_FEED_SKELETON_DARK_MAX_ALPHA"
+    ],
+    "selectedDeclarations": [
+      "rememberHomeFeedSkeletonPulseState",
+      "HomeFeedSkeletonCard",
+      "HomeFeedSkeletonTitleRow",
+      "HomeFeedSkeletonMetaRow",
+      "HomeFeedSkeletonBlock",
+      "HomeFeedHeroCarouselSkeleton",
+      "homeFeedSkeletonBlockBackground",
+      "homeFeedSkeletonBlockAlpha",
+      "HOME_FEED_SKELETON_PULSE_DURATION_MILLIS",
+      "HOME_FEED_SKELETON_LIGHT_MIN_ALPHA",
+      "HOME_FEED_SKELETON_LIGHT_MAX_ALPHA",
+      "HOME_FEED_SKELETON_DARK_MIN_ALPHA",
+      "HOME_FEED_SKELETON_DARK_MAX_ALPHA"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+    "sha256LF": "4da92985a0204c748e0c574184f25f0fc02c3353652b340ef273a5614c9e1de8",
+    "allDeclarations": [
+      "HOME_TOP_PARTITION_TAB_ID",
+      "HOME_TOP_SUBSCRIPTION_TAB_ID",
+      "HomeTopTabEntry",
+      "LEGACY_DEFAULT_HOME_TOP_TAB_IDS",
+      "DEFAULT_HOME_TOP_CATEGORIES",
+      "DEFAULT_HOME_TOP_ENTRIES",
+      "HOME_TOP_CUSTOMIZABLE_CATEGORIES",
+      "resolveHomeTopTabId",
+      "resolveHomeTopEntryById",
+      "resolveHomeTopCategoryById",
+      "resolveDefaultHomeTopTabIds",
+      "resolveHomeTopTabEntries",
+      "resolveHomeTopCategories",
+      "resolveHomeTopTabIndex",
+      "resolveHomeCategoryForTopTab",
+      "resolveHomeTopCategoryOrNull",
+      "resolveHomeTopCategoryKey",
+      "resolveHomeTopTabEntryOrNull",
+      "resolveHomeTopTabEntryKey",
+      "ensureSubscriptionHomeTab",
+      "resolveHomeTopTabEntryLabel"
+    ],
+    "selectedDeclarations": [
+      "HOME_TOP_PARTITION_TAB_ID",
+      "HOME_TOP_SUBSCRIPTION_TAB_ID",
+      "HomeTopTabEntry",
+      "LEGACY_DEFAULT_HOME_TOP_TAB_IDS",
+      "DEFAULT_HOME_TOP_CATEGORIES",
+      "DEFAULT_HOME_TOP_ENTRIES",
+      "HOME_TOP_CUSTOMIZABLE_CATEGORIES",
+      "resolveHomeTopTabId",
+      "resolveHomeTopEntryById",
+      "resolveHomeTopCategoryById",
+      "resolveHomeTopTabEntries",
+      "resolveHomeTopCategories",
+      "resolveHomeTopTabEntryOrNull",
+      "resolveHomeTopTabEntryKey",
+      "ensureSubscriptionHomeTab",
+      "resolveHomeTopTabEntryLabel"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+    "sha256LF": "17873889bf966d677e3327e8faaa4fb83f53728fdbcd98f7e5104b6f09cf5f6f",
+    "allDeclarations": [
+      "HomeTopSearchRowMetrics",
+      "resolveHomeTopSearchRowMetrics",
+      "resolveHomeTabsToContentTighteningDp"
+    ],
+    "selectedDeclarations": [
+      "HomeTopSearchRowMetrics",
+      "resolveHomeTopSearchRowMetrics",
+      "resolveHomeTabsToContentTighteningDp"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+    "sha256LF": "4dc21ae2ccff91c0fd33c871734f91bbf85a4473d112f99b75a2f3a98c848496",
+    "allDeclarations": [
+      "shouldApplyHomeSystemBars",
+      "resolveHomeStatusBarDarkIcons"
+    ],
+    "selectedDeclarations": [
+      "shouldApplyHomeSystemBars",
+      "resolveHomeStatusBarDarkIcons"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeScrollCoordinator.kt",
+    "sha256LF": "11db1737044b20100e0faf8ab1da8e6d76b573b90f995cc3fcb284f745bc8985",
+    "allDeclarations": [
+      "BottomBarVisibilityIntent",
+      "HomeScrollUpdate",
+      "HomeHeaderSettleTransition",
+      "resolveHomeRecommendationHeaderCollapseMode",
+      "quantizeHomeHeaderOffset",
+      "resolveHomeEmbeddedPageTopPaddingPx",
+      "shouldHandleHomeVerticalPreScroll",
+      "resolveHomeHeaderSettleTransition",
+      "resolveHomeHeaderReleaseTarget",
+      "resolveHomeHeaderTransitionRunning",
+      "resolveHomeHeaderListIndex",
+      "canRevealHomeHeaderForList",
+      "shouldExpandHomeHeaderForSettledPage",
+      "resolveHomeHeaderOffsetForSettledPage",
+      "reduceHomePreScroll"
+    ],
+    "selectedDeclarations": [
+      "BottomBarVisibilityIntent",
+      "HomeScrollUpdate",
+      "HomeHeaderSettleTransition",
+      "resolveHomeRecommendationHeaderCollapseMode",
+      "quantizeHomeHeaderOffset",
+      "resolveHomeEmbeddedPageTopPaddingPx",
+      "shouldHandleHomeVerticalPreScroll",
+      "resolveHomeHeaderSettleTransition",
+      "resolveHomeHeaderTransitionRunning",
+      "resolveHomeHeaderListIndex",
+      "canRevealHomeHeaderForList",
+      "reduceHomePreScroll"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeScrollCoordinator.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+    "sha256LF": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+    "allDeclarations": [
+      "VideoCardTransitionClock",
+      "VideoCardTransitionSettleState",
+      "report",
+      "VideoCardMorphProgressReporter",
+      "LocalVideoCardMorphProgressReporter",
+      "LocalVideoCardTransitionClock",
+      "VideoCardTransitionTimelineSpec",
+      "resolveVideoCardTimelineSpec",
+      "shouldPreferSharedMorphProgress",
+      "resolveVideoCardGestureStartDepth",
+      "resolveVideoCardClockDepthProgress",
+      "resolveReturningDepthWithFloor",
+      "resolveVideoCardPredictiveGestureDepthProgress",
+      "resolveVideoCardReturnClearStartDepth",
+      "morphFractionToReturnSettle",
+      "resolveMorphAlignedFallbackDurationMs",
+      "rememberVideoCardTransitionClock"
+    ],
+    "selectedDeclarations": [
+      "VideoCardTransitionClock",
+      "VideoCardTransitionSettleState",
+      "LocalVideoCardTransitionClock",
+      "shouldPreferSharedMorphProgress",
+      "resolveVideoCardGestureStartDepth",
+      "resolveVideoCardClockDepthProgress",
+      "resolveReturningDepthWithFloor"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+    "sha256LF": "602709fd478812fc9f571d82c164268d222339487581d53dac0d4f4a0ba96f22",
+    "allDeclarations": [
+      "HomeBottomBarScrollState",
+      "HomeBottomBarScrollUpdate",
+      "reduceHomeBottomBarListScroll",
+      "resolveBottomBarChromeScrollOffset"
+    ],
+    "selectedDeclarations": [
+      "HomeBottomBarScrollState",
+      "HomeBottomBarScrollUpdate",
+      "reduceHomeBottomBarListScroll"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+    "sha256LF": "8d9763336e08301009a9211514eaa82129f45f2924e092744e22d2d8e52cf79c",
+    "allDeclarations": [
+      "resolveHomeTopTabsRevealDelayMs",
+      "resolveHomeTopTabsVisible",
+      "resolveEffectiveHomeTabRowHeight",
+      "resolveEffectiveHomeTopChromeHeight",
+      "shouldAutoCollapseHomeSearchRow",
+      "shouldCollapseHomeTopTabsWithSearchRow"
+    ],
+    "selectedDeclarations": [
+      "resolveHomeTopTabsRevealDelayMs",
+      "resolveHomeTopTabsVisible",
+      "resolveEffectiveHomeTabRowHeight",
+      "resolveEffectiveHomeTopChromeHeight"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+    "sha256LF": "2b8f4534e0d5a1fdb50e47c1ef238af34ac2a9e5fbb923afdc3c22f1263de1d6",
+    "allDeclarations": [
+      "HomeAvatarAction",
+      "resolveHomeAvatarAction"
+    ],
+    "selectedDeclarations": [
+      "HomeAvatarAction",
+      "resolveHomeAvatarAction"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+    "sha256LF": "0216d770c562728dc9cac6549bbbbb205ac10f79bb594437665a610ae17198ff",
+    "allDeclarations": [
+      "resolveHomeFeedMaxContentWidth",
+      "isCompactHomeFeedScreen",
+      "resolveHomeFeedStoredColumnCount",
+      "resolveHomeFeedGridColumns",
+      "resolveHomeFeedCardAspectRatio",
+      "HomeFeedBookHingeGridSpec",
+      "resolveHomeFeedBookHingeGridSpec",
+      "HomeFeedBookHingeArrangement",
+      "resolveHomeFeedHorizontalArrangement"
+    ],
+    "selectedDeclarations": [
+      "HomeFeedBookHingeGridSpec",
+      "resolveHomeFeedBookHingeGridSpec",
+      "HomeFeedBookHingeArrangement",
+      "resolveHomeFeedHorizontalArrangement"
+    ],
+    "alreadyOwnedDeclarations": [
+      "resolveHomeFeedMaxContentWidth",
+      "isCompactHomeFeedScreen",
+      "resolveHomeFeedStoredColumnCount",
+      "resolveHomeFeedGridColumns"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+    "sha256LF": "d114aadafc87fcac9e3d94ec641c8f5eee28b28bf5cc7cbccdeabdba6662e198",
+    "allDeclarations": [
+      "resolveRequiredPullDistanceDp",
+      "shouldResetToTopOnRefreshStart",
+      "shouldResetToTopAfterIncrementalRefresh",
+      "shouldShowReleaseToRefreshHint",
+      "resolvePullRefreshHintText",
+      "resolvePullIndicatorTranslationY",
+      "resolvePullContentMaxOffsetDp",
+      "resolveMd3ScreenshotPullOffsetFraction",
+      "resolvePullContentOffsetFraction",
+      "resolveStablePullContentOffsetFraction",
+      "shouldSnapPullOffsetToFinger",
+      "resolveMd3ScreenshotRefreshIndicatorHeightDp",
+      "resolveMd3ScreenshotRefreshIndicatorTotalHeightDp",
+      "resolveMd3ScreenshotRefreshIndicatorTranslationY"
+    ],
+    "selectedDeclarations": [
+      "shouldResetToTopOnRefreshStart",
+      "shouldResetToTopAfterIncrementalRefresh",
+      "shouldShowReleaseToRefreshHint",
+      "resolvePullRefreshHintText",
+      "resolvePullIndicatorTranslationY",
+      "resolvePullContentMaxOffsetDp",
+      "resolveMd3ScreenshotPullOffsetFraction",
+      "resolvePullContentOffsetFraction",
+      "resolveStablePullContentOffsetFraction",
+      "shouldSnapPullOffsetToFinger",
+      "resolveMd3ScreenshotRefreshIndicatorHeightDp",
+      "resolveMd3ScreenshotRefreshIndicatorTotalHeightDp",
+      "resolveMd3ScreenshotRefreshIndicatorTranslationY"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+    "sha256LF": "1665875bbaa189b7945c0efd19e714279eda3b9c9c9baf74560b43686aeca1a9",
+    "allDeclarations": [
+      "HOME_HERO_CAROUSEL_MAX_ITEMS",
+      "HOME_HERO_CAROUSEL_SIDE_PEEK_DP",
+      "HOME_HERO_CAROUSEL_PAGE_SPACING_DP",
+      "HOME_HERO_CAROUSEL_PHONE_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_TABLET_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_WIDE_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_TABLET_BREAKPOINT_DP",
+      "HOME_HERO_CAROUSEL_WIDE_BREAKPOINT_DP",
+      "HOME_HERO_CAROUSEL_TABLET_MAX_WIDTH_DP",
+      "HOME_HERO_CAROUSEL_WIDE_MAX_WIDTH_DP",
+      "HOME_HERO_CAROUSEL_TOP_GAP_REDUCTION_DP",
+      "HomeHeroCarouselCardTransform",
+      "resolveHomeFeedTopPaddingDp",
+      "resolveHomeHeroCarouselItemOrNull",
+      "resolveHomeHeroCarouselItemKey",
+      "selectHomeHeroCarouselItems",
+      "excludeHomeHeroCarouselItems",
+      "shouldShowHomeHeroCarousel",
+      "shouldYieldHomeTopPagerToHeroCarousel",
+      "resolveHomeHeroCarouselAspectRatio",
+      "resolveHomeHeroCarouselWidthDp",
+      "HomeHeroCarouselLayout",
+      "resolveHomeHeroCarouselMaxHeightDp",
+      "resolveHomeHeroCarouselLayout",
+      "resolveHomeHeroCarouselCardTransform",
+      "resolveHomeHeroCarouselPreviewAlpha"
+    ],
+    "selectedDeclarations": [
+      "HOME_HERO_CAROUSEL_MAX_ITEMS",
+      "HOME_HERO_CAROUSEL_PHONE_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_TABLET_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_WIDE_ASPECT_RATIO",
+      "HOME_HERO_CAROUSEL_TABLET_BREAKPOINT_DP",
+      "HOME_HERO_CAROUSEL_WIDE_BREAKPOINT_DP",
+      "HOME_HERO_CAROUSEL_TABLET_MAX_WIDTH_DP",
+      "HOME_HERO_CAROUSEL_WIDE_MAX_WIDTH_DP",
+      "HOME_HERO_CAROUSEL_TOP_GAP_REDUCTION_DP",
+      "HomeHeroCarouselCardTransform",
+      "resolveHomeFeedTopPaddingDp",
+      "resolveHomeHeroCarouselItemOrNull",
+      "resolveHomeHeroCarouselItemKey",
+      "selectHomeHeroCarouselItems",
+      "excludeHomeHeroCarouselItems",
+      "shouldShowHomeHeroCarousel",
+      "shouldYieldHomeTopPagerToHeroCarousel",
+      "resolveHomeHeroCarouselAspectRatio",
+      "resolveHomeHeroCarouselWidthDp",
+      "HomeHeroCarouselLayout",
+      "resolveHomeHeroCarouselMaxHeightDp",
+      "resolveHomeHeroCarouselLayout",
+      "resolveHomeHeroCarouselCardTransform",
+      "resolveHomeHeroCarouselPreviewAlpha"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+    "sha256LF": "f6e6bdcfffdc5ce763f5c849f1ad7a1095416637648cfe967e2c31e1918cb59a",
+    "allDeclarations": [
+      "HomePerformanceConfig",
+      "resolveHomePreloadAheadCount",
+      "resolveHomeCoverPreloadRange",
+      "resolveHomePerformanceConfig"
+    ],
+    "selectedDeclarations": [
+      "HomePerformanceConfig",
+      "resolveHomePreloadAheadCount",
+      "resolveHomeCoverPreloadRange",
+      "resolveHomePerformanceConfig"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+    "sha256LF": "198067b7a9e28013a55b279b45bff231aac75e97658034f8201a3607606c53ec",
+    "allDeclarations": [
+      "resolveHomeDrawerLogoutAction"
+    ],
+    "selectedDeclarations": [
+      "resolveHomeDrawerLogoutAction"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt",
+    "sha256LF": "a4b1a94f96aa135ae45faebfbfeb9c8ce67e483818f446399adb5d21869ac8f3",
+    "allDeclarations": [
+      "PagerGestureDirection",
+      "PAGER_HORIZONTAL_DOMINANCE_RATIO",
+      "PAGER_AMBIGUOUS_DIRECTION_SLOP_MULTIPLIER",
+      "HOME_PAGER_HORIZONTAL_LOCK_SLOP_MULTIPLIER",
+      "PAGER_RELEASE_POSITION_THRESHOLD",
+      "PAGER_RELEASE_MAX_POSITION_THRESHOLD_DP",
+      "PAGER_RELEASE_MIN_FLING_VELOCITY_DP",
+      "resolveVerticalPriorityPagerGestureDirection",
+      "resolvePagerInitialHorizontalDelta",
+      "resolvePagerReleaseTargetPage",
+      "verticalPriorityHorizontalPagerSwipe",
+      "PagerDragRelease",
+      "PagerDragScrollSession"
+    ],
+    "selectedDeclarations": [
+      "PagerGestureDirection",
+      "PAGER_HORIZONTAL_DOMINANCE_RATIO",
+      "PAGER_AMBIGUOUS_DIRECTION_SLOP_MULTIPLIER",
+      "HOME_PAGER_HORIZONTAL_LOCK_SLOP_MULTIPLIER",
+      "PAGER_RELEASE_POSITION_THRESHOLD",
+      "PAGER_RELEASE_MAX_POSITION_THRESHOLD_DP",
+      "PAGER_RELEASE_MIN_FLING_VELOCITY_DP",
+      "resolveVerticalPriorityPagerGestureDirection",
+      "resolvePagerInitialHorizontalDelta",
+      "resolvePagerReleaseTargetPage",
+      "verticalPriorityHorizontalPagerSwipe",
+      "PagerDragRelease",
+      "PagerDragScrollSession"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+    "sha256LF": "aa10cd816875f4a76a505df2fdc66d6b8d6ce0172da239365b4d3b939a98e11f",
+    "allDeclarations": [
+      "resolveHomeBottomBarBaseVisibility"
+    ],
+    "selectedDeclarations": [
+      "resolveHomeBottomBarBaseVisibility"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
+    "sha256LF": "c2889de37dcf966bbcc10195ebcb10083aba619ff590de8f856b3f0a6e252645",
+    "allDeclarations": [
+      "USER_AGREEMENT_ACK_KEY",
+      "APP_WELCOME_PREFS_NAME",
+      "UserAgreementClause",
+      "UserAgreementChannelLink",
+      "userAgreementIntroText",
+      "userAgreementClauseList",
+      "userAgreementChannelLinks",
+      "canAcknowledgeUserAgreement",
+      "canAcknowledgeUserAgreement",
+      "isUserAgreementRequired"
+    ],
+    "selectedDeclarations": [
+      "USER_AGREEMENT_ACK_KEY"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+    "sha256LF": "925d1937415f1e149a89d6ca34e11b7e98e8b1a8787926274c569a0147f179a3",
+    "allDeclarations": [
+      "TODAY_WATCH_STARTUP_REVEAL_WINDOW_MS",
+      "TODAY_WATCH_NEAR_TOP_OFFSET_PX",
+      "TodayWatchStartupRevealDecision",
+      "decideTodayWatchStartupReveal"
+    ],
+    "selectedDeclarations": [
+      "TODAY_WATCH_STARTUP_REVEAL_WINDOW_MS",
+      "TODAY_WATCH_NEAR_TOP_OFFSET_PX",
+      "TodayWatchStartupRevealDecision",
+      "decideTodayWatchStartupReveal"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+    "sha256LF": "4a5533da5e7aece565dea5326a1216759cb9aee616d5b1b06462aee1fe892357",
+    "allDeclarations": [
+      "shouldEnableHomeDrawerGestures"
+    ],
+    "selectedDeclarations": [
+      "shouldEnableHomeDrawerGestures"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWaterfallMotionSpec.kt",
+    "sha256LF": "e72f94d4ffd337b587b387707f5da301599bbee44d16d2ea6daa3f70b52e9ac3",
+    "allDeclarations": [
+      "homeWaterfallFadeInSpec",
+      "homeWaterfallExpandSpec",
+      "homeWaterfallFadeOutSpec"
+    ],
+    "selectedDeclarations": [
+      "homeWaterfallFadeInSpec",
+      "homeWaterfallExpandSpec",
+      "homeWaterfallFadeOutSpec"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeWaterfallMotionSpec.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+    "sha256LF": "2c366f533a555da0f98f156e8b176c8d6a2319edfac33d0d8d6c7f7e7bd1b523",
+    "allDeclarations": [
+      "nonLinearWaterfallDelayMillis"
+    ],
+    "selectedDeclarations": [
+      "nonLinearWaterfallDelayMillis"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt",
+    "sha256LF": "fdc931d5fc2904d349f2548eeb0119fad473d9302eb523b2d63240179cf19dbb",
+    "allDeclarations": [
+      "IOS_TOP_TAB_CONTENT_PADDING_DP",
+      "TOP_TAB_WIDE_CENTER_BREAKPOINT_DP",
+      "TOP_TAB_INDICATOR_SETTLE_TIMEOUT_MILLIS",
+      "resolveFloatingIndicatorStartPaddingPx",
+      "resolveTopTabRowHorizontalPaddingDp",
+      "resolveTopTabDockIndicatorHorizontalGapDp",
+      "resolveTopTabDockIndicatorVerticalGapDp",
+      "resolveTopTabDockEndInsetDp",
+      "resolveTopTabIndicatorShape",
+      "resolveMd3TopTabUnderlineCenterOffsetDp",
+      "resolveTopTabDockIndicatorWidthDp",
+      "TOP_TAB_INDICATOR_CONTENT_PADDING_DP",
+      "resolveTopTabInterpolatedIndicatorWidthDp",
+      "resolveTopTabDockIndicatorHeightDp",
+      "resolveTopTabWrapItemWidthDp",
+      "shouldWrapTopTabDockWidth",
+      "resolveTopTabDockWrapWidthDp",
+      "resolveTopTabDockItemWidthDp",
+      "resolveTopTabDockIndicatorOffsetPx",
+      "resolveTopTabEdgeAwarePanelOffsetPx",
+      "resolveTopTabVisibleSlots",
+      "resolveMd3TopTabVisibleSlots",
+      "resolveMd3TopTabLayoutVisibleSlots",
+      "resolveIosTopTabLayoutVisibleSlots",
+      "resolveIosTopTabItemWidthDp",
+      "resolveMd3TopTabMinItemWidthDp",
+      "resolveMd3TopTabMaxItemWidthDp",
+      "resolveMd3TopTabItemWidthDp",
+      "resolveFixedHomeTopTabItemWidthDp",
+      "resolveMd3TopTabContentPaddingDp",
+      "resolveMd3VisibleTabIndices",
+      "resolveMd3SelectedVisibleIndex",
+      "resolveTopTabMinItemWidthDp",
+      "resolveTopTabItemWidthDp",
+      "resolveTopTabVisibleCategorySlots",
+      "resolveTopTabActionSlotWidthDp",
+      "normalizeTopTabLabelMode",
+      "shouldShowTopTabIcon",
+      "shouldShowTopTabText",
+      "resolveTopTabIconFamily",
+      "resolveMd3TopTabLabelMode",
+      "resolveTopTabCategoryForIcon",
+      "resolveTopTabCategoryIcon",
+      "resolveTopTabPartitionIcon",
+      "Md3TopTabRowVariant",
+      "resolveMd3TopTabRowVariant",
+      "resolveMd3TopTabActionButtonCorner",
+      "resolveMd3TopTabActionButtonSize",
+      "resolveMd3TopTabActionIconSize",
+      "resolveMd3TopTabActionContentBottomPadding",
+      "resolveMd3TopTabVerticalLiftDp",
+      "resolveMd3TopTabRowVerticalTranslationDp",
+      "resolveMd3TopTabIndicatorBottomPadding",
+      "resolveIconOnlyTopTabIndicatorWidth",
+      "resolveHomeSkinTopTabActionButtonSize",
+      "resolveHomeSkinTopTabActionIconSize",
+      "resolveHomeSkinTopTabIndicatorBottomPadding",
+      "resolveTopTabSkinStickerIconSize",
+      "resolveTopTabSkinPartitionIconSize",
+      "resolveTopTabSkinStickerIndicatorWidth",
+      "resolveTopTabSkinStickerRowHeight",
+      "resolveTopTabSkinStickerItemVerticalPadding",
+      "resolveIosTopTabRowHeight",
+      "resolveHomeTopDockShellHeight",
+      "resolveIosTopTabActionButtonSize",
+      "resolveIosTopTabActionButtonCorner",
+      "resolveIosTopTabActionIconSize",
+      "performHomeTopBarTap",
+      "premiumClickable",
+      "FluidHomeTopBar",
+      "resolveTopTabUnselectedAlpha",
+      "resolveTopTabUnselectedColor",
+      "resolveIosTopTabSelectedContentColor",
+      "resolveIosTopTabCapsuleContainerColor",
+      "TOP_DOCK_SHELL_LENS_INTENSITY",
+      "homeTopBottomBarMatchedSurface",
+      "LightweightHomeTopTabs",
+      "HomeTopTabMotionLayer",
+      "LightweightTopTabIndicatorOverlay",
+      "LightweightTopTabMd3Underline",
+      "TopTabLiquidColorMode",
+      "resolveTopTabVisibleContentAlpha",
+      "resolveTopTabUsesGlassExportForSelectedGlyphs",
+      "LightweightTopTabItem",
+      "TopTabBlendedIcon",
+      "CategoryTabRow",
+      "rememberTopTabPagerDragHeld",
+      "resolveTopTabIndicatorVelocity",
+      "resolveTopTabPagerVelocityItemsPerSecond",
+      "resolveTopTabIndicatorDragTargetIndex",
+      "resolveTopTabIndicatorLayerVelocityItemsPerSecond",
+      "shouldTopTabIndicatorBeInteracting",
+      "resolveTopTabIndicatorInteractionReleaseDelayMillis",
+      "shouldTopTabIndicatorUseRefraction",
+      "shouldDeformTopTabIndicator",
+      "resolveTopTabIndicatorVisualPolicy",
+      "resolveTopTabStaticIndicatorVisualPolicy",
+      "resolveTopTabIndicatorLayerTransform",
+      "resolveTopTabIndicatorScaleProgress",
+      "resolveTopTabMatchedPanelOffsetPx",
+      "resolveTopTabNeutralIndicatorColor",
+      "resolveTopTabNeutralIndicatorTintAlpha",
+      "TopTabIndicatorBackdropPolicy",
+      "resolveTopTabIndicatorBackdropPolicy",
+      "TopTabRefractionMotionProfile",
+      "resolveTopTabRefractionMotionProfile",
+      "resolveTopTabRefractionMotionProfile",
+      "resolveTopTabItemMotionVisual",
+      "resolveTopTabHorizontalDeltaPx",
+      "resolveTopTabIndicatorViewportShiftPx",
+      "resolveTopTabIndicatorViewportClampShiftPx",
+      "CategoryTabItem"
+    ],
+    "selectedDeclarations": [
+      "IOS_TOP_TAB_CONTENT_PADDING_DP",
+      "TOP_TAB_WIDE_CENTER_BREAKPOINT_DP",
+      "TOP_TAB_INDICATOR_SETTLE_TIMEOUT_MILLIS",
+      "resolveTopTabRowHorizontalPaddingDp",
+      "resolveTopTabDockIndicatorHorizontalGapDp",
+      "resolveTopTabDockIndicatorVerticalGapDp",
+      "resolveTopTabDockEndInsetDp",
+      "resolveTopTabIndicatorShape",
+      "resolveMd3TopTabUnderlineCenterOffsetDp",
+      "resolveTopTabDockIndicatorWidthDp",
+      "TOP_TAB_INDICATOR_CONTENT_PADDING_DP",
+      "resolveTopTabInterpolatedIndicatorWidthDp",
+      "resolveTopTabDockIndicatorHeightDp",
+      "resolveTopTabWrapItemWidthDp",
+      "shouldWrapTopTabDockWidth",
+      "resolveTopTabDockWrapWidthDp",
+      "resolveTopTabDockItemWidthDp",
+      "resolveTopTabDockIndicatorOffsetPx",
+      "resolveTopTabEdgeAwarePanelOffsetPx",
+      "resolveMd3TopTabVisibleSlots",
+      "resolveMd3TopTabLayoutVisibleSlots",
+      "resolveIosTopTabLayoutVisibleSlots",
+      "resolveIosTopTabItemWidthDp",
+      "resolveMd3TopTabMinItemWidthDp",
+      "resolveMd3TopTabMaxItemWidthDp",
+      "resolveMd3TopTabItemWidthDp",
+      "resolveFixedHomeTopTabItemWidthDp",
+      "resolveMd3TopTabContentPaddingDp",
+      "shouldShowTopTabIcon",
+      "shouldShowTopTabText",
+      "resolveTopTabIconFamily",
+      "resolveTopTabCategoryForIcon",
+      "resolveTopTabCategoryIcon",
+      "resolveTopTabPartitionIcon",
+      "resolveMd3TopTabVerticalLiftDp",
+      "resolveMd3TopTabRowVerticalTranslationDp",
+      "resolveIconOnlyTopTabIndicatorWidth",
+      "resolveHomeSkinTopTabActionButtonSize",
+      "resolveHomeSkinTopTabActionIconSize",
+      "resolveTopTabSkinStickerIconSize",
+      "resolveTopTabSkinPartitionIconSize",
+      "resolveTopTabSkinStickerIndicatorWidth",
+      "resolveTopTabSkinStickerRowHeight",
+      "resolveTopTabSkinStickerItemVerticalPadding",
+      "resolveIosTopTabRowHeight",
+      "performHomeTopBarTap",
+      "resolveIosTopTabSelectedContentColor",
+      "resolveIosTopTabCapsuleContainerColor",
+      "TOP_DOCK_SHELL_LENS_INTENSITY",
+      "homeTopBottomBarMatchedSurface",
+      "LightweightHomeTopTabs",
+      "HomeTopTabMotionLayer",
+      "LightweightTopTabIndicatorOverlay",
+      "LightweightTopTabMd3Underline",
+      "TopTabLiquidColorMode",
+      "resolveTopTabVisibleContentAlpha",
+      "resolveTopTabUsesGlassExportForSelectedGlyphs",
+      "LightweightTopTabItem",
+      "TopTabBlendedIcon",
+      "CategoryTabRow",
+      "rememberTopTabPagerDragHeld",
+      "resolveTopTabPagerVelocityItemsPerSecond",
+      "resolveTopTabIndicatorDragTargetIndex",
+      "shouldTopTabIndicatorUseRefraction",
+      "shouldDeformTopTabIndicator",
+      "resolveTopTabIndicatorVisualPolicy",
+      "resolveTopTabIndicatorLayerTransform",
+      "resolveTopTabIndicatorScaleProgress",
+      "resolveTopTabMatchedPanelOffsetPx",
+      "TopTabIndicatorBackdropPolicy",
+      "resolveTopTabIndicatorBackdropPolicy"
+    ],
+    "alreadyOwnedDeclarations": [
+      "normalizeTopTabLabelMode",
+      "resolveMd3TopTabActionButtonCorner",
+      "resolveMd3TopTabActionButtonSize",
+      "resolveMd3TopTabActionIconSize",
+      "resolveHomeTopDockShellHeight",
+      "resolveIosTopTabActionButtonSize",
+      "resolveIosTopTabActionButtonCorner",
+      "resolveIosTopTabActionIconSize"
+    ],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/TopBar.kt",
+    "changes": [
+      {
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "before": "SettingsManager.MAX_TOP_TABS",
+        "after": "com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.MAX_TOP_TABS"
+      },
+      {
+        "before": "SettingsManager.TopTabLabelMode.TEXT_ONLY",
+        "after": "com.bilipai.desktop.ui.DesktopOriginalHomeSettingConstants.TopTabLabelMode.TEXT_ONLY"
+      },
+      {
+        "before": "import androidx.compose.ui.res.vectorResource\n",
+        "after": ""
+      },
+      {
+        "before": "ImageVector.vectorResource(\n                com.android.purebilibili.R.drawable.ms_rss_feed_24\n            )",
+        "after": "com.bilipai.desktop.settings.DesktopLinkedDockVectors.vector(com.bilipai.desktop.settings.DesktopLinkedDockSymbols.ms_rss_feed_24)"
+      }
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+    "sha256LF": "eb5b47502b302db15a22bc88224e9e5680b975dc4c286b8ce29469367c1fc55a",
+    "allDeclarations": [
+      "HomeTopTabGestureAction",
+      "resolveHomeTopTabGestureAction",
+      "resolveHomeTopCollapsedHandleHeight",
+      "resolveHomeTopTabsAutoCollapsed",
+      "reduceHomeTopTabsAutoCollapseState",
+      "resolveHomeTopTabPresentationHeight"
+    ],
+    "selectedDeclarations": [
+      "HomeTopTabGestureAction",
+      "resolveHomeTopTabGestureAction",
+      "resolveHomeTopCollapsedHandleHeight",
+      "resolveHomeTopTabPresentationHeight"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+    "sha256LF": "c05d491f60caeecb0b64218e8dc7f8565b099790e55a6aa4410d9f7339715490",
+    "allDeclarations": [
+      "AppNavigationAppearance",
+      "resolveEffectiveNavigationBottomBarBlur",
+      "resolveAppNavigationAppearance"
+    ],
+    "selectedDeclarations": [
+      "AppNavigationAppearance",
+      "resolveEffectiveNavigationBottomBarBlur",
+      "resolveAppNavigationAppearance"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ContentCardSurfacePolicy.kt",
+    "sha256LF": "2b331b966c2f1d8f2e61e075476b2cab41186f0b85106d763c05f109e279b652",
+    "allDeclarations": [
+      "ContentCardSurfaceSpec",
+      "resolveContentCardSurfaceSpec",
+      "rememberContentCardSurfaceSpec",
+      "resolveContentCardCornerDp"
+    ],
+    "selectedDeclarations": [
+      "ContentCardSurfaceSpec",
+      "resolveContentCardSurfaceSpec",
+      "rememberContentCardSurfaceSpec"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/ContentCardSurfacePolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+    "sha256LF": "79f11b9ec6ad54a8b3f131fd0213b43ed59faf888f451936b688b53f9e8db248",
+    "allDeclarations": [
+      "resolveUserVipBadgeLabel",
+      "UserVipBadge",
+      "resolveVipBadgeColors",
+      "AccessibleVipBadgeColors"
+    ],
+    "selectedDeclarations": [
+      "resolveUserVipBadgeLabel",
+      "UserVipBadge",
+      "resolveVipBadgeColors",
+      "AccessibleVipBadgeColors"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+    "sha256LF": "799ecb2199e98131e551a1746ef47f3d2f2699fdab97c74c799abc42b346805b",
+    "allDeclarations": [
+      "DrawerMotionBudget",
+      "resolveDrawerMotionBudget",
+      "shouldEnableDrawerBlur",
+      "shouldForceLowDrawerBlurBudget"
+    ],
+    "selectedDeclarations": [
+      "DrawerMotionBudget",
+      "resolveDrawerMotionBudget",
+      "shouldEnableDrawerBlur",
+      "shouldForceLowDrawerBlurBudget"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpec.kt",
+    "sha256LF": "80b1615d19dae58b74485132977d421a9e42629ec8ab24beb702575feeb6787e",
+    "allDeclarations": [
+      "resolveHomeSkeletonCoverShape",
+      "resolveHomeSkeletonInfoShape"
+    ],
+    "selectedDeclarations": [
+      "resolveHomeSkeletonCoverShape",
+      "resolveHomeSkeletonInfoShape"
+    ],
+    "alreadyOwnedDeclarations": [],
+    "mode": "policy-extract",
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpec.kt",
+    "changes": []
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+    "sha256LF": "adc145f30542bcc80858dfa55700b62bec5a05bd7261652ec0a1f226f34f8817",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "rememberMetricsStateHolder",
+      "TrackJank",
+      "TrackScrollJank",
+      "TrackJankStateValue",
+      "TrackJankStateFlag"
+    ],
+    "reason": "only Android hierarchy Holder lookup becomes required current Windows window metric port; original state changes/scroll collectors retained"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/ModifierExt.kt",
+    "sha256LF": "caa784820d58714dc5cec7415ee3f67b2a11ab1d31e63d062bc1701e4f1f4bfa",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "iOSCardTapEffect"
+    ],
+    "reason": "missing exact original modifier; existing HapticType/feedback implementation sole reused"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "sha256LF": "e7ee5766b05d05a39e81f0a81774c0870eb340879493df4397f94864b9d386f8",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "VIDEO_CARD_TRANSITION_MAX_BLUR_RADIUS_DP",
+      "VIDEO_CARD_TRANSITION_BLUR_QUANTUM_PX",
+      "VIDEO_CARD_TRANSITION_RETURN_BLUR_QUANTUM_PX",
+      "VIDEO_CARD_TRANSITION_BACKGROUND_SCALE_REDUCTION",
+      "VIDEO_CARD_TRANSITION_RELATED_SCALE_REDUCTION",
+      "VIDEO_CARD_TRANSITION_PARTITION_SCALE_REDUCTION",
+      "VIDEO_CARD_TRANSITION_MAX_SCRIM_ALPHA_DARK",
+      "VIDEO_CARD_TRANSITION_MAX_SCRIM_ALPHA_LIGHT",
+      "VIDEO_CARD_TRANSITION_REDUCED_SCRIM_ALPHA",
+      "VIDEO_CARD_TRANSITION_SCALE_GAP_MIN_TINT_LIGHT",
+      "VIDEO_CARD_TRANSITION_SCALE_GAP_MIN_TINT_DARK",
+      "VIDEO_CARD_TRANSITION_DARK_GAP_BASE",
+      "VIDEO_CARD_TRANSITION_BACKGROUND_CORNER_FALLBACK_DP",
+      "VIDEO_CARD_TRANSITION_BACKGROUND_RETURN_DURATION_MS",
+      "VIDEO_CARD_TRANSITION_BACKGROUND_CANCEL_DURATION_MS",
+      "VideoCardTransitionBackgroundPhase",
+      "VideoCardTransitionBackgroundSource",
+      "resolveVideoCardTransitionBackgroundSource",
+      "resolveVideoCardTransitionBackgroundScaleReduction",
+      "shouldUseRealtimeVideoCardTransitionBackgroundBlur",
+      "shouldUseHostOwnedVideoCardTransitionSnapshot",
+      "shouldHomeFeedOwnVideoCardTransitionSnapshot",
+      "shouldApplyVideoCardTransitionSnapshotOnRouteShell",
+      "VideoCardTransitionBackgroundFrame",
+      "VideoCardTransitionBackgroundState",
+      "LocalVideoCardTransitionBackgroundState",
+      "resolveVideoCardTransitionMotionTier",
+      "resolveVideoCardTransitionScrimAlpha",
+      "resolveVideoCardTransitionContentScale",
+      "resolveVideoCardTransitionBackgroundScalePivot",
+      "resolveVideoCardTransitionOverlayDepthPivot",
+      "videoCardTransitionChromeReveal",
+      "videoCardTransitionOverlayDepthEffect",
+      "resolveVideoCardTransitionBackgroundScalePivotOffset",
+      "resolveVideoCardTransitionBackgroundFrame",
+      "resolveVideoCardTransitionBackgroundCornerRadiusDp",
+      "resolveVideoCardTransitionBackgroundCornerRadiusPx",
+      "resolveVideoCardTransitionBackgroundGestureProgress",
+      "resolveVideoCardTransitionBackgroundOpeningGestureProgress",
+      "isVideoCardTransitionBackgroundGesturePhase",
+      "resolveVideoCardTransitionBackgroundGestureBlurProgress",
+      "resolveVideoCardTransitionReturnFullDurationMillis",
+      "resolveVideoCardTransitionBackgroundReturnDurationMs",
+      "resolveMorphAlignedDepthClearDurationMs",
+      "shouldInterruptVideoCardOpeningOnReturn",
+      "shouldSnapClearVideoCardDepthBlurOnQuickReturn",
+      "shouldApplyVideoCardTransitionBackgroundToRoute",
+      "videoCardTransitionLiveBackgroundEffect",
+      "VideoCardTransitionNavBackdropFrame",
+      "shouldShowVideoCardTransitionNavBackdrop",
+      "resolveVideoCardTransitionNavBackdropFrame",
+      "resolveVideoCardTransitionNavBackdropColor",
+      "shouldDrawVideoCardTransitionScaleGapFill",
+      "resolveVideoCardTransitionScaleGapFillColor",
+      "shouldSourceYieldDepthLayerToHost",
+      "shouldUseVideoCardTransitionSnapshotBlur",
+      "VideoCardTransitionBackgroundFrameCache",
+      "VideoCardTransitionSnapshotLayerState",
+      "isVideoCardTransitionSnapshotDrawable",
+      "VideoCardTransitionSnapshotHandle",
+      "VIDEO_CARD_TRANSITION_LIGHT_SCRIM_TINT",
+      "applyVideoCardTransitionSnapshotFrame",
+      "rememberVideoCardTransitionSnapshotHandle",
+      "shouldLiveRecordVideoCardTransitionSnapshot",
+      "videoCardTransitionBackgroundEffect",
+      "resolveVideoCardTransitionFrozenLayerAlpha",
+      "shouldPrimeLiveContentForHazeDuringDepthDraw",
+      "resolveVideoCardTransitionDepthProgress",
+      "softClearVideoCardTransitionDepth",
+      "resolveVideoCardTransitionBlurStrength",
+      "resolveVideoCardTransitionMaxBlurRadiusPx",
+      "resolveVideoCardTransitionBlurQuantumPx",
+      "quantizeVideoCardTransitionBlurRadius",
+      "normalizeVideoCardTransitionRoute"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "changes": [
+      {
+        "before": "import android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "import androidx.compose.ui.platform.LocalView\n",
+        "after": ""
+      },
+      {
+        "before": "Build.VERSION.SDK_INT",
+        "after": "com.android.purebilibili.feature.home.components.cards.DesktopHomeCardPlatform.androidRenderEffectApiLevel"
+      },
+      {
+        "before": "Build.VERSION_CODES.S",
+        "after": "31"
+      },
+      {
+        "before": "    val view = LocalView.current\n",
+        "after": "    val windowPlatform = com.bilipai.desktop.ui.LocalDesktopHomePlatform.current\n"
+      },
+      {
+        "before": "deviceCornerRadiusPx = resolveDeviceDisplayCornerRadiusPx(view.rootWindowInsets)",
+        "after": "deviceCornerRadiusPx = windowPlatform.deviceCornerRadiusPx"
+      }
+    ],
+    "reason": "existing sole home-full-card output extension: complete original retained GraphicsLayer renderer; only native WindowInsets corner lookup binds required Root window geometry"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "sha256LF": "e37ef5012d302af1f8a02d5c7e4932c0a7644f06ae1d5907947602ee672b430e",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "recoverableBlurGates",
+      "recoverableBlurEnabled",
+      "hazeSourceCompat",
+      "shouldEnableRecoverableHeavyVisualEffects",
+      "rememberRecoverableHazeState"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "changes": [
+      {
+        "before": "import android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "import com.android.purebilibili.core.lifecycle.BackgroundManager",
+        "after": "import com.bilipai.desktop.ui.LocalDesktopHomePlatform\nimport com.bilipai.desktop.ui.DesktopHomeWindowBackgroundPort"
+      },
+      {
+        "before": "    if (!shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)) return this\n",
+        "after": ""
+      },
+      {
+        "before": "    sdkInt: Int = Build.VERSION.SDK_INT\n",
+        "after": "    platform: com.bilipai.desktop.ui.DesktopHomePlatform = LocalDesktopHomePlatform.current\n"
+      },
+      {
+        "before": "    var isAppInBackground by remember { mutableStateOf(BackgroundManager.isInBackground) }",
+        "after": "    var isAppInBackground by remember(platform.background) { mutableStateOf(platform.background.isInBackground) }"
+      },
+      {
+        "before": "val shouldRecreateState = shouldRecreateRecoverableHazeState(sdkInt)",
+        "after": "val shouldRecreateState = platform.recreateHazeOnResume"
+      },
+      {
+        "before": "BackgroundManager.BackgroundStateListener",
+        "after": "DesktopHomeWindowBackgroundPort.Listener"
+      },
+      {
+        "before": "BackgroundManager.addListener(listener)",
+        "after": "platform.background.addListener(listener)"
+      },
+      {
+        "before": "BackgroundManager.removeListener(listener)",
+        "after": "platform.background.removeListener(listener)"
+      },
+      {
+        "before": "fun rememberRecoverableHazeState(",
+        "after": "internal fun rememberRecoverableHazeState("
+      }
+    ],
+    "reason": "existing sole home-full-card gate/map reused; original recreation/blur state algorithm and WeakHashMap retained; native visibility listeners replace Android BackgroundManager"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLogger.kt",
+    "sha256LF": "bd9fa234b62208862a7a4465958f96d4726551d14b77d72d7405ebe2f468d177",
+    "mode": "policy-extract",
+    "selectedDeclarations": null,
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLogger.kt",
+    "changes": [
+      {
+        "before": "import com.android.purebilibili.BuildConfig\n",
+        "after": ""
+      },
+      {
+        "before": "if (!BuildConfig.DEBUG) return",
+        "after": "if (!com.bilipai.desktop.ui.LocalDesktopHomePlatform.current.debugFrameMetricsEnabled) return"
+      }
+    ],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+    "sha256LF": "280fb390d8e688920542542093f8ac44974d9e86cd03d7518173453ec8abea94",
+    "mode": "policy-extract",
+    "selectedDeclarations": null,
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+    "sha256LF": "e37cbef3eec3cc56d90315f66c8876a230cfa0fb0ae1bb40e6f7882f34ab0481",
+    "mode": "policy-extract",
+    "selectedDeclarations": null,
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "sha256LF": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "isVideoWallpaper"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperType.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/ModifierExt.kt",
+    "sha256LF": "caa784820d58714dc5cec7415ee3f67b2a11ab1d31e63d062bc1701e4f1f4bfa",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "iOSTapEffect"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+    "sha256LF": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "ErrorState"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalErrorState.kt",
+    "changes": [
+      {
+        "before": "LottieAnimation(\n            url = LottieUrls.ERROR,\n            size = 120.dp,\n            iterations = 1\n        )",
+        "after": "com.bilipai.desktop.ui.LocalDesktopHomeErrorAnimation.current(LottieUrls.ERROR,120.dp,1)"
+      }
+    ],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt",
+    "sha256LF": "a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "BottomBarMatchedDockVisibility"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/feature/home/components/DesktopHomeMatchedDockVisibilityReference.kt",
+    "changes": [],
+    "reason": "reference-only selected2; existing shared32 sole producer must append these declarations, never install a second facade",
+    "install": false
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshPolicy.kt",
+    "sha256LF": "b176222984174db4c73fe4009bbf1401328d38889258dc45b03e33e5878a011f",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "resolveMiuixPullToRefreshTexts"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalPullRefreshText.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/PullRefreshUiPolicy.kt",
+    "sha256LF": "0a807746f26140114ca3add090066be5fad1054b440284c60dde9ac348e0989c",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "resolvePullRefreshThresholdDp"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThreshold.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionHostDepthLayer.kt",
+    "sha256LF": "2e5da7bef26c7aa839775a2a123b5b14f528db1b1e999748dccc924a6db6d02a",
+    "mode": "policy-extract",
+    "selectedDeclarations": [
+      "shouldInvalidateSnapshotOnSourceDispose"
+    ],
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
+    "changes": [],
+    "reason": "exact original declarations"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.kt",
+    "sha256LF": "5b32b6ee70c82660a5492b6b0fb089fc2721cb2b4c9a85290b1292e4ca07ec6c",
+    "mode": "policy-extract",
+    "selectedDeclarations": null,
+    "generated": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.kt",
+    "changes": [
+      {
+        "before": "import android.os.Trace\n",
+        "after": ""
+      },
+      {
+        "before": "import android.os.Build\n",
+        "after": ""
+      },
+      {
+        "before": "Log.isLoggable(TAG, Log.DEBUG)",
+        "after": "java.util.logging.Logger.getLogger(TAG).isLoggable(java.util.logging.Level.FINE)"
+      },
+      {
+        "before": "if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {\n            Trace.setCounter(name, value)\n        }",
+        "after": "java.util.logging.Logger.getLogger(TAG).fine(\"$name=$value\")"
+      }
+    ],
+    "reason": "original counter/phase algorithm preserved; Android Perfetto emission maps only to real JVM local FINE logging, no telemetry client/upload"
+  }
+]

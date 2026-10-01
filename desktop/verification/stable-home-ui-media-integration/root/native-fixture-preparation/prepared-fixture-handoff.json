@@ -1,0 +1,129 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_FIXTURE_PREPARATION",
+  "artifactCount": 23,
+  "artifacts": [
+    {
+      "path": "NativeHomeMediaFixture.kt",
+      "bytes": 12906,
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f"
+    },
+    {
+      "path": "run.py",
+      "bytes": 12305,
+      "sha256Bytes": "1df4dc7f12cd7bf8065a4f36a347593d13ba4e22c4e5322d47766031b73dacfd"
+    },
+    {
+      "path": "audit-abi.py",
+      "bytes": 8031,
+      "sha256Bytes": "64dcb7d29b0295042a6ccd854fd73c85f71196a98bd190075d3468ec9128237e"
+    },
+    {
+      "path": "abi-source-review.json",
+      "bytes": 14233,
+      "sha256Bytes": "46122e8cd0f5313c8d127d2ff05ac6a9aed7d4529ce1d423d673c01268c3c293"
+    },
+    {
+      "path": "audit-history-01.json",
+      "bytes": 382,
+      "sha256Bytes": "5b4a89af262d1fef63662de80fb943613f0bbb3d2771a985ddbc3e2c87697389"
+    },
+    {
+      "path": "CONTRACT.md",
+      "bytes": 4523,
+      "sha256Bytes": "72e0000f1d1f0f621f4f8001f5586f7209706adb511c2847ff12e208195f785a"
+    },
+    {
+      "path": "freeze-preparation.py",
+      "bytes": 1674,
+      "sha256Bytes": "c4ffcaac13b2c7978555c4b81ff54e960f29bbbad098d12d7ffba17b120a3c73"
+    },
+    {
+      "path": "runs/compile-01/compile-result.json",
+      "bytes": 269,
+      "sha256Bytes": "3066b599c43c90414883da14f49eb4f9125f0363c283f99dfa453e85a60f0654"
+    },
+    {
+      "path": "runs/compile-01/compiler.args",
+      "bytes": 24068,
+      "sha256Bytes": "24e2bd004daae348936f0d80e0cd3f5a54e975e01f67799c9cfb4262ddc14887"
+    },
+    {
+      "path": "runs/compile-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-after.json",
+      "bytes": 112157,
+      "sha256Bytes": "af5fe686199bcb13263098edcc3cb13d9c4a7ec5d6bca134e214de7beadf4a47"
+    },
+    {
+      "path": "runs/compile-01/dependency-pins-before.json",
+      "bytes": 112157,
+      "sha256Bytes": "af5fe686199bcb13263098edcc3cb13d9c4a7ec5d6bca134e214de7beadf4a47"
+    },
+    {
+      "path": "runs/compile-01/fixture-symbol-audit.json",
+      "bytes": 1053,
+      "sha256Bytes": "a283b3c97f5e70cf74f36d58015b57d473b448f0c2cdb9e5e51f1ac2eeb8d880"
+    },
+    {
+      "path": "runs/compile-01/native-media-fixture.jar",
+      "bytes": 45140,
+      "sha256Bytes": "8d63051d0f8a2b3aba0abe21b63fc78f3034dde49d205afa15921fc3f3266615"
+    },
+    {
+      "path": "runs/compile-01/source-inputs/NativeHomeMediaFixture.kt",
+      "bytes": 12906,
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f"
+    },
+    {
+      "path": "runs/compile-02/compile-result.json",
+      "bytes": 269,
+      "sha256Bytes": "3066b599c43c90414883da14f49eb4f9125f0363c283f99dfa453e85a60f0654"
+    },
+    {
+      "path": "runs/compile-02/compiler.args",
+      "bytes": 24068,
+      "sha256Bytes": "cb821373364deada5b5e2509b5dff32ae1ea560372aecacd00079de51823e783"
+    },
+    {
+      "path": "runs/compile-02/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-after.json",
+      "bytes": 116210,
+      "sha256Bytes": "ce0f81af3d20c10849c443ec58c4e7f3ac3349dca0575cf338f654aa7658dc0c"
+    },
+    {
+      "path": "runs/compile-02/dependency-pins-before.json",
+      "bytes": 116210,
+      "sha256Bytes": "ce0f81af3d20c10849c443ec58c4e7f3ac3349dca0575cf338f654aa7658dc0c"
+    },
+    {
+      "path": "runs/compile-02/fixture-symbol-audit.json",
+      "bytes": 1053,
+      "sha256Bytes": "a283b3c97f5e70cf74f36d58015b57d473b448f0c2cdb9e5e51f1ac2eeb8d880"
+    },
+    {
+      "path": "runs/compile-02/native-media-fixture.jar",
+      "bytes": 45140,
+      "sha256Bytes": "8d63051d0f8a2b3aba0abe21b63fc78f3034dde49d205afa15921fc3f3266615"
+    },
+    {
+      "path": "runs/compile-02/source-inputs/NativeHomeMediaFixture.kt",
+      "bytes": 12906,
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f"
+    }
+  ],
+  "fixtureOnlyCompilePass": true,
+  "actualProductNativeRuntimeProof": false,
+  "nativeLoadedOrExecuted": false,
+  "ffmpegExecuted": false,
+  "productionSourceModified": false,
+  "prospectiveCompileDependencies": "Actual30 + explicit frozen media74 and Home UI class overlays. NEVER executed.",
+  "actualRunRequires": "Later Root-authorized immutable installed graph and 0 production class overrides",
+  "actualRunCohortMustBeSeparate": true
+}

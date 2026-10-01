@@ -1,0 +1,26 @@
+{
+    "settings": {
+        "listen_video_bottom_tab_migration_complete": true,
+        "header_blur_enabled": false,
+        "header_collapse_enabled": false,
+        "home_card_dynamic_tint_enabled": true,
+        "home_hero_carousel_enabled": true,
+        "unrelated_key": "retained",
+        "top_tab_order": "FOLLOW,POPULAR,RECOMMEND,ANIME,LIVE,SUBSCRIPTION,PARTITION",
+        "top_tab_visible_tabs": "FOLLOW,POPULAR,RECOMMEND,ANIME,LIVE,SUBSCRIPTION,PARTITION",
+        "bottom_bar_order": "HOME,DYNAMIC,HISTORY,PROFILE",
+        "bottom_bar_visible_tabs": "HOME,DYNAMIC,HISTORY,PROFILE",
+        "bottom_bar_item_colors": "home:23,my:17,bad:invalid",
+        "bottom_bar_item_labels": "home:  自定义  ,mine:我的",
+        "grid_column_count": 5,
+        "grid_column_count_compact": 2,
+        "tablet_use_sidebar": false,
+        "easter_egg_enabled": true
+    },
+    "easter_egg": {
+        "enabled": true
+    },
+    "data_saver": {
+        "mode": 0
+    }
+}

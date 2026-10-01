@@ -1,0 +1,3321 @@
+{
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "paths": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256LF": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+      "allDeclarations": [
+        "HomeScrollRequest",
+        "HOME_RESELECT_DOUBLE_TAP_WINDOW_MS",
+        "mergeHomeScrollRequests",
+        "LocalHomeScrollChannel",
+        "LocalHomeMiuixBackdrop",
+        "LocalHomeWallpaperBackdrop",
+        "LocalHomeWallpaperBackdropReady",
+        "LocalHomeWallpaperIsStatic",
+        "LocalHomeScrollOffset",
+        "LocalHomeFeedScrollInProgress",
+        "HomeScreen",
+        "HomeOverlayMotionSpec",
+        "resolveHomeOverlayMotionSpec",
+        "RETURN_ANIMATION_SUPPRESSION_BUFFER_MS",
+        "RETURN_ANIMATION_SUPPRESSION_TABLET_EXTRA_MS",
+        "resolveReturnAnimationSuppressionDurationMs",
+        "resolveHomeContentInteractionRestoreDelayMs"
+      ],
+      "selectedDeclarations": [
+        "HomeScrollRequest",
+        "HOME_RESELECT_DOUBLE_TAP_WINDOW_MS",
+        "mergeHomeScrollRequests",
+        "LocalHomeScrollChannel",
+        "LocalHomeMiuixBackdrop",
+        "HomeScreen",
+        "HomeOverlayMotionSpec",
+        "resolveHomeOverlayMotionSpec",
+        "RETURN_ANIMATION_SUPPRESSION_BUFFER_MS",
+        "RETURN_ANIMATION_SUPPRESSION_TABLET_EXTRA_MS",
+        "resolveReturnAnimationSuppressionDurationMs",
+        "resolveHomeContentInteractionRestoreDelayMs"
+      ],
+      "alreadyOwnedDeclarations": [
+        "LocalHomeWallpaperBackdrop",
+        "LocalHomeWallpaperBackdropReady",
+        "LocalHomeWallpaperIsStatic",
+        "LocalHomeScrollOffset",
+        "LocalHomeFeedScrollInProgress"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "sha256LF": "0d350bbae49db96c6290220767155433df729fa16e852f31544faeb2aeb17ea2",
+      "allDeclarations": [
+        "resolveHomeCategoryVideoGridKey",
+        "resolveHomeCategoryVideoGridKeys",
+        "resolveHomeFeedAlignedRows",
+        "resolveHomeOldContentGridItemIndex",
+        "resolveHomeHeroCarouselDedupKey",
+        "shouldRequestHomeCategoryLoadMore",
+        "HomeCategoryPageContent",
+        "PopularSubCategorySegmentedControl",
+        "TodayWatchModeSegmentedControl",
+        "TodayWatchPlanCard",
+        "WaterfallReveal",
+        "OldContentDivider"
+      ],
+      "selectedDeclarations": [
+        "resolveHomeCategoryVideoGridKey",
+        "resolveHomeCategoryVideoGridKeys",
+        "resolveHomeFeedAlignedRows",
+        "resolveHomeOldContentGridItemIndex",
+        "resolveHomeHeroCarouselDedupKey",
+        "shouldRequestHomeCategoryLoadMore",
+        "HomeCategoryPageContent",
+        "PopularSubCategorySegmentedControl",
+        "TodayWatchModeSegmentedControl",
+        "TodayWatchPlanCard",
+        "WaterfallReveal",
+        "OldContentDivider"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "sha256LF": "3dd55fff4015adb388f9a403e6ae585a01b4a81f9aff3502a3af97f069187939",
+      "allDeclarations": [
+        "UserState",
+        "HomeCategory",
+        "LiveSubCategory",
+        "PopularSubCategory",
+        "TodayWatchMode",
+        "resolveHomeCategoryLabelRes",
+        "resolveLiveSubCategoryLabelRes",
+        "resolvePopularSubCategoryLabelRes",
+        "resolveTodayWatchModeLabelRes",
+        "TodayUpRank",
+        "TodayWatchPlan",
+        "TodayWatchCardUiConfig",
+        "CategoryContent",
+        "HomeUiState"
+      ],
+      "selectedDeclarations": [
+        "UserState",
+        "LiveSubCategory",
+        "resolveHomeCategoryLabelRes",
+        "resolveLiveSubCategoryLabelRes",
+        "resolvePopularSubCategoryLabelRes",
+        "resolveTodayWatchModeLabelRes",
+        "TodayWatchCardUiConfig",
+        "CategoryContent",
+        "HomeUiState"
+      ],
+      "alreadyOwnedDeclarations": [
+        "HomeCategory",
+        "PopularSubCategory",
+        "TodayWatchMode",
+        "TodayUpRank",
+        "TodayWatchPlan"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+      "sha256LF": "6a1e4d560e4a2d564670185bafe8f601d9c227a37a59d867816b53cc54c2620f",
+      "allDeclarations": [
+        "HOME_HEADER_LIQUID_GLASS_ALPHA",
+        "HomeTopActionIcons",
+        "resolveHomeTopActionIcons",
+        "HomeTopChromeMotionPolicy",
+        "HomeTopLinkedBottomBarAppearance",
+        "shouldExportHomeTopActionIconThroughLiquidGlass",
+        "resolveHomeSkinSearchSurfaceColor",
+        "resolveHomeSkinTopTabContentColor",
+        "resolveHomeSkinTopTabUnselectedContentColor",
+        "resolveHomeSkinTopTabIndicatorColor",
+        "resolveHomeSkinTopTabRowHeight",
+        "HomeTopChromeRenderMode",
+        "HomeTopChromeSurfaceTreatment",
+        "resolveHomeTopLinkedBottomBarAppearance",
+        "shouldUseLegacyHomeTopTabs",
+        "formatHomeTopRightUnreadBadge",
+        "HomeTopRightUnreadBadgeLayout",
+        "resolveHomeTopRightUnreadBadgeLayout",
+        "resolveHomeTopRightActionSlotWidth",
+        "resolveHomeTopRightActionContentDescription",
+        "resolveHomeTopChromeLiquidGlassEnabled",
+        "resolveHomeTopTabIndicatorLiquidGlassEnabled",
+        "resolveHomeTopSearchLiquidGlassEnabled",
+        "resolveHomeTopChromeMaterialMode",
+        "resolveHomeTopChromeRenderMode",
+        "shouldDrawHomeTopSearchLegacyHighlight",
+        "resolveHomeTopChromeSurfaceTreatment",
+        "resolveHomeHeaderSurfaceAlpha",
+        "resolveHomeTopBlurContainerAlpha",
+        "resolveHomeTopTabOverlayAlpha",
+        "resolveHomeTopTabVerticalPaddingDp",
+        "resolveNonNegativeHomeTopPadding",
+        "resolveHomeTopTabYOffsetDp",
+        "resolveHomeTopSearchBarHeight",
+        "HomeHeaderScrollLayout",
+        "HomeTopPinnedChromeLayout",
+        "resolveHomeTopPinnedChromeLayout",
+        "resolveHomeTopSearchRevealDeadZone",
+        "resolveHomeTopVisibleSearchHeightPx",
+        "usesImmediateHomeTopSearchReveal",
+        "resolveHomeTopSearchContentRevealFraction",
+        "resolveHomeTopSearchContentTranslationYPx",
+        "resolveHomeHeaderScrollLayout",
+        "resolveHomeTopTabRowHeight",
+        "resolveHomeTopSearchRowHorizontalPadding",
+        "resolveHomeTopSearchPillHeight",
+        "resolveHomeTopSearchContentHorizontalPadding",
+        "resolveHomeTopSearchIconTextGap",
+        "resolveHomeTopSearchContainerShape",
+        "resolveHomeTopEdgeButtonShape",
+        "resolveHomeTopEdgeControlHeight",
+        "resolveHomeTopAvatarOuterSize",
+        "resolveHomeTopAvatarInnerSize",
+        "resolveHomeTopSettingsButtonSize",
+        "resolveHomeTopSettingsIconSize",
+        "resolveHomeTopEdgeControlGap",
+        "shouldUseUnifiedHomeTopPanel",
+        "shouldUseDetachedHomeTopTabDock",
+        "resolveHomeTopUnifiedPanelHorizontalPadding",
+        "resolveHomeTopUnifiedPanelInnerPadding",
+        "shouldRenderHomeTopUnifiedPanelChrome",
+        "resolveHomeTopUnifiedPanelCornerRadius",
+        "resolveHomeTopReservedContentBottomGap",
+        "resolveHomeTopEmbeddedTabHorizontalPadding",
+        "resolveHomeTopTabHorizontalPadding",
+        "resolveHomeTopControlsContentWidthDp",
+        "resolveHomeTopSearchToTabsSpacing",
+        "resolveHomeTopTabsToContentSpacing",
+        "resolveHomeTopSearchCollapseExtraSpacing",
+        "resolveHomeTopSearchCollapseDistance",
+        "shouldUseIntegratedCollapsedHomeTopBar",
+        "resolveHomeTopContinuousSlabOverlap",
+        "resolveHomeTopContinuousSlabShape",
+        "resolveHomeTopReservedListPadding",
+        "resolveHomeTopBlurContainerColors",
+        "resolveHomeTopBlurSurfaceType",
+        "resolveHomeTopContinuousSlabRenderMode",
+        "resolveHomeTopContinuousSlabHeight",
+        "resolveHomeTopContinuousSlabSurfaceColor",
+        "resolveHomeTopPanelChromeRenderMode",
+        "resolveHomeTopSearchChromeRenderMode",
+        "resolveHomeTopUnifiedTabChromeRenderMode",
+        "resolveHomeTopUnifiedLocalTabChromeRenderMode",
+        "resolveHomeTopTabDockChromeRenderMode",
+        "shouldApplyHomeTopTabDockHaze",
+        "resolveHomeTopUnifiedTabSurfaceColor",
+        "resolveHomeTopDetachedTabDockSurfaceColor",
+        "resolveHomeTopUnifiedSearchContainerColor",
+        "resolveHomeTopSearchDarkWhiteOverlayMultiplier",
+        "resolveHomeTopUnifiedSearchBorderColor",
+        "resolveHomeTopEdgeControlContainerColor",
+        "resolveHomeTopEdgeControlBorderColor",
+        "resolveHomeTopUnifiedPanelReadabilityColor",
+        "resolveHomeTopWideChromePreferFlatGlass",
+        "resolveHomeTopLocalChromeRenderMode",
+        "resolveHomeTopChromeMotionPolicy",
+        "resolveHomeTopTabChromeMotionPolicy",
+        "shouldEnableTopTabSecondaryBlur",
+        "resolveHomeHeaderTabBorderAlpha",
+        "resolveHomeTopChromeReadabilityAlpha",
+        "resolveHomeTopSearchContentAlpha",
+        "resolveHomeTopForegroundColor",
+        "resolveHomeTopInnerUnderlayColor",
+        "resolveHomeTopChromeHighlightOverlayColor",
+        "tuneHomeTopGlassColors",
+        "resolveHomeTopContainerColors",
+        "resolveHomeTopActionIconAlpha",
+        "resolveHomeTopUnifiedPanelDividerAlpha",
+        "shouldShowUnifiedHomeTopPanelDivider",
+        "resolveHomeTopTabContentUnderlayAlpha",
+        "resolveHomeTopChromeLensShape",
+        "HomeTopChromeSurfaceStyle",
+        "HomeTopChromeBackdropSpec",
+        "resolveHomeTopChromeBackdropSpec",
+        "resolveHomeTopChromeSurfaceColor",
+        "homeTopChromeSurface",
+        "HomeHeader"
+      ],
+      "selectedDeclarations": [
+        "HOME_HEADER_LIQUID_GLASS_ALPHA",
+        "HomeTopActionIcons",
+        "resolveHomeTopActionIcons",
+        "HomeTopChromeMotionPolicy",
+        "HomeTopLinkedBottomBarAppearance",
+        "shouldExportHomeTopActionIconThroughLiquidGlass",
+        "resolveHomeSkinSearchSurfaceColor",
+        "resolveHomeSkinTopTabContentColor",
+        "resolveHomeSkinTopTabUnselectedContentColor",
+        "resolveHomeSkinTopTabIndicatorColor",
+        "resolveHomeSkinTopTabRowHeight",
+        "HomeTopChromeRenderMode",
+        "HomeTopChromeSurfaceTreatment",
+        "resolveHomeTopLinkedBottomBarAppearance",
+        "shouldUseLegacyHomeTopTabs",
+        "formatHomeTopRightUnreadBadge",
+        "HomeTopRightUnreadBadgeLayout",
+        "resolveHomeTopRightUnreadBadgeLayout",
+        "resolveHomeTopRightActionSlotWidth",
+        "resolveHomeTopRightActionContentDescription",
+        "resolveHomeTopChromeLiquidGlassEnabled",
+        "resolveHomeTopTabIndicatorLiquidGlassEnabled",
+        "resolveHomeTopSearchLiquidGlassEnabled",
+        "resolveHomeTopChromeMaterialMode",
+        "resolveHomeTopChromeRenderMode",
+        "shouldDrawHomeTopSearchLegacyHighlight",
+        "resolveHomeTopChromeSurfaceTreatment",
+        "resolveHomeHeaderSurfaceAlpha",
+        "resolveHomeTopBlurContainerAlpha",
+        "resolveHomeTopTabOverlayAlpha",
+        "resolveHomeTopTabVerticalPaddingDp",
+        "resolveNonNegativeHomeTopPadding",
+        "resolveHomeTopTabYOffsetDp",
+        "resolveHomeTopSearchBarHeight",
+        "HomeHeaderScrollLayout",
+        "HomeTopPinnedChromeLayout",
+        "resolveHomeTopPinnedChromeLayout",
+        "resolveHomeTopSearchRevealDeadZone",
+        "resolveHomeTopVisibleSearchHeightPx",
+        "usesImmediateHomeTopSearchReveal",
+        "resolveHomeTopSearchContentRevealFraction",
+        "resolveHomeTopSearchContentTranslationYPx",
+        "resolveHomeHeaderScrollLayout",
+        "resolveHomeTopSearchContentHorizontalPadding",
+        "resolveHomeTopSearchIconTextGap",
+        "resolveHomeTopSearchContainerShape",
+        "resolveHomeTopEdgeButtonShape",
+        "resolveHomeTopEdgeControlHeight",
+        "resolveHomeTopAvatarOuterSize",
+        "resolveHomeTopAvatarInnerSize",
+        "resolveHomeTopSettingsButtonSize",
+        "resolveHomeTopSettingsIconSize",
+        "resolveHomeTopEdgeControlGap",
+        "shouldUseUnifiedHomeTopPanel",
+        "shouldUseDetachedHomeTopTabDock",
+        "resolveHomeTopUnifiedPanelHorizontalPadding",
+        "resolveHomeTopUnifiedPanelInnerPadding",
+        "shouldRenderHomeTopUnifiedPanelChrome",
+        "resolveHomeTopUnifiedPanelCornerRadius",
+        "resolveHomeTopReservedContentBottomGap",
+        "resolveHomeTopEmbeddedTabHorizontalPadding",
+        "resolveHomeTopTabHorizontalPadding",
+        "resolveHomeTopControlsContentWidthDp",
+        "resolveHomeTopSearchToTabsSpacing",
+        "resolveHomeTopTabsToContentSpacing",
+        "resolveHomeTopSearchCollapseExtraSpacing",
+        "resolveHomeTopSearchCollapseDistance",
+        "shouldUseIntegratedCollapsedHomeTopBar",
+        "resolveHomeTopContinuousSlabOverlap",
+        "resolveHomeTopContinuousSlabShape",
+        "resolveHomeTopReservedListPadding",
+        "resolveHomeTopBlurContainerColors",
+        "resolveHomeTopBlurSurfaceType",
+        "resolveHomeTopContinuousSlabRenderMode",
+        "resolveHomeTopContinuousSlabHeight",
+        "resolveHomeTopContinuousSlabSurfaceColor",
+        "resolveHomeTopPanelChromeRenderMode",
+        "resolveHomeTopSearchChromeRenderMode",
+        "resolveHomeTopUnifiedTabChromeRenderMode",
+        "resolveHomeTopUnifiedLocalTabChromeRenderMode",
+        "resolveHomeTopTabDockChromeRenderMode",
+        "shouldApplyHomeTopTabDockHaze",
+        "resolveHomeTopUnifiedTabSurfaceColor",
+        "resolveHomeTopDetachedTabDockSurfaceColor",
+        "resolveHomeTopUnifiedSearchContainerColor",
+        "resolveHomeTopSearchDarkWhiteOverlayMultiplier",
+        "resolveHomeTopUnifiedSearchBorderColor",
+        "resolveHomeTopEdgeControlContainerColor",
+        "resolveHomeTopEdgeControlBorderColor",
+        "resolveHomeTopUnifiedPanelReadabilityColor",
+        "resolveHomeTopWideChromePreferFlatGlass",
+        "resolveHomeTopLocalChromeRenderMode",
+        "resolveHomeTopChromeMotionPolicy",
+        "resolveHomeTopTabChromeMotionPolicy",
+        "shouldEnableTopTabSecondaryBlur",
+        "resolveHomeHeaderTabBorderAlpha",
+        "resolveHomeTopChromeReadabilityAlpha",
+        "resolveHomeTopSearchContentAlpha",
+        "resolveHomeTopForegroundColor",
+        "resolveHomeTopInnerUnderlayColor",
+        "resolveHomeTopChromeHighlightOverlayColor",
+        "tuneHomeTopGlassColors",
+        "resolveHomeTopContainerColors",
+        "resolveHomeTopActionIconAlpha",
+        "resolveHomeTopUnifiedPanelDividerAlpha",
+        "shouldShowUnifiedHomeTopPanelDivider",
+        "resolveHomeTopTabContentUnderlayAlpha",
+        "resolveHomeTopChromeLensShape",
+        "HomeTopChromeSurfaceStyle",
+        "HomeTopChromeBackdropSpec",
+        "resolveHomeTopChromeBackdropSpec",
+        "resolveHomeTopChromeSurfaceColor",
+        "homeTopChromeSurface",
+        "HomeHeader"
+      ],
+      "alreadyOwnedDeclarations": [
+        "resolveHomeTopTabRowHeight",
+        "resolveHomeTopSearchRowHorizontalPadding",
+        "resolveHomeTopSearchPillHeight"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopControls.kt",
+      "sha256LF": "6e4fe801eb4b4666faf274480784d2b2eb497c0bfbdc4ed323ea458757cc3d66",
+      "allDeclarations": [
+        "HomeTopAvatarContent",
+        "HomeTopSearchPillContent",
+        "HomeTopUnreadBadge"
+      ],
+      "selectedDeclarations": [
+        "HomeTopAvatarContent",
+        "HomeTopSearchPillContent",
+        "HomeTopUnreadBadge"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabChrome.kt",
+      "sha256LF": "20d99c3a011f86931099e194b049b9ccb06cbf39178e7d7955472ef1411fd045",
+      "allDeclarations": [
+        "HomeTopTabChrome",
+        "CollapsedTopTabHandle"
+      ],
+      "selectedDeclarations": [
+        "HomeTopTabChrome",
+        "CollapsedTopTabHandle"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDock.kt",
+      "sha256LF": "b2093f257e619373761f1a97f44788f781ad08a1ae8cc9877a9b6248bd0d4b90",
+      "allDeclarations": [
+        "shouldHomeTopTabUseFloatingBottomBarDock",
+        "shouldHomeTopTabChromeDrawOuterShell",
+        "shouldUseOfficialMd3HomeTopToolbar",
+        "shouldUseOfficialMiuixHomeTopTabs",
+        "resolveHomeTopTabFloatingDockWidth",
+        "HomeTopTabFloatingDock"
+      ],
+      "selectedDeclarations": [
+        "shouldHomeTopTabUseFloatingBottomBarDock",
+        "shouldHomeTopTabChromeDrawOuterShell",
+        "shouldUseOfficialMd3HomeTopToolbar",
+        "shouldUseOfficialMiuixHomeTopTabs",
+        "resolveHomeTopTabFloatingDockWidth",
+        "HomeTopTabFloatingDock"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpec.kt",
+      "sha256LF": "a30e34a0b0c4693edf8e3e73abd7dd175d9ce2c40fe4ac4f009b0b16f61773a8",
+      "allDeclarations": [
+        "iosTopTabCapsuleMotionSpec"
+      ],
+      "selectedDeclarations": [
+        "iosTopTabCapsuleMotionSpec"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawer.kt",
+      "sha256LF": "65af2ef6f212169e0613132546d42b0daa7058ee777cf94e0fa5c2d84912011b",
+      "allDeclarations": [
+        "MineSideDrawer"
+      ],
+      "selectedDeclarations": [
+        "MineSideDrawer"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+      "sha256LF": "c6d4fc1543fcef185e87208c9e473ea9bdf8cee6e6693847c061323d71484444",
+      "allDeclarations": [
+        "MineSideDrawerLayoutPolicy",
+        "resolveMineSideDrawerLayoutPolicy",
+        "resolveMineSideDrawerWidthDp",
+        "resolveMineSideDrawerFooterSpacerHeightDp"
+      ],
+      "selectedDeclarations": [
+        "MineSideDrawerLayoutPolicy",
+        "resolveMineSideDrawerLayoutPolicy",
+        "resolveMineSideDrawerWidthDp",
+        "resolveMineSideDrawerFooterSpacerHeightDp"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+      "sha256LF": "5a26bd2ebd2526d345e8a5045ee129f5eee56faa27f2bc62f284b2becad8435c",
+      "allDeclarations": [
+        "DrawerGlassPalette",
+        "resolveDrawerGlassPalette",
+        "resolveHomeDrawerScrimAlpha"
+      ],
+      "selectedDeclarations": [
+        "DrawerGlassPalette",
+        "resolveDrawerGlassPalette",
+        "resolveHomeDrawerScrimAlpha"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBar.kt",
+      "sha256LF": "d6ab43391f1a67f13bd44b981fbbcf0f8a1563ecb08ff91bf0e5c2c8a210e060",
+      "allDeclarations": [
+        "performHomeSideBarItemTap",
+        "FrostedSideBar",
+        "MiuixSideBar",
+        "MiuixSideBarSkinItem",
+        "FrostedSideBarBlendedMaterialIcon",
+        "FrostedSideBarContent",
+        "SideBarAccountSwitchButton"
+      ],
+      "selectedDeclarations": [
+        "performHomeSideBarItemTap",
+        "FrostedSideBar",
+        "MiuixSideBar",
+        "MiuixSideBarSkinItem",
+        "FrostedSideBarBlendedMaterialIcon",
+        "FrostedSideBarContent",
+        "SideBarAccountSwitchButton"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "sha256LF": "eb5ec33451f5e8ddca271b15ffd5a88739796ad7f7b6566b8b60c4d9380b2637",
+      "allDeclarations": [
+        "HomeHeroCarousel",
+        "HomeHeroCarouselCard",
+        "MutedHeroVideoPlayer"
+      ],
+      "selectedDeclarations": [
+        "HomeHeroCarousel",
+        "HomeHeroCarouselCard",
+        "MutedHeroVideoPlayer"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+      "sha256LF": "60db1ec6edaeb70967e19fac3c47edee96dcb6928cafb01a86bfe32209f6c0b1",
+      "allDeclarations": [
+        "shouldEnableSaveCoverAction",
+        "shouldShowBlockCreatorAction",
+        "VideoPreviewDialog",
+        "DisposableVideoPlayer",
+        "PreviewMenuItem",
+        "MenuDivider"
+      ],
+      "selectedDeclarations": [
+        "shouldEnableSaveCoverAction",
+        "shouldShowBlockCreatorAction",
+        "VideoPreviewDialog",
+        "DisposableVideoPlayer",
+        "PreviewMenuItem",
+        "MenuDivider"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheet.kt",
+      "sha256LF": "3ff7c53ca24d750689066d0366245533c4f36b1956c303b0d0fd16ef16f4ad04",
+      "allDeclarations": [
+        "HomeNotInterestedReasonSheet",
+        "ReasonGroup"
+      ],
+      "selectedDeclarations": [
+        "HomeNotInterestedReasonSheet",
+        "ReasonGroup"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeRefreshIndicator.kt",
+      "sha256LF": "5da4d452d383e457ed308471f8b63ed2122d0631bf584fe44d127a4770c38560",
+      "allDeclarations": [
+        "Md3ScreenshotRefreshIndicator",
+        "HomeRefreshIndicator"
+      ],
+      "selectedDeclarations": [
+        "Md3ScreenshotRefreshIndicator",
+        "HomeRefreshIndicator"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpec.kt",
+      "sha256LF": "7cc4ed9a6ebeb2fa2a3eb2d12f7157b70c02da7b04998452eeaf13cf188fce6f",
+      "allDeclarations": [
+        "md3RefreshAlphaMotionSpec",
+        "md3RefreshScaleMotionSpec",
+        "iosRefreshArrowMotionSpec",
+        "iosRefreshAlphaMotionSpec",
+        "iosRefreshScaleMotionSpec"
+      ],
+      "selectedDeclarations": [
+        "md3RefreshAlphaMotionSpec",
+        "md3RefreshScaleMotionSpec",
+        "iosRefreshArrowMotionSpec",
+        "iosRefreshAlphaMotionSpec",
+        "iosRefreshScaleMotionSpec"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+      "sha256LF": "5c1d96c026bbe54f7d9214b2123695f9ce05ff960d50b7e720dd94a6894bb77a",
+      "allDeclarations": [
+        "StoryVideoCard"
+      ],
+      "selectedDeclarations": [
+        "StoryVideoCard"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "allDeclarations": [
+        "Context",
+        "DEFAULT_CRASH_TRACKING_ENABLED",
+        "DEFAULT_ANALYTICS_ENABLED",
+        "DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ENABLED",
+        "DEFAULT_QUALITY_SWITCH_FAILURE_DIALOG_ONCE_ENABLED",
+        "DEFAULT_DASH_SEGMENT_REQUESTS_ENABLED",
+        "resolveDefaultPlayerDiagnosticLoggingEnabled",
+        "DEFAULT_PLAYER_DIAGNOSTIC_LOGGING_ENABLED",
+        "LiquidGlassStyle",
+        "LiquidGlassMode",
+        "LiquidGlassAdvancedPreset",
+        "LiquidGlassAdvancedSettings",
+        "normalizeLiquidGlassAdvancedValue",
+        "resolveLiquidGlassAdvancedPreset",
+        "resolveLiquidGlassAdvancedSettings",
+        "resolveLegacyLiquidGlassMode",
+        "resolveDefaultLiquidGlassStrength",
+        "normalizeLiquidGlassStrength",
+        "normalizeLiquidGlassProgress",
+        "LONG_PRESS_SPEED_HINT_SCALE_MIN",
+        "LONG_PRESS_SPEED_HINT_SCALE_MAX",
+        "LONG_PRESS_SPEED_HINT_DEFAULT_SCALE",
+        "LONG_PRESS_SPEED_HINT_ALPHA_MIN",
+        "LONG_PRESS_SPEED_HINT_ALPHA_MAX",
+        "LONG_PRESS_SPEED_HINT_DEFAULT_ALPHA",
+        "LONG_PRESS_SPEED_HINT_STEP",
+        "normalizeLongPressSpeedHintScale",
+        "normalizeLongPressSpeedHintAlpha",
+        "resolveLegacyLiquidGlassProgress",
+        "resolveLegacyLiquidGlassProgress",
+        "resolveStoredLiquidGlassProgress",
+        "resolveLiquidGlassModeFromProgress",
+        "resolveLiquidGlassStrengthFromProgress",
+        "resolveLegacyLiquidGlassStyleFromProgress",
+        "HomeHeaderBlurMode",
+        "resolveHomeHeaderBlurEnabled",
+        "resolveHomeHeaderBlurModePreference",
+        "PlaybackCompletionBehavior",
+        "PortraitPlayerCollapseMode",
+        "FullscreenMode",
+        "FullscreenAspectRatio",
+        "BottomProgressBehavior",
+        "PlayerProgressPlacement",
+        "PlayerControlVisibilitySettings",
+        "normalizeDanmakuDisplayArea",
+        "normalizeDanmakuFontScale",
+        "DEFAULT_HOME_REFRESH_COUNT",
+        "MIN_HOME_REFRESH_COUNT",
+        "MAX_HOME_REFRESH_COUNT",
+        "normalizeHomeRefreshCount",
+        "HomeFeedCardWidthPreset",
+        "HomeFeedCardStyle",
+        "HomeDurationStyle",
+        "HomeCardBadgeEffectMode",
+        "HomeCardInfoGlassMode",
+        "BottomBarLiquidGlassPreset",
+        "HomeSettings",
+        "resolveHomeCardFrostedGlassEnabled",
+        "AppThemeSettings",
+        "ThemeModeRoleOverrides",
+        "ThemeRoleOverrides",
+        "BottomBarSearchAutoExpandMode",
+        "BottomBarSearchLayoutMode",
+        "HomeWallpaperEffectMode",
+        "HomeWallpaperEffectScope",
+        "HomeTopRightAction",
+        "HomeTopLayoutOrder",
+        "HomeHeaderCollapseMode",
+        "HomeBarHideType",
+        "CommonListHeaderCollapseMode",
+        "resolveHomeHeaderCollapseModeForTopBarHide",
+        "resolveHomeHeaderCollapseModeForTopTabs",
+        "resolveHomeHeaderCollapseModeForSearch",
+        "resolveUiPresetPreferenceValue",
+        "resolveAndroidNativeVariantPreferenceValue",
+        "DanmakuPanelWidthMode",
+        "PortraitDanmakuDisplayAreaMode",
+        "TabletCommentPanelWidthPreset",
+        "TabletSecondaryDefaultTab",
+        "normalizeDanmakuFullscreenPanelWidthMode",
+        "DanmakuSettingsScope",
+        "resolveDanmakuSettingsScope",
+        "DanmakuSettings",
+        "AppNavigationSettings",
+        "BottomTabMigrationResult",
+        "resolveListenVideoBottomTabMigration",
+        "HomeTopTabSettings",
+        "AutoExitFullscreenMode",
+        "resolveAutoExitFullscreenMode",
+        "PlayerInteractionSettings",
+        "ShareablePreferenceDefinition",
+        "BooleanShareablePreferenceDefinition",
+        "IntShareablePreferenceDefinition",
+        "FloatShareablePreferenceDefinition",
+        "StringShareablePreferenceDefinition",
+        "mapHomeSettingsFromPreferences",
+        "mapAppThemeSettingsFromPreferences",
+        "mapDanmakuSettingsFromPreferences",
+        "mapAppNavigationSettingsFromPreferences",
+        "defaultTabletUseSidebar",
+        "mapHomeTopTabSettingsFromPreferences",
+        "mapPlayerInteractionSettingsFromPreferences",
+        "decodeCollectionSubscriptionIds",
+        "encodeCollectionSubscriptionIds",
+        "toggleCollectionSubscription",
+        "setCollectionSubscription",
+        "decodeCollectionSortPreferences",
+        "encodeCollectionSortPreferences",
+        "SettingsManager"
+      ],
+      "selectedDeclarations": [
+        "HomeSettings",
+        "HomeTopRightAction",
+        "HomeTopLayoutOrder",
+        "HomeHeaderCollapseMode",
+        "HomeBarHideType",
+        "AppNavigationSettings",
+        "HomeTopTabSettings"
+      ],
+      "alreadyOwnedDeclarations": [
+        "LiquidGlassStyle",
+        "LiquidGlassMode",
+        "LiquidGlassAdvancedPreset",
+        "LiquidGlassAdvancedSettings",
+        "normalizeLiquidGlassAdvancedValue",
+        "resolveLiquidGlassAdvancedPreset",
+        "resolveLiquidGlassAdvancedSettings",
+        "resolveLegacyLiquidGlassMode",
+        "resolveDefaultLiquidGlassStrength",
+        "normalizeLiquidGlassStrength",
+        "normalizeLiquidGlassProgress",
+        "resolveLegacyLiquidGlassProgress",
+        "resolveLegacyLiquidGlassProgress",
+        "resolveStoredLiquidGlassProgress",
+        "resolveLiquidGlassModeFromProgress",
+        "resolveLiquidGlassStrengthFromProgress",
+        "HomeHeaderBlurMode",
+        "resolveHomeHeaderBlurEnabled",
+        "resolveHomeHeaderBlurModePreference",
+        "DEFAULT_HOME_REFRESH_COUNT",
+        "MIN_HOME_REFRESH_COUNT",
+        "MAX_HOME_REFRESH_COUNT",
+        "normalizeHomeRefreshCount",
+        "HomeFeedCardWidthPreset",
+        "HomeFeedCardStyle",
+        "HomeDurationStyle",
+        "HomeCardBadgeEffectMode",
+        "HomeCardInfoGlassMode",
+        "BottomBarLiquidGlassPreset",
+        "resolveHomeCardFrostedGlassEnabled",
+        "ThemeModeRoleOverrides",
+        "ThemeRoleOverrides",
+        "HomeWallpaperEffectMode",
+        "HomeWallpaperEffectScope",
+        "CommonListHeaderCollapseMode",
+        "DanmakuSettingsScope",
+        "decodeCollectionSubscriptionIds",
+        "encodeCollectionSubscriptionIds",
+        "toggleCollectionSubscription",
+        "setCollectionSubscription",
+        "decodeCollectionSortPreferences",
+        "encodeCollectionSortPreferences"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+      "sha256LF": "4052122d98eeb925b932db1b0ab104ff871e0546469a3bc6bfc2a5d96be25449",
+      "allDeclarations": [
+        "HomeFeedScrollAnchor",
+        "HomeFeedScrollAnchorSaver",
+        "captureHomeFeedScrollAnchor",
+        "shouldRestoreHomeFeedScrollAnchor",
+        "shouldApplyHomeFeedScrollAnchor",
+        "shouldReserveHomeBottomBarListPadding"
+      ],
+      "selectedDeclarations": [
+        "HomeFeedScrollAnchor",
+        "HomeFeedScrollAnchorSaver",
+        "captureHomeFeedScrollAnchor",
+        "shouldRestoreHomeFeedScrollAnchor",
+        "shouldApplyHomeFeedScrollAnchor"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt",
+      "sha256LF": "bfaec603c9f73da7f50f6f54456fe7f2c942962ae3b30a92c303f248420ed702",
+      "allDeclarations": [
+        "HomePagerSettledAction",
+        "shouldEnableHomeTopPagerUserScroll",
+        "shouldDisplayHomeTopCategoryInline",
+        "shouldSwitchHomeCategoryFromPager",
+        "resolveHomePagerSettledAction",
+        "shouldUseInitialHomePagerSnap",
+        "shouldSkipHomePagerStateDrive",
+        "shouldAnimateHomePagerToCategory",
+        "resolveHomeInitialTopTabPage",
+        "shouldTreatInitialHomePagerPageAsSyncedWithState",
+        "resolveHomePagerTargetPage"
+      ],
+      "selectedDeclarations": [
+        "HomePagerSettledAction",
+        "shouldEnableHomeTopPagerUserScroll",
+        "shouldDisplayHomeTopCategoryInline",
+        "shouldSwitchHomeCategoryFromPager",
+        "resolveHomePagerSettledAction",
+        "shouldUseInitialHomePagerSnap",
+        "shouldSkipHomePagerStateDrive",
+        "shouldAnimateHomePagerToCategory",
+        "resolveHomeInitialTopTabPage",
+        "shouldTreatInitialHomePagerPageAsSyncedWithState",
+        "resolveHomePagerTargetPage"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+      "sha256LF": "bc58b113c871cc7aac5e71698b2607b4bb69a10f74bf15e19450ad866f95f921",
+      "allDeclarations": [
+        "shouldOpenLiveListFromHomeTopTab",
+        "shouldOpenBangumiFromHomeTopTab",
+        "shouldEmbedLivePageInHomeTopTab",
+        "shouldEmbedBangumiPageInHomeTopTab",
+        "HomeTopTabScrollTarget",
+        "resolveHomeTopTabScrollTarget"
+      ],
+      "selectedDeclarations": [
+        "shouldEmbedLivePageInHomeTopTab",
+        "shouldEmbedBangumiPageInHomeTopTab",
+        "HomeTopTabScrollTarget",
+        "resolveHomeTopTabScrollTarget"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256LF": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+      "allDeclarations": [
+        "DepthSyncedGlobalHomeWallpaperBackdrop",
+        "HomeWallpaperBackdrop",
+        "isStaticHomeWallpaperUri"
+      ],
+      "selectedDeclarations": [
+        "HomeWallpaperBackdrop",
+        "isStaticHomeWallpaperUri"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+      "sha256LF": "7cba90be328190cd3965923b19836c7e6c9ce241678f0b19ffef5308f3e7e4ec",
+      "allDeclarations": [
+        "resolveGlobalLiquidGlassReuseEnabled",
+        "LiquidGlassReuseSurface",
+        "resolveLiquidGlassReuseParticipates",
+        "resolveSharedLiquidGlassChromeEnabled",
+        "resolveEffectiveHomeSettings"
+      ],
+      "selectedDeclarations": [
+        "resolveEffectiveHomeSettings"
+      ],
+      "alreadyOwnedDeclarations": [
+        "resolveGlobalLiquidGlassReuseEnabled"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+      "sha256LF": "108cc19dfffb6fba72908eb0ce5ba26dd63b1ae6a766a53bbb608cc67d88c12e",
+      "allDeclarations": [
+        "HomeVideoClickSource",
+        "HomeVideoClickRequest",
+        "resolveHomeCategoryVideoSourceRoute"
+      ],
+      "selectedDeclarations": [
+        "HomeVideoClickSource",
+        "HomeVideoClickRequest",
+        "resolveHomeCategoryVideoSourceRoute"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+      "sha256LF": "97b76d437936dddfccb4b0f553b14f3b3105ef012fdd520ac293d5863a5fcced",
+      "allDeclarations": [
+        "WECHAT_PACKAGE_NAME",
+        "QQ_PACKAGE_NAME",
+        "VideoSharePayload",
+        "VideoShareTarget",
+        "resolveVideoShareRecipientIds",
+        "VideoShareStyle",
+        "buildVideoSharePayload",
+        "resolveVideoShareCardMetaLine",
+        "resolveVideoShareCardFileName",
+        "buildVideoShareIntent",
+        "buildTargetedShareIntent",
+        "buildVideoCoverShareIntent",
+        "resolveVideoShareChooserTitle",
+        "ShareActivityCandidate",
+        "SHARE_EXCLUDE_LABEL_TOKENS",
+        "SHARE_EXCLUDE_CLASS_TOKENS",
+        "SHARE_FRIEND_LABEL_TOKENS",
+        "SHARE_FRIEND_CLASS_TOKENS",
+        "containsAnyToken",
+        "isExcludedShareActivity",
+        "scoreShareActivityCandidate",
+        "resolvePreferredShareActivity"
+      ],
+      "selectedDeclarations": [
+        "VideoSharePayload",
+        "buildVideoSharePayload"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/NavigationUiPolicy.kt",
+      "sha256LF": "e13e473aedf4d6846f60aa4ef184773242bb9989d5a5427ba2600f298fdc3a18",
+      "allDeclarations": [
+        "shouldUseSidebarNavigationForLayout",
+        "shouldEnableHomeDrawer",
+        "shouldUseExpandedNavigationRailForLayout"
+      ],
+      "selectedDeclarations": [
+        "shouldUseSidebarNavigationForLayout",
+        "shouldEnableHomeDrawer",
+        "shouldUseExpandedNavigationRailForLayout"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
+      "sha256LF": "f73c04a5d670c052f8aa2d19c737c81f6865ff7fa960dcb998960e33b5d3a7d1",
+      "allDeclarations": [
+        "rememberHomeFeedSkeletonPulseState",
+        "HomeFeedSkeletonCard",
+        "HomeFeedSkeletonTitleRow",
+        "HomeFeedSkeletonMetaRow",
+        "HomeFeedSkeletonBlock",
+        "HomeFeedHeroCarouselSkeleton",
+        "homeFeedSkeletonBlockBackground",
+        "homeFeedSkeletonBlockAlpha",
+        "HOME_FEED_SKELETON_PULSE_DURATION_MILLIS",
+        "HOME_FEED_SKELETON_LIGHT_MIN_ALPHA",
+        "HOME_FEED_SKELETON_LIGHT_MAX_ALPHA",
+        "HOME_FEED_SKELETON_DARK_MIN_ALPHA",
+        "HOME_FEED_SKELETON_DARK_MAX_ALPHA"
+      ],
+      "selectedDeclarations": [
+        "rememberHomeFeedSkeletonPulseState",
+        "HomeFeedSkeletonCard",
+        "HomeFeedSkeletonTitleRow",
+        "HomeFeedSkeletonMetaRow",
+        "HomeFeedSkeletonBlock",
+        "HomeFeedHeroCarouselSkeleton",
+        "homeFeedSkeletonBlockBackground",
+        "homeFeedSkeletonBlockAlpha",
+        "HOME_FEED_SKELETON_PULSE_DURATION_MILLIS",
+        "HOME_FEED_SKELETON_LIGHT_MIN_ALPHA",
+        "HOME_FEED_SKELETON_LIGHT_MAX_ALPHA",
+        "HOME_FEED_SKELETON_DARK_MIN_ALPHA",
+        "HOME_FEED_SKELETON_DARK_MAX_ALPHA"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+      "sha256LF": "4da92985a0204c748e0c574184f25f0fc02c3353652b340ef273a5614c9e1de8",
+      "allDeclarations": [
+        "HOME_TOP_PARTITION_TAB_ID",
+        "HOME_TOP_SUBSCRIPTION_TAB_ID",
+        "HomeTopTabEntry",
+        "LEGACY_DEFAULT_HOME_TOP_TAB_IDS",
+        "DEFAULT_HOME_TOP_CATEGORIES",
+        "DEFAULT_HOME_TOP_ENTRIES",
+        "HOME_TOP_CUSTOMIZABLE_CATEGORIES",
+        "resolveHomeTopTabId",
+        "resolveHomeTopEntryById",
+        "resolveHomeTopCategoryById",
+        "resolveDefaultHomeTopTabIds",
+        "resolveHomeTopTabEntries",
+        "resolveHomeTopCategories",
+        "resolveHomeTopTabIndex",
+        "resolveHomeCategoryForTopTab",
+        "resolveHomeTopCategoryOrNull",
+        "resolveHomeTopCategoryKey",
+        "resolveHomeTopTabEntryOrNull",
+        "resolveHomeTopTabEntryKey",
+        "ensureSubscriptionHomeTab",
+        "resolveHomeTopTabEntryLabel"
+      ],
+      "selectedDeclarations": [
+        "HOME_TOP_PARTITION_TAB_ID",
+        "HOME_TOP_SUBSCRIPTION_TAB_ID",
+        "HomeTopTabEntry",
+        "LEGACY_DEFAULT_HOME_TOP_TAB_IDS",
+        "DEFAULT_HOME_TOP_CATEGORIES",
+        "DEFAULT_HOME_TOP_ENTRIES",
+        "HOME_TOP_CUSTOMIZABLE_CATEGORIES",
+        "resolveHomeTopTabId",
+        "resolveHomeTopEntryById",
+        "resolveHomeTopCategoryById",
+        "resolveHomeTopTabEntries",
+        "resolveHomeTopCategories",
+        "resolveHomeTopTabEntryOrNull",
+        "resolveHomeTopTabEntryKey",
+        "ensureSubscriptionHomeTab",
+        "resolveHomeTopTabEntryLabel"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+      "sha256LF": "17873889bf966d677e3327e8faaa4fb83f53728fdbcd98f7e5104b6f09cf5f6f",
+      "allDeclarations": [
+        "HomeTopSearchRowMetrics",
+        "resolveHomeTopSearchRowMetrics",
+        "resolveHomeTabsToContentTighteningDp"
+      ],
+      "selectedDeclarations": [
+        "HomeTopSearchRowMetrics",
+        "resolveHomeTopSearchRowMetrics",
+        "resolveHomeTabsToContentTighteningDp"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+      "sha256LF": "4dc21ae2ccff91c0fd33c871734f91bbf85a4473d112f99b75a2f3a98c848496",
+      "allDeclarations": [
+        "shouldApplyHomeSystemBars",
+        "resolveHomeStatusBarDarkIcons"
+      ],
+      "selectedDeclarations": [
+        "shouldApplyHomeSystemBars",
+        "resolveHomeStatusBarDarkIcons"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeScrollCoordinator.kt",
+      "sha256LF": "11db1737044b20100e0faf8ab1da8e6d76b573b90f995cc3fcb284f745bc8985",
+      "allDeclarations": [
+        "BottomBarVisibilityIntent",
+        "HomeScrollUpdate",
+        "HomeHeaderSettleTransition",
+        "resolveHomeRecommendationHeaderCollapseMode",
+        "quantizeHomeHeaderOffset",
+        "resolveHomeEmbeddedPageTopPaddingPx",
+        "shouldHandleHomeVerticalPreScroll",
+        "resolveHomeHeaderSettleTransition",
+        "resolveHomeHeaderReleaseTarget",
+        "resolveHomeHeaderTransitionRunning",
+        "resolveHomeHeaderListIndex",
+        "canRevealHomeHeaderForList",
+        "shouldExpandHomeHeaderForSettledPage",
+        "resolveHomeHeaderOffsetForSettledPage",
+        "reduceHomePreScroll"
+      ],
+      "selectedDeclarations": [
+        "BottomBarVisibilityIntent",
+        "HomeScrollUpdate",
+        "HomeHeaderSettleTransition",
+        "resolveHomeRecommendationHeaderCollapseMode",
+        "quantizeHomeHeaderOffset",
+        "resolveHomeEmbeddedPageTopPaddingPx",
+        "shouldHandleHomeVerticalPreScroll",
+        "resolveHomeHeaderSettleTransition",
+        "resolveHomeHeaderTransitionRunning",
+        "resolveHomeHeaderListIndex",
+        "canRevealHomeHeaderForList",
+        "reduceHomePreScroll"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "sha256LF": "b7024240db5a025573b2c00689001b7d9b2adcb9e83e4132744d242127a5ca83",
+      "allDeclarations": [
+        "VideoCardTransitionClock",
+        "VideoCardTransitionSettleState",
+        "report",
+        "VideoCardMorphProgressReporter",
+        "LocalVideoCardMorphProgressReporter",
+        "LocalVideoCardTransitionClock",
+        "VideoCardTransitionTimelineSpec",
+        "resolveVideoCardTimelineSpec",
+        "shouldPreferSharedMorphProgress",
+        "resolveVideoCardGestureStartDepth",
+        "resolveVideoCardClockDepthProgress",
+        "resolveReturningDepthWithFloor",
+        "resolveVideoCardPredictiveGestureDepthProgress",
+        "resolveVideoCardReturnClearStartDepth",
+        "morphFractionToReturnSettle",
+        "resolveMorphAlignedFallbackDurationMs",
+        "rememberVideoCardTransitionClock"
+      ],
+      "selectedDeclarations": [
+        "VideoCardTransitionClock",
+        "VideoCardTransitionSettleState",
+        "LocalVideoCardTransitionClock",
+        "shouldPreferSharedMorphProgress",
+        "resolveVideoCardGestureStartDepth",
+        "resolveVideoCardClockDepthProgress",
+        "resolveReturningDepthWithFloor"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+      "sha256LF": "602709fd478812fc9f571d82c164268d222339487581d53dac0d4f4a0ba96f22",
+      "allDeclarations": [
+        "HomeBottomBarScrollState",
+        "HomeBottomBarScrollUpdate",
+        "reduceHomeBottomBarListScroll",
+        "resolveBottomBarChromeScrollOffset"
+      ],
+      "selectedDeclarations": [
+        "HomeBottomBarScrollState",
+        "HomeBottomBarScrollUpdate",
+        "reduceHomeBottomBarListScroll"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+      "sha256LF": "8d9763336e08301009a9211514eaa82129f45f2924e092744e22d2d8e52cf79c",
+      "allDeclarations": [
+        "resolveHomeTopTabsRevealDelayMs",
+        "resolveHomeTopTabsVisible",
+        "resolveEffectiveHomeTabRowHeight",
+        "resolveEffectiveHomeTopChromeHeight",
+        "shouldAutoCollapseHomeSearchRow",
+        "shouldCollapseHomeTopTabsWithSearchRow"
+      ],
+      "selectedDeclarations": [
+        "resolveHomeTopTabsRevealDelayMs",
+        "resolveHomeTopTabsVisible",
+        "resolveEffectiveHomeTabRowHeight",
+        "resolveEffectiveHomeTopChromeHeight"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+      "sha256LF": "2b8f4534e0d5a1fdb50e47c1ef238af34ac2a9e5fbb923afdc3c22f1263de1d6",
+      "allDeclarations": [
+        "HomeAvatarAction",
+        "resolveHomeAvatarAction"
+      ],
+      "selectedDeclarations": [
+        "HomeAvatarAction",
+        "resolveHomeAvatarAction"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+      "sha256LF": "280fb390d8e688920542542093f8ac44974d9e86cd03d7518173453ec8abea94",
+      "allDeclarations": [
+        "AdaptivePullToRefreshBox",
+        "AdaptivePullToRefreshDefaultIndicator"
+      ],
+      "selectedDeclarations": [
+        "AdaptivePullToRefreshBox",
+        "AdaptivePullToRefreshDefaultIndicator"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/motion/ReduceMotion.kt",
+      "sha256LF": "c866be7aef5df1f8b5bd9e955c096677bd83cc8dd202c7ef54da13e90cecd342",
+      "allDeclarations": [
+        "readSystemReduceMotion",
+        "rememberSystemReduceMotion"
+      ],
+      "selectedDeclarations": [
+        "readSystemReduceMotion",
+        "rememberSystemReduceMotion"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+      "sha256LF": "0216d770c562728dc9cac6549bbbbb205ac10f79bb594437665a610ae17198ff",
+      "allDeclarations": [
+        "resolveHomeFeedMaxContentWidth",
+        "isCompactHomeFeedScreen",
+        "resolveHomeFeedStoredColumnCount",
+        "resolveHomeFeedGridColumns",
+        "resolveHomeFeedCardAspectRatio",
+        "HomeFeedBookHingeGridSpec",
+        "resolveHomeFeedBookHingeGridSpec",
+        "HomeFeedBookHingeArrangement",
+        "resolveHomeFeedHorizontalArrangement"
+      ],
+      "selectedDeclarations": [
+        "HomeFeedBookHingeGridSpec",
+        "resolveHomeFeedBookHingeGridSpec",
+        "HomeFeedBookHingeArrangement",
+        "resolveHomeFeedHorizontalArrangement"
+      ],
+      "alreadyOwnedDeclarations": [
+        "resolveHomeFeedMaxContentWidth",
+        "isCompactHomeFeedScreen",
+        "resolveHomeFeedStoredColumnCount",
+        "resolveHomeFeedGridColumns"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+      "sha256LF": "d114aadafc87fcac9e3d94ec641c8f5eee28b28bf5cc7cbccdeabdba6662e198",
+      "allDeclarations": [
+        "resolveRequiredPullDistanceDp",
+        "shouldResetToTopOnRefreshStart",
+        "shouldResetToTopAfterIncrementalRefresh",
+        "shouldShowReleaseToRefreshHint",
+        "resolvePullRefreshHintText",
+        "resolvePullIndicatorTranslationY",
+        "resolvePullContentMaxOffsetDp",
+        "resolveMd3ScreenshotPullOffsetFraction",
+        "resolvePullContentOffsetFraction",
+        "resolveStablePullContentOffsetFraction",
+        "shouldSnapPullOffsetToFinger",
+        "resolveMd3ScreenshotRefreshIndicatorHeightDp",
+        "resolveMd3ScreenshotRefreshIndicatorTotalHeightDp",
+        "resolveMd3ScreenshotRefreshIndicatorTranslationY"
+      ],
+      "selectedDeclarations": [
+        "shouldResetToTopOnRefreshStart",
+        "shouldResetToTopAfterIncrementalRefresh",
+        "shouldShowReleaseToRefreshHint",
+        "resolvePullRefreshHintText",
+        "resolvePullIndicatorTranslationY",
+        "resolvePullContentMaxOffsetDp",
+        "resolveMd3ScreenshotPullOffsetFraction",
+        "resolvePullContentOffsetFraction",
+        "resolveStablePullContentOffsetFraction",
+        "shouldSnapPullOffsetToFinger",
+        "resolveMd3ScreenshotRefreshIndicatorHeightDp",
+        "resolveMd3ScreenshotRefreshIndicatorTotalHeightDp",
+        "resolveMd3ScreenshotRefreshIndicatorTranslationY"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+      "sha256LF": "1665875bbaa189b7945c0efd19e714279eda3b9c9c9baf74560b43686aeca1a9",
+      "allDeclarations": [
+        "HOME_HERO_CAROUSEL_MAX_ITEMS",
+        "HOME_HERO_CAROUSEL_SIDE_PEEK_DP",
+        "HOME_HERO_CAROUSEL_PAGE_SPACING_DP",
+        "HOME_HERO_CAROUSEL_PHONE_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_TABLET_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_WIDE_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_TABLET_BREAKPOINT_DP",
+        "HOME_HERO_CAROUSEL_WIDE_BREAKPOINT_DP",
+        "HOME_HERO_CAROUSEL_TABLET_MAX_WIDTH_DP",
+        "HOME_HERO_CAROUSEL_WIDE_MAX_WIDTH_DP",
+        "HOME_HERO_CAROUSEL_TOP_GAP_REDUCTION_DP",
+        "HomeHeroCarouselCardTransform",
+        "resolveHomeFeedTopPaddingDp",
+        "resolveHomeHeroCarouselItemOrNull",
+        "resolveHomeHeroCarouselItemKey",
+        "selectHomeHeroCarouselItems",
+        "excludeHomeHeroCarouselItems",
+        "shouldShowHomeHeroCarousel",
+        "shouldYieldHomeTopPagerToHeroCarousel",
+        "resolveHomeHeroCarouselAspectRatio",
+        "resolveHomeHeroCarouselWidthDp",
+        "HomeHeroCarouselLayout",
+        "resolveHomeHeroCarouselMaxHeightDp",
+        "resolveHomeHeroCarouselLayout",
+        "resolveHomeHeroCarouselCardTransform",
+        "resolveHomeHeroCarouselPreviewAlpha"
+      ],
+      "selectedDeclarations": [
+        "HOME_HERO_CAROUSEL_MAX_ITEMS",
+        "HOME_HERO_CAROUSEL_PHONE_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_TABLET_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_WIDE_ASPECT_RATIO",
+        "HOME_HERO_CAROUSEL_TABLET_BREAKPOINT_DP",
+        "HOME_HERO_CAROUSEL_WIDE_BREAKPOINT_DP",
+        "HOME_HERO_CAROUSEL_TABLET_MAX_WIDTH_DP",
+        "HOME_HERO_CAROUSEL_WIDE_MAX_WIDTH_DP",
+        "HOME_HERO_CAROUSEL_TOP_GAP_REDUCTION_DP",
+        "HomeHeroCarouselCardTransform",
+        "resolveHomeFeedTopPaddingDp",
+        "resolveHomeHeroCarouselItemOrNull",
+        "resolveHomeHeroCarouselItemKey",
+        "selectHomeHeroCarouselItems",
+        "excludeHomeHeroCarouselItems",
+        "shouldShowHomeHeroCarousel",
+        "shouldYieldHomeTopPagerToHeroCarousel",
+        "resolveHomeHeroCarouselAspectRatio",
+        "resolveHomeHeroCarouselWidthDp",
+        "HomeHeroCarouselLayout",
+        "resolveHomeHeroCarouselMaxHeightDp",
+        "resolveHomeHeroCarouselLayout",
+        "resolveHomeHeroCarouselCardTransform",
+        "resolveHomeHeroCarouselPreviewAlpha"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+      "sha256LF": "f6e6bdcfffdc5ce763f5c849f1ad7a1095416637648cfe967e2c31e1918cb59a",
+      "allDeclarations": [
+        "HomePerformanceConfig",
+        "resolveHomePreloadAheadCount",
+        "resolveHomeCoverPreloadRange",
+        "resolveHomePerformanceConfig"
+      ],
+      "selectedDeclarations": [
+        "HomePerformanceConfig",
+        "resolveHomePreloadAheadCount",
+        "resolveHomeCoverPreloadRange",
+        "resolveHomePerformanceConfig"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+      "sha256LF": "198067b7a9e28013a55b279b45bff231aac75e97658034f8201a3607606c53ec",
+      "allDeclarations": [
+        "resolveHomeDrawerLogoutAction"
+      ],
+      "selectedDeclarations": [
+        "resolveHomeDrawerLogoutAction"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt",
+      "sha256LF": "a4b1a94f96aa135ae45faebfbfeb9c8ce67e483818f446399adb5d21869ac8f3",
+      "allDeclarations": [
+        "PagerGestureDirection",
+        "PAGER_HORIZONTAL_DOMINANCE_RATIO",
+        "PAGER_AMBIGUOUS_DIRECTION_SLOP_MULTIPLIER",
+        "HOME_PAGER_HORIZONTAL_LOCK_SLOP_MULTIPLIER",
+        "PAGER_RELEASE_POSITION_THRESHOLD",
+        "PAGER_RELEASE_MAX_POSITION_THRESHOLD_DP",
+        "PAGER_RELEASE_MIN_FLING_VELOCITY_DP",
+        "resolveVerticalPriorityPagerGestureDirection",
+        "resolvePagerInitialHorizontalDelta",
+        "resolvePagerReleaseTargetPage",
+        "verticalPriorityHorizontalPagerSwipe",
+        "PagerDragRelease",
+        "PagerDragScrollSession"
+      ],
+      "selectedDeclarations": [
+        "PagerGestureDirection",
+        "PAGER_HORIZONTAL_DOMINANCE_RATIO",
+        "PAGER_AMBIGUOUS_DIRECTION_SLOP_MULTIPLIER",
+        "HOME_PAGER_HORIZONTAL_LOCK_SLOP_MULTIPLIER",
+        "PAGER_RELEASE_POSITION_THRESHOLD",
+        "PAGER_RELEASE_MAX_POSITION_THRESHOLD_DP",
+        "PAGER_RELEASE_MIN_FLING_VELOCITY_DP",
+        "resolveVerticalPriorityPagerGestureDirection",
+        "resolvePagerInitialHorizontalDelta",
+        "resolvePagerReleaseTargetPage",
+        "verticalPriorityHorizontalPagerSwipe",
+        "PagerDragRelease",
+        "PagerDragScrollSession"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+      "sha256LF": "aa10cd816875f4a76a505df2fdc66d6b8d6ce0172da239365b4d3b939a98e11f",
+      "allDeclarations": [
+        "resolveHomeBottomBarBaseVisibility"
+      ],
+      "selectedDeclarations": [
+        "resolveHomeBottomBarBaseVisibility"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
+      "sha256LF": "c2889de37dcf966bbcc10195ebcb10083aba619ff590de8f856b3f0a6e252645",
+      "allDeclarations": [
+        "USER_AGREEMENT_ACK_KEY",
+        "APP_WELCOME_PREFS_NAME",
+        "UserAgreementClause",
+        "UserAgreementChannelLink",
+        "userAgreementIntroText",
+        "userAgreementClauseList",
+        "userAgreementChannelLinks",
+        "canAcknowledgeUserAgreement",
+        "canAcknowledgeUserAgreement",
+        "isUserAgreementRequired"
+      ],
+      "selectedDeclarations": [
+        "USER_AGREEMENT_ACK_KEY"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+      "sha256LF": "925d1937415f1e149a89d6ca34e11b7e98e8b1a8787926274c569a0147f179a3",
+      "allDeclarations": [
+        "TODAY_WATCH_STARTUP_REVEAL_WINDOW_MS",
+        "TODAY_WATCH_NEAR_TOP_OFFSET_PX",
+        "TodayWatchStartupRevealDecision",
+        "decideTodayWatchStartupReveal"
+      ],
+      "selectedDeclarations": [
+        "TODAY_WATCH_STARTUP_REVEAL_WINDOW_MS",
+        "TODAY_WATCH_NEAR_TOP_OFFSET_PX",
+        "TodayWatchStartupRevealDecision",
+        "decideTodayWatchStartupReveal"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+      "sha256LF": "4a5533da5e7aece565dea5326a1216759cb9aee616d5b1b06462aee1fe892357",
+      "allDeclarations": [
+        "shouldEnableHomeDrawerGestures"
+      ],
+      "selectedDeclarations": [
+        "shouldEnableHomeDrawerGestures"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeWaterfallMotionSpec.kt",
+      "sha256LF": "e72f94d4ffd337b587b387707f5da301599bbee44d16d2ea6daa3f70b52e9ac3",
+      "allDeclarations": [
+        "homeWaterfallFadeInSpec",
+        "homeWaterfallExpandSpec",
+        "homeWaterfallFadeOutSpec"
+      ],
+      "selectedDeclarations": [
+        "homeWaterfallFadeInSpec",
+        "homeWaterfallExpandSpec",
+        "homeWaterfallFadeOutSpec"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+      "sha256LF": "2c366f533a555da0f98f156e8b176c8d6a2319edfac33d0d8d6c7f7e7bd1b523",
+      "allDeclarations": [
+        "nonLinearWaterfallDelayMillis"
+      ],
+      "selectedDeclarations": [
+        "nonLinearWaterfallDelayMillis"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "sha256LF": "fdc931d5fc2904d349f2548eeb0119fad473d9302eb523b2d63240179cf19dbb",
+      "allDeclarations": [
+        "IOS_TOP_TAB_CONTENT_PADDING_DP",
+        "TOP_TAB_WIDE_CENTER_BREAKPOINT_DP",
+        "TOP_TAB_INDICATOR_SETTLE_TIMEOUT_MILLIS",
+        "resolveFloatingIndicatorStartPaddingPx",
+        "resolveTopTabRowHorizontalPaddingDp",
+        "resolveTopTabDockIndicatorHorizontalGapDp",
+        "resolveTopTabDockIndicatorVerticalGapDp",
+        "resolveTopTabDockEndInsetDp",
+        "resolveTopTabIndicatorShape",
+        "resolveMd3TopTabUnderlineCenterOffsetDp",
+        "resolveTopTabDockIndicatorWidthDp",
+        "TOP_TAB_INDICATOR_CONTENT_PADDING_DP",
+        "resolveTopTabInterpolatedIndicatorWidthDp",
+        "resolveTopTabDockIndicatorHeightDp",
+        "resolveTopTabWrapItemWidthDp",
+        "shouldWrapTopTabDockWidth",
+        "resolveTopTabDockWrapWidthDp",
+        "resolveTopTabDockItemWidthDp",
+        "resolveTopTabDockIndicatorOffsetPx",
+        "resolveTopTabEdgeAwarePanelOffsetPx",
+        "resolveTopTabVisibleSlots",
+        "resolveMd3TopTabVisibleSlots",
+        "resolveMd3TopTabLayoutVisibleSlots",
+        "resolveIosTopTabLayoutVisibleSlots",
+        "resolveIosTopTabItemWidthDp",
+        "resolveMd3TopTabMinItemWidthDp",
+        "resolveMd3TopTabMaxItemWidthDp",
+        "resolveMd3TopTabItemWidthDp",
+        "resolveFixedHomeTopTabItemWidthDp",
+        "resolveMd3TopTabContentPaddingDp",
+        "resolveMd3VisibleTabIndices",
+        "resolveMd3SelectedVisibleIndex",
+        "resolveTopTabMinItemWidthDp",
+        "resolveTopTabItemWidthDp",
+        "resolveTopTabVisibleCategorySlots",
+        "resolveTopTabActionSlotWidthDp",
+        "normalizeTopTabLabelMode",
+        "shouldShowTopTabIcon",
+        "shouldShowTopTabText",
+        "resolveTopTabIconFamily",
+        "resolveMd3TopTabLabelMode",
+        "resolveTopTabCategoryForIcon",
+        "resolveTopTabCategoryIcon",
+        "resolveTopTabPartitionIcon",
+        "Md3TopTabRowVariant",
+        "resolveMd3TopTabRowVariant",
+        "resolveMd3TopTabActionButtonCorner",
+        "resolveMd3TopTabActionButtonSize",
+        "resolveMd3TopTabActionIconSize",
+        "resolveMd3TopTabActionContentBottomPadding",
+        "resolveMd3TopTabVerticalLiftDp",
+        "resolveMd3TopTabRowVerticalTranslationDp",
+        "resolveMd3TopTabIndicatorBottomPadding",
+        "resolveIconOnlyTopTabIndicatorWidth",
+        "resolveHomeSkinTopTabActionButtonSize",
+        "resolveHomeSkinTopTabActionIconSize",
+        "resolveHomeSkinTopTabIndicatorBottomPadding",
+        "resolveTopTabSkinStickerIconSize",
+        "resolveTopTabSkinPartitionIconSize",
+        "resolveTopTabSkinStickerIndicatorWidth",
+        "resolveTopTabSkinStickerRowHeight",
+        "resolveTopTabSkinStickerItemVerticalPadding",
+        "resolveIosTopTabRowHeight",
+        "resolveHomeTopDockShellHeight",
+        "resolveIosTopTabActionButtonSize",
+        "resolveIosTopTabActionButtonCorner",
+        "resolveIosTopTabActionIconSize",
+        "performHomeTopBarTap",
+        "premiumClickable",
+        "FluidHomeTopBar",
+        "resolveTopTabUnselectedAlpha",
+        "resolveTopTabUnselectedColor",
+        "resolveIosTopTabSelectedContentColor",
+        "resolveIosTopTabCapsuleContainerColor",
+        "TOP_DOCK_SHELL_LENS_INTENSITY",
+        "homeTopBottomBarMatchedSurface",
+        "LightweightHomeTopTabs",
+        "HomeTopTabMotionLayer",
+        "LightweightTopTabIndicatorOverlay",
+        "LightweightTopTabMd3Underline",
+        "TopTabLiquidColorMode",
+        "resolveTopTabVisibleContentAlpha",
+        "resolveTopTabUsesGlassExportForSelectedGlyphs",
+        "LightweightTopTabItem",
+        "TopTabBlendedIcon",
+        "CategoryTabRow",
+        "rememberTopTabPagerDragHeld",
+        "resolveTopTabIndicatorVelocity",
+        "resolveTopTabPagerVelocityItemsPerSecond",
+        "resolveTopTabIndicatorDragTargetIndex",
+        "resolveTopTabIndicatorLayerVelocityItemsPerSecond",
+        "shouldTopTabIndicatorBeInteracting",
+        "resolveTopTabIndicatorInteractionReleaseDelayMillis",
+        "shouldTopTabIndicatorUseRefraction",
+        "shouldDeformTopTabIndicator",
+        "resolveTopTabIndicatorVisualPolicy",
+        "resolveTopTabStaticIndicatorVisualPolicy",
+        "resolveTopTabIndicatorLayerTransform",
+        "resolveTopTabIndicatorScaleProgress",
+        "resolveTopTabMatchedPanelOffsetPx",
+        "resolveTopTabNeutralIndicatorColor",
+        "resolveTopTabNeutralIndicatorTintAlpha",
+        "TopTabIndicatorBackdropPolicy",
+        "resolveTopTabIndicatorBackdropPolicy",
+        "TopTabRefractionMotionProfile",
+        "resolveTopTabRefractionMotionProfile",
+        "resolveTopTabRefractionMotionProfile",
+        "resolveTopTabItemMotionVisual",
+        "resolveTopTabHorizontalDeltaPx",
+        "resolveTopTabIndicatorViewportShiftPx",
+        "resolveTopTabIndicatorViewportClampShiftPx",
+        "CategoryTabItem"
+      ],
+      "selectedDeclarations": [
+        "IOS_TOP_TAB_CONTENT_PADDING_DP",
+        "TOP_TAB_WIDE_CENTER_BREAKPOINT_DP",
+        "TOP_TAB_INDICATOR_SETTLE_TIMEOUT_MILLIS",
+        "resolveTopTabRowHorizontalPaddingDp",
+        "resolveTopTabDockIndicatorHorizontalGapDp",
+        "resolveTopTabDockIndicatorVerticalGapDp",
+        "resolveTopTabDockEndInsetDp",
+        "resolveTopTabIndicatorShape",
+        "resolveMd3TopTabUnderlineCenterOffsetDp",
+        "resolveTopTabDockIndicatorWidthDp",
+        "TOP_TAB_INDICATOR_CONTENT_PADDING_DP",
+        "resolveTopTabInterpolatedIndicatorWidthDp",
+        "resolveTopTabDockIndicatorHeightDp",
+        "resolveTopTabWrapItemWidthDp",
+        "shouldWrapTopTabDockWidth",
+        "resolveTopTabDockWrapWidthDp",
+        "resolveTopTabDockItemWidthDp",
+        "resolveTopTabDockIndicatorOffsetPx",
+        "resolveTopTabEdgeAwarePanelOffsetPx",
+        "resolveMd3TopTabVisibleSlots",
+        "resolveMd3TopTabLayoutVisibleSlots",
+        "resolveIosTopTabLayoutVisibleSlots",
+        "resolveIosTopTabItemWidthDp",
+        "resolveMd3TopTabMinItemWidthDp",
+        "resolveMd3TopTabMaxItemWidthDp",
+        "resolveMd3TopTabItemWidthDp",
+        "resolveFixedHomeTopTabItemWidthDp",
+        "resolveMd3TopTabContentPaddingDp",
+        "shouldShowTopTabIcon",
+        "shouldShowTopTabText",
+        "resolveTopTabIconFamily",
+        "resolveTopTabCategoryForIcon",
+        "resolveTopTabCategoryIcon",
+        "resolveTopTabPartitionIcon",
+        "resolveMd3TopTabVerticalLiftDp",
+        "resolveMd3TopTabRowVerticalTranslationDp",
+        "resolveIconOnlyTopTabIndicatorWidth",
+        "resolveHomeSkinTopTabActionButtonSize",
+        "resolveHomeSkinTopTabActionIconSize",
+        "resolveTopTabSkinStickerIconSize",
+        "resolveTopTabSkinPartitionIconSize",
+        "resolveTopTabSkinStickerIndicatorWidth",
+        "resolveTopTabSkinStickerRowHeight",
+        "resolveTopTabSkinStickerItemVerticalPadding",
+        "resolveIosTopTabRowHeight",
+        "performHomeTopBarTap",
+        "resolveIosTopTabSelectedContentColor",
+        "resolveIosTopTabCapsuleContainerColor",
+        "TOP_DOCK_SHELL_LENS_INTENSITY",
+        "homeTopBottomBarMatchedSurface",
+        "LightweightHomeTopTabs",
+        "HomeTopTabMotionLayer",
+        "LightweightTopTabIndicatorOverlay",
+        "LightweightTopTabMd3Underline",
+        "TopTabLiquidColorMode",
+        "resolveTopTabVisibleContentAlpha",
+        "resolveTopTabUsesGlassExportForSelectedGlyphs",
+        "LightweightTopTabItem",
+        "TopTabBlendedIcon",
+        "CategoryTabRow",
+        "rememberTopTabPagerDragHeld",
+        "resolveTopTabPagerVelocityItemsPerSecond",
+        "resolveTopTabIndicatorDragTargetIndex",
+        "shouldTopTabIndicatorUseRefraction",
+        "shouldDeformTopTabIndicator",
+        "resolveTopTabIndicatorVisualPolicy",
+        "resolveTopTabIndicatorLayerTransform",
+        "resolveTopTabIndicatorScaleProgress",
+        "resolveTopTabMatchedPanelOffsetPx",
+        "TopTabIndicatorBackdropPolicy",
+        "resolveTopTabIndicatorBackdropPolicy"
+      ],
+      "alreadyOwnedDeclarations": [
+        "normalizeTopTabLabelMode",
+        "resolveMd3TopTabActionButtonCorner",
+        "resolveMd3TopTabActionButtonSize",
+        "resolveMd3TopTabActionIconSize",
+        "resolveHomeTopDockShellHeight",
+        "resolveIosTopTabActionButtonSize",
+        "resolveIosTopTabActionButtonCorner",
+        "resolveIosTopTabActionIconSize"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+      "sha256LF": "eb5b47502b302db15a22bc88224e9e5680b975dc4c286b8ce29469367c1fc55a",
+      "allDeclarations": [
+        "HomeTopTabGestureAction",
+        "resolveHomeTopTabGestureAction",
+        "resolveHomeTopCollapsedHandleHeight",
+        "resolveHomeTopTabsAutoCollapsed",
+        "reduceHomeTopTabsAutoCollapseState",
+        "resolveHomeTopTabPresentationHeight"
+      ],
+      "selectedDeclarations": [
+        "HomeTopTabGestureAction",
+        "resolveHomeTopTabGestureAction",
+        "resolveHomeTopCollapsedHandleHeight",
+        "resolveHomeTopTabPresentationHeight"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+      "sha256LF": "c05d491f60caeecb0b64218e8dc7f8565b099790e55a6aa4410d9f7339715490",
+      "allDeclarations": [
+        "AppNavigationAppearance",
+        "resolveEffectiveNavigationBottomBarBlur",
+        "resolveAppNavigationAppearance"
+      ],
+      "selectedDeclarations": [
+        "AppNavigationAppearance",
+        "resolveEffectiveNavigationBottomBarBlur",
+        "resolveAppNavigationAppearance"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/ModifierExt.kt",
+      "sha256LF": "caa784820d58714dc5cec7415ee3f67b2a11ab1d31e63d062bc1701e4f1f4bfa",
+      "allDeclarations": [
+        "shimmerEffect",
+        "debounceClickable",
+        "rememberDebounceClick",
+        "rememberDebounceCallback",
+        "VideoGridItemSkeleton",
+        "HapticType",
+        "rememberHapticFeedback",
+        "bouncyClickable",
+        "hapticClickable",
+        "iOSTapEffect",
+        "iOSTapScale",
+        "iOSCardTapEffect"
+      ],
+      "selectedDeclarations": [
+        "iOSTapEffect",
+        "iOSCardTapEffect"
+      ],
+      "alreadyOwnedDeclarations": [
+        "VideoGridItemSkeleton",
+        "HapticType",
+        "rememberHapticFeedback",
+        "bouncyClickable"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ContentCardSurfacePolicy.kt",
+      "sha256LF": "2b331b966c2f1d8f2e61e075476b2cab41186f0b85106d763c05f109e279b652",
+      "allDeclarations": [
+        "ContentCardSurfaceSpec",
+        "resolveContentCardSurfaceSpec",
+        "rememberContentCardSurfaceSpec",
+        "resolveContentCardCornerDp"
+      ],
+      "selectedDeclarations": [
+        "ContentCardSurfaceSpec",
+        "resolveContentCardSurfaceSpec",
+        "rememberContentCardSurfaceSpec"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+      "sha256LF": "65c4a8b57fd0483fb4a3074d87e33fb988a1311a57397fc9564214b0519d096b",
+      "allDeclarations": [
+        "iosIndicatorSpecular",
+        "BottomNavItem",
+        "resolveBottomNavItemLabel",
+        "resolveBottomNavItemContentDescription",
+        "resolveBottomNavItemLookupKeys",
+        "BottomBarLayoutPolicy",
+        "Md3BottomBarDisplayMode",
+        "Md3BottomBarFloatingChromeSpec",
+        "MaterialDockedBottomBarItemColors",
+        "resolveMaterialDockedBottomBarItemColors",
+        "resolveDockedBottomBarIndicatorColor",
+        "resolveFloatingBottomBarContainerColor",
+        "resolveMd3BottomBarFloatingChromeSpec",
+        "resolveMd3BottomBarDisplayMode",
+        "shouldUseOfficialMd3FloatingToolbar",
+        "AndroidNativeBottomBarTuning",
+        "SharedFloatingBottomBarIconStyle",
+        "AndroidNativeIndicatorSpec",
+        "resolveSharedBottomBarCapsuleShape",
+        "resolveBiliPaiFloatingBottomBarWidth",
+        "resolveBiliPaiBottomBarItemSlotWidth",
+        "resolveBiliPaiBottomBarItemCenterX",
+        "BiliPaiBottomBarSearchLayout",
+        "resolveBiliPaiBottomBarSearchCircleSize",
+        "resolveBiliPaiExpandedHomeIconSize",
+        "resolveBiliPaiExpandedHomeIconScale",
+        "resolveBiliPaiBottomBarSearchFieldExpanded",
+        "resolveBiliPaiBottomBarSearchLayout",
+        "resolveBiliPaiBottomBarDockHeight",
+        "resolveBiliPaiBottomBarIndicatorHeight",
+        "resolveBiliPaiBottomBarSearchHeight",
+        "resolveBottomBarRefractionCaptureWidth",
+        "BiliPaiBottomBarSearchLayoutState",
+        "rememberBiliPaiBottomBarSearchLayoutState",
+        "BottomBarSearchTopThresholdPx",
+        "BottomBarTransientAlphaThreshold",
+        "shouldAutoExpandBottomBarSearchAtThreshold",
+        "shouldAutoExpandBottomBarSearch",
+        "resolveBottomBarSearchEnabledForItem",
+        "shouldReserveBottomBarSearchLayout",
+        "resolveBottomBarVisibleItemsForSearchMode",
+        "BottomBarSearchExpansionOverride",
+        "resolveEffectiveBottomBarSearchExpanded",
+        "resolveBottomBarSearchExpansionOverrideOnNavItemClick",
+        "resolveBottomBarSearchExpansionOverrideOnSearchClick",
+        "shouldResetBottomBarSearchExpansionOverride",
+        "resolveBottomBarSearchExpansionOverrideAfterSubmit",
+        "shouldRequestBottomBarSearchIme",
+        "shouldDismissBottomBarSearchImeOnScroll",
+        "shouldRenderBottomBarRefractionCapture",
+        "shouldRenderBottomBarIndicatorBackdrop",
+        "shouldRenderBottomBarHeavyInteractiveEffects",
+        "shouldUseBottomBarCombinedIndicatorBackdrop",
+        "shouldUseBottomBarIndicatorLens",
+        "shouldComposeBottomBarDockContent",
+        "resolveAndroidNativeBottomBarTuning",
+        "resolveAndroidNativeBottomBarContainerColor",
+        "resolveAndroidNativeFloatingBottomBarContainerColor",
+        "resolveAndroidNativeBottomBarGlassEnabled",
+        "resolveBottomBarIndicatorEffectsEnabled",
+        "shouldUseBottomBarCaptureLens",
+        "resolveBiliPaiBottomBarShellColor",
+        "shouldBlurBiliPaiBottomBarShell",
+        "shouldUseAndroidNativeFloatingHazeBlur",
+        "shouldRenderBottomBarLiquidGlassEffects",
+        "shouldUsePlainMiuixFloatingBar",
+        "biliPaiMiuixFloatingDockSurface",
+        "resolveAndroidNativeIndicatorSpec",
+        "resolveAndroidNativeIndicatorColor",
+        "resolveAndroidNativeExportTintColor",
+        "BottomBarSkinContentColors",
+        "resolveFloatingBottomBarLabelColor",
+        "resolveBottomBarSkinContentColors",
+        "resolveReadableBottomBarSkinForeground",
+        "bottomBarColorContrastRatio",
+        "bottomBarSkinLabelScrim",
+        "resolveAndroidNativeIdleIndicatorSurfaceColor",
+        "resolveBiliPaiBottomBarContainerColor",
+        "resolveBottomBarDarkTheme",
+        "resolveBottomBarIdleIndicatorSurfaceColor",
+        "resolveAndroidNativePanelOffsetFraction",
+        "toAppPlatformNavigationDisplayMode",
+        "shouldUseMiuixOfficialNavigationBarItem",
+        "resolveMiuixDockedBottomBarItemColor",
+        "resolveBottomBarFloatingHeightDp",
+        "normalizeBottomBarLabelMode",
+        "shouldShowBottomBarIcon",
+        "shouldShowBottomBarDynamicReminderBadge",
+        "formatBottomBarDynamicReminderBadge",
+        "shouldShowBottomBarText",
+        "resolveBottomBarBottomPaddingDp",
+        "BottomBarIndicatorPolicy",
+        "BottomBarIndicatorVisualPolicy",
+        "BOTTOM_BAR_REFRACTION_IDLE_HOLD_MS",
+        "BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET",
+        "resolveBottomBarCaptureSafeInsetDp",
+        "BILIPAI_INDICATOR_VELOCITY_NORMALIZATION_DIVISOR",
+        "BILIPAI_INDICATOR_VELOCITY_SCALE_X_MULTIPLIER",
+        "BILIPAI_INDICATOR_VELOCITY_CLAMP",
+        "resolveBottomBarIndicatorVisualPolicyWithHold",
+        "BottomBarRefractionLayerPolicy",
+        "BottomBarRefractionMotionProfile",
+        "BottomBarPresetPanelOffsets",
+        "BottomBarBackdropPresetLensSpec",
+        "BottomBarBackdropPresetProgress",
+        "BottomBarSearchLaunchMorphSpec",
+        "resolveBottomBarSearchLaunchMorphSpec",
+        "BottomBarItemMotionVisual",
+        "BottomBarClickPulseTransform",
+        "BottomBarIndicatorLayerTransform",
+        "resolveBottomBarClickPulseTransform",
+        "resolveBottomBarLiquidGlassLensProgress",
+        "resolveBottomBarLiquidGlassHighlightAlpha",
+        "resolveBottomBarIndicatorGlowAlpha",
+        "resolveBottomBarBackdropPresetCaptureLens",
+        "resolveBottomBarBackdropPresetIndicatorLens",
+        "resolveBottomBarBackdropPresetProgress",
+        "resolveBottomBarEffectiveBackdropPresetProgress",
+        "resolveBottomBarIndicatorLayerTransform",
+        "rememberBottomBarIndicatorDragScaleProgress",
+        "rememberBottomBarIndicatorLayerScaleTransform",
+        "resolveBottomBarVisualIndicatorPosition",
+        "resolveBottomBarEdgeStrain",
+        "resolveBottomBarEdgeCompressionScaleX",
+        "resolveBottomBarSettleReboundTransform",
+        "rememberBottomBarClickPulseTransform",
+        "rememberBottomBarTapSwitchPressProgress",
+        "rememberBottomBarSettleReboundTransform",
+        "resolveBottomBarItemCoverage",
+        "resolveBottomBarItemMotionScale",
+        "resolveBottomBarSampledItemMotionScale",
+        "resolveBottomBarItemMotionVisual",
+        "resolveBottomBarIndicatorVisualPolicy",
+        "resolveBottomBarRefractionLayerPolicy",
+        "resolveBottomBarRefractionMotionProfile",
+        "resolveBottomBarEffectiveRefractionMotionProfile",
+        "resolveBottomBarPresetPanelOffsets",
+        "resolveBottomBarMovingIndicatorSurfaceColor",
+        "resolveIosFloatingBottomIndicatorColor",
+        "resolveIosFloatingBottomIndicatorTintAlpha",
+        "resolveBottomBarIndicatorTintAlpha",
+        "resolveBottomBarIndicatorTintAlpha",
+        "resolveBottomBarIndicatorPolicy",
+        "resolveBottomIndicatorHeightDp",
+        "resolveBottomBarLayoutPolicy",
+        "FrostedBottomBar",
+        "MaterialBottomBar",
+        "OfficialMd3FloatingToolbarContent",
+        "OfficialMd3FloatingBottomBar",
+        "MaterialBottomBarAnimatedIcon",
+        "MiuixBottomBar",
+        "IllustratedSkinBottomBar",
+        "DockedBottomBarSkinContainer",
+        "MiuixDockedBottomBarItem",
+        "BiliPaiFloatingBottomBar",
+        "BiliPaiFloatingBottomBarChrome",
+        "FloatingBottomBarTabVisual",
+        "BiliPaiMiuixBottomBarIndicatorLayer",
+        "BiliPaiBottomBarSearchSlot",
+        "BiliPaiBottomBarSearchCapsule",
+        "BiliPaiBottomBarSearchVisualContent",
+        "BottomBarInputTarget",
+        "AndroidNativeBottomBarItem",
+        "resolveMaterialBottomBarIcon",
+        "resolveHomeNavigationBarIcon",
+        "resolveSharedBottomBarIcon",
+        "resolveSharedBottomBarSidebarIcon",
+        "BottomBarBlendedMiuixIcon",
+        "BottomBarBlendedMaterialIcon",
+        "BottomBarReminderBadgeAnchor",
+        "BottomBarReminderBadgeAnchor",
+        "resolveBottomBarSurfaceColor",
+        "shouldUseHomeCombinedClickable",
+        "BottomBarPrimaryTapAction",
+        "resolveBottomBarPrimaryTapAction",
+        "performBottomBarPrimaryTap",
+        "performMaterialBottomBarTap",
+        "shouldAcceptBottomBarTap",
+        "shouldUseBottomReselectCombinedClickable",
+        "BottomBarItemColorBinding",
+        "resolveBottomBarItemColorBinding",
+        "resolveBottomBarSelectedContentColor",
+        "resolveAndroidNativeBottomBarItemContentColor",
+        "resolveBottomBarSlidingContentColor",
+        "resolveBottomBarReadableContentColor",
+        "resolveIos26BottomIndicatorGrayColor"
+      ],
+      "selectedDeclarations": [
+        "resolveBottomNavItemLabel",
+        "resolveBiliPaiFloatingBottomBarWidth",
+        "resolveBiliPaiBottomBarSearchCircleSize",
+        "resolveBiliPaiBottomBarDockHeight",
+        "resolveBiliPaiBottomBarIndicatorHeight",
+        "resolveAndroidNativeExportTintColor",
+        "resolveReadableBottomBarSkinForeground",
+        "bottomBarColorContrastRatio",
+        "normalizeBottomBarLabelMode",
+        "BottomBarIndicatorVisualPolicy",
+        "BILIPAI_INDICATOR_VELOCITY_NORMALIZATION_DIVISOR",
+        "BILIPAI_INDICATOR_VELOCITY_SCALE_X_MULTIPLIER",
+        "BILIPAI_INDICATOR_VELOCITY_CLAMP",
+        "BottomBarRefractionMotionProfile",
+        "BottomBarIndicatorLayerTransform",
+        "resolveBottomBarIndicatorLayerTransform",
+        "rememberBottomBarIndicatorDragScaleProgress",
+        "rememberBottomBarIndicatorLayerScaleTransform",
+        "resolveBottomBarRefractionMotionProfile",
+        "resolveBottomBarMovingIndicatorSurfaceColor",
+        "resolveMaterialBottomBarIcon",
+        "resolveHomeNavigationBarIcon"
+      ],
+      "alreadyOwnedDeclarations": [
+        "iosIndicatorSpecular",
+        "AndroidNativeBottomBarTuning",
+        "resolveSharedBottomBarCapsuleShape",
+        "resolveAndroidNativeBottomBarTuning",
+        "resolveAndroidNativeBottomBarContainerColor",
+        "resolveAndroidNativeFloatingBottomBarContainerColor",
+        "resolveAndroidNativeBottomBarGlassEnabled",
+        "resolveBiliPaiBottomBarShellColor",
+        "shouldUseAndroidNativeFloatingHazeBlur",
+        "shouldRenderBottomBarLiquidGlassEffects",
+        "biliPaiMiuixFloatingDockSurface",
+        "resolveBiliPaiBottomBarContainerColor",
+        "resolveBottomBarDarkTheme",
+        "BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET",
+        "resolveBottomBarCaptureSafeInsetDp",
+        "BottomBarItemMotionVisual",
+        "resolveBottomBarItemCoverage",
+        "resolveBottomBarItemMotionScale",
+        "resolveBottomBarItemMotionVisual",
+        "resolveBottomBarSurfaceColor"
+      ]
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+      "sha256LF": "79f11b9ec6ad54a8b3f131fd0213b43ed59faf888f451936b688b53f9e8db248",
+      "allDeclarations": [
+        "resolveUserVipBadgeLabel",
+        "UserVipBadge",
+        "resolveVipBadgeColors",
+        "AccessibleVipBadgeColors"
+      ],
+      "selectedDeclarations": [
+        "resolveUserVipBadgeLabel",
+        "UserVipBadge",
+        "resolveVipBadgeColors",
+        "AccessibleVipBadgeColors"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+      "sha256LF": "799ecb2199e98131e551a1746ef47f3d2f2699fdab97c74c799abc42b346805b",
+      "allDeclarations": [
+        "DrawerMotionBudget",
+        "resolveDrawerMotionBudget",
+        "shouldEnableDrawerBlur",
+        "shouldForceLowDrawerBlurBudget"
+      ],
+      "selectedDeclarations": [
+        "DrawerMotionBudget",
+        "resolveDrawerMotionBudget",
+        "shouldEnableDrawerBlur",
+        "shouldForceLowDrawerBlurBudget"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/WindowSizeUtils.kt",
+      "sha256LF": "cda5b8ae2ba18958739f2d51648683ed33150cec4c1db70b5c232005bd140c62",
+      "allDeclarations": [
+        "WindowWidthSizeClass",
+        "WindowHeightSizeClass",
+        "resolveWindowWidthSizeClass",
+        "resolveWindowHeightSizeClass",
+        "resolveWindowWidthSizeClass",
+        "resolveWindowHeightSizeClass",
+        "resolveStableDeviceWidthSizeClass",
+        "WindowSizeClass",
+        "AppFoldPosture",
+        "AppHingeOrientation",
+        "AppFoldingFeatureInfo",
+        "AppWindowAdaptiveInfo",
+        "DefaultWindowSizeClass",
+        "LocalWindowSizeClass",
+        "LocalAppWindowAdaptiveInfo",
+        "rememberIsFlatFoldable",
+        "rememberAppWindowAdaptiveInfo",
+        "findHostActivity",
+        "toAppFoldingFeatureInfo",
+        "hasPrecisePointer",
+        "calculateWindowSizeClass",
+        "resolveSingleColumnFeedMaxWidth",
+        "rememberResponsiveValue",
+        "rememberAdaptiveGridColumns",
+        "rememberSplitLayoutRatio",
+        "shouldUseSideNavigation",
+        "isTabletDevice",
+        "ResponsiveSpacing",
+        "rememberResponsiveSpacing",
+        "rememberResponsiveFontSize",
+        "scaledIfSpecified",
+        "responsiveContentWidth",
+        "centeredContent",
+        "isTabletLandscape",
+        "isTabletPortrait",
+        "rememberImageGridColumns"
+      ],
+      "selectedDeclarations": [
+        "shouldUseSideNavigation"
+      ],
+      "alreadyOwnedDeclarations": [
+        "WindowWidthSizeClass",
+        "WindowHeightSizeClass",
+        "resolveWindowWidthSizeClass",
+        "resolveWindowHeightSizeClass",
+        "resolveWindowWidthSizeClass",
+        "resolveWindowHeightSizeClass",
+        "WindowSizeClass",
+        "AppFoldPosture",
+        "AppHingeOrientation",
+        "AppFoldingFeatureInfo",
+        "AppWindowAdaptiveInfo",
+        "DefaultWindowSizeClass",
+        "LocalWindowSizeClass",
+        "LocalAppWindowAdaptiveInfo",
+        "resolveSingleColumnFeedMaxWidth",
+        "ResponsiveSpacing",
+        "rememberResponsiveSpacing",
+        "responsiveContentWidth"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpec.kt",
+      "sha256LF": "80b1615d19dae58b74485132977d421a9e42629ec8ab24beb702575feeb6787e",
+      "allDeclarations": [
+        "resolveHomeSkeletonCoverShape",
+        "resolveHomeSkeletonInfoShape"
+      ],
+      "selectedDeclarations": [
+        "resolveHomeSkeletonCoverShape",
+        "resolveHomeSkeletonInfoShape"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+      "sha256LF": "e37cbef3eec3cc56d90315f66c8876a230cfa0fb0ae1bb40e6f7882f34ab0481",
+      "allDeclarations": [
+        "ComfortablePullToRefreshBox"
+      ],
+      "selectedDeclarations": [
+        "ComfortablePullToRefreshBox"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/AdaptivePullToRefreshPolicy.kt",
+      "sha256LF": "b176222984174db4c73fe4009bbf1401328d38889258dc45b03e33e5878a011f",
+      "allDeclarations": [
+        "resolveAdaptivePullToRefreshRenderer",
+        "resolveMiuixPullToRefreshTexts",
+        "resolvePullRefreshIndicatorTopInsetDp",
+        "resolveScaffoldedPullRefreshIndicatorTopInsetDp"
+      ],
+      "selectedDeclarations": [
+        "resolveMiuixPullToRefreshTexts"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "sha256LF": "f89b2381a774e707660df9d23f13c074d8b282952a282a653f4845ec28c4c0b3",
+      "allDeclarations": [
+        "HomeNavigationIconRole",
+        "HomeNavigationIconSource",
+        "resolveHomeNavigationIconRole",
+        "resolveMiuixPreferredHomeNavigationIconSource",
+        "resolveMiuixPreferredHomeNavigationIcon",
+        "resolveMiuixBottomNavigationIcon",
+        "resolveMiuixHomeNavigationIcon"
+      ],
+      "selectedDeclarations": [
+        "HomeNavigationIconRole",
+        "resolveHomeNavigationIconRole",
+        "resolveMiuixPreferredHomeNavigationIcon",
+        "resolveMiuixBottomNavigationIcon",
+        "resolveMiuixHomeNavigationIcon"
+      ],
+      "alreadyOwnedDeclarations": []
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/PullRefreshUiPolicy.kt",
+      "sha256LF": "0a807746f26140114ca3add090066be5fad1054b440284c60dde9ac348e0989c",
+      "allDeclarations": [
+        "resolvePullRefreshThresholdDp"
+      ],
+      "selectedDeclarations": [
+        "resolvePullRefreshThresholdDp"
+      ],
+      "alreadyOwnedDeclarations": []
+    }
+  ],
+  "references": {
+    "com.android.purebilibili.feature.home.resolveHomeFeedPinchColumnBounds": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalBottomBarContentPadding": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\ui\\DesktopFavoriteBottomBarLocals.kt"
+    ],
+    "com.android.purebilibili.core.plugin.PluginStore": [
+      "desktop\\build\\generated\\plugins\\com\\android\\purebilibili\\core\\plugin\\PluginStore.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppScaffold": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeCoverImageSource": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeCoverRequestPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.rememberHomeGlassPillColors": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeInteractionMotionBudget": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppSurfaceTokens": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppSurfaceTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppSurfaceTokens.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardReturnSpringSettleBufferMs": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.navigation.animatePagerSelection": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\navigation\\PagerSelectionMotion.kt",
+      "direct:app/src/main/java/com/android/purebilibili/navigation/PagerSelectionMotion.kt"
+    ],
+    "com.android.purebilibili.core.ui.ContainerLevel": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppShapes.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalBottomBarVisible": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\ui\\DesktopFavoriteBottomBarLocals.kt"
+    ],
+    "com.android.purebilibili.feature.home.LocalHomeWallpaperBackdropReady": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeFeedCardLayout": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedCardStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeFeedCardStylePolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.adaptive.resolveEffectiveMotionTier": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\adaptive\\MotionTierPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/MotionTierPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.CommonListHeaderCollapseMode": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\store\\DesktopFavoriteChromePolicies.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppButton": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeWallpaperBackdropAppearance": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppModalNavigationDrawer": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppText": [
+      "desktop\\build\\generated\\components\\com\\android\\purebilibili\\core\\ui\\components\\AppText.kt",
+      "desktop\\build\\generated\\components\\com\\android\\purebilibili\\core\\ui\\components\\AppText.kt",
+      "desktop\\build\\generated\\components\\com\\android\\purebilibili\\core\\ui\\components\\AppText.kt",
+      "desktop\\build\\generated\\components\\com\\android\\purebilibili\\core\\ui\\components\\AppText.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeFeedStoredColumnCount": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeCardGridPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.resolveHomeHeaderBlurEnabled": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\store\\DesktopFavoriteChromePolicies.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppTextButton": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeFeedGridColumns": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeCardGridPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.LocalHomeScrollOffset": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\DesktopFavoriteScrollLocals.kt"
+    ],
+    "com.android.purebilibili.data.model.response.VideoItem": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ListModels.kt",
+      "direct:app/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"
+    ],
+    "com.android.purebilibili.feature.home.HomeRefreshTipSurfaceStyle": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.LocalHomeFeedScrollInProgress": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\DesktopFavoriteScrollLocals.kt"
+    ],
+    "com.android.purebilibili.feature.home.TodayWatchMode": [
+      "desktop\\build\\generated\\plugins\\com\\android\\purebilibili\\feature\\home\\DesktopTodayWatchModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.adaptive.resolveDeviceUiProfile": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\ui\\adaptive\\DesktopFavoriteDeviceProfile.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppPullRefreshIndicatorStyle": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppPullRefreshIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppPullRefreshProfile": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppPullRefreshIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt"
+    ],
+    "com.android.purebilibili.feature.home.homeFeedPinchZoom": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppSemanticVisualPolicy": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppSemanticVisualPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.motion.pullRefreshReleaseSpring": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\motion\\AppMotionTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppMotionTokens.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.recoverableBlurEnabled": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\RecoverableVisualEffects.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoCardTransitionBackgroundPhase": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionBackgroundPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeNotInterestedReasons": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeNotInterestedPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeNotInterestedPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppTopChromePolicy": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeCoverRequestSpec": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeCoverRequestPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.LocalWallpaperPalette": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardAdaptiveTintPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabStyle": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.motion.AppMotionTokens": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\motion\\AppMotionTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppMotionTokens.kt"
+    ],
+    "com.android.purebilibili.feature.home.isCompactHomeFeedScreen": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeCardGridPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopPresetStyle": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppPullRefreshLoadingIndicator": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppPullRefreshIndicator.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppPullRefreshIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BottomBarMatchedDockEdge": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\ChromeBackdropSource.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/blur/ChromeBackdropSource.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveLiquidGlassTuning": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt",
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt",
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt"
+    ],
+    "com.android.purebilibili.feature.home.PopularSubCategory": [
+      "desktop\\build\\generated\\discovery\\com\\android\\purebilibili\\feature\\home\\DesktopDiscoveryHomeUiState.kt"
+    ],
+    "com.android.purebilibili.core.plugin.feed.isSubscriptionPluginOrFeedEnabled": [
+      "desktop\\build\\generated\\js\\com\\android\\purebilibili\\core\\plugin\\feed\\FeedSourceCatalog.kt"
+    ],
+    "com.android.purebilibili.feature.home.rememberHomeGlassChromeColors": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeRefreshTipAppearance": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeWallpaperUri": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionExposure": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionExposure.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppSpacingTokens": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppSpacingTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppSpacingTokens.kt"
+    ],
+    "com.android.purebilibili.feature.home.shouldHandleRefreshNewItemsEvent": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeRefreshUiPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.LocalVideoCardTransitionBackgroundState": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionBackgroundPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppShapes": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppShapes.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppShapes.kt"
+    ],
+    "com.android.purebilibili.feature.home.GridPinchColumnHudPill": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeFeedPinchZoomPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeFeedPinchZoomPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VIDEO_SHARED_TRANSITION_STANDARD_DURATION_MILLIS": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeFeedMaxContentWidth": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\feature\\home\\DesktopOriginalHomeCardGridPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.LocalVideoCardSharedElementSourceRoute": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardSharedElementContext.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt"
+    ],
+    "com.android.purebilibili.feature.home.shouldShowRecommendOldContentDivider": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeRefreshUiPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeRefreshUiPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalSetBottomBarVisible": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\ui\\DesktopFavoriteBottomBarLocals.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.resolveVideoSharedTransitionDurationMillis": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.LocalHomeWallpaperIsStatic": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+    ],
+    "com.android.purebilibili.core.util.CardPositionManager": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\CardPositionManager.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/util/CardPositionManager.kt"
+    ],
+    "com.android.purebilibili.feature.home.HomeCategory": [
+      "desktop\\build\\generated\\discovery\\com\\android\\purebilibili\\feature\\home\\DesktopDiscoveryHomeUiState.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.shouldShowHomeOverlayChromeDuringVideoCardTransition": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardTransitionExposure.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionExposure.kt"
+    ],
+    "com.android.purebilibili.core.ui.performance.isLowBlurBudgetForced": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\performance\\RuntimeVisualGuardLocals.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppAlertDialog": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppDialogComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppDialogComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.LocalHomeWallpaperBackdrop": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\HomeScreen.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppSurface": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppSurface.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppSurface.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSurface.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSurface.kt"
+    ],
+    "com.android.purebilibili.core.util.responsiveContentWidth": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailResponsiveWidth.kt"
+    ],
+    "com.android.purebilibili.core.ui.animation.DissolveAnimationPreset": [
+      "adapter: sole DesktopReplyDissolvableContainer / FavoriteJiggle"
+    ],
+    "com.android.purebilibili.feature.home.HomeCoverRequestSpec": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeCoverRequestPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeCoverRequestPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeCardInfoGlassMode": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeFeedCardStyle": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\core\\store\\DesktopOriginalHomeCardSettings.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.videoListItemModifier": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\VideoListLayoutControl.kt",
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\VideoListLayoutControl.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/components/VideoListLayoutControl.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/components/VideoListLayoutControl.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppChromeSizeTokens": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppChromeSizeTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppChromeSizeTokens.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.UpBadgeName": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\UpBadgeName.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeName.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.FeedVerticalStaggeredGrid": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\FeedVerticalStaggeredGrid.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/components/FeedVerticalStaggeredGrid.kt"
+    ],
+    "com.android.purebilibili.core.theme.AppUiStyle": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\UiPreset.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/UiPreset.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppCardDefaults": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppCard.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"
+    ],
+    "com.android.purebilibili.core.theme.LocalAppUiStyle": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\UiPreset.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/UiPreset.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.LocalHomeScrollTickProvider": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardAdaptiveTintPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardAdaptiveTintPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeDurationStyle": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.ui.AdaptiveLoadingIndicator": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AdaptiveLoadingIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveLoadingIndicator.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppIcon.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppIcon.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppIcon.kt",
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppIcon.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppIcon.kt"
+    ],
+    "com.android.purebilibili.feature.home.TodayWatchPlan": [
+      "desktop\\build\\generated\\plugins\\com\\android\\purebilibili\\feature\\home\\DesktopTodayWatchModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.roundMatchedLiquidIndicatorHeightDp": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\MatchedLiquidIndicatorGeometry.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"
+    ],
+    "com.android.purebilibili.feature.home.shouldEnableTodayWatchUpRankClick": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\TodayWatchPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/TodayWatchPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.ElegantVideoCard": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCard.kt"
+    ],
+    "com.android.purebilibili.core.ui.animation.jiggleOnDissolve": [
+      "adapter: sole DesktopReplyDissolvableContainer / FavoriteJiggle"
+    ],
+    "com.android.purebilibili.core.store.HomeWallpaperEffectMode": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeCardBadgeEffectMode": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveWatchLaterAid": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeWatchLaterPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeWatchLaterPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.adaptive.MotionTier": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\adaptive\\MotionTier.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/adaptive/MotionTier.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppCard": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppCard.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppCard.kt"
+    ],
+    "com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard": [
+      "adapter: sole DesktopReplyDissolvableContainer / FavoriteJiggle"
+    ],
+    "com.android.purebilibili.data.model.response.LiveRoom": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\LiveModels.kt",
+      "direct:app/src/main/java/com/android/purebilibili/data/model/response/LiveModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveAppSettingsIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldDrawHomeTopTabOuterChromeSurface": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.core.util.rememberHapticFeedback": [
+      "desktop\\src\\main\\kotlin\\com\\android\\purebilibili\\core\\util\\DesktopCardHaptic.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldUseOpaqueTopChromeBackground": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveFloatingDockGeometryScale": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBarGeometry.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.BlurSurfaceType": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\BlurBudgetPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.TopTabMaterialMode": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.BlurIntensity": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\BlurIntensity.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurIntensity.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.currentUnifiedBlurIntensity": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\UnifiedBlur.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BottomBarMatchedReusableLiquidDock": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopSearchRowHorizontalPadding": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteHeaderMetrics.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.TopSolidProgressiveFadeOverlay": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\ProgressiveFade.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/blur/ProgressiveFade.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveSharedBottomBarCapsuleShape": [
+      "desktop\\build\\generated\\dynamic-reply\\com\\android\\purebilibili\\feature\\home\\components\\DesktopOriginalReplyCapsuleShape.kt"
+    ],
+    "com.android.purebilibili.core.ui.OpticalContrastPalette": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\ui\\OpticalContrastPalette.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppHorizontalDivider": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppSurface.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppSurface.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.liquid.vibrancy": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Vibrancy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BILIPAI_PROGRESSIVE_TOP_BLUR_RADIUS_DP": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.HomeVisualPalette": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\HomeVisualPalette.kt"
+    ],
+    "com.android.purebilibili.core.store.BottomBarLiquidGlassPreset": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.ui.globalWallpaperAwareChromeColor": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveBottomBarSurfaceColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BILIPAI_PROGRESSIVE_TOP_BLUR_FALLOFF_CURVE": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppSearchEntry": [
+      "desktop\\build\\generated\\preferences\\com\\android\\purebilibili\\core\\ui\\components\\AdaptivePreferenceComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopTabViewportSyncEnabled": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeGlassChromeStyle": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.resolveGlobalLiquidGlassReuseEnabled": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\store\\DesktopOriginalDetailLiquidReusePolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.BlurStyles": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\blur\\BlurStyles.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/blur/BlurStyles.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.LiquidGlassTuning": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveProgressiveTopBlurBottomExtension": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.lerp": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassTuning.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppSemanticIconFamily": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppSemanticVisualPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopTabRowHeight": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteHeaderMetrics.kt"
+    ],
+    "com.android.purebilibili.core.ui.blur.unifiedBlur": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\blur\\UnifiedBlur.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldUseBiliPaiProgressiveTopBlur": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveEffectiveHomeHeaderTabMaterialMode": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.biliPaiProgressiveTopBlur": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt",
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\feature\\home\\components\\ProgressiveTopChrome.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeHeaderBlurMode": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\core\\store\\DesktopFavoriteChromePolicies.kt"
+    ],
+    "com.android.purebilibili.core.store.LiquidGlassStyle": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveAppSearchIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppTopTabPresentation": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.HomeGlassResolvedColors": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveAppInboxIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.HomeInteractionMotionBudget": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopSearchPillHeight": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteHeaderMetrics.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppTopChromePolicy": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.core.util.HapticType": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\util\\ModifierExt.kt"
+    ],
+    "com.android.purebilibili.core.util.FormatUtils": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\FormatUtils.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSRed": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveAndroidNativeFloatingBottomBarContainerColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BottomBarFloatingSegmentedControl": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarFloatingSegmentedControl.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveAndroidNativeBottomBarTuning": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveBiliPaiBottomBarShellColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabIconSizeDp": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.FloatingBottomBarGeometryMode": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBarGeometry.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.LocalFloatingBottomBarItemSelectionScale": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveBottomBarDarkTheme": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalGlobalWallpaperBackdropVisible": [
+      "desktop\\build\\generated\\preferences\\com\\android\\purebilibili\\core\\ui\\AppWallpaperBackdropLocal.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.HomeSelectionIndicatorStyle": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\HomeSelectionIndicatorPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.LocalFloatingBottomBarContentColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt"
+    ],
+    "com.android.purebilibili.core.ui.motion.iosMorphTween": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\motion\\AppMotionTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppMotionTokens.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppChevronForwardIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.UserLevelBadge": [
+      "desktop\\build\\generated\\blocked-list-ui\\com\\android\\purebilibili\\core\\ui\\components\\DesktopUpstreamUserLevelBadge.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppDrawerContainerTreatment": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppDrawerVisualPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppDrawerVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppTvIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppLikeIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSPink": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSGreen": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppWatchLaterIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSYellow": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppPreference": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPreferenceComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPreferenceComponents.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppBookmarkIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppHistoryIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppLogoutIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppDrawerVisualPolicy": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppDrawerVisualPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppDrawerVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppInboxIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppDownloadIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSBlue": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.util.AppFoldPosture": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.util.LocalWindowSizeClass": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppPlatformNavigationRailItem": [
+      "desktop\\build\\generated\\preferences\\com\\android\\purebilibili\\core\\ui\\components\\AppNavigationComponents.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppNavigationCapabilities": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppNavigationCapabilities.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppNavigationCapabilities.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveGlobalWallpaperProtectiveColor": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAdaptiveChrome.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppPlatformNavigationRail": [
+      "desktop\\build\\generated\\preferences\\com\\android\\purebilibili\\core\\ui\\components\\AppNavigationComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.videoCardShellReturnChromeAlpha": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardShellReturnChrome.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardShellReturnChrome.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.LocalVideoSharedTransitionSpeedSettings": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardSharedElementContext.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSharedElementContext.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.rememberNativeVideoCardSnapshotController": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardNativeSnapshot.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardNativeSnapshot.kt"
+    ],
+    "com.android.purebilibili.core.ui.adaptive.adaptiveCardHoverEffect": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\ui\\adaptive\\AdaptiveInputModifiers.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalSharedTransitionEnabled": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\SharedTransitionProvider.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.videoCardShellSharedBoundsOrEmpty": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardShellSharedBounds.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardShellSharedBounds.kt"
+    ],
+    "com.android.purebilibili.core.ui.MediaContrastPalette": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\MediaContrastPalette.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/MediaContrastPalette.kt"
+    ],
+    "com.android.purebilibili.core.util.HomeCoverReturnPrefetchRegistry": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\util\\HomeCoverReturnPrefetch.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.isVideoCardSharedSourceInstanceOwner": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardScrollLiteVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardSourceSnapshot.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardSharedTransitionMotionSpec": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.core.util.HomeCoverReturnPrefetchEntry": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\util\\HomeCoverReturnPrefetch.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoCardSourceLayout": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoCardSourceSnapshot.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardSourceSnapshot.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalSharedTransitionScope": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\SharedTransitionProvider.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalAnimatedVisibilityScope": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\SharedTransitionProvider.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/SharedTransitionProvider.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppClearIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.LocalNavigationBackHandler": [
+      "desktop\\build\\generated\\bgm-detail\\bgm-original-retained\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\LocalNavigationBackHandler.kt",
+      "desktop\\build\\generated\\bgm-detail\\com\\android\\purebilibili\\core\\ui\\LocalNavigationBackHandler.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppShareIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppPhotoIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppVisibilityOffIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberAppPlayIcon": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppIcons.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppIcons.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppModalBottomSheet": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\ui\\DesktopOriginalDetailAppSheetComponents.kt"
+    ],
+    "com.android.purebilibili.data.model.response.RecommendationFeedbackType": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ListModels.kt",
+      "direct:app/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"
+    ],
+    "com.android.purebilibili.data.model.response.RecommendationFeedbackReason": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\data\\model\\response\\ListModels.kt",
+      "direct:app/src/main/java/com/android/purebilibili/data/model/response/ListModels.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.HorizontalVideoStatRow": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\HorizontalVideoCardStats.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardStats.kt"
+    ],
+    "com.android.purebilibili.feature.video.ui.section.resolveCompactPublishTimeRowText": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\video\\ui\\section\\VideoInfoDisplayPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.videoCardTitleMaxLines": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\VideoCardTitleVisibility.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/VideoCardTitleVisibility.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppDropdownMenuItem": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.videoCardShellReturnCoverAlpha": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardShellReturnChrome.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardShellReturnChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.rememberVideoCardOnlineCount": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardOnlineCountStore.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.AppDropdownMenu": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\AppPrimitiveComponents.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/components/AppPrimitiveComponents.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.shouldEnableVideoCoverSharedTransition": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.resolveStoryVideoCardScrollLiteVisualPolicy": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardScrollLiteVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.HORIZONTAL_VIDEO_STAT_WRAP_SPACING_DP": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\HorizontalVideoCardLayoutPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt"
+    ],
+    "com.android.purebilibili.core.util.animateEnter": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\util\\Animations.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/util/Animations.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.resolveVideoPremiumBadgeLabel": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoPremiumBadgePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoPremiumBadgePolicy.kt"
+    ],
+    "com.android.purebilibili.core.theme.BiliPink": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.HORIZONTAL_VIDEO_STAT_ROW_SPACING_DP": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\HorizontalVideoCardLayoutPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardLayoutPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.feedContentTypography": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\FeedContentTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/FeedContentTokens.kt"
+    ],
+    "com.android.purebilibili.core.ui.FeedTitleHierarchy": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\FeedContentTokens.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/FeedContentTokens.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.isVideoCardSharedReturnTarget": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardScrollLiteVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.shouldEnableVideoCardCoverCrossfade": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardScrollLiteVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardScrollLiteVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.LocalMiuixVideoCardTransitionState": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\MiuixVideoCardTransitionState.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/MiuixVideoCardTransitionState.kt"
+    ],
+    "com.android.purebilibili.core.ui.videoCardTitleOverflow": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\VideoCardTitleVisibility.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/VideoCardTitleVisibility.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.resolveVideoCardCoverOverlayTextShadow": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCardCoverOverlayTextPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/VideoCardCoverOverlayTextPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.shouldUseVideoCardShellSharedBounds": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeCardEnterAnimationEnabledAtMount": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeCardEnterAnimationPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeCardEnterAnimationPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.HomeVideoBadgePill": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCard.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.resolveUpStatsText": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\components\\UpBadgeNamePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/components/UpBadgeNamePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.resolveHomeVideoGlassBadgeStylePolicy": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\cards\\HomeVideoGlassBadgeStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/cards/HomeVideoGlassBadgeStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.cards.VideoCardDurationPublishRow": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\feature\\home\\components\\cards\\VideoCard.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VIDEO_SHARED_TRANSITION_CUSTOM_DEFAULT_MILLIS": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.LiquidGlassAdvancedSettings": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeFeedCardWidthPreset": [
+      "desktop\\build\\generated\\home-cards\\com\\android\\purebilibili\\core\\store\\DesktopOriginalHomeCardSettings.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoSharedTransitionSpeed": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.core.store.LiquidGlassMode": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.core.store.LiquidGlassReadabilityMode": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\store\\LiquidGlassReadabilityMode.kt"
+    ],
+    "com.android.purebilibili.core.store.HomeWallpaperEffectScope": [
+      "desktop\\build\\generated\\home-full-card\\generated\\com\\android\\purebilibili\\core\\store\\SettingsManager.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeWallpaperDecodeSizePx": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.HomeWallpaperBackdropAppearance": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.util.WindowSizeClass": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.skeleton.rememberGentleSkeletonPulse": [
+      "desktop\\build\\generated\\dynamic-reply\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplySkeletonBreathing.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveHomeCardInfoSurfaceAppearance": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeGlassVisualPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeGlassVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VIDEO_SHARED_COVER_ASPECT_RATIO": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.skeleton.rememberSkeletonBreathingEnabled": [
+      "desktop\\build\\generated\\dynamic-reply\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalReplySkeletonBreathing.kt"
+    ],
+    "com.android.purebilibili.feature.home.resolveNextHomeGlobalScrollOffset": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\HomeScrollOffsetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/HomeScrollOffsetPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.rememberPresetPrimitiveRenderer": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\PresetPrimitiveRenderer.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/PresetPrimitiveRenderer.kt"
+    ],
+    "com.android.purebilibili.core.ui.PresetPrimitiveRenderer": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\PresetPrimitiveRenderer.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/PresetPrimitiveRenderer.kt"
+    ],
+    "com.android.purebilibili.core.util.AppHingeOrientation": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.util.AppWindowAdaptiveInfo": [
+      "desktop\\build\\generated\\dynamic-detail-container\\com\\android\\purebilibili\\core\\util\\DesktopOriginalDetailWindowModels.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppPullRefreshMotionStyle": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppPullRefreshIndicator.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppPullRefreshIndicator.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.FloatingBottomBar": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingBottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.bottomBarMatchedLiquidDockSurface": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarMatchedLiquidChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.normalizeTopTabLabelMode": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.liquid.lens": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\liquid\\Lens.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveMatchedLiquidIndicatorHeightDp": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\MatchedLiquidIndicatorGeometry.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoHeroMotionSpec": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.transition.VideoHeroMotionTokens": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\transition\\VideoSharedTransitionPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/core/ui/transition/VideoSharedTransitionPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.biliPaiFloatingDockCaptureSurface": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.TopTabClickAction": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.Md3TopTabIndicatorAccelerate": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveBiliPaiBottomBarContainerColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveSegmentedControlMotionSpec": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.MD3_TOP_TAB_INDICATOR_DURATION_MILLIS": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.rememberLiquidGlassAdaptiveReadabilityState": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabTargetBounds": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabSelectedContentPosition": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabClickAction": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeSelectionIndicatorStyle": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\HomeSelectionIndicatorPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldAnimateMd3TopTabUnderline": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldUseLightweightTopTabItemClickIndication": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabVisualSpec": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.Md3TopTabIndicatorDecelerate": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.rememberLiquidGlassAdaptiveContentColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveHomeTopDockShellHeight": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabTapContentPosition": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveIosTopTabActionButtonCorner": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldDrawLightweightTopTabItemContainer": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveSharedLiquidExportMonochromeColor": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.trackLiquidGlassAdaptiveReadability": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\LiquidGlassAdaptiveReadability.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.KeepLazyTabSelectionVisible": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\ui\\components\\TabSelectionScroll.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabIndicatorRenderPosition": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabLabelTextSizeSp": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveIosTopTabActionIconSize": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabActionIconSize": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveIosTopTabActionButtonSize": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabActionButtonSize": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.core.ui.components.resolveScrollableTabIndicatorFollowDeltaPx": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\ui\\components\\TabSelectionScroll.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabActionButtonCorner": [
+      "desktop\\build\\generated\\original-favorites\\com\\android\\purebilibili\\feature\\home\\components\\DesktopFavoriteTopTabMetrics.kt"
+    ],
+    "com.android.purebilibili.core.theme.resolveAccessibleContainerColors": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\ThemeContrastPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"
+    ],
+    "com.android.purebilibili.core.theme.ACCESSIBLE_TEXT_MIN_CONTRAST": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\ThemeContrastPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/ThemeContrastPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabLabelLineHeightSp": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveTopTabIconTextSpacingDp": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BiliPaiFloatingDockIndicator": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\FloatingDockChrome.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabSelectedLabelColor": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\TopTabStylePolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/TopTabStylePolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.shouldAnimateIosTopTabCapsule": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.motion.BottomBarMotionSpec": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\BottomBarMotionSpec.kt"
+    ],
+    "com.android.purebilibili.core.ui.resolveMatchedLiquidIndicatorGeometry": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\MatchedLiquidIndicatorGeometry.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/MatchedLiquidIndicatorGeometry.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabUnderlineTapBounds": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.AppIconStyle": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\ui\\AppSemanticVisualPolicy.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/ui/AppSemanticVisualPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabUnderlineBounds": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveMd3TopTabIndicatorTranslationPx": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveIosTopTabCapsuleTargetTranslationPx": [
+      "desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\home\\components\\HomeInteractionMotionBudgetPolicy.kt",
+      "direct:app/src/main/java/com/android/purebilibili/feature/home/components/HomeInteractionMotionBudgetPolicy.kt"
+    ],
+    "com.android.purebilibili.core.ui.motion.resolveBottomBarMotionSpec": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\core\\ui\\motion\\BottomBarMotionSpec.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBar.kt"
+    ],
+    "com.android.purebilibili.feature.home.components.resolveSegmentedControlIndicatorHeightDp": [
+      "desktop\\build\\generated\\shared-liquid-tabs\\generated\\com\\android\\purebilibili\\feature\\home\\components\\BottomBarLiquidSegmentedControl.kt"
+    ],
+    "com.android.purebilibili.core.theme.iOSSystemGray6": [
+      "desktop\\build\\generated\\upstream\\design-system\\src\\main\\java\\com\\android\\purebilibili\\core\\theme\\Color.kt",
+      "direct:design-system/src/main/java/com/android/purebilibili/core/theme/Color.kt"
+    ]
+  },
+  "requiredAdapters": {
+    "com.android.purebilibili.core.ui.setWindowNavigationBarColor": "app/src/main/java/com/android/purebilibili/core/ui/SystemBarCompat.kt",
+    "com.android.purebilibili.feature.bangumi.HomeBangumiTabPage": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+    "com.android.purebilibili.feature.home.HomeViewModel": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+    "com.android.purebilibili.core.ui.setWindowStatusBarColor": "app/src/main/java/com/android/purebilibili/core/ui/SystemBarCompat.kt",
+    "com.android.purebilibili.feature.home.components.BottomNavItem": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBar.kt",
+    "com.android.purebilibili.feature.partition.PartitionContent": "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+    "com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "com.android.purebilibili.core.ui.transition.videoCardTransitionOverlayDepthEffect": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.feature.home.subscription.SubscriptionFeedPage": "app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionBackgroundSource": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.core.ui.performance.TrackJankStateFlag": "app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+    "com.android.purebilibili.core.ui.transition.shouldUseRealtimeVideoCardTransitionBackgroundBlur": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.feature.video.share.VideoShareSheetHost": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+    "com.android.purebilibili.feature.home.components.rememberHomeUiSkinDecoration": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionBackgroundScaleReduction": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.core.store.SettingsManager": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "com.android.purebilibili.core.ui.transition.videoCardTransitionBackgroundEffect": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.feature.download.DownloadManager": "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+    "com.android.purebilibili.core.ui.transition.shouldHomeFeedOwnVideoCardTransitionSnapshot": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+    "com.android.purebilibili.core.ui.performance.TrackJankStateValue": "app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+    "com.android.purebilibili.core.ui.blur.hazeSourceCompat": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "com.android.purebilibili.core.plugin.skin.rememberUiSkinState": "app/src/main/java/com/android/purebilibili/core/plugin/skin/UiSkinSettingsStore.kt",
+    "com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "com.android.purebilibili.feature.home.components.CrashTrackingConsentDialog": "app/src/main/java/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt",
+    "com.android.purebilibili.feature.live.LiveListScreen": "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+    "com.android.purebilibili.core.ui.performance.TrackScrollJank": "app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+    "com.android.purebilibili.feature.home.components.HomeUiSkinDecoration": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.core.ui.blur.shouldAllowHomeChromeLiquidGlass": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "com.android.purebilibili.core.ui.blur.shouldAllowDirectHazeLiquidGlassFallback": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+    "com.android.purebilibili.feature.home.components.resolveFloatingDockLabelLineHeight": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+    "com.android.purebilibili.feature.home.components.BottomBarSkinIcon": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.HomeSideBarClickAction": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+    "com.android.purebilibili.feature.home.components.resolveBottomBarMiuixSkinDockIconSize": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.shouldUseExpandableMiuixSideBar": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+    "com.android.purebilibili.feature.home.components.shouldUseMiuixOfficialSideBarItem": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+    "com.android.purebilibili.feature.home.components.ProvideBottomBarSkinMotion": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.resolveDynamicSideBarClickAction": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+    "com.android.purebilibili.feature.home.components.resolveHomeSideBarClickAction": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarRendererPolicy.kt",
+    "com.android.purebilibili.feature.home.components.BottomBarUiSkinDecoration": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.rememberNavigationSelectionTransform": "app/src/main/java/com/android/purebilibili/feature/home/components/SideBarMotionSpec.kt",
+    "com.android.purebilibili.core.store.BottomBarSearchAutoExpandMode": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "com.android.purebilibili.core.store.BottomBarSearchLayoutMode": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "com.android.purebilibili.core.ui.wallpaper.isVideoWallpaper": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "com.android.purebilibili.core.ui.wallpaper.WallpaperMedia": "app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+    "com.android.purebilibili.feature.home.components.TopTabSkinIconPaths": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.resolveBottomBarSkinDockHeight": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarUiSkin.kt",
+    "com.android.purebilibili.feature.home.components.resolveFloatingDockLabelFontSize": "app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarTypographySpec.kt",
+    "com.android.purebilibili.core.ui.transition.resolveVideoCardTransitionBackgroundGestureBlurProgress": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt"
+  }
+}

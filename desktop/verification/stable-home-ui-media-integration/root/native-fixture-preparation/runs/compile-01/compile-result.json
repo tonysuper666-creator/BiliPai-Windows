@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "mode": "prepared-compile",
+  "fixtureOnly": true,
+  "nativeExecution": false,
+  "snapshotManifestSha256Bytes": "e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69",
+  "dependencyOverlayUsedForCompileOnly": true
+}

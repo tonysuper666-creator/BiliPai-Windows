@@ -1,0 +1,16 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+    "candidateBase": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvNative.kt",
+    "baseSha256LF": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+    "candidateSha256LF": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+    "localPatch": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\hunks\\MpvNative.kt.patch"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "candidateBase": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+    "baseSha256LF": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+    "candidateSha256LF": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+    "localPatch": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\hunks\\MpvPlayer.kt.patch"
+  }
+]

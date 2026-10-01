@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "productionCount": 71,
+  "existingSoleOutputExpansions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "soleExistingProducer": "extract-upstream-home-full-card.py",
+      "expandedSha256LF": "679b3373964a1db626c176cffe4c13da6b87ea04015c76b4281064fc79013ded"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "soleExistingProducer": "extract-upstream-home-full-card.py",
+      "expandedSha256LF": "12aea23040a0336772d9c0c7b9a41425bb28bf9d00da3e065606104a380dc3f1"
+    }
+  ],
+  "resourceRequiredKeys": [
+    "home_category_anime",
+    "home_category_follow",
+    "home_category_game",
+    "home_category_knowledge",
+    "home_category_live",
+    "home_category_popular",
+    "home_category_recommend",
+    "home_category_tech",
+    "home_live_subcategory_followed",
+    "home_live_subcategory_popular",
+    "home_popular_subcategory_comprehensive",
+    "home_popular_subcategory_precious",
+    "home_popular_subcategory_ranking",
+    "home_popular_subcategory_weekly",
+    "home_today_watch_mode_learn",
+    "home_today_watch_mode_relax",
+    "sidebar_toggle"
+  ],
+  "resourcesJarSha256Bytes": "a784e344d2b168035d829b7ca0b6378e000b9176b966bf1f08c54435b9585104",
+  "newCompositionLocalGlobalsDuplicated": false,
+  "producerSecondStoreOrClient": false,
+  "scope": "source derivation/ownership; prepared consumer byte identities only, no full Home mounted acceptance"
+}

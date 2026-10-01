@@ -1,0 +1,16 @@
+{
+  "noFixtureRerun": true,
+  "historicalSixDiskCasesActual25": true,
+  "productClassBytesUnchanged": [
+    {
+      "class": "com/bilipai/desktop/plugins/DesktopPluginStore.class",
+      "actual25Sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5",
+      "actual26Sha256Bytes": "8080ca780512288b0a98a5c7448b13331fce3ee981dd6e4f6f514fca9e2202a5"
+    },
+    {
+      "class": "com/bilipai/desktop/plugins/DesktopPreferenceSnapshot.class",
+      "actual25Sha256Bytes": "075e8d79999b8546eea1e5ab7d02095078273062323026fde9e8c308cae7bcd7",
+      "actual26Sha256Bytes": "075e8d79999b8546eea1e5ab7d02095078273062323026fde9e8c308cae7bcd7"
+    }
+  ]
+}

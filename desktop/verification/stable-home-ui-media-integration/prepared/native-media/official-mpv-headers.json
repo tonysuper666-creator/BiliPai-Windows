@@ -1,0 +1,14 @@
+[
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\render.h",
+    "sha256Bytes": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/69e63f425a531f814431fba12750bdb3721357f2/include/mpv/render.h",
+    "commit": "69e63f425a531f814431fba12750bdb3721357f2"
+  },
+  {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-platform-media-parity\\official-mpv-headers\\client.h",
+    "sha256Bytes": "1acf99ee77c8c2a6f1d1993bd81bbc8a91d27fb5924e80171670e6139a4bd353",
+    "url": "https://raw.githubusercontent.com/mpv-player/mpv/69e63f425a531f814431fba12750bdb3721357f2/include/mpv/client.h",
+    "commit": "69e63f425a531f814431fba12750bdb3721357f2"
+  }
+]

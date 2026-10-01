@@ -1,0 +1,8 @@
+[
+  {
+    "path": "desktop/tools/extract-upstream-home-full-card.py",
+    "baseSha256LF": "d865e9df8c2ec0f9b44cedb666e3e0b3555e20e007780e7b7eefc7163e642388",
+    "desiredSha256LF": "d56768b7fce2b2f8acf7abf5cae3cec418c215b4ec1ff5d8a6514ddc2092095d",
+    "scope": "two output bodies only; keep same producer and backing map; no shared source edited"
+  }
+]

@@ -1,0 +1,406 @@
+{
+  "frozen": true,
+  "preparedOnly": true,
+  "phase": "source-only6-home-media-platform",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualDependencyManifestSha256Bytes": "e69b7b08805fc7a6aaec8557e8ba1cfd2368b701f99ecb94edc672efd22b6b69",
+  "explicitPreparedHome332ClassDependency": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-home-page-parity\\classes-full-07",
+  "compileResult": {
+    "path": "runs/04/compile-result.json",
+    "sha256Bytes": "4a5bff32695f9bd12b8b80d2d7a765b4160e41666ab7f87c6a7e8a2f7213f881",
+    "jarSha256Bytes": "ec6c0e4a310bdfec4f10377ca65c7198c869073a1c9f5a426cea7291290cc4f0",
+    "candidateClasses": 53
+  },
+  "sourceChecksSha256Bytes": "85c39cdaed94f61dd58e303386cc6c62e26209c947783b0c2722a0d07ee231c9",
+  "contract": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "a1d754f47a97bf67619ee9fe3ba547f3fd0fea6855b53c65f8653c1ca913d628"
+  },
+  "manualNewSources": 4,
+  "existingSoleFileHunks": 2,
+  "nativePlaybackExecuted": false,
+  "actualHwndOrExternalAppsUsed": false,
+  "externalApiAccountHttpUsed": false,
+  "officialPinnedHeaderDownloadOnly": true,
+  "originalParentUiAndVmProducersChanged": false,
+  "pending": [
+    "actual DLL software-render ABI/startup/paused first-frame acceptance",
+    "actual Compose video modifier/haze/crop/scrim sample",
+    "CPU realtime performance/HDR/GPU zero-copy",
+    "same sole parent Home caller subject-key delta",
+    "Root retained Home/data/media installation and direct shared service wiring",
+    "Windows local wallpaper picker/content URI migration; remote GIF outside local-document adapter"
+  ],
+  "artifacts": [
+    {
+      "path": "audit-source.py",
+      "sha256Bytes": "6b820ef1a1786a1c37a38cc334047d14a6224d46453ac76e9ed95104a055535a",
+      "bytes": 6979
+    },
+    {
+      "path": "base/MpvNative.kt",
+      "sha256Bytes": "c225eae70a6b006096652da7a55a53922d443c6151555badefd05a5372ddfb25",
+      "bytes": 6915
+    },
+    {
+      "path": "base/MpvPlayer.kt",
+      "sha256Bytes": "86863c8be2ab2731d2a0ff16219b5c237ff298a16992bac3b0aa5b76ef9bf51e",
+      "bytes": 58653
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "15cef452f2d51899c400265767f626c928f74011e7cb7eedb6b74f4cb37259dc",
+      "bytes": 4060
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "4ece4f04f403f03ef7ef3fafe72335e0855e99fcefc3a8a865305c4c1adc670d",
+      "bytes": 2508
+    },
+    {
+      "path": "history.json",
+      "sha256Bytes": "ecdc9d77c33035bec1c31c90a2d8f3eb4bf021dd852c056b0fcb6951739795dd",
+      "bytes": 571
+    },
+    {
+      "path": "hunks/MpvNative.kt.adaptations.json",
+      "sha256Bytes": "ee1e82697135e05843a07ef711482e922a4eb38accff3463d81b8a9f09c36f41",
+      "bytes": 1094
+    },
+    {
+      "path": "hunks/MpvNative.kt.patch",
+      "sha256Bytes": "bd1ecc5ed66f85e3f54b61ed8855c95bb3d5ca6dadba488984e92f85a2e5deb3",
+      "bytes": 1113
+    },
+    {
+      "path": "hunks/MpvPlayer.kt.adaptations.json",
+      "sha256Bytes": "56ae9683c0fe18684aec04bed21b842dee58c7a406189080b92201a6fe1b1bd6",
+      "bytes": 5010
+    },
+    {
+      "path": "hunks/MpvPlayer.kt.patch",
+      "sha256Bytes": "fd39ef98196fc82704ff9915da678251c02c1b3772cc39ed552e6782d1841213",
+      "bytes": 8716
+    },
+    {
+      "path": "official-mpv-headers/client.h",
+      "sha256Bytes": "1acf99ee77c8c2a6f1d1993bd81bbc8a91d27fb5924e80171670e6139a4bd353",
+      "bytes": 86136
+    },
+    {
+      "path": "official-mpv-headers/render.h",
+      "sha256Bytes": "192691941602052f00df0587f126246c48785a1cf21de68d22a92ea1908d1c55",
+      "bytes": 34271
+    },
+    {
+      "path": "official-mpv-headers.json",
+      "sha256Bytes": "778460eec99451a3c0d75c1e3b40ba868c9f55bf65279ae8c97c70e54ebfabde",
+      "bytes": 949
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/performance/JankTracking.kt",
+      "sha256Bytes": "adc145f30542bcc80858dfa55700b62bec5a05bd7261652ec0a1f226f34f8817",
+      "bytes": 2333
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/SystemBarCompat.kt",
+      "sha256Bytes": "0e4d5bd971cf452b118e39df4fecd6200630ccbbc784d3a46069a7fedb32ec4c",
+      "bytes": 4389
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt",
+      "sha256Bytes": "8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b",
+      "bytes": 4034
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "sha256Bytes": "eb5ec33451f5e8ddca271b15ffd5a88739796ad7f7b6566b8b60c4d9380b2637",
+      "bytes": 32837
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+      "sha256Bytes": "60db1ec6edaeb70967e19fac3c47edee96dcb6928cafb01a86bfe32209f6c0b1",
+      "bytes": 16579
+    },
+    {
+      "path": "original-source/app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256Bytes": "d966dbd9074fdf29b97785ebf7a724e5635e8098abf2f44c9d2ccf31eb38d2f6",
+      "bytes": 7085
+    },
+    {
+      "path": "patch-baselines.json",
+      "sha256Bytes": "c1b81750b77e2c5e60931724140578921df60d8e131805c4cf3b41446ec5ed49",
+      "bytes": 1327
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "a6f70a371511a72b860c2f8b11a3f26fea82de600ef444c4d0533f40aae6a83c",
+      "bytes": 7442
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "bytes": 7457
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "bytes": 60406
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "c747310a5200d5d30c3a935d09c21e110cd7269597e9e901a117c54bb4ead889",
+      "bytes": 9149
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "bytes": 9432
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt",
+      "sha256Bytes": "f73b775f131559586b8186e2d5bef29c7cc80afa51f28ee4ee305c62754bf879",
+      "bytes": 5089
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "bytes": 5827
+    },
+    {
+      "path": "preview-subject-boundary.json",
+      "sha256Bytes": "d6f9756c89a856e142345a58e1dd72da8b8c286d16d8cf00c0b0ad39d30ee80e",
+      "bytes": 1927
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "a1d754f47a97bf67619ee9fe3ba547f3fd0fea6855b53c65f8653c1ca913d628",
+      "bytes": 11190
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "a7c20ea8cc65369fdc8450f4db7a2053c423fef927eac763d4deace6f8c35bda",
+      "bytes": 24692
+    },
+    {
+      "path": "runs/01/compiler.log",
+      "sha256Bytes": "dce47875858985f2d186c5fc88b902174e344f3ee606b15e96fa3186a068ef1e",
+      "bytes": 296
+    },
+    {
+      "path": "runs/01/dependency-pins-before.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/01/prepared-home-platform.jar",
+      "sha256Bytes": "2c6b1fb09692be858ed517d93f1ac06d927fa7740cfbbee18d5b73cb6736b804",
+      "bytes": 151551
+    },
+    {
+      "path": "runs/01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "bytes": 7457
+    },
+    {
+      "path": "runs/01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "a2b58b2584ca9a73d67225cf9f5ec456f6ecb51405df2cd7efa93bf924db0764",
+      "bytes": 60230
+    },
+    {
+      "path": "runs/01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "ad8b7f301e74336252f686cbaae73f8b785ab9974fa779a52fd1e8307d7af17d",
+      "bytes": 9129
+    },
+    {
+      "path": "runs/01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "8fdc20ad5e4923d822861f85d63746fc523fee2753e31d70ea014e12e5f624c9",
+      "bytes": 8614
+    },
+    {
+      "path": "runs/01/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "8a2c0dc12c16ed880302f9e093a5a4e4b8f4450700ebbf88a93c5457018d8885",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/02/compile-result.json",
+      "sha256Bytes": "253ec875b7b1007edb7e80b881b47a2ebb55771815f52008d19565f6ec584d6f",
+      "bytes": 5647
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "94c9d1ad75afdc3028de557db7b3e445f0613924149e4b0f4e39da0734a03960",
+      "bytes": 24692
+    },
+    {
+      "path": "runs/02/compiler.log",
+      "sha256Bytes": "7418482b2d66e7ecc2cfa1f071bc2a50ba63758880fba216641270b16324bf7e",
+      "bytes": 296
+    },
+    {
+      "path": "runs/02/dependency-pins-after.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/02/dependency-pins-before.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/02/prepared-home-platform.jar",
+      "sha256Bytes": "d26826c7934a811c4b7903a01dd13f8e5fdb794d92f4ba421d26bd81b37ca66c",
+      "bytes": 151594
+    },
+    {
+      "path": "runs/02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "bytes": 7457
+    },
+    {
+      "path": "runs/02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "bytes": 60406
+    },
+    {
+      "path": "runs/02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "ad8b7f301e74336252f686cbaae73f8b785ab9974fa779a52fd1e8307d7af17d",
+      "bytes": 9129
+    },
+    {
+      "path": "runs/02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "8fdc20ad5e4923d822861f85d63746fc523fee2753e31d70ea014e12e5f624c9",
+      "bytes": 8614
+    },
+    {
+      "path": "runs/02/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "8a2c0dc12c16ed880302f9e093a5a4e4b8f4450700ebbf88a93c5457018d8885",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/03/compile-result.json",
+      "sha256Bytes": "c6e4be2293ef110aac14eab8035ad985e85b9a64f09ba9d3639ddb6486480dc2",
+      "bytes": 6503
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "f63158c7bfac556a15378f541943004877c0519d2f3ac567a185fe4966248ddf",
+      "bytes": 24930
+    },
+    {
+      "path": "runs/03/compiler.log",
+      "sha256Bytes": "acc61617d14fee255b9764e0ecaf0ffd0840670d7ad542e3c622b55b734c9620",
+      "bytes": 693
+    },
+    {
+      "path": "runs/03/dependency-pins-after.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/03/dependency-pins-before.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/03/prepared-home-platform.jar",
+      "sha256Bytes": "6a83a6965cc3d838b968d576047ca40b6b841c74e556fe4d4bb0fc8c75a67554",
+      "bytes": 171762
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "bytes": 7457
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "bytes": 60406
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "ad8b7f301e74336252f686cbaae73f8b785ab9974fa779a52fd1e8307d7af17d",
+      "bytes": 9129
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "eb6b594d6f3a265e6e4aba918a1f502361bf9e2f6810b4be303f3ac33f7c4d6e",
+      "bytes": 8936
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt",
+      "sha256Bytes": "f73b775f131559586b8186e2d5bef29c7cc80afa51f28ee4ee305c62754bf879",
+      "bytes": 5089
+    },
+    {
+      "path": "runs/03/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "8a2c0dc12c16ed880302f9e093a5a4e4b8f4450700ebbf88a93c5457018d8885",
+      "bytes": 5786
+    },
+    {
+      "path": "runs/04/compile-result.json",
+      "sha256Bytes": "4a5bff32695f9bd12b8b80d2d7a765b4160e41666ab7f87c6a7e8a2f7213f881",
+      "bytes": 6590
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "985e628ce503b27b71d05f612ad07f7d62fdc4b743a01e1146136af7f68c5eea",
+      "bytes": 24930
+    },
+    {
+      "path": "runs/04/compiler.log",
+      "sha256Bytes": "ddc56707fc2ef76b238b58b163cf1a6977d4b7273f12d7d173eb44aedb13edb7",
+      "bytes": 1142
+    },
+    {
+      "path": "runs/04/dependency-pins-after.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/04/dependency-pins-before.json",
+      "sha256Bytes": "2a15b74078e058c96e628a4363f0cf6e528ae9ee9fe930a1265d8dc914dedbb6",
+      "bytes": 104666
+    },
+    {
+      "path": "runs/04/prepared-home-platform.jar",
+      "sha256Bytes": "ec6c0e4a310bdfec4f10377ca65c7198c869073a1c9f5a426cea7291290cc4f0",
+      "bytes": 175695
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "2ac4e6dd8fb5ccea7aad30eaf64f10d655873d9042e0fea3d366353dfa7ba8f6",
+      "bytes": 7457
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "8e4ac49b91d7279c10ddd5c8c6e8a045ed9d11f1f6d26b773f6322f1cfa0e6c5",
+      "bytes": 60406
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "c747310a5200d5d30c3a935d09c21e110cd7269597e9e901a117c54bb4ead889",
+      "bytes": 9149
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "da89ab5b4193a9ec8a1c5a2645a1320514e44fc7798c77254aedd82092beda41",
+      "bytes": 9432
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt",
+      "sha256Bytes": "f73b775f131559586b8186e2d5bef29c7cc80afa51f28ee4ee305c62754bf879",
+      "bytes": 5089
+    },
+    {
+      "path": "runs/04/source-inputs/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8",
+      "bytes": 5827
+    },
+    {
+      "path": "source-checks.json",
+      "sha256Bytes": "85c39cdaed94f61dd58e303386cc6c62e26209c947783b0c2722a0d07ee231c9",
+      "bytes": 14064
+    }
+  ]
+}

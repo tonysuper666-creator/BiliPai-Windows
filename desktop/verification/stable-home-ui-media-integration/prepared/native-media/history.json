@@ -1,0 +1,6 @@
+{
+  "run01": "Kotlin compile succeeded; postcompile overlap audit failed because own two existing MPV files also emit MpvNodes/MpvCallException; exact allowed file family corrected. Preserved run01 byte evidence. No runtime attempted.",
+  "run02": "5-source compile PASS; old constructor ABI preserved with secondary required target constructor.",
+  "run03": "6-source compile PASS with real local GIF/WebP consumer.",
+  "run04": "Final6-source compile PASS; lifecycle/cancel/error feedback/opaque padding source guard tightened. No runtime/native acceptance claimed."
+}

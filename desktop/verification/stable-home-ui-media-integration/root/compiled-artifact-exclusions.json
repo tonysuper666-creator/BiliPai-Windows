@@ -1,0 +1,2207 @@
+[
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/AppNavigationSettings.class",
+    "sha256Bytes": "ed9b5856949fd38b0bfdf8978fd831007f28c65c1be869d756aad4c7b93b5812",
+    "sizeBytes": 10923,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/BottomTabMigrationResult.class",
+    "sha256Bytes": "51ac205451d8a8d46af42fac75259607df58d19921ecaf8e21017101fcc84adc",
+    "sizeBytes": 4201,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/DesktopHomeNavigationMigrationKt.class",
+    "sha256Bytes": "f0ebf1ee1f1d925fe93624f608f302b14edca790ced5f9eba48d37149bd17471",
+    "sizeBytes": 3246,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeBarHideType$Companion.class",
+    "sha256Bytes": "b32db39441f8d9e08040a175a3dac121a858c4f3f8085e7b2ac240623016dd28",
+    "sizeBytes": 2185,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeBarHideType.class",
+    "sha256Bytes": "e43269c2a659cc27e33d2cae4f5d31f8b467d582e5b4aa069ffa00691e31ec9f",
+    "sizeBytes": 3063,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeHeaderCollapseMode$Companion.class",
+    "sha256Bytes": "03d832051a3425a6d2e18cf40e4f4b088ebd3021c0d20eb2162c646c1abbe6d6",
+    "sizeBytes": 2481,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeHeaderCollapseMode.class",
+    "sha256Bytes": "098cb22b6e92a132392de5c35a1b986b9923cd6dca05a712da7c1411a57fac1a",
+    "sizeBytes": 4052,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeSettings.class",
+    "sha256Bytes": "c957fb6bfc99bace65c5b313d6e024791fced2719245691c468fbece2f5d43d3",
+    "sizeBytes": 40822,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicyKt.class",
+    "sha256Bytes": "ae520770c91f6bea9a3f3587f5fa16cf5ac5519d40f385ee420047e9a7acba1a",
+    "sizeBytes": 962,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopLayoutOrder$Companion.class",
+    "sha256Bytes": "270c36fc1a417799a016345a5bbb92e5845b81149a7511ead0a5834a4d29770b",
+    "sizeBytes": 2221,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopLayoutOrder.class",
+    "sha256Bytes": "23526082146a4c962312e631fc7ec40533146aa44da7f6fa22d41f00f0c13479",
+    "sizeBytes": 2759,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopRightAction$Companion.class",
+    "sha256Bytes": "8c2a3c6ae97ccd5d808d67d8b9ccaf5c7a0290b39ae7d48f4d5089f7c4eac96c",
+    "sizeBytes": 2213,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopRightAction.class",
+    "sha256Bytes": "c3c26a935bff75ded3b2b03cc1e2da8ab3cdb19711d0b8586c7c71e029e8984c",
+    "sizeBytes": 2728,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopTabSettings.class",
+    "sha256Bytes": "644ef954794f92c0c9d068d7784c0e5fc724fdd401e2d11de1794bf4a5c15a1d",
+    "sizeBytes": 4774,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabelsKt.class",
+    "sha256Bytes": "5058d0eff6b4a4a50eef577a1eda4ceaa9f64381702f58bb34ec1a6832e3a51d",
+    "sizeBytes": 7430,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/AdaptivePullToRefreshBoxKt$WhenMappings.class",
+    "sha256Bytes": "a7099d904ec0cdd93745e1441aad70a304e11b201d750caff3cd31575e29e401",
+    "sizeBytes": 919,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/AdaptivePullToRefreshBoxKt.class",
+    "sha256Bytes": "0e0dfeb787090276f6e9b260a04e31f38b487199c602bbd3118105c72bbecec6",
+    "sizeBytes": 23984,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/blur/RecoverableVisualEffectsKt$rememberRecoverableHazeState$2$1$listener$1.class",
+    "sha256Bytes": "d1de3438171c85c96260053bcda60c68c3c8e0939755bdda233505e4cb54bd23",
+    "sizeBytes": 2376,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/blur/RecoverableVisualEffectsKt.class",
+    "sha256Bytes": "73ada2b56bba19a19ec8ee32c293e3af442f83de296e638a6c03fc95836ec725",
+    "sizeBytes": 16779,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/ComfortablePullToRefreshBoxKt.class",
+    "sha256Bytes": "8a888757f721fa6a078ba8c7162956c01fb28d0c3566b7c3444905b6c73dcd02",
+    "sizeBytes": 14670,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragRelease.class",
+    "sha256Bytes": "8d53ba5177fce719113a7b821aea9b77b8475ebbc2fc662610c9aa09425afd9f",
+    "sizeBytes": 2684,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragScrollSession$awaitRelease$2$1.class",
+    "sha256Bytes": "2de5ff92eacbc90240e7f33ab26ca1d96f41a760069605a7f74d323956fd513b",
+    "sizeBytes": 1815,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragScrollSession.class",
+    "sha256Bytes": "c0d92053520e695a0994d02948efbac15166786716d90e9b398ae5f8bc50d146",
+    "sizeBytes": 5818,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerGestureDirection.class",
+    "sha256Bytes": "ab4495ec4c0b2a11eaa3907879aa40ead75fc3abeeaaadb49cb2be4d0775b824",
+    "sizeBytes": 2093,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureKt.class",
+    "sha256Bytes": "a7ae2e7756b13ebeb245bacdf9ee31018ef3b9698b7be2ab4f297eec19d09d05",
+    "sizeBytes": 13808,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/components/AccessibleVipBadgeColors.class",
+    "sha256Bytes": "13f45f4cb984e0a50f3b1b27dcb80f25fa37890d8f7f58d22bcf0fd1f49ba2f1",
+    "sizeBytes": 3435,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/components/UserVipBadgeKt.class",
+    "sha256Bytes": "7863d47f27dfa331a6134a84116b43c636d38cd5cfecbdc024393eaefc31bfc3",
+    "sizeBytes": 12507,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfacePolicyKt$WhenMappings.class",
+    "sha256Bytes": "1bcc7282214dfb01fce9a86ac594074bf980689a78339137ff8899b0de4a6ded",
+    "sizeBytes": 881,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfacePolicyKt.class",
+    "sha256Bytes": "2597fa70497bbe4c9cf26285e1c414dcf0281c8c068e30f9ea40ef8cbd1168de",
+    "sizeBytes": 5072,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfaceSpec.class",
+    "sha256Bytes": "31e8d695053dc5b21c18ac26faaa7069b81c2c3be1065e4171f088b252cf76a3",
+    "sizeBytes": 4907,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalErrorStateKt.class",
+    "sha256Bytes": "9173dd681ec7ea085acfefa0c2132271961156e391906894a075978aedadecba",
+    "sizeBytes": 22582,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalPullRefreshTextKt.class",
+    "sha256Bytes": "244f5007ed7f7b43e5740bf6618774cbbb95ab3bd2954b0f11e5e3088ed7a962",
+    "sizeBytes": 932,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThresholdKt.class",
+    "sha256Bytes": "49eddb879fbbe218ab3d1a4da309beaa74803d45de87fb93780c8815b165c6e5",
+    "sizeBytes": 507,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackJank$1$1.class",
+    "sha256Bytes": "4e8535330432132d8264d4238a7551a72aa1ddfa1ffbad79bd64621128031ab3",
+    "sizeBytes": 4198,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackScrollJank$1$1$2.class",
+    "sha256Bytes": "4292502848ba2be529d42f45528d1aac5413d36e6115115d071fcb3f26024c38",
+    "sizeBytes": 2439,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackScrollJank$1$1.class",
+    "sha256Bytes": "c5cfa44cb84d39decb5e3b99c07b9b8ec09bca95231780cc80427e33af24e4f4",
+    "sizeBytes": 5011,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt.class",
+    "sha256Bytes": "503e899d75364166559f9edf4172fd75eb1e8ca57961fe4dee36c9817a72b541",
+    "sizeBytes": 16286,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicyKt.class",
+    "sha256Bytes": "713d0a3702185b977b1379051c0db5a56f962a0883ab5f590b0b26ecf15d9132",
+    "sizeBytes": 636,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrame.class",
+    "sha256Bytes": "c5820e7bc390f62c6dcb7dfacbcbab73286c8d7327c790d838fb117138c8366d",
+    "sizeBytes": 4616,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrameCache.class",
+    "sha256Bytes": "e464e320466b576fd35e09dce571d774bca488a8ae7cbe8faa766f2e05b6764c",
+    "sizeBytes": 3839,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPhase.class",
+    "sha256Bytes": "0138c519e789a271a9b03cb52301269efd6ff54a793fee6af4f4e2b45b5959ea",
+    "sizeBytes": 2270,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt$WhenMappings.class",
+    "sha256Bytes": "0b38c2824aafdd995c96da40f1e66d5d0e41a1284760b2ea930a198f8f9206c0",
+    "sizeBytes": 2421,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt.class",
+    "sha256Bytes": "03841a398b442cb582c2ceaf9fa265789f3631171ea61b519421f2c631b1ceb5",
+    "sizeBytes": 88651,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundSource.class",
+    "sha256Bytes": "b788d1deaef9235165c73b2e6e38d45d4978961ae073558203c68e6fc4da3318",
+    "sizeBytes": 2224,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundState.class",
+    "sha256Bytes": "a6ac5a77577d86b27629b65224bc46f4b6a18453ba50749258f91802064ca79b",
+    "sizeBytes": 18898,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$animateFallbackTo$1.class",
+    "sha256Bytes": "51c0f3d3a94ffdeaeccd3e1d2ef50a9d0cffce03499cf6eeff0f6fda3372d831",
+    "sizeBytes": 2210,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$settleFromCurrent$1.class",
+    "sha256Bytes": "f795a49e0e5a6d5c5c4abe631d80c27e9df6adf540a8648de35edc69dd8e4452",
+    "sizeBytes": 2328,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$snapClearAndIdle$1.class",
+    "sha256Bytes": "a3f767b8525e4cd7bc98a9915a421257d4d0c23bd8bcffa850a48e6de75952d1",
+    "sizeBytes": 1958,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$snapFallback$1.class",
+    "sha256Bytes": "a1cf544ec1d4a319f46647e6efb8fb6fa515d816f2ad50310edb97d240088c6a",
+    "sizeBytes": 1979,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$WhenMappings.class",
+    "sha256Bytes": "baa90466a5b2b29420ca82897be73c1518a005e95b9d9f108bdf182144ec4816",
+    "sizeBytes": 1032,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.class",
+    "sha256Bytes": "ca710b77c14e1f147008d9ce2e58239c4893c4c685dab05ff7adccf318acd4dc",
+    "sizeBytes": 23243,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClockKt$WhenMappings.class",
+    "sha256Bytes": "b1b746b6a57f0417ebc0f38c4427381cff1b9d80c91af7e6eef8215fb2482a10",
+    "sizeBytes": 1089,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClockKt.class",
+    "sha256Bytes": "b8df0c63a96faf88bfac8b31cfa829c43a2545d27f7a568b18ffe8522c89d6b1",
+    "sizeBytes": 5529,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics$WhenMappings.class",
+    "sha256Bytes": "239937a8a0db7f492d6c20dffde9c153764b6f38f82b1ecc2777774f8cc9d035",
+    "sizeBytes": 1059,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.class",
+    "sha256Bytes": "dea5835562b3247efae4d0709717583fff30a7c9950447320ef03c889a32f1d4",
+    "sizeBytes": 7591,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLoggerKt.class",
+    "sha256Bytes": "db5192581654b66bcf6d406f06ea7c946f6bdca8ac9974667d8259c4012fd5e8",
+    "sizeBytes": 8070,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdropFrame.class",
+    "sha256Bytes": "4ce0d1c83e68a4f19b3b041aa5ddc14bf65ba0bd71904a3e2524caedd5075d8d",
+    "sizeBytes": 3066,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSettleState.class",
+    "sha256Bytes": "ae43d94e44ad870b5882d83a443cd2cf06092fb07b43dbf6b1b86e7c172ab81a",
+    "sizeBytes": 2351,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotHandle.class",
+    "sha256Bytes": "87b6331e57440de57fcd017a79f9475786994baf15f6ac02f0ddcf6708cb4a36",
+    "sizeBytes": 2564,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotLayerState.class",
+    "sha256Bytes": "6c5eb610c6c9ba0d27d9977692811432ddfd138a428f4723f5832c3c7a973109",
+    "sizeBytes": 7059,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperTypeKt.class",
+    "sha256Bytes": "7f7b036521498b963f2f02843d3ddfb022aaae651fd0e838f3fbc93e5e31d64e",
+    "sizeBytes": 1508,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/util/DesktopHomeCardTapEffectKt.class",
+    "sha256Bytes": "9ce3875166afcf33c98ee273a9c37e740856d47187ff25615e45b62a9ee119ad",
+    "sizeBytes": 13000,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/util/DesktopHomeTapEffectKt.class",
+    "sha256Bytes": "c3cc2700d4f30f176d29ec46764fab59dd5b30eaaee7f135b745b8dddaff7a79",
+    "sizeBytes": 11729,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/core/util/NavigationUiPolicyKt.class",
+    "sha256Bytes": "6c4d45cc2aea57c251470b3ba47a92b25c1f855cbb8ea2c2e0df58bafd0b7d98",
+    "sizeBytes": 2405,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/CategoryContent.class",
+    "sha256Bytes": "9d0c8b7d1f72ac93ca0cac1285b128df2d943b8a8cfb3b405ad0f8109ec53e27",
+    "sizeBytes": 7772,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/ComposableSingletons$StoryVideoCardKt.class",
+    "sha256Bytes": "22efbe0ff2f89345c69154869af19f3ba5eee618b96073090b9da0d942e2ee5d",
+    "sizeBytes": 3833,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/StoryVideoCardKt$StoryVideoCard$2$1.class",
+    "sha256Bytes": "ab43188da077f79ed018013010ac13866afd51f251e217d5fcaf4d8f656058ee",
+    "sizeBytes": 5611,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/StoryVideoCardKt.class",
+    "sha256Bytes": "8d0d8039af04b38cadf0c556cb5bb5a408f121aad2b830901575fa5369b11315",
+    "sizeBytes": 99064,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerGlassPalette.class",
+    "sha256Bytes": "9b2c8e6796f418631c3501d6a091ab35841aa1653c2f6229d3446da00af27c0e",
+    "sizeBytes": 4321,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerMotionBudget.class",
+    "sha256Bytes": "5fccdcc829156e7cb4a06dac3b8a5a2a95b4295440ac1c01035d0bd571199877",
+    "sizeBytes": 2061,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicyKt.class",
+    "sha256Bytes": "8c09abca1df7db2fa0817c09287bc5c8c5d260b547c420fcac7897987bf562d7",
+    "sizeBytes": 1596,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt$HomeHeader$7$4$1$1.class",
+    "sha256Bytes": "a53ef9867d6c8174775a9ecee00b40459aec4bc9028e32866d9d73a5f37dffd6",
+    "sizeBytes": 4023,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt$WhenMappings.class",
+    "sha256Bytes": "419bd000ddf6f0c01c3663dbbede86a806738751dea29cdef4f2d54e4ed2ba04",
+    "sizeBytes": 1816,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt.class",
+    "sha256Bytes": "1018e6ffe45099e3956ff1c0e721416d316e665d650609a573e2e8cdf44f02e9",
+    "sizeBytes": 267670,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderScrollLayout.class",
+    "sha256Bytes": "825b8a0389757571f0eea3d90b5677d7dd0ebd52e0b4f378d862f024ebfca8d8",
+    "sizeBytes": 3607,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$3$1$1.class",
+    "sha256Bytes": "c7775c651efeadd8ea808e28a70ff6cd13d9c408be74614b4a118c800e5fbc59",
+    "sizeBytes": 6694,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$3$1.class",
+    "sha256Bytes": "0acd8a9508ac733ef8c121825e84e310c840c5c148228987f3c6e3d6c70933a1",
+    "sizeBytes": 2228,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$4$1$1$1.class",
+    "sha256Bytes": "4a534a14f64299defb0bf8884cd12ad9552217ba69570ddb768f373b3b20ef29",
+    "sizeBytes": 1356,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarouselCard$1$1.class",
+    "sha256Bytes": "e15a30d7efa8a81886027e89cae88cbc06c91f5ace9c0aaf483c79eff9ed8733",
+    "sizeBytes": 5241,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarouselCard$cardCoordsRef$1$1.class",
+    "sha256Bytes": "e38354fbacbcb5691a5a2295b59217a6fab2901f822f7b0b9f23284530b2ecd0",
+    "sizeBytes": 1476,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt.class",
+    "sha256Bytes": "fa85d4421186e5ad152cd79c57a8c2821cb2574af1d7eaab66a9ab5a7e768134",
+    "sizeBytes": 99247,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheetKt.class",
+    "sha256Bytes": "b2d73c6a155b5a7f838651ae3cb1f157a2c60a52e3fad919be2f0c6851609189",
+    "sizeBytes": 28280,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeRefreshIndicatorKt.class",
+    "sha256Bytes": "135a0078594896e4ec5c4f023cdcf744b16e944ab609bef0f97465fdb0ed1236",
+    "sizeBytes": 31446,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpecKt.class",
+    "sha256Bytes": "09d3d792ddc9da8ea72b43dac1f00f49fdaf3580a898f298aaed789e0ced549d",
+    "sizeBytes": 1534,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopActionIcons.class",
+    "sha256Bytes": "9070a788eb23e6d4858cc1cb91489bc6b628bd9bc2a59bea41cc154dc26dc69f",
+    "sizeBytes": 4236,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeBackdropSpec.class",
+    "sha256Bytes": "bad5a40eb8f60cd02507e3dd86a439e1765efd6610d62be5a54b885716dfabf7",
+    "sizeBytes": 3102,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeMotionPolicy.class",
+    "sha256Bytes": "56e35eb523a1ef3ef83fbf2b31987fa3585e586fc2ede6f07df61a13561219fd",
+    "sizeBytes": 2875,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeRenderMode.class",
+    "sha256Bytes": "eab00b77c91f5d2a3a2f0fa87e87a1cb5f678f29c69291295cd6fb1cd4785fda",
+    "sizeBytes": 2226,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeSurfaceStyle.class",
+    "sha256Bytes": "24906d54a4ebdb16abc639cc14a5849391ac42eea9bad8304be55d4eb160d876",
+    "sizeBytes": 6444,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeSurfaceTreatment.class",
+    "sha256Bytes": "3960a5d5abe85c0f04c43669ac495a87496adaf76632714c039faa91eeba4a89",
+    "sizeBytes": 2139,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopControlsKt.class",
+    "sha256Bytes": "67fe2caf85c565fb0510922f34236ec36acc18db18fbdbcf3c1fcf272a408828",
+    "sizeBytes": 25432,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopLinkedBottomBarAppearance.class",
+    "sha256Bytes": "5d5bd6968807bcb2fcf245a6043addb1e8faa6db37c2f8467b9555020b0c55e9",
+    "sizeBytes": 3268,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopPinnedChromeLayout.class",
+    "sha256Bytes": "c6b92e86e8443aa2e14fece275caf6c36d1d3f680748a2332f17c39bc9cbaeba",
+    "sizeBytes": 3816,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopRightUnreadBadgeLayout.class",
+    "sha256Bytes": "3e67066902cbf1481e5952ea35e458e284f38996e3f11e438487eb6060882030",
+    "sizeBytes": 5502,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt$HomeTopTabChrome$3$1$WhenMappings.class",
+    "sha256Bytes": "94a2316fe4906174edb41e54dfdcb9089bcd100cf0bb5a5e04dabe90f8abf2d7",
+    "sizeBytes": 1028,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt$HomeTopTabChrome$3$1.class",
+    "sha256Bytes": "1f3e93b6cf4d0a9e003ec97cd0e39e37c871d6220758b1214e1d8de8a13f4dcf",
+    "sizeBytes": 5359,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt.class",
+    "sha256Bytes": "da4d97983fabfa1406d00321dbfeaf8f731e532e552a7fa6eaeeca8d2848b145",
+    "sizeBytes": 49796,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDockKt.class",
+    "sha256Bytes": "d1d632d46482c5b91b6086acb696a999cdc8075431c9c39a2c470cece22d81da",
+    "sizeBytes": 49624,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpecKt.class",
+    "sha256Bytes": "c4c9f3bae38736ade4a0e0516040713bb398386bdecd4c21ed43f65287f9dbb8",
+    "sizeBytes": 917,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerKt$MineSideDrawer$closeAndRun$1.class",
+    "sha256Bytes": "0c49ac4eebd52110bdee45085d31c125407c198c2d8aea93cdda5329a8cbf810",
+    "sizeBytes": 3843,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerKt.class",
+    "sha256Bytes": "51c4775829a3b40b3df2b43b613a6eac1c21a15602eccc963cec8bcf9a8f1814",
+    "sizeBytes": 88481,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.class",
+    "sha256Bytes": "b7ca50ad739692b1842d2b95a794865494184e45ff7615fc4373f0e48dbb72d7",
+    "sizeBytes": 6999,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicyKt.class",
+    "sha256Bytes": "51ebe1721789681f1db169ddd6281409038e7b753a4f13b819a399a5fb5ca310",
+    "sizeBytes": 2432,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicyKt.class",
+    "sha256Bytes": "41004e0ce52d103e8853885b81f5413156ca380fe446aeedace4594d30a3b65c",
+    "sizeBytes": 2352,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/SideBarKt$WhenMappings.class",
+    "sha256Bytes": "bd24bb164013e7a3f7c6c2938a6f221664cede10a9eb0247c5d422edfa9ae291",
+    "sizeBytes": 946,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/SideBarKt.class",
+    "sha256Bytes": "5925a0421b5301ab54e692f3453339406f8994db44c498d877fbe5800957875f",
+    "sizeBytes": 94701,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$1$1.class",
+    "sha256Bytes": "35b9a5e1637f4b51b4198b2ca702b51014d7c416c3c3bbe6cc5a0fcd2798c765",
+    "sizeBytes": 3915,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$1$1$2.class",
+    "sha256Bytes": "1bbc3a829878fee7a8b17361c56cbc3d2e7a110982529e624dcf29f52b9182d8",
+    "sizeBytes": 1901,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$1$1.class",
+    "sha256Bytes": "20ee6df4132b3607c01951a6d57bccb087ba937f068f83671e2a52c3978e8f34",
+    "sizeBytes": 6000,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1$1$2.class",
+    "sha256Bytes": "2f0e8cf9e23387bae0e446408cf59311420a40ed8dbf368f97f1bb89d0ed0700",
+    "sizeBytes": 3774,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1$1.class",
+    "sha256Bytes": "7e4edfb653919d9165edc8125bc75ffc1090cec922a4fe35dddf97beb4bc3243",
+    "sizeBytes": 5068,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1.class",
+    "sha256Bytes": "50ce0af1aa3990cf5337c86ea4d875c98fdf2e7aa4d9b49e2596a82b5854f53d",
+    "sizeBytes": 5271,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$3$1.class",
+    "sha256Bytes": "2c24736eb5315d168e64e8329ff502566440d820111b04e37b004f867e956daa",
+    "sizeBytes": 4322,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$2$1.class",
+    "sha256Bytes": "efd889adc60b5952f738d473e841c85ba202a8a85dfb9299e0528a46adde16f5",
+    "sizeBytes": 2273,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$3$1$1.class",
+    "sha256Bytes": "2f94b584028d00e3f94a4b6a7ef795ceb746a48a013ca3d7dfe4bb65aad40127",
+    "sizeBytes": 3448,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$3$1.class",
+    "sha256Bytes": "f18812896ba06d706fbaa9b8373c3d5d5bf6a7d82ef9b80d5cce572240430719",
+    "sizeBytes": 3347,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$topTabVelocityTracker$1$1.class",
+    "sha256Bytes": "0b952da542e3b5c47b1d7fbf789f36fd258216a15e2bbf4a9f2334e48dda13dd",
+    "sizeBytes": 2001,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$WhenMappings.class",
+    "sha256Bytes": "4bf2782499c1069f3c5ee8ef7217a17c93e56b4b6ef5939ff74d20fcbfb2f702",
+    "sizeBytes": 2349,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt.class",
+    "sha256Bytes": "a1ee6b1b45b435afb2a356fc315ff2a962ee6aab1b7ca904d1098537e0762cc3",
+    "sizeBytes": 310227,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopTabIndicatorBackdropPolicy.class",
+    "sha256Bytes": "aa68400447947c04bc54ffbecfd403fcd3d88935d102267c0d211f5607c0af8e",
+    "sizeBytes": 2970,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopTabLiquidColorMode.class",
+    "sha256Bytes": "0aca745e79c41358a924e572fce9505c6fd5fea6e80883dfcc527d3f994d2782",
+    "sizeBytes": 2138,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt$VideoPreviewDialog$1$1.class",
+    "sha256Bytes": "778506e9a1c711495ee69e2d0368bab6b1ae5ac05ab9d4ae980376020c901fb0",
+    "sizeBytes": 3217,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt$VideoPreviewDialog$2$1.class",
+    "sha256Bytes": "bb4cd9061808ac7e85f640a20a788b609ff9fb527574f87fd3f786e3ddd2e76e",
+    "sizeBytes": 6260,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt.class",
+    "sha256Bytes": "aaf3bbecd592f33cb50c7f6566738454d6727590dfb6d2498b3102e78337d6ab",
+    "sizeBytes": 66311,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/ComposableSingletons$DesktopOriginalHomeScreenKt.class",
+    "sha256Bytes": "d3b6f6b01e1af2bcdfb21926e97633bac5119256029e031babfe2c98d13063d9",
+    "sizeBytes": 9714,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/ComposableSingletons$HomeCategoryPageKt.class",
+    "sha256Bytes": "29091a7caf90b84bda6f84a8f1db1265379752502c447dc6b63839214e2ee4b5",
+    "sizeBytes": 19351,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$1$WhenMappings.class",
+    "sha256Bytes": "d549d0bd6034b3a41de26d99e76a803d147561d0847b3a1ca3284eaec4bfd2e8",
+    "sizeBytes": 1217,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$1.class",
+    "sha256Bytes": "db71a5deca2397271d7d9938b3cc16243347908a15b47a18ac51057102f3a775",
+    "sizeBytes": 10693,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$request$1.class",
+    "sha256Bytes": "5d2580b1d05c98ee2b0a77326c7cea1d40ce6b2bff72c669405f0c0177dca3c4",
+    "sizeBytes": 3727,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1.class",
+    "sha256Bytes": "20ad08bcf1ba2b68532a81feb97a622226bc9115cd1c8942ae409d937d55d5f8",
+    "sizeBytes": 12801,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2$emit$1.class",
+    "sha256Bytes": "8306fb9b3cf0284f3e5ee6a0425c91911549ef7b0e13cd5c95c5978dd1f54de8",
+    "sizeBytes": 2361,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2$WhenMappings.class",
+    "sha256Bytes": "09400189f108f274da7506f098cb60678094943371c5545ad2a1141d568b18e9",
+    "sizeBytes": 1207,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2.class",
+    "sha256Bytes": "af2e957f95a52b0713064954048a4189ad798260c2953c7489f73744a9ff955c",
+    "sizeBytes": 10305,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1.class",
+    "sha256Bytes": "1ec4cbef4e220726b3fa9dfde61865188084b31b760ea2fdf7bc66ad39ed199e",
+    "sizeBytes": 8963,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$29$1.class",
+    "sha256Bytes": "6e6aacfae1873e627981788c406ad8d5ff0098069aa92f6d5be8499daebfe0e3",
+    "sizeBytes": 8537,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$30$1.class",
+    "sha256Bytes": "4307843245c3262bcf700f1ffeebaaca799300984acf6bdad275e94039aef37b",
+    "sizeBytes": 9390,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$31$1.class",
+    "sha256Bytes": "7d12eadc43556cb1b9cd04cec30c73e0ac0fc37f1591573e6482598ff108d85a",
+    "sizeBytes": 8412,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$32$1.class",
+    "sha256Bytes": "33bc5a4c08dd649b479057e362dafbd9bddf29fc63da88cf343d9dcb8fe320e1",
+    "sizeBytes": 5208,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$33$1.class",
+    "sha256Bytes": "8d5b6df946b93e26bb96c1037816c2734ffa64ad6351af03c1d86012cd101481",
+    "sizeBytes": 9087,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1$1$emit$1.class",
+    "sha256Bytes": "9eac46f0d35e5daf4b5e2d1945c75dce333de9b8d91a89f7c0303780f3b36da8",
+    "sizeBytes": 2122,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1$1.class",
+    "sha256Bytes": "0188ff5c855890a527ea89ca350bf137e65a1e4b884bd4735ebe6e40c8f68b26",
+    "sizeBytes": 3072,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1.class",
+    "sha256Bytes": "bf216a7d530c90fb8ed47b72679a4995bb98067b288e615b324f638a624ab8d1",
+    "sizeBytes": 5147,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$35$1.class",
+    "sha256Bytes": "85e4ab2b51b9f8bbdcf048631252abe74ba7bac41609205d9579d5dc2042b3ea",
+    "sizeBytes": 5551,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$36$1.class",
+    "sha256Bytes": "e46b41d9150e94fb19a859168add8737d0e1b28c13fba0b5b732590d2ca1bae4",
+    "sizeBytes": 4573,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$37$1.class",
+    "sha256Bytes": "a48a200ea24538165bf48a9c1867d22ae1be398b968e80c86a16fbb57a334567",
+    "sizeBytes": 5197,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$38$1.class",
+    "sha256Bytes": "b21f908979ff118e62fa9b21caa9f1aa247d26956d012a3bcfcfc621ef25b590",
+    "sizeBytes": 5242,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$39$1.class",
+    "sha256Bytes": "88a70d01fcb072c955a4d4c73bddfb57ae6269936f2f2e4082ab82151586f9e2",
+    "sizeBytes": 6829,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$40$1$WhenMappings.class",
+    "sha256Bytes": "14bd5a62e45a3902b6ebcbfa29f5c03bf44148c0f2ae5413969b8257342915de",
+    "sizeBytes": 947,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$40$1.class",
+    "sha256Bytes": "d9b569c598c19baae5ec422aa4f1630b1f3437ac9b4d89d36ca7b774da50b127",
+    "sizeBytes": 9882,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$2$2.class",
+    "sha256Bytes": "9f8f5bf0d9fc88e97ec9dab21516943328292934037aff88af8c356940b9a780",
+    "sizeBytes": 3213,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$2.class",
+    "sha256Bytes": "d4a915184e2bc4851f924705a228de2dff1df4c6e662bd36d540dc4cef3f814b",
+    "sizeBytes": 9249,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$invokeSuspend$$inlined$map$1.class",
+    "sha256Bytes": "e681e3fa5e61f83454cc77aa3f09377de5b63c7f4e3430f8d4484fa9e70da058",
+    "sizeBytes": 4271,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1.class",
+    "sha256Bytes": "b5f55c2a03c65ea1e8fa27ee130eab0117aee0b0dc408d3fd37d583f1fdc6c52",
+    "sizeBytes": 10591,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$43$1$1$1.class",
+    "sha256Bytes": "c9b49707eb285452d8222427458a82f120d6233c7d7a8f055594104513eabdb5",
+    "sizeBytes": 4722,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$46$1.class",
+    "sha256Bytes": "8dbc45aa485ef791fa3e74809ea1ba49dda99d0b6b8c190a3510b496157fe30f",
+    "sizeBytes": 5949,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$47$1$1.class",
+    "sha256Bytes": "c58e74847e3edf8eda63b3885c0b0f2089bfb9bff448575708028a918151e508",
+    "sizeBytes": 3734,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$47$1.class",
+    "sha256Bytes": "fb1812a3ec70ff55c5225bf049ede18843cdb0563d9f5afda5e610ed9c156db5",
+    "sizeBytes": 6978,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$48$1.class",
+    "sha256Bytes": "9983504a563f8fbba7076af1b1ad1d85377b9fb6cac6903c9504240ccd5df208",
+    "sizeBytes": 11746,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$49$1.class",
+    "sha256Bytes": "1bc48fb86dfa60684054857263a738587461d2b98a0af5b5ed3c57e4629dc718",
+    "sizeBytes": 4547,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$51$1.class",
+    "sha256Bytes": "4183cdfd86e681954a555436a45a0362a6addefdf0badbfa5d5e4c147d0982d1",
+    "sizeBytes": 5412,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1$3$WhenMappings.class",
+    "sha256Bytes": "87424d4256fe64fabb152411a8451fb4af0af94dba07ea2dcf980f3d9861a371",
+    "sizeBytes": 1099,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1$3.class",
+    "sha256Bytes": "dcf348927b4bffa9af687866f318d7c6433d04420cbf8e1e0ea006afdfdf95ce",
+    "sizeBytes": 4586,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1.class",
+    "sha256Bytes": "e58c1575b255626154400912b654dc5e6022cf5d14de92079b486ad4f9da3839",
+    "sizeBytes": 10564,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$53$1.class",
+    "sha256Bytes": "fe9e7168bca83ed1c1a1baa5b57338ac4a60fa208217b33536c340c569a746e8",
+    "sizeBytes": 4986,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$54$1.class",
+    "sha256Bytes": "58ed5c66c1a25ba158af4e891cb9e3cefda87640802b6ce03eb049fa620f510e",
+    "sizeBytes": 5870,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$55$1$WhenMappings.class",
+    "sha256Bytes": "2e93043af72570e8227e91fb6d145f33bb2058954ac86530a35c4b9b7b4c34ca",
+    "sizeBytes": 1043,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$55$1.class",
+    "sha256Bytes": "bf128f9499607dc848b112d6c122a1e2c3c8dbe0bd41cc0838a0575a07d7125e",
+    "sizeBytes": 9592,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$57$1.class",
+    "sha256Bytes": "d7120eef1fd3c29723d9ecde19f7a646744e3a633d250e5cdaee7b9e2b80518c",
+    "sizeBytes": 4955,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2$1$1.class",
+    "sha256Bytes": "90643395f9ef8f36ee82763c7fec0dc3ae7d0999279f3af7126630a1436b2a25",
+    "sizeBytes": 5618,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2$1.class",
+    "sha256Bytes": "6b1b9129b2459539ef9508e00a08390020fe867a7004c9d28d0dee48a9e65b8b",
+    "sizeBytes": 4820,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2.class",
+    "sha256Bytes": "b020b65300bae0fa8f2c56b1e863eb3e9ac577265f18c2fd25c842d0a91da961",
+    "sizeBytes": 13765,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1.class",
+    "sha256Bytes": "7c5aa4447bd270c53872bf07a9dd9ef3781aac6e3c21c68090218cc5a9c0f0b7",
+    "sizeBytes": 8765,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1.class",
+    "sha256Bytes": "135691ef9a371b41de0a9caad723f6cf1cc9bfaa9af1225a16b735b288d78857",
+    "sizeBytes": 8495,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$animateHeaderOffsetTo$1.class",
+    "sha256Bytes": "87c914572fec8df7324c80113060e2293a0ff1435d6213877b9139a7fc47891b",
+    "sizeBytes": 5496,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$handleNavItemClick$1$1$1$1.class",
+    "sha256Bytes": "edcf14730406be34d910e58a6c8f62cbc83d192b1662e6149e4ad9ff9af284cc",
+    "sizeBytes": 6211,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$handleNavItemClick$1$1$1.class",
+    "sha256Bytes": "c4af788089d23f04c58c7632d942e8c9ef17c5cfeb3dc9020bae33eeecfab86c",
+    "sizeBytes": 8272,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$lambda$263$0$$inlined$onDispose$1.class",
+    "sha256Bytes": "b1eba8b62b94ba124aa2a46d73fb1a3996aed638dad9c05e1724da228b0ee692",
+    "sizeBytes": 3063,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$lambda$263$0$$inlined$onDispose$2.class",
+    "sha256Bytes": "cba59269574c8211cbcd5fbf85de05fa106122cf59ed2f5bf49b42b03216acdc",
+    "sizeBytes": 4099,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$nestedScrollConnection$1$1.class",
+    "sha256Bytes": "34031c441c70656c42dc1a4720e89c9764223f304520fa660f3abed2c76218d6",
+    "sizeBytes": 13608,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$onToggleNavigationMode$1$1$1.class",
+    "sha256Bytes": "dca1b3220c00e40b1a7fa1ad0e7316cbbd5bba31c4250ecd6a619ac0156b608e",
+    "sizeBytes": 4900,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$openHomeDrawer$1$1$1.class",
+    "sha256Bytes": "f7b45895665ffff278edd043a6473c41404cbcdd6bf446b80dfae9037b91443e",
+    "sizeBytes": 4594,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$1$1$1$2$3$1$1.class",
+    "sha256Bytes": "232620d7b34cefb311460afc9883bb95da65febb8db8dc55241a9d9469c6ab6a",
+    "sizeBytes": 5547,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$1$1$1$2$3$1$2.class",
+    "sha256Bytes": "7995d97e996d5c35a4b643a73ce141ea67ec8e2184829bf483a2bbfd640fa690",
+    "sizeBytes": 4844,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$12$3$1$1.class",
+    "sha256Bytes": "21c35e0bc07fd45901b6b8372f6ff1cd87e49098572e2503811d3d47bce15c88",
+    "sizeBytes": 3848,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$14$4$1$1.class",
+    "sha256Bytes": "63e4fac9fd96d02e618962a984e684ce10f9d671d607c9d098426c822bb58672",
+    "sizeBytes": 5562,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$14$8$1.class",
+    "sha256Bytes": "e6e1c33c230498df9bd37895c169b3db53278c6c8a21cadef8883c2c38b2215e",
+    "sizeBytes": 4623,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$2$1$1.class",
+    "sha256Bytes": "17665de1449125e8b58496c59d27ee53f335c520836552b682164e3a2471e828",
+    "sizeBytes": 5339,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$3$1$1$1.class",
+    "sha256Bytes": "54df3be9b79743b86e56e58cb7bd14b14274141742b9613257ab956d430981ec",
+    "sizeBytes": 3443,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$3$1$1.class",
+    "sha256Bytes": "95ae39aea222a4797e14bbe318a358d5cf70379ea2d967bb100eda95e88cda04",
+    "sizeBytes": 6889,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$triggerHomeBackToTopCardSquish$1.class",
+    "sha256Bytes": "a38e2b5d32204160848540bfda8d8594c98cec3788c1e03b95dd0910bf4904aa",
+    "sizeBytes": 4227,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$withHomeScrollToTopLock$1.class",
+    "sha256Bytes": "0680b29996d0bc7b011fe4e7a32cbcf2eb9ba1795415157de463730cc054d53c",
+    "sizeBytes": 2733,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$WhenMappings.class",
+    "sha256Bytes": "aacfb6d555431cce06c1455d8ebab07dfeca6ee74984555fca8026375d865bf3",
+    "sizeBytes": 2599,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt.class",
+    "sha256Bytes": "075d652db848cc4f28dcba03dc542a297dc8587a718739b4bb88ba94afb892e4",
+    "sizeBytes": 639022,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeAvatarAction.class",
+    "sha256Bytes": "9eb19640c6c08d986f2eea6c44f8d49e0ce771dcd5c3fe5a40f099f34baf4d67",
+    "sizeBytes": 2044,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeAvatarActionPolicyKt.class",
+    "sha256Bytes": "f351d47e38d14b91f9714a51361f9ae5adb10f2cb21bca91c8e21757ec1ec687",
+    "sizeBytes": 1002,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$13$1.class",
+    "sha256Bytes": "1ac75f3a855ac4c95690e4927e41a6df53d052e509948c28a77eb55d056ae172",
+    "sizeBytes": 5397,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$14$2$1$1$1$1.class",
+    "sha256Bytes": "ed0639d426409b17ab82fe2703c626ba195d60dc2255d2b98722a5ea1641e947",
+    "sizeBytes": 5474,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$4$1.class",
+    "sha256Bytes": "4e2d5cf9ca6f548773aaa921dea76c1ac7cabd971a0848e65e490a88ca29174f",
+    "sizeBytes": 4537,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$visibleGridVideos$1$1.class",
+    "sha256Bytes": "e8d370c0554e867cdebd13b3f2965c1f7c3bcc0bd66a985abb43a179ffa9fb5a",
+    "sizeBytes": 3563,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$TodayWatchPlanCard$1$1.class",
+    "sha256Bytes": "e9052b672de846e46b3731f45ad9d590d5facdcf8896ce44b3674b88aa4df2f4",
+    "sizeBytes": 4440,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$WhenMappings.class",
+    "sha256Bytes": "a52d817fb6e52e02f6288551282d205d8b47ddbf3c807597194b8199a19b2cd5",
+    "sizeBytes": 932,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt.class",
+    "sha256Bytes": "080852a7fe83c462d24651a6f91b9d3ee7117ab755695d6feaee3e5995079440",
+    "sizeBytes": 234471,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeDrawerGesturePolicyKt.class",
+    "sha256Bytes": "07496d3136976ce03c17fe74df66d22b5ca5f42d86386d9578a2df23d818df3c",
+    "sizeBytes": 1059,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicyKt.class",
+    "sha256Bytes": "7b2b8440891ba87743df5e883111687a619aba7b8487e2f90dd131fb392edbf1",
+    "sizeBytes": 1301,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedBookHingeArrangement.class",
+    "sha256Bytes": "63ae2f7c725b17944335ba079f10916e71fdfdcaf72a038f77ec98021d2585b4",
+    "sizeBytes": 5136,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedBookHingeGridSpec.class",
+    "sha256Bytes": "91aa3855d999a65321cc8b1c4e0d94e734cc4c7c2879bc1c9b5b71f7e4a9f6f3",
+    "sizeBytes": 4346,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedGridPolicyKt.class",
+    "sha256Bytes": "706fe5b55cd5e25da9bd00c832685a6ab2aacc6f098bf025e22659611cdf0450",
+    "sizeBytes": 5078,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedSkeletonCardKt.class",
+    "sha256Bytes": "bfc730d0e21d9bd990bfbf9e517081e12caa108543de9168ef886de31f7be20b",
+    "sizeBytes": 42292,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpecKt.class",
+    "sha256Bytes": "d89ac480cafec6b1fd087f2186f4d5691b760e937b59bb71fed53955f1686e33",
+    "sizeBytes": 1181,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselCardTransform.class",
+    "sha256Bytes": "1fc99c820510834a39ac82a48370f1e3aa8b5c642111bd65e60b5177267af3c6",
+    "sizeBytes": 6785,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselLayout.class",
+    "sha256Bytes": "7f09f9c121bf8afd60d64c4908472d76c0ecd93b2c4f95954b1b47411f53f394",
+    "sizeBytes": 3191,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselPolicyKt.class",
+    "sha256Bytes": "7b242acc23eca9821069c8b8d0a523b1d39bb34c069dac390604fc21af884afb",
+    "sizeBytes": 10988,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicyKt.class",
+    "sha256Bytes": "ff736cc01b0fa47b91b0a3540796b71befa423d83178bd1fd6c681073b8aa943",
+    "sizeBytes": 2720,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeOverlayMotionSpec.class",
+    "sha256Bytes": "8eceafd5e342a2d6f14c30f3079e77b2a48c48b0a064f8d8073822483393a79d",
+    "sizeBytes": 6033,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomePerformanceConfig.class",
+    "sha256Bytes": "ff92edce00e02da99c8421be437d525143f801432340b8df8949439d333815d0",
+    "sizeBytes": 5593,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomePerformancePolicyKt.class",
+    "sha256Bytes": "7a9beabebaf2a16f9566d50bffac35970d897f7a034bb3ae37736ed3ddffe534",
+    "sizeBytes": 3044,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomePullRefreshUiPolicyKt$WhenMappings.class",
+    "sha256Bytes": "15747257adc3c46d7270be1e8b038be94de17856e17dc3b20e21170a2dacdada",
+    "sizeBytes": 905,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomePullRefreshUiPolicyKt.class",
+    "sha256Bytes": "4559207822c755baf8589e16f72543d60e79cb0ba58540da5dfa587d774484c0",
+    "sizeBytes": 6817,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeScrollRequest.class",
+    "sha256Bytes": "db5d1222587d4cc9d1d93578715495347403ed16c001f86aafbc3c7307ea5abd",
+    "sizeBytes": 2083,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeSystemBarsPolicyKt.class",
+    "sha256Bytes": "04d223f762e7d8900383763a7e4228fc606b7c61f4f1e2feca44663c31102e2e",
+    "sizeBytes": 1657,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopCategoryPolicyKt.class",
+    "sha256Bytes": "39aebab4fab0f838c76ed7a6be6d58d002bf941caa6f896fbe3619e699079d91",
+    "sizeBytes": 21722,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicyKt.class",
+    "sha256Bytes": "0f4473efa44f57a04b514311c8b1c33b658f14e827bc2043f2b7f61f4083cc24",
+    "sizeBytes": 3018,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopSearchRowMetrics.class",
+    "sha256Bytes": "789c605d13e37f8a299662123554d53e64da5999adecde71315310dfc29fdba7",
+    "sizeBytes": 3371,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Category.class",
+    "sha256Bytes": "5c77e20a6f03fb2bbed306f679e85b9a3a59da78b859b8b7c24546104ca8bf26",
+    "sizeBytes": 3463,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Partition.class",
+    "sha256Bytes": "75e7bbbd1257a2a66250510474225fb33dbd7df13e9a19c9665b4f381ada9b2f",
+    "sizeBytes": 1844,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Subscriptions.class",
+    "sha256Bytes": "be40b1b0b5292136b24c71fc5c5f393a8d866eb0e509f4a106c328137b596d1c",
+    "sizeBytes": 1860,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry.class",
+    "sha256Bytes": "dd79f12238987a93281a1fb440451cc05b24c255139b5984485401f157dd1768",
+    "sizeBytes": 1192,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabGestureAction.class",
+    "sha256Bytes": "e88115d3fe44267a326aa1cc7d23a55c7fa4570ef0f1b61a503803b25d10236d",
+    "sizeBytes": 2079,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabGesturePolicyKt.class",
+    "sha256Bytes": "9254aef17e760f37bb73a3fff1cedf0790754c0b7aea054df5fb1746e0ef7692",
+    "sizeBytes": 2622,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabRevealPolicyKt.class",
+    "sha256Bytes": "39e2b91d71c0870b4ecca8a5d04e0eaec2eee51a86b106783e137c5142bdfd61",
+    "sizeBytes": 3623,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabScrollTarget.class",
+    "sha256Bytes": "984dd460f23b34bf7836a1c5ba8d7587a1785c7101539c477e798d6fe0dbdee4",
+    "sizeBytes": 2199,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiState.class",
+    "sha256Bytes": "2984fb2161ed78e627130dc7802a78a20603f489508fae4dd792246e1988fd80",
+    "sizeBytes": 26792,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiStateKt$WhenMappings.class",
+    "sha256Bytes": "c3c2ae232a0c2becebcfbcf1332b9463ff9beda54ba68b3a0628e4585ca52f49",
+    "sizeBytes": 2251,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiStateKt.class",
+    "sha256Bytes": "59876acabb04ce5ff42212ef0c378f62a096f4767d35102f42ffd713725b998b",
+    "sizeBytes": 3384,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickRequest.class",
+    "sha256Bytes": "31739ecdb06caf8bcb548adf37db29544b0df28a3b72b23eb3f803a5ca825ab4",
+    "sizeBytes": 6204,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickRequestKt.class",
+    "sha256Bytes": "197daa19e49fdd3d58e9d2347e0d63d2eb7b6981af423a26b4862c840ffb9700",
+    "sizeBytes": 1384,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickSource.class",
+    "sha256Bytes": "26794fc79b980a7e40993d968446af828d26f5535b0489698bf1e288654f941d",
+    "sizeBytes": 2060,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeWallpaperBackdropKt.class",
+    "sha256Bytes": "365d42cf3fbf78f627c40920e08675bf6f162c9254b2263490b073ccbaf339c7",
+    "sizeBytes": 20888,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/HomeWaterfallMotionSpecKt.class",
+    "sha256Bytes": "0375968a5f1ec2777b0dff6ee0282fcc2fe1060197caaea4cd3bc74760932130",
+    "sizeBytes": 1744,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/LiveSubCategory.class",
+    "sha256Bytes": "63ac3a15ff75ce1dc141f2c3caaa0a45c86d53c5cdca0b52ca8d1fe3d9750c13",
+    "sizeBytes": 2262,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/BottomBarVisibilityIntent.class",
+    "sha256Bytes": "e9363f63783e86fbe18f874aeb2512e36067d981079b77f94356ae1ee274a59c",
+    "sizeBytes": 2076,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicyKt$WhenMappings.class",
+    "sha256Bytes": "c364d057c6c6c3f8f6182a366c89820707116aeadbbe71b37d54392b795692cf",
+    "sizeBytes": 1152,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicyKt.class",
+    "sha256Bytes": "cefd62c8fdd7516c5eff67f64163f32e0e8fd2f5bad5d43266af4a58dde55399",
+    "sizeBytes": 1735,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicyKt.class",
+    "sha256Bytes": "d2325087af2c5347b84bbf31533508177a533955e81bd7aebc29af1a1236ecc7",
+    "sizeBytes": 2646,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollState.class",
+    "sha256Bytes": "c818dd0a74a6a32984bc122ac20379f0e49c14868a769b38421466645147d28b",
+    "sizeBytes": 2897,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollUpdate.class",
+    "sha256Bytes": "e023f6fd6392fd79ae582d020ceeb1854a117b2a053bfac46b42188e5f216486",
+    "sizeBytes": 4252,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeFeedScrollAnchor.class",
+    "sha256Bytes": "21e6f82c15506749c9b6bf7685ae49bac480eb18f11faa8b17168264c3febbae",
+    "sizeBytes": 5133,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicyKt.class",
+    "sha256Bytes": "f311b4ff10dfa870d09537e23aeccc7332471160cb231fa904e9ae43f78e10fb",
+    "sizeBytes": 6641,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeHeaderSettleTransition.class",
+    "sha256Bytes": "994f7099914d381f4cf4704a004b865dd3ecd0c3b8551f813536ae4bf0d976c5",
+    "sizeBytes": 3003,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomePagerSettledAction.class",
+    "sha256Bytes": "e5bd946a05affb4bf430b044ab83ea4646bb80751a2ed964869d90e93df7392c",
+    "sizeBytes": 2198,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicyKt.class",
+    "sha256Bytes": "7129f7aed293bee404c240317f5d97f2b6a09bebc19e8c288479f4e31794435b",
+    "sizeBytes": 7383,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeScrollCoordinatorKt.class",
+    "sha256Bytes": "f6e07e290f7f0249f4de7a6e031504395e3e422a982b45e1de536223c41c63b3",
+    "sizeBytes": 6370,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeScrollUpdate.class",
+    "sha256Bytes": "14097ce79ea1dc462f8a948cc8039c9529f1f56c97e296c994f6c9c1e8db0ec9",
+    "sizeBytes": 4884,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchCardUiConfig.class",
+    "sha256Bytes": "bf353eaac76614b699db45f0d926bd938b73952ba3094839daefb447f319b15a",
+    "sizeBytes": 4282,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchMotionPolicyKt.class",
+    "sha256Bytes": "980c9d72ab33f44dcce3c02f13f89544fb55d655ceb10aea04dda13ac96ff93d",
+    "sizeBytes": 1209,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchStartupRevealDecision.class",
+    "sha256Bytes": "76b3a7caa614df7ff4c6ecb0856c52b23763243379c455ac1371c7cb1c124670",
+    "sizeBytes": 2137,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicyKt.class",
+    "sha256Bytes": "f9026b740607fce683ef973e675aa4c17c02a7e130893799bb98250f6ada4194",
+    "sizeBytes": 1890,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/home/UserState.class",
+    "sha256Bytes": "b44c5afbdde3f0fee73593c47c83a83b781e8f0e5bd1756c719c1c7becc789b5",
+    "sizeBytes": 9216,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/onboarding/UserAgreementPolicyKt.class",
+    "sha256Bytes": "51a3b0ffcf05aa83706c15f9733e1a09d9451988610cbbbe8fc7ba36569e72eb",
+    "sizeBytes": 579,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/video/share/VideoSharePayload.class",
+    "sha256Bytes": "f32d3602209c5bdab151e3c05a5146c777f493473419ff1e589ce4f1f86857af",
+    "sizeBytes": 5821,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/feature/video/share/VideoSharePolicyKt.class",
+    "sha256Bytes": "e89407efde24c5f79e95e418b6764467183c4fb70e78835ea2409ae438939057",
+    "sizeBytes": 3398,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/navigation/AppNavigationAppearance.class",
+    "sha256Bytes": "dbca3cc88fb81b12c2546883feb110d95c76c823c1b1a50628fb340d52a6d9bd",
+    "sizeBytes": 3640,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/android/purebilibili/navigation/AppNavigationAppearancePolicyKt.class",
+    "sha256Bytes": "56b6c5c40132b41a017bc3c524293949f8ee3a007e5e8645b30e1cf60ddec234",
+    "sizeBytes": 1621,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeAnalyticsPort.class",
+    "sha256Bytes": "c5830b18d89675965432c5a9f97e18efe257b163022e5f078c9c1226ae0030a8",
+    "sizeBytes": 1356,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeClock.class",
+    "sha256Bytes": "6b074e1bed63799d92902642dd3fe7d4d514cbd51737ef9a75fb1ec761ed0df1",
+    "sizeBytes": 1066,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEmbeddedPages.class",
+    "sha256Bytes": "2c694801194c19b49f53284290052cd49bafe31ccfb7159fd18758b616cb1a09",
+    "sizeBytes": 5092,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEnvironment.class",
+    "sha256Bytes": "3cf67948ccde6bc422a3e01c0e4abf73f028d31f81d0be65f0503da798ec42d5",
+    "sizeBytes": 8891,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEnvironmentKt.class",
+    "sha256Bytes": "71154ab487fde98699aa64b2c3a56f0eb61113ee848bbc8f37aa1a4aca0032e3",
+    "sizeBytes": 3123,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeGlobalNamespace.class",
+    "sha256Bytes": "d50873658c8e661921f34a0a5ff0dbc19dbac0f0cdf30b4f7b2194188711197c",
+    "sizeBytes": 645,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMediaPorts.class",
+    "sha256Bytes": "66c08084027b199344fe79797fde530166101677182152c53da0354f2ffff947",
+    "sizeBytes": 4079,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMediaPortsKt.class",
+    "sha256Bytes": "baba383f8700e1df9d7192da1526d42fd065fe7e31bc6ae9f2f9d58fdb0ea117",
+    "sizeBytes": 2750,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricHolder.class",
+    "sha256Bytes": "82b839bbd991801e21244339b77a75ea4bea5498453fa88c88d554eedf90335c",
+    "sizeBytes": 1386,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricPortsKt.class",
+    "sha256Bytes": "62c487ed79cda17d22b46fc5a6a82079f32b9d489bf21349672854101382c694",
+    "sizeBytes": 4679,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricSink.class",
+    "sha256Bytes": "5d9a1387ddda1bbeb992d1e4b03fe5bb6d43ffce7f4d9ec68afdad32f8489e2b",
+    "sizeBytes": 733,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeOverlayPorts.class",
+    "sha256Bytes": "f4e377672ab3e231bd67904a83c7bee319a0972cfd0ee721019b81220291aeaa",
+    "sizeBytes": 1637,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomePlatform.class",
+    "sha256Bytes": "cda35f0f0665e0042823ae47ccc04f720e02259257bafe648ddf05a222fd9e32",
+    "sizeBytes": 2841,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeSettingsPort.class",
+    "sha256Bytes": "0331423d9c0f5e2a48971e8233cb03476f68f95778c1df7739848b0772917caa",
+    "sizeBytes": 2907,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWallpaperPort.class",
+    "sha256Bytes": "4d82477e524bd010624a95c26f533cd32d13b401f9af6e78289dd5d843fa29da",
+    "sizeBytes": 1121,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWindowBackgroundPort$Listener.class",
+    "sha256Bytes": "9ba0fc11ab666d7afa5b3a67c4cee0b1091f280840b3a909295500cf36855aef",
+    "sizeBytes": 663,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWindowBackgroundPort.class",
+    "sha256Bytes": "6c5afbaad83409811898e34ab4f85e88bf4f7c273bc2135e236e0baefc85062a",
+    "sizeBytes": 997,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeGlobalNamespace.class",
+    "sha256Bytes": "e8f32c08a46e5f46859143eb72f2c84b469d78242acddf131479410db3dc181a",
+    "sizeBytes": 2723,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeNavigation.class",
+    "sha256Bytes": "fe4d9dc4f0dd1fd7ccdcd9f8a6d4373ba9751a68781f465e7a4c4e787f82506d",
+    "sizeBytes": 13749,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$Companion$create$2.class",
+    "sha256Bytes": "6b8535220dcff9537cbcf6f4ffeaee29dd1bc2cab0be8bf154a005ef53b7969c",
+    "sizeBytes": 10216,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$Companion.class",
+    "sha256Bytes": "f476de411860aeb81b3ffcf9029266a613f681660585f97854150065170c0e09",
+    "sizeBytes": 2743,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$homeSettings$1.class",
+    "sha256Bytes": "cee597fe71d44b2fa17436a8e55d8e67f6b56ec9ed833216472f145336e6da6a",
+    "sizeBytes": 2013,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$setEasterEggEnabled$2.class",
+    "sha256Bytes": "7ce4702d10adfaa1a498b17a96546efca2c8fc860aaabe7e648b4b587116d851",
+    "sizeBytes": 4223,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$1.class",
+    "sha256Bytes": "3972de669d7b81c31780bc31d62ee6fb0c00d8278af4a3cb87fdcf9af0e151f2",
+    "sizeBytes": 1713,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$2$1.class",
+    "sha256Bytes": "89006c8295ca01307e65da5c0b821e096d65c2c2fadf3a9ebf2ae4e0bda6c964",
+    "sizeBytes": 1708,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$2.class",
+    "sha256Bytes": "d2bf84730e3a8344c17b8d4176301f5004786aebedfb2d48549c391065bb691f",
+    "sizeBytes": 3803,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1.class",
+    "sha256Bytes": "a349234cd975090ae34dcee8090685634b318412eff6194ad68522d5e8055397",
+    "sizeBytes": 4095,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$topTabs$1.class",
+    "sha256Bytes": "387231ff3a4d6310256eef9e0f64e807cfe0e7f603db6cec2c1e053145076b53",
+    "sizeBytes": 2019,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$write$2.class",
+    "sha256Bytes": "ce059f00f57ab470f14de8dc42ada8dd7ed77ff1040160a3a77d644787dc807e",
+    "sizeBytes": 4098,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.class",
+    "sha256Bytes": "f087c2c18dac94ede7117745aa51273abea1bc9174580b3140eee9a874cf0715",
+    "sizeBytes": 16201,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeRootKt.class",
+    "sha256Bytes": "63f4ea1e875df31097e5bc13334af6bd05322e116f35dda612d2db8fdd06c440",
+    "sizeBytes": 18874,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants$BottomBarLabelMode.class",
+    "sha256Bytes": "a8d4826e1dbce4638599ab530f350f932a808e3799e3347737d0cb48c5d0b0eb",
+    "sizeBytes": 1341,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants$TopTabLabelMode.class",
+    "sha256Bytes": "a8655f53601f5c8b5b814b23ecddbd530d5e8b63b3dc9763e45ec73c873b4853",
+    "sizeBytes": 1283,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants.class",
+    "sha256Bytes": "27a36145dbc259d8f48f520bec7f041cc9de55020c55a76599719e54b9073323",
+    "sizeBytes": 1723,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt$floatPreferencesKey$1.class",
+    "sha256Bytes": "75b16d438b0903367ef02ea87f3995a52d01085ef40dc0eaf0a19142e4c77fd2",
+    "sizeBytes": 1811,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt$intPreferencesKey$1.class",
+    "sha256Bytes": "2ac8f432228433997af962be8e893961c4e2ceccbb1a7c279bdec7fac68f45b4",
+    "sizeBytes": 1807,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt.class",
+    "sha256Bytes": "a31b5c38dfce3088462f4cfd7da20c4323e5085a6ce5a5a2180baffab4a22cdb",
+    "sizeBytes": 46888,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.class",
+    "sha256Bytes": "a1f2774b14f51238c2cc8fdeb34573a4ca11859c9050fceac1930183ffdee3f0",
+    "sizeBytes": 8619,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+    "sha256Bytes": "f050474ea364b8ca5047db65a428a61ddd1ffd196061c555734300fe4d151dc2",
+    "sizeBytes": 2830,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "classes-full-07/top/yukonga/miuix/kmp/icon/extended/MessagesKt.class",
+    "sha256Bytes": "8499a8546c20452cfae071822bdfe44223570f3ff8903270cb85b7804976b0fa",
+    "sizeBytes": 16469,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$awaitValue$2$1.class",
+    "sha256Bytes": "f774f8f4c3203b57f988c27d63af5741983de7a873385896f1491c263f59d632",
+    "sizeBytes": 1987,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$awaitValue$2.class",
+    "sha256Bytes": "58e41be6b8f1ca7cd96abf232e132d49c725d8965e5f063a4496fa9558178e79",
+    "sizeBytes": 3874,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$main$1.class",
+    "sha256Bytes": "bff7f4bca63c8508ed62a8a857da0faa3e32303d13dd98671596ee31eed70cc6",
+    "sizeBytes": 28747,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt.class",
+    "sha256Bytes": "8f539cc396a69c397f9170cb0eac6faca59ffd8c23d4f026fabe78089b6b476b",
+    "sizeBytes": 4520,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/home-ui",
+    "path": "prefs-proof-01/classes/META-INF/home_prefs_fixture.kotlin_module",
+    "sha256Bytes": "3079018e25fdc5f08b403d8dc087ee7f198745b570506cdfba2aecf0148a2fbd",
+    "sizeBytes": 76,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/native-media",
+    "path": "runs/01/prepared-home-platform.jar",
+    "sha256Bytes": "2c6b1fb09692be858ed517d93f1ac06d927fa7740cfbbee18d5b73cb6736b804",
+    "sizeBytes": 151551,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/native-media",
+    "path": "runs/02/prepared-home-platform.jar",
+    "sha256Bytes": "d26826c7934a811c4b7903a01dd13f8e5fdb794d92f4ba421d26bd81b37ca66c",
+    "sizeBytes": 151594,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/native-media",
+    "path": "runs/03/prepared-home-platform.jar",
+    "sha256Bytes": "6a83a6965cc3d838b968d576047ca40b6b841c74e556fe4d4bb0fc8c75a67554",
+    "sizeBytes": 171762,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "prepared/native-media",
+    "path": "runs/04/prepared-home-platform.jar",
+    "sha256Bytes": "ec6c0e4a310bdfec4f10377ca65c7198c869073a1c9f5a426cea7291290cc4f0",
+    "sizeBytes": 175695,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "root/actual33-native",
+    "path": "runs/actual33-01/native-media-fixture.jar",
+    "sha256Bytes": "1157e29095039b4fea1283564f629c10f49efaf23761cfebd5007940570f44de",
+    "sizeBytes": 45132,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "root/native-fixture-preparation",
+    "path": "runs/compile-01/native-media-fixture.jar",
+    "sha256Bytes": "8d63051d0f8a2b3aba0abe21b63fc78f3034dde49d205afa15921fc3f3266615",
+    "sizeBytes": 45140,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  },
+  {
+    "label": "root/native-fixture-preparation",
+    "path": "runs/compile-02/native-media-fixture.jar",
+    "sha256Bytes": "8d63051d0f8a2b3aba0abe21b63fc78f3034dde49d205afa15921fc3f3266615",
+    "sizeBytes": 45140,
+    "reason": "Rebuildable prepared/fixture compiler output; raw hash retained, no binary payload installed"
+  }
+]

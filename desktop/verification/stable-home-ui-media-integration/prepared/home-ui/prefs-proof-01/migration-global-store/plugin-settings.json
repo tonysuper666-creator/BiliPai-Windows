@@ -1,0 +1,8 @@
+{
+    "settings": {
+        "bottom_bar_order": "HOME,DYNAMIC,HISTORY,LISTEN_VIDEO,PROFILE",
+        "bottom_bar_visible_tabs": "HOME,DYNAMIC,HISTORY,PROFILE,LISTEN_VIDEO",
+        "some_other_key": "untouched",
+        "listen_video_bottom_tab_migration_complete": true
+    }
+}

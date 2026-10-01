@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "readOnlyVerification": true,
+  "nativeOrJvmRerun": false,
+  "originalPreparationArtifactsStillMatch": 23,
+  "runtimeCpPrePostIdentical": true,
+  "runtimeEntries": 97,
+  "loadedActualClassesVerified": 9,
+  "productionOverrides": 0,
+  "resultSha256Bytes": "3ae06091594fe8fb9d69956b7d851ec2fb1028376514dda359757f4791a0cd4e",
+  "acceptedSha256Bytes": "49101483c67b8c8fbba0f369e1ebddfca76ec81d6d889b0407265f821eb4b8dd",
+  "actualTexturePngSha256Bytes": "c4a1a619b6eb3a8bb02d4b6309428aac4d79973c40381d411dc1650e735498a9",
+  "independentImageReader": "Pillow",
+  "actualOffscreenSamples": {
+    "(128, 64)": [
+      128,
+      127,
+      255,
+      255
+    ],
+    "(32, 16)": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "(0, 0)": [
+      255,
+      255,
+      255,
+      255
+    ]
+  },
+  "sourcePreparationManifestSha256Bytes": "f853e695355758d2e5ab1ad39a260a3f686abf239fd340dd03196578dc9377f8"
+}

@@ -1,0 +1,8 @@
+{
+  "status": "SOURCE_AUDIT_ASSERTION_FAILED",
+  "nativeExecution": false,
+  "assertion": "'UNINITIALIZED' in official render.h",
+  "reason": "Audit script used uppercase text, while the fixed official header contains lowercase 'uninitialized garbage'.",
+  "correction": "Assert exact actual official text. No production source or native binary changed.",
+  "runtimeResult": null
+}

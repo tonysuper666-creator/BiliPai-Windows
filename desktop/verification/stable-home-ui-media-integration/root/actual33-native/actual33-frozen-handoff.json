@@ -1,0 +1,170 @@
+{
+  "status": "FROZEN_ACTUAL_MAIN33_NATIVE_AND_OFFSCREEN_PROOF",
+  "artifactCount": 30,
+  "artifacts": [
+    {
+      "path": "prepared-fixture-handoff.json",
+      "bytes": 4516,
+      "sha256Bytes": "f853e695355758d2e5ab1ad39a260a3f686abf239fd340dd03196578dc9377f8"
+    },
+    {
+      "path": "verify-actual33.py",
+      "bytes": 2666,
+      "sha256Bytes": "b2040026528d897cce5c7382d1e3a725b04f04913bc7b9854391a79ccb94a1a8"
+    },
+    {
+      "path": "actual33-readonly-verification.json",
+      "bytes": 927,
+      "sha256Bytes": "725ace6a87e26ac820216d1032cd4b865148a4b065bdfb64cebbebacf7595764"
+    },
+    {
+      "path": "ACTUAL33-RESULT.md",
+      "bytes": 2356,
+      "sha256Bytes": "94a79de8b540aa3652f126831bfe27434d1da29105d34f057bb4eb3cb0e4d888"
+    },
+    {
+      "path": "freeze-actual33.py",
+      "bytes": 1904,
+      "sha256Bytes": "06d7e5973b3b3203e7d8a8d8b68524f4714b35c7f7b10a199f1c9b9e5f17abe4"
+    },
+    {
+      "path": "runs/actual33-01/accepted.json",
+      "bytes": 634,
+      "sha256Bytes": "49101483c67b8c8fbba0f369e1ebddfca76ec81d6d889b0407265f821eb4b8dd"
+    },
+    {
+      "path": "runs/actual33-01/compile-result.json",
+      "bytes": 264,
+      "sha256Bytes": "814138e91531472aca2906773513bb22251c5b815421e5a030615ca4b223e9ce"
+    },
+    {
+      "path": "runs/actual33-01/compiler.args",
+      "bytes": 24846,
+      "sha256Bytes": "f4eb98535f2d9b7a7a4ec1e6ddcd115da85102a5616f64a8791561d2ffc1232d"
+    },
+    {
+      "path": "runs/actual33-01/compiler.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual33-01/dependency-pins-after.json",
+      "bytes": 43254,
+      "sha256Bytes": "052008f5e113d11374a741a5dae22e7d136d09b0043cbf33cc47fe2cc56dcbc2"
+    },
+    {
+      "path": "runs/actual33-01/dependency-pins-before.json",
+      "bytes": 43254,
+      "sha256Bytes": "052008f5e113d11374a741a5dae22e7d136d09b0043cbf33cc47fe2cc56dcbc2"
+    },
+    {
+      "path": "runs/actual33-01/fixture-symbol-audit.json",
+      "bytes": 1053,
+      "sha256Bytes": "0d26c62d32693a31fbe61bab4818a36b344467d723cf63bdb4c39643e0cdb53c"
+    },
+    {
+      "path": "runs/actual33-01/java-command.json",
+      "bytes": 26747,
+      "sha256Bytes": "d57f82bbd1c950593e6c0e110e42b07a1b682745485acaa7dad665f8895ff316"
+    },
+    {
+      "path": "runs/actual33-01/local-media/blue-ffprobe.json",
+      "bytes": 2705,
+      "sha256Bytes": "1769227044d86231f2488973756215dd2515444a62a89b6a84e3725cd2ef8fba"
+    },
+    {
+      "path": "runs/actual33-01/local-media/blue-ffprobe.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual33-01/local-media/blue-generator-command.json",
+      "bytes": 526,
+      "sha256Bytes": "08da5d78eb4010cb63ca9d12657e8af2883eb7cc1231c4b5f02066c9900309cf"
+    },
+    {
+      "path": "runs/actual33-01/local-media/blue-generator.log",
+      "bytes": 1139,
+      "sha256Bytes": "b8b993c0eb202c9ab19918c59a964a7a4fbb1c9624559ba42a7a16bf1a70495b"
+    },
+    {
+      "path": "runs/actual33-01/local-media/blue.mp4",
+      "bytes": 4123,
+      "sha256Bytes": "262f6f21541a05f071086581390c2484935dd329143e5b7bf06736f31eb4a965"
+    },
+    {
+      "path": "runs/actual33-01/local-media/media-pins.json",
+      "bytes": 599,
+      "sha256Bytes": "287b3026af5ba86b07994bb423b0dcb4759b4ae693f179b7da21fd29afaf352a"
+    },
+    {
+      "path": "runs/actual33-01/local-media/moving-ffprobe.json",
+      "bytes": 2713,
+      "sha256Bytes": "e2d13190ea1912f2ae0d0d8581d0b0dd4e242d132d67893b904135bab505bde0"
+    },
+    {
+      "path": "runs/actual33-01/local-media/moving-ffprobe.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual33-01/local-media/moving-generator-command.json",
+      "bytes": 530,
+      "sha256Bytes": "0efa15509fff56b1b79b30e1176aff22ef878cb81b43c0d09d12046093c70bcf"
+    },
+    {
+      "path": "runs/actual33-01/local-media/moving-generator.log",
+      "bytes": 1144,
+      "sha256Bytes": "af4c24cbdf5d534c544717483583a2ed2244d5f276bdc8f3e6cd6ad74690de75"
+    },
+    {
+      "path": "runs/actual33-01/local-media/moving.mp4",
+      "bytes": 273705,
+      "sha256Bytes": "0e09ab9a6a9af00cee99508e4a3ff41e9436f7d1850e4b31c6ceb0c22d8c4656"
+    },
+    {
+      "path": "runs/actual33-01/native-media-fixture.jar",
+      "bytes": 45132,
+      "sha256Bytes": "1157e29095039b4fea1283564f629c10f49efaf23761cfebd5007940570f44de"
+    },
+    {
+      "path": "runs/actual33-01/proof/actual-offscreen-native-texture.png",
+      "bytes": 6552,
+      "sha256Bytes": "c4a1a619b6eb3a8bb02d4b6309428aac4d79973c40381d411dc1650e735498a9"
+    },
+    {
+      "path": "runs/actual33-01/proof/result.json",
+      "bytes": 4295,
+      "sha256Bytes": "3ae06091594fe8fb9d69956b7d851ec2fb1028376514dda359757f4791a0cd4e"
+    },
+    {
+      "path": "runs/actual33-01/runtime-exit.json",
+      "bytes": 86,
+      "sha256Bytes": "94992cf16aedde44ea1b408a499010091dea4bb36d803b91f9378595b0e5c8a4"
+    },
+    {
+      "path": "runs/actual33-01/runtime.log",
+      "bytes": 1502,
+      "sha256Bytes": "ec1f95f19fe290e2d9fec3bd39fd72fefeb89c2ca6b6d4e1958f0bef3aead8a4"
+    },
+    {
+      "path": "runs/actual33-01/source-inputs/NativeHomeMediaFixture.kt",
+      "bytes": 12906,
+      "sha256Bytes": "593b39977aa40e0b370a6d789e87bc6d15c02703ee7cdf4d6b6a5e66fd10751f"
+    }
+  ],
+  "assertions": 19,
+  "productionClassOverrides": 0,
+  "actualClassSourcesVerified": 9,
+  "runtimeEntries": 97,
+  "snapshotManifestSha256Bytes": "a94cf303442cc285a81650237f0cc1a3910c47e4f3b1a43e42a23e36e0c63883",
+  "orderedCpSha256Bytes": "e76eb70649106c7acc0d446c539e6b971fcf578daaca68221a5897fda2fdb09d",
+  "sourcePreparationManifestSha256Bytes": "f853e695355758d2e5ab1ad39a260a3f686abf239fd340dd03196578dc9377f8",
+  "nativeLocalCpuFrames": true,
+  "isolatedOffscreenCompose": true,
+  "nativeWindow": false,
+  "RootUiAccountPlaybackProof": false,
+  "screenMonitorPresentation": false,
+  "performanceBenchmark": false,
+  "sourceOrNativeBinaryModified": false
+}

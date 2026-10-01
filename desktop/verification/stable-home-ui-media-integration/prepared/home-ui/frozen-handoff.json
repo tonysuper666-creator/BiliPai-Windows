@@ -1,0 +1,3168 @@
+{
+  "schemaVersion": 1,
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "full original HomeScreen/HomeCategoryPage/SideBar UI source closure + sameglobal82key original decoder/4 setter seam; concrete HomeViewModel/Rootmount/native remain pending",
+  "proof": {
+    "actualSnapshot26": true,
+    "sourceCompile80": true,
+    "newProductDuplicateClass": false,
+    "intentionalSoleOwnerExpandedClasses": 9,
+    "actualDiskFocusedGates": 6,
+    "diskBaseActual25SameStoreByteIdentityIn26": true,
+    "mountedFullHome": false,
+    "nativeHWND": false,
+    "sharedMainModified": false,
+    "sharedGradleRun": false,
+    "externalAccountTransport": false
+  },
+  "installWhitelist": "install-whitelist.json",
+  "rootRecipe": "ROOT-INTEGRATION.md",
+  "artifacts": [
+    {
+      "path": "additions.py",
+      "sha256Bytes": "7ecdb5b3ad4ae758dbc8258bafd262f6d552c5561b585e827c5c0eaeb706f739",
+      "lengthBytes": 9010,
+      "install": false
+    },
+    {
+      "path": "adjust1.py",
+      "sha256Bytes": "e642dc3465ab1e4549e82c517a5ba081f0505f1223c7c6b62e40af3356e33dff",
+      "lengthBytes": 2511,
+      "install": false
+    },
+    {
+      "path": "adjust2.py",
+      "sha256Bytes": "f676dfbc9f8581b8140f3e404a2cbc4022b6bb15f5426e63f416ed133fb01945",
+      "lengthBytes": 2620,
+      "install": false
+    },
+    {
+      "path": "adjust3.py",
+      "sha256Bytes": "09e003d74941ed2f93d49be464b3858dbf7169d7a466c10689747b6e20aae006",
+      "lengthBytes": 1139,
+      "install": false
+    },
+    {
+      "path": "adjust4.py",
+      "sha256Bytes": "845bcb011c76a4bfd53c416fc53dcc253c4391eb948f526447584a50d1c0b802",
+      "lengthBytes": 1815,
+      "install": false
+    },
+    {
+      "path": "adjust_screen.py",
+      "sha256Bytes": "cdd212c90fa15ace6791b309f56848c1903bdca6f11051f21640da90a7bd3c75",
+      "lengthBytes": 8701,
+      "install": false
+    },
+    {
+      "path": "audit.py",
+      "sha256Bytes": "39f4d53b1dedf05681a061e5ef27781c257727bbd53507e84695f59a78edcad0",
+      "lengthBytes": 7832,
+      "install": false
+    },
+    {
+      "path": "class-overlap-actual26-final.json",
+      "sha256Bytes": "ebe8194f6deed4331c824c8ddd26d5f4e351f35dd1cdac87332f9cf9632accba",
+      "lengthBytes": 1106,
+      "install": false
+    },
+    {
+      "path": "class-overlap-final.json",
+      "sha256Bytes": "e9554bc8d6e4f57ead93186ff62ebc2db07601485ba630011bb289794a0ee34b",
+      "lengthBytes": 1091,
+      "install": false
+    },
+    {
+      "path": "class-overlap-initial.json",
+      "sha256Bytes": "f187d8a7325c6610b5cb1652684056185b516a5bca74da6d685b67ec64a98d64",
+      "lengthBytes": 1039,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/AppNavigationSettings.class",
+      "sha256Bytes": "ed9b5856949fd38b0bfdf8978fd831007f28c65c1be869d756aad4c7b93b5812",
+      "lengthBytes": 10923,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/BottomTabMigrationResult.class",
+      "sha256Bytes": "51ac205451d8a8d46af42fac75259607df58d19921ecaf8e21017101fcc84adc",
+      "lengthBytes": 4201,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/DesktopHomeNavigationMigrationKt.class",
+      "sha256Bytes": "f0ebf1ee1f1d925fe93624f608f302b14edca790ced5f9eba48d37149bd17471",
+      "lengthBytes": 3246,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeBarHideType$Companion.class",
+      "sha256Bytes": "b32db39441f8d9e08040a175a3dac121a858c4f3f8085e7b2ac240623016dd28",
+      "lengthBytes": 2185,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeBarHideType.class",
+      "sha256Bytes": "e43269c2a659cc27e33d2cae4f5d31f8b467d582e5b4aa069ffa00691e31ec9f",
+      "lengthBytes": 3063,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeHeaderCollapseMode$Companion.class",
+      "sha256Bytes": "03d832051a3425a6d2e18cf40e4f4b088ebd3021c0d20eb2162c646c1abbe6d6",
+      "lengthBytes": 2481,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeHeaderCollapseMode.class",
+      "sha256Bytes": "098cb22b6e92a132392de5c35a1b986b9923cd6dca05a712da7c1411a57fac1a",
+      "lengthBytes": 4052,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeSettings.class",
+      "sha256Bytes": "c957fb6bfc99bace65c5b313d6e024791fced2719245691c468fbece2f5d43d3",
+      "lengthBytes": 40822,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicyKt.class",
+      "sha256Bytes": "ae520770c91f6bea9a3f3587f5fa16cf5ac5519d40f385ee420047e9a7acba1a",
+      "lengthBytes": 962,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopLayoutOrder$Companion.class",
+      "sha256Bytes": "270c36fc1a417799a016345a5bbb92e5845b81149a7511ead0a5834a4d29770b",
+      "lengthBytes": 2221,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopLayoutOrder.class",
+      "sha256Bytes": "23526082146a4c962312e631fc7ec40533146aa44da7f6fa22d41f00f0c13479",
+      "lengthBytes": 2759,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopRightAction$Companion.class",
+      "sha256Bytes": "8c2a3c6ae97ccd5d808d67d8b9ccaf5c7a0290b39ae7d48f4d5089f7c4eac96c",
+      "lengthBytes": 2213,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopRightAction.class",
+      "sha256Bytes": "c3c26a935bff75ded3b2b03cc1e2da8ab3cdb19711d0b8586c7c71e029e8984c",
+      "lengthBytes": 2728,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/HomeTopTabSettings.class",
+      "sha256Bytes": "644ef954794f92c0c9d068d7784c0e5fc724fdd401e2d11de1794bf4a5c15a1d",
+      "lengthBytes": 4774,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabelsKt.class",
+      "sha256Bytes": "5058d0eff6b4a4a50eef577a1eda4ceaa9f64381702f58bb34ec1a6832e3a51d",
+      "lengthBytes": 7430,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/AdaptivePullToRefreshBoxKt$WhenMappings.class",
+      "sha256Bytes": "a7099d904ec0cdd93745e1441aad70a304e11b201d750caff3cd31575e29e401",
+      "lengthBytes": 919,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/AdaptivePullToRefreshBoxKt.class",
+      "sha256Bytes": "0e0dfeb787090276f6e9b260a04e31f38b487199c602bbd3118105c72bbecec6",
+      "lengthBytes": 23984,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/blur/RecoverableVisualEffectsKt$rememberRecoverableHazeState$2$1$listener$1.class",
+      "sha256Bytes": "d1de3438171c85c96260053bcda60c68c3c8e0939755bdda233505e4cb54bd23",
+      "lengthBytes": 2376,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/blur/RecoverableVisualEffectsKt.class",
+      "sha256Bytes": "73ada2b56bba19a19ec8ee32c293e3af442f83de296e638a6c03fc95836ec725",
+      "lengthBytes": 16779,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/ComfortablePullToRefreshBoxKt.class",
+      "sha256Bytes": "8a888757f721fa6a078ba8c7162956c01fb28d0c3566b7c3444905b6c73dcd02",
+      "lengthBytes": 14670,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragRelease.class",
+      "sha256Bytes": "8d53ba5177fce719113a7b821aea9b77b8475ebbc2fc662610c9aa09425afd9f",
+      "lengthBytes": 2684,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragScrollSession$awaitRelease$2$1.class",
+      "sha256Bytes": "2de5ff92eacbc90240e7f33ab26ca1d96f41a760069605a7f74d323956fd513b",
+      "lengthBytes": 1815,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerDragScrollSession.class",
+      "sha256Bytes": "c0d92053520e695a0994d02948efbac15166786716d90e9b398ae5f8bc50d146",
+      "lengthBytes": 5818,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/common/PagerGestureDirection.class",
+      "sha256Bytes": "ab4495ec4c0b2a11eaa3907879aa40ead75fc3abeeaaadb49cb2be4d0775b824",
+      "lengthBytes": 2093,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGestureKt.class",
+      "sha256Bytes": "a7ae2e7756b13ebeb245bacdf9ee31018ef3b9698b7be2ab4f297eec19d09d05",
+      "lengthBytes": 13808,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/components/AccessibleVipBadgeColors.class",
+      "sha256Bytes": "13f45f4cb984e0a50f3b1b27dcb80f25fa37890d8f7f58d22bcf0fd1f49ba2f1",
+      "lengthBytes": 3435,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/components/UserVipBadgeKt.class",
+      "sha256Bytes": "7863d47f27dfa331a6134a84116b43c636d38cd5cfecbdc024393eaefc31bfc3",
+      "lengthBytes": 12507,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfacePolicyKt$WhenMappings.class",
+      "sha256Bytes": "1bcc7282214dfb01fce9a86ac594074bf980689a78339137ff8899b0de4a6ded",
+      "lengthBytes": 881,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfacePolicyKt.class",
+      "sha256Bytes": "2597fa70497bbe4c9cf26285e1c414dcf0281c8c068e30f9ea40ef8cbd1168de",
+      "lengthBytes": 5072,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/ContentCardSurfaceSpec.class",
+      "sha256Bytes": "31e8d695053dc5b21c18ac26faaa7069b81c2c3be1065e4171f088b252cf76a3",
+      "lengthBytes": 4907,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalErrorStateKt.class",
+      "sha256Bytes": "9173dd681ec7ea085acfefa0c2132271961156e391906894a075978aedadecba",
+      "lengthBytes": 22582,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalPullRefreshTextKt.class",
+      "sha256Bytes": "244f5007ed7f7b43e5740bf6618774cbbb95ab3bd2954b0f11e5e3088ed7a962",
+      "lengthBytes": 932,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThresholdKt.class",
+      "sha256Bytes": "49eddb879fbbe218ab3d1a4da309beaa74803d45de87fb93780c8815b165c6e5",
+      "lengthBytes": 507,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackJank$1$1.class",
+      "sha256Bytes": "4e8535330432132d8264d4238a7551a72aa1ddfa1ffbad79bd64621128031ab3",
+      "lengthBytes": 4198,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackScrollJank$1$1$2.class",
+      "sha256Bytes": "4292502848ba2be529d42f45528d1aac5413d36e6115115d071fcb3f26024c38",
+      "lengthBytes": 2439,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt$TrackScrollJank$1$1.class",
+      "sha256Bytes": "c5cfa44cb84d39decb5e3b99c07b9b8ec09bca95231780cc80427e33af24e4f4",
+      "lengthBytes": 5011,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/performance/DesktopHomeJankTrackingKt.class",
+      "sha256Bytes": "503e899d75364166559f9edf4172fd75eb1e8ca57961fe4dee36c9817a72b541",
+      "lengthBytes": 16286,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicyKt.class",
+      "sha256Bytes": "713d0a3702185b977b1379051c0db5a56f962a0883ab5f590b0b26ecf15d9132",
+      "lengthBytes": 636,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrame.class",
+      "sha256Bytes": "c5820e7bc390f62c6dcb7dfacbcbab73286c8d7327c790d838fb117138c8366d",
+      "lengthBytes": 4616,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundFrameCache.class",
+      "sha256Bytes": "e464e320466b576fd35e09dce571d774bca488a8ae7cbe8faa766f2e05b6764c",
+      "lengthBytes": 3839,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPhase.class",
+      "sha256Bytes": "0138c519e789a271a9b03cb52301269efd6ff54a793fee6af4f4e2b45b5959ea",
+      "lengthBytes": 2270,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt$WhenMappings.class",
+      "sha256Bytes": "0b38c2824aafdd995c96da40f1e66d5d0e41a1284760b2ea930a198f8f9206c0",
+      "lengthBytes": 2421,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicyKt.class",
+      "sha256Bytes": "03841a398b442cb582c2ceaf9fa265789f3631171ea61b519421f2c631b1ceb5",
+      "lengthBytes": 88651,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundSource.class",
+      "sha256Bytes": "b788d1deaef9235165c73b2e6e38d45d4978961ae073558203c68e6fc4da3318",
+      "lengthBytes": 2224,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundState.class",
+      "sha256Bytes": "a6ac5a77577d86b27629b65224bc46f4b6a18453ba50749258f91802064ca79b",
+      "lengthBytes": 18898,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$animateFallbackTo$1.class",
+      "sha256Bytes": "51c0f3d3a94ffdeaeccd3e1d2ef50a9d0cffce03499cf6eeff0f6fda3372d831",
+      "lengthBytes": 2210,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$settleFromCurrent$1.class",
+      "sha256Bytes": "f795a49e0e5a6d5c5c4abe631d80c27e9df6adf540a8648de35edc69dd8e4452",
+      "lengthBytes": 2328,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$snapClearAndIdle$1.class",
+      "sha256Bytes": "a3f767b8525e4cd7bc98a9915a421257d4d0c23bd8bcffa850a48e6de75952d1",
+      "lengthBytes": 1958,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$snapFallback$1.class",
+      "sha256Bytes": "a1cf544ec1d4a319f46647e6efb8fb6fa515d816f2ad50310edb97d240088c6a",
+      "lengthBytes": 1979,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock$WhenMappings.class",
+      "sha256Bytes": "baa90466a5b2b29420ca82897be73c1518a005e95b9d9f108bdf182144ec4816",
+      "lengthBytes": 1032,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.class",
+      "sha256Bytes": "ca710b77c14e1f147008d9ce2e58239c4893c4c685dab05ff7adccf318acd4dc",
+      "lengthBytes": 23243,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClockKt$WhenMappings.class",
+      "sha256Bytes": "b1b746b6a57f0417ebc0f38c4427381cff1b9d80c91af7e6eef8215fb2482a10",
+      "lengthBytes": 1089,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionClockKt.class",
+      "sha256Bytes": "b8df0c63a96faf88bfac8b31cfa829c43a2545d27f7a568b18ffe8522c89d6b1",
+      "lengthBytes": 5529,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics$WhenMappings.class",
+      "sha256Bytes": "239937a8a0db7f492d6c20dffde9c153764b6f38f82b1ecc2777774f8cc9d035",
+      "lengthBytes": 1059,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.class",
+      "sha256Bytes": "dea5835562b3247efae4d0709717583fff30a7c9950447320ef03c889a32f1d4",
+      "lengthBytes": 7591,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLoggerKt.class",
+      "sha256Bytes": "db5192581654b66bcf6d406f06ea7c946f6bdca8ac9974667d8259c4012fd5e8",
+      "lengthBytes": 8070,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionNavBackdropFrame.class",
+      "sha256Bytes": "4ce0d1c83e68a4f19b3b041aa5ddc14bf65ba0bd71904a3e2524caedd5075d8d",
+      "lengthBytes": 3066,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSettleState.class",
+      "sha256Bytes": "ae43d94e44ad870b5882d83a443cd2cf06092fb07b43dbf6b1b86e7c172ab81a",
+      "lengthBytes": 2351,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotHandle.class",
+      "sha256Bytes": "87b6331e57440de57fcd017a79f9475786994baf15f6ac02f0ddcf6708cb4a36",
+      "lengthBytes": 2564,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/transition/VideoCardTransitionSnapshotLayerState.class",
+      "sha256Bytes": "6c5eb610c6c9ba0d27d9977692811432ddfd138a428f4723f5832c3c7a973109",
+      "lengthBytes": 7059,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperTypeKt.class",
+      "sha256Bytes": "7f7b036521498b963f2f02843d3ddfb022aaae651fd0e838f3fbc93e5e31d64e",
+      "lengthBytes": 1508,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/util/DesktopHomeCardTapEffectKt.class",
+      "sha256Bytes": "9ce3875166afcf33c98ee273a9c37e740856d47187ff25615e45b62a9ee119ad",
+      "lengthBytes": 13000,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/util/DesktopHomeTapEffectKt.class",
+      "sha256Bytes": "c3cc2700d4f30f176d29ec46764fab59dd5b30eaaee7f135b745b8dddaff7a79",
+      "lengthBytes": 11729,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/core/util/NavigationUiPolicyKt.class",
+      "sha256Bytes": "6c4d45cc2aea57c251470b3ba47a92b25c1f855cbb8ea2c2e0df58bafd0b7d98",
+      "lengthBytes": 2405,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/CategoryContent.class",
+      "sha256Bytes": "9d0c8b7d1f72ac93ca0cac1285b128df2d943b8a8cfb3b405ad0f8109ec53e27",
+      "lengthBytes": 7772,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/ComposableSingletons$StoryVideoCardKt.class",
+      "sha256Bytes": "22efbe0ff2f89345c69154869af19f3ba5eee618b96073090b9da0d942e2ee5d",
+      "lengthBytes": 3833,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/StoryVideoCardKt$StoryVideoCard$2$1.class",
+      "sha256Bytes": "ab43188da077f79ed018013010ac13866afd51f251e217d5fcaf4d8f656058ee",
+      "lengthBytes": 5611,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/cards/StoryVideoCardKt.class",
+      "sha256Bytes": "8d0d8039af04b38cadf0c556cb5bb5a408f121aad2b830901575fa5369b11315",
+      "lengthBytes": 99064,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerGlassPalette.class",
+      "sha256Bytes": "9b2c8e6796f418631c3501d6a091ab35841aa1653c2f6229d3446da00af27c0e",
+      "lengthBytes": 4321,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerMotionBudget.class",
+      "sha256Bytes": "5fccdcc829156e7cb4a06dac3b8a5a2a95b4295440ac1c01035d0bd571199877",
+      "lengthBytes": 2061,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicyKt.class",
+      "sha256Bytes": "8c09abca1df7db2fa0817c09287bc5c8c5d260b547c420fcac7897987bf562d7",
+      "lengthBytes": 1596,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt$HomeHeader$7$4$1$1.class",
+      "sha256Bytes": "a53ef9867d6c8174775a9ecee00b40459aec4bc9028e32866d9d73a5f37dffd6",
+      "lengthBytes": 4023,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt$WhenMappings.class",
+      "sha256Bytes": "419bd000ddf6f0c01c3663dbbede86a806738751dea29cdef4f2d54e4ed2ba04",
+      "lengthBytes": 1816,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderKt.class",
+      "sha256Bytes": "1018e6ffe45099e3956ff1c0e721416d316e665d650609a573e2e8cdf44f02e9",
+      "lengthBytes": 267670,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeaderScrollLayout.class",
+      "sha256Bytes": "825b8a0389757571f0eea3d90b5677d7dd0ebd52e0b4f378d862f024ebfca8d8",
+      "lengthBytes": 3607,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$3$1$1.class",
+      "sha256Bytes": "c7775c651efeadd8ea808e28a70ff6cd13d9c408be74614b4a118c800e5fbc59",
+      "lengthBytes": 6694,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$3$1.class",
+      "sha256Bytes": "0acd8a9508ac733ef8c121825e84e310c840c5c148228987f3c6e3d6c70933a1",
+      "lengthBytes": 2228,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarousel$4$1$1$1.class",
+      "sha256Bytes": "4a534a14f64299defb0bf8884cd12ad9552217ba69570ddb768f373b3b20ef29",
+      "lengthBytes": 1356,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarouselCard$1$1.class",
+      "sha256Bytes": "e15a30d7efa8a81886027e89cae88cbc06c91f5ace9c0aaf483c79eff9ed8733",
+      "lengthBytes": 5241,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt$HomeHeroCarouselCard$cardCoordsRef$1$1.class",
+      "sha256Bytes": "e38354fbacbcb5691a5a2295b59217a6fab2901f822f7b0b9f23284530b2ecd0",
+      "lengthBytes": 1476,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeHeroCarouselKt.class",
+      "sha256Bytes": "fa85d4421186e5ad152cd79c57a8c2821cb2574af1d7eaab66a9ab5a7e768134",
+      "lengthBytes": 99247,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheetKt.class",
+      "sha256Bytes": "b2d73c6a155b5a7f838651ae3cb1f157a2c60a52e3fad919be2f0c6851609189",
+      "lengthBytes": 28280,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeRefreshIndicatorKt.class",
+      "sha256Bytes": "135a0078594896e4ec5c4f023cdcf744b16e944ab609bef0f97465fdb0ed1236",
+      "lengthBytes": 31446,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpecKt.class",
+      "sha256Bytes": "09d3d792ddc9da8ea72b43dac1f00f49fdaf3580a898f298aaed789e0ced549d",
+      "lengthBytes": 1534,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopActionIcons.class",
+      "sha256Bytes": "9070a788eb23e6d4858cc1cb91489bc6b628bd9bc2a59bea41cc154dc26dc69f",
+      "lengthBytes": 4236,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeBackdropSpec.class",
+      "sha256Bytes": "bad5a40eb8f60cd02507e3dd86a439e1765efd6610d62be5a54b885716dfabf7",
+      "lengthBytes": 3102,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeMotionPolicy.class",
+      "sha256Bytes": "56e35eb523a1ef3ef83fbf2b31987fa3585e586fc2ede6f07df61a13561219fd",
+      "lengthBytes": 2875,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeRenderMode.class",
+      "sha256Bytes": "eab00b77c91f5d2a3a2f0fa87e87a1cb5f678f29c69291295cd6fb1cd4785fda",
+      "lengthBytes": 2226,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeSurfaceStyle.class",
+      "sha256Bytes": "24906d54a4ebdb16abc639cc14a5849391ac42eea9bad8304be55d4eb160d876",
+      "lengthBytes": 6444,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopChromeSurfaceTreatment.class",
+      "sha256Bytes": "3960a5d5abe85c0f04c43669ac495a87496adaf76632714c039faa91eeba4a89",
+      "lengthBytes": 2139,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopControlsKt.class",
+      "sha256Bytes": "67fe2caf85c565fb0510922f34236ec36acc18db18fbdbcf3c1fcf272a408828",
+      "lengthBytes": 25432,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopLinkedBottomBarAppearance.class",
+      "sha256Bytes": "5d5bd6968807bcb2fcf245a6043addb1e8faa6db37c2f8467b9555020b0c55e9",
+      "lengthBytes": 3268,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopPinnedChromeLayout.class",
+      "sha256Bytes": "c6b92e86e8443aa2e14fece275caf6c36d1d3f680748a2332f17c39bc9cbaeba",
+      "lengthBytes": 3816,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopRightUnreadBadgeLayout.class",
+      "sha256Bytes": "3e67066902cbf1481e5952ea35e458e284f38996e3f11e438487eb6060882030",
+      "lengthBytes": 5502,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt$HomeTopTabChrome$3$1$WhenMappings.class",
+      "sha256Bytes": "94a2316fe4906174edb41e54dfdcb9089bcd100cf0bb5a5e04dabe90f8abf2d7",
+      "lengthBytes": 1028,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt$HomeTopTabChrome$3$1.class",
+      "sha256Bytes": "1f3e93b6cf4d0a9e003ec97cd0e39e37c871d6220758b1214e1d8de8a13f4dcf",
+      "lengthBytes": 5359,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabChromeKt.class",
+      "sha256Bytes": "da4d97983fabfa1406d00321dbfeaf8f731e532e552a7fa6eaeeca8d2848b145",
+      "lengthBytes": 49796,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDockKt.class",
+      "sha256Bytes": "d1d632d46482c5b91b6086acb696a999cdc8075431c9c39a2c470cece22d81da",
+      "lengthBytes": 49624,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpecKt.class",
+      "sha256Bytes": "c4c9f3bae38736ade4a0e0516040713bb398386bdecd4c21ed43f65287f9dbb8",
+      "lengthBytes": 917,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerKt$MineSideDrawer$closeAndRun$1.class",
+      "sha256Bytes": "0c49ac4eebd52110bdee45085d31c125407c198c2d8aea93cdda5329a8cbf810",
+      "lengthBytes": 3843,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerKt.class",
+      "sha256Bytes": "51c4775829a3b40b3df2b43b613a6eac1c21a15602eccc963cec8bcf9a8f1814",
+      "lengthBytes": 88481,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.class",
+      "sha256Bytes": "b7ca50ad739692b1842d2b95a794865494184e45ff7615fc4373f0e48dbb72d7",
+      "lengthBytes": 6999,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicyKt.class",
+      "sha256Bytes": "51ebe1721789681f1db169ddd6281409038e7b753a4f13b819a399a5fb5ca310",
+      "lengthBytes": 2432,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicyKt.class",
+      "sha256Bytes": "41004e0ce52d103e8853885b81f5413156ca380fe446aeedace4594d30a3b65c",
+      "lengthBytes": 2352,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/SideBarKt$WhenMappings.class",
+      "sha256Bytes": "bd24bb164013e7a3f7c6c2938a6f221664cede10a9eb0247c5d422edfa9ae291",
+      "lengthBytes": 946,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/SideBarKt.class",
+      "sha256Bytes": "5925a0421b5301ab54e692f3453339406f8994db44c498d877fbe5800957875f",
+      "lengthBytes": 94701,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$1$1.class",
+      "sha256Bytes": "35b9a5e1637f4b51b4198b2ca702b51014d7c416c3c3bbe6cc5a0fcd2798c765",
+      "lengthBytes": 3915,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$1$1$2.class",
+      "sha256Bytes": "1bbc3a829878fee7a8b17361c56cbc3d2e7a110982529e624dcf29f52b9182d8",
+      "lengthBytes": 1901,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$1$1.class",
+      "sha256Bytes": "20ee6df4132b3607c01951a6d57bccb087ba937f068f83671e2a52c3978e8f34",
+      "lengthBytes": 6000,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1$1$2.class",
+      "sha256Bytes": "2f0e8cf9e23387bae0e446408cf59311420a40ed8dbf368f97f1bb89d0ed0700",
+      "lengthBytes": 3774,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1$1.class",
+      "sha256Bytes": "7e4edfb653919d9165edc8125bc75ffc1090cec922a4fe35dddf97beb4bc3243",
+      "lengthBytes": 5068,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$2$1.class",
+      "sha256Bytes": "50ce0af1aa3990cf5337c86ea4d875c98fdf2e7aa4d9b49e2596a82b5854f53d",
+      "lengthBytes": 5271,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$3$1.class",
+      "sha256Bytes": "2c24736eb5315d168e64e8329ff502566440d820111b04e37b004f867e956daa",
+      "lengthBytes": 4322,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$2$1.class",
+      "sha256Bytes": "efd889adc60b5952f738d473e841c85ba202a8a85dfb9299e0528a46adde16f5",
+      "lengthBytes": 2273,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$3$1$1.class",
+      "sha256Bytes": "2f94b584028d00e3f94a4b6a7ef795ceb746a48a013ca3d7dfe4bb65aad40127",
+      "lengthBytes": 3448,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$6$2$1$4$1$2$3$1.class",
+      "sha256Bytes": "f18812896ba06d706fbaa9b8373c3d5d5bf6a7d82ef9b80d5cce572240430719",
+      "lengthBytes": 3347,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$LightweightHomeTopTabs$2$2$topTabVelocityTracker$1$1.class",
+      "sha256Bytes": "0b952da542e3b5c47b1d7fbf789f36fd258216a15e2bbf4a9f2334e48dda13dd",
+      "lengthBytes": 2001,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt$WhenMappings.class",
+      "sha256Bytes": "4bf2782499c1069f3c5ee8ef7217a17c93e56b4b6ef5939ff74d20fcbfb2f702",
+      "lengthBytes": 2349,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopBarKt.class",
+      "sha256Bytes": "a1ee6b1b45b435afb2a356fc315ff2a962ee6aab1b7ca904d1098537e0762cc3",
+      "lengthBytes": 310227,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopTabIndicatorBackdropPolicy.class",
+      "sha256Bytes": "aa68400447947c04bc54ffbecfd403fcd3d88935d102267c0d211f5607c0af8e",
+      "lengthBytes": 2970,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/TopTabLiquidColorMode.class",
+      "sha256Bytes": "0aca745e79c41358a924e572fce9505c6fd5fea6e80883dfcc527d3f994d2782",
+      "lengthBytes": 2138,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt$VideoPreviewDialog$1$1.class",
+      "sha256Bytes": "778506e9a1c711495ee69e2d0368bab6b1ae5ac05ab9d4ae980376020c901fb0",
+      "lengthBytes": 3217,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt$VideoPreviewDialog$2$1.class",
+      "sha256Bytes": "bb4cd9061808ac7e85f640a20a788b609ff9fb527574f87fd3f786e3ddd2e76e",
+      "lengthBytes": 6260,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/components/VideoPreviewDialogKt.class",
+      "sha256Bytes": "aaf3bbecd592f33cb50c7f6566738454d6727590dfb6d2498b3102e78337d6ab",
+      "lengthBytes": 66311,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/ComposableSingletons$DesktopOriginalHomeScreenKt.class",
+      "sha256Bytes": "d3b6f6b01e1af2bcdfb21926e97633bac5119256029e031babfe2c98d13063d9",
+      "lengthBytes": 9714,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/ComposableSingletons$HomeCategoryPageKt.class",
+      "sha256Bytes": "29091a7caf90b84bda6f84a8f1db1265379752502c447dc6b63839214e2ee4b5",
+      "lengthBytes": 19351,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$1$WhenMappings.class",
+      "sha256Bytes": "d549d0bd6034b3a41de26d99e76a803d147561d0847b3a1ca3284eaec4bfd2e8",
+      "lengthBytes": 1217,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$1.class",
+      "sha256Bytes": "db71a5deca2397271d7d9938b3cc16243347908a15b47a18ac51057102f3a775",
+      "lengthBytes": 10693,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1$request$1.class",
+      "sha256Bytes": "5d2580b1d05c98ee2b0a77326c7cea1d40ce6b2bff72c669405f0c0177dca3c4",
+      "lengthBytes": 3727,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$27$1.class",
+      "sha256Bytes": "20ad08bcf1ba2b68532a81feb97a622226bc9115cd1c8942ae409d937d55d5f8",
+      "lengthBytes": 12801,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2$emit$1.class",
+      "sha256Bytes": "8306fb9b3cf0284f3e5ee6a0425c91911549ef7b0e13cd5c95c5978dd1f54de8",
+      "lengthBytes": 2361,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2$WhenMappings.class",
+      "sha256Bytes": "09400189f108f274da7506f098cb60678094943371c5545ad2a1141d568b18e9",
+      "lengthBytes": 1207,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1$2.class",
+      "sha256Bytes": "af2e957f95a52b0713064954048a4189ad798260c2953c7489f73744a9ff955c",
+      "lengthBytes": 10305,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$28$1.class",
+      "sha256Bytes": "1ec4cbef4e220726b3fa9dfde61865188084b31b760ea2fdf7bc66ad39ed199e",
+      "lengthBytes": 8963,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$29$1.class",
+      "sha256Bytes": "6e6aacfae1873e627981788c406ad8d5ff0098069aa92f6d5be8499daebfe0e3",
+      "lengthBytes": 8537,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$30$1.class",
+      "sha256Bytes": "4307843245c3262bcf700f1ffeebaaca799300984acf6bdad275e94039aef37b",
+      "lengthBytes": 9390,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$31$1.class",
+      "sha256Bytes": "7d12eadc43556cb1b9cd04cec30c73e0ac0fc37f1591573e6482598ff108d85a",
+      "lengthBytes": 8412,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$32$1.class",
+      "sha256Bytes": "33bc5a4c08dd649b479057e362dafbd9bddf29fc63da88cf343d9dcb8fe320e1",
+      "lengthBytes": 5208,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$33$1.class",
+      "sha256Bytes": "8d5b6df946b93e26bb96c1037816c2734ffa64ad6351af03c1d86012cd101481",
+      "lengthBytes": 9087,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1$1$emit$1.class",
+      "sha256Bytes": "9eac46f0d35e5daf4b5e2d1945c75dce333de9b8d91a89f7c0303780f3b36da8",
+      "lengthBytes": 2122,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1$1.class",
+      "sha256Bytes": "0188ff5c855890a527ea89ca350bf137e65a1e4b884bd4735ebe6e40c8f68b26",
+      "lengthBytes": 3072,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$34$1.class",
+      "sha256Bytes": "bf216a7d530c90fb8ed47b72679a4995bb98067b288e615b324f638a624ab8d1",
+      "lengthBytes": 5147,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$35$1.class",
+      "sha256Bytes": "85e4ab2b51b9f8bbdcf048631252abe74ba7bac41609205d9579d5dc2042b3ea",
+      "lengthBytes": 5551,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$36$1.class",
+      "sha256Bytes": "e46b41d9150e94fb19a859168add8737d0e1b28c13fba0b5b732590d2ca1bae4",
+      "lengthBytes": 4573,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$37$1.class",
+      "sha256Bytes": "a48a200ea24538165bf48a9c1867d22ae1be398b968e80c86a16fbb57a334567",
+      "lengthBytes": 5197,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$38$1.class",
+      "sha256Bytes": "b21f908979ff118e62fa9b21caa9f1aa247d26956d012a3bcfcfc621ef25b590",
+      "lengthBytes": 5242,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$39$1.class",
+      "sha256Bytes": "88a70d01fcb072c955a4d4c73bddfb57ae6269936f2f2e4082ab82151586f9e2",
+      "lengthBytes": 6829,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$40$1$WhenMappings.class",
+      "sha256Bytes": "14bd5a62e45a3902b6ebcbfa29f5c03bf44148c0f2ae5413969b8257342915de",
+      "lengthBytes": 947,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$40$1.class",
+      "sha256Bytes": "d9b569c598c19baae5ec422aa4f1630b1f3437ac9b4d89d36ca7b774da50b127",
+      "lengthBytes": 9882,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$2$2.class",
+      "sha256Bytes": "9f8f5bf0d9fc88e97ec9dab21516943328292934037aff88af8c356940b9a780",
+      "lengthBytes": 3213,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$2.class",
+      "sha256Bytes": "d4a915184e2bc4851f924705a228de2dff1df4c6e662bd36d540dc4cef3f814b",
+      "lengthBytes": 9249,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1$invokeSuspend$$inlined$map$1.class",
+      "sha256Bytes": "e681e3fa5e61f83454cc77aa3f09377de5b63c7f4e3430f8d4484fa9e70da058",
+      "lengthBytes": 4271,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$41$1.class",
+      "sha256Bytes": "b5f55c2a03c65ea1e8fa27ee130eab0117aee0b0dc408d3fd37d583f1fdc6c52",
+      "lengthBytes": 10591,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$43$1$1$1.class",
+      "sha256Bytes": "c9b49707eb285452d8222427458a82f120d6233c7d7a8f055594104513eabdb5",
+      "lengthBytes": 4722,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$46$1.class",
+      "sha256Bytes": "8dbc45aa485ef791fa3e74809ea1ba49dda99d0b6b8c190a3510b496157fe30f",
+      "lengthBytes": 5949,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$47$1$1.class",
+      "sha256Bytes": "c58e74847e3edf8eda63b3885c0b0f2089bfb9bff448575708028a918151e508",
+      "lengthBytes": 3734,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$47$1.class",
+      "sha256Bytes": "fb1812a3ec70ff55c5225bf049ede18843cdb0563d9f5afda5e610ed9c156db5",
+      "lengthBytes": 6978,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$48$1.class",
+      "sha256Bytes": "9983504a563f8fbba7076af1b1ad1d85377b9fb6cac6903c9504240ccd5df208",
+      "lengthBytes": 11746,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$49$1.class",
+      "sha256Bytes": "1bc48fb86dfa60684054857263a738587461d2b98a0af5b5ed3c57e4629dc718",
+      "lengthBytes": 4547,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$51$1.class",
+      "sha256Bytes": "4183cdfd86e681954a555436a45a0362a6addefdf0badbfa5d5e4c147d0982d1",
+      "lengthBytes": 5412,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1$3$WhenMappings.class",
+      "sha256Bytes": "87424d4256fe64fabb152411a8451fb4af0af94dba07ea2dcf980f3d9861a371",
+      "lengthBytes": 1099,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1$3.class",
+      "sha256Bytes": "dcf348927b4bffa9af687866f318d7c6433d04420cbf8e1e0ea006afdfdf95ce",
+      "lengthBytes": 4586,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$52$1.class",
+      "sha256Bytes": "e58c1575b255626154400912b654dc5e6022cf5d14de92079b486ad4f9da3839",
+      "lengthBytes": 10564,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$53$1.class",
+      "sha256Bytes": "fe9e7168bca83ed1c1a1baa5b57338ac4a60fa208217b33536c340c569a746e8",
+      "lengthBytes": 4986,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$54$1.class",
+      "sha256Bytes": "58ed5c66c1a25ba158af4e891cb9e3cefda87640802b6ce03eb049fa620f510e",
+      "lengthBytes": 5870,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$55$1$WhenMappings.class",
+      "sha256Bytes": "2e93043af72570e8227e91fb6d145f33bb2058954ac86530a35c4b9b7b4c34ca",
+      "lengthBytes": 1043,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$55$1.class",
+      "sha256Bytes": "bf128f9499607dc848b112d6c122a1e2c3c8dbe0bd41cc0838a0575a07d7125e",
+      "lengthBytes": 9592,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$57$1.class",
+      "sha256Bytes": "d7120eef1fd3c29723d9ecde19f7a646744e3a633d250e5cdaee7b9e2b80518c",
+      "lengthBytes": 4955,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2$1$1.class",
+      "sha256Bytes": "90643395f9ef8f36ee82763c7fec0dc3ae7d0999279f3af7126630a1436b2a25",
+      "lengthBytes": 5618,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2$1.class",
+      "sha256Bytes": "6b1b9129b2459539ef9508e00a08390020fe867a7004c9d28d0dee48a9e65b8b",
+      "lengthBytes": 4820,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1$2.class",
+      "sha256Bytes": "b020b65300bae0fa8f2c56b1e863eb3e9ac577265f18c2fd25c842d0a91da961",
+      "lengthBytes": 13765,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1$1.class",
+      "sha256Bytes": "7c5aa4447bd270c53872bf07a9dd9ef3781aac6e3c21c68090218cc5a9c0f0b7",
+      "lengthBytes": 8765,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$59$1.class",
+      "sha256Bytes": "135691ef9a371b41de0a9caad723f6cf1cc9bfaa9af1225a16b735b288d78857",
+      "lengthBytes": 8495,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$animateHeaderOffsetTo$1.class",
+      "sha256Bytes": "87c914572fec8df7324c80113060e2293a0ff1435d6213877b9139a7fc47891b",
+      "lengthBytes": 5496,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$handleNavItemClick$1$1$1$1.class",
+      "sha256Bytes": "edcf14730406be34d910e58a6c8f62cbc83d192b1662e6149e4ad9ff9af284cc",
+      "lengthBytes": 6211,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$handleNavItemClick$1$1$1.class",
+      "sha256Bytes": "c4af788089d23f04c58c7632d942e8c9ef17c5cfeb3dc9020bae33eeecfab86c",
+      "lengthBytes": 8272,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$lambda$263$0$$inlined$onDispose$1.class",
+      "sha256Bytes": "b1eba8b62b94ba124aa2a46d73fb1a3996aed638dad9c05e1724da228b0ee692",
+      "lengthBytes": 3063,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$lambda$263$0$$inlined$onDispose$2.class",
+      "sha256Bytes": "cba59269574c8211cbcd5fbf85de05fa106122cf59ed2f5bf49b42b03216acdc",
+      "lengthBytes": 4099,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$nestedScrollConnection$1$1.class",
+      "sha256Bytes": "34031c441c70656c42dc1a4720e89c9764223f304520fa660f3abed2c76218d6",
+      "lengthBytes": 13608,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$onToggleNavigationMode$1$1$1.class",
+      "sha256Bytes": "dca1b3220c00e40b1a7fa1ad0e7316cbbd5bba31c4250ecd6a619ac0156b608e",
+      "lengthBytes": 4900,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$openHomeDrawer$1$1$1.class",
+      "sha256Bytes": "f7b45895665ffff278edd043a6473c41404cbcdd6bf446b80dfae9037b91443e",
+      "lengthBytes": 4594,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$1$1$1$2$3$1$1.class",
+      "sha256Bytes": "232620d7b34cefb311460afc9883bb95da65febb8db8dc55241a9d9469c6ab6a",
+      "lengthBytes": 5547,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$1$1$1$2$3$1$2.class",
+      "sha256Bytes": "7995d97e996d5c35a4b643a73ce141ea67ec8e2184829bf483a2bbfd640fa690",
+      "lengthBytes": 4844,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$12$3$1$1.class",
+      "sha256Bytes": "21c35e0bc07fd45901b6b8372f6ff1cd87e49098572e2503811d3d47bce15c88",
+      "lengthBytes": 3848,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$14$4$1$1.class",
+      "sha256Bytes": "63e4fac9fd96d02e618962a984e684ce10f9d671d607c9d098426c822bb58672",
+      "lengthBytes": 5562,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$14$8$1.class",
+      "sha256Bytes": "e6e1c33c230498df9bd37895c169b3db53278c6c8a21cadef8883c2c38b2215e",
+      "lengthBytes": 4623,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$2$1$1.class",
+      "sha256Bytes": "17665de1449125e8b58496c59d27ee53f335c520836552b682164e3a2471e828",
+      "lengthBytes": 5339,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$3$1$1$1.class",
+      "sha256Bytes": "54df3be9b79743b86e56e58cb7bd14b14274141742b9613257ab956d430981ec",
+      "lengthBytes": 3443,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$scaffoldLayout$1$1$8$1$3$1$1.class",
+      "sha256Bytes": "95ae39aea222a4797e14bbe318a358d5cf70379ea2d967bb100eda95e88cda04",
+      "lengthBytes": 6889,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$triggerHomeBackToTopCardSquish$1.class",
+      "sha256Bytes": "a38e2b5d32204160848540bfda8d8594c98cec3788c1e03b95dd0910bf4904aa",
+      "lengthBytes": 4227,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$HomeScreen$withHomeScrollToTopLock$1.class",
+      "sha256Bytes": "0680b29996d0bc7b011fe4e7a32cbcf2eb9ba1795415157de463730cc054d53c",
+      "lengthBytes": 2733,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt$WhenMappings.class",
+      "sha256Bytes": "aacfb6d555431cce06c1455d8ebab07dfeca6ee74984555fca8026375d865bf3",
+      "lengthBytes": 2599,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/DesktopOriginalHomeScreenKt.class",
+      "sha256Bytes": "075d652db848cc4f28dcba03dc542a297dc8587a718739b4bb88ba94afb892e4",
+      "lengthBytes": 639022,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeAvatarAction.class",
+      "sha256Bytes": "9eb19640c6c08d986f2eea6c44f8d49e0ce771dcd5c3fe5a40f099f34baf4d67",
+      "lengthBytes": 2044,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeAvatarActionPolicyKt.class",
+      "sha256Bytes": "f351d47e38d14b91f9714a51361f9ae5adb10f2cb21bca91c8e21757ec1ec687",
+      "lengthBytes": 1002,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$13$1.class",
+      "sha256Bytes": "1ac75f3a855ac4c95690e4927e41a6df53d052e509948c28a77eb55d056ae172",
+      "lengthBytes": 5397,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$14$2$1$1$1$1.class",
+      "sha256Bytes": "ed0639d426409b17ab82fe2703c626ba195d60dc2255d2b98722a5ea1641e947",
+      "lengthBytes": 5474,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$4$1.class",
+      "sha256Bytes": "4e2d5cf9ca6f548773aaa921dea76c1ac7cabd971a0848e65e490a88ca29174f",
+      "lengthBytes": 4537,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$HomeCategoryPageContent$visibleGridVideos$1$1.class",
+      "sha256Bytes": "e8d370c0554e867cdebd13b3f2965c1f7c3bcc0bd66a985abb43a179ffa9fb5a",
+      "lengthBytes": 3563,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$TodayWatchPlanCard$1$1.class",
+      "sha256Bytes": "e9052b672de846e46b3731f45ad9d590d5facdcf8896ce44b3674b88aa4df2f4",
+      "lengthBytes": 4440,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt$WhenMappings.class",
+      "sha256Bytes": "a52d817fb6e52e02f6288551282d205d8b47ddbf3c807597194b8199a19b2cd5",
+      "lengthBytes": 932,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeCategoryPageKt.class",
+      "sha256Bytes": "080852a7fe83c462d24651a6f91b9d3ee7117ab755695d6feaee3e5995079440",
+      "lengthBytes": 234471,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeDrawerGesturePolicyKt.class",
+      "sha256Bytes": "07496d3136976ce03c17fe74df66d22b5ca5f42d86386d9578a2df23d818df3c",
+      "lengthBytes": 1059,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicyKt.class",
+      "sha256Bytes": "7b2b8440891ba87743df5e883111687a619aba7b8487e2f90dd131fb392edbf1",
+      "lengthBytes": 1301,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedBookHingeArrangement.class",
+      "sha256Bytes": "63ae2f7c725b17944335ba079f10916e71fdfdcaf72a038f77ec98021d2585b4",
+      "lengthBytes": 5136,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedBookHingeGridSpec.class",
+      "sha256Bytes": "91aa3855d999a65321cc8b1c4e0d94e734cc4c7c2879bc1c9b5b71f7e4a9f6f3",
+      "lengthBytes": 4346,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedGridPolicyKt.class",
+      "sha256Bytes": "706fe5b55cd5e25da9bd00c832685a6ab2aacc6f098bf025e22659611cdf0450",
+      "lengthBytes": 5078,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedSkeletonCardKt.class",
+      "sha256Bytes": "bfc730d0e21d9bd990bfbf9e517081e12caa108543de9168ef886de31f7be20b",
+      "lengthBytes": 42292,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpecKt.class",
+      "sha256Bytes": "d89ac480cafec6b1fd087f2186f4d5691b760e937b59bb71fed53955f1686e33",
+      "lengthBytes": 1181,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselCardTransform.class",
+      "sha256Bytes": "1fc99c820510834a39ac82a48370f1e3aa8b5c642111bd65e60b5177267af3c6",
+      "lengthBytes": 6785,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselLayout.class",
+      "sha256Bytes": "7f09f9c121bf8afd60d64c4908472d76c0ecd93b2c4f95954b1b47411f53f394",
+      "lengthBytes": 3191,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeHeroCarouselPolicyKt.class",
+      "sha256Bytes": "7b242acc23eca9821069c8b8d0a523b1d39bb34c069dac390604fc21af884afb",
+      "lengthBytes": 10988,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicyKt.class",
+      "sha256Bytes": "ff736cc01b0fa47b91b0a3540796b71befa423d83178bd1fd6c681073b8aa943",
+      "lengthBytes": 2720,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeOverlayMotionSpec.class",
+      "sha256Bytes": "8eceafd5e342a2d6f14c30f3079e77b2a48c48b0a064f8d8073822483393a79d",
+      "lengthBytes": 6033,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomePerformanceConfig.class",
+      "sha256Bytes": "ff92edce00e02da99c8421be437d525143f801432340b8df8949439d333815d0",
+      "lengthBytes": 5593,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomePerformancePolicyKt.class",
+      "sha256Bytes": "7a9beabebaf2a16f9566d50bffac35970d897f7a034bb3ae37736ed3ddffe534",
+      "lengthBytes": 3044,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomePullRefreshUiPolicyKt$WhenMappings.class",
+      "sha256Bytes": "15747257adc3c46d7270be1e8b038be94de17856e17dc3b20e21170a2dacdada",
+      "lengthBytes": 905,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomePullRefreshUiPolicyKt.class",
+      "sha256Bytes": "4559207822c755baf8589e16f72543d60e79cb0ba58540da5dfa587d774484c0",
+      "lengthBytes": 6817,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeScrollRequest.class",
+      "sha256Bytes": "db5d1222587d4cc9d1d93578715495347403ed16c001f86aafbc3c7307ea5abd",
+      "lengthBytes": 2083,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeSystemBarsPolicyKt.class",
+      "sha256Bytes": "04d223f762e7d8900383763a7e4228fc606b7c61f4f1e2feca44663c31102e2e",
+      "lengthBytes": 1657,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopCategoryPolicyKt.class",
+      "sha256Bytes": "39aebab4fab0f838c76ed7a6be6d58d002bf941caa6f896fbe3619e699079d91",
+      "lengthBytes": 21722,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicyKt.class",
+      "sha256Bytes": "0f4473efa44f57a04b514311c8b1c33b658f14e827bc2043f2b7f61f4083cc24",
+      "lengthBytes": 3018,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopSearchRowMetrics.class",
+      "sha256Bytes": "789c605d13e37f8a299662123554d53e64da5999adecde71315310dfc29fdba7",
+      "lengthBytes": 3371,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Category.class",
+      "sha256Bytes": "5c77e20a6f03fb2bbed306f679e85b9a3a59da78b859b8b7c24546104ca8bf26",
+      "lengthBytes": 3463,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Partition.class",
+      "sha256Bytes": "75e7bbbd1257a2a66250510474225fb33dbd7df13e9a19c9665b4f381ada9b2f",
+      "lengthBytes": 1844,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry$Subscriptions.class",
+      "sha256Bytes": "be40b1b0b5292136b24c71fc5c5f393a8d866eb0e509f4a106c328137b596d1c",
+      "lengthBytes": 1860,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabEntry.class",
+      "sha256Bytes": "dd79f12238987a93281a1fb440451cc05b24c255139b5984485401f157dd1768",
+      "lengthBytes": 1192,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabGestureAction.class",
+      "sha256Bytes": "e88115d3fe44267a326aa1cc7d23a55c7fa4570ef0f1b61a503803b25d10236d",
+      "lengthBytes": 2079,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabGesturePolicyKt.class",
+      "sha256Bytes": "9254aef17e760f37bb73a3fff1cedf0790754c0b7aea054df5fb1746e0ef7692",
+      "lengthBytes": 2622,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabRevealPolicyKt.class",
+      "sha256Bytes": "39e2b91d71c0870b4ecca8a5d04e0eaec2eee51a86b106783e137c5142bdfd61",
+      "lengthBytes": 3623,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeTopTabScrollTarget.class",
+      "sha256Bytes": "984dd460f23b34bf7836a1c5ba8d7587a1785c7101539c477e798d6fe0dbdee4",
+      "lengthBytes": 2199,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiState.class",
+      "sha256Bytes": "2984fb2161ed78e627130dc7802a78a20603f489508fae4dd792246e1988fd80",
+      "lengthBytes": 26792,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiStateKt$WhenMappings.class",
+      "sha256Bytes": "c3c2ae232a0c2becebcfbcf1332b9463ff9beda54ba68b3a0628e4585ca52f49",
+      "lengthBytes": 2251,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeUiStateKt.class",
+      "sha256Bytes": "59876acabb04ce5ff42212ef0c378f62a096f4767d35102f42ffd713725b998b",
+      "lengthBytes": 3384,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickRequest.class",
+      "sha256Bytes": "31739ecdb06caf8bcb548adf37db29544b0df28a3b72b23eb3f803a5ca825ab4",
+      "lengthBytes": 6204,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickRequestKt.class",
+      "sha256Bytes": "197daa19e49fdd3d58e9d2347e0d63d2eb7b6981af423a26b4862c840ffb9700",
+      "lengthBytes": 1384,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeVideoClickSource.class",
+      "sha256Bytes": "26794fc79b980a7e40993d968446af828d26f5535b0489698bf1e288654f941d",
+      "lengthBytes": 2060,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeWallpaperBackdropKt.class",
+      "sha256Bytes": "365d42cf3fbf78f627c40920e08675bf6f162c9254b2263490b073ccbaf339c7",
+      "lengthBytes": 20888,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/HomeWaterfallMotionSpecKt.class",
+      "sha256Bytes": "0375968a5f1ec2777b0dff6ee0282fcc2fe1060197caaea4cd3bc74760932130",
+      "lengthBytes": 1744,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/LiveSubCategory.class",
+      "sha256Bytes": "63ac3a15ff75ce1dc141f2c3caaa0a45c86d53c5cdca0b52ca8d1fe3d9750c13",
+      "lengthBytes": 2262,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/BottomBarVisibilityIntent.class",
+      "sha256Bytes": "e9363f63783e86fbe18f874aeb2512e36067d981079b77f94356ae1ee274a59c",
+      "lengthBytes": 2076,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicyKt$WhenMappings.class",
+      "sha256Bytes": "c364d057c6c6c3f8f6182a366c89820707116aeadbbe71b37d54392b795692cf",
+      "lengthBytes": 1152,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicyKt.class",
+      "sha256Bytes": "cefd62c8fdd7516c5eff67f64163f32e0e8fd2f5bad5d43266af4a58dde55399",
+      "lengthBytes": 1735,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicyKt.class",
+      "sha256Bytes": "d2325087af2c5347b84bbf31533508177a533955e81bd7aebc29af1a1236ecc7",
+      "lengthBytes": 2646,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollState.class",
+      "sha256Bytes": "c818dd0a74a6a32984bc122ac20379f0e49c14868a769b38421466645147d28b",
+      "lengthBytes": 2897,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollUpdate.class",
+      "sha256Bytes": "e023f6fd6392fd79ae582d020ceeb1854a117b2a053bfac46b42188e5f216486",
+      "lengthBytes": 4252,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeFeedScrollAnchor.class",
+      "sha256Bytes": "21e6f82c15506749c9b6bf7685ae49bac480eb18f11faa8b17168264c3febbae",
+      "lengthBytes": 5133,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicyKt.class",
+      "sha256Bytes": "f311b4ff10dfa870d09537e23aeccc7332471160cb231fa904e9ae43f78e10fb",
+      "lengthBytes": 6641,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeHeaderSettleTransition.class",
+      "sha256Bytes": "994f7099914d381f4cf4704a004b865dd3ecd0c3b8551f813536ae4bf0d976c5",
+      "lengthBytes": 3003,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomePagerSettledAction.class",
+      "sha256Bytes": "e5bd946a05affb4bf430b044ab83ea4646bb80751a2ed964869d90e93df7392c",
+      "lengthBytes": 2198,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicyKt.class",
+      "sha256Bytes": "7129f7aed293bee404c240317f5d97f2b6a09bebc19e8c288479f4e31794435b",
+      "lengthBytes": 7383,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeScrollCoordinatorKt.class",
+      "sha256Bytes": "f6e07e290f7f0249f4de7a6e031504395e3e422a982b45e1de536223c41c63b3",
+      "lengthBytes": 6370,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/policy/HomeScrollUpdate.class",
+      "sha256Bytes": "14097ce79ea1dc462f8a948cc8039c9529f1f56c97e296c994f6c9c1e8db0ec9",
+      "lengthBytes": 4884,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchCardUiConfig.class",
+      "sha256Bytes": "bf353eaac76614b699db45f0d926bd938b73952ba3094839daefb447f319b15a",
+      "lengthBytes": 4282,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchMotionPolicyKt.class",
+      "sha256Bytes": "980c9d72ab33f44dcce3c02f13f89544fb55d655ceb10aea04dda13ac96ff93d",
+      "lengthBytes": 1209,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchStartupRevealDecision.class",
+      "sha256Bytes": "76b3a7caa614df7ff4c6ecb0856c52b23763243379c455ac1371c7cb1c124670",
+      "lengthBytes": 2137,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicyKt.class",
+      "sha256Bytes": "f9026b740607fce683ef973e675aa4c17c02a7e130893799bb98250f6ada4194",
+      "lengthBytes": 1890,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/home/UserState.class",
+      "sha256Bytes": "b44c5afbdde3f0fee73593c47c83a83b781e8f0e5bd1756c719c1c7becc789b5",
+      "lengthBytes": 9216,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/onboarding/UserAgreementPolicyKt.class",
+      "sha256Bytes": "51a3b0ffcf05aa83706c15f9733e1a09d9451988610cbbbe8fc7ba36569e72eb",
+      "lengthBytes": 579,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/video/share/VideoSharePayload.class",
+      "sha256Bytes": "f32d3602209c5bdab151e3c05a5146c777f493473419ff1e589ce4f1f86857af",
+      "lengthBytes": 5821,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/feature/video/share/VideoSharePolicyKt.class",
+      "sha256Bytes": "e89407efde24c5f79e95e418b6764467183c4fb70e78835ea2409ae438939057",
+      "lengthBytes": 3398,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/navigation/AppNavigationAppearance.class",
+      "sha256Bytes": "dbca3cc88fb81b12c2546883feb110d95c76c823c1b1a50628fb340d52a6d9bd",
+      "lengthBytes": 3640,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/android/purebilibili/navigation/AppNavigationAppearancePolicyKt.class",
+      "sha256Bytes": "56b6c5c40132b41a017bc3c524293949f8ee3a007e5e8645b30e1cf60ddec234",
+      "lengthBytes": 1621,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeAnalyticsPort.class",
+      "sha256Bytes": "c5830b18d89675965432c5a9f97e18efe257b163022e5f078c9c1226ae0030a8",
+      "lengthBytes": 1356,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeClock.class",
+      "sha256Bytes": "6b074e1bed63799d92902642dd3fe7d4d514cbd51737ef9a75fb1ec761ed0df1",
+      "lengthBytes": 1066,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEmbeddedPages.class",
+      "sha256Bytes": "2c694801194c19b49f53284290052cd49bafe31ccfb7159fd18758b616cb1a09",
+      "lengthBytes": 5092,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEnvironment.class",
+      "sha256Bytes": "3cf67948ccde6bc422a3e01c0e4abf73f028d31f81d0be65f0503da798ec42d5",
+      "lengthBytes": 8891,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeEnvironmentKt.class",
+      "sha256Bytes": "71154ab487fde98699aa64b2c3a56f0eb61113ee848bbc8f37aa1a4aca0032e3",
+      "lengthBytes": 3123,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeGlobalNamespace.class",
+      "sha256Bytes": "d50873658c8e661921f34a0a5ff0dbc19dbac0f0cdf30b4f7b2194188711197c",
+      "lengthBytes": 645,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMediaPorts.class",
+      "sha256Bytes": "66c08084027b199344fe79797fde530166101677182152c53da0354f2ffff947",
+      "lengthBytes": 4079,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMediaPortsKt.class",
+      "sha256Bytes": "baba383f8700e1df9d7192da1526d42fd065fe7e31bc6ae9f2f9d58fdb0ea117",
+      "lengthBytes": 2750,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricHolder.class",
+      "sha256Bytes": "82b839bbd991801e21244339b77a75ea4bea5498453fa88c88d554eedf90335c",
+      "lengthBytes": 1386,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricPortsKt.class",
+      "sha256Bytes": "62c487ed79cda17d22b46fc5a6a82079f32b9d489bf21349672854101382c694",
+      "lengthBytes": 4679,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeMetricSink.class",
+      "sha256Bytes": "5d9a1387ddda1bbeb992d1e4b03fe5bb6d43ffce7f4d9ec68afdad32f8489e2b",
+      "lengthBytes": 733,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeOverlayPorts.class",
+      "sha256Bytes": "f4e377672ab3e231bd67904a83c7bee319a0972cfd0ee721019b81220291aeaa",
+      "lengthBytes": 1637,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomePlatform.class",
+      "sha256Bytes": "cda35f0f0665e0042823ae47ccc04f720e02259257bafe648ddf05a222fd9e32",
+      "lengthBytes": 2841,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeSettingsPort.class",
+      "sha256Bytes": "0331423d9c0f5e2a48971e8233cb03476f68f95778c1df7739848b0772917caa",
+      "lengthBytes": 2907,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWallpaperPort.class",
+      "sha256Bytes": "4d82477e524bd010624a95c26f533cd32d13b401f9af6e78289dd5d843fa29da",
+      "lengthBytes": 1121,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWindowBackgroundPort$Listener.class",
+      "sha256Bytes": "9ba0fc11ab666d7afa5b3a67c4cee0b1091f280840b3a909295500cf36855aef",
+      "lengthBytes": 663,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopHomeWindowBackgroundPort.class",
+      "sha256Bytes": "6c5afbaad83409811898e34ab4f85e88bf4f7c273bc2135e236e0baefc85062a",
+      "lengthBytes": 997,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeGlobalNamespace.class",
+      "sha256Bytes": "e8f32c08a46e5f46859143eb72f2c84b469d78242acddf131479410db3dc181a",
+      "lengthBytes": 2723,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeNavigation.class",
+      "sha256Bytes": "fe4d9dc4f0dd1fd7ccdcd9f8a6d4373ba9751a68781f465e7a4c4e787f82506d",
+      "lengthBytes": 13749,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$Companion$create$2.class",
+      "sha256Bytes": "6b8535220dcff9537cbcf6f4ffeaee29dd1bc2cab0be8bf154a005ef53b7969c",
+      "lengthBytes": 10216,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$Companion.class",
+      "sha256Bytes": "f476de411860aeb81b3ffcf9029266a613f681660585f97854150065170c0e09",
+      "lengthBytes": 2743,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$homeSettings$1.class",
+      "sha256Bytes": "cee597fe71d44b2fa17436a8e55d8e67f6b56ec9ed833216472f145336e6da6a",
+      "lengthBytes": 2013,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$setEasterEggEnabled$2.class",
+      "sha256Bytes": "7ce4702d10adfaa1a498b17a96546efca2c8fc860aaabe7e648b4b587116d851",
+      "lengthBytes": 4223,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$1.class",
+      "sha256Bytes": "3972de669d7b81c31780bc31d62ee6fb0c00d8278af4a3cb87fdcf9af0e151f2",
+      "lengthBytes": 1713,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$2$1.class",
+      "sha256Bytes": "89006c8295ca01307e65da5c0b821e096d65c2c2fadf3a9ebf2ae4e0bda6c964",
+      "lengthBytes": 1708,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1$2.class",
+      "sha256Bytes": "d2bf84730e3a8344c17b8d4176301f5004786aebedfb2d48549c391065bb691f",
+      "lengthBytes": 3803,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$state$$inlined$map$1.class",
+      "sha256Bytes": "a349234cd975090ae34dcee8090685634b318412eff6194ad68522d5e8055397",
+      "lengthBytes": 4095,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$topTabs$1.class",
+      "sha256Bytes": "387231ff3a4d6310256eef9e0f64e807cfe0e7f603db6cec2c1e053145076b53",
+      "lengthBytes": 2019,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences$write$2.class",
+      "sha256Bytes": "ce059f00f57ab470f14de8dc42ada8dd7ed77ff1040160a3a77d644787dc807e",
+      "lengthBytes": 4098,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.class",
+      "sha256Bytes": "f087c2c18dac94ede7117745aa51273abea1bc9174580b3140eee9a874cf0715",
+      "lengthBytes": 16201,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeRootKt.class",
+      "sha256Bytes": "63f4ea1e875df31097e5bc13334af6bd05322e116f35dda612d2db8fdd06c440",
+      "lengthBytes": 18874,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants$BottomBarLabelMode.class",
+      "sha256Bytes": "a8d4826e1dbce4638599ab530f350f932a808e3799e3347737d0cb48c5d0b0eb",
+      "lengthBytes": 1341,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants$TopTabLabelMode.class",
+      "sha256Bytes": "a8655f53601f5c8b5b814b23ecddbd530d5e8b63b3dc9763e45ec73c873b4853",
+      "lengthBytes": 1283,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants.class",
+      "sha256Bytes": "27a36145dbc259d8f48f520bec7f041cc9de55020c55a76599719e54b9073323",
+      "lengthBytes": 1723,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt$floatPreferencesKey$1.class",
+      "sha256Bytes": "75b16d438b0903367ef02ea87f3995a52d01085ef40dc0eaf0a19142e4c77fd2",
+      "lengthBytes": 1811,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt$intPreferencesKey$1.class",
+      "sha256Bytes": "2ac8f432228433997af962be8e893961c4e2ceccbb1a7c279bdec7fac68f45b4",
+      "lengthBytes": 1807,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecodeKt.class",
+      "sha256Bytes": "a31b5c38dfce3088462f4cfd7da20c4323e5085a6ce5a5a2180baffab4a22cdb",
+      "lengthBytes": 46888,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.class",
+      "sha256Bytes": "a1f2774b14f51238c2cc8fdeb34573a4ca11859c9050fceac1930183ffdee3f0",
+      "lengthBytes": 8619,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "sha256Bytes": "f050474ea364b8ca5047db65a428a61ddd1ffd196061c555734300fe4d151dc2",
+      "lengthBytes": 2830,
+      "install": false
+    },
+    {
+      "path": "classes-full-07/top/yukonga/miuix/kmp/icon/extended/MessagesKt.class",
+      "sha256Bytes": "8499a8546c20452cfae071822bdfe44223570f3ff8903270cb85b7804976b0fa",
+      "lengthBytes": 16469,
+      "install": false
+    },
+    {
+      "path": "closure-audit.json",
+      "sha256Bytes": "b1d4af11bcae5e0adba53a5bfaa59e85cb8dacfd06c272d3ece608536f56c1d8",
+      "lengthBytes": 780213,
+      "install": false
+    },
+    {
+      "path": "compile-category-01.args",
+      "sha256Bytes": "c43925f588b62a9ca9dc49c7818a570eb9396aed84066ce9c2b70859a36d3fc9",
+      "lengthBytes": 29077,
+      "install": false
+    },
+    {
+      "path": "compile-category-01.log",
+      "sha256Bytes": "611549d217f2ca4107dedcc9294f68c1c84bb1aa1118d3c04959ce49a16b57b6",
+      "lengthBytes": 33957,
+      "install": false
+    },
+    {
+      "path": "compile-category-02.args",
+      "sha256Bytes": "ea0b83e3e97f2edee584cc7522052897bf0e68109cacd761bad8f260ab7aa45f",
+      "lengthBytes": 30460,
+      "install": false
+    },
+    {
+      "path": "compile-category-02.log",
+      "sha256Bytes": "01e3ce8974aa348842efd5dee1a258df6ad39c1c3e7b0624395369a5594f9e9a",
+      "lengthBytes": 7126,
+      "install": false
+    },
+    {
+      "path": "compile-category-03.args",
+      "sha256Bytes": "b770465546971cd7230b1d6aef366236f7be2418b95144cec5bdb361fb2ec0dd",
+      "lengthBytes": 30234,
+      "install": false
+    },
+    {
+      "path": "compile-category-03.log",
+      "sha256Bytes": "38e2b5df27fc083a20c1a12e991f439e852dd6c0829e597a8590faa9dbc5356a",
+      "lengthBytes": 936,
+      "install": false
+    },
+    {
+      "path": "compile-full-01.args",
+      "sha256Bytes": "ffb60d24a52b9e5199bc1a2d9b0c20316f6625982be2a2d8044943c20e1f3ac9",
+      "lengthBytes": 36657,
+      "install": false
+    },
+    {
+      "path": "compile-full-01.log",
+      "sha256Bytes": "060a03f40443458361beb18c973f682229d294f6fe1ecd7b57f811909e2f4f94",
+      "lengthBytes": 25068,
+      "install": false
+    },
+    {
+      "path": "compile-full-02.args",
+      "sha256Bytes": "f05243535ac5c82bb2a6a1aaaf1352a1ead722027416bed536440504f82fe963",
+      "lengthBytes": 39068,
+      "install": false
+    },
+    {
+      "path": "compile-full-02.log",
+      "sha256Bytes": "585be460c6bf02589751f216ab70acb8e13b179a015bda6e157968ac60900d9d",
+      "lengthBytes": 39028,
+      "install": false
+    },
+    {
+      "path": "compile-full-03.args",
+      "sha256Bytes": "c6f7be554a02757a459dcc505bd392422b549335dd65fc525470e98231501a11",
+      "lengthBytes": 40821,
+      "install": false
+    },
+    {
+      "path": "compile-full-03.log",
+      "sha256Bytes": "188891dc900260f97d45541a17bbe7a299af49a0c9b96b1712c7dc489acc2e11",
+      "lengthBytes": 880,
+      "install": false
+    },
+    {
+      "path": "compile-full-04.args",
+      "sha256Bytes": "696435be140f5fdb690640183142ee2ea1c863f34dbc7485096b559a3bf8aee7",
+      "lengthBytes": 41024,
+      "install": false
+    },
+    {
+      "path": "compile-full-04.log",
+      "sha256Bytes": "fc71b5d430e4f0788fe4837ac299a5d23046d2ba907307d91b08c15b0129f2ce",
+      "lengthBytes": 309,
+      "install": false
+    },
+    {
+      "path": "compile-full-05.args",
+      "sha256Bytes": "696435be140f5fdb690640183142ee2ea1c863f34dbc7485096b559a3bf8aee7",
+      "lengthBytes": 41024,
+      "install": false
+    },
+    {
+      "path": "compile-full-05.log",
+      "sha256Bytes": "94bd4751210cd6ebe50f6fe13e14f503fc537c8ff5ea3a6f23ec12399312508c",
+      "lengthBytes": 2334,
+      "install": false
+    },
+    {
+      "path": "compile-full-06.args",
+      "sha256Bytes": "536264f22af4c9e7f7ab54840a41034280e9a75556159cd0c35e30755d5f7f2a",
+      "lengthBytes": 40690,
+      "install": false
+    },
+    {
+      "path": "compile-full-06.log",
+      "sha256Bytes": "f7b9f9f586e559b8491fc6c7547a1ac99c550ed46f99d71709751886a42eee1d",
+      "lengthBytes": 2349,
+      "install": false
+    },
+    {
+      "path": "compile-full-07.args",
+      "sha256Bytes": "5ef4169f4a225d69dd3f5a3b903a5db0e3d728774c639a9f383eacef472dea9b",
+      "lengthBytes": 40447,
+      "install": false
+    },
+    {
+      "path": "compile-full-07.log",
+      "sha256Bytes": "f7b9f9f586e559b8491fc6c7547a1ac99c550ed46f99d71709751886a42eee1d",
+      "lengthBytes": 2349,
+      "install": false
+    },
+    {
+      "path": "compile_category.py",
+      "sha256Bytes": "7c7f971b3c2b94b76165082172fcdae1da8438d4c81319ad44115099e5097664",
+      "lengthBytes": 2959,
+      "install": false
+    },
+    {
+      "path": "compile_full.py",
+      "sha256Bytes": "db8733146a8100c5d33121604af4d688f2f4cc3d8006c928a83880f4db3bc208",
+      "lengthBytes": 2649,
+      "install": false
+    },
+    {
+      "path": "fix_prepare.py",
+      "sha256Bytes": "9e716dfcfa77a3e1fa252a1f0cd026186822493f07d574d8c1116a149bb61a22",
+      "lengthBytes": 765,
+      "install": false
+    },
+    {
+      "path": "fixtures/HomePreferencesFixture.kt",
+      "sha256Bytes": "8b9b2d7a961208f9b3885476b6a714f1d9541815510d958c34da9ef5a37a01fb",
+      "lengthBytes": 6579,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/store/DesktopHomeNavigationMigration.kt",
+      "sha256Bytes": "0bac75acb8a724d7950d0e7b9ba016d74907514936cbda99c89cc0c0dc0026b9",
+      "lengthBytes": 961,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+      "sha256Bytes": "7aff16515e28f6cef2b1d4aafa93849451f7cc174a36bf22536d60c72d9651d6",
+      "lengthBytes": 333,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabels.kt",
+      "sha256Bytes": "5fcfc91d8c8b442d070cdd2dc4d8506bf98fa1c0cc40fd453a9e427a7f195a37",
+      "lengthBytes": 1617,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "3dcd1605e9d33a20b509e41cf7b3ff11789a8fecc1c61f2361a949da6cce4370",
+      "lengthBytes": 9726,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+      "sha256Bytes": "3640aca6be394b8271e0dd1c88006497066e3fe5603a748ad2d9246f8a2f852d",
+      "lengthBytes": 5395,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+      "sha256Bytes": "eca07051fea2b41dd3fff923cf5f79ee3d671bd732bd592ea882345b00a781b9",
+      "lengthBytes": 1579,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt",
+      "sha256Bytes": "3a6c4e423178e3f0f2861716432e8fd6661b626ad4da78b1a82a7e0e86211f1d",
+      "lengthBytes": 15063,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+      "sha256Bytes": "1b5aa17cde1232f1405fafd6d4464d46d9869f4d61ab1e2f3e9420a60cb6fce5",
+      "lengthBytes": 4467,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/ContentCardSurfacePolicy.kt",
+      "sha256Bytes": "d52774241bca3bac12f0d9bf8a728540254f3ed7de3f380d296cba8c829d227e",
+      "lengthBytes": 1505,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/DesktopHomeOriginalErrorState.kt",
+      "sha256Bytes": "6558638e9cad982779616c590651024e38a79ab37674f8e376c0f331276ad826",
+      "lengthBytes": 3031,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/DesktopHomeOriginalPullRefreshText.kt",
+      "sha256Bytes": "fb2db6278cbbbfd2569c9d9f6fdf6367aa0879577f48db378079dae90e4357db",
+      "lengthBytes": 817,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThreshold.kt",
+      "sha256Bytes": "809943595d7e764c5de8666ddcf98d6244ac99a2b26f12b0970559b757fa7e50",
+      "lengthBytes": 273,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/performance/DesktopHomeJankTracking.kt",
+      "sha256Bytes": "a7db0ae5ea47fe37d2aff9010e0236626ba874527acd8d0e6037f4ab103defff",
+      "lengthBytes": 1883,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
+      "sha256Bytes": "e9cd12601d47e7dd8819ff659605d113c6e2085c82b965546d626aa7d9569aa4",
+      "lengthBytes": 930,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "sha256Bytes": "4eae3ef22d8cf3e629fc9ea93d824321866dfeff934cad19cdd93adebc1e33ef",
+      "lengthBytes": 16435,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.kt",
+      "sha256Bytes": "f8ef4ab23a99f1653c0d2fab249a87816baca99fbeb862c8ed73f560a9bc2386",
+      "lengthBytes": 3704,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLogger.kt",
+      "sha256Bytes": "226942292e393c1513a43e348b41c3068e46f29e941d45a3eadca09c23d9ebcc",
+      "lengthBytes": 2742,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperType.kt",
+      "sha256Bytes": "8d3fff276c73f05a06ea7bdc87c2a35b13222fc22998a875c3387cdcca70360d",
+      "lengthBytes": 564,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/util/DesktopHomeCardTapEffect.kt",
+      "sha256Bytes": "976e3f6de26ad30e48a4830352c84786968e0753a846f4e504708956d45069ed",
+      "lengthBytes": 2226,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
+      "sha256Bytes": "6df3782464bad09ea2031370e2e9079cba0c28a8520f2aef174baf5d463a6f50",
+      "lengthBytes": 2074,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/core/util/NavigationUiPolicy.kt",
+      "sha256Bytes": "b02845ff0aef821ebfdd3ccec8696b3322d525759c0172ae0875579cb7163a85",
+      "lengthBytes": 1463,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+      "sha256Bytes": "2ccbc8adba6aa8e0a8577be90cec355970a29404b8148a4bced346afd70590d4",
+      "lengthBytes": 25077,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+      "sha256Bytes": "b20f527392d9099a7897b8dcb325a0b4520c95ff7072a170db5d41a4dd3770d9",
+      "lengthBytes": 766,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+      "sha256Bytes": "5618096958296c24c115f7553df26b6329e1d21c772177117e7ddc077044b667",
+      "lengthBytes": 129656,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "sha256Bytes": "91ee83ad9bccbdf6b3783ca9e94a7baa5b3a8757967c94b2c94e85607de85121",
+      "lengthBytes": 31633,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheet.kt",
+      "sha256Bytes": "759aa5ce0e12e56ec75231ee42c94ce53cd7727d6091455d58e8868ec63e2c5f",
+      "lengthBytes": 5042,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeRefreshIndicator.kt",
+      "sha256Bytes": "fe8c5785c4f20036b611e984b26c73101f3cb27d60ffdeded6a99c9ad1711f4e",
+      "lengthBytes": 7736,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpec.kt",
+      "sha256Bytes": "077830164187c92d9f76bdfa901901a1309f6d4608392312466a97b5de15ba41",
+      "lengthBytes": 916,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeTopControls.kt",
+      "sha256Bytes": "b1eccf4393da4819e8d2b123ee34216cc2f1be52cdbb803e89c6255832c6f405",
+      "lengthBytes": 4854,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeTopTabChrome.kt",
+      "sha256Bytes": "0d1ee09b7a707f2a9aa7562082941a8d568f2d564ed5531016aef76cacd3a10e",
+      "lengthBytes": 15500,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDock.kt",
+      "sha256Bytes": "ead8826776d6930cfe1a62693d1bc9af61c7bd73bafe15bd47ed761ea4041f7e",
+      "lengthBytes": 13532,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpec.kt",
+      "sha256Bytes": "14db94d8dab9f97945b2b20405000409169b3b7011199f78d0eb3f22e6095147",
+      "lengthBytes": 438,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/MineSideDrawer.kt",
+      "sha256Bytes": "42f528c3ad5c4988a4781d5b3e1b70b88911d9f309f0c51aefce846cc82b9880",
+      "lengthBytes": 24020,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+      "sha256Bytes": "16587888e32f933309798311c0f5f3b3b33298afd4b4c2e5ee8baa346dc28be5",
+      "lengthBytes": 3624,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+      "sha256Bytes": "a28413589321bf7ed3b10c6461e5dbd5516d76839d6a003a20a134edaf24a21b",
+      "lengthBytes": 2693,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/SideBar.kt",
+      "sha256Bytes": "c713e336e068460dd0a1f394b6b33187375a52de463e714775eb318c4a108d6b",
+      "lengthBytes": 25982,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "sha256Bytes": "f2d340452c6efc5444fe34feb0d6e20df4f8aa25ff385c8dbdf66473dadc2af5",
+      "lengthBytes": 117101,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+      "sha256Bytes": "8b2ffcb7474f58a99ef96e5226cdce585e28dbd1f4e1f3506373d4ddc35fd180",
+      "lengthBytes": 15422,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt",
+      "sha256Bytes": "d93992980a72109e5ee04a73c41177de8a2c57cd9dd16254886386dc20e2d14d",
+      "lengthBytes": 168215,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+      "sha256Bytes": "dbb9f7aec5ecb8ca8a344870b87127e45c1e108af3a10b6bbb23ed06406afa08",
+      "lengthBytes": 616,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "sha256Bytes": "a1425c698c5f936671ec82c0f60fef6acf77666c5734b6027105a9b008b71b50",
+      "lengthBytes": 57567,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+      "sha256Bytes": "2fe1ffad54b48b66c533f55c090e9c86458ebe6bbe476ad17e405df307641537",
+      "lengthBytes": 474,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+      "sha256Bytes": "3423d14780eef59e264bde674e2da32c72c3cc6beb2e7ad604e84efa09696fea",
+      "lengthBytes": 388,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+      "sha256Bytes": "f67baad9474d58b2ffb66506d91535048c58c4e1ade331b5671175d824c39d28",
+      "lengthBytes": 3505,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
+      "sha256Bytes": "e7c143a9e358ac11418897935d8f4b458aac175c906ad29dad1d3d78a3f9b3ae",
+      "lengthBytes": 11455,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpec.kt",
+      "sha256Bytes": "b6a4abb1352598fde0e253aa0ea7a8138a0b77508f9b1a1a673e17ddf005daa5",
+      "lengthBytes": 597,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+      "sha256Bytes": "f06b31ff2904fa30fb59da1832644ecb654cf80c2793e413f9d19331feaebf03",
+      "lengthBytes": 8201,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+      "sha256Bytes": "bf7f71b82a0203f955ede0084e52ea4454e31b84453cb0ef9ad6e25f94b75334",
+      "lengthBytes": 1153,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+      "sha256Bytes": "eea54e826a54335e65beaaca0ffd3524fa98c96810d3a4599d430943c43ddd42",
+      "lengthBytes": 3875,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+      "sha256Bytes": "277b03d2ba209a1111c477455e5110ed49e918295d77d23ae7e6bb0de3ecd7af",
+      "lengthBytes": 5683,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+      "sha256Bytes": "e86a01910374665d7276ec71e64fa28d48ba9681bb9d0933d4bc560bd4bf7797",
+      "lengthBytes": 716,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+      "sha256Bytes": "92bc8edb326f8a6bd442361e5b9b71da77ce5268c8336ca8f86215d78ebce72e",
+      "lengthBytes": 6205,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+      "sha256Bytes": "b87d56fdca752d55e3e17d88c178ce938ded60548fd38b7c027dedb2aebbf4f5",
+      "lengthBytes": 1567,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+      "sha256Bytes": "5543d42b5be6a4e55be80a835534fcfb3bfd2580ff992fe7a0b930a0fa24321c",
+      "lengthBytes": 1150,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+      "sha256Bytes": "e914a7d5db05eef283c80735773e852fde9b44dbff447f7aac9f4b2f2c3207ab",
+      "lengthBytes": 1777,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "sha256Bytes": "40a692f7f4727c997e6a5dac8da8580c8f2c77c7c5717f7d6e28c4ba6a7d9286",
+      "lengthBytes": 6635,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+      "sha256Bytes": "0f3653ad4434aacf0f2d2a31bcb510299f9c7ab0dac1c95904a7ef579c5ff793",
+      "lengthBytes": 713,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256Bytes": "bfbc0868cafa9a3576479d1bd64c93b1521a7fbc1766be60c2190e40a729d186",
+      "lengthBytes": 4473,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/HomeWaterfallMotionSpec.kt",
+      "sha256Bytes": "4e5d517c946a12bceeeaacc5519d48932e0dd69e2563f2c93ec702000c95e246",
+      "lengthBytes": 884,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+      "sha256Bytes": "3757a32808b51f2260c28a1460b42e5c4d99e0d629ec95b38c9db951111186c9",
+      "lengthBytes": 822,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+      "sha256Bytes": "0d32764bc86c68cf83b0032f2c05d96b3313b99e15e2a0ce201871b466c1d22f",
+      "lengthBytes": 1792,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+      "sha256Bytes": "684b901994b721c6a03d2922029fbbdea604005cdee2e1d5dfeba7ee539cc7bf",
+      "lengthBytes": 3255,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt",
+      "sha256Bytes": "e2c27d0d75908401fda699cb218fdc03e11c79e9afc0b939045008f0bf3ab656",
+      "lengthBytes": 5121,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/policy/HomeScrollCoordinator.kt",
+      "sha256Bytes": "b8324369db35e1b940c82cde0ee53e439420d218c103c76ca49aaced7f245507",
+      "lengthBytes": 4804,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+      "sha256Bytes": "08a38038fe75010d12830f7c0ab290c4d2ccc6b0a5a1e6cfeb00fe5cb729a02d",
+      "lengthBytes": 712,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+      "sha256Bytes": "89f09015d21510229218b95538c607aefa189354d284c5ec4a8332623997ce58",
+      "lengthBytes": 1484,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
+      "sha256Bytes": "d5c863b0ff6cba03794b75788836a78d42d9390a94f5b7643f1923b49b795b5c",
+      "lengthBytes": 363,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+      "sha256Bytes": "5591d15989c931993332e86a0d52a254140fc97aec602f6d03a6f88bfcd0b954",
+      "lengthBytes": 1089,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+      "sha256Bytes": "f2cb0976124b128a29729ad5882f16718004b9aee2d7227357e44d68bb67c788",
+      "lengthBytes": 1082,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants.kt",
+      "sha256Bytes": "3be6c707b81a3f31645ae689f0758c212d248edf0608e2eec64a20b966f2a0c4",
+      "lengthBytes": 785,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt",
+      "sha256Bytes": "7a248c62e64fe48d2b4fb7afdd227784588719889987f01c8cc2143306ccf195",
+      "lengthBytes": 22549,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/home-page-producer-inventory.json",
+      "sha256Bytes": "9840813d755120e61500f14ebef4233da81c18b6ac02b0abd679dc4012bf8039",
+      "lengthBytes": 72997,
+      "install": false
+    },
+    {
+      "path": "generator-production-proof/home-page-settings-selection.json",
+      "sha256Bytes": "94e1fed215f9e25fbcc7ca24e28b1726e105e14e90d039a27ecddd41ebd0c574",
+      "lengthBytes": 4445,
+      "install": false
+    },
+    {
+      "path": "home-full-card-source-owner.patch",
+      "sha256Bytes": "f915f7320eeb5dae613dba4d5a656d2af9ec7f8ba99449e8bcf583dc24e54757",
+      "lengthBytes": 1391,
+      "install": false
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "99d28f84489aad072fbddc030a8ba7893c225f1b84ade91964fc1150825a1b79",
+      "lengthBytes": 2924,
+      "install": false
+    },
+    {
+      "path": "miuix-messages-source-evidence.json",
+      "sha256Bytes": "d01f679b3e056e783c3b63626f62e5d2c704fab559fde7775e4bf405a9f943b1",
+      "lengthBytes": 594,
+      "install": false
+    },
+    {
+      "path": "patch-baselines.json",
+      "sha256Bytes": "65d54592b1890bf4fc072973c7765031e00975204c69377c7bc4d4a0182d9cb0",
+      "lengthBytes": 362,
+      "install": false
+    },
+    {
+      "path": "prefs-product-class-continuity.json",
+      "sha256Bytes": "ababcafedc4fadaa35c47a84499e19a2e7178daa2190b317faea217cb9c0cbaf",
+      "lengthBytes": 686,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/actual-global-store/plugin-settings.json",
+      "sha256Bytes": "0b81240d252b74bb709e099519f45f00071b46d34da446b3adce5bf022f68cb4",
+      "lengthBytes": 975,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$awaitValue$2$1.class",
+      "sha256Bytes": "f774f8f4c3203b57f988c27d63af5741983de7a873385896f1491c263f59d632",
+      "lengthBytes": 1987,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$awaitValue$2.class",
+      "sha256Bytes": "58e41be6b8f1ca7cd96abf232e132d49c725d8965e5f063a4496fa9558178e79",
+      "lengthBytes": 3874,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt$main$1.class",
+      "sha256Bytes": "bff7f4bca63c8508ed62a8a857da0faa3e32303d13dd98671596ee31eed70cc6",
+      "lengthBytes": 28747,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classes/com/bilipai/desktop/ui/HomePreferencesFixtureKt.class",
+      "sha256Bytes": "8f539cc396a69c397f9170cb0eac6faca59ffd8c23d4f026fabe78089b6b476b",
+      "lengthBytes": 4520,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classes/META-INF/home_prefs_fixture.kotlin_module",
+      "sha256Bytes": "3079018e25fdc5f08b403d8dc087ee7f198745b570506cdfba2aecf0148a2fbd",
+      "lengthBytes": 76,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/classpath.txt",
+      "sha256Bytes": "96d5cc1e9c20b8f51f1d1b13675f312c74b1b9c5adcb1bb968814a7e4eda5ea8",
+      "lengthBytes": 22801,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/compile.args",
+      "sha256Bytes": "038535735c69c13cbc9e1fa39e9e4983a910f300f8831b62a335ff835fcf53a9",
+      "lengthBytes": 23379,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "lengthBytes": 0,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/migration-global-store/plugin-settings.json",
+      "sha256Bytes": "92b290ab1cc60c7f2e1acc509d06118e7c0abd182e4efe7edb71417f3fbf5f2b",
+      "lengthBytes": 278,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/result.json",
+      "sha256Bytes": "d7cfa268dfbdbc9cb052f8930a3671be5b9cc480dc93913e61e4a9bff074027a",
+      "lengthBytes": 955,
+      "install": false
+    },
+    {
+      "path": "prefs-proof-01/run.log",
+      "sha256Bytes": "980dbb062f23ce2865ffe85270c2c7a91e873825441a5174f513273e3179fd0a",
+      "lengthBytes": 957,
+      "install": false
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "b4fcad3c337417cea04af768dc8581ddb4532db9aa5bcbfddc415ace3c8d2e6a",
+      "lengthBytes": 18754,
+      "install": false
+    },
+    {
+      "path": "prepare_ports.py",
+      "sha256Bytes": "a1c67f6df2d1e06003d6abfb4022f3025b04fea355a08ecded6a7fd947e075b0",
+      "lengthBytes": 2584,
+      "install": false
+    },
+    {
+      "path": "prepared/fork-icons/miuix-icons/src/commonMain/kotlin/icon/extended/Messages.kt",
+      "sha256Bytes": "f911c8200fd37077d1e986f52be9693fa90588e39f06cb86be35c5440856f1c0",
+      "lengthBytes": 12591,
+      "install": true
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/DesktopHomeNavigationMigration.kt",
+      "sha256Bytes": "0bac75acb8a724d7950d0e7b9ba016d74907514936cbda99c89cc0c0dc0026b9",
+      "lengthBytes": 961,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/HomeSettingsUiPresetPolicy.kt",
+      "sha256Bytes": "7aff16515e28f6cef2b1d4aafa93849451f7cc174a36bf22536d60c72d9651d6",
+      "lengthBytes": 333,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/navigation/DesktopHomeNavigationLabels.kt",
+      "sha256Bytes": "5fcfc91d8c8b442d070cdd2dc4d8506bf98fa1c0cc40fd453a9e427a7f195a37",
+      "lengthBytes": 1617,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "3dcd1605e9d33a20b509e41cf7b3ff11789a8fecc1c61f2361a949da6cce4370",
+      "lengthBytes": 9726,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/AdaptivePullToRefreshBox.kt",
+      "sha256Bytes": "3640aca6be394b8271e0dd1c88006497066e3fe5603a748ad2d9246f8a2f852d",
+      "lengthBytes": 5395,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/blur/RecoverableVisualEffects.kt",
+      "sha256Bytes": "679b3373964a1db626c176cffe4c13da6b87ea04015c76b4281064fc79013ded",
+      "lengthBytes": 3223,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/ComfortablePullToRefreshBox.kt",
+      "sha256Bytes": "eca07051fea2b41dd3fff923cf5f79ee3d671bd732bd592ea882345b00a781b9",
+      "lengthBytes": 1579,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/common/VerticalPriorityPagerGesture.kt",
+      "sha256Bytes": "3a6c4e423178e3f0f2861716432e8fd6661b626ad4da78b1a82a7e0e86211f1d",
+      "lengthBytes": 15063,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/components/UserVipBadge.kt",
+      "sha256Bytes": "1b5aa17cde1232f1405fafd6d4464d46d9869f4d61ab1e2f3e9420a60cb6fce5",
+      "lengthBytes": 4467,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/ContentCardSurfacePolicy.kt",
+      "sha256Bytes": "d52774241bca3bac12f0d9bf8a728540254f3ed7de3f380d296cba8c829d227e",
+      "lengthBytes": 1505,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeLottieUrls.kt",
+      "sha256Bytes": "b921d1f1b307cfa5b03829ae591c4ed527eea4ae95b9af95af54b8666194f874",
+      "lengthBytes": 924,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalErrorState.kt",
+      "sha256Bytes": "6558638e9cad982779616c590651024e38a79ab37674f8e376c0f331276ad826",
+      "lengthBytes": 3031,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalPullRefreshText.kt",
+      "sha256Bytes": "fb2db6278cbbbfd2569c9d9f6fdf6367aa0879577f48db378079dae90e4357db",
+      "lengthBytes": 817,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/DesktopHomeOriginalPullThreshold.kt",
+      "sha256Bytes": "809943595d7e764c5de8666ddcf98d6244ac99a2b26f12b0970559b757fa7e50",
+      "lengthBytes": 273,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/performance/DesktopHomeJankTracking.kt",
+      "sha256Bytes": "a7db0ae5ea47fe37d2aff9010e0236626ba874527acd8d0e6037f4ab103defff",
+      "lengthBytes": 1883,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/transition/DesktopHomeDepthOwnershipPolicy.kt",
+      "sha256Bytes": "e9cd12601d47e7dd8819ff659605d113c6e2085c82b965546d626aa7d9569aa4",
+      "lengthBytes": 930,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionBackgroundPolicy.kt",
+      "sha256Bytes": "12aea23040a0336772d9c0c7b9a41425bb28bf9d00da3e065606104a380dc3f1",
+      "lengthBytes": 63827,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionClock.kt",
+      "sha256Bytes": "4eae3ef22d8cf3e629fc9ea93d824321866dfeff934cad19cdd93adebc1e33ef",
+      "lengthBytes": 16435,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionDiagnostics.kt",
+      "sha256Bytes": "f8ef4ab23a99f1653c0d2fab249a87816baca99fbeb862c8ed73f560a9bc2386",
+      "lengthBytes": 3704,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/transition/VideoCardTransitionLiveBlurHitchLogger.kt",
+      "sha256Bytes": "226942292e393c1513a43e348b41c3068e46f29e941d45a3eadca09c23d9ebcc",
+      "lengthBytes": 2742,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/ui/wallpaper/DesktopHomeWallpaperType.kt",
+      "sha256Bytes": "8d3fff276c73f05a06ea7bdc87c2a35b13222fc22998a875c3387cdcca70360d",
+      "lengthBytes": 564,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/util/DesktopHomeCardTapEffect.kt",
+      "sha256Bytes": "976e3f6de26ad30e48a4830352c84786968e0753a846f4e504708956d45069ed",
+      "lengthBytes": 2226,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/util/DesktopHomeTapEffect.kt",
+      "sha256Bytes": "6df3782464bad09ea2031370e2e9079cba0c28a8520f2aef174baf5d463a6f50",
+      "lengthBytes": 2074,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/core/util/NavigationUiPolicy.kt",
+      "sha256Bytes": "b02845ff0aef821ebfdd3ccec8696b3322d525759c0172ae0875579cb7163a85",
+      "lengthBytes": 1463,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/cards/StoryVideoCard.kt",
+      "sha256Bytes": "2ccbc8adba6aa8e0a8577be90cec355970a29404b8148a4bced346afd70590d4",
+      "lengthBytes": 25077,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/DesktopHomeMatchedDockVisibilityReference.kt",
+      "sha256Bytes": "e9fdbcb802124c53d5cb3d623a8c8ecc790940fb198ad8b257e37802e6af9d1c",
+      "lengthBytes": 4504,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/DrawerMotionBudgetPolicy.kt",
+      "sha256Bytes": "b20f527392d9099a7897b8dcb325a0b4520c95ff7072a170db5d41a4dd3770d9",
+      "lengthBytes": 766,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeHeader.kt",
+      "sha256Bytes": "5618096958296c24c115f7553df26b6329e1d21c772177117e7ddc077044b667",
+      "lengthBytes": 129656,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeHeroCarousel.kt",
+      "sha256Bytes": "91ee83ad9bccbdf6b3783ca9e94a7baa5b3a8757967c94b2c94e85607de85121",
+      "lengthBytes": 31633,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeNavigationIconPolicy.kt",
+      "sha256Bytes": "118d89e0fc7979e4a3dcfdc198e482322ed6bd945aceb0b8239a1b95bdb6cec4",
+      "lengthBytes": 5621,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeNotInterestedReasonSheet.kt",
+      "sha256Bytes": "759aa5ce0e12e56ec75231ee42c94ce53cd7727d6091455d58e8868ec63e2c5f",
+      "lengthBytes": 5042,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeRefreshIndicator.kt",
+      "sha256Bytes": "fe8c5785c4f20036b611e984b26c73101f3cb27d60ffdeded6a99c9ad1711f4e",
+      "lengthBytes": 7736,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeRefreshMotionSpec.kt",
+      "sha256Bytes": "077830164187c92d9f76bdfa901901a1309f6d4608392312466a97b5de15ba41",
+      "lengthBytes": 916,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopControls.kt",
+      "sha256Bytes": "b1eccf4393da4819e8d2b123ee34216cc2f1be52cdbb803e89c6255832c6f405",
+      "lengthBytes": 4854,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabChrome.kt",
+      "sha256Bytes": "0d1ee09b7a707f2a9aa7562082941a8d568f2d564ed5531016aef76cacd3a10e",
+      "lengthBytes": 15500,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabFloatingDock.kt",
+      "sha256Bytes": "ead8826776d6930cfe1a62693d1bc9af61c7bd73bafe15bd47ed761ea4041f7e",
+      "lengthBytes": 13532,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/HomeTopTabMotionSpec.kt",
+      "sha256Bytes": "14db94d8dab9f97945b2b20405000409169b3b7011199f78d0eb3f22e6095147",
+      "lengthBytes": 438,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawer.kt",
+      "sha256Bytes": "42f528c3ad5c4988a4781d5b3e1b70b88911d9f309f0c51aefce846cc82b9880",
+      "lengthBytes": 24020,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawerLayoutPolicy.kt",
+      "sha256Bytes": "16587888e32f933309798311c0f5f3b3b33298afd4b4c2e5ee8baa346dc28be5",
+      "lengthBytes": 3624,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/MineSideDrawerVisualPolicy.kt",
+      "sha256Bytes": "a28413589321bf7ed3b10c6461e5dbd5516d76839d6a003a20a134edaf24a21b",
+      "lengthBytes": 2693,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/SideBar.kt",
+      "sha256Bytes": "c713e336e068460dd0a1f394b6b33187375a52de463e714775eb318c4a108d6b",
+      "lengthBytes": 25982,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/TopBar.kt",
+      "sha256Bytes": "f2d340452c6efc5444fe34feb0d6e20df4f8aa25ff385c8dbdf66473dadc2af5",
+      "lengthBytes": 117101,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/components/VideoPreviewDialog.kt",
+      "sha256Bytes": "8b2ffcb7474f58a99ef96e5226cdce585e28dbd1f4e1f3506373d4ddc35fd180",
+      "lengthBytes": 15422,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt",
+      "sha256Bytes": "d93992980a72109e5ee04a73c41177de8a2c57cd9dd16254886386dc20e2d14d",
+      "lengthBytes": 168215,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeAvatarActionPolicy.kt",
+      "sha256Bytes": "dbb9f7aec5ecb8ca8a344870b87127e45c1e108af3a10b6bbb23ed06406afa08",
+      "lengthBytes": 616,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "sha256Bytes": "a1425c698c5f936671ec82c0f60fef6acf77666c5734b6027105a9b008b71b50",
+      "lengthBytes": 57567,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeDrawerGesturePolicy.kt",
+      "sha256Bytes": "2fe1ffad54b48b66c533f55c090e9c86458ebe6bbe476ad17e405df307641537",
+      "lengthBytes": 474,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeDrawerLogoutPolicy.kt",
+      "sha256Bytes": "3423d14780eef59e264bde674e2da32c72c3cc6beb2e7ad604e84efa09696fea",
+      "lengthBytes": 388,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedGridPolicy.kt",
+      "sha256Bytes": "f67baad9474d58b2ffb66506d91535048c58c4e1ade331b5671175d824c39d28",
+      "lengthBytes": 3505,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedSkeletonCard.kt",
+      "sha256Bytes": "e7c143a9e358ac11418897935d8f4b458aac175c906ad29dad1d3d78a3f9b3ae",
+      "lengthBytes": 11455,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeFeedSkeletonVisualSpec.kt",
+      "sha256Bytes": "b6a4abb1352598fde0e253aa0ea7a8138a0b77508f9b1a1a673e17ddf005daa5",
+      "lengthBytes": 597,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeHeroCarouselPolicy.kt",
+      "sha256Bytes": "f06b31ff2904fa30fb59da1832644ecb654cf80c2793e413f9d19331feaebf03",
+      "lengthBytes": 8201,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeLiveTabRoutingPolicy.kt",
+      "sha256Bytes": "bf7f71b82a0203f955ede0084e52ea4454e31b84453cb0ef9ad6e25f94b75334",
+      "lengthBytes": 1153,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomePerformancePolicy.kt",
+      "sha256Bytes": "eea54e826a54335e65beaaca0ffd3524fa98c96810d3a4599d430943c43ddd42",
+      "lengthBytes": 3875,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomePullRefreshUiPolicy.kt",
+      "sha256Bytes": "277b03d2ba209a1111c477455e5110ed49e918295d77d23ae7e6bb0de3ecd7af",
+      "lengthBytes": 5683,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "sha256Bytes": "d93992980a72109e5ee04a73c41177de8a2c57cd9dd16254886386dc20e2d14d",
+      "lengthBytes": 168215,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeSystemBarsPolicy.kt",
+      "sha256Bytes": "e86a01910374665d7276ec71e64fa28d48ba9681bb9d0933d4bc560bd4bf7797",
+      "lengthBytes": 716,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeTopCategoryPolicy.kt",
+      "sha256Bytes": "92bc8edb326f8a6bd442361e5b9b71da77ce5268c8336ca8f86215d78ebce72e",
+      "lengthBytes": 6205,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeTopContentSpacingPolicy.kt",
+      "sha256Bytes": "b87d56fdca752d55e3e17d88c178ce938ded60548fd38b7c027dedb2aebbf4f5",
+      "lengthBytes": 1567,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeTopTabGesturePolicy.kt",
+      "sha256Bytes": "5543d42b5be6a4e55be80a835534fcfb3bfd2580ff992fe7a0b930a0fa24321c",
+      "lengthBytes": 1150,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeTopTabRevealPolicy.kt",
+      "sha256Bytes": "e914a7d5db05eef283c80735773e852fde9b44dbff447f7aac9f4b2f2c3207ab",
+      "lengthBytes": 1777,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "sha256Bytes": "40a692f7f4727c997e6a5dac8da8580c8f2c77c7c5717f7d6e28c4ba6a7d9286",
+      "lengthBytes": 6635,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeVideoClickRequest.kt",
+      "sha256Bytes": "0f3653ad4434aacf0f2d2a31bcb510299f9c7ab0dac1c95904a7ef579c5ff793",
+      "lengthBytes": 713,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt",
+      "sha256Bytes": "bfbc0868cafa9a3576479d1bd64c93b1521a7fbc1766be60c2190e40a729d186",
+      "lengthBytes": 4473,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/HomeWaterfallMotionSpec.kt",
+      "sha256Bytes": "4e5d517c946a12bceeeaacc5519d48932e0dd69e2563f2c93ec702000c95e246",
+      "lengthBytes": 884,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeBottomBarModePolicy.kt",
+      "sha256Bytes": "3757a32808b51f2260c28a1460b42e5c4d99e0d629ec95b38c9db951111186c9",
+      "lengthBytes": 822,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeBottomBarScrollPolicy.kt",
+      "sha256Bytes": "0d32764bc86c68cf83b0032f2c05d96b3313b99e15e2a0ce201871b466c1d22f",
+      "lengthBytes": 1792,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeFeedScrollRestorePolicy.kt",
+      "sha256Bytes": "684b901994b721c6a03d2922029fbbdea604005cdee2e1d5dfeba7ee539cc7bf",
+      "lengthBytes": 3255,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/policy/HomePagerSyncPolicy.kt",
+      "sha256Bytes": "e2c27d0d75908401fda699cb218fdc03e11c79e9afc0b939045008f0bf3ab656",
+      "lengthBytes": 5121,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/policy/HomeScrollCoordinator.kt",
+      "sha256Bytes": "b8324369db35e1b940c82cde0ee53e439420d218c103c76ca49aaced7f245507",
+      "lengthBytes": 4804,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/TodayWatchMotionPolicy.kt",
+      "sha256Bytes": "08a38038fe75010d12830f7c0ab290c4d2ccc6b0a5a1e6cfeb00fe5cb729a02d",
+      "lengthBytes": 712,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/home/TodayWatchStartupRevealPolicy.kt",
+      "sha256Bytes": "89f09015d21510229218b95538c607aefa189354d284c5ec4a8332623997ce58",
+      "lengthBytes": 1484,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
+      "sha256Bytes": "d5c863b0ff6cba03794b75788836a78d42d9390a94f5b7643f1923b49b795b5c",
+      "lengthBytes": 363,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+      "sha256Bytes": "5591d15989c931993332e86a0d52a254140fc97aec602f6d03a6f88bfcd0b954",
+      "lengthBytes": 1089,
+      "install": false
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/navigation/AppNavigationAppearancePolicy.kt",
+      "sha256Bytes": "f2cb0976124b128a29729ad5882f16718004b9aee2d7227357e44d68bb67c788",
+      "lengthBytes": 1082,
+      "install": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeEnvironment.kt",
+      "sha256Bytes": "4c75e770aa9d19fd617824a07c581d444183124a76562a1af96ba11d3b002695",
+      "lengthBytes": 4753,
+      "install": true
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeMediaPorts.kt",
+      "sha256Bytes": "60b6595cc8d309ae50f5e4661249dc7c183c81eab4cd87525b61d3151569d263",
+      "lengthBytes": 2036,
+      "install": true
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopHomeMetricPorts.kt",
+      "sha256Bytes": "5bd2728f6a264d747614cf6891554e9f708511a01d783c23823fd596599ed031",
+      "lengthBytes": 754,
+      "install": true
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "sha256Bytes": "4d5989e97318c7264753d076ea2d2fe0ade8be92df6d2029142642782cc0bd64",
+      "lengthBytes": 4912,
+      "install": true
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeRoot.kt",
+      "sha256Bytes": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984",
+      "lengthBytes": 5288,
+      "install": true
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeSettingConstants.kt",
+      "sha256Bytes": "3be6c707b81a3f31645ae689f0758c212d248edf0608e2eec64a20b966f2a0c4",
+      "lengthBytes": 785,
+      "install": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt",
+      "sha256Bytes": "7a248c62e64fe48d2b4fb7afdd227784588719889987f01c8cc2143306ccf195",
+      "lengthBytes": 22549,
+      "install": false
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.kt",
+      "sha256Bytes": "65b53788070a0ad3beed834d1c4fd808c4454cd446e1ab1897481c039b4cff1b",
+      "lengthBytes": 2818,
+      "install": true
+    },
+    {
+      "path": "prepared/tools/extract-upstream-home-page.py",
+      "sha256Bytes": "bfb436456c3dacbbf1868657b9023e48b226d6a7ed6ace23cadb4275211cb6df",
+      "lengthBytes": 66177,
+      "install": true
+    },
+    {
+      "path": "producer-inventory.json",
+      "sha256Bytes": "6175079a7787be92bae3147e7f6177359a37071ec4230f94dc78327ac0f0427e",
+      "lengthBytes": 105892,
+      "install": false
+    },
+    {
+      "path": "producer-proof.json",
+      "sha256Bytes": "8f01fcf06dbbe3a8e15921a5c00237a5815cc2357eb3998e27fdb365f815c3ac",
+      "lengthBytes": 1582,
+      "install": false
+    },
+    {
+      "path": "refine.py",
+      "sha256Bytes": "ff44489cbe6841eddf84ed61dd842c14d1ded4a23a73afe51379167b8f044ce7",
+      "lengthBytes": 1145,
+      "install": false
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "81dc91903e3edd8c11e83bea48f9aae8fe2065b386dde7ac29a841b341b50549",
+      "lengthBytes": 8109,
+      "install": false
+    },
+    {
+      "path": "run_preferences.py",
+      "sha256Bytes": "2bf8b5825e1cc6d02ac4897f8b7eb716e438272b7525ccb35963eee8328c75c8",
+      "lengthBytes": 2361,
+      "install": false
+    },
+    {
+      "path": "selected-closure-audit.json",
+      "sha256Bytes": "5342a41b993d586b595cb1e6777dc10d84b5a92f63d84e62c66c1125405f32d0",
+      "lengthBytes": 183498,
+      "install": false
+    },
+    {
+      "path": "settings-selection-evidence.json",
+      "sha256Bytes": "94e1fed215f9e25fbcc7ca24e28b1726e105e14e90d039a27ecddd41ebd0c574",
+      "lengthBytes": 4445,
+      "install": false
+    },
+    {
+      "path": "settings.py",
+      "sha256Bytes": "cb2379eeb456c51f5bbfe900a569c6d87b05680b178539ec30e5df5fcecabbb4",
+      "lengthBytes": 5490,
+      "install": false
+    },
+    {
+      "path": "source-inventory.json",
+      "sha256Bytes": "d7923a64bdc48d62bad36842f2c9a085dea2472d4ff845fd3827059a1d33c34f",
+      "lengthBytes": 66704,
+      "install": false
+    }
+  ],
+  "binaryPolicy": "classes/task store proof only; do not install or commit compiled classes/JAR/DLL/user storage; exactsource whitelist only"
+}

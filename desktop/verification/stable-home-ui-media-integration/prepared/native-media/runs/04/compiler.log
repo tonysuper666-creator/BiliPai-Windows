@@ -1,0 +1,9 @@
+desktop\.local\stable-home-platform-media-parity\runs\04\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\player\MpvSoftwareFrames.kt:72:24: warning: this class is not recommended for use in Kotlin. Use 'kotlin.Any' instead.
+    private val wake = Object()
+                       ^^^^^^
+desktop\.local\stable-home-platform-media-parity\runs\04\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopHomeOwnedMedia.kt:145:85: warning: unnecessary safe call on a non-null receiver of type 'DesktopHomeMediaLease'.
+    LaunchedEffect(own, playerState?.error) { playerState?.error?.let { error -> own?.commit { failureCallback(error) } } }
+                                                                                    ^^
+desktop\.local\stable-home-platform-media-parity\runs\04\source-inputs\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopHomeWallpaperImages.kt:86:40: warning: 'val Canvas.nativeCanvas: Canvas' is deprecated. Naming alignment to avoid ambiguity: use [Canvas.skiaCanvas] extension instead.
+            val canvas = composeCanvas.nativeCanvas
+                                       ^^^^^^^^^^^^
