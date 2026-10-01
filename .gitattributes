@@ -79,3 +79,4 @@ desktop/src/main/resources/licenses/rich-content/** -text
 desktop/verification/stable-video-core-section-native/** -text
 desktop/verification/stable-video-repository-core-ports/** -text
 desktop/verification/stable-video-owned-token-refresh/** -text
+desktop/verification/stable-video-playback-invocation/** -text

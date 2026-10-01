@@ -1,0 +1,18 @@
+{
+  "preparedOnly": true,
+  "fullVmMounted": false,
+  "snapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-54",
+  "manifestSha": "8b3e0846caad410c5478787b740cf3999356de385000d3a5683a24ea0433885a",
+  "cpSha": "add7053c45aa02db763c7c2d105447b071646041ef59bcabfd217026fbbd3065",
+  "runtimeEntries": 101,
+  "compileExit": 0,
+  "inputSources": 1,
+  "classes": 16,
+  "productOverlaps": [],
+  "sources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee"
+    }
+  ]
+}

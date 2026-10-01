@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "compileExitCode": 0,
+  "runExitCode": 0,
+  "actualProductSnapshot": 57,
+  "runtimeEntries": 101,
+  "fixtureClasses": 22,
+  "productionOverrides": 0,
+  "fixtureProductClassIntersections": [],
+  "fixtureJarSha256Bytes": "19c9714df9ff9d55e1463582a3ab84c64652151c2177460eb14dae5d5a3caa2c",
+  "pinnedProductOrigins": [
+    {
+      "class": "com.bilipai.desktop.data.DesktopRepository",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-57/main-kotlin.jar",
+      "sha256ClassEntryBytes": "68f8ee5f9f7ead08fa82092f3bc88b4f99ea1242def082fb6c0304cf4a9c4c8e"
+    },
+    {
+      "class": "com.bilipai.desktop.data.DesktopSessionStore",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-57/main-kotlin.jar",
+      "sha256ClassEntryBytes": "412d849ea8f43feac60ac01c8d29e369f1922b4b588d83e2c0239f40e4706c49"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoRepositoryBinding",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-57/main-kotlin.jar",
+      "sha256ClassEntryBytes": "b7428ca9fcb3888d6165dd2c1018e41c56f64b59d43363124b644f0454f5574b"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoLoadProtocolEnvironment",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-57/main-kotlin.jar",
+      "sha256ClassEntryBytes": "9a493ff2216bbb6c2949084126b0a44b2c5384ead5ad2ac407f1e55620d41525"
+    },
+    {
+      "class": "com.bilipai.desktop.ui.DesktopOriginalVideoPlaybackInvocationPorts",
+      "codeSource": "file:/C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai/desktop/.local/stable-product-snapshot-57/main-kotlin.jar",
+      "sha256ClassEntryBytes": "3d4f58592602578083bd9784aa4a790f783840b028fcb7c23ada9d419e8094ca"
+    }
+  ],
+  "fixtureSourceUnchanged": true,
+  "fixtureHistoricalScopeTextRetained": true,
+  "sameSocketFreeChecksReplayed": true,
+  "mediaAcceptanceIsFixtureObserverOnly": true,
+  "classBytesReportedByFixture": false,
+  "actualAccountUsed": false,
+  "nativeExecuted": false,
+  "fullOrdinaryVideoRootMountAccepted": false
+}

@@ -1,0 +1,92 @@
+{
+  "preparedOnly": true,
+  "installWhitelist": "install-whitelist.json",
+  "files": [
+    {
+      "path": "compile-invocation.py",
+      "sha256Bytes": "a2f0f3c115c40b20b2161669dc830f0ec867adfcec3eebe9128f9963328a71ad",
+      "bytes": 4263
+    },
+    {
+      "path": "fixture/PlaybackInvocationFixture.kt",
+      "sha256Bytes": "18eee727c0d8a2dcad0315a28e0f942f5be6ebfb7760cf551c788eb07a58ec14",
+      "bytes": 11950
+    },
+    {
+      "path": "historical/invocation-compile-01/compile.args",
+      "sha256Bytes": "3cb6589119b08f2f9cb670f11820ca9c2254f25a3c5ba25598a0d67fd7f9cae8",
+      "bytes": 25863
+    },
+    {
+      "path": "historical/invocation-compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "historical/invocation-compile-01/result.json",
+      "sha256Bytes": "375efdfba5156aae1850addbe6e8fd8617744756205361f4fbae2a44e35c4c2f",
+      "bytes": 853
+    },
+    {
+      "path": "historical/invocation-compile-02/compile.args",
+      "sha256Bytes": "1054b0d2a2a8c12d9ac9c312a4155ef533766230368a424d0218ce9e11c2a9fa",
+      "bytes": 26036
+    },
+    {
+      "path": "historical/invocation-compile-02/compile.log",
+      "sha256Bytes": "2ceb427ca1365079b22397c2d53445663cf8aa19bcb2373b2582fc4b28966773",
+      "bytes": 409
+    },
+    {
+      "path": "historical/invocation-compile-02/result.json",
+      "sha256Bytes": "4cdbbb3067abb935ad416767a1acd35e99f2217ac44d303e70847c69ae98b439",
+      "bytes": 1154
+    },
+    {
+      "path": "historical/invocation-compile-03/compile.args",
+      "sha256Bytes": "afc2265bdccb7d01f119d7cbc5962d92af1ae420dbaab881bda56f1f871c1068",
+      "bytes": 26036
+    },
+    {
+      "path": "historical/invocation-compile-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "historical/invocation-compile-03/fixture-result.json",
+      "sha256Bytes": "c90c1e59789c79a004ba7dc372483fee0206ea8b6b31a3d950a051a0832a6f69",
+      "bytes": 2553
+    },
+    {
+      "path": "historical/invocation-compile-03/result.json",
+      "sha256Bytes": "f0303b25f57ba78476af072919addf0be9f73b9016b6319a41bb72439ef2edb0",
+      "bytes": 1175
+    },
+    {
+      "path": "historical/invocation-compile-03/runtime.log",
+      "sha256Bytes": "c31c7a504f185b1ad934ecf49909b74fdd2a0eddcdc099c5bb6bed8429382f7d",
+      "bytes": 90
+    },
+    {
+      "path": "install-whitelist.json",
+      "sha256Bytes": "abf47aef58db1c72ad93e8d41a41236e081dfd229a9d2c860cfe1bc6a886fe45",
+      "bytes": 396
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+      "bytes": 8295
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "a2ae693e2ca3ea59f39b064d2e9aaaba1da0d7c20f0f4e232a0df230d5e6061b",
+      "bytes": 2568
+    },
+    {
+      "path": "scope.json",
+      "sha256Bytes": "8c07cbf9e2e8ce5817d6d9c0c5d45e4b541acce452ae1abcb68ec26662896add",
+      "bytes": 439
+    }
+  ],
+  "scope": "scope.json"
+}

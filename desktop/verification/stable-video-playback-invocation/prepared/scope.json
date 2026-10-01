@@ -1,0 +1,12 @@
+{
+  "originalTarget": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "snapshot55Manifest": "c26f15be9d6472c30b2a58a97d50c85cedc11d8074df2c1516620dd33334f124",
+  "snapshot55OrderedCp": "8118ea8bb2d916b8e81ad2f6e678115b437ac458a4c94cd42dc9c1a0813ea55a",
+  "runtimeEntries": 101,
+  "preparedOnly": true,
+  "assertions": 16,
+  "fullVmMounted": false,
+  "nativePlaybackProof": false,
+  "rootControllerRetired": false,
+  "binaryInstall": false
+}

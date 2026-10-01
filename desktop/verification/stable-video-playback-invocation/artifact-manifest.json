@@ -1,0 +1,231 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "6a3b07d40a24f7cddf3d5ced277cf6b1fa4c410877bb358294cada770c59fddf",
+      "sizeBytes": 3172
+    },
+    {
+      "path": "prepared/compile-invocation.py",
+      "sha256Bytes": "a2f0f3c115c40b20b2161669dc830f0ec867adfcec3eebe9128f9963328a71ad",
+      "sizeBytes": 4263
+    },
+    {
+      "path": "prepared/fixture/PlaybackInvocationFixture.kt",
+      "sha256Bytes": "18eee727c0d8a2dcad0315a28e0f942f5be6ebfb7760cf551c788eb07a58ec14",
+      "sizeBytes": 11950
+    },
+    {
+      "path": "prepared/historical/invocation-compile-01/compile.args",
+      "sha256Bytes": "3cb6589119b08f2f9cb670f11820ca9c2254f25a3c5ba25598a0d67fd7f9cae8",
+      "sizeBytes": 25863
+    },
+    {
+      "path": "prepared/historical/invocation-compile-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/historical/invocation-compile-01/result.json",
+      "sha256Bytes": "375efdfba5156aae1850addbe6e8fd8617744756205361f4fbae2a44e35c4c2f",
+      "sizeBytes": 853
+    },
+    {
+      "path": "prepared/historical/invocation-compile-02/compile.args",
+      "sha256Bytes": "1054b0d2a2a8c12d9ac9c312a4155ef533766230368a424d0218ce9e11c2a9fa",
+      "sizeBytes": 26036
+    },
+    {
+      "path": "prepared/historical/invocation-compile-02/compile.log",
+      "sha256Bytes": "2ceb427ca1365079b22397c2d53445663cf8aa19bcb2373b2582fc4b28966773",
+      "sizeBytes": 409
+    },
+    {
+      "path": "prepared/historical/invocation-compile-02/result.json",
+      "sha256Bytes": "4cdbbb3067abb935ad416767a1acd35e99f2217ac44d303e70847c69ae98b439",
+      "sizeBytes": 1154
+    },
+    {
+      "path": "prepared/historical/invocation-compile-03/compile.args",
+      "sha256Bytes": "afc2265bdccb7d01f119d7cbc5962d92af1ae420dbaab881bda56f1f871c1068",
+      "sizeBytes": 26036
+    },
+    {
+      "path": "prepared/historical/invocation-compile-03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/historical/invocation-compile-03/fixture-result.json",
+      "sha256Bytes": "c90c1e59789c79a004ba7dc372483fee0206ea8b6b31a3d950a051a0832a6f69",
+      "sizeBytes": 2553
+    },
+    {
+      "path": "prepared/historical/invocation-compile-03/result.json",
+      "sha256Bytes": "f0303b25f57ba78476af072919addf0be9f73b9016b6319a41bb72439ef2edb0",
+      "sizeBytes": 1175
+    },
+    {
+      "path": "prepared/historical/invocation-compile-03/runtime.log",
+      "sha256Bytes": "c31c7a504f185b1ad934ecf49909b74fdd2a0eddcdc099c5bb6bed8429382f7d",
+      "sizeBytes": 90
+    },
+    {
+      "path": "prepared/install-whitelist.json",
+      "sha256Bytes": "abf47aef58db1c72ad93e8d41a41236e081dfd229a9d2c860cfe1bc6a886fe45",
+      "sizeBytes": 396
+    },
+    {
+      "path": "prepared/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+      "sizeBytes": 8295
+    },
+    {
+      "path": "prepared/ROOT-INTEGRATION.md",
+      "sha256Bytes": "a2ae693e2ca3ea59f39b064d2e9aaaba1da0d7c20f0f4e232a0df230d5e6061b",
+      "sizeBytes": 2568
+    },
+    {
+      "path": "prepared/scope.json",
+      "sha256Bytes": "8c07cbf9e2e8ce5817d6d9c0c5d45e4b541acce452ae1abcb68ec26662896add",
+      "sizeBytes": 439
+    },
+    {
+      "path": "root/video-invocation-install57/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee",
+      "sizeBytes": 8295
+    },
+    {
+      "path": "root/video-invocation-install57/installed.json",
+      "sha256Bytes": "eb7eac347ab4556772792282f74a09b2be4b282a86c1144ed246dcaec041121c",
+      "sizeBytes": 624
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/PlaybackInvocationFixture.kt",
+      "sha256Bytes": "18eee727c0d8a2dcad0315a28e0f942f5be6ebfb7760cf551c788eb07a58ec14",
+      "sizeBytes": 11950
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/compile.args",
+      "sha256Bytes": "efdadfc0535d5461ecf08aa7b08e13a1314b068ed20af1a1beae1fd40520e29e",
+      "sizeBytes": 25530
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/pins-after.json",
+      "sha256Bytes": "4a81d02c888f0eb38a1712f7990e89f9cb644b2d70ba76572174fb691e938461",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/pins-before.json",
+      "sha256Bytes": "4a81d02c888f0eb38a1712f7990e89f9cb644b2d70ba76572174fb691e938461",
+      "sizeBytes": 42522
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/result.json",
+      "sha256Bytes": "6038496b4c914c01ab43e25627aed23ca00905e02d498693292b9e77422ed16a",
+      "sizeBytes": 2529
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/run.log",
+      "sha256Bytes": "4743339be2f3901abfa725a0832cd039901052890aeb683211cf36403d142438",
+      "sizeBytes": 91
+    },
+    {
+      "path": "root/actual57-invocation-fixture01/runner-result.json",
+      "sha256Bytes": "9877eb35134471e3d37349317e56aa0ed49444446a8d4c14d158d90c060f45ca",
+      "sizeBytes": 2457
+    },
+    {
+      "path": "root/snapshot57/manifest.json",
+      "sha256Bytes": "e28b6b6e465c8a03e0a26eff6dc2c1dfe1b0aa133e5710eaf3f7ff3f5fe9d007",
+      "sizeBytes": 147578
+    },
+    {
+      "path": "root/snapshot57/ordered-runtime-cp.json",
+      "sha256Bytes": "9f9e943b59d873e36d1a8a29825bd65f1189209724dd0c9f3eed4cf0b38537b4",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-57.log",
+      "sha256Bytes": "dd660777d509861330ba9435c0572805195380326212a2e59368f09d7c4fcaf6",
+      "sizeBytes": 20279
+    },
+    {
+      "path": "root/classpath-57.log",
+      "sha256Bytes": "7c162df127e6e77117fbaa124774a5dc00a562d0ef4fd8adfca638e66ec2c51d",
+      "sizeBytes": 287
+    },
+    {
+      "path": "root/physical-startup57/PhysicalRootStartupFixture.java",
+      "sha256Bytes": "e680e0d6bdb2dad911dc52e315bc54c3ac484c32d77db993c1a0d3c601b747e9",
+      "sizeBytes": 5134
+    },
+    {
+      "path": "root/physical-startup57/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/physical-startup57/launch.args",
+      "sha256Bytes": "2fbd03857765bfda2e1744d96edf445677bfed6d41da22d7df1f6b24418b6448",
+      "sizeBytes": 25813
+    },
+    {
+      "path": "root/physical-startup57/physical-window.json",
+      "sha256Bytes": "9a6b9efb7ebedb94c58ab75081dd7430eedd6c3ebe2aa6a9a815918c2a6cea7f",
+      "sizeBytes": 210
+    },
+    {
+      "path": "root/physical-startup57/result.json",
+      "sha256Bytes": "8ad86b4af4b6044d64ce4030cb8a0c971be205a3f68fff0a8148080c5f588316",
+      "sizeBytes": 1221
+    },
+    {
+      "path": "root/physical-startup57/stderr.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/physical-startup57/stdout.raw.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/install-video-invocation57.py",
+      "sha256Bytes": "bd24217018d29ef50e1bb9c2cc2d68f57f94fe05eea8242fbd3e60f915196cf7",
+      "sizeBytes": 2068
+    },
+    {
+      "path": "root/run-actual57-invocation-fixture.py",
+      "sha256Bytes": "a3185a6b12d04a47d4ee42c950867399e6242f0bd6241db52a132d21687ae69c",
+      "sizeBytes": 5197
+    },
+    {
+      "path": "root/freeze-video-invocation57.py",
+      "sha256Bytes": "dd4d1058bc93c6c8c678a8000fd0d64ca442fc2ec4e339df23b1cd0744a14f61",
+      "sizeBytes": 6250
+    },
+    {
+      "path": "root/jvm-method-name-audit-57.json",
+      "sha256Bytes": "767b788f5fed013fb333286440437004e88c578e200909b8321e1cd80a3c9dab",
+      "sizeBytes": 240
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "2e35f4b87f3aa9fed580445f8b986c28b81f9fbe4c47209f819566f174c07fe5",
+      "sizeBytes": 4616
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "root/actual57-invocation-fixture01/fixture.jar",
+      "sha256Bytes": "19c9714df9ff9d55e1463582a3ab84c64652151c2177460eb14dae5d5a3caa2c",
+      "reason": "Rebuildable binary or private rendered output"
+    }
+  ]
+}

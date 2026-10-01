@@ -1,0 +1,18 @@
+{
+  "applied": true,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "installedSha256Bytes": "d1bb0077e92bbd4a31acae3142146a0c82e6f3f8f1168b737c7e28f62623cbee"
+    }
+  ],
+  "sourceIdentityCount": 1057,
+  "newSourceIdentities": 0,
+  "newDependencies": 0,
+  "networkInvocationCapturesActualLiveJob": true,
+  "networkChildrenShareImmutableReceipt": true,
+  "acceptedRecoveryRequiresIndependentPublicationView": true,
+  "fullOrdinaryVideoRootMountAccepted": false,
+  "currentNativeAuthorityRetired": false,
+  "wholeCompilationPending": true
+}
