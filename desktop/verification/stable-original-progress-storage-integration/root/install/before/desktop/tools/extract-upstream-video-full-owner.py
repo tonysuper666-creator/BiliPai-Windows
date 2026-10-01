@@ -44,19 +44,6 @@ def generate_original_video_action_status(repo,output):
  target.write_text(body,encoding='utf-8',newline='\n')
  return dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode='policy-extract',generated=True)
 
-def generate_original_video_progress(repo,output):
- original='app/src/main/java/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt'
- body=wide(Path(repo)/original).read_text(encoding='utf-8').replace('\r\n','\n')
- assert sha(body)=='878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5','pinned full original progress source'
- body=body.replace('import android.content.Context','import com.bilipai.desktop.ui.DesktopOriginalProgressPreferences as Context')
- body=body.replace('import android.content.SharedPreferences','import com.bilipai.desktop.ui.DesktopOriginalProgressPreferences as SharedPreferences')
- anchor='context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)'
- assert body.count(anchor)==1
- body=body.replace(anchor,'context',1).replace('class PlaybackProgressManager {','internal class PlaybackProgressManager {',1)
- target=wide(Path(output)/'com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt');target.parent.mkdir(parents=True,exist_ok=True)
- target.write_text(body,encoding='utf-8',newline='\n')
- return dict(path='com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt',origin=original,sha256LF=sha(body),mode='policy-extract',generated=True)
-
 def generate(repo,output,standalone=False):
  outputs=[]
  for recipe in RECIPES:
@@ -77,7 +64,6 @@ def generate(repo,output,standalone=False):
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted))
  outputs.append(generate_original_video_action_status(repo,output))
- outputs.append(generate_original_video_progress(repo,output))
  return outputs
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--repo',required=True);parser.add_argument('--output',required=True);parser.add_argument('--standalone',action='store_true')

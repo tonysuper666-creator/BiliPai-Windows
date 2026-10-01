@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "exit": 0,
+  "snapshot": 75,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureSourceCount": 1,
+  "fixtureClasses": 4,
+  "uniqueProductClassOrigins": 4,
+  "assertions": 22,
+  "pinsUnchanged": true,
+  "actualInstalledProgressAndStore": true,
+  "globalRootProgressMounted": false,
+  "wholeRootAccepted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}

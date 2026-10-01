@@ -1,0 +1,34 @@
+{
+  "com/android/purebilibili/feature/video/controller/PlaybackProgressManager.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-75\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15311,
+      "sha256Bytes": "5574ba1884b080c9f9aa36034f93970f24e54e8b7645ffe65c0d186c880e6fe2"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalProgressWriter.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-75\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15311,
+      "sha256Bytes": "5574ba1884b080c9f9aa36034f93970f24e54e8b7645ffe65c0d186c880e6fe2"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalProgressPreferences.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-75\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15311,
+      "sha256Bytes": "5574ba1884b080c9f9aa36034f93970f24e54e8b7645ffe65c0d186c880e6fe2"
+    }
+  ],
+  "com/bilipai/desktop/plugins/DesktopPluginStore.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-75\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15311,
+      "sha256Bytes": "5574ba1884b080c9f9aa36034f93970f24e54e8b7645ffe65c0d186c880e6fe2"
+    }
+  ]
+}

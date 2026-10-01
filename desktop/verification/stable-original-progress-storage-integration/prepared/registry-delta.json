@@ -1,0 +1,12 @@
+{
+  "newIdentity": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "original-video-progress-manager"
+    ],
+    "sha256": "878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5"
+  },
+  "neverReplaceWholeRegistry": true,
+  "pinnedTarget": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589"
+}

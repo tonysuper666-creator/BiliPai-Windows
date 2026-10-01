@@ -1,0 +1,180 @@
+Starting a Gradle Daemon, 1 incompatible Daemon could not be reused, use --status for details
+Parallel Configuration Cache is an incubating feature.
+Calculating task graph as no cached configuration is available for tasks: :desktop:classes
+
+> Configure project :app
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\158d5d5f444f24b52ef7e0e58cbb175f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\158d5d5f444f24b52ef7e0e58cbb175f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\0bed3542632d5f79a2fa0e75fec47d56' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\e2c7f868265797bd9d0d754943eabb7f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\84aeecd5047674a4ee32e75e08276766' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\4d82601f2511e6c41f0812820f066d02' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\74e3fc03344a64b4ef3a2043fed7333f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\0bed3542632d5f79a2fa0e75fec47d56' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\e2c7f868265797bd9d0d754943eabb7f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\84aeecd5047674a4ee32e75e08276766' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\74e3fc03344a64b4ef3a2043fed7333f' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\4d82601f2511e6c41f0812820f066d02' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, f571933bb948577b1f9f3076fb8fc7c6)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\a124875106ae15b19212bf601d1fb2d3' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\8a45c7a6c8cd46f2ed0f2939fd46aaa8' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\3d0c692f4eb2fa09ad228bbb8fe1d0d7' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\33680c4557448905909624e2aead15a5' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\0b8abc51a9cc20b6f9139fa9a41dcaea' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\a124875106ae15b19212bf601d1fb2d3' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\0b8abc51a9cc20b6f9139fa9a41dcaea' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\3d0c692f4eb2fa09ad228bbb8fe1d0d7' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\33680c4557448905909624e2aead15a5' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+The contents of the immutable workspace 'C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\toolchain\gradle-home\caches\9.5.0\transforms\8a45c7a6c8cd46f2ed0f2939fd46aaa8' have been modified. These workspace directories are not supposed to be modified once they are created. The modification might have been caused by an external process, or could be the result of disk corruption.
+outputDirectory:
+ - transformed (Missing, b2b4c679e0de9c339f26fecdcb3b8cd5)
+
+resultsFile:
+ - results.bin (RegularFile, 73ca381b89ef34e001ca5d1d9a1e4b14)
+
+
+> Configure project :dolby-ffmpeg-decoder
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/dolby-ffmpeg-decoder/build.gradle.kts:24:21: 'fun srcDir(srcDir: Any): Any' is deprecated. Use `directories` mutable set instead.
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Cannot locate tasks that match ':desktop:classes' as project 'desktop' not found in root project 'BiliPai'.
+
+* Try:
+> Run gradle projects to get a list of available projects.
+> For more on name expansion, please refer to https://docs.gradle.org/9.5.0/userguide/command_line_interface.html#sec:name_abbreviation in the Gradle documentation.
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 37s
+Configuration cache entry stored.

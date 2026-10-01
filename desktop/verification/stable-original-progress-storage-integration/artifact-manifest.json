@@ -1,0 +1,327 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/compile-proof.py",
+      "sha256Bytes": "f75531afea5c4289044752b438f3a1143c2d116a0fabae66d838400edf77ab5e",
+      "sizeBytes": 3359
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sha256Bytes": "5239c6b2a7a6e63e5f5acc256fbb472c725814fe66ed531861f33206201de439",
+      "sizeBytes": 2636
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "sha256Bytes": "f514cca9498fcb4ab7bfb1f1c1aa2adc1adae14ff9773e26b2d6be7f47b3e361",
+      "sizeBytes": 7186
+    },
+    {
+      "path": "prepared/historical-actual73/01/compile.args",
+      "sha256Bytes": "c3b6e415e6af5262e8fc9b4b7f751fc4af3ff64423d9fad0a2b289c5cde56e83",
+      "sizeBytes": 25871
+    },
+    {
+      "path": "prepared/historical-actual73/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/historical-actual73/01/pins-after.json",
+      "sha256Bytes": "a59c086c482ee4fab8c57988a5b19205c0bca7c61b65ebc108c335b6925f8cad",
+      "sizeBytes": 51597
+    },
+    {
+      "path": "prepared/historical-actual73/01/pins-before.json",
+      "sha256Bytes": "a59c086c482ee4fab8c57988a5b19205c0bca7c61b65ebc108c335b6925f8cad",
+      "sizeBytes": 51597
+    },
+    {
+      "path": "prepared/historical-actual73/01/result.json",
+      "sha256Bytes": "9557fc239c25998ff43971a3ad99550a675f0c1a361c654a828e8d541c8175f0",
+      "sizeBytes": 11901
+    },
+    {
+      "path": "prepared/historical-actual73/01/run.log",
+      "sha256Bytes": "4bb82f998a64af49ec42d2162d1846c1486e36c7bde97d2cb7465b9a8259f6bb",
+      "sizeBytes": 1551
+    },
+    {
+      "path": "prepared/historical-actual73/02/compile.args",
+      "sha256Bytes": "2030078ffc34c3b46ac19d35d9922259eb589028c2cc72f9b19d0b543260ec27",
+      "sizeBytes": 25871
+    },
+    {
+      "path": "prepared/historical-actual73/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/historical-actual73/02/pins-after.json",
+      "sha256Bytes": "5b54ed11113f0f51e844277f603b66de1360028fb47b0aa795e58fe25a5bd13b",
+      "sizeBytes": 51597
+    },
+    {
+      "path": "prepared/historical-actual73/02/pins-before.json",
+      "sha256Bytes": "5b54ed11113f0f51e844277f603b66de1360028fb47b0aa795e58fe25a5bd13b",
+      "sizeBytes": 51597
+    },
+    {
+      "path": "prepared/historical-actual73/02/result.json",
+      "sha256Bytes": "a42a4ac692f8a3d0a443d5e7030cdaba08f98f5740dbd3ad3b1e4646093f967d",
+      "sizeBytes": 11900
+    },
+    {
+      "path": "prepared/historical-actual73/02/run.log",
+      "sha256Bytes": "7dfaa4f92885b57680ada7b1e5ce901acf112845e96fcd708d6c951e995773c5",
+      "sizeBytes": 698
+    },
+    {
+      "path": "prepared/install-whitelist.json",
+      "sha256Bytes": "2a80d4973f50260c71e17aae2a982333f7bf8770e4646deab992b8d9fa7112fb",
+      "sizeBytes": 623
+    },
+    {
+      "path": "prepared/original/PlaybackProgressManager.kt",
+      "sha256Bytes": "878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5",
+      "sizeBytes": 7161
+    },
+    {
+      "path": "prepared/prepared/existing/desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "sizeBytes": 218867
+    },
+    {
+      "path": "prepared/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "sizeBytes": 4769
+    },
+    {
+      "path": "prepared/producer-hunks.json",
+      "sha256Bytes": "80d2bb947ba28139ada666b70b9615b2ed2995c1a68af3eefb3040ab81671b0c",
+      "sizeBytes": 1962
+    },
+    {
+      "path": "prepared/ProgressStorageProof.kt",
+      "sha256Bytes": "a4576e52378389853c55f3e38aa58f19f6d0f968cdf0696e17a9d92986c2631b",
+      "sizeBytes": 4991
+    },
+    {
+      "path": "prepared/proof-actual74/compile.args",
+      "sha256Bytes": "494d36d72b4ffd4cea3bf178e042aad2f52c205478b9006ee3017ada795541e9",
+      "sizeBytes": 26000
+    },
+    {
+      "path": "prepared/proof-actual74/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/proof-actual74/inputs/generated/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "sha256Bytes": "f514cca9498fcb4ab7bfb1f1c1aa2adc1adae14ff9773e26b2d6be7f47b3e361",
+      "sizeBytes": 7186
+    },
+    {
+      "path": "prepared/proof-actual74/inputs/prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "sizeBytes": 4769
+    },
+    {
+      "path": "prepared/proof-actual74/inputs/ProgressStorageProof.kt",
+      "sha256Bytes": "a4576e52378389853c55f3e38aa58f19f6d0f968cdf0696e17a9d92986c2631b",
+      "sizeBytes": 4991
+    },
+    {
+      "path": "prepared/proof-actual74/pins-after.json",
+      "sha256Bytes": "bc40728827153782af9adec0f26f4c8ed29c8933045d49d3b96162a2da569e12",
+      "sizeBytes": 44488
+    },
+    {
+      "path": "prepared/proof-actual74/pins-before.json",
+      "sha256Bytes": "bc40728827153782af9adec0f26f4c8ed29c8933045d49d3b96162a2da569e12",
+      "sizeBytes": 44488
+    },
+    {
+      "path": "prepared/proof-actual74/result.json",
+      "sha256Bytes": "65b19852c225751d092af4eebb729fcc8298c97278c17b25288bbcb551f820a2",
+      "sizeBytes": 280
+    },
+    {
+      "path": "prepared/proof-actual74/run.log",
+      "sha256Bytes": "981e5c9a9c1f62806529f5af319a3b15fec60050dc80df3e746ec3608fe8bd38",
+      "sizeBytes": 711
+    },
+    {
+      "path": "prepared/registry-delta.json",
+      "sha256Bytes": "55185da6ea9b3094a7e2476f1490706abbee752ddf0f40d4557d6e40a4b63a57",
+      "sizeBytes": 424
+    },
+    {
+      "path": "prepared/replayed/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "sha256Bytes": "f514cca9498fcb4ab7bfb1f1c1aa2adc1adae14ff9773e26b2d6be7f47b3e361",
+      "sizeBytes": 7186
+    },
+    {
+      "path": "prepared/ROOT-INTEGRATION.md",
+      "sha256Bytes": "e0b14b8bf978e96c86c7963916f6c586f6db2965c5bdd748126ab95908884d53",
+      "sizeBytes": 3246
+    },
+    {
+      "path": "prepared/source-review.json",
+      "sha256Bytes": "c713e57d14b6ab056a25e1f2fed9b18a29b051c794b72788da2bcbfbd94bc95f",
+      "sizeBytes": 447
+    },
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "ccb08af8a9ce7e887eb87c0634cad273d918c0b61ee2020d963e77c677f3d551",
+      "sizeBytes": 7300
+    },
+    {
+      "path": "root/install/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "sizeBytes": 4769
+    },
+    {
+      "path": "root/install/after/desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "sizeBytes": 218867
+    },
+    {
+      "path": "root/install/after/desktop/upstream-sources.json",
+      "sha256Bytes": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611",
+      "sizeBytes": 411971
+    },
+    {
+      "path": "root/install/before/desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11",
+      "sizeBytes": 217529
+    },
+    {
+      "path": "root/install/before/desktop/upstream-sources.json",
+      "sha256Bytes": "6b667db5788d72e71c6c501276db61d175b7d1f6bd30fb23799e7462e5735e37",
+      "sizeBytes": 411660
+    },
+    {
+      "path": "root/install/installed.json",
+      "sha256Bytes": "87415160a3ced22e5cf33b54f29601b7d8f59e3d596d72540f33be741f60ef4a",
+      "sizeBytes": 1369
+    },
+    {
+      "path": "root/snapshot75/manifest.json",
+      "sha256Bytes": "548d3f0d96db04be54e2e22d4e2d42ebca3a83c806fd6fa55d400f83c7d4f1b9",
+      "sizeBytes": 156911
+    },
+    {
+      "path": "root/snapshot75/ordered-runtime-cp.json",
+      "sha256Bytes": "4f2f3212c1ca85bc2bc6208f834bc6bc34b10c533d56da904139918dd5a2253a",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-75.log",
+      "sha256Bytes": "950f8c1d7b8461672a4dabe556d631208c9737033ffe48f43fbecdfa0cdd1c26",
+      "sizeBytes": 14213
+    },
+    {
+      "path": "root/classpath75.log",
+      "sha256Bytes": "e1761a6a544c03868f92a535f39dadab5a2202c64f31781793acaed8944f58ca",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/classes-75-preflight.log",
+      "sha256Bytes": "dc9be1a8deb88c81577fe188e9896538a3e36c8a0dd343b6fc1580d8305a6319",
+      "sizeBytes": 14043
+    },
+    {
+      "path": "root/jvm-method-name-audit-75.json",
+      "sha256Bytes": "b7bb3acdb532d2d0d46b602308cd51c5c8f8acabcdca79c6263c33a4b040cf63",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/install-original-progress75.py",
+      "sha256Bytes": "73c58bfae570292abd1f076333c622b49165155728314eea0fb94c12a0273ade",
+      "sizeBytes": 4131
+    },
+    {
+      "path": "root/freeze-original-progress75.py",
+      "sha256Bytes": "0be6240364869c255a4296b613ce22f4c1a4b007490ff4d4b8b913c5eb722488",
+      "sizeBytes": 7272
+    },
+    {
+      "path": "root/installed-proof/run.py",
+      "sha256Bytes": "e58dd0884b68ec644153220f6c99b044a04108b4eda1b85b593c9f088c99f25b",
+      "sizeBytes": 4832
+    },
+    {
+      "path": "root/installed-proof/runs/01/class-origins.json",
+      "sha256Bytes": "27fd01f5e2ee1b7a294f29e36d13edd2c6753aa28f80bd9553df9f02be5bed12",
+      "sizeBytes": 1715
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile-command.json",
+      "sha256Bytes": "2484b778c5cd0c9cc98dc008f0a03998e31f0104df5eb06aeea1e3f977a4e6d9",
+      "sizeBytes": 2550
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.args",
+      "sha256Bytes": "4be1de9283973036478f37d2388c797a85363d242f9786dc2c657fb4c15079c1",
+      "sizeBytes": 25527
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/installed-proof/runs/01/inputs/ProgressStorageProof.kt",
+      "sha256Bytes": "a4576e52378389853c55f3e38aa58f19f6d0f968cdf0696e17a9d92986c2631b",
+      "sizeBytes": 4991
+    },
+    {
+      "path": "root/installed-proof/runs/01/overlap.json",
+      "sha256Bytes": "8f2bfb8ac2442fff4b9e85d5cd0ef00986240275632ff15b2d2e91fd2845bec8",
+      "sizeBytes": 55
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-after.json",
+      "sha256Bytes": "1989aca76e1f6f3621e0591f39d01964c866b014b0db872b6c229fce5a19dc1a",
+      "sizeBytes": 42923
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-before.json",
+      "sha256Bytes": "1989aca76e1f6f3621e0591f39d01964c866b014b0db872b6c229fce5a19dc1a",
+      "sizeBytes": 42923
+    },
+    {
+      "path": "root/installed-proof/runs/01/result.json",
+      "sha256Bytes": "691e7973789a3df5c250ad736de1ea611879da0073e814f9c3e1a9aa3d5e50c6",
+      "sizeBytes": 411
+    },
+    {
+      "path": "root/installed-proof/runs/01/run-command.json",
+      "sha256Bytes": "7e5084f72b21ed3cc9e9abcc9e9b7ed6b607fad4048e5d6897352ba9f6339f3e",
+      "sizeBytes": 27043
+    },
+    {
+      "path": "root/installed-proof/runs/01/run.log",
+      "sha256Bytes": "8ca328e462f2283c835bf2d95717de93ad9fb837d22d5d20c9e36bc82b4c8797",
+      "sizeBytes": 676
+    },
+    {
+      "path": "root/installed-proof/excluded-artifacts.json",
+      "sha256Bytes": "38c9e498bc4d7e6801b1c87e93577930820ecedf320a4ede0957f16fa9d972e0",
+      "sizeBytes": 226
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "f4154726c721fb3a5dbc82288da934142c65de127c41171974a28180709fdbb2",
+      "sizeBytes": 890
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "runs/01/fixture.jar",
+      "sizeBytes": 12083,
+      "sha256Bytes": "5520c3262895b6f98cc5a7068dbbaeaae090b1e34ad2810b0ffa3430dc780c53",
+      "reason": "Rebuildable fixture output; not production payload."
+    }
+  ]
+}

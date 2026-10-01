@@ -1,0 +1,7 @@
+
+> Task :exportStableRuntimeClasspath
+Exported 101 ordered actual stable runtime entries.
+
+BUILD SUCCESSFUL in 816ms
+1 actionable task: 1 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

@@ -1,0 +1,36 @@
+{
+  "phase": 75,
+  "baseCommit": "4fb5d663e666b11ed8d42e7a01ebf066a4a1439f",
+  "frozenPacketSha256": "ccb08af8a9ce7e887eb87c0634cad273d918c0b61ee2020d963e77c677f3d551",
+  "preparedRaw": 34,
+  "newManual": 1,
+  "existingProducerFamilies": 1,
+  "exactProducerHunks": 2,
+  "indexedInverse": true,
+  "newSourceIdentities": 1,
+  "sourceIdentityCount": 1170,
+  "resourceCount": 213,
+  "newDependencies": 0,
+  "registryUnionPreservesExistingRows": true,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11",
+      "afterSha256Bytes": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "6b667db5788d72e71c6c501276db61d175b7d1f6bd30fb23799e7462e5735e37",
+      "afterSha256Bytes": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611"
+    }
+  ],
+  "originalProgressBodyInstalled": true,
+  "globalRootProgressMounted": false,
+  "wholeRootAccepted": false,
+  "desktopExeReplaced": false
+}

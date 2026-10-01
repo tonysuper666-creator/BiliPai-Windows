@@ -9819,14 +9819,6 @@
       "features": [
         "original-video-detail-holder-full"
       ]
-    },
-    {
-      "path": "app/src/main/java/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
-      "mode": "policy-extract",
-      "features": [
-        "original-video-progress-manager"
-      ],
-      "sha256": "878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5"
     }
   ],
   "featureCoverage": {

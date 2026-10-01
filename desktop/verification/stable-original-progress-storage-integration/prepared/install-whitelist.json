@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "new",
+    "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+    "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+    "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7"
+  },
+  {
+    "kind": "twoExactHunks",
+    "source": "producer-hunks.json",
+    "destination": "desktop/tools/extract-upstream-video-full-owner.py"
+  },
+  {
+    "kind": "singleIdentityUnion",
+    "source": "registry-delta.json",
+    "destination": "desktop/upstream-sources.json"
+  }
+]
